@@ -323,7 +323,7 @@ def image(args, scanners, report):
                             if name in wanted:
                                 raise ValueError("A bundled version record requires a regular file.")
                             if not args.vulnerabilities_only:
-                                content.add(io.BytesIO(member.linkname.encode()), location)
+                                content.add(io.BytesIO(member.linkname.encode()), location, expand=False)
                         elif not (member.isdir() or member.isdev() or member.isfifo()):
                             raise ValueError("An image layer contains an unsupported file type.")
                 coverage.append({"layer": diff_ids[index], **scanners.content(content)})

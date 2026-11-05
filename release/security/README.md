@@ -94,6 +94,7 @@ Gitleaks checks the complete image configuration and manifest.
 That configuration includes stored environment values and build history.
 
 The file check expands tar and ZIP archives and gzip, bzip2, and xz streams.
+The file and image checks scan the target name of each symbolic link and hard link as text, and expand no link.
 Gitleaks receives the expanded contents with its internal archive traversal disabled.
 It scans file contents under neutral names, so a file path cannot exclude a dependency directory.
 Binary text retains its line positions after the check replaces invalid text bytes and zero bytes.

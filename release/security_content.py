@@ -24,7 +24,7 @@ class Content:
         self.locations = {}
         self.bytes = 0
 
-    def add(self, stream, location, depth=0):
+    def add(self, stream, location, depth=0, expand=True):
         if depth > 16:
             raise ValueError("The nested archive exceeds the required scan depth.")
         number = len(self.locations)
@@ -45,6 +45,9 @@ class Content:
         saved = self.root.parent / f"archive-{depth}.bin"
         raw.rename(saved)
         try:
+            # A link body is its target name. The scan reads the link target as a separate file.
+            if not expand:
+                return
             with saved.open("rb") as source:
                 magic = source.read(8)
             if zipfile.is_zipfile(saved):
@@ -72,6 +75,6 @@ class Content:
                 with archive.extractfile(item) as source:
                     self.add(source, target, depth)
             elif item.issym() or item.islnk():
-                self.add(io.BytesIO(item.linkname.encode()), target, depth)
+                self.add(io.BytesIO(item.linkname.encode()), target, depth, expand=False)
             elif not (item.isdir() or item.isdev() or item.isfifo()):
                 raise ValueError("An archive contains an unsupported file type.")

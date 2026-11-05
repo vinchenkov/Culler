@@ -118,6 +118,28 @@ class SecurityPolicyTest(unittest.TestCase):
             self.assertFalse((root / "escape").exists())
             self.assertTrue(any(item["file"] == "archive!../../escape" for item in content.locations.values()))
 
+    def test_links_with_archive_names_retain_their_target_text(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            body = io.BytesIO()
+            with tarfile.open(fileobj=body, mode="w") as archive:
+                for kind, name in ((tarfile.SYMTYPE, "usr/share/doc/x/changelog.Debian.gz"),
+                                   (tarfile.LNKTYPE, "usr/share/doc/x/copy.tar")):
+                    entry = tarfile.TarInfo(name)
+                    entry.type = kind
+                    entry.linkname = "../y/changelog.Debian.gz"
+                    archive.addfile(entry)
+            body.seek(0)
+            content = Content(root / "files")
+            content.add(body, {"file": "layer.tar", "subject": "fixture"})
+            content.add(io.BytesIO(b"../z/notes.gz"), {"file": "notes.gz", "subject": "fixture"}, expand=False)
+            texts = {item["file"]: (content.root / name).read_text() for name, item in content.locations.items()}
+            self.assertEqual(texts["layer.tar!usr/share/doc/x/changelog.Debian.gz"], "../y/changelog.Debian.gz")
+            self.assertEqual(texts["layer.tar!usr/share/doc/x/copy.tar"], "../y/changelog.Debian.gz")
+            self.assertEqual(texts["notes.gz"], "../z/notes.gz")
+            with self.assertRaises(ValueError):
+                content.add(io.BytesIO(b"plain text"), {"file": "damaged.gz", "subject": "fixture"})
+
 
 if __name__ == "__main__":
     unittest.main()
