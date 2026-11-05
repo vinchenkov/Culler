@@ -11,8 +11,7 @@ Source files and tests establish implemented behavior.
 Approved documents establish intent and decisions.
 
 Each role reads knowledge from its assigned repository version.
-The Strategist and Arbiter use the `Repository copy` path in their run brief.
-Read `openwiki/` from that copy when the Project has a wiki.
+Read `openwiki/` from that repository when the Project has a wiki.
 Current repository evidence takes precedence over a generated page.
 Proposed intent remains distinct from accepted decisions and verified behavior.
 
