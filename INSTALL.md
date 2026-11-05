@@ -29,7 +29,7 @@ With that file, `curl` can fetch the private launcher:
   printf '"\n'
 } | curl -q --config - --fail --location \
   --header 'Accept: application/vnd.github.raw+json' \
-  'https://api.github.com/repos/vinchenkov/CullingHouse/contents/install.sh?ref=main' \
+  'https://api.github.com/repos/vinchenkov/Culler/contents/install.sh?ref=main' \
   --output install.sh
 sh install.sh
 ```
@@ -46,7 +46,7 @@ With that credential, the initial download can use this command:
 
 ```sh
 gh api --header 'Accept: application/vnd.github.raw+json' \
-  'repos/vinchenkov/CullingHouse/contents/install.sh?ref=main' > install.sh
+  'repos/vinchenkov/Culler/contents/install.sh?ref=main' > install.sh
 sh install.sh
 ```
 
@@ -55,7 +55,7 @@ sh install.sh
 Public distribution supports this command without a credential:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/vinchenkov/CullingHouse/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh | bash
 ```
 
 ## Setup and updates

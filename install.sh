@@ -45,7 +45,7 @@ Production requires Apple silicon and macOS.
 
 Other setup options pass to the release installer.
 See the install guide for setup instructions:
-https://github.com/vinchenkov/CullingHouse/blob/main/INSTALL.md
+https://github.com/vinchenkov/Culler/blob/main/INSTALL.md
 HELP
       exit 0 ;;
   esac
@@ -73,7 +73,7 @@ done
 for tool in curl plutil shasum tar unzip; do
   command -v "$tool" >/dev/null 2>&1 || fail "The required tool $tool is absent from the PATH. Add /usr/bin to the PATH, then run install.sh again."
 done
-CULLER_REPOSITORY=${CULLER_REPOSITORY:-vinchenkov/CullingHouse}
+CULLER_REPOSITORY=${CULLER_REPOSITORY:-vinchenkov/Culler}
 case "$CULLER_REPOSITORY" in
   *[!a-zA-Z0-9._/-]*|/*|*/|*/*/*|*..*) fail "The GitHub repository must use owner/name." ;;
   */*) ;;

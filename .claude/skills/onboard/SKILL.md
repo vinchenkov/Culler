@@ -24,7 +24,7 @@ Updates preserve that stop choice.
 
 The permanent launcher address is:
 
-`https://api.github.com/repos/vinchenkov/CullingHouse/contents/install.sh?ref=main`
+`https://api.github.com/repos/vinchenkov/Culler/contents/install.sh?ref=main`
 
 Each saved launcher selects the latest complete GitHub release.
 The launcher verifies that release's installer before execution.
@@ -37,7 +37,7 @@ A public repository supports this download:
 ```sh
 curl --fail --location \
   --header 'Accept: application/vnd.github.raw+json' \
-  'https://api.github.com/repos/vinchenkov/CullingHouse/contents/install.sh?ref=main' \
+  'https://api.github.com/repos/vinchenkov/Culler/contents/install.sh?ref=main' \
   --output install.sh
 sh install.sh
 ```
@@ -53,7 +53,7 @@ The following command requires a stored classic token with the required access.
 ```sh
 gh api \
   --header 'Accept: application/vnd.github.raw+json' \
-  'repos/vinchenkov/CullingHouse/contents/install.sh?ref=main' >install.sh
+  'repos/vinchenkov/Culler/contents/install.sh?ref=main' >install.sh
 sh install.sh
 ```
 

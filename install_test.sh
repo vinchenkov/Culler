@@ -69,7 +69,7 @@ while [ "$#" -gt 0 ]; do
 done
 if [ -n "${CULLER_FIXTURE_HTTP:-}" ]; then
   case "$url" in
-    */repos/vinchenkov/CullingHouse) printf '{}' >"$output"; printf '%s' "${CULLER_FIXTURE_REPO_STATUS:-200}" ;;
+    */repos/vinchenkov/Culler) printf '{}' >"$output"; printf '%s' "${CULLER_FIXTURE_REPO_STATUS:-200}" ;;
     *) printf '%s' "$CULLER_FIXTURE_HTTP" ;;
   esac
   exit 0

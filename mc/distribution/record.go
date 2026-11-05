@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const DefaultRepository = "vinchenkov/CullingHouse"
+const DefaultRepository = "vinchenkov/Culler"
 const RecordName = "release.json"
 const InstalledRecord = "state/published-release.json"
 
