@@ -58,5 +58,4 @@ The review found these separate defects, which remain outside this correction:
 - Repeated account authorization rejections bypass the one-recovery allowance.
   The proxy observation path resets the connection to `unknown` without `model_refresh_used`.
 
-The [connection controls](../../specs/failure-controls.md#connection-controls) define the retained retry and recovery requirements.
-The automatic transport recovery tests do not establish compliance with these separate requirements.
+The automatic transport recovery tests do not cover these separate defects.

@@ -4,6 +4,8 @@ title: Failure controls and retry allowances
 description: How Culler classifies failed agent runs, which allowance each failure consumes, how retries are timed and restored, and how operator decisions and connection conditions stay separate.
 tags: [failure, retries, allowance, blocked, stalled, connections]
 sources:
+  - id: openwiki-source-2b9db73e8eaa164d3fba79a2
+    resource: repo://dashboard/src/ui/app.js
   - id: openwiki-source-b578a24182c530b5d8630c21
     resource: repo://mc/dispatch/dispatch.go
   - id: openwiki-source-636e77a0ecbade42aa7a7799
@@ -30,8 +32,6 @@ sources:
     resource: repo://mc/verbs/runner.go
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
-  - id: openwiki-source-e6fbc8559fa9ac2c2f73b510
-    resource: repo://specs/failure-controls.md
 generated: { by: "culler-scribe", at: "2026-10-21T23:26:36.318Z" }
 verified:
   - by: openwiki/0.7.0
@@ -42,13 +42,12 @@ verified:
 
 Culler runs unattended, so it must decide alone whether a failed run deserves another attempt. It answers with small, owned allowances. Each failure is charged to exactly one owner, and each kind of condition stops only the work it owns. `mc` holds every count in the spine. The resident and the runners only report what they observe.
 
-This page separates **stated intent** (the specifications) from **implemented behavior** (code and tests).
+This page describes the implemented behavior in code and tests.
 
-## Sources of intent
+## Related documents
 
-- `specs/failure-controls.md` is the current specification. It states task conditions, proposed allowance rules, failure classification, the attention threshold, proposal decisions, and connection controls.
-- `failure-handling-spec.md` at the repository root is an earlier specification. It uses one per-task "infrastructure failure" allowance and a separate per-Project "Strategist allowance". The current code follows `specs/failure-controls.md` instead: launch failures and proposal-run failures share one Project infrastructure allowance. Read the root document as history for the blocked/stalled vocabulary and the board pause, not as the current allowance model.
-- The "Agent failure controls" section of `mc/dispatch/README.md` restates the current model.
+- `failure-handling-spec.md` at the repository root is an earlier specification. It uses one per-task "infrastructure failure" allowance and a separate per-Project "Strategist allowance". The current code uses a different model: launch failures and proposal-run failures share one Project infrastructure allowance. Read the root document as history for the blocked/stalled vocabulary and the board pause, not as the current allowance model.
+- The "Agent failure controls" section of `mc/dispatch/README.md` describes the current model.
 
 ## Task conditions: Decision Pending and Retries Exhausted
 
@@ -127,7 +126,7 @@ Connection conditions own neither pipeline allowance. The runners classify a req
 
 When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` (`mc/verbs/runner.go`) calls `domain.RecoverNetworkAttempt`, which clears only the network condition that admitted that run, and only if the connection, authorization, and profile are still current. A role terminal also clears it (`ClearNetworkRetry`). Homie uses the same reporter through `mc homie model-response`.
 
-The full connection policy table (refresh limits, quota, rejected credentials) is in `specs/failure-controls.md`.
+[Agent connections and access renewal](../operations/agent-connections.md) describes account renewal, rejected keys, and quota failures.
 
 ## Tests
 
@@ -155,11 +154,8 @@ The task returns to Seeded with merge context.
 Merge repairs have no separate finite allowance. Verifier corrections retain their correction allowance.
 An approved task holds Project priority; an open correction alone does not create that priority.
 
-The correction specification describes a finite merge repair allowance and retained priority after approval.
-Those requirements differ from the accepted implementation.
 `RequestMergeRepair` starts a repair for each conflict and clears the current approval through `returnToSeeded`.
 `priorityTask` selects a currently approved task; an open correction alone holds no Project priority.
-Use the source behavior above when diagnosing the accepted deployment.
 
 ## Resolve the recorded condition
 

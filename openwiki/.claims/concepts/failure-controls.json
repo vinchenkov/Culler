@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:82484314c558bd4b40539aea55a5de2adff558c7ad18a2d02f800201cdb07d43",
+  "pageVersion": "sha256:d9aa8609721ecf85277c585fdb249cc500fbf79a58e8796b308023a942d6bd8c",
   "claims": [
     {
       "id": "claim_637facb17ef542c7a1ee9d97d98a7b4a",
       "statement": "The dashboard labels the blocked field Decision Pending and the stalled field Retries Exhausted.",
       "evidence": [
         {
-          "resource": "repo://specs/failure-controls.md#L27-L30",
-          "version": "repo-lines-v1:sha256:61bd464918b1dc7a8e77a0c600b762390c4b17908cc02f06408228bec69f72f1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE0MDhjZWQyYjAxOTIxMmNjNjYxMTYzMmU3YmViOGJiOTczN2Y3NmJjZDgwN2M2MWRhZmZkMzAxOTljODhjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjUxMzYwMmQwMTFhMzMxZjcwOWYwYmJiOWJiZTljMzYxYWNjZDJlMzVhZGUxZWFjNTllYmY4MDM4MzZlOTgwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWZiOTJlNDdkMWRkOTNkODkxMWQ3MTI3NWZkMTE5YjRiMzAwMDk1ZGE3MmMxNjBmMjYwOTQxNDBiNTBkOWY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmY4NzZiNzg0ZmMxOGFiYTI0YWYyOWQ5MDcwNTVmM2Q2M2NlN2IxYzFhOWI3MGI5NzExYmRmZDgyOGE3ZmM5YyJ9"
+          "resource": "repo://dashboard/src/ui/app.js#L918-L919",
+          "version": "repo-lines-v1:sha256:b756bac80b0970e5f4b3c95995c94a7901740cbf9805e2989e8f5274c6926950:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJiZTIwMzU0OTIzZDUyMDJiMzg0YTM3NmFlYTNlY2YzYjdkMGE5ODY5ZmIzMWNjNGYxMzU1YjFiMDJmZTU2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I3ZjBiMjBiOGQyZmUzYTQ1OWRlZjU0YjQxM2FmOGQ0NjA0M2U0NzNlYWM2ODU3YmQxMTc3YzM0ZjVjN2E5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDFlZDczYTRkNjljYzQwZGIzZDBkNTcxOGUxNjE4MTljNGRjZWYzM2ExZDNmMzBlMjQ3ODYxNzhiZTE0OGEwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWUzYmE0MjA1NzM0OTM4N2FiMjljZjkyNWNjODY2MTcyMjNjYTAxY2UyYWM2Mjk0NDc0Nzk2ZDk4ZWZiOGVjYyJ9"
         }
       ]
     },

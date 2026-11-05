@@ -215,4 +215,4 @@ It reports live account confirmation, inbound Gateway delivery, both alert types
 It explicitly leaves a reply from a live agent unverified.
 It also records Unix socket path-length limits with a long macOS temporary path.
 These are attributed historical results, not a fresh test run or production acceptance by this wiki update.
-The [specification](../../specs/discord-dashboard-configuration.md) defines intended requirements; implementation and checks establish the behavior described here.
+The implementation and its checks establish the behavior described here.

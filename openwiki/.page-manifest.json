@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "pages": {
     "/openwiki/architecture/dashboard.md": {
-      "pageVersion": "sha256:a754302855b85664f62098b319be530cd3991128b1204bafd9839ee518a69b0b",
+      "pageVersion": "sha256:20415cd7b1e7578420baa690a635f341d3cceb58a20505ddf94c36d74cde0ccc",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
@@ -53,14 +53,14 @@
     "/openwiki/concepts/failure-controls.md": {
       "gitHead": "f5818946505ba67d45a1c3aebbe4aeae98c7cc43",
       "sourceFingerprint": "sha256:a974ca3c202b00c2de00220ea7bc3f50705d25ce95bd3f61c93a0efb7109b554",
-      "pageVersion": "sha256:82484314c558bd4b40539aea55a5de2adff558c7ad18a2d02f800201cdb07d43",
+      "pageVersion": "sha256:d9aa8609721ecf85277c585fdb249cc500fbf79a58e8796b308023a942d6bd8c",
       "completedBy": "culler-scribe",
       "completedRunId": "1f7f5479-955b-4f3e-90a8-fabeb0518958"
     },
     "/openwiki/concepts/homie.md": {
       "gitHead": "a7292ccef4b2d3b222cf0cc56d2eda6eb091b2ad",
       "sourceFingerprint": "sha256:08baa0f8926e9e9f5272464c3599d7a3f5e85e4a235570a2a623e0ff8f58607e",
-      "pageVersion": "sha256:b700fc2216857f214af80a64e52c84658c360e6c815bc42098a69a264a9fef0c",
+      "pageVersion": "sha256:5fa823af842a05dc702fcd4c8960e9de5f867408c320d71655029dfd4fc123f7",
       "completedBy": "culler-scribe",
       "completedRunId": "f257afcc-722b-40ab-951e-e6ef27c0b675"
     },
@@ -72,7 +72,7 @@
       "completedRunId": "4bd661a6-4798-4aee-a3c9-09d9a67d5429"
     },
     "/openwiki/integrations/discord.md": {
-      "pageVersion": "sha256:47204ba6efdfde5b78a210ad3c9d8a6c69acf55240ef7af3cd957ad896dfd6ab",
+      "pageVersion": "sha256:78a6383cd9773c7c0ec68faa903bab89f4a10ddaef1f39c7bfedae4a2cce093a",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
@@ -121,7 +121,7 @@
       "sourceFingerprint": "sha256:68f48f8f08af302e6fa817024861bb6e64c41c64fe1945368f9f7d82c5f95668"
     },
     "/openwiki/quickstart.md": {
-      "pageVersion": "sha256:4e6868c21a7cdc27938cdd2418f3a62ef58b38530991ff86487c76ef9321f9e6",
+      "pageVersion": "sha256:827b802baa15fb7b1e003aa57cc2bf38a7eb7c1d0f09cadfe3168e76b4bd0e15",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
@@ -144,7 +144,7 @@
     "/openwiki/workflows/decision-resolution.md": {
       "gitHead": "a7292ccef4b2d3b222cf0cc56d2eda6eb091b2ad",
       "sourceFingerprint": "sha256:08baa0f8926e9e9f5272464c3599d7a3f5e85e4a235570a2a623e0ff8f58607e",
-      "pageVersion": "sha256:13ccd879597bb5797dd15c733fabe246c012afde085159d6680ee23ee9ed8e6b",
+      "pageVersion": "sha256:fb5a84d9a5d0a69c5816189eb4c0bbde063c9ec038eec2718640ced617a88988",
       "completedBy": "culler-scribe",
       "completedRunId": "f257afcc-722b-40ab-951e-e6ef27c0b675"
     },
@@ -165,7 +165,7 @@
     "/openwiki/workflows/packet-conversations.md": {
       "gitHead": "a7292ccef4b2d3b222cf0cc56d2eda6eb091b2ad",
       "sourceFingerprint": "sha256:08baa0f8926e9e9f5272464c3599d7a3f5e85e4a235570a2a623e0ff8f58607e",
-      "pageVersion": "sha256:1b33237f8f9c147127069b3826b22b6ee4bf0c4906c98e8317a8b190bbba2b27",
+      "pageVersion": "sha256:19607390978b1dcbb5a51af11e414a0ad451c56e5f5d9192504b3bf43386431a",
       "completedBy": "culler-scribe",
       "completedRunId": "f257afcc-722b-40ab-951e-e6ef27c0b675"
     },
@@ -179,7 +179,7 @@
     "/openwiki/workflows/task-pipeline.md": {
       "gitHead": "a7292ccef4b2d3b222cf0cc56d2eda6eb091b2ad",
       "sourceFingerprint": "sha256:08baa0f8926e9e9f5272464c3599d7a3f5e85e4a235570a2a623e0ff8f58607e",
-      "pageVersion": "sha256:f0121d9913e78d3c3b629c13566fa2183e283d3f3ebeb633433bd3270907df8c",
+      "pageVersion": "sha256:fc7e8420bcefb11af70008953489c297cc1b5530b1fc95a97533ef4efbcd468b",
       "completedBy": "culler-scribe",
       "completedRunId": "f257afcc-722b-40ab-951e-e6ef27c0b675"
     }

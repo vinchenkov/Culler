@@ -200,7 +200,6 @@ The browser smoke checks the shared conversation through packet changes, reloads
 The Docker test checks artifact reads, refused writes, and isolation from another task.
 
 These are source-defined checks. This page does not claim a fresh test execution or production acceptance.
-`specs/packet-homie-chat.md` defines the intended behavior and the separate live acceptance procedure.
 
 - [Homie](../concepts/homie.md) explains claims, replies, native sessions, and idle recovery.
 - [The dashboard](../architecture/dashboard.md) explains the reader layout and API boundary.

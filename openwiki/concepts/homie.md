@@ -105,14 +105,14 @@ The schema keeps that effort immutable with the session route.
 A later wake uses the stored effort, even when the profile's effort changes.
 The current profile still supplies the connection and model access.
 
-`specs/homie-model-switch-and-paste.md` states the intended dashboard behavior. A model change in an empty conversation replaces it. In a conversation with messages, the change starts a new conversation and keeps the old one. The verified implementation is in `homieStartWithBinding`:
+A model change in an empty conversation replaces that conversation. In a conversation with messages, the change starts a new conversation and keeps the old one. `homieStartWithBinding` implements this behavior:
 
 - A model change requires `previous` (the current session) and a request id of 16–80 characters (`validModelRequest`). It must be an ordinary dashboard conversation, neither a Vision session nor a packet conversation.
 - The new session id derives from `sha256(previous + "\0" + request)`. A repeated request therefore resolves to the same replacement instead of creating a duplicate.
 - If the binding is unchanged, the current session is kept.
 - If the previous session has no messages, it is ended and marked `deleted_at` in the same transaction, and the result reports `replaced`. If it has messages, it is kept and the result reports `preserved`.
 
-`mc/verbs/homiemodel_test.go` covers replacement, request reuse, concurrent requests, a message that arrives concurrently, same-model selection, stopping the old container, and failure that preserves the previous session. The spec's image paste and draft-preservation rules are dashboard behavior; see [the dashboard](../architecture/dashboard.md).
+`mc/verbs/homiemodel_test.go` covers replacement, request reuse, concurrent requests, a message that arrives concurrently, same-model selection, stopping the old container, and failure that preserves the previous session. Image paste and draft preservation are dashboard behavior; see [the dashboard](../architecture/dashboard.md).
 
 ## Packet conversations
 

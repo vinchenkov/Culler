@@ -151,8 +151,6 @@ See [agent input](../concepts/agent-input.md) and [the test guide](../tests/chec
 
 ## Evidence and tests
 
-`specs/decision-resolution.md` states the intended behavior.
-Its Current gaps section describes the motivating problems, rather than the accepted implementation.
 The source and tests establish the behavior on this page.
 
 | Source | Behavior checked |

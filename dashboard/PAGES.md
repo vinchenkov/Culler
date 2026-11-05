@@ -106,7 +106,7 @@ AgentsView receives no dashboard credential.
 The status response supplies the address and the state of each viewer.
 The **Wiki** tooltip names the Project title and the first 7 characters of the exported commit.
 The **Traces** tooltip describes direct access to all traces in AgentsView.
-Every AgentsView link provides automatic authentication under [Automatic authentication for AgentsView](../specs/agentsview-authentication.md).
+Every AgentsView link provides automatic authentication.
 The operator reaches the intended page without the AgentsView authentication page.
 An access failure shows a Culler error state with its known cause and a retry control.
 

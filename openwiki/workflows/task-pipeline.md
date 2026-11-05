@@ -126,7 +126,6 @@ They can retrieve historical task details through their permitted read commands 
 Historical tasks do not qualify as existing work for `duplicate_of`.
 The Arbiter uses its operator decision procedure when the all-reject rules prevent a permitted verdict.
 These are role instructions; historical context does not prove that an agent follows them.
-The specification in `specs/cancelled-task-history.md` states the intended limits and behavior.
 `mc/verbs/directives_test.go` checks consistent requirements in both directives and command skills.
 `mc/verbs/dispatchverb_test.go` checks historical entries in dispatched briefs and isolation between Projects.
 

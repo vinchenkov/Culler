@@ -224,9 +224,8 @@ The Scribe updates the wiki on a schedule, separately from task execution.
 Its wiki commit merges into `main` without a review packet.
 
 The repository also retains operational evidence and design material.
-`specs/` holds requirements; `acceptance/` holds host acceptance procedures and checks.
+`acceptance/` holds host acceptance procedures and checks.
 `performance/` and `evals/` preserve experiment tools and evidence.
-`reports/` contains retained operational reports.
 `third_party/` holds vendored dependency material.
 Production ships only the explicit release manifests.
 
