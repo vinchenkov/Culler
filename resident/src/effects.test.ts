@@ -243,62 +243,6 @@ describe("the Scribe run of a wiki update", () => {
   }
 });
 
-describe("wiki access for roles without a repository", () => {
-  const snapshot = JSON.stringify({
-    project: "ws-e2e", accepted_commit: "a".repeat(40), status: "ready",
-    graph: { root: "openwiki", nodes: [{ path: "openwiki/report.md", content: "Complete accepted report.\n" }], edges: [] },
-  }) + "\n";
-  const freeRole = (role: string): Effect => ({
-    ...spawnEffect, role, mount_plan: { entries: [], version: 1 },
-    skill_store_dir: `skills/projects/ws-e2e/${role.replace(/[()]/g, "-")}`,
-  });
-
-  for (const role of ["arbiter"]) {
-    test(`${role} receives the accepted wiki snapshot through mc`, async () => {
-      const rig = makeRig();
-      rig.mc.enqueue(ok(snapshot));
-      await applyEffect(freeRole(role), rig.deps);
-      const path = "/tmp/mc-home/runs/run-42-worker.wiki.json";
-      expect(rig.mc.calls[0]).toEqual(["wiki", "show", "--project", "ws-e2e"]);
-      expect(rig.fakeFs.writes.get(path)).toBe(snapshot);
-      const envelope = JSON.parse(rig.fakeFs.writes.get("/tmp/mc-home/runs/run-42-worker.json")!);
-      expect(envelope.mounts.wiki).toBe("/mc/wiki.json");
-      expect(envelope.mounts.allow_write).not.toContain("/mc/wiki.json");
-      const create = rig.docker.calls.find((argv) => argv[0] === "create")!;
-      expect(create).toContain(`${path}:/mc/wiki.json:ro`);
-      expect(create.some((arg) => arg.includes(":/workspace/source"))).toBe(false);
-    });
-  }
-
-  test("a Project without a wiki receives the explicit absent result", async () => {
-    const rig = makeRig();
-    const absent = JSON.stringify({ project: "ws-e2e", accepted_commit: "", status: "absent", graph: { nodes: [], edges: [] } });
-    rig.mc.enqueue(ok(absent));
-    await applyEffect(freeRole("arbiter"), rig.deps);
-    expect(rig.fakeFs.writes.get("/tmp/mc-home/runs/run-42-worker.wiki.json")).toBe(absent);
-    expect(rig.docker.calls.some((argv) => argv[0] === "start")).toBe(true);
-  });
-
-  test("invalid snapshots stop the launch before the resident writes files", async () => {
-    for (const output of [fail(1, "Unavailable repository"), ok("not JSON"), ok("null"), ok(snapshot.replace("ws-e2e", "ws-other"))]) {
-      const rig = makeRig();
-      rig.mc.enqueue(output);
-      await expect(applyEffect(freeRole("arbiter"), rig.deps)).rejects.toThrow("wiki snapshot");
-      expect(rig.docker.calls).toEqual([]);
-      expect(rig.fakeFs.writes.size).toBe(0);
-      expect(rig.mc.calls.at(-1)?.slice(0, 2)).toEqual(["run", "infra-failure"]);
-    }
-  });
-
-  test("a failed container creation removes the wiki snapshot", async () => {
-    const rig = makeRig();
-    rig.mc.enqueue(ok(snapshot));
-    rig.docker.enqueue(fail(1, "Container creation failed"));
-    await applyEffect(freeRole("arbiter"), rig.deps);
-    expect(rig.fakeFs.events).toContain("rm:/tmp/mc-home/runs/run-42-worker.wiki.json");
-  });
-});
-
 describe("idle and unknown effects", () => {
   test("a repository effect is not a tick effect", async () => {
     const rig = makeRig();
@@ -1338,10 +1282,6 @@ describe("spawn effect", () => {
 		];
 		for (const c of cases) {
 			const rig = makeRig();
-			if (c.bound && c.role.startsWith("arbiter")) {
-				// Each Arbiter run also reads the accepted wiki snapshot.
-				rig.mc.enqueue(ok(JSON.stringify({ project: "ws-e2e", accepted_commit: "", status: "absent", graph: { nodes: [], edges: [] } })));
-			}
 			const effect: Effect = {
 				...spawnEffect,
 				run_id: "run-11-reader",
@@ -1360,11 +1300,18 @@ describe("spawn effect", () => {
 				continue;
 			}
 			expect(create).toContain("/tmp/mc-home/runs/seeding/run-11-reader/repo:/workspace/seeding/repo/source:ro");
+			expect(create!.some((arg) => arg.includes("/mc/wiki.json"))).toBe(false);
+			expect(rig.mc.calls).toEqual([
+				["__mount-recheck", "/tmp/mc-home/runs/run-11-reader.mounts.json"],
+				["__mount-recheck", "/tmp/mc-home/runs/run-11-reader.mounts.json"],
+			]);
+			expect([...rig.fakeFs.writes.keys()].some((path) => path.endsWith(".wiki.json"))).toBe(false);
 			expect(rig.docker.calls.some((call) => call[0] === "start")).toBe(true);
 			expect(rig.mc.calls.some((call) => call[0] === "run" && call[1] === "infra-failure")).toBe(false);
 			const envelope = JSON.parse(rig.fakeFs.writes.get("/tmp/mc-home/runs/run-11-reader.json")!);
 			expect(envelope.subject_id).toBe(c.subject_id);
 			expect(envelope.pool_ids).toEqual(effect.pool_ids);
+			expect(envelope.mounts.wiki).toBeUndefined();
 		}
 	});
 
@@ -1614,7 +1561,6 @@ describe("reap effect", () => {
 		expect(rig.fakeFs.events).toEqual([
 			"rm:/tmp/mc-home/runs/run-42-worker.json",
 			"rm:/tmp/mc-home/runs/run-42-worker.mounts.json",
-			"rm:/tmp/mc-home/runs/run-42-worker.wiki.json",
 			"rm:/tmp/mc-home/runs/seeding/run-42-worker",
 			"rm:/tmp/mc-home/runs/scratch/run-42-worker",
 		]);
@@ -1653,7 +1599,6 @@ describe("reap effect", () => {
     expect(rig.fakeFs.events).toEqual([
       "rm:/tmp/mc-home/runs/run-42-worker.json",
       "rm:/tmp/mc-home/runs/run-42-worker.mounts.json",
-      "rm:/tmp/mc-home/runs/run-42-worker.wiki.json",
 			"rm:/tmp/mc-home/runs/seeding/run-42-worker",
 			"rm:/tmp/mc-home/runs/scratch/run-42-worker",
     ]);
@@ -1693,7 +1638,6 @@ describe("reap effect", () => {
 		expect(distinctInOrder(rig.fakeFs.events)).toEqual([
 			"rm:/tmp/mc-home/runs/run-42-worker.json",
 			"rm:/tmp/mc-home/runs/run-42-worker.mounts.json",
-			"rm:/tmp/mc-home/runs/run-42-worker.wiki.json",
 			"rm:/tmp/mc-home/runs/seeding/run-42-worker",
 			"rm:/tmp/mc-home/runs/scratch/run-42-worker",
 		]);
@@ -1760,7 +1704,6 @@ describe("reap effect", () => {
 		expect(distinctInOrder(rig.fakeFs.events)).toEqual([
 			"rm:/tmp/mc-home/runs/run-42-worker.json",
 			"rm:/tmp/mc-home/runs/run-42-worker.mounts.json",
-			"rm:/tmp/mc-home/runs/run-42-worker.wiki.json",
 			"rm:/tmp/mc-home/runs/seeding/run-42-worker",
 			"rm:/tmp/mc-home/runs/scratch/run-42-worker",
 		]);
@@ -1826,7 +1769,6 @@ describe("reap effect", () => {
     expect(rig.fakeFs.events).toEqual([
       "rm:/tmp/mc-home/runs/run-42-worker.json",
       "rm:/tmp/mc-home/runs/run-42-worker.mounts.json",
-      "rm:/tmp/mc-home/runs/run-42-worker.wiki.json",
 			"rm:/tmp/mc-home/runs/seeding/run-42-worker",
 			"rm:/tmp/mc-home/runs/scratch/run-42-worker",
     ]);

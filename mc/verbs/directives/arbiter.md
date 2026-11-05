@@ -65,7 +65,7 @@ The parts of the run brief follow this directive. A part is a section with a hea
 - The **Run** part holds the run identifier. It is the `<run_id>` value of each `mc` command.
 - The **Proposed pool** part defines the complete assignment. This Project proposal run has no task subject.
 - The **Proposal decisions** part holds the operator resolutions for Project proposal questions. Apply each relevant resolution.
-- The **Project** part names the Project. Its `Repository copy` fact is the path of a read-only copy of the committed files of the Project.
+- The **Project** part names the Project and its read-only `Repository copy`. Read source files and project knowledge from that copy.
 - The **Active tasks** part holds each active task, with its full description.
 - The **Rejected work** part holds compact entries for recent rejected tasks of this Project.
 - The **Cancelled work** part holds compact entries for recent cancelled tasks of this Project.

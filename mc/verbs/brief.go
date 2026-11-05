@@ -751,7 +751,7 @@ func loadBriefDelivery(ctx context.Context, q Q, task int64) (briefDelivery, err
 
 func addArbiterParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn) error {
 	b.Parts = append(b.Parts, projectPart(sp.Project,
-		"This is the Project that you select work for. Read its committed files, which hold the merged work, at the repository copy."))
+		"This is the Project that you select work for. Read its committed source files and project knowledge at the repository copy."))
 	pool := make([]briefBoardRow, 0, len(sp.ProposedPool))
 	for _, id := range sp.ProposedPool {
 		task, err := loadBriefTask(ctx, q, id)

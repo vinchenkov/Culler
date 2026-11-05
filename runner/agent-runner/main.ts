@@ -56,10 +56,10 @@ export interface RunEnvelope {
   harness_config?: { behavior: string };
   runtime?: RunEnvelopeRuntime;
   /** The isolated repository of the run. `input_commit` is the commit the
-   * preamble pins the repository to before the model sees the tree. Absent on
-   * a run without a repository (propose, Homie), and the preamble is skipped. */
+   * preamble pins the repository to before the model sees the tree.
+   * Proposal runs and Homie omit this field and skip the preamble. */
   repository?: { input_commit: string };
-  mounts: { session: string; workspace?: string; wiki?: string };
+  mounts: { session: string; workspace?: string };
   environment?: { configuration: ProjectEnvironment; configuration_revision: string; image_digest: string };
 }
 

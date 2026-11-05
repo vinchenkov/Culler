@@ -125,7 +125,6 @@ test("the extractor still sees the resident's grouped and flat calls", () => {
   expect(argvs).toContain("dispatch");
   expect(argvs).toContain("run stopped");
   expect(argvs).toContain("homie launch-bind");
-  expect(argvs).toContain("wiki show");
   expect(argvs).toContain("wiki-state list");
   expect(argvs).toContain("__trace-sessions");
   expect(argvs).toContain("__trace-register-setup");

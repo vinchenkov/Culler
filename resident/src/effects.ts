@@ -1263,27 +1263,6 @@ async function spawnAttempt(
   const providerAccessPath = projection?.proxyConfig === undefined ? undefined
     : providerAccessHostPath(config.mcHome, run_id, run_id);
 
-  const wikiSnapshotPath = role === "arbiter"
-    ? posix.join(runsDir(config.mcHome), `${run_id}.wiki.json`)
-    : undefined;
-  let wikiSnapshot: string | undefined;
-  if (wikiSnapshotPath !== undefined) {
-    const result = await deps.runMc(["wiki", "show", "--project", effect.project]);
-    if (result.exitCode !== 0) {
-      throw new Error(`wiki snapshot failed with exit ${result.exitCode}`);
-    }
-    let value: unknown;
-    try { value = JSON.parse(result.stdout); } catch {
-      throw new Error("wiki snapshot contains invalid JSON");
-    }
-    if (value === null || typeof value !== "object" || Array.isArray(value) ||
-        !("project" in value) || value.project !== effect.project ||
-        !("accepted_commit" in value) || typeof value.accepted_commit !== "string") {
-      throw new Error("wiki snapshot does not identify the assigned Project and accepted commit");
-    }
-    wikiSnapshot = result.stdout;
-  }
-
   // 1. folder: the trace-only session folder plus the sibling envelope dir.
   // run.json must live outside the session folder so the RW session mount
   // never aliases the RO /mc/run.json mount.
@@ -1381,7 +1360,6 @@ async function spawnAttempt(
     mounts: {
       session: "/mc/session",
       workspace: scratchDir === undefined ? "/workspace/source" : "/mc/scratch",
-      ...(wikiSnapshotPath === undefined ? {} : { wiki: "/mc/wiki.json" }),
       allow_write: writableDestinations,
     },
   };
@@ -1394,9 +1372,6 @@ async function spawnAttempt(
     runJson.mounts.allow_write.push(...(role === "scribe" ? ["/workspace/source/openwiki", "/workspace/source/.git"] : ["/workspace/source"]));
   }
   await deps.fs.writeFile(runJsonPath, JSON.stringify(runJson, null, 2) + "\n");
-  if (wikiSnapshotPath !== undefined) {
-    await deps.fs.writeFile(wikiSnapshotPath, wikiSnapshot!, { mode: 0o644 });
-  }
   const planPath = mountPlanHostPath(config.mcHome, run_id);
   await deps.fs.writeFile(planPath, JSON.stringify(effect.mount_plan) + "\n", { mode: 0o600 });
   let launchImage = environment?.image_digest ?? config.image;
@@ -1427,7 +1402,6 @@ async function spawnAttempt(
     deps.credentials?.revoke?.(run_id, run_id);
     await discardLaunch(runJsonPath);
     await discardLaunch(planPath);
-		if (wikiSnapshotPath !== undefined) await discardLaunch(wikiSnapshotPath);
 		if (providerAccessPath !== undefined) await discardLaunch(providerAccessPath);
 		if (activeSeedingEnvelope !== undefined) await discardLaunch(activeSeedingEnvelope);
 		if (seedingProjectionBase !== undefined) await discardLaunch(seedingProjectionBase, { recursive: true });
@@ -1522,7 +1496,6 @@ async function spawnAttempt(
     ...(environment ? projectCacheArguments(config.mcHome, effect.project, environment.image_digest) : []),
     "-v", `${sessionDir}:/mc/session`,
     "-v", `${runJsonPath}:/mc/run.json:ro`,
-    ...(wikiSnapshotPath === undefined ? [] : ["-v", `${wikiSnapshotPath}:/mc/wiki.json:ro`]),
     ...(scratchDir === undefined ? [] : ["-v", `${scratchDir}:/mc/scratch`]),
     "-v", `${runsLogDir}:/mc/logs`,
     "-v", `${config.behaviorsDir}:/mc/behaviors:ro`,
@@ -1706,7 +1679,6 @@ async function reap(effect: ReapEffect, deps: TickDeps): Promise<void> {
   // with the container. Missing files are fine (force semantics).
   await discard(runJsonHostPath(deps.config.mcHome, effect.run_id));
   await discard(mountPlanHostPath(deps.config.mcHome, effect.run_id));
-  await discard(posix.join(runsDir(deps.config.mcHome), `${effect.run_id}.wiki.json`));
 	await discard(`${runsDir(deps.config.mcHome)}/seeding/${effect.run_id}`, { recursive: true });
 	// Same disposability for a plan-less run's scratch cwd: derived from this
 	// exact safe run id, holds no task-store input, removed with the container.
