@@ -60,7 +60,7 @@ verified:
 
 Culler deploys onto one Apple-silicon Mac. Production never runs source from a clone. A deployment home (`MC_HOME`, default `~/.culler`) holds an installed copy of the exact shipped files, the configuration, and three launchd units: resident, dashboard, and AgentsView. The spine lives in a Docker named volume. Several shell scripts at the repository root are the front doors, and they are not interchangeable. The Go code behind them lives in `mc/deployment`, `mc/onboarding`, and `mc/distribution`. `release/` and `.github/workflows/release.yml` build and publish releases.
 
-The operator's vocabulary is `install.sh` and their coding harness. Operator-facing text never tells a human to run `mc`. The coding harness follows `.claude/skills/onboard/SKILL.md` for install, onboard, and acceptance.
+The operator's vocabulary is `install.sh` and their coding harness. Operator-facing text never tells a human to run `mc`.
 
 ## The front doors
 
@@ -181,7 +181,7 @@ See [Release security checks](release-security.md) for coverage, exceptions, rep
 
 ## Contract tests
 
-`install_test.sh` runs the launcher and `release/installer.sh` against fixtures with fake `curl`, `mise`, and `mc`. It also requires `--check-updates` and `--mc-home` to appear in `.claude/skills/onboard/SKILL.md`. AGENTS.md extends that rule to any new or renamed production flag. The test enforces only the flags it lists, so a new flag also needs an entry in that list. `redeploy_test.sh` proves the redeploy order and its failure behavior. `scripts/install-source_test.sh` and `uninstall_test.sh` cover their scripts. `mc/check.sh` runs the first two; see [checks and test lanes](../tests/checks-and-test-lanes.md).
+`install_test.sh` runs the launcher and `release/installer.sh` against fixtures with fake `curl`, `mise`, and `mc`. `redeploy_test.sh` proves the redeploy order and its failure behavior. `scripts/install-source_test.sh` and `uninstall_test.sh` cover their scripts. `mc/check.sh` runs the first two; see [checks and test lanes](../tests/checks-and-test-lanes.md).
 
 ## Runtime updates and agent sign-in
 

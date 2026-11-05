@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:91bc1e83d6a5dc7cf201e4aca369116492ef0bebdc80cb527a6a13c9070725ef",
+  "pageVersion": "sha256:0ae07d23388c8cd6779aef92d1f81c54ad73da1dda6f91ba5aa5f2b8555bc2eb",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -117,16 +117,6 @@
         {
           "resource": "repo://.github/workflows/release.yml",
           "version": "repo-file-v1:sha256:84be6e2a761efb4248b15b7c10558e02b7978aba9cf3f391a5fb5e2913f38e06"
-        }
-      ]
-    },
-    {
-      "id": "claim_dbb3b4039c9347689c7893a080de85a9",
-      "statement": "install_test.sh fails when .claude/skills/onboard/SKILL.md omits the --check-updates or --mc-home flag.",
-      "evidence": [
-        {
-          "resource": "repo://install_test.sh#L134-L136",
-          "version": "repo-lines-v1:sha256:00ad1c35dfbfbddb050f5b2cc9b3ec502403f96ff8c8682e4b28e0f0a70b0fb5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ZhZmFjYTQyNTdjNWZiNjg1OTcwNWFiY2VjOGJjOTBhZGUzZjgwN2FiNzFiMGI4MDAxOTk3OWFiMTE5MjVjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExN2ZhMDA2YmE5MjA4NTAwYjI5MzBjZTY5Y2JkZTQzNmM2NDdhZmE5MTdjYjczOTZhOWJjOTExMWE0NmRkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2M0MGU1NThkZGE3NTM1MDcyZmNlZTM2NzIxODVhYTE4YWE2NzU1ZGQ5OGVmNTE5ZTczNTZmZWFiZDBiZmY3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTc4ZDgyNGEwYmU0YzRmZTBiYzJmODUzMGMxOThjNTBhZTJhY2VmYTdlMTU4NWU4ZDA4NWY4MWU0MDkwNDY4ZiJ9"
         }
       ]
     },

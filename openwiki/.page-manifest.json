@@ -107,7 +107,7 @@
       "completedRunId": "0f161b40-6ab8-44c1-a851-f876ec09357c"
     },
     "/openwiki/operations/install-and-deployment.md": {
-      "pageVersion": "sha256:91bc1e83d6a5dc7cf201e4aca369116492ef0bebdc80cb527a6a13c9070725ef",
+      "pageVersion": "sha256:0ae07d23388c8cd6779aef92d1f81c54ad73da1dda6f91ba5aa5f2b8555bc2eb",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
@@ -128,7 +128,7 @@
       "sourceFingerprint": "sha256:68f48f8f08af302e6fa817024861bb6e64c41c64fe1945368f9f7d82c5f95668"
     },
     "/openwiki/tests/checks-and-test-lanes.md": {
-      "pageVersion": "sha256:cf18e8805cb5b7b6914cd1436ebc0805b80140659ac533af5f92c3e6ee96c1ab",
+      "pageVersion": "sha256:d279861a89898719d6031f272f8f4a519d23782a660f0c1d1fa37561e0291c62",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",

@@ -233,7 +233,7 @@ Run these at phase completion, never in the fast suite:
 
 `mc/e2e/doc.go` carries no build tag, so the untagged toolchain reports `mc/e2e [no test files]` instead of "matched no packages". The property package shares its case generator between lanes. The untagged `TestGeneratorHonesty` and `TestPlantedMutantsKilled` run in the fast suite and use the same corpus as the nightly properties. As a result, the fast lane cannot certify a different generator than the one the nightly lane uses.
 
-The dashboard smoke harness requires `MC_SMOKE_BIN`, which `smoke.sh` sets. Never run smoke files directly. Use `bootSmoke()`/`teardown()`, one Chromium per Bun process, and keep `data-testid` hooks stable. Smokes prove dashboard behavior only. Complete pipeline acceptance is a host procedure in `.claude/skills/onboard/SKILL.md`.
+The dashboard smoke harness requires `MC_SMOKE_BIN`, which `smoke.sh` sets. Never run smoke files directly. Use `bootSmoke()`/`teardown()`, one Chromium per Bun process, and keep `data-testid` hooks stable. Smokes prove dashboard behavior only.
 The harness checks the scratch home's `discord.socket` path before it creates the home. It rejects paths above 103 bytes with a request for a shorter `MC_SMOKE_ROOT`. The CI browser job uses `$RUNNER_TEMP/smoke` for that root.
 
 `dashboard/src/ui/theme.test.ts` checks the background picture selection, button state, tab updates, and theme-specific grid tokens.
