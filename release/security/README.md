@@ -150,7 +150,7 @@ A secret exception matches these exact fields:
 
 Each secret exception includes a reason.
 The subject identifies a commit, artifact checksum, or image layer.
-The initial exceptions identify checked source hashes, synthetic test values, and review identifiers.
+The initial exceptions identify checked source hashes and synthetic test values.
 
 A vulnerability exception matches the image, target, package, installed version, and advisory identifier.
 Each vulnerability exception includes a reason and an expiry date in `YYYY-MM-DD` form.
