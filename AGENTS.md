@@ -132,7 +132,7 @@ Deployment front doors. They are not interchangeable:
 - `./install.sh --dev --mc-home <scratch-path>` — development install. Never point a dev install at `~/.culler`.
 - `./install.sh` — production bootstrap plus the terminal setup interface and the `culler` lifecycle command.
 - `./redeploy.sh` — move the live production deployment to this checkout and keep its database. Production tier only. When the deployed database has a different schema, `redeploy.sh` stops and keeps that database. The stop message names the cause and the `--reset-database` option.
-- `./redeploy.sh --reset-database` — replace the deployed database with an empty database with the current schema. The operator must type a confirmation at a terminal first. The reset keeps the Project repositories and worktrees, the credentials, the operator configuration, and the deployment identity. `.claude/skills/onboard/SKILL.md` describes that option.
+- `./redeploy.sh --reset-database` — replace the deployed database with an empty database with the current schema. The operator must type a confirmation at a terminal first. The reset keeps the Project repositories and worktrees, the credentials, the operator configuration, and the deployment identity.
 - `./redeploy-dashboard.sh` — move only the live dashboard to the files committed at `HEAD`. No image build, no resident restart. A change that needs a new `mc` verb or a new manifest file needs `./redeploy.sh`.
 - `./dev-reset.sh --confirm [--rebuild] [--smoke]` — destroy and re-provision the dev deployment. Pass `--rebuild` when the tree moved since the last activation.
 - `./uninstall.sh --keep-data` — remove software and preserve deployment and Project data.
@@ -284,7 +284,6 @@ The directory name and the frontmatter `name` must match.
 - The update must state the new model succinctly and remove each statement that the change made false. The update must hold no history of the change.
 - Never open the spine from TypeScript. Every read and write spawns `mc`.
 - A new browser-loaded dashboard module needs three edits: `UI_MODULES` in `dashboard/src/server.ts`, `hostReleaseFiles` in `mc/deployment/host_release.go`, and the import in `app.js`. Non-JS assets must be hand-listed in the manifest. Run `./mc/check.sh` after adding any asset.
-- A new or renamed `install.sh` production flag must also appear in `.claude/skills/onboard/SKILL.md`; `install_test.sh` cross-checks them and fails `mc/check.sh` otherwise.
 - `runner/image/build-prod.sh` refuses while any `com.culler.*` launchd unit is loaded. This is deliberate and has no override; stop supervision first.
 - Never load launchd during development. In production, activate supervision only while the operator is present.
 - `OPERATOR-INPUTS.md` holds live secrets and is gitignored. Never commit, log, or copy its values into tracked files. When a Docker suite fails strangely, first diff the live Docker Desktop settings against the snapshot in that file.
@@ -316,5 +315,4 @@ Use that `mc` for your role commands only. Test the `mc` and the dashboard that 
   - Pull request jobs hold no provider credentials or release publication permissions.
   - A selected test group with zero tests fails.
   - Go tests that read files outside their module run with `-count=1`.
-- `.claude/skills/onboard/SKILL.md` — the install, onboard, and acceptance procedure.
 - Write files in `specs/` in the declarative style: state end states, not steps; remove instructions by omission; use ASD-STE100 Simplified Technical English.

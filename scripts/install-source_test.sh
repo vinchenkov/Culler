@@ -27,47 +27,6 @@ for width in 80 40; do
   fi
 done
 
-skill="$ROOT/.claude/skills/onboard/SKILL.md"
-
-# The front door's flag list is read from its own case arms, so a new flag
-# that the skill does not name fails here. The --help arm is the only one
-# the skill does not list.
-front_door_flags=$(sed -n '/^while \[ \$# -gt 0 \]; do$/,/^done$/p' "$ROOT/scripts/install-source.sh" | \
-  sed -n 's/^ *\(-[a-z]|\)\{0,1\}\(--[a-z][a-z-]*\)).*/\2/p' | grep -v '^--help$')
-[ "$(printf '%s\n' "$front_door_flags" | grep -c '^--')" -ge 1 ] || \
-  fail "no front-door flag was read from install.sh"
-for flag in $front_door_flags; do
-  grep -F -- "$flag" "$skill" >/dev/null || \
-    fail "/onboard skill omitted production front-door flag $flag"
-done
-skill_flags=$(awk '/^The production front door accepts these flags:$/ { list = 1; next }
-  list && /^- / { items = 1 } items && /^$/ { exit } items { print }' "$skill" | \
-  grep -o -- '--[a-z][a-z-]*' | sort -u)
-[ -n "$skill_flags" ] || fail "no flag was read from the /onboard skill flag list"
-for flag in $skill_flags; do
-  printf '%s\n' "$front_door_flags" | grep -Fx -- "$flag" >/dev/null || \
-    fail "/onboard skill lists a flag that install.sh rejects: $flag"
-done
-for required in \
-  "./install.sh" \
-  "Culler preserves an existing repository and its history." \
-  "One account is enough." \
-  "Setup reads no credential store of the operator." \
-  "Pipeline smoke and provider acceptance remain separate opt-in checks." \
-  "Culler supports Codex sign-in with an OpenAI account and Claude Code sign-in with an Anthropic account." \
-  "mc __acceptance provider" \
-  "--attempt" \
-  "mc __acceptance s7" \
-  "The macOS Keychain holds each API key and account credential." \
-  "Each agent container receives a scoped Culler token and the public proxy certificate."
-do
-  grep -F -- "$required" "$skill" >/dev/null || \
-    fail "/onboard skill omitted production front-door input $required"
-done
-if grep -F "warm helper is not provisioned yet" "$skill" >/dev/null; then
-  fail "/onboard skill still describes the completed production helper as deferred"
-fi
-
 make_mise() {
   bin=$1
   mkdir -p "$bin"

@@ -131,9 +131,6 @@ CMD
 chmod 755 "$TMP/bun-fixture/bun-darwin-aarch64/bun"
 (cd "$TMP/bun-fixture" && zip -q -r "$TMP/fixtures/bun.zip" bun-darwin-aarch64)
 unset MC_HOME CULLER_GITHUB_TOKEN_FILE CULLER_BOOTSTRAP_DIR CULLER_PACKAGE_ROOT CULLER_RELEASE_RECORD
-for flag in --check-updates --mc-home; do
-  grep -F -- "$flag" "$ROOT/.claude/skills/onboard/SKILL.md" >/dev/null || fail "The onboard skill omits $flag."
-done
 cp "$ROOT/release/installer.sh" "$TMP/fixtures/installer.sh"
 tar -czf "$TMP/fixtures/package.tar.gz" -C "$TMP/package" bin/mc bin/install.sh bin/agentsview host/file runner/file
 # macOS supplies plutil. The JSON fixture writer remains a test dependency.
