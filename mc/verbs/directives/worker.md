@@ -2,7 +2,6 @@
 
 ## Culler contract
 
-Use the model and effort set by the agent profile.
 Implement every criterion in the Task description and resolve task regressions that the Verifier identifies.
 New or changed tests must pass.
 An unavailable required test remains unverified.
