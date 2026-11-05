@@ -44,3 +44,17 @@ func TestControlCCarriesCancellationAndSetupExit(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestCommandConfirmationCancelsWithoutAPreviousStep(t *testing.T) {
+	for _, input := range []string{"\x02", ":back\n"} {
+		var out bytes.Buffer
+		terminal := NewCommandInput(strings.NewReader(input), &out, true)
+		_, err := terminal.Ask(Prompt{Label: "Confirm removal", CancelOnly: true})
+		if !errors.Is(err, ErrExit) || errors.Is(err, ErrBack) {
+			t.Fatalf("The confirmation selected a previous step: %v", err)
+		}
+		if !strings.Contains(out.String(), "ctrl+c cancel") || strings.Contains(out.String(), "ctrl+b back") {
+			t.Fatal("The confirmation controls do not describe cancellation.")
+		}
+	}
+}

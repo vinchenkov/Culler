@@ -178,11 +178,12 @@ func (t *Terminal) Choose(prompt string, choices []Choice, selected int) (value 
 // Prompt describes one text answer.
 // Progress, Hints, and a correction show only while the prompt waits for the answer.
 type Prompt struct {
-	Label    string
-	Progress string
-	Hints    []string
-	Value    string
-	Secret   bool
+	Label      string
+	Progress   string
+	Hints      []string
+	Value      string
+	Secret     bool
+	CancelOnly bool
 	// Check returns a correction for a rejected answer, or nil for an accepted answer.
 	Check func(string) *Correction
 	// Correction names the problem of an earlier answer until the operator enters an accepted answer.
@@ -260,6 +261,9 @@ func (t *Terminal) Ask(question Prompt) (answer string, retErr error) {
 			answer := string(runes)
 			switch answer {
 			case ":back":
+				if question.CancelOnly {
+					return "", ErrExit
+				}
 				return "", ErrBack
 			case ":exit":
 				return "", ErrExit
@@ -284,6 +288,9 @@ func (t *Terminal) Ask(question Prompt) (answer string, retErr error) {
 			}
 			return answer, nil
 		case keyBack:
+			if question.CancelOnly {
+				return "", ErrExit
+			}
 			return "", ErrBack
 		case keyExit:
 			return "", ErrExit

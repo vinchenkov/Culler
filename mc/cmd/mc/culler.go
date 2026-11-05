@@ -14,9 +14,12 @@ const cullerConfigurationGuidance = "Configure Culler in the dashboard or throug
 const cullerInstallerURL = "https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh"
 
 type cullerOptions struct {
-	command, service, home string
-	help, noColor, check   bool
-	tail                   int
+	command, service, home      string
+	help, noColor, check        bool
+	tail                        int
+	keepData, fullWipe          bool
+	dryRun, yes                 bool
+	homes, workspaces, binaries []string
 }
 
 var cullerCommands = []struct{ name, usage, description string }{
@@ -26,6 +29,7 @@ var cullerCommands = []struct{ name, usage, description string }{
 	{"stop", "stop [service]", "Stop Culler services safely."},
 	{"restart", "restart [service]", "Restart Culler services."},
 	{"update", "update [--check]", "Install or check for an update."},
+	{"uninstall", "uninstall [options]", "Remove all Culler installations."},
 	{"logs", "logs [service] [--tail N]", "Show recent service logs."},
 	{"help", "help [command]", "Show command help."},
 }
@@ -42,7 +46,7 @@ func knownCullerCommand(name string) bool {
 func parseCuller(args []string) (cullerOptions, error) {
 	o := cullerOptions{tail: 100}
 	var positional []string
-	tailSet, version := false, false
+	tailSet, version, homeSet := false, false, false
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
 		switch arg {
@@ -54,6 +58,27 @@ func parseCuller(args []string) (cullerOptions, error) {
 			version = true
 		case "--check":
 			o.check = true
+		case "--keep-data":
+			o.keepData = true
+		case "--full-wipe":
+			o.fullWipe = true
+		case "--dry-run":
+			o.dryRun = true
+		case "--yes":
+			o.yes = true
+		case "--home", "--workspace", "--binary":
+			i++
+			if i == len(args) || !strings.HasPrefix(args[i], "/") {
+				return o, fmt.Errorf("The %s option requires an absolute path.", arg)
+			}
+			switch arg {
+			case "--home":
+				o.homes = append(o.homes, args[i])
+			case "--workspace":
+				o.workspaces = append(o.workspaces, args[i])
+			case "--binary":
+				o.binaries = append(o.binaries, args[i])
+			}
 		case "--mc-home", "--tail":
 			i++
 			if i == len(args) {
@@ -61,6 +86,7 @@ func parseCuller(args []string) (cullerOptions, error) {
 			}
 			if arg == "--mc-home" {
 				o.home = args[i]
+				homeSet = true
 			} else {
 				n, err := strconv.Atoi(args[i])
 				if err != nil || n < 1 || n > 1000 {
@@ -124,6 +150,17 @@ func parseCuller(args []string) (cullerOptions, error) {
 	if tailSet && o.command != "logs" {
 		return o, fmt.Errorf("The --tail option belongs to culler logs.")
 	}
+	if o.keepData || o.fullWipe || o.dryRun || o.yes || len(o.homes)+len(o.workspaces)+len(o.binaries) > 0 {
+		if o.command != "uninstall" {
+			return o, fmt.Errorf("The removal options belong to culler uninstall.")
+		}
+	}
+	if o.keepData && o.fullWipe {
+		return o, fmt.Errorf("Choose --keep-data or --full-wipe.")
+	}
+	if o.command == "uninstall" && homeSet {
+		return o, fmt.Errorf("Uninstall removes all detected Culler installations. Use --home to include another deployment, instead of --mc-home.")
+	}
 	return o, nil
 }
 
@@ -152,13 +189,14 @@ func cullerHelp(t *onboarding.Terminal, command string) {
 			}
 		}
 		detail := map[string][]string{
-			"status":  {"Show local service checks without external network requests.", "A deliberate stop remains distinct from a service failure."},
-			"version": {"Show the full command and installed release identities.", "This command works without active services."},
-			"start":   {"An omitted service selects all services.", "A ready service remains active without a restart."},
-			"stop":    {"An omitted service selects all services.", "The resident waits up to three minutes for active work.", "A stop remains in effect after login and computer restart."},
-			"restart": {"An omitted service selects all services.", "The resident waits for active work before it stops.", "A dashboard restart leaves the resident active."},
-			"update":  {"Open the current installer in this terminal.", "Use --check to inspect release availability without an update."},
-			"logs":    {"An omitted service selects the resident.", "Show 100 recent records and exit.", "Use --tail N for 1 through 1000 records."},
+			"status":    {"Show local service checks without external network requests.", "A deliberate stop remains distinct from a service failure."},
+			"version":   {"Show the full command and installed release identities.", "This command works without active services."},
+			"start":     {"An omitted service selects all services.", "A ready service remains active without a restart."},
+			"stop":      {"An omitted service selects all services.", "The resident waits up to three minutes for active work.", "A stop remains in effect after login and computer restart."},
+			"restart":   {"An omitted service selects all services.", "The resident waits for active work before it stops.", "A dashboard restart leaves the resident active."},
+			"update":    {"Open the current installer in this terminal.", "Use --check to inspect release availability without an update."},
+			"uninstall": {"Remove all detected Culler and old Mission Control installations.", "The default removes software and permanently deletes Culler data.", "Active agents stop. Removal can discard unfinished work.", "Project repositories and shared host tools remain.", "Review the plan, then type wipe to confirm.", "Use --keep-data to preserve configuration, credentials, and history.", "MC_HOME includes a deployment; it does not limit removal to that deployment."},
+			"logs":      {"An omitted service selects the resident.", "Show 100 recent records and exit.", "Use --tail N for 1 through 1000 records."},
 		}
 		t.Panel("Details", detail[command])
 		if command == "start" || command == "stop" || command == "restart" || command == "logs" {
@@ -166,7 +204,19 @@ func cullerHelp(t *onboarding.Terminal, command string) {
 		}
 	}
 	t.Panel("Options", nil)
-	t.CommandItem("--mc-home <absolute-path>", "Select the deployment home.")
+	if command == "uninstall" {
+		t.CommandItem("--keep-data", "Remove software and keep Culler data.")
+		t.CommandItem("--full-wipe", "Delete Culler data. This is the default.")
+		t.CommandItem("--dry-run", "Show the removal plan and exit.")
+		t.CommandItem("--yes", "Confirm removal without a prompt.")
+		t.CommandItem("--home <absolute-path>", "Include another deployment. Repeat as needed.")
+		t.CommandItem("--workspace <absolute-path>", "Include another Project. Repeat as needed.")
+		t.CommandItem("--binary <absolute-path>", "Include a runtime executable named mc.")
+	} else if command == "help" {
+		t.CommandItem("--mc-home <absolute-path>", "Select the deployment home, except for uninstall.")
+	} else {
+		t.CommandItem("--mc-home <absolute-path>", "Select the deployment home.")
+	}
 	t.CommandItem("--no-color", "Disable color.")
 	t.CommandItem("--help", "Show help.")
 	if command == "help" {

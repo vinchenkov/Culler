@@ -124,13 +124,17 @@ func inspectCullerCommandFiles(home string) error {
 func runCuller(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	return runCullerWith(args, stdin, stdout, stderr, cullerDependencies{
 		inspect: inspectCuller, manager: newCullerManager, release: readPublishedReleaseStatus,
+		uninstall: func(ctx context.Context, o cullerOptions, in io.Reader, out, diagnostic io.Writer) int {
+			return cullerUninstall(ctx, o, in, out, diagnostic, []string{"/tmp", os.TempDir()})
+		},
 	})
 }
 
 type cullerDependencies struct {
-	inspect func(context.Context, string) cullerStatus
-	manager func(string) (*cullerManager, error)
-	release func(context.Context, string) releaseStatus
+	inspect   func(context.Context, string) cullerStatus
+	manager   func(string) (*cullerManager, error)
+	release   func(context.Context, string) releaseStatus
+	uninstall func(context.Context, cullerOptions, io.Reader, io.Writer, io.Writer) int
 }
 
 func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, deps cullerDependencies) int {
@@ -214,6 +218,9 @@ func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, dep
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 	switch o.command {
+	case "uninstall":
+		o.home = home
+		return deps.uninstall(ctx, o, stdin, stdout, stderr)
 	case "status":
 		ctx, end := context.WithTimeout(ctx, 9*time.Second)
 		defer end()

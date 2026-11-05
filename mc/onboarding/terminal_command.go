@@ -9,7 +9,11 @@ import (
 
 // NewCommandTerminal shares setup styles without interactive input controls.
 func NewCommandTerminal(out io.Writer, noColor bool) *Terminal {
-	t := NewTerminal(nil, out)
+	return NewCommandInput(nil, out, noColor)
+}
+
+func NewCommandInput(in io.Reader, out io.Writer, noColor bool) *Terminal {
+	t := NewTerminal(in, out)
 	term := os.Getenv("TERM")
 	t.ansi = t.output != nil && term != "" && term != "dumb"
 	_, disabled := os.LookupEnv("NO_COLOR")
