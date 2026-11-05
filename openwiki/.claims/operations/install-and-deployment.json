@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:91bc1e83d6a5dc7cf201e4aca369116492ef0bebdc80cb527a6a13c9070725ef",
+  "claims": [
+    {
+      "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
+      "statement": "install.sh with --dev executes scripts/install-source.sh from the checkout; otherwise it requires a Darwin arm64 host.",
+      "evidence": [
+        {
+          "resource": "repo://install.sh#L64-L72",
+          "version": "repo-lines-v1:sha256:ca5e4d234f95c76514b4ecc1c7ec397bedcb336f9cfa9f4b2bb628ba24909c59:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE5YWZhMDA0N2YxNDc1NDdhNDFmMGU0Y2ExNjI4ODJlNDZkNmY5Zjc1ZDQ0ZTIxNzJjOGRjYmJkZmFjNGU5YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU5ODU2N2RmNWM3MzQ1M2Y5MTA0OWZhYTdhZGQwZGQ0YzFkMWNjZTk3OGIwMzFkZjdlMDg5NzRlM2ZjODJlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWE1ZTkwOWVmZGRjMTc1YTdlMzEwN2Q3Mzk2MzMyNjBiNTIxZDBkNjYxYWNlOWQyOWZiYTczYjc0MTZhMTc5MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ3MzNiMjk1OWI5ZmJiZDVlZTg5ZTlkMmY2ZWViYzk0OTdkOGZlOGY4MDFlOGI5ZTgzZTJmMjcwOWJjNmViYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c8d4b08ee00492d982fa3ebf06f7101",
+      "statement": "The launcher requires each of the five release checks to appear exactly once with passed true in release.json and verifies the installer's SHA-256 and size before running it.",
+      "evidence": [
+        {
+          "resource": "repo://install.sh#L154-L175",
+          "version": "repo-lines-v1:sha256:b5e5da036e12aadbeafe8b0b73256f5898c06762e78bef2be0624b35fc3a16ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1OTZhYjM5OGI3MzJlODU0OGFlYjczMWIxZmZkMTliODg1ODZiMThkMTVmYzgzNTc0MDg5MjBhY2Y0ZmY1NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMGU0ZjZiOWEzZWI0NWQ3MGZmOWZjMjNmMDUxYjRhN2Q4ODhlNTZjZDcwY2NjZTI0OWY5YTZlNDQxNzNjOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3NTNmMTg2YjhiZDQ5NTcyYWZjZjg5NzU4NTI3ZmE3OWJlYTNhMTg1MmU1ZTFhYjU0ODMzNmU2ZGUxOGViOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1YWVmNWFhYWEwNDdjYWFkYWIyYzdmZjRjZDQ0MmFmN2IwZWJiMjhkZjJhOGUyMzA2YTU1MDI5NzY2ZDRmYmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a90a2eb29914b9d82bbf1684ac9b9f5",
+      "statement": "release/installer.sh permits the culler command in the package and checks that it matches the mc executable.",
+      "evidence": [
+        {
+          "resource": "repo://release/installer.sh#L53-L67",
+          "version": "repo-lines-v1:sha256:10b6fd40ba504370b607e25429acc8d03cecbe2103f65b5c2d90e5845fe48000:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNzE3MTEwMmI4MWJiZDkzMjhlNTkzM2U1MTFjZDdjODBmMWRlOTU0NGEzZTVkNTljNWMzNTQwNjY3NDgzMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlNDRiYThlZDAzOTYxMmZiM2M4MTNmMmY1OTliN2EzM2IxZjZkNzExZmUxMmMyYjQ5OGU4NDcyNDczMGEyYzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4YmRhZjFlMGU0ODI0Y2M1ZWQ4Yjg2ZTEzZmI4YjVjY2YwNDRiOGUwYzIyMzhlOGM3YzFjNjhiMjJhMzFkYjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNWIyYjMzYTEzZjBkNDMyOThiNGEzNTUyYmU3MzNiMzEwNzUxZTBlY2JlYTNmZDI0MGYwZjczMzFiMWYyNjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_36b9c6d2fece4836bb63cc0e561f74fd",
+      "statement": "release/installer.sh hands off to mc __setup with release and host-release sources inside the unpacked package.",
+      "evidence": [
+        {
+          "resource": "repo://release/installer.sh#L165-L166",
+          "version": "repo-lines-v1:sha256:840217516c020dd69e80a8aae7973ede89dcd30631597ddeebcc7f40154e4095:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmVhYmI5OGY5YjAzYTRhNjYzMDg2MmFhNjRlNzIyNGM1NjFjZWZjZjhmNWU1YWI3MWUzOTc0NDUxYTVhMmQ4OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmJiMjM4NzgyNDJmOTVjNTRiYjk1NGE0MDkyNzRmODE3ODM3NDY3MzZlYmIxYWQzYzZkNTc0YzhkYjExODVhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTBmYmE0NmE1YjgxYTAyMGEwODAzOWEyZTAyY2E3ODFmMTQzODIzMWRkYzFkYTlmMzkyNWI0OGFlYzY3NGJkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4680296b10fb499190ddcd6f780793f4",
+      "statement": "The development install builds mc with the test_fake_routing tag into the scratch home's bin directory.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/install-source.sh#L635-L642",
+          "version": "repo-lines-v1:sha256:14fa037fd4fed6678bf2b7975bca7fbbd44f039fe1569d4bebfc843751499f7c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhkOTNhMTViYjdkNjRhNzI4NjIwNDEyNWExY2ViMTExZWFmMjVlZTk5YzgwNmRkZGI5MDYwZGNjZTkxMTk2NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjQxZmUwYTM0YjkzMTMyYzAyZmZlMzNjMTRjNDg5NjhiOTZhMjc5NWU2OWY0NzE0MGRhNjc0NzcxZTRhMzRhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDVkMDk5ZDFiMjAwYThhMmVmNjNiODQyOWI3MWZiMzg3NDg5ODY5NDBkY2U2MTA5OWIyYWNkYTUxOGQ0ZmQ2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmJiOThhYzJmNGM1MTljNThmYjdiZTAzNGNmZTI1NTU0NGMwNWE2YzhmNjJjYWZjZmJlNWMwZDgyYzI5ZjIzNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_00ed7b03616a4346b177f7277c97cf8b",
+      "statement": "Redeploy preserves the database by default and passes --allow-database-reset only after the explicit reset confirmation.",
+      "evidence": [
+        {
+          "resource": "repo://redeploy.sh#L387-L419",
+          "version": "repo-lines-v1:sha256:cf1a68f0a6ed0191a719163ecc6a71b196545974aaae3c9bb8a7696af42f3746:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0MmM4ZDNjN2E1NGM1YjQ5MTY1NDAwMzlhY2I1NTE5ZTM1ODkyNjAwOTVmZWU1MmY0YTI1MWNmZjY4N2RjZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlNDA1YzRlM2M4YzNhMDA1MjViZTA5Mzk1YzMxYjNiYjQ0ZmNmNTNiNGI4MjVjMjc0ZGVmYTM3M2RhNDZkYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1MDBjNGQwY2NhOGE0MjQ5ZGE1OTMwYjQxMjEzZDA5ZmQwMDJjNGY1NjcwZGZkNDk0NWJiNDRkMjU5YTVlNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fed69b3746be452c9089d95228fb62cf",
+      "statement": "runner/image/build-prod.sh exits 3 while any com.culler.* launchd unit is loaded.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/build-prod.sh#L13-L41",
+          "version": "repo-lines-v1:sha256:84aca9ee9af56a6e2ca175ab84bd4ecc09dc12b4464011919d8d45d70df92f24:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MmQ4NjBiMzhkZDNjNmYzM2IyYjMzYWU4ODE4MTE2ZWNhZTBiZmJmYTA1ODEzYTMzNTIwMzNmNjczNTBhZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1MjI5YWRhZGRhNDJkNjlhMDI1YzcxN2UyZDU2YzJiZWRlYzBjMThmODk0ZTA5MzVhODFiYmZjYWUzZTg2ZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MjdhZWRmOThkZmEyZjc1Y2RjZTdlNmNiOTVkYzdjZTNkNjhmMjE5NmMzYzRjMDJjYTFiNzFlMGE3MTBiMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NTI2OGEzMDYyODlmYTVjZWUyMTI1OTYyMzk4NmFkMzhiMTlkOWEyY2I3NTE4ZjZjNzYwOGVkNmRkZTk2NGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_793a90ce5f0440e6892f93e7238e8479",
+      "statement": "PrepareSupervision publishes three LaunchAgent definitions but never writes ~/Library/LaunchAgents or bootstraps a job; activation is the operator-present step.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/supervision.go#L415-L420",
+          "version": "repo-lines-v1:sha256:b3f9f34323e07133b10c064113783de21d6662b22cebda665701bf806ae4932c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGZmZmVjN2FiZmFhOTM2N2U3ZDFjZDM2NTJjNGRmYTE5ZGM5OGQxNTJiYzU5M2U2MDA5MDFjYmIyMzRkYjkwOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzNkNmQyNzM4ODkwYjAwZWU0NDY3MWVjZmRkODE1NWQ5ZjBkZDI5MTQ0YjkxNmJmNGEyZDI1MjU2YzllMGM0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGNjOGEwZDIxZGM1NWQwZTdmOWEyOWI3YTUxZjU1ZGU1ZWRiNGRkYjBlYmRlZGNlZmMyMDZlOGU4OTRkZGFlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk3NGZmOTBhMjVkOGUwYjRkYjJmZTgyYTA4NGJkYzFiNzg2ZGVkNDM1ZWZiZmUzMWI4OTAyMjM5MmUyNzIyOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a83f625e1e24dce8c715509d9eb807b",
+      "statement": "ValidateHostRelease rejects unexpected, missing, symlinked, or non-operator-owned entries and requires 0700 directories and 0600 files.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/host_release.go#L233-L282",
+          "version": "repo-lines-v1:sha256:a0facc3882f1c82a5bc62200f4eadc9192b42bf0c422d8c07ffab2f2c49bbf08:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOTQ1ZmNkMDRhZDI1NWM1Y2RjMjE3NTdhYzllNjU5OGY2ZTFhOGFlOTU1ZTA2YjQ4NDYwYzk0OGQ4ZWQ0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YTE4NTI4MDg2M2NmYjcxOTExYjZhZmFkYWY5YWUzMzI4ZmQyMmJjY2RmOGQ3Y2Y3YWFhMWExYjM5YWNmYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTJhY2Q5MmIzNTRiMWNhMGI5Y2RiNTI4N2YxNDRkMTBmZDk4ZTUzZTUwMTEwNjFhYzgxMTZmMTYzZTY4YTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b2e215139724e6d939747d09315adfe",
+      "statement": "publish.py publishes a release only when the commit is in main history and ahead of the currently available release, and refuses to modify a published release.",
+      "evidence": [
+        {
+          "resource": "repo://release/publish.py#L150-L159",
+          "version": "repo-lines-v1:sha256:fb55ea4c3d6d494433a160dee20fac74e55b4bd77d24f95a116716f7a533d0f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0OWIyMDAyYjc5OWE1OTdhMmUzYmI2ZTZkMDBjYWVjNTIyNWIyMjQ2NjgwMWU1MTg3Njc3MmFmNTJlMTI3ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzNjIwYzkzZjhmOTdlMzhlMWMwZjZlNjJjNGZlMDA0Njg2MTM1Yjg3ZDg0MTU2MTJlZjkxZmU1OWM1MDI5ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMmVhMDZkNDE0ZDZhNDU0OGU4N2JmZjUxNmViZTM1NTE1NTYwYzlkOTNjZjYyMmQ3OWVhNTZmZDExMmJiZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwNzZhZDFjODgxM2M0MzJmYzU5NGMzZTMzN2Q0MTM1Y2IwNWRhOWQ1OTI4ZjQ2ODA0YTg0MDk4NWM5OTRiNDIifQ"
+        },
+        {
+          "resource": "repo://release/publish.py#L189-L193",
+          "version": "repo-lines-v1:sha256:b36b6814ca12d77b9ca4bcdbae1835cb142562910c7bcb8627bfb1f0c7064c8e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFhODYxMWJlODQzZmM3MWY5MjI0Y2ZiOWE0MDU0NGRkYTdkMzg1YjJjM2NmZjQ5MzQ3M2I3YzNlMDZlZGM5YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBlMmE0NjUwMDk1ZmE5NWQwZTJiYjQxYjJkYjI5MDk0ZDM0MDRkMjhjZTEyMzM5ZWM4OGJiNGI1YzViZThmNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjA5MTZjMTlmNTBmMDk0MTg2MTI4MGQwZDZiOGE1ZDFhNGE2ZGQ1NjQ1MDBjNjk3ZTY0MmZjNjlmY2Y3ZDZlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODkzYmQ2NmUyYmI3MWYzYjhhOTI0MDY0YmJmN2IwN2M1OTAzYTc3M2ZhNGY4YzM1NDYwNjAzODY2NzFkM2E3MyJ9"
+        },
+        {
+          "resource": "repo://release/publish.py#L92-L105",
+          "version": "repo-lines-v1:sha256:d4c90ad637f8a12df3bd32e33ef6ef105b966fade0284c8ddb6cf646674a1251:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMzRmYWZjNjJkNzk5ODdkNmI1NDBiNjVjYjU3OThiOWYyNTcxNzU3MTVkODc0NzNiNTg3YWYwODZlZmQ5ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwOTE1ZjhkY2M5YTY0OTg5NWNiMTQyODA2M2Y4ZmJlMzAxZGI4OTFjYTZjZjY2ZjE3M2Y2MmI1NTA2OWZmZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlNzU3NWMzYjc3NzZjZjJmOWMyYmZiY2E0NGYyMTQ4MTNhNzgyN2VhYTljMzg0NTRjNzAzYjY4OWE3NDQzODYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f74916e4eb574f87b68761a7fe9f5d58",
+      "statement": "The release workflow's default permission is contents read, and only push-to-main jobs receive packages write or contents write.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml",
+          "version": "repo-file-v1:sha256:84be6e2a761efb4248b15b7c10558e02b7978aba9cf3f391a5fb5e2913f38e06"
+        }
+      ]
+    },
+    {
+      "id": "claim_dbb3b4039c9347689c7893a080de85a9",
+      "statement": "install_test.sh fails when .claude/skills/onboard/SKILL.md omits the --check-updates or --mc-home flag.",
+      "evidence": [
+        {
+          "resource": "repo://install_test.sh#L134-L136",
+          "version": "repo-lines-v1:sha256:00ad1c35dfbfbddb050f5b2cc9b3ec502403f96ff8c8682e4b28e0f0a70b0fb5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ZhZmFjYTQyNTdjNWZiNjg1OTcwNWFiY2VjOGJjOTBhZGUzZjgwN2FiNzFiMGI4MDAxOTk3OWFiMTE5MjVjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExN2ZhMDA2YmE5MjA4NTAwYjI5MzBjZTY5Y2JkZTQzNmM2NDdhZmE5MTdjYjczOTZhOWJjOTExMWE0NmRkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2M0MGU1NThkZGE3NTM1MDcyZmNlZTM2NzIxODVhYTE4YWE2NzU1ZGQ5OGVmNTE5ZTczNTZmZWFiZDBiZmY3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTc4ZDgyNGEwYmU0YzRmZTBiYzJmODUzMGMxOThjNTBhZTJhY2VmYTdlMTU4NWU4ZDA4NWY4MWU0MDkwNDY4ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd17297309934fca8924efbcf72746e7",
+      "statement": "The host release ships the dashboard fonts and license notices that the dashboard server serves.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/server.ts#L46-L59",
+          "version": "repo-lines-v1:sha256:2b44f0a6c8c1df2164a0d35101f86d668bff2c6805c6e2e43902a59ac8d37a9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMWQ3YmI0N2QxN2I2ZWIwMWY3Yzc4MzQyMjVjMDgzMDM5YjI3YjVlZmU3NGM2YjRmM2RjNGZlMDViNzZmZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMTkyODNmY2M0YTk3ZjNhNDg2YTNjZmVhMjQ0NWZkZmYzOTllMDUxZGZiYzU2NjEzNGRiNzM4YWFhMWJiOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzZDk1OWU2NGNiMDU0NjdjYmJkYTJlODBmNTA5OTdiZmYzNjgxZTk1N2MzZWFkMmZhODczOTQ0OWEwNzc2N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxYjg4NGM3MDM2NjA1MTE2ZTgyNGJhZDcwZTFlNmZmYzkwYWU0NTViNmYyMGZiY2ZkYTFhNGYzNjM1MmI1NTAifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/host_release.go#L73-L83",
+          "version": "repo-lines-v1:sha256:a8fdad70661ed063f4b37229430b36da362dd124dfa278c6fcd86f073eef7d96:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliZjNhOWRjMDFkZTFlNGRlNzY2N2IyYjk4N2RhNTJhNzhiYmI1MDkwYTIzYTQ5MTFkNTM4OGIxN2M1ZGI0ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwODFhM2UxYjQzMGU4NWQxNzNhYzkxODdkNDRmOWY1MGVmZjA1YzcyMTM0NDk0YWQ2ODJjZTJjZDBhMzFkYTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyOTFiMTcyMjZjYjdmMWZjYzA3ODFhMjljYTJhODE4NDI1ZjNmN2VlNGQyYWU1ZTIwZmU0ODNlMmI4MWM2YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNzJiNDBhN2MzMzNkNDgwZDRlZGEyZTgzMGVkNjU2MDFhM2Y3MzdhMjY1YjA5MTVmOTc3MzMwN2RhNmMyZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_37869bf90af34899bd5105aded9760c9",
+      "statement": "The host release closure test compares the dashboard's served static assets with the files in the host release manifest.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/host_release_closure_test.go#L100-L115",
+          "version": "repo-lines-v1:sha256:02a59424b0c89ce73e9c382792aca52275179f7ccb246efe187fc00fec2ad517:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMTA0ZTdkMmVmZDJiZTY2YzVjYzI5ZjMxY2Q1NTZhZjM1YTZmNWNiMGZkNWIyMjE5YTRhYmIzN2ExMTdkMTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1NjExYTNjNTYyMDVjMDk0YTMyZTQxNDFjMjMwOWU3MmNlNzJjOTRmNGRlOWM2MWVkOTNkYTk2YmQ3YjI3NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwMTgxZjY4NWEyYThmMTBjMjdhZDgwMmY0NWYxMmNlMjZjNjNmYTlkY2QzZjNmZWYyNTI2NDMyYjk2ZTdmMmYifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/host_release_closure_test.go#L177-L210",
+          "version": "repo-lines-v1:sha256:db21139c5eee873acd396a65df522672a3297c20f1fbe35ce8abe10ba619ff9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmZmE4MjI2MjdkZmNkZDYzNWNkMGQyNmI0NGRiZDQ3MzdmZTBlMTBlZGRkOGFiYWE2OTAzNGY3ZmQ5YmRhNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwMzk5NDVmNzEzY2VjY2MyYTJiZTk4MWFiNWM1ZWVhMzdmOTVmOTc2OWU1NzVjZDhlZDlhOWZjYmFmZGYwNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_130575a7c2174b54b587a1bbcc2f1721",
+      "statement": "The host release closure test checks that every served dashboard file ships and that each shipped file exists and is reachable.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/host_release_closure_test.go#L182-L211",
+          "version": "repo-lines-v1:sha256:492fbef585ce03a2840a1d1dd0c61b830bc6a35f2d75ef611cc11cbab25e6cf2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmYTdhNzA0NGRjY2IxOTk1ZTZmMmZhZDdmNzk4MWQzNmI2MGFhNDE0MTI5Mjk2MzZiZGNlNTM3OWY1MmM4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5MDE0ZjQwYjAxMWZkYWY5ZGMwOGY0NTllZDQ5MzdjZTY0NDIzNjc4MzM1NWUyOWM4ZjFhNzBmZDlkZmY3ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1bd0fcca3084453a94bfbbd54a8fd362",
+      "statement": "Published releases retain separate immutable references for the Project image and the runtime image.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L495-L515",
+          "version": "repo-lines-v1:sha256:5478dd3f9f33c2ac12853fed7dd41a75885cc2a080602cbfa2615d904ed8b8c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmYjZlYTYyMDg3Zjk5YWMzNmMwN2Y0MTBmYzZkMWQwNjQ5NzAxMGUxNzk4MTQ3ZjVlYThjNTc1OGRkYmNiYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWQ2YjRhMDUzNzVkNWM2NzQ2MTgwNzVlOTkzZDJmZWFhNGU1MTAwZWQ1YTkyMjMyODlmMWJjOGIzNzQwYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhZGE4M2I1NDE1OTY4ZjRmOWRjODAwZGEzNGJjNTdhNmYwMDQ4OGRjMTdlZGI0Mjc0ZTMxOTY0ZjY5MDRiZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzZjg1NjQ1Zjg2NmExYzgxZTk5ZTNmY2YyOTk0MDU5Yjc2ZDJiNzQxMDA0ZmY2YzU2MTk1YTc2NGNkNzkzMmQifQ"
+        },
+        {
+          "resource": "repo://release/publish.py#L162-L173",
+          "version": "repo-lines-v1:sha256:c29b01e5d3178a5356d00f4651f13528ba020465b7f8569cce0cafd1982e5dba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyN2RmYTYwYWVjMjhlNmZjYjRkMGEzMmIwNzU2YjE1M2MwYTQ5Yjc4ZmUyZDE3NWFkOTA3N2MxOTE3MDgzMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5YzQ5NDYyOTRlN2E5OTRmY2UyNGU3MWM4ZTU1ZmI3NDk1NzVhOTA2ODEzZjI2YjBmYzc1ZTFiMjhjMGNmYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2MjQwZDRjYjVlYjlmYTAwNzNkZjYzNjg1YzllOWU4ZTAyNjVjZWJjZGNjZTEzMjM3OWUzMjQ5NTMwNmY2NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1NjMxMDNlN2I4ODFlZDMzNDE5MmQwNWQ4NDdjZjNjN2EzMTk4ZGY0ZGJmMGU5YWZhY2U3OTZlYTcxZDgwYWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2227dedda4f549d98bd34f6a85dd4774",
+      "statement": "Subscription sign-in requires an isolated home and credential directory.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L18-L45",
+          "version": "repo-lines-v1:sha256:052711a93237909e0e48ff468ae3d612edf3133d6ae536f0d0e5e52345bbcdf6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMjc0NjQwODM3NDVkMGYxOTc4MjM4MTJhYjFmMDNmMzZmNzcxY2ZhMGQ4ODA0NGU3ZGQ3ZTlkMGQxYWRmMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzMzZiNTMzMjlkOGYxMzNkZWU4NTEwYmQ0YmYyZDdmMDdmZjI0ZTNhNmJlMjg5YjkxOTAyYWNjY2Q0OThlODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4NDE0YmY1NzE1MWM0NGYyMGY2ZDU0MzYxYTA2NTc4N2NhOTUyOWVlOGQ1NjM0MGYxNzdlYzZmZDg2ZTgyYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjlkZjE4ZDVhOTk4NzlmNDJlNmFiNDY4MjYwNmJlYmM0OTExN2U0MjRiOWUzMzZiYjkyN2MyNjVjNDZmMzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d3b95aebcb34d2ee27e0d5a10d78c33",
+      "statement": "A schema difference or absent deployed database stops redeploy with a recovery message that names the reset option.",
+      "evidence": [
+        {
+          "resource": "repo://redeploy.sh#L166-L189",
+          "version": "repo-lines-v1:sha256:b8b1ff26617be989b8948d814f225903e7734a3cd1a2b0064188f86826e02bc1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMTA4MDQ1Y2I5NmRmMTlmM2JiMTMwMTgyYWU2MjIwMWYyMWMwNTBlZGNiYjZlM2IyMzRkZDgzMTRjNDNkMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ODkzMGEwNjFjMzQ5NDFhNWIyY2E3M2U1NjU4YTgxYTQ0M2Q2OWZiNWRmZWY0ZjQ2ODYzOTUzNzc5ZTAyN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmYzNjYWE3ODFjNTYyNThjOGNiNTI5M2YwZThmYzA1ZTBmNTFiMTgxNzgwYjNlMjQ2YTZkYjQ0NTFiNWY1N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmMzY0ZWYzYTI2ZTNmYjRjYzdkZTRlZTM5NmZkZDU0YTAwYjQ4YjEzODQ3MTVlMzRmOWM4Y2NmZDE2ZDkwYjYifQ"
+        },
+        {
+          "resource": "repo://redeploy.sh#L297-L329",
+          "version": "repo-lines-v1:sha256:eff1cf86bc84cdeb7e1144bcc9515e416408f5282c6901f86cfbd5fbb0c65df4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwYTg3YTY4YmU5ZGQ3MjgxOGFhNzdlYTdlNzM3ZDYzNDg1YWNjMzA4MzQ3M2FiZDMyNzM5MTIzOWFhMmM2MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5MGY0MDg2ZGExODNkOWMyMGJhYjhjMmY0ZDJlYzhkNjI1Y2Q4ZDUyMzc5YWFjZTIyZTFhZTA3NmY4ZTAyMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyZGQwNDA5OGIyZjc0NjdiY2JkYzBiNTgwYmE5NWVmOGNkODhmMGRjZDQ2YjI2ODAxMGM2OWM1YjkzMjVlZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmMGU5MGM5NzczNTNmNzEyOTAzMTg2MmY1NTQ0ODYxZGNmNWE5OTZkMTMxNjZiZTEyNmUyMmMwOWM2Yzg2N2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_05ae0755d7e894ebb479db620e74ac7c",
+      "statement": "redeploy.sh --reset-database requires a terminal and the typed word reset, and otherwise exits without a change.",
+      "evidence": [
+        {
+          "resource": "repo://redeploy.sh#L212-L263",
+          "version": "repo-lines-v1:sha256:e0c4fa86009cddc944bfb6389398c5929fe7b4e4b6a89cf7c4d83b01777755c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkNzY2MDUxMjkyMDJmZWMwZmI1ZDY5NGUwNGU1YTcwMjJkZmE2YzkyMGEzYjg2NmJiMGZjMDE0M2UyZDZlZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMGE0MzMxNzdhMmM0YWNkYjFiMmI5N2JiMjUyZjMxYWEzY2FmNjlhZjI1OTJjN2M3OTIyNWNhMjEyNzAzNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cbda8190c7fe466fbb35530460a77dd4",
+      "statement": "Redeploy checks database compatibility before service shutdown and refuses to build images when service shutdown remains unconfirmed.",
+      "evidence": [
+        {
+          "resource": "repo://redeploy.sh#L297-L383",
+          "version": "repo-lines-v1:sha256:6f428dd3dc864d5d83c2def1917ef7524ea6dcfa2e83e47745bebe681ae7be7e:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwYTg3YTY4YmU5ZGQ3MjgxOGFhNzdlYTdlNzM3ZDYzNDg1YWNjMzA4MzQ3M2FiZDMyNzM5MTIzOWFhMmM2MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZGM2ODUyOWVjNzdiN2I4MGViNTQ5YmFmNWJjYTlkOTczMjkzZGQ1NWMwNjEwNWIwYjE3NjA3OWFhM2M1ZWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyZGQwNDA5OGIyZjc0NjdiY2JkYzBiNTgwYmE5NWVmOGNkODhmMGRjZDQ2YjI2ODAxMGM2OWM1YjkzMjVlZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlNDA1YzRlM2M4YzNhMDA1MjViZTA5Mzk1YzMxYjNiYjQ0ZmNmNTNiNGI4MjVjMjc0ZGVmYTM3M2RhNDZkYmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6b9072bc1bf94f79937522a48b8b7b6e",
+      "statement": "The uninstall mode tests require Project home tools and configuration to survive keep-data and disappear during full wipe.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/uninstall_modes_prod_test.go#L166-L208",
+          "version": "repo-lines-v1:sha256:0c653f615ff08bbf6a06f70885533b0975da23ab6a8efb34cfede8852f322a11:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYjMzMWUxZjU1OWI4OTliNzk5M2RlMzY5YzVlOTNjMGYxOGUyZTM5NmE4MzdiYjE3YzU3MjAwYjM3MzI1MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5OWU5OGE3MTVlYmQ2MDdjY2ZiN2Q2ZWRmZmU0ZGRiZjJhMGMyMWUxZDBlMGFkNTk4MmVjZjEyNWQ0MGMxNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwNTE4N2E0NGFkYWMwNWY2YTI0ZGQ2NDA1N2M5YmIxODA4MWUwMjg0NDNhNmUxY2U0OWRhMTdmODMzNjFhMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2ZWQ0MWYyOWRjMTFjZDFlZmM4MDcyM2Q1MTY0ODUwZjYxOGJlOWQyOTk1NWZkZDM1NWIwYWU3MzFmNTIzNTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e22fd11b89ac4a08ae57903cd7ef399f",
+      "statement": "importLegacyNpmCache copies absent retained npm archives into the home cache without replacing existing destination files.",
+      "evidence": [
+        {
+          "resource": "repo://runner/shared/project-cache.ts#L10-L34",
+          "version": "repo-lines-v1:sha256:7f6017f97cebbba4a4aa61bcfaf93c66c296bdb77d02177674502ff54140b1af:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhODUxMzBhZTc0YWU5OTYwNGNlY2Y2MGEwYzZiMDgxYTFlYmRmOWFkZjE1NDE3NTMzZmVjNGY3YzhiZGM2NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMjk0MTFkODNjMzZmMTEyYjRlNjRkNWQwMTgyNjI4NGE1MGY5NjU5MGY4OTdmNDZlNTMxNDEwOTE2YmQxNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1N2I4MDhlMzY1MmI3MzUwMTBkNWJjZGQ2Y2U3MzQ4NGExNzk3ODVjZGE1NWYxZDc4ODNlMjZjMTQ3ZDExYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlNTk4YzEzYmViZWExYmExMjkzYzVhNWM0MmMzM2NiNDM1Y2VmNTY5ZDk5ZTllNDlmZjYyN2NiYzAzZGI2MWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_55ee852dda3f4e098613e3d42b23f164",
+      "statement": "Both publication jobs require the dashboard-browser job from the same workflow run.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L452-L455",
+          "version": "repo-lines-v1:sha256:7dac0f4d7dafa2d7eb3455c83393c3c14e5bf14ef24db8378836cde20657cba8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFlNWVlNGY4YTI2Y2VlZWM0ZGMzY2QwYmE5OTA1YmEyZmExZjlhOGNmYTQ0NWFjZjdlZjQ0OTNmMGZhZDAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE4Njg0ZWEzZGMzMTJkNzQwODYzYjAzZjJhZWJmNDcyM2E3NjA0ZDg2Nzg4ODM0Mzk2OGRhODA0YWI2YzZkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWRhMGZlZGE3NDYxN2UyMTE1OTcwNjU5MmEyNTJiZjMxZjM2MmIyNzAxOGY4ZWQyNWUzMGRlZjFjNzE1ZWQ5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDZmMTQxZmI1MzVjMjI2ZjQ4NzNhOWQyNTNhOTE3ODkxMWZjMTBkNjhlODQ3MDdmNDE5NjNiYTliOTE0OTJhZiJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L517-L520",
+          "version": "repo-lines-v1:sha256:6d6a9eb46691a1d1ac66e40a350882e3d3c64439a70446a981471b0ee9b60fb2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg3ZjIxOGVkOTc4OGE4MTdlZjc4YzI1MzQyMTNjNTIyZjA3YjU5YzI1ODZkMTQzMTU0ODdmOWIzNmE5OGE4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE3ZjZmNzk1MzM0OTVhNWZkMGQzMjJkNGQ1MjFmZjcxYjMyOWI5YzY4MzgwYzVlYjMyNzZjYTc4YTUxNjRmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIzM2UyZGUzMjc1ZWU0M2M1NTgzMDhiNzdjYzA3MzNjNjc0NjViZDU5MzZjMDBjYTUzMGYxMWI0NjAwYzllNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTU4MDhjMmQ5ZjQ0NjVkZGQ4MTE2OGFjYjMwYTUzZWYzMWQ0OThhMThkNzhlNjkyNWVmM2I0YjJkMDNiMGE2MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e689c143adb1417a921d7f07e87d470a",
+      "statement": "The browser job retains its suite log, JUnit report, and screenshot directory as an artifact for seven days.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L261-L263",
+          "version": "repo-lines-v1:sha256:058310e0a50800901b08d9852a26c81998863010b5fca46a37bd784f3ad5e8cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxNGQxZDA1MjA2NTBjM2ViYjY5Mzg1YjhlMWNmNDljNzM2MmUyMTVhNWZiZTU4YWVlMmQ4Y2ViYTIwYWE3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmJjZDRkZTA4MDkxNGJmZDM3NjE0NzM3ZmZiYzkwZWVjYjVkNzA0MTI5MjNjMTUyYjE5ZmJmZjc2MTkxYWViZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDk4YmQyNTAwYjVmNzU5N2JjNDRiYjYxMTU3ZjliNWMwYWRiZjdmZjc2MjNhNTRjNGJmNGE4MzM3NDE2YmJjZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDFkOGU2NDgwMmYxZDRmNWVhNzBkM2NkMzNkMDM1YTFhNmFjYmY5ODRmMjQyY2U2YTQwNDJhMWFiYmM5MDllNSJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L286-L297",
+          "version": "repo-lines-v1:sha256:9505bfb82cd7f1e19457f6e1a9414cd628b4a3f0063495d54db975d395b2bc1b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlOWQ4YTlkMmVhMjdjNmJjN2U2ZDllMDAwN2M5YjYyNzAwM2NmMjg3NWVkYzA5YjQxZTEwNDViNzJlZjI1YTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliZjQ1ZDJiYzIxMDg5NWU2N2JkMWQyMGRhYWFjMWI1OTgyYTc2NjQwODI5ZmQxZjFiYjRhNjk5NTUyOTI5NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxMTJmZjRmMWFlMDZjYWIzODIyOWI4YTc3ZDQwODI3OTc2OWYxMjllOWU2ZDMzNWRmNzUwYmJhZjQzMDY1MGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhNDgyNzc0ZmQwNzBkOGQ1Yzc2Mzk0MzlhZjIzMGM2YThkYjc5YjVmZWJiYTM0ZWEwMjFkNGIzNDZhNTFmNjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c605d8eb5b4b449da42ec1ab6d026ae7",
+      "statement": "The image upload job loads verified scanned archives without an image build.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L452-L515",
+          "version": "repo-lines-v1:sha256:b9eeb9e4741d88e89448042207fb7fe4ee2b716d86f22fd2c39554ada54fedd7:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZTVlZTRmOGEyNmNlZWVjNGRjM2NkMGJhOTkwNWJhMmZhMWY5YThjZmE0NDVhY2Y3ZWY0NDkzZjBmYWQwMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWQ2YjRhMDUzNzVkNWM2NzQ2MTgwNzVlOTkzZDJmZWFhNGU1MTAwZWQ1YTkyMjMyODlmMWJjOGIzNzQwYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYTBmZWRhNzQ2MTdlMjExNTk3MDY1OTJhMjUyYmYzMWYzNjJiMjcwMThmOGVkMjVlMzBkZWYxYzcxNWVkOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzZjg1NjQ1Zjg2NmExYzgxZTk5ZTNmY2YyOTk0MDU5Yjc2ZDJiNzQxMDA0ZmY2YzU2MTk1YTc2NGNkNzkzMmQifQ"
+        },
+        {
+          "resource": "repo://release/security_images.py#L13-L28",
+          "version": "repo-lines-v1:sha256:2c49becfd471d9ef5c3e4423a24d74495c244b93d46ccea14411e09273d18729:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmYzY0NDk0MTdkZmQ2NTY2ZDJlNWZmYjQ4YjdhYzk2NDQ5YzRiYjkyM2QxMjE1ZTVmM2I0NmNmMjE4ZDk5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0ODZmZjVjZjkzNjNiNDQyOTMzNjgwM2IyYzk2MGU3M2RhOGM0N2ZhMGM2ZjY3NjU4ZDE0YjMyM2NkMjJkMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YmI2ZmJmZDRhMjFhMDFhNzIxZGI4NGMzZjlmZTBmMjg1NGJmMDEyZDMzNjczYTc5NGJlMDEzYmI0YTZjYWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1ZTJhNzZkMTZkY2RkODQwYmI3ZjFiYTI2OWM1ZmUzMmVjODA0Y2I5Zjg3MTgxODFhZmM0NjZmOGI4YWQxMzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f52ba1b75ee84628a33f60a2d3d289c1",
+      "statement": "The publisher scans all release files, including release.json, before the first release file upload.",
+      "evidence": [
+        {
+          "resource": "repo://release/publish.py#L174-L188",
+          "version": "repo-lines-v1:sha256:12aaff0ba2957965d7f089fc9d908fcab43798497e3037a0cc9d7d9e3a74bd29:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiODU5ODE3NTgyN2EzNmJiN2MzZmNmYzhlZmQyOTI1YzFkY2Y3Y2NiNzlmYjlkZWVjYTAzNGM5MTJjZDg2YWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1NWZiYWE5MzEzNGZmZTNhYmMwMDcyNWEwMzUzMmNlNTk4MmM0MDBjZWRhOWUwMTdhNDg4YmUyYThmNmM5MjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlNjEzZjljNmUxNzBhZjhmMzc3NGY3ZWU3YjA2OGI5YzdmMDUxYjg4ZWVkY2Y1OWQzMTcwM2E2NGMyYmRhZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzODczN2I0ZjdmM2JiYmNkNzUzZjdmMTc3YjEwZDM4ZDNkYWQyZGY3OGMzN2FiMTMzMTdmYzRhNjQ3MWY5YjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1548c24a220f46a48a1356d00fed83ee",
+      "statement": "Both publication jobs require release-security, which rejects any prerequisite result other than success.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L452-L455",
+          "version": "repo-lines-v1:sha256:7dac0f4d7dafa2d7eb3455c83393c3c14e5bf14ef24db8378836cde20657cba8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFlNWVlNGY4YTI2Y2VlZWM0ZGMzY2QwYmE5OTA1YmEyZmExZjlhOGNmYTQ0NWFjZjdlZjQ0OTNmMGZhZDAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE4Njg0ZWEzZGMzMTJkNzQwODYzYjAzZjJhZWJmNDcyM2E3NjA0ZDg2Nzg4ODM0Mzk2OGRhODA0YWI2YzZkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWRhMGZlZGE3NDYxN2UyMTE1OTcwNjU5MmEyNTJiZjMxZjM2MmIyNzAxOGY4ZWQyNWUzMGRlZjFjNzE1ZWQ5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDZmMTQxZmI1MzVjMjI2ZjQ4NzNhOWQyNTNhOTE3ODkxMWZjMTBkNjhlODQ3MDdmNDE5NjNiYTliOTE0OTJhZiJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L517-L520",
+          "version": "repo-lines-v1:sha256:6d6a9eb46691a1d1ac66e40a350882e3d3c64439a70446a981471b0ee9b60fb2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg3ZjIxOGVkOTc4OGE4MTdlZjc4YzI1MzQyMTNjNTIyZjA3YjU5YzI1ODZkMTQzMTU0ODdmOWIzNmE5OGE4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE3ZjZmNzk1MzM0OTVhNWZkMGQzMjJkNGQ1MjFmZjcxYjMyOWI5YzY4MzgwYzVlYjMyNzZjYTc4YTUxNjRmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIzM2UyZGUzMjc1ZWU0M2M1NTgzMDhiNzdjYzA3MzNjNjc0NjViZDU5MzZjMDBjYTUzMGYxMWI0NjAwYzllNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTU4MDhjMmQ5ZjQ0NjVkZGQ4MTE2OGFjYjMwYTUzZWYzMWQ0OThhMThkNzhlNjkyNWVmM2I0YjJkMDNiMGE2MyJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L77-L92",
+          "version": "repo-lines-v1:sha256:8a1f696f60c47944d558e0570dbde888b85a21fe50b0f6839d724adaf38de886:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1YTBmZDdiZTA1NWJjM2NkYTU2Y2Q0YWJmMTI1OTljMTI0ZDBmYThkMTA1ZTMxN2Y4NDgxZDlhMzcyZjA1MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNTllODljMzllZWY2ZGJmYmQwOGVhMzM3N2ZkZDM2OWFiNWQ3OGIwM2U2ZjY3ZjJkZmMwYjhmMjU1ZWIwMDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYTBmZWRhNzQ2MTdlMjExNTk3MDY1OTJhMjUyYmYzMWYzNjJiMjcwMThmOGVkMjVlMzBkZWYxYzcxNWVkOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmMzN2JkZTJkNTMzNGU5ZjcwNmQ3YjJmMWY0NGM3Yjk0NDUxMTk5OGEyNWMwN2FlMzA1YTEzNTA0OTRmOTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c4ab915ac6b145a595cd10eca725991f",
+      "statement": "The host release manifest ships the Discord dashboard module and resident configuration service.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/host_release.go",
+          "version": "repo-file-v1:sha256:a50a177c4222082115602747478f337890a4565354ab26a4d4fb1dc6fd278498"
+        }
+      ]
+    },
+    {
+      "id": "claim_e45085a4451141c7913a7c7beae6a5a6",
+      "statement": "Setup saves the model selected during a successful new Codex profile connection test for later runs.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L107-L110",
+          "version": "repo-lines-v1:sha256:dde399d6609928c09bebf6b6c37a144cd4d352c67cb4b7050ee29753b1ea9e25:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjdhMWZiMGUxZGFkYzc4NjVkNTI1YTViMWUxYzZkNmRkOTM4OTNhOWEzYjcwMDVlYzBjZmI2MjI0YTQyYjM2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTExN2M0MmY2NjI3NTA4OWNmZmFlNzU0NzA2ZTllOWM5MTBjYjVmMTA2ZDI0MDk5MDgwNjExMzY4OWQ3OTg5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzc0OWYxYWU5OGY2NTdiY2QwYTJkMmNjYjQ2NWU2OWFlZDkwMDBhY2RkNGQ4YjRiZjUwYzY5MzY3NzFiNmQ1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTEyNTBmYjU2MjA0NjM4ZDI4NzczMDg5NzRkMWJhZDYyMmY2ZmVkY2Y2MTMzMjFhMmY1ZDM4ZDM5ZWQyNmJlNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_250022b76727454bbb3938216a6bdd30",
+      "statement": "Configuration validation rejects unsupported credential kinds and custom provider destinations.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/config.go",
+          "version": "repo-file-v1:sha256:91290223a7255c6c96a197c8007694e79711a6e21835e307e1f8c95afeabf273"
+        }
+      ]
+    },
+    {
+      "id": "claim_d082e17fcf614e10a1a0ff38f6cd7663",
+      "statement": "Setup installs the culler command and verifies its path in new zsh and bash shells.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_install_prod.go#L22-L95",
+          "version": "repo-lines-v1:sha256:85e618ea0f5f24e7e104b5f921220f462a1becd0c04d3c4334d21c9c0f182f99:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZDMyODNmZDAxYmU1OWY0ZTJjNGRiMzZiOWRiZmVmNzkzYjY4MWNmNmRjNzQ5YzkwOGRjZTljYTQxZDUyY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjN2YwZjA5NTI1MTA4MzY3NzhlZTZjNjJlMmJiMGY1MzUzYTkwODFmNDFjMGY2NzgxN2RkNjI4NTA5YmU5NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmODRhNjczYmU0MDNmOTM4ZWQ1ZGU2OTgyNDY3OGVkMDA5NGU5ZTFmMTE4NWE1YmY0ZTVhZGRjNjI1NTE1ZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0MDQyZjYwMDAwZDhiNjg1NmQ1OWMyMDQ1YjRmMDY2MWRjNWFkOWU3MWZjYTMwNTlkYzdiNzM3MzM0MGZjODQifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/cli_install.go#L180-L313",
+          "version": "repo-lines-v1:sha256:2f45b6909fb3722c56a1df872a386f2d573a0722e07bc4f430131e3bff675791:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhYTFiNTcwYTc3OGQ2NWIzMWNlZmE1YzYyNmE5NGRjYTVmNzlhZjZjNTNjZjVkNDYwYzNiMDE1OGNiMGYxNDM3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4ZDkxZDFhNjkwMDA0ZjgzODgwZGE3ZDA0ODE4OWM3ZDcxMjExYmNlYzdmYjU0MDBlN2Y1NzI0YWNiYmQxZTYyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5N2QyZWIwNzBkZWY0OTA4NjFmY2VlYWU5OWE2NDg0MDM5OGQ5N2U0Y2QxNDE3Mzg1ZjRmMDlhNDY3YjI0MzdhIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_c8ab5c4c298841d39b30e45a18f0190d",
+      "statement": "Source redeploys pass the executable directory through MC_BIN_DIR.",
+      "evidence": [
+        {
+          "resource": "repo://redeploy.sh#L270-L283",
+          "version": "repo-lines-v1:sha256:8fc62e14f1d9a4fea86f799c5a7acedf42a4d0ac27d4841ef62c6a0babb517f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwNDc4OTJlM2ZkODAxOThhNzdiZWE5OWI4MWQwMTk2YTM0ZGE3MTdjM2VjODllN2NhMzg5MDE0M2RkYTgzZGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1YmExODc2YWM4MDc3NTlhMmJhOGNhNDZmYzgxYTg2ZmE4MmM4YmRjNTM5YTFiZTJlNjIzN2RiMjU0NDVhMDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f8eb24f924d4d188b936856c0942cc5",
+      "statement": "The published installer verifies the host Bun archive against the release record and installs it under the Culler home.",
+      "evidence": [
+        {
+          "resource": "repo://release/installer.sh#L104-L152",
+          "version": "repo-lines-v1:sha256:232f9d9810c6350222190f2ba999ca42b3ffefa8ecf1e0ebd867bf4d657c3c30:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYWQ1YjdhODM4NzEyYzZiNzcxYWFmZDdhNjU2YWQ1NWY0MjAwYWI0NTY4NTY5MWJiZGM3YjkxZmQ1NWRkYTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmYjdiZTMxMGI1N2VlYmFiY2I1NzMwNmNiYWU3ZDkyZWY3YzEyMmU1N2M4NzVjNWZjNjk2ZWY0NzA4MGIzMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxNDAyYWQ3MmIyMDc5ZDRlMjA3ZTdhYjE0ZWJkZmM4NjM0ZGRmNzFiNzljNjU1MTlkNzFmOTc0MjNhMGZlYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzZDEwNmNkOWQxN2M5ZmYyZGQ4MWZkZGZhZjUzMzZkOGNhNmJkZTE5NGExZWMwMmJhMDljNWY1MDA1MWMxM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6fb744aa6a0c4081a7e3191ee484fcc0",
+      "statement": "The host resident and dashboard use the Bun version in the published release record.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/host_bun_prod.go#L43-L85",
+          "version": "repo-lines-v1:sha256:56f677db2c060076264a31c03cb5063b355bc614ad0d7445792514b3f38884ce:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YmJjMjQwNWY3YzJhNDkxZjllNWI3NTY4YTg1MmNiM2RiNzBiNjgzMGIwMDk3Mzg5NDI5M2M1ZmRlOGI2M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MmRjMGM1ZTA5MTZlY2M0NGY2Njk4MjYzNjQ5ODQ4NDk3NGE1OGYyNGNkM2Q0OWMwNGU0MTg1NDY1MjdjYzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3NWE5ZDJmNzg2NTY5NTQwYjEzNWY3NThhYjljYTJkNjMwYjY1YmUzMGYwM2U2N2Q2ODFiMjc1NWI1MjBjMzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3MTViMjYxZTAyODA3YTk1Y2NiYjFlYjE2MjY2NDk5NjcxNjZiZGUyNTgzM2I0OTYwMTU3ZjIzNzI5MmQzYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b120f7082b84bfd9b5ba2feb5a2ee09",
+      "statement": "Both uninstall modes remove the host Bun under the Culler home.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/uninstall_prod.go",
+          "version": "repo-file-v1:sha256:2bdceecc5226f5b1ff9cfdba182ed2f560cb548c2e52b923a635062163966a8b"
+        }
+      ]
+    },
+    {
+      "id": "claim_42bdfcc548be4de684d55d13a136c72e",
+      "statement": "The host source sign-in tests restore write access before they rename the sealed credential directory.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_host_sources_test.go#L65-L73",
+          "version": "repo-lines-v1:sha256:38a5eb983f42f5f2ebbbe63624e8cafb1624473f9d36ca3570d9d36217ac63c8:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThiYjhlNjhhOWY5N2I0ZjBmMzEwZGE3NGIzOGU0ZmFmODQ4MjE1YTZmNzg0YzVkYzJiZjg1ZjlmZTNjZTE1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjQ4OTliYTU2Zjc2YzNhYjJkMjI5MmJiMWVlZGViMWI4Mzc4MDA3ZTE0Yjc3MTIxNjMyZjJkYjQwYmFkMTY2MCJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/runtimeauth_host_sources_test.go#L91-L96",
+          "version": "repo-lines-v1:sha256:9e7eedb0402700c2a5d841883dc15d6093e5a042506fec509a99449fce849125:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQ2NjZlY2ZhNWFjODI4YTU5MzM4YmE5NzkwMjA5MTcyMWM5OTg5YzU3YWRiMzVlNzQ1NjNmNmM3MjEzOWJlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTBkZjgxYjA0NmY1ODA2NTkzOGQ0OTRlYWUxMmU1N2MwNDAyZGVlNTU2NjBmNjBkMzYwOTQ2MDY4ZWVjMjNjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjhkYzJjMDlhZDkzODk3NjY4NTQyOGEzMjhmOTk3YjAxZjlkNGU4NDQwMDJmMDhhYzNmYmU1NTVhMmJhNzM4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODhiZmZjNGNjMzEzYzY2ODQzYzhhYjIzODdjNTBhNDUzNGRkNjRiYTliNTgxMTY1MGZlNWZkMTVjZGIxYWM2ZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T10:01:23.917Z"
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/826/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "c08680251176d2b274c95c909d1a88557ba105cfdd399278119326611e483637",
+      "source": {
+        "kind": "file",
+        "path": "memos-batch-rss-authors/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/826/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "16566e3ad8597040c20549cbe07c428c7222720a9ce61791ff26fff9ca938ab1",
+      "source": {
+        "kind": "file",
+        "path": "memos-batch-rss-authors/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "877905304550ea1e5e90f2ad278cd999fcd192b83f82a4d8b5d228dfa017c1e7",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "a5109b3ac3c9167d7eab26667279f86c3e9cb707c280a5cbe414b1a9b6dcc10a",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "b2ec6c713f338687a584e21763489dd264a108e539c6de2f425ace118c6ee69f",
+    "role_inputs": "73e3053a7eb78dbdbef77146de8850933042d9153291b32d4531168608bfebd4",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "c4c9e353848d0b5fec43f4dd15994aa7a38de3c5c9efffc365757c1bd7bb185a"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "883981f19e00d15222a836d8db7f1ff217f19971a9506be0f108e3ef1641d2ef"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "75ade1d21cb8e6655da22dadddfc5dd7843546f2ff7d2a914dd784e1dbe765f1"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "cc1f3ac3c11a220e264347f0c28207850063f78610e77a0f77028adf8a082d95"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-batch-rss-authors",
+  "id": "memos-batch-rss-authors",
+  "paths": {
+    "/mc/artifacts/eval/826/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/826/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The feed collects distinct creator identifiers and requests those users through one list call.",
+        "before": "The multi-user RSS feed fetches authors individually and ignores individual lookup errors.",
+        "conditions": [
+          "The multi-user feed returns an error if the batch user query fails.",
+          "The single-user feed path remains separate.",
+          "The author list derives from the limited feed memo result, not every user.",
+          "The change does not establish a measured feed latency improvement."
+        ],
+        "id": "behavior-1",
+        "mechanism": "FindUser gains an identifier list and each database driver renders its IN filter.",
+        "sources": [
+          {
+            "path": "server/router/rss/rss.go",
+            "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/e0cc24782362d65befce885f2ecf3a14b5bac7d8/server/router/rss/rss.go"
+          },
+          {
+            "path": "store/user.go",
+            "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/e0cc24782362d65befce885f2ecf3a14b5bac7d8/store/user.go"
+          },
+          {
+            "path": "store/db/sqlite/user.go",
+            "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/e0cc24782362d65befce885f2ecf3a14b5bac7d8/store/db/sqlite/user.go"
+          },
+          {
+            "path": "store/db/mysql/user.go",
+            "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/e0cc24782362d65befce885f2ecf3a14b5bac7d8/store/db/mysql/user.go"
+          },
+          {
+            "path": "store/db/postgres/user.go",
+            "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/e0cc24782362d65befce885f2ecf3a14b5bac7d8/store/db/postgres/user.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No feed request or benchmark ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-batch-rss-authors",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "826"
+          },
+          {
+            "label": "Title",
+            "value": "Fetch feed authors through one list operation"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The feed collects distinct creator identifiers and requests those users through one list call.\n\nAcceptance criteria:\n- The feed collects distinct creator identifiers and requests those users through one list call.\n- The multi-user feed returns an error if the batch user query fails.\n- The single-user feed path remains separate.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/826/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/826/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/826/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+          },
+          {
+            "label": "Base commit",
+            "value": "23a7e99a21e3f6d7feed34d807c3acd0c74a71f9"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 826": {
+        "acceptance_criteria": [
+          "The feed collects distinct creator identifiers and requests those users through one list call.",
+          "The multi-user feed returns an error if the batch user query fails.",
+          "The single-user feed path remains separate."
+        ],
+        "description": "The feed collects distinct creator identifiers and requests those users through one list call.\n\nAcceptance criteria:\n- The feed collects distinct creator identifiers and requests those users through one list call.\n- The multi-user feed returns an error if the batch user query fails.\n- The single-user feed path remains separate.",
+        "id": 826,
+        "project_id": "memos-evaluation",
+        "purpose": "The feed collects distinct creator identifiers and requests those users through one list call.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Fetch feed authors through one list operation"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The feed collects distinct creator identifiers and requests those users through one list call.",
+            "The multi-user feed returns an error if the batch user query fails.",
+            "The single-user feed path remains separate."
+          ],
+          "description": "The feed collects distinct creator identifiers and requests those users through one list call.\n\nAcceptance criteria:\n- The feed collects distinct creator identifiers and requests those users through one list call.\n- The multi-user feed returns an error if the batch user query fails.\n- The single-user feed path remains separate.",
+          "id": 826,
+          "project_id": "memos-evaluation",
+          "purpose": "The feed collects distinct creator identifiers and requests those users through one list call.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Fetch feed authors through one list operation"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The feed collects distinct creator identifiers and requests those users through one list call.",
+        "The multi-user feed returns an error if the batch user query fails.",
+        "The single-user feed path remains separate."
+      ],
+      "description": "The feed collects distinct creator identifiers and requests those users through one list call.\n\nAcceptance criteria:\n- The feed collects distinct creator identifiers and requests those users through one list call.\n- The multi-user feed returns an error if the batch user query fails.\n- The single-user feed path remains separate.",
+      "id": 826,
+      "purpose": "The feed collects distinct creator identifiers and requests those users through one list call.",
+      "requirements_version": 1,
+      "title": "Fetch feed authors through one list operation"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "23a7e99a21e3f6d7feed34d807c3acd0c74a71f9",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+    "reviewed_tree": "d7614179b7bac13953bd75b76d50d2930d0372c0",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "performance_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

@@ -1,0 +1,854 @@
+bun test v1.3.9 (cf6cdbbb)
+
+src/wiki-fixture.test.ts:
+(pass) the wiki fixture holds the five statements of the Go test helper [1.98ms]
+(pass) the wiki fixture on a scratch database with the current schema > recordCurrentWiki records one successful wiki update with no wiki change [13.41ms]
+(pass) the wiki fixture on a scratch database with the current schema > seedFailedWikiUpdate records one failed wiki update with its cause [12.92ms]
+(pass) the wiki fixture on a scratch database with the current schema > seedActiveWikiUpdate records one active wiki update with a started agent and a heartbeat [12.26ms]
+(pass) the wiki fixture on a scratch database with the current schema > a later call records a later wiki update [17.91ms]
+(pass) the wiki fixture on a scratch database with the current schema > an active wiki update stops each function that records a wiki update [24.86ms]
+(pass) the wiki fixture on a scratch database with the current schema > each function that records a wiki update refuses a Project that the database does not hold [16.82ms]
+(pass) the wiki fixture on a scratch database with the current schema > recordMainTrace gives one run a Claude binding and a main trace [15.04ms]
+
+src/pause.test.ts:
+(pass) pipeline controls call dedicated commands [4.18ms]
+(pass) a pause refusal reaches the dashboard
+(pass) reads cannot change a pause [0.24ms]
+
+src/board-writes.test.ts:
+(pass) board requests > the command receives the full request through standard input [0.86ms]
+(pass) board requests > a conflict preserves the command response and current record [0.08ms]
+(pass) board requests > the command validates protected fields and returns its rejection [0.08ms]
+(pass) board requests > a malformed request reaches no command [0.14ms]
+(pass) board requests > a read request cannot submit a board write
+(pass) historical reports > the recorded report controls the host path [0.25ms]
+(pass) historical reports > a history row without a report causes no file read [0.06ms]
+(pass) historical reports > a historical delivery report must match its recorded content [0.72ms]
+
+src/projects.test.ts:
+(pass) Project operations pass their request to the command [0.29ms]
+(pass) project guidance follows requirements independently of task count [0.12ms]
+(pass) a successful pipeline start wakes the resident
+
+src/environment.test.ts:
+(pass) environment actions preserve the exact request and response [0.29ms]
+(pass) an environment refusal reaches the browser without an execution request [0.07ms]
+(pass) GET requests and malformed input cannot approve an environment
+
+src/customization.test.ts:
+(pass) customization routes preserve the command records and exact text [0.54ms]
+(pass) a stale customization save returns the command conflict [0.09ms]
+
+src/wiki-server.test.ts:
+(pass) the provenance record > each local library copy matches its integrity value and keeps its license [5.05ms]
+(pass) the provenance record > the record names the OpenWiki version that the runner image pins [0.82ms]
+(pass) the provenance record > the record refuses unsafe, incomplete, and repeated entries
+(pass) the page rewrite > points each matching library at its local copy and removes the Google Fonts links [0.75ms]
+(pass) the page rewrite > keeps a reference whose version or integrity value differs from the record
+(pass) the page rewrite > reports each network reference that stays in the page, and no local or replaced reference [0.12ms]
+(pass) the Host rule > accepts only a loopback name with the bound port [0.02ms]
+(pass) the wiki key rule > matches only the exact key [0.35ms]
+(pass) the wiki key rule > the server refuses to start without a valid key
+(pass) the wiki server > serves the rewritten page at the Project folder address below the key without a token [3.83ms]
+(pass) the wiki server > answers 404 for each address without the exact key [0.81ms]
+(pass) the wiki server > serves the flat files of the current export and the library copies [3.24ms]
+(pass) the wiki server > every response names the wiki service [2.45ms]
+(pass) the wiki server > logs each network reference of a page once [2.95ms]
+(pass) the wiki server > every response carries the wiki policy headers [0.69ms]
+(pass) the wiki server > accepts only read methods [0.38ms]
+(pass) the wiki server > refuses a Host header outside the loopback names of the bound port [0.32ms]
+(pass) the wiki server > answers 404 for each other path [0.37ms]
+(pass) the wiki server > refuses an export record that names another Project, an unsafe folder, or a link [1.11ms]
+(pass) the wiki server > follows the export record to the current export at each request [0.75ms]
+
+src/pierre.test.ts:
+(pass) local Pierre modules > each module holds the bytes that the provenance record states [5.90ms]
+(pass) local Pierre modules > the directory holds only recorded modules and license notices [0.24ms]
+(pass) local Pierre modules > each bundled package has its pinned version and its license notice [3.25ms]
+(pass) local Pierre modules > the build inputs pin each direct dependency to one exact version [0.30ms]
+(pass) local Pierre modules > each module imports only other local modules [12.91ms]
+(pass) local Pierre modules > the server serves each module and each license notice [0.34ms]
+
+src/mc.test.ts:
+(pass) makeMcRunner > success: parses the JSON object and passes argv through [190.73ms]
+(pass) makeMcRunner > domain rejection: exit 1 with the error envelope and stderr [118.95ms]
+(pass) makeMcRunner > non-JSON stdout yields json: null, never a throw [119.26ms]
+(pass) The command receives structured input outside its arguments [116.47ms]
+(pass) A connection token reaches standard input and stays outside command arguments [138.81ms]
+
+src/server.test.ts:
+(pass) bind grammar > parses host:port and bracketed IPv6
+(pass) bind grammar > refuses a portless or hostless bind [0.07ms]
+(pass) fail-closed bind/auth > any bind without a token is refused at startup, loopback included [0.10ms]
+(pass) fail-closed bind/auth > the token gates every /api request before any mc spawn [1.71ms]
+(pass) fail-closed bind/auth > a foreign Host header is refused — DNS rebinding boundary [0.76ms]
+(pass) fail-closed bind/auth > a cross-origin request is refused, same-origin passes — CSRF boundary [1.32ms]
+(pass) static shell > the dashboard address serves no wiki export or library copy [0.94ms]
+(pass) static shell > serves the shell page at / and the app module [1.55ms]
+(pass) static shell > the shell page frames only its own origin [0.87ms]
+(pass) static shell > anything else is 404, never a directory listing [0.85ms]
+(pass) native Project folder chooser > requires authorization, a local origin, and POST before it opens [0.61ms]
+(pass) native Project folder chooser > returns cancellation and recovers after a chooser failure [0.88ms]
+
+src/api.test.ts:
+(pass) verb mirror > release status and installer actions use the shared host commands [0.26ms]
+(pass) verb mirror > the AgentsView token route reads the host command and is never cached [0.10ms]
+(pass) verb mirror > GET /api/sessions passes mc homie list through [0.02ms]
+(pass) verb mirror > GET /api/sessions/:id/history passes through
+(pass) verb mirror > POST /api/sessions starts with a generated dashboard ref [0.14ms]
+(pass) verb mirror > a domain rejection surfaces as 400 with the mc envelope [0.05ms]
+(pass) verb mirror > an environment failure surfaces as 500 without leaking argv advice [0.06ms]
+(pass) verb mirror > unknown api endpoints are 404, non-api paths fall through as null [0.04ms]
+(pass) channel ref derivation > send reuses the session's existing dashboard binding [0.15ms]
+(pass) channel ref derivation > send generates a fresh ref when the session has no dashboard binding [0.06ms]
+(pass) channel ref derivation > resume derives the ref the same way [0.03ms]
+(pass) channel ref derivation > start, send, and resume nudge the resident with the session id after the verb succeeds [0.14ms]
+(pass) channel ref derivation > a refused verb nudges nothing [0.06ms]
+(pass) channel ref derivation > a missing resident socket is logged and never fails the request [0.34ms]
+(pass) channel ref derivation > send without a body is a usage 400 and spawns nothing [0.03ms]
+(pass) channel ref derivation > a non-JSON content type is refused before parsing (simple-request fence) [0.04ms]
+(pass) channel ref derivation > an mc usage envelope (exit 2) is a caller-caused 400, not a 500 [0.02ms]
+(pass) channel ref derivation > makeGenRef mints dash-<8 hex> [0.18ms]
+(pass) outbox drain > drains every polled row and reports the count [0.16ms]
+(pass) outbox drain > a failed ack is logged and skipped, not fatal (at-least-once) [0.09ms]
+(pass) outbox drain > acks only the kinds history renders; blocked and health rows survive the drain [0.07ms]
+(pass) outbox drain > a row whose kind is absent or unrecognized is left undelivered
+(pass) review queue > GET /api/packets passes mc packet list through untouched
+(pass) review queue > approve fires the verb with no reason
+(pass) review queue > decide nudges the resident with packet-decide [0.24ms]
+(pass) review queue > a refused decision nudges nothing [0.07ms]
+(pass) review queue > a failed decision nudge is logged and leaves the response unchanged [0.73ms]
+(pass) review queue > revise and cancel carry the operator's reason verbatim
+(pass) review queue > a reason on approve is passed on and refused by the verb, not by us
+(pass) review queue > an unknown decision never reaches mc
+(pass) board and activity > GET /api/tasks mirrors mc task list with its live-work default [0.43ms]
+(pass) board and activity > GET /api/tasks/<id> mirrors mc task get, missing task included [0.01ms]
+(pass) board and activity > GET /api/leases mirrors mc lease list, one row per Project
+(pass) board and activity > GET /api/settings mirrors mc settings get
+(pass) board and activity > an uninitialized spine surfaces the settings verb's own rejection
+(pass) board and activity > the retired /api/lock is gone, not quietly aliased
+(pass) board and activity > GET /api/activity fetches ONE stream, unsplit
+(pass) system health > GET /api/activity?kind= passes the verb's own filter through [0.33ms]
+(pass) system health > an empty kind is not sent as an empty filter
+(pass) system health > GET /api/activity?limit= passes the verb's own limit through [0.12ms]
+(pass) system health > kind and limit travel together [0.04ms]
+(pass) system health > a non-numeric limit is refused before any spawn [0.03ms]
+(pass) system health > an empty limit is not sent as an empty flag [0.03ms]
+(pass) system health > GET /api/doctor mirrors mc doctor [0.06ms]
+(pass) packet render > GET /api/packets/:task/render serves the resolved bytes [0.03ms]
+(pass) packet render > GET /api/artifact-roots mirrors the map the browser translates with [0.11ms]
+(pass) packet render > an HTML render is typed html and can never run in the dashboard's origin [0.07ms]
+(pass) packet render > an extensionless render stays plain text [0.15ms]
+(pass) packet render > a packet with no recorded render is 404, not a resolver call [0.08ms]
+(pass) packet render > an unknown task is 404 [0.04ms]
+(pass) packet render > a resolver refusal passes through as the verb's own rejection [0.06ms]
+(pass) packet render > an unreadable render is an environment failure, never empty 200 bytes [0.08ms]
+(pass) attachment bytes > an inline claim streams with its declared type and the recorded length [0.12ms]
+(pass) attachment bytes > a non-inline claim is a named download, never its declared type [0.03ms]
+(pass) attachment bytes > a malformed address is refused before any mc spawn [0.20ms]
+(pass) attachment bytes > an unconfirmed claim is 404
+(pass) attachment bytes > unmaterialized bytes are 404 [0.11ms]
+(pass) attachment bytes > an over-cap claim is 413 [0.03ms]
+(pass) attachment bytes > bytes that disagree with the spine are a 500, never served
+(pass) attachment bytes > a verb usage refusal is 400 and an environment failure is 500
+(pass) attachment bytes > a confirmed claim whose file vanished under the GC race is 404
+(pass) attachment bytes > a file swapped to a different length after verification is a 500, never served [0.17ms]
+(pass) the real openAttachment seam > refuses a symlink where the verified file stood, serves the regular file [2.14ms]
+(pass) outbox delivery for displayed records > blocked_alert confirms exactly the displayed records [0.16ms]
+(pass) outbox delivery for displayed records > health confirms exactly the displayed records [0.03ms]
+(pass) outbox delivery for displayed records > an unknown kind reaches no command [0.04ms]
+(pass) outbox delivery for displayed records > a failed acknowledgment reaches the browser [0.03ms]
+(pass) outbox delivery lag > reports the count and the oldest row per surface [0.16ms]
+(pass) outbox delivery lag > says so when the poll limit truncates the count [0.24ms]
+(pass) outbox delivery lag > a refused poll refuses the whole reading [0.06ms]
+(pass) pipeline, configs, and logs reads > GET /api/runs mirrors mc run list [0.11ms]
+(pass) pipeline, configs, and logs reads > GET /api/wiki-states mirrors mc wiki-state list [0.04ms]
+(pass) pipeline, configs, and logs reads > a failed wiki state read returns the failure of the verb [0.05ms]
+(pass) pipeline, configs, and logs reads > GET /api/projects mirrors mc project list [0.06ms]
+(pass) pipeline, configs, and logs reads > the dashboard address mirrors no wiki command [0.06ms]
+(pass) pipeline, configs, and logs reads > GET /api/config mirrors mc config show [0.04ms]
+(pass) pipeline, configs, and logs reads > POST /api/config sends the exact edit request through standard input [0.09ms]
+(pass) pipeline, configs, and logs reads > POST /api/config preserves a save rejection [0.04ms]
+(pass) pipeline, configs, and logs reads > a missing config.toml surfaces the verb's own rejection [0.06ms]
+(pass) pipeline, configs, and logs reads > GET /api/routing mirrors mc routing show [0.01ms]
+(pass) pipeline, configs, and logs reads > POST /api/routing mirrors mc routing set and returns the verb's JSON verbatim [0.09ms]
+(pass) pipeline, configs, and logs reads > POST /api/routing passes the verb's rejection through as the mc envelope [0.13ms]
+(pass) pipeline, configs, and logs reads > POST /api/routing refuses a missing, empty, or non-string field before any spawn [0.07ms]
+(pass) pipeline, configs, and logs reads > POST /api/routing reports an environment failure as 500 [0.11ms]
+(pass) pipeline, configs, and logs reads > GET /api/logs/:unit forwards stream and tail to the verb [0.06ms]
+(pass) pipeline, configs, and logs reads > GET /api/logs/:unit without params sends the bare verb
+(pass) pipeline, configs, and logs reads > a non-numeric tail is refused before any spawn [0.03ms]
+(pass) pipeline, configs, and logs reads > GET /api/logs/:unit forwards format to the verb [0.03ms]
+(pass) pipeline, configs, and logs reads > GET /api/logs/runs mirrors the server-produced run list [0.05ms]
+(pass) pipeline, configs, and logs reads > GET /api/logs/run/:id forwards the id opaquely with the window flags [0.05ms]
+(pass) pipeline, configs, and logs reads > a run id the verb refuses passes through as the usage envelope [0.02ms]
+(pass) pipeline, configs, and logs reads > an unknown unit comes back as the verb's own usage envelope at 400
+(pass) pipeline, configs, and logs reads > an environment failure on a read is 500
+(pass) host-plane health (GET /api/health) > forwards the bare verb, and the tail when the browser sets one
+(pass) host-plane health (GET /api/health) > a non-numeric tail is refused before anything is spawned
+(pass) host-plane health (GET /api/health) > the verb's own refusal passes through as the mc envelope
+(pass) the packet render requires the displayed packet and version [0.31ms]
+(pass) the packet render verifies the recorded report bytes [0.12ms]
+(pass) an accepted child report remains readable without an operator packet [0.07ms]
+(pass) Activity forwards its Project filter with the row limit [0.06ms]
+(pass) a pane cannot acknowledge records without a displayed record list
+(pass) Agent profile command interface > A connection secret travels through standard input only
+(pass) Agent profile command interface > A model list request travels through standard input
+(pass) Agent profile command interface > The dashboard cannot invoke a background worker [0.23ms]
+(pass) an expired task report preserves its history and returns an explicit expiry result
+(pass) Outbox reads start concurrently and preserve every surface [0.19ms]
+(pass) Project Vision > a Vision conversation retains its explicit Project [0.12ms]
+(pass) Project Vision > a clear starts an empty Vision conversation and refuses an ordinary one [0.07ms]
+(pass) Project Vision > draft operations forward their exact revision and contents [0.05ms]
+(pass) Project Vision > uploads use the addressed session and the host command [0.13ms]
+(pass) automatic conversation creation uses the atomic session command [0.05ms]
+(pass) conversation deletion passes the session identity and its failure through [0.03ms]
+(pass) conversation rename forwards its title and reports a domain rejection [0.08ms]
+(pass) model selection forwards the conversation, profile, and retry identity [0.07ms]
+(pass) packet change data > GET /api/packets/:task/changes returns the verified file inventory [0.30ms]
+(pass) packet change data > GET /api/packets/:task/changes/patch returns the exact patch part of one file [0.08ms]
+(pass) packet change data > a changed packet, an absent record, an expired packet, and an unknown file are refused [0.15ms]
+(pass) packet change data > bytes that differ from the recorded digest are refused [0.05ms]
+
+src/main.test.ts:
+(pass) parseConfig > accepts the minimal and the full shape [0.07ms]
+(pass) parseConfig > refuses non-objects, a missing mc_bin, mistyped fields, and a missing token [0.16ms]
+(pass) the dashboard process > serves the wiki exports at the wiki address [25.97ms]
+(pass) the dashboard process > keeps the dashboard available when the wiki address cannot bind [25.71ms]
+(pass) the dashboard process > starts no wiki address without a wiki key [24.85ms]
+
+src/mc.read-deadline.test.ts:
+(pass) The command read deadline > Each GET request receives its own context without changing shared dependencies [0.21ms]
+(pass) The command read deadline > A scoped read carries the absolute deadline and reports its complete duration [206.62ms]
+(pass) The command read deadline > An aborted read in a shared queue creates no process [315.88ms]
+(pass) The command read deadline > A read that expires in a shared queue creates no process [255.79ms]
+(pass) The command read deadline > Cancellation stops the active process and its child before completion [258.02ms]
+(pass) The command read deadline > A cancelled active read retains its admission slot until the absolute deadline [754.91ms]
+(pass) The command read deadline > An aborted expired context preserves the plain write command [304.24ms]
+(pass) The command read deadline > Partial system status retains the slot when Docker completion is unconfirmed [254.59ms]
+(pass) The command read deadline > Exit 125 preserves failure for malformed, absent, and error responses [1292.10ms]
+(pass) The command read deadline > Exit 125 cannot turn another command into a successful partial status [192.33ms]
+(pass) The command read deadline > An unknown command retains the plain path under an aborted context [230.66ms]
+(pass) The command read deadline > A completion callback failure preserves the command result [191.66ms]
+
+src/ui/viewers.test.ts:
+(pass) viewerOrigin > accepts only a loopback http address
+(pass) the Traces link > opens the complete AgentsView session list
+(pass) the Traces link > states why AgentsView is unavailable
+(pass) the trace link of a run > opens the AgentsView session of the run at its last message [0.31ms]
+(pass) the trace link of a run > a run without a main trace has no link
+(pass) the trace link of a run > an unavailable AgentsView gives the unavailable state with the reason
+(pass) the wiki link of a Project > opens the export of the Project and names the Project and the commit
+(pass) the wiki link of a Project > an export without an address states that the wiki address is not ready
+(pass) the wiki link of a Project > states each unavailable reason
+(pass) the wiki link of a Project > refuses an export address outside the loopback interface
+(pass) the link attributes > an available link opens a new tab without an opener and names the new tab [0.01ms]
+(pass) the link attributes > an unavailable link has no address, stays in the focus order, and states the reason
+(pass) the link attributes > the header links start in the state before the status response [0.31ms]
+(pass) the link attributes > a header link follows each change of its state [0.16ms]
+(pass) the link attributes > the Project menu wiki link names its Project
+(pass) the link attributes > a run has a trace link only with a main trace [0.16ms]
+(pass) the AgentsView token copy > starts the clipboard write in the same call as the press, before the token response [0.35ms]
+(pass) the AgentsView token copy > writes the text after the response when the browser has no ClipboardItem
+(pass) the AgentsView token copy > states each failure and writes nothing [0.24ms]
+
+src/ui/pipeline.test.ts:
+(pass) leaseStale > a free lease is never stale
+(pass) leaseStale > three missed beats against the settings row's interval is stale [0.19ms]
+(pass) leaseStale > an unread settings row falls back to a short interval
+(pass) heartbeatStopped > three missed beats stop the heartbeat, and a run with no heartbeat is not stopped
+(pass) outboxLagView > tones step from leaf to sky to rust with the backlog [0.11ms]
+(pass) outboxLagView > a capped count is a floor: the row and the total both say so
+(pass) outboxLagView > no surfaces at all
+(pass) runsView > newest first, capped at the limit [8.64ms]
+(pass) runsView > a running row has no outcome and no end, and reads as sky
+(pass) runsView > the spine's finished outcomes are leaf, its failures rust [0.43ms]
+(pass) runsView > an outcome outside the vocabulary is stone, not rust
+(pass) runsView > an ended run with no outcome is explicitly unknown, never a lie
+(pass) runsView > a subjectless run and an empty list
+(pass) runsView > the result states the end in plain words, and a failed run names its reason [0.16ms]
+(pass) runsView > a Verifier run that requests a correction says so in rust; a pass reads as completed [0.33ms]
+(pass) runsView > a merge step is not a run row, and the limit counts only agent runs [0.11ms]
+(pass) runsView > a wiki update row states the result text, the cause, and the tone of its wiki update [0.36ms]
+(pass) runsView > a run row carries the AgentsView session that the command computed [0.15ms]
+(pass) runsView > the run row of a wiki update carries its AgentsView session [0.08ms]
+(pass) doctorView > deployment results exclude connection checks from the composed report [0.11ms]
+(pass) doctorView > unchecked: the probe has not been run this session [0.03ms]
+(pass) doctorView > ok: every finding passes [0.02ms]
+(pass) doctorView > failing: counts the failures and tones them rust [0.03ms]
+(pass) doctorView > deferred is reported, not alarmed
+(pass) doctorView > an unrecognised status is treated as a failure, not as passing
+(pass) doctorView > a doctor payload with no findings array [0.03ms]
+(pass) degradedUnits > nothing degraded means nothing to open [0.09ms]
+(pass) degradedUnits > a deferred check earns no log deep-link [0.02ms]
+(pass) degradedUnits > a stale lease points at the resident's stderr and names its Project [0.05ms]
+(pass) degradedUnits > a failing doctor check adds the resident, and a dashboard one adds the dashboard [0.05ms]
+(pass) degradedUnits > a failing AgentsView check opens the AgentsView log, and a failing wiki check the dashboard log [0.03ms]
+(pass) degradedUnits > several failing checks never duplicate a tail
+(pass) topology tables > one node per agent role, in the frozen order and lanes [0.03ms]
+(pass) topology tables > from/to are the statuses each role consumes and produces
+(pass) topology tables > edges connect the task roles and task correction paths, and no edge names the Scribe
+(pass) topologyView > edges come through verbatim [0.11ms]
+(pass) topologyView > a held lease lights exactly one node, and it is the owner's [0.22ms]
+(pass) topologyView > several held leases light one node each, naming their Projects [0.10ms]
+(pass) topologyView > a held lease with a silent heartbeat marks its node stale [0.06ms]
+(pass) topologyView > free leases leave every node inactive [0.05ms]
+(pass) topologyView > routing facts land on the node, and both Strategist modes share the flat row [0.02ms]
+(pass) topologyView > a routing table with no row for a role reports unknown, never a guess [0.04ms]
+(pass) topologyView > the newest run per role drives recent vs idle, reading oldest-first input [0.09ms]
+(pass) topologyView > an in-flight run reads Running; an ended run with no outcome reads Ended [0.04ms]
+(pass) topologyView > a merge step lights no node and is not the last run of a role [0.04ms]
+(pass) topologyView > the frozen tables are never mutated by a view [0.04ms]
+(pass) healthView > current availability remains separate from historical log errors [0.03ms]
+(pass) healthView > an unread plane is unchecked, not failing
+(pass) healthView > the verb's three-valued status survives, exactly as the doctor's does
+(pass) healthView > attention lines are carried through untouched
+(pass) healthView > a non-string in attention is dropped rather than rendered as one
+(pass) healthView > a passing plane says so
+(pass) a final run does not mark a Pipeline role as active
+
+src/ui/errors.test.ts:
+(pass) an absent Docker socket or a refused connection identifies an unavailable daemon [0.14ms]
+(pass) other errors retain their own explanation
+
+src/ui/requests.test.ts:
+(pass) Concurrent consumers share a read and reuse it until its freshness expires
+(pass) A write rejects old freshness and every consumer receives the new result [0.44ms]
+(pass) Cancellation releases one consumer and preserves the shared read [0.18ms]
+(pass) A failed read permits a retry and an authorization failure clears protected data [0.14ms]
+(pass) Prefetch has one active read, yields to page reads, and stops while hidden [0.11ms]
+(pass) A record conflict invalidates old details before the conflict form reads them [0.06ms]
+(pass) A read action preserves unrelated cached data [0.12ms]
+(pass) A new consumer can retry after the last prior consumer cancels [0.05ms]
+
+src/ui/board.test.ts:
+(pass) leaseHeld and heldLeases > held is the run_id being set, free is it being null [0.02ms]
+(pass) leaseHeld and heldLeases > held leases keep the verb's Project order [0.04ms]
+(pass) activeTaskID > returns the leased subject
+(pass) activeTaskID > a free lease marks nothing [0.04ms]
+(pass) activeTaskID > a subjectless lease marks nothing
+(pass) leaseView > reads the held lease off the row [0.12ms]
+(pass) leaseView > flags a heartbeat older than three intervals as stale [0.02ms]
+(pass) leaseView > stays inside the window at exactly three intervals [0.01ms]
+(pass) leaseView > the interval is the settings row's, not the lease row's [0.02ms]
+(pass) leaseView > defaults the interval to 30s when the settings row has not been read [0.02ms]
+(pass) leaseView > a free lease reports nothing rather than zeros, but keeps its Project
+(pass) leaseView > a held lease with no heartbeat yet is unknown, not stale
+(pass) leaseView > a subjectless held lease still reports its run [0.07ms]
+(pass) leaseView > leasesView reads every row in the verb's order
+(pass) leaseBadge > the idle badge states that no agents are active [0.10ms]
+(pass) leaseBadge > a Project page names the role, the task, and the run time [0.06ms]
+(pass) leaseBadge > a run without a heartbeat says so in the tooltip [0.03ms]
+(pass) leaseBadge > a run without a task names only the role
+(pass) leaseBadge > a run in a paused Project is finishing [0.08ms]
+(pass) leaseBadge > a stale heartbeat comes first, so a truncated badge still shows it [0.02ms]
+(pass) leaseBadge > a global page counts the runs and names each Project by title in the tooltip [0.09ms]
+(pass) leaseBadge > a global page counts the runs of paused Projects as finishing
+(pass) leaseBadge > the count text keeps one form for any number of runs [0.11ms]
+(pass) leaseBadge > the count text states stale heartbeats first and pending stops last
+(pass) projectOptions > all first, then unique projects sorted [0.09ms]
+(pass) projectOptions > skips absent and empty projects
+(pass) taskTags > a wave child carries no membership pill
+(pass) taskTags > expedited priority gets a pill; corrections and origin never do
+(pass) taskTags > the project pill rides last, and only when asked for
+(pass) taskTags > an older row with no optional columns produces no pills
+(pass) runningLabel > names the run age once it is a minute old
+(pass) runningLabel > a stale heartbeat does not read as running
+(pass) boardColumns > renders every stage in pipeline order with its counts [0.24ms]
+(pass) boardColumns > an empty task list still yields five empty columns
+(pass) boardColumns > the project filter keeps only exact matches [0.22ms]
+(pass) boardColumns > orders expedited, then blocked, then the longest wait
+(pass) boardColumns > the running card leads its column, ahead of expedited and blocked
+(pass) boardColumns > ties keep spine order
+(pass) boardColumns > falls back to created_at when the stage stamp is absent
+(pass) boardColumns > one held lease makes exactly one card active and only it carries the run
+(pass) boardColumns > two held leases make one active card per Project, each with its own run [0.47ms]
+(pass) boardColumns > a subjectless lease marks no card at all [0.02ms]
+(pass) boardColumns > a blocked card with no recorded reason still says so
+(pass) boardColumns > keeps a recorded reason and leaves unblocked cards without one [0.10ms]
+(pass) boardColumns > carries the row's membership facts and an untitled fallback [0.06ms]
+(pass) boardColumns > the project pill shows only on an unfiltered board of several Projects [0.05ms]
+(pass) boardColumns > the running card carries the chip text and the stale flag
+(pass) boardColumns > tolerates absent tasks and an absent options object
+(pass) taskDetail > reads the prose, the origin and the ages off the get row
+(pass) taskDetail > a wait under a minute, or with no stamp, is no stage age
+(pass) taskDetail > blank prose is absent, and a blocked row without a reason still says so
+(pass) taskDetail > the dialog carries no correction notes, commits, or delivery records
+(pass) taskDetail > the packet link needs a packet that the Review reader opens [0.05ms]
+(pass) taskDetail > the held lease is the current run, with its liveness
+(pass) taskDetail > a packaged row names its packet; a decided row names the decision and its age [0.04ms]
+(pass) taskDetail > an approved task states the merge state text of its packet row [0.01ms]
+(pass) boardStatItems > leads with blocked and active work, and marks zero counts
+(pass) boardStatItems > keeps blocked and active first when both are zero, with less weight
+(pass) boardStats > counts the whole board by default, with every active subject
+(pass) boardStats > counts only the filtered set, active subjects included [0.24ms]
+(pass) boardStats > a subjectless or free lease contributes no active subject
+(pass) boardStats > an empty board counts zero
+(pass) visionNotices > current valid files produce no notice
+(pass) visionNotices > current file failures override the setup record and preserve the host facts
+(pass) visionNotices > every blocked file state appears for active and paused repositories
+(pass) visionNotices > archived Projects need no notice; absent host facts produce no invented status
+(pass) task failure facts > the attention threshold applies to each Project [0.51ms]
+(pass) task failure facts > the direct block reason cannot create an inherited block
+(pass) task failure facts > three tasks with one failure each preserve the allowance
+(pass) task failure facts > approved card shows Approved [0.14ms]
+(pass) task failure facts > a stalled task retains its stage and earlier packet [0.03ms]
+(pass) task failure facts > a card names the connection that its next run waits for and carries no failure record [0.03ms]
+(pass) task failure facts > a run exit does not establish a credential or quota diagnosis [0.04ms]
+(pass) task failure facts > a supported agent diagnosis retains its source and supplied quota facts
+(pass) a final run retains its lease without a false active task
+(pass) shared Arbiter proposal review > three separate cards share one run and the same review indicator [0.19ms]
+(pass) shared Arbiter proposal review > an ended review clears all active indicators and preserves the canonical history [0.12ms]
+(pass) shared Arbiter proposal review > a claim without process start identifies the pending agent launch [0.06ms]
+
+src/ui/agentprofiles.test.ts:
+(pass) the panel lists only the enabled agent profiles of the catalog
+(pass) a listed profile with a ready connection reads Connected without an attention alert
+(pass) Use an existing connection lists only connections with a saved credential or no token requirement
+(pass) only the Edit form keeps the current connection of an agent profile that lost its access
+(pass) the profile status states the connection access without a successful test claim
+(pass) a profile save excludes credentials and retains the exact model identifier
+(pass) a model test request carries no earlier test receipt
+(pass) Current connection state overrides a saved credential
+(pass) the Edit form requests authorization from the current connection state only
+(pass) Only a stopped connection that needs authorization offers Reconnect
+(pass) an operation summary states whether the operation runs, waits for the operator, or ended [0.62ms]
+(pass) the elapsed time counts whole seconds from the operation start [0.04ms]
+(pass) an endpoint connection name comes from the host of a complete endpoint address [0.05ms]
+(pass) only a connected subscription lists its models
+(pass) model choices show the provider name and keep a model that the provider does not offer [0.05ms]
+
+src/ui/boardwrites.test.ts:
+(pass) board write requests > creation carries only user fields and the selected destination
+(pass) board write requests > an edit carries the presented version and preserves protected fields
+(pass) board write requests > each reason action carries its reason and version
+(pass) board write requests > an exact retry preserves its operation after a lost response and reload
+(pass) record controls > a final decision prevents content edits and cancellation
+(pass) record controls > approved work permits recovery and cancellation before application
+(pass) record controls > an active charter review restricts child edits but preserves cancellation [0.42ms]
+(pass) record controls > a task revision prevents a second requirements revision and preserves title edits
+(pass) record controls > a partial task read cannot offer unversioned edits
+(pass) revision effects describe the current stage and the exact active run
+(pass) a revision that waits for a repository operation names no current run [0.13ms]
+(pass) assessment progress retains the supplied delay, actor, reason, and proposed plan [0.02ms]
+(pass) Proposed tasks omit every operator action before and during proposal review [0.01ms]
+(pass) allowance limits require their explicit action [0.01ms]
+
+src/ui/format.test.ts:
+(pass) projectStateText > names the pause state of one Project [0.06ms]
+(pass) pauseAllView > offers bulk controls for at least two eligible Projects
+(pass) pauseAllView > hides bulk controls with fewer than two eligible Projects [0.09ms]
+(pass) leaseStateText > names the lease state of one Project [0.03ms]
+(pass) dateTimeLabel > renders a spine stamp with its year in the named zone [0.47ms]
+(pass) dateTimeLabel > an unreadable stamp renders empty [0.05ms]
+(pass) stampLabel > renders diagnostic timestamps with their UTC marker and fractional seconds [0.08ms]
+(pass) stampLabel > renders a spine stamp in the named zone [0.33ms]
+(pass) stampLabel > agrees with the header clock on the hour and the date [0.24ms]
+(pass) stampLabel > an unreadable stamp renders empty [0.01ms]
+(pass) localStamp > renders a log record stamp in the named zone with a numeric offset [0.38ms]
+(pass) localStamp > an unreadable stamp renders empty [0.04ms]
+(pass) relative ages > stay the same in every zone [0.17ms]
+
+src/ui/markdown.test.ts:
+(pass) markdown inline > reads code, links, strong and emphasis [0.15ms]
+(pass) markdown inline > markup inside a code span stays literal
+(pass) markdown inline > an unclosed marker survives as text [0.03ms]
+(pass) markdown blocks > headings, paragraphs, rules and quotes [0.22ms]
+(pass) markdown blocks > bulleted and numbered lists gather their items [0.04ms]
+(pass) markdown blocks > a fenced block keeps its bytes verbatim [0.03ms]
+(pass) markdown blocks > an empty document is an empty tree
+(pass) markdown list continuation > a wrapped list item stays one item of one list [0.13ms]
+(pass) markdown list continuation > a blank line ends the item and the list [0.03ms]
+(pass) markdown list continuation > a heading right after an item closes the list [0.02ms]
+
+src/ui/router.test.ts:
+(pass) router > saved Activity links open Pipeline [0.10ms]
+(pass) router > names a page and its extra segments
+(pass) router > an unknown or token fragment names no page [0.01ms]
+(pass) router > hashes round-trip [0.03ms]
+(pass) router > the address of a packet names the Review page and the task
+(pass) router > the address of a packet parses back to its task [0.05ms]
+(pass) router > any other address names no packet [0.04ms]
+
+src/ui/logs.test.ts:
+(pass) pickers > the tables mirror the verb, events first, run lane last
+(pass) logsQuery > builds the query for a valid pick — prose streams stay text
+(pass) logsQuery > the AgentsView log is plain text in each of its streams, and the debug stream opens first
+(pass) logsQuery > the structured stream asks for records beside the rendering
+(pass) logsQuery > invalid picks fall back to the defaults rather than reaching the server
+(pass) logsQuery > tail clamps to the verb's own maximum
+(pass) logsQuery > the run lane names its run in the path, encoded, structured
+(pass) logsQuery > the run lane with no run picked has nothing to ask for [0.28ms]
+(pass) validRunID > mirrors the resident's safe-id shape [0.03ms]
+(pass) nextTail / canLoadOlder > adds 500 lines [0.02ms]
+(pass) nextTail / canLoadOlder > clamps at the maximum [0.01ms]
+(pass) nextTail / canLoadOlder > an absent or invalid current widens from the default window [0.01ms]
+(pass) nextTail / canLoadOlder > the affordance disables itself at the clamp [0.02ms]
+(pass) logsView > a log not yet written is a state, not an error [0.07ms]
+(pass) logsView > a run that captured nothing is a state with its own sentence
+(pass) logsView > an absent response is missing too, with unknown pickers [0.03ms]
+(pass) logsView > an existing but empty log is its own state [0.03ms]
+(pass) logsView > ok carries the whole window, numbered, unmatched
+(pass) logsView > a grep keeps only hits, with their original line numbers
+(pass) logsView > a grep that matches nothing still says so against the window [0.15ms]
+(pass) logsView > a whitespace-only grep is no grep at all [0.03ms]
+(pass) logsView > the truncated flag passes through — older lines exist beyond the window [0.01ms]
+(pass) logsView > the grep note counts hits against the whole window
+(pass) logsView over a structured window > displays the verb's rendering and takes levels from the aligned records [0.03ms]
+(pass) logsView over a structured window > shows each record's stamp in the browser zone and leaves every other line verbatim [0.31ms]
+(pass) logsView over a structured window > levelCounts tallies the whole window for the facet chips [0.03ms]
+(pass) logsView over a structured window > a level facet narrows, and a line with no record always survives it [0.03ms]
+(pass) logsView over a structured window > all levels can be hidden while raw crash output remains visible [0.03ms]
+(pass) logsView over a structured window > naming every level is no facet at all
+(pass) logsView over a structured window > grep and facet compose, and grep runs over the DISPLAYED text [0.03ms]
+(pass) logsView over a structured window > a facet with no survivors says so
+(pass) logsView over a structured window > the level facet never applies to a prose window
+(pass) runOptions > joins the verb's run list against the spine's rows, newest first [0.08ms]
+(pass) runOptions > tolerates absent inputs
+(pass) hash deep-link > a bare unit defaults to the stream that matters
+(pass) hash deep-link > an explicit stream is honoured, with or without the #
+(pass) hash deep-link > the run lane deep-links one run's diagnostics [0.03ms]
+(pass) hash deep-link > anything else is not a logs link
+(pass) hash deep-link > unknown units and streams are refused, not guessed [0.03ms]
+(pass) hash deep-link > logsHash is canonical and round-trips [0.06ms]
+(pass) hash deep-link > logsHash falls back to the defaults for an invalid pick [0.01ms]
+(pass) copyText > copies exactly what the unit wrote — no numbers, no markers [0.04ms]
+(pass) copyText > copies only the filtered lines when a grep is applied [0.01ms]
+(pass) copyText > copies the rendering the operator is reading on a structured window
+(pass) copyText > an empty or missing view copies nothing
+(pass) the mc unit and the events stream > mc offers only its events stream, in the query and in the hash [0.03ms]
+(pass) the mc unit and the events stream > the supervised units still reach both launchd files [0.03ms]
+(pass) processRuns > selects only referenced runs, with the latest reference first [0.07ms]
+(pass) processRuns > an empty process log has no runs, even when other runs exist [0.01ms]
+
+src/ui/topology.test.ts:
+(pass) the Scribe node > a Scribe run with a current heartbeat reads Running now, on its Project, with no task [0.26ms]
+(pass) the Scribe node > a Scribe run with no started agent reads Agent launch pending [0.05ms]
+(pass) the Scribe node > a Scribe run with three missed beats reads Heartbeat stopped [0.04ms]
+(pass) the Scribe node > the node reads Idle while the wiki state row holds no Scribe run [0.14ms]
+(pass) the Scribe node > with no wiki state row, the node takes its run from the newest Scribe run row [0.23ms]
+(pass) the Scribe node > a wiki state row with no Scribe run reads Idle beside an active Scribe run row [0.02ms]
+(pass) the Scribe node > a Scribe run lights no edge and no other node [0.05ms]
+(pass) the Scribe node > the node states the result text of a failed wiki update as its last run [0.06ms]
+
+src/ui/activity.test.ts:
+(pass) splitStreams > dispatch errors and connection waits are the separate error stream, everything else is events [0.08ms]
+(pass) splitStreams > empty and absent reads split into two empty streams [0.02ms]
+(pass) activityRows > preserves the verb's newest-first order [0.39ms]
+(pass) activityRows > tones group by kind family, not by severity [0.36ms]
+(pass) activityRows > actor falls back to system when the spine wrote the row itself [0.25ms]
+(pass) activityRows > the subject names a task, a run, a connection, or a Project, and detail degrades to an empty string [0.28ms]
+(pass) activityRows > carries both a relative age and the shared formatter's stamp [0.32ms]
+(pass) activityRows > a row missing every optional column renders unknowns, never throws [0.03ms]
+(pass) activityRows > empty and absent inputs give no rows [0.01ms]
+(pass) kindOptions > suggests only the unique kinds this read contained, sorted [0.03ms]
+(pass) kindOptions > duplicates collapse and missing kinds are skipped [0.03ms]
+(pass) kindOptions > empty and absent inputs suggest nothing
+(pass) mergeRows > a poll window that overlaps what is on screen does not duplicate rows [0.08ms]
+(pass) mergeRows > orders newest first, breaking a shared stamp by id [0.03ms]
+(pass) mergeRows > an id-less row is kept once and deduped on its content [0.03ms]
+(pass) mergeRows > a row with an unreadable stamp sorts last rather than claiming to be newest [0.02ms]
+(pass) mergeRows > empty and absent sides merge to the other side [0.01ms]
+(pass) newRowIDs > returns only the ids the poll added, in incoming order [0.04ms]
+(pass) newRowIDs > an id-less row flashes nothing and a repeat is reported once
+(pass) newRowIDs > nothing new, and empty or absent inputs, give no flashes [0.02ms]
+(pass) streamStats > counts the window, its span, and its distinct actors [0.06ms]
+(pass) streamStats > an actorless row counts as the system actor [0.02ms]
+(pass) streamStats > rows with unreadable stamps leave the span empty rather than lie
+(pass) streamStats > an empty or absent stream reports zeroes and no ages [0.02ms]
+
+src/ui/environment.test.ts:
+(pass) configuration edits preserve recorded inputs without changing the accepted revision [0.08ms]
+(pass) file review exposes additions, changes, and removals with exact contents [0.08ms]
+(pass) a queued operation reports authorization without active execution [0.11ms]
+(pass) approval requires the recorded proposal and successful setup owns completion [0.05ms]
+(pass) the environment route keeps Project identity and a status read has no write effect [0.03ms]
+(pass) the image inventory displays recorded manifest versions [0.05ms]
+(pass) source acceptance and cache removal report host work accurately [0.03ms]
+(pass) the Dockerfile reference identifies the exact selected base [0.02ms]
+(pass) an unavailable accepted image exposes repair instead of a ready status [0.04ms]
+
+src/ui/flowmap.test.ts:
+(pass) flowmapView nodes > a run claim waits for process start before the graph says Running now [0.25ms]
+(pass) flowmapView nodes > a running node says where it runs and for how long; the disclosure names the task [0.06ms]
+(pass) flowmapView nodes > one node running for two Projects names both [0.03ms]
+(pass) flowmapView nodes > a silent heartbeat reads as stale, not as running [0.03ms]
+(pass) flowmapView nodes > an idle node says when it last ran, or that it never ran [0.04ms]
+(pass) flowmapView nodes > Homie carries no state word: it holds no lease [0.03ms]
+(pass) flowmapView nodes > every topology node is drawn in both layouts [0.03ms]
+(pass) flowmapView nodes > each edge starts and ends on the box of its role [0.12ms]
+(pass) flowmapView nodes > the Scribe node is inside the graph and touches no edge, no label, and no other node [0.19ms]
+(pass) clippedLine > a line that fits stays whole [0.04ms]
+(pass) clippedLine > a wide line loses Project name characters and keeps its age [0.03ms]
+(pass) clippedLine > a wide line without an age loses its last characters [0.01ms]
+(pass) flowmapView edges and the strip > the Scribe receives its normal route, and the verified edge counts each verified task [0.09ms]
+(pass) flowmapView edges and the strip > each chain edge carries its status and the count across Projects [0.04ms]
+(pass) flowmapView edges and the strip > an edge lights when the role it leaves is running [0.05ms]
+(pass) flowmapView edges and the strip > an edge stays unlit while its role has no run with a current heartbeat [0.09ms]
+(pass) flowmapView edges and the strip > blocked tasks are listed with their Project and reason [0.13ms]
+(pass) wikiStateFacts > a current wiki with no ended wiki update states both facts [0.08ms]
+(pass) wikiStateFacts > the last wiki update states its end in the zone of the browser, and its result [0.47ms]
+(pass) wikiStateFacts > a failed wiki update states its cause, and a wiki that is behind states the earliest next start [0.31ms]
+(pass) wikiStateFacts > the earliest next start is the text of the row when the row holds one [0.04ms]
+(pass) wikiStateFacts > only a wiki that is behind states the earliest next start [0.01ms]
+(pass) wikiStateFacts > an active wiki update states its step, and the repair of an interrupted merge on a second line [0.32ms]
+(pass) wikiStateFacts > after a failed read, one fact states that the dashboard cannot read the wiki state
+(pass) wikiStateFacts > a read with no row for the Project gives no fact
+(pass) flowPopoverNode > the role detail of the Scribe holds the wiki facts between the description and the rows [0.44ms]
+(pass) flowPopoverNode > after a failed read, the role detail states that and keeps both rows [0.16ms]
+(pass) flowPopoverNode > a read with no row for the Project gives no list of wiki facts [0.08ms]
+(pass) flowPopoverNode > the role detail of each other role holds no wiki fact [0.22ms]
+(pass) layoutFor > the rail folds below the narrow threshold
+(pass) flowmapView routing facts > every node carries its agent and current binding for the picker
+(pass) bindingOptions > sorts by id, labels each entry with the harness and the model, and marks only the current one
+(pass) bindingOptions > a role without a route marks no entry
+(pass) bindingOptions > a missing or empty list gives no entries
+(pass) agent profile choices show the display name and preserve the identifier
+
+src/ui/taskdialog.test.ts:
+(pass) historyView > lists the newest runs up to the limit and keeps the older runs [0.07ms]
+(pass) historyView > keeps no older run when the history fits
+(pass) historyView > tolerates an absent list
+(pass) runHistoryNode > lists the older runs in a disclosure, each with its trace link [0.78ms]
+(pass) runHistoryNode > has no disclosure when the history fits [0.09ms]
+(pass) task dialog reports > a priority task shows the cause and Project hold outside technical details [0.49ms]
+(pass) task dialog reports > a task opens its report through the review packet only
+(pass) task dialog reports > the record controls come first in the main column [0.05ms]
+(pass) decisionTone > approved is leaf, rejected is rust, anything else is stone
+(pass) liveRunView > a fresh heartbeat reads as running now
+(pass) liveRunView > a stale heartbeat names itself
+(pass) liveRunView > no run is null
+
+src/ui/systemhealth.test.ts:
+(pass) release status keeps a failed check separate from a current release [0.17ms]
+(pass) a completed newer workflow asks for another release check [0.02ms]
+(pass) Current recovery removes only its own condition and preserves history references [0.10ms]
+(pass) An incomplete response preserves the complete snapshot and marks it unavailable [0.03ms]
+(pass) Concurrent refresh requests share one request and a stopped controller ignores its response [0.27ms]
+(pass) A partial observation adds a known failure without clearing previous failures [0.03ms]
+(pass) A request that ignores cancellation releases the request slot after its deadline [0.11ms]
+(pass) history preserves each completed result and omits start records [0.03ms]
+(pass) refresh activity distinguishes one request from several requests [0.03ms]
+(pass) an unknown connection states that the cause is unconfirmed [0.03ms]
+(pass) a network failure states only the observed error and elapsed retry threshold [0.16ms]
+(pass) The deployment check runs when the page opens and again after each interval [0.26ms]
+(pass) A hidden page skips the deployment check until it becomes visible again [0.08ms]
+(pass) A visible page repeats only a deployment check older than the interval [0.03ms]
+(pass) A failed or incomplete deployment check retains the earlier evidence [0.11ms]
+(pass) Connections that require attention stay open and the others share one count [0.07ms]
+(pass) The viewer facts follow the latest response that carries them [0.03ms]
+(pass) A condition without a dashboard control shows its repair action as text [0.09ms]
+(pass) network notices distinguish delay, eligibility, and an active attempt [0.09ms]
+(pass) confirmed recovery appears once and follows the attempt's current state [0.02ms]
+(pass) priority task notices identify the Project hold and current cause [0.09ms]
+
+src/ui/configs.test.ts:
+(pass) configuration editors > the editor retains typed values and server constraints
+(pass) configuration editors > only supported editors appear in groups and counts [0.34ms]
+(pass) configuration editors > the filter matches keys and preserves typed drafts
+(pass) configuration editors > empty and unsupported responses expose no editor
+(pass) routingRows > the task roles in pipeline order, then the Scribe, then Homie; an unknown role follows in input order [0.17ms]
+(pass) routingRows > labels are capitalised and the homie row is marked, not hidden [0.05ms]
+(pass) routingRows > family carries the harness; a missing model falls back to empty [0.02ms]
+(pass) routingRows > empty input [0.01ms]
+(pass) projectRows > preserves the verb's order and marks the live rows [0.02ms]
+(pass) projectRows > absent columns fall back to an explicit dash
+(pass) projectRows > empty input
+
+src/ui/paths.test.ts:
+(pass) hostPaths > rewrites a cited container path onto the host
+(pass) hostPaths > rewrites every occurrence, not just the first
+(pass) hostPaths > leaves an unmapped target exactly as written
+(pass) hostPaths > leaves the plane root alone when no target segment follows
+(pass) hostPaths > leaves a bare plane directory alone
+(pass) hostPaths > passes the text through untouched when no map has loaded
+(pass) hostPaths > touches nothing outside the plane
+
+src/ui/review.test.ts:
+(pass) livePackets > keeps the three live states: awaiting decision first, then oldest first [0.06ms]
+(pass) livePackets > tolerates an absent list
+(pass) ledgerPackets > the Approved filter shows merged packets, newest decision first, higher task first on a tie
+(pass) ledgerPackets > the Cancelled filter shows cancelled packets [0.06ms]
+(pass) ledgerPackets > the All filter shows both final decisions in one decision order [0.02ms]
+(pass) ledgerPackets > Approved is the default filter [0.03ms]
+(pass) ledgerPackets > a replaced packet appears in neither view [0.02ms]
+(pass) ledgerPackets > each filter names its own empty state
+(pass) packetView > carries age, thesis and render presence [0.14ms]
+(pass) packetView > age tone flips exactly at 24h in queue
+(pass) packetView > only a ready packet that awaits a decision offers the decision controls
+(pass) packetView > an approved row states the approval and the merge state text of mc [0.23ms]
+(pass) packetView > an approved row without a merge state text states only the approval [0.15ms]
+(pass) packetView > only an approved row carries a merge state [0.15ms]
+(pass) packetView > the reader follows one decided packet from its approval to its merge [0.33ms]
+(pass) packetView > a returned row states the return and its cause [0.03ms]
+(pass) packetView > a blocked row carries the block reason [0.02ms]
+(pass) packetView > a ledger row states the decision, its local time, and the merge or the reason [0.30ms]
+(pass) packetView > an expired report carries its expiry date
+(pass) packetView > absent packet fields use the empty state
+(pass) readerStateTag > the reader names the awaiting state that a Live queue row leaves untagged
+(pass) readerStateTag > each other review state keeps the tag of its row [0.33ms]
+(pass) packetsFor > the Live queue view shows the live states [0.09ms]
+(pass) packetsFor > the Ledger view applies the filter [0.31ms]
+(pass) packetsFor > an unknown view falls back to the Live queue [0.13ms]
+(pass) packetsFor > empty inputs render no rows [0.01ms]
+(pass) packetsFor > does not mutate the caller's array [0.19ms]
+(pass) queueStats > counts the decisions owed, the review slots, and the ledger [0.05ms]
+(pass) queueStats > the slots in use are judged against the review capacity [0.04ms]
+(pass) queueStats > the badge count excludes approved and returned packets [0.03ms]
+(pass) queueStats > an unread settings row reports the cap unknown, not zero [0.04ms]
+(pass) queueStats > an empty queue has zero counts
+(pass) reasonRequired > revise and cancel owe a reason, approve does not [0.03ms]
+(pass) decisionPayload > approve sends the verb alone [0.03ms]
+(pass) decisionPayload > approve never carries a reason, even when one was typed [0.01ms]
+(pass) decisionPayload > revise and cancel carry the trimmed reason
+(pass) decisionPayload > the operator's words ride untouched apart from trimming [0.03ms]
+(pass) decisionPayload > a blank reason abandons the decision
+(pass) decisionPayload > an unknown verb sends nothing [0.03ms]
+(pass) renderMode > the server's content type is the primary signal [0.03ms]
+(pass) renderMode > a sniff catches HTML written under a bare name [0.01ms]
+(pass) renderMode > absent inputs land on the honest floor
+(pass) packetDocument > wraps the bytes in a skeleton whose head carries the CSP first [0.03ms]
+(pass) packetDocument > no network grant of any kind — media is data:/blob: only [0.03ms]
+(pass) packetDocument > the sandbox grant never includes scripts or same-origin
+(pass) packetDocument > in-page links resolve inside the frame, before any report byte [0.03ms]
+(pass) packetDocument > non-string bytes render an empty body rather than the word undefined
+(pass) readerPosition > the Live queue order sets the position and the neighbours [0.06ms]
+(pass) readerPosition > each Ledger filter sets its own order [0.03ms]
+(pass) readerPosition > the order agrees with the rows of the packet list [0.40ms]
+(pass) readerPosition > a packet absent from the current list has no position and no neighbours [0.03ms]
+(pass) firstPacket > each view and each Ledger filter opens the first row of its list [0.38ms]
+(pass) firstPacket > an empty list has no first packet
+(pass) shortCommit > keeps the first 7 characters [0.03ms]
+(pass) shortCommit > an absent commit has no short form
+(pass) reportArea > the report area shows the thesis only when it shows no report [0.04ms]
+(pass) reportArea > an expired report shows the thesis and the criteria [0.11ms]
+(pass) reportArea > a packet without a recorded report never shows a report
+(pass) linkRole > an empty address is a link to the top of the report
+(pass) linkRole > an in-page link stays in the report
+(pass) linkRole > a link to an absolute address opens a new tab
+(pass) linkRole > a relative address and a script address lose the link
+(pass) applyLinkRules > each link gets the rule of its address [0.33ms]
+(pass) applyLinkRules > an SVG link address in the XLink namespace gets the same rules [0.06ms]
+(pass) applyLinkRules > a template loses its shadow root mode [0.02ms]
+(pass) applyLinkRules > an SVG animation of a link address or target is removed [0.03ms]
+(pass) reportDocument > the frame document is the stable serialization of the packet document with the link rules [0.23ms]
+(pass) reportDocument > a declarative shadow root does not reach the frame
+(pass) reportDocument > a link that appears only on a later parse gets the link rules [0.19ms]
+(pass) reportDocument > a report without a stable serialization shows as plain text [0.02ms]
+
+src/ui/homiefmt.test.ts:
+(pass) sessionLabel > names the session, its status and its relative age
+(pass) sessionLabel > drops the age when the session never recorded activity
+(pass) sessionLabel > uses the fallback name with no clock and no row
+(pass) sessionRows > orders newest activity first
+(pass) sessionRows > sorts a session with no stamp last and keeps input order among ties
+(pass) sessionRows > keeps spine order for two sessions active at the same instant
+(pass) sessionRows > reports a Discord-born ended session as resumable from known_bindings alone
+(pass) sessionRows > carries live bindings as surface/ref pairs and skips a surfaceless one
+(pass) sessionRows > tones a reaped session and an unknown status apart [0.61ms]
+(pass) sessionRows > marks only the selected session
+(pass) sessionRows > survives a row from an older spine that carries no binding columns
+(pass) sessionRows > returns nothing for an empty or absent registry
+(pass) sessionStats > counts each registry state and the Discord-born population [0.09ms]
+(pass) sessionStats > zeroes out on an empty or absent registry
+(pass) transcriptRows > attributes a non-dashboard send as the echo it is
+(pass) transcriptRows > attributes a dashboard send to the operator at this keyboard
+(pass) transcriptRows > attributes a reply to Homie and never claims it as the operator's
+(pass) transcriptRows > passes attachment refs through untouched
+(pass) transcriptRows > keeps ids and seq so the pane can key and order rows [1.12ms]
+(pass) transcriptRows > does not invent a surface for a send that carries none [0.03ms]
+(pass) transcriptRows > returns nothing for an empty, absent or messageless history [0.02ms]
+(pass) replyOwed > owes nothing on an empty, absent or messageless history [0.02ms]
+(pass) replyOwed > owes a reply when the newest message is inbound
+(pass) replyOwed > owes nothing when the newest message is a reply
+(pass) replyOwed > owes a reply again when a new inbound follows the last reply [0.03ms]
+(pass) pollTight > runs tight while an active session owes a reply
+(pass) pollTight > runs lazy on an ended session even when its newest message is inbound [0.03ms]
+(pass) pollTight > runs lazy when the active session owes nothing
+(pass) tabOpenAction > selects the newest active session when none is open [0.09ms]
+(pass) tabOpenAction > keeps the open session when the list holds an active one [0.04ms]
+(pass) tabOpenAction > a tab open resumes the open session when that session ended [0.02ms]
+(pass) tabOpenAction > a tab open with no open session resumes the session with the newest activity [0.03ms]
+(pass) tabOpenAction > a reaped session is a resume target [0.02ms]
+(pass) tabOpenAction > a tab open with no sessions opens nothing [0.01ms]
+(pass) tabOpenAction > a poll never starts and never resumes a session [0.04ms]
+(pass) tabOpenAction > a tab open during a resume in flight does nothing more [0.03ms]
+(pass) pendingTurnBody > shows the draft while the turn has no reply [0.02ms]
+(pass) pendingTurnBody > the reply replaces the draft, an attachment-only reply included
+(pass) pendingTurnBody > is pending, with no body, for a turn with no draft and no reply
+(pass) the provisional draft row > sits right under the pending message, marked provisional, with no id [0.08ms]
+(pass) the provisional draft row > leaves when the reply row lands, and the pane stops owing a reply [0.08ms]
+(pass) the provisional draft row > the newest turn with no draft gets an empty provisional row at once [0.03ms]
+(pass) the provisional draft row > an older turn with no draft shows no row; only the newest one waits [0.03ms]
+(pass) the provisional draft row > an empty provisional row leaves when the reply lands [0.03ms]
+(pass) the provisional draft row > an ended session shows no provisional row and polls lazy, draft or not [0.05ms]
+(pass) attachmentView > an allowlisted raster claim renders inline through the byte endpoint [0.10ms]
+(pass) attachmentView > parameters cannot buy an inline render; the bare type is judged
+(pass) attachmentView > everything off the allowlist downloads — image/svg+xml included [0.03ms]
+(pass) attachmentView > a legacy string reference stays inert — it names no servable bytes
+(pass) attachmentView > a claim missing any address field stays inert rather than 404-linking [0.03ms]
+(pass) composeState > asks for a session before it offers a composer [0.03ms]
+(pass) composeState > lets an active session be typed into with no hint in the way
+(pass) composeState > offers the resume instead of an error on an ended or reaped session [0.03ms]
+(pass) Every failed reply remains visible after another inbound message [0.11ms]
+(pass) a retry uses its current state instead of the original message age [0.16ms]
+(pass) homieModelView > a conversation without a session shows the Homie route [0.10ms]
+(pass) homieModelView > a session keeps its own model after the route changes
+(pass) homieModelView > a profile without a model shows the profile name
+(pass) homieModelView > a session binding outside the enabled list keeps its identifier [0.06ms]
+(pass) homieModelView > absent routing shows no model
+(pass) conversation names use a stored title, a bounded excerpt, or an empty state [0.17ms]
+
+src/ui/changes.test.ts:
+(pass) changeRecord > returns the record of the packet, or null without one [0.03ms]
+(pass) changesLabel > states the number of changed files of the merge candidate [0.02ms]
+(pass) comparisonFacts > names the destination branch, both commits of the range, and the verified Worker commit [0.10ms]
+(pass) comparisonFacts > the commits of the range come from the record [0.02ms]
+(pass) comparisonFacts > shows only the recorded commits [0.02ms]
+(pass) fileStatus and fileNotes > each change type has a label and a tree status [0.02ms]
+(pass) fileStatus and fileNotes > a rename states the previous path and the similarity [0.02ms]
+(pass) fileStatus and fileNotes > a mode change states both modes, and an unchanged content is explicit [0.02ms]
+(pass) fileStatus and fileNotes > a binary change has no text diff and says so [0.01ms]
+(pass) fileStatus and fileNotes > an empty new or deleted file is explicit [0.02ms]
+(pass) fileStatus and fileNotes > a type change states both types, and a text diff needs no note [0.02ms]
+(pass) fileStatus and fileNotes > an unknown mode shows as recorded
+(pass) lineCounts and deferredDiff > shows the added and removed lines, or binary
+(pass) lineCounts and deferredDiff > a large text diff waits for the operator
+(pass) lineCounts and deferredDiff > sizes read in bytes, kibibytes, or mebibytes
+(pass) fileOrder and comparePaths > the file order is the order of the tree: directories first, then names
+(pass) fileOrder and comparePaths > a file and a directory of one name keep a stable order
+(pass) fileOrder and comparePaths > the tree status holds one entry for each file
+(pass) changesAddress > names the exact packet version and the file
+(pass) comparisonState > an expired packet, an absent record, and a recorded comparison differ
+(pass) comparisonState > each state that the view cannot show has its own text
+(pass) evidenceFact > names the evidence file and copies its host path
+(pass) evidenceFact > a path without a host root stays as recorded, and a packet without evidence has none
+
+src/ui/theme.test.ts:
+(pass) resolveTheme > uses the stored selection [0.02ms]
+(pass) resolveTheme > uses the theme of the system without a valid selection
+(pass) themeControl > the tooltip names the theme that a click selects [0.06ms]
+(pass) the page head > sets the theme that resolveTheme selects [1.32ms]
+(pass) the page head > uses the theme of the system when the browser blocks storage [0.05ms]
+(pass) the page head > runs before the stylesheet loads [0.09ms]
+(pass) mountTheme > shows the theme of the system and the state of the button [0.29ms]
+(pass) mountTheme > a click selects the other theme and stores the selection [0.05ms]
+(pass) mountTheme > a change of the system theme applies only without a selection [0.03ms]
+(pass) mountTheme > a selection in another tab applies in this tab [0.05ms]
+(pass) mountTheme > a listener hears a change and no repeat of the same theme [0.01ms]
+(pass) the color tokens > each text color of the light theme has a contrast of 4.5:1 on each surface [0.33ms]
+(pass) the color tokens > white text has a contrast of 4.5:1 on each fill of the light theme [0.07ms]
+(pass) the color tokens > the focus ring and each input border of the light theme have a contrast of 3:1 [0.02ms]
+(pass) the color tokens > each text color of the dark theme has a contrast of 4.5:1 on each surface [0.12ms]
+(pass) the color tokens > white text has a contrast of 4.5:1 on each fill of the dark theme
+(pass) the color tokens > the focus ring and each input border of the dark theme have a contrast of 3:1
+(pass) the color tokens > the dark theme changes each color token that names paper, ink, or a surface
+
+src/ui/evaluation.test.ts:
+(pass) the first assessment has no inferred scores [0.75ms]
+(pass) the form rejects incomplete and fractional scores
+
+ 784 pass
+ 0 fail
+ 3097 expect() calls
+Ran 784 tests across 37 files. [5.47s]

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c625d826e3c37f6a490559335e1f1aee0d1b12fd7c272d9d81aa534682338b9b",
+  "claims": [
+    {
+      "id": "claim_7e701e9fbdc84e238f485a2bc67b0108",
+      "statement": "The performance controller rejects command clock differences above 1000 milliseconds.",
+      "evidence": [
+        {
+          "resource": "repo://performance/compare.py#L22-L49",
+          "version": "repo-lines-v1:sha256:994899f018090c65e1226b5bdc74c5accb3240e110d2d01242b533ee61365411:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzYzdhZmIzZjlkYzBhOTFhOTZjZWIzMzU1OWQzZDMxMmIwYzFkNjQxZDIxZTBkY2YzMWFiZmQ0NTI2NmQ2MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MDRkODU3ZWExNWU1YjY2ZmNjYTU1ZjA3ZTY2ZmI1MmI3NzA3ZGQwODk3MTkyMTdjOTUxOTNjNjhmNGNjYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiYWUzZGU3ZDU0YjI4NmQzMmNhM2YzMmM0NDVlYzMwOWQ1YTk0ZDM0YzNhYThiMGYxMWM1YzQ5ZTRmYmZlZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5897c840c8e4e79af2fb3328ce546db",
+      "statement": "Evaluation case assessments preserve original inputs and publish revisions with verified hashes and receipts.",
+      "evidence": [
+        {
+          "resource": "repo://mc/evalcase/README.md#L16-L40",
+          "version": "repo-lines-v1:sha256:84d0a69d2ccf7e10c5e362ef058bc809a411dd98cb48458696bfd76508db8755:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyYzQ1M2UyMjY1Y2RkZDY0ZWJjODVkNTUxMjNlODdiNDc5NDRhMTE4MjAzZDJkODgxZjI2NjJiMGI4MTg3YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5N2EwMjM2ZDM3MmNjZTQ5YTk3NTQyMGU2ODYxODk2NDk0ZGFkYmQyOTI5OTg0NWE3MTcxYjk3OThkMGJhZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29e38197b9ac4558bfa51ec4821f31ab",
+      "statement": "The evaluation contract parity check invokes test.sh in its disposable module copy.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/runtime.py#L119-L126",
+          "version": "repo-lines-v1:sha256:a4e1ef35b0e7f00568fdc6f72d8eec552a92f6e5da1491aa1329ff678c213ee4:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjFlZjc2MTQ3MjNjYTM3MjRiNGM3ZmU2YmUyOTIzMGViZGI1MzRlZmFhMzBkNzE2NzliZjU5NTQ3ZmY2YTRlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ1YWY5Mzc1OTg2MmY3NTRmNmNhNzhjYjUxMDA2Yzg3ODY3ZjQ0OWMyODQzZGQ4ZTIzOGVjM2NmOTI5NTdhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGRhZGJmN2I3NDZmODJlMmE3ZDI2NTNmMjEyZjMzZTVlMGMzY2I5ZTE2YjExM2UwOTExZmVhMDA5OGJlNGExZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a368bfa10634199a79a852b01859dcb",
+      "statement": "The corpus amendment record binds current manifests to retained assignment and source-review evidence without new application test evidence.",
+      "evidence": [
+        {
+          "resource": "repo://evals/cases/verification/corpus-amendments.json#L1-L36",
+          "version": "repo-lines-v1:sha256:b962bda1eb862568d122f9b2d7769debbf97961243b76485fa5d1244f6852939:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NDM3MWZlOGY0NjU0OWVjZjE1ZTA1ODQ3MmQ0ZjRkY2ViYjdkNzdhMDFmNmI1NWQ0OTVhMGJmMjE3NmFkNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0NDNjZWJhMzNjN2NkMmZmNWIzMWEzNjJkMDhmMzBlNjIyYjcxYzk3ZDM5YzJiY2Y2YWE1ZjM5YzQ1MTZhNzEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-19T19:56:40.385Z"
+  }
+}

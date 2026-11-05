@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:1b2b3cc648dd04fa194737d00e9352bb401cfec1b085f7a34dd11b61ab3fe056",
+  "claims": [
+    {
+      "id": "claim_70c4bb3813634779b2c8216ae9996cf7",
+      "statement": "The substrate joins three schema files with newlines and hashes the result for CurrentSchemaID.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/substrate.go#L20-L37",
+          "version": "repo-lines-v1:sha256:9de801a9220d00ab47cb2620eb668ba4d064bd42432f65510712ffbf7003d773:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2ZDEzYmZhNWNiYzI0ZDY1OWE5NDNhOTZiNDFlMTBhOTQ2ZTNjZjQxMjFhZDNkMDA0MGRkM2JkYWZhNjA4NjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMDQ4OGM3NDViZDAzODgxMzU4MGZmZTUxN2Q2ZTBmOWFjNGVmYjU4MzZlNmU0ZWI0ZDBkZGY5NTkxNWQzM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiODlkZDlkODQzOGU2ZWU3OWU0YWVlNzU1YTEyZjU3ZGMzZjZkNmUyZGIxNDgxYzQ1MjFiMzFjNjA5MDI5YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZDljYjU3MzgzZGUyNDE3ZTU1Y2RmMmZhOGRiMTQzMDEwMzVjMTIyZWUzYjk4ZGI4ZDVmNmY5NWQ3OGRhYjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_abd1ff721df548f78da34f28a19bbfb8",
+      "statement": "substrate.Open calls GuardLockDomain before opening and sets busy_timeout(5000), journal_mode(WAL), and foreign_keys(1) as DSN pragmas.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/substrate.go#L47-L65",
+          "version": "repo-lines-v1:sha256:0dd7faaefb8f3b6b5a379131306526b7115ff0a0f7b29459d05c2ebbb596611a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NTQ4MzQxY2Y3MjFjZjZhZjRkNGUwYjE4YjIzMmQ1ODAwZmZiMmZiOTJiZGE3MDE4M2RiYzJjYTlmY2MzYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5YjQ3YTdjNTEwMDJhZGMxZWE2MmJmMmQyZjZmODVlNGNlMTljNGMzNDE2MzA5ZDVkMWZiOTA2MTI0NDZiMWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyY2JhODM3MGY1ZGJmMTk2NDJiNjk1MDBlNDU0MWJlMzkzMmRkZDQwYzNkZWEzYzliMmMzMDUwZDE4OTU1YzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6bb4509179224ddbaa00ea025793e4f1",
+      "statement": "OpenReadOnly opens with mode=ro and query_only and retries with immutable=1 only when no -wal file exists beside the database.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/substrate.go#L86-L126",
+          "version": "repo-lines-v1:sha256:f719557feccd4256ae5879b299f434981ffba9066caa63bf51c3ad6a7981bb4e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyMzJiNzY2ZDA0NThiYmI0ZjRjMTM3MDA5MWEzNzVjYzJiYWE5NTI5ZTk1ZWY0NjlmNTY3ZGQ1MjNmNTk2YTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyMzRjMGJkMWY1OTg5M2JjZmE3OWQ3ZmFlZTkwNmNiMzI1Y2RhYmI2NDkwYWEzNmMyZWZkZjk2MDM4ZmMzOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5ZDQ1NDQzMGEwN2EzZjM0ZjczODc5MmNmNWIzNjQ4YWJjNzdhNjQ4ZjNiZGFmODBjNGExNGU5Yzc4NzZlYmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5b792a703db4cb086ad899e3abc0920",
+      "statement": "CheckSchema runs in a read-only transaction, compares the database's schema objects with a freshly initialized in-memory schema, requires meta.schema_id to equal CurrentSchemaID, and then validates dispatch scalars.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/substrate.go#L141-L211",
+          "version": "repo-lines-v1:sha256:8b3773c59a4dea443cd049c2108b372633eba7ada3ece9d663e37d135656ca7f:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OTI4ZWIyYWQ5OGNmZjUyOWQ5NzliZWJhYjkzYjJmZjkyNjZkMTFkNzE2YmVkY2U0NzlmYjY0NzZjMjljYTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhZjQ3OWU5ODFlMTViMjcyODI2Y2E4YjJkM2UyNjZhNTZhOWFmZGU1NTZjMmExYTEwMzI4ZWUzNWI2MjJhZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhOWExYTE5YWIxM2JhNTU0NmViMjA4Zjg0ZmRlYjBiY2U0MTMwZTE4MmVmYjdjYWI1ZWM2ZWRkYWQ4YWNlOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_31deec2de75e453ba614123624a9391f",
+      "statement": "A dropped trigger, an extra column or table, or a different schema identity makes CheckSchema return ErrSchemaMismatch without changing the database schema.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema_identity_test.go#L30-L60",
+          "version": "repo-lines-v1:sha256:4542e1d11524e98735770017040ecca64f7d20b53ffd4d37b9fb4f82cef27f07:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMGQyYzFhZTljMTdmZDQ1NWU2ZTA3NmU3ODlmZGI1MzA5YTdjMjg2YmRmMDFhOTRiYTg0ODY2NjY3YTIyN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNTUwOWFhNzFmOTcwZDA0MTk0MzI0NzhhNDg2M2JkZTk1NGQxYzJiMDMzNWE5MGEyOWFhMDc4YjA2NjYxY2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_385b792b312d41bf9070990d7e5458c7",
+      "statement": "The resident hashes schema.sql, delivery.sql, and environments.sql with newline separators, matching Go.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/resident-control.ts#L13-L21",
+          "version": "repo-lines-v1:sha256:82d1645dbd26c93f5e52528739ac46543def773d543f3d2e78a503a70c78a2c5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzc0N2FjNGNiYTFiZDliMGQwNjJkZDRjYWQ5ZDU5ZjU5MzA1ODA0NjZmZGI2ZjBjZjhjYzRiZTRhMTI2MDVlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmUwM2E1YzY4OTdjN2M5M2YyNjIzMzZlM2I1ZTQzZmZmOWQ5YTQ1YmM4OWM3Y2UzOWJkZjY4ZmRiNmU3YzdlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmMzNzc2OTJhMmY2YTcwODBkMjZjNTVjYzI1M2EwMTZkYTZiMjAxMzhkMTc1MjlhMzkyNzhkMWNmMGRiOWJjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWI5M2M4OTgzODJiNWFiNjE1ZTFiMzU3MGVhZmQyMjMwOTJjYTFmYzNiMThkOTJlODdiNDkwMjQzOTRlYTU3OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_467f8a966d54419d8e134e505599439a",
+      "statement": "mc sends CurrentSchemaID in the dispatch control hello and requires the hello_ack to match exactly; the resident refuses a hello that differs from its expected frame.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/resident_control.go#L129-L151",
+          "version": "repo-lines-v1:sha256:98b65a94c57aa973be078c38d7b18418c1ba80a38ba22fa415c27ac9575bdc96:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3NzJhMjhkNGRhYTM0YjE0ZTZmZmZhYmVkOGMxMjJiYjc0MmUxMDgxNDFiZTBlODZkYmNiOTY0MGI1ZDQwMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNGVmYTE5NDc1YWEyNjY4ZDJmNmRiMDYxMmNmZDFmMmVjMGU2MDBlMWZlY2U5Y2VlM2MxY2M4NTk0NWQwM2EifQ"
+        },
+        {
+          "resource": "repo://resident/src/resident-control.ts#L303-L309",
+          "version": "repo-lines-v1:sha256:f5ab6f36e879e1b5a024598642b5ce24afb82aff5687b5401cd9ba6bebaeb65e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTEwMmU5ZjFmOWM2OTA2NDhmYTQxZDFkZGQwZmJjZTY4MWQyMTdiMmQ4YjI5Mzg0MzVkOGJkNDk5M2U4MzkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWQxZmU4YjQyNDU5YTY5ZGU5MDgwNDViYTdkMGJjYTgwOTM0MGFkNDFjYTBhYzFiNjk3ZmFmZTlkZTI0MjdjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ5MDg1MDQ0MmUwOTE2ZWRkODhjYjFjOGVhZmFhNTE3YjE4ZjBkYzI0MDVkZTIxNWZhZjc2ZGFiYWYxNDIxMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_17ea5ce94f1549708cadd91399382cfd",
+      "statement": "The lock-domain guard accepts only ext4, ext3, xfs, or btrfs mounts whose source starts with /dev/.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/lockdomain.go#L26-L31",
+          "version": "repo-lines-v1:sha256:8eed139fb649480960843fe3a42739387239ec55ea7d37c1abe41d5f3d400baf:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJhM2NiZGEzOWU5NDQzNzMzODdlMmFmMDYyYTUwM2Q2OGM5OGI1ZmJlOTkzNGFmNmExMjlhMDNkNjQxNDRmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjkxYjQ5N2UxYWMwODM0ODA1NjYyNzZmODMwYzJkMDAxNGFkOTJlNzA5NWIwMTkyOGEzOGFlMDk1ZmI5N2FmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTU5NTY2OGQ5ZjE0OGIzOTcyYWI2Mzc3OTM0ZDEwYjc5YTEwOGQyZjI4NjA2ZTkzMTUzMDI5MjZlOWU0MzU2OSJ9"
+        },
+        {
+          "resource": "repo://mc/substrate/lockdomain.go#L65-L69",
+          "version": "repo-lines-v1:sha256:90db9392ef8aa79240ebe256b5500c39838d0e44930218d3236c2587af866857:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc4NWViNDRiZGRlMGY4NGJlMDczZWMwMWJhYjc4MmQzOGU3NzM2NDBjZmNjNTE2Y2ZlMmUzN2MzNjM5N2QwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRlZmM0OTQxOGQyNmRjZjEyOWIyMmE2YWEyMTEwOGNlZWMzNzY3N2EzMmQwOGU5ZDVmZWUzNWRkYTY2YmI5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGEyNzhjY2ZhOWQwNzY1NzNjODQyYjk3YzNkMWU4NzQ0YWZjMDliYzYxZDkyMDQyMDhiYmMwMWFkYTQ5YTRmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODI5OGMzYmI1ZjFlZGVkYmE4NDM5MWNiMDljMTE5NDI5MzllNzI2MWUyZWM0NjlmM2QzNDg0ZmQ2Y2Q3ZmM1ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c9ce9819c8e4e3eb6d0d36adcaa187f",
+      "statement": "The task transition trigger rejects status changes outside its listed edges.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L291-L308",
+          "version": "repo-lines-v1:sha256:a4808cdb49302e8cc920165a1b78098fc8f6198cb76fa0a3a7cc281a95bf0a7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNGZiZTc4YjVlMTliNThjNDJkZjhlODBlOGJkN2JkMWI0MjYxOTUxNDAwZWE0YTVlM2FjOTcxMWMwNzI1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYTBhOTU2N2JjYzlmYWZhOTI3ODA4NGYwM2IyZDAwNDVjOTkxMTkwZWQ2OTkwMTFiYmU2ZTdhY2RkMzgyNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NjM5ZjU1NmI2ZmQyZmY0OGQ3YzBlNjc5NWFhODVmOGQxNDcxODkyNjAzNThjYmRmZWRjMDdmNTlkMDE5N2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_24ce73120315454982c3531d7175d8bc",
+      "statement": "Domain functions use the transaction supplied through Q, while the substrate checks each write.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/domain.go#L1-L19",
+          "version": "repo-lines-v1:sha256:5604a3e8ccbc368a66970cd91a745afdb82d0a7cac1186e6a614855c9e910283:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NDYyMmYxNzUzZjNiZDUwMmYwZmFiYTgzNGE5MzFlYjc0ZjEyZWY2OWQ3ZTcxNWI4NDEzM2I2ZjZkNWRjNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxYTNhMWRjYWEzYWY2MDJiNTE4MWI2YzdkMWRiY2EwM2FkMTlkYjA1ZDYyZmYyZTQwYjU0NjlkODM4MGNiOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3eff1f428ca42a6ad9345953fd8bf81",
+      "statement": "Every task has scope task and destination main.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/task_model_test.go#L9-L34",
+          "version": "repo-lines-v1:sha256:606484fa2429d131149052785cc5035553c3929557c92c40ab24c84752edec0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNmZjZDUzMzJjMzg2ZmFlYjg2ZmU3NTEyNmNjNGFjYmVjZjJjNzI0ZDkxMjNlMjhiYTAzYmU2NDkwNDYzMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExODhlZGU3OTJmMDk5ODUwZTg1MjJlMTA1MDBhM2Y1ZjAyY2E2MmU0NDY5MTAxZTRiY2JjYWYyOGRlY2U3MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1ZjU4ZWRmZDVkZjAyMDg4ZTdlMjI3YjZhOTA3OTBlYTMzNGJiYmYyYjRjYjRlMGMyNzUxMzQ2YWJjMTk0ODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_98dff40a37514b708b58fc04923ee855",
+      "statement": "The schema requires a condition type for blocked tasks and prevents changes to a non-null task base_commit.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L244-L253",
+          "version": "repo-lines-v1:sha256:d765f56e7eb21a94f84b29b940bbdfdcb59438ddcf7d0083a428c12e25518f1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxYjk0MDhkOWYwMWIzNDcwYjRiMTkwZGJjNGE3OTRlNWZiYTgxODE1N2I2NjkyNGY3NWE5ZTJkNzI5MTQwNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4ZTU2NzRiODY2NmQwNjdkYjdmM2U2MWQ2ZDQzYzdkNDA3ZjNkZGYyY2QwYThlY2ZhMmRjYjRmOThkNWI4NzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNjRlYThlNDhmZTUwN2MyYTdjZjg2NTM2NTM2ZTNjY2IxNWRhMzJhNTIwNWJiYzBlZWU2ZTA5MWYyYzA1MDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkODZlMjA4OWQwYmZjNjBhZDViNTNiMzkzNTIyZmJlNzE3ZGE3NjAzZjEwZGMwNjNhMDQwYWYxNmRjYjJkNGQifQ"
+        },
+        {
+          "resource": "repo://mc/substrate/schema.sql#L373-L389",
+          "version": "repo-lines-v1:sha256:30b987f95133a435b0117cc00ec275654001ca73966dc98e8a92c70177bffc4d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ODZkMGYxMjMwYmZlOWRmMjA5NGI2ZGVkMTk1ZTM5MWY5YmJlYzAwNmUxN2QzNjViZjU1NGI2Mjk3ZjRjMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwY2E4NTc1ZjNlOWI1N2I0ODNhMDgyZmU1YmYxN2E0M2Y3NzQ5OTBhYjUxZmJmNjJjZTRkYWRjOTJmZDVkM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiM2Q1MmQ2ODA0MjMwNzA1ZWU3NzY4YjAzYzQ0NDgxYjU2MDcyYzEwZmI0ZDAxYzUxMmVlMzBhNzE0NDk0ZWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aefc24564ea24af7af5f9faa310b705b",
+      "statement": "Discord connection retirement deactivates Discord bindings and retires pending Discord outbox rows while preserving dashboard alert routes.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/discord.go#L32-L74",
+          "version": "repo-lines-v1:sha256:b87d7192d0190f49d59e10a821c60152b63e0467a5378e3e65f8d537ed975cef:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyNTBhZTYwY2I2ZjEyMGFkMTBhMjQ2ZWY4NzIwNzU0ZDUyMDMwNDM0MWYzMDQ4ODc4YmM5YWMyOGRmMmEyNDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjOTg2ZjZkYjhlOWIwOWQ4NGJhYzFjMTZhNWY2Mzg0NzU4YTZlYjQ3YzkwMDlmZGViNjhhYTYyYjIxY2MyYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b2cb4c6638e4993a99af81f47ff6e66",
+      "statement": "Retired outbox rows are excluded from polling and refused by delivery acknowledgement.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/outbox.go#L32-L50",
+          "version": "repo-lines-v1:sha256:1df1b67df838e4dbec739f5a85e67d8683872deec6287804db4a5e8dd3a7be10:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjODMyY2VkNWMxZDUxY2M2MDNhYmY0NTk4N2JlMmJmYTE1YmRhMDdjZTkzOGVmM2FkMWNmYmExYzRmNTZlOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4ZjNhM2Q4YWViY2I3YzZmMmYwOTU4YzBhMmUyNGU4NTQyMGEyOWEzYzNmODk3OWY4NjY4OTZjMzY5YWJhNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzYmQ2NDIyMTYyNzUwMTQ3YmZkYTBhNjQ5NWQzN2EzYmFmM2Y4NGJjN2Y2OTU5YTMxNzAyMzlhOTI1M2FmNmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwZTEwY2VhOTlmZTY2NjczODQ3ZWE2MWM4ODhmNzA3ZTc4YTU5OTc5YWZmZjUxY2I4OTQ3YWQ4YWFjZjhjYjEifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/outbox.go#L99-L121",
+          "version": "repo-lines-v1:sha256:3948c1c32bd14d643f015bf14248b5b711c0b64c1b08dbc5bdaf32b7eaabb73a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMGM5NTZjNjBjZDQ4MDQ5OGYxMTI2NmZhNWUyMWE4YjI1MmZlZTEyOWRlMmI2ZTY2YTY0ZTUxMmRlNTVhMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyYmUyODA5ZjBlZjczOTZmZjc2ZWY3NzkxOGMxNThmYzIyNjhmZDZkYzI2MjY2ZjZmMzFhZmEyZGI2ZDE0MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhYzRlNTk2Y2UxODk4MzIyMzQ0NDljZjFjYmE5YzcwYjk2YWVjM2JlN2I2NDliNGY0NGFmZWZiYjI5ZGRkNWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_28d51bb6656846f4a4b344b4c10ca7f6",
+      "statement": "The spine stores a unique Discord thread identifier for each associated Homie session and prevents changes to its association.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L941-L955",
+          "version": "repo-lines-v1:sha256:4e2f554a50974a9e2802046b0b45e39197970c0e06b2e1055c9b4be7ecc0f9e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzZWI1NzNiMGE2NjFkNzdhNGZjODE5NjRkNDMxNjJkMGMyNmQ5MDUxMTRmZGRmN2FiZDFmMDViZTVjNzgwY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNmJmNjY4ZmI5ZDI4MGQ1YmUwNTAyNzQ4OThmY2RkMTU4MWE4ZmVjMzUzMDQ3NGQ2YTIwNGMyZWRlNGM3Y2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjYzJlMDYxMmE1NGRiNDdiY2QxNjU1MWVkM2Q1ODU4ZGMwNWJlMzUyZDFlNmQ5MTA1MmM3ZjFhOWM3NTRhNjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjk3ZWYxMjZiNzFiYjkyZDA1ODVhNmExYjdiZjM3MDQ1MDg0YWJmODEwNzM5MWQ2M2UxNWY0MTNhNTM0MGQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-03T21:04:30.847Z"
+  }
+}

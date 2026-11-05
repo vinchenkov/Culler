@@ -1,0 +1,210 @@
+// Package distribution defines the published Culler release contract.
+package distribution
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
+	"time"
+)
+
+const DefaultRepository = "vinchenkov/CullingHouse"
+const RecordName = "release.json"
+const InstalledRecord = "state/published-release.json"
+
+var RequiredChecks = []string{"fast-suite-macos", "deployment-linux", "application-package", "product-image", "release-downloads"}
+var hexDigest = regexp.MustCompile(`^[0-9a-f]{64}$`)
+var commitDigest = regexp.MustCompile(`^[0-9a-f]{40}$`)
+var imageDigest = regexp.MustCompile(`^ghcr\.io/[a-z0-9][a-z0-9/._-]*@sha256:[0-9a-f]{64}$`)
+var runtimeVersion = regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+$`)
+
+type Asset struct {
+	Name   string `json:"name"`
+	SHA256 string `json:"sha256"`
+	Size   int64  `json:"size"`
+}
+type Check struct {
+	Name   string `json:"name"`
+	Passed bool   `json:"passed"`
+}
+type RuntimeVersions struct {
+	Bun string `json:"bun"`
+	Go  string `json:"go"`
+}
+
+// AgentsViewRelease names the pinned AgentsView release that the package
+// holds.
+type AgentsViewRelease struct {
+	Version          string `json:"version"`
+	ArchiveSHA256    string `json:"archive_sha256"`
+	ExecutableSHA256 string `json:"executable_sha256"`
+}
+
+// HostBunArchive names the Bun archive of one Mac architecture.
+type HostBunArchive struct {
+	Name   string `json:"name"`
+	URL    string `json:"url"`
+	Size   int64  `json:"size"`
+	SHA256 string `json:"sha256"`
+}
+
+// HostBunRelease names the Bun release that the published installer puts
+// under MC_HOME/bun/<version>/, with one archive for each supported Mac
+// architecture.
+type HostBunRelease struct {
+	Version  string                    `json:"version"`
+	Archives map[string]HostBunArchive `json:"archives"`
+}
+
+// HostBunPlatform is the archive key of a Mac with Apple silicon.
+const HostBunPlatform = "darwin-arm64"
+
+type Record struct {
+	WorkflowSeconds int64           `json:"workflow_seconds,omitempty"`
+	Format          int             `json:"format"`
+	Commit          string          `json:"commit"`
+	ReleaseID       string          `json:"release_id"`
+	Tag             string          `json:"tag"`
+	Sequence        int64           `json:"sequence"`
+	PublishedAt     time.Time       `json:"published_at"`
+	Platform        string          `json:"platform"`
+	Schema          string          `json:"schema"`
+	Runtimes        RuntimeVersions `json:"runtimes"`
+	Installer       Asset           `json:"installer"`
+	Package         Asset           `json:"package"`
+	Image           string          `json:"image"`
+	ProjectImage    string          `json:"project_image,omitempty"`
+	Checks          []Check         `json:"checks"`
+	// AgentsView is absent in a record of a release before the AgentsView
+	// package. Setup requires it in the release that it installs.
+	AgentsView *AgentsViewRelease `json:"agentsview,omitempty"`
+	// HostBun is absent in a record of a release before the host Bun
+	// install. Setup requires it in the release that it installs.
+	HostBun *HostBunRelease `json:"host_bun,omitempty"`
+}
+
+func (r Record) Validate() error {
+	if r.Format != 1 {
+		return errors.New("unsupported release record format")
+	}
+	if !commitDigest.MatchString(r.Commit) || r.ReleaseID != r.Commit || r.Tag != "culler-"+r.Commit {
+		return errors.New("release identity does not match its commit")
+	}
+	if r.Sequence <= 0 || r.PublishedAt.IsZero() {
+		return errors.New("release publication identity is absent")
+	}
+	if r.Platform != "darwin-arm64" {
+		return errors.New("this release requires a Mac with Apple silicon")
+	}
+	if !hexDigest.MatchString(r.Schema) {
+		return errors.New("release schema identity is invalid")
+	}
+	if !runtimeVersion.MatchString(r.Runtimes.Bun) || !runtimeVersion.MatchString(r.Runtimes.Go) {
+		return errors.New("release runtime versions are invalid")
+	}
+	if !imageDigest.MatchString(r.Image) {
+		return errors.New("release image must use a GitHub Container Registry digest")
+	}
+	if r.ProjectImage != "" && !imageDigest.MatchString(r.ProjectImage) {
+		return errors.New("release Project image must use a GitHub Container Registry digest")
+	}
+	for _, a := range []struct {
+		asset Asset
+		name  string
+	}{{r.Installer, "installer.sh"}, {r.Package, "culler-darwin-arm64.tar.gz"}} {
+		if a.asset.Name != a.name || !hexDigest.MatchString(a.asset.SHA256) || a.asset.Size <= 0 {
+			return fmt.Errorf("release asset %s is invalid", a.name)
+		}
+	}
+	if a := r.AgentsView; a != nil && (!runtimeVersion.MatchString(a.Version) ||
+		!hexDigest.MatchString(a.ArchiveSHA256) || !hexDigest.MatchString(a.ExecutableSHA256)) {
+		return errors.New("release AgentsView identity is invalid")
+	}
+	if h := r.HostBun; h != nil {
+		if err := h.validate(); err != nil {
+			return err
+		}
+	}
+	checks := map[string]bool{}
+	for _, c := range r.Checks {
+		if c.Name == "" || checks[c.Name] || !c.Passed {
+			return errors.New("release checks are incomplete or invalid")
+		}
+		checks[c.Name] = true
+	}
+	for _, name := range RequiredChecks {
+		if !checks[name] {
+			return fmt.Errorf("release check %s is absent", name)
+		}
+	}
+	return nil
+}
+
+func (h HostBunRelease) validate() error {
+	if !runtimeVersion.MatchString(h.Version) {
+		return errors.New("release host Bun version is invalid")
+	}
+	if _, ok := h.Archives[HostBunPlatform]; !ok {
+		return errors.New("release host Bun archive for " + HostBunPlatform + " is absent")
+	}
+	for platform, archive := range h.Archives {
+		if platform == "" || archive.Name == "" || strings.ContainsAny(archive.Name, "/\\\x00") ||
+			!strings.HasPrefix(archive.URL, "https://") || archive.Size <= 0 || !hexDigest.MatchString(archive.SHA256) {
+			return errors.New("release host Bun archive " + platform + " is invalid")
+		}
+	}
+	return nil
+}
+
+func Decode(data []byte) (Record, error) {
+	var r Record
+	if len(data) > 1<<20 {
+		return r, errors.New("release record exceeds its size limit")
+	}
+	if err := json.Unmarshal(data, &r); err != nil {
+		return r, errors.New("release record is invalid JSON")
+	}
+	return r, r.Validate()
+}
+func Load(path string) (Record, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return Record{}, err
+	}
+	return Decode(data)
+}
+func Save(path string, r Record) error {
+	if err := r.Validate(); err != nil {
+		return err
+	}
+	data, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		return err
+	}
+	if err = os.MkdirAll(filepath.Dir(path), 0700); err != nil {
+		return err
+	}
+	f, err := os.CreateTemp(filepath.Dir(path), ".release-*")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(f.Name())
+	if err = f.Chmod(0600); err == nil {
+		_, err = f.Write(append(data, '\n'))
+	}
+	if err == nil {
+		err = f.Sync()
+	}
+	closeErr := f.Close()
+	if err != nil {
+		return err
+	}
+	if closeErr != nil {
+		return closeErr
+	}
+	return os.Rename(f.Name(), path)
+}

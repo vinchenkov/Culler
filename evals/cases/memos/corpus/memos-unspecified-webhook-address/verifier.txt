@@ -1,0 +1,63 @@
+{
+  "criteria": [
+    {
+      "criterion": "The list adds IPv4 0.0.0.0/8 and IPv6 ::/128.",
+      "evidence": [
+        {
+          "path": "internal/webhook/validate.go",
+          "revision": "607dc28413c0c24439454e973065f67a94d9fd21"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "An existing hostname allowlist or the deprecated blanket override can permit a destination.",
+      "evidence": [
+        {
+          "path": "internal/webhook/validate.go",
+          "revision": "607dc28413c0c24439454e973065f67a94d9fd21"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The change does not claim to audit every possible server-side request forgery path.",
+      "evidence": [
+        {
+          "path": "internal/webhook/validate.go",
+          "revision": "607dc28413c0c24439454e973065f67a94d9fd21"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "9da3765b193ebb6745033ed4b146a3fd6475a94c",
+      "changed_paths": [
+        "internal/webhook/validate.go",
+        "internal/webhook/webhook_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "607dc28413c0c24439454e973065f67a94d9fd21",
+      "reviewed_tree": "75d4036d1265d67e9aa406a837cce6117290deb9"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 817,
+  "unverified": [
+    "No destination resolution or outbound request ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

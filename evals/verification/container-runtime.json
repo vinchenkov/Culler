@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "model_calls": 0,
+  "method": "Actual evaluation container and product Codex adapter with a deterministic test executable.",
+  "source_revision": "7677b7acef0319ef44807dae21c24b0c32ead0d8",
+  "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+  "terminal": "packaged",
+  "repository_changed": false,
+  "evidence_changed": [],
+  "omitted_parts": null,
+  "runtime_source_hash": "455aed7b69a8feddb67e2ef35fedf4125e6c75e7af23b6a3ece6df587398639f",
+  "product_source_hash": "88ba52b4038ef9abc28fef2529b9fac3bfb475a66c3474d3194db7056c98f984",
+  "evidence": {
+    "path": "/private/tmp/culler-eval-latest-main-runtime-check-20261002-01/result.json",
+    "sha256": "f4db98dea3bb3ecd01d3819969a0e0c56f35cde80ef77ea3afe46f35eb3a27f0"
+  },
+  "limits": [
+    "The deterministic test executable invokes no model.",
+    "The real native model check retains its earlier source identities."
+  ]
+}

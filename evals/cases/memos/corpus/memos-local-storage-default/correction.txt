@@ -1,0 +1,8 @@
+{
+  "correction": "Preserve the source conditions and evidence limits in the report and packet.",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "Every existing instance changes to local storage after this upgrade.",
+  "replacement_claim": "Fresh instances without an explicit storage value default to LOCAL.",
+  "requirements_version": 2,
+  "task_id": 814
+}

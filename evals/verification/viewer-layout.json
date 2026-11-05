@@ -1,0 +1,158 @@
+{
+  "accepted": true,
+  "reviewer": "viewer_experience_review",
+  "timestamp": "2026-10-03T04:41:07.031642+00:00",
+  "scope": "The two experiment display templates. No model execution or control behavior change.",
+  "source_hashes": {
+    "evals/web/control.html": "f24b2ae0d9b83c6935da86b17a734471c04fd6c6854b4c59bddcf03cc6df1eba",
+    "evals/web/experiment.html": "347b01c82b1551744024d0099fd745a9b164c4649bda543f1dd9ab93d20c7c04"
+  },
+  "fixed_inputs": {
+    "verified": true,
+    "protocol_hash": "0430553af268ad5362d4d12d28316ebc4fa7d6e0a1c2557c6c9ff59b8bfafb87",
+    "runtime_hash": "d0087dca8fd28cb274c99b25f5d1ef17f48bcb6dbcd087e15fc9aa8d9bf62f4d",
+    "product_hash": "889b5a7f0c1bf0b29db7a38ecfca94a52a1aa5a61bb519b4fbb0d4a987bfbc85",
+    "display_templates_outside_frozen_source_manifests": true
+  },
+  "capture_hashes": {
+    "final-desktop-evidence-expanded.png": "e4a229de5c91d9e2e7d82ba7da0528b84f66d111bc13f4342b008df6de8f9040",
+    "final-desktop-history.png": "4ac4d0e5192049f14d74d0e0b650a9d3b24677ab495577caf6fb804bd997d92d",
+    "final-desktop-latest.png": "3744d8a31fd280756c05e7dd6dc282cecc2244d240198d3626433efb74f5a27c",
+    "final-narrow-latest.png": "64df996d6c01a66417ff0fd53ccf246904d8bd53e92550db4baae726d99905c9",
+    "final-wide-latest.png": "be312e2369116c3be6b109801bcfbbb7e916ad67e821d86e784f918f1927c9bc"
+  },
+  "checks": {
+    "isolated_browser_requests": "Only GET requests to the read-only local preview and existing local controls. External requests blocked.",
+    "viewport_sizes": [
+      [
+        1440,
+        1000
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        560,
+        900
+      ]
+    ],
+    "full_width_frame": true,
+    "single_compact_header": true,
+    "tree_visible_before_scroll": true,
+    "theme_matches_controls": true,
+    "current_phase_separate_from_history": true,
+    "latest_resumes_follow": true,
+    "partial_validation_labeled": true,
+    "case_number_maps_to_case_title": true,
+    "successful_disposal_requires_execution_details": true,
+    "disposal_failure_remains_visible": "Verified by source inspection and the real-browser regression test. No actual experiment disposal failure exists in these captures.",
+    "ownership_uses_case_title_and_trial_ordinal": true,
+    "fixed_models_and_high_effort_discoverable": true,
+    "uncalibrated_judge_note_retained": true,
+    "diagnostics_collapsed_by_default": true,
+    "page_horizontal_overflow": false,
+    "large_generation_arrows": "The local browser regression verifies equal canvas and SVG coordinate widths, nine parent-child arrows, contained graph overflow, and no page overflow at desktop and narrow widths."
+  },
+  "tests_reported_by_root": {
+    "control_browser": {
+      "passed": 12,
+      "seconds": 58.51
+    },
+    "viewer_browser": {
+      "passed": 20,
+      "seconds": 18.87
+    }
+  },
+  "model_calls_initiated_by_review": 0,
+  "experiment_control_actions": 0,
+  "remaining_blockers": [],
+  "previous_source_hashes": {
+    "evals/web/control.html": "f24b2ae0d9b83c6935da86b17a734471c04fd6c6854b4c59bddcf03cc6df1eba",
+    "evals/web/experiment.html": "e1df87fdf8c309ecdbfa18da9b2e1bc607f796db1e3c23ecf6998b57e77ca81e"
+  },
+  "final_capture_geometry": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "frame": {
+        "x": 0,
+        "y": 47.6875,
+        "width": 1440,
+        "height": 952.3125
+      },
+      "tree": {
+        "x": 340,
+        "y": 367.6875,
+        "width": 1053,
+        "height": 258.59375
+      },
+      "phase": "Current phase: Validation",
+      "viewing": "Viewing: Validation \u00b7 trial starts",
+      "node": "D0original\nOriginal directive\nValidation in progress\nValidation case scores\nCase 1: 83.3\nCase 2: 87.5\n2 of 7 validation cases complete \u00b7 No stored validation mean\nSelection probability: absent",
+      "horizontal_overflow": false,
+      "history": "History paused \u00b7 current phase remains above",
+      "latest_restores_follow": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "frame": {
+        "x": 0,
+        "y": 47.6875,
+        "width": 1920,
+        "height": 1032.3125
+      },
+      "tree": {
+        "x": 460,
+        "y": 367.6875,
+        "width": 1293,
+        "height": 258.59375
+      },
+      "phase": "Current phase: Validation",
+      "viewing": "Viewing: Validation \u00b7 trial starts",
+      "node": "D0original\nOriginal directive\nValidation in progress\nValidation case scores\nCase 1: 83.3\nCase 2: 87.5\n2 of 7 validation cases complete \u00b7 No stored validation mean\nSelection probability: absent",
+      "horizontal_overflow": false
+    },
+    {
+      "viewport": {
+        "width": 560,
+        "height": 900
+      },
+      "frame": {
+        "x": 0,
+        "y": 47.6875,
+        "width": 560,
+        "height": 852.3125
+      },
+      "tree": {
+        "x": 31,
+        "y": 431.1875,
+        "width": 498,
+        "height": 282.59375
+      },
+      "phase": "Current phase: Validation",
+      "viewing": "Viewing: Validation \u00b7 trial starts",
+      "node": "D0original\nOriginal directive\nValidation in progress\nValidation case scores\nCase 1: 83.3\nCase 2: 87.5\n2 of 7 validation cases complete \u00b7 No stored validation mean\nSelection probability: absent",
+      "horizontal_overflow": false
+    }
+  ],
+  "independent_final_regression": {
+    "test": "test_large_candidate_generation_preserves_arrow_coordinates_inside_the_graph",
+    "passed": 1,
+    "seconds": 0.75,
+    "candidates": 10,
+    "parent_child_arrows": 9,
+    "model_calls": 0
+  },
+  "base_revision": "bd4cde317478eaf8b0c744a3de6c75146a0d1e3f",
+  "test_source_hashes": {
+    "evals/tests/test_control_browser.py": "bdbd50911f239f7ce027182677378100f3159578387aae8625f83702ffa0538b",
+    "evals/tests/test_viewer.py": "288283c722f1c297488410906b03dfca96e37ede1bf2e2741ca2a148137dfe24",
+    "evals/tests/test_live_viewer.py": "35fcf04aee7e1f72eacaa60b8b4982128cbb60b6dcffa3b8f192c9f1f0652158"
+  }
+}

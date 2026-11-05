@@ -1,0 +1,17 @@
+#!/bin/sh
+# The prepare operation builds a merge candidate in an isolated repository.
+# The apply operation updates the destination branch of the Project with an
+# accepted candidate. Both run as
+# `mc __repository <envelope-file>` inside a merge container. The resident
+# records both results. This program never opens the database.
+set -eu
+
+if [ "$#" -ne 2 ]; then
+    echo "usage: mc-land prepare|apply <envelope-file>" >&2
+    exit 2
+fi
+case "$1" in
+    prepare|apply) exec mc __repository "$2" ;;
+esac
+echo "mc-land: unknown operation $1; expected prepare or apply" >&2
+exit 2

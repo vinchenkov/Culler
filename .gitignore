@@ -1,0 +1,61 @@
+# Live operator secrets — never tracked.
+OPERATOR-INPUTS.md
+
+# Environment keys
+.env
+discord.env
+
+# Conventional in-repo MC_HOME location — a backstop fence.
+.mc/
+
+# Dev scratch state (dev MC_HOME lives OUT of tree; this is a second backstop).
+.mc-dev-home/
+
+# Human maintained files that should not be tracked
+agents-ignore-please/
+
+# Build & dependency output
+node_modules
+__pycache__/
+spikes/*/out/
+dist/
+*.test
+/mc/mc
+spikes/**/bin/
+spikes/01-setuid-gate/probe/mcprobe
+
+# OS noise
+.DS_Store
+/.codex/
+
+# build-prod.sh output: the production image binary
+runner/image/mc-prod-bin
+
+# Development-only agent skills — used to build Culler, not part of
+# what a deployment ships. They stay on disk; git does not carry them.
+.claude/skills/spec-alignment/
+.agents/skills/spec-alignment
+
+# specs
+/specs/
+# reports
+/reports/
+# design
+/design/
+# mockups
+/mockups/
+
+DRIVER.md
+
+# Verification artifacts (verify-behavior): screenshots and video are large,
+# they are re-made by re-running the evidence dir's own script, and they are
+# read from disk beside the report that cites them. The report, the script
+# and the console-problem log stay tracked; the recordings do not.
+.tracking/**/evidence/**/*.png
+.tracking/**/evidence/**/*.jpg
+.tracking/**/evidence/**/*.jpeg
+.tracking/**/evidence/**/*.webm
+.tracking/**/evidence/**/*.mp4
+
+# The image build stages the exact runner release here.
+runner/runtime-source/

@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+export PLAYWRIGHT_BROWSERS_PATH=/opt/culler-runtime/ms-playwright
+exec /opt/culler-runtime/bin/node /opt/culler-runtime/browser/node_modules/@playwright/cli/playwright-cli.js "$@"

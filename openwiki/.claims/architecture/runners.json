@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7a3e9329c508aefbf59fd61779d799449a8e30c0ecce47063d23bf597ad935bc",
+  "claims": [
+    {
+      "id": "claim_72140ad5595540da9dadcbf90a41c767",
+      "statement": "build-prod.sh refuses with exit 3 while any com.culler.* launchd unit is loaded, before compiling anything.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/build-prod.sh#L13-L42",
+          "version": "repo-lines-v1:sha256:3f3a38f4934ac9d35109190b1387ae4a874e772e4d14b8fa258f505e5610df82:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MmQ4NjBiMzhkZDNjNmYzM2IyYjMzYWU4ODE4MTE2ZWNhZTBiZmJmYTA1ODEzYTMzNTIwMzNmNjczNTBhZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MjdhZWRmOThkZmEyZjc1Y2RjZTdlNmNiOTVkYzdjZTNkNjhmMjE5NmMzYzRjMDJjYTFiNzFlMGE3MTBiMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhZjRhMjQzOWFkMGNiN2I5NDRjMmI2MWE1NjI3MzQzMTVhZmRjZGMwYmY2ZWMwZWY5ODUzOGU0ZWJjM2VhMjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c9792c46528641a891fe01a027a7d4ec",
+      "statement": "The production build validates the release commit and builds the Project image followed by the product image.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/build-prod.sh#L5-L11",
+          "version": "repo-lines-v1:sha256:1d8ac516bf4206e063e24ce4c55d2ed43884e224d8846ba8b0f0648cb96500d3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBiZmNlNmQ2MzIwNmY3YzNhNjgyYjNhNGM3OTk1MDY2YTIwNGY2OWJkMjBiZWExZGNlZDc4NmI1ZGRhNGI1NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzc2OWQyMzdjZDQyMGI5ZDM4Yjk4MWEwYTRmNjc3MDE5MGE0YTgzZGNhMWZlNTZjNGY1YmExZTJjYmMwZWY3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQ4ODVlMWM3ZDJiOTFmOGE0ZjQ5M2VlMjkzMGRmZjQzNTA1Y2NiOTU0MGY3OGYyMmMyY2ZhODE1MDU2NTYxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWVlODdjNDFkZDVlNzQ4ZWMxZTk1YzhkM2I4NjY1MGExYzM5NDJkMDFmMWQ1MzU0NjEwNDgyYmIzNWE5NTdhMCJ9"
+        },
+        {
+          "resource": "repo://runner/image/build-prod.sh#L55-L64",
+          "version": "repo-lines-v1:sha256:f6e0f974196298f60dab42cdd1811d62e7d7790a73c4ae11ab0a1bc5a2c32324:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYmM4N2FlN2Q5NGJhMTk1NWU4Y2IwN2M1NWNkY2UyMTk0Y2E4NDRhODRiMmVlMjVmZDNiYjUyMmVmNWMxZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhZDMxMDNlZTU5MTg3MWVhODhiZTUxZGUxZDA2ODYxOWFlZjJiNWE3M2I5ZjFmZGY3ZGQ2MTViZGMyOGE0MjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5MjI4MmNhMjJmZDc3ODU5YzI4MjZjZmU2OTgzMGFlMzU3NTVkZTNkYjkzYWU3MTUyNGFlZWExM2NiZWY5OTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5NzY2ZGYxZjc0ZmQ1ZjI3NGJhNDdjMDM0MWY5ZmU0ZTYxZThlM2Y5OTUwNGE5MTVkMWY5YTVkZGQ4NmQ0MzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_175a958e0d104a478a953f4ece5188f9",
+      "statement": "The private runtime supplies mc, mc-land, and mc-real; mc-real has uid and gid 10001 and mode 6755.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/runtime.Dockerfile#L64-L89",
+          "version": "repo-lines-v1:sha256:f11ab9008720d6910ff433e3c7ebc4ac2974843da39890fa8b8fcf1f44a70918:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4NmU2MTZiOGVjMmQ4ZjM1ZjYwYjNiMDQ5ZGI0Y2U4MzNlNmExMjM0Njc2YTg0YzQ3OTE2NzA4OGRkYjk5YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNjdmZWE1ZTJiZGY1ZmRiODUwZDA2YTI3MTdkODUwOWFmOTlmNzFmNjVlOTJlNWFkMmI4NjJlMTQ3NTFjZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwNWJkODAxZGM2NzdmNWQzZTcwNDk0MGZlMGI4ZWY0YTkxNDdjMDQxZDk3ZTU5ODgwMTUxMjUzNzdlNTkxZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5YWIxMTQ2ZDNjMzIyMDQwNjZlMzZmZGE3ZTgyOGViNjE4MTEyMzE2NmUyZWQ2ZGQ2ZjJhZTMxYzE1NWEyZmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_064b93fadd7d4e75ae99bb26583952b2",
+      "statement": "Pipeline containers use the configured runtime volume; the source bind mount is a fallback without that volume.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts#L1514-L1521",
+          "version": "repo-lines-v1:sha256:26b29ad80c8a7eaff7388e638cd9363a0fdbf7167bca8071997bc2bc0be556f0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjdmMjA4NWY0N2ExOWRjZjQ4MTBjZjE0ZjljMzlmNTczY2YxMmJkZTI4MzVhZGI2ZmZhNmYyNGM3ZDhjNzc3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODUyYjdlZThkYmQ0MDk5MWNmNjJhMTQ3YjlkNWFmZGMzYTRkY2MwNzZkNzVlMDM4NzIzOTFmMmExNDg2MWMxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzg4MjlkMGUwMTYxYWE0MmJmOGZjM2ZjMTIxNWQxODliMDE4MTM3MDJkY2FmMGEwZDQzMTkwZmFkNTJlZmExNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzRmMjAwM2VjODc4M2Q5NjdhNWE0MTEwNGY1YjNlYTVhOGY3OTU5MjY0ZDI5NGEzN2U5OWU4N2E3YWUwMjYyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3616b715f3549f6bb64516cd70d4510",
+      "statement": "adapterInvocation runs the fake harness for fake/fake or a listed stand-in route, and otherwise selects the codex or claude-sdk adapter by the runtime harness family, refusing any other family.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L79-L145",
+          "version": "repo-lines-v1:sha256:edd049bb9156f534aedb885791e4623d715573ab4239209250652789d61327c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZDBkYWI1MjM1YWEwZTllZjZlNmJiM2ViZGE5NGUwN2VhNGQyOWJkMDljNjA4MWEyMzYyNWNlYjVkODA3NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwYjYyOTAzMTJhMzlmNmUyOGJhOGNkZTRmMWNjYWVlOTE2N2Q4NjRiOWYzYTQ0ZGRiZTEzM2Q1OWM1YjU2NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwNjcyNTdkNmMzOGY4Yjc2Mzg0MThkMjIzYjU0ZDg2ZTU0ZTM5MTEwMWM0NjMwYTJiZTExZjdkZTI0YzA4YjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe1890f6a76e4accb406ef7ad8024013",
+      "statement": "The repository preamble verifies an unchanged tree for the Scribe and otherwise runs git reset --hard and git clean -fdx at the input commit.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L178-L209",
+          "version": "repo-lines-v1:sha256:fe54c50bb4669a5c47c61a649625e2f448398909039e357c7f980efd51ce41ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkYTBjMDIzNGI3MTBiMTFhMzRkZThkOWQxNzAwOGRjZTlkODc1MzEwMmM2NjVmZTQ1MDZiZmUxMTUyODg4YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhMjg1ZTIwY2RlZTIxYTliYmI1Y2JmNzFhNGQxOWY5YWQyNGI0ZDVmYjY3YjllODk4YTRiOGE2OWY5MGYzZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4Nzc1NzcxNTY0ODNlZTYwMDQwMjVmNDBlZTFlYmM3NDk4YTA2YTRlODlmYWE0MjIzNmY0ZmY0ZDYyNWExYmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1221cb9356344bf95f9e860cd9b55c8",
+      "statement": "The first native session registration sends an immediate heartbeat; runs without an environment timer start periodic heartbeats there.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L379-L409",
+          "version": "repo-lines-v1:sha256:5e7f40c9d51579e5a21577085353b7893b70dd7f8bf62ca3481dcc7d703d6ecb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhNWFmOTNjMmU0NGVkYWRmYjZiNGY4ZWNmZjZkNWUxNDkwNzUxYzVmNzNlMGY0MDhmMTJhYmY1MjE3NWYyOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmZjU1MjNjZDk4OTk2NWQ3NzQyYTQ4ODI0MjVhMzIxODJmODRhZTU4NTBiZjRmOWYyZWRmZTdkNTExZTgwY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiMGQwNzAyNzM5YmM3MWNkZjkxMzU2NDA2NWJkN2IwZTJlMGU5MWY2MTQ5MTU1YmZkNDU4NmExNWMzYTEyZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_96e24930b75943f4a667a681de9151f2",
+      "statement": "The runner writes the brief to the adapter only after mc run process-started succeeds, and kills the adapter otherwise.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L411-L422",
+          "version": "repo-lines-v1:sha256:8f730ad2cf26d9ed818416d740e15d97ad4ed87d02348c9a1637bf43fcee6725:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNjYzMzA0NjFkNDY2OGQ5MGYyYmMwMGEyMDlkYTczZGZjNjY4N2JlNWU1MGI5NTVlMTJmNWNhYTI0YTIyOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlOTgwNDU1ZTk1ODFjMWY5ZGQ3YmY2ODQ3MDE4YWU5NGRhMGFlYjYwYzllZjlhYzgxZDNiN2MyZjA0ZGU4MDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0YmJmNDk4ZDMwM2M0ZjM4OWRkYWVjNDA2ODkyNjY5ZDBkMjA4OTEwMzYzNDYwY2RmYzkxYjE4YWM3YmUzMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b226b92b7f2340ce8d528314a29d1e13",
+      "statement": "Unless stopped by a signal, the runner reports mc run infra-failure after the adapter exits, including exit 0.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L445-L452",
+          "version": "repo-lines-v1:sha256:ca33bb6760d03e3cac1fa47ee9f2bff292c6e5f4f9d12efd4ad32801a970dc82:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWIzMGZhYjgwMzQwNWY1NDNhMTAxNzRjMTQ1Y2MzYWEwOGE4N2I3YWQxYmQ1MGMwNWEwYzU4MDBlZDkxY2YwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWI2ZjJmOTAwNmQ1ZDA5MmUwZDk0MWNjNWMzMTZkMTJkYzM4ZmVmZjRkZTU3MWM2MTc4ZDg2OTgxOTdkMzQzNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGRjYTJkMWE5ZWY5ZTZkZmVhMTNiMGMzMDEzZWNlNzQyODY1NDUzMzNhYzNiYTJhZjcyOWNjMjM2NTE5N2I1YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmMxNDAwYTI5NDczMGEyMmNhMTkzMTVjMjczMmNlYjE4N2YyNzczMzNhOTI3YzU1ZTUyYTE3MGFjZjc2ZTc4OCJ9"
+        },
+        {
+          "resource": "repo://runner/agent-runner/runner-process.test.ts#L276-L284",
+          "version": "repo-lines-v1:sha256:bf212ae1f43f7b12f8cb9ab067ebef4e136b4b1754193da609fdef5c479f5d07:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2U0MWEzYWY4YWZmYTcyMjdhYjE3MmI0NDI3MjA2ODRkMTM1ODBjMmIyYzZkYThiNTkzYmZiNGZlNjI0Y2QwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjc1MTMyZjk3NThkOWY0MDdmMDIxNDczYTAzZmZmZGQzMGQ4YTkzNDU1YzU1NDZhMzgyZTI2ODUwMmExMzIwMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDIyZTQ5MWMxNDU0MDk3ODIwNWExMTlhMzhjYjIxNDU2ZTk4OTFkMGEzOTlmMTYxNDExYmJkYjYxY2Y0M2Q4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjEyZGQ4YjFlMWZmYWYyOGZkYjdjOTA4MDk3NzhlMmFkNjNmOTg3NDI0ODAyNDc0MGI4MGYyNThmOTJiZWU4NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba819ec7a5a34951acbe0ffd9c4c20ac",
+      "statement": "Skill installation writes to $HOME/.agents/skills and never throws; it logs and skips on failure.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/skills.ts#L99-L150",
+          "version": "repo-lines-v1:sha256:8d08f5a7fc1bbe9d70ce27359635c01c5e69b9fd8ebbf1493c41b80551fb79ce:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNThkNjIzNzgwMGE5ZDdmYTgyN2Y1ZTlmZTYzMTRkOGZjOWVjOTJjMjM4N2JkNGMwM2YxN2M0NjFhYTkyZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6375b1649c84b7499ed4b5effda835a",
+      "statement": "The Homie runner never heartbeats, holds no lease, and loops mc homie claim and mc homie reply.",
+      "evidence": [
+        {
+          "resource": "repo://runner/homie-runner/main.ts#L1-L19",
+          "version": "repo-lines-v1:sha256:03b20f9c32b5edbfce1f2431ccd0f78bd3eb2f2d6c40987c3735ab249adcd3c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODdhNmY5ZGUwMTY2NTJhM2Y2NzkwNTU0YmFkMTI3Y2NlODdhMzQyNTdlNWFjZTcwZTMwZjAzNmFhYzhmOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MWZiZmNlYTIzNGRiNTc1MmM2YzEwYzU0ZTZlOWExM2I5MzYyZTI4NzI4M2JiOWMyNjMxZWQ4OTM0NGUzNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjZTExMGQ1N2QyMmU1MTU2NWQ0OGMyMjk5ZjNiYWM2MzdjZmMzNDJhYTJiZjg5MGI4MjBhOGY3ZWExZDQyNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7d6b6a624313490497fc9708a4a37260",
+      "statement": "The production runner manifest includes setup, agent, and Homie runners and shared environment modules, and excludes the fake harness.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runner_release.go",
+          "version": "repo-file-v1:sha256:ffcf03174dd70941e04baee9e444ece8594c1124f4e5de6f84fb9a95b497f68a"
+        }
+      ]
+    },
+    {
+      "id": "claim_fbbb52602156407d8f36da4b728f11ee",
+      "statement": "The fake harness never heartbeats and uses no network, LLM, or credentials.",
+      "evidence": [
+        {
+          "resource": "repo://runner/fake-harness/README.md#L137-L145",
+          "version": "repo-lines-v1:sha256:6d0963f29bb4902c9647de0f7fa4068b8c3049cc143fde66e99823fff70ec74e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjJhZjc2NWQ3NTcxY2I5MjZlZmMxZWZlMGIxNDFjZDdiNjg4ODE5ODg4MGEzYTU5M2I0MTZmZGNkNDY2ZjdiOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIyMzAzMDg4Y2NjYWRhYmVjNGMyYTVmOTViN2JhYmZiNTFjY2IxNWNjMWUxMjQyOWQ1YTRmZjIxZTQ2NWM0ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTYyZDI2OGQ0ZWJlYjY0ZDVkYmVkNTk5ZTY5YzVhYTQ5NDE3YWFmMjVmY2IyNTdjMTUwZTY0MmUwYzU0MTYxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGNkYTM4NDRlNzU4M2MwMWQ4MzZlNTYyYzlkZGUwMzExNTNlODNhYmI2MGVjOTZiMWJmZTViNmY0YmJiY2JiMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_508dac85d24acc5a7fc932be587f1db2",
+      "statement": "toolchain-smoke.sh builds mc from a copy of mc/ and .mise.toml as uid 10002 with GOTOOLCHAIN=local and GOFLAGS=-mod=readonly, requires the image Go version from mc/go.mod, and checks that go.mod and go.sum stay unchanged.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/toolchain-smoke.sh#L7-L31",
+          "version": "repo-lines-v1:sha256:4c2ccf63692c7bc8dc78ab3b37bd4653fa57729e90d8ff90a94a67d6b69bdc1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTc4MDY4MGM1NTZhMjk4YjM3NTg1YTUzM2I3OTU3YTFhZDViNzg4NmYzMmJkOTcxOTRhOWQwNTViNmRjZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0MDZkM2IxYmQ1YjQ2NzVhYzgxZDdjMmZmY2JiMGIwZTQyMGZiNjZhNDU2Zjc2NmMyMjk5MjlhYmU1NThmMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwOTViZDlkMDcyYzE2ZTBmYTdkODhmN2RiODM2MjFmZTllNzg0N2U4ODczMjUyNjY4ZjY4MGRiMzQyOWIwZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2c1181bf17736cba296154430564721",
+      "statement": "The agent runner and the Claude and Codex adapters log through runLogSink.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L247-L251",
+          "version": "repo-lines-v1:sha256:93faa13f06863cbf0ec6ca4c4e4201088fccc535f87852a69c03d5a5c3224c2d:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGEwOTBlYzY0NWExYTAyY2UzYTllOThiMWZlMmUyMWZkMWExZjEyMDgwYzUxYjllODEwMTQxMGZlN2NlYjU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RlZjU2NTYxMTNkZTM4OTkwMTE2Nzc3NWQzMTA0MjY0YTk4OGQxYjViZDUwNWE0ZjA0OTEzNDczNjRlNDNlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjczMzVmODMxYTY0ZWZiMTM4NWU2Y2Y5ODdiMGMxOWVmODdlNmRlZDc2MzYwZGNmYmY5NjcyNDA0OTI4Y2ZmNSJ9"
+        },
+        {
+          "resource": "repo://runner/agent-runner/adapters/claude.ts#L20-L24",
+          "version": "repo-lines-v1:sha256:dc4d5f5cc267c0e1002c3b0bbc9f3bfde8214bc0790950428642b94fd4861098:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGEwOTBlYzY0NWExYTAyY2UzYTllOThiMWZlMmUyMWZkMWExZjEyMDgwYzUxYjllODEwMTQxMGZlN2NlYjU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODg0Yjc0NTY0MWQ4YmU3NzMxZGUxMWE0MGZlZjcwMzViYjM5ZTg5YWEwNTJkMjRlM2JiN2U0NzA2ZWVkYTM4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzIyZWVjYjVmYzEzZDk4MDdjNTIzMGY4NDVjYjFiZjAwOTE4OWM4MTY2N2EyMjBjZGM5YzNiMWMxZjk3MGFkNCJ9"
+        },
+        {
+          "resource": "repo://runner/agent-runner/adapters/codex.ts#L16-L20",
+          "version": "repo-lines-v1:sha256:68f4e873747e33c9b0b2e56c7681be2ac063d26fde0a43229fb7012d7f77e6af:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGEwOTBlYzY0NWExYTAyY2UzYTllOThiMWZlMmUyMWZkMWExZjEyMDgwYzUxYjllODEwMTQxMGZlN2NlYjU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODg0Yjc0NTY0MWQ4YmU3NzMxZGUxMWE0MGZlZjcwMzViYjM5ZTg5YWEwNTJkMjRlM2JiN2U0NzA2ZWVkYTM4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWY4NGUxNjdhZjFhYjFjMzIwMmE4YmMwMzlhYmM2M2UxNDI2NDI1YzhhZDNkNzBjMGUzMzRhZmRjZjY2MWUzZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc5b954777fa42f19baefb29020b0ad4",
+      "statement": "Setup and pipeline containers share a policy that includes Docker init to reap child processes.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts#L1512-L1523",
+          "version": "repo-lines-v1:sha256:cc4cea0b978c643fa7f7a6d8990c75ef3572b69427a055a2b753fb401f81cf14:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNzI2OTM1MDY2NmJhZWUxYzgzZmNmNzgzOTA5M2UyYWYwYzQ0NWJkMzU4MTQzOWQ3MTI5MTBmOTcxZmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0ZGM5ZjE3MmU5ZDFkZjIxZmJjMzRiM2MwN2QyOTNkODJkZWUyYzY1MDQwNzhmYjM4YjhlNzdkZGI3YTM2YmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MWYzZjQ0OTUzZGYwYmJkNjg1YTE2ZjVlZjIwMGNmNGNlZDhhZWIyMWYwYmM4ODgzMWE1NGYwZWQxZGQ3ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1YTdmZmUyMTdjYzNiMjM1ZWNhYjNiZmQwMTZiZmJlYjU5NjZjMTk3OWYzNTNhZTZlYWNlZGI4OWUzNDZiMDEifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L42-L54",
+          "version": "repo-lines-v1:sha256:3aa905137c0ac800654831f1650dbb7730a3211753c0c293e4de7942c0602f20:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiMmMyMjBiOTI2NjhiNmExZjIyMmYzNDUyNWIxYWMwZjk2YzA5ZDZkZGFhNmIxMDg2MzZiMjk1NjA2MWM1ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1NjcwZjQxYjM1MTVmYmE1YmM2ZWJlYzk5MTZmNTFmMGJlZDU4NzdmZTBjOGEwNjFkNmYzYzBhZjI1OGMyZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_33992a6e082a4ed096973ecf7e6523a5",
+      "statement": "Setup process errors prefer structured adapter diagnoses, then Docker errors, then the exit code.",
+      "evidence": [
+        {
+          "resource": "repo://runner/shared/setup-error.ts",
+          "version": "repo-file-v1:sha256:c41792ec08ba0b80538fa5f950ac19a849fb1eab7e1eff39764e64142951aab1"
+        }
+      ]
+    },
+    {
+      "id": "claim_127a1c67779348a59d98a1119ba5656d",
+      "statement": "The repository Project Dockerfile creates /private/tmp and links /usr/bin/git to the installed Git executable.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile.culler-project",
+          "version": "repo-file-v1:sha256:351751430cee2160b803ded3183544f8da7ff343ebce209cb766317ca25a8ae6"
+        }
+      ]
+    },
+    {
+      "id": "claim_6bd32f225dd34bc195a69f4c3f3acb40",
+      "statement": "Project containers mount separate temporary .agents, .claude, and .codex directories within their persistent home.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L90-L99",
+          "version": "repo-lines-v1:sha256:77fda30de6bb18967dea7cfcdd0d4384a687cf87279bcb387f2ce8518510b37a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0YmVhYTdlMmUyMWM0NGRlNGYwZGFiMjc3YjZlMTFlYTM2NTg5MWFiMDk1MmEwY2U5YTdmODNlMmYzNWNmMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MjJiZmFiYzgwZjMwM2QxOGJmMDc1ZmU1NzBlMjZiN2E2ZTk3YzZmMzk0ZmU4MWQzYTZhNTMyMzdkN2JmZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYjM0ODE3YWY1MWFlNzc4M2NiMjRmMzQ5ZmZlMzI5NzIwMmRlMmEyODk3MGNlN2E4NWJhNWM1NzBkOTg0YmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e5e105557a71466ab7ec90b34911147c",
+      "statement": "The Homie turn prompt includes diagnostic context and requires explicit operator confirmation for a proposed state change.",
+      "evidence": [
+        {
+          "resource": "repo://runner/homie-runner/main.ts#L372-L385",
+          "version": "repo-lines-v1:sha256:32d17046a7c35dd39f10bfdacabd87a520ea67a0a89855907628308c2f8dd1a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5OTAxMWJmYWNhMzkyNTQ1YWJmMmExOTljMzFlZDljZWYyZjM4MTk2NTQ2MDFjOTUyYTNlNDM1ODAzYTEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjhlYzFiZDFkZmE3YTFmZDM0MjE2NDU4MjMwZDdkNTBhODk3MTdkNjBlNjNhMGI2YjlmZDE4YmY3NzlhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d21702d865d14eb1a45c1dd0109cf737",
+      "statement": "The Homie turn prompt assigns Discord setup and account approval to Configs → Discord.",
+      "evidence": [
+        {
+          "resource": "repo://runner/homie-runner/main.ts#L372-L385",
+          "version": "repo-lines-v1:sha256:32d17046a7c35dd39f10bfdacabd87a520ea67a0a89855907628308c2f8dd1a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5OTAxMWJmYWNhMzkyNTQ1YWJmMmExOTljMzFlZDljZWYyZjM4MTk2NTQ2MDFjOTUyYTNlNDM1ODAzYTEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjhlYzFiZDFkZmE3YTFmZDM0MjE2NDU4MjMwZDdkNTBhODk3MTdkNjBlNjNhMGI2YjlmZDE4YmY3NzlhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc299ae85731409cb6f931d437fbf57b",
+      "statement": "The runner rejects a nonempty runtime base URL and a channel that mismatches its supported harness family.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L107-L117",
+          "version": "repo-lines-v1:sha256:f3223e56b8b69db88fedd1d095e37b935cdf9621c49e25ac0ed0ac0ef34f3a83:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2Y2RmYzQyNGRmNzZhYzQyNWExZmJkYmQyNmE2NmUzYjQxZGI1MzJjZjM0Y2Q4MTkwOWU5NTE5MjM4N2I4NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMwYTgxZjJlMDYyZjc4NTJiNTExZDI0ZTE0MzlhZGQwZWEzOTJjNWQ5YzY4OWRkYjNiOGIyMDU5YWRiZjJkZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkMTgxYjNhYTQ5MGYxMzc1YjQxMjIxNTY2YjNjY2M1MDEwZGU3OGVkM2IyNjRkZTZlODY1MmE3MDU5ZDVkNmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed29b2b63cb94f6abe05ec6b2578279c",
+      "statement": "The host proxy checks a container request against its assigned connection, model, operations, and lifetime.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/provider-proxy.ts",
+          "version": "repo-file-v1:sha256:b9ac9a5fb1b8ff781a140cb35f99c1217b9589bf8dacca0ba90ea7d6230cdfb6"
+        }
+      ]
+    },
+    {
+      "id": "claim_af67d294bcdc4553bbd4be1e306b8e0d",
+      "statement": "The Homie turn prompt says a Discord channel message starts a session in a thread and dashboard replies reach that thread.",
+      "evidence": [
+        {
+          "resource": "repo://runner/homie-runner/main.ts#L379-L379",
+          "version": "repo-lines-v1:sha256:156c41be9455f5a0c1fa4a7c296c1b6538da151c94cfb895962b63039159dfe4:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU2YzQxYmU5NDU1ZjVhMGMxZmE0YTdjMjk2YzFiNjUzOGRhMTUxYzk0Y2ZiODk1OTYyYjYzMDM5MTU5ZGZlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU2YzQxYmU5NDU1ZjVhMGMxZmE0YTdjMjk2YzFiNjUzOGRhMTUxYzk0Y2ZiODk1OTYyYjYzMDM5MTU5ZGZlNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWYwNzE2ZjZiMGQ1OGUxZTBmZDcyNjg3NTNjMmU4NmU4ZmQxYTliM2VkOGE2ODkyNzNjZDhmNDE2ZDJiOTQzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGZhOTkyMzBmYWZhODk0ZmYxOTZlOTFiOTZmZjQ2YWRmNDI2Zjk2MmQ5ZmM3YWVjOWQ0YTAxYThiY2E4ZjZhZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_799643cbb15b4c5e9e74a606ea3e66e8",
+      "statement": "The runner passes configured effort to its adapter, and each adapter checks its supported levels.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/adapters/claude.ts#L375-L382",
+          "version": "repo-lines-v1:sha256:9759c38ac93f750d7c3aa285cf8eb6a4e832ec789e90a899b411fad49636bc08:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM5ODdkNzcxODc5MGI0ZTk1NWMwYzM5NjUyZWE5MjdiN2I1ZDEyNWU2ZTZkMzljMWY0YjllYmM3ZTkyM2I3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzM4ZTJlZDUwNDFjYzlhOTY5YTRlMDUzNjQzM2IwY2YwMTM2YWE4MWJlYTIxMmY0ZTM2MGM5Y2FiZTdlNzAzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmU4MmUzMThiYWQwYzI3YTJjYjNlMDFhYmQzODdjNjJiMThiYWZmMmViNzQ3Y2ZmZTM2MjNhYjIwNmYxNDRkMCJ9"
+        },
+        {
+          "resource": "repo://runner/agent-runner/adapters/codex.ts#L360-L365",
+          "version": "repo-lines-v1:sha256:a28dae3861ce21189b44a8ad2fefc6a50c8113c9f519799bce3ab1ecce1b2b58:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM5ODdkNzcxODc5MGI0ZTk1NWMwYzM5NjUyZWE5MjdiN2I1ZDEyNWU2ZTZkMzljMWY0YjllYmM3ZTkyM2I3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI4OGVkMTAxNTZiN2YxYWNkZjkzMzliYTczM2ZmMTNlNmRlNWE2YjhkODUwZDk3Mjk1NGU3YWE0YjY3ZjQxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjg2OTk4MDE5YmQyZGY5ZDc5MGE4MmE1ZjQ1YjhmNmM1YTcxYzdmZDI1ZjIzZWQwOWM0OWI1NjQxOWI0ZTU1OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2IyMDU5MTgwZmEwMmE4MzE4YjkwYjNkNjM3ZjM3ZWY4NTc3Zjc3MWVhYTg4ODhjZjI3N2U3NjllY2Y5YTJiNiJ9"
+        },
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L115-L132",
+          "version": "repo-lines-v1:sha256:313631aaddf813be69d301a790db721bba19f358076b7d85608d478ba01a61a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYWRjMTlkOGQ1NjhkNzUzNTliMmNjNGQxYmZjMmQyOTdiNzYzNTNiNmJkNzNiZjEwMjQ3NTg1ZWM1M2ZhNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMzFiNDEyMDA1MjE2ZmUwYWVmNzdmMTdlYTMzZjJjNjZiODIzNDdhNWI2MzdmZTFiMjFkMzQ5YmRmZTdiM2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMWNjMTNkY2FlZjcyZTJjNjQ3Nzk0Yjg0MTczNjg3OWQxYjU2MWU4Y2ViZGY0MDdkYTgxM2UzMzkyMTAzOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MzU0MzcyN2RlMTM0ZmU0YjM1MGQ4NzNhMmUwNzRiY2FkZDVkNzdjODAxZjFlMTVkZjc4MDQ3NjMyMzc2YmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3c4a1bf8c7e473aae9534e7b84193c2",
+      "statement": "A production build runs browser checks for both the Project browser and the private runtime browser.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/build-prod.sh#L66-L68",
+          "version": "repo-lines-v1:sha256:23820555efeb70aded0b5261a2e0b706900c36391f6ee6eb371a05f6531419cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyMTViN2M1MTA5MWNmZTU3ZWVjNTIyNjFlMmFmNTkyYjgzMmZhZTk3NTk4NWRjNjE1YmViYWFjNDAxNmUxMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmIyZDM3MDk3MGE1MjQ1ZGQ3ZWIwYTU4N2QwNGQyYmYwZjYzYjQzMmMyYmEyZGYyMGYxMWE3MzQyYTAwMzc2MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJjOGFmNDJiN2RiMzA2YmU5MzEyYmJiOGY2M2U0NDAyMDgzMWRmNmYwMGFiNzcwNWNjYWMwNTA4ZmYwY2M5YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T09:00:19.897Z"
+  }
+}

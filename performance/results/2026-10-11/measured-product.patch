@@ -1,0 +1,1159 @@
+diff --git a/dashboard/src/api.ts b/dashboard/src/api.ts
+index 247c8774..2604c8c4 100644
+--- a/dashboard/src/api.ts
++++ b/dashboard/src/api.ts
+@@ -306,6 +306,9 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
+   if (!path.startsWith("/api/")) {
+     return null;
+   }
++  if (req.method === "GET" && deps.mc.withReadContext) {
++    deps = { ...deps, mc: deps.mc.withReadContext({ signal: req.signal, deadlineUnixMs: Date.now() + 15_000 }) };
++  }
+ 
+   if (path === "/api/sessions" && req.method === "GET") {
+     return verbResponse(await deps.mc.run(["homie", "list"]));
+diff --git a/dashboard/src/main.ts b/dashboard/src/main.ts
+index a467b4b0..736d3788 100644
+--- a/dashboard/src/main.ts
++++ b/dashboard/src/main.ts
+@@ -6,11 +6,11 @@
+ // reconnects. LaunchAgent generation belongs to install/onboard, not here.
+ 
+ import { mkdirSync } from "node:fs";
+-import { makeLogger, parseLevel } from "../../runner/shared/log";
++import { makeLogger, parseLevel, type Logger } from "../../runner/shared/log";
+ import { openFileSink } from "../../runner/shared/log-sink";
+ import { makeGenRef } from "./api";
+ import { openAttachmentFile } from "./hostfile";
+-import { makeMcRunner } from "./mc";
++import { makeMcRunner, type McCompletionRecord } from "./mc";
+ import { nudgeResident, residentSocketPath } from "./resident-nudge";
+ import { DEFAULT_BIND, startDashboardServer } from "./server";
+ import { DEFAULT_WIKI_BIND, startWikiServer, WIKI_KEY } from "./wiki-server";
+@@ -25,6 +25,15 @@ export interface DashboardConfig {
+   auth_token: string;
+ }
+ 
++export function observeCommand(log: Logger, record: McCompletionRecord): void {
++  const context = { ...record };
++  if (record.outcome !== "completed" || record.code !== 0) {
++    log.warn("dash.mc_completed", "The dashboard command ended with an error.", context);
++  } else {
++    log.info("dash.mc_completed", "The dashboard command completed.", context);
++  }
++}
++
+ export function parseConfig(raw: string): DashboardConfig {
+   let parsed: unknown;
+   try {
+@@ -88,7 +97,9 @@ if (import.meta.main) {
+   const server = startDashboardServer(
+     { bind: cfg.bind ?? DEFAULT_BIND, authToken: cfg.auth_token },
+     {
+-      mc: makeMcRunner(cfg.mc_bin),
++      mc: makeMcRunner(cfg.mc_bin, {
++        onComplete: (record) => observeCommand(log, record),
++      }),
+       genRef: makeGenRef(),
+       log,
+       readRender: (hostPath) => Bun.file(hostPath).text(),
+diff --git a/dashboard/src/mc.read-deadline.test.ts b/dashboard/src/mc.read-deadline.test.ts
+new file mode 100644
+index 00000000..07d43234
+--- /dev/null
++++ b/dashboard/src/mc.read-deadline.test.ts
+@@ -0,0 +1,361 @@
++import { describe, expect, test } from "bun:test";
++import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
++import { tmpdir } from "node:os";
++import { join } from "node:path";
++
++import { makeMcRunner, type McCompletionRecord, type McReadContext, type McRunner } from "./mc";
++import { handleApi } from "./api";
++import { deps } from "./test-helpers";
++
++function quote(value: string): string {
++  return `'${value.replaceAll("'", "'\\''")}'`;
++}
++
++interface Fixture {
++  root: string;
++  bin: string;
++  file(name: string): string;
++}
++
++async function fixture(script: string, body: (value: Fixture) => Promise<void>): Promise<void> {
++  const root = mkdtempSync(join(tmpdir(), "mc-read-deadline-"));
++  const bin = join(root, "mc-stub");
++  writeFileSync(bin, `#!/bin/sh\ncd ${quote(root)} || exit 9\n${script}\n`, { mode: 0o755 });
++  try {
++    await body({ root, bin, file: (name) => join(root, name) });
++  } finally {
++    writeFileSync(join(root, "release"), "release\n");
++    for (const name of ["child.pid", "parent.pid"]) {
++      const path = join(root, name);
++      if (!existsSync(path)) continue;
++      const pid = Number(readFileSync(path, "utf8").trim());
++      if (!Number.isInteger(pid) || pid <= 0) continue;
++      try {
++        process.kill(pid, "SIGKILL");
++      } catch (error) {
++        if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
++      }
++    }
++    rmSync(root, { recursive: true, force: true });
++  }
++}
++
++async function until(condition: () => boolean, message: string): Promise<void> {
++  const deadline = performance.now() + 3000;
++  while (!condition()) {
++    if (performance.now() >= deadline) throw new Error(message);
++    await new Promise((resolve) => setTimeout(resolve, 5));
++  }
++}
++
++async function settles<T>(pending: Promise<T>): Promise<T> {
++  let timer: ReturnType<typeof setTimeout> | undefined;
++  try {
++    return await Promise.race([
++      pending,
++      new Promise<never>((_resolve, reject) => {
++        timer = setTimeout(() => reject(new Error("The read did not complete.")), 3000);
++      }),
++    ]);
++  } finally {
++    clearTimeout(timer);
++  }
++}
++
++function scoped(runner: McRunner, signal: AbortSignal, deadlineUnixMs = Date.now() + 10000): McRunner {
++  if (!runner.withReadContext) throw new Error("The runner does not expose the read context.");
++  return runner.withReadContext({ signal, deadlineUnixMs });
++}
++
++function errorCode(result: Awaited<ReturnType<McRunner["run"]>>): unknown {
++  return (result.json?.error as Record<string, unknown> | undefined)?.code;
++}
++
++function alive(pid: number): boolean {
++  try {
++    process.kill(pid, 0);
++    return true;
++  } catch (error) {
++    if ((error as NodeJS.ErrnoException).code === "ESRCH") return false;
++    throw error;
++  }
++}
++
++const queueStub = `
++for argument do project="$argument"; done
++printf '%s\\n' "$project" >> calls
++if [ "$project" = first ]; then
++  : > first-started
++  while [ ! -f release ]; do sleep 0.02; done
++fi
++printf '{"project":"%s"}\\n' "$project"
++`;
++
++const partialStatus = {
++  complete: false,
++  observed_at: "2026-10-11T20:00:00.000000123Z",
++  conditions: [],
++  connections: [],
++  availability: { observed_at: "", available: false, can_commit: false },
++  viewers: {
++    agentsview: { url: "", state: "unavailable", reason: "The viewer is unavailable." },
++    wiki: { url: "", projects: {} },
++  },
++};
++
++describe("The command read deadline", () => {
++  test("Each GET request receives its own context without changing shared dependencies", async () => {
++    const contexts: McReadContext[] = [];
++    const mc: McRunner = {
++      run: async () => ({ code: 0, json: { plain: true }, stderr: "" }),
++      withReadContext(context) {
++        contexts.push(context);
++        return { run: async () => ({ code: 0, json: { scoped: true }, stderr: "" }) };
++      },
++    };
++    const shared = deps({ mc });
++    const controller = new AbortController();
++    const first = new Request("http://localhost/api/sessions", { signal: controller.signal });
++    const second = new Request("http://localhost/api/sessions");
++    const before = Date.now();
++    expect(await (await handleApi(first, new URL(first.url), shared))?.json()).toEqual({ scoped: true });
++    expect(await (await handleApi(second, new URL(second.url), shared))?.json()).toEqual({ scoped: true });
++    expect(shared.mc).toBe(mc);
++    expect(contexts).toHaveLength(2);
++    expect(contexts[0]!.signal).toBe(first.signal);
++    expect(contexts[1]!.signal).toBe(second.signal);
++    expect(contexts[0]!.deadlineUnixMs).toBeGreaterThanOrEqual(before + 15000);
++    expect(contexts[0]!.deadlineUnixMs).toBeLessThanOrEqual(Date.now() + 15000);
++    controller.abort();
++    expect(contexts[0]!.signal.aborted).toBe(true);
++    expect(contexts[1]!.signal.aborted).toBe(false);
++    const post = new Request("http://localhost/api/no-such-route", { method: "POST" });
++    await handleApi(post, new URL(post.url), shared);
++    expect(contexts).toHaveLength(2);
++  });
++
++  test("A scoped read carries the absolute deadline and reports its complete duration", async () => {
++    await fixture(`printf '%s\\n' "$@" > arguments\nprintf '{"tasks":[]}'`, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { onComplete: (record) => records.push(record) });
++      const controller = new AbortController();
++      const deadline = Date.now() + 10000;
++      const result = await scoped(runner, controller.signal, deadline).run(["task", "list"]);
++      expect(result.code).toBe(0);
++      expect(result.json).toEqual({ tasks: [] });
++      expect(readFileSync(value.file("arguments"), "utf8").trim().split("\n")).toEqual([
++        "__read", "--deadline-unix-ms", String(deadline), "--", "task", "list",
++      ]);
++      expect(records).toHaveLength(1);
++      const record = records[0]!;
++      expect(record.outcome).toBe("completed");
++      expect(record.code).toBe(0);
++      expect(record.pid).toBeGreaterThan(0);
++      expect(record.spawnedAtUnixMs).not.toBeNull();
++      expect(record.exitObservedAtUnixMs).not.toBeNull();
++      expect(record.startedAtUnixMs).toBeLessThanOrEqual(record.spawnedAtUnixMs!);
++      expect(record.spawnedAtUnixMs!).toBeLessThanOrEqual(record.exitObservedAtUnixMs!);
++      expect(record.exitObservedAtUnixMs!).toBeLessThanOrEqual(record.completedAtUnixMs);
++      expect(record.elapsedMs).toBeGreaterThanOrEqual(0);
++      expect(record.queueMs).toBeGreaterThanOrEqual(0);
++      expect(record.elapsedMs).toBeGreaterThanOrEqual(record.queueMs);
++    });
++  });
++
++  test("An aborted read in a shared queue creates no process", async () => {
++    await fixture(queueStub, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { maxConcurrentReads: 1, onComplete: (record) => records.push(record) });
++      const firstController = new AbortController();
++      const secondController = new AbortController();
++      const first = scoped(runner, firstController.signal).run(["task", "list", "--project", "first"]);
++      try {
++        await until(() => existsSync(value.file("first-started")), "The first read did not start.");
++        const second = scoped(runner, secondController.signal).run(["task", "list", "--project", "second"]);
++        secondController.abort();
++        const result = await settles(second);
++        expect(result.code).toBe(2);
++        expect(errorCode(result)).toBe("request-cancelled");
++        expect(readFileSync(value.file("calls"), "utf8")).toBe("first\n");
++        const cancelled = records.find((record) => record.outcome === "cancelled");
++        expect(cancelled).toBeDefined();
++        expect(cancelled!.pid).toBeNull();
++        expect(cancelled!.spawnedAtUnixMs).toBeNull();
++        expect(cancelled!.exitObservedAtUnixMs).toBeNull();
++        writeFileSync(value.file("release"), "release\n");
++        expect((await first).code).toBe(0);
++      } finally {
++        writeFileSync(value.file("release"), "release\n");
++        firstController.abort();
++        secondController.abort();
++        await settles(first);
++      }
++    });
++  });
++
++  test("A read that expires in a shared queue creates no process", async () => {
++    await fixture(queueStub, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { maxConcurrentReads: 1, onComplete: (record) => records.push(record) });
++      const firstController = new AbortController();
++      const secondController = new AbortController();
++      const first = scoped(runner, firstController.signal).run(["task", "list", "--project", "first"]);
++      try {
++        await until(() => existsSync(value.file("first-started")), "The first read did not start.");
++        const result = await settles(scoped(runner, secondController.signal, Date.now() + 50)
++          .run(["task", "list", "--project", "second"]));
++        expect(result.code).toBe(2);
++        expect(errorCode(result)).toBe("deadline-exceeded");
++        expect(readFileSync(value.file("calls"), "utf8")).toBe("first\n");
++        const expired = records.find((record) => record.outcome === "deadline");
++        expect(expired).toBeDefined();
++        expect(expired!.pid).toBeNull();
++        expect(expired!.spawnedAtUnixMs).toBeNull();
++        expect(expired!.exitObservedAtUnixMs).toBeNull();
++        expect(expired!.queueMs).toBeGreaterThan(0);
++        writeFileSync(value.file("release"), "release\n");
++        expect((await first).code).toBe(0);
++      } finally {
++        writeFileSync(value.file("release"), "release\n");
++        firstController.abort();
++        secondController.abort();
++        await settles(first);
++      }
++    });
++  });
++
++  test("Cancellation stops the active process and its child before completion", async () => {
++    await fixture(`echo $$ > parent.pid\nsleep 30 &\necho $! > child.pid\nwait\nprintf '{"tasks":[]}'`, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { onComplete: (record) => records.push(record) });
++      const controller = new AbortController();
++      const pending = scoped(runner, controller.signal).run(["task", "list"]);
++      try {
++        await until(() => existsSync(value.file("child.pid")), "The read child did not start.");
++        const child = Number(readFileSync(value.file("child.pid"), "utf8").trim());
++        const parent = Number(readFileSync(value.file("parent.pid"), "utf8").trim());
++        expect(alive(child)).toBe(true);
++        controller.abort();
++        const result = await settles(pending);
++        expect(result.code).toBe(2);
++        expect(errorCode(result)).toBe("request-cancelled");
++        await until(() => !alive(child) && !alive(parent), "The read process group still exists.");
++        expect(records).toHaveLength(1);
++        expect(records[0]!.outcome).toBe("cancelled");
++        expect(records[0]!.pid).toBe(parent);
++        expect(records[0]!.exitObservedAtUnixMs).not.toBeNull();
++      } finally {
++        controller.abort();
++      }
++    });
++  });
++
++  test("A cancelled active read retains its admission slot until the absolute deadline", async () => {
++    await fixture(queueStub, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { maxConcurrentReads: 1, onComplete: (record) => records.push(record) });
++      const firstController = new AbortController();
++      const secondController = new AbortController();
++      const firstDeadline = Date.now() + 750;
++      const first = scoped(runner, firstController.signal, firstDeadline)
++        .run(["task", "list", "--project", "first"]);
++      try {
++        await until(() => existsSync(value.file("first-started")), "The first read did not start.");
++        firstController.abort();
++        expect(errorCode(await settles(first))).toBe("request-cancelled");
++        expect(Date.now()).toBeLessThan(firstDeadline);
++        const second = scoped(runner, secondController.signal, firstDeadline + 3000)
++          .run(["task", "list", "--project", "second"]);
++        expect((await settles(second)).code).toBe(0);
++        expect(readFileSync(value.file("calls"), "utf8")).toBe("first\nsecond\n");
++        const completed = records.find((record) => record.outcome === "completed");
++        expect(completed).toBeDefined();
++        expect(completed!.spawnedAtUnixMs).not.toBeNull();
++        expect(completed!.spawnedAtUnixMs!).toBeGreaterThanOrEqual(firstDeadline);
++      } finally {
++        writeFileSync(value.file("release"), "release\n");
++        firstController.abort();
++        secondController.abort();
++        await settles(first);
++      }
++    });
++  });
++
++  test("An aborted expired context preserves the plain write command", async () => {
++    await fixture(`printf '%s\\n' "$@" > arguments\ncat`, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { onComplete: (record) => records.push(record) });
++      const controller = new AbortController();
++      controller.abort();
++      const argv = ["project", "pause", "benchmark"];
++      const result = await scoped(runner, controller.signal, Date.now() - 1)
++        .run(argv, JSON.stringify({ accepted: true }));
++      expect(result.code).toBe(0);
++      expect(result.json).toEqual({ accepted: true });
++      expect(readFileSync(value.file("arguments"), "utf8").trim().split("\n")).toEqual(argv);
++      expect(records).toHaveLength(1);
++      expect(records[0]!.outcome).toBe("completed");
++    });
++  });
++
++  test("Partial system status retains the slot when Docker completion is unconfirmed", async () => {
++    await fixture(`for argument do action="$argument"; done\nprintf '%s\\n' "$action" >> calls\nprintf '%s' ${quote(JSON.stringify(partialStatus))}\nif [ "$action" = status ]; then exit 125; fi`, async (value) => {
++      const records: McCompletionRecord[] = [];
++      const runner = makeMcRunner(value.bin, { maxConcurrentReads: 1, onComplete: (record) => records.push(record) });
++      const firstDeadline = Date.now() + 250;
++      const first = await scoped(runner, new AbortController().signal, firstDeadline).run(["system", "status"]);
++      expect(first.code).toBe(0);
++      expect(first.json).toEqual(partialStatus);
++      expect(records[0]!.code).toBe(125);
++      const second = await scoped(runner, new AbortController().signal, firstDeadline + 3000).run(["task", "list"]);
++      expect(second.code).toBe(0);
++      expect(records[1]!.spawnedAtUnixMs!).toBeGreaterThanOrEqual(firstDeadline);
++      expect(readFileSync(value.file("calls"), "utf8")).toBe("status\nlist\n");
++    });
++  });
++
++  test("Exit 125 preserves failure for malformed, absent, and error responses", async () => {
++    for (const output of ["", "not JSON", "{}", JSON.stringify({ complete: false }),
++      JSON.stringify({ error: { code: "environment", message: "The read failed." } }),
++      JSON.stringify({ ...partialStatus, error: { code: "environment", message: "The read failed." } })]) {
++      await fixture(`printf '%s' ${quote(output)}\nexit 125`, async (value) => {
++        const result = await scoped(makeMcRunner(value.bin), new AbortController().signal).run(["system", "status"]);
++        expect(result.code).toBe(125);
++      });
++    }
++  });
++
++  test("Exit 125 cannot turn another command into a successful partial status", async () => {
++    await fixture(`printf '%s' ${quote(JSON.stringify(partialStatus))}\nexit 125`, async (value) => {
++      for (const argv of [["task", "list"], ["system", "diagnostics"], ["system", "status", "unexpected"]]) {
++        const result = await scoped(makeMcRunner(value.bin), new AbortController().signal).run(argv);
++        expect(result.code).toBe(125);
++      }
++    });
++  });
++
++  test("An unknown command retains the plain path under an aborted context", async () => {
++    await fixture(`printf '%s\\n' "$@" > arguments\nprintf '{"accepted":true}'`, async (value) => {
++      const controller = new AbortController();
++      controller.abort();
++      const argv = ["unrecognized", "list"];
++      const result = await scoped(makeMcRunner(value.bin), controller.signal, Date.now() - 1).run(argv);
++      expect(result.code).toBe(0);
++      expect(readFileSync(value.file("arguments"), "utf8").trim().split("\n")).toEqual(argv);
++    });
++  });
++
++  test("A completion callback failure preserves the command result", async () => {
++    await fixture(`printf '{"tasks":[]}'`, async (value) => {
++      let callbacks = 0;
++      const runner = makeMcRunner(value.bin, { onComplete: () => {
++        callbacks += 1;
++        throw new Error("The test callback rejected the record.");
++      } });
++      const result = await scoped(runner, new AbortController().signal).run(["task", "list"]);
++      expect(result.code).toBe(0);
++      expect(result.json).toEqual({ tasks: [] });
++      expect(callbacks).toBe(1);
++    });
++  });
++});
+diff --git a/dashboard/src/mc.ts b/dashboard/src/mc.ts
+index c7185e49..200d6768 100644
+--- a/dashboard/src/mc.ts
++++ b/dashboard/src/mc.ts
+@@ -16,24 +16,213 @@ export interface McResult {
+ /** Injectable seam: tests substitute a scripted fake. */
+ export interface McRunner {
+   run(argv: string[], input?: string): Promise<McResult>;
++  withReadContext?(context: McReadContext): McRunner;
+ }
+ 
+-export function makeMcRunner(mcBin: string): McRunner {
++export interface McReadContext {
++  signal: AbortSignal;
++  deadlineUnixMs: number;
++}
++
++export interface McCompletionRecord {
++  startedAtUnixMs: number;
++  spawnedAtUnixMs: number | null;
++  exitObservedAtUnixMs: number | null;
++  completedAtUnixMs: number;
++  elapsedMs: number;
++  queueMs: number;
++  pid: number | null;
++  code: number | null;
++  outcome: "completed" | "deadline" | "cancelled" | "error";
++}
++
++export interface McRunnerOptions {
++  maxConcurrentReads?: number;
++  onComplete?: (record: McCompletionRecord) => void;
++}
++
++// The Go wrapper checks the same exact command pairs before it accepts a deadline.
++const DEADLINE_READ_PAIRS = new Set([
++  "task list", "task get", "project list", "packet list", "lease list",
++  "settings get", "pause status", "run list", "run customization",
++  "wiki-state list", "homie list", "homie history", "activity list",
++  "board history-report", "outbox poll", "system status", "system diagnostics",
++]);
++
++function deadlineRead(argv: string[]): boolean {
++  return argv.length >= 2 && DEADLINE_READ_PAIRS.has(`${argv[0]} ${argv[1]}`);
++}
++
++type ReadStop = "deadline" | "cancelled";
++
++class ReadStopped extends Error {
++  constructor(readonly reason: ReadStop) {
++    super(reason === "deadline" ? "The read exceeded its deadline." : "The read request was cancelled.");
++  }
++}
++
++function stopped(context: McReadContext): ReadStop | null {
++  if (context.signal.aborted) return "cancelled";
++  return context.deadlineUnixMs <= Date.now() ? "deadline" : null;
++}
++
++function stoppedResult(reason: ReadStop): McResult {
++  const message = new ReadStopped(reason).message;
+   return {
+-    async run(argv: string[], input?: string): Promise<McResult> {
+-      const proc = Bun.spawn([mcBin, ...argv], {
++    code: 2,
++    json: { error: { code: reason === "deadline" ? "deadline-exceeded" : "request-cancelled", message } },
++    stderr: message,
++  };
++}
++
++function objectRecord(value: unknown): value is Record<string, unknown> {
++  return value !== null && typeof value === "object" && !Array.isArray(value);
++}
++
++function partialSystemStatus(argv: string[], json: Record<string, unknown> | null): boolean {
++  if (argv.length !== 2 || argv[0] !== "system" || argv[1] !== "status" || json === null || "error" in json) return false;
++  const availability = json.availability;
++  const viewers = json.viewers;
++  if (!objectRecord(availability) || !objectRecord(viewers)) return false;
++  const agentsview = viewers.agentsview;
++  const wiki = viewers.wiki;
++  return json.complete === false && typeof json.observed_at === "string" && Number.isFinite(Date.parse(json.observed_at)) &&
++    Array.isArray(json.conditions) && Array.isArray(json.connections) &&
++    typeof availability.observed_at === "string" && typeof availability.available === "boolean" &&
++    typeof availability.can_commit === "boolean" && objectRecord(agentsview) &&
++    typeof agentsview.url === "string" && typeof agentsview.state === "string" && typeof agentsview.reason === "string" &&
++    objectRecord(wiki) && typeof wiki.url === "string" && objectRecord(wiki.projects);
++}
++
++export function makeMcRunner(mcBin: string, options: McRunnerOptions = {}): McRunner {
++  const limit = options.maxConcurrentReads ?? 8;
++  if (!Number.isInteger(limit) || limit < 1) throw new Error("The read concurrency limit must be a positive integer.");
++  let active = 0;
++  type Waiter = { start(): void; stop(reason: ReadStop): void; context: McReadContext };
++  const queue: Waiter[] = [];
++
++  function drain(): void {
++    while (active < limit && queue.length > 0) {
++      const entry = queue.shift()!;
++      const reason = stopped(entry.context);
++      if (reason !== null) entry.stop(reason);
++      else entry.start();
++    }
++  }
++
++  function acquire(context: McReadContext): Promise<() => void> {
++    return new Promise((resolve, reject) => {
++      let settled = false;
++      let timer: ReturnType<typeof setTimeout>;
++      const cleanup = () => {
++        clearTimeout(timer);
++        context.signal.removeEventListener("abort", onAbort);
++      };
++      const entry: Waiter = {
++        context,
++        start() {
++          if (settled) return;
++          settled = true;
++          cleanup();
++          active++;
++          let released = false;
++          resolve(() => {
++            if (released) return;
++            released = true;
++            active--;
++            drain();
++          });
++        },
++        stop(reason) {
++          if (settled) return;
++          settled = true;
++          cleanup();
++          const index = queue.indexOf(entry);
++          if (index !== -1) queue.splice(index, 1);
++          reject(new ReadStopped(reason));
++        },
++      };
++      const onAbort = () => entry.stop("cancelled");
++      context.signal.addEventListener("abort", onAbort, { once: true });
++      timer = setTimeout(() => entry.stop("deadline"), Math.max(0, context.deadlineUnixMs - Date.now()));
++      const reason = stopped(context);
++      if (reason !== null) entry.stop(reason);
++      else {
++        queue.push(entry);
++        drain();
++      }
++    });
++  }
++
++  async function invoke(argv: string[], input?: string, context?: McReadContext): Promise<McResult> {
++    const started = options.onComplete ? performance.now() : 0;
++    const record: McCompletionRecord | undefined = options.onComplete ? {
++      startedAtUnixMs: Date.now(), spawnedAtUnixMs: null, exitObservedAtUnixMs: null,
++      completedAtUnixMs: 0, elapsedMs: 0, queueMs: 0, pid: null, code: null, outcome: "error",
++    } : undefined;
++    let release: (() => void) | undefined;
++    let timer: ReturnType<typeof setTimeout> | undefined;
++    let onAbort: (() => void) | undefined;
++    let reason: ReadStop | null = null;
++    let spawned = false;
++    let remoteCompleted = false;
++    try {
++      if (context) {
++        release = await acquire(context);
++        const expired = stopped(context);
++        if (expired !== null) throw new ReadStopped(expired);
++      }
++      if (record) {
++        record.queueMs = context ? performance.now() - started : 0;
++        record.spawnedAtUnixMs = Date.now();
++      }
++      const command = context
++        ? [mcBin, "__read", "--deadline-unix-ms", String(context.deadlineUnixMs), "--", ...argv]
++        : [mcBin, ...argv];
++      const proc = Bun.spawn(command, {
+         // The live env, snapshotted per spawn: passthrough untouched, but
+         // visible even when set after module load (the smoke relies on it).
+         env: { ...process.env },
+         stdin: input === undefined ? "ignore" : new TextEncoder().encode(input),
+         stdout: "pipe",
+         stderr: "pipe",
++        ...(context ? { detached: true } : {}),
+       });
++      spawned = true;
++      if (record) record.pid = proc.pid;
++      if (context) {
++        const stop = (cause: ReadStop) => {
++          if (reason !== null) return;
++          reason = cause;
++          try {
++            process.kill(-proc.pid, "SIGKILL");
++          } catch {
++            // A process can exit between the abort and the signal.
++            try { proc.kill("SIGKILL"); } catch { /* The container deadline still applies. */ }
++          }
++        };
++        onAbort = () => stop("cancelled");
++        context.signal.addEventListener("abort", onAbort, { once: true });
++        timer = setTimeout(() => stop("deadline"), Math.max(0, context.deadlineUnixMs - Date.now()));
++        const expired = stopped(context);
++        if (expired !== null) stop(expired);
++      }
++      const exit = record ? proc.exited.then((code) => {
++        record.exitObservedAtUnixMs = Date.now();
++        record.code = code;
++        return code;
++      }) : proc.exited;
+       const [stdout, stderr, code] = await Promise.all([
+         new Response(proc.stdout).text(),
+         new Response(proc.stderr).text(),
+-        proc.exited,
++        exit,
+       ]);
++      remoteCompleted = code === 0 && reason === null;
++      if (reason !== null || (context && code === 124)) {
++        const outcome = reason ?? "deadline";
++        if (record) record.outcome = outcome;
++        return stoppedResult(outcome);
++      }
+       let json: Record<string, unknown> | null = null;
+       try {
+         const parsed: unknown = JSON.parse(stdout);
+@@ -43,7 +232,47 @@ export function makeMcRunner(mcBin: string): McRunner {
+       } catch {
+         json = null;
+       }
+-      return { code, json, stderr };
++      if (record) record.outcome = "completed";
++      // The host can return partial system status after a Docker transport failure.
++      // Exit 125 preserves that result and retains the container admission slot.
++      return { code: context && code === 125 && partialSystemStatus(argv, json) ? 0 : code, json, stderr };
++    } catch (error) {
++      if (error instanceof ReadStopped) {
++        if (record) {
++          record.outcome = error.reason;
++          record.queueMs = performance.now() - started;
++        }
++        return stoppedResult(error.reason);
++      }
++      throw error;
++    } finally {
++      clearTimeout(timer);
++      if (context && onAbort) context.signal.removeEventListener("abort", onAbort);
++      if (release && context && spawned && !remoteCompleted) {
++        // Killing Docker on the Mac does not confirm that the container command stopped.
++        // Keep its slot until the container deadline can end that command.
++        setTimeout(release, Math.max(0, context.deadlineUnixMs - Date.now())).unref();
++      } else {
++        release?.();
++      }
++      if (record) {
++        record.completedAtUnixMs = Date.now();
++        record.elapsedMs = performance.now() - started;
++        try { options.onComplete?.(record); } catch { /* A duration observer cannot change the command result. */ }
++      }
++    }
++  }
++
++  const runner: McRunner = {
++    run: (argv, input) => invoke(argv, input),
++    withReadContext(context) {
++      if (!Number.isSafeInteger(context.deadlineUnixMs)) throw new Error("The read deadline must use integer Unix milliseconds.");
++      const scoped = { ...context, deadlineUnixMs: Math.min(context.deadlineUnixMs, Date.now() + 15_000) };
++      return {
++        run: (argv, input) => invoke(argv, input, deadlineRead(argv) ? scoped : undefined),
++        withReadContext: runner.withReadContext,
++      };
+     },
+   };
++  return runner;
+ }
+diff --git a/mc/cmd/mc/cli_log.go b/mc/cmd/mc/cli_log.go
+index 74b4db8e..40af9802 100644
+--- a/mc/cmd/mc/cli_log.go
++++ b/mc/cmd/mc/cli_log.go
+@@ -181,6 +181,7 @@ func logInvocation(args []string, exit int, started time.Time) {
+ 	}
+ 	verb, sub, flags := invocationShape(args)
+ 	ctx := mclog.Ctx{
++		"pid":    os.Getpid(),
+ 		"verb":   verb,
+ 		"argc":   len(args),
+ 		"exit":   exit,
+diff --git a/mc/cmd/mc/helper_manager.go b/mc/cmd/mc/helper_manager.go
+index 478e29dc..0ac9e53b 100644
+--- a/mc/cmd/mc/helper_manager.go
++++ b/mc/cmd/mc/helper_manager.go
+@@ -6,7 +6,6 @@ import (
+ 	"encoding/json"
+ 	"fmt"
+ 	"os"
+-	"os/exec"
+ 	"strconv"
+ 	"strings"
+ 
+@@ -20,7 +19,7 @@ type dockerCommandRunner interface {
+ type execDockerRunner struct{}
+ 
+ func (execDockerRunner) CombinedOutput(args ...string) ([]byte, error) {
+-	return exec.Command("docker", args...).CombinedOutput()
++	return readCommand("docker", args...).CombinedOutput()
+ }
+ 
+ type helperImageInspect struct {
+diff --git a/mc/cmd/mc/main.go b/mc/cmd/mc/main.go
+index 84348dbc..949c7ea7 100644
+--- a/mc/cmd/mc/main.go
++++ b/mc/cmd/mc/main.go
+@@ -44,6 +44,9 @@ func main() {
+ // Closing the logger matters: rotation reopens the fd, and a process that exits
+ // without closing can leave the last record unflushed on a full disk.
+ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
++	if len(args) > 0 && args[0] == "__read" {
++		return runReadCommand(args, stdin, stdout, stderr)
++	}
+ 	// Saved and restored, not simply cleared: `mc __onboard verify` re-enters
+ 	// run() for each smoke command, and a nested call that reset cliLog to nil
+ 	// on the way out would silently stop the OUTER invocation from logging
+@@ -415,8 +418,8 @@ func writeVerbError(stdout, stderr io.Writer, err error) int {
+ 
+ func delegate(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+ 	helper := helperContainerName()
+-	argv := append([]string{"exec", "-i", helper, "mc"}, args...)
+-	cmd := exec.Command("docker", argv...)
++	argv := append([]string{"exec", "-i", helper, "mc"}, delegatedReadArgs(args)...)
++	cmd := readCommand("docker", argv...)
+ 	cmd.Stdin = stdin
+ 	// Both streams are teed for the same reason, and neither is altered: the
+ 	// caller receives every byte the inner mc wrote. stdout is captured because
+diff --git a/mc/cmd/mc/read_deadline.go b/mc/cmd/mc/read_deadline.go
+new file mode 100644
+index 00000000..de9cc3fa
+--- /dev/null
++++ b/mc/cmd/mc/read_deadline.go
+@@ -0,0 +1,144 @@
++package main
++
++import (
++	"context"
++	"fmt"
++	"io"
++	"os"
++	"os/exec"
++	"strconv"
++	"time"
++
++	"mc/verbs"
++)
++
++const maxReadDuration = 15 * time.Second
++const unconfirmedReadExitCode = 125
++
++type readInvocation struct {
++	context     context.Context
++	deadline    time.Time
++	unconfirmed bool
++}
++
++// One process executes one command. Nested host reads retain its deadline.
++var currentRead *readInvocation
++
++func deadlineReadAllowed(args []string) bool {
++	if len(args) < 2 {
++		return false
++	}
++	switch args[0] + " " + args[1] {
++	case "task list", "task get", "project list", "packet list", "lease list",
++		"settings get", "pause status", "run list", "run customization",
++		"wiki-state list", "homie list", "homie history", "activity list",
++		"board history-report", "outbox poll", "system status", "system diagnostics",
++		"__system-state status", "__system-state diagnostics":
++		return true
++	}
++	return false
++}
++
++func parseReadCommand(args []string) (time.Time, []string, error) {
++	if len(args) < 6 || args[0] != "__read" || args[1] != "--deadline-unix-ms" || args[3] != "--" {
++		return time.Time{}, nil, fmt.Errorf("The read requires an absolute deadline and a command.")
++	}
++	deadline, err := strconv.ParseInt(args[2], 10, 64)
++	if err != nil || deadline <= 0 {
++		return time.Time{}, nil, fmt.Errorf("The read deadline is invalid.")
++	}
++	inner := args[4:]
++	if !deadlineReadAllowed(inner) {
++		return time.Time{}, nil, fmt.Errorf("The command does not support a read deadline.")
++	}
++	return time.UnixMilli(deadline), inner, nil
++}
++
++func runReadCommand(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
++	deadline, inner, err := parseReadCommand(args)
++	if err != nil {
++		return writeVerbError(stdout, stderr, verbs.Usagef("%v", err))
++	}
++	return runWithinReadDeadline(deadline, func() int {
++		if shouldDelegateToHelper() {
++			id, err := verbs.LoadIdentity()
++			if err != nil {
++				return writeVerbError(stdout, stderr, err)
++			}
++			if err := verbs.RequireHostScope(id, "bounded read"); err != nil {
++				return writeVerbError(stdout, stderr, err)
++			}
++		} else if !privateHelperScopeOK() {
++			return writeVerbError(stdout, stderr, verbs.Domainf("The read wrapper requires the host or the fixed helper scope."))
++		}
++		return run(inner, stdin, stdout, stderr)
++	})
++}
++
++func readDeadlineBudget(deadline, now time.Time) time.Duration {
++	remaining := deadline.Sub(now)
++	if remaining > maxReadDuration {
++		return maxReadDuration
++	}
++	return remaining
++}
++
++func runWithinReadDeadline(deadline time.Time, action func() int) int {
++	now := time.Now()
++	budget := readDeadlineBudget(deadline, now)
++	if budget <= 0 {
++		return privateHelperTimeoutExitCode
++	}
++	deadline = now.Add(budget)
++	parent := context.Background()
++	previous := currentRead
++	if previous != nil {
++		parent = previous.context
++		if previous.deadline.Before(deadline) {
++			deadline = previous.deadline
++		}
++	}
++	ctx, cancel := context.WithDeadline(parent, deadline)
++	defer cancel()
++	// The container timer remains active after its Docker client disconnects.
++	// The local cap bounds clock differences between the Mac and the virtual machine.
++	timer := time.AfterFunc(time.Until(deadline), func() { os.Exit(privateHelperTimeoutExitCode) })
++	defer timer.Stop()
++	invocation := &readInvocation{context: ctx, deadline: deadline}
++	currentRead = invocation
++	defer func() {
++		if previous != nil && invocation.unconfirmed {
++			previous.unconfirmed = true
++		}
++		currentRead = previous
++	}()
++	if ctx.Err() != nil {
++		return privateHelperTimeoutExitCode
++	}
++	code := action()
++	if ctx.Err() != nil {
++		return privateHelperTimeoutExitCode
++	}
++	if code == 0 && invocation.unconfirmed {
++		return unconfirmedReadExitCode
++	}
++	return code
++}
++
++func readCommand(name string, args ...string) *exec.Cmd {
++	if currentRead == nil {
++		return exec.Command(name, args...)
++	}
++	return exec.CommandContext(currentRead.context, name, args...)
++}
++
++func delegatedReadArgs(args []string) []string {
++	if currentRead == nil {
++		return args
++	}
++	return readArgsAtDeadline(args, currentRead.deadline)
++}
++
++func readArgsAtDeadline(args []string, deadline time.Time) []string {
++	return append([]string{"__read", "--deadline-unix-ms", strconv.FormatInt(deadline.UnixMilli(), 10), "--"}, args...)
++}
+diff --git a/mc/cmd/mc/read_deadline_test.go b/mc/cmd/mc/read_deadline_test.go
+new file mode 100644
+index 00000000..e51faf12
+--- /dev/null
++++ b/mc/cmd/mc/read_deadline_test.go
+@@ -0,0 +1,165 @@
++package main
++
++import (
++	"bytes"
++	"context"
++	"errors"
++	"fmt"
++	"io"
++	"os"
++	"reflect"
++	"strconv"
++	"strings"
++	"testing"
++	"testing/synctest"
++	"time"
++)
++
++func TestReadDeadlineAcceptsExactReadCommand(t *testing.T) {
++	deadline := time.Now().Add(time.Second).UnixMilli()
++	want := []string{"task", "list", "--project", "project-1", "--limit", "20"}
++	args := append([]string{"__read", "--deadline-unix-ms", strconv.FormatInt(deadline, 10), "--"}, want...)
++	gotDeadline, gotArgs, err := parseReadCommand(args)
++	if err != nil || gotDeadline.UnixMilli() != deadline || !reflect.DeepEqual(gotArgs, want) {
++		t.Fatalf("parsed deadline = %v, command = %v, error = %v", gotDeadline, gotArgs, err)
++	}
++}
++
++func TestReadDeadlineRejectsWritesAndUnknownCommands(t *testing.T) {
++	for _, command := range [][]string{
++		{"task", "create"}, {"project", "register"}, {"pause", "all"},
++		{"settings", "set"}, {"outbox", "ack"}, {"system", "probe"},
++		{"doctor"}, {"config", "get"}, {"__system-state", "record"},
++	} {
++		t.Run(strings.Join(command, "_"), func(t *testing.T) {
++			args := append([]string{"__read", "--deadline-unix-ms", strconv.FormatInt(time.Now().Add(time.Second).UnixMilli(), 10), "--"}, command...)
++			var stdout, stderr bytes.Buffer
++			code := run(args, privateExpiredDeadlineReader{t}, &stdout, &stderr)
++			if code != 2 || !strings.Contains(stdout.String(), "error") {
++				t.Fatalf("write refusal = %d, stdout = %q, stderr = %q", code, stdout.String(), stderr.String())
++			}
++		})
++	}
++}
++
++func TestReadDeadlineRejectsInvalidEnvelope(t *testing.T) {
++	for _, args := range [][]string{
++		{"__read"},
++		{"__read", "--deadline-unix-ms", "0", "--", "task", "list"},
++		{"__read", "--deadline-unix-ms", "abc", "--", "task", "list"},
++		{"__read", "--deadline-unix-ms", "123", "task", "list"},
++		{"__read", "--deadline", "123", "--", "task", "list"},
++	} {
++		if _, _, err := parseReadCommand(args); err == nil {
++			t.Fatalf("accepted invalid read envelope: %q", args)
++		}
++	}
++}
++
++func TestReadDeadlineExpiresBeforeAction(t *testing.T) {
++	code := runWithinReadDeadline(time.Now().Add(-time.Second), func() int {
++		t.Fatal("an expired read reached the command body")
++		return 99
++	})
++	if code != privateHelperTimeoutExitCode {
++		t.Fatalf("expired read exit = %d", code)
++	}
++}
++
++func TestReadDeadlineCapsClockDifference(t *testing.T) {
++	now := time.Now()
++	if got := readDeadlineBudget(now.Add(time.Hour), now); got != maxReadDuration {
++		t.Fatalf("clock difference budget = %s, want %s", got, maxReadDuration)
++	}
++	if got := readDeadlineBudget(now.Add(3*time.Second), now); got != 3*time.Second {
++		t.Fatalf("remaining budget = %s, want 3s", got)
++	}
++}
++
++func TestReadDeadlineNestedReadKeepsParentDeadline(t *testing.T) {
++	previous := currentRead
++	synctest.Test(t, func(t *testing.T) {
++		deadline := time.Now().Add(time.Second)
++		code := runWithinReadDeadline(deadline, func() int {
++			parent := currentRead
++			childCode := runWithinReadDeadline(time.Now().Add(time.Hour), func() int {
++				if !currentRead.deadline.Equal(deadline) {
++					t.Fatalf("nested deadline = %s, want %s", currentRead.deadline, deadline)
++				}
++				args := delegatedReadArgs([]string{"project", "list"})
++				if args[2] != strconv.FormatInt(deadline.UnixMilli(), 10) {
++					t.Fatalf("Docker received a different deadline: %v", args)
++				}
++				return 0
++			})
++			if currentRead != parent {
++				t.Fatal("the nested read did not restore its parent context")
++			}
++			return childCode
++		})
++		if code != 0 {
++			t.Fatalf("read exit = %d", code)
++		}
++	})
++	if currentRead != previous {
++		t.Fatal("the read left its deadline on another command")
++	}
++}
++
++func TestReadDeadlineCancelsHostCommandBeforeSpawn(t *testing.T) {
++	ctx, cancel := context.WithCancel(t.Context())
++	cancel()
++	previous := currentRead
++	currentRead = &readInvocation{context: ctx, deadline: time.Now().Add(time.Second)}
++	t.Cleanup(func() { currentRead = previous })
++	if err := readCommand("/bin/sh", "-c", "exit 99").Run(); !errors.Is(err, context.Canceled) {
++		t.Fatalf("cancelled host command returned %v", err)
++	}
++}
++
++func TestReadDeadlinePreservesUnconfirmedNestedRead(t *testing.T) {
++	code := runWithinReadDeadline(time.Now().Add(time.Second), func() int {
++		inner := runWithinReadDeadline(time.Now().Add(time.Second), func() int {
++			currentRead.unconfirmed = true
++			return 0
++		})
++		if inner != unconfirmedReadExitCode {
++			t.Fatalf("nested unconfirmed read exit = %d", inner)
++		}
++		return 0 // System status can still return a partial result.
++	})
++	if code != unconfirmedReadExitCode {
++		t.Fatalf("unconfirmed read exit = %d", code)
++	}
++}
++
++func TestReadDeadlineTerminatesBlockedContainerCommand(t *testing.T) {
++	if os.Getenv("MC_TEST_READ_SELF_DEADLINE") == "1" {
++		synctest.Test(t, func(t *testing.T) {
++			reader, writer := io.Pipe()
++			defer reader.Close()
++			defer writer.Close()
++			const budget = 20 * time.Millisecond
++			go func() {
++				code := runWithinReadDeadline(time.Now().Add(budget), func() int {
++					fmt.Fprintln(os.Stdout, "The container command started.")
++					_, _ = io.ReadAll(reader)
++					return 99
++				})
++				fmt.Fprintf(os.Stderr, "The container command returned %d.\n", code)
++				os.Exit(99)
++			}()
++			synctest.Wait()
++			time.Sleep(budget - time.Nanosecond)
++			fmt.Fprintln(os.Stdout, "The container command remains alive before its deadline.")
++			time.Sleep(time.Nanosecond)
++			synctest.Wait()
++			t.Fatal("the container command remains alive at its deadline")
++		})
++		return
++	}
++	output := privateHelperDeadlineProcess(t, "MC_TEST_READ_SELF_DEADLINE")
++	if !strings.Contains(output, "The container command remains alive before its deadline.") {
++		t.Fatalf("the container command ended before its deadline: %s", output)
++	}
++}
+diff --git a/mc/cmd/mc/systemstatus.go b/mc/cmd/mc/systemstatus.go
+index d528e5f0..77cab1d6 100644
+--- a/mc/cmd/mc/systemstatus.go
++++ b/mc/cmd/mc/systemstatus.go
+@@ -67,13 +67,26 @@ func systemSpineCall(action string, request any) (any, error) {
+ 	if !shouldDelegateToHelper() {
+ 		return commandSystemSpine(action, bytes.NewReader(body))
+ 	}
+-	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
++	parent := context.Background()
++	if currentRead != nil {
++		parent = currentRead.context
++	}
++	ctx, cancel := context.WithTimeout(parent, 8*time.Second)
+ 	defer cancel()
+-	cmd := exec.CommandContext(ctx, "docker", "exec", "-i", helperContainerName(), "mc", "__system-state", action)
++	inner := []string{"__system-state", action}
++	if currentRead != nil {
++		deadline, _ := ctx.Deadline()
++		inner = readArgsAtDeadline(inner, deadline)
++	}
++	args := append([]string{"exec", "-i", helperContainerName(), "mc"}, inner...)
++	cmd := exec.CommandContext(ctx, "docker", args...)
+ 	cmd.Stdin = bytes.NewReader(body)
+ 	var out bytes.Buffer
+ 	cmd.Stdout = &out
+ 	if err := cmd.Run(); err != nil {
++		if currentRead != nil {
++			currentRead.unconfirmed = true
++		}
+ 		var refusal struct {
+ 			Error struct {
+ 				Message string `json:"message"`
+diff --git a/mc/deployment/supervision.go b/mc/deployment/supervision.go
+index 0911718f..e81ba8cd 100644
+--- a/mc/deployment/supervision.go
++++ b/mc/deployment/supervision.go
+@@ -324,7 +324,7 @@ func launchAgent(label, bun, entry, config, working, mcHome, logLevel, pathEnv,
+   <key>KeepAlive</key>
+   <true/>
+   <key>ProcessType</key>
+-  <string>Background</string>
++  <string>Standard</string>
+   <key>ThrottleInterval</key>
+   <integer>10</integer>
+   <key>StandardOutPath</key>
+diff --git a/mc/deployment/supervision_plist_darwin_test.go b/mc/deployment/supervision_plist_darwin_test.go
+index b8d624c9..0ebc4df7 100644
+--- a/mc/deployment/supervision_plist_darwin_test.go
++++ b/mc/deployment/supervision_plist_darwin_test.go
+@@ -3,6 +3,7 @@ package deployment
+ import (
+ 	"os/exec"
+ 	"path/filepath"
++	"strings"
+ 	"testing"
+ )
+ 
+@@ -16,5 +17,11 @@ func TestSupervisionPropertyListsPassPlatformValidation(t *testing.T) {
+ 		if out, err := exec.Command("/usr/bin/plutil", "-lint", path).CombinedOutput(); err != nil {
+ 			t.Fatalf("property list validation %s: %v: %s", name, err, out)
+ 		}
++		if name == "resident.plist" || name == "dashboard.plist" {
++			out, err := exec.Command("/usr/bin/plutil", "-extract", "ProcessType", "raw", "-o", "-", path).CombinedOutput()
++			if err != nil || strings.TrimSpace(string(out)) != "Standard" {
++				t.Fatalf("process policy %s: %v: %s", name, err, out)
++			}
++		}
+ 	}
+ }
+diff --git a/runner/shared/log.ts b/runner/shared/log.ts
+index 3a19c441..4effe1e4 100644
+--- a/runner/shared/log.ts
++++ b/runner/shared/log.ts
+@@ -83,7 +83,7 @@ export const EVENTS = [
+   "runner.mc_failed", "runner.store_preamble_refused",
+   "adapter.launch_failed", "adapter.stream_error", "adapter.session_captured",
+   "cli.invoked", "cli.verb_refused",
+-  "dash.request_failed", "dash.render_refused", "dash.nudge_failed", "dash.wiki_failed", "dash.wiki_library_remote",
++  "dash.request_failed", "dash.render_refused", "dash.nudge_failed", "dash.wiki_failed", "dash.wiki_library_remote", "dash.mc_completed",
+   "log.sink_failed",
+ ] as const;
+ 

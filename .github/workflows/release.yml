@@ -1,0 +1,568 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  GOFLAGS: ""
+  GOENV: "off"
+  GOTOOLCHAIN: local
+  NO_COLOR: "1"
+
+jobs:
+  source-secrets:
+    name: source-secrets
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      - name: Check the complete public history and pull request commits
+        run: |
+          ./release/secret-check.sh --public-refs --commit "$GITHUB_SHA" \
+            --tools "$RUNNER_TEMP/security-tools" --report "$RUNNER_TEMP/security-history.json"
+      - name: Preserve the masked history report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-security-history-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/security-history.json
+          if-no-files-found: error
+          retention-days: 30
+
+  security-acceptance:
+    name: security-acceptance
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+      - name: Build the controlled advisory database tool
+        working-directory: release/security/fixture-db
+        run: mise exec -- go build -mod=readonly -o "$RUNNER_TEMP/fixture-db" .
+      - name: Prove the security gates with controlled fixtures
+        run: |
+          ./release/check.sh
+          python3 release/security_acceptance.py --tools "$RUNNER_TEMP/security-tools" \
+            --fixture-db "$RUNNER_TEMP/fixture-db" --report "$RUNNER_TEMP/security-acceptance.json"
+      - name: Preserve the scanner acceptance record
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-security-acceptance-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/security-acceptance.json
+          if-no-files-found: error
+          retention-days: 30
+
+  release-security:
+    name: release-security
+    if: always()
+    needs: [source-secrets, security-acceptance, fast-suite-macos, deployment-linux, dashboard-browser, release-images]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 5
+    steps:
+      - name: Require every release check to succeed
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os
+          results = json.loads(os.environ["RESULTS"])
+          if len(results) != 6 or any(item["result"] != "success" for item in results.values()):
+              raise SystemExit("A required release check failed or remains unverified.")
+          PYTHON
+
+  fast-suite-macos:
+    name: fast-suite-macos and application-package
+    needs: [source-secrets]
+    runs-on: macos-15
+    timeout-minutes: 30
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+      archive-sha256: ${{ steps.inputs.outputs.archive-sha256 }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select scratch tool directories
+        run: |
+          test "$(uname -s)" = Darwin
+          test "$(uname -m)" = arm64
+          printf 'MISE_DATA_DIR=%s\n' "$RUNNER_TEMP/mise" >> "$GITHUB_ENV"
+          printf 'GOCACHE=%s\n' "$RUNNER_TEMP/go-build" >> "$GITHUB_ENV"
+          printf 'GOMODCACHE=%s\n' "$RUNNER_TEMP/go-mod-cache" >> "$GITHUB_ENV"
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ${{ runner.temp }}/go-build
+            ${{ runner.temp }}/go-mod-cache
+            ~/.bun/install/cache
+            ~/.npm
+          key: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/agent-runner/bun.lock', 'runner/openwiki/package-lock.json', 'dashboard/bun.lock') }}
+          restore-keys: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+      - name: Install locked test dependencies
+        run: |
+          npm ci --prefix runner/openwiki --ignore-scripts
+          node runner/openwiki/patch-upstream.mjs runner/openwiki/node_modules/openwiki
+          (cd runner/agent-runner && mise exec -- bun install --frozen-lockfile)
+          (cd dashboard && mise exec -- bun install --frozen-lockfile)
+      - name: Run every fast check
+        run: |
+          for component in mc runner/fake-harness runner/agent-runner runner/homie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
+            log="$RUNNER_TEMP/culler-check-${component//\//-}.log"
+            if ! "./$component/check.sh" > "$log" 2>&1; then
+              cat "$log"
+              exit 1
+            fi
+            cat "$log"
+            if [[ "$component" != mc ]] && ! grep -Eq '^[[:space:]]*[1-9][0-9]* pass([[:space:]]|$)' "$log"; then
+              echo "The component check selected zero successful tests: $component" >&2
+              exit 1
+            fi
+          done
+      - name: Build and validate the application package
+        id: package
+        env:
+          CULLER_COMMIT: ${{ github.sha }}
+          CULLER_RELEASE_OUTPUT: ${{ runner.temp }}/culler-release
+        run: |
+          ./release/build.sh "$CULLER_RELEASE_OUTPUT"
+          python3 release/validate_package.py --output "$CULLER_RELEASE_OUTPUT"
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      - name: Scan the exact release files
+        run: |
+          python3 release/security_scan.py files --directory "$RUNNER_TEMP/culler-release/assets" \
+            --commit "$GITHUB_SHA" --tools "$RUNNER_TEMP/security-tools" \
+            --report "$RUNNER_TEMP/culler-release/security-files.json"
+      - name: Record the exact release inputs
+        id: inputs
+        env:
+          CULLER_RELEASE_OUTPUT: ${{ runner.temp }}/culler-release
+        run: |
+          COPYFILE_DISABLE=1 tar -C "$CULLER_RELEASE_OUTPUT" -czf "$RUNNER_TEMP/culler-release-inputs.tar.gz" .
+          python3 - <<'PY'
+          import hashlib
+          import os
+          from pathlib import Path
+          archive = Path(os.environ["RUNNER_TEMP"]) / "culler-release-inputs.tar.gz"
+          digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("archive-sha256=" + digest + "\n")
+          PY
+      - name: Preserve the exact release inputs
+        id: upload
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-release-inputs-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/culler-release-inputs.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Preserve the masked file report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-security-files-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/culler-release/security-files.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve the fast check logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-checks-macos-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/culler-check-*.log
+          retention-days: 7
+
+  deployment-linux:
+    name: deployment-linux
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Select scratch tool directories
+        run: |
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = aarch64
+          printf 'MISE_DATA_DIR=%s\n' "$RUNNER_TEMP/mise" >> "$GITHUB_ENV"
+          printf 'GOCACHE=%s\n' "$RUNNER_TEMP/go-build" >> "$GITHUB_ENV"
+          printf 'GOMODCACHE=%s\n' "$RUNNER_TEMP/go-mod-cache" >> "$GITHUB_ENV"
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ${{ runner.temp }}/go-build
+            ${{ runner.temp }}/go-mod-cache
+          key: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum') }}
+          restore-keys: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+      - name: Run portable deployment checks
+        run: ./mc/test.sh -count=1 ./deployment/
+      - name: Run the production Linux filesystem guard checks
+        run: |
+          log="$RUNNER_TEMP/culler-guard.log"
+          ./mc/test.sh -count=1 -tags= ./substrate/ -run 'Test(LockDomain|OpenRefuses|OpenReadOnlyRefuses|GuardResolves|LinuxRequires)' | tee "$log"
+          if grep -q '^UNVERIFIED ' "$log"; then
+            echo "The production Linux filesystem guard checks require a block-device filesystem." >&2
+            exit 1
+          fi
+
+  dashboard-browser:
+    name: dashboard-browser
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Select scratch tool and smoke directories
+        run: |
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = aarch64
+          printf 'MISE_DATA_DIR=%s\n' "$RUNNER_TEMP/mise" >> "$GITHUB_ENV"
+          printf 'GOCACHE=%s\n' "$RUNNER_TEMP/go-build" >> "$GITHUB_ENV"
+          printf 'GOMODCACHE=%s\n' "$RUNNER_TEMP/go-mod-cache" >> "$GITHUB_ENV"
+          # The smoke home holds a Unix socket, so this root keeps the socket path short.
+          printf 'MC_SMOKE_ROOT=%s\n' "$RUNNER_TEMP/smoke" >> "$GITHUB_ENV"
+          printf 'MC_SMOKE_EVIDENCE_DIR=%s\n' "$RUNNER_TEMP/culler-smoke/evidence" >> "$GITHUB_ENV"
+          printf 'MC_SMOKE_REPORT=%s\n' "$RUNNER_TEMP/culler-smoke/report.xml" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/culler-smoke"
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ${{ runner.temp }}/go-build
+            ${{ runner.temp }}/go-mod-cache
+            ~/.npm
+          key: culler-browser-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/image/project-tools/package-lock.json') }}
+          restore-keys: culler-browser-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+      # The default Project image installs Playwright from this lock file.
+      # The same Playwright installs its matching Chromium build.
+      - name: Install the locked Playwright and its matching Chromium
+        run: |
+          tools="$RUNNER_TEMP/project-tools"
+          mkdir "$tools"
+          cp runner/image/project-tools/package.json runner/image/project-tools/package-lock.json "$tools/"
+          npm ci --prefix "$tools" --omit=dev --ignore-scripts
+          "$tools/node_modules/.bin/playwright" install --with-deps chromium
+          printf 'MC_SMOKE_PLAYWRIGHT=%s\n' "$tools/node_modules/playwright/index.mjs" >> "$GITHUB_ENV"
+      - name: Run the complete dashboard browser suite
+        run: |
+          set -o pipefail
+          ./dashboard/smoke.sh 2>&1 | tee "$RUNNER_TEMP/culler-smoke/smoke.log"
+      - name: Preserve the browser suite log and evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-dashboard-browser-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/culler-smoke
+          if-no-files-found: warn
+          retention-days: 7
+
+  release-images:
+    name: release-images
+    needs: [fast-suite-macos, deployment-linux]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    outputs:
+      artifact-id: ${{ steps.images.outputs.artifact-id }}
+    # The build cache holds the compressed layers of both images: about 1.1 GB for the
+    # default Project image and about 0.7 GB for the product image.
+    # Only a push to main saves a cache entry. A pull request run restores the cache of main and saves nothing.
+    # GitHub removes the oldest entries when the repository passes its cache size limit.
+    # GitHub also removes an entry that no run restores within the cache retention period.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          artifact-ids: ${{ needs.fast-suite-macos.outputs.artifact-id }}
+          path: ${{ runner.temp }}/culler-inputs
+      - name: Verify and unpack the release inputs
+        env:
+          ARCHIVE_SHA256: ${{ needs.fast-suite-macos.outputs.archive-sha256 }}
+        run: |
+          printf '%s  %s\n' "$ARCHIVE_SHA256" "$RUNNER_TEMP/culler-inputs/culler-release-inputs.tar.gz" | sha256sum -c -
+          mkdir "$RUNNER_TEMP/culler-release"
+          tar -xzf "$RUNNER_TEMP/culler-inputs/culler-release-inputs.tar.gz" -C "$RUNNER_TEMP/culler-release"
+      - name: Restore the build cache of the latest main build
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/build-cache
+          key: release-images-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+          restore-keys: release-images-${{ runner.os }}-${{ runner.arch }}-
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+        with:
+          driver: docker-container
+      # The image source cache key of BuildKit is the manifest digest of the base image.
+      # The release label changes the image configuration at each release, so the product image
+      # builds on a label-free build of the same Project image. That base keeps its manifest
+      # digest while the Project layers keep theirs. The labelled build imports the cache that
+      # the label-free build exports, so both builds hold the same layers. The labelled build
+      # loads the default Project image into the Docker engine.
+      # The images hold no attestation record, the same as an image from the Docker engine.
+      - name: Build the Project and runtime images
+        run: |
+          BUILD_CACHE="$RUNNER_TEMP/build-cache"
+          BUILD_CACHE_NEW="$RUNNER_TEMP/build-cache-new"
+          PROJECT_BASE_LAYOUT="$RUNNER_TEMP/project-base"
+          mkdir -p "$BUILD_CACHE" "$BUILD_CACHE_NEW"
+          docker buildx build --platform linux/arm64 --target project \
+            -f "$RUNNER_TEMP/culler-release/image/runner/image/Dockerfile" \
+            --cache-from "type=local,src=$BUILD_CACHE,tag=project" \
+            --cache-to "type=local,dest=$BUILD_CACHE_NEW,mode=max,tag=project" \
+            --output "type=oci,tar=false,dest=$PROJECT_BASE_LAYOUT" --provenance=false \
+            -t "culler-project:check" "$RUNNER_TEMP/culler-release/image"
+          docker buildx build --platform linux/arm64 --target project \
+            -f "$RUNNER_TEMP/culler-release/image/runner/image/Dockerfile" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --cache-from "type=local,src=$BUILD_CACHE_NEW,tag=project" \
+            --output type=docker --provenance=false \
+            -t "culler-project:check" "$RUNNER_TEMP/culler-release/image"
+          docker buildx build --platform linux/arm64 --target product \
+            -f "$RUNNER_TEMP/culler-release/image/runner/image/runtime.Dockerfile" \
+            --build-context "culler-project:check=oci-layout://$PROJECT_BASE_LAYOUT:check" \
+            --build-arg "PROJECT_BASE=culler-project:check" --build-arg MC_BIN=mc-prod-bin \
+            --build-arg RUNTIME_DEPS=1 --build-arg "CULLER_RELEASE_ID=$GITHUB_SHA" \
+            --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+            --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" \
+            --cache-from "type=local,src=$BUILD_CACHE,tag=product" \
+            --cache-to "type=local,dest=$BUILD_CACHE_NEW,mode=max,tag=product" \
+            --output type=docker --provenance=false \
+            -t "culler-runner:check" "$RUNNER_TEMP/culler-release/image"
+          # The new cache directory holds only the layers of this build. The prune frees the builder storage.
+          rm -rf "$BUILD_CACHE" "$PROJECT_BASE_LAYOUT"
+          mv "$BUILD_CACHE_NEW" "$BUILD_CACHE"
+          docker buildx prune --all --force
+          du -sh "$BUILD_CACHE"
+      - name: Save the build cache of this main build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/build-cache
+          key: release-images-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+      # Two runs with the same layer inputs print the same layer digests here.
+      - name: Record the layers of both images
+        run: |
+          for image in culler-project:check culler-runner:check; do
+            echo "== $image"
+            docker image inspect --format '{{json .RootFS.Layers}}' "$image"
+            docker history --no-trunc --format '{{.Size}}  {{.CreatedBy}}' "$image"
+          done
+      - name: Check the Project image with the runtime volume
+        run: ./runner/image/project-smoke.sh "culler-project:check" "culler-runner:check"
+      - name: Check the product without a source checkout
+        run: ./runner/image/product-smoke.sh culler-runner:check
+      - name: Check the Project browser and the runtime browser
+        run: |
+          ./runner/image/browser-smoke.sh culler-project:check
+          ./runner/image/browser-smoke.sh culler-runner:check --runtime
+      - name: Save both images and check every layer and the image contents
+        run: |
+          mkdir -p "$RUNNER_TEMP/security-images"
+          for image in project runner; do
+            docker image save "culler-$image:check" -o "$RUNNER_TEMP/security-images/$image.tar"
+            python3 release/image_layers.py "$RUNNER_TEMP/security-images/$image.tar"
+          done
+          python3 release/image_contents.py --project "$RUNNER_TEMP/security-images/project.tar" \
+            --runner "$RUNNER_TEMP/security-images/runner.tar"
+      - name: Write the size report
+        run: |
+          mkdir -p "$RUNNER_TEMP/size-report"
+          python3 release/size_report.py --project "$RUNNER_TEMP/security-images/project.tar" \
+            --runner "$RUNNER_TEMP/security-images/runner.tar" --output "$RUNNER_TEMP/size-report/size-report.md"
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      - name: Scan both release images
+        run: |
+          status=0
+          for image in project runner; do
+            python3 release/security_scan.py image --archive "$RUNNER_TEMP/security-images/$image.tar" \
+              --image "$image" --commit "$GITHUB_SHA" --tools "$RUNNER_TEMP/security-tools" \
+              --report "$RUNNER_TEMP/security-images/$image.json" || status=1
+          done
+          exit "$status"
+      - name: Preserve the exact checked images
+        id: images
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-checked-images-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/security-images
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+      - name: Preserve the size report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-size-report-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/size-report/size-report.md
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Preserve the masked image reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-security-images-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/security-images/*.json
+          if-no-files-found: error
+          retention-days: 30
+
+  product-image:
+    name: product-image
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images, release-security]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.push.outputs.image }}
+      project-image: ${{ steps.push.outputs.project-image }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          artifact-ids: ${{ needs.release-images.outputs.artifact-id }}
+          path: ${{ runner.temp }}/security-images
+      - name: Load the exact checked images
+        run: |
+          image_repository="ghcr.io/${GITHUB_REPOSITORY,,}/runner"
+          export IMAGE_TAG="$image_repository:build-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          export PROJECT_IMAGE_TAG="${image_repository%/runner}/project:build-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          printf 'IMAGE_REPOSITORY=%s\n' "$image_repository" >> "$GITHUB_ENV"
+          printf 'PROJECT_IMAGE_REPOSITORY=%s/project\n' "${image_repository%/runner}" >> "$GITHUB_ENV"
+          printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" >> "$GITHUB_ENV"
+          printf 'PROJECT_IMAGE_TAG=%s\n' "$PROJECT_IMAGE_TAG" >> "$GITHUB_ENV"
+          python3 release/security_images.py "$RUNNER_TEMP/security-images" --commit "$GITHUB_SHA"
+      - name: Authenticate the image upload
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Push the checked image and retain its digest
+        id: push
+        run: |
+          docker push "$PROJECT_IMAGE_TAG"
+          docker image inspect "$PROJECT_IMAGE_TAG" > "$RUNNER_TEMP/culler-project-image.json"
+          docker push "$IMAGE_TAG"
+          docker image inspect "$IMAGE_TAG" > "$RUNNER_TEMP/culler-pushed-image.json"
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+          record = json.loads((Path(os.environ["RUNNER_TEMP"]) / "culler-pushed-image.json").read_text())[0]
+          pattern = re.escape(os.environ["IMAGE_REPOSITORY"]) + r"@sha256:[0-9a-f]{64}"
+          digests = [value for value in record["RepoDigests"] if re.fullmatch(pattern, value)]
+          if len(digests) != 1:
+              raise SystemExit("The checked image requires one immutable registry digest.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("image=" + digests[0] + "\n")
+          project = json.loads((Path(os.environ["RUNNER_TEMP"]) / "culler-project-image.json").read_text())[0]
+          pattern = re.escape(os.environ["PROJECT_IMAGE_REPOSITORY"]) + r"@sha256:[0-9a-f]{64}"
+          digests = [value for value in project["RepoDigests"] if re.fullmatch(pattern, value)]
+          if len(digests) != 1:
+              raise SystemExit("The Project image requires one immutable registry digest.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("project-image=" + digests[0] + "\n")
+          PY
+
+  release-downloads:
+    name: release-downloads and publication
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, product-image, release-security]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      packages: read
+      actions: read
+    concurrency:
+      group: culler-release-publication
+      cancel-in-progress: false
+      queue: max
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          artifact-ids: ${{ needs.fast-suite-macos.outputs.artifact-id }}
+          path: ${{ runner.temp }}/culler-inputs
+      - name: Verify and unpack the release inputs
+        env:
+          ARCHIVE_SHA256: ${{ needs.fast-suite-macos.outputs.archive-sha256 }}
+        run: |
+          printf '%s  %s\n' "$ARCHIVE_SHA256" "$RUNNER_TEMP/culler-inputs/culler-release-inputs.tar.gz" | sha256sum -c -
+          mkdir "$RUNNER_TEMP/culler-release"
+          tar -xzf "$RUNNER_TEMP/culler-inputs/culler-release-inputs.tar.gz" -C "$RUNNER_TEMP/culler-release"
+      - name: Authenticate private image retrieval
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      - name: Verify release downloads and publish the complete release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_IMAGE: ${{ needs.product-image.outputs.image }}
+          PROJECT_IMAGE: ${{ needs.product-image.outputs.project-image }}
+        run: python3 release/publish.py --output "$RUNNER_TEMP/culler-release" --image "$RELEASE_IMAGE" --project-image "$PROJECT_IMAGE" --tools "$RUNNER_TEMP/security-tools"
+      - name: Preserve the masked publication report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-security-publication-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/culler-release/security-publication.json
+          if-no-files-found: error
+          retention-days: 30

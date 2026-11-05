@@ -1,0 +1,80 @@
+{
+  "case_id": "memos-author-spacing",
+  "method": "unchanged_frontend_with_synthetic_service_responses",
+  "limits": [
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "clock": "2026-09-30T12:00:00Z",
+  "timezone": "UTC",
+  "locale": "en-US",
+  "images": [
+    {
+      "path": "before-author.png",
+      "sha256": "21ed0e1c47d10ceba1a20d65cb4691d8ad2b053cb91f11ea472aec7dac1092e1",
+      "source_revision": "45519accd338fa29010db6a9d31de6fe252256ae",
+      "side": "before",
+      "state": {
+        "name": "author",
+        "display_name": "Al"
+      },
+      "fixture": "before-author-fixture.json",
+      "fixture_sha256": "ef6b07b612aaf7f98dc10b8e1cc7dfb65c6fa8ee402da40697e767302d2fadb7",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-author.png",
+      "sha256": "4b72309b26341cf629e2a73618aaafd4cedf094cbcb8aac6257ac14a3fbdf51a",
+      "source_revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+      "side": "after",
+      "state": {
+        "name": "author",
+        "display_name": "Al"
+      },
+      "fixture": "after-author-fixture.json",
+      "fixture_sha256": "ef6b07b612aaf7f98dc10b8e1cc7dfb65c6fa8ee402da40697e767302d2fadb7",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    }
+  ],
+  "tools": {
+    "capture_memos.py": "49eff933ca650fb9a036cb989e76fb7f26c8fc1d0247bc139012da924cb14d9a",
+    "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+  },
+  "browser_version": "145.0.7632.6"
+}

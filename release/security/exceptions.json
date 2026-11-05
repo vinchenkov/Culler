@@ -1,0 +1,77 @@
+{
+  "secrets": [
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:365ee7ca40c8a64a1dea1bd3ef18be04559ba5c2",
+      "file": "performance/RESULTS.html",
+      "rule": "generic-api-key",
+      "line": 75,
+      "reason": "The value is the source checksum of dashboard/src/api.ts."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:365ee7ca40c8a64a1dea1bd3ef18be04559ba5c2",
+      "file": "performance/results-view-data.json",
+      "rule": "generic-api-key",
+      "line": 194,
+      "reason": "The value is the source checksum of dashboard/src/api.ts."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:365ee7ca40c8a64a1dea1bd3ef18be04559ba5c2",
+      "file": "performance/results/2026-10-11/candidate-sources.json",
+      "rule": "generic-api-key",
+      "line": 2,
+      "reason": "The value is the source checksum of dashboard/src/api.ts."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:771480e44c43a99c9ceadace38d5e2bad9e39c3a",
+      "file": "mc/go.sum",
+      "rule": "generic-api-key",
+      "line": 50,
+      "reason": "The value is the public Go module checksum for modernc.org/token v1.1.0."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:8aa679eca0d97471b01baa98e385683264c6b8a6",
+      "file": "mc/verbs/refusalroute_test.go",
+      "rule": "generic-api-key",
+      "line": 25,
+      "reason": "The test uses this fixed key to sign synthetic refusal-route requests."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:caf81320e553535b586a49e2fb839ea1c754539c",
+      "file": "spikes/01-setuid-gate/probe/go.sum",
+      "rule": "generic-api-key",
+      "line": 50,
+      "reason": "The value is the public Go module checksum for modernc.org/token v1.1.0."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:e415c10f21a11f3a9e723c379d7cb0d8a5e43b51",
+      "file": "docs/reviews/2026-07-14-adr-021-implementation-probe.json",
+      "rule": "generic-api-key",
+      "line": 15,
+      "reason": "The value identifies a review result. It is not a credential."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:e6cf4a19315594aa73821c3a798c088364d46967",
+      "file": "spikes/04-egress-gateway/probes/probe1-minimax.sh",
+      "rule": "curl-auth-header",
+      "line": 40,
+      "reason": "The probe uses an intentionally invalid test credential to check the connection."
+    },
+    {
+      "scanner": "gitleaks",
+      "subject": "commit:e6cf4a19315594aa73821c3a798c088364d46967",
+      "file": "spikes/04-egress-gateway/probes/probe1-minimax.sh",
+      "rule": "curl-auth-header",
+      "line": 47,
+      "reason": "The probe uses an intentionally invalid test credential to check the connection."
+    }
+  ],
+  "vulnerabilities": []
+}

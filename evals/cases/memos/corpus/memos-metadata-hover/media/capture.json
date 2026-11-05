@@ -1,0 +1,522 @@
+{
+  "case_id": "memos-metadata-hover",
+  "method": "unchanged_frontend_with_synthetic_service_responses",
+  "limits": [
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "clock": "2026-09-30T12:00:00Z",
+  "timezone": "UTC",
+  "locale": "en-US",
+  "images": [
+    {
+      "path": "before-owner-idle.png",
+      "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+      "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "side": "before",
+      "state": {
+        "name": "owner-idle",
+        "attachment": true,
+        "other": false,
+        "hover": null,
+        "edit": true
+      },
+      "fixture": "before-owner-idle-fixture.json",
+      "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+        "hover": false,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "1",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+            "opacity": "0",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "before-owner-hover.png",
+      "sha256": "882b1fa9569ab12bcecafe4076d68139eec165fa1627c79fa5234c776c3324bc",
+      "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "side": "before",
+      "state": {
+        "name": "owner-hover",
+        "attachment": true,
+        "other": false,
+        "hover": "attachment",
+        "edit": true
+      },
+      "fixture": "before-owner-hover-fixture.json",
+      "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+        "hover": true,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "1",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+            "opacity": "0",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "before-other-idle.png",
+      "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+      "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "side": "before",
+      "state": {
+        "name": "other-idle",
+        "attachment": true,
+        "other": true,
+        "hover": null,
+        "edit": false
+      },
+      "fixture": "before-other-idle-fixture.json",
+      "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/BatchGetUsers",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+        "hover": false,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "1",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": {},
+            "opacity": "0",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "before-other-hover.png",
+      "sha256": "469baa58a207f572ac19f33fbe27ebd5e53d815dd4795f6bc067f90d28641541",
+      "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "side": "before",
+      "state": {
+        "name": "other-hover",
+        "attachment": true,
+        "other": true,
+        "hover": "attachment",
+        "edit": false
+      },
+      "fixture": "before-other-hover-fixture.json",
+      "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/BatchGetUsers",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+        "hover": true,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "1",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": {},
+            "opacity": "0",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "after-owner-idle.png",
+      "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+      "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "side": "after",
+      "state": {
+        "name": "owner-idle",
+        "attachment": true,
+        "other": false,
+        "hover": null,
+        "edit": true
+      },
+      "fixture": "after-owner-idle-fixture.json",
+      "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+        "hover": false,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "1",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+            "opacity": "0",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "after-owner-hover.png",
+      "sha256": "eaca786cb22dbde7cf4218093d1e467cedecb8690ded793089d18210931b8609",
+      "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "side": "after",
+      "state": {
+        "name": "owner-hover",
+        "attachment": true,
+        "other": false,
+        "hover": "attachment",
+        "edit": true
+      },
+      "fixture": "after-owner-hover-fixture.json",
+      "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+        "hover": true,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "0",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+            "opacity": "1",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "after-other-idle.png",
+      "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+      "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "side": "after",
+      "state": {
+        "name": "other-idle",
+        "attachment": true,
+        "other": true,
+        "hover": null,
+        "edit": false
+      },
+      "fixture": "after-other-idle-fixture.json",
+      "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/BatchGetUsers",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+        "hover": false,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "1",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": {},
+            "opacity": "0",
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "path": "after-other-hover.png",
+      "sha256": "d22bd8de472cbb778c3a4677eaafc55ef915f795af45e2957b63d2289f855d90",
+      "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "side": "after",
+      "state": {
+        "name": "other-hover",
+        "attachment": true,
+        "other": true,
+        "hover": "attachment",
+        "edit": false
+      },
+      "fixture": "after-other-hover-fixture.json",
+      "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/BatchGetUsers",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": {
+        "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+        "hover": true,
+        "children": [
+          {
+            "class": "flex size-5 shrink-0 items-center justify-center",
+            "opacity": "1",
+            "text": ""
+          },
+          {
+            "class": "min-w-0 flex-1 truncate text-foreground",
+            "opacity": "1",
+            "text": "example.txt"
+          },
+          {
+            "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+            "opacity": "0",
+            "text": "TXT\u00b72.0 KB"
+          },
+          {
+            "class": {},
+            "opacity": "0.75",
+            "text": ""
+          }
+        ]
+      }
+    }
+  ],
+  "tools": {
+    "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+    "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+  },
+  "browser_version": "145.0.7632.6"
+}

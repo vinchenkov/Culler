@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:42999f3056f099c9e61536c94f21cbe2053373e5c8c777383e309ddb6516c6d2",
+  "claims": [
+    {
+      "id": "claim_9b499244e0744b82b23967e19b689227",
+      "statement": "The OpenWiki MCP server is launched through env -i with only PATH and HOME=/tmp/mc-openwiki, so it receives no provider credentials, and its receipt goes to /tmp/openwiki-completion.json.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/adapters/openwiki.ts#L90-L108",
+          "version": "repo-lines-v1:sha256:1ea14271a550e5c8ed5fa6b584d835f94331e9c9033dca943bb4cadae555b6b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjNDk1ZDQzZTU3N2FmMGY5ODMzOWRkOTdiMTM4NDA4MmNlYzM4ZDA1NTI5MWEwMmNjZjkwYWU3N2Q1ZGNmMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjYzY0ZDhmZjhhMWM5NjQwYzM3M2Q2MTk5NWUxNDQzNjA5ZTdlZjhlMjQxZmM5ZTI2Y2I5YWFiMWJmZWRiYWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9f6ca3004f374fd6af27bee34f945983",
+      "statement": "server.ts requires --repo, builds the integration from integration.mjs, and serves OpenWiki over a stdio MCP transport.",
+      "evidence": [
+        {
+          "resource": "repo://runner/openwiki/server.ts#L1-L15",
+          "version": "repo-lines-v1:sha256:6b71ebcaa0e7d358443f3591d2e06219d7ec57fad14810864ded4cf4ad597a7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5ZGViMzM1NjY0OWIzODQzMzJiNjI4NjE0ZTNlYzE5YjNhOWYxYmQ5YzhjNWFmNGQzN2Y4Y2YyYjZiNmY5MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNjZmZGNlMTcxODk3YWQ4Y2ZhYzM4MzljYWVhZmVjYWQ0OTMxOWZmMjBhYTliNDZhOTYzYjcxOTI0YzkyZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e8ec3970a1a42fbb6c31d6cb771f083",
+      "statement": "The resident wiki lane runs mc __wiki-export --image <image> every 20 seconds, one call at a time, and logs wiki.export_failed once per distinct cause.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/wiki-lane.ts#L10-L10",
+          "version": "repo-lines-v1:sha256:35c93f1b2df5f7486f96bc3820d0d1f4287267210ec4ab1ae5efc201048571f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzVjOTNmMWIyZGY1Zjc0ODZmOTZiYzM4MjBkMGQxZjQyODcyNjcyMTBlYzRhYjFhZTVlZmMyMDEwNDg1NzFmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzVjOTNmMWIyZGY1Zjc0ODZmOTZiYzM4MjBkMGQxZjQyODcyNjcyMTBlYzRhYjFhZTVlZmMyMDEwNDg1NzFmOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDhhOGJmODRiNGQ4MDRmYTVhOGVhNjVhYjM0ZmExYzkxYmY5YjNlODI0ZTY0ZWZhZDlmYTdiOTMzYmIzMDI0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjZmMjQ3NGQ1NzQ0NWFlNjBjNjFlMmNlZGMyMDVhZjVmNWM1OGE0ZmUxMDkwYjEwZDc4MDRkZmQ0MDA5YWMxMiJ9"
+        },
+        {
+          "resource": "repo://resident/src/wiki-lane.ts#L73-L122",
+          "version": "repo-lines-v1:sha256:e72e6c7e914e3705e78776058e4cd3498686c588df0585df22bda5fae8f0e649:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkOTQxYzgyMTc0N2RlNDQ5OGI3ZTExZGRkMDhmMmQzNGYwYzY2MTg3MTEyZjY3ZGM4MDFmYWJiNDQ1MmI1NzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4Zjc5MjIyMTcyNmQxOWMzNjMyZjU2NGQ1N2VjNjAzZGEzYjhlNjc5YjFiYzhhZmYzNzUyMzA4MjlkNzU3MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlYmQ4YjcwOTRiZDkyYWYwNGI5MGMwYTMwMmJhYTE0NWYwNTU0ODk2ZWVlYjhiOWVjY2IxMDY2NTI1NzFiODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3cb917926e746b4ac98e9587c172891",
+      "statement": "mc __wiki-export requires host scope and exports into MC_HOME/wiki through wiki.Exporter with DockerExport.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/wiki_export.go#L19-L71",
+          "version": "repo-lines-v1:sha256:f3c8acddaba328495b35403424784a4acee184c886d00223af461afc4616b864:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxNjM5MzliNjg5NjIyNjg4ZjE2NmMxOTUwYWExOTU1NWM2ZTE3ODEzYTZmZTM1Njk2ZjExNjJhNDg2MzNhMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjYWM1ODgxNWJkNjU0NjBiNGRlMWFiMzZiNDU2YTVhOGVmYWFiNTIzYmI4ZGY5ZTliMjA5MTUyN2QzMzkxNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agentsview.go#L161-L165",
+          "version": "repo-lines-v1:sha256:ddab7746ce4523f9a1bb2c6ceae736f8ddd031af8aacea818617270fae1755ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzA4NTNlODgwODljZGUyZDUzM2IxYjk5NzI0YTgzZjY2NjkyMGIzMGI5N2Y1MDI1NzhhZjg0YjE0MDQ3ZTlkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_573a679b9b1b45c3a66f42307480c1ee",
+      "statement": "An export reads the openwiki tree of the main branch commit, skips an unchanged commit and tree, waits 10 minutes before retrying a failed commit and tree, and keeps the previous export on failure.",
+      "evidence": [
+        {
+          "resource": "repo://mc/wiki/export.go#L169-L214",
+          "version": "repo-lines-v1:sha256:29c0dc2f7824bbf4f5c16ef7a7561fbde358c8c55cde58746a1f7ea713c8dc18:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4MjBmNzQyYWNjZDczNWQ2MTJjNGVkYzM1NmIwNjZjNDZhZDc3NWQyYWY4ZjMwZWIwNDhlOGZkYjk3ZWM1YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0MTg5MzgzMzhkZjdkZjQxNWYyMmJhOTNjYmQ5MDAyZjM2MjA5OTY2NjM1YThjOGI5NDM4MDdiY2Y2YWJlMDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjY2I3N2VlZTcxYjliYjQ2MDIzYzg2ZTU0ODk3MDk1ZTgxY2UxZTk5Mzc1NDBkZDUzZTIzNjgxZWVmYmVlN2YifQ"
+        },
+        {
+          "resource": "repo://mc/wiki/export.go#L30-L34",
+          "version": "repo-lines-v1:sha256:cbb55b0ead07938b98b9d7e0013cffd3a9556f411850b7d9acd7685d2f9e725f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE2ZGJjZjhlZTkzMGQ4MTkyOTA2ODE5ZWIxY2ExYmVkNjgyNjk4OTE4ZTFjMTkwNmVjZmNmMzk5ZTNiMGZjNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWY2MDQ5YTc1N2ExODg0OWVjZjg1NDY5MDJmZWQwYzVkYmU3ODE4MmUyYjYzYWMxZjE3ZmZiYWNiZWZhMDhjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJjNTU1NDUzZjU3ZWVlZWIwOTkwMmRmNzkyMGM1YjFhYjFlYmVjNzIzZTczYmNlNWI2ZWQyZjgxMjE4ZGRmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhMTZjNDVkNmVhOTViNDgzOGZiZTNlZWZhOGU1NTM1YzVkZjVkZDQyZjVkODUwYzNmNzU0ZTk2MDcxZWRhZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e036f5f3913d45dc87bc4507f09f4e4a",
+      "statement": "The export container runs with no network, uid 10002, all capabilities dropped, a read-only root, limited CPU, memory, and pids, and an empty environment.",
+      "evidence": [
+        {
+          "resource": "repo://mc/wiki/export.go#L549-L564",
+          "version": "repo-lines-v1:sha256:b8f6fbc91551126c2f1d8f3a7c6623ddf9f803e8344d6014f4d99f654da909a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjOTQzMzQzMzc0N2ZlOWMzMzJjMGM0NjQyNDk2ZDZjZjZjMWNhYWZiYTJhMmRlZmY1YjFhZWI4ODhmNjFiYjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkMTRkNmRlNGQzZDUwYmY2MmY3NDAxMjA2YmQwMzYzNWJlNGMyMGZkZDRjNmUxMjE2YTEwM2U1NDJlNGMzOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4ZmIzMjBmNGFhZjc4NmY2MDNjZDcwOTUwOTdlMzkzMmYyYTcwZjhjNTcyODZlYTE1YjY3NGJjNjkxZWRhOGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9f99b2a01244b4c9fd41c6a36eca389",
+      "statement": "The wiki key is a 64-hex viewer secret at MC_HOME/state/wiki-key, created once and never rewritten.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/viewer_secrets.go#L17-L20",
+          "version": "repo-lines-v1:sha256:6a71f9ec2779b7b56e417bc41bc45c7f6a812aec4baf26c884003646e5660b70:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTE2Mjc2ZGJkMmFmNzc5MDg1YTU1MmUwNjYxMTkxNWM3Zjg2MWZhNzI5MGFhYTRiNmU4Njk3MjBkM2IzMTY3OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTVlZmE2MzhkOThlNzIwNzlmN2E3N2RmZTJmNGIzNzM0YTNiOGM0NGNjNjgxMTA3NjQ4NmNkNTBmOGY1NzEwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWZhMzNhYmQ2ZmRhNGE2MjU5ZDBmZTQ0ZmVkYjkyMWVhNGMxODc1N2YzMzhlYTM4YTYwYjQyOTE2ODAwN2IxMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc3NDliNzRjZDhjNTE4MmNkODQ1MDQ0MjE5N2IwMGNlYmE1NDJiNjUxOWEwOTY1YzRiZWFlNDE0NzIxYWIwOCJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/viewer_secrets.go#L44-L74",
+          "version": "repo-lines-v1:sha256:566462d41808585d2e61f4199588f2b4c9ff7eb6a881a83fc8dbcf5b460cd407:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZGMzZWYzYTY1YzAxYzQ3MjVlMDk3MDYxNjliMGJkMzdiMTVkYTVlY2Q4MjdhOTJhZGVjNjgyMDQ5ZmFhYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiYzcyNWQ5ZWE4ZGE1NzA0NWE2MzgxNzU5NGU1YTMxN2QzMDY2ZDkwMjA3ZDYxNDBmM2NkZTkwNWI1MDc2YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjY2U1OWMwYzYwZGI0NDQ1NmNiM2I1ZjYzZjYyNTk3ZTA2YmE2ZTM3OGYxOGJjMDEyY2M3MmFkZDBhYmQwMjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eeaa4a8d54384807850ddee12efc79a6",
+      "statement": "The wiki server defaults to 127.0.0.1:7335, accepts only GET and HEAD, and returns 404 for any path without the wiki key.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/wiki-server.ts#L15-L15",
+          "version": "repo-lines-v1:sha256:6ab064b789af086591b4cf4ac868eda98ceae456c42d9ac6f409471cbd9d8d40:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmFiMDY0Yjc4OWFmMDg2NTkxYjRjZjRhYzg2OGVkYTk4Y2VhZTQ1NmM0MmQ5YWM2ZjQwOTQ3MWNiZDlkOGQ0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmFiMDY0Yjc4OWFmMDg2NTkxYjRjZjRhYzg2OGVkYTk4Y2VhZTQ1NmM0MmQ5YWM2ZjQwOTQ3MWNiZDlkOGQ0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDhjOGY3ODM3ZjIwNDFmZmM1OTgyNGVlZmY3NjQwOTU3YTg5N2FlNTliY2M1MmVmNDkzMjUwZmRmMTQwYTlkNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2VhNmIyMjEwMWZlOWZiNjkxZGY1ZjcwNmIxZjAwZGEwNjU3NzlhMzBhNDdlOTM0YTliM2FiYTU4ZDQyYjg4NiJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/wiki-server.ts#L174-L186",
+          "version": "repo-lines-v1:sha256:a2e08a85282e36d49d692359c65d2d5b921d4a4e1549cedd097a91d5cb960f6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwYTVlMjMyYzBmNWFlYzZjNTc1NDQxOTUzYjZkMWMwOWRlNTI3MTkyZjk0ZmNlNjlhOTU5NGViYWM5YmZlMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNjI3YWI4ZTQyZjQ5NmVhMDMyYzkxNDA5ZTU5NTVjNzc1NjY5MTRiMDQ3Yzg5YmJkNGI0ZWRhZTdmMTNjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI5YjJhZThiMjAwZGY5NjQ1ZjY2M2ViZTljOTRlZTk3OGNmYTBkZmRhN2EwMjc5MTU2YzI0M2E3YjU1YjdjNDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9fa5939d82d4ba2809cbf8fc75829f6",
+      "statement": "The AgentsView pin is embedded in mc, must target darwin-arm64, and must not disable the claude or codex agents.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentsview.go#L15-L16",
+          "version": "repo-lines-v1:sha256:c47d89c57126e023eceb95c975cc6cfc84e36a4fe0cc9e6ea4225e5dcd661a69:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmY1YTJkNjhiNTMzZjRhYmRkYjI0NTI4OWVlZDA4OTQ2MTcxZmIyZWM1NDMzMzI3NjkxZTAyZWNkYmI4NDY2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQ2NDIyMjQ3M2Y5ZDM1OGVlNzUwN2Q1YTA5ZTBhMjc1NGM5N2RlZDI1NmY3YTg5ZDA5NDBhMjAwODI2NmMyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGQ1ZGU2NzM5MGNlMzJiZmZlZjBkZTk2NGMxYzcyMDA5OTVkNjhjYTNlZWNhZGViM2RkMDliODcyYTU0ZWI3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWRhYTNkZDE3NDlkNDY5NTZlMTgyOTZiMGM2MjdkMzBmMTY4MzdiMWNkY2I0MzFkMWJhZDAwZWE4ZTE1MWY4ZCJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/agentsview.go#L66-L112",
+          "version": "repo-lines-v1:sha256:5e1a1cdffa0a7bb359c57d68b7904f7cf7e68f805294e6bf9b2ed925b8e0eb4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3YjhlYmFmY2JkNjQxYjliY2JiZWY0MTg5NTUxY2MyYTAwZmMzMWI4OTI2ZmYyNzdjODhhNmY4NjVkMWI3ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_31670d406000412d81fcc05483262f1c",
+      "statement": "AgentsView is the third supervised launchd unit; the units stop in the order resident, dashboard, agentsview.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentsview_supervision.go#L20-L23",
+          "version": "repo-lines-v1:sha256:5d47f07ccbf6fd2b055a95e912f6672a1509ddc9f92030b172dd4e06df9c1ece:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODFkNTE2OWJkOWExMDI1ZmZhM2M2NzM3N2VkOGUzNzFkYjg3MTBkZWFlYzQ4YjM0NGEwOGEzNzY2YjgzNjNhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzNkODZlMjcxNjJjNTc0MjVlNGNlMjYyZWJiOGFhZGU0ZmZmMDVhYWQ5ZjI1OGZlN2M3NjI2NjQxNDc1ZWMyNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzllZGQ3MmJhNmI0MDA4M2NlOTUyNjlmYTU2ZmNmM2FjMWJkOTgyMjFhYTY2MjFhNjgzZjdkNTYzMmJiMjFkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGM4NjdlNzRlNjAyZDM4ODA1NmFjYjY2YzJlMWE3ZDhmNzRiMjg4MWY3MzgzYTEyN2RhNWJiY2Q1NzNjNWNjMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_19f51f92b9ac4f31994db6af73bd5ab2",
+      "statement": "The AgentsView configuration sets require_auth = true with the deployment token and points the claude and codex agents at the trace-copy folders.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentsview.go#L139-L159",
+          "version": "repo-lines-v1:sha256:893149b143882ecc59a753be0c54023418a942f650ff75a2ceb5e1e56af2d1c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkZGZkNzE1NTk1MDEwMjY5ZDhjOWNiNWFjZmRlZjRiYWI2OTM3ZTgyMjFkZmU4OWRhYWFmYzJhNTUyZDFmNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZGZhZDljNzRiYjFkZWFiZGYxZmVjOTBhZmIzMDBhNjk1MGFmYjQwZTU2MDM5Zjk1ODg2Njc3ZDQzYjI4OTEifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agentsview_supervision.go#L166-L190",
+          "version": "repo-lines-v1:sha256:7f0540059abe52c756b2cb47d8f59f5ab12ba410770bd420245d4dd78339ea05:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3OTkzMmZhMThiOGEzNWZmOWYwYWM0MGQxODdlMjk3NjAzYzIzYWIxYzA5MTQ4ZDRkYzg5NmI4MGQ4ZTQxNTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyYmE3OTUzYTk2ZDVlZjI1NzAxMGU4ODkxZTc4NGJjN2Y0MDY1YWJhMzk0OTZkNGNhYzEyMzllMWJjMDMzZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyM2Y1YzI4YTRiYTIzMWJlMTI2MWY2MmQ2NTk2MzhiMzdlMjU0MGZlOGMwNjg4NGQyM2IyZWRkZWFkODZiOTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_afe65b28d2ff464c82077f0f4ef73c6d",
+      "statement": "The resident AgentsView client sends the token as a bearer authorization header on each request.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/agentsview.ts#L128-L140",
+          "version": "repo-lines-v1:sha256:9977e0beff4893a76d396d34a349afd1806b2784e6b0bcdfd283763666f476db:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNTAwNGJjOGQ2ODk3MGFhZTAyNmFjMDIwZWQzNDRjNTUyOGE4MjMxZGYxNDdkZjdmODlkZTFkYjA3Zjk2YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MzMyOGFhYmY3NDc1MTY2MGQ0YjdiMjU4NzVlYjZkNTg0MDFjMjM3MjM0MzAzOTg0ZGQyZWJiYTcwZTdlYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmMjA1MDdhYjk5NzhkYmFjODhmZTM3MGM1Zjg1YzQyNjNiMDE0OTdmMjM0ODdlMzE4NzIyMTIxNTY4NTEzNTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9c3c8b6e7b1452bb4a6ed38aaabe116",
+      "statement": "mc/trace maps claude-sdk and codex bindings to trace formats and gives Codex sessions the AgentsView id prefix codex:.",
+      "evidence": [
+        {
+          "resource": "repo://mc/trace/trace.go#L24-L52",
+          "version": "repo-lines-v1:sha256:e71218d635b1760151af71c02c0ddb96444e160af0ba64a7e4382c5b8f369253:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjNmNlN2M0Yjc5Y2FmZDdjZjNhNWNkZWZjZTcyMDI2NmFkYWI0ZDQ1YzZiNzI5OGY5ZTA0NDliZGUyNmZjMzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3ZjQxMGYxMzFjZTVkNTBlZWY0OTQ1MWNlNmNlOTE2Njk4ZmE3ZTAxOTgxNGM3ZTU0MzExZmExM2I3NzFjZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxZGI4NTFiOWMwOTBhMjA0N2ZmYjE1YzUxOGQ5MjQwMjI5N2Q4ODEzZWE1ODlkNTFmYTU3NzU4N2EwYmFkNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOGNhZWU0OGQ1MTY0MjFhZjRjNjk4ZDFiMTMxMTFlYzQ1OWNjYWU1OTkwODA2NTRjN2Q4ZmU5OGY2OGFjZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d9a4a6ae1ed4411acd1375d74dd477e",
+      "statement": "The viewer doctor reports agentsview and wiki checks, requiring a loaded prepared unit plus a token-authenticated ping for AgentsView.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/doctorviewers.go#L25-L59",
+          "version": "repo-lines-v1:sha256:7df8a6b785cfe29cb0177e2e7bb71566658aebbdb734d44c97f3d5e08dcefa7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5Y2I5ODAwZWU1ZGVmYzAxZjU1ZjdkM2Q3NjNmMWJjYjZlZTc1ODg3NTc3NThlNDlmY2IwZjgwMDAwODdjYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkYjE3MGY0M2RmZDkzOWFmZmQ0MjBiNGIwZjg3MjhlMTUzZWQwZTk3Mzk0M2Y3ODA3N2E0Mzk0NGNhYjk1OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5ZjE5NjUzNGEwMDc4YTE2OTE4ZTY4ODZlMDBiOGRjZWQ2ODQ0ZjZlNzhlOTY3YjVhYWM5Y2NlNmQ3ZDExYjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c87ac09ba65949a48ad8a8702098b88a",
+      "statement": "The Scribe completion path validates HEAD, repository cleanliness, wiki scope, and the completion receipt before it records the result.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/wikicomplete.go#L20-L70",
+          "version": "repo-lines-v1:sha256:1f7c1b50a2e673bbd633a87525cf5718ac700690d3a36403c5b1098745f09830:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5MjYxMjVjMzEyZmIwOGQ0MjQzMWNlZDg5MzYxMWE3ZTkwZjJiZTIwNWY1NWExMzNmZjQ4NTg1MzY0MzFkMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNjQ2NWU4MDM0YjhmMGVjN2YwZGU3Njk2MmJkZDcwNjc4ZjQ3Nzk0OGE1ZjdjNjgzOWMxZmVmZGQ1MTgxNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ZTk2ZTIxYzk3ZTc5NDJlNDlkNDA5YTdhZGY0NzM3NDlhYTg3YWYwYmMyMjZjYzUwNmVlZWQ5YjJkMDUwZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzNWYwZWNlNzlmMzM3MTBmZWRhYWUyYTZkMWE0NjBjMjliYjZlZDU0MmIyYjhkNWNjNzRhMTRiOWJiOGU5NDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e736720dd9d4b91882a3526e75a0f5d",
+      "statement": "Wiki state derives from accepted commit equality and the active or last successful wiki update.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/wikiupdate.go#L59-L76",
+          "version": "repo-lines-v1:sha256:0e7a81a87f0e2033d423af13c20369f87c09aee2ffce1cf23f956f24ac126066:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNzFmMDM5NDcxODNjMTQ2ZGYwNzI4NmJhZTI5YzkyZTY5ZGU0NGNhMmEzMjQxMGU5ODYxOTM2NjM4NGI0YjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YjVmNDVmYTcyOTVmOWQwMWU4MWZkOWE2ZTU1NzE3NGVlZDQzYzY1ZjM0Zjk4NTAwYzRlN2IyZDI4NzljOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4Njk0OWNmNWNlNGY0Njc4OGVhNDdiZDlmZjFlZjZlZTI0OGViMzM4ZWIwNjJiNjVjNGZlYThjNmZlMDJiZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2Zjg2MzUyM2M2MzczNWVmM2U4MzFiNWZhMDkwMWQ2OTJiYmYyMWU5YTE0ZjUzYTkxZmZkNjYyNmRkMjdhM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca4d946b16574978bc3c087405a8849e",
+      "statement": "The AgentsView proxy exchanges a single-use 30-second grant for a 12-hour session cookie on a separate loopback origin.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L147-L174",
+          "version": "repo-lines-v1:sha256:2d932b75a86b9c868e0c9e6e909ffc157e58257b26541d4146cdc5947e79760f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NGExMzE2N2ZkZWEyMWFhNGM2YzU1ZGU3MzZmNThhNTAzYTQ2ODEzYjE0ZTlmYTM2YzcwYWZjMmRkYTNkOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZGExMDZmMDRkOGZhNmE2Y2M2YzE0NjgzNzZlOThmYTdiZmExMGQ0MzgyMjA4NzRkYjA2ZmQ5ZWU2OWI1ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGM5MDE1NjhhZGI4NDZkM2YyMGRjMTA5YzNlMzcxZWM3MDBiODIwYTZiMGJiM2ZlZDQyMjkwYWQ3NDk2NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMzdkZWQxMmU1NDViYzBjYzRmZjc4ODg5MTEwZTEwZTc2ZTg4MDczMDAwNGMyZWMxNjlmOGU4NzQxYTgzN2UifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L5-L8",
+          "version": "repo-lines-v1:sha256:607ff484876145039061673398be3119d5cbdd204230cb126433d25f912ae830:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQ1NTc3NWE5YTRhZjdjMDkwYWJjOTQ4MmEyNzM1MzhiNjRiNzQ2NTg2Y2IwZWRkMjMzOWJjNTI2OWZiMDMyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRlOGE0MzVlMTdhYTFkNzRiNmIzNjU0YmY5MWZhOGFmOWFjYTIzNzdhNjg4YzU1ZGRkMWZkYTU2MGYzM2UxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGFjMmVhYTA2ZGZkZmI3Y2M2MzdjNTkyYjc4ZDM1ZGYzODAwMGNkOTZiNWViMGY4NjczZDg0MGU5NzBhMjNmYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2M0YzY4ZWRmZDcwMjVmYzY4YTM5MDM3MjBkNDUwZmZmNDI3NmY3NzI1MzZiN2QyOWVhYzcyNTI5YjhmYzk4NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_512d2be46d5e44ea8da2b2326dac735f",
+      "statement": "The proxy keeps the AgentsView token out of settings responses and refuses service configuration and synchronization paths.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L196-L218",
+          "version": "repo-lines-v1:sha256:298d6d21f77cfbdf1f11b992de9c2ab5b830f3f1fe71aaa0d3edb8f1c3395167:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiOTE1ZDg2NGFmNjYyMTdiZTEzZGI4OWZiM2JkOGU2YTM4OTlkMWUwZTg0ZDIzMTlmZTljZGE3M2NkZDc1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlOTdhZWYxNjc4NmRiZmMwOTZiNGZhMTkxMDc2NzJjZjlkYjE4YmY2YzVhYTFmYzVmY2VhMzJmN2ExNTdhYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiYTkyYWQ1NjIxN2Q2OWY5ZDIxZWZlNGNiNjY5NTAxNzAwYTNiNTUzOWIyZDc4ZWZjNWQ0NGMzMjA4NjgxOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5cd6f6c1de904943abc24a5ddd18f176",
+      "statement": "The AgentsView credential command requires host scope.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/agentsview_access.go#L10-L20",
+          "version": "repo-lines-v1:sha256:e846ae696ce343d7ac09a30ba997d5179c7beb2cfc978d7f5bbc70e4dfd98f85:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5OTEwMjIxN2Q0YzUzODg4NTZjM2MwNDc4OWQ3M2MwOTFjODlhNWRiMTg0ZjNlMTIxNGMzNTQ1YWJjMDM2NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwYTY4MGRmYThjZTU0NTQxYjUwZDgzM2Q2YmI3NDlhZDAxZmViZmYxZWYyZmJhMmQwNTBmYjQzZjgyYTMzY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzMGU2NTQ1NTAyODFhZDQyMjI2OTI4MjNlMmUyNGIzMjI5MmYyOTdmNGJiYmJkMzdiN2MwNmM5MTI3MGMxNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea8eff868b944f0a8fb010b833eaa2c0",
+      "statement": "The wiki commit step requires the expected Project home and jurisdiction digest while rejecting ordinary mounts and seeding projections.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/wikiround.go#L469-L483",
+          "version": "repo-lines-v1:sha256:14064e49c27b432380ea59e361ca1b9153e2b608579486b5a0b799ed1dea9676:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MjMxNjU0ODJhZWQ4YzdkYjUyOWRjN2Y5MzNhZjcyZDU4MTNlMDA5MTJiMjViM2EwNjdhMmUzMjk5ODhjZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyODY4N2U3OTI4ZmUwZGZlZGE2Yzc5NDhhYWE4ZWIxYTQ1ZDlmYzdhNDMzZWYyM2U5MTBkMTgxODQyYTkwZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjMjBiN2U0YWU0ZTdmYmEyYTI2OWEzYTdmOWRjODU1MmJkMDgwZTllODU3ZDEzMzljN2VhOTMwMmIyYzMxZTMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-19T23:23:34.817Z"
+  }
+}

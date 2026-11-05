@@ -1,0 +1,29 @@
+{
+  "status": "accepted",
+  "reviewer": "audit_macos",
+  "interpretation": "The new dashboard messages can appear through the shared text renderer. The terminal review rule therefore applies.",
+  "captureBoundary": "Isolated fixture calls the actual observeCommand, makeLogger, and renderText functions. It starts no mc or Docker process.",
+  "validationOnly": true,
+  "widths": [
+    40,
+    80
+  ],
+  "colorModes": [
+    "color",
+    "no-color"
+  ],
+  "scenarios": [
+    "completed",
+    "deadline",
+    "cancelled",
+    "error-before-spawn"
+  ],
+  "observations": [
+    "Success and warning levels match the supplied command outcomes.",
+    "The completed message reports only the zero-exit success case.",
+    "The warning record preserves the exact outcome, exit code, and process fields.",
+    "Both widths retain every field and the complete message.",
+    "The existing renderer emits no color codes in either environment.",
+    "The records describe completed operations and require no operator action."
+  ]
+}

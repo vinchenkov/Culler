@@ -1,0 +1,436 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/808/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "88f5448d29c26e60cdfc242ee11c569f2bd6782454b484a2236180849c8522df",
+      "source": {
+        "kind": "file",
+        "path": "memos-scheduler-plugin/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/808/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "2cd30bd887b31e9d7ae2ce47e5f20c15bac8e5d9747b7b345f2463480080166a",
+      "source": {
+        "kind": "file",
+        "path": "memos-scheduler-plugin/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "scribe-report",
+      "kind": "report",
+      "path": "eval/808/scribe.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "09349f79ec795e4c89d20de513ad1c9e8d393e90e655f5c8f383b329eb4c2dee",
+      "source": {
+        "kind": "file",
+        "path": "memos-scheduler-plugin/scribe.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "f7d32a4ece3d9041d2abd7f04a0ad2c06a8d5660c872f2630f6174086c24cdcf",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "id": "authored-history",
+      "kind": "source_record",
+      "path": "authored-history.json",
+      "provenance": "captured_git_commands",
+      "sha256": "2ec4c1461664972abf6a98a6a136f6a221df2d034aca27952bd4bc3b10d95aae",
+      "source": {
+        "kind": "file",
+        "path": "memos-scheduler-plugin/authored-history.json"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "c7698c086b2008ce1d085a4a605465c86e5083b104c2b000f7258c8e4d112fd8",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "8ff9657d0421cd43c67c74be27bf8dba7cf19f76e2a6daae198dc0016e986b6e",
+    "role_inputs": "0eaf4b5f117a2a8b49a38d371dc21f15620d19480353aa6333667faf01c6cbcf",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "final",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "bfee23a6930abdf9a1cc6771aa6aa2a922dfade0560b8e2e961da620eb56c290"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c006dd9917372196a2d603319ec3bb096a97feb174b4663faba9aca65eea2b93"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "d6c13c265b271c4d2e1968f5c17002e99fae7a6c519e6b93f49b10f4a56d5b50"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "8c6412ea5b2b61140a78ba99a7696e2fdb2eec3d1467dc9f5dd44ad44b5d603c"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-scheduler-plugin",
+  "id": "memos-scheduler-plugin",
+  "paths": {
+    "/mc/artifacts/eval/808/scribe.txt": "scribe-report",
+    "/mc/artifacts/eval/808/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/808/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+        "before": "The plugin directory contains no scheduler package.",
+        "conditions": [
+          "The parser supports five-field and six-field expressions.",
+          "The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+          "Each job loop runs its handler synchronously before it calculates the next run.",
+          "Duplicate names and invalid jobs fail registration."
+        ],
+        "id": "behavior-1",
+        "mechanism": "Start parses each schedule and launches a goroutine with a cancellation context.",
+        "sources": [
+          {
+            "path": "plugin/scheduler/scheduler.go",
+            "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/5828f34aae3bd91cc60c420ee4ce9760f7239ff8/plugin/scheduler/scheduler.go"
+          },
+          {
+            "path": "plugin/scheduler/parser.go",
+            "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/5828f34aae3bd91cc60c420ee4ce9760f7239ff8/plugin/scheduler/parser.go"
+          },
+          {
+            "path": "plugin/scheduler/job.go",
+            "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/5828f34aae3bd91cc60c420ee4ce9760f7239ff8/plugin/scheduler/job.go"
+          }
+        ]
+      },
+      {
+        "after": "The package adds middleware composition and a stop operation that waits with a caller context.",
+        "before": "The package exposes no scheduler middleware or stop operation.",
+        "conditions": [
+          "A timed-out handler can continue if it ignores cancellation.",
+          "Start can launch an earlier job before a later schedule parse fails.",
+          "Stop closes stopCh; this revision does not implement safe restart on the same Scheduler instance.",
+          "The plugin adds examples and tests but no durable job storage or application registration."
+        ],
+        "id": "behavior-2",
+        "mechanism": "Recovery converts panics to errors; logging records results; timeout returns when its context expires.",
+        "sources": [
+          {
+            "path": "plugin/scheduler/middleware.go",
+            "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/5828f34aae3bd91cc60c420ee4ce9760f7239ff8/plugin/scheduler/middleware.go"
+          },
+          {
+            "path": "plugin/scheduler/scheduler.go",
+            "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/5828f34aae3bd91cc60c420ee4ce9760f7239ff8/plugin/scheduler/scheduler.go"
+          },
+          {
+            "path": "plugin/scheduler/README.md",
+            "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/5828f34aae3bd91cc60c420ee4ce9760f7239ff8/plugin/scheduler/README.md"
+          }
+        ]
+      },
+      {
+        "after": "The authored fixture partitions that change into three actual source commits and one documentation commit.",
+        "before": "The upstream change exists as one implementation commit.",
+        "conditions": [
+          "The source test files and documentation come from upstream; no fixture report claims executed tests.",
+          "The Scribe range changes only the package README and doc.go.",
+          "The upstream commit defines the source behavior. The fixture records no production Culler execution."
+        ],
+        "id": "fixture-history",
+        "mechanism": "The final fixture tree equals the pinned upstream tree. The Git bundle supplies every new fixture commit.",
+        "sources": [
+          {
+            "evidence_artifact": "authored-history",
+            "path": "plugin/scheduler/README.md",
+            "revision": "76c850b035ef84eaf151b05981a120cc5c58286c",
+            "symbol": "The complete package README"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The preparation executes no scheduler or added test.",
+      "The package cannot establish exactly-once execution or restart safety from these source checks.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+      "The fixture supplies actual source commits. It records no production Culler execution."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-scheduler-plugin",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "808"
+          },
+          {
+            "label": "Title",
+            "value": "Add an in-process scheduled job plugin"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The new scheduler package registers named jobs and runs each job against a cron schedule.\n\nAcceptance criteria:\n- The new scheduler package registers named jobs and runs each job against a cron schedule.\n- The package adds middleware composition and a stop operation that waits with a caller context.\n- The parser supports five-field and six-field expressions.\n- The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/808/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/808/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/808/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "76c850b035ef84eaf151b05981a120cc5c58286c"
+          },
+          {
+            "label": "Base commit",
+            "value": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "76c850b035ef84eaf151b05981a120cc5c58286c"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "76c850b035ef84eaf151b05981a120cc5c58286c"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 808": {
+        "acceptance_criteria": [
+          "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+          "The package adds middleware composition and a stop operation that waits with a caller context.",
+          "The parser supports five-field and six-field expressions.",
+          "The default timezone is UTC; an invalid scheduler timezone falls back to UTC."
+        ],
+        "description": "The new scheduler package registers named jobs and runs each job against a cron schedule.\n\nAcceptance criteria:\n- The new scheduler package registers named jobs and runs each job against a cron schedule.\n- The package adds middleware composition and a stop operation that waits with a caller context.\n- The parser supports five-field and six-field expressions.\n- The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+        "id": 808,
+        "project_id": "memos-evaluation",
+        "purpose": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+        "requirements_version": 1,
+        "scope": "task",
+        "status": "packaging",
+        "title": "Provide an in-process scheduler package"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+            "The package adds middleware composition and a stop operation that waits with a caller context.",
+            "The parser supports five-field and six-field expressions.",
+            "The default timezone is UTC; an invalid scheduler timezone falls back to UTC."
+          ],
+          "description": "The new scheduler package registers named jobs and runs each job against a cron schedule.\n\nAcceptance criteria:\n- The new scheduler package registers named jobs and runs each job against a cron schedule.\n- The package adds middleware composition and a stop operation that waits with a caller context.\n- The parser supports five-field and six-field expressions.\n- The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+          "id": 808,
+          "project_id": "memos-evaluation",
+          "purpose": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+          "requirements_version": 1,
+          "scope": "task",
+          "status": "packaging",
+          "title": "Provide an in-process scheduler package"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+        "The package adds middleware composition and a stop operation that waits with a caller context.",
+        "The parser supports five-field and six-field expressions.",
+        "The default timezone is UTC; an invalid scheduler timezone falls back to UTC."
+      ],
+      "description": "The new scheduler package registers named jobs and runs each job against a cron schedule.\n\nAcceptance criteria:\n- The new scheduler package registers named jobs and runs each job against a cron schedule.\n- The package adds middleware composition and a stop operation that waits with a caller context.\n- The parser supports five-field and six-field expressions.\n- The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+      "id": 808,
+      "purpose": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+      "requirements_version": 1,
+      "scope": "task",
+      "title": "Provide an in-process scheduler package"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "scribe-report",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+    "bundle": {
+      "kind": "file",
+      "path": "memos-scheduler-plugin/source.bundle",
+      "sha256": "c6b1e2b6912e0fef37c031a6918a56906ea21b6cc921e01523c4a44c0729ebd2"
+    },
+    "change_origin": "authored",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+    "reviewed_tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb",
+    "upstream_commit": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+    "upstream_commit_url": "https://github.com/usememos/memos/commit/5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "feature_across_components"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

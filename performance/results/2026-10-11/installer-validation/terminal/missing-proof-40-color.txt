@@ -1,0 +1,1 @@
+{"error": "The fixture record needs proof that its resource names were initially absent.", "operation": "install-helper", "type": "error"}

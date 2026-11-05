@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4e6868c21a7cdc27938cdd2418f3a62ef58b38530991ff86487c76ef9321f9e6",
+  "claims": [
+    {
+      "id": "claim_42d820f5d8a6460084195657876ba264",
+      "statement": "Culler is a local-first orchestration system for AI coding agents with one human operator that deploys onto one Mac.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L20-L20",
+          "version": "repo-lines-v1:sha256:c27b2e4834a7b0dc41c0e056f7b6e5216c8fec62211f68f546cc344e96e886b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzI3YjJlNDgzNGE3YjBkYzQxYzBlMDU2ZjdiNmU1MjE2YzhmZWM2MjIxMWY2OGY1NDZjYzM0NGU5NmU4ODZiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzI3YjJlNDgzNGE3YjBkYzQxYzBlMDU2ZjdiNmU1MjE2YzhmZWM2MjIxMWY2OGY1NDZjYzM0NGU5NmU4ODZiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWQ5YzE0M2RlMDQ3YjI1OThlZGZkOGMzYjM1OTA4NTVkNTc2YjAzOWI0OTY3ZGM0OWYyYzA0Y2Y2Yzc1YjAxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzZiZDNkYWIxNzMyODMxYjgwNWYxODkyNTg5NTZlMzY4ZDdiM2E5YTMxZmFmOGIzZDQ2YmFhZjcyNzI4NDU1NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_af7adfa9550b4c5a9064d13a010a79e3",
+      "statement": "Culler supports Macs with Apple silicon.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L3-L3",
+          "version": "repo-lines-v1:sha256:0542ab2c6f4f5dcefcc6ccce43b21fb84b0e821c1b5ab72eb9cf617a97c87c27:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0MmFiMmM2ZjRmNWRjZWZjYzZjY2NlNDNiMjFmYjg0YjBlODIxYzFiNWFiNzJlYjljZjYxN2E5N2M4N2MyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0MmFiMmM2ZjRmNWRjZWZjYzZjY2NlNDNiMjFmYjg0YjBlODIxYzFiNWFiNzJlYjljZjYxN2E5N2M4N2MyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGRkYzlhODBhMTBhZWYzZmZmNjJhODYzNDU2YWM3YTMwZTYxNGRlODAzNjc5YTA0ZTIzODJiMmM5MWU3YWNjZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmFlOGM0N2YzYTMwNGZlYzliZWE1N2FmMTM1NGViOTU5MzE4MGI2NDIzNTU4YmI0ZDI2NjMzZTBhZTdkZGQyMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6ec47acc5e94294b26eb3d8ec9a709c",
+      "statement": "TypeScript processes spawn mc and read one JSON object from stdout; exit code 0 is success, 1 is a domain rejection, and 2 is a usage or environment error.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L159-L159",
+          "version": "repo-lines-v1:sha256:6307f0cde28be168add86723746b9fe064fd7783baac9f6c706502a1a020ff64:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMwN2YwY2RlMjhiZTE2OGFkZDg2NzIzNzQ2YjlmZTA2NGZkNzc4M2JhYWM5ZjZjNzA2NTAyYTFhMDIwZmY2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMwN2YwY2RlMjhiZTE2OGFkZDg2NzIzNzQ2YjlmZTA2NGZkNzc4M2JhYWM5ZjZjNzA2NTAyYTFhMDIwZmY2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQ5MGQyNzJjZTNjMjZiNmYwNjllNWFkNjM1MDFjODRjZTU0MDhkODIzYWRhMjU3ZDQ4MDNlYThhYzQ4Y2Y3ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQwYmY0NGUyMGFkZmQyOTk2YzAwMDQ5Yjk3ZTY5N2JmMDQyN2FiNmQyMDZjZDdlOTNjYmI1MDY4MDg3MTFmMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ddb0784bf30485d85e54c832d0fb674",
+      "statement": "The dashboard binds 127.0.0.1:7333 by default.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/server.ts#L11-L11",
+          "version": "repo-lines-v1:sha256:50f54f69574ef9710e8f10938c0cadbf8f8c09759f34aa9731342b286c073236:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBmNTRmNjk1NzRlZjk3MTBlOGYxMDkzOGMwY2FkYmY4ZjhjMDk3NTlmMzRhYTk3MzEzNDJiMjg2YzA3MzIzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTBmNTRmNjk1NzRlZjk3MTBlOGYxMDkzOGMwY2FkYmY4ZjhjMDk3NTlmMzRhYTk3MzEzNDJiMjg2YzA3MzIzNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU2MGMwMWM1OWVmNTI2YTMyMjE2OWIwZWRmZjVlZjEwYzFhOWYxZTE5MzAzNTk5Yjc0MWE0MGFiYTUyZjcwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODQ0NmE1NzNmMDJmYTQwNGU5NGZjNzUzOTkwNmRhNDMyY2M4YmU3ZWM3N2FiMTJkYzU4ZDVmOTA4Mzk5ZjFlYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_083de9a1ad8742f7ac29e4fa2a966950",
+      "statement": "The release fast suite includes mc, six runner components including setup-runner, resident, and dashboard.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L136-L150",
+          "version": "repo-lines-v1:sha256:cea9c9556dde4ec98f20c82d05c9b156ff0f1180958540c9f10ba0670b95c3b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjYTEzNWIxNmY4N2E5ODRhNGE5OGE5MDM0YzM0NDI5NDMyYWE0OGQyOTc1ZjAwMTZkY2Q3ZjQyODBkMzg5OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYTkxOTM1MDZkZjNkZmVjNTQyYTRjZTFkOGQzOGFhZjU0N2I2YmQzNjNiNDgxYTJiNDcyNzE2NmU1YzRjOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzYmExZWNjMDhkOWNmMGVlNGRhNmM1ZDZkYTljMmUwMTAzZDg2MGM4NDc3YzY0ZGM3OGYyYjE1NzQwNDRhYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlYzQxMzk3ODc4NTk4N2Q1YWQwNGFkNTBmNGYzZDMzNmM5OTI2YWU1M2ZmMDU2NThhODZkYzEwYTQyODJmMTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fb1fbdd0c4ce466788c26ad662e8295d",
+      "statement": "Repository rules prohibit code references to absent documents and require short comments for tricky code.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:3def89ca272c679efccf311ba20c41c6713ba3f4923e917c402a4d297f82369c"
+        }
+      ]
+    },
+    {
+      "id": "claim_9c16ea06c81044bbb08b7d3e27805218",
+      "statement": "mc/mclog documents that a nil *Logger is a no-op and that OpenComponent never creates an absent directory and returns (nil, nil) for it.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/mclog.go#L63-L63",
+          "version": "repo-lines-v1:sha256:ed260d2bcd25f134acf2e272af8570a47b0ce2399cfa44d377d71cb740780841:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQyNjBkMmJjZDI1ZjEzNGFjZjJlMjcyYWY4NTcwYTQ3YjBjZTIzOTljZmE0NGQzNzdkNzFjYjc0MDc4MDg0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQyNjBkMmJjZDI1ZjEzNGFjZjJlMjcyYWY4NTcwYTQ3YjBjZTIzOTljZmE0NGQzNzdkNzFjYjc0MDc4MDg0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzFjYThiY2Y3M2NiOTYwMTExZjE3OTEyOTk1YTRlM2M3M2Y3OGQzYjhmNTMwYmQ4ZDQ4MzY2OTkzZWU4YWJmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWNkNWVhNjhlZjIwZjM2OTM5ZGNiMGVkYTVjYjc4NWY2OWE0OWI3MWJiMmFlMjNjMzlhNzUzNDlkNjc0NzgyYiJ9"
+        },
+        {
+          "resource": "repo://mc/mclog/mclog.go#L71-L71",
+          "version": "repo-lines-v1:sha256:17298a0850ca80e1afaf93a079e1bfa7a86f804639c2be559eaefcacdc6d85c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTcyOThhMDg1MGNhODBlMWFmYWY5M2EwNzllMWJmYTdhODZmODA0NjM5YzJiZTU1OWVhZWZjYWNkYzZkODVjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTcyOThhMDg1MGNhODBlMWFmYWY5M2EwNzllMWJmYTdhODZmODA0NjM5YzJiZTU1OWVhZWZjYWNkYzZkODVjMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDM1ZDdkYjMwZGRiNDQ5ZTlkZTE4MWJmMjQwZjFkN2FhYTkwZjMxMWE0MTcyZjdjYTA1NWVhNmU0YzI1NzI4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDhjM2UyNmFmNjY4ZjkyZWI3MGNlMDNkOGNhZDliMjljNzQxOTEwZjc2NTY4ZmMwZDQzYjQ3N2I5ODdmNjAyMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a92f46fe8c7e438286dd9defcf89ac53",
+      "statement": "The operator decides a review packet with exactly one of approve, revise, or cancel.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/packet.go#L19-L34",
+          "version": "repo-lines-v1:sha256:ddd909e4cecfd4c56135acf6e93247a62a16abaebd303a7437c1d558b25e5ca3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmOWU0NTFiMGFhYTlmMmZiNTQyY2NhMzEwZjNkZGVlOTQ0NTllODA3ZmI1Y2NmOWM5NDVhYWFlM2Q2MjdkMTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyNGNiZDYxNDVkNDQ3N2ZjOTIzZGQ5Y2YyOWI4MTBhZGJiMjNhYWZjMGI5ZGU4Y2YwZjIxNTA0NGMyMTE3YTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxNWY2ZGQ4NzM5YTVmZWY0YWIxODk0ZWJmZTI0NWFiYjhiY2E0Y2EzOWZhZDIyMjc5MTU1ZGQyZmUyMDJlMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fc83fd20e77843ac878df533d5086496",
+      "statement": "The substrate combines schema.sql, delivery.sql, and environments.sql into the current schema and computes its SHA-256 identity.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/substrate.go#L21-L39",
+          "version": "repo-lines-v1:sha256:8f6b909f5f4e65fa2f3a7a5ce0ce513ede2762d415decc374dc73305128e8778:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzM2ExMjAzNzgxZjBmYzk0Mjg4OGI3ZDY5ZDYzZDIyYzM1N2EzNjllNzNmNDVjMjExMjIzYjMyMjlkN2MyNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczYTYyOTQ3NzQ2ZGFiODkxZDg0NzgyODVlOWM2MDMxNDg1N2I4MzQzNzAzNTMyYjY2NWUxMTk1N2QxZDg1MmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4YjAyNDk0NGRiODJmZTBmZjM2YjY0NzA4YTc4Y2EyYmEyYTJjMWE2YTBmOTY4NDQwNDhmNWJhZDAwM2U3ZjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_81393d45fa70438cafd31e307c9c2dc3",
+      "statement": "The Setup Journal keeps one current row per milestone and resets that milestone when another attempt starts.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.js#L333-L362",
+          "version": "repo-lines-v1:sha256:7ddb9344123c3f54a0ff1a866c090c5354c8e7f9d346f05d853e76c25ef6b960:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlOWY0ZGQzNzRlNTk5ZGY3ZmY5ZTdhN2Q5NzRhNzU4Yzg3YzcyNzU1NjZkMTBlZWM0NjJlNDMxYzFhMWE1YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhM2VjMDVlODJjOWNiMWExZjcyNzY3NTRkNjc2YzA0MDVjMGU0YzFhOTJlYWNhMWJkZTY0MzgzN2UxNDVjMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNWFkYjM2ZTUzZGExNWZkMWVhOWU4YWMzZjU0MDgyNzcxNTYzM2Q1YWM0YTkxNzVlYzEwYzk3OGY2YzhkODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d3cf295960d54a8ba02d92508a33c637",
+      "statement": "The setup agent assesses each missing prerequisite before its final image decision and requires credible feasibility evidence for a material development benefit.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/setup.md#L40-L50",
+          "version": "repo-lines-v1:sha256:31aa4f29afe12696a10e4255c7ecbf7e0299093a97bd6c18803b128362e4e3fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YjI3ZGU5OWVkNjkzODE2ZWU4YjRhZDkyOTBmMzg3OTBlZjRiYjk0OWNlNjg0OGNiMGJlNjViMGJlMjk2Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4MGQ0MzNjNDUwNWMyNjMxMjFkMzVlOWMwZTAwNDg2ZDQyYzBhNThmMWQ0MjcyYzdmZDE1OTA4MTQzOWU2MTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjN2Y1NzI0Y2VlMGYwNzJmNTBlNjJiYWY5MjVmNTVlNWIzM2MwYjZkZDRmOWFiMWZmZDI3YjJlNjljMmMxNTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59f7cd9f9d2e428aa908d0a6ed553ac0",
+      "statement": "Expected image capabilities remain unverified until the approved image executes the affected commands.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/setup/mc-setup/SKILL.md#L50-L52",
+          "version": "repo-lines-v1:sha256:3533507174d36a491706da6fc420fdb7713d18b278748a7b8e7b13f38d9a294e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIzMDFhNmRiODc4Mzc1ZTZlMjZlOTMxMDIzZTFmOGNjYTAwOGU4OTViM2M2NDJhYmMxOGM0OTE3MjY1ZTMyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhmMDcyMWZmYmVkZGI0MDNiMmU1YzA3NDlkOTEyMTg0NDA2ZGRmYTgxZDNlN2U1ZWZkY2VlYTA5Y2M4OTE4ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQ0MDE4YmI2N2VlNWUzN2I1NzJkOTk4NTQ4MmYyZDUyZjBlYzhlOTQ2OWJjMGY1ZjUyYjIxZTZkMjRlZjMwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWVlYjViOGU5YjQwYTM5ZmVjN2NhMTRhZTRmYWY4ZDNlYTJjNDg2NWI5M2UwMWJmZTNhZWRiZGFiOTk0MTUyMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_826b5d8107504e20a77e496ea63fa939",
+      "statement": "The Strategist accepts at most two task proposals per batch.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/roles.go#L272-L288",
+          "version": "repo-lines-v1:sha256:7b3702c97a328c5ae0cf19fc1c2a892efd7f49e8c8a3b870aa0e3a5c0facfe28:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzAzODc5YTdiODFmNDQ3OTNmZmRlNTkwOGEzNDVmNjE0NzYxMWI0OTgwNDYwNWM5M2NlMTUwNDc3YjhhMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3MzEzYWQ4MGM3ZDdkOGE4YjY0ZDEzYzY3MTA4OTIwMDEwYzdmMjk2YTU5YzI4NGUzODc3MTcwZTk2NGFmNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwZmQ2MTVjMDM2ZWI3OGE4ODkxMzhkYTE0YTIwMjkyZDcxNzdiMWQ5ODFiMDhiMThmMmE4Mzg3OTcwYTViY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_12ae08d4c9874d3fa2971014b447a41d",
+      "statement": "Project priority belongs to an approved task; an open correction alone has no Project priority.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/delivery.go#L23-L38",
+          "version": "repo-lines-v1:sha256:09c8b9135982ee55f96f85a154c30592a607fca8b639e037e9ca9b26a2eb97e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MDk3OTJhMTVjOGVkZmU4MGJhNmY3MjQ2NjBkMWFjZTBiOTJjOWIzZTJiOTA1YWZkOWIzMWU4YjE1YmI0YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMzQyNmQ4ZDRiNTU1M2E0MDAzMDY1Y2Q5YmU2MDBmZDA2MDc0Y2UzMWM0MzE5NjYwZWE4Y2E2MGZjYTg3ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzNzBhMDNkNTgwMTE0MDdiYmQ1N2E2ZjQ4MjBiYjRiYTQxMThiMThjYWRlMWVjZGVjYWVlZDkwMzQxMWM4MGEifQ"
+        },
+        {
+          "resource": "repo://mc/dispatch/delivery.go#L64-L79",
+          "version": "repo-lines-v1:sha256:000a0b191d9ed616a7f6c9b949378f21704c8cffa4d5cb702959a9cbec543653:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NGRiMDFmMjljZDY0OGFhMGI0ZDJhOWJmMzJhZTUxNjhjMDcyZjVmZmJhMWNmODViOTdiOWJkNWVjYmI1ZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkOThkODYyNTg2ZDZlOTEyM2Q0YjUwNmYwNDZjN2U5YTU5NGU4YjM2OTk1Yzc1N2U0Nzg5MjZhYzQ4ZGI3YTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1OTc5MDhkOGU1OTgyYzdlOTJlMzA4N2QxMzY1Y2I2YWExOGI4Y2YwMjE5ZGFkNzQ5ZTJiY2VkZTc1MWM0MTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2528f1f0be804112bed32f00771f01c3",
+      "statement": "The Pipeline places the Project wiki section beside the task run banner, above the task path, and below the banner at narrow widths.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/style.css#L3391-L3396",
+          "version": "repo-lines-v1:sha256:d4463691b3984aa46d4289f9771ced5845d881b74bef5de2154dd5542889a8a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTYwYTdhNzYzYmE4MzdjMzNmN2NjODJlMDYzZWNlMWFhY2FmNjYwOTM0NWIwMjJjY2RlMzFlNTI0MmMxMTdjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODc1MTUxNjYyNmQ1MWViMmIwYjYwZGEzZDBlZTkyNTUzM2QxYzQ0ZGVmNjU3OTcxZDY4YmQ0MDRlMjNlZmFiMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzU3NzExZGMzNjZjYTg2MmM5YzY0MTMyMWZkNmY3NTlkNGY3ZWZjNzQ2Yjc4YzA1YjVkYTc4NDNmOWYyY2U5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODYzYjc0Yjg4ODQ1NGE4ODczZGQ0YzlmN2RkMmJiODEzMmFhZTQ4NjM0NDYwODI1YWQ5MDkxNmQ3NGE4MThkMiJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/style.css#L3493-L3498",
+          "version": "repo-lines-v1:sha256:45fd687cb76d3b9ccc9a31a2096b009f2a33bc620b63a5a104d82ff71adc676b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q0NmNjZTcxYzg5MTk2Y2Q4ZjAxMDdhNjJjNzQzNDJjZWQxM2IwYjVhYzMwZDdmNmQ1NmUyZTI5M2VhMjM3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM0ZGQxMGE5Mzc4MmNiOTY3MTM0YjYzODQzZTRjYmY2ZDZjN2U4YmZkMDFlZjNmZWQ1YWY0MGNlYzg5ZjViYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWFlYzExNjM2MGZlMzAyYmZjMzYxMjc0OWVlZGEwYjczNjZhYzViMDZjODc0MjljY2MxMWRkMmZjYWQ0YWRjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ4NmUyMTkyYzAwZGZiYzM3ZTRhYzY3OGIwMmEzMjg0OGIzNmRiMDg3NWE4NjgzZjE5MTc0Mzg2OTFmM2MzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_99ea50672aa8495aa43d0a4b547b5d30",
+      "statement": "The retained security research identifies commit 816470a9f790005da233081a7d8ef60ba84b5973 as its reviewed source and separates selected checks from unverified checks.",
+      "evidence": [
+        {
+          "resource": "repo://work/security-posture-2026-10-19/culler-security-research.html#L337-L368",
+          "version": "repo-lines-v1:sha256:b84cf32f8fcb22903716805615b055b3dec5d42d5703d6d95b1c46554291b185:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYWMwNDcwYTZkNjRiZWY1Y2NjZTQwOTVjNWNjYTU2ODgxOWNkZjE5NzY2MzkwNTg2YjMwZWY3NjI5YTBkZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyNmEyZGJkOGI5Yjk2YjZjZjNhN2UxOTE5NzYzOGZkZTExN2ZkNDAxNjk0N2UyNmU1ZjQzMjA5MjdiNzliYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzYjdmNjdlOTNlNzliMmQxM2ExZThkMTkxMzBmNmUyZmY0MjBkOTMwMDI1NmJiMjllODc3YWNhOTJhN2U0YWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4NDZlZWYyOWZkNjdmNThjY2U1MzdjZjJmNTNmZDVmYmI5NmI2YTljYWYwZjdlZDc4OGVmZGI4Y2UwZDNhNTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb881dcb71644ad683821b438788e479",
+      "statement": "The work directory retains Pipeline font previews, a comparison image, and a Swift renderer.",
+      "evidence": [
+        {
+          "resource": "repo://work/pipeline-fonts.html",
+          "version": "repo-file-v1:sha256:7e9d5929885a37126ba66e90dae75e0c6211f7cc823fbd7df7dfd86f0b574020"
+        },
+        {
+          "resource": "repo://work/render-font-comparison.swift",
+          "version": "repo-file-v1:sha256:72023fd6a7305d8adea39b9c1312b585ad2f7d1b388b70a1a5b55f5193d4a964"
+        }
+      ]
+    },
+    {
+      "id": "claim_63f997e95e784022889469385c662aec",
+      "statement": "The Review page offers a packet conversation that also opens on the Homie page.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/packetchat.js",
+          "version": "repo-file-v1:sha256:4f91e1a2d08c9cdf4afcd1fbc1c58a8358fb0a822815a5a939e6555ab35ef0bc"
+        }
+      ]
+    },
+    {
+      "id": "claim_e15cb05c54d14615b64c667c66d101d2",
+      "statement": "The security proposal page distinguishes its original source review from a documentation follow-up at 839b8ef2402f.",
+      "evidence": [
+        {
+          "resource": "repo://work/security-posture-2026-10-19/culler-security-posture.html",
+          "version": "repo-file-v1:sha256:978c6b86c65840a01309f8a60e06e68681618fa691c9bc7178b00aaaf897b6a4"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f80612d58794a98828bf3faf1679a7d",
+      "statement": "Setup and pipeline containers use a persistent Project home with separate temporary role directories.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts",
+          "version": "repo-file-v1:sha256:cf17b9042f168e0fc2f3c348fa82ebf7557440e7c4b80ea75b4a5e90a89bad73"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts",
+          "version": "repo-file-v1:sha256:ab3c0cc685fb681bb9b9d18fd7951e809bf644ec80b088cc21add6c8f08f9cfa"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e36fa551a984440b10ac787c752ba99",
+      "statement": "The task dialog shows the unsuccessful Verifier correction count and displays the report in the correction limit alert.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L224-L230",
+          "version": "repo-lines-v1:sha256:d495e5badd7ac12b9c64ed9c07cefb7e64332bf0e3aa1be99713402278595fc1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY0MjM2OTBiMzRjYTU1NTllNGFjYjAzZmYwMGQ0NDVlYWQ0Njc2ZGMwY2YyODY5ZjBlNjIzZjc0YTY3NjRlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGZlOTRiZDEzOTA1YjA2ZGU4OWQxNmQxNzc5ZGVhMzFmOWEzOGI2MDQ4M2ExMjU0ZTE4YmI2ZDVhZmRjYWEzMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzk2ZGI4Yzc2MWVlZmVkNDc0NzQ5YmVhMTIzMDcwZTFlZjdkNWRiZjcxZGM2MTkzNzFmMTZhODU0MzgzNGUwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGEzNzE1NzI4YzExYjQwNTAxYzllMjRlYWRiNGVjNDE2Zjc5YzYzYTEwN2U0OWZhZDE1NGIzYmRjMDg5Nzc5NiJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L270-L278",
+          "version": "repo-lines-v1:sha256:eb5c9aa21e718f76bb7a8ba3b5ce25099be30231203c669041b583b0bd8b4b2a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDY4ZWYzZDM5OWY4ZWQ5Njc0ZjRmYmY2NzZhNmRkMTRiMzNmNzMwZGIwMTkzNmM1ZmRjNTljYzU0ODMwMDE1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTlmNzdiMmNmNzhiODIwMGRhNjU3YTYwZmVjM2FkZjJlZTFjOGY5ZGNjNzM4NDcyNDk2NGNhN2NiNmUwZGU5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODk5ZDNjYzM4YjY3YjVhY2Q5MjExN2E1MTIxYTI2ZjY5NDY0NTU4YjUyNjMwM2EzYmY4ZGRmOGI0OTkxM2UzMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGVmODAzZTAyNTU3OThhYzU3MGU1ZGI4ZmUwNTU4Mjk3NjMxOWQ0NDZkNjNlOGQ1YmIyYjc2NTg3OWE4NTI5YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6970beb40dc148fda29eea1e7b0aacfd",
+      "statement": "Routine Verifier correction results use a neutral tone in recent runs and task history.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/pipeline.js#L154-L168",
+          "version": "repo-lines-v1:sha256:4e9393f59a6ffeddbe60fc711315948feb9c5ffc9354741426e8a50b9d467830:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNzI3Y2UzODMwNTQ4OWI5YzEwY2MwZDc3ODIxNzMwNGY4NmRmODhmMTYyOWRkYWFkOGFkNGE0NGJjMTNiZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0MzViMDA4ODY5NDlhNGZjY2I2ZTliNTdiMjM5MmMxNzdjNjdjODFkYTA3NTI2MDI0MTJhMTZlZTE2YzExNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmY2YwMmUyNWFhMzlmZDM3OTBmZTNmMGZlMjk1NThjOGM0NjViOGZlYjQ3MWNlM2NhYWMwOTA5OTNjNWJmMGQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L92-L106",
+          "version": "repo-lines-v1:sha256:97bf7fcffc15a3a946fb887419ccf785db45be8eac92e15fdeaa132f35808064:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkZWRkNmZjYmEwOTIzMmJjYTlhMGUwZjFkZGNlMDlkYTkzZDFhMzU3YTcwODEzNjFmYmEwYjUxMzA5NGE5MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMWJjMjY4NmY3MDk1ZTAwNTE2OWI4OTUxMzU2YzJkMmI1ZGUyZjczYWQ3NDI5MmMwZTIxOGRlNWFjMmYyOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZWFmYWJmNzFmOGM0NWQ1NGM1NTZlMGU3YjI0YTllZmE1N2E3MDM0ZWI1N2VmZTEzMGMwMGFkZjBhYzE0NmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzZjU4ZGM4OGZiMTMzZDIwZjYyM2Q4Y2YyZjEwNmMyNTM1NDYwMTQ5Y2Q0OTNiM2IxZjk3Y2I2NzhmMDliYTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c766e410e5c42a7afeb7b5bb41a452d",
+      "statement": "Ask Homie opens an ordinary conversation with the selected diagnostic issue and requests an explanation and proposed action.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/diagnosticchat.js#L13-L32",
+          "version": "repo-lines-v1:sha256:55cc69e4bb95289f7b5b15f1879d4da3de124d9f0ff9b5ca7fcf553e4c1e9687:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3ZTgzYzdlNTViZTkzNzVlZGJiMWI1NzdhYjJhZmJjZjVmNDcwMTE3NGYwYzY2ODdiODE4ZTJjNWVkNjdlMTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwMzEzYTQ3NzljODlmZjcxODkwMDY2Mjg1NGJkYmZlYzY2N2E0MDYwNzU4NWQyZjQyNTVhYjk1YjU2ZDg4NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiNjA4OWE1NDA1MzQwMDZmMmYwODAzMjBiMWUyMzQ1NjJhNWE5MGE5ODcxMDY3ODJhYWRkZjUzMTk3YWFmM2QifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/diagnosticchat.js#L70-L99",
+          "version": "repo-lines-v1:sha256:97727e696726954d122b595ed972f3f88b49d9bb29206433618cf8b289d3d155:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjNGE3ZTVlZGYwMTMzMWQxYThiODQ0YWI0ZTc0NDI2NWI3NjAzYjJiNzVmYzIyYzYyZTE5MTY1ZTI3ZTgwNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzOWI2MzNlMGYyYWZkYTRjZmZkZDZjNjY2N2Q1MjBmMzA3Y2EwN2U1M2MxNjkzZmJjY2Q5ODc3MGE3MGIwOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e8f1a8513f849e59722c26d4bcc5931",
+      "statement": "The Review quick chat provides model selection that starts a new packet conversation when the selected profile differs from its current profile.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/packetchat.js",
+          "version": "repo-file-v1:sha256:4f91e1a2d08c9cdf4afcd1fbc1c58a8358fb0a822815a5a939e6555ab35ef0bc"
+        }
+      ]
+    },
+    {
+      "id": "claim_85bb3f17adbe40b2a978cb46a2b5d28c",
+      "statement": "Operators open Setup history from the Project's Environment page to view its journal on the Board.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/harness.ts#L352-L359",
+          "version": "repo-lines-v1:sha256:58330d7aabd72175aeb83ba56503d2dfbc2c9d524d981edf7779eee34edd3776:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc5OTk3NTUyZjE3NDgxOWQ2MmJiNzkxZTllZmNjYjI0MGQwZjNjYmEwNGJjYThiMmFkMmJkZDg4M2VlNWU0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y4Y2JjZDg1ZjU5ZmQwNzc3ODQ0OTQ5YjEzOWU2NTdhYTljODk4OTVlNzc3ZjIzYjg0MTQ1OWE0MzcwZTExNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTc5Y2RmN2Q3M2U1Yzg0ZWJjMzk2NWVlYjI0MmM0YmMyNzBkZjQzMGRlNmJiMmE1YjE0MDViY2EyYTkyZTJjMSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L3191-L3206",
+          "version": "repo-lines-v1:sha256:17812466775a2f08b4ee842af338a12cd3400726de6c2e813f6110ff20fe3e6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhOTM0YTU0YTQwMjdiNTkxZGM0Y2FhZmM1MzNmOTAzY2VjYzUwNTg2YjNkYTlmNWQxN2RjZGI0MTY1NjZhNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5YTYwN2NmYTc0N2E5OGJhZmRiNjcyNzE0Nzk0MzIyMzgwN2VlMWQ2MjY3YTk2NGZkMjAyY2E2YmJhMGY4ZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNmZhNmU2NTk1NGJjZjVjMTNlNTQzNzUyODUxNGZlN2QwNWU5NjExNzQ2MWE0OWFjODg0NGY4NzIxZTdlZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3MTJiZmQ4Y2Y2OGU4MmEwMzI1YzQ4YzZlZGVkN2M5ZTg5NjFlOTdkMDBiMjVlOTg4NWE3ZDBkZWIyZTM0M2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6dd5d9077dd24f1d80aa04f4bb50e1c4",
+      "statement": "Live queue and Ledger cards identify packets by task number and task title, with the title below metadata and limited to three lines.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L1816-L1853",
+          "version": "repo-lines-v1:sha256:8a9a5ed7c560765253256b6f4af6a2b3c4503cb10cc32a9fdd49205ed7d3aff1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkYmUyNmYxMzVmZWZlNzhlMDNiNDRkMjZiNzQxOGZkMDY2YjMyNWU0Zjc3MjYxYjc0MjFlYmY5N2ZjZmY3ZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4MzU2YzcxNTFmOGNhNzY2ODg0NDM1MDY3MGQyMmE2NzVhOTAzYmM1NGI0YzgzOTU5YzAzYjYxNTg0MzYxZTYifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/style.css#L2665-L2676",
+          "version": "repo-lines-v1:sha256:83429e1fcf0f15b1eb9459011907857e527404b0ea370abb0ca23b397187217d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MjQwNTdiMmYyMGE0YTRlNGI0N2VkNjY3NzllYWJhOTE2Yzc2M2VlODYyZWQ0ZDA4ZDU4ZWI0ZTg2N2M4NzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlZjQ5OWEyNDhlZWQyN2YzODhjYWFmMWQ5ZTA4M2JjZDYyN2UyMWExZjk1ZWFiN2M0NjlhNDgwOTk5MmY1YmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0OWM2OTQzMmEwMmUzOTM2OWY2NDU1YmRlOWE2MWE2ODZhMzY3MjhiNjlkOWYwNTFkZTZkZWNkZGRkNTkwZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_df0b1ac5a1d54ef6aabcc79f4afbacb3",
+      "statement": "Reader and quick chat headings use the packet row title.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L2455-L2459",
+          "version": "repo-lines-v1:sha256:5bd572da827d63e46505739a7c581991607be11424588e65329149a190a2a2d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmZmJmMWFjMWYwMDk2ZDk0YzM3NDRmM2YyYWQyYzFhMWZhMzY2MDkxMzg3OWZhMTcxNWJhZWIwOTM3MDJjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ3YzkxYzQ1Yjc1MTg0NDM2MThmOGU5N2NiMTAzOWIyNzk5OWFjZmUzNmIwN2NjMmM2ZWZhMTFlMjJkZGRhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDE3ZjliYzgzZGU3Nzc3OGI5MjI3N2JiZGY0NDE3ODNmMTI3NjRlNmQ5MWM4MzE4ZDdhNWM4YzZlNjYyYjgzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQxNTI0OGM3ZjViMTE1MGI2YThiMDJmOGYzNjE5NDljMDRlYWY0MjQ2OGFmZGJkYjcyMmE1OWU0MjQyZjA0MSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/packetchat.js#L190-L195",
+          "version": "repo-lines-v1:sha256:57a07e3b42f75f0f579c3a8b605b2048f5a6774c7f26937c04c7708f2fbe174c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkyZjEyMjRhMmM1ZjM2YjE4OTMzOTdkMmNhMzZjOTc1YzBiYjgzMzA0NmQ5NmFlY2JmYjcwM2ZmNGNjNjNhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTgyZDQ5Y2I1MTQzN2Y1NDc1ZDM3NWYwZWM1NjM5ZTJmMDBiYzU5YjdkNDBhOTE3ZjRmYzhjYmM5MzczMmZmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM4MjQwY2ExYzk1ODI5MTI1YjIxYjljYmZmMGFiZDkxNTIzYWY0MWU5ZjM4OGY5ZmZjMGZkNzFjZGQwOTg5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_98bd6034a22d45d499ae0fcad4caed8b",
+      "statement": "The dashboard resolves operator decision reports through a changed task description and a reason, with Cancel task as an alternative.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/boardwrites.js#L424-L458",
+          "version": "repo-lines-v1:sha256:12a9c6b332760e1a5a233cf9d5eeabbb246096f6eb38a16c283c1bdf9fd6b732:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiYzdhMzk4NzI5MTVkM2E3ZjU4Njc0MmM1YjVkYTdiZjBlZmFlOWQ4ZDAxNDk2ZGEzZTQ2MjRjY2Y0MTVlZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhZWQ0MTNmNjg0YjI3ODI3MTcwZDMwMjEzNzMyYjAwOTQ2NzAwODgzNjAyMTM1ZDdmNzc0NTU5YmZmNmYyZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhMGM5NGM5MTA1ZGE2MWZlZjE1ZTI3OGFlNzViN2NkNjFlZjEzMDc3MWIwNGUwY2Q5YjllN2E2NWZhNWFiMDEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/boardwrites.js#L64-L97",
+          "version": "repo-lines-v1:sha256:4edfc4a94bb71431ea961f14a0e99cbce9ba02a388bbacb5bfe3498a8c5956bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2ZWRkYzhhYTI2YjI4ZGU1OTRkMWEyMmQ5YmVkN2RlZjExOTBmOGY3ZjZhNDk1MDU3YWRiODQxNjYyMTE0MjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmM2U2NDlmOWY3NTM3OGIyN2Q3MGViYTAwZGRiYmY3YjczOWI1MmFkMTdjMGM0NTkxNWY3ZTk0Y2YyNWNiN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhODFlMWMzMjU5NjIyZTRkNTcwYjMxZWNlM2NhYTQyM2VjYTliNjZhZDllNzhlZmUyZmYzNzFmYjg4NjdlZWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0fa5d231b234d29be5a02c6e8cf1892",
+      "statement": "The security proposal document presents component diagrams, data-flow examples, and glossaries as proposals rather than implemented controls.",
+      "evidence": [
+        {
+          "resource": "repo://work/security-posture-2026-10-19/culler-security-posture.html",
+          "version": "repo-file-v1:sha256:978c6b86c65840a01309f8a60e06e68681618fa691c9bc7178b00aaaf897b6a4"
+        }
+      ]
+    },
+    {
+      "id": "claim_db38c12ba19648dd8c4452cc149da09d",
+      "statement": "The browser suite runs on pull requests and main pushes, and both publication jobs require it.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml",
+          "version": "repo-file-v1:sha256:84be6e2a761efb4248b15b7c10558e02b7978aba9cf3f391a5fb5e2913f38e06"
+        }
+      ]
+    },
+    {
+      "id": "claim_da3fa765fb724600986aca7808b52e5e",
+      "statement": "The retained dashboard theme viewer compares Culler blue, Soft blue, Paper, and Slate with light and dark previews.",
+      "evidence": [
+        {
+          "resource": "repo://work/dashboard-theme-sets/index.html#L249-L268",
+          "version": "repo-lines-v1:sha256:e42e59f3a2ed9b5cc698c12eafd9b1cf43671b4aa48bd19d8be156472d5c3f28:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4ZDhiZDg4NmZiYTJmZjBlMDQwYTExZjhhNzEzNWU2MDBkZGZhZTgyOWQ2N2NkZTk0OTRkN2E2MDVjOTNjMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMTViMWE0ZTgwMzVjNWRlMzc2YTMwZDdmZmYwY2RjMzYwZDEzYjQ1Yzk3NDg2Y2YzZDhjYzQwNTk3NjEyZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhNTJkOGVkZmM1MTM0ZDk4ZjMxNDc2NGJmYjBlOWI2ZDUxMTI2OWJmMzc4YmY2OTIzMmQwODE0ZjhjMDdkNzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyN2QzNDJmNzg4NGViZjA4NmNkOGQwODI4ZGQ4YjExYjVhOTJkZDE0ZTk1N2ZjN2I2NjE2M2M5NjcxOGNiM2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de61fc28740c452abbdc69c061c742c3",
+      "statement": "The implementation inventory maps shared dashboard components and exceptions and records implementation check results.",
+      "evidence": [
+        {
+          "resource": "repo://work/dashboard-theme-sets/implementation-inventory.md",
+          "version": "repo-file-v1:sha256:942967bf053e0250cd5b242fb8631e067d0ad9cf1db16bfb17a165c41bdc62eb"
+        }
+      ]
+    },
+    {
+      "id": "claim_96fb5581a7df4fb0bdbdaca9483a7906",
+      "statement": "Discord setup proceeds through bot validation, channel test delivery, account confirmation, and explicit dashboard approval.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/discord.js#L48-L131",
+          "version": "repo-lines-v1:sha256:c1c3ec652595e9ad3676357862d97ad31c20fc0ffc44a19de282ba20d7848fad:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkMTFmY2MxOWZkYTM0MGExODc2MGU2ZjM4MzY2ZThkN2MwMGI2MzQ3MGZlMzAyNjUyZmE5MWIyMjJhNWYxNWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3MzZjYWIwZDhlMDY4ZTdlODU3ZDFmYTM1ZmVhNmUyNjAyMmJhNDM3MzhlOGVlZmM3NTkyZjJlYWNjNTJjYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1Y2I1NmQ1YWU3MDUzNjI0NTkxNzM5NmQ0ZDk4M2E3YzNmZDJmMGJmMmY1ODRhNDU5ODA1NDk4ZDFjY2VkMDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d6733937d0b498ca7f375923f00c813",
+      "statement": "The notice, issue dialog, and System health count a shared proposal decision once while preserving independent task conditions.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L2992-L3016",
+          "version": "repo-lines-v1:sha256:dc8d23c5afb6a1913801a4997e9b8a914be32b8fcd148d95ec52bbc778fb35db:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3NWNhOGQ5MDVjZGY5ZTY4Y2E2ZmUyNzVjOGI0ZTc1NGE5YTQ1ZWFhZjAzNGM1NWFiNWM0YjU3NGUxN2ZmYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2NGZmYWQ4NDQ2Y2ViM2Q4ZjY3YzlhYWE1NWUzMDgzMzg1YzhhZDRmZWZlMDY1OTBmYmExN2ZlY2M2MmU2OTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzNmIxYjYyMDc4OWM5MjgzMGE2MmY3MjZmNTI3MzQyYWRiOTBmNmU2MmVjZjcyMWIwYjgxNmVjZmNlM2JhYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI5ZmViZDc0ODJkN2RiZTQzYjg1ZDk1ZGZiZjE5MDJkYjE5OTUxMDQ1ZDEzYmNjNGY1Y2QyZjEwNTNmZmUxYTgifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L3141-L3146",
+          "version": "repo-lines-v1:sha256:cfaae30255562b3d91ead7e69c2a5629d32b83611e40c13a714620ff74728eb3:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQzZDk4MzU4NjlmZmNiN2Q3NDZmZWRlMWE0M2U2MGIyNTg4NzI3ZjFlYTkxMDU2MDliNTU3NWZmMGRkZDY1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYyZDk2MzY3NWI2YmZmNzE3YjJiNjA3YjJhZjBmYmRlYzVmNDcwZjE2MzYzZDVhYmJjNzMxOGY3MTdhNmYwYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzc5MTgwNjNlYTY4YmZlMjg0OGYwMGY0ZGM2ODk4MjFhNTM4MDA2Njk5YzVjNTQ2MDJhMWE0ZGI1MWFjNjA5YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzhiM2VhNjBiZThhOGJkMTM2ZjQ1MDI4ZWE0OTE1ZjBmNWMzMWVkMzA1ZWQwNTAwYzNkZGU2ZWMzODk3N2UzMyJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L280-L292",
+          "version": "repo-lines-v1:sha256:09321516f888a5b330c6e29dd33922217b366ffa7759c8dec095f836038f467f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4OTc1ODJiNDc4MTc0NGE4MzhlNzlhZWFlNDc5MzVlMjg2ZjY3NzI3ZDQ3NTRjM2VlOTRkNDk3MmJjMzI1ZmEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L334-L340",
+          "version": "repo-lines-v1:sha256:d2a09966a6604124bbf5ad9218129b304e815f491d93396ed355f11443431f9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRiMGZjM2ViODdkZTllNDYxY2IxOWEzNjBmMjcxMTZhYzI5ZGI5ZTY0NzQyZTI2YmY3ZTRkYjk1ZGE2OTkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI2Nzc1MmUyY2JjM2MyNDczMGExNmNlZjk3OThkZTYwYTBiMzAxM2Q4NWQ2MzYxZDA3MDI5NjM0MjczNTAzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODU2M2EzYjNlMjU5ZjBmMWMyNmMyOWI0NDk0Nzk0Y2JmOGU4N2I2N2Y2NzQ0M2FlMjg0ZWMyOGRmOGNkYmI2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTczZTE5YjM3MmNkYTE2OTFhYzlmYWQ2OGM5NWZiOWZmZTBlZDE2MDU2NzVhYTdkNjI2YTc5YmNiM2M1ZWJlNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd3318cc60334f059bb8e2fb32593ac0",
+      "statement": "Repository rules permit task progress with unchanged failures and unavailable host tests outside criteria when the remaining task requirements hold.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:3def89ca272c679efccf311ba20c41c6713ba3f4923e917c402a4d297f82369c"
+        }
+      ]
+    },
+    {
+      "id": "claim_a17363b023c94c22b29d70bb47f78bb6",
+      "statement": "The Review reader opens the shared task dialog through its Task control.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L2670-L2682",
+          "version": "repo-lines-v1:sha256:f50b35bd64f0f7b1f5b00af33a185e19ab959b6565cab8310d28cc2fe7f687a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhYTEyMmVkYmQ1OTYwNzU5YWYyYjQ0NmFiNjI2NGJiMzYwYzZlMDExODU3ZGYzMDBlNzcwOGVkYTJjOTVlZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1MmFmNDg0ZGFkMTkzNDAzZWUzOTg3MTVhZjUwYmJhMDA3OTk1YjdmMGUyZTdlZmRmOWUwYjQzMThjYzFhMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwODk1MTlkMDZmMGJmZTdjMDIzMDIwMzdmNDhkY2NlZWY0ZTE3MTM2OGFiNzE0YmNmMTQ1MjQ5NTFkYzZiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0MzYwOTdmYWEyMjFkZWJlOTg3NmY4ZDU0Y2VkMGViNjZkZGFiNjY3YTYwOTQ4NGQyNTRmNWQ2Y2E5ODUzNmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29a2db899213422992ace8ca34d2a54f",
+      "statement": "The host retains provider credentials and supplies temporary Culler tokens to agent containers.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/credential-projector.ts",
+          "version": "repo-file-v1:sha256:08ee72440209d8d9e5c56b248e36c1c45ae0e365808c0cdf644eece85832012c"
+        },
+        {
+          "resource": "repo://resident/src/provider-credentials.ts",
+          "version": "repo-file-v1:sha256:4913723eb9dbdf0aacc6f0b8b46065ee4e0c02c25a2a92f9d5057be26a80a587"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee80ff857fc3423e87a900a8226174c8",
+      "statement": "Discord setup asks the operator to send only the displayed code in the selected channel.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/discord.js#L112-L122",
+          "version": "repo-lines-v1:sha256:ddac185b3ea5c7a3d12a64478bcfd338e4adb4ab4fdd4a3d34d4f1dc4e5a9fcb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MzdlNDUxZTZlNjRiMTEwZmQ3ZmNiNjEzNDcxNWY1NWFiZTViZmJkMDk1YTgzYjE1YjRkYzgxMjgzY2ZhYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0MTI1NzRkMDliNmM4MDIwNTFkNzAwZjY1OGNiYjcwMzZjYzljOWZlMzhjYTIyYmY5YTJhZDQ3NmU4YWI5OWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmODIwOGNiOTY3NzI0ZDg2NWUxMzk2M2Y1ODc0ZjAxZTlkNjEwYjI3NGNmOTc1YmUzMzM4NGRiNWQ4ZTRjYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhODZjMTU5OGE4NTYzOGJmZDcwOTk0NmJkNGUxNGNkNDIzNjcyZWFkNWIwNGNjYjBhM2ZlNjA4MWE0ODkxNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a937ca0dff0e49d983450ebdb40a4e58",
+      "statement": "The task dialog offers no Require decision control.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/board-writes.smoke.test.ts#L181-L190",
+          "version": "repo-lines-v1:sha256:0d17acbc1ed8b8db2e5aadb599d52e5959a86a98d44e16a14e3f0eb3f7bddddd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MmUwYjA1MDRkNWM5NTg0NmM5MThmNzc1ZDJjZjBjZDU4MmVmNmQ2OTUxNjAwY2E3NDViNDRhZjA5NTY0YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMzdmYTEzNjZhZjljYWQxMGYyMzExZTg3MTYxYjEzZTQyZDc5ZmJjNTU5OWE1NTNjMjhlN2Y1MGZmZjYxYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5MjBlYTg4NzhiOWRkYmIyN2NhZDllOWY1ZDdmNzM1YjNlYTFlZWJjZDgwZmE5NjIxMzM1OWZkYzJlNDY4ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmNTcxYzRmN2ZjOTdkZTBlYzhmZDM3ZTFmMjM5MmFlMDI2NDliOTY3ZWExNjNlNjI2NzViZjkzOGQ3ZjkwMjgifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/boardwrites.js#L108-L134",
+          "version": "repo-lines-v1:sha256:6f0325a2708c0bd004cd9ca61f17e92b1721359ecea0bd0358ae2368b68788fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNjQ2MmUzMzg3NWIzZjJlYjljMTZlN2M3OGQ4MzExODk0ZWQwOWE5OTExMTdlOGRmYTNkNGJlYWExZWJmYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4ZDA0NWMwMGY1ZDNjYzc1Y2I2YTc0NGJmNGMwMWE3YjEwMjI1YzU4Mjc1Njg0M2FiYzE1NWU5NGIyNzRjMDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_282ae7e2e5ca4619b9b9861790d3c841",
+      "statement": "A packaged task has no Edit title and priority control in its task dialog.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/board-writes.smoke.test.ts#L319-L324",
+          "version": "repo-lines-v1:sha256:2235896a7cfcba2a316dc9f7a6a5e9a1c8cf061a875d77d610acccc17743d55d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmY1NzJhZGVmNGMxYzg0NmU2MDVhZmRmZDg0YTJlNDEwY2NiYmUzODA4NjFiODU3OThhZDk2YTQ0Mjg4NTlkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODE4YzA3MGJhYWEwNmRhNmYwN2Q4MTFkNDVhMDJjZWZhYWUyNmVlYTJlOWFhOTZiZDFhNjY1MjA3ZGUyMTk5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDZiZDZjODRiM2VlOGVmY2UxMWQwN2U2MDhjMzEwZWFhYWFjYWU1MDU3NTVhNzUwM2M0YjQ3NmJjM2M1ZGIxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTk4YjQwY2I3NWExZDc3ZDA5NDUxNDQ3YzgwYjNhZDM1MTQxZmRkOGJmOTRjZTk0NDkyOTFhOWZlYjQ1NTIzOSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/boardwrites.js#L123-L129",
+          "version": "repo-lines-v1:sha256:c67cce733c110def9be24a96b36b26fcf5f96fbefb6cdc6313928ed86cb36ec5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzFhNzlmYzZiNTVhYWY2MWQyNjgxZmQ3OGEzMzViNmEzOGRhNDllNTJmZjk5ZWJiN2NkNjJhYjU3ODJlYWRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc3OWE3ZTUwMWU5MTQ3ZTUxZDg5MDVmNGQ3ODI2NDM4ZGY3ZDIxMTE5OWFlYjRjZWYzMTRmOTk0ZjIzOWNkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGU1Y2FjYTQ2NDc2ZDZhNjIxM2YwNDJmM2E5YTA0YTBmY2ZmMDRmY2FjYTM4NWRjMDM4MGZiMjMxMTkxNzNhZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGRiYzBmNzNhNjUzYjk0MzZlMmZmNDFhOWU3ZGVmNTg0NzEyNzYwZDhiZWQ4NjQ0ZGEwN2YzYWRhYmJjZGE0MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cbcca90ecec04d748c44da6a7105167f",
+      "statement": "The dashboard light theme uses porcelain paper, white surfaces, and navy text; its dark theme uses navy paper, dark blue surfaces, and pale text.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/PAGES.md#L148-L154",
+          "version": "repo-lines-v1:sha256:f2734153241c8d33e1f10faa75cce401b44cebbc0c3efc02d1934805aa12f51d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjOWZkZmZlNzY4MDgyYzc5NDU3OTM1YzgyNGIzODEzN2ViYjM3M2EyOWQwYzFmMWY5MTg0N2IxM2ZjN2IyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQ0NGI3YTk2NDNkNGY0OWFmMjNjYzA0NzZiNjAwN2RmODI4NDkxYWI2MjkyNTZmMmI5YjI1MzZlZWU2NDFkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWE2NmFlMzY3NTA2NWI3NTI3ODFlMjNlZGUwZWM0Y2ZkMTY4MjczMzYxOGUzOGVlMzJmYTYzOTUzYjkyZGJkNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzFmNzIwZWRiMWU5YmRhNTIxMzIyMWNjNmViOGMxZGM1ZTg5Yjg0N2Y5YjI4NGJlYWZlZTg2YmUxODllMDNmYSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/style.css#L238-L268",
+          "version": "repo-lines-v1:sha256:425ab9f174b65329b68a0eeaaa5709ee4085eef848fdec9903aef8e4820c350d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMjM0YmJlMjEzZWEwZWFhNjI0ODc5ZDczZmIxN2ViYTM1MjFmNzc1NWRhMGE4N2VlNWZkNDdiOTVlZmU4N2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzMzczNzA4NDEzNzIzMGJmMDY5ZDk3NWI4ZjJjZGE5ZTczMTQ0M2NlY2EyMmQ5NDM2NWM4ZGMzNGE3YmVlZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0OWMxODBjZjkyZDBkOGIxMzE1YWRjMTJiMjhlOTZhNzNmMjk4YjQ3Yjc4Y2NkNmE5ODM2NmY2YTVhZTk0N2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2ZDM2YmEyOWYxZDFhYWM2NmM0MzExZjA1MmY5M2I5MDdhYzMwMWRmYzhlMzU1NzZkZWY3YjRmZjliN2Q2NzkifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/style.css#L25-L32",
+          "version": "repo-lines-v1:sha256:97419e63974f7a25a51d46659fac182f5fca745d930540b1fdbe7e8bb8b7d084:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWFlOGQ2MmU3ZWFlNzFhZDc3MmE2YzZiNmE3N2VkNTFmYmNkMjE0M2MzZjM0ZDRhOTA4NDk5ZjE1MmU0ZTgyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY3YWNiOTUwMmUwNTg3MjZmNDhhNmRhNjVhMTgyZWI4YzJhYzZiNzZkMmYxZDgwZTc5MDVkZjhhOTY4MWIxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGYzNjJlNmMwZWMyNzhmNDMxMTcyMzhmN2FmNDc2ZTBjODczZDE3OTkzNDljNWJhNDdmZWIxNDJmZThhYTFhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGIxMDcwY2I0OTU5ZjA0OWRjNDhjMjUzYjNhMjQ1NzUyMDYyMTczZTlhN2Y4NGE5NWZmZjAxZjE0NGQ0NzlhMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f879cc28ccca4b788f0c952bc997e44e",
+      "statement": "The dashboard shows tile lines until the operator selects the logo button to show the background picture; the browser retains the selection.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/PAGES.md#L170-L177",
+          "version": "repo-lines-v1:sha256:5dd0f6427c4a77badc3470dc0b90e632611677827141aa1755f8ff074ed5d3c5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJlNjI4Mjk5NzVhYTVlYTE5YmZkZTBiY2I3NGEzODI0MzgwNGE0OTE4YzU3MTdkYTlmMjM3OTkwZTc3ZGI0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RkMDEzMzFjOTA2MGY1ZWFhMDgxNjM1MjE3MjUxZDA0NDk2NmUzY2E1YzgwYjdjMzE4NzcxNmVhNjgzNWNlNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmZlOTY3NTQ3OTQxOTU0NTM3Njc5NmIyNjBjMTk3ODBiYWRlMjJhMjIwYjUwOGVjYmIxMmI2ODJmMTc1M2IzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2ViZGFlZDljNmVkODk5YjkzMDljMjhkNWFmMzJjNzdlYzUzNjQ0ZGI2NzgxODY4MzRjYjkzNGJiOGFiYTFjYyJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/theme.js#L67-L98",
+          "version": "repo-lines-v1:sha256:1bd079c797384332cdd735e84f7e24e9c717e1224fef3897b3aaf74ead998f8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjODU3ZDQ4NjMyZDU2N2FkNWE4NWNjZTExN2ZjNTE1MjE4ZTAxYzkzMWE3ZTRhZGMxNGZmYWVkOGU2M2RiN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjMDIzMmMwMDVjMWI3YjExYTE0MTlmYzM5MjRjZjI2NjI5NWFlOTI2OWQ5MTVjMmM0YTE3ZDZhNGRjNGNiYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwODc2ZDI1NTc0ODY2YmQ2MWYyZGZlYmY0NjA4NzFiMTc2NTFiZmMxODYyMzc1MjRiMzdjZGM1NDMyYmE3YzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_10eef632e04a47878e99e995ea89f69f",
+      "statement": "The configured Discord channel starts one thread conversation per channel message, and the dashboard can continue that session.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/PAGES.md#L1816-L1826",
+          "version": "repo-lines-v1:sha256:f44f910d0b8856ac25d724035e04f7a07f522de1bcccdcc6778756a203aa13f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzOGZhYzNlZmI2OGI4NDA3OGQwMjU1MGYzYjNhYmQ4MGE4MjZhMmRlNjE0NTg0NTRlZmIxNGE3MDIwY2JmMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNDA3NDY3MGJjNDk3NzgxNDFlY2M4MGMxZTNiYzAwNmZiMTEzMWI5MTY1YzRjZmE1MTM1NDI1NGU1Y2UxODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMjdmMzZkNjgxZGY3MzczMGRjYWFkMDdmNTJjNTIxNWU1ZjNmNGU5YWMyMzYxNzVjNjE5MGQyOWEwZWE1YTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxODU5M2UwODM2OTQyYWRjYTI1MTgyMWQ0ZGM1Y2JiZjRjZDU3ZDQxY2ViZDdmODVmMTIzZTRmZGNlYzJlNTcifQ"
+        },
+        {
+          "resource": "repo://resident/src/discord.ts#L276-L320",
+          "version": "repo-lines-v1:sha256:a83f373f6083bbcf8bfc0d7fe8ea9c953252018d8c9a43d034a84bbf4c38ea35:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0N2M1YjQzY2VjNTJmMjlmMTViNmViYTk4NzkxYjEzODdkOGM5ZjYzYTM5N2U2ZWYwOWMzYWM3YjAxMzgyYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMjY5YzNhNzNiNWEyZjJiZWI3MDMwMjgwYTJjYTVjMTI1ODM2OTE4ZWNlNGY1MTU2MGM5ZmNkNTEzNWRiYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkMmJjYzk0OGFmMDAzNmMxMDc4YWY4MGU4Y2E5NjdmYjNlYzI0NjViNzRhMDBhN2RmNTA5MWMyZGQ4YmU4YWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd8806f7e5ff4fac918ee49aff5944c1",
+      "statement": "Agent profiles can select an optional effort, and the model test checks that selection.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/config.go#L109-L119",
+          "version": "repo-lines-v1:sha256:ee9cfd0bffee9166256f02a1b1d9968f8595be3d11bce3c5d580d76eabfd38b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3ZjQxMGYxMzFjZTVkNTBlZWY0OTQ1MWNlNmNlOTE2Njk4ZmE3ZTAxOTgxNGM3ZTU0MzExZmExM2I3NzFjZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0N2I2NDRjOTJlMmI1ZmE5YjNjOGM2YTJiMTNiZjYwZWFlY2ZjODExZWY0NWUxYTNiNWMxZTdlNDE5Nzk0NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhZmRlNGQ3NmNkYzgzZjRlMDQyYmUyNTk4NmM4Yzc4OTdkNDg1MzQ4ZWI1ZjQwZWJjNDVmMWRlZTg5OTRhYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMTI3MjhhYzk1NTE4YWUzNzMzNDE1OWFjZmM2M2Q5YjM4YmVmMzcwMDY4YzA4ZDI5ZGUxOTkxMDEwNmRhNzMifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agentprofile_auth.go#L204-L218",
+          "version": "repo-lines-v1:sha256:e0b511f510e55338b7dc8332f8cd47c5bca903ffe36863bd45d7c399d5051377:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOTBjNjJlNWM3NTcyOWUzZmUxN2EyYmJkNTBlOTkzNDBmZGJlMGQ4NzgzZDQzMTJlY2Y4OGU4NDdkMGQ2Y2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4MWQwZGI0OGE0YWZjN2I2ODkzYTJlNzcyNjEzOTUyMjA5YWQzYjRhZDVmMDQ5MGFkNjAwYTI5MGFiNDFiYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3ZWQ1MmI2MDhkY2RjZGRiNDI4MjNjZGIzNDU1ZDM1NzQ0MDhiZTJlMDFiMThlNTczNTM4Zjc3Mzk5ODY1MTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_beda4d3f2fbf41d1b7ed892325bc35c8",
+      "statement": "The role assignment dialog offers an Edit action for each enabled profile.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L497-L539",
+          "version": "repo-lines-v1:sha256:2917b29a1ab1a047552f09c9df792a786c26d902fa3aeb770ecdb59d8446b962:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNWJjMDI0YzQ4YzVhNjZlMjQ4NTUyZjE2M2Y2ZTE4OWIxZWQzNDc0MGMwOTA3MWEzYjA1Nzg1MjQ1YmY1M2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NDdiZTUwZDhlYjUzM2ZmMTlmNzU3MWJjOGUwNjk4ZWZiMzEyOTE2ZTY2MWZmNGYyZDViZTlmYWNjM2QyNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkY2U0ZThhMzI4MGNhMWIzNTg1NGY3YTg5MjQzNjEwNjJkNTQwNGJjYjIzM2E2ODY3NTNhMmM4Y2M2NjY2ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWRhZThhMGU4NjFiODU3ZDc0ZDNiMGQ0MGE2ZDVmYjEyMGFkNDNlZDIwN2JjNTg2OGEwZTEyZDY5ZGU0NjAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T10:01:23.917Z"
+  }
+}

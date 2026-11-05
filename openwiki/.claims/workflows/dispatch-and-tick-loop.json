@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:30e5308c4f3f0aaec75c0fa3790269c2063f28800236ab419ae3ef4638cbc6d4",
+  "claims": [
+    {
+      "id": "claim_4665dd1d847544b8aca52a0ff841277e",
+      "statement": "dispatch.Decide evaluates one Project and returns a stop (reap) of an agent run, a spawn, or an idle reason, with no I/O and no mutation of its inputs.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L340-L346",
+          "version": "repo-lines-v1:sha256:53dea787e69ffd4ca77188c01dff7eef0f198c3d27a9011ab93ae6866e353491:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3OGVlODE3Y2EyNmU1NDQwN2ZhMDQ0MjdkZGRiNDFjZjM4MDE2N2I2NmU0ODIyYjYxYzk5MjhiYmNhMzQ4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzM0ZTQyZDE0ODMzMWQ5NTVjODRhNzQ0MzhlNWQyNzdiNmM1Y2JiYjlhY2M1NTNmZDUxNDU0ZmM5ZDg2ZjVkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDFlOTQ5OWQ0NzM4ZWVlZmE1MDZkYjllYWNiZmFkOTJjZGVmMTE2ZGMyOTMxYWJhMDlhNjRjZWUyYzU0MzkzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDlmZTU0YzUwNTNhNDJjN2EyMThjOWJlMWI5MTA1MDNkM2MyNTA5MmNkMjEwM2I5Y2M5N2FjYjBmNmRmMjRiNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd5f1818d4ea468e92fc97da5966a569",
+      "statement": "Decide reconciles a held lease first (reap or lease-held), then returns project-inactive for an inactive Project, project-infrastructure-exhausted at three Project infrastructure failures, vision-required without a valid vision, and attention-required at three attention tasks.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L346-L379",
+          "version": "repo-lines-v1:sha256:61f15b8d9be13c8a0f96f121e8da09408a2fd6ddc6fe8924c4e7a9ddeccd0ce9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNGU0MmQxNDgzMzFkOTU1Yzg0YTc0NDM4ZTVkMjc3YjZjNWNiYmI5YWNjNTUzZmQ1MTQ1NGZjOWQ4NmY1ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2MWE1YjE2NmQyZThmMGVlZGJjMmE4NjZiNjdjYTIwMmI4OTBlNjkxZWRjY2I4NzVlZWQ4MDYyZmZjZDVkMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ODRmYTY0NmU3YTEyNDY5YzkxZTM3MjM2OTUyNzI2NGFiNzFkNmVjZjBlMTg0Zjk4Zjg3NDY2ZGQ1ZDM0MDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_839216bafa91452da6202cca39df4d55",
+      "statement": "TickOrder returns every Project id in sorted order, including inactive Projects, because a reap can apply there.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L443-L452",
+          "version": "repo-lines-v1:sha256:888847658b3a22e0e7d751c2e249a5d2d035ec9f7fff5f87b5cf0012cf286035:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNTI4ZDk3ZmEwZjdjYTUxYTk0NmI5ZTllYTMyMWY3NTdmYmFjMDY1NzM5ZWE0Nzg3NGVlZjkyZjBjNTBhMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxNmI2YmUyY2ZjNzcxMGMzMThkMjU1YTJlMmUyMjk4NGEyZjc4NDkwNzljY2NhZTFhZDcyMTFmZmI1Yzc5MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzM2YwNWU1ZGU3M2UyZWI4OWUxNGFmZWZlY2U4YzUwMTQ2MDIyZGMyNGU0YzYwOTc1MmU3ZjM3N2U0NjA2ZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3340724dd3bf4277aa0aee898246eb9e",
+      "statement": "Ordinary dispatch candidates are ordered expedite lane first, then furthest stage, then priority, then age, then id.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L618-L633",
+          "version": "repo-lines-v1:sha256:5f78caffb2bc1cc12f33b53960932110ac8ac9289a66d425269d9ad05e3b627f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZWZlZWRmZDM0MGEzMGNjMzU3YjVkNTZiYmMxNmU0NGJlYmUwODc4Yzk2OGYzMmEwMGE5YmI5NWRkNWI0Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3ZjZkNjM0NjEyNTA1MGYyNDMxMjEyMWNiYjNhMjZlOWJiODA0NDg1NDhkMTFlNWViYjkzZjRiZDA2NjhmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmYWFjMzY2NDRiMWJmNmYwN2ZhOTI1MjMyMGJiNjY2NzcxNGNmY2U4MDViMzlkMjU5MTZlYjJkZGI5YTY2NzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f3c064767b5649f1a1b9184672131318",
+      "statement": "Project priority belongs to the approved task with the smallest task number; an open correction alone holds no Project priority.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/delivery.go#L23-L38",
+          "version": "repo-lines-v1:sha256:09c8b9135982ee55f96f85a154c30592a607fca8b639e037e9ca9b26a2eb97e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MDk3OTJhMTVjOGVkZmU4MGJhNmY3MjQ2NjBkMWFjZTBiOTJjOWIzZTJiOTA1YWZkOWIzMWU4YjE1YmI0YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMzQyNmQ4ZDRiNTU1M2E0MDAzMDY1Y2Q5YmU2MDBmZDA2MDc0Y2UzMWM0MzE5NjYwZWE4Y2E2MGZjYTg3ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzNzBhMDNkNTgwMTE0MDdiYmQ1N2E2ZjQ4MjBiYjRiYTQxMThiMThjYWRlMWVjZGVjYWVlZDkwMzQxMWM4MGEifQ"
+        },
+        {
+          "resource": "repo://mc/dispatch/delivery.go#L64-L79",
+          "version": "repo-lines-v1:sha256:000a0b191d9ed616a7f6c9b949378f21704c8cffa4d5cb702959a9cbec543653:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NGRiMDFmMjljZDY0OGFhMGI0ZDJhOWJmMzJhZTUxNjhjMDcyZjVmZmJhMWNmODViOTdiOWJkNWVjYmI1ZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkOThkODYyNTg2ZDZlOTEyM2Q0YjUwNmYwNDZjN2U5YTU5NGU4YjM2OTk1Yzc1N2U0Nzg5MjZhYzQ4ZGI3YTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1OTc5MDhkOGU1OTgyYzdlOTJlMzA4N2QxMzY1Y2I2YWExOGI4Y2YwMjE5ZGFkNzQ5ZTJiY2VkZTc1MWM0MTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_57e52ee9f6ae49c48e95d0ed2cbaf910",
+      "statement": "Dispatch runs Homie first, then Project pipeline rounds, then wiki rounds; a pipeline round error preserves committed effects.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/dispatchverb.go#L77-L95",
+          "version": "repo-lines-v1:sha256:067105df6c47e1eb5a97dad88c9f9b77fa0130c3aeff6708ab00049c0d0a9128:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNjNhYTQzODU1Y2IwYTVlZWQ2ZTcwYzFhNmMyOTU5ZDM3YzY3YTRmMjVkNTYwZTExY2RlOWE5Y2JiMjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMGYzZDRiZTI3ZDQwMDhlOTJkYjA3YTUxYWYwMDk1OTA4NGE4MDQ1MThkMDg4ODQ3ZGJlMjJkYTYwZjlhODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2NmIwMzA2ZjIwNjViYjFjNTcxMTFkYTg5ZjFkNDc5Yzc4ZmY4NTU2YTQ4NDQyYjE2NzlmZmEwN2JlNDljMzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmNGEzNWQ0Nzc2ZWZhNzY2MWU2MmU2ODA2ZGZlYmU4ODNlMjIyZmU2NTZmNDNiNDA2NGZmOGZkOTA3NTM1YzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d2e608ce69f34af8934d005b08f0e70b",
+      "statement": "The canonical seam structs are a frozen wire contract, wall-clock time is excluded from the projection, and a shape change bumps the action version and dispatch key domain.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/dispatchseam.go#L6-L20",
+          "version": "repo-lines-v1:sha256:1196944671ed5529482c38ea0d09685fac3fd7803c395fe2dc12ec2b98a6448f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiM2Y4NzA5NTc4MDc1YjcxZDRkZWI2MGFlYTJmZjBhNzZjZDZiNjI0N2RmOTZmN2JmYzE4YTA2Mzc3ZDE1NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjMTUzZDczNmY3M2EwZjk2NGY1ZWIwYjZmYjYwZDE3ZWFkNTNmZjY0ZjQ0NDRiOTE5MmFiMzMwNzYyNWNjOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljYTg3MGUyMjc3YzAzY2VhMjdjMWYzMWQyYjE0YWRhZmVkNTY2MzVjYjg0YWIwODg3NDAzYzY0YzRhMjc5OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzk0ZDZlYzk0NjYxYzY2NjU2OWZiZjMyYzExN2JkMWVlMDY1NTE0YmY1MjdiZjRjNzlmZTljNjdiNjhkZjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0f956b349a9e4c8d9c2c9c618b951bcd",
+      "statement": "Commit rebuilds the canonical projection and returns an inert stale refusal when its preparation token differs, and a candidate_mismatch refusal when the re-decision selects a different candidate.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/dispatchseam.go#L904-L929",
+          "version": "repo-lines-v1:sha256:7c74d57f2c0d5bf319383b493e116fb18ed21d87a2ca6320379bb967c699eb20:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxOGFkMjRjY2Y0NGJjZDFlYTg0OThmY2VmYTk1YWI1NDYyNGE0NjRmMWRjMTgwY2RlOTY5ZmJhYmVmNDZhYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZDc2ZTA4MmIxMDI1MWQyZmJlNWVkOTgwYzk5YzUzNzhhYTNkODJiNmQ5YzYzMTU0MDliNjE1YzlkZTc0NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NDBmMDBmYTFlOGUwYzQ2NDcwMWMxNjkwNWY1MTBlYTU0MjgzZTZjYTkzYmJkNzM4MDA5OGZiNWY4ZTAyZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_01d6c00700b142e0a1eb9f5038ec8ade",
+      "statement": "The tick loop skips a timer firing while a tick is in flight, and a nudge during a tick books exactly one more tick.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/tick-loop.ts#L22-L60",
+          "version": "repo-lines-v1:sha256:41f8646da70ab5d64750d6097433e86b4e7fc224315c26cd2cda70619f874dc9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1YzY4MDI5OGIwMTVlMjc0MmU5MWUzMWMwYzAwZGZiMTVhODMwYWVkOTI1ZTdjZWFlN2RhMjJmZTM1MDdmMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2NWY3ZDM0YTJlODM4OGIyMTU2YTU4MTE5OTUzOTM5ZjI1ZmFlMjljMjYwODk0NGQ4OGU4MTI1MmYwNmM1ZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3NWMxNmU0MTM2MmQyMWE1NjA0MDVkNDA4NTE1NDUwOWE1NzhmYTcyN2ZlZjk1NThmNzFhNGU5YzczZmU1M2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9ed568bc034d4b4e8ad0179f5adc572b",
+      "statement": "The nudge socket accepts only a Homie session id, vision-save, project-start, or packet-decide, each at most 64 bytes.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/nudge-socket.ts#L11-L26",
+          "version": "repo-lines-v1:sha256:c10d7c8e5d09151d459d22dffc4a66720803d0952f3f5eba971a6317119986f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YzRlOWRmYTcyMjczMTcyMDg2M2MzZWY2YWVlMmQ2OTQyZTM3MTE5Y2E4NDk5OTk3YTg1ZDhkY2IzMWMyNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZGM2Yzg5YjRlMmM1NDEyNzIwMWY2ZWJlNGUxMzQ2YTBlMTk2NmUxNDczNWJkNzNhYTQ3MzA1ODQyNGRkZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiYTFhMzQ3ZGQ1ZGQ1OTM3NDdhZTdkZTMzZWNlMzMyYjZhZGQ0OTI4MmQ4OTdmMzBkMzA2ODIzOTZkMmM5Y2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec2e187d697d49ac93548659d0e8e1fa",
+      "statement": "A reap stops the setup and pipeline containers, calls mc run stopped, and only then discards the launch envelope and plan files.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts#L1655-L1709",
+          "version": "repo-lines-v1:sha256:2b44f76180d3bf423185e643631cbd673360270a3b4b2b6bdfd067e0294c7c3a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NDY1NDQ1OTUwM2VlYzZmYjBiZjJjNTEwZTg4Mzc5MmYzNDgzYTY0Y2Y4YjE5YWMxYzc5MWZmNjM0Mzg2MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyYzE3YjE1ZGZmYzE4ZDNlZjEyMWVmNWE5MDFhZWFjMDUwZTA1MTY1NDgxMmY4YzcwMzcwMGViZjBhNzM3OTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxZTczNmFkOGE4ZDUxZGFlZjA4OTQwZDZlMWJhNmFjMjUxNDM1ZjQ3MThiM2U2YmMzZjJiNzhmNWQxZGEyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYjc2OTZhNzViYjI4MTkxZDFmNDJmZGQ2NDVkMzI3MzkwZjYwMjEzNzBjNGIyZGIzZDgzODNjYzM3YTkzMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9946beff805a42c591df0b7260bee7ca",
+      "statement": "Pause all sets every active Project to paused, and resume all reactivates only paused Projects whose setup_status is ready, each in one transaction and only from host scope.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/pause.go#L43-L71",
+          "version": "repo-lines-v1:sha256:3bc705b5de5a3450093467b84507be4239924a246d4cb10626139bd27fd9597b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NzdhOGY1MDRjNjI1N2NjMTQ3NWUyZDBlNjljMjRmYTAzYTYxN2FmMDgyZTQzOGY1NzA4NzVkZGEzNzYwZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljMGExMmJmMjcyNjdhN2RmMzA1ZmRiYmIxYTllZWYyZjY4Yjk2YmM1OWI1NWYwYTYyNjc3YTZhYTY5MGRiNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8dc50f5133854d00bf17772ee253e182",
+      "statement": "Mount attestation prepares the selected Project home before it resolves and records the protected home path.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/mountattest.go#L447-L458",
+          "version": "repo-lines-v1:sha256:f7fc840853d004a1ef0409210dd1e84cb903076cfc92d5c7ef7387a383c4bf2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5ZGZjMTU1MzVlODI1Y2IwODJiYmIyZGU0MGMyMTMzMTY0NTY4OTIyMjg0ZTYxMjZlYjkxYjg1NzM1MjdjMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmNDc3N2JkZWFkNTJlMjVkYjYwNzk0ZmU2MzI3ODI1YTgzNmQ1Y2NlNGVjN2U4ZTNhNDVmNjZhODRkNjdkN2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1YmYwNTQ3ZGIyOWY1ZWJhZTk4MWU5MWM1NjZiYWM4MDkwMDUxNmM4YTE4NDFjMmVjZWRhNzQ1M2RiN2MyNGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4Nzc5MTk0Yzc3ZjgxYjA2ZjFlOTM1NDhlZDhlMDliZDM0YzAxMGNlYThhZjllNmE2ZmE3ZDYyNzczOTNjMjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_03804254bb564f44b90d1b68d8f03416",
+      "statement": "The resident requests the first tick at startup and later timer ticks use a default interval of 60 seconds.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/README.md#L1-L7",
+          "version": "repo-lines-v1:sha256:73df343899543d6792f4d5286e85bfcf6b6cd57d45479e43202c46eae5e2b9c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjMzYTQ4ZDhkMGE4NmI1ZDFkYmI4ODk5ZTIyNTRmY2ExNWRlMmE5NGY1OWE1YzA1YTRjN2FjYzA3MmFlYmE2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UyYzRlMjY3NzI5NmRhZjFmYzJkMTE0YzE5ZjkyZTA4M2U4NWY0MGM3Y2Y1NTA3MDg2MWUwNDJiZDA3ODdmNSJ9"
+        },
+        {
+          "resource": "repo://resident/src/main.ts#L785-L795",
+          "version": "repo-lines-v1:sha256:a8123f2c24af3da7b63acd1cf114e63427b0f28ef01956f03d6297a6607f6e9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZjVmOThiYmVlNmU4ZTk1MmI1ZjBlMWU4ZDZkMmY1MzVlMTY1OTlmMjdlYmJiMzEzNTNjNGZiZmM0NTU4OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYzhiMjM1NWIzMGY1YTkwNDZiNTIwYjFjZjFkYjFlM2VlOTU5Y2FhYTlkNjk2NWMxNTEwYTI5NmRjOWVkZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ODViOGU5MGFkMzUwNDU5OTMyOTg1MDRlNWNkNzBhN2E2MmYxYjBkZDExZjNkMTU3ZWU1MThkYWM0ODA1NTAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-03T00:11:39.952Z"
+  }
+}

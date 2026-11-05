@@ -1,0 +1,4 @@
+{"stage": "verify-resources", "type": "helper-install-progress", "validationOnly": true}
+{"stage": "backup", "type": "helper-install-progress", "validationOnly": true}
+{"stage": "copy", "type": "helper-install-progress", "validationOnly": true}
+{"backup": "/private/tmp/culler-performance/installer-display-pny4vscy/install.json.original", "record": "/private/tmp/culler-performance/installer-display-pny4vscy/install.json", "sha256": "b89498cde55b82abbc27430c9d2f0601547b1dec2de648131d65d38f09e9aa68", "status": "verified", "type": "helper-install-result", "validationOnly": true}

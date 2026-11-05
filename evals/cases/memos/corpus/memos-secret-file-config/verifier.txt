@@ -1,0 +1,208 @@
+{
+  "criteria": [
+    {
+      "criterion": "The new loader creates one process-local configuration snapshot after migration and demo seed.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/deployment_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/instance_setting.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/idp.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/auth_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/idp_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "docs/configuration-provisioning.md",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The API rejects writes to file-backed resources and validates authentication changes within driver transactions.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/deployment_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/instance_setting.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/idp.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/auth_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/idp_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "docs/configuration-provisioning.md",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The default directory is /etc/secrets; only supported direct-child file patterns load.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/deployment_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/instance_setting.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/idp.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/auth_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/idp_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "docs/configuration-provisioning.md",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Files changed after startup require a process restart.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/deployment_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/instance_setting.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/idp.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "store/auth_config.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/idp_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        },
+        {
+          "path": "docs/configuration-provisioning.md",
+          "revision": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "564da949cb87491ca8e493d2f7aedcd2ef9545a1",
+      "changed_paths": [
+        "cmd/memos/main.go",
+        "docs/configuration-provisioning.md",
+        "docs/identity-provider-bootstrap.md",
+        "server/router/api/v1/idp_service.go",
+        "server/router/api/v1/instance_service.go",
+        "server/router/api/v1/test/configuration_provisioning_test.go",
+        "store/auth_config.go",
+        "store/db/mysql/auth_config.go",
+        "store/db/mysql/auth_config_test.go",
+        "store/db/postgres/auth_config.go",
+        "store/db/postgres/auth_config_test.go",
+        "store/db/sqlite/auth_config.go",
+        "store/demo_seed_test.go",
+        "store/deployment_config.go",
+        "store/deployment_config_test.go",
+        "store/driver.go",
+        "store/idp.go",
+        "store/idp_bootstrap.go",
+        "store/idp_bootstrap_test.go",
+        "store/instance_setting.go",
+        "store/migrator.go",
+        "store/seed/sqlite/01__dump.sql",
+        "store/store.go",
+        "store/test/auth_config_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "0038295bbc772b38425b6c7f9ca814e4d1e44260",
+      "reviewed_tree": "3fc565e709d080f4f27cf057b9e9dd6bd3663057"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 813,
+  "unverified": [
+    "No deployment, mounted-secret load, API mutation, or database concurrency test ran.",
+    "The new no-persistence policy does not remove provider secrets that an earlier bootstrap stored.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

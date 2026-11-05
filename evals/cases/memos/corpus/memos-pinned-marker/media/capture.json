@@ -1,0 +1,202 @@
+{
+  "case_id": "memos-pinned-marker",
+  "method": "unchanged_frontend_with_synthetic_service_responses",
+  "limits": [
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "clock": "2026-09-30T12:00:00Z",
+  "timezone": "UTC",
+  "locale": "en-US",
+  "images": [
+    {
+      "path": "before-pinned.png",
+      "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+      "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "side": "before",
+      "state": {
+        "name": "pinned",
+        "pinned": true
+      },
+      "fixture": "before-pinned-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "before-unpinned.png",
+      "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+      "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "side": "before",
+      "state": {
+        "name": "unpinned",
+        "pinned": false
+      },
+      "fixture": "before-unpinned-fixture.json",
+      "fixture_sha256": "a8ee68139bfa242a753798490bdec683493aa228cd1e1784a01ca59d3dc45d3b",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "before-pinned-hover.png",
+      "sha256": "00cfc91ee80e2ee7b23dd76cbf3f40fed89c68365cc208d80a6078309ddd3f1a",
+      "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "side": "before",
+      "state": {
+        "name": "pinned-hover",
+        "pinned": true,
+        "hover": "header"
+      },
+      "fixture": "before-pinned-hover-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-pinned.png",
+      "sha256": "960b0b8ce9fb4f49cfcc5e64b9ea3ccf5858d380cd3a6ef9d56210999ab0f7ce",
+      "source_revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "side": "after",
+      "state": {
+        "name": "pinned",
+        "pinned": true
+      },
+      "fixture": "after-pinned-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-unpinned.png",
+      "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+      "source_revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "side": "after",
+      "state": {
+        "name": "unpinned",
+        "pinned": false
+      },
+      "fixture": "after-unpinned-fixture.json",
+      "fixture_sha256": "a8ee68139bfa242a753798490bdec683493aa228cd1e1784a01ca59d3dc45d3b",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-pinned-hover.png",
+      "sha256": "c417a1a34eeeda50ecec972306be33c15476f6140bc92ee84d1c484e924a9935",
+      "source_revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "side": "after",
+      "state": {
+        "name": "pinned-hover",
+        "pinned": true,
+        "hover": "header"
+      },
+      "fixture": "after-pinned-hover-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    }
+  ],
+  "tools": {
+    "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+    "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+  },
+  "browser_version": "145.0.7632.6"
+}

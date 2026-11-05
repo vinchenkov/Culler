@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "presets": [
+    {
+      "id": "production",
+      "label": "Production",
+      "purpose": "directive_evaluation",
+      "description": "Uses all 35 cases and repeated trials for directive evaluation.",
+      "protocol_file": "packager.json"
+    },
+    {
+      "id": "production-short",
+      "label": "Production — 5 iterations",
+      "purpose": "directive_evaluation",
+      "description": "Preserves all 35 cases and Production trial counts, with at most five iterations. Fewer proposals reduce opportunities for improvement.",
+      "protocol_file": "packager.production-short.json"
+    },
+    {
+      "id": "test",
+      "label": "Test",
+      "purpose": "execution_check",
+      "description": "Checks execution with 23 cases, one trial per case, and at most two iterations. Scores remain exploratory; directive improvement requires a full evaluation.",
+      "protocol_file": "packager.test.json"
+    }
+  ]
+}

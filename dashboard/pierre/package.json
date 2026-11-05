@@ -1,0 +1,13 @@
+{
+  "name": "culler-dashboard-pierre",
+  "private": true,
+  "type": "module",
+  "description": "Build inputs of the local Pierre Diffs and Pierre Trees modules that the dashboard serves. tm-grammars supplies the license notices of the bundled grammars.",
+  "dependencies": {
+    "@pierre/diffs": "1.5.1",
+    "@pierre/trees": "1.0.0-beta.6"
+  },
+  "devDependencies": {
+    "tm-grammars": "1.32.22"
+  }
+}

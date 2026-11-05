@@ -1,0 +1,24 @@
+{
+  "codex": {
+    "identityHeader": "chatgpt-account-id",
+    "apiKeyHeader": "",
+    "operations": [
+      { "id": "model", "method": "POST", "path": "/responses", "modelRequired": true },
+      { "id": "compact", "method": "POST", "path": "/responses/compact", "modelRequired": true },
+      { "id": "models", "method": "GET", "path": "/models", "queryKeys": ["client_version"] }
+    ],
+    "requestHeaders": ["accept", "content-type", "user-agent", "openai-beta", "originator", "x-client-request-id"],
+    "responseHeaders": ["content-type", "retry-after", "request-id", "x-request-id", "openai-processing-ms"]
+  },
+  "claude": {
+    "identityHeader": "",
+    "apiKeyHeader": "x-api-key",
+    "operations": [
+      { "id": "model", "method": "POST", "path": "/v1/messages", "modelRequired": true, "queryKeys": ["beta"] },
+      { "id": "count", "method": "POST", "path": "/v1/messages/count_tokens", "modelRequired": true, "queryKeys": ["beta"] },
+      { "id": "models", "method": "GET", "path": "/v1/models", "queryKeys": ["limit", "after_id", "before_id"] }
+    ],
+    "requestHeaders": ["accept", "content-type", "user-agent", "anthropic-version", "anthropic-beta", "x-client-request-id", "x-stainless-lang", "x-stainless-package-version", "x-stainless-os", "x-stainless-arch", "x-stainless-runtime", "x-stainless-runtime-version", "x-stainless-retry-count", "x-stainless-timeout"],
+    "responseHeaders": ["content-type", "retry-after", "request-id", "x-request-id"]
+  }
+}

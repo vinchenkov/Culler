@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a82d08915910aa650a73e0b3f4ea00fc54865f17dc6ec14d4d4928d2df48f6d1",
+  "claims": [
+    {
+      "id": "claim_40bf16bc04264ce683e954dec92e3a71",
+      "statement": "The culler command routes status, version, lifecycle, update, and logs operations on the Mac host.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/culler_prod.go#L135-L260",
+          "version": "repo-lines-v1:sha256:146aabc0580c46280649cce96bef755b08e50ad3f117792d5694a5f247bea030:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjNzZmY2ZmN2Q0YmVlZDZlZmYzOGNhNzRjY2FlMGFiNmI0YzY0MjA5M2E1NzkwNzAwMDc5ZWRjMTg2NjJlYTJlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiODI1YzUyOGZjMTU1OGVlMzk2NjE0ZDcxOWMxYzFiODQwZGZmNDJhNjJlMTEzZjNiZTA4NmRiNjFhNWRkZGMyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5YjJmZmU4MTNlNGQyODFiZWJjNjMxMjA3ZmY2OWZmNzgxZmFjZWE5MzY4YzI2NWM3MWM3YzdjZDM3NzlhODllIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f78124b53004303b2b3d842b5fe0251",
+      "statement": "An explicit service stop persists in the deployment stop record.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L321-L339",
+          "version": "repo-lines-v1:sha256:532bbf28c00cf9c347db90d7910195ba730f584ba5903951ef15b6caf0599c8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkYzc2MDIwYmFlNzA1NzdlNjRiMzMwZGNhODNmZGYyNGYzZDc1OTNhMDE1NGQ4YWJlYzZkYzYzZjU4OTdmZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkZTc2N2Q1ZjZmMjRhOWMyNGQ1NGE4ZjVjOTZlNzZjZThhMDllNWQ3ZmI5MDEwZmY0MWFmMmNmOGMxNTJiODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1ZjE4Yzk0OTkwMDA5MjI5YTJjMzllOGU4Mjg1M2M5OTFlM2E1YTNjMDcwZmIzYmQyMDEyOTZjYjI0MDdjNDUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/lifecycle.go#L16-L83",
+          "version": "repo-lines-v1:sha256:c28ba57b207967c1c2651a5a1e3d134a62cef9faadc2f2a8b818f644663ded78:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZmQ0OGY1ZjRmNGYxMzU4NjcwY2ZiOTU2YTRlMmJiZTZjZWQ1MTA5MjM2NjJhMmYyYzc5OGI4NDQ2YmYzN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2ZjMzMGM5MGZiNjBmOGIyZDQ0YjU3NDliMzBjODJiNGQxMWIyYzYwYWQ0ODU2NWU3N2I1MGNmMmVkOTQ5MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4ZjJlZTYyMjBkOWUzNmNlYWE4MDM3NDEwYjg1OGM2YmI2MzhkZTQ2ZTk1Zjg4NjM1MjM2NzJiYWNkYzc4ZGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f458e46e75e54f8992f3eea9104c4e63",
+      "statement": "A resident stop waits up to three minutes for active work before service transition.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L359-L366",
+          "version": "repo-lines-v1:sha256:8c3e3056ef88979c554fe4987cd4524ac8eed5cf47e38b20f23f66abdee35254:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkNTc4MzRjYTc2OTdhNDdhYWQzYzNjNWY4N2E1ZmI0NDViMjk4OGI2ZDhhMTg0Y2VlMzBhY2Q2NjYyYzBmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTY1M2RlMjcyZjExNDEwMzMwZmRhMGVhZGFlNWZjOGNhZTY0MjU4MGU2MTliYmQzODMzYTc5YWYwMjBiMDJhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWVjMWQ1ZDUxMTg0MjhkNmM2MDEzMTI4MmIyOTlmYTFhODI0N2U5MmM0MDg3N2MzN2I3OWQ5MGU0OGJiYmM1ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_23de1e9f27f74f92b87f239c7f4f48d0",
+      "statement": "A failed service change attempts to restore the prior state and stop choices.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L245-L336",
+          "version": "repo-lines-v1:sha256:7beabb50f54c93250638a39ac2a481b47ad7b141c0fc7c9e42c6b3afbabf3c24:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2MTY0NTE2NWI4ODkxMGIzZDkyN2RhNzFmMGNiMWI1MmUxMDlhYjA5MjgxN2E4ZjdiMWRkZDg4MzYwNzI5YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwMmJjZGU0Yjg5OTcxNDk1MmFkMmQ5ZjY2ZWM2Njk0NmY0ZDQ3NzM2M2RkOTIyMjcxNzNjMmE5ZDM5YWRmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1NTIxOWY5MjA4YWEzOTZjZmQwZWM3OTJjMDY2MzliMzIxNWMxYTA5NWJmNmZjODNmM2QxM2E5ZmEzMGJlNWIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T05:07:38.661Z"
+  }
+}

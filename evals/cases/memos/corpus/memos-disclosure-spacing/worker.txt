@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "base_commit": "80bab62c723d2c016753679d61468aefd987201d",
+      "changed_paths": [
+        "web/src/lib/markdownStyles.ts"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "reviewed_tree": "a18bb9c691b59da12c9bce1b4c45c499e020f906"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+      "conditions": [
+        "The summary uses normal font weight instead of medium font weight.",
+        "The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior.",
+        "The change adds no new disclosure state or content transformation."
+      ],
+      "mechanism": "The shared details and summary style declarations reduce padding, margins, and icon dimensions."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+  "task_id": 804,
+  "unverified": [
+    "This case covers shared style declarations, not every Markdown renderer combination.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "verified_source_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+}

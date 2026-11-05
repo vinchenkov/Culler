@@ -1,0 +1,86 @@
+{
+  "criteria": [
+    {
+      "criterion": "The creator link can shrink below that minimum width.",
+      "evidence": [
+        {
+          "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+          "revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The change affects the creator label beside the time and existing Space badge.",
+      "evidence": [
+        {
+          "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+          "revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The change adds no new user data, API, or permission rule.",
+      "evidence": [
+        {
+          "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+          "revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "45519accd338fa29010db6a9d31de6fe252256ae",
+      "changed_paths": [
+        "web/src/components/MemoView/components/MemoHeader.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+      "reviewed_tree": "3de7d09d87bfedab18cc77429535ff59c55d89a7"
+    },
+    "frontend_capture": {
+      "result": "captured",
+      "provenance": "/mc/artifacts/eval/802/media/capture.json",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "images": 2
+    }
+  },
+  "media": [
+    {
+      "path": "/mc/artifacts/eval/802/media/before-author.png",
+      "revision": "45519accd338fa29010db6a9d31de6fe252256ae",
+      "sha256": "21ed0e1c47d10ceba1a20d65cb4691d8ad2b053cb91f11ea472aec7dac1092e1",
+      "description": "Before: author. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/802/media/after-author.png",
+      "revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+      "sha256": "4b72309b26341cf629e2a73618aaafd4cedf094cbcb8aac6257ac14a3fbdf51a",
+      "description": "After: author. Fixed synthetic frontend state."
+    }
+  ],
+  "media_status": "supplied",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 802,
+  "unverified": [
+    "The source declaration does not prove every browser width or every translated label fits.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ]
+}

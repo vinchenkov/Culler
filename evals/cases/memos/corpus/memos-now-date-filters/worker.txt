@@ -1,0 +1,54 @@
+{
+  "checks": [
+    {
+      "base_commit": "e3c231fcac5691f9590a5d685bdebec23b73be35",
+      "changed_paths": [
+        "internal/filter/README.md",
+        "internal/filter/functions_test.go",
+        "internal/filter/parser.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+      "reviewed_tree": "6f8a54cd6f6a8fe8c77b4dbbc0b2a227f9affbf7"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+      "conditions": [
+        "The current time is fixed for one compilation; a compiled statement does not update itself later.",
+        "The accessors accept no timezone argument and operate only on timestamp fields.",
+        "getMonth, getDayOfMonth, getDayOfWeek, and getDayOfYear use zero-based values; getDate uses one-based values."
+      ],
+      "mechanism": "The parser converts the accessor result into a literal before it renders the comparison."
+    },
+    {
+      "after": "Two literal operands can produce a constant condition.",
+      "conditions": [
+        "Numeric literals widen to float64 for the comparison.",
+        "Strings support ordered and equality comparisons; booleans support equality and inequality.",
+        "Unsupported literal combinations return an error.",
+        "The change adds source tests and filter documentation."
+      ],
+      "mechanism": "The compiler swaps a left literal and a right field, then mirrors ordered operators."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+  "task_id": 807,
+  "unverified": [
+    "The preparation executes no filter test or database query.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+}

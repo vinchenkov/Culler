@@ -1,0 +1,13 @@
+usage: author_scheduler_fixture.py
+       [-h] --cache EXTERNAL_MIRROR
+
+Create actual scheduler fixture commits.
+Preserve the pinned upstream source
+tree.
+
+options:
+  -h, --help      show this help message
+                  and exit
+  --cache EXTERNAL_MIRROR
+                  Path to the external
+                  bare Memos repository.

@@ -1,0 +1,700 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:cf18e8805cb5b7b6914cd1436ebc0805b80140659ac533af5f92c3e6ee96c1ab",
+  "claims": [
+    {
+      "id": "claim_307239e03a82428c8b39bb994d34c56d",
+      "statement": "mc/check.sh fails when gofmt -l lists any file and runs untagged go vet.",
+      "evidence": [
+        {
+          "resource": "repo://mc/check.sh#L8-L14",
+          "version": "repo-lines-v1:sha256:f911ac3e3fb94a2a19f792a72cc7583ad11abde8903003d6d2955eff5761a552:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ3ZGQyMDg5MjhiYWJmOGZlOWM4MmRlODhkMzZkOThmMTRkMWIxMWI0ZWFmNDg4NDkyNjIzZDdlMDU5ZWI5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYxODgyNzNhZWJmOWMxYTY5MTE3MjMwNDliMmZjYzhiZmRhNzIyNmRlYzM5OTAxZDgwYTg1MDA3MDJmMTMxMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjRjZTVkMTY3MDgwNTQwMjU0ZjNjYzFlZmUyNGEyMzZkZWMxM2IzZDM0YzkwODk3YjVhMGVjZGM1ZTgyYjhlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWZmMjhiYjUyMTkxMmVhYjQ5Mzg0N2Q4NWRmOGNiYzEzMjk3MmI3OWFhZTY3NjUxY2YwMTUxNGZiMWFmYWEwMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c4fea5d25c474830973f099a5ee5b29b",
+      "statement": "The Go gate vets nightly, docker_e2e, docker_boundary, test_fake_routing, and test_scratch_spine builds, and Linux arm64 builds with and without test_scratch_spine.",
+      "evidence": [
+        {
+          "resource": "repo://mc/check.sh#L22-L32",
+          "version": "repo-lines-v1:sha256:3e33f4490b2c31f8a5516e9a2134b2db8754a85ddc4b903719b18acda917d661:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2YzI4YmU1ZTE2ZWNkZTQ3NGI5MzQ2ZmFjMzY1MDI2YWQ0ODg3YWQ1NzAyMTRlNDc2NTIzZmE3ZGRkMDNiZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMjZkYmRlNDFlNzczZDlhNWNjMjJhMTFjODdhOGRkMTE3YmM3NmQ1ZTkxMDg2NzZlZDZlZGQwMTIxY2FjYTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlODg1NTNhYWMwN2ZjNGE1NWVkMDk2Yjc3YWRjZmJlMWJmNjY1NmRlZTExYjUwNDNiOTM2NThkYTg5MDI0YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5OTA5MmZkNTJhNDYzZDIxNzVlNDk2NTIwZGM3YTlhOGE3NzU3OTc3ZTUxMjk4ODA4NTMzZmRjMjFmZTM5NzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dda8835abedf4dc7a13eebf27b8c6ec3",
+      "statement": "mc/check.sh runs the deployment and testenv package tests with -count=1 because these tests read files outside the Go module.",
+      "evidence": [
+        {
+          "resource": "repo://mc/check.sh#L34-L35",
+          "version": "repo-lines-v1:sha256:4bb6879c3a770ef4642759da7258e9ea732afbb8c9a50d74db4adadc11eb3a82:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWFlZjExNDg1YzY1ODdkNmVjZTgzNzU5ZDk0NmFhZWYyMjIwMWM3MDJlODllMGFkYzdiMjZiMWE5OTBmNDczOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODY3ZTNlM2QwNjA0ZDhkYzBjYjA1NDAyNTM2MWZhNDk4MTFhYTUxNTk2Yjg5MzZjZGNkOWI1NGYwZDMyOWI0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmY0MDExZDU3ZDAyOGMzMDQ3NzYyOTE5YTI0ZDMwMDllZmUxYmNlZjBkZTAyMDA0YTkzOGYyMGQwZmE3OTA5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmI3ZTZiYWU4NWYzMmJiNDIyODlkMTUzNTgyNDJjODMxMWJiZjczODViYzQ1ZDk5ZDBkNzk5NDQ1MjI3N2RiMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3bc63f12a25415e84f353e6007a637c",
+      "statement": "mc/check.sh runs install, redeploy, and uninstall contract tests, then the Go suite through test.sh with Linux scratch-spine selection.",
+      "evidence": [
+        {
+          "resource": "repo://mc/check.sh",
+          "version": "repo-file-v1:sha256:00a3ec99ac6a86a7df511da9cb9d47fb7e83a73823d4b74570727440cccc4ea4"
+        },
+        {
+          "resource": "repo://mc/test.sh#L6-L16",
+          "version": "repo-lines-v1:sha256:a4cadf30dfc2353e14c362111ec0b3c2257914691111e1645361f6ca0c7609f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MzI5OTg3ODc4YjM1NWU0NmUwMjVmMjI3NzcwOTJhMmU0N2Y2MGY5NWE4M2I5OWM0ZjZjNmZjODdkYzM5YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiNGMwM2E5MmZiMWM3YWI1M2Q0MmZiODUzMDI1ZDcwZWI0ZjUxMmYxOWY2NDAxZGQ5OTY4YTM0OGVlMGJiNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMTU4OWRhYjc4NDYyNGEzZmY1ZGU4YWQ2OGZiNTg4MzA5NWRmNDdhNDgwYWFjY2I3ZDRiNTAxYTg0NzQ5NjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77b16146a13943369e856a8456decbe0",
+      "statement": "mc/test.sh fails a go test invocation whose output contains no === RUN line, reporting that the selected group executed zero tests.",
+      "evidence": [
+        {
+          "resource": "repo://mc/test.sh#L20-L29",
+          "version": "repo-lines-v1:sha256:218902e1410698c50be0eb4994ecc255bc9873f47db6a0ba317f0c0264e003d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkOTIyZGEyNTc2N2IyNmI1Njk5ZTA4YTYxMGY4Njg1OWYyOGQ0ZjNmMzhhNDkxYjExMzcwNDU3ZDNiNjJmOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhMTU4OWRhYjc4NDYyNGEzZmY1ZGU4YWQ2OGZiNTg4MzA5NWRmNDdhNDgwYWFjY2I3ZDRiNTAxYTg0NzQ5NjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViYTRkMDY0MTMyN2M2YmFlOGIwMjY1NWM2ODA0MWI0NDdmMjUxNzkyNWFlNjMyZTE4OTZhMDc3NzRmZjA0MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c036e636cc8949cda0deec5ffed3d482",
+      "statement": "release/check.sh fails when unittest discovery selects zero tests.",
+      "evidence": [
+        {
+          "resource": "repo://release/check.sh#L9-L10",
+          "version": "repo-lines-v1:sha256:767909853a0227459dea1139081349593d577cbf877670917c0fcd939f617fbe:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzM4NjJkOGI4MGQ1ZjM2ZjRjZDdiOTMzZTdiMzg4YWFjZDFkNWVjMTEwOGIyMmQwMWQ5NjA3M2YwNjYwMjI1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhiYWU5OGFiOTYxNjhiN2M4MTI2NTdkNzNlNmE0MzIyYjllYzQzMTE0OTg0NmY3Y2VmMDQ5NDYxOThlMjljOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODU3YTVhMzVkYzkxNTFjMGNlNGJjZTk4ZjM1NGIxNTJiMmRiMWU5MjBkMjczYTM5ZDQyNjY1MTllYjM3NzQyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTgxNzEzZjFjZGFlNTAxNTFmYjdlM2U2OGFjNTRmYmU2YzU0NDk0Zjg3MTdhZTE0NTI5ZTczMTQzMzE0ZDZmNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7842c825279949e6ac6bb6ac781a06bb",
+      "statement": "The CI fast suite runs ten component checks and rejects non-mc logs without a positive pass count.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L138-L152",
+          "version": "repo-lines-v1:sha256:f1e507c4cd65348a43ef43f8e7eee01b393d84a751f203c2ea82bdd81b861040:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MGU4MjRlOWM3ZTlhZWZlYTYyZWI5YWQ4NTczMmYxNzhmZTUwNTU0MDcxZDNlNjQ2OTQxMWIwZWU4OWE4OWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiMDc4NDhhNDM2NjY1NmIyYmE2MTk3YmUwMmI5MjA4MTQ1NDZmOWQ5YWQwYjUzMzllNGMyNmEyYzk0NjUxMTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmOTI2OGI1NThjMGJkZWY3MTY1Mzk2MDVjZDc4MGJhNTVjMDY0YjM2ODMxNDE3YzBjM2I4NjI5ODdiZTJhMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5ZmFiMTNjZTE5MGEyYzE0ZTQ5YmUwMjI2ZDlhYWZhNzQ4NGZkOWJiYjg2YzVjMWJkMDA3NGMyNmEwNjMxNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_253b117fad2145ca8abdeca0701aa3f8",
+      "statement": "The deployment-linux CI job runs the portable deployment tests with -count=1 and the Linux filesystem guard tests in substrate.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L228-L238",
+          "version": "repo-lines-v1:sha256:538e610290f2839ccea0e87b178c76b9cb54b77110ef6714641ac0644a84fe46:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxNmEwYWY4NWI1NGZkOTg2OWU3OGE4MTZiNTY3OTkyZTRlMTE5NDk0NGYzNzcyNDVlMTA5OWUyOWE1OWNiOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNTU5NzljZTczMDIwMzNlNmIyZmQ3ZDg4ZjUzN2EzYjhlMDkxZWEzMDVjODExZmZhMTI3NGJmNTc2NGVhNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3ZDUzYTBhNThkMGI4MmU5MTdmOTFhMDU0MTRiM2YxYzI2NjQ3OGU3OTEzYWRiODAzNzdmMGI4NDkxYTExODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMzI2MGQ0NWVhOTQ4OGNjZmEwYmIxMzE5Mjc1OTkzYmVlYzgyN2U2ZjhhZWJmZjgwMmVkNjU2ZTZkNWI3YWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf1c18d9c4ab4291ba12abb303abafbd",
+      "statement": "The docker_e2e suite drives one task through the real mc, the real resident timer, and real containers, and never calls mc dispatch.",
+      "evidence": [
+        {
+          "resource": "repo://mc/e2e/e2e_test.go#L1-L18",
+          "version": "repo-lines-v1:sha256:65ea66a1a5a1476d0874f2f673845227cec5fb9a4bae59821479480b19e105d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5OGU2NGFiZGI2NmQyZGIyZDEyNzVmZmIzN2FjMGZjOTIzMzIzMGNkNDRlZTVlMjdkOThjYjhmMzk4MGNkNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNjNjZjBmMzBiZmMzZjIxM2IxYzcxMjE1MGQ2ODk2ODVkM2IyNGIyYTdmNTU2MTU5NjQ5Nzc1MDE2NDFkOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkNTkyMDAyN2U0Y2YyOGNkYjI4ZGIyNDRlOTg0NjRiZDc0MDY1Mzc1MmUzYmQ3MDc3NDRjM2RhMzBmZDMwMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c5f705a709248e4bfec907a20b60e48",
+      "statement": "The untagged property honesty and mutant gates and the nightly properties share one case corpus.",
+      "evidence": [
+        {
+          "resource": "repo://mc/property/dispatch_case_test.go#L12-L14",
+          "version": "repo-lines-v1:sha256:b8a607575ce2aed1a621f743f5bec257471826fd5f456809f00f2033ff5def90:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDE4YjViOGY3ZTcyODc4YWFmNGEzY2Q2ZGY4MzVkNDQwMGZmZDMyZWNkNWE4MzgyODYzMDcyYmRmYzU0NGE5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzQyMmEwYmY2ZjllMDIyYmFlODBmMDUwYzRlNzYyNjBkOGRkZGM0MjlkYjhhNmY3ZDMyMTA1MzQwZGZhNjMzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGZmMmMxODAyMTA1ZThhMzQ1ODJhZDAxYWM5MTY5NzFiYThmMjI4YjU4OTcxMjM1MmEyOThhZGY1ODMzYmUxYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_607f355cbaf7405cb008fe32c7d09a06",
+      "statement": "evals/check.sh runs culler-evals check, which runs pytest in evals and reports zero model calls.",
+      "evidence": [
+        {
+          "resource": "repo://evals/check.sh#L1-L4",
+          "version": "repo-lines-v1:sha256:0dae5d878778bfd64889a2c9df1dcc7802039826964ef07407988c510e8dd8a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA3MTJlN2JkYzUyNGJhN2I4OGYxMWNmNDRkOWVmNGRjYmU1NDMzYTNiY2JjMGYxODUwMWNhOWNlMmMyZDk5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://evals/culler_evals/cli.py#L603-L605",
+          "version": "repo-lines-v1:sha256:05b1241bb8a395a654d732a72aa1044326993b092887e714f47528becd62b0a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjM4MGI4OTczMWUyNmYzMjMxYzBkYzMzMzEyNzJhZGQ0MWE2NjE1NjY1MmE0MWRjNzliNmE5Yjk3OTNkMTcxOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDBiODgxOWU5ODExOGYzNzg4MDc4MzhkY2M0NDgxY2U5ZGFlYWY4MDcwMzA5NDZkODFkODBhNTg3NzUyODRmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAxZGQ4MTA3YzRmY2U4Zjc0YTExN2E3MzBlODEwNmM3ODIzY2E5N2Q2NmFiNDVlNjFhM2FhMWY1MzFmZGE1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTk4M2JhNDFlNjBmYjIwZDllZjNhNTAzYjFmMzcxM2Y1Mzg3ZmRhY2QzYmFjNDY5NTMzZGE1YTkyYjg3MzgyYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1ecdd03fc31d491ab4d5cf656bbcd731",
+      "statement": "The host stores captured evaluation cases under MC_HOME/evals/cases/ with owner-only access when the development flag authorizes a Packager run.",
+      "evidence": [
+        {
+          "resource": "repo://mc/evalcase/README.md#L3-L8",
+          "version": "repo-lines-v1:sha256:d6a84050f691224d6fb3f867bb38a3ffeed71673468f74d5dfc95aa8b81d2d83:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWJmMWM5M2VhY2Y0ZjFiZWQwZTNhMjcxZDYxNTQ5MTZkM2Q0ZDM5ODg2Y2MxMjRlY2JlY2MzNjcwN2ExNjk5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzQyNGQzNTJmM2IwYTkyYWZmYWVlM2NkNzdjNGE1YmNkNzIzZmUwYTQxMWEzYWYyM2ViMGM5NmFkOGE1OTc3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTJjM2ExNjUzMmE0MDA0YzAzY2ExY2Q0ZjU2NWQ0ZWZlYTRkMjYxYWE1OTlmNmM3OWRjMDRhNmUxYjk4ODlmZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ceef21124be2f4391d162327fdde47ed",
+      "statement": "On Linux, mc/test.sh adds -tags=test_scratch_spine unless the caller passes a -tags argument.",
+      "evidence": [
+        {
+          "resource": "repo://mc/test.sh#L6-L16",
+          "version": "repo-lines-v1:sha256:a4cadf30dfc2353e14c362111ec0b3c2257914691111e1645361f6ca0c7609f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MzI5OTg3ODc4YjM1NWU0NmUwMjVmMjI3NzcwOTJhMmU0N2Y2MGY5NWE4M2I5OWM0ZjZjNmZjODdkYzM5YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiNGMwM2E5MmZiMWM3YWI1M2Q0MmZiODUzMDI1ZDcwZWI0ZjUxMmYxOWY2NDAxZGQ5OTY4YTM0OGVlMGJiNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMTU4OWRhYjc4NDYyNGEzZmY1ZGU4YWQ2OGZiNTg4MzA5NWRmNDdhNDgwYWFjY2I3ZDRiNTAxYTg0NzQ5NjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb8d3042863f4e074ebb1a9b3768e8cb",
+      "statement": "mc/test.sh prints one UNVERIFIED line with the package, the test, and the skip reason for each skipped test, and a count of the skipped tests.",
+      "evidence": [
+        {
+          "resource": "repo://mc/test.sh#L30-L65",
+          "version": "repo-lines-v1:sha256:5e028ca403a19251962f66a5958fb170379f07330ab5d1be6029c77b1d5f9344:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkMGRiYmIyOGMwMDJjODYyMjQxZTM4YjE1MDE4YTIxODY1ZGEyMWRjZmQyZTY4MmViMmNhY2YyMDIzNTBlMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTYxNjM0NjgwMTMzMjkwZGYwM2RkOGMwMzU4ZjYyM2UwOTMzMGQ3OTM1ZDExYTYxMGM5MTIwNDI3Y2RmNzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OTVjMWViNGQ2YjVmYTVlNjk5ZDVmNDkxODY3OGE1MTBkMDU5OWY1OWViOTVhOGVkNGE3NmZkZmRmZGIyMmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_01d5a8d4b81c5a116f3d7bdc3a729eb1",
+      "statement": "On Linux, mc/check.sh runs the filesystem guard tests in ./substrate/ again with -tags= after the full Go test run.",
+      "evidence": [
+        {
+          "resource": "repo://mc/check.sh#L45-L51",
+          "version": "repo-lines-v1:sha256:b14eead76b3f36af141568bcac99cf990c42a3d69caada9efce9d18f0a140d50:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ5NjYxY2IxYTg3ODgwMTljMTE5MmExMTlhNjU3Y2Y0N2JkM2I3NTk3MTEyYzI4Njg1Y2Q3YTc4OTNiMmNiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzc2OWQyMzdjZDQyMGI5ZDM4Yjk4MWEwYTRmNjc3MDE5MGE0YTgzZGNhMWZlNTZjNGY1YmExZTJjYmMwZWY3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmIzMWZmYWMyZjE5MmZlNTMyYmM5NTBhZWRkYTNmZTJmYTEzZjkwZDMxMTQ3YmEwYTdiNTg1MDM0NjU4YWMwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_abe41be1a9f4f395a7486570f4e52978",
+      "statement": "Each Bun component preloads runner/shared/test-environment.ts through bunfig.toml, and that file removes the run variables and points MC_RUN_JSON and MC_RUN_LOG_DIR at absent paths.",
+      "evidence": [
+        {
+          "resource": "repo://resident/bunfig.toml",
+          "version": "repo-file-v1:sha256:aeed3b8fb5c0dbfe0376e43f6835836de8dcc0b24a19a1de2c193a0ad6433dfa"
+        },
+        {
+          "resource": "repo://runner/shared/test-environment.ts",
+          "version": "repo-file-v1:sha256:831c878cb258b2a359dd894fcc129908e65816fdb0a411f84ad20c14e8ef737b"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d44827c0a93466ea37de8ddfc08354c",
+      "statement": "The Linux CI job fails if the production filesystem guard checks report any UNVERIFIED test.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L230-L238",
+          "version": "repo-lines-v1:sha256:f1262f489d91abf7bdf3c12df9dff25f72e6785dd80bf0a97e1466a12269b51b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNiNDRkMGQxOTJkMDk2YTgzMjI5NmFkODQ5ZmJiYzZiMjY5NWNhNzdjNWVhNjlmZTE1ZGNmN2E4YTVmMmFmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmY1NTk3OWNlNzMwMjAzM2U2YjJmZDdkODhmNTM3YTNiOGUwOTFlYTMwNWM4MTFmZmExMjc0YmY1NzY0ZWE1ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGJkMDY2N2I5M2YyN2MxMTk3NjRmMTJkZGVkYmZjMTc3NzI4NWFjODRhZjcyYzFhNDcwNzI3ZmI3NGE4YjA2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmEzMjYwZDQ1ZWE5NDg4Y2NmYTBiYjEzMTkyNzU5OTNiZWVjODI3ZTZmOGFlYmZmODAyZWQ2NTZlNmQ1YjdhYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f513c94d45f43a2a10697432ac902e4",
+      "statement": "The packet context tests cover report fences, media replacement, the 128 KiB text limit, unavailable reports, and exclusion of mutable packet state.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/packetcontext_test.go",
+          "version": "repo-file-v1:sha256:4449b511b4ff068047f4815999e2cf50f66198cf0de5445484b71b74fa477aee"
+        }
+      ]
+    },
+    {
+      "id": "claim_48421dad542548c0ad003f418e8f0740",
+      "statement": "The packet artifact Docker test checks task report and evidence reads, refused writes, and isolation from another task.",
+      "evidence": [
+        {
+          "resource": "repo://mc/e2e/homie_packet_artifacts_test.go",
+          "version": "repo-file-v1:sha256:3931ea6dfb9f183add5173d35cf990b9b222029dbca2588384de51725db8ac8b"
+        }
+      ]
+    },
+    {
+      "id": "claim_af9b8145bc584443ab5c64bc03f40f4b",
+      "statement": "The packet conversation tests cover current identity, shared preparation, resume, deletion, archive refusal, and model restrictions.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homiepacket_test.go",
+          "version": "repo-file-v1:sha256:a8e5baea6ad4c59fc14166e8ae81b36ba0a12aa2a887368338fe6fd2af93a4a5"
+        }
+      ]
+    },
+    {
+      "id": "claim_e99639fdc66d401191e98099c68dc856",
+      "statement": "The dependency reuse acceptance script exercises fresh offline Worker preparation after setup through npm, Bun, and uv home caches.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/dependency-reuse.ts#L249-L291",
+          "version": "repo-lines-v1:sha256:b931773e6f077da8eca72e529b59fd45c319a459c1a731271eae61371926e964:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlNDM1NDRkMTBiMmRkYjM4YTNmOTMwYmQwOTNiMjY2NWQ2ZGYyNWFjNzUxNzYxMmJhZDY1Mjg1Nzc5Zjc4M2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwMDM2ZmNiM2E3NmQ2YTA3MWQzODMzMWJhODE0ZjE3NWEwY2EyOGNkYTcyOTQ5ZmRlZmRkOTU5MWQ3YTA0MzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwN2UxOTMzOWFlMmQwZDFjMzRjOTA2NDI1YmE1ZDhjZjc1ZTQ5ZjUzNzhkYTVmODU0ZTgwN2NjNTlkMDZkODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5M2VjOTYxNzBlZWQwNDM3MTUxNzA2NTQ1NDBlODJkM2Y3NGRlZTg1MGEwZTJhOTUyYzVjYWM5NTlhYTJlMDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ae6b15c942ff400baaf4f6b240f40766",
+      "statement": "The dependency reuse acceptance script checks concurrent role files, image and process replacement, Project separation, legacy archives, and cache removal.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/dependency-reuse.ts#L293-L359",
+          "version": "repo-lines-v1:sha256:6ef8f035f0a28bf943587a58f14d07aae6afa784fb6bdc3a3728505bdce858cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMmEwYWU1ZDBiMDg4N2NiN2RkODQ4ODRlZjkzNjJhNWFiZWYyZGZhMDM4YTRlMmZlMjI3ZjcwMzhkMWFjMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxZWJlOTA2YTMxZGMyMzcyZjBhODJkNDhhZmUyMzE3OTdjYmI1YzUzYTRlYjEyYzk4Y2M4MDQ3MmQzNjVhOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_52b9ac9a93314fa2bb3e9f4cdbe2ccea",
+      "statement": "The browser report gate rejects zero tests, failures, errors, skips, and missing expected suite files.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke-gate.ts#L40-L51",
+          "version": "repo-lines-v1:sha256:2422868c3de061b14c9251002b224784e02ab2fcf50eb57c1c58669d9ac1a376:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMGQ4NjMyZDVlNDliZGQ5MGEzZWJmZDVjNTg1ZmFhMDk0MDBiNWRhNjJhNWI1M2JmZDFkOWRjOWMzZTZkMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkYjZiMWQ3NDRhZjg0MmY4NmY5MmJhNzM5NjVjZmE3YTEzYjNlMjMxNjlmZTJjOWUwZWRlYzlhODU0NGM4NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3Y2RlNDA4YjMzYjM3NzRlN2RlMTIzYzRhNmU1ZmVjNWJkYWQ3ZThmMjM0NzVjYmE3Y2Y0ODExMTVjMTVkMmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ef93d0b20f74447ae305ade98cdb5a2",
+      "statement": "The smoke script checks a JUnit report after every run and requires all smoke files when called without arguments.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke.sh",
+          "version": "repo-file-v1:sha256:cb10bcb3237bd33a658ab4bc6f7d102ae571cf133fdd51e103990570bc3c6d6b"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d5f899fd4cd437eb827fee7de6cc5bd",
+      "statement": "The CI browser job installs Playwright from the default Project image lock file and installs its matching Chromium.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L275-L285",
+          "version": "repo-lines-v1:sha256:21323513a13a4674ee3699ad94455c4f5381ca115ae1fbd5e6708ba87780e665:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNWViYTUyNjY3OTNlY2Y2ZDkwN2JhODM5ZTRlNzdkMmRjMjRmODAyZThmMDA5ZmM2MThkZGYzNTkxMTNlNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ODA2MDg3M2ZjODgzYWFiOTZiOWQ1YmZiNmI3Y2Y2ZjA1MTc5MmNlZTc2ODZlYTgyYjNiZDQ2ZjA5NWIyYTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYWQ3NzlmYTBjNjQ2YmRmNDQwNzhiNjg2MTE0YTFmYTI3MDRhMTY1YjE5ZTQzODA2N2IwOWY5NmJjNDI3ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4NDg3ZTM5ZWUyNjlkMzQyMGQ1OWY0YTYxYTZkYTY4MDRhMTE0YzU3Y2FjMGZjMGY1N2NiNWY2NDlmOWNiODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d54efc5467a45d29f73826109af5ed2",
+      "statement": "The fast tests check the browser gate's exit behavior, screenshot paths, and release workflow dependencies.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/smoke-gate.test.ts",
+          "version": "repo-file-v1:sha256:58455fe551c41660aef77e76f8f0a111368fcb9b125c3088c4aebb6a952e50ce"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5d226c7ca434253ac6f717ed665af16",
+      "statement": "The published release record requires five checks, while the workflow requires dashboard-browser before both publication jobs.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L452-L455",
+          "version": "repo-lines-v1:sha256:7dac0f4d7dafa2d7eb3455c83393c3c14e5bf14ef24db8378836cde20657cba8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFlNWVlNGY4YTI2Y2VlZWM0ZGMzY2QwYmE5OTA1YmEyZmExZjlhOGNmYTQ0NWFjZjdlZjQ0OTNmMGZhZDAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE4Njg0ZWEzZGMzMTJkNzQwODYzYjAzZjJhZWJmNDcyM2E3NjA0ZDg2Nzg4ODM0Mzk2OGRhODA0YWI2YzZkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWRhMGZlZGE3NDYxN2UyMTE1OTcwNjU5MmEyNTJiZjMxZjM2MmIyNzAxOGY4ZWQyNWUzMGRlZjFjNzE1ZWQ5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDZmMTQxZmI1MzVjMjI2ZjQ4NzNhOWQyNTNhOTE3ODkxMWZjMTBkNjhlODQ3MDdmNDE5NjNiYTliOTE0OTJhZiJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L517-L520",
+          "version": "repo-lines-v1:sha256:6d6a9eb46691a1d1ac66e40a350882e3d3c64439a70446a981471b0ee9b60fb2:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg3ZjIxOGVkOTc4OGE4MTdlZjc4YzI1MzQyMTNjNTIyZjA3YjU5YzI1ODZkMTQzMTU0ODdmOWIzNmE5OGE4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE3ZjZmNzk1MzM0OTVhNWZkMGQzMjJkNGQ1MjFmZjcxYjMyOWI5YzY4MzgwYzVlYjMyNzZjYTc4YTUxNjRmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIzM2UyZGUzMjc1ZWU0M2M1NTgzMDhiNzdjYzA3MzNjNjc0NjViZDU5MzZjMDBjYTUzMGYxMWI0NjAwYzllNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTU4MDhjMmQ5ZjQ0NjVkZGQ4MTE2OGFjYjMwYTUzZWYzMWQ0OThhMThkNzhlNjkyNWVmM2I0YjJkMDNiMGE2MyJ9"
+        },
+        {
+          "resource": "repo://mc/distribution/record.go#L19-L19",
+          "version": "repo-lines-v1:sha256:e4badd8b3717f6b9ff03521268d7f3223bd19c7f366ab3b88b430c4fcd21e180:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRiYWRkOGIzNzE3ZjZiOWZmMDM1MjEyNjhkN2YzMjIzYmQxOWM3ZjM2NmFiM2I4OGI0MzBjNGZjZDIxZTE4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRiYWRkOGIzNzE3ZjZiOWZmMDM1MjEyNjhkN2YzMjIzYmQxOWM3ZjM2NmFiM2I4OGI0MzBjNGZjZDIxZTE4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjViNmI2N2ZlM2E4MTljZTAzZWFiMzVmNzgyOTY4NWFmNTgwNzIzNjU0ZDQwOTIxMzE3YmE0NWVhMWRlMWFmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTJhNzM0NThlMjlmYTVmN2FhMTc3OWVhZjgyZGUzNzcwMDg5NzI4MDY5NzZmMjExZmNmZmE4YzlkYzJiZTQ0ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_53aa0b7650ad477a815893b3cccbf0d7",
+      "statement": "Security unit tests cover exact exceptions, report masking, and refusal of changed scan inputs.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_test.py",
+          "version": "repo-file-v1:sha256:395b65ac1565ec7f39e8ccbb1e3df0410e8971053c772cd18fb7ccbacd957969"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb8e588196214b0081f10283a04ccc4b",
+      "statement": "The scanner acceptance test detects a new high-severity advisory in an unchanged image.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_acceptance.py#L167-L189",
+          "version": "repo-lines-v1:sha256:75aa14e5dcd284969b19392fa4689091519943b4a5ef1779a95dbd9c33547f50:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNTljZDMwODlkZjRhMGQ1ZjQyODMxYTY4Yzc0Y2I4ZTYwYTUzM2MzZDJjZGNjMTA1ZTIyZGU0NzQxZmNjOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyZDUxYmYyOGI0YWMzYTU5YmIyYjA2Y2YxMzMxNzliZDgyNjZiOWQ3NTkwNjhiYTlkYWQ3NDA2MTYyYWI1ZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3YzFkMGIzZTlkMzZiMzY2YTEyYmI3YzkzMmY3OGI0ZGM1OWI3MTFkMmJmYjljZTliZDdmNmM4MzBhNGY1NzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5af8ea51c1a34822ac1533c03f59ccc9",
+      "statement": "Workflow tests check required security prerequisites, read-only pull request jobs, exact image reuse, and nightly report retention.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/security-gate.test.ts",
+          "version": "repo-file-v1:sha256:9f7bd5977ae0b64d139fac05448f31b5fb1db1f516788c21c721142d091c8077"
+        }
+      ]
+    },
+    {
+      "id": "claim_9622a2621ef34ce08af3de94e7a63161",
+      "statement": "The report-frame smoke checks fixed page styles, preserved diagram styles, and absent fixture overflow at 1280- and 390-pixel viewport widths.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/report-frame.smoke.test.ts#L85-L118",
+          "version": "repo-lines-v1:sha256:97de744dc64c95b5a8f74642268e8562bbe8555da3bb9cdc4be489456272fe8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwOGJjZDRhNGIwNDNlODViN2UxNzlkY2Q1OGQ1YTc5Mjc2NjQ2ODYwYzg1YzhmNWI2ZTYyYjE3NWIwZjUxNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmYjYwY2Q5YjM5ODUwMThmNTg4YjExZmYxNGFkZjdkZTk1ZWFjMThjM2JmNDJjODk1ODEwMTdiOTkzYjEyODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNDk4ODJjOGNlNGNkOWE0YTQyOTE3MDA3NGQyMWQ5YTkwZTNlNzc3NTgzZTcxZjdjZWI5NmZlMThkZWJkNTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_738ae4c4045641e8be666e46a6185711",
+      "statement": "The review unit tests check the styled empty body and stable report serialization with link rules.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/review.test.ts#L385-L388",
+          "version": "repo-lines-v1:sha256:3d30c530973177670827c429d73b72a13ace65fe44bdeeb4dc058a38cf83ae7d:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDUzNTRmMjMwYTk3NjMxZjRhZTAyMGEyMzg5NGU0MzZjOTExMDkzODhmOWM0ZWRiZjUxNTg5YWE5ZDg2NDEwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzI4N2FmZGMyN2I4YzIxZjhiNzBhMGZhOGJlYzhkMmZjYjMzNDE3Yjg0OGNkMzI0YmE2NDhjMDBhYTBlZGU2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgyY2Q5NTgzNjY4NjNiMjIzMTFjODBjY2IyZDQ1MGEwZWFkNDRmMWFkM2ViMTQ0MTE2NDIwOTFmMzJkZjcxYSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/review.test.ts#L628-L641",
+          "version": "repo-lines-v1:sha256:f4e17957378810c69e01bd659f585c796335cc439918d45947c999d44970e000:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NmI0ZGMzNDFhYjY2NmVjMDA0MWZhMmYxYzkwZjhlMDYyOWQxOGM4MmMwZDRiNzllMGMxMTM0OTEwZDAxYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjOWMxMGI4MjdkZWRlZWY5YTYzZmE4YjQxZDVhMWZkMThiZTRhZWY5NmQ4OTM1YjFkNGJkNGZjNDJiMTVjODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkZTExMDAzYmI2ZjRiNjBjMTg0MGEwZjU5MmZhZTVhYTVlYmE2NGFiNjcwOGRkNTNiMmE5Yjk2MWM4ZWRmOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkY2ZiZjUxZjA1NmE5NmVmMjI0NDk1NjRlMDdkZWZiNzRiOGM3OGU0NTI5NzA1OTBjYjI0ZmMzZDJhZjE0MjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e59da73fb4c542d29ecceaf39fe0c4a6",
+      "statement": "The packet chat browser tests check pointer and keyboard resize, width retention, draft preservation, and narrow layout limits.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/packet-chat.smoke.test.ts#L344-L441",
+          "version": "repo-lines-v1:sha256:3098a3c8ea540e9efd6cd4420469229654c1320b7a8dcad14dd78d5f5622b1c0:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkYzk5NjM1M2RjNTUwYTU5ZTdlMWQzNGE4M2Y1NDcyYzNkYjk5MzE1OWQyOGNhMmUzMDkxNjVmMGM2MjAyMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YzE5ZWMxMzAyZTI5NmI0NjJhNjA3MGE5Zjk2MDQ5ZGQ3N2JiNzAwMTgxMjVmMjFkMDFhNTVlNzlhNDE2MDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkOTYyZDVkYzVlN2Y0YTUxMTA0MjViMjQ3MmQ3NjNkMjNiN2YzMjVlOTA0Yzc5Zjg4MTE5NmJjMzEwMjkwNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNDhlZTI3N2ExNWZmM2EyNGUwNmE2MDU0N2RlNDA2NDNlOTdmOTlkNmY3N2NkYjc3NjQ2YWE3MzcxMGY1ZDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de32c0f329a44d71a97e6d63fed81b8f",
+      "statement": "The Discord browser smoke uses real host commands and a local configuration service with simulated Discord responses.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/discord.smoke.test.ts#L1-L41",
+          "version": "repo-lines-v1:sha256:26535c5f457b75bfd6896c8fd721a5db35b374250cc81b3dcf9822715dda85e8:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NWY3NDc4MzNkNDBjYjBjMDFkNzBiMGY5YjNlZjU0MjAxMjZiMTI5ZDY0ZDc1YTYzMDM3ZWRlYjg0ZmNlN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2YzE5ZWMxMzAyZTI5NmI0NjJhNjA3MGE5Zjk2MDQ5ZGQ3N2JiNzAwMTgxMjVmMjFkMDFhNTVlNzlhNDE2MDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMDBlY2I4ODYyYzBkYWU0YzNmMTMxOTM4MTNiYzBlNjMwZDdjMTQxYjc3NWIwOWRkMzk0Yjc2NmYwNjNiYWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de4b8d7d275b47adabf72e4452826dca",
+      "statement": "The Packet divider smoke waits for the narrow conversation and restores the desktop viewport before cleanup resets the divider.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/packet-chat.smoke.test.ts#L414-L439",
+          "version": "repo-lines-v1:sha256:261098c91d2794fd13ea07f8ca512c75fa5e1ea62b5214433859837c037f0c3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODhjNzU4ZTc2Zjg3YWIxYmQwZWU1MGIzNTNmZjVkYjBlYzg0YzdjMGVkZTRlNWJkYzkzNWE5MDRiZjNlODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2EwOThmOTQ0MmE3YjBlZWJlYmY1YTJiNWYyODVjYTBlMmQ2YjJiZTMxN2I5OWExMTdjNTI4ZDY3OWNkYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMzhlMDY3MTM4NzZhZGM3Y2RmZTJhMDdjZTMzNWNkMTc3NjMxODA2ZGIwY2Q5NWQ0OThjMjQ0OWYwNDgwYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5ZWMzOWQ2ODgxYjY1YTg2MmNkZjY2M2U0NTllZGFjNzNkM2ZjOTgzOGNjNzI4YWUzODc4OTFmNDgyMWM2MGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e33e102d36d8470295aac9a9c69659df",
+      "statement": "The configuration tests reject unsupported connection kinds, custom provider destinations, credential values, and empty base_url declarations.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/agentprofiles_test.go#L8-L62",
+          "version": "repo-lines-v1:sha256:52823287807450d9b8ff5d583f410b2d20d911cb8ffa29b2af6addb5cf34f55c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NWU2MmNmMzYwNWMyNWIzMWVjYjk1OTAxMTc5MmZlYjkzMDdlNzU5NzI0NjZiMWNkZjg5MDU3ODc3Njk3YmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NzBhMGUzYzYzYmQzNjFjNjMxZTAwMmNkNDBkMzYzNDA2YmZhNDIyY2VjMGY1Yjg1NmQ3MjhlZDg4MjZkNDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_84791f00b466485f877beec028fb7b7f",
+      "statement": "The credential projection container test exercises both supported channels with a local token authority and synthetic grants.",
+      "evidence": [
+        {
+          "resource": "repo://mc/e2e/credential_projection_test.go",
+          "version": "repo-file-v1:sha256:b5252884862a728305e1a51cafbac89623afee941e6339e6ddc7d8d74bf73696"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f7398eccd634a519ef06a3159e59feb",
+      "statement": "The runtime access verifier test checks refusal of an unsupported authority before any request and without exposing the refresh value.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_verifier_test.go",
+          "version": "repo-file-v1:sha256:3decf042458082b593184e0f0b336656c1782efbb5b0fa04d21d7ddb93ac761e"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9e7b6c3c15d472da5427c4dd8b826aa",
+      "statement": "The Verifier compares submitted failures with the base under comparable conditions and treats matching check and cause as an unchanged failure.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md",
+          "version": "repo-file-v1:sha256:d3edc865ec54d4dbb6faa7448213518cf8b1f2f05a568a073b1898dff2831158"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b44fbc4f9aa44cfa3c56c60c76773ff",
+      "statement": "An unchanged failure outside the criteria permits task PASS when criteria, new or changed tests, and regression assessment satisfy the contract.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/verifier.md",
+          "version": "repo-file-v1:sha256:28c546c85ec0044c7c5ff8e9bb8e775e6527f5888384a1b415e5ef93b4b55165"
+        }
+      ]
+    },
+    {
+      "id": "claim_12ebcf773eb54a65bb19f44a4fcda120",
+      "statement": "The Verifier must execute later independent checks after an early failure when the container supports them.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/verifier.md",
+          "version": "repo-file-v1:sha256:28c546c85ec0044c7c5ff8e9bb8e775e6527f5888384a1b415e5ef93b4b55165"
+        }
+      ]
+    },
+    {
+      "id": "claim_b7a8501df0bd4effb418e0b75fda3b56",
+      "statement": "The Packager preserves every UNVERIFIED entry and base comparisons without an additional approval requirement.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/packager.md",
+          "version": "repo-file-v1:sha256:ef0303c5ff1cd91e9b10c691ccb20f348d2d4c2c9db9ce9c76183f43ab44454d"
+        }
+      ]
+    },
+    {
+      "id": "claim_c929fb091fdc4b34b84dbdb94355999c",
+      "statement": "Arbiter criteria tests cover accepted invalid and mixed batches, malformed batch refusals, rollback, and all-reject with other ready work.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/arbiter_criteria_test.go",
+          "version": "repo-file-v1:sha256:c995d9bbc6ed03bd200f97ea3c015e6c11131f34bb376120df16375db73d3d68"
+        }
+      ]
+    },
+    {
+      "id": "claim_d94a05570ae24c23a1f78c37f8a9915f",
+      "statement": "The report-frame smoke expects a #fdfdfe root and body background, #172f47 body text, and a light color scheme at both tested widths.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/report-frame.smoke.test.ts#L85-L118",
+          "version": "repo-lines-v1:sha256:97de744dc64c95b5a8f74642268e8562bbe8555da3bb9cdc4be489456272fe8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwOGJjZDRhNGIwNDNlODViN2UxNzlkY2Q1OGQ1YTc5Mjc2NjQ2ODYwYzg1YzhmNWI2ZTYyYjE3NWIwZjUxNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmYjYwY2Q5YjM5ODUwMThmNTg4YjExZmYxNGFkZjdkZTk1ZWFjMThjM2JmNDJjODk1ODEwMTdiOTkzYjEyODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNDk4ODJjOGNlNGNkOWE0YTQyOTE3MDA3NGQyMWQ5YTkwZTNlNzc3NTgzZTcxZjdjZWI5NmZlMThkZWJkNTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e619bc5f28f8442794804a1cd4edb2a6",
+      "statement": "The dashboard theme unit tests check the picture selection, button state, storage updates, and theme-specific grid tokens.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/theme.test.ts#L157-L209",
+          "version": "repo-lines-v1:sha256:80287dbdcb3c663bdaea8f68e15f37c8c66bf53df4e943e2a771f6e317183a80:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNDM4Zjc4YThjMTUxZWY3Mzg1MzkwMjM1ZjY5NDc1MDlhODY2YzQ3NTdmNzQwN2U1NDYxNmIzZjIxNWVhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjZjdkOGE1ZTFlMTQwMjFjNGEwMmI3MmYzYjE0NGQwNjEwMmNlNDk0NGQyYTVkMjVlMjQ3MGE0MTcwNmVjODgifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/theme.test.ts#L292-L296",
+          "version": "repo-lines-v1:sha256:735104b21f2bc3c9121fbeea025701087feed1be9f025d3615c7ac191162de8f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRiMjMyNWZjNmU3ZTBmNzk1YjVlZGQ4NTIwNjY3YjJjZjYzNDk3YWNmM2YzMDU0YTRjN2VlZGU2OTI0MTZlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWUxMmI2MTE4OTQzZTMwYzAwNjgzM2U3ODE2MzBhNTNiMzJmNDE3ZWY1Zjk3OTVjM2YxMmYzMzA4MDI0YzVkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgxN2ZiYjczYzkyYjM2ZDVlNDg5NmZmNTFjMWI1OGVlYzMzMGJiZTk2MWJhMDVmYzYyMDVmODY3ZWExYmNmNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_484fe553561f469397aaa9cce568dbf6",
+      "statement": "The theme browser smoke checks the grid in both themes, the picture toggle and reload, the veil, and the chick animation period.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L118-L135",
+          "version": "repo-lines-v1:sha256:6463d4d3b4a3c16c06bfa2e6bf2c6e8998ee6bd844c5bfd0c1e6d437e8bbafee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxZDU0NTI3ZTUxZjk0NDlmYzY5MDA5NzZlZmU5MzY2NmZkNGVkNDg5ZTY5ODA4NDJiOWUzNmFjMzJlZjNhMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkZmUxNGZlMTQwNTAxZDE3YTAyOTA5YmE0ZDBkMmEzMmE2NzZjNjhmN2Y4NzZkZmM4YTliYjMwNTFlZDYyNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2YTdkYjllY2JiYjViODNjN2YzODU3OGY5MDRjOWZlYjEwZTE4NmRjYTU1N2Q1MDY5MGRmZjA0MzZlYzU4NDMifQ"
+        },
+        {
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L150-L191",
+          "version": "repo-lines-v1:sha256:1e8a31741d30c83b026d5532c83d8005539a91a56b5b006b4317a57b02d9be28:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYTllOTIzODhmY2IyMjg4ZDY2YjcyOTZmOWM5MDJmZmFjMzNhY2JiMzBjZGEwNzJkYmIzYTk4NTRmMjViYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjZiMWY2M2Y3MzZjMTk4OTk4ZmMxZmM2ODFkN2U1MDg3YTE5Y2UwZDhmMDhiYWVjMWE3NzNhYmZiMzlhMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMTVhY2ViOGE5OTUwMDA0YTU3ZjFlYjUxOGRlYzIxYTM1MDAzYjI4NDNmNjM5ZThmZjNmZTQ3NjMzOTI0MWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmNzA4OTU0NmU1ZWFjYmU4ODY1NjVhNjQ3YjA5NTJiNjAzNzRmYTY5OGEyMTBhMDBhNTlhYmQyMWU3Y2YwOTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ef5601d2aae4576b62a18e14dba08c2",
+      "statement": "The focused Go and resident tests cover provider access before the first setup heartbeat and refusal after the environment operation ends.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/providerlifetime_test.go#L101-L150",
+          "version": "repo-lines-v1:sha256:0f22334cf0a2b2e3095b2685bceed2c6d555dea6728eee7164b1cc0f92aa95f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkYTQ4MDkzN2I4M2M4NzdjNjZkMjY5ZTliMDdhOGU1MzZhM2ExMDkxZmJlNDcxNGFlNDY2MjhkNjk2ZWIwMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjNjY1YzNjOWY0MmUzNGI3MTViNjkzZDg1NTE3Yzk0ZmY2ZDNlYmVmOTM2MmNmNDI4YmQ0NWYzOTdhN2Y2NDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzNGFlZTNkMzkwMWMwODMxODU3ODQxYjQ4MzdmMzNlNmQyZTRhM2EyOThmMDE4NDQwMzYwZjk1MjdmNWY1Y2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmNDZkYTg5MDVmNmQyZTZiNzc2Yzc4YjY4ZDllODNiYTRjNzdmMDcxYTVhYmVjYTNkYjc0YTk0ZTUzODM3YzYifQ"
+        },
+        {
+          "resource": "repo://resident/src/setup-proxy-start.test.ts#L89-L135",
+          "version": "repo-lines-v1:sha256:91f70828c00628d873eafcceb0efe674343f771cffc9729d36729affd109e5fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4Nzg4ZThhMzY4M2ZhMzE4Yzc1OTdkZGY1OWJlNTNmZDkyNGEwYjIzMWRmZGZhN2M2ODMzYzA0MzY4OTg0MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkM2IwYzA4N2E4NzIwYjUwYWZmMGFiYmQxM2IyNDA1YjE5NmQ4NThiYjU0ZTNmYzE3ODI0ZjI3MTRiNzVlMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5YzE4YmQ3Nzg3N2ZlNjRiMGU5YTBjNTBhNjExMWY2MTc2NWRjODZmYTAzMTNmMmU0N2E3YjI5ZDZjNmU1YmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8e7e0205052a46bebcaf14439a5b32f7",
+      "statement": "Workspace preview tests distinguish a file path from a missing parent directory.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/workspacesetup_test.go#L80-L106",
+          "version": "repo-lines-v1:sha256:da3ec61b89bd255f1c2284a362bd90b39121df6c3a75a18a4af99546c4b1e0d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkOTVmNTQwMzRkNmI1NzQ2NGQxZjY0Y2Y3N2JlNzkyYjRlMjI4ODQxNWRkYjMxMzljYzJiMmRiNjVmN2Q3YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNTk0MzgzOTUwNGNlMmE1ZGUwNWQ5NGI3YTFkMjlmZTE1NjQ2ZGUyYzVjNTVhMjc0YTkxZjMzMmZiZWJmZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczMWRhNGRkMDY4Mjc0NDljNjYwOGUwMWE5YTY3NDBhNDFhYjc2MGU0ZjIyYjkzODFlMjJiMTNlOGIyZGM5ZTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f600ead59f84ec5b5581a5fd3d6a39f",
+      "statement": "The Discord conversation smoke checks dashboard and thread continuity across an idle period and connector restart.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/discord-conversation.smoke.test.ts#L80-L159",
+          "version": "repo-lines-v1:sha256:99b9452646df53416c9b49694be3314d27a66553e636fa3a9c47ec787f0c53b8:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZWIxNmMwNWRjZjdhNWU4YWRhMjM4YmViMDk5NWY1MWUwNmM3YzNmNmRmZGI4MDczNjBhZmI5OGRkNmYzMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxYzY1NzZjNjljYjhkZTljMWUzMjUyZjc0MzhiNTZhNDkzOTQ0NzRjOTIzYTVlOGU4YmNlM2ZjZDg1ZDcwYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5NmJlYWU2NjM2NmE3ZTI1Y2VkMDc5NmNjOTcwM2UzYjlkZmI1MDEyZTA0ZDk4N2RhZGNhNDU0MTliZmVkNjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35a49d923d8a4c448192436cd461e8d2",
+      "statement": "The resident recovery integration tests use synthetic credentials and Go connection controls to verify retry timing and launch admission.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/connection-recovery.test.ts#L103-L176",
+          "version": "repo-lines-v1:sha256:deb894df446840f1467aa77c862cbdb1bb963a4cd8bc49c3017115fc85f03c21:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5YTFlNjY5M2FmNzBhNjVmZWI5NmRkN2RiNjdmYWI4NGJhNjFkOTU1MDVjZWM2MTBlNDNkOGExNjk2MWVmNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkM2IwYzA4N2E4NzIwYjUwYWZmMGFiYmQxM2IyNDA1YjE5NmQ4NThiYjU0ZTNmYzE3ODI0ZjI3MTRiNzVlMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ODU4ZjhkY2NkOTE3ZDA4ZGYwOWI3ODE1NjYzYzk3OWQ2MzRjZGMzZDE5YTMyYWU0NGJhMGJiZjgzODNlYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhN2NlYjE5ZWM3N2VhMmU4NzhlNGZiMTI5OWRhNGE4OGJhMDUzNWJkYzk1YTVkM2VlYjY5YjQ0OGFjMjI1NGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eea0a44fb94848208ade477aaf25407e",
+      "statement": "The resident recovery integration tests verify obsolete renewal results, overlapping ticks, and stopped authorization.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/connection-recovery.test.ts#L178-L239",
+          "version": "repo-lines-v1:sha256:a03a97effbec0655b163f7b5ec695560b04445ea5e94dea5e06cea54ef8c5e82:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzMzY2YzE0MTdkNDU2ZTIyNTlhZmE5OTEyZTJlNjFiMzY3MDk4ZDU0YThiMzViMmRkYjg4MGQxNmJmYjRiZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkM2IwYzA4N2E4NzIwYjUwYWZmMGFiYmQxM2IyNDA1YjE5NmQ4NThiYjU0ZTNmYzE3ODI0ZjI3MTRiNzVlMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1OGE0NzJkMWIyMTI3MmE4ZDg2N2U1NDJkMWJkMzVmZmYyZDYzMGVkZmRlOWQzMWM0MmZiMmIzYjgzZGNhZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c1e6ee8128f044b5bef34e57f582acab",
+      "statement": "The Go renewal tests verify repeated transport failures, retained diagnostic evidence, and obsolete results.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/provider_renewal_test.go#L39-L120",
+          "version": "repo-lines-v1:sha256:98058bacdfe13baf5837030dd064ff4bd3f84d17049df91bf745bd83cc91c932:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3ZjIxNTM2OTMwYzBhODIyYzhlMjc0MmVjZDAyYTBkMWQ2ZWU1NGU1YjI4YWY1MmMzYzQxYzU0MjU2YWRhNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5Nzc4MjdjYTUxNjNkYmE2MDQzZjU5Njc1NzEyNTgyNzMyNTdiNTdmZGM5ZTc5MzlhOWU1MzUyN2RmZWE5MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77c2dbddc9ab439086932186cc260845",
+      "statement": "The resident unit tests verify condition selection, asynchronous renewal, and cancellation after failure.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/main.test.ts#L200-L264",
+          "version": "repo-lines-v1:sha256:cbd92eff25f20e01a1abcd077d8fa003f1363ff66f7fd497a5baf5d8984096c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjMDVmNGYxNzZkMTY1NzU3MjgzZjI1ODQwNjZkNGNkZDYzNTUxN2M0YmJlZWQxNGYzNDc3MWY2YjVjMGQ4YTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiMDZjZDUwMTI1YmQ0M2M0ZjMwYTdjNzE5MmQ3ZTdkZjJmOTgxMjE4MTQ1MTg1MTdhOWRlYzhkYzU2ODI0ODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExODRmYzBhMGFjMmViNDQwZjZhYTlhMGI4MDg3NTM5YmE4ZGQ4NDAyYjY4ZmVkNGNiNDVmYWIzMWM0YWEwMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5MTk3MTc2MWM5YTkwNTgzN2Q1NzYzMGE2YjQ1ZmU3ZjBkNGEyM2IxYTc4YTk3N2RiN2IyNGIwN2JkNmZhNjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2694974264a840cc88dc0359e9531c3f",
+      "statement": "The profile and adapter tests cover effort validation, catalog levels, model test errors, and adapter arguments.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/agentprofiles_test.go",
+          "version": "repo-file-v1:sha256:c4205aa833417cf5c79f9387b4eca3890c63fcd4ee95325fc54b007ef7b0176e"
+        },
+        {
+          "resource": "repo://mc/deployment/agentprofile_models_test.go",
+          "version": "repo-file-v1:sha256:d7b64e05186b3f8427376a2d1056bd2c87724ee6105bf1e8f8d321e40bd3a76e"
+        },
+        {
+          "resource": "repo://mc/deployment/agentprofile_testop_test.go",
+          "version": "repo-file-v1:sha256:429e9f5c832692bdee3755d943af21d6c54961f497d1ad5030c8c57ff4386193"
+        },
+        {
+          "resource": "repo://runner/agent-runner/adapters/adapters.test.ts",
+          "version": "repo-file-v1:sha256:78e5e523472143bf19d81b7bf5a6231464ab370a0c2cd486e73bb6c86c2473ae"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc805ae6974845fdbca4225191547b08",
+      "statement": "The dashboard model configuration smoke checks effort selection and profile display.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts",
+          "version": "repo-file-v1:sha256:4edc8fc637161b7106d0d188a8b71bd038e20964fa4f4cc89afb14f0b7eb357b"
+        }
+      ]
+    },
+    {
+      "id": "claim_deb8f3fa5b424a7cab3b16dafdb1e526",
+      "statement": "The dashboard model configuration smoke checks profile Edit actions in the role assignment dialog.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts",
+          "version": "repo-file-v1:sha256:4edc8fc637161b7106d0d188a8b71bd038e20964fa4f4cc89afb14f0b7eb357b"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e321f5d38db44e091476210e63bbb81",
+      "statement": "The culler command tests cover lifecycle behavior and failures.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/culler_prod_test.go",
+          "version": "repo-file-v1:sha256:d3c1e24b35b9a271076c3e1560268776991d646adf8ccad471b43c394f65efbd"
+        }
+      ]
+    },
+    {
+      "id": "claim_917e8ea2d1e84348934d2eab67351e22",
+      "statement": "The command installation tests cover path and executable safety checks.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/cli_install_test.go",
+          "version": "repo-file-v1:sha256:e507e9a2febab83fa2a226411a0531d6d10d568068950ec2aaa0145ed15116c0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6cece8c60b9f40fe9ce055986805f22a",
+      "statement": "The release image job checks the contents of both saved images and writes a size report from those archives.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L398-L416",
+          "version": "repo-lines-v1:sha256:38d3685750824194ffac015e00e38665d15005d5801ec894c75bc184df1aa4cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjZThiODJlMzgwNWEzYTE4MDAzZjJmZTQ1ZDRmNWRiYjQ3YWZkZThjMmRkZjU1OWNlZDJiNGZkYzRmNDA2MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyYzJmYmVkNmJhNDJiZWM3YjFkYjUwNzJiODkxMjk4N2MyNWYzODI4YzNhMmI1OGE1ZGU5ZTkxZWRhZjY1NGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5ZmEzNTA5YmMyMjA1NzM5MTFlNGM0MjNkNDJiYzdkNTViZTlmMzk0NmRkNmQ3MTE1YzAwZDdmMDc4MGNiN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ZTRkMDY5NGJmNGUwODZhMWRkMGJjMzEyZTZjOWFhZGJkZWVlZWE3NWFmYjEwMjUxOWE2MzMyZTM5MzhjOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa163057c5b9475f89c01230ff77bd83",
+      "statement": "The local release check runs the image archive, content, and size report Python tests.",
+      "evidence": [
+        {
+          "resource": "repo://release/check.sh#L1-L13",
+          "version": "repo-lines-v1:sha256:9fedcd95e27d6630aadf807b4cb167704d93993cc27a55ff626ea9bc39dc313d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxYjlhNTM4MmQ0ZjM5YmRhNzNkZjgxNjBhMWZlMmExYTdlNTA0ODA2NDg5M2JjNGQxOTE3NzU5NDA3NzBiNWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1NjA4MWNmZDc4MDg0ODVmMDI2NTcxMWViNmI2NzRkZjlmZWJiMGVmYTZiZTM1YjY5ZjlmZjVmYzEwZjQ0NmIifQ"
+        },
+        {
+          "resource": "repo://release/image_contents_test.py",
+          "version": "repo-file-v1:sha256:789e6c083cd580e9fea3eee9c5178a852ca767f7c0b3e74b6f8351f953c5c885"
+        },
+        {
+          "resource": "repo://release/size_report_test.py",
+          "version": "repo-file-v1:sha256:708ea4e9770e4d1fd0052e998d3bb32c8bc6400db8740fb451676b63c292a62d"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9a14d78e0bd4bc699b1d5f41b1f51b7",
+      "statement": "The host source sign-in test fixture restores directory write access before it renames a sealed credential directory.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_host_sources_test.go#L65-L73",
+          "version": "repo-lines-v1:sha256:38a5eb983f42f5f2ebbbe63624e8cafb1624473f9d36ca3570d9d36217ac63c8:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThiYjhlNjhhOWY5N2I0ZjBmMzEwZGE3NGIzOGU0ZmFmODQ4MjE1YTZmNzg0YzVkYzJiZjg1ZjlmZTNjZTE1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjQ4OTliYTU2Zjc2YzNhYjJkMjI5MmJiMWVlZGViMWI4Mzc4MDA3ZTE0Yjc3MTIxNjMyZjJkYjQwYmFkMTY2MCJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/runtimeauth_host_sources_test.go#L91-L96",
+          "version": "repo-lines-v1:sha256:9e7eedb0402700c2a5d841883dc15d6093e5a042506fec509a99449fce849125:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQ2NjZlY2ZhNWFjODI4YTU5MzM4YmE5NzkwMjA5MTcyMWM5OTg5YzU3YWRiMzVlNzQ1NjNmNmM3MjEzOWJlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTBkZjgxYjA0NmY1ODA2NTkzOGQ0OTRlYWUxMmU1N2MwNDAyZGVlNTU2NjBmNjBkMzYwOTQ2MDY4ZWVjMjNjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjhkYzJjMDlhZDkzODk3NjY4NTQyOGEzMjhmOTk3YjAxZjlkNGU4NDQwMDJmMDhhYzNmYmU1NTVhMmJhNzM4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODhiZmZjNGNjMzEzYzY2ODQzYzhhYjIzODdjNTBhNDUzNGRkNjRiYTliNTgxMTY1MGZlNWZkMTVjZGIxYWM2ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f00272cc26294d5bbef9533eb842fbd5",
+      "statement": "The dashboard smoke harness rejects a scratch Discord socket path above 103 bytes before it creates the home.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/harness.ts#L244-L254",
+          "version": "repo-lines-v1:sha256:50d4adcc57a3d9b6d9e356ede301225acf5907df87b486d792305963280a7af3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ZDJmNjFhMWQ3NDRlZDYxYmIwNGJhZjJkZTQyMjg2NGU1NDhkZDMwOGQ0OTRhNmI3ZmU2NWIzZTZhNWI3NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MDU3MzU0M2IxNTdmMGNhNTk3YjM4NmVmYzkzZGNlZDNkZjIyM2Y1Y2EwMDYwYjEyMzg0MWMyMTJlNjkzOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZGFjNTA3YzNlODViZWE3YTlkMWYyODg4OTE1YzYzZDc0NmE5MTQ3OGI0ZjEzZmI2NjBjYmJmM2NmMDMwMDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_102462ee396745dabe8d2b16ff25db12",
+      "statement": "The CI browser job sets MC_SMOKE_ROOT below RUNNER_TEMP/smoke.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L253-L261",
+          "version": "repo-lines-v1:sha256:7ec0624a5b17a1b9dbdbcd9d051bb60e68c2d0724083bc74523b42d6fbfe0f91:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjYwZGRjMDQzOWMxYzE5NjRmODBjMzIzYTRkMzViZjVkZDAwYjg0MzU5N2I5MTM0MTRmNjFiM2Y5NmIwZDhkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxNGQxZDA1MjA2NTBjM2ViYjY5Mzg1YjhlMWNmNDljNzM2MmUyMTVhNWZiZTU4YWVlMmQ4Y2ViYTIwYWE3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE1OGJlNGNjYzUzYzE0YmVlMGJhZWVjOGUzN2UyOGJjY2FjNzFlMjYxZDdhOTljMjRmNjVjNTNiNzUyNDhmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNiOWYzMGY4NWIyYzU3ZGVhOTRlMjhkNGFkMzVkODIxMjVhYjljZDA3MGZkNjA4ZTU5MWEyYjA3ODA0NmYwZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T10:01:23.917Z"
+  }
+}

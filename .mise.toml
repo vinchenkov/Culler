@@ -1,0 +1,4 @@
+[tools]
+# The host and runner image use the same toolchain versions.
+go = "1.25.12"
+bun = "1.3.12"

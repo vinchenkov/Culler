@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-02T23:00:56.483026+00:00",
+  "reviewer": "/root/case_corpus",
+  "recorder": "/root/gepa_engine",
+  "result": "accepted",
+  "acceptance_source": "Independent review message in this task.",
+  "matrix": {
+    "path": "/private/tmp/culler-eval-listener-terminal-review/matrix.json",
+    "sha256": "46ddb08b7bcbe818d00a3f1e72a67e2af0a53652f23681a07e73e3a82d9a6856"
+  },
+  "records": [
+    {
+      "state": "occupied",
+      "columns": 80,
+      "color_requested": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-occupied-80-color-0.txt",
+      "sha256": "c3a831d20f15bc6a8d2fc7b75462b800be7a283cbb08096097d318ca5ed147e3",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "permission",
+      "columns": 80,
+      "color_requested": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-permission-80-color-0.txt",
+      "sha256": "dcb117b1b359ec6a5db07dad3188ad4b65294b0f4bf4b7d4a5ab6302cb9fb966",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "resource",
+      "columns": 80,
+      "color_requested": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-resource-80-color-0.txt",
+      "sha256": "efd8626b54a6d7a58756bc9c646b931235c36791ce54b20afbd438677c46f982",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "occupied",
+      "columns": 80,
+      "color_requested": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-occupied-80-color-1.txt",
+      "sha256": "d1801a3b48eaf6275f13a82d5237b8da956a7f1d9ecd8ef54184e674033abb5b",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "permission",
+      "columns": 80,
+      "color_requested": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-permission-80-color-1.txt",
+      "sha256": "cb20460ff105a520bc0baccc1aa3cda868c51bca1df4fb632ac20a5aa4b4c5d6",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "resource",
+      "columns": 80,
+      "color_requested": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-resource-80-color-1.txt",
+      "sha256": "2719c1380289ccfdfa2b723e5a874809e0fa39fd467e07da89cc9ec968e982b4",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "occupied",
+      "columns": 40,
+      "color_requested": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-occupied-40-color-0.txt",
+      "sha256": "b13524fb2b5a8ef2e09ada4b2f2d00cdb0b6e1d6565182263b609a72296f7bdd",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "permission",
+      "columns": 40,
+      "color_requested": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-permission-40-color-0.txt",
+      "sha256": "a7ec5cf565f35b58c82b7ab6a452c5c6de8f6742dc03701c8c40d74996a6a7b2",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "resource",
+      "columns": 40,
+      "color_requested": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-resource-40-color-0.txt",
+      "sha256": "43bac0cbb2cf7cdb248440216692d50d77cef3d5232a47f18f8f5beb1977403b",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "occupied",
+      "columns": 40,
+      "color_requested": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-occupied-40-color-1.txt",
+      "sha256": "24480120662dbb2179d11c59739c4a82bc98b9cab9bb1fcb897e6e508844a523",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "permission",
+      "columns": 40,
+      "color_requested": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-permission-40-color-1.txt",
+      "sha256": "157ac0617bcc01631507f96e70bb2d46500270a2cc8ac1d3089edc130a0c928b",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    },
+    {
+      "state": "resource",
+      "columns": 40,
+      "color_requested": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-listener-terminal-review/listener-resource-40-color-1.txt",
+      "sha256": "03b2a363228db5f8b390c33a60662e7cbb6779ff5697d3e637506001895cb926",
+      "model_calls": 0,
+      "method": "Actual command dispatch. Occupied uses a real loopback listener; permission/resource use controlled errno faults."
+    }
+  ],
+  "source_files": [
+    {
+      "path": "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/culler_evals/cli.py",
+      "sha256": "ac5ebc91a600bf76d1e3f9476296ccf095b91b8a3c91a65f465c5275ee7279ba"
+    },
+    {
+      "path": "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/tests/test_cli_run.py",
+      "sha256": "dd7b5877ebb915b1d26f93e821036811699f15af2d7e2f22ce07df75233a3d12"
+    }
+  ],
+  "observations": [
+    "Each failure identifies its listener scope at both terminal widths.",
+    "Each failure preserves the portable viewer path and gives a continuation action with --resume.",
+    "The occupied-port action fits the existing experiment.",
+    "The startup guard records a failed session and exports its records before any model call.",
+    "Color and plain output preserve the same meaning."
+  ],
+  "limits": [
+    "The occupied-port capture uses a real loopback listener. Permission and resource captures inject errno faults.",
+    "These failures prove no model execution or directive improvement."
+  ],
+  "model_calls": 0
+}

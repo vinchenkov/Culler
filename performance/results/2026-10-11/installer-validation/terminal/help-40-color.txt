@@ -1,0 +1,25 @@
+[1;34musage: [0m[1;35minstall-helper.py[0m [[32m-h[0m]
+                         [36m--config [33mCONFIG[0m
+                         [36m--binary [33mBINARY[0m
+                         [36m--record [33mRECORD[0m
+
+Install one Linux candidate in an
+owned scratch helper and retain its
+original binary.
+
+[1;34moptions:[0m
+  [1;32m-h[0m, [1;36m--help[0m      show this help
+                  message and exit
+  [1;36m--config[0m [1;33mCONFIG[0m
+                  Use the owned
+                  scratch fixture
+                  configuration.
+  [1;36m--binary[0m [1;33mBINARY[0m
+                  Read a Linux
+                  candidate below the
+                  fixture bin
+                  directory.
+  [1;36m--record[0m [1;33mRECORD[0m
+                  Create this new JSON
+                  record below the
+                  fixture directory.

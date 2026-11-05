@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:99ee891eb7c197ecb239fa4e859554908a55fec895422a9d58fb8ea16c9d3bcb",
+  "claims": [
+    {
+      "id": "claim_aee9aadca2bf4c71862803d812043b81",
+      "statement": "Configuration validation requires a supported sign-in kind, release-defined authority, and matching harness family.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/config.go",
+          "version": "repo-file-v1:sha256:91290223a7255c6c96a197c8007694e79711a6e21835e307e1f8c95afeabf273"
+        }
+      ]
+    },
+    {
+      "id": "claim_bddf039cc44b4286989c403ec1591bcd",
+      "statement": "The current configuration parser rejects a declared base_url field even when its value is empty.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/config.go#L404-L414",
+          "version": "repo-lines-v1:sha256:9ddebc205eeeffd856d2debc53327efea341ab29e1637d94635953543832ca29:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlM2VhZWQ5ZDU3YjhiODY4ZDQ2NDdiMmY4NWU2MGI3Y2ZmMGJlNjVkM2EyMDY1ZmZlZjhkYjVjNTM2YmEyYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmZGI5NjJjMWZkZGE0MDliNzQ1MmU1ZWUzYjQzYzA3MjI4MGI1OThlNzBiYzk4Njk2MjAwMTBlNzFlMTRmODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MGJjY2U5MmZhMjFjOWIxMTkxMGY1ZDI0NDIyOWMzNjg3MDExNjQ4OTNjMDRhOWQzNjA2ZmEyMzQ4N2UzODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef21ff04a9f04d779712a34d745232e0",
+      "statement": "Connection updates reject stale revisions, duplicate names, and changed access settings when profiles depend on the connection.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentprofiles.go",
+          "version": "repo-file-v1:sha256:87e8eccd3632a0f025581561a7231cfca62cbb40a2cba4ed3ed739003c8bdec8"
+        }
+      ]
+    },
+    {
+      "id": "claim_aebaaf3a14624128b8a0c331f427dec8",
+      "statement": "Setup sign-in requires separate home and credential directories and uses a ten-minute timeout.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L16-L43",
+          "version": "repo-lines-v1:sha256:e692a96106d5ab68e359a8e7decfaa97697c2d181a3ad63e45c5f0e082db68f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjYmFiMWQ2ZjY0YTZmMDc3M2NhNDI5ZmZmYzlkNTE4MzE4NDc1YzQwYjkwNmQ1MTc5MGY5MjdiNjdiZmYwZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmZWUzOTBiYmQ1NGMzMjJmZjU4ODJmZjEyZTUxZDlkNWQyNzk2ZDFmOTFkYTgxMjc0MDI3NzFkZDZkM2ViZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMjNjMmYwNDZkY2NmNDg2ZTQ1MmQ5Y2MyMTM3YTA3Njc2NjVhMGRlZGRhMTA3YjYzMGJmM2UxNmE2NGQ5M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNzM1MGU3MWQ5NzM4ZWVlNmNiZjk3ZWVlYWVmYTBjZDgzNTc4ZDQzZmJiODM0MGYwMTkxMjVhZjRmNDhhMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c4ab600bdb5a44549c070e50ec3bba5b",
+      "statement": "The host grant store uses an owner-only directory and mode-0600 temporary files before rename.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentprofile_grant.go",
+          "version": "repo-file-v1:sha256:79f1f9d4edf41b44df053d0654463891ddd2df86d8d0eb14a85e5609cab9b13f"
+        }
+      ]
+    },
+    {
+      "id": "claim_da914429d5b641afb7fa775a173da577",
+      "statement": "The environment guard has fixed forbidden names that operator additions cannot remove.",
+      "evidence": [
+        {
+          "resource": "repo://mc/boundary/envpolicy.go",
+          "version": "repo-file-v1:sha256:a549e0343b1647c907fe3165ada8258a76d0ca3cce2f022e555475de3d5acdf7"
+        }
+      ]
+    },
+    {
+      "id": "claim_82d8150c4f114918b62377c6e55abe36",
+      "statement": "The resident requires host confirmation of a test build before it accepts runtime authority overrides.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/agent-profile-runtime.ts#L9-L16",
+          "version": "repo-lines-v1:sha256:cb4af62ec84b2f4f918db4e1e653f1e67bca08667bc0102ad912d1ac3ad99cf3:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI2YTkwN2E1YTQ2YTdhYzY5M2VkZGRkMDRhZmY5ZDk1MWQyODg1N2Y0ODFjNTgyZjFmZDE1MDJiNjY2ZmZjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY2NGRkODc3ZTk1YWJhMDQxZDUyOTQzYmMxMzRiOTdlNTcwNWU5YzExMDNhOTJlMjc3YzRmMmFlYTFiNzk5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTQyNmE2YWUyNDMxODgwNDNiM2Q5MGRkYmNhMmI4YmZkYjczNTlhZDMxZWM1YzZkNzJmNWRkYTljMmU1MTA5NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a6eb47a9e1140ceaa844c7eeeae3831",
+      "statement": "The resident renews account access on the host and saves a rotated credential before it supplies the session to a request.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/provider-credentials.ts",
+          "version": "repo-file-v1:sha256:4913723eb9dbdf0aacc6f0b8b46065ee4e0c02c25a2a92f9d5057be26a80a587"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb72b6b7039d48e4afa81a121d382cff",
+      "statement": "The provider proxy permits the active queued or running setup and validation operation until 30 minutes after its creation, then revokes access when the operation ends or loses active status.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/providerlifetime.go#L65-L101",
+          "version": "repo-lines-v1:sha256:c5bcf97ec0b100276d156073560df40fc06419eae280fa941613ab2a4a040ae5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkM2Y4MjJkMzMyMGY3Zjc1MzFhODZiMDEwMmNmMzdiOGJjMmVmMmEzZWNkMWNmM2RlZmVlMzVkMjA4MTk2YTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjOTZhOWY2MjlkNzA1ZTQxMDg3YjVlMGU0NzU5MzQ0ZWY2NmE2NTFlYzYzZTg2MTQ5YjcxMzMyYWVjYzc0MjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMGUyYTY0MjcxYjdkZmUxNTQ5OGZmYzkxYTMwMDcwMTk0NmQ5Y2MyNmRhOTYxNTEzYzgyYzAxMmZjZjhhNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://resident/src/provider-lifetime.ts#L4-L28",
+          "version": "repo-lines-v1:sha256:e0ef5756ddf47b1a0cf1e4ca8855e3c0a65668ffb02a32e71fb31e4372cfe6ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2OTRiZTYyZjFmMTAwZGJhMTNiNmU5OGUzZTI5N2MxNDM1MDUxYmY3ODExYWUzYjdkMGU2ZTM5N2Q1Yzc3NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlMGQ5YjRlNTQ5MGE3OTM5NzhlMjE0ZDAxYmNiOWUxMTU5ZDA3NGViYjMyYmJhMjc2YmRjMmMyZjBkMmIwY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1MWY1OWNjNTYzZTAzZTg0Y2I4NTk5NWM3YjE4ODZjMTA4YjhiNGM3ZmQ0OTg0MjgyOTlhOWMyYWRhYjIzOTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9f8d7b59a4174471adf2808ff7b74dde",
+      "statement": "Before dispatch, the resident selects unknown and retry_wait account token refresh conditions for renewal without waiting for the provider response.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/main.ts#L262-L272",
+          "version": "repo-lines-v1:sha256:d0f4901c1148452a0631b302d8b0e5c4e47f798b80392cacb3c63f66046ef344:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjM2FkZDI3NWQ1YWVmZmRmNzhmMmVhNDM2YWRjYjRhNzdlY2VmNzc0YmQ2MjZiNWYyMzk3YWZjZTIyMjY3ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMDA5Y2UxOWFlZDRkZTFlMGRkMjIxOTMzYTI0ODA2Yzk1MmZiZTM4ZjdhMGUyMzE2MTE0M2UzNGUxNGEyNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhNDI5NmY5MGZjNDdiZDFmMTE1OWZkN2Y5OTFmM2VlNzNlODE3NmRlZWI2MGZmNzU5ZmJiMTk1NzZmYzBmZjcifQ"
+        },
+        {
+          "resource": "repo://resident/src/main.ts#L715-L723",
+          "version": "repo-lines-v1:sha256:2794d2e3d5413fd94ab2ae7ca1c4c79b90da1a19779e43707fc24a2b692f1a2d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWE0NDIyOTE2YjNlOTJiZDY0YzA3NTdhMGYyYjQ1ZDJjNjIwN2IzZWY2MTg5MDk5NjZlOGM2ODY1MjYxOGYyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE1MjY0MWJmNGIyNTBlOTEyNmFiNGIzNmNjZTEwNGI4NzE4YWI2YTcwZGFkYTkwYzM3OTMxYThhMThhMDkzMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmY1MDFmYTY0NzA5OGE3YzkxNzM2NTMyYjJhZDk1MjAyNjg3YTk0ZDI5NzRlMDBhOWZhNzUxNjQ2MTM5MDc5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmNmOTdhZTQ2MjRiNzI5MzFiMWU1ZTgxOGNmYjBhODNlZDNkNTExOWMxZDM1OWE4NGE5OTQ1MWY1YTNiNjk4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_62d8acd753ba447db0538d05c6e20b3e",
+      "statement": "A connection check enforces the retry time, refuses a stopped connection, and permits one active check.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/connectionhealth.go#L74-L153",
+          "version": "repo-lines-v1:sha256:0779acb9f1cb963fc15ab0ce3f7a957c4e64398887d30aeb29f7e99df2c37c10:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiMWVmMzc3ZWY4M2I2Mzc2MmM5ZGZhZGRmY2Q4ZDEzNzEzY2FmNzEzYTkwOGUyZjVkNGQ4OTM2MTFiNWM3ZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4ZjBiNjY0OTkyMGVjNmNjMjM2MWY3ZWVhNTg4MTg0OTA4MDE2YjM2ZGIwZDA2YzRkY2I1MTNiOTZhZDY2NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlOGEzNTcyMjAzNzk2YzQyODc4MjdjNWYxZmM0ZmI0NjczZmNkZDk3ZDZkN2IxZWFjMmY4NDhiNWJiNTZlNzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4a9a04369f1549e18ba12351e515ff1a",
+      "statement": "A failed renewal cancels its check without a second failure observation.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/main.ts#L236-L259",
+          "version": "repo-lines-v1:sha256:89c843eb0e1bc950ac51f6ea325128da3801da7bc0faf61d8361df9ca37599d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MDgwMGMxOGY0NGM0M2QxOGE0NDQxODQ1ZWQ2NGQyNGI4YmZmNzMzNjAxNTdmNzU3OTk1ZmZiYTBkYmY5MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiNjA1OWI3YmI2NTc5MDFhODM3YzM3NWZmYzI2NDJjOWQxNzczZTBjYjE0MjVmMTlkZDUxYWFhN2QyZTBjY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxMTZhMTc2NDdkODdmYTFmZDBlYWQzMzFjZjM3OWYxMGViZWVmYjJlNTRhYmY2MDVmM2VlMWRjNmY5ZjRmZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkZGIwZDZiNjhjYWVkOGRkYzE5MGU5NGQ2NTFlNmY4MzRjNGUwMmVkZjZkM2JhMjllOTA1NzE4NDRhODE5MDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e4a2063f2c644bd1814bbc7275d71097",
+      "statement": "The recovery integration test verifies that a transport failure blocks launch admission until successful renewal clears the condition.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/connection-recovery.test.ts#L103-L158",
+          "version": "repo-lines-v1:sha256:7a4c3cfc4e2ce7493ee15358963aec9881ae489a09309d3758c7be39735235b4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5YTFlNjY5M2FmNzBhNjVmZWI5NmRkN2RiNjdmYWI4NGJhNjFkOTU1MDVjZWM2MTBlNDNkOGExNjk2MWVmNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ODUxODAwZDg2MjFiN2IxYmQ4MjBkZGQwYjUzMTA5Y2U0NjQ3MmQ2MTU1MGQzMTE3NmJmOWEzNTkxNmFjYWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ODU4ZjhkY2NkOTE3ZDA4ZGYwOWI3ODE1NjYzYzk3OWQ2MzRjZGMzZDE5YTMyYWU0NGJhMGJiZjgzODNlYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1ZjdkNjJhMjc5OWFjODMxMWZiMmEzYzUxZWRmNjA0YmMyNjJhNzU2NDg4ZGFkODljOWE4MjMxODhlY2UzNzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ae6d31f2ce184484b7549ffbf382d7a5",
+      "statement": "An agent profile stores an optional effort, and configuration validation checks it against the harness levels.",
+      "evidence": [
+        {
+          "resource": "repo://mc/config/config.go#L109-L119",
+          "version": "repo-lines-v1:sha256:ee9cfd0bffee9166256f02a1b1d9968f8595be3d11bce3c5d580d76eabfd38b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3ZjQxMGYxMzFjZTVkNTBlZWY0OTQ1MWNlNmNlOTE2Njk4ZmE3ZTAxOTgxNGM3ZTU0MzExZmExM2I3NzFjZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0N2I2NDRjOTJlMmI1ZmE5YjNjOGM2YTJiMTNiZjYwZWFlY2ZjODExZWY0NWUxYTNiNWMxZTdlNDE5Nzk0NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhZmRlNGQ3NmNkYzgzZjRlMDQyYmUyNTk4NmM4Yzc4OTdkNDg1MzQ4ZWI1ZjQwZWJjNDVmMWRlZTg5OTRhYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMTI3MjhhYzk1NTE4YWUzNzMzNDE1OWFjZmM2M2Q5YjM4YmVmMzcwMDY4YzA4ZDI5ZGUxOTkxMDEwNmRhNzMifQ"
+        },
+        {
+          "resource": "repo://mc/config/config.go#L1090-L1102",
+          "version": "repo-lines-v1:sha256:df5f19b97a7846efcd8b9e706669c4b0b3d1e0663bc3d3f6be6f989e3506d031:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwYmZlYmRlZDdlNWYxMDM0NWFkZTIxNDkwZDZmNDMxNDVhYWU1MWMzYTczZWYyODg5ZTI5OTAwMDE2OGIzYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmOTViZmY5NzQ0YTZlMGZjMmUzYWYzNmJkY2YxZmQyMmI5NGFlYzFhNjgxYjVhYTJiOWRkNGM3N2QxYzNmYWYifQ"
+        },
+        {
+          "resource": "repo://mc/config/config.go#L1166-L1180",
+          "version": "repo-lines-v1:sha256:1de27822bb8527be82907314167217294007bab8fd73cdd2635c19446419c50e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMDRiNTJmZWI5MjcxNzMyZTMyNDhmM2QxMTE5NWEzZjM0NDExZmY5MGYyYjcxYThmY2E2ZGEzNDQ3ZDcwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMzZiMTMzZWFmZDkwNzRhZmZkNGI3NjNkNWQ0ZTNkYTE5Nzc5M2Q3YTEzNWMyM2E2MDg0YzgwZTBlN2YwM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f42c83e92ccd4c17a3253b522d442568",
+      "statement": "The host model list reports supported effort levels and whether the provider supplied that information.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentprofile_models.go#L169-L191",
+          "version": "repo-lines-v1:sha256:047be6d361271052a7041120b80e90a57a2c61c4b03a31843952feae462d8194:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyNDk0OTYzZjU2OTlkNWNjNmZkN2JlOTE2MDU4OTQxNGIyMjA3MjhmYTdlYzkyNGVjNzk1NTc3NWM1YTdiZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzZWViMWQ1ZmE2YmM1ZThmY2IyYWI3YWIwMzBiMTExNWJlNzdhYmU2Nzk0NjgxNmVlYTZlMzc0ZThiMDJlZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzYmIwZDQyMTMwMzYwYWY0YWM2Mzk1ZWYwYjdiYjMzZDdhNDEyMzY0ZWFlNzQyNzc3OTkwNTA4NDFiMDg5MzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDQyOWUzNTFkYjc4NDY5NGI0OGIzOTM5NDk3ZWE5OTc4YTQ1Y2U4OTZhN2JlYzVmNzBlYzNhMzQ3NjM0NjUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agentprofile_models.go#L31-L42",
+          "version": "repo-lines-v1:sha256:d75ab4e8c9291ece540fa7fd155c0534ff5d522a22b4d548e3181a48f741bbb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNDkzN2Q5YjMyZWMyYmVlNzQ2Mzc4YmEwM2RhNzljMWMzYjg0ZWZiMjdjNzQxNzM3ODIxZjBiYWMxMzU0YjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2NGFlYzVjZWUxMzJkMzY2YjNiNDVjMDlhYWFiMGYyNjhhZjVlNTJlZGZlYzY4NzU2YWNlN2QwOTNlYWY5NzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxYWJjMDZmZmMzMTcxNTdhY2FiMDJiMjQxY2VhYjhiODViMGMyZGYxYzM2ZGFhZGI2YmI0Y2UxMDMyMzI3YWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc558e4840df4b159e7a5ebbd9384b51",
+      "statement": "The host checks a selected effort against the model list before the model test and reports an effort error for an unavailable level.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentprofile_auth.go#L204-L218",
+          "version": "repo-lines-v1:sha256:e0b511f510e55338b7dc8332f8cd47c5bca903ffe36863bd45d7c399d5051377:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOTBjNjJlNWM3NTcyOWUzZmUxN2EyYmJkNTBlOTkzNDBmZGJlMGQ4NzgzZDQzMTJlY2Y4OGU4NDdkMGQ2Y2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4MWQwZGI0OGE0YWZjN2I2ODkzYTJlNzcyNjEzOTUyMjA5YWQzYjRhZDVmMDQ5MGFkNjAwYTI5MGFiNDFiYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3ZWQ1MmI2MDhkY2RjZGRiNDI4MjNjZGIzNDU1ZDM1NzQ0MDhiZTJlMDFiMThlNTczNTM4Zjc3Mzk5ODY1MTAifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agentprofile_models.go#L331-L342",
+          "version": "repo-lines-v1:sha256:a403c7900bc756266a165e0772c7b08f673de51187555c9771c0f70dae00b7b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzZGVlZmFlYTE2ZTNhOWJiYjZlMDk3YTUzYmVhNTAzZjhiODIyOWQ3OWQzMDIxZDlkMDI4ZDZhYTI1ODBmMzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agentprofile_testop.go#L639-L665",
+          "version": "repo-lines-v1:sha256:841036616fa7b186b40fe7ad88845ffef88b22b12c9432e29ecc4cccee3796c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjMjk3ODc0ZTgwNzk5NzFjMDU2MmFjMzUwOGU3MTRkOTE1YTA5OWJlMmE4NjIyYmIwZGIwYjVmZWYwMmE5OTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlYjg2YTUxMTA3YTg0YjliNjNmYzA1YjQ5MzBiMGQ4N2VhZjdmZGMyM2M2YWY1YWYxMjFlMDQ4NTBlNTM4MzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiZTQ0MWY3YjNkNWQ2NDExOTVhOGZjZDc1YzBlMDUyZTQ2MDdmNTBiYWNhY2VmZjMxNjFkNWZhNDM2YzU5ZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmMGY4MWNhZjk5NTQzZGFmZThlOTNiNzczNjAyYzYxMDZhOWI4ZDUxNmI1ZGYwYWJiNjUwZjhlNzQ1ZWI4ZjIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T04:07:09.592Z"
+  }
+}

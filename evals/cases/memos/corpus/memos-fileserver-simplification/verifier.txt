@@ -1,0 +1,124 @@
+{
+  "criteria": [
+    {
+      "criterion": "The file server reuses the context-aware attachment reader and standard file operations.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/api/v1/attachment_service.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/README.md",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Thumbnail generation encodes into a buffer, writes the cache, and returns the buffer.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/api/v1/attachment_service.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/README.md",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Path resolution returns a string instead of an always-nil error result.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/api/v1/attachment_service.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/README.md",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Avatar lookup calls the store directly; content-type and data-URI helpers become free functions.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/api/v1/attachment_service.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        },
+        {
+          "path": "server/router/fileserver/README.md",
+          "revision": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "16cd3107bf324dc159ec5d1894d6c11dec7edd96",
+      "changed_paths": [
+        "server/router/api/v1/attachment_service.go",
+        "server/router/fileserver/README.md",
+        "server/router/fileserver/fileserver.go",
+        "server/router/fileserver/fileserver_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "cf1be15f3ec0eeca30419e93c6f019d07ea41919",
+      "reviewed_tree": "6a69d402d72902abaedbf5456c825dfcf33259c2"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 823,
+  "unverified": [
+    "No file, image, motion, or storage request ran for this preparation.",
+    "The source checks establish structure, not a universal claim of identical image behavior.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "base_commit": "16cd3107bf324dc159ec5d1894d6c11dec7edd96",
+      "changed_paths": [
+        "server/router/api/v1/attachment_service.go",
+        "server/router/fileserver/README.md",
+        "server/router/fileserver/fileserver.go",
+        "server/router/fileserver/fileserver_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "cf1be15f3ec0eeca30419e93c6f019d07ea41919",
+      "reviewed_tree": "6a69d402d72902abaedbf5456c825dfcf33259c2"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The file server reuses the context-aware attachment reader and standard file operations.",
+      "conditions": [
+        "Path resolution returns a string instead of an always-nil error result.",
+        "Avatar lookup calls the store directly; content-type and data-URI helpers become free functions.",
+        "Unused exported cache constants and thumbnail MIME lists disappear.",
+        "Thumbnail and motion cache reads use os.ReadFile."
+      ],
+      "mechanism": "The blob path opens the shared reader, reads it, and closes it; the motion path passes its request context."
+    },
+    {
+      "after": "Thumbnail generation encodes into a buffer, writes the cache, and returns the buffer.",
+      "conditions": [
+        "The metadata probe helper loses its MIME parameter and redundant HEIC branch; its caller handles the protected format path.",
+        "The README changes to describe current native file routes and storage behavior.",
+        "Source tests change with the helper signatures."
+      ],
+      "mechanism": "The thumbnail encoder writes a JPEG at quality 90 through os.WriteFile with mode 0644."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The file server reuses the context-aware attachment reader and standard file operations.",
+  "task_id": 823,
+  "unverified": [
+    "No file, image, motion, or storage request ran for this preparation.",
+    "The source checks establish structure, not a universal claim of identical image behavior.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "cf1be15f3ec0eeca30419e93c6f019d07ea41919"
+}

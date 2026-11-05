@@ -1,0 +1,413 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/818/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "effb44233e1910c758dbe4bf312850be7016483dd98fac0fc2be67ea0e35e709",
+      "source": {
+        "kind": "file",
+        "path": "memos-cgnat-address-guard/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/818/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "903e808a42e47fb6a7d7e1fe2a73b4efc4baa4cc5d81e11b3f9cb98ba5406dd0",
+      "source": {
+        "kind": "file",
+        "path": "memos-cgnat-address-guard/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "earlier-verdict",
+      "kind": "report",
+      "path": "eval/818/earlier-verdict.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "5fb4bf01d9197fe271ca93e3e794173e3f50c49b94af881a97e9030a0f679c05",
+      "source": {
+        "kind": "file",
+        "path": "memos-cgnat-address-guard/earlier-verdict.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "correction",
+      "kind": "report",
+      "path": "eval/818/correction.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "ae944c213f81ea1eb4599862f536ee56982852bc99c172b9ef8e224f46861abd",
+      "source": {
+        "kind": "file",
+        "path": "memos-cgnat-address-guard/correction.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "bec85a71642a0378ca1a5a4d791d3923636af086b54e1b475685abc9970a1952",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "3cba71fa9042b525c6970acac70660c48be67c617d527d171f3097e4f6901f86",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "7d2b394762b4cde74541978b2b7e3d03092f066e2d208b255cb17f7235bb6688",
+    "role_inputs": "16c0acef661cd7758e26a850d700c3b9e1f862c235a5899a49d1822795530279",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "1ef9e52f8b27e19738d6259740c8c67790c494a7dd428c6a2aaea73fed65c3b4"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "281674aac6b23941d9ded79a00d61107a1e10de820fb03ea176edfcec0bf0b5e"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-cgnat-address-guard",
+  "id": "memos-cgnat-address-guard",
+  "paths": {
+    "/mc/artifacts/eval/818/correction.txt": "correction",
+    "/mc/artifacts/eval/818/earlier-verdict.txt": "earlier-verdict",
+    "/mc/artifacts/eval/818/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/818/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+        "before": "The reviewed guards do not classify 100.64.0.0/10 through the added branches.",
+        "conditions": [
+          "The existing loopback, private, link-local, and unspecified checks remain.",
+          "Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+          "The workflow defaults DRIVER to sqlite, then clears DRIVER for the store job so that job keeps all-driver coverage.",
+          "The change adds source tests for the address branches."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The webhook adds a reserved network; link metadata checks IPv4 and mapped IPv4 values from 100.64 through 100.127.",
+        "sources": [
+          {
+            "path": "internal/webhook/validate.go",
+            "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33/internal/webhook/validate.go"
+          },
+          {
+            "path": "internal/linkmeta/html_meta.go",
+            "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33/internal/linkmeta/html_meta.go"
+          },
+          {
+            "path": ".github/workflows/backend-tests.yml",
+            "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33/.github/workflows/backend-tests.yml"
+          }
+        ]
+      },
+      {
+        "after": "The authored correction rejects that claim; the latest source-inspection verdict passes the narrower claim.",
+        "before": "The authored earlier report includes an overbroad source claim.",
+        "conditions": [
+          "The records describe source inspection, not application execution.",
+          "Both verdicts use the actual reviewed source; this fixture records a report correction, not an extra implementation commit."
+        ],
+        "id": "authored-correction-history",
+        "mechanism": "The fixture supplies both verdicts and the correction so the packet can show their order.",
+        "sources": [
+          {
+            "path": "internal/webhook/validate.go",
+            "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33/internal/webhook/validate.go"
+          },
+          {
+            "path": "internal/linkmeta/html_meta.go",
+            "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33/internal/linkmeta/html_meta.go"
+          },
+          {
+            "path": ".github/workflows/backend-tests.yml",
+            "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33/.github/workflows/backend-tests.yml"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No network guard test or continuous integration job ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-cgnat-address-guard",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "818"
+          },
+          {
+            "label": "Title",
+            "value": "Treat the carrier-grade NAT range as internal"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The webhook guard and link metadata guard reject that range through their internal-address rules.\n\nAcceptance criteria:\n- The webhook guard and link metadata guard reject that range through their internal-address rules.\n- The existing loopback, private, link-local, and unspecified checks remain.\n- Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/818/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "/mc/artifacts/eval/818/correction.txt",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/818/earlier-verdict.txt",
+            "outcome": "fail",
+            "requirements_version": 1
+          },
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/818/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/818/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+          },
+          {
+            "label": "Base commit",
+            "value": "7e3d3c63156c206209fdc8e75a4fb117b1aaf1fb"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 818": {
+        "acceptance_criteria": [
+          "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+          "The existing loopback, private, link-local, and unspecified checks remain.",
+          "Existing webhook override and allowlist rules remain distinct from the link metadata guard."
+        ],
+        "description": "The webhook guard and link metadata guard reject that range through their internal-address rules.\n\nAcceptance criteria:\n- The webhook guard and link metadata guard reject that range through their internal-address rules.\n- The existing loopback, private, link-local, and unspecified checks remain.\n- Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+        "id": 818,
+        "project_id": "memos-evaluation",
+        "purpose": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Treat the carrier-grade NAT range as internal"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+            "The existing loopback, private, link-local, and unspecified checks remain.",
+            "Existing webhook override and allowlist rules remain distinct from the link metadata guard."
+          ],
+          "description": "The webhook guard and link metadata guard reject that range through their internal-address rules.\n\nAcceptance criteria:\n- The webhook guard and link metadata guard reject that range through their internal-address rules.\n- The existing loopback, private, link-local, and unspecified checks remain.\n- Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+          "id": 818,
+          "project_id": "memos-evaluation",
+          "purpose": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Treat the carrier-grade NAT range as internal"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+        "The existing loopback, private, link-local, and unspecified checks remain.",
+        "Existing webhook override and allowlist rules remain distinct from the link metadata guard."
+      ],
+      "description": "The webhook guard and link metadata guard reject that range through their internal-address rules.\n\nAcceptance criteria:\n- The webhook guard and link metadata guard reject that range through their internal-address rules.\n- The existing loopback, private, link-local, and unspecified checks remain.\n- Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+      "id": 818,
+      "purpose": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+      "requirements_version": 1,
+      "title": "Treat the carrier-grade NAT range as internal"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "earlier-verdict",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "correction",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "7e3d3c63156c206209fdc8e75a4fb117b1aaf1fb",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+    "reviewed_tree": "ee516a870dcc1d7fd7e253b058fb91c8e22f716e",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "data_or_access"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

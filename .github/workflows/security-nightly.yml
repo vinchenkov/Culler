@@ -1,0 +1,38 @@
+name: Nightly release security
+
+on:
+  schedule:
+    - cron: '23 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  current-release-images:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Check the current release images with fresh advisory data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 release/security_nightly.py --output "$RUNNER_TEMP/security-nightly" --tools "$RUNNER_TEMP/security-tools"
+      - name: Preserve the nightly security reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-security-nightly-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/security-nightly/*.json
+          if-no-files-found: error
+          retention-days: 90

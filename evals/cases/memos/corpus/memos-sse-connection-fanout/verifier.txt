@@ -1,0 +1,125 @@
+{
+  "criteria": [
+    {
+      "criterion": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+      "evidence": [
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.",
+      "evidence": [
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "If either cross-tab primitive is unavailable, each visible tab keeps its own connection.",
+      "evidence": [
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+      "evidence": [
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "dd18002b12b8632d11b57fa3d33de244bba91476"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "c4221c6dfe51902d0c5f482802e670fda1b72751",
+      "changed_paths": [
+        "server/router/api/v1/sse_handler.go",
+        "server/router/api/v1/sse_hub.go",
+        "server/router/api/v1/sse_hub_test.go",
+        "server/router/api/v1/test/sse_handler_test.go",
+        "web/src/hooks/useLiveMemoRefresh.ts",
+        "web/tests/live-memo-refresh.test.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "dd18002b12b8632d11b57fa3d33de244bba91476",
+      "reviewed_tree": "b7178ded2453af778c8145c6280eaf30eceb8c19"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 828,
+  "unverified": [
+    "No cross-tab browser session, network recovery, race test, or benchmark ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

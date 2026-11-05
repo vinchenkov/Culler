@@ -1,0 +1,1 @@
+{"error": "the following arguments are required: --config, --binary, --record", "operation": "install-helper", "type": "error"}

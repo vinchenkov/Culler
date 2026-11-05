@@ -1,0 +1,136 @@
+{
+  "case_id": "memos-disclosure-spacing",
+  "method": "unchanged_frontend_with_synthetic_service_responses",
+  "limits": [
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "clock": "2026-09-30T12:00:00Z",
+  "timezone": "UTC",
+  "locale": "en-US",
+  "images": [
+    {
+      "path": "before-collapsed.png",
+      "sha256": "18a3e824bdaf050bdc0c1bc0b6fb9663cfee5b3c8bbeb9aa8860dc3458ca1491",
+      "source_revision": "80bab62c723d2c016753679d61468aefd987201d",
+      "side": "before",
+      "state": {
+        "name": "collapsed"
+      },
+      "fixture": "before-collapsed-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "before-expanded.png",
+      "sha256": "821cde38b415cdb301c576bafea33b60927cbe188ac4747d269668b1a7e29ce3",
+      "source_revision": "80bab62c723d2c016753679d61468aefd987201d",
+      "side": "before",
+      "state": {
+        "name": "expanded",
+        "expand": true
+      },
+      "fixture": "before-expanded-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-collapsed.png",
+      "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+      "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "side": "after",
+      "state": {
+        "name": "collapsed"
+      },
+      "fixture": "after-collapsed-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-expanded.png",
+      "sha256": "267103ffe6b078daca49dea63ae10e2b81aca858f15ab99633c474c3c65f6f73",
+      "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "side": "after",
+      "state": {
+        "name": "expanded",
+        "expand": true
+      },
+      "fixture": "after-expanded-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    }
+  ],
+  "tools": {
+    "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+    "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+  },
+  "browser_version": "145.0.7632.6"
+}

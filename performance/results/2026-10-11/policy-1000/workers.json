@@ -1,0 +1,34 @@
+[
+  {
+    "policyReport": {
+      "pid": 32797,
+      "task_priority": 4
+    },
+    "ready": {
+      "boundary": "before runner.run through process exit, both output streams, and JSON parse",
+      "bunVersion": "1.3.9",
+      "maxConcurrency": 1,
+      "mcBin": "/private/tmp/culler-performance/20261011-mac-command/bin/mc-baseline",
+      "pid": 32797,
+      "runnerModule": "/private/tmp/culler-performance/20261011-mac-command/baseline/mc.ts",
+      "type": "ready"
+    },
+    "variant": "background"
+  },
+  {
+    "policyReport": {
+      "pid": 32798,
+      "task_priority": 31
+    },
+    "ready": {
+      "boundary": "before runner.run through process exit, both output streams, and JSON parse",
+      "bunVersion": "1.3.9",
+      "maxConcurrency": 1,
+      "mcBin": "/private/tmp/culler-performance/20261011-mac-command/bin/mc-baseline",
+      "pid": 32798,
+      "runnerModule": "/private/tmp/culler-performance/20261011-mac-command/baseline/mc.ts",
+      "type": "ready"
+    },
+    "variant": "standard"
+  }
+]

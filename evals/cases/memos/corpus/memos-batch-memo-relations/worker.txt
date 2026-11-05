@@ -1,0 +1,60 @@
+{
+  "checks": [
+    {
+      "base_commit": "3d4f793f97b567bda823a60b7fe10e09e14499ce",
+      "changed_paths": [
+        "server/router/api/v1/memo_service.go",
+        "server/router/api/v1/memo_service_converter.go",
+        "server/router/api/v1/test/test_helper.go",
+        "store/db/mysql/memo_relation.go",
+        "store/db/postgres/memo_relation.go",
+        "store/db/sqlite/memo_relation.go",
+        "store/memo_relation.go",
+        "store/test/memo_relation_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+      "reviewed_tree": "7eed498ec3b38ae6209dbba1673abf8764669497"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "Memo and comment lists resolve relations in a batch before conversion.",
+      "conditions": [
+        "An empty memo list returns an empty map without that relation query.",
+        "The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+        "The converter maps both relation directions and skips unresolved endpoints.",
+        "A relation load failure can abort a list response."
+      ],
+      "mechanism": "The service queries relation endpoints for the memo identifier list and loads missing endpoint memos together."
+    },
+    {
+      "after": "The three database drivers accept a memo identifier list across both relation endpoints.",
+      "conditions": [
+        "Create, get, and update use a single-memo wrapper around the batch helper.",
+        "Delete retains a best-effort relation lookup for webhook conversion.",
+        "The change adds source tests and isolates the test data directory."
+      ],
+      "mechanism": "The drivers render identifier-list filters for the batched relation lookup."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "Memo and comment lists resolve relations in a batch before conversion.",
+  "task_id": 825,
+  "unverified": [
+    "No list request, database query, or performance benchmark ran.",
+    "The source reduces lookup structure; it does not establish a numerical latency improvement.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+}

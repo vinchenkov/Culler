@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "status": "draft",
+  "scope": "Packager packet quality; generated Files changed remains outside this rubric.",
+  "dimensions": {
+    "comprehension": {
+      "weight": null,
+      "anchors": {
+        "0": "The packet fails to explain the change or creates a materially incorrect mental model.",
+        "1": "The packet names the change, but its practical effect remains unclear.",
+        "2": "The packet explains the main effect, but important scope or conditions remain unclear.",
+        "3": "The packet explains the change and material conditions with minor gaps that preserve the mental model.",
+        "4": "The packet gives a representative mental model. The operator can explain the change and predict the relevant outcomes from the packet alone."
+      },
+      "guidance": [
+        "Assess the representative mental model of changed behavior, scope, practical effect, and material conditions.",
+        "Assess what the packet teaches through text, visuals, and permitted interactions. Use the case evidence to check accuracy, not to supply missing explanations.",
+        "Useful abstraction and omitted irrelevant implementation detail can earn four.",
+        "Distinguish likely operator comprehension from observed human comprehension."
+      ],
+      "max_score": 4
+    },
+    "causal_explanation": {
+      "weight": null,
+      "anchors": {
+        "0": "The packet gives a materially incorrect cause or identifies no relevant mechanism.",
+        "1": "The packet names a relevant mechanism but does not connect it to the result.",
+        "2": "The packet explains part of that connection, but leaves an important causal relationship unexplained.",
+        "3": "The packet explains the main causal relationship accurately. Some useful connections remain implicit.",
+        "4": "The packet explains the essential causal relationships at an appropriate level. The operator can explain why the result follows from the packet alone."
+      },
+      "guidance": [
+        "Assess how the mechanism produces the result, including structural relationships for internal refactors.",
+        "Give credit only for essential causal relationships that the packet explains.",
+        "Concise explanation and useful abstraction can earn four. Examples and diagrams earn credit through explanatory value.",
+        "An incorrect cause that can affect the operator's decision also requires a critical failure."
+      ],
+      "max_score": 4
+    },
+    "decision_support": {
+      "weight": null,
+      "anchors": {
+        "0": "The packet materially misstates verification, risks, or rollback, or provides no useful account of the evidence.",
+        "1": "The packet reports a verdict or generic assurance, but leaves its basis and limits unexplained.",
+        "2": "The packet identifies the main evidence, but leaves an important uncertainty, risk, or rollback limit unclear.",
+        "3": "The packet faithfully represents the evidence and its limits. Minor omissions preserve the basis for the operator's decision.",
+        "4": "The packet faithfully represents all decision-relevant evidence, verification coverage, uncertainty, reported risks, and rollback limits."
+      },
+      "guidance": [
+        "Assess the faithful account of durable Verifier evidence, verification coverage, uncertainty, reported risks, and rollback limits.",
+        "Limited verification can earn four when the packet faithfully explains its limits.",
+        "Assess the packet's evidence account separately from the strength of the underlying verification.",
+        "The Packager performs no new verification or risk assessment.",
+        "Invented successful checks and unsupported risk conclusions also require critical failures."
+      ],
+      "max_score": 4
+    },
+    "visual_explanation": {
+      "weight": null,
+      "anchors": {
+        "0": "A visual creates a materially incorrect impression, or the display makes essential content unusable.",
+        "1": "Clutter, illegible content, or confusing visual relationships substantially obstruct the explanation.",
+        "2": "The display clarifies some relevant relationships, but significant visual or layout defects increase effort.",
+        "3": "The display presents relevant relationships accurately and readably. Minor visual or layout defects create avoidable effort.",
+        "4": "The display makes relevant relationships easy to inspect and understand, without unnecessary visual effort.",
+        "5": "Original visuals convey the essential model, mechanism, and material conditions accurately. The operator can understand these from the visuals with little prose."
+      },
+      "guidance": [
+        "Assess the actual desktop display, layout, media, captions, and visual relationships.",
+        "Concise text can earn four when a figure adds no explanatory value.",
+        "Creative designs earn credit through their explanatory value. Additional figures earn no automatic credit.",
+        "A materially incorrect visual impression also requires the applicable critical failure.",
+        "Clarity assesses language and conceptual order; visual explanation assesses the actual display.",
+        "Award five when the visual explanation makes the essential model intuitive before the operator reads the detailed prose.",
+        "Judge originality through its explanatory value. A diagram tailored to the change can earn five with simple shapes and labels.",
+        "At five, the visuals convey the relevant relationships, changes, and conditions at an appropriate abstraction. Prose can supply supporting detail.",
+        "Visuals must preserve representative meaning. Novelty, decoration, visual complexity, and figure count earn no credit by themselves."
+      ],
+      "max_score": 5
+    },
+    "clarity": {
+      "weight": null,
+      "anchors": {
+        "0": "The language or conceptual order prevents a useful interpretation of the explanation.",
+        "1": "Major problems with language, terms, or conceptual order require substantial effort to follow the explanation.",
+        "2": "The explanation is understandable, but undefined terms, inconsistent names, vague references, or conceptual jumps cause confusion.",
+        "3": "The packet uses clear technical language, consistent terms, and logical conceptual order. Minor ambiguities create avoidable effort.",
+        "4": "The packet uses plain technical language and consistent established terms. It explains new terms where needed. Concepts follow a logical order."
+      },
+      "guidance": [
+        "Assess plain technical language, consistent established terms, useful definitions, and logical conceptual order.",
+        "Assess definitions under the selected directive's term rules. Core and established terms need no prose definition.",
+        "When the packet names a responsible entity, its name uses the appropriate level of abstraction.",
+        "The packet need not name an entity for every action.",
+        "Necessary technical depth can earn four. Clear language preserves the meaning.",
+        "The Glossary contract checks required definitions. Clarity assesses their explanatory value."
+      ],
+      "max_score": 4
+    },
+    "packet_length": {
+      "weight": null,
+      "anchors": {
+        "0": "Excess content prevents useful review.",
+        "1": "Substantial unnecessary detail or repetition requires extensive effort to find the essential explanation.",
+        "2": "Unnecessary detail or repetition creates noticeable effort across the packet.",
+        "3": "The content is mostly proportionate. Minor unnecessary detail or repetition creates avoidable effort.",
+        "4": "The amount of content matches the change's complexity and the operator's needs. Each part justifies the effort to review it."
+      },
+      "guidance": [
+        "Assess whether the amount of content justifies the effort to review it.",
+        "Assess figures, permitted interactions, and expandable content alongside initially visible text.",
+        "A long packet can earn four when its content serves the change's complexity and the operator's needs.",
+        "Low word counts earn no credit by themselves. Useful optional detail can justify the effort to inspect it.",
+        "Assess omissions in the relevant dimension and critical checks. Do not repeat omission penalties in packet length.",
+        "Identify specific justified or unnecessary content. Distinguish estimated effort from observed human effort or fatigue."
+      ],
+      "max_score": 4
+    }
+  },
+  "critical_failure_categories": [
+    "material_contradiction",
+    "material_condition_omitted",
+    "invented_verification",
+    "material_behavior_omitted",
+    "incorrect_cause",
+    "resource_violation"
+  ],
+  "judge_result_fields": {
+    "dimensions": {
+      "dimension_name": {
+        "score": "0–5 for visual_explanation; 0–4 for every other dimension",
+        "reason": "Explanation",
+        "evidence": [
+          "Packet content and authoritative fact references"
+        ]
+      }
+    },
+    "critical_failures": [],
+    "semantic_checks": [],
+    "uninspected_content": [],
+    "feedback": [],
+    "artifacts": []
+  },
+  "assessment_guidance": [
+    "Assess only the Packager packet. Generated Files changed data remains outside the rubric.",
+    "Use authoritative case evidence to check packet claims, including code or Git details that the Packager chooses to include.",
+    "Preserve material behavior, causal relationships, conditions, and evidence limits. Harmless omission of detail receives no penalty.",
+    "Assess the fixed operator context. It carries no separate dimension score.",
+    "Assess the packet content through text, visuals, and permitted interactions. Each score requires packet evidence, not facts supplied only by the case references.",
+    "Quality scores cannot compensate for a critical failure. Record each critical failure with its supporting evidence."
+  ]
+}

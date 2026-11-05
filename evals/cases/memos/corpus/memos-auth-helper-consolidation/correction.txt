@@ -1,0 +1,8 @@
+{
+  "correction": "Preserve the source conditions and evidence limits in the report and packet.",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "Every authentication outcome remains exactly identical after this refactor.",
+  "replacement_claim": "The shared authenticator supplies AuthenticateToUser and shared context application.",
+  "requirements_version": 1,
+  "task_id": 822
+}

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:43e964758bee6f968dd6eea0bb47921b9a81da328fb7bd9219cf85452cc8e8cb",
+  "claims": [
+    {
+      "id": "claim_a72c6a21827440248c90076ab963276f",
+      "statement": "The mc binary is the sole spine writer and its verbs write one JSON object to stdout, diagnostics to stderr, and exit 0 for success, 1 for a domain rejection, and 2 for a usage or environment error.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L1-L8",
+          "version": "repo-lines-v1:sha256:0564ebc461c56233a1515397e891522064b15d6da600ee25ad295cefd80b35c7:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQ0NGExOThiOGE3Y2RmOTI3ZjA1M2ZlMDQ5ZmViYjU2YTZlZWNjM2E3ZTkxNjE1OGRkYmJlNTBlNWE2YTliZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGYyM2VhYzFmNTdhZDIzMWVkY2U1MGJkZDJkNzkxNTFlZDkzZjcxZGYxNzUwMDg1OTlhNjMyNGFiZGQyOTMxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjEzZmY4NmVhZmRhZTMxZWU4YWI0YzI0NzcyZjYyM2FhMGYwNzg5MjNjNzk2NTVmNDdkY2MxYjZlMzNhODI1MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_57afe10a428541fdb47af16f0a105b4c",
+      "statement": "The dashboard reaches the spine by spawning mc and parsing one JSON object from stdout.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/mc.ts#L41-L80",
+          "version": "repo-lines-v1:sha256:8e81a8add0be85a6defd1b7d6d12d292e73e28fb0da41e52d84c49129fcdf490:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmM2ZiZGZmN2Y4MDJiYzM2NDUyNGJkNzI2ZTcxNjhmOTZkMjBhOWJlY2I5NDhhNzUxODExY2MwNzFhZjdjYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxNmRhNzQ5NGUyYWViODg3YzVmMTM2MjRjODFjNTI5NzE4NDczODA0NDA4ZDAxNjA1OTA0M2YzNjgzNTAwY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0ZGUwODAzNDhmZDVjOTllZjk0NjIzNzhlODg5OGI2YjhkN2M0NDg0NzczNzJiMmEzZmExZTU0MzRlYmUxNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkODhlNmVmYjk0N2MyMmZhZWJjN2Q2YzZkYTY5YjM0ZDdhNTNjMmUxZThkY2IzZDhlYTYxMDUwNzY5NjA3OTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f1d640c45d1402480e1952d2210ec07",
+      "statement": "The resident routes mc dispatch through a controlled exchange and all other verbs through a plain spawn.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/resident-control.ts#L109-L131",
+          "version": "repo-lines-v1:sha256:0808552db0d986009b70b949029af30dd0e23f67b1e56aa2af34fce0146ddbc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkMmViNTcwODQ3YWRhZTYzOTVmZGE1ZjljNmZiY2JhNTczMGFmMjE5M2FlMzM5N2UxMzIzYzk5ZGE3MTAwOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzOTI4ZTlmMDQ1MWY3NWYzMDY2MzAxNDQyYzA4ZDE0NDdlMDM0M2YwN2NlMzhjZWQ4ZmM5NzEyMmZiMWFhZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwOGY2NTFlMjJiYjVjMjk2NmE0MTBjNjFiZGQwZjk1ZDQ3NTYzMzcxZjE2ZjU1MzE3N2NhZjYzMTJjYTU1ZmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9a08fa4031d34a24b38a862564efc4f7",
+      "statement": "For mc dispatch the resident passes one end of a socket pair to the child on fd 3 and expects a hello frame carrying the release build id, control version, spine schema id, config schema version, and deployment UUID, refusing any mismatch.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/resident-control.ts#L183-L226",
+          "version": "repo-lines-v1:sha256:4098a11448990ccd1a269775197bd124f2f267209ce65db5ee48b22acbc547cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MWY4YWJiNmYyNTYwNGI4MzMzNzA5MTViMWIxMjk0MTY0NDliZDYyNzIyOTQ1Y2Y0NWRkNjU4ZWFkMTk1OTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NzdkMmYwMzFlOThiNWU5MTFjNWFkNGZiOWIyMTg2YTkzMjUyMmU4ZjQ2ZWU0MGJhYmZhZTNkYTAwZmMxMjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkZTRlODNmNmQzYzQwMTAwM2JmMjk4OGU0M2VlOWE3ZDI2MTFkNDg4MjhkMjU2NzIxODQ5NDUxYjVkOWZiYmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0MWQ4NjJiYjVlY2Y2ZjdkYTExZmM4N2IwM2VlOGU4ZjRkZTI2NzNjMWJkMzlkZDI3ZDllNjFmY2Q4ZTQ3YmEifQ"
+        },
+        {
+          "resource": "repo://resident/src/resident-control.ts#L303-L309",
+          "version": "repo-lines-v1:sha256:f5ab6f36e879e1b5a024598642b5ce24afb82aff5687b5401cd9ba6bebaeb65e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTEwMmU5ZjFmOWM2OTA2NDhmYTQxZDFkZGQwZmJjZTY4MWQyMTdiMmQ4YjI5Mzg0MzVkOGJkNDk5M2U4MzkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWQxZmU4YjQyNDU5YTY5ZGU5MDgwNDViYTdkMGJjYTgwOTM0MGFkNDFjYTBhYzFiNjk3ZmFmZTlkZTI0MjdjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ5MDg1MDQ0MmUwOTE2ZWRkODhjYjFjOGVhZmFhNTE3YjE4ZjBkYzI0MDVkZTIxNWZhZjc2ZGFiYWYxNDIxMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3dedd6f74774c448256371569e12309",
+      "statement": "The agent runner sends heartbeats through mc during environment preparation and harness execution.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L285-L310",
+          "version": "repo-lines-v1:sha256:dc97a13c85ab4530c611ed9ba2c7b05e6bb133b9e4b903d023764d90bf787bfe:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMTVkOThmNzE3ZTBmZWYyZTNkZWIyODkxNjY1YWM1NjY4MzYyMDZhNjYyZDdiMThhY2U2OGZlZjdhODAyMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5YjJkMjZlMTU5N2YxOWE4NTFmOGY0YzhkZDM4ZWE1OGFhMmMyNGJhMDBlNmE5YWI3YTY4ZTk0NGQ2OWExYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5MjNhMjdlZDNlMzc5ZTc5YTRmYTliMDMzZGE1ODY3Mzg2ZDYzM2NhODIzNDkyYjVlZGU4MzEzMWZmYjQ2ZTMifQ"
+        },
+        {
+          "resource": "repo://runner/agent-runner/main.ts#L389-L396",
+          "version": "repo-lines-v1:sha256:638af11aa0e543d5f4c85d33b5f3a1f53892ce893e2806dc7d24994ad08af0d0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMyNDllODM1MjAxOWE2ZTcwYzdiMTQ0NGFjMTkzODI2Zjk4NjllOTFmYzU2ZTVmMDczN2FiZDA3Njk2NWU1ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJhMmNiMjVhMTIyYjQ0MjIxYTYyMzRlYzY2MGE3YjVmYjdmOWJkZTdiM2I5ZTJiM2M1NTlhMGQ5NmZhYzczOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTIxMjU2NmZmYjhjMjJhNTY5YTgwYmY0NDg2OWYyNDkxN2UzY2E0ZjQ1M2ExZTE1YWU5OTk4YjNkZWE2OGE1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmIwZDA3MDI3MzliYzcxY2RmOTEzNTY0MDY1YmQ3YjBlMmUwZTkxZjYxNDkxNTViZmQ0NTg2YTE1YzNhMTJmNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0c449cbf84a4a1ba898d6da9f93a80c",
+      "statement": "The production mc delegates to the helper container whenever it runs on darwin, and its spine path is /mc/spine/spine.db.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/runtime_scope_prod.go#L10-L23",
+          "version": "repo-lines-v1:sha256:4a4f506d1b3c0a1bc4050d2a2d7b6a533e0058a58866f7eebe1bda0afa7e4092:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYjU3YTQzNDA2MzQ1ZDA3YmM0YTI0MjQ0YmM4Y2M2ZGMxNWNhZDJkZjA2ZjljMTAzNmVkMmI0YWFlZDEyM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmODA5YmZmYzY1YmU3N2EzYWYwNTRiNDljNGRiYzBiNDJkZDZkODM0N2VjYTA4YTlhODE3MTQ5YzhiYWU1MjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwODQwOTRlOGUzYWZhM2NkODVkNjI5ZDljNzU0OThjZjM2MWMxMWY4YTUyNDg0NWYyZjFlMGUyZDYzZGQwYzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMDI0OTQzMWEwYmU0ZGI5OTJmZWFhMWI3ZjRkYjY0NjFlZDhiYzQ0NmRlZDQ3NzllYTk2NjY1ZWFkMjUxM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a48d8c0f3f8431597b5fad58835d7cc",
+      "statement": "Delegation re-runs the same arguments as docker exec -i <helper> mc.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L428-L432",
+          "version": "repo-lines-v1:sha256:542b4e41cc6b83ccfb693bdb66f21fcdabb8347ecb434364233784c10199839e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU1YmQ1NGNiN2MzMjJlODAwYTE4OWUzZmJmYmYwZjg0M2M3ZmJjMzU2YzdmMmQyZWI3Y2M0NGYxNGY1ZmZlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWM1ZmE4MzU1YmQzNzMwNTFiNTU2NDcyMjE2N2E0Mzc3OGM1NGE1M2MzOGNkNDg5MTUyZmZmNjhkMDk0MDM0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGI1MzRlMDkwNzM5ZTRjZmM0OTdlMWU2MTYyNDgzNjg5MjEwM2I5NWE0ZjI5MjI0NmRiMjUzMzZkNjllMTdlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzYzYzI1ZDc4ZTFkNGJmMTYwMWIyZDJiYmFiNGYzODEzOGJhZmY5NWM5ZjBjZDA2YjYyYzFjOWMzNDgyNDdkNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e30a32309bfd435494f71f7b6e75c858",
+      "statement": "Helper, spine, and runtime volume names derive from a hash of canonical MC_HOME.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/names.go#L24-L39",
+          "version": "repo-lines-v1:sha256:e0f7b297a04ae60e6d50c108f43e714b02e538d17f0f7488bcc2772fe48eb684:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZDc4ZTIyZWIzODJmNzUwYjEwYzRlNjgxZmNmY2ExZDNkMzEwN2VhMzIxOThhMDVjNmM3ODczYTNkOGNiNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZGY1ZjhjOTI1MDVkY2JhN2Q3ZjI2MjA4ZWIxNDViMjI0OTYyYjQ4M2E1MGEwYzRiYTFkNjA3YmFlNjIxZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiMDQxMzc4MzAyYjZiODFkMGQxZjEwMzNkZTlmZGE1OGY1MDcyNzg4MjI5ZmY2OWY4MzFlOTVjM2RhMGUzNGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_45c0cda5c1d44c298bfb659166b3503a",
+      "statement": "Host-file verbs such as health, logs, config, and routing run locally instead of delegating to the helper.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L297-L303",
+          "version": "repo-lines-v1:sha256:f61137a75df51e83679d43bfba4fdef5bdcc45271e27aa0a424e2fd0dd4a4dd3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDg0NDEzMzAxM2NkYTlmZTQxMDUxNzMyYWYzMjhhODg1OWI4NGQ3YzE1NzFhNjQ3OGJkYTgwZTNjNDNlNmM5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JmYWI1MDIzZTFlY2ZjMGIxNGYwMTkxYzViMTYzNjU4NjRlMjA3Zjk2YTlhYjY5OWQyYjgxOWFkZDYyZDI3YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWNlYTE3N2JmYzhhOTRlZWVjODUyNDE2YmU2ZjA4MWEzNmUzMTFjNzFjNmNmOGRiZDAzNTY1ODJjZmI1NWNjYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c9077e60c85f4498b1cd9563eb930e63",
+      "statement": "Pipeline containers run as uid 10002 with dropped capabilities and a read-only identity mount.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts#L1455-L1467",
+          "version": "repo-lines-v1:sha256:02a11861c1dfa5f4a9a4db244d5fd844dc7136570cad249c6868d79cceec9438:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNzI2OTM1MDY2NmJhZWUxYzgzZmNmNzgzOTA5M2UyYWYwYzQ0NWJkMzU4MTQzOWQ3MTI5MTBmOTcxZmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDU2NDA4MmUxNzZjMjJhZmE0OGE4NGJlOTNjZmM2N2U0NWVhNmY3YzFmZWFhZjM3ZWVlMjQzZDBmYzgyZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MWYzZjQ0OTUzZGYwYmJkNjg1YTE2ZjVlZjIwMGNmNGNlZDhhZWIyMWYwYmM4ODgzMWE1NGYwZWQxZGQ3ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0NDc3MGE5NjliMDM2MDI1NTU3ZDAzNTg4ZDgxOGRmM2I0NDM2MzAyMGNjOTQ0MmM4ZTk1ZjI2M2Q1NDJkYTIifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L42-L52",
+          "version": "repo-lines-v1:sha256:dfcef5fd63a11740fc20d45c179cb5aef3a0102214317f120e5f2b29c78c1417:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhMGYzYWE3NzFmNDllMGVlNGM3NDRlMWI0ODBjMTcyODA4NTRiMjU5NmVmNTQ5MWNjYTE2ODNmMzc4MjJkODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmYjdjZTg1ZmFiZDgzYjJjYjE0NjQyOWQ2ZjkzYWQzZTA4YWY2NjZmYzY2MjA1MzM4YWMxMDczN2UxMjhiZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkZGNhY2MzMjVhNDJkY2U4NjczMmVjZWYyYWFkYjk3NmU1ZWJhYTNhNGM1M2IzYzc4NzliMzkxOTMxODNhYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6cac58fce0c744db8271b3aa81351ad2",
+      "statement": "launchd starts the resident and the dashboard by running bun on resident/src/main.ts and dashboard/src/main.ts, with unit labels of the form com.culler.<suffix>.<unit>.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentsview_supervision.go#L26-L28",
+          "version": "repo-lines-v1:sha256:0197e1d0819fc1c6186fcd768bc5b63eabf49f06443e3765e74aeafcaea86585:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRkZWRkOTI3NGIxMDlkY2FiZGU5ZTBiOTg5ODZlMTIyNGEwZTkzZjNhZDBlMzdiNzllZmNlOTgyYTFjNDFiYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjQyY2VhN2IzMWYwMWQ2NDM2MjNhMTJlMzdiN2MzODcyMzliMTVhMzE3OWRiOWNlZTZiNTM4NzQyZTk3MzlhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWUxMWMwOGU4MjcyMjIxYjkyMzZhZmU3ZWM0NmFiYjgwOTgzMWM4NDUzNzRlYjhhNjc2MDc0MDUwOTgwNTU0ZiJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/supervision.go#L593-L600",
+          "version": "repo-lines-v1:sha256:f6e40acee0c6cf3cac8cf5f6c2b280e4df468f0d041eed3da7d737b862ed6674:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGVmMDJlMDNlODA4ZmVmY2FhNmQwOGVkODkzODI5ZGEyYWE5MjcyMjkxYmJiZjhmOGRhZTkwNWZlNWU5NGNmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFkYjQ5M2ViN2QxMzMyZTQ3MzM1ZGZmYTQzNjc4YTVmYTViMmIxNWRhMGNkY2M0YTQzODY4ZWNjY2U2Mzk2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2E2MzdiMjEyMTQzOWZhNDNlMTMxYzNlZTlhODQ1ZmU4OTA3ZDU1ZDE3NDMwMTljNDhlMjNhYTIzOTE1ZDc4ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2IzNTE0MTZmMDhlMTE4YThhYTZmM2I0ZmM0MTBhYTMxZGE2YzZlYWVlMDI2NmU1MzYwNDk2ODQxMzdjOTZhYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b34299788f084fafb56c46f38bededf3",
+      "statement": "MC_HOME defaults to ~/.culler when the environment variable is unset and must be absolute.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/ops.go#L80-L93",
+          "version": "repo-lines-v1:sha256:e66979af3c0a1443ceb8d8ad41246143acb36cf5ed9115e8d3fee493dbecc850:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxZTUxYzQzYTI5ZTNjZTQzZGYxMGZiZDQ5ZTNmOTVkODI3YzlkNmIzZDE4ZTMyMDMxMDkzMWNhZThmOGRmMzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3MTE1YTQzOWJkMzAyOTkxMGY2MWQ3OWVjNzU1Y2ZjMjczODNkODA2MWJlNzRjMDcxMmQ1MWFjODZmODkzZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlNzk4MTIxMmFiNDA2Mzk3YmRkNTg5MDU2OTQ5ZTBiZWVmMzA3YWY1NTY0MWZjZDUzZjI1ZTYzOGZmZmNhZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e878fa0178c44f6e9cedd218a09d1b42",
+      "statement": "ProjectToolHome places persistent Project storage under MC_HOME/state/projects/<project>/home.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/onboardworkspace.go#L59-L87",
+          "version": "repo-lines-v1:sha256:df5209118c36cc194da140f16da5dc55c9e24dbafb12aabad0ff2f6dfda60094:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMzI1NTFjNjE3ZDg4N2NkN2M0ZDI4NGE4NWY3NGYzYjcyZGEwZGVhMTFhYTIxMTI5NjFiZGM2NjE2MDJhMTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlOTcyMjk1ZTRlZThjNjZiOGQ4ZDFhYjEwZjI1NTgyYWFjNmJjOTAzMmMwM2ViZTVhNjg3Yjg3NTdkYjNmZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2ZjE0MDBmNzY3OTIwNjkyMjg1ZDc4YmVjM2E2YzEyOTMzMzg0Zjk3MTliOTg2ZTIzNzI0MzY1YmNiNTc3ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViODM4NzBlNWQzY2MxMWQxZTM2OWQ0NjBiYjZhM2MxMDc2OGVmYjk3NDNlMmJhNDRjMzAwNmQzMzExYTU0ODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d55dccde7b824f84ac78ce2f2c042a59",
+      "statement": "The resident owns the Discord configuration socket at MC_HOME/discord.socket with mode 0600.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord-config.ts#L328-L357",
+          "version": "repo-lines-v1:sha256:7ec3e546a3cda08f876822f5519f0d6bd5219a28cdbe7eec5c883dd09a9174d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTk1ZjRlZTVmZjYzZDUwOTUwNDE5ZGMzNDQxNDUxMzg1MWRjOTczNmZkMTdhNGY3YmZhOTMwYjI2MWI2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0MThkNTU5YzE5YzM0MTk0MmM3NWY1NWZkOWRiZTc4OTQ2ZGFkZDU1NDViYjQ0YTBjOTViZjc5YmI5Y2RhZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-29T16:53:36.977Z"
+  }
+}

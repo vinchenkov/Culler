@@ -1,0 +1,27 @@
+ok  	mc/deployment	17.757s
+install.sh fail-closed preflight: ok
+Published installer contracts: ok
+redeploy.sh front door: ok
+uninstall_test.sh: all contracts passed
+ok  	mc/boundary	(cached)
+ok  	mc/cmd/culler-package	(cached)
+ok  	mc/cmd/mc	272.695s
+?   	mc/cmd/probe-resolve	[no test files]
+ok  	mc/config	(cached)
+ok  	mc/deployment	(cached)
+ok  	mc/dispatch	(cached)
+ok  	mc/distribution	(cached)
+ok  	mc/domain	(cached)
+?   	mc/e2e	[no test files]
+ok  	mc/evalcase	(cached)
+ok  	mc/mclog	(cached)
+ok  	mc/onboarding	(cached)
+ok  	mc/property	(cached)
+ok  	mc/refusal	(cached)
+ok  	mc/repository	(cached)
+ok  	mc/routing	(cached)
+ok  	mc/substrate	(cached)
+ok  	mc/trace	(cached)
+ok  	mc/verbs	(cached)
+ok  	mc/wiki	(cached)
+ok  	mc/wikitest	(cached)

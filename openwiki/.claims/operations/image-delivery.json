@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4417ac9cdf74f5fa7452f9afb597b131a3d993c4b1e844eeb471711b8525264f",
+  "claims": [
+    {
+      "id": "claim_fdd699f503a748f28d95ccb82cfcba94",
+      "statement": "The product image adds the private runtime to the default Project image.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/runtime.Dockerfile#L58-L68",
+          "version": "repo-lines-v1:sha256:5763780f502c29ea91cc51dce7554c4456c5aa5f32aa025c0a1ebd3d9e40a678:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2Mjc3ODRlYWUwZTcwMTYwOWZjOWM3YWZjNmY1NDI0NzgzYTA2NWZmZGE4YTA0NDczNzVmZGY1MWE5ZjMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwZTgzZWJiMWQzMjYwZTUzYzJlYWVhNGQ3NDliNWZiMjQyMTJlODU5NzExMGQ2NzE0NWQxNWFiYjcwZTAxZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwOWE0YTExOTc1Y2Y0YjJiOTJmNzU1Mzc0NTc4YmRjYmU3NmM4MWNjZmQxZDc2YmFiYjcxYTljMTMwZmQ5MmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9dc9e69f72c5418893a1cda19e771eec",
+      "statement": "The image content check verifies layer order, duplicate tool files, caches, access, and protected mc-real attributes.",
+      "evidence": [
+        {
+          "resource": "repo://release/image_contents.py#L413-L430",
+          "version": "repo-lines-v1:sha256:2b5ed1638f9b792c548ea2b1a3e8bae31ed36e57aa31e9facb45c34d7ff0105e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYzk1YzRmNTQwNzhjNTQzNDQzODVkNTg4OTZhN2NmZWY2Yzg5OWQ0NWM5MjJmMWUwNzUyOTc4YzJkZGZkOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMjgyMmYxYWQ1Mzc4NGY4ZTI0MThmYzZjZGQxYThmNjlhODI2M2Q4ZGI3MjFmOTI2YjRiZjMzYjIyYzIyNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_89f3df5d33fd47d5973675e22c75f9bf",
+      "statement": "The size report measures fresh install and update sizes from image archives.",
+      "evidence": [
+        {
+          "resource": "repo://release/size_report.py#L83-L149",
+          "version": "repo-lines-v1:sha256:e4b50352767897ab2fc1b03a3d7c554b9830f3730fb76e0944f82c09b8d72777:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNWYyMTdhZmE0NDU3ZWZiZmQxYTQ5YTNkMDBkNmNmMzkyZjA4NTVmMDEzMzRmNmJmMzE3NDhjNTg1MDJiMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2MTgyODc5M2E2YjNmYTgzZGI5YWEzN2Y1ZjRiNmQxNmNmNWM0ODM0YWUzMjhmNTQxNDU3MWQ2NGJlYmQ4OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0MjVlM2E3MjAzMjBiZGJiZDVlNWVmZWI0NjJhZTM4OWVlNTA0ZGQ4ZjExNmMwNGRlODUwZTcxMDI1NjU5MmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2447999866e344f9b8b822021a3081d2",
+      "statement": "The runtime installer compares manifests, writes changed files through new paths, and writes the release marker last.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtime_install.js",
+          "version": "repo-file-v1:sha256:1348970cd748e1ee73f2a91eb9aac28ec7963ccf105cadf7624b2cdecf91d220"
+        },
+        {
+          "resource": "repo://mc/deployment/runtime_install.js#L1-L12",
+          "version": "repo-lines-v1:sha256:730336eefa77a231261d95f855041d1b36f429dd2b087e28ed489e9442c640fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiZTJlNGU4MTdjNzQ4NDgyMmMxODUzNzNmNTdjZTdiMGJkZmRhMzBkYzU2NDNiMmRhNmU5ZmU1Zjk3NWU1ZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NWYzY2NhOWE0NjM3YzM0NTkzYzViNGRjNTY5OGQ2MzY4YjkxY2U0M2Y2ZDI2MjczYTcwYzQzMGE2NmI3MWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3M2RjOWM1NTIzYTg4ZWQ3ZDIyYzRjYzE4N2U3OGUzZTI3YjMxMjU4Nzk0NWJiZDM4ZmRhZDc2YzU0ZjZiNzYifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/runtime_install.js#L117-L146",
+          "version": "repo-lines-v1:sha256:4b4d6c76425b641c02b0f9da9f8fd05e9e132294d527f5ba71e06fa7c78202c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYTczNjU1ZGI2MGMwNmI0NWE2Y2E2M2FlYmRiMWZlYTBkZjk2YjUxMDE1MTFmZTFkNzFjMWNjNzhhNWM0ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYzFlOWY3ZWMwNzFkN2Y4M2Y5NzVjZTBiODdhODgyOWZmNzY4ZTA3YTg0NTljY2UwYjk0ZWY1YTE4MjNhZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExODkwOTJjZjcyZjgwNjJmNTBkNmE2Y2ZhYmVlMjQ3NWNhODRiNjg3MzZlNTU5YTJmMGI5OTEyODFkODViZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4YzM1ODc4MGNlOTM3YTgwYTYzYTVjYjA5N2RmYzNkZmE3YjI2Y2JlMGM0ZGVjN2E5NWI0ZGQxNTFmMWJhYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c1ef68a419d4968871df43c73ea7c61",
+      "statement": "A published update records removed images and keeps images that Projects need or containers use.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/image_removal_prod.go#L15-L44",
+          "version": "repo-lines-v1:sha256:351cc431e5fd43f1131aa9e563d9af74879fe06b8f329bd40472672343c70a6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MGFjZTRiNjVkZjZhNWFlZjk2NDJiYzhkYjk0ZTVlOTA4ZDc2ZWMzN2I5OTE3ZmQxYWUwYWI4NDBhM2Q0OGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1YjBhYzgzODM2ZGZhNWJlZDQ1NWEwNjNlZmJkNTE3NDRhYzM0YjA1ZWQxNWYyMjc4ODdiMTlkODYwNDVmMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhNWMyZjUwZGNmMzYyZmQ1MzNiMDFiMjc0NjUwOTAyOTE1MGQ1MDljMzI4Y2VkZjY3MmJjNmMxZGFjMWZkYmEifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/image_removal.go#L38-L78",
+          "version": "repo-lines-v1:sha256:2adbc59f993c69424638c0379f1029978e87a7418c98676de080e704a3280f83:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YTRhYjYyZmJhNzQ4Y2RjNmVlZTk1N2E3N2NiOGZmZDVlM2Y4MmYyZTQ2M2YyYzI0MDhiNDg2OTRlMmNmNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkM2M1M2I3ODE1YWE4MjViNmM0ZDhlZTA1YTZkYTZiMzYyNTVhZmFiNGIyYWEyYzY0ZjM5ZTQwZmQ5MDY2ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4NDg5ODdhOWNmZmEzMTgyYWIxNDcwYTdjMGY3YmQ0YTA1OTQzNmExMjc2ZmYzNGNkNzBjN2E1NWEyZGQ5NmQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T09:00:19.897Z"
+  }
+}

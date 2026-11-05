@@ -1,0 +1,3 @@
+# Preserve the exact bytes of browser and terminal evidence.
+cases/memos/**/media/*-text.txt -text -whitespace
+cases/verification/terminal-author-tools/*.txt -text -whitespace

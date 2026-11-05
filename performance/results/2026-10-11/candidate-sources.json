@@ -1,0 +1,15 @@
+{
+  "dashboard/src/api.ts": "55f168b9376dec7c6dde5af7d551407325b32ad235314f477895dc171a117828",
+  "dashboard/src/main.ts": "e593f97b11b4ed9721467247b7e1f430c732ffea389398a384c790c661d4af87",
+  "dashboard/src/mc.read-deadline.test.ts": "c83b30bf6337839d027dc9ae8ff5ea7c392faec38024577aa128fc4e27cdd092",
+  "dashboard/src/mc.ts": "7c35612b57b2da3473038b945c868b531dac09697dcb8508c5fed27f61c0fd55",
+  "mc/cmd/mc/cli_log.go": "599c20c90adc054792caa9dddf060da2209e127b661b7dc803ee0fdb25d8cb9e",
+  "mc/cmd/mc/helper_manager.go": "17d4211ee94201111e479079439b3a1ff509b18afd2a331dd9ffc3bfdfbced24",
+  "mc/cmd/mc/main.go": "29850a49a74b3a04910817d79b7e2eb67f79f1126a7940e98f0b289dcae0ee34",
+  "mc/cmd/mc/read_deadline.go": "077f05a42dbbfaa8b73c35f6e0153acaf03a33256230ece67cbb6bc0c0d8a4e7",
+  "mc/cmd/mc/read_deadline_test.go": "26c42427238b1d92c069d8c7ae6ddd42833facbd8f5d3d35f67b9cad6c5241cb",
+  "mc/cmd/mc/systemstatus.go": "6d93caeebb47e8dc622666b5a16275d9e5de00eb8d277f01899f936800ab1cf5",
+  "mc/deployment/supervision.go": "8ae1a66a2595924259b7ea6efc51afc4d4e2933b0c211439a77ea934b94c7837",
+  "mc/deployment/supervision_plist_darwin_test.go": "f30cf9bb89326f7b085c470892f20103e09859b477e58ca38e868dc677d4423f",
+  "runner/shared/log.ts": "899817556fa695db65febfdb185d47b8bfd69e37ccf828479b93bf4467dc2f75"
+}

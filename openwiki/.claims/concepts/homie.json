@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b700fc2216857f214af80a64e52c84658c360e6c815bc42098a69a264a9fef0c",
+  "claims": [
+    {
+      "id": "claim_d0901f87144148f29fca692817e602f8",
+      "statement": "Only Strategist, Arbiter, Worker, Verifier, and Packager can own a Project lease; Homie and Scribe cannot.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L453-L463",
+          "version": "repo-lines-v1:sha256:f555acae26f1156af224b951ef39d4819d5738c4a29f5bbb361f210d4237c8ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkNjAzYWI1MTFhOWNkOWQ4NzM3M2M3YzMyMjliYTM0OGU1NmExZThjNjQ2NDYwOTE4ZjUzZmVkNDRlY2Y5MDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNmJhODAyYzAzMDk3MzFkOWZjMmJkYjIwZTk4MDIwY2ZmMjgzMjcxMTdjOTRlMDM1YTcxMjllMDJlYTU3N2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE0MGMyZjNmNjQ5NmE1ZTJlNTM2NmVjZmIwOTUzMTY4YWYxNWUzM2ZjZmQ2ODBlZTYzMzllMzNjYzgzNWU5Y2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmYTRmMWZmZjJkMmRkYjEyNzgwZTI4MDA4NDMxZTM0OTM4ZmUxMzk5MTMwMmJiMDAxMTcyZmRiMDU2Y2ZjNTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9c314d029cb44c45b2a354bf70c47d44",
+      "statement": "A Homie session row has status active, ended, or reaped and stores a frozen verb_allowlist JSON array.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L732-L746",
+          "version": "repo-lines-v1:sha256:f5229c1d0479109c99be0718ecffeb20a2b112e2742753ba63c574f3e5a0073b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiZjY5N2ViODk3YTY5ODU4NzE1ZjBiZWM0M2VhNzUwOGNlNzM2ZDczNTA1MDY3NWUyZDYwZTEyNjYzZWMyNDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMzUxZGNjMTBmMDBkMmYxZDdmMmQ3NjVmYmE2OWU2MjhlY2RiMDE2MzIxOWNlZjlmMDcyOWVlYTkxYTJlNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlNjEzZmEyZDE1NTI2ZTIyNjQ4MDBmNjY5NGIyNzY4YTBjYTQ0YmFlNjczZmI4ODRlN2VjM2E3YzNkNjlmZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjNDcyNmIxNTQ4YmU0NjYxMTUxMmQwMzRiYThiZTQ2NmQ2YmVmOTViZmE1OWExZTU1Yjk2NGU3ODBmNDg2NWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2edfe9542248485bad3640485617b9dc",
+      "statement": "The Homie idle timeout setting defaults to 1800 seconds.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L427-L435",
+          "version": "repo-lines-v1:sha256:133cb270bb95d5420c13a95be2deff4ddd95f858d90cdd4e1a4be95bc956852d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQ1OWY4YjMzNzk4MmNlZjI0Y2M1ZWE2ZjM1MTg1ZDU3ZTcwNjdhODA4YjA1MzI5OGVjMjE0MWEzOGZlZmU3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODkwNzU2MDVmZmM1MzI0NTM2OTIzNGYyNmNlMTNlYzI4MWRkNTQ0MmVhNTQ3YjQ5OWExMzFkMmIyOTlhMjQ1OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTY1MjQ3ZDdmZjRmYzk4ODczNTQ1MWMxN2M5NTU5MDVkYWVmZTcyZjZmMzM4ZDUxOGY1Yzk2OTg1MjhkNGExNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTlkNzJiZmQ2OTkyNTRhOWJlZjc5ZTcwYTQ4YzE4YWRjOGI4ZWEyYjBiNDlhNGY0NmY3NzRiNWUyYjI4MTkyZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bbfd78b30c0a4c5a95b85bfdc4e6d2e5",
+      "statement": "maximumHomieAgentVerbs is the compiled maximum set of operator verbs a Homie session may hold, and project registration is absent.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L16-L41",
+          "version": "repo-lines-v1:sha256:2bfae20bf110498423f77c22039a583f4cc5202a297bbf9741215b590ae3c675:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiOTU4MTg3MzAxNTJjN2E5MTM0YmRjZjNkYmFiOWFkZjhhYTM1YWViOWVlOWJiZTlkYjE3N2JjN2M1Y2E4M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZjlmMWIyNjkyMjM1Yjg1MTk1ZWIzMTk4NDMxMGJiYTk2NDE5MWNiMjdmNmVjOGQ2MGMxN2I3ZGViZjk4ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMWRiMWQzZmU0ZjViOTgwZmU3OGY1NDZjMjc5YzUwZmQwNzk4ZGNiMzYyMzM2NDk1MTMwYmUzMGFjMDBkNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxMWUxNjdmZDA2YzRhMjc3YjE0Zjg5MDVlNmNhZDRiN2YyODk0MWNlYjJiNjVlZTU4ODI0OGNmNDgzYzYwNDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5f71fea15c54724bc3607ab14e0b8fc",
+      "statement": "canonicalHomieAllowlist defaults to the maximum set and refuses any requested verb outside it.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L93-L124",
+          "version": "repo-lines-v1:sha256:1095025cb3fbb36f8b852bf0a355e0512d4a312bdafe7f99ba639d0f0f41dd4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NGZkNjc1NTRiZGJjMmM4ODYxOGUwM2QwOGM1NjcxZTcxMzIwZTY0ZjEyNGQ0MzRhNmJjODY0NDc0YjBmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmYWMxNzVkMWEwMzk0MjljYTFkOTRjZjllNzIzNzk0YzI0YzNmYWU2Zjc1ZWUyM2RjZWM4NTUxYTI2YzI0OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlNzljYTNkMTFlZmRhMzY1MWM0OTA0MDhiMjNiZTEwY2E3NTYyNzZmN2FmNzM1ZGJiYmY0YmE5YTI2ZDI2MTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_be87840bd8e44627a1d9623f5b81232e",
+      "statement": "requireActiveHomieVerb requires an active session, an envelope allowlist equal to the frozen value, and the verb in that allowlist.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L1451-L1483",
+          "version": "repo-lines-v1:sha256:26f8a9d73226df6a35906cca153f4552c7ed83e9faed48432db2d62897c60189:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwY2IwZTgzMmUzMTY4ZWY2MDcxNzdlMDc2M2ExNTI2ZTNmZWJhODU4MDcyMzllYWYxMDc4ZmMyNjU0ZTUyMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5ZDBjNWQxZDA1ZDVlZmQ4MmNhMDA0NDljNTkxNjc0MWFmMDgyOTk5ZjRmYTQxYzVhYTJkNTJjOTFlZGQ2YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1YjJiMTNmM2ZhZjg5NWI0ZDQwOTQ2OWM4ZWI1MGQ0YTE2NDNlZjdmMmVmOGY3YmM3OTUxNGZiNmUyZmQ1NDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b9d343135b7482f9c9536d64fd3c3cd",
+      "statement": "selectHomieWake lets idle end win over spawn and makes any active session without a launch spawn-eligible; resume debt selects the launch mode.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homieselect.go#L80-L122",
+          "version": "repo-lines-v1:sha256:6277350a041b42756e26c9cb95745dad3a8a7f6cf14f8711b9a55ace5858191a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyMjM0MTRiZDdhMmRmNmI2NGE1MjU5NDVkYWE5YTIzYjNiOWJiZmJiOGU3MzNkZThjYjk4YjQ1ODM0NmJjMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1NWYxOWE3N2ZlN2JkZTNmOGM2Y2I0ZWIzNTczODJkM2FiYzNjN2FlOWI4Y2RmZTQ2MWQ1ZjhhZDU4ZTg2ZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxYjkzMDZkYWUxYjczMWQ5YjBkMTk5ZDI2OTdlNmVmMjg0OGYyM2VjODc2YTk4ZmI3MGVkY2M0N2RjYWY2N2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b07370b04f34f5ab16b68aa2a8c1a03",
+      "statement": "The homie-wake effect carries the Homie directive, shipped skill set, skill store directory, resolved runtime binding, frozen verb allowlist, and idle timeout.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homieselect.go#L414-L454",
+          "version": "repo-lines-v1:sha256:36380865bbb6d8773a0ef6ad05dd2371245f914545d8915a81f52643ed16735c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4MmQyYzk4OGEyMmQ5YmJiMTBmZmNjYjUyZjNhYTEzZGFkZGQxYTNjZWY1MTQ1MWM1NjQxY2JhM2JkN2RlNzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlMmQ5NzY2Zjk0MzZmNTUwNzgzMWY4OTE0ZWZkN2YzMDZkMmU2Y2MxMDExYjUxYTJhMmNkZjRlZDg3ZjUzMjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyM2E3YTM0ZDA0OTI3ZTQyZWEyMmVlZTA0NDM5MWE4NTJiYzg1MzZhOGM5MGFhODZkMTY0NDE5OGFhNTQ0YTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwN2MyNGMzYzZlYjBjZjE5YTgwYmQ2MzI4NTZhYjQzYmY0Y2U0ZTc0MWZkYzM5ZGJkYmQ5MTkzMDU4NTI3ZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_13a50c574f2743a7ae09ac407cf7515d",
+      "statement": "HomieRuntimeRegistry is memory-only and keyed by a per-boot key, so after a resident restart an old container can be inventoried for cleanup but never adopted.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/homie-runtime.ts#L27-L57",
+          "version": "repo-lines-v1:sha256:580d03a4a4af26d7aed5cba17fbe9ac314f9e7dca3c7ea6613960fd9d2575a3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMTNiNjU1YTQxYzliODViNmY1OWYwZGFjODViZmJjMmUzMWVhMDcxYmM0ODY4NzJmNDgwMWIyZDU3MTQyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwZWZiMWJjYThjOGMwNmM4ODQ3ZjRhMzcyNzk2MDE1YzM2Mzk1NzVhYzQxYjU5OWMyYTI2M2FhYjZiNjc5YzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_30b7228923f441068b70fc892e1fb128",
+      "statement": "The Homie runner never heartbeats, holds no lease, loops claim, harness turn, and reply, and writes drafts at most once per second.",
+      "evidence": [
+        {
+          "resource": "repo://runner/homie-runner/main.ts#L1-L19",
+          "version": "repo-lines-v1:sha256:03b20f9c32b5edbfce1f2431ccd0f78bd3eb2f2d6c40987c3735ab249adcd3c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODdhNmY5ZGUwMTY2NTJhM2Y2NzkwNTU0YmFkMTI3Y2NlODdhMzQyNTdlNWFjZTcwZTMwZjAzNmFhYzhmOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MWZiZmNlYTIzNGRiNTc1MmM2YzEwYzU0ZTZlOWExM2I5MzYyZTI4NzI4M2JiOWMyNjMxZWQ4OTM0NGUzNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjZTExMGQ1N2QyMmU1MTU2NWQ0OGMyMjk5ZjNiYWM2MzdjZmMzNDJhYTJiZjg5MGI4MjBhOGY3ZWExZDQyNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bafd9dc63b2641ac8f0b960e2b243f4f",
+      "statement": "A model change derives the new session id from the previous session and request id, and ends and deletes the previous session only when it has no messages.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L292-L389",
+          "version": "repo-lines-v1:sha256:2271da44a07e81379280cf124b3f37aea56b8f6e84af8ae16dba8ba07c58c91b:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODVkMGZmZjQyYzM1ZDM0NGIzMzFmMmMwNGVlOWYwMGM1OWY1MzFkYTZiNDIyMDg5ZTQ0YmM1ZDRlOTYzOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0MmU4YTk4MDU5M2YxYTU1NDdhNTBlOTU3NzlmMjgwYzJhZjk1ZTQ2YmQzYmY3YzYzZmI0MzZjNmVjYjIxZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3Nzc2YzVmYjI4ZjhiZjlkNDQ3OGJlNDM5YjA5OTcyZDI1ZGRiZDdmMWI2OWIwYWM2ZTc4NTZmN2UwM2Y2NGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7946227b5cd41509f2c548636042db0",
+      "statement": "The resident applies pending Vision submissions through mc project vision-pending and vision-apply and only logs failures.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/vision-save.ts#L4-L25",
+          "version": "repo-lines-v1:sha256:02b3382120386e4619542633bb41eb8903c1589a55a482c7bf4549e6df0707ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkY2Y3MDBhZTFjNjM5NTUwZmJjZjRiMWRjZjU2N2E2YmMzMTgzZDIwNDBhODdiMTdlMWQzNzUyZDI4YWI1NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2N2I4YWQ4N2I5ZWYzZjlmY2M1M2RkYmFlOTkwZDYwYjE3NDEwZjM5ZWRkMGEyMjc5Y2Y5ZDcxZDIyMWZjZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_63e41adf2a0b4e94be91ee07318912de",
+      "statement": "With one Project or all Projects paused, a tick still emits a homie-wake and starts no pipeline run.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/pause_test.go#L85-L113",
+          "version": "repo-lines-v1:sha256:dc96a37bb2407e4cfacbf303297bf372645699b265518d066b88c12db85a7e0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkZDk0ZDEzNjc0ZWI1YWQyNjI1ZjlhNmZjNzU4NjZlMmYzZjZhMjIyZjU3ZjdkODI0YTA3MDdlN2M4M2IwY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMzliOTE1OGJmMWRmMzM5Y2Y2MjhhZDJlMDk3NzA5YmE4MzE0NmI4YjAxOGQ3Nzc5NzNiNTZmODEyYzM2ZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_009df8aa80a5407ba2a6539cc4151174",
+      "statement": "A Homie session has an immutable optional packet identifier and cannot be both a Vision session and a packet conversation.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L732-L876",
+          "version": "repo-lines-v1:sha256:bcfdf0b6271236d42aee84781264a5e36b49178f4605dc3580502825d2d86d7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiYmY2OTdlYjg5N2E2OTg1ODcxNWYwYmVjNDNlYTc1MDhjZTczNmQ3MzUwNTA2NzVlMmQ2MGUxMjY2M2VjMjQxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2Yzc4MmU0ODBkNDQzZTMzOTg5Nzc5YzYyYzk0ODY4NDk5YmE1NjJkYWEyOTc3YjVkOGViZDJhNDdiZjhjNDAzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjZTYxM2ZhMmQxNTUyNmUyMjY0ODAwZjY2OTRiMjc2OGEwY2E0NGJhZTY3M2ZiODg0ZTdlYzNhN2MzZDY5ZmU0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1N2YyOWQ1MjdlMTAwNGQ2MWEzM2YyOGFkM2ZkZDZmNjViMTNjZjExNGY1ZDY0NTVhNDg4YmVlYzZiN2NjMTcxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b1f4a15f7e074cf5b12c438746d13e64",
+      "statement": "Packet preparation checks the current packet and version, then returns, resumes, or creates its conversation in one transaction.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L437-L454",
+          "version": "repo-lines-v1:sha256:419fab454d0c5d97e9273a1a5c89fda0c54d057003c1e34eff20bf343acac1ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkOGFjOGUwOGNjZDhmY2ZlZGJmYTM5NTZhMjhiZTEzZTQ0MjE0MjM2MzYzYTE3MDgyMmExMGE1MDdlNzZhMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmOWRmMzQyMTY2YzZhZmRiMTFmNDEwNWU4MzFlODljMGI3NWI1NTUwNWM4NzA1YzE1OTJiNDBlZGJlNTA0MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjOWIxNmI3ZTgzNzFlYzBmZTM1N2JkZjNkYjM3MjhjNjAzNTEwNWJlZWIyNjY1ZTEzMjQzZTRkM2U4ZTIwMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5MDI1OGY5N2MzYzRkYTM2MjVlMmNkMTRlYjRkYWQ1NWI2MzYxZDRiODIyMDhmMWI4YjIyYjNmNTIzMzEzZTcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/homie.go#L544-L611",
+          "version": "repo-lines-v1:sha256:4ba95277998f031a7e4d4b8a522f3db77f918abf45f80cb1664febcecfaca28b:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3YjZiMDJkNzg5ZDNlMmY4Mjc0OTEzMDA3YTc3YmIxYjNmOWFjNzAwMDViZGIyYmE2OGRkMTUxYTliNmQyMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YmEwMTlmZmQzODc3M2I3NmNjMjIwNmM0MDM4OTVjZjIwNzQ2NmQyMTE1MzE3M2I5Njk2NWU4YzhmZDcwMjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjZTM0MGJmZmMxOWM2ZDQ4NDE2YTFhODc0NzEyMDMyMTM5ZjVlYTdmZjU0MGMyY2ZkYWRlNjU3NGYyMDAyZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4YTAyNTAzNjFmMzYxNWRhNjY0YzQwMzg5NDQ1ODBkZjg2NDYxZGRkMTY2ZTgyYzAyZDg0YjY4N2IwYzllZmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c836832b62254aa2b3d57244525a1654",
+      "statement": "An archived Project refuses packet conversation preparation, send, and resume; the ordinary model-change command excludes packet conversations.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go",
+          "version": "repo-file-v1:sha256:2fb9d913abd44e8b7f95e5761b17d7444c301173ff6944d2341cb17a231e9624"
+        },
+        {
+          "resource": "repo://mc/verbs/homiepacket_test.go",
+          "version": "repo-file-v1:sha256:a8e5baea6ad4c59fc14166e8ae81b36ba0a12aa2a887368338fe6fd2af93a4a5"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d1019e871d94dc7b2d626313280cc2a",
+      "statement": "The Homie directive treats diagnostic text as evidence and requires explicit operator confirmation before a proposed state change.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/homie.md#L26-L34",
+          "version": "repo-lines-v1:sha256:651d796f2ea2c7585f5a7d3310ee04cf5e300dec48e071eac74f72059041bfe6:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDU4NjY0MTVhZWJhMWM3YzBiMmJiNDQ4NzYwNjg2NTBlOGUxMjVlYWRiZWNlMzkyMWNkMWEwOTQwYWMxODRiNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWY3MzEzNmZkYWZkOTNkMGZjZmY1ODcyMDIzZTgyOTM2N2I0YzMwMjI3MzU0OWQwYzAyNzBiMjdiNjc5ZDAxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWJmZDMxYjQwZDUxNmY5YjNkYzY2YTM3MTY2MzNlOTE1YTJjYjYyZGU0MWM0ZDBlNTI4NDQ4MTI1NDdkYWJmMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_eee6042371d7403883328ecdb22f7866",
+      "statement": "The Homie command skill keeps system diagnostic history host-only and requires disclosure of evidence outside permitted reads.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/homie/mc-homie/SKILL.md#L378-L388",
+          "version": "repo-lines-v1:sha256:ea16636edb3f24c36cd5d2c2fbe82c4b6067f25cbca6213ca46f367245ac9796:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkOTZhZDcwYjRjM2VhYmIyYTkwZjhhYzY5OTMyYWJiMWU5ZWU1OGQxNTdiNjc0ZWZlZmI2Zjg5ZjJiNjY4ZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYjYxNjU1NmU3M2Y0ZTVlMTgxNDZmNDY0NWEyNzJhMTY5ZTU4MjBiYWMzMTU4NjM2YTM3MzJiYmVkNGEzMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNmNmMGIzYTZlNDRiYzRmZTE1NmYzMDk2NzIxZDc3MWY0MmUyNjdkZWJiYTNmMjZlNTA2YjI5NWRjMWUzMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMjM3OWMzODllYzM1NDkwNGJiNTY2ODQyNTliOGVlMjMwNmY0ZGJkMTIzN2QwYzhlNjBkNWIxMjU5MzIyYTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e27ea54736944f70b61968040d5a6a60",
+      "statement": "The Review quick chat selects a packet model through the Homie route and a new conversation, with confirmation when the current conversation has messages.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/conversation.js",
+          "version": "repo-file-v1:sha256:b2f2fc38b2cff005e6fc5c83b32ff1296ee314a892a876e8fb8192cb8eb8b84a"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/packetchat.js",
+          "version": "repo-file-v1:sha256:4f91e1a2d08c9cdf4afcd1fbc1c58a8358fb0a822815a5a939e6555ab35ef0bc"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fe9fb69396e46e69aee01fd73933ab2",
+      "statement": "Homie resolves an operator decision report through BoardWrite revise with a changed description and reason; reason-only unblock is refused.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/decisionresolution_test.go#L388-L412",
+          "version": "repo-lines-v1:sha256:5f89ce304248b40d63c9c8b1bc12e12b8f2258e5072074af176545776a6eb559:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhZWYwODI5N2U0Yzg3NmM5NDRmZGVjY2NjNWYyMGQ2Y2FkNzAxY2YyNjk5ZGYzYmM1MTNhZTdmMWRhNTJkNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNDkyNDIxNWE0NzM0M2M1MGEzYmNiNmZhNDRiNjhlNTI4N2M4ZDRkMTlhZjMwMGZkZjY4NzQ1ZjdjZGViMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkYTRjNjU1YTk1NzEwNGViMzZiOWVjODNjN2Q5YzVmZjRmNjUyODJkNzkwOWY0OWQxZTEyMGY0NGZjYzZkZTYifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/homie/mc-homie/SKILL.md#L533-L575",
+          "version": "repo-lines-v1:sha256:9e3c2b842044bb1603eada5f149bc4aa6d313ee60547ad63b92e7ffae2c4236a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMWQyYWFjMjJiOTQ5M2M0N2UwNzU5OWU4ZmYwY2MyZjkzMDlmNTRmYjMzYjNjNmJhYmU1YjUyYWU5NGMzNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NDljN2ZkYjc3YTNmNjY3NjliZmQxMDIyOTcyMzQ2NmFhNTk1Y2Q3NzMwMGFiYWNkMGRkN2ZjMmJhOTEzYmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2ODA3ZGI2Y2RhZGFlYjFjMzBmMTBjZTQwMzQ1YjQyNzIxMjRlN2UyMGIzMmQzNTIzYWYxMGIwYmFhMTcxMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhN2IxMDcxZDJiNGQ1OWQ3OGVjMzAxNTg5MjE0MzBkMGNlYjUyNjgxZWQ5NTIyOGU1NjQ3NTY2ZTc0NGMzODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3ec79288ce4c4e3a96a66ff4b8ad2624",
+      "statement": "The Discord connector consumes account confirmation messages before ordinary Homie handling, and a preview connection forwards no ordinary messages.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord.ts",
+          "version": "repo-file-v1:sha256:472eb4f2ccff7716acf1804572d94cfad01291371ac033953cae7186260d3a89"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba2191edc6414419aaebbc3f10be7e35",
+      "statement": "A profile or authorization change stops the Homie container and a later start uses current access.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homierestart_test.go",
+          "version": "repo-file-v1:sha256:70af5b8c8c184461572b09984d558c01809c3170e441aa48a454515e464bef4b"
+        },
+        {
+          "resource": "repo://resident/src/homie-runtime.ts",
+          "version": "repo-file-v1:sha256:da918712f2bc70b5b4a74223da6d3f2af7a4baa39d66d475e5c81607643144f3"
+        }
+      ]
+    },
+    {
+      "id": "claim_1dae8997f0664972915bd2e7568e4f7a",
+      "statement": "The Discord connector excludes a message that contains only a 16-digit hexadecimal code from ordinary Homie routing.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord.ts#L147-L149",
+          "version": "repo-lines-v1:sha256:69a1afea418f322123a8491a7ff1ef97e32bf28034b1e8d6fb5140787925e160:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU2MWIzYWVmYjdhMWZiZGQ2ZTljYzczMDk2NGFjN2U4MzE2YzI5ZThjMThlYWU5N2FhOTY2NGFiZmYzZmQ2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExNWU1MjdlZmE1NmQ1ZmQzOGQ1YmZkODc5NDI5NjMzOGNmZDE1MWUzZTMzODM0NmIyZWI1MmUyYjlkMTI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQ2ZWEyNzcxMTNkNmZhMmY4MDZmM2VhZWYwNjBiYWMwMTFhOTMzNTFjNTlkYTU3NWI0YjA1MjFlZWMyMWIzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTJiNjc3MzY1ODE4YjgxMDYxOGVjYTBhODcxMmYwNmYwYjBhMDA3OGZkYzI4OThlN2RiMzNiMjA5YWNkNzQ0YiJ9"
+        },
+        {
+          "resource": "repo://resident/src/discord.ts#L193-L199",
+          "version": "repo-lines-v1:sha256:ddda6772aa9e4dc4c2a5ac715c5feeb8b5430c551531fc1b49240f97bd3aaa07:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNjMDI5NDY2ZDc0ZGNhYmE1MjliNWI3NzhjZWYwYTc0ZmMwM2JmZjIxYjM3MTdlZDYyZjQ4YTVjOTM3ZTI5YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjM4YTg2MzliYzBjMGYyMDAzMzg5ODllMjNmZTNlNjYxY2I3Yjg0M2UzNjQzNGJlOTgwZThlMDAwODZmOTI3YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzgxODFjN2UxYzg2MTc4NGI3MTdmZGRiNTE0NzQ2ZTY1MTJjMjNkMGQwYmNlNjQ5MTA2MDk5ODRhYTFkMzA4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjYyNjg3NDEyMzZjYzM3NDUzMTcyYWYwNGZkMjc4ODhkMTJmOTBhY2Y0ZjEyZGRiYmY3OGM3ZTg5M2Q2MGEwMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba1906e997e24189ac0f1175887d0e6e",
+      "statement": "A Discord thread start reuses the session associated with that thread and refuses a retired or deleted association.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L319-L341",
+          "version": "repo-lines-v1:sha256:50e579e3019e76860c5a1f078e91b568844381e0145e91f93bba7a39c272c553:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwNDY4YmM3MDU1ZTgxYmM5ZWZiNWM5ZmQ5NWFkNWUyOTJhNGU2NWE5ZGNmMmQ0NjczYzlkOWY5MTk2ZTNkMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyODg0M2JlNjdlMjRjZTcxOWQ3MjE3Yzc3OGUzNTk4NjIxNDg2MWM0MzFlZTRkOTljOTI4OTAxM2NkNmU1MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmMDllYTJmZTBhYWVmOWY1MTQxM2FjMzBlNTI5Y2IxZTJmNThlMDM5NDI5NTg1Njc2MzA4MzBlZWFkY2VlNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3YzAzMjIyMGI1ZTljZmQ4MjhlY2Y4NDdiMDM5ZDJiYjliMzFlZWIwNDQ0NmNiYjcyYTE4ZmUxZThjNzBlNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_124ea0bc76e34e2a9a11f5384b9b0348",
+      "statement": "A repeated Discord source message reuses its transcript entry when its session, thread, and body match.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homie.go#L870-L893",
+          "version": "repo-lines-v1:sha256:9e280b847d5b0dfa873da3b5e56bf3e679d54fd49201811d8b5e4ecb35eb17d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MDllZTM3YTEyYjMzM2I1ZGNkZGRiOWE4ZTk3YzBkNjNhZWY0NGI0YTNlNTczYmZlODk1NWNkMjVkM2ZmMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4MGRjOGI3M2JkMzFmNDVjYjk3Y2FlZDU0NTgxMDgyMmEwYzRjMTA1MjI5MmVmODk0MWNlZDZmZTNlZDg5YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2ZjBkOGQyNTNjYzI1NzE5YmExNGQ5ZDgzODYyOWYyYTI2Mjc0NWQ3NGVjOTlmNzczMGQ2YjVjOTgxNTFiYzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b44c525c221476dae46c41ec022191f",
+      "statement": "Homie stores the profile effort when a session starts, and the schema prevents a later effort change.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L742-L751",
+          "version": "repo-lines-v1:sha256:12a3c717cbc5a7d66cec4acc50176fc71e8995a9fe1f28fd18a2fe97f06af527:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4ZGI3MmNmMjYwZTE5ZDZjMGU5NGZjN2ZjNWRjOGZiODI5NzgxYWE3ODAwYTM2NjlkZWJhYTAwNTQyYzMzNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ZDNhNTczNjNhZGZjOGZjMWEyNjQwOGMwZmVjMGQ1ZWJkYWZkMGVmMzdiOWZlNGVjNjhlYjNkN2JjMGIyOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlZjFmNWMyNmFmMDA3MTUxOTRkNjdlZTYzYmFlNjJhYzFlNGIwMjQ4Mzg2NWNhMmViMThjMmMwNjIwNGFkNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwOGI2NjBjNzNlZjVkZTI5NDYyNzgyOWI3OThmNzQ2MTg5YzU1NDM5ODQ3ZmFjM2ExMTdkMTZlNWJhMGRkMTcifQ"
+        },
+        {
+          "resource": "repo://mc/substrate/schema.sql#L860-L877",
+          "version": "repo-lines-v1:sha256:1f548badbedbdb86616d8cd43f0c4726330cae516b37ad86a3b36e311281b0c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkYWJkNjRiZmZmYjJjOWM5ZDA1M2E2ZGEzMWIzNThhNGMwYzAzNTdhNDk0Y2M5N2I5ZTU2ZjQ1ODU0MjAyYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2NjY3NTEyOTg1MmIyMzRlM2VhOWFhNGMzM2Y5NjE2YmEyN2RmOGNjZmE5NDVjNzc1ZjI2YTdlYWE3MjUyM2UifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/homie.go#L243-L263",
+          "version": "repo-lines-v1:sha256:d5331eeb7b7e9a0873deaa8079265636ce3eb1978dc708b94ff0276d2533fc03:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkZDQwOTc1MzYzM2FmYTVhYzA5ZjY3YzM0YWMyNDQzZjM5MjFkNzYzMmY0YzBiYmRkNjNmOTA0YjkzYmVjZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2MGRjOGFkMzFhNGE4ZDAwNzc1NDdkZmRjODAwZDc5YjE2NDFiNWVlNTExNWU1ZDViNmYxNTRkMjY0YzFkYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhMGU3NWFhMGQ3YjZhM2MyY2RhYjIzZDU4ZmQ0YzIwOTExYmFiOGUwNTQ2MjE2NjU3MjFkMmVhMzAxZWVlYjYifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/homie.go#L457-L465",
+          "version": "repo-lines-v1:sha256:a21bedf1406d168a19233aa00b6de2ffd0f4873cf393671abfac1d3f0efc3504:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU0ZTc4ZDJlYjY4M2U4NGZhOWQxMTNkMjZlMzkxM2IyMjU2ODJhNDBlNGI0MTgxNzU4Y2UyNDdlNTNmYmU4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRlZmM0OTQxOGQyNmRjZjEyOWIyMmE2YWEyMTEwOGNlZWMzNzY3N2EzMmQwOGU5ZDVmZWUzNWRkYTY2YmI5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGI3Y2I3OTY5ZDEwODYyNzE4Y2RkZjMxNDdkMDcxNmMwN2I5ZmJjYzQ0NDc3NjhhYWE1NWNlMDI5M2VjZWJlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTQ2YjM3ZTIxMDEyNTVmNzAzN2RlNGJiNmU3YjQ3NjNhNDIzOGY5MjVlZTExYzQ2NzU5NzU2ZDY3YjNiZWMwYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9d8b93724734de1ae515932a31d8f61",
+      "statement": "A Homie wake carries the session's stored effort to the resident.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/homieselect.go#L269-L284",
+          "version": "repo-lines-v1:sha256:913b969b4cbe36be5b14e72c132ce249c4cdb888214ad2a88a73878461a9c64d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YzhmNGU5MzVhMmQxNzNkZmRjZmI3NDc5NDcwYTg3NTVmMmUwNTNhYzUwMzMyODFiNjRlMWUxNWNlZmQwZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MzI1YTFlZDJjZTUyZTE0NTJkODUyZWU1MjhjZDQxOTE1NzE2OTRlNzA0ZTJkNzRkMzMzOGE1NTBmZmJmY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5Nzc4NTA5YTg5MDBlYzViOGYyMTRkNDk1ZGJhYzdlOWIwNTU5YjZiZTliNzI5YzkzMzQ5ZTc5ODVjMGVlMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkMGI5ZjA0NmY0ZTgzYzIxY2YyZTE5ZjgzYjg5ZDdjYjEyY2ZmMTMyZDFiODAzYjkyZjVmZTI5M2Q5NTMxNjMifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/homieselect.go#L320-L329",
+          "version": "repo-lines-v1:sha256:f608c69e50f6423e48cd82e4ea005cb898613b653d1909d640720d466e94ff0d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjZTk0MmNmYzYyMWQyODYxNmMyM2Y3YjdmMTg3YTAyNjI3OTQ1MTA5NTQ1YjU4YjhjZWViOGJlYmEwNzg0YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ODg2NWRmYWU2MzFhMTY3MWExNTg1MzAyZmY0ZmEwOGU2MzYyZWY3MWI1ODE4ZjFkNTgxY2FlNWE4ZmYwN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlM2VmMGE5MzQ5MmUxZTIyMDhmZjAzMjQzNDI4NmM3ZjI3OTk4ZmUwOTU3Nzc5N2Y5YWI4MmM5YzVmNmViNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NDY5MjE2NzQwYTZmODVhMmQ4ODU1YzBmNWM4NDQyOTAxZjZhYjA3ZDlhM2U5ZmUxNGRlN2M1ODNjN2NiYzYifQ"
+        },
+        {
+          "resource": "repo://resident/src/effects.ts#L625-L635",
+          "version": "repo-lines-v1:sha256:a282566406793bd869767311e73db95cc1b538278fcd03ef6ba2a5afb445d9d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5N2E0MmE0NWU3ZDBjZTMxY2MzNTcyOGNiNTI2OTJjZWMzZTIxYzVjMzI3NDdlZjY2NTFkNGM4M2ZmYTUzZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNTA2NjVkY2E5MTk5NTczMGMwN2NiZjY2ZmNkZTVhZDFlOTA2NGM2NWJkYTI5ZGMxMWNiNjE3NWJmNjU3N2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhODZhZTQxZGE1YmMyZTlmNjZkZWZhMGM5ZjM1MjU2MDE4M2RmNWJmZjQzZDhmMzQxMzdmMWZlMzQxZjAwYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmYzc3OWUzOTRkYTFhY2MxYTk5NWVmOTMxODQyMGZiMWQ1YzYwM2NkYmFkNzRkN2EwM2IzM2VjYTQyOGE3NmQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T04:07:09.592Z"
+  }
+}

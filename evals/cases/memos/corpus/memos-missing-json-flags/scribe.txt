@@ -1,0 +1,16 @@
+{
+  "changed_documentation": [
+    "filter/README.md"
+  ],
+  "evidence_scope": "Documentation source inspection only.",
+  "provenance": "authored_for_experiment",
+  "result_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+  "role": "Scribe",
+  "scope": "The case author inspected the upstream documentation in the reviewed commit. No separate Scribe run or commit occurred.",
+  "source_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+  "unverified": [
+    "No renderer or database query test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "Unexpected nonboolean JSON values can follow different conversion rules across database dialects."
+  ]
+}

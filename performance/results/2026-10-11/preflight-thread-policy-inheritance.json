@@ -1,0 +1,110 @@
+{
+  "observedAt": "2026-10-11T21:10:39.184004+00:00",
+  "reports": [
+    {
+      "policy": "standard",
+      "direct": {
+        "pid": 40727,
+        "parentPid": 40715,
+        "taskPriority": 31,
+        "requestedQoS": 21,
+        "relativePriority": 0,
+        "bsdFlags": 4210704,
+        "darwinBackgroundFlag": false,
+        "externalDarwinBackgroundFlag": false,
+        "darwinProcessPriority": 0,
+        "darwinProcessPriorityErrno": 0,
+        "diskPolicy": 0,
+        "diskPolicyErrno": 0,
+        "threads": [
+          {
+            "currentPriority": 31,
+            "basePriority": 31,
+            "policy": 1,
+            "state": 1
+          }
+        ]
+      },
+      "viaBun": {
+        "bunVersion": "1.3.9",
+        "bunPid": 40728,
+        "child": {
+          "pid": 40729,
+          "parentPid": 40728,
+          "taskPriority": 31,
+          "requestedQoS": 21,
+          "relativePriority": 0,
+          "bsdFlags": 4210704,
+          "darwinBackgroundFlag": false,
+          "externalDarwinBackgroundFlag": false,
+          "darwinProcessPriority": 0,
+          "darwinProcessPriorityErrno": 0,
+          "diskPolicy": 0,
+          "diskPolicyErrno": 0,
+          "threads": [
+            {
+              "currentPriority": 31,
+              "basePriority": 31,
+              "policy": 1,
+              "state": 1
+            }
+          ]
+        },
+        "code": 0
+      }
+    },
+    {
+      "policy": "background",
+      "direct": {
+        "pid": 40730,
+        "parentPid": 40715,
+        "taskPriority": 4,
+        "requestedQoS": 9,
+        "relativePriority": 0,
+        "bsdFlags": 16400,
+        "darwinBackgroundFlag": false,
+        "externalDarwinBackgroundFlag": false,
+        "darwinProcessPriority": 0,
+        "darwinProcessPriorityErrno": 0,
+        "diskPolicy": 0,
+        "diskPolicyErrno": 0,
+        "threads": [
+          {
+            "currentPriority": 4,
+            "basePriority": 4,
+            "policy": 1,
+            "state": 1
+          }
+        ]
+      },
+      "viaBun": {
+        "bunVersion": "1.3.9",
+        "bunPid": 40731,
+        "child": {
+          "pid": 40732,
+          "parentPid": 40731,
+          "taskPriority": 31,
+          "requestedQoS": 9,
+          "relativePriority": 0,
+          "bsdFlags": 16400,
+          "darwinBackgroundFlag": false,
+          "externalDarwinBackgroundFlag": false,
+          "darwinProcessPriority": 0,
+          "darwinProcessPriorityErrno": 0,
+          "diskPolicy": 0,
+          "diskPolicyErrno": 0,
+          "threads": [
+            {
+              "currentPriority": 4,
+              "basePriority": 4,
+              "policy": 1,
+              "state": 1
+            }
+          ]
+        },
+        "code": 0
+      }
+    }
+  ],
+  "boundary": "Direct native process and native child of Bun, under the same process type as the benchmark."
+}

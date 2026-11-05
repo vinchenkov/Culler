@@ -1,0 +1,119 @@
+bun test v1.3.9 (cf6cdbbb)
+
+network-error.test.ts:
+(pass) fetch failures without a provider response receive their network class [5.00ms]
+(pass) harness texts name network failures by code or phrase [0.23ms]
+
+log.test.ts:
+(pass) the event registry > every name matches the grammar [0.12ms]
+(pass) the event registry > holds no duplicates [0.02ms]
+(pass) the event registry > carries no identifier-shaped segment [0.04ms]
+(pass) parseLevel > never throws, whatever the environment says [0.02ms]
+(pass) parseLevel > matches case-insensitively [0.03ms]
+(pass) levelEnabled > admits everything at or above the configured level [0.02ms]
+(pass) levelEnabled > LEVELS is ordered error < warn < info < debug
+(pass) serialize > emits the head keys in fixed order, then context sorted [0.21ms]
+(pass) serialize > ends in exactly one newline [0.09ms]
+(pass) serialize > is byte-stable regardless of insertion order [0.02ms]
+(pass) serialize > drops a non-scalar and counts it [0.03ms]
+(pass) serialize > drops a non-finite number, which would otherwise serialize as null [0.03ms]
+(pass) serialize > caps msg at 2048 bytes and marks the cut [0.09ms]
+(pass) serialize > counts the msg cap in BYTES, not code units
+(pass) serialize > caps the whole line at 8192 bytes, largest context value first [0.15ms]
+(pass) serialize > never drops ts, level, comp or event to make room [0.06ms]
+(pass) serialize > honours a caller-supplied line cap
+(pass) serialize > shrinks msg only after every context field is gone [0.13ms]
+(pass) serialize > an impossible cap terminates at the head instead of looping
+(pass) serialize > emits an unregistered event name rather than refusing it
+(pass) renderText > renders the documented line
+(pass) renderText > pads the level to five characters
+(pass) renderText > omits the pair section entirely when there is no context
+(pass) makeLogger > stamps ts from the injected clock, in ISO-8601 Z with milliseconds
+(pass) makeLogger > writes exactly once per record, newline inside that one string [0.28ms]
+(pass) makeLogger > does not touch the sink for a record below the configured level [0.07ms]
+(pass) makeLogger > drops a context key that collides with a head key and counts it
+(pass) makeLogger > drops a non-scalar context value the same way
+(pass) child > merges child context under the per-call context
+(pass) child > is chainable
+(pass) child > leaves the parent's context alone [0.12ms]
+(pass) makeTestLogger > keeps both the lines and the parsed records [0.02ms]
+(pass) makeTestLogger > captures what a child writes as well [0.06ms]
+
+check-project.test.ts:
+(pass) an accepted baseline permits only its exact observed application failure
+(pass) a source change to an approved build file requires a new image validation [1.57ms]
+(pass) an inapplicable check requires a declared predicate and a reason
+
+log-sink.test.ts:
+(pass) openFileSink > appends one line per write and creates the file 0600 [0.48ms]
+(pass) openFileSink > appends to an existing file rather than truncating it [0.26ms]
+(pass) openFileSink > a missing directory makes every write a silent no-op [0.17ms]
+(pass) openFileSink > starts working the moment the directory appears [0.26ms]
+(pass) openFileSink > a write error is reported, not propagated [0.65ms]
+(pass) openFileSink > complains to stderr at most once a minute, however many failures [0.45ms]
+(pass) openFileSink > the default cap is 16 MiB and the default ring keeps 4
+(pass) rotation > shifts the ring and loses no record across the rename [1.86ms]
+(pass) rotation > drops the oldest generation once the ring is full [2.81ms]
+(pass) rotation > a lock somebody else holds means overshoot, never a stall [0.59ms]
+(pass) rotation > breaks a lock whose holder died [1.45ms]
+(pass) rotation > maxBytes 0 disables rotation entirely [0.53ms]
+(pass) rotation > reopens after another process rotated the file out from under it [1.36ms]
+(pass) concurrent appenders > four short-lived processes never interleave a line [34.21ms]
+(pass) openRunSink > writes runner.ndjson without rotating [0.90ms]
+(pass) openRunSink > stops at the cap and says so once, in the file's own format [4.93ms]
+(pass) stderrSink > writes the line to real fd 2, verbatim [18.77ms]
+
+project-environment.test.ts:
+(pass) Project workflow > installs dependencies before services and preserves observed check failures [0.05ms]
+(pass) Project workflow > stops services after readiness failure and excludes secrets from output [0.84ms]
+(pass) Project workflow > keeps secret values within their command scope [0.08ms]
+(pass) Project workflow > secret input completes at its newline while Docker keeps standard input open [0.81ms]
+(pass) Project workflow > invalid secret input exposes no secret value in its failure [0.23ms]
+(pass) Project workflow > refuses command directories through symlinks outside the Project [1.18ms]
+(pass) Project workflow > check applicability records explicit omissions and keeps predicate failures unverified [0.19ms]
+(pass) workflow timeout terminates descendants that keep command output open [312.16ms]
+(pass) service teardown terminates descendants after the shell exits [27.75ms]
+(pass) readiness timeouts stop the service and each predicate process group [839.18ms]
+
+model-response.test.ts:
+(pass) reports ignore partial events, retry failure, and stop after success [0.63ms]
+(pass) a report exception preserves the active attempt [0.04ms]
+
+golden.test.ts:
+(pass) cross-language render parity > the fixture is not empty
+(pass) cross-language render parity > every golden line renders to its golden text [0.31ms]
+(pass) cross-language render parity > re-serializing a golden record reproduces the golden line [0.17ms]
+(pass) cross-language render parity > the golden set still covers the cases it was built to cover [0.16ms]
+
+project-files.test.ts:
+(pass) setup acceptance captures checked files once and excludes ignored dependency files [333.54ms]
+(pass) direct acceptance resumes after approved files are written [477.67ms]
+(pass) direct acceptance resumes after approved files are staged [501.97ms]
+(pass) direct acceptance preserves changes outside the approved paths [206.50ms]
+(pass) direct acceptance preserves different bytes in an approved path or its index entry [270.50ms]
+(pass) direct acceptance checks the final files after the commit [611.81ms]
+(pass) direct acceptance captures approved removals and new files after none replay [608.57ms]
+(pass) direct acceptance captures approved removals and new files after deleted replay [593.63ms]
+(pass) direct acceptance captures approved removals and new files after staged replay [629.83ms]
+(pass) direct acceptance captures an approved removal without new files [436.88ms]
+(pass) approved removal preserves different source bytes and unrelated operator changes [260.15ms]
+(pass) approved removal rejects symlink parents and all invalid paths before any mutation [1.57ms]
+
+project-cache.test.ts:
+(pass) cache eviction removes old downloads and leaves external files intact [1.63ms]
+(pass) cache validation retains verified npm archives and removes corrupt or executable cache files [4.25ms]
+(pass) cache validation removes symbolic links without reading or deleting their external targets [1.08ms]
+(pass) two agent homes share only verified archive content and keep npm executables and indexes private [4.91ms]
+(pass) private npm cache setup refuses outside paths and symbolic link parents [1.72ms]
+
+project-evidence.test.ts:
+(pass) image inventory observes replacement tools and added system packages [1.12ms]
+(pass) run evidence records selected tools and lockfile identities for each declared package root [3.99ms]
+(pass) declaration evidence reports absent and malformed files without reading an external symbolic link [1.66ms]
+(pass) the evidence process records real version stdout and failed probes without an install command [340.32ms]
+(pass) the collector parses common lock formats and retains the complete Go version token [1.90ms]
+
+ 93 pass
+ 0 fail
+ 1607 expect() calls
+Ran 93 tests across 10 files. [6.58s]

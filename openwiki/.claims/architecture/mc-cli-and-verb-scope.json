@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b40d29cb954793b65fd19469283176f416b2b3da518df8404103916f440456d3",
+  "claims": [
+    {
+      "id": "claim_7ba26c16d0434b749aa6b15f31009048",
+      "statement": "writeVerbError maps a UsageError to exit 2 with code usage, other errors to exit 1 with the DomainError code or domain-rejection, prints the message to stderr, and writes an error envelope to stdout.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L400-L430",
+          "version": "repo-lines-v1:sha256:fbb6f37e96040b64b04855036b3a760f158af5e124c78c6ae3baba9f4e26735c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNjdlOTIxNDU3MTU2ZGEwZDcxYjhmYTI2ZDkxODRjYmI0OTJkYzYwYmExMmFmMGE2MmU5NWIxYzgxYTM1ZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3MDI4N2Y2YmIyZDY3YThhZGM2ZmE3MmUzNDY1MTU3YTQ0MjBjMzE5OWE0MDk1YjIzMzg1YmM2NGY4ZDJkZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhM2FkYTgwODFkNzljMzM4Mjc4NTk3OTJmY2JiM2EwMmRlZGE5Njc3NDI0YWE3MmQ4YTgwMWIxYjIxN2I3YWEifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L472-L479",
+          "version": "repo-lines-v1:sha256:4734726fe209b84e1e80c17e92d5b6969650e86af2493358b37b59d8fca8237f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTFlNDU0MTg5YTM0ZGQwNDgzZDM0YjE2YWM3YmM4MmJlMWUzYzBiMGQ4MjczZDc4ODI2ZGU2YzlhMjBhMWY5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODcwMjg3ZjZiYjJkNjdhOGFkYzZmYTcyZTM0NjUxNTdhNDQyMGMzMTk5YTQwOTViMjMzODViYzY0ZjhkMmRkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE2M2RiNzMwMzI1OTU0MWY2ZGFhNmU0NDc2YWU0YWI0OGViZjk5MjJmZGVmYzYxN2FhZGIzZjlhZmU0ZmVlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec9a8dd1ea8f4dc7a7e3264efbf9f00d",
+      "statement": "A missing task returns exit 1 with code not-found, a missing argument returns exit 2 with code usage, and a pipeline caller of mc dispatch gets exit 1 with domain-rejection.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/cli_test.go#L156-L191",
+          "version": "repo-lines-v1:sha256:3361bcda4de2f1044f536f06a6d77b743042389f323b204f88f683f82236aecf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzE3MTA1ZDYyMmQ5MmRkNDc1ZWVjYzdhNDExOGNiMGMwMWU3YWJiZmEyZjMxOWRjYTI3YzA0ZjRjNTFhNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViOTczNWU3NDk1ODMyY2QxODU1YTJjYjMwMzc5OTJkMjdkZmVkYWUwM2Y1MDZhNjcwYjg5ZDE4YzEzZjE5MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmMjI2MTgxOGZmYjk2OTBkMzc2MTE5YWZiN2U5MzlhMGQ3NGQ4OTA1Yjg4ZDczZDdiMWUyZmY5ZTM4ZWM3YjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_21ad7372c0f048ecb0220ca97990bdc2",
+      "statement": "Delegation runs docker exec -i <helper> mc with the original arguments and reports a wrapper-only failure as exit 2 with self-delegation failed.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L432-L470",
+          "version": "repo-lines-v1:sha256:3785eef8ca773551485250bff67f874657bec6737dbf6760571fcdd830dbb91b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNWJkNTRjYjdjMzIyZTgwMGExODllM2ZiZmJmMGY4NDNjN2ZiYzM1NmM3ZjJkMmViN2NjNDRmMTRmNWZmZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiNTM0ZTA5MDczOWU0Y2ZjNDk3ZTFlNjE2MjQ4MzY4OTIxMDNiOTVhNGYyOTIyNDZkYjI1MzM2ZDY5ZTE3ZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzMzljZWMwYzQwMGIzODUzODI4OTY1NjVlOTQzNjM1OWEwY2I3YmM5YmU2MjQ1MmU1YzgwYmFkMzA5ZTNkZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e260ceacd2fb43b391502960f979bba5",
+      "statement": "The production build delegates on darwin, uses the fixed spine path /mc/spine/spine.db, and takes the helper name from the deployment names of the canonical MC_HOME.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L199-L213",
+          "version": "repo-lines-v1:sha256:05f5f11b52ecb814eb609da4e562a97f242d42fa1fb41269863741058a79c5de:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NTc0NmY5NGQwZjBiZjQyMjkxOWI2MjhmZDEyYTc3MWQ1ZmZmZjI4Y2VmNjliYmFkNjZiMGIyNzQ5NWQxYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwYjE2ODg0MTI4NmJkN2UyYjJjNjJkZTUwN2E4YjBlYzFhODE1MzM4MzA3NTAxNjU2MmVkZTUxYzUyY2Q3MjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4MjBjOWI3ZjhhMDI4YmUxNjI1NmNmNzhmMjg0ZGZkY2Q4ZGFlNjQ2ZTM1YzJjMzA2MzU5NzFjYTE4MzRkYmIifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/runtime_scope_prod.go#L1-L23",
+          "version": "repo-lines-v1:sha256:2e267ca219eaf20801cd6d1295d57d124c043667545a7a97d2e3b7f7a358d5da:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZTg4OTY0NjFlMTQ4MmI0NjYyODliZTcwYTFjMzZmM2NmZDdjOTA0YzZmY2MwZTZkM2M1ODc1NGRmNTJjMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmODA5YmZmYzY1YmU3N2EzYWYwNTRiNDljNGRiYzBiNDJkZDZkODM0N2VjYTA4YTlhODE3MTQ5YzhiYWU1MjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMDI0OTQzMWEwYmU0ZGI5OTJmZWFhMWI3ZjRkYjY0NjFlZDhiYzQ0NmRlZDQ3NzllYTk2NjY1ZWFkMjUxM2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e062a61b79a4a8f930a55912e7e8c7a",
+      "statement": "In test_fake_routing builds, mc delegates only when MC_HELPER is set and MC_SPINE is unset, and uses MC_SPINE as the spine path.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/runtime_scope_testfake.go#L1-L13",
+          "version": "repo-lines-v1:sha256:71d9197319f2b9d83c5fa90d2ee69e491774b63be4f35e961c614c07aa71eba8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMWFhNzkzMzhmOWFiYjQ3OTkzYjMxMGY2Mjk0ZDdlZDFhODgxOWU1ZTIwNzU0NTg5Yzk1ODA2N2E4MGExNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1ZTQ0MmJhMTBjZmVkZWZlMDE2NjFiZWQ2N2U2OGQ3N2IzOTZkZjY2MDQ3ZTFhMDMwYTYwZWIyYTBkMDMxZjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMGRkODExYTNmNTJmOWMxOGZiYjBlODJkNTE2ZjAwYmFhYmI5MzZhNmIwMThiMWNlZWIwNTY4MTNlZDY5M2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dabe488b49dd4f65b611b7950f21e0db",
+      "statement": "The helper container runs /bin/sleep infinity as uid 10002 with no network, all capabilities dropped, fixed CPU, memory, and pid limits, and only the spine volume mounted at /mc/spine.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L215-L237",
+          "version": "repo-lines-v1:sha256:a5e1cc381d19fb780f72299439cb544f68c81a4e52209ee3b406d883d7f790df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMDQ4ODBmZjFkNzFmZDhkNTY4YWE1Mjc2ZDUzZWRmMGNmNmRkMjc1ZmZjYmM2NTNmYjRlZDQxODJhMzlmZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZjFjZmFmOGY4OThjNGQzNzY0NTI5OTNjYTQ3MzY2MTE5NjI4NzA2ZjNhZWFkM2ExYWIzYmRkYjU5OGE5M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1ZWE2OTExNjdkNTBlYjI0NTIxNWM4MzdlZGVjYjAyMzAzYzk0YzgzZTUzMWFhMmNiZDNhNzYxYzU2MTdlZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_460a0e413a334355a9bbea5ad4314831",
+      "statement": "ensure refuses to remove a container that holds the helper name without the mc-managed helper labels.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L288-L294",
+          "version": "repo-lines-v1:sha256:eeaccc65f1cb1cde8d0ad6607b979209e5515a50d0d8e2b2d8fe9db006d41d9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y4OWRkZWU3ODZkMDZhYWNlMTkyOTgxNTY0NDcxMzBlNDU1NzFiZWQ3Nzc0YmM4N2NlNDVhNjAwODU1ZDExYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmY4NmY5OGNkYTk1YjMwY2UwMDQ5YjNiM2IyN2I4OWFiZDUwOWZmZDFlYzllOWE0NWM3ODdjNzJmMGQwMWQxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGYwNzIwMTE4NjExMzYzN2UyZTEyOTgzZGY3ODZmN2M1NTYxYjhjMjM4Nzk2YmNiYmIzYTU2MGM5NzMzZjNiYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_764438dac35f4cf0ade15a039424aa95",
+      "statement": "LoadIdentity returns nil, meaning host scope, when run.json is absent, and RequireHostScope refuses any caller with an identity.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/verbs.go#L194-L202",
+          "version": "repo-lines-v1:sha256:0dcd7d8898fbcfbe8562e47f417954cdda14c6d3fd6f7cffdd464c21b1e60098:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRiNDFlODQ5NGYwN2VlNjUwMDdhYjk1ODY0ZjE3MTEzMmVlNDdkN2JkOGM2NTQ1MjVlMjMyZTkyYzI1OTU0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODE2Zjc2MGRhNWM5YmJjNDk2MDBkOGU3MTQ2ZjkxMjNhOTE0MzU3YjE4ODM0YmFkOGZmNzAxYTFkNzY2OGM1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWE5OTU5NWRmOWM1MTVmN2NiYTUwY2Y0OWJiOGY2NDdlNjkxNzZjYzZlODdhZDY3YjQzZTQ0YTE0NzdlNDBiOCJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/verbs.go#L285-L299",
+          "version": "repo-lines-v1:sha256:6eaaa64093c2a1b1f47a75bc1af7348143b9a71e0149d1cd42b7969c3f5a8503:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlM2U5MzFmYWVlOTc1MGIxMTllZGU4YTU5ODdkNjNhNTJiYzM1OGVjOWFkOWMzOTg3NjA2NDc4M2EzMjhiOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkNWI4N2ZiOWI5OWJmYjQ3M2I4OWU0YmM0MTNkM2U1NWYwNzUyNGM1NGM5NjRhM2IwNTAyNjg3Yzg5NTNhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhNzE4ZmU2ODI4ZmNkNDQyMTcxNzJlNDk5OTM0NTc5OTI0NDA5ODZmODg4ZTNmYjljOTU1MDg4Y2M4MTQwNDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_02b8d441e69f41a1977bfad92500154c",
+      "statement": "When real and effective uids differ, the run.json path is fixed to /mc/run.json and MC_RUN_JSON is ignored.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/runjson_test.go#L5-L12",
+          "version": "repo-lines-v1:sha256:a6621ed5cecdc402a5aafdce8597dbe607245e09f887fafd99d5b9f61bf84ebc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmN2FmNDhhNTdjMGQ0NWIzMWJlNGQ4YzQxNzhlZTIwYWQ1ZmY1NjdiYWMzYzIxYjY2YWFhYjhkZGU0ODU3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDdmZThlMWE1YjEzNDYxYjkzNTBjN2M1ZjlhYWQxNWJkZTBjMDQ2ZWJlOWQ2MTZiMjY2NDM3ZmFhYzkyZGEyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjFkNGYxMzgzOGEzZDEyNWNhYzVjNTQzYTdlOTI4MDI3MTEwYjg2NTE5YThkYmRiNzAxYmQwYzU3YjcyZTZkMiJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/verbs.go#L229-L242",
+          "version": "repo-lines-v1:sha256:88b9e46e01c4b58007d597c5dd1307ad9da4554f535444b1f12eeb03d6c1c907:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZDQ0NzgxZDBkMWFkNmE3ZTA1NjAwOWU4MDhiMmIzOGNhYjU1M2E1NjFlYTdmMGFhNzE2NDEyZDQyMWZjNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxMmM5NjgyZjU2YjRiNzM5MTZlZmY3YWFlZmQ0ZTA3ZjE1NGEzMTJhZWQ3MzQxMDVmYTY4YjgwNGNjODU0ZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmY2JhNDNmNTA0Yjg1YTM4MDIwMzAzMjdiODViYzk0MjJjNTdmNGFlYjlhZWRmYWJmMmM2ZGRjZDAwMWVmNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_23217aff639947ba8634aca57fe5f3d9",
+      "statement": "The runtime wrapper executes /opt/culler-runtime/libexec/mc-real, owned by uid and gid 10001 with mode 6755.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/mc_dispatch.go#L10-L16",
+          "version": "repo-lines-v1:sha256:716217e4c3740b7d4cb8d860673e654126bb726ce7d499f571073705de09b71e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE1ZDY0Zjk3MWIyNGY3MDFkMzRjNzdmMTI1YWQ5M2Q3MGI3YjQwYTAyYzAyMzZiMDQ1MzkzZTI0YmY2YjVmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWZhMzNhYmQ2ZmRhNGE2MjU5ZDBmZTQ0ZmVkYjkyMWVhNGMxODc1N2YzMzhlYTM4YTYwYjQyOTE2ODAwN2IxMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        },
+        {
+          "resource": "repo://runner/image/runtime.Dockerfile#L88-L88",
+          "version": "repo-lines-v1:sha256:e805b8b27bde5bb4645404f2f8b6ba47d73a3bc0c35b3ef4a152195f2348a5ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTgwNWI4YjI3YmRlNWJiNDY0NTQwNGYyZjhiNmJhNDdkNzNhM2JjMGMzNWIzZWY0YTE1MjE5NWYyMzQ4YTViYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTgwNWI4YjI3YmRlNWJiNDY0NTQwNGYyZjhiNmJhNDdkNzNhM2JjMGMzNWIzZWY0YTE1MjE5NWYyMzQ4YTViYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzhiMDkxMTZlNzZmMTcwOWMzNzJlODA4YWUzZWY4Y2ZkMzM2YzM0YjM4NmY3NzY5MDIyMTc4OTExMmNhOWUxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODc4ZDJkNzcxZjNiYzU5ODk0Y2EzY2U3ZTdkZTdmYzg5MDQ2NjNhZmIyMjE1MzUxYzNjMDY3YTI1MWYyODcyYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_825e02ba0eac4ccca27661177acd3052",
+      "statement": "Pipeline callers of host-only verbs are refused before any spine file is created.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/cli_test.go#L870-L892",
+          "version": "repo-lines-v1:sha256:36fcded0fda32e7d3052d3c956043a9961b380abd809053cc630beb928706fc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2Y2NkNTJiYmNhYmQ3YzEyYmVmNTQ2ZGU1OTVhZmQ5MzcwZjgzYzViNGZhOWQ3MmRjNTUyZGUyOWZkMzFlMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmZGM4MjgyMzRmNDc0MzYxMWI3YmU5YzZjMGRjN2IxMTdhYWY0ODg1YjBjZWYyZjI5ZjQ0NDViNDFiMjY5MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_45657072a71349ac9bb38fee726808c6",
+      "statement": "The fake harness binding is added to the routing registry only in test_fake_routing builds.",
+      "evidence": [
+        {
+          "resource": "repo://mc/routing/registry_active.go#L1-L6",
+          "version": "repo-lines-v1:sha256:a2ada7d7635a0cf56a8160abe2d388ccf67ebdfdca2c1e4c4828fe2273c0b8ee:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFlODg5NjQ2MWUxNDgyYjQ2NjI4OWJlNzBhMWMzNmYzY2ZkN2M5MDRjNmZjYzBlNmQzYzU4NzU0ZGY1MmMwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM4YThjYTBjMGZmYTk1NGM4MDFkMTEyMjA5ZmRkYTBhZDNiYTVjNjdlOTU0NzBmNWY5NjMyOGFmZjY4ODI5MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWQzMTEwY2MxZWQ4ZmRlNTM5ODRlODQwNjQ3ZDNhNzVlMWRiNTFjNTM1NzNjMjI4ZDdkZDg4M2RjNmY0YTkxYyJ9"
+        },
+        {
+          "resource": "repo://mc/routing/registry_active_fake.go#L1-L11",
+          "version": "repo-lines-v1:sha256:5b93e3e8b2acd620cea17e2457edda8e6ca037f310793ea0a48cd10fe90a9091:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMWFhNzkzMzhmOWFiYjQ3OTkzYjMxMGY2Mjk0ZDdlZDFhODgxOWU1ZTIwNzU0NTg5Yzk1ODA2N2E4MGExNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyMTllZWJhMjExOTI1NTY5ZWZkNDJhYWI0Mjc1OTY1NjcxNmExMzBjMTVkMmMxYzU1NDllODlkYTMwOGNmYTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8987dc08434b4edeb0753cd618c1a5c0",
+      "statement": "Discord configuration, runtime-policy, and spine-projection commands require host scope.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/discord.go",
+          "version": "repo-file-v1:sha256:5a6b6d05f825de6a504c73b8250b253019c51308124a62ed7fc1d38f04383fe1"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-05T09:00:19.897Z"
+  }
+}

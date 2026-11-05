@@ -1,0 +1,8 @@
+{
+  "cleanupErrors": [],
+  "completedTrials": 2000,
+  "error": null,
+  "finishedAt": "2026-10-11T21:46:29.101061+00:00",
+  "fixtureCleanup": "The caller owns the scratch helper and volume.",
+  "outcome": "complete"
+}

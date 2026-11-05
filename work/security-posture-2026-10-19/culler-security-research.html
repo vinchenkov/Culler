@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; font-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="description" content="Culler security research: credentials, container isolation, release priorities, and comparisons with OpenClaw and Hermes.">
+  <title>Culler — Security posture</title>
+  <style>:root{color-scheme:light;--paper:#f4f3ed;--surface:#fff;--ink:#202c2a;--muted:#5c6b67;--line:#dbe1da;--green:#145d4a;--green-soft:#e6f0e9;--amber:#8b4c18;--amber-soft:#fff0db;--red:#a13e2d;--red-soft:#fae8e1;--sidebar:#17342b;--blue:#375c89;--shadow:0 12px 40px #17342b08}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;line-height:1.65}button,a,summary{-webkit-tap-highlight-color:transparent}button{font:inherit}button,summary{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b47a29;outline-offset:4px}a{color:var(--green);text-underline-offset:4px;text-decoration-thickness:1px}a:hover{color:var(--red)}[hidden]{display:none!important}.skip-link{position:fixed;left:20px;top:-100px;background:var(--surface);padding:10px;z-index:10}.skip-link:focus{top:12px}.shell{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:var(--sidebar);color:#eff4ed;padding:36px 22px 24px}.brand{display:flex;align-items:center;gap:12px;padding:0 12px}.brand-mark{width:36px;height:36px;border:1px solid #719183;border-radius:11px;display:grid;place-items:center;font-size:21px;line-height:1;font-weight:600}.brand strong{display:block;font-size:21px;letter-spacing:-.7px}.brand small{display:block;color:#bed0c5;font-size:11px;letter-spacing:1.4px;text-transform:uppercase}.nav-caption{margin:46px 12px 12px;color:#a8c0b2;font-size:10px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase}.section-nav{display:grid;gap:5px}.nav-link{display:flex;align-items:center;gap:13px;width:100%;border:0;border-radius:9px;background:transparent;color:#c5d5cb;padding:12px;text-align:left;font-size:14px;line-height:1.3;transition:background .15s,color .15s}.nav-link .nav-num{color:#92b2a0;font:11px ui-monospace,SFMono-Regular,Menlo,monospace}.nav-link .nav-arrow{margin-left:auto;opacity:0}.nav-link:hover{background:#244739;color:#fff}.nav-link.active{background:#e9eee4;color:#203b2e}.nav-link.active .nav-num{color:#52705d}.nav-link.active .nav-arrow{opacity:1}.sidebar-note{margin-top:auto;border-top:1px solid #365447;padding:22px 12px 0}.sidebar-note .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ebbe78;margin-right:7px}.sidebar-note strong{display:block;font-size:12px;font-weight:500;color:#e9dec2}.sidebar-note p{font-size:12px;line-height:1.6;color:#aac0b2;margin:9px 0 0}.sidebar-note code{background:transparent;border:0;padding:0;color:#d4e1d8;font-size:11px}.workspace{min-width:0}.topbar{height:76px;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:0 46px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted);background:#fafaf6}.breadcrumb{display:flex;gap:10px;align-items:center}.breadcrumb span:first-child{font-weight:600;color:var(--ink)}.top-actions{display:flex;align-items:center;gap:20px}.print-btn{background:transparent;border:1px solid #cbd4cb;border-radius:7px;padding:7px 12px;color:var(--ink);font-size:12px}.print-btn:hover{background:var(--green-soft)}main{max-width:1400px;margin:0 auto;padding:39px 46px 30px}.page-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:1.75px;font-weight:650;text-transform:uppercase;color:var(--green);margin:0 0 12px}.page-heading h1{font-size:clamp(34px,3.4vw,52px);letter-spacing:-2px;line-height:1.08;margin:0;font-weight:600}.page-deck{max-width:780px;margin:16px 0 0;color:var(--muted);font-size:15px;line-height:1.65}.section-index{padding-top:9px;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;color:var(--muted)}.hero{display:grid;grid-template-columns:minmax(0,1fr) 198px;gap:22px;border:1px solid #e5cab6;border-left:4px solid #b8613a;border-radius:12px;background:linear-gradient(115deg,#fff9f2,#f9efe3);padding:25px 27px;margin:0 0 23px}.status-label{display:flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:1.4px;font-weight:650;color:var(--red)}.status-label:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}.hero h2{font-size:25px;line-height:1.3;letter-spacing:-.65px;margin:10px 0}.hero p{margin:0!important;max-width:750px;color:#715444;font-size:13px}.hero-side{align-self:center;display:flex;flex-direction:column;gap:10px;border-left:1px solid #e5cab6;padding-left:22px}.hero-side span{font-size:11px;color:#715444}.text-button{border:0;background:none;text-align:left;padding:0;color:var(--red);font-size:13px;font-weight:600;line-height:1.4}.text-button:hover{text-decoration:underline;text-underline-offset:4px}.overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:0 0 29px}.overview-card{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:20px 21px;box-shadow:var(--shadow)}.card-kicker{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}.card-kicker span:last-child{height:6px;width:6px;border-radius:50%;background:var(--green)}.overview-card.attention .card-kicker span:last-child{background:var(--red)}.overview-card h3{font-size:23px;letter-spacing:-.7px;font-weight:600;margin:14px 0 6px;line-height:1.2}.overview-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0!important}.architecture{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:23px 25px;margin:0 0 28px}.diagram-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.diagram-top h2{font-size:16px;margin:0;letter-spacing:-.3px;font-weight:600}.diagram-tag{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted)}.arch-flow{display:grid;grid-template-columns:1fr 54px 1.2fr 54px 1fr;align-items:stretch;gap:0}.arch-node{min-width:0;border:1px solid var(--line);border-radius:9px;padding:16px;background:#fafbf8}.arch-node.container{border:1px solid #84ae9b;background:#eff6f0}.arch-node.outbound{border:1px dashed #c88f6d;background:#fff8ee}.node-label{font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}.arch-node h3{font-size:14px;font-weight:600;margin:0 0 10px}.arch-node ul{list-style:none;padding:0;margin:0!important;display:grid;gap:6px}.arch-node li{font-size:11px;margin:0!important;color:var(--muted)}.arch-node li:before{content:"·";margin-right:6px;color:var(--green);font-weight:700}.arch-arrow{display:grid;place-content:center;color:#7a8e80;font-size:25px}.arch-arrow.risk{color:var(--amber)}.arch-notes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;line-height:1.55;color:var(--muted)}.arch-notes strong{display:block;color:var(--ink);font-weight:600;margin-bottom:3px}.report-panel{min-width:0}.report-panel>p,.content-section>p{max-width:100%;margin:12px 0;font-size:14px;line-height:1.8}.report-panel strong{font-weight:600}.report-panel h3{font-size:20px;line-height:1.4;letter-spacing:-.45px;margin:30px 0 14px;font-weight:600}.report-panel .flow-node h3,.report-panel .arch-node h3{font-size:14px;margin:0 0 10px}.report-panel .overview-card h3{font-size:23px;margin:14px 0 6px}.report-panel ul,.report-panel ol{padding-left:22px;margin:14px 0 20px}.report-panel li{margin:9px 0;font-size:14px;line-height:1.75}.report-panel li::marker{color:var(--green)}.lead-answer{padding:17px 21px;border:1px solid #bdd2c4;background:var(--green-soft);border-radius:9px;margin-bottom:25px!important;font-size:15px!important}.lead-answer strong{font-weight:600}.evidence{color:var(--muted);font-size:11px!important;line-height:1.8!important;border-left:2px solid #cad6cc;padding:8px 12px;margin:15px 0 23px!important;background:#ebeee7;border-radius:0 5px 5px 0}code{font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#e9eee6;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere;word-break:break-word}.evidence code{background:none;padding:0}.table-responsive{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:18px 0 23px}.table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.65;text-align:left}.table th,.table td{padding:16px 18px;vertical-align:top;border-bottom:1px solid #e3e8e0;overflow-wrap:anywhere}.table thead th{color:#dce9df;background:#284638;font-size:11px;font-weight:500}.table tbody tr:nth-child(even){background:#f7f8f3}.table tbody tr:last-child>*{border-bottom:0}.table tbody th{font-weight:600;color:var(--ink)}.table td:first-child{font-weight:500}.table td code{font-size:10.5px}.comparison{min-width:740px}.comparison th:first-child{width:17%}.comparison th:nth-child(2){width:27%}.comparison th:nth-child(3),.comparison th:nth-child(4){width:28%}.comparison td:nth-child(2){background:#e7f0e754}.comparison td a{display:inline;font-size:10px}.comparison thead th:nth-child(2){background:#35634e}.control-list{list-style:none;padding:0!important;display:grid;grid-template-columns:1fr 1fr;gap:0 26px}.control-list li{position:relative;padding:14px 0 14px 27px;border-bottom:1px solid var(--line);margin:0!important;font-size:12px;line-height:1.7}.control-list li:before{content:"✓";position:absolute;left:0;top:16px;display:grid;place-content:center;background:#e0ede2;color:#276345;border-radius:50%;width:17px;height:17px;font-size:10px;font-weight:600}.control-list strong{display:block;font-size:13px;color:var(--ink);margin-bottom:3px}.assessment-actions{display:grid;grid-template-columns:1fr;gap:10px;list-style:none;padding:0!important;counter-reset:action}.assessment-actions li{counter-increment:action;position:relative;padding:16px 20px 16px 52px;margin:0!important;background:var(--surface);border:1px solid var(--line);border-radius:9px;color:var(--muted);font-size:13px}.assessment-actions li:before{content:counter(action,decimal-leading-zero);position:absolute;top:17px;left:17px;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--green)}.assessment-actions strong{color:var(--ink)}.flow{display:grid;grid-template-columns:1fr 32px 1fr 32px 1fr;gap:10px;align-items:center;margin:21px 0 16px;padding:25px;background:#e7eee4;border-radius:11px;border:1px solid #c7d8c6}.flow-node{padding:17px 15px;background:var(--surface);min-width:0;border:1px solid #c9d7c9;border-radius:8px;align-self:stretch}.flow-node strong{display:block;font-size:13px;color:var(--green);line-height:1.5}.flow-node span{display:block;font-size:12px;line-height:1.6;color:var(--muted);margin-top:7px}.flow-arrow{text-align:center;color:var(--green);font-size:22px}.flow-current{background:#f2eadf;border-color:#e0cdb6}.flow-current .flow-node{border-color:#deccb7}.flow-current .flow-node strong,.flow-current .flow-arrow{color:#805631}details{padding:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:13px 0;overflow:hidden}details>summary{position:relative;list-style:none;padding:20px 46px 20px 22px;font-size:14px;font-weight:600;line-height:1.6}details>summary::-webkit-details-marker{display:none}details>summary:after{content:"+";position:absolute;right:21px;top:18px;font-size:20px;line-height:1.2;font-weight:400;color:var(--muted)}details[open]>summary:after{content:"−"}details[open]>summary{border-bottom:1px solid var(--line)}details>.detail-body{padding:4px 22px 15px}details p{font-size:13px;line-height:1.8;margin:13px 0}details li{font-size:13px!important}.finding-label{display:inline-flex!important;align-items:center;color:var(--amber);font-size:10px!important;letter-spacing:.1px;background:var(--amber-soft);border-radius:5px;padding:5px 9px;margin:15px 0 5px!important}.priority-critical>summary{background:#fff5ed;border-left:3px solid #b8643c}.source-list{list-style:none!important;padding:0!important;display:grid;grid-template-columns:1fr 1fr;gap:10px}.source-list li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin:0!important;font-size:13px!important}.section-intro{font-size:14px;color:var(--muted);margin:0 0 22px!important}.section-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:23px 0 14px;margin-top:32px;border-top:1px solid var(--line)}.section-footer span{font-size:11px;color:var(--muted)}.next-btn{background:var(--green);color:#fff;border:0;border-radius:7px;padding:10px 16px;font-size:12px;white-space:nowrap}.next-btn:hover{background:#0e4939}.document-footer{border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;padding-top:18px;margin-top:14px;font-size:10px;color:var(--muted)}.comparison-intro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}.compare-card{border-top:3px solid #7b8e7c;background:var(--surface);padding:18px;border-radius:0 0 9px 9px}.compare-card:first-child{border-color:var(--green)}.compare-card span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}.compare-card strong{display:block;font-size:19px;margin:10px 0 7px;letter-spacing:-.5px}.compare-card p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}.scope-note{border-left:3px solid var(--blue);padding:12px 18px;background:#eaf0f5;font-size:12px!important;color:#3d5670}.test-results{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}.test-result{border:1px solid #c8dacc;border-radius:9px;padding:18px 20px;background:#eef5ed}.test-result strong{display:block;font-size:27px;font-weight:500;letter-spacing:-.7px;color:var(--green)}.test-result span{font-size:11px;color:var(--muted)}.boundary-stack{margin:22px 0 26px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:23px}.boundary-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px}.boundary-outer{background:#e9f0e6;border:1px solid #aec8b2;border-radius:8px;padding:19px}.boundary-outer>strong{font-size:13px;color:var(--green)}.boundary-inner{margin-top:15px;padding:17px;border:1px dashed #ccab7a;border-radius:7px;background:#fff8ed;display:flex;gap:20px;align-items:center;justify-content:space-between}.boundary-inner strong{display:block;font-size:13px;color:var(--amber)}.boundary-inner span{font-size:11px;color:var(--muted)}.boundary-inner code{font-size:11px;white-space:nowrap;background:#f2e7d6}.print-only{display:none}@media(min-width:1600px){main{padding-top:48px}.page-deck{font-size:16px}.report-panel>p{max-width:1000px}}@media(max-width:1100px){.shell{grid-template-columns:210px minmax(0,1fr)}.sidebar{padding:30px 14px 20px}.topbar{padding:0 28px}main{padding:30px 28px}.hero{grid-template-columns:1fr}.hero-side{border-left:0;border-top:1px solid #e5cab6;padding:13px 0 0;flex-direction:row;align-items:center;justify-content:space-between}.arch-flow{grid-template-columns:1fr 25px 1.15fr 25px 1fr}.arch-node{padding:13px 10px}.overview-card{padding:17px}.page-heading h1{font-size:38px}}@media(max-width:800px){.shell{display:block}.sidebar{position:relative;height:auto;padding:18px 22px}.brand{padding:0}.brand strong{font-size:18px}.brand small{font-size:9px}.brand-mark{width:31px;height:31px;font-size:17px}.nav-caption,.sidebar-note{display:none}.section-nav{grid-template-columns:repeat(3,1fr);gap:5px;margin-top:19px}.nav-link{padding:10px 9px;font-size:12px;gap:7px}.nav-link .nav-arrow{display:none}.nav-num{font-size:9px!important}.topbar{height:55px;padding:0 23px}.top-actions time{display:none}main{padding:27px 23px}.page-heading{margin-bottom:23px;gap:10px}.page-heading h1{font-size:36px;letter-spacing:-1.3px}.page-deck{font-size:13px}.overview-card h3{font-size:21px!important}.hero h2{font-size:23px}.hero{padding:22px}.control-list{gap:0 20px}.flow{padding:18px;gap:6px;grid-template-columns:1fr 20px 1fr 20px 1fr}.flow-node{padding:13px}.table th,.table td{padding:13px}.comparison{min-width:710px}.comparison-intro{gap:10px}.compare-card{padding:15px}.compare-card strong{font-size:17px}.report-panel h3{font-size:19px}.test-result{padding:14px}.test-result strong{font-size:24px}}@media(max-width:540px){.sidebar{padding:16px}.topbar{padding:0 17px}.breadcrumb{font-size:10px;gap:7px}.print-btn{font-size:10px;padding:6px 8px}.top-actions{gap:8px}main{padding:24px 17px}.page-heading h1{font-size:32px}.section-index{font-size:10px}.page-deck{font-size:13px}.hero{padding:19px 18px}.hero h2{font-size:22px}.hero-side{flex-direction:column;align-items:flex-start;gap:8px}.overview-grid{grid-template-columns:1fr;gap:9px}.overview-card{display:grid;grid-template-columns:1fr auto;gap:5px 12px;padding:15px 17px}.card-kicker{align-self:center}.card-kicker span:last-child{display:none}.report-panel .overview-card h3{margin:0;font-size:20px}.overview-card p{grid-column:1/-1}.architecture{padding:19px 17px}.diagram-top{align-items:flex-start}.diagram-top h2{font-size:15px}.diagram-tag{font-size:9px;max-width:78px;text-align:right}.arch-flow{grid-template-columns:1fr}.arch-node{padding:14px 16px}.arch-node ul{gap:2px}.arch-arrow{height:32px;transform:rotate(90deg)}.arch-notes{grid-template-columns:1fr;gap:12px}.control-list,.source-list{grid-template-columns:1fr}.flow{grid-template-columns:1fr;padding:18px}.flow-arrow{height:28px;transform:rotate(90deg)}.flow-node{padding:15px}.flow-node span{margin-top:4px}.comparison-intro{grid-template-columns:1fr}.compare-card{display:grid;grid-template-columns:1fr 1fr;gap:7px}.compare-card strong{margin:0;font-size:17px;text-align:right}.compare-card p{grid-column:1/-1}.table{font-size:11px}.table th,.table td{padding:12px 11px}.table code{font-size:10px}.report-panel>p,.report-panel li{font-size:13px}.report-panel h3{font-size:18px}details>summary{padding:17px 37px 17px 16px;font-size:13px}details>.detail-body{padding:2px 16px 13px}details>summary:after{right:15px}.finding-label{font-size:9px!important}.boundary-stack{padding:16px}.boundary-outer{padding:15px}.boundary-inner{flex-direction:column;align-items:flex-start;gap:10px;padding:14px}.test-results{grid-template-columns:1fr;gap:8px}.test-result{display:flex;justify-content:space-between;align-items:center;gap:12px}.test-result strong{font-size:23px}.section-footer{flex-direction:column;align-items:flex-start}.document-footer{flex-direction:column;gap:4px}.section-nav{gap:4px}.nav-link{padding:9px 7px;font-size:11px;gap:5px}.report-panel .scope-note{font-size:12px!important}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}@media print{body{background:#fff;font-size:11px}.shell{display:block}.sidebar,.topbar,.page-heading,.section-footer,.document-footer{display:none}.report-panel[hidden]{display:block!important}.report-panel{break-before:page}.report-panel:first-child{break-before:auto}.print-only{display:block!important;font-size:26px;line-height:1.2;margin:0 0 20px}main{max-width:none;padding:0}.table-responsive{overflow:visible}.table{min-width:0!important;font-size:9px}.table th,.table td{padding:8px}.hero,.architecture,.overview-card,.flow,details,.comparison-intro{break-inside:avoid;box-shadow:none}.hero{grid-template-columns:1fr}.hero-side{display:none}.comparison{min-width:0}.report-panel .evidence{font-size:9px!important}.comparison-intro{grid-template-columns:repeat(3,1fr)}.report-panel>p,.report-panel li{font-size:11px}details{overflow:visible}details>summary:after{display:none}a{color:inherit}.source-list{grid-template-columns:1fr}.page-deck{font-size:12px}}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#report-main">Skip to the report</a>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Report navigation">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">C</div><div><strong>Culler</strong><small>Security research</small></div></div>
+      <p class="nav-caption">Report contents</p>
+      <div class="section-nav" role="tablist" aria-label="Security report sections" aria-orientation="vertical">
+        <button class="nav-link active" id="cs-tab-assessment" type="button" role="tab" aria-controls="cs-assessment" aria-selected="true"><span class="nav-num">01</span><span>Assessment</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+        <button class="nav-link" id="cs-tab-proxy" type="button" role="tab" aria-controls="cs-proxy" aria-selected="false" tabindex="-1"><span class="nav-num">02</span><span>Proxy &amp; secrets</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+        <button class="nav-link" id="cs-tab-sandbox" type="button" role="tab" aria-controls="cs-sandbox" aria-selected="false" tabindex="-1"><span class="nav-num">03</span><span>Sandboxes</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+        <button class="nav-link" id="cs-tab-priorities" type="button" role="tab" aria-controls="cs-priorities" aria-selected="false" tabindex="-1"><span class="nav-num">04</span><span>Priorities</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+        <button class="nav-link" id="cs-tab-compare" type="button" role="tab" aria-controls="cs-compare" aria-selected="false" tabindex="-1"><span class="nav-num">05</span><span>Comparison</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+        <button class="nav-link" id="cs-tab-evidence" type="button" role="tab" aria-controls="cs-evidence" aria-selected="false" tabindex="-1"><span class="nav-num">06</span><span>Evidence</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+      </div>
+      <div class="sidebar-note"><strong><span class="status-dot" aria-hidden="true"></span>Review before release</strong><p>One trusted operator.<br>One Mac deployment.</p><p>Source commit<br><code>816470a9f790</code></p></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div class="breadcrumb"><span>Security posture</span><span aria-hidden="true">/</span><span id="current-section">Assessment</span></div>
+        <div class="top-actions"><a href="culler-security-posture.html">Concrete proposals ↗</a><time datetime="2026-10-19">19 October 2026</time><button class="print-btn" type="button" id="print-report">Print the full report ↗</button></div>
+      </header>
+      <main id="report-main">
+        <header class="page-heading"><div><p class="eyebrow" id="page-kicker">Open-source release review</p><h1 id="page-title">Culler security posture</h1><p class="page-deck" id="page-deck">Container isolation is a strong foundation. Credentials and outbound access need tighter controls before release.</p></div><span class="section-index" id="section-index">01 / 06</span></header>
+        <section class="report-panel" id="cs-assessment" role="tabpanel" aria-labelledby="cs-tab-assessment"><h2 class="print-only">Culler security posture</h2>
+    <div class="hero">
+  <div><div class="status-label">Priority before release</div><h2>Authenticate the refresh broker.</h2><p>The endpoint accepts an arbitrary refresh token and returns a usable access token. Fix caller authentication before publication.</p></div>
+  <div class="hero-side"><span>Confirmed endpoint behavior<br>Live container reachability remains unverified.</span><button class="text-button" type="button" data-section="priorities">Read the fix and evidence →</button></div>
+</div>
+<div class="overview-grid">
+  <article class="overview-card"><div class="card-kicker"><span>Command isolation</span><span aria-hidden="true"></span></div><h3>Mandatory</h3><p>Agent commands run in restricted containers.</p></article>
+  <article class="overview-card attention"><div class="card-kicker"><span>Outbound access</span><span aria-hidden="true"></span></div><h3>Unrestricted*</h3><p>*The reviewed launch paths enforce no destination policy.</p></article>
+  <article class="overview-card attention"><div class="card-kicker"><span>Usable credentials</span><span aria-hidden="true"></span></div><h3>Inside the agent</h3><p>Static keys and access tokens enter the container.</p></article>
+</div>
+<div class="architecture" role="group" aria-label="Current credential and execution boundaries">
+  <div class="diagram-top"><h2>Where the current boundaries sit</h2><span class="diagram-tag">Current architecture</span></div>
+  <div class="arch-flow">
+    <div class="arch-node"><div class="node-label">Trusted host</div><h3>Resident &amp; credentials</h3><ul><li>Real refresh tokens stay here.</li><li>The broker issues access tokens.</li><li>The host projects static keys.</li></ul></div>
+    <div class="arch-arrow" aria-label="Credentials enter the container">→</div>
+    <div class="arch-node container"><div class="node-label">Container boundary</div><h3>Agent &amp; Project tools</h3><ul><li>A non-root user runs commands.</li><li>Linux capabilities are dropped.</li><li>Readable secrets remain exposed.</li></ul></div>
+    <div class="arch-arrow risk" aria-label="Direct outbound connections">→</div>
+    <div class="arch-node outbound"><div class="node-label">Network access</div><h3>Provider &amp; internet</h3><ul><li>No mandatory credential proxy.</li><li>No enforced destination policy.</li><li>Host reachability needs live tests.</li></ul></div>
+  </div>
+  <div class="arch-notes"><div><strong>Isolation limits writes and privileges.</strong>A container protects its surrounding system only within its permissions.</div><div><strong>Confidentiality needs separate controls.</strong>A process can transmit data that it can read.</div></div>
+</div>
+
+    <p>The current design protects host files and control state better than it protects credentials and outbound data. Container isolation alone cannot prevent those disclosures.</p>
+    <p>OAuth is a token authorization protocol. Its access tokens authorize requests; its refresh tokens obtain new access tokens.</p>
+    <ol class="assessment-actions">
+      <li><strong>Add an authenticated credential proxy and enforce its network path.</strong> Start with static provider keys. Keep the proxy outside agent containers.</li>
+      <li><strong>Keep the harness sandboxes disabled under the current architecture.</strong> Their privilege restrictions conflict with the protected <code>mc</code> executable.</li>
+      <li><strong>Keep Homie’s Project context and exclude credential files.</strong> Use a host-controlled file view across the same Projects and useful traces.</li>
+    </ol>
+    <p class="evidence text-small">Evidence: <code>resident/src/refresh-broker.ts:32</code>; <code>resident/src/effects.ts:320, 548</code>; <code>runner/agent-runner/adapters/codex.ts:58</code>; <code>adapters/claude.ts:103</code>.</p>
+
+    <h3>Controls that already exist</h3>
+    <ul class="control-list">
+      <li><strong>Container execution:</strong> agent processes use user identifier 10002, drop all Linux capabilities, and receive resource limits.</li>
+      <li><strong>Protected runtime:</strong> Culler mounts its runtime and run identity read-only. Project image checks reject extra setuid files and file capabilities.</li>
+      <li><strong>Protected state:</strong> the <code>mc</code> executable enters user identifier 10001. Its role checks use the fixed run identity.</li>
+      <li><strong>Credential separation:</strong> real OAuth refresh tokens remain on the host. Codex receives access tokens and a dummy refresh token.</li>
+      <li><strong>Browser access:</strong> the dashboard requires a bearer token, including on loopback. Host and Origin checks reject foreign hosts.</li>
+      <li><strong>Untrusted reports:</strong> report frames omit script and same-origin permission. AgentsView uses a separate origin and temporary access grants.</li>
+      <li><strong>Release controls:</strong> actions use commit pins. Pull request jobs have read-only permissions. Release inputs use checksums and image digests.</li>
+    </ul>
+    <p class="evidence text-small">Evidence: <code>resident/src/environment-lane.ts:42</code>; <code>runner/image/runtime.Dockerfile:55</code>; <code>mc/deployment/project_image.go:133</code>; <code>mc/verbs/verbs.go:234</code>; <code>dashboard/src/server.ts:129</code>; <code>dashboard/src/ui/review.js:383</code>; <code>.github/workflows/release.yml</code>.</p>
+
+    <h3>What users can safely assume</h3>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Assumption</th><th>Current assessment</th></tr></thead>
+        <tbody>
+          <tr><td>Agent commands run inside containers.</td><td>Yes, for the reviewed production launch paths.</td></tr>
+          <tr><td>A read-only mount hides its secrets.</td><td>No. It prevents writes. Ordinary file permissions still control reads.</td></tr>
+          <tr><td>Provider keys remain outside agent commands.</td><td>No. Static keys and usable access tokens enter the container.</td></tr>
+          <tr><td>Containers cannot reach host services or the local network.</td><td>No enforced restriction appears in the reviewed launch paths.</td></tr>
+          <tr><td>Projects form separate confidentiality boundaries.</td><td>Pipeline workspaces have separation. Ordinary Homie sessions deliberately span Projects and traces.</td></tr>
+          <tr><td>Approval of a code change prevents earlier data theft.</td><td>No. A malicious command can send data before the review step.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="scope-note">This assessment covers source behavior and selected tests. It does not certify the live deployment or prove resistance to a container escape.</p>
+  </section>
+<section class="report-panel" id="cs-proxy" role="tabpanel" aria-labelledby="cs-tab-proxy" hidden><h2 class="print-only">Proxy and secrets</h2>
+    <h3>The resident has a refresh broker, not a general internet proxy</h3>
+    <p>The refresh broker obtains new Codex access tokens from host-held grants. It does not forward model requests or filter general outbound traffic.</p>
+    <div class="flow flow-current" role="img" aria-label="Current design: the host projects credentials into the agent container. The container connects directly to providers and other reachable destinations.">
+      <div class="flow-node"><strong>Host credential store</strong><span>Refresh tokens remain here.</span></div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="flow-node"><strong>Agent container</strong><span>Static keys or access tokens enter here.</span></div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="flow-node"><strong>Provider / internet</strong><span>No mandatory egress filter.</span></div>
+    </div>
+    <p class="evidence text-small">Evidence: <code>resident/src/credential-projector.ts:599–675</code>; <code>resident/src/environment-lane.ts:42–49</code>. The AgentsView proxy serves browser access. The model test proxy supports tests.</p>
+
+    <h3>Three different proxy functions</h3>
+    <ol>
+      <li><strong>Transport:</strong> a forward proxy carries traffic. It can carry OAuth sign-in traffic and static-key traffic.</li>
+      <li><strong>Credential injection:</strong> a trusted service adds an application programming interface (API) credential to an approved request.</li>
+      <li><strong>Network enforcement:</strong> container network rules prevent direct connections that bypass the proxy.</li>
+    </ol>
+    <p>Hypertext Transfer Protocol (HTTP) proxy variables only configure clients that obey them. Agent code can ignore those variables.</p>
+    <p>HTTP Secure (HTTPS) uses Transport Layer Security (TLS). An HTTPS CONNECT tunnel preserves that encryption and cannot change the encrypted Authorization header.</p>
+    <p>Credential injection needs an explicit API gateway or trusted TLS termination. Prefer an explicit gateway where the harness supports a custom endpoint.</p>
+    <p>For general TLS interception, the container must trust a certificate authority. Certificate pinning and some clients can prevent that approach.</p>
+
+    <h3>Which credentials can a proxy handle?</h3>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Input</th><th>Useful treatment</th><th>Limit</th></tr></thead>
+        <tbody>
+          <tr><td>Static provider API key</td><td>Keep the key on the host. Give the run a short-lived proxy credential.</td><td>Restrict the upstream host, path, method, account, and spend.</td></tr>
+          <tr><td>OAuth sign-in</td><td>Keep login and refresh on the host. A compatible gateway can add an access token upstream.</td><td>The gateway must support that harness protocol and token lifecycle. OAuth is not inherently exempt from proxies.</td></tr>
+          <tr><td>Ordinary Project variable</td><td>Continue to inject configuration through the process environment.</td><td>A proxy cannot supply an arbitrary local process variable.</td></tr>
+          <tr><td>Project HTTP credential</td><td>Use a placeholder where the client sends an agreed header or other supported field.</td><td>Configure the exact destination and substitution rule.</td></tr>
+          <tr><td>Database password, private key, or local file secret</td><td>Use a protocol-specific broker or a short-lived, limited credential.</td><td>A generic HTTP proxy cannot cover arbitrary protocols or local secret use.</td></tr>
+          <tr><td>Request signature</td><td>Use a service that creates the signature.</td><td>Simple header substitution cannot replace a secret that the client needs to compute a signature.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Codex documentation supports custom providers with OpenAI authentication and proxy-compatible certificate bundles. This establishes feasibility, not compatibility with every proposed gateway.</p>
+    <p class="evidence text-small"><a href="https://learn.chatgpt.com/docs/auth" target="_blank" rel="noopener noreferrer">Official Codex authentication documentation</a>.</p>
+
+    <h3>Project variables and secrets today</h3>
+    <p>Culler already distinguishes ordinary variables from secret references. The resident reads referenced secret files and sends values through container standard input.</p>
+    <p>The runner then places the selected values in process environments. The <code>setup</code>, <code>agent</code>, and <code>both</code> scopes control that selection.</p>
+    <p>This reduces accidental exposure in configuration records and container arguments. A selected secret remains readable by the process that receives it.</p>
+    <p class="evidence text-small">Evidence: <code>resident/src/environment-lane.ts:324–337</code>; <code>resident/src/effects.ts:1394</code>; <code>runner/shared/project-environment.ts:66–91</code>.</p>
+
+    <h3>Recommended design</h3>
+    <div class="flow" role="img" aria-label="Recommended design: an agent uses a run credential to reach a separate authenticated gateway. The gateway adds the real credential and permits approved upstream requests. Network rules block direct outbound connections.">
+      <div class="flow-node"><strong>Agent container</strong><span>Run credential only.</span></div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="flow-node"><strong>Credential gateway</strong><span>Authenticate, restrict, inject, record.</span></div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="flow-node"><strong>Approved service</strong><span>Real credential arrives here.</span></div>
+    </div>
+    <ul>
+      <li>The resident manages a separate gateway process or container. Agent containers receive no upstream secret.</li>
+      <li>Each grant identifies one run and its allowed services. Run termination revokes the grant.</li>
+      <li>Network rules permit only the gateway and explicit Project services. Cover Internet Protocol versions 4 and 6, plus Domain Name System (DNS) traffic.</li>
+      <li>The gateway refuses private network addresses, host services, and metadata endpoints unless the Project explicitly requires them.</li>
+      <li>The gateway rechecks redirects and resolved addresses. It records metadata without credentials or request bodies.</li>
+      <li>Package downloads use a separate policy. Prefer dependency preparation before the agent receives useful credentials.</li>
+    </ul>
+    <p>A proxy protects credentials only within its contract. An agent can still misuse an allowed service or send source text through an allowed provider.</p>
+    <p class="evidence text-small">Design recommendation. <a href="https://developers.openai.com/api/docs/guides/agents-api/environments/security" target="_blank" rel="noopener noreferrer">OpenAI’s environment guidance</a> also separates credentials from untrusted execution.</p>
+  </section>
+<section class="report-panel" id="cs-sandbox" role="tabpanel" aria-labelledby="cs-tab-sandbox" hidden><h2 class="print-only">Sandboxes</h2>
+    <div class="boundary-stack">
+  <div class="boundary-label">Two distinct isolation layers</div>
+  <div class="boundary-outer"><strong>Outer layer · Culler agent container · Enabled</strong>
+    <div class="boundary-inner"><div><strong>Inner layer · Harness process sandbox · Disabled</strong><span>The privilege restriction conflicts with Culler’s setuid command.</span></div><code>10002 → mc → 10001</code></div>
+  </div>
+</div>
+<h3>The disabled settings are real</h3>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Harness</th><th>Culler setting</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Codex 0.156.1</td><td><code>sandbox_mode="danger-full-access"</code><br><code>approval_policy="never"</code></td><td>No inner sandbox or interactive command approval.</td></tr>
+          <tr><td>Claude Agent software development kit (SDK) 0.3.280</td><td><code>sandbox: { enabled: false }</code><br><code>permissionMode: "bypassPermissions"</code></td><td>No inner sandbox. Permission checks use bypass mode.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="evidence text-small">Evidence: <code>runner/agent-runner/package.json:6</code>; <code>adapters/codex.ts:58–81</code>; <code>adapters/claude.ts:103–126</code>.</p>
+
+    <h3>This is nested process isolation, not necessarily another Docker container</h3>
+    <p>The harness sandboxes apply operating-system restrictions to tool processes. Current Linux documentation describes Bubblewrap for both harnesses.</p>
+    <p>Culler’s older Codex comment describes Landlock and seccomp. That comment does not establish the internals of every current Codex version.</p>
+    <p>The important conflict is <code>no_new_privs</code>. This Linux restriction prevents an executed file from gaining privileges through its setuid bit.</p>
+    <ol>
+      <li>Culler starts the agent with user identifier 10002.</li>
+      <li>The protected <code>mc-real</code> executable uses setuid to enter user identifier 10001.</li>
+      <li>That identity permits access to the protected spine database.</li>
+      <li>An inner sandbox that sets <code>no_new_privs</code> prevents this identity change.</li>
+    </ol>
+    <p>The identity change grants database access, not root access. Culler intentionally omits Docker’s <code>no-new-privileges</code> option for agent containers.</p>
+    <p>Claude also documents a separate nested-container issue with the <code>/proc</code> mount. Its weaker nested mode does not resolve Culler’s setuid design.</p>
+    <p class="evidence text-small">Evidence: <code>runner/image/runtime.Dockerfile:55–56</code>; <code>resident/src/effects.test.ts:1861</code>. Sources: <a href="https://learn.chatgpt.com/docs/sandboxing" target="_blank" rel="noopener noreferrer">Codex sandbox</a>; <a href="https://code.claude.com/docs/en/sandboxing" target="_blank" rel="noopener noreferrer">Claude Code sandbox</a>.</p>
+
+    <h3>Recommendation: preserve the current setting, then remove the architectural conflict</h3>
+    <p>Do not enable the inner sandboxes as a simple configuration change. First replace in-container privilege elevation with an authenticated command service outside the agent.</p>
+    <p>The service can expose the existing role commands through a narrow remote procedure call interface. The agent container then needs no spine database mount.</p>
+    <ol>
+      <li>Bind each service credential to one run, role, and Project.</li>
+      <li>Preserve the current identity, lease, and command authorization checks in the service.</li>
+      <li>Remove the setuid dependency and spine mount from agent containers.</li>
+      <li>Enable <code>no-new-privileges</code> on the outer container.</li>
+      <li>Test the exact pinned harness versions with their inner sandboxes enabled.</li>
+    </ol>
+    <p>Keep the existing container restrictions during that work. Additional sandbox layers can reduce damage, but each layer needs a demonstrated permission boundary.</p>
+    <details>
+      <summary class="cursor-interaction">Acceptance checks for that change</summary><div class="detail-body">
+      <ul>
+        <li>Each role can complete its permitted commands in a fresh session and a resumed session.</li>
+        <li>A run cannot submit another Project’s identity or use an expired credential.</li>
+        <li>Dependency preparation, browser tools, and artifact submission work under the selected restrictions.</li>
+        <li>Agent commands cannot read upstream credentials or open the spine directly.</li>
+        <li>A failed service connection stops the operation instead of enabling broader access.</li>
+      </ul>
+    </div></details>
+  </section>
+<section class="report-panel" id="cs-priorities" role="tabpanel" aria-labelledby="cs-tab-priorities" hidden><h2 class="print-only">Release priorities</h2>
+    <p>These priorities reflect the reviewed attack paths. They are not vulnerability scores or estimates of exploitation frequency.</p>
+    <details class="priority-critical" open>
+      <summary class="cursor-interaction">Before release: authenticate the Codex refresh broker</summary><div class="detail-body">
+      <p class="finding-label text-small">High priority · Confirmed endpoint behavior · Moderate effort</p>
+      <p>The endpoint checks the request shape but authenticates no caller. A request with an arbitrary refresh token receives a newly minted access token.</p>
+      <p>One listener serves one credential source. The projector exposes its address through <code>host.docker.internal</code>.</p>
+      <p>Any process that reaches the endpoint can request that account’s access token. A local process needs no knowledge of a real refresh token.</p>
+      <p>Removal of the broker address from shell environments does not authenticate callers.</p>
+      <p>The source also intends container access. I did not repeat the live Docker Desktop reachability check during this review.</p>
+      <p><strong>Fix:</strong> require an unguessable grant for one run, with expiry and revocation. Reject absent, foreign, and expired grants before token refresh.</p>
+      <p>Use an authorization header where the harness supports one. Otherwise use a protected run-specific capability path and redact it everywhere.</p>
+      <p>Also add request limits and <code>Cache-Control: no-store</code>. A grant prevents unrelated callers; it does not protect against its authorized agent.</p>
+      <p class="evidence text-small"><code>resident/src/refresh-broker.ts:32–82</code>; <code>credential-projector.ts:599–617</code>; <code>refresh-broker.test.ts:69–73</code>. The synthetic-token test passed.</p>
+    </div></details>
+    <details class="priority-critical" open>
+      <summary class="cursor-interaction">Define Homie’s file policy and preserve its Project context</summary><div class="detail-body">
+      <p class="finding-label text-small">High priority · Confirmed mount design · Exposure depends on local files</p>
+      <p>An ordinary Homie session receives all available Project roots and all session traces. The Vision-specific session narrows its Project roots.</p>
+      <p>A full Project mount can expose readable, untracked files such as <code>.env</code>. A read-only mount still permits their contents to leave the container.</p>
+      <p>The blocked-path policy checks source addresses. It explicitly does not scan directory contents.</p>
+      <p><strong>Proposal:</strong> keep all available Projects and useful traces. Replace direct folder mounts with a host-controlled view that excludes declared credential files.</p>
+      <p>Preserve tracked local edits and explicitly included untracked source. Homie still reads source across Projects; the file policy cannot detect every secret.</p>
+      <p class="evidence text-small"><code>resident/src/effects.ts:320–323, 548–559</code>; <code>mc/boundary/blocked.go:95–97</code>. This is a source-based exposure assessment, not a claim that I found a secret.</p>
+    </div></details>
+    <details class="priority-critical" open>
+      <summary class="cursor-interaction">Before release: remove assumptions about secret isolation</summary><div class="detail-body">
+      <p class="finding-label text-small">High priority · Confirmed credential projection · Small policy changes, larger technical fix</p>
+      <p>Static provider keys enter the container unchanged. OAuth access tokens also enter it. Project secret references become process environment values.</p>
+      <p>Use dedicated development accounts and the narrowest available permissions. Set provider spend limits and keep production credentials outside Project environments.</p>
+      <p>State that dependency commands and agent commands can read credentials in their process environment. Redaction limits accidental disclosure only.</p>
+      <p><strong>Technical fix:</strong> move static provider keys behind the credential gateway. Extend support to OAuth after the protocol tests pass.</p>
+      <p class="evidence text-small"><code>resident/src/credential-projector.ts:654–675</code>; <code>runner/shared/project-environment.ts:66–91</code>.</p>
+    </div></details>
+    <details>
+      <summary class="cursor-interaction">Low effort: add the public security contract and automated scans</summary><div class="detail-body">
+      <ul>
+        <li>Add <code>SECURITY.md</code> with a private disclosure route, supported versions, and response expectations.</li>
+        <li>Document one trusted operator, readable data, network access, and the limits of prompt-injection defenses.</li>
+        <li>Scan the full Git history and release archives for secrets before publication. Rotate real credentials that appear in history.</li>
+        <li>Add dependency vulnerability checks for Go, Bun, Node.js, and container packages to continuous integration (CI).</li>
+        <li>Add automated dependency update proposals. Preserve exact version pins and the current credential-free pull request jobs.</li>
+        <li>Document credential revocation, trace retention, backup protection, and recovery after a suspected compromise.</li>
+      </ul>
+      <p>I found no tracked <code>SECURITY.md</code> or dedicated vulnerability-scan job in the reviewed checkout. Existing tests and checksum checks remain valuable.</p>
+      <p class="evidence text-small">Evidence: tracked file inventory; <code>.github/workflows/release.yml</code>; <code>INSTALL.md:100</code>. Full secret-history and dependency scans remain unverified.</p>
+    </div></details>
+    <details>
+      <summary class="cursor-interaction">Low to moderate effort: strengthen browser and data controls</summary><div class="detail-body">
+      <ul>
+        <li>Expand the dashboard Content Security Policy beyond <code>frame-src 'self'</code>. Restrict scripts, connections, embedding, objects, and base URLs.</li>
+        <li>Test exact Origin checks, including ports. Keep bearer authorization on every state request.</li>
+        <li>Review the durable dashboard token in browser local storage. A script injection could steal it; this review found no such exploit.</li>
+        <li>Add explicit token rotation and logout behavior. A host session cookie can reduce token exposure to scripts, with request-forgery protection.</li>
+        <li>Validate permissions on credential and secret files. Keep secrets out of ordinary variables, traces, backups, and generated review artifacts.</li>
+        <li>Test processor, memory, process, disk, and log limits. The reviewed launch code already limits the first three.</li>
+      </ul>
+      <p class="evidence text-small">Evidence: <code>dashboard/src/server.ts:17, 148–169</code>; <code>dashboard/src/ui/app.js:263–282</code>; <code>resident/src/environment-lane.ts:45–46</code>. These are additional controls, not confirmed browser exploits.</p>
+    </div></details>
+    <details>
+      <summary class="cursor-interaction">Substantive work: enforce outbound network policy</summary><div class="detail-body">
+      <p>Real agent containers use Docker’s default network path. The launch code provides no destination allowlist or host-service exclusion.</p>
+      <p>Restrict direct outbound traffic outside the agent process. Proxy environment variables alone cannot enforce this policy.</p>
+      <ul>
+        <li>Start with explicit provider, package registry, and Project service destinations.</li>
+        <li>Block other host services, private network addresses, and cloud metadata addresses.</li>
+        <li>Test proxy bypass through raw sockets, alternate DNS, Internet Protocol version 6, redirects, and address changes.</li>
+        <li>Separate dependency preparation from credentialed execution where feasible.</li>
+        <li>Define an explicit unrestricted mode with accurate disclosure of its access.</li>
+      </ul>
+      <p class="evidence text-small"><code>resident/src/environment-lane.ts:42–49</code>; <code>resident/src/effects.ts:529, 650, 1050–1053</code>.</p>
+    </div></details>
+    <details>
+      <summary class="cursor-interaction">Substantive work: reduce trusted code and verify releases</summary><div class="detail-body">
+      <ul>
+        <li>Replace the in-container setuid path with the authenticated command service described in the Sandboxes section.</li>
+        <li>Separate inference credentials from repository tools through separate processes with enforced identities, or separate containers.</li>
+        <li>Require specific approval for external side effects and changes to authority. Prompt instructions cannot enforce those restrictions.</li>
+        <li>Add verifiable release signatures, build provenance, and a software bill of materials.</li>
+        <li>Consider a separate virtual machine or host for mutually untrusted Projects. Ordinary containers share the Docker host kernel.</li>
+        <li>Add malicious-repository tests for cross-Project reads, credential access, control-command abuse, and trace disclosure.</li>
+      </ul>
+      <p>Checksums detect mismatched bytes. A checksum from the same compromised source cannot independently establish publisher identity.</p>
+      <p class="evidence text-small">Design recommendations. Current release evidence: <code>.github/workflows/release.yml</code>; <code>install.sh:166–169</code>. I found no explicit release signature verification in those paths.</p>
+    </div></details>
+  </section>
+<section class="report-panel" id="cs-compare" role="tabpanel" aria-labelledby="cs-tab-compare" hidden><h2 class="print-only">Project comparison</h2>
+    <p class="lead-answer"><strong>Culler starts with stronger mandatory command isolation than the default host installations of these two projects.</strong></p>
+    <p>OpenClaw and Hermes offer more explicit optional security controls and public guidance. Their optional controls do not establish that either default deployment is safer.</p>
+    <p>This comparison covers <code>openclaw/openclaw</code> and <code>NousResearch/hermes-agent</code>. I used DeepWiki for discovery and primary documentation for the claims below.</p>
+    <div class="comparison-intro">
+  <article class="compare-card"><span>Culler default</span><strong>Container execution</strong><p>Mandatory isolation; credentials still enter the container.</p></article>
+  <article class="compare-card"><span>OpenClaw default</span><strong>Sandbox off</strong><p>Optional Docker isolation and a separate secret proxy.</p></article>
+  <article class="compare-card"><span>Hermes default</span><strong>Host execution</strong><p>Optional Docker isolation and iron-proxy integration.</p></article>
+</div>
+<div class="table-responsive">
+      <table class="table comparison">
+        <thead><tr><th>Control</th><th>Culler</th><th>OpenClaw</th><th>Hermes Agent</th></tr></thead>
+        <tbody>
+          <tr><th>Default command location</th><td>Agent containers are mandatory.</td><td>Sandbox mode defaults to off. Docker is the default backend when enabled. <a href="https://docs.openclaw.ai/gateway/sandboxing/modes-scope-and-backend" target="_blank" rel="noopener noreferrer">Source</a></td><td>The local backend runs commands on the host by default. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/configuration/#local-backend" target="_blank" rel="noopener noreferrer">Source</a></td></tr>
+          <tr><th>Container restrictions</th><td>Non-root user; all capabilities dropped; resource limits. Agent containers omit <code>no-new-privileges</code>.</td><td>The Docker backend defaults to no network, read-only root, and all capabilities dropped. It enables <code>no-new-privileges</code>. <a href="https://docs.openclaw.ai/gateway/sandboxing/docker-backend" target="_blank" rel="noopener noreferrer">Source</a></td><td>The Docker backend uses <code>no-new-privileges</code> and process limits. It restores three file-management capabilities. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/security#container-isolation" target="_blank" rel="noopener noreferrer">Source</a></td></tr>
+          <tr><th>Credentials outside tools</th><td>Refresh grants stay on the host. Static keys and access tokens enter the container.</td><td>An optional proxy substitutes destination-bound secret placeholders for Gateway-hosted commands. <a href="https://docs.openclaw.ai/gateway/secrets/secret-store-and-egress" target="_blank" rel="noopener noreferrer">Source</a></td><td>An optional iron-proxy integration replaces provider environment keys with opaque tokens in Docker sandboxes. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/egress/iron-proxy" target="_blank" rel="noopener noreferrer">Source</a></td></tr>
+          <tr><th>Outbound restrictions</th><td>Real agent launches permit the default network path.</td><td>The optional proxy allowlist covers clients that obey proxy settings. Raw sockets can bypass it. <a href="https://docs.openclaw.ai/gateway/secrets/secret-store-and-egress#traffic-allowlist" target="_blank" rel="noopener noreferrer">Source</a></td><td>Docker network access defaults to enabled. The proxy documents a raw-socket bypass limit. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/configuration/" target="_blank" rel="noopener noreferrer">Network</a> · <a href="https://hermes-agent.nousresearch.com/docs/user-guide/egress/iron-proxy#security-model" target="_blank" rel="noopener noreferrer">Proxy</a></td></tr>
+          <tr><th>Command approvals</th><td>Harness approval prompts are disabled. Culler enforces role commands and workflow decisions.</td><td>Tool policy and execution approvals supplement optional isolation. Elevated execution can leave the sandbox. <a href="https://docs.openclaw.ai/gateway/sandboxing" target="_blank" rel="noopener noreferrer">Source</a></td><td>Smart approval is the default. Unattended risky commands default to denial. Isolated backends skip dangerous-command checks. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/security" target="_blank" rel="noopener noreferrer">Source</a></td></tr>
+          <tr><th>Operator access</th><td>Local bearer-authenticated dashboard with Host and Origin checks.</td><td>A regular host install binds loopback. Unknown direct-message senders usually require pairing. One trusted boundary per gateway. <a href="https://docs.openclaw.ai/gateway/security" target="_blank" rel="noopener noreferrer">Source</a></td><td>Message authorization uses allowlists and pairing. Channel exposure needs separate review. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/security" target="_blank" rel="noopener noreferrer">Source</a></td></tr>
+          <tr><th>Security operations</th><td>Extensive boundary tests and deployment checks. Public disclosure and scan coverage need work.</td><td>A dedicated security audit reports configuration risks. It offers limited automatic repairs. <a href="https://docs.openclaw.ai/gateway/security/running-the-audit" target="_blank" rel="noopener noreferrer">Source</a></td><td>Skills Guard scans skill content. The documentation distinguishes heuristic checks from actual containment. <a href="https://hermes-agent.nousresearch.com/docs/user-guide/security" target="_blank" rel="noopener noreferrer">Source</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="evidence text-small">Culler evidence: <code>resident/src/environment-lane.ts:42</code>; <code>credential-projector.ts:654</code>; <code>dashboard/src/server.ts:129</code>; harness adapters; release workflow.</p>
+
+    <h3>Three comparison details matter</h3>
+    <ul>
+      <li><strong>OpenClaw’s secret proxy has limited scope.</strong> Its automatic integration excludes sandbox commands, remote node commands, and provider-native harness subprocesses.</li>
+      <li><strong>Hermes’s proxy protects selected environment credentials.</strong> It does not protect arbitrary mounted credential files or a compromised host process.</li>
+      <li><strong>Neither proxy is a complete network boundary.</strong> Both projects document limits when a process ignores the proxy and opens raw sockets.</li>
+    </ul>
+    <p class="evidence text-small"><a href="https://docs.openclaw.ai/gateway/secrets/secret-store-and-egress#traffic-allowlist" target="_blank" rel="noopener noreferrer">OpenClaw scope and limits</a> · <a href="https://hermes-agent.nousresearch.com/docs/user-guide/egress/iron-proxy#security-model" target="_blank" rel="noopener noreferrer">Hermes scope and limits</a>.</p>
+    <p><strong>What to adopt:</strong> explicit secret access modes, authenticated grants, a deployment security report, and clear public threat-model documentation.</p>
+    <p><strong>What to prove independently:</strong> actual packet restrictions, isolation between Projects, and the scope of each credential grant.</p>
+  </section>
+<section class="report-panel" id="cs-evidence" role="tabpanel" aria-labelledby="cs-tab-evidence" hidden><h2 class="print-only">Evidence</h2>
+    <h3>Scope and evidence</h3>
+    <p>I reviewed Culler at commit <code>816470a9f790005da233081a7d8ef60ba84b5973</code>. The task branch is <code>research/security-posture-2026-10-19</code>.</p>
+    <p>The review covered container launches, credentials, role boundaries, Project secrets, browser access, and release controls. I changed no application code or deployment settings.</p>
+    <p>The external comparison reflects documentation retrieved on 19 October 2026. DeepWiki returned no indexed commit identifier in its answers.</p>
+    <p>DeepWiki’s OpenClaw answer described Docker execution as default in one passage and sandbox mode as off elsewhere. Primary documentation resolves that distinction.</p>
+    <h3>Executed checks</h3><div class="test-results">
+  <div class="test-result"><strong>61 passed</strong><span>Selected resident tests</span></div>
+  <div class="test-result"><strong>51 passed</strong><span>Selected dashboard tests</span></div>
+  <div class="test-result"><strong>2 groups passed</strong><span>Selected Go package groups</span></div>
+</div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Check</th><th>Result</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Resident credential projector, refresh broker, and Homie envelope tests</td><td>61 passed; 0 failed.</td><td>Confirmed projection behavior and container-envelope validation. Confirmed arbitrary refresh-token input receives a synthetic access token.</td></tr>
+          <tr><td>Dashboard server, AgentsView proxy, wiki server, and Markdown tests</td><td>51 passed; 0 failed.</td><td>Confirmed selected browser authorization and content rules.</td></tr>
+          <tr><td>Selected Go boundary and Project archive tests</td><td>Both selected package groups passed.</td><td>Covered environment restrictions, blocked paths, mount allowlists, and rejection of privileged archive entries.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Initial dashboard tests failed to create temporary listeners under the execution sandbox. They passed with listener permission.</p>
+    <p>The Go tests initially could not write their default cache. They passed with a writable task cache.</p>
+    <h3>Checks that remain unverified</h3>
+    <ul>
+      <li>The deployed containers, Docker Desktop network behavior, and host firewall rules.</li>
+      <li>Live provider authentication, full Docker boundary tests, and a container-escape assessment.</li>
+      <li>A full secret scan of Git history and a current dependency vulnerability scan.</li>
+      <li>Live file permissions, token rotation, trace contents, backups, and repository protection settings.</li>
+      <li>The complete project test suite and external-project runtime behavior.</li>
+    </ul>
+    <p>I used synthetic credentials in tests. I did not read live secret values or send Culler source code to DeepWiki.</p>
+    <h3>Primary external sources</h3>
+    <ul class="source-list">
+      <li><a href="https://learn.chatgpt.com/docs/sandboxing" target="_blank" rel="noopener noreferrer">Codex sandbox documentation</a> and <a href="https://learn.chatgpt.com/docs/auth" target="_blank" rel="noopener noreferrer">authentication documentation</a>.</li>
+      <li><a href="https://code.claude.com/docs/en/sandboxing" target="_blank" rel="noopener noreferrer">Claude Code sandbox documentation</a>.</li>
+      <li><a href="https://docs.openclaw.ai/gateway/security" target="_blank" rel="noopener noreferrer">OpenClaw security model</a>, <a href="https://docs.openclaw.ai/gateway/sandboxing/docker-backend" target="_blank" rel="noopener noreferrer">Docker backend</a>, and <a href="https://docs.openclaw.ai/gateway/secrets/secret-store-and-egress" target="_blank" rel="noopener noreferrer">secret proxy</a>.</li>
+      <li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/security" target="_blank" rel="noopener noreferrer">Hermes security model</a>, <a href="https://hermes-agent.nousresearch.com/docs/user-guide/configuration/" target="_blank" rel="noopener noreferrer">configuration defaults</a>, and <a href="https://hermes-agent.nousresearch.com/docs/user-guide/egress/iron-proxy" target="_blank" rel="noopener noreferrer">iron-proxy integration</a>.</li>
+    </ul>
+    <details>
+      <summary class="cursor-interaction">DeepWiki research records</summary><div class="detail-body">
+      <ul>
+        <li><a href="https://deepwiki.com/search/describe-the-current-security_87179b95-0f8d-4bd5-a51f-f5ace9b25a7e" target="_blank" rel="noopener noreferrer">OpenClaw security research</a>.</li>
+        <li><a href="https://deepwiki.com/search/describe-the-current-security_57214095-b4bb-4e55-a2eb-8cff6fb63448" target="_blank" rel="noopener noreferrer">Hermes Agent security research</a>.</li>
+      </ul>
+    </div></details>
+  </section>
+        <div class="section-footer"><span>Source evidence and recommendations remain distinct throughout this report.</span><button class="next-btn" id="next-section" type="button">Next: Proxy &amp; secrets →</button></div>
+        <footer class="document-footer"><span>Culler · Security research · 19 October 2026</span><span>Source review and selected tests · Application code unchanged</span></footer>
+      </main>
+    </div>
+  </div>
+  <noscript><style>.report-panel[hidden]{display:block!important}.section-nav,.next-btn,.print-btn{display:none}.print-only{display:block}.report-panel{margin-top:50px}</style><p>All report sections appear below when JavaScript is disabled.</p></noscript>
+  <script>
+  (() => {
+    'use strict';
+    const sections = [
+      {id:'assessment',label:'Assessment',title:'Culler security posture',kicker:'Open-source release review',deck:'Container isolation is a strong foundation. Credentials and outbound access need tighter controls before release.'},
+      {id:'proxy',label:'Proxy & secrets',title:'Keep credentials outside the agent.',kicker:'Network access & credentials',deck:'The resident refreshes tokens. It does not provide a general proxy or enforce an outbound network policy.'},
+      {id:'sandbox',label:'Sandboxes',title:'Resolve the privilege conflict first.',kicker:'Container & process isolation',deck:'The inner sandboxes are disabled deliberately. Their privilege restrictions conflict with Culler’s protected command path.'},
+      {id:'priorities',label:'Priorities',title:'What to fix before release.',kicker:'Priorities & implementation effort',deck:'Start with the refresh endpoint and data access. Then add the public security contract and stronger technical boundaries.'},
+      {id:'compare',label:'Comparison',title:'Culler, OpenClaw & Hermes.',kicker:'Defaults, options & limits',deck:'Compare the controls that each project enables by default. Optional controls need separate assessment.'},
+      {id:'evidence',label:'Evidence',title:'The evidence behind the review.',kicker:'Source scope & verification',deck:'The review combines source inspection, selected tests, DeepWiki research, and primary documentation.'}
+    ];
+    const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+    let current = 0;
+    const select = (index, updateHash = true, scroll = true, focus = false) => {
+      current = index;
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.classList.toggle('active', i === index);
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].hidden = i !== index;
+      });
+      const item = sections[index];
+      document.getElementById('current-section').textContent = item.label;
+      document.getElementById('page-title').textContent = item.title;
+      document.getElementById('page-kicker').textContent = item.kicker;
+      document.getElementById('page-deck').textContent = item.deck;
+      document.getElementById('section-index').textContent = String(index + 1).padStart(2,'0') + ' / 06';
+      document.getElementById('next-section').textContent = index < 5 ? 'Next: ' + sections[index + 1].label + ' →' : 'Return to assessment ↑';
+      if (updateHash && location.hash !== '#' + item.id) {
+        try { history.pushState(null, '', '#' + item.id); } catch (_) { location.hash = item.id; }
+      }
+      if (focus) tabs[index].focus({preventScroll:true});
+      if (scroll) window.scrollTo({top:0,behavior:'instant'});
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', event => {
+        const keys = ['ArrowDown','ArrowRight','ArrowUp','ArrowLeft','Home','End'];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        let next = i;
+        if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else next = (i + (['ArrowDown','ArrowRight'].includes(event.key) ? 1 : -1) + tabs.length) % tabs.length;
+        select(next,true,false,true);
+      });
+    });
+    document.querySelectorAll('[data-section]').forEach(button => button.addEventListener('click', () => {
+      const index = sections.findIndex(item => item.id === button.dataset.section);
+      if (index >= 0) select(index,true,true,true);
+    }));
+    document.getElementById('next-section').addEventListener('click', () => select((current + 1) % sections.length,true,true,true));
+    const fromHash = () => {
+      const index = sections.findIndex(item => '#' + item.id === location.hash);
+      if (index >= 0) select(index,false);
+      else if (!location.hash) select(0,false);
+    };
+    window.addEventListener('popstate', fromHash);
+    window.addEventListener('hashchange', fromHash);
+    const media = window.matchMedia('(max-width:800px)');
+    const orientation = () => document.querySelector('[role="tablist"]').setAttribute('aria-orientation',media.matches ? 'horizontal' : 'vertical');
+    media.addEventListener('change', orientation);
+    orientation();
+    let savedDetails = null;
+    window.addEventListener('beforeprint', () => {
+      if (savedDetails) return;
+      savedDetails = Array.from(document.querySelectorAll('details')).map(item => [item,item.open]);
+      savedDetails.forEach(([item]) => {item.open = true;});
+    });
+    window.addEventListener('afterprint', () => {
+      if (savedDetails) savedDetails.forEach(([item,open]) => {item.open = open;});
+      savedDetails = null;
+    });
+    document.getElementById('print-report').addEventListener('click', () => window.print());
+    fromHash();
+  })();
+  </script>
+</body>
+</html>

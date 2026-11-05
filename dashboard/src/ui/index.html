@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Culler</title>
+  <meta name="theme-color" content="#1f5078">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f5078'/%3E%3Cg transform='translate(-1.2 11.6) scale(.57)'%3E%3Cpath fill='%23f3f6f9' d='M48.2 63.2C39.9 63 32.5 61.8 26.7 59.8C20.2 57.5 14.8 53 13.4 48.7C12.7 46.8 12.8 45.7 13.5 45.3C14.3 44.9 14.9 45.1 16.3 46.2C19.7 49.1 23 50.9 28.6 52.6C33 54 35.9 54.6 40.5 55.1C50.5 56.1 60.9 55.6 68.2 53.7C76.1 51.6 80.3 49.8 84.7 46.5C86.7 45 87.1 44.9 87.9 45.3C88.6 45.7 88.7 46.7 88.2 48.3C87.3 51.1 85.3 53.5 81.4 56.1C77.2 58.9 74.2 60.1 67.3 61.5C61.7 62.7 53.5 63.4 48.2 63.2ZM47.8 53.6C44.4 53.5 39.5 53 37.1 52.6C32.1 51.7 28.6 50.8 24.9 49.2C17.7 46.1 11.5 41.1 10.6 37.7C10.1 35.6 11.3 33.6 13.2 33.3C14.3 33.2 14.8 33.5 16.4 35.5C19.4 39 25.7 42.3 32.5 43.8C44.2 46.4 53.5 46.7 64.8 44.8C75.1 43.1 82.5 39.7 86.4 34.7C87.7 33 90 33.4 90.9 35.5C91.1 35.9 91.2 36.1 91.2 37C91.2 38 91.1 38.1 90.8 38.8C89.9 40.7 87.5 43 84 45.3C74.8 51.3 62.4 54.2 47.8 53.6ZM47.9 44.4C44.1 44.2 42.4 43.9 41.9 43.5C41.2 43 40.7 41.6 40.3 39.8C39.8 36.5 40.8 32.3 42.8 29.3C44.3 27 46.6 25.6 48.7 25.6C50.1 25.6 51.7 26.2 53 27.2C57.6 30.9 60 40.3 57.1 43.5C56.7 44 56.4 44.2 55.5 44.3C54.8 44.4 49 44.5 47.9 44.4ZM34.1 42.5C29.4 41.5 25.6 40.1 22.8 38.4C20 36.8 19.5 36 19.6 33.3C19.6 31.8 19.6 31.2 20.1 29.7C21.1 26.3 23.6 23.3 26.3 22C27.4 21.6 28.2 21.4 29.4 21.4C33.8 21.4 37.6 25.4 38.9 31.4C39.2 32.8 39.3 36.5 39 38.1C38.6 39.9 37.9 41.5 37.1 42.4C36.6 43 36.1 43 34.1 42.5Z'/%3E%3Cpath fill='%23ec8b55' d='M63 43.5C62.6 43.3 61.6 42.6 61.2 42.2C60.7 41.6 60.5 41.1 60.3 40.1C59.7 36 59.1 34 57.9 31.4L57.4 30.4L57.4 29.4C57.4 27.7 57.9 25.5 58.8 23.6C59.2 22.7 59.5 22.3 59.8 22.3C60 22.3 60.1 22.4 60.5 23.4C60.6 23.8 60.8 24.4 61 24.7C61.1 24.9 61.2 25.3 61.2 25.5C61.4 26 61.7 27 61.9 27.3C62.1 27.6 62.2 27.6 63.1 27.2C63.4 27 64 26.7 64.4 26.6C64.7 26.5 65.1 26.3 65.4 26.2C66.3 25.8 66.5 25.8 66.8 26C66.9 26.1 67.1 26.5 67.3 26.9C67.4 27.3 67.7 27.8 67.9 28.1C68 28.4 68.3 29 68.4 29.4C68.7 30.3 69.2 31.3 69.3 31.4C69.4 31.4 70.1 31.1 70.9 30.7C73.7 29.4 73.6 29.4 74 30C74.1 30.2 74.5 30.8 74.9 31.2C75.2 31.7 75.6 32.3 75.8 32.6C76.3 33.5 76.8 34.2 77 34.2C77.1 34.2 77.7 33.8 78.7 33C79.6 32.2 81 31.1 81.5 30.6C82.2 29.9 82.4 29.8 82.7 30.1C82.8 30.3 82.8 30.5 82.8 32C82.8 32.8 82.8 33.7 82.7 33.9C82.7 34.1 82.5 34.6 82.4 35C81.8 37 80.7 38.2 78.2 39.4C76.8 40.2 73.9 41.3 72.1 41.8C71.8 41.8 71.4 42 71.2 42C69.4 42.5 66.9 43.1 65.3 43.3C64.9 43.4 64.3 43.5 64 43.5C63.4 43.6 63.3 43.6 63 43.5ZM76.9 32C76.7 31.7 75.9 30.6 75 29.1C74.6 28.4 74.2 27.8 74.1 27.8C73.9 27.7 73.6 27.8 72.2 28.5C70 29.7 70 29.7 69.5 28.6C68.2 25.8 68 25.4 68 25.3C68 25.2 67.7 24.5 67.5 24.2C67.3 23.9 66.7 24 64.3 25.1C64.1 25.2 63.9 25.3 63.8 25.3C63.8 25.3 63.6 25.4 63.4 25.5C62.7 25.8 62.7 25.7 61.8 23.6C60.9 21.2 60.8 20.5 61.2 20.1C61.6 19.7 61.6 19.7 62.6 20.2C63.4 20.7 63.7 20.8 64 20.6C64.7 20.2 67 18.4 68.5 17C69.8 15.8 69.9 15.5 69.7 14.2C69.2 11.6 69.2 10.4 69.8 8.4C71 4.3 75 1.5 79.4 1.6C81.6 1.7 82.9 2.3 84.8 3.9C85.2 4.2 85.3 4.2 85.8 4.2C86.7 4.2 88.8 3.6 91.1 2.6C92.1 2.2 92.7 2.1 92.7 2.3C92.7 2.7 91.2 4.5 89.3 6.4C88.5 7.2 87.8 7.9 87.8 7.9C87.8 8 88.8 8.1 90.6 8.3C93.5 8.6 93.8 8.9 91.8 9.6C89.6 10.4 86.5 12 86.3 12.5C86.1 13 84.7 15 84 15.8C82.5 17.4 82.5 17.3 82.5 20.9C82.4 24 82.2 25.2 81.6 27C81 29 80.3 29.9 78.4 31.5C77.4 32.3 77.2 32.3 76.9 32ZM88.1 27.5C87.9 27.5 87.7 27.4 87.6 27.4C86.8 27.4 84.4 26.3 84.1 25.9C83.7 25.4 83.7 20.9 84 19.7C84.4 18 85.4 16.6 87 15.4C88 14.7 89.3 14.1 91.7 13.3C94.5 12.4 95.8 11.8 98.4 10.2C101.5 8.4 103.2 7.8 104.3 8.1C105.6 8.5 106 9.7 105.3 11.3C104.6 12.6 103.2 14.2 101.6 15.4C101.1 15.8 100.6 16.2 100.4 16.3L100.1 16.6L100.8 16.6C101.7 16.7 102.1 16.8 102.4 17.3C102.7 17.7 102.7 17.9 102.4 18.5C101.8 19.9 100.3 21 97.7 21.8C97 22 96.2 22.2 95.9 22.3C95 22.5 95 22.5 95.5 22.7C96.3 23.1 96.6 23.8 96.3 24.6C95.7 25.8 93.9 26.9 91.5 27.5C90.7 27.6 88.4 27.6 88.1 27.5ZM80.7 10.8C81.1 10.7 81.5 10.4 81.8 10.1C83.4 8.6 83 6.1 81 5.2C80.5 5 80.3 5 79.7 5C78.4 5.1 77.6 5.6 77 6.6C76.6 7.4 76.6 8.6 77 9.4C77.7 10.7 79.4 11.3 80.7 10.8Z'/%3E%3Ccircle cx='80' cy='8.2' r='3.1' fill='%23f3f6f9'/%3E%3Cpath fill='%23133554' d='M79.9 8.6C78.5 7.8 79.3 5.6 80.9 5.7C82.1 5.9 82.7 7.2 82 8.2C81.6 8.8 80.6 9 79.9 8.6Z'/%3E%3C/g%3E%3C/svg%3E">
+  <script>
+    // The theme applies before the first paint: the stored selection, or the theme of the system.
+    (() => {
+      let theme = null;
+      try { theme = localStorage.getItem("mc.theme"); } catch {}
+      if (theme !== "light" && theme !== "dark") theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+      // The background picture shows only after the operator selects it.
+      let scene = null;
+      try { scene = localStorage.getItem("mc.scene"); } catch {}
+      document.documentElement.dataset.scene = scene === "shown" ? "shown" : "hidden";
+    })();
+  </script>
+  <link rel="preload" href="/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="header-navigation">
+        <div class="scope-switcher">
+          <h1 class="scope">
+            <span class="brand">
+              <button type="button" class="brand-button" id="scene-button" data-testid="scene-button" aria-label="Background picture" aria-pressed="false" title="Show the background picture"><svg class="brand-mark" viewBox="9 0.5 98 64" aria-hidden="true"><path class="nest" d="M48.2 63.2C39.9 63 32.5 61.8 26.7 59.8C20.2 57.5 14.8 53 13.4 48.7C12.7 46.8 12.8 45.7 13.5 45.3C14.3 44.9 14.9 45.1 16.3 46.2C19.7 49.1 23 50.9 28.6 52.6C33 54 35.9 54.6 40.5 55.1C50.5 56.1 60.9 55.6 68.2 53.7C76.1 51.6 80.3 49.8 84.7 46.5C86.7 45 87.1 44.9 87.9 45.3C88.6 45.7 88.7 46.7 88.2 48.3C87.3 51.1 85.3 53.5 81.4 56.1C77.2 58.9 74.2 60.1 67.3 61.5C61.7 62.7 53.5 63.4 48.2 63.2ZM47.8 53.6C44.4 53.5 39.5 53 37.1 52.6C32.1 51.7 28.6 50.8 24.9 49.2C17.7 46.1 11.5 41.1 10.6 37.7C10.1 35.6 11.3 33.6 13.2 33.3C14.3 33.2 14.8 33.5 16.4 35.5C19.4 39 25.7 42.3 32.5 43.8C44.2 46.4 53.5 46.7 64.8 44.8C75.1 43.1 82.5 39.7 86.4 34.7C87.7 33 90 33.4 90.9 35.5C91.1 35.9 91.2 36.1 91.2 37C91.2 38 91.1 38.1 90.8 38.8C89.9 40.7 87.5 43 84 45.3C74.8 51.3 62.4 54.2 47.8 53.6Z"/><path class="egg" d="M47.9 44.4C44.1 44.2 42.4 43.9 41.9 43.5C41.2 43 40.7 41.6 40.3 39.8C39.8 36.5 40.8 32.3 42.8 29.3C44.3 27 46.6 25.6 48.7 25.6C50.1 25.6 51.7 26.2 53 27.2C57.6 30.9 60 40.3 57.1 43.5C56.7 44 56.4 44.2 55.5 44.3C54.8 44.4 49 44.5 47.9 44.4ZM34.1 42.5C29.4 41.5 25.6 40.1 22.8 38.4C20 36.8 19.5 36 19.6 33.3C19.6 31.8 19.6 31.2 20.1 29.7C21.1 26.3 23.6 23.3 26.3 22C27.4 21.6 28.2 21.4 29.4 21.4C33.8 21.4 37.6 25.4 38.9 31.4C39.2 32.8 39.3 36.5 39 38.1C38.6 39.9 37.9 41.5 37.1 42.4C36.6 43 36.1 43 34.1 42.5Z"/><path class="chick" d="M63 43.5C62.6 43.3 61.6 42.6 61.2 42.2C60.7 41.6 60.5 41.1 60.3 40.1C59.7 36 59.1 34 57.9 31.4L57.4 30.4L57.4 29.4C57.4 27.7 57.9 25.5 58.8 23.6C59.2 22.7 59.5 22.3 59.8 22.3C60 22.3 60.1 22.4 60.5 23.4C60.6 23.8 60.8 24.4 61 24.7C61.1 24.9 61.2 25.3 61.2 25.5C61.4 26 61.7 27 61.9 27.3C62.1 27.6 62.2 27.6 63.1 27.2C63.4 27 64 26.7 64.4 26.6C64.7 26.5 65.1 26.3 65.4 26.2C66.3 25.8 66.5 25.8 66.8 26C66.9 26.1 67.1 26.5 67.3 26.9C67.4 27.3 67.7 27.8 67.9 28.1C68 28.4 68.3 29 68.4 29.4C68.7 30.3 69.2 31.3 69.3 31.4C69.4 31.4 70.1 31.1 70.9 30.7C73.7 29.4 73.6 29.4 74 30C74.1 30.2 74.5 30.8 74.9 31.2C75.2 31.7 75.6 32.3 75.8 32.6C76.3 33.5 76.8 34.2 77 34.2C77.1 34.2 77.7 33.8 78.7 33C79.6 32.2 81 31.1 81.5 30.6C82.2 29.9 82.4 29.8 82.7 30.1C82.8 30.3 82.8 30.5 82.8 32C82.8 32.8 82.8 33.7 82.7 33.9C82.7 34.1 82.5 34.6 82.4 35C81.8 37 80.7 38.2 78.2 39.4C76.8 40.2 73.9 41.3 72.1 41.8C71.8 41.8 71.4 42 71.2 42C69.4 42.5 66.9 43.1 65.3 43.3C64.9 43.4 64.3 43.5 64 43.5C63.4 43.6 63.3 43.6 63 43.5ZM76.9 32C76.7 31.7 75.9 30.6 75 29.1C74.6 28.4 74.2 27.8 74.1 27.8C73.9 27.7 73.6 27.8 72.2 28.5C70 29.7 70 29.7 69.5 28.6C68.2 25.8 68 25.4 68 25.3C68 25.2 67.7 24.5 67.5 24.2C67.3 23.9 66.7 24 64.3 25.1C64.1 25.2 63.9 25.3 63.8 25.3C63.8 25.3 63.6 25.4 63.4 25.5C62.7 25.8 62.7 25.7 61.8 23.6C60.9 21.2 60.8 20.5 61.2 20.1C61.6 19.7 61.6 19.7 62.6 20.2C63.4 20.7 63.7 20.8 64 20.6C64.7 20.2 67 18.4 68.5 17C69.8 15.8 69.9 15.5 69.7 14.2C69.2 11.6 69.2 10.4 69.8 8.4C71 4.3 75 1.5 79.4 1.6C81.6 1.7 82.9 2.3 84.8 3.9C85.2 4.2 85.3 4.2 85.8 4.2C86.7 4.2 88.8 3.6 91.1 2.6C92.1 2.2 92.7 2.1 92.7 2.3C92.7 2.7 91.2 4.5 89.3 6.4C88.5 7.2 87.8 7.9 87.8 7.9C87.8 8 88.8 8.1 90.6 8.3C93.5 8.6 93.8 8.9 91.8 9.6C89.6 10.4 86.5 12 86.3 12.5C86.1 13 84.7 15 84 15.8C82.5 17.4 82.5 17.3 82.5 20.9C82.4 24 82.2 25.2 81.6 27C81 29 80.3 29.9 78.4 31.5C77.4 32.3 77.2 32.3 76.9 32ZM88.1 27.5C87.9 27.5 87.7 27.4 87.6 27.4C86.8 27.4 84.4 26.3 84.1 25.9C83.7 25.4 83.7 20.9 84 19.7C84.4 18 85.4 16.6 87 15.4C88 14.7 89.3 14.1 91.7 13.3C94.5 12.4 95.8 11.8 98.4 10.2C101.5 8.4 103.2 7.8 104.3 8.1C105.6 8.5 106 9.7 105.3 11.3C104.6 12.6 103.2 14.2 101.6 15.4C101.1 15.8 100.6 16.2 100.4 16.3L100.1 16.6L100.8 16.6C101.7 16.7 102.1 16.8 102.4 17.3C102.7 17.7 102.7 17.9 102.4 18.5C101.8 19.9 100.3 21 97.7 21.8C97 22 96.2 22.2 95.9 22.3C95 22.5 95 22.5 95.5 22.7C96.3 23.1 96.6 23.8 96.3 24.6C95.7 25.8 93.9 26.9 91.5 27.5C90.7 27.6 88.4 27.6 88.1 27.5ZM80.7 10.8C81.1 10.7 81.5 10.4 81.8 10.1C83.4 8.6 83 6.1 81 5.2C80.5 5 80.3 5 79.7 5C78.4 5.1 77.6 5.6 77 6.6C76.6 7.4 76.6 8.6 77 9.4C77.7 10.7 79.4 11.3 80.7 10.8Z"/><circle class="eye" cx="80" cy="8.2" r="3.1"/><path class="pupil" d="M79.9 8.6C78.5 7.8 79.3 5.6 80.9 5.7C82.1 5.9 82.7 7.2 82 8.2C81.6 8.8 80.6 9 79.9 8.6Z"/></svg></button>
+              <span class="scope-root">Culler</span>
+            </span>
+            <span id="project-context" data-testid="project-context" class="project-context">
+              <span class="scope-separator" aria-hidden="true">/</span>
+              <button type="button" id="project-button" data-testid="project-button" class="scope-button" disabled
+                aria-haspopup="dialog" aria-expanded="false" aria-controls="project-panel" title="Select a Project">
+                <span class="scope-name" id="project-name">Project</span>
+                <i class="scope-pause-dot" id="project-pause-dot" data-testid="project-pause-dot" aria-hidden="true" hidden></i>
+                <svg class="scope-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </span>
+          </h1>
+          <div class="scope-panel" id="project-panel" role="dialog" aria-label="Projects" hidden>
+            <div class="scope-panel-title">
+              <span><strong>Projects</strong> <span aria-hidden="true">·</span> <span id="project-count">—</span></span>
+              <span>A pause blocks new dispatch only.</span>
+            </div>
+            <ul class="scope-list" id="project-listbox" data-testid="project-listbox"></ul>
+            <button class="btn" id="project-add" data-testid="project-add" type="button">Add Project</button>
+            <div class="scope-foot" id="pipeline-controls" aria-label="Pipeline controls" hidden>
+              <span id="pipeline-pause-error" data-testid="pipeline-pause-error" role="alert" hidden></span>
+              <button class="btn" id="pipeline-pause" data-testid="pipeline-pause" type="button" disabled>Pause all</button>
+            </div>
+          </div>
+        </div>
+        <nav class="seg" aria-label="Dashboard pages">
+          <span class="nav-group" role="group" aria-label="Project pages">
+            <button class="tab active" data-testid="tab-board" data-panel="board-pane" data-page="board" type="button">Board</button>
+            <button class="tab" data-testid="tab-review" data-panel="review-pane" data-page="review" type="button">Review<span class="count" data-testid="review-count" hidden></span></button>
+            <button class="tab" data-testid="tab-pipeline" data-panel="pipeline-pane" data-page="pipeline" type="button">Pipeline</button>
+          </span>
+          <span class="nav-divider" aria-hidden="true"></span>
+          <span class="nav-group" role="group" aria-label="System pages">
+            <button class="tab" data-testid="tab-homie" data-panel="homie-pane" data-page="homie" type="button">Homie</button>
+            <button class="tab" data-testid="tab-logs" data-panel="logs-pane" data-page="logs" type="button">Logs</button>
+            <button class="tab" data-testid="tab-configs" data-panel="configs-pane" data-page="configs" type="button">Configs</button>
+          </span>
+        </nav>
+        <!-- The viewers open in a separate browser tab. They are links, not page
+             tabs: the page tab selectors never match them. -->
+        <div class="viewer-links" data-testid="viewer-links">
+          <a class="viewer-link" id="header-wiki" data-testid="header-wiki" target="_blank" rel="noopener noreferrer"
+             aria-label="Wiki, opens a new tab" aria-disabled="true" tabindex="0" title="Loading wiki status…">Wiki <span class="external-mark" aria-hidden="true">↗</span></a>
+          <a class="viewer-link" id="header-traces" data-testid="header-traces" target="_blank" rel="noopener noreferrer"
+             aria-label="Traces, opens a new tab" aria-disabled="true" tabindex="0" title="Loading AgentsView status…">Traces <span class="external-mark" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="header-status">
+        <button class="theme-button" id="theme-button" data-testid="theme-button" type="button" aria-label="Dark theme" aria-pressed="false" title="Use the dark theme">
+          <svg class="moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 9.7A5.7 5.7 0 0 1 6.3 2.6a5.7 5.7 0 1 0 7.1 7.1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <svg class="sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.3v1.5M8 13.2v1.5M1.3 8h1.5M13.2 8h1.5M3.3 3.3l1 1M11.7 11.7l1 1M3.3 12.7l1-1M11.7 4.3l1-1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <span class="lease-badge free" id="lease-badge" data-testid="lease-badge" title="One lease per Project: every held lease is named here">
+          <i class="dot"></i><span class="text">Loading lease state…</span>
+        </span>
+      </div>
+    </header>
+    <script>
+      // Set the navigation before modules and data arrive.
+      (() => {
+        const raw = location.hash.replace(/^#\/?/, "");
+        let page = raw.includes("=") ? "board" : raw.split("/").filter(Boolean)[0];
+        if (page === "activity") page = "pipeline";
+        if (!["board", "review", "pipeline", "homie", "configs", "logs", "vision", "environment"].includes(page)) page = "board";
+        document.documentElement.dataset.initialPage = page;
+        const context = document.getElementById("project-context");
+        context.classList.toggle("muted", !["board", "review", "pipeline"].includes(page));
+        try {
+          const id = localStorage.getItem("mc.project");
+          const saved = JSON.parse(localStorage.getItem("mc.project-label") || "null");
+          if (id) document.getElementById("project-name").textContent = saved?.id === id ? saved.name : id;
+        } catch {}
+        for (const tab of document.querySelectorAll("nav.seg .tab")) {
+          const active = tab.dataset.page === page;
+          tab.classList.toggle("active", active);
+          tab.setAttribute("aria-current", active ? "page" : "false");
+        }
+        const tab = document.querySelector("nav.seg .tab.active");
+        const nav = tab?.closest("nav.seg");
+        if (nav && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = Math.max(0, tab.offsetLeft - (nav.clientWidth - tab.offsetWidth) / 2);
+      })();
+    </script>
+
+    <aside id="system-notices" data-testid="system-notices" class="system-notices" aria-label="System health"><div class="system-notice-pending" role="status">Loading system status…</div></aside>
+    <main>
+      <div class="docker-notice" id="docker-error" data-testid="docker-error" role="alert" hidden>
+        <strong>Docker is unavailable</strong>
+        <p>Open Docker Desktop and wait for Docker to start.</p>
+        <p>Culler needs Docker to read task data and run agents. This dashboard reconnects automatically.</p>
+        <details id="docker-error-disclosure">
+          <summary>Technical details</summary>
+          <pre id="docker-error-details"></pre>
+        </details>
+      </div>
+
+      <div id="project-vision" data-testid="project-vision" hidden></div>
+
+      <!-- ============================================================ 1. Board -->
+      <section id="board-pane" class="panel" data-testid="board-pane" aria-busy="true">
+        <p id="board-pending" class="sr-only" data-testid="board-pending" role="status">Loading tasks…</p>
+        <div class="panel-head" id="board-heading">
+          <h2 tabindex="-1">Board <span class="paused-mark" id="board-paused" data-testid="board-paused" hidden>Paused · no new runs start</span> <small>Follow each task from proposal to review.</small></h2>
+          <button class="btn primary" id="board-create" data-testid="board-create" type="button" disabled>Create task</button>
+        </div>
+        <div id="board-system-status" data-testid="board-system-status"></div>
+        <div id="board-project" data-testid="board-project" hidden></div>
+        <div id="board-setup" data-testid="board-setup" hidden></div>
+        <div id="board-vision" data-testid="board-vision"></div>
+        <div class="stat-row" id="board-stats" data-testid="board-stats"><span class="stat stat-lead" data-testid="stat-blocked"><b>—</b><span class="stat-label">Blocked tasks</span></span><span class="stat stat-lead" data-testid="stat-active"><b>—</b><span class="stat-label">Agent runs</span></span><span class="stat" data-testid="stat-total"><b>—</b><span class="stat-label">Tasks</span></span><span class="stat" data-testid="stat-stalled"><b>—</b><span class="stat-label">Stalled</span></span></div>
+        <div class="cols" id="board-columns" data-testid="board-columns">
+          <div class="col" data-testid="board-column-proposed"><div class="column-head"><h3><i class="dot dot-proposed" aria-hidden="true"></i>Proposed</h3><span class="column-count" aria-label="Task count is unavailable">—</span></div><div class="stack"><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div></div></div>
+          <div class="col" data-testid="board-column-seeded"><div class="column-head"><h3><i class="dot dot-seeded" aria-hidden="true"></i>Seeded</h3><span class="column-count" aria-label="Task count is unavailable">—</span></div><div class="stack"><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div></div></div>
+          <div class="col" data-testid="board-column-worked"><div class="column-head"><h3><i class="dot dot-worked" aria-hidden="true"></i>Worked</h3><span class="column-count" aria-label="Task count is unavailable">—</span></div><div class="stack"><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div></div></div>
+          <div class="col" data-testid="board-column-verified"><div class="column-head"><h3><i class="dot dot-verified" aria-hidden="true"></i>Verified</h3><span class="column-count" aria-label="Task count is unavailable">—</span></div><div class="stack"><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div></div></div>
+          <div class="col" data-testid="board-column-packaged"><div class="column-head"><h3><i class="dot dot-packaged" aria-hidden="true"></i>Packaged</h3><span class="column-count" aria-label="Task count is unavailable">—</span></div><div class="stack"><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div><div class="skeleton-card" data-testid="board-skeleton-card" aria-hidden="true"></div></div></div>
+        </div>
+      </section>
+
+      <div id="board-command-root"></div>
+
+      <!-- ============================================================ 2. Homie -->
+      <section id="homie-pane" class="panel conversation-page" data-testid="homie-pane" hidden>
+        <header class="vision-bar">
+          <h2 class="vision-title">Homie</h2>
+          <div class="vision-actions">
+            <span id="homie-stats" data-testid="homie-stats"></span>
+          </div>
+        </header>
+        <div class="homie-grid">
+          <aside class="vision-panel homie-sessions" aria-label="Sessions">
+            <div class="vision-panel-bar"><h3>Sessions</h3></div>
+            <div class="session-list" id="session-list" data-testid="session-list" tabindex="0" aria-label="Sessions"><div class="loading" role="status">Loading sessions…</div></div>
+          </aside>
+          <section class="vision-panel vision-conversation" aria-label="Conversation with Homie">
+            <div class="vision-panel-bar" id="homie-controls">
+              <h3>Conversation</h3>
+              <p class="sr-only" id="homie-head" data-testid="homie-head">Loading sessions…</p>
+              <button class="btn primary" id="new-session" data-testid="new-session" type="button">New session</button>
+            </div>
+            <div class="transcript" id="homie-transcript" data-testid="homie-transcript" tabindex="0" aria-label="Conversation with Homie"><div class="empty" role="status">The transcript awaits a session.</div></div>
+            <div class="homie-compose-status">
+              <p class="conversation-status" id="homie-hint" data-testid="homie-hint" role="status" hidden></p>
+              <button class="btn small" id="resume" data-testid="resume" type="button" hidden>Resume this session</button>
+            </div>
+            <div id="homie-composer"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="vision-pane" class="panel conversation-page" data-testid="vision-pane" hidden></section>
+      <section id="environment-pane" class="panel" data-testid="environment-pane" hidden></section>
+
+      <!-- ==================================================== 3. Review Queue -->
+      <section id="review-pane" class="panel" data-testid="review-pane" hidden>
+        <div class="review-list" id="review-list" data-testid="review-list">
+          <div class="panel-head">
+            <h2><span id="review-title">Review Queue</span> <small id="review-subtitle">Review the results before changes merge.</small></h2>
+            <div class="controls">
+              <div class="filterbar segmented" data-testid="packet-views" role="group" aria-label="Review view">
+                <button class="pick on" data-view="live" data-testid="packet-view-live" type="button" aria-pressed="true">Live queue</button>
+                <button class="pick" data-view="ledger" data-testid="packet-view-ledger" type="button" aria-pressed="false">Ledger</button>
+              </div>
+            </div>
+          </div>
+          <div class="stat-row" id="review-stats" data-testid="review-stats"></div>
+          <div class="review-queue">
+            <div class="subhead">Packets <small id="queue-note" data-testid="queue-note"></small></div>
+            <div class="ledger-filter-row" id="ledger-filters" data-testid="ledger-filters" hidden>
+              <span>Show</span>
+              <div class="filterbar segmented" role="group" aria-label="Ledger filter">
+                <button class="pick on" data-filter="approved" data-testid="ledger-filter-approved" type="button" aria-pressed="true">Approved <span class="pick-count" id="ledger-count-approved"></span></button>
+                <button class="pick" data-filter="cancelled" data-testid="ledger-filter-cancelled" type="button" aria-pressed="false">Cancelled <span class="pick-count" id="ledger-count-cancelled"></span></button>
+                <button class="pick" data-filter="all" data-testid="ledger-filter-all" type="button" aria-pressed="false">All <span class="pick-count" id="ledger-count-all"></span></button>
+              </div>
+            </div>
+            <div class="queue" id="packets" data-testid="packets" tabindex="-1" aria-label="Packet list"></div>
+            <div class="empty" id="review-empty" data-testid="review-empty" hidden>Nothing awaiting decision.</div>
+          </div>
+        </div>
+        <div class="reader-empty" id="reader-empty" data-testid="reader-empty" role="status"></div>
+        <!-- The reader: one packet beside the queue column. Only the
+             content area and the open panel scroll. Below 960 px the reader
+             covers the window, and each other part of the page is inert. -->
+        <div class="reader" id="packet-reader" data-testid="packet-reader" role="region" aria-labelledby="reader-title" tabindex="-1" hidden>
+          <header class="reader-bar" data-testid="reader-bar">
+            <button class="reader-close" id="reader-close" data-testid="reader-close" type="button">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span id="reader-close-label">Review Queue</span>
+              <span class="count" id="reader-close-count" title="Packets that await a decision" hidden></span>
+            </button>
+            <h2 class="reader-title" id="reader-title" data-testid="reader-title"></h2>
+            <span class="reader-tags" id="reader-tags" data-testid="reader-tags"></span>
+            <div class="reader-tools">
+              <div class="facts-actions" id="reader-actions">
+                <button class="btn small" id="task-open" data-testid="packet-task-open" type="button" aria-haspopup="dialog">Task</button>
+              </div>
+              <div class="reader-nav" role="group" aria-label="Move through the packet list">
+                <button class="reader-step" id="reader-previous" data-testid="reader-previous" type="button" aria-label="Previous packet" title="Previous packet">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <span class="reader-position" id="reader-position" data-testid="reader-position"></span>
+                <button class="reader-step" id="reader-next" data-testid="reader-next" type="button" aria-label="Next packet" title="Next packet">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- The view row selects the content of the reader: the packet or
+               the files that the change holds. Below 960 px the row also
+               selects the Homie view. -->
+          <div class="reader-views" id="reader-views" data-testid="reader-views">
+            <div class="view-tabs" role="tablist" aria-label="Review content">
+              <button class="view-tab" id="view-packet" data-testid="reader-view-packet" data-reader-view="packet" type="button" role="tab" aria-selected="true" aria-controls="packet-render" tabindex="0">Packet</button>
+              <button class="view-tab" id="view-changes" data-testid="reader-view-changes" data-reader-view="changes" type="button" role="tab" aria-selected="false" aria-controls="changes-view" tabindex="-1">Files changed</button>
+              <button class="view-tab" id="view-homie" data-testid="reader-view-homie" data-reader-view="homie" type="button" role="tab" aria-selected="false" aria-controls="reader-homie-view" tabindex="-1">Homie</button>
+            </div>
+            <!-- The display controls of the Files changed view. -->
+            <div class="changes-tools" id="changes-tools" data-testid="changes-tools" hidden>
+              <button class="btn small ghost changes-tree-toggle" id="changes-tree-toggle" data-testid="changes-tree-toggle" type="button" aria-controls="changes-side" aria-expanded="true">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.75" y="2.75" width="12.5" height="10.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.25 3v10" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+                <span id="changes-tree-label">Hide the file tree</span>
+              </button>
+              <div class="filterbar segmented changes-layouts" role="group" aria-label="Diff layout" data-testid="changes-layouts">
+                <button class="pick on" data-layout="unified" data-testid="changes-layout-unified" type="button" aria-pressed="true">Unified</button>
+                <button class="pick" data-layout="split" data-testid="changes-layout-split" type="button" aria-pressed="false">Side by side</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="reader-error" id="reader-error" data-testid="reader-error" role="alert" hidden>
+            <span class="msg" id="reader-error-message"></span>
+            <button class="close" id="reader-error-close" type="button" aria-label="Dismiss">✕</button>
+          </div>
+
+          <div class="reader-main">
+            <div class="report" id="packet-render" data-testid="packet-render" role="tabpanel" aria-labelledby="view-packet"></div>
+            <!-- Files changed: the recorded Git changes of the merge candidate.
+                 The tree selects the file that the diff shows. -->
+            <section class="changes view-inactive" id="changes-view" data-testid="changes-view" role="tabpanel" aria-labelledby="view-changes" inert>
+              <!-- The commits show below the file tree, or below the state
+                   text when the view shows no file tree. -->
+              <div class="changes-state" id="changes-state" data-testid="changes-state" hidden>
+                <div class="changes-message" id="changes-message" role="status"></div>
+              </div>
+              <div class="changes-body" id="changes-body" hidden>
+                <div class="changes-side" id="changes-side" data-testid="changes-side">
+                  <p class="changes-summary" id="changes-summary" data-testid="changes-summary"></p>
+                  <nav class="changes-tree" id="changes-tree" data-testid="changes-tree" aria-label="Changed files"></nav>
+                  <ul class="facts-list changes-facts" id="changes-facts" data-testid="changes-facts" aria-label="Commits of the comparison"></ul>
+                </div>
+                <div class="changes-file" id="changes-file" data-testid="changes-file" hidden>
+                  <header class="changes-file-head" id="changes-file-head"></header>
+                  <ul class="changes-notes" id="changes-notes" data-testid="changes-notes" hidden></ul>
+                  <div class="changes-diff" id="changes-diff" data-testid="changes-diff" tabindex="0" role="region" aria-label="Diff of the selected file"></div>
+                </div>
+              </div>
+            </section>
+            <!-- The Homie view holds the quick chat below 960 px. -->
+            <section class="reader-homie view-inactive" id="reader-homie-view" data-testid="reader-homie-view" role="tabpanel" aria-labelledby="view-homie" inert></section>
+          </div>
+
+          <div id="evaluation-control" class="evaluation-control" hidden></div>
+          <div class="reader-decision" id="reader-decision" data-testid="packet-decision-bar">
+            <button class="btn primary" id="packet-homie-open" data-testid="packet-homie-open" type="button" aria-expanded="false" aria-controls="packet-chat-column">Ask Homie</button>
+            <div class="decision-main">
+              <p class="packet-decision" id="packet-decision" data-testid="packet-decision" hidden></p>
+              <p class="reader-block" id="reader-block-reason" data-testid="reader-block-reason" hidden></p>
+              <div class="decide" id="packet-decide" data-testid="packet-decide" hidden>
+                <div class="decide-row">
+                  <div class="buttons">
+                    <button class="btn approve" id="packet-approve" data-testid="packet-approve" type="button">Approve</button>
+                    <button class="btn revise" id="packet-revise" data-testid="packet-revise" type="button">Revise</button>
+                    <button class="btn cancel" id="packet-cancel" data-testid="packet-cancel" type="button">Cancel</button>
+                  </div>
+                </div>
+                <span class="decide-note" id="decide-note" data-testid="decide-note"></span>
+                <div class="reason-block" id="reason-block" data-testid="reason-block" hidden>
+                  <label for="packet-reason" id="reason-label">Reason</label>
+                  <div class="reason-row">
+                    <textarea class="field" id="packet-reason" data-testid="packet-reason" rows="2"
+                              placeholder="Say what to change, or why the change stops."></textarea>
+                    <button class="btn primary" id="decide-submit" data-testid="packet-decide-submit" type="button" hidden>Send</button>
+                    <button class="btn ghost" id="decide-abandon" data-testid="decide-abandon" type="button" hidden>Never mind</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- The chat column holds the quick chat beside the reader at 960 px
+             and more. -->
+        <div class="packet-chat-resize" id="packet-chat-resize" data-testid="packet-chat-resize" role="separator"
+             tabindex="0" aria-label="Homie width" aria-orientation="vertical" aria-controls="packet-chat-column"
+             aria-valuemin="320" aria-valuemax="400" aria-valuenow="400"
+             title="Drag or use the arrow keys to resize Homie. Double-click to reset the width." hidden></div>
+        <aside class="packet-chat-column" id="packet-chat-column" data-testid="packet-chat-column" aria-label="Homie" hidden></aside>
+      </section>
+
+      <!-- Pipeline -->
+      <section id="pipeline-pane" class="panel" data-testid="pipeline-pane" hidden>
+        <div class="panel-head">
+          <h2>Pipeline <small>See what runs now and what comes next.</small></h2>
+          <button class="btn" id="pipeline-profiles" data-testid="pipeline-profiles" type="button">Model configuration</button>
+        </div>
+
+        <div class="topology" id="pipeline-topology" data-testid="pipeline-topology">
+          <div class="loading" role="status">Loading leases…</div>
+        </div>
+
+        <section id="activity-pane" class="pipeline-activity" data-testid="activity-pane" aria-labelledby="activity-title">
+          <div class="panel-head">
+            <h3 id="activity-title">Activity <small>Events and dispatch errors.</small></h3>
+            <div class="controls">
+              <input class="field" id="activity-kind" data-testid="activity-kind" type="text"
+                     list="activity-kinds" autocomplete="off" placeholder="Filter by kind…"
+                     aria-label="Filter activity by kind">
+              <datalist id="activity-kinds"></datalist>
+              <label class="check"><input type="checkbox" id="activity-tail" data-testid="activity-tail" checked> Live tail</label>
+            </div>
+          </div>
+          <div class="stream">
+            <div class="head">
+              <div class="activity-tabs" role="tablist" aria-label="Activity streams">
+                <button id="activity-tab-events" data-testid="activity-tab-events" class="activity-tab" type="button"
+                        role="tab" aria-selected="true" aria-controls="activity-events" tabindex="0" data-activity-stream="events">
+                  Events <span class="activity-total" id="activity-events-total">—</span>
+                </button>
+                <button id="activity-tab-errors" data-testid="activity-tab-errors" class="activity-tab" type="button"
+                        role="tab" aria-selected="false" aria-controls="activity-errors" aria-describedby="activity-help" tabindex="-1" data-activity-stream="errors">
+                  Dispatch errors <span class="activity-total" id="activity-errors-total">—</span>
+                </button>
+              </div>
+              <span class="count" id="events-count" data-testid="events-count"></span>
+              <span class="count" id="errors-count" data-testid="errors-count" hidden></span>
+            </div>
+            <p class="activity-help" id="activity-help" data-testid="activity-help">Dispatch errors come from checks before Culler starts a run. See Recent runs for run failures.</p>
+            <div class="rows" id="activity-events" data-testid="activity-events" role="tabpanel" aria-labelledby="activity-tab-events" tabindex="0">
+              <div class="loading" role="status">Loading events…</div>
+            </div>
+            <div class="rows" id="activity-errors" data-testid="activity-errors" role="tabpanel" aria-labelledby="activity-tab-errors" tabindex="0" hidden>
+              <div class="loading" role="status">Loading dispatch errors…</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="panelcard">
+          <h3>Recent runs <small>Read the run diagnostics or open the trace.</small></h3>
+          <div id="pipeline-runs" data-testid="pipeline-runs"><div class="loading" role="status">Loading runs…</div></div>
+        </div>
+      </section>
+
+      <!-- ========================================================== 6. Configs -->
+      <section id="configs-pane" class="panel" data-testid="configs-pane" hidden>
+        <div class="config-workspace">
+          <aside class="config-sidebar">
+            <h2>Configs</h2>
+            <nav class="config-nav" aria-label="Configuration sections">
+              <a href="#configs/system" data-config-section="system" data-testid="config-nav-system" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/></svg><div>System<span>Health and delivery</span></div></a>
+              <a href="#configs/agents" data-config-section="agents" data-testid="config-nav-agents"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="8" width="14" height="12" rx="2"/><path d="M12 8V4H9M2 13v3M22 13v3M9 12v2M15 12v2M9 17h6"/></svg><div>Agents<span>Roles and models</span></div></a>
+              <a href="#configs/projects" data-config-section="projects" data-testid="config-nav-projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a2 2 0 0 1 2-2h5l3 4h6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg><div>Projects<span>Environments and controls</span></div></a>
+              <a href="#configs/discord" data-config-section="discord" data-testid="config-nav-discord" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H4a2 2 0 0 0-2 2v11l4-4h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM10 16v1a2 2 0 0 0 2 2h6l4 3V11a2 2 0 0 0-2-2h-1"/></svg><div>Discord<span>Conversations and alerts</span></div></a>
+              <a href="#configs/advanced" data-config-section="advanced" data-testid="config-nav-advanced"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h5m4 0h9M3 12h12m4 0h2M3 19h2m4 0h12M8 2v6m7 1v6M5 16v6"/></svg><div>Advanced settings<span>Shared configuration</span><small id="configs-draft-indicator" hidden>Unsaved changes</small></div></a>
+            </nav>
+          </aside>
+          <div class="config-content">
+            <div id="configs-content">
+              <section id="config-section-system" class="config-section" data-testid="config-section-system" aria-labelledby="config-system-title">
+                <header class="config-section-head"><div><h3 id="config-system-title" tabindex="-1">System</h3><p>Review deployment health, trace access, and delivery status.</p></div></header>
+                <section class="panelcard system-health-card" aria-labelledby="system-health-title">
+                  <div class="system-health-head">
+                    <h4 id="system-health-title">System health</h4>
+                    <span id="system-health-summary" class="system-health-status" role="status"></span>
+                  </div>
+                  <div class="system-health-grid">
+                    <section class="system-health-section">
+                      <div class="system-section-head">
+                        <h5>Deployment</h5>
+                        <button class="btn" id="doctor-run" data-testid="doctor-run" type="button">Re-check deployment</button>
+                      </div>
+                      <div id="pipeline-doctor" data-testid="pipeline-doctor">
+                        <div id="deployment-status"></div>
+                        <details id="deployment-findings" class="system-disclosure" hidden>
+                          <summary>View checks</summary><div id="deployment-checks"></div>
+                          <div class="controls" id="doctor-links" data-testid="doctor-links"></div>
+                        </details>
+                      </div>
+                      <div class="system-release" data-testid="release-controls">
+                        <div class="system-section-head">
+                          <h5>Updates</h5>
+                          <button class="btn" id="release-check" type="button">Check for updates</button>
+                        </div>
+                        <div id="release-status" role="status">Release availability is not checked.</div>
+                        <p id="release-action-status" class="system-helper" role="status"></p>
+                        <button class="btn" id="release-open" type="button">Open installer</button>
+                      </div>
+                    </section>
+                    <section class="system-health-section">
+                      <div class="system-section-head"><h5>Resident</h5></div>
+                      <div id="pipeline-health" data-testid="pipeline-health">
+                        <div id="resident-status"></div>
+                        <details id="resident-history" class="system-disclosure">
+                          <summary>Historical diagnostics</summary>
+                          <p>These records describe past events. They do not indicate the current state.</p>
+                          <div id="resident-findings"></div>
+                          <div id="pipeline-health-attention" data-testid="pipeline-health-attention"></div>
+                        </details>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="system-health-section">
+                    <h5>Connections</h5>
+                    <div id="system-connections" class="system-connection-list"></div>
+                    <details id="system-connection-more" class="system-disclosure" hidden>
+                      <summary id="system-connection-summary">Connections</summary>
+                      <div id="system-connection-rest" class="system-connection-list"></div>
+                    </details>
+                  </div>
+                  <div id="system-execution-section" class="system-health-section" hidden>
+                    <h5>Execution</h5><div id="system-execution"></div>
+                  </div>
+                </section>
+
+                <details class="panelcard system-delivery">
+                  <summary>Delivery status</summary>
+                  <div id="pipeline-outbox" data-testid="pipeline-outbox"></div>
+                </details>
+              </section>
+              <section id="config-section-agents" class="config-section" data-testid="config-section-agents" aria-labelledby="config-agents-title" hidden>
+                <header class="config-section-head"><div><h3 id="config-agents-title" tabindex="-1">Agents</h3><p>Assign an agent profile to each role across all Projects.</p></div><button class="btn" id="configs-profiles" data-testid="configs-profiles" type="button">Model configuration</button></header>
+                <div class="panelcard config-role-card">
+                  <h4>Shared role assignments</h4>
+                  <p class="system-helper">Changes apply to new runs. Active runs keep their original profile.</p>
+                  <div id="configs-routing" data-testid="configs-routing"><div class="loading" role="status">Loading agent routes…</div></div>
+                </div>
+              </section>
+              <section id="config-section-projects" class="config-section" data-testid="config-section-projects" aria-labelledby="config-projects-title" hidden>
+                <header class="config-section-head"><div><h3 id="config-projects-title" tabindex="-1">Projects</h3><p>Manage each Project’s environment, role customization, and pipeline.</p></div><button class="btn" id="configs-add-project" data-testid="configs-add-project" type="button">Add Project</button></header>
+                <div class="panelcard">
+                  <p class="system-helper">A pause blocks new pipeline runs. Active runs continue. Homie remains available.</p>
+                  <div id="configs-projects" data-testid="configs-projects"><div class="loading" role="status">Loading Projects…</div></div>
+                </div>
+              </section>
+              <section id="config-section-discord" class="config-section" data-testid="config-section-discord" aria-labelledby="config-discord-title" hidden>
+                <header class="config-section-head"><div><h3 id="config-discord-title" tabindex="-1">Discord</h3><p>Talk to Homie and receive Culler alerts in your Discord server.</p></div></header>
+                <div id="discord-content" data-testid="discord-content"></div>
+              </section>
+              <section id="config-section-advanced" class="config-section" data-testid="config-section-advanced" aria-labelledby="config-advanced-title" hidden>
+                <header class="config-section-head"><div><h3 id="config-advanced-title" tabindex="-1">Advanced settings</h3><p>Adjust shared values. Each setting states when a change takes effect.</p></div></header>
+                <div class="panelcard config-advanced" id="configs-advanced">
+                  <p class="system-helper">These settings apply to all Projects. Each setting states when a saved change takes effect.</p>
+                  <input class="field" id="configs-search" data-testid="configs-search" type="text"
+                         autocomplete="off" placeholder="Filter settings by key…" aria-label="Filter settings by key">
+                  <div id="configs-knobs" data-testid="configs-knobs">
+                    <div class="loading" role="status">Loading effective configuration…</div>
+                  </div>
+                  <div class="config-actions config-savebar">
+                    <button class="btn primary" id="configs-save" type="button" disabled>Save changes</button>
+                    <button class="btn" id="configs-discard" type="button" disabled>Discard changes</button>
+                    <p id="configs-save-status" role="status" aria-live="polite"></p>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================== 7. System Logs -->
+      <section id="logs-pane" class="panel" data-testid="logs-pane" hidden>
+        <div class="panel-head">
+          <h2>System Logs <small>Raw resident, dashboard, AgentsView, and command process output, plus recorded run diagnostics.</small></h2>
+        </div>
+        <div class="controls logs-toolbar">
+          <label class="check" for="logs-limit">LIMIT</label>
+          <select class="field" id="logs-limit" data-testid="logs-limit" aria-label="Line limit">
+            <option value="500">500 lines</option>
+            <option value="1000">1000 lines</option>
+            <option value="1500">1500 lines</option>
+            <option value="2000">2000 lines</option>
+          </select>
+          <div class="controls" id="logs-levels"></div>
+          <input class="field" id="logs-grep" data-testid="logs-grep" type="search" autocomplete="off"
+                 placeholder="Search logs" aria-label="Search logs">
+          <span class="note" id="logs-matches" aria-live="polite"></span>
+          <label class="check"><input type="checkbox" id="logs-wrap" data-testid="logs-wrap"> Wrap lines</label>
+          <button class="btn ghost" id="logs-copy" data-testid="logs-copy" type="button">Copy visible</button>
+          <span id="logs-homie"></span>
+        </div>
+        <select id="logs-unit" data-testid="logs-unit" aria-label="Unit" hidden></select>
+        <select id="logs-run" data-testid="logs-run" aria-label="Run" hidden></select>
+        <div class="logs-layout">
+          <aside class="logs-sidebar">
+            <h3>PROCESSES</h3>
+            <div id="logs-processes"></div>
+            <h3>RECENT RUNS</h3>
+            <div id="logs-recent"></div>
+            <p class="note" id="logs-run-count"></p>
+          </aside>
+          <div class="logs-content">
+            <div class="logpane" id="logs-lines" data-testid="logs-lines" tabindex="0" aria-label="Log messages">
+              <div class="note">The logs load here.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="errorbox" id="error" data-testid="error" role="alert" hidden>
+        <span class="msg" id="error-message"></span>
+        <button class="close" id="error-close" type="button" aria-label="Dismiss">✕</button>
+      </div>
+    </main>
+
+    <!-- The task dialog (taskdialog.js): the full row of one task, over the
+         page. app.js fills the head and the body and keeps it in step with
+         the poll while it is open. -->
+    <dialog class="board-write-dialog" id="board-write-dialog" data-testid="board-write-dialog" aria-labelledby="board-write-heading"></dialog>
+
+    <dialog class="task-dialog ui-dialog" id="task-dialog" data-testid="task-dialog" aria-labelledby="task-dialog-title">
+      <div class="ui-dialog-shell">
+        <header class="td-head ui-dialog-head" id="task-dialog-head"></header>
+        <div class="td-body ui-dialog-body" id="task-dialog-body"></div>
+      </div>
+    </dialog>
+
+    <footer id="footer" data-testid="footer" hidden></footer>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

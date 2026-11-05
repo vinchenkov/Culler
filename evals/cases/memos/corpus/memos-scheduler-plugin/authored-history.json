@@ -1,0 +1,59 @@
+{
+  "application_tests_executed": false,
+  "author": "/root/case_corpus",
+  "base_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+  "created_at": "2026-10-02T22:21:01.982907+00:00",
+  "final_tree_matches_upstream": true,
+  "model_calls": 0,
+  "partitions": [
+    {
+      "input_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "paths": [
+        "plugin/scheduler/parser.go",
+        "plugin/scheduler/parser_test.go"
+      ],
+      "result_commit": "b560411559164f543f34a2c44d3f3a65e1072d5b",
+      "result_tree": "001b1e8fcca092c050263b8aca0bb28912122f64",
+      "title": "Parse cron schedules"
+    },
+    {
+      "input_commit": "b560411559164f543f34a2c44d3f3a65e1072d5b",
+      "paths": [
+        "plugin/scheduler/job.go",
+        "plugin/scheduler/job_test.go",
+        "plugin/scheduler/middleware.go",
+        "plugin/scheduler/middleware_test.go"
+      ],
+      "result_commit": "17cced6dfe7776fc2f46a25d1db291ebef0012ae",
+      "result_tree": "ebd900847dfd628d9b8f55ae02ea0c191a947c22",
+      "title": "Validate jobs and compose middleware"
+    },
+    {
+      "input_commit": "17cced6dfe7776fc2f46a25d1db291ebef0012ae",
+      "paths": [
+        "plugin/scheduler/scheduler.go",
+        "plugin/scheduler/scheduler_test.go",
+        "plugin/scheduler/integration_test.go",
+        "plugin/scheduler/example_test.go"
+      ],
+      "result_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f",
+      "result_tree": "d61635279157cf0573aceef228a57722bfc71111",
+      "title": "Execute and stop scheduled jobs"
+    },
+    {
+      "input_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f",
+      "paths": [
+        "plugin/scheduler/README.md",
+        "plugin/scheduler/doc.go"
+      ],
+      "result_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+      "result_tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb",
+      "title": "Document the scheduler package"
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "schema_version": 1,
+  "scope": "Actual fixture Git history derived from one pinned upstream change. No production Culler role executed these tasks.",
+  "upstream_commit": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8",
+  "upstream_tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb"
+}

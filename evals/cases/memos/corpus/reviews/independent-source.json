@@ -1,0 +1,2112 @@
+{
+  "application_tests_executed": false,
+  "case_count": 24,
+  "cases": [
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "c118b25c7c78654828b3a05556c1961b21afaf49f5e85b8e15c0c69c948c4fca"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "79d2f69d3a3c22c945391fcfcba0095a102f398827c038cc029947ea57ef94f4"
+        },
+        {
+          "id": "earlier-verdict",
+          "kind": "report",
+          "sha256": "39644c36045031b6e64aa8758357e899e220e03dbaef00ac9a7d644032306926"
+        },
+        {
+          "id": "correction",
+          "kind": "report",
+          "sha256": "25b656fe9af77446a63a241bbdb2c767cc7308b1c361392647066f9d71f1bf37"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "25555b5ad8f985871080b4d92a48dc31accc89ab36a9cd00864065f654e6edd9"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "47d9414702dc18966af385352b960bfe451511b7",
+      "changed_files": [
+        {
+          "path": "server/auth/authenticator.go",
+          "sha256": {
+            "base": "8b2425371e65914d1de53ca6ba96dd3352710c54d8f118d69444a9599ea82f8e",
+            "reviewed": "8942d7b7110333cc4ecde4d68e6e870fc1d6c79d2ac2d3e296c819ebe2a9b59d"
+          }
+        },
+        {
+          "path": "server/auth/context.go",
+          "sha256": {
+            "base": "1547ed5b0c252b85d152a7138e44ac0eb93da95d01dbe01a1fd50d8017630fc0",
+            "reviewed": "98456868852f173e465bb309274d5d4acc8c2bbca2ffe9a449f0d61180d1f5e4"
+          }
+        },
+        {
+          "path": "server/router/api/v1/connect_interceptors.go",
+          "sha256": {
+            "base": "c867bedfc6589cd4b36f54696f7ae419086d78f2b06baf5c01f678ffaf1381bd",
+            "reviewed": "c13c4ef476ad1d30f2b2e9c3721abb0b52feba20580d75899341ef910904bc87"
+          }
+        },
+        {
+          "path": "server/router/api/v1/v1.go",
+          "sha256": {
+            "base": "b758fdfaa72f49ece5b169cf72a7be6b63b4b8ee902aac40d146695d4649d917",
+            "reviewed": "5fb56d3768dc0fcff4f6ea293b6739021f9c4bca8105be6d906a3af448732cec"
+          }
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "sha256": {
+            "base": "4db1caf40197e203c89c19c4d4eff76375da4e5127c25204e1b0ba866860e425",
+            "reviewed": "556289463548fe6532ab1c239d9b25c312470db2534be843017f261631ffe7a9"
+          }
+        },
+        {
+          "path": "server/router/mcp/auth_middleware.go",
+          "sha256": {
+            "base": "d8d8fe20fabfc0bcb236eb1f6cb71cc254fe3b4470e71d2ef2cba8888d924e93",
+            "reviewed": "cd990f2bcbb538dc82d8b0e3214e1550fa02d2220e8baeffc963822dae6e1ebd"
+          }
+        },
+        {
+          "path": "server/router/mcp/mcp.go",
+          "sha256": {
+            "base": "4a8bc9768007b36529cb0967abab7cfe312b6b003d3eccf6b1ca82236ae2d235",
+            "reviewed": "83d2a5212019ab14a49c8ec0a7ad089945245b760ff0888ff70b39e7268dcf69"
+          }
+        },
+        {
+          "path": "server/server.go",
+          "sha256": {
+            "base": "7ac725671dae9b1a15f0626f2e1dc5d82f663a875b0244b9fae60feb01611d93",
+            "reviewed": "b313d7b93f463c23e74ebc412cfda623e00dcdfb0be4b0f751cb42f64c93928c"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-auth-helper-consolidation",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The shared helpers preserve the stated token order. Error paths differ, as the reports state.",
+        "The authored earlier verdict rejects universal behavior equivalence. The current report preserves the narrower source claim."
+      ],
+      "original_manifest_sha256": "afe3002f7d7ff98d253f328d23a5bbaf8a1c61485d7ddaafe2851b642e8ea598",
+      "reference_facts_hash": "ee6439c53f106ab773c3a78fab238a665f2c77b2fb9123be78c98160a38a0525",
+      "reference_limits_hash": "ff0addee16bc57d2bf7bcd1d08faef170ec4a1fe1edbd34bfe68f51432fc4e2c",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "26d10212c6e854987a235a790220cd8540cc158c",
+      "reviewed_diff_sha256": "25555b5ad8f985871080b4d92a48dc31accc89ab36a9cd00864065f654e6edd9",
+      "reviewed_tree": "c7d1d05162624c77f34d5f298b07617af3b03579",
+      "role_inputs_hash": "21ca8b095be83530be4819ea5aa66e64f85cb74caf85dc2ccbae98625f2059ad"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "192617a6df0b475fa37f18cde8d8e169463c38f8c7b280377da37a5fab2432da"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "2e486fdb4c276061d14545464c7d28389826bf9679d7bb5301d0f1e2415cd392"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "2e9bb98e3696bd994cf0a551c8c054e5afe35a48aef64f105be24f7286a2c36a"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "21303e879d2c7a857306206d2cbdae83f61983e6",
+      "changed_files": [
+        {
+          "path": "proto/api/v1/instance_service.proto",
+          "sha256": {
+            "base": "d4b84e7e861a973d6620f09d7a561bba4b69afd1cb7468cd4587148ec3165867",
+            "reviewed": "31ef63d59083bab73800ffba8adefda194b2ab14dbb5c44e1ce9123e6891aed3"
+          }
+        },
+        {
+          "path": "proto/gen/api/v1/apiv1connect/instance_service.connect.go",
+          "sha256": {
+            "base": "a5d2abe31ee7259eb77f8e8fbc8636693e96d464075e0dcc3aa2355ffe7b7a99",
+            "reviewed": "31f38b1617c2094e59ff0e8fc5d15c42fa3d52e9c53a2499e4b923bfe59166f4"
+          }
+        },
+        {
+          "path": "proto/gen/api/v1/instance_service.pb.go",
+          "sha256": {
+            "base": "aa6990578e1af39d2b188b97259f1b2ec7da272a8a683a4e131fd3b743dfc462",
+            "reviewed": "8c15916ee86196103d8197cf8feb47bc9a560998d0bb75f89ce9e060a2acfc6f"
+          }
+        },
+        {
+          "path": "proto/gen/api/v1/instance_service.pb.gw.go",
+          "sha256": {
+            "base": "594267c94952a9a1c9866a47652f6609e1b23037f328d174bfa7e1b605027623",
+            "reviewed": "3034e85eaaff2989275a0e93e45f57ac9692da8722cea20b02027feb5389e895"
+          }
+        },
+        {
+          "path": "proto/gen/api/v1/instance_service_grpc.pb.go",
+          "sha256": {
+            "base": "25aa2285f34dae9a5d091d444f2aa80caba367f1b60d5d804c1afc563bd2c23d",
+            "reviewed": "ec3b57a3c261d82d4e3c346a735b2fd2689e31f637fcfe72af157c56347de5b0"
+          }
+        },
+        {
+          "path": "proto/gen/openapi.yaml",
+          "sha256": {
+            "base": "ea04df8acaf504b1a8a0523a44f84b00ce6d4db97ede71da8a145bcdbb88826e",
+            "reviewed": "ee7d236570d6bfa7e7b8a16b83b56bb484102d27a187973896e76720927924f2"
+          }
+        },
+        {
+          "path": "server/router/api/v1/acl_config.go",
+          "sha256": {
+            "base": "be4650092b441c229488047dbcfe050d1a1c6ec2b08bcc7736516d3778b4413e",
+            "reviewed": "4df39702836b8078e06065b7b0451056d690a166d264253ba761c379a89d97fe"
+          }
+        },
+        {
+          "path": "server/router/api/v1/acl_config_test.go",
+          "sha256": {
+            "base": "d8faf0becbcaf5f10562f6b1113611a6727cb1e20761cb614144767e042daf1b",
+            "reviewed": "b11721706429c9abe787a99988d58f4fa77f952a0e7565737c0ac1de21bd8e11"
+          }
+        },
+        {
+          "path": "server/router/api/v1/connect_services.go",
+          "sha256": {
+            "base": "418197fcb0b3d207232545fdce53af97b10b6328ad24483bff42c8bd58db6851",
+            "reviewed": "07d233be0346a639744a396cda9da4e29ec68637fd8c7447f75499c0466dae74"
+          }
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "sha256": {
+            "base": "52542b5e9fe29acd6a11c0bd1a1e2ac4546b5c438928e3c155b04831455147df",
+            "reviewed": "460af813a4393502536ab06116cff9e64f0acc98a36e6070ad1df5f4a67df21e"
+          }
+        },
+        {
+          "path": "server/router/api/v1/test/instance_service_test.go",
+          "sha256": {
+            "base": "e53df7e1b8cbfb2082fb75b8446c74aedaa130f5738731aa7c42ffae21623d8f",
+            "reviewed": "b25e6866218c40c7cbdb4069e7ecb497038f1e9ea100df2e733918cd9ae0465b"
+          }
+        },
+        {
+          "path": "web/src/contexts/InstanceContext.tsx",
+          "sha256": {
+            "base": "8878fb09d052e5ad91447eaf7c20964f5e0c2c389374a82d66551e5695e08d88",
+            "reviewed": "806a5850761529ec60120dfe822e044083a038d12f103dcb7ae3f5056dcef027"
+          }
+        },
+        {
+          "path": "web/src/hooks/useInstanceQueries.ts",
+          "sha256": {
+            "base": "82505012ba70524eec54f4240a6b8ee83dc3d9da363f66cf968b5ed378655bb1",
+            "reviewed": "4bbf6a7159a5ac99e9c438f8d2ea012cd4952bdf63a7e2db1302a6f1e82402e4"
+          }
+        },
+        {
+          "path": "web/src/pages/Setting.tsx",
+          "sha256": {
+            "base": "79fcc31fb339c2ff60bafe8d8bca1658f8a0c6d0e9601ea8e73499d64efa1133",
+            "reviewed": "696498ecd9d093b61436c00049d79821346bed058059a50d56b92f044a2c90e6"
+          }
+        },
+        {
+          "path": "web/src/types/proto/api/v1/instance_service_pb.ts",
+          "sha256": {
+            "base": "38733c65a53b848949ed18d6d660cf2f9109861d1dd0ffd773f84ee4f5040b26",
+            "reviewed": "35984498a6f026ceee8f9f748e1a089c6673b8d129a7a31659287cf9e9cfa629"
+          }
+        },
+        {
+          "path": "web/tests/filtered-memo-stats.test.ts",
+          "sha256": {
+            "base": "67cf324533b0986639418388066b44f58396093d5eb588fec8c3a871b5cfa19b",
+            "reviewed": "758575f8c013186e4ab13f90b38da5be2b6915a9d9a802f01157b3e911744bcc"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-batch-instance-settings",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The interface, generated clients, access configuration, and frontend use the new batch operation.",
+        "The helper preserves per-group access restrictions. One request does not imply one database query."
+      ],
+      "original_manifest_sha256": "5452f1cdfd84163e6aa1f3e7dc9c01fbe2a41d32a31053bc0ef20a59105e1657",
+      "reference_facts_hash": "fadc964fdf234dce3725b094f2bef2e967c2ae58a8e41bc1d1229de67228c1ab",
+      "reference_limits_hash": "fea7d9a48970a5b376b87c69e0dc4f5c6bfd62073fff1542a296035fb515a8bf",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "f3f059b2f78666e3532c2f7639f7307f1756bcf8",
+      "reviewed_diff_sha256": "2e9bb98e3696bd994cf0a551c8c054e5afe35a48aef64f105be24f7286a2c36a",
+      "reviewed_tree": "2e2809f62f7a4afe03947f9dbe4fd382368ca352",
+      "role_inputs_hash": "dec0f716cf0562a6aa5f8bb335e8407187a58084a0af3962179826afa34c3427"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "a74ebf153170378ed70abc15c5de6ab76dc0a31f84bcd5335e6d5eb387caa857"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "2fca1ba4080d23d246fce803f60296f072ba9b85c5c2681c3ca077b32c6bc45a"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "a26b38351124497e4704994a08b34957f99be4db4c837470e6fbf8355cd0e79c"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "3d4f793f97b567bda823a60b7fe10e09e14499ce",
+      "changed_files": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "sha256": {
+            "base": "5e0ab641e4226c320f885b6ac96f77ed80f35875a0dff3e6b6f7c5a285887ee1",
+            "reviewed": "a338b2fea224e0eced13eb3f0a2071caa0901b57e80131f42684dbc783d719f0"
+          }
+        },
+        {
+          "path": "server/router/api/v1/memo_service_converter.go",
+          "sha256": {
+            "base": "fab5b449f50cbdcb2c43ea234f844391c0f28e9b5898a6f7a8f938c86959c2a9",
+            "reviewed": "0ec7b3a13d59942499bc36f23efbcce624b9873274b58ea25452c9e37c257c80"
+          }
+        },
+        {
+          "path": "server/router/api/v1/test/test_helper.go",
+          "sha256": {
+            "base": "0a141684d8b3760830ace725af8fdf012ebfa0dbcd745c6299636884aee26990",
+            "reviewed": "8cfc1bd5e9493a113afb2c7bb43dd79e729ab908605a8eecca82f31f826b680e"
+          }
+        },
+        {
+          "path": "store/db/mysql/memo_relation.go",
+          "sha256": {
+            "base": "93c9ceb69ead9c6b259a7dbbc699fc2dbd43e2f851c029e96caec9d9adb9b674",
+            "reviewed": "80d186be28f7fd587200fdbc70ccb0debdedcddddce7d9c28ff697ba4c6d6375"
+          }
+        },
+        {
+          "path": "store/db/postgres/memo_relation.go",
+          "sha256": {
+            "base": "121e2af5b35f8714892d02d52318381b6157adc646ed9923be07bdda72f5be5e",
+            "reviewed": "d30a2043d91c98288b886509c159a8a87c6bc90a5b5587517807ed482b25788c"
+          }
+        },
+        {
+          "path": "store/db/sqlite/memo_relation.go",
+          "sha256": {
+            "base": "7549e0b8a704bb3c59843dc7f12e7fe22ad0ae5543f2b80436d7c41c188b56d1",
+            "reviewed": "9539a3b48f49b7f03d6b5f1c9a9bb31f47b5191b964ecc983aa5e85abf574703"
+          }
+        },
+        {
+          "path": "store/memo_relation.go",
+          "sha256": {
+            "base": "73ed1a3b55506c1bef291cbef2d1bc06a71432552680783aaf131d590e9dd9f8",
+            "reviewed": "b7a3e53170a43b68b29aaab61cca7f39f3773e35f11dd50781fade78a7b9bbdd"
+          }
+        },
+        {
+          "path": "store/test/memo_relation_test.go",
+          "sha256": {
+            "base": "02417e76a1977f7bd3e4b6e5a5926b2d37bdeeeba27453b219573f35e5ad07ca",
+            "reviewed": "988b7e30b62bdb28bcb9c1a053113898570e8550ca14f3f7796175b54faa08f4"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-batch-memo-relations",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The converter loads both relation endpoints and applies visibility filters to both sides.",
+        "The empty-list path returns before the query. No numerical performance result appears in the evidence."
+      ],
+      "original_manifest_sha256": "9bb2756f1a52f37e91f38abc3e6134b87eb5bdec01debdc7fcf4fd1e39ca8301",
+      "reference_facts_hash": "d4e3202f0b233611b1aa7e81917b28db1de99510dffb8461badebe35242b5229",
+      "reference_limits_hash": "1482f0917ebfa6fa6a252b66b54ee4c07b6845ee4371a15a2b9f5f3e5e6599a6",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+      "reviewed_diff_sha256": "a26b38351124497e4704994a08b34957f99be4db4c837470e6fbf8355cd0e79c",
+      "reviewed_tree": "7eed498ec3b38ae6209dbba1673abf8764669497",
+      "role_inputs_hash": "c0c30607f91ae33b6220fe8c124f4c08e94de822368e4bb2c8969f87e0c6d1fb"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "c08680251176d2b274c95c909d1a88557ba105cfdd399278119326611e483637"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "16566e3ad8597040c20549cbe07c428c7222720a9ce61791ff26fff9ca938ab1"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "877905304550ea1e5e90f2ad278cd999fcd192b83f82a4d8b5d228dfa017c1e7"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "23a7e99a21e3f6d7feed34d807c3acd0c74a71f9",
+      "changed_files": [
+        {
+          "path": "server/router/rss/rss.go",
+          "sha256": {
+            "base": "c939e48aa08dad69b9223d61abe00a705ceed22ca15cb38fb5f561502f0c74ee",
+            "reviewed": "6a087cf79d95a7ecb974cb4fd8ace6487a98f53d09092cecc97ea44ff3905204"
+          }
+        },
+        {
+          "path": "store/db/mysql/user.go",
+          "sha256": {
+            "base": "fd25c1c5ce5cfa78509d33bcdd9b0bff339f7c4c955e702f4edfdb64a4d5dd71",
+            "reviewed": "3d915bfc8e520d7f412978b28f2d0430db479dcc069cb1a4c18f96665380b06f"
+          }
+        },
+        {
+          "path": "store/db/postgres/user.go",
+          "sha256": {
+            "base": "8d603998cc3837bf8f96e5f287530a36f79642509a8147813c09dea7d7d8ea90",
+            "reviewed": "64c8b6ec5d00831fdd0154ab2e49279088252ca893be27e6b675d6913c460423"
+          }
+        },
+        {
+          "path": "store/db/sqlite/user.go",
+          "sha256": {
+            "base": "5945b96c7756ec51cf29f16088813118da91d03abfc534df3c23bee736664c06",
+            "reviewed": "3dbf97545b6d3c5308b7e64c6221619d39d9d53805cb608aea1a504a9bacf340"
+          }
+        },
+        {
+          "path": "store/test/user_test.go",
+          "sha256": {
+            "base": "16edaadf45017b8527d35a67654c99382257f06f9d033e7bff2c4d3c8cc64930",
+            "reviewed": "41dd707c6d2e210ac3d62cff83f30715b2ecf6c9c9d2ea3a070efb138764af16"
+          }
+        },
+        {
+          "path": "store/user.go",
+          "sha256": {
+            "base": "cf01e4c29bde99d175e10c12c40391cca323201bf8eea9946b78afaed3b8cdc0",
+            "reviewed": "2a415bdcaa6f9d346d3e71fda6f9772f15ffdac70230f0c7e2a1f53a7dce95f4"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-batch-rss-authors",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The feed collects distinct creator identifiers after its memo limit. Empty feeds return before the user batch.",
+        "The batch error now ends the feed request. The single-user path remains separate."
+      ],
+      "original_manifest_sha256": "8c77ca2f152baa92b9dc238a3fe7d279489fbdb0cffdcce96b245fe38461bdbc",
+      "reference_facts_hash": "5a13dede995a10d5ff3312b330c73d88004ff51c74510d4ba7b4b568322859b9",
+      "reference_limits_hash": "f51b1e1cdc1c2648be711534de252929c23866e2134a7c060b3d23b172030309",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+      "reviewed_diff_sha256": "877905304550ea1e5e90f2ad278cd999fcd192b83f82a4d8b5d228dfa017c1e7",
+      "reviewed_tree": "d7614179b7bac13953bd75b76d50d2930d0372c0",
+      "role_inputs_hash": "73e3053a7eb78dbdbef77146de8850933042d9153291b32d4531168608bfebd4"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "effb44233e1910c758dbe4bf312850be7016483dd98fac0fc2be67ea0e35e709"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "903e808a42e47fb6a7d7e1fe2a73b4efc4baa4cc5d81e11b3f9cb98ba5406dd0"
+        },
+        {
+          "id": "earlier-verdict",
+          "kind": "report",
+          "sha256": "5fb4bf01d9197fe271ca93e3e794173e3f50c49b94af881a97e9030a0f679c05"
+        },
+        {
+          "id": "correction",
+          "kind": "report",
+          "sha256": "ae944c213f81ea1eb4599862f536ee56982852bc99c172b9ef8e224f46861abd"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "bec85a71642a0378ca1a5a4d791d3923636af086b54e1b475685abc9970a1952"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "7e3d3c63156c206209fdc8e75a4fb117b1aaf1fb",
+      "changed_files": [
+        {
+          "path": ".github/workflows/backend-tests.yml",
+          "sha256": {
+            "base": "b8d134231351f8ee96eacad4af464c5a90da26af77be5d2ea9293e7ce148bc76",
+            "reviewed": "01017740c59992317d6307259f00f322de840cd50d084563615255dba9758b67"
+          }
+        },
+        {
+          "path": "internal/linkmeta/html_meta.go",
+          "sha256": {
+            "base": "d8f4e4306142b4cec224565a920171664f920241be658cc0fd6633bfaf8a65a2",
+            "reviewed": "b0024a3809bb36cd76aeb9c1e38682a96a8dd4cf70c8b63a79c47fafc505a44a"
+          }
+        },
+        {
+          "path": "internal/linkmeta/html_meta_test.go",
+          "sha256": {
+            "base": "b52aee275c853123c6de87088f9af250141df4e9adf2d078012bfcc04b0f38eb",
+            "reviewed": "41a28e17b3e716e5fd4313da312c12982701da63291185dd6b7bfbec104feef1"
+          }
+        },
+        {
+          "path": "internal/webhook/validate.go",
+          "sha256": {
+            "base": "e90dc769a2a96b66b28262515478605d065445ca6d7a1bc2e3cb970aae02aa09",
+            "reviewed": "e0111fde229bd793dedcb5d324aaf78e3972c093218f810dd97fb363a33e3ccf"
+          }
+        },
+        {
+          "path": "internal/webhook/webhook_test.go",
+          "sha256": {
+            "base": "8c844987ee86cb1113c80f46fcf7ac5379f0ebad1278f1367a89c0ee3860c4bf",
+            "reviewed": "5bff9f753783668547941f677bcc1e3f854d4830591ae54eadb90281cdfba3ab"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-cgnat-address-guard",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The network guards include 100.64.0.0/10. The link guard also covers mapped IPv4 addresses.",
+        "The webhook allowlist and explicit override remain separate conditions. The source cannot prove universal internal-address refusal."
+      ],
+      "original_manifest_sha256": "841e83cc301fe829b51c531d37b0166bb84ad2f50c9047d75fa57e419726b54b",
+      "reference_facts_hash": "22a293263aa9e23ca8679302f0cd4ce92c786fc751aebb05d38e92504d978582",
+      "reference_limits_hash": "7cfb097fca041e5a8371f9719a9ca1d629e68efe75de43a3e775ccb28df85821",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+      "reviewed_diff_sha256": "bec85a71642a0378ca1a5a4d791d3923636af086b54e1b475685abc9970a1952",
+      "reviewed_tree": "ee516a870dcc1d7fd7e253b058fb91c8e22f716e",
+      "role_inputs_hash": "16c0acef661cd7758e26a850d700c3b9e1f862c235a5899a49d1822795530279"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "54ac629abd2f0a434add3ee16cb0460866dfbeb9dbec6078e7e0d5b0f889a60a"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "8fbef635226692d527222ec570384b6944fbe6008c8f6ecf04fcf83b0a95b0b9"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "ecbb8a1d468fc92731db08056bfcad75bad98644bf2b4ac54f8b4a4f43bcfd3d"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "be00abe852479820b7c574e15e276d70961ab7bd",
+      "changed_files": [
+        {
+          "path": "web/src/auth-state.ts",
+          "sha256": {
+            "base": "934af9243f8746553bd6a5fa3d4b357388353e940000af0dd1bce49a7548fbf2",
+            "reviewed": "cc9a5569ee75997fb2c2e666869ddc3c45d4fcade408d9e12070819804b977a6"
+          }
+        },
+        {
+          "path": "web/src/contexts/AuthContext.tsx",
+          "sha256": {
+            "base": "aceb4e1b99d8cd1ea429566b172d8ad619e62cc9da690ae4c35d3e462252da43",
+            "reviewed": "9608bb1a2e4c7156170d7261d26fea577c2d91aa78274627cc11a37de332b3cf"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-cookie-session-recovery",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The initial token absence triggers refresh and a second token check.",
+        "The catch path and absent-token path preserve the stated failure limit. No session success claim requires execution evidence."
+      ],
+      "original_manifest_sha256": "cac1f5787869db18d8eabc2ad0eca90fdc6a805eeff63885a729316c02722d44",
+      "reference_facts_hash": "10d3a17697cdc0a2946a79fc4e93c8697b659599b93bda943b93470c79e2761e",
+      "reference_limits_hash": "f78256b02b1edcfc82cfa2ac542b38d80e3f5513be3d32ef1cd5772d73a58277",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2",
+      "reviewed_diff_sha256": "ecbb8a1d468fc92731db08056bfcad75bad98644bf2b4ac54f8b4a4f43bcfd3d",
+      "reviewed_tree": "d8b4213a905465468e937e7c8517db7d6ff02da9",
+      "role_inputs_hash": "80b4b3d4d50e92d03c763c57c403772be4fed001ce25926a3a36f4ce1a14aa0e"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "08534e7e71b894bd07b697e4eaf349b75cdc4c2e94f93c91b3af84b39f25cf9a"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "eff9353913e54cb0be57230a7d7f41cf419a356fade5d3680dd099445e347141"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "1e79d2ac5799446274c10316987c40f0c5452639bd1b2ff3c169217b8aabd230"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "00225db922fb1675e21f0b5181c31f0bd4e3e6d3",
+      "changed_files": [
+        {
+          "path": "server/cors.go",
+          "sha256": {
+            "base": "ac04bd12b9fded6798929b423590bba1e48b3d02bbcdebd558459ba3fa7fd4b7",
+            "reviewed": "30126c61003afbe5c4159c194ec344482fd8c26d93f48e52a0e8321d79bf6d65"
+          }
+        },
+        {
+          "path": "server/cors_test.go",
+          "sha256": {
+            "base": "e8a61a2f15d25cf7ccd1fb75f9cbe368bd2886f36cc4524e1de1d3c8e59ab5fe",
+            "reviewed": "5e15cbfa3f1faa54cc61c16f0c733bce44859631bcfb307e25900a80be08ecd5"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-cors-credential-boundary",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The middleware accepts non-null origins for token requests. Only trusted origins receive the credentials header.",
+        "The source rejects the opaque null origin. The reports claim no executed browser policy test."
+      ],
+      "original_manifest_sha256": "f5e35ec6177cab3558dd78f6747f6ec21314733df09c68bcf9ff0ad34e32edef",
+      "reference_facts_hash": "b5cfc2ce4f7ddc674a53a2df9bcb2c13f2317bd63310ec8a29b974bad33044cf",
+      "reference_limits_hash": "37112a85884fb56621e50a2bfe99ecdc25b334e2af4a3830143b5d80f9200fde",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "385fa22056c51a42a0eb99fd08a8876009c2c52d",
+      "reviewed_diff_sha256": "1e79d2ac5799446274c10316987c40f0c5452639bd1b2ff3c169217b8aabd230",
+      "reviewed_tree": "eecb444898d42745d99c115129db945e3dd0b8cc",
+      "role_inputs_hash": "45ef8310a0f49e2227baaaa5bf0d185640df2d118087d10ea523ec9973509f7a"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "90f2400d32cb4598ca564cb6da02f42679b33a1025fac002cf7cf4f85a368164"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "ed9472b75c4e8d6a5f7c06deb03d581b24b615a2c89ddf0dac11912de4ed6de1"
+        },
+        {
+          "id": "earlier-verdict",
+          "kind": "report",
+          "sha256": "6efa57665c3ecdd25d9c752211391e69a53efe55c0d38e80ac1650495766fc5c"
+        },
+        {
+          "id": "correction",
+          "kind": "report",
+          "sha256": "08438807567016b82f192d0583a09f78cae9e8283bc4ff239beee26806954171"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "9df2eddba6bf5c7502bef2a097160726379a342c810fd5f748c339209f5ab344"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "88f150502c9a1ec6050ff4bdd8f439f646829ab3",
+      "changed_files": [
+        {
+          "path": "internal/scheduler/parser.go",
+          "sha256": {
+            "base": "52de30c4c36328bcc6301526306dddbe7c02bd78bc558a8ca811b2dc86ae3977",
+            "reviewed": "9d2e609e3317026437b0c8357d21eb0fb3d78395b22e759543b3b56f1a6d962a"
+          }
+        },
+        {
+          "path": "internal/scheduler/parser_calendar_test.go",
+          "sha256": {
+            "reviewed": "5ba0fd98f12461117fc6412557d95a690d74665a53314463bb2b9ee1acfababa"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-cron-calendar-match",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "Restricted day fields use OR. An asterisk prefix on either field selects AND.",
+        "The source handles Sunday as zero or seven. The authored correction preserves these conditions."
+      ],
+      "original_manifest_sha256": "79b7b4750a6c181b2d938acba22afe7bcb8b260c6f56d635920c8c51d7065f53",
+      "reference_facts_hash": "26841fe9e85e96a4ab58792b3159bdaf7e286dd35bb3b048b2b35eb449ebc3ef",
+      "reference_limits_hash": "7b4a564cbd8971ba686555dcd24def56c93dccf4eb5752c795c367e92264f625",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "3227748a3018688d1d0b5f16aab82ae8319dc1e1",
+      "reviewed_diff_sha256": "9df2eddba6bf5c7502bef2a097160726379a342c810fd5f748c339209f5ab344",
+      "reviewed_tree": "cd7b82ae2b7788cfc9a5b713de219f6104383c46",
+      "role_inputs_hash": "3c14cf2eaf3332752b47205c77a83de52de2a2ee9051bfb184b2dc14697776cf"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "b42c11fa545fe28a0aeb5c9e10499e1c00601dbb43f4dc87663ddf6e13266c0d"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "cf7d8207c3fffa09e3d020a9dedd74e623f1dca309adffd8a8dbf75b82b90b5f"
+        },
+        {
+          "id": "scribe-report",
+          "kind": "report",
+          "sha256": "d32d0b8a501bdb8b49888f01e88bde3ade4d39a25204632eb2be20250c110fd0"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "f4af4069dbe111c870c6ec516d89f2ef2a10e7abceb07ca8deb642327d349b14"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "16cd3107bf324dc159ec5d1894d6c11dec7edd96",
+      "changed_files": [
+        {
+          "path": "server/router/api/v1/attachment_service.go",
+          "sha256": {
+            "base": "0f57f40a7a43a8132b58dd9929ffbfaa6b3877064817def28dd42f21136256c7",
+            "reviewed": "6e4e9dc19cf146b79465df99b54a66e8e008cb4ec0dce6e291e0ce6da4227458"
+          }
+        },
+        {
+          "path": "server/router/fileserver/README.md",
+          "sha256": {
+            "base": "9027ab5a86805f9d86f2a7c54554d046586355ed3d21b75df999083bf9d48f2b",
+            "reviewed": "dd883f415c15cf661c04c0ce1b2508fa22f46f0cf6e694d981abcf2969d855be"
+          }
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "sha256": {
+            "base": "ca164cbec88e714455ffd54792a6237d4b33dc61a91a76c55512d0217983ff2c",
+            "reviewed": "fedc14c581f82712019242811ca3afabc26ff61ae010660861a2f2fc7859aa39"
+          }
+        },
+        {
+          "path": "server/router/fileserver/fileserver_test.go",
+          "sha256": {
+            "base": "66fb27e9da21e5efbae910ad6d16497b88ecad7ad531d180ff10a4182deee3c8",
+            "reviewed": "5b629f3d808f4604f2330afaa119e68b74d020b7adf0194fdb3e382f0392f1df"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-fileserver-simplification",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The shared reader receives the request context. The thumbnail path returns its encoded buffer after the cache write.",
+        "The caller retains the protected metadata path. The reports avoid universal image equivalence."
+      ],
+      "original_manifest_sha256": "1b82d371ad3d23ee5ea58d13f9ea8148549729d0c0ef161a51b3794ccd5a462a",
+      "reference_facts_hash": "dcbaa0d23803cfd33afd74f7ab39d85d329ee293059d9e50ba3ab2702a7949b2",
+      "reference_limits_hash": "5c435b2e5d8c603a12713062e3e9dc35a8c476ae46018724a09212c40ea8a593",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "cf1be15f3ec0eeca30419e93c6f019d07ea41919",
+      "reviewed_diff_sha256": "f4af4069dbe111c870c6ec516d89f2ef2a10e7abceb07ca8deb642327d349b14",
+      "reviewed_tree": "6a69d402d72902abaedbf5456c825dfcf33259c2",
+      "role_inputs_hash": "4bbdc1791820daf0b1dbfc47dc59642307a8166b069bd4171fe0a4e55bffc54f"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "f6c0afb5a3022567a520ef8241e1f65e2c08c75922007eeccc7d8c15cc276e5e"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "dd17c70f17ef257c960ee324ac451375c2d3ee708dbdc77aff364bfdb1722a25"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "c9c1b501a107df2a646e4ed290818616f7e2830b31024bd6474cf834836753a8"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "4f0556e23f8863027f2b3b57d64acc2207f040a8",
+      "changed_files": [
+        {
+          "path": "server/router/frontend/frontend.go",
+          "sha256": {
+            "base": "b7791e3fb979d6d36d5210eca7e44a7ca8595a9d9d16fe7ff02ffbed91c7008c",
+            "reviewed": "c16bc90747c3acf96a36f9dee7c5970e1b5555ea5ac6849dd04df2f940968081"
+          }
+        },
+        {
+          "path": "server/router/frontend/frontend_test.go",
+          "sha256": {
+            "base": "726310ef778c8e43bbcf9acec9a2269043bba21103f22258148d801910b4ca0e",
+            "reviewed": "2a9777d4710a21eeee20dc24f9898aa6aaac8e643e49f6f257ea38a3a54f88de"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-frontend-cache-policy",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The middleware reads the request URL path and separates HTML cache rules from asset cache rules.",
+        "The route exclusions use their stated boundaries. Added tests supply source, not executed request evidence."
+      ],
+      "original_manifest_sha256": "3e0443d303ada3a8071bef832ddb57549bb1bbcc072e2a3ae2bad9a0f5ff855b",
+      "reference_facts_hash": "ee9a1bc5a37990faed086bcede03a894203ff9343a9a06a39049d7b22be45ca1",
+      "reference_limits_hash": "47bcbfcbb0daec96aeba4bbc298b37fc2da58eb95439705c69b99761fae62526",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "084f40bc9e5922ff2d41c08dce837b96696437aa",
+      "reviewed_diff_sha256": "c9c1b501a107df2a646e4ed290818616f7e2830b31024bd6474cf834836753a8",
+      "reviewed_tree": "0901ba6db31a5916e6aafb951116d339561d29f6",
+      "role_inputs_hash": "a8f9e88b100765efbcc91764443ae7415c25f3c370cb212e94afc4f9ab12df8e"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "b1e0a02373ed1de3083fb275cb7d7ee0301ff76e9c679f5e92e886bca25f3cb6"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "c18e21706e06c6d596ddb2348e8c4276cb6320e7a2650f6f37edd42d5f123ec9"
+        },
+        {
+          "id": "earlier-verdict",
+          "kind": "report",
+          "sha256": "b6316d1a632da222b2594b1644d3af754240ee434068d481a46959b6cae9718f"
+        },
+        {
+          "id": "correction",
+          "kind": "report",
+          "sha256": "4f65e3bd765653f19bb19d03e698a9b756d3cb58033025349273af21776b6dc9"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "b2c83226bf3a94949adfe916fc907bd365f5319e9545cabf4aab978123c7c57c"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "026ea92f7b4005c30ca84340c22018740659ab51",
+      "changed_files": [
+        {
+          "path": "store/instance_setting.go",
+          "sha256": {
+            "base": "02b15af8400c48ebca40d41e89be575aae5c30fe7e590bcf47525753d10e1565",
+            "reviewed": "9286d7f544db40152e01999ea62b866ff14e7a89fb02ec5ed0e9ffcdd7d8b97d"
+          }
+        },
+        {
+          "path": "store/migration/mysql/0.26/03__migrate_storage_setting.sql",
+          "sha256": {
+            "reviewed": "78ee48f5a62286249fde9bf79931a01532d5c81e5cb4c44c8c245ef432a3f73f"
+          }
+        },
+        {
+          "path": "store/migration/postgres/0.26/03__migrate_storage_setting.sql",
+          "sha256": {
+            "reviewed": "d0097d6318fe8f2d9737051e614561ea7dce21a1f409c56871b3cb285878fa55"
+          }
+        },
+        {
+          "path": "store/migration/sqlite/0.26/05__migrate_storage_setting.sql",
+          "sha256": {
+            "reviewed": "d0097d6318fe8f2d9737051e614561ea7dce21a1f409c56871b3cb285878fa55"
+          }
+        },
+        {
+          "path": "store/test/instance_setting_test.go",
+          "sha256": {
+            "base": "911f65a61be6640cc78b6ae4f599bf15e8e0a327f95da89c3707276cfa95ae03",
+            "reviewed": "ae51871855d52589ea6b06996a4854a88c4c2a8bada6be42708578323b478d63"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-local-storage-default",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The default getter selects LOCAL. Upgrade files insert DATABASE only when the storage setting is absent.",
+        "Fresh initialization uses the current schema version. The source includes no attachment migration."
+      ],
+      "original_manifest_sha256": "d3b1fbe216c13f43280e00ba0f9532f1bb5b335de965485d53b71ad7a5d063b8",
+      "reference_facts_hash": "33fd5bbb85f08a0e4b55506f6c54596ec7a8b0c9824b76c04e27fce19b618478",
+      "reference_limits_hash": "fb3428b65bc1640616e37ed76d2e2d5c7fb02f16c7f6207bd8ccc50578cc7c20",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "78efa6802e2fd96c981e86c5b658fb4b5c05091f",
+      "reviewed_diff_sha256": "b2c83226bf3a94949adfe916fc907bd365f5319e9545cabf4aab978123c7c57c",
+      "reviewed_tree": "7ca9af6690df9be0e2f7abc141a585344a2254d6",
+      "role_inputs_hash": "b1f4f5545b2b535aaec38ab9a84a0abfef528c8a5882dccc53f4a095f7564b0b"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "03606693afbe5bd3d3a8f942d1e85140f96df6f74f99206496eecf209d0004e6"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "d890cb83dddb13886d46008deab04af95e8593b70362bdb6d085ae87851f4b73"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "fbb6d4c844f64fcd83ce659f351c3cdf7505996cc8b1d166a4fd2e5583f678eb"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "2b2192d4e153bd04f1d325b60fd880cf00d68b01",
+      "changed_files": [
+        {
+          "path": "server/api/v1/attachment_service_storage.go",
+          "sha256": {
+            "base": "d36ff924706af0e8c8e22f94c458d9ab1ab13eba312c06b10a0981a408d58441",
+            "reviewed": "0b3e1f69a92b9e05ec619ec1f5675bd10fb8bc331580f5794e33ec555ef53214"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-managed-s3-comparison",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The early guards preserve the existing object identity comparison.",
+        "Equality with a nonempty left key implies a nonempty right key. No benchmark claim appears."
+      ],
+      "original_manifest_sha256": "a3fc571debd58f25ef88b870cc7701f85e7ea8ec533f6234d1ff8aeb7bd4efc1",
+      "reference_facts_hash": "d131990381529fb68c8b9bafaa1bf305ab12f98ae5b09093ebd4d76f303739d9",
+      "reference_limits_hash": "989d6cc928746634be5108a86a69303429f5f7ed5b575de4dc82af1d84f013aa",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "a1c3061c6c531406e19d3d79c176d5de89bafbc5",
+      "reviewed_diff_sha256": "fbb6d4c844f64fcd83ce659f351c3cdf7505996cc8b1d166a4fd2e5583f678eb",
+      "reviewed_tree": "40077f7f16ba5b4b996fbd404dc2b0c16cbede28",
+      "role_inputs_hash": "cfe447dca916c356db8cdf41f3ff73c96ff07a64aaebd5218c2f23098c871047"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "28ecf611c3703fa3f8f1fe80722f5360f9cbacf3a4deae105726464166db7d42"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "dfd8845e741351313036955edeba4382113ae7e02d10a378656c120260a74667"
+        },
+        {
+          "id": "scribe-report",
+          "kind": "report",
+          "sha256": "1cd0a6f54c9dbcb0bac5415bbfbd559e547ae960229881a6b380acfd67a7a38c"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "6afca78e1639addbc954d01a1a20de319fd6014a738239bf38fb288d7c73a97a"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "0db0025d320758079e6acf7f69038b3a96755161",
+      "changed_files": [
+        {
+          "path": "filter/README.md",
+          "sha256": {
+            "base": "895370a6b1681d92b7fc42ee3b18c1f40fdf4927bd4da2123daecd19e9e82a83",
+            "reviewed": "73a15259e13472f0faf928def89471e57c1420028ce7f9450565278cf33de69c"
+          }
+        },
+        {
+          "path": "filter/engine_test.go",
+          "sha256": {
+            "base": "de61dea11827d3d41dc9383542ed245b3e8f07a6265abfa0eac3c8cab066a67b",
+            "reviewed": "059d9e36d63292e40aa94bc49985df166be595a469966f7c9c67110f51030c35"
+          }
+        },
+        {
+          "path": "filter/render.go",
+          "sha256": {
+            "base": "89d32878094ba3aa889701f0c65d5627da465cba8853f89eb4b010c0de1041ac",
+            "reviewed": "a1b91e5e8017c43069fca5936cac81b210cd4e4bf4bfc179060ca9be4a7e7019"
+          }
+        },
+        {
+          "path": "store/test/memo_filter_test.go",
+          "sha256": {
+            "base": "23362f111ae3bc3c35c660b066321893c1f8ca9067a72e024010636359ce916a",
+            "reviewed": "632b778e97e5dba49ad9ff099ee4b96865e5db16993ef7f896a41c4ba1b4ceb8"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-missing-json-flags",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The shared predicate treats missing or null flags as false.",
+        "The corrected conditions distinguish SQLite, MySQL, and PostgreSQL conversion rules. Unexpected nonboolean values remain outside the uniform claim."
+      ],
+      "original_manifest_sha256": "6fcf4a83c58a4d824d1e021107fd1f30180574caabb196aa4c0ab2f32b582b9f",
+      "reference_facts_hash": "a62081f3df96c4bfa55a15755826da23ce6937de303356daf00c43033332ef6d",
+      "reference_limits_hash": "aeb524861fff5ad83712b11632b029b1ed8b1d1a2a5c8a1d391e03aea97fcd54",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+      "reviewed_diff_sha256": "6afca78e1639addbc954d01a1a20de319fd6014a738239bf38fb288d7c73a97a",
+      "reviewed_tree": "d1606a9ad9f1d2422ffc8115027060e711cd3bf1",
+      "role_inputs_hash": "3c1de200c74da619150441ac669862f7abbe04f0a9aa36ce266d32d4b61340c3"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "71905932d788f197f5c8fe2577f4a4ad33dfa1676ccc513cd84442efe67d3194"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "db38df7a5f1b31084ff1e52f91899083a00a28ec58b1048efb94c3c43fa6b481"
+        },
+        {
+          "id": "scribe-report",
+          "kind": "report",
+          "sha256": "59358b833e4d7f2562b4286d09a42e4ef7b249103682781f9d5c4360186ecf82"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "d2df437f53d2e40a7bb7e64e1881fa7e9d25d84bfa4c0fa9a6e03fcb60cc8310"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "e3c231fcac5691f9590a5d685bdebec23b73be35",
+      "changed_files": [
+        {
+          "path": "internal/filter/README.md",
+          "sha256": {
+            "base": "d4c7960565bacff873107567328ba1842481fe665dfbd28f9b6e4490a80dfa16",
+            "reviewed": "6d5d5085df70cd2aa868b6ac07819d24e58927d06191cc31d1cf67545228d3da"
+          }
+        },
+        {
+          "path": "internal/filter/functions_test.go",
+          "sha256": {
+            "base": "f2887d4384f8ec1925146b06fbc71a838f68fbba86720cbc9d4d4db4e39b82a1",
+            "reviewed": "94eb2f2d4da4efd937e90007c09fe55475693fc4d55e05ab47d37a1c91931624"
+          }
+        },
+        {
+          "path": "internal/filter/parser.go",
+          "sha256": {
+            "base": "014ccb35b9ef8706e9b2b98c2c9a0d20faf89b65f6cbcd53c9ab91ef78725e5b",
+            "reviewed": "147f37b4a2d4b715a6c7e5a77e0f9197d39cfd39cf1398efcb9a42768235db7b"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-now-date-filters",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The compiler folds the accessor against one UTC instant. It rejects timezone arguments.",
+        "The declared zero-based accessors, reversed operators, and constant expressions match the parser branches."
+      ],
+      "original_manifest_sha256": "cfd6ff0a70a0e10187fdbe7d033aaea311ac1327c514f6219636b5644a6cb478",
+      "reference_facts_hash": "69862ad3149842520c0c106bb42401593796ea43f3b938f5decec936da687b1b",
+      "reference_limits_hash": "31d373c8e1ccfe4493dc92269b7ad3db48d555ca6a58e7319dfe6aabe28240ae",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+      "reviewed_diff_sha256": "d2df437f53d2e40a7bb7e64e1881fa7e9d25d84bfa4c0fa9a6e03fcb60cc8310",
+      "reviewed_tree": "6f8a54cd6f6a8fe8c77b4dbbc0b2a227f9affbf7",
+      "role_inputs_hash": "8dba879397b7543cc96a094a1c6d78a1d8e8f8b58122743c9af5c64e1b706fd4"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "a64da612b11d978c9e70d380a2d41a1c37479c15ed237d247bb6e4c0eb18cc65"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "acfcbf65e683626ae34ba34159c26402d9da5b5278f45c5e7ff4ad0d9d3ddeff"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "4e457afec198a473fcecb51d4c31902cd9622606af24e78e33832b1d118e8c84"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "14a1c9a53b75602efe515b729948fa6b8bc0038d",
+      "changed_files": [
+        {
+          "path": "internal/scheduler/parser.go",
+          "sha256": {
+            "base": "153e6fb98ea28910abcf2cbcbb0debf498bb1eac9685f40caca32cc6da61e00a",
+            "reviewed": "52de30c4c36328bcc6301526306dddbe7c02bd78bc558a8ca811b2dc86ae3977"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-scheduler-membership-refactor",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The list matcher replaces the loop with slices.Contains. Empty membership remains false.",
+        "The source includes no new schedule semantics or measured benefit."
+      ],
+      "original_manifest_sha256": "83d9751eacb10fc195c0b9b9f0d96eca13bc48ade3cc177570144931e2bb16fc",
+      "reference_facts_hash": "48a018ccd8dba29a9a3e84fdf86986729d7ab8c1413571276ba3c5a681942c59",
+      "reference_limits_hash": "16754961568906bfad59ed6f7e6ba49eba6a06899c0a0e1c879f6bbf470cefaf",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "9fae524221f9912081b95328758bea3da5cb7acc",
+      "reviewed_diff_sha256": "4e457afec198a473fcecb51d4c31902cd9622606af24e78e33832b1d118e8c84",
+      "reviewed_tree": "72b79af5df8af2704ac5cc72feefb8abe8131fbc",
+      "role_inputs_hash": "90bf34d872cc89212d07d0ef4855fcd93dbd0d2ec3c9e1ab7a4b4d8a275deadf"
+    },
+    {
+      "amendment_reviews": [
+        {
+          "date": "2026-10-17",
+          "observations": [
+            "The source identifiers and authored history remain unchanged.",
+            "The source behavior and evidence limits remain unchanged.",
+            "The original source review supplies the source acceptance. This amendment contains no new application test evidence."
+          ],
+          "result": "accepted",
+          "reviewer": "/root",
+          "scope": "The review covers the task scope, report roles, and removal of obsolete report artifacts."
+        }
+      ],
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "88f5448d29c26e60cdfc242ee11c569f2bd6782454b484a2236180849c8522df"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "2cd30bd887b31e9d7ae2ce47e5f20c15bac8e5d9747b7b345f2463480080166a"
+        },
+        {
+          "id": "scribe-report",
+          "kind": "report",
+          "sha256": "09349f79ec795e4c89d20de513ad1c9e8d393e90e655f5c8f383b329eb4c2dee"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "f7d32a4ece3d9041d2abd7f04a0ad2c06a8d5660c872f2630f6174086c24cdcf"
+        },
+        {
+          "id": "authored-history",
+          "kind": "source_record",
+          "sha256": "2ec4c1461664972abf6a98a6a136f6a221df2d034aca27952bd4bc3b10d95aae"
+        }
+      ],
+      "authored_history": {
+        "partitions": [
+          {
+            "input_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+            "paths": [
+              "plugin/scheduler/parser.go",
+              "plugin/scheduler/parser_test.go"
+            ],
+            "result_commit": "b560411559164f543f34a2c44d3f3a65e1072d5b",
+            "tree": "001b1e8fcca092c050263b8aca0bb28912122f64"
+          },
+          {
+            "input_commit": "b560411559164f543f34a2c44d3f3a65e1072d5b",
+            "paths": [
+              "plugin/scheduler/job.go",
+              "plugin/scheduler/job_test.go",
+              "plugin/scheduler/middleware.go",
+              "plugin/scheduler/middleware_test.go"
+            ],
+            "result_commit": "17cced6dfe7776fc2f46a25d1db291ebef0012ae",
+            "tree": "ebd900847dfd628d9b8f55ae02ea0c191a947c22"
+          },
+          {
+            "input_commit": "17cced6dfe7776fc2f46a25d1db291ebef0012ae",
+            "paths": [
+              "plugin/scheduler/example_test.go",
+              "plugin/scheduler/integration_test.go",
+              "plugin/scheduler/scheduler.go",
+              "plugin/scheduler/scheduler_test.go"
+            ],
+            "result_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f",
+            "tree": "d61635279157cf0573aceef228a57722bfc71111"
+          },
+          {
+            "input_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f",
+            "paths": [
+              "plugin/scheduler/README.md",
+              "plugin/scheduler/doc.go"
+            ],
+            "result_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+            "tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb"
+          }
+        ],
+        "sha256": "2ec4c1461664972abf6a98a6a136f6a221df2d034aca27952bd4bc3b10d95aae",
+        "upstream_tree_match": true
+      },
+      "base_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "changed_files": [
+        {
+          "path": "plugin/scheduler/README.md",
+          "sha256": {
+            "reviewed": "63d138d195b3ec7e7abbf932d894f599546bf3af5d06cbac5f68872337d295e6"
+          }
+        },
+        {
+          "path": "plugin/scheduler/doc.go",
+          "sha256": {
+            "reviewed": "5a20514d07778434ed562ac7cdb72187b50cecd1a62c1fc66610fb022465808f"
+          }
+        },
+        {
+          "path": "plugin/scheduler/example_test.go",
+          "sha256": {
+            "reviewed": "821a96f088af1900d5535f27aadb51b5052a33e8bb1deeade98eb26c7c4da08e"
+          }
+        },
+        {
+          "path": "plugin/scheduler/integration_test.go",
+          "sha256": {
+            "reviewed": "61f71567223cc466ef329f9b867df73b664879f9e9f4ec49d8c2bf4769349dde"
+          }
+        },
+        {
+          "path": "plugin/scheduler/job.go",
+          "sha256": {
+            "reviewed": "c9514b17da77938c11bf66b198742b95f633a4560a70e967ab181d5d5f40a24d"
+          }
+        },
+        {
+          "path": "plugin/scheduler/job_test.go",
+          "sha256": {
+            "reviewed": "ac6e672c69f974fa6c00b498f5e2088f23597f25d5f33e1878ee71401a2907c6"
+          }
+        },
+        {
+          "path": "plugin/scheduler/middleware.go",
+          "sha256": {
+            "reviewed": "5ab2c5aa44a317196248e36c636e5442cb17f7d1a7a598a45e891519c4cb3163"
+          }
+        },
+        {
+          "path": "plugin/scheduler/middleware_test.go",
+          "sha256": {
+            "reviewed": "cc594080debe2d978c98c1c30e1ebe91106475f6f6dba2e3a0cb1b5d2f5e7650"
+          }
+        },
+        {
+          "path": "plugin/scheduler/parser.go",
+          "sha256": {
+            "reviewed": "153e6fb98ea28910abcf2cbcbb0debf498bb1eac9685f40caca32cc6da61e00a"
+          }
+        },
+        {
+          "path": "plugin/scheduler/parser_test.go",
+          "sha256": {
+            "reviewed": "fccab66b86cca7629bc5eeac2b5530e464dc9875920c79a211c104ced52a5766"
+          }
+        },
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "sha256": {
+            "reviewed": "61811ea4fd784e0a9d8dcdbb68c4022cd593e5130af7443ef200355297153d05"
+          }
+        },
+        {
+          "path": "plugin/scheduler/scheduler_test.go",
+          "sha256": {
+            "reviewed": "3da913cd90ea80a157da64f2f3824a3f4b784528d949f86a59652863a279f28a"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-scheduler-plugin",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The three authored source commits form one actual chain. The documentation commit changes only README.md and doc.go.",
+        "The final authored tree equals the pinned upstream tree. The fixture records no production Culler execution.",
+        "Handlers run synchronously in each job loop. Timeout cannot stop a handler that ignores cancellation.",
+        "Start lacks atomic rollback after a later parse failure. Stop does not reset its closed channel for safe restart."
+      ],
+      "original_manifest_sha256": "f0df1f108c9fd0c0a98dd7b2457ee259da3ce3992a0e2847cd105b728442178d",
+      "reference_facts_hash": "7136462288421e0ce8e64708e8c31d8ae7030a1f906ca7cd4bccf0125b51312f",
+      "reference_limits_hash": "388f739474dbd9ad91865eb9ac45f2fa47de21c83dafc3f1f3cf3684ef470a2c",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+      "reviewed_diff_sha256": "f7d32a4ece3d9041d2abd7f04a0ad2c06a8d5660c872f2630f6174086c24cdcf",
+      "reviewed_tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb",
+      "role_inputs_hash": "0eaf4b5f117a2a8b49a38d371dc21f15620d19480353aa6333667faf01c6cbcf"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "13f7d2bf772e372194b5fe58b77827fdd64653e7a172302659597c4c6a8dd7ef"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "13d2ce0fe11664031997d0e5b4bc018d08c85a0cbb81f77ed250803361f17992"
+        },
+        {
+          "id": "scribe-report",
+          "kind": "report",
+          "sha256": "3473c1abe1d3195fd487e361d1e960aa88adc79c09e13ca55eb011715bd06241"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "6f02b5da59957ed58898ba059ea591ae509d9d47e0746049aa2ed6ed1a5a077a"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "564da949cb87491ca8e493d2f7aedcd2ef9545a1",
+      "changed_files": [
+        {
+          "path": "cmd/memos/main.go",
+          "sha256": {
+            "base": "fe7d03b970c303770bc6a1e858b7b95227fb87db46184725e1ab1b18f909936f",
+            "reviewed": "274d646f5bbeff20d83e208e4961165c21f533b4c77ea544aae2370176bdd839"
+          }
+        },
+        {
+          "path": "docs/configuration-provisioning.md",
+          "sha256": {
+            "reviewed": "abaaa220fd9e74f66726073785011047fc9ca9731f3a1fd9eb2f5e91bd07335a"
+          }
+        },
+        {
+          "path": "docs/identity-provider-bootstrap.md",
+          "sha256": {
+            "base": "07cd3cba28f185bb348b49358720cac5f16bae337a3a047328abefcbd7778378"
+          }
+        },
+        {
+          "path": "server/router/api/v1/idp_service.go",
+          "sha256": {
+            "base": "bd34ed04cbba4e5ce010006977ecb5ed8f1398382ce8dd58c1e9c945bc0f6cdd",
+            "reviewed": "44b27c1de33e0d6959e148a3646cfeec613ca556f8242dcb5cc97ab275b234ac"
+          }
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "sha256": {
+            "base": "f9e4a51876da224df735d17a79dc8a7191b1529c3cbdca3126f68c106becdc59",
+            "reviewed": "6c2310abbd7e2f9f99ab77ad9aecc4f5e871bae6438676cf0a0e47f0efe046bf"
+          }
+        },
+        {
+          "path": "server/router/api/v1/test/configuration_provisioning_test.go",
+          "sha256": {
+            "reviewed": "a4bbec6ea829d9e8a00a7d97dd11caf2d5a5f4916027242591bcbc3a67c4401f"
+          }
+        },
+        {
+          "path": "store/auth_config.go",
+          "sha256": {
+            "reviewed": "0b919369ed534b3c4a37a497d7fcc2acfcc62bcdb4206b4df00bab1f824f1de8"
+          }
+        },
+        {
+          "path": "store/db/mysql/auth_config.go",
+          "sha256": {
+            "reviewed": "ca3fd443c1d4c1fde21146fcae802c5f9bbd32ad50ac8b00db730f73fa30651c"
+          }
+        },
+        {
+          "path": "store/db/mysql/auth_config_test.go",
+          "sha256": {
+            "reviewed": "eee7ba7c68ebd008d12e2443c18ec5b3680fe0028dcd84e8c80b7adbd53395fc"
+          }
+        },
+        {
+          "path": "store/db/postgres/auth_config.go",
+          "sha256": {
+            "reviewed": "4d659cb78c9a459ba62bb969c9134b36e609e3f7817eb3f954163f34c3aa808a"
+          }
+        },
+        {
+          "path": "store/db/postgres/auth_config_test.go",
+          "sha256": {
+            "reviewed": "e3c0d8d4247b292d73979a20a257b2221bff682a7eb794c2f2cf6c56f33af044"
+          }
+        },
+        {
+          "path": "store/db/sqlite/auth_config.go",
+          "sha256": {
+            "reviewed": "08341a095cd49a7f9e74c7c06619707280d0c4b62b8300c0cae2e071bf6e62c9"
+          }
+        },
+        {
+          "path": "store/demo_seed_test.go",
+          "sha256": {
+            "base": "6974e192cc0d5819f865d07edfde3b22425080dcb9cbb99f99bd79ea3d916b11",
+            "reviewed": "116a7863192874301a6401d614f6d0edc6a141010370c2f694b98a1236262f78"
+          }
+        },
+        {
+          "path": "store/deployment_config.go",
+          "sha256": {
+            "reviewed": "303718006a6bfcf402dac94fc5e21934a76e9650b88f2797fd44ea23c492925d"
+          }
+        },
+        {
+          "path": "store/deployment_config_test.go",
+          "sha256": {
+            "reviewed": "51f05f19232eb390fec62136d1c30b3ab1513e437b6f9548565df0942c91efc1"
+          }
+        },
+        {
+          "path": "store/driver.go",
+          "sha256": {
+            "base": "7335c5e46925eb6a087638c512591e0ecfe156b1dbbc0a4f465d17c08d7426e5",
+            "reviewed": "a490c0bc1936961ca7846e0379992e244b19564fc8a6c50754b436618aae77fd"
+          }
+        },
+        {
+          "path": "store/idp.go",
+          "sha256": {
+            "base": "492ccc11a13840ac546f1985c8bc4a4aa3c03c92597e536b63ebb8ac96bcbf07",
+            "reviewed": "a94ff0d4de1956d0b4c7228f552c27ed41f58e7ba19661be9183406d4afb9910"
+          }
+        },
+        {
+          "path": "store/idp_bootstrap.go",
+          "sha256": {
+            "base": "944d49acf4e9ad7af7550284ee6b0dffbeca0f713d55da775a40fe1ced628dca"
+          }
+        },
+        {
+          "path": "store/idp_bootstrap_test.go",
+          "sha256": {
+            "base": "384dee46310ca47c583d26b54adbcab76e505911d776918c5407125c64f3dc99"
+          }
+        },
+        {
+          "path": "store/instance_setting.go",
+          "sha256": {
+            "base": "cf24065d30a955ffc23dd674d181972b82791067f705793ad42168c7289ca552",
+            "reviewed": "5f54bb257ed58463c8444959c45e193637955ecd6ebb2770bb213409be8d5642"
+          }
+        },
+        {
+          "path": "store/migrator.go",
+          "sha256": {
+            "base": "8dee9e6946454341954ea118695a75f11e94eb4a7bab4fc5be37241cf370b152",
+            "reviewed": "f7415cd90b8d9c437a249de6c802e9a3db7af065db48fe66446a6bfb889526bf"
+          }
+        },
+        {
+          "path": "store/seed/sqlite/01__dump.sql",
+          "sha256": {
+            "base": "f639988b74a4e4b325bedd72f21ba2064c7227884823ded41b87cdaa3aba894e",
+            "reviewed": "5729de30389f81a3b7e45619b755117d7a0f913c4afc886b847a4ca60403c620"
+          }
+        },
+        {
+          "path": "store/store.go",
+          "sha256": {
+            "base": "20f964eea7892236d67d2e2b2c356db304ccfbbf5c234053f3aa53f54463ac1b",
+            "reviewed": "c74e44ebe59fe52a86b0a3ed92a5cdd590841d49f91ca483936be15dac7490a3"
+          }
+        },
+        {
+          "path": "store/test/auth_config_test.go",
+          "sha256": {
+            "reviewed": "fe126494afb0a870a1ec34ecf9e37d0cd2ce185ef9952196c16d6785e1f9017a"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-secret-file-config",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "Startup loads configuration after migration. Effective getters clone file resources and preserve stored fallbacks.",
+        "The API refuses mutations to file-backed resources. The three database drivers validate authentication changes inside transactions.",
+        "The loader preserves unrelated legacy authentication violations with a warning. It does not delete former stored secrets."
+      ],
+      "original_manifest_sha256": "0c9c37d05a8f8c6ef3a52eeef4fe80607b2e59801f47e05934457c2fda815878",
+      "reference_facts_hash": "26dcd3d845d4baa10c9e8a553130909ad721cd2134ef8a5ca2490f21b46bcd11",
+      "reference_limits_hash": "15e82b672f5c265c912c8bc156b1c3f56a5f8e927558760a21d46e352bd374c3",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "0038295bbc772b38425b6c7f9ca814e4d1e44260",
+      "reviewed_diff_sha256": "6f02b5da59957ed58898ba059ea591ae509d9d47e0746049aa2ed6ed1a5a077a",
+      "reviewed_tree": "3fc565e709d080f4f27cf057b9e9dd6bd3663057",
+      "role_inputs_hash": "f9c95db9a49939277d8f50663ac6663d2e03a1979dd40fd0e0d5185322f20464"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "eef54cecf2eb50cb4d8ba706fa93f4711fdafb5d3713750d28093f3f00668d7e"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "96753a2a08d2fda32ac3c9c29e972d90c17466496c8a0f0cdaf12bc4d2d5f51f"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "be6594973c246cbf027fe156e4eab778e5f9d81c5eeca1b13c655e53b90d23ea"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "319a7cac949590e171ee4c1980416ecbfd51ee8a",
+      "changed_files": [
+        {
+          "path": "plugin/email/README.md",
+          "sha256": {
+            "reviewed": "b393493c5f79a635e2d70780f8e3cff3b588d9245e1665ef83abb5241a1f71ad"
+          }
+        },
+        {
+          "path": "plugin/email/client.go",
+          "sha256": {
+            "reviewed": "ebca6abb15417280daf892ddf466eb88e2511e625688382d91f1e6384ebab01b"
+          }
+        },
+        {
+          "path": "plugin/email/client_test.go",
+          "sha256": {
+            "reviewed": "65575a44c057f4fa7afd6b9691b4eb7f53d57ea88450ac6999e7717a628e2465"
+          }
+        },
+        {
+          "path": "plugin/email/config.go",
+          "sha256": {
+            "reviewed": "96cd32b4b9756b7e400c9ad0b7539d125cac66f44cba6a0c180b838df81ff177"
+          }
+        },
+        {
+          "path": "plugin/email/config_test.go",
+          "sha256": {
+            "reviewed": "f3339caf4e84aca4c9f62f8fcaf20fdc90859c7b077d5cd5f542eae292067080"
+          }
+        },
+        {
+          "path": "plugin/email/doc.go",
+          "sha256": {
+            "reviewed": "716305424bc04256a6626ec3c924d955e29042a36db82f0c328db6c08d9d9d33"
+          }
+        },
+        {
+          "path": "plugin/email/email.go",
+          "sha256": {
+            "reviewed": "f83ba0ae5c386189009cfb9379b1dc221c6e6173dbdad3f9e6115d79d24785a6"
+          }
+        },
+        {
+          "path": "plugin/email/email_test.go",
+          "sha256": {
+            "reviewed": "24ee65871563faae94a21a98f7f35c20ba17ae83e588b20bc865ea71cecb9905"
+          }
+        },
+        {
+          "path": "plugin/email/message.go",
+          "sha256": {
+            "reviewed": "d9eb5f12c1edc3b551133a8db0c74ae9cef11d01617a5459cc335bd96ad7e9ad"
+          }
+        },
+        {
+          "path": "plugin/email/message_test.go",
+          "sha256": {
+            "reviewed": "efe88e972a5bfee200c7f06e69ad627fefd7d4992a4fcfb016a659c6b7606f5a"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-smtp-plugin",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "Recipient construction includes Bcc without a Bcc header. Message formatting selects HTML or plain text.",
+        "Both UseTLS branches call the same SMTP function. The SSL branch uses the stated TLS minimum.",
+        "The asynchronous operation creates a goroutine and logs errors. The package supplies no durable queue or application registration."
+      ],
+      "original_manifest_sha256": "4b832d568b947ee1324ee84d81281b16c5597374a57a1360901124340e43864e",
+      "reference_facts_hash": "c0c9b694883cb544c04edcd8f1f2c2c3148013001211ecea6c0acb5667c61a86",
+      "reference_limits_hash": "19e620dfac6342e99f3b309e92111de4a8c3122d7c6191bef3c69ea88c42e5f5",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "reviewed_diff_sha256": "be6594973c246cbf027fe156e4eab778e5f9d81c5eeca1b13c655e53b90d23ea",
+      "reviewed_tree": "4ab6732179eb447f874efc1e8aeb109dceb25601",
+      "role_inputs_hash": "7ff6f4a6e1fb768e42449ab840fcd2cb69b2bcf3a74c739069f0e1b3efb95475"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "4a80e253813943c477d5bf5233406b108b0ac5d25b6e1f8922b9d424c1865783"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "f54e352ad225022ac86eea797b07cc4f4a689dca02ea80ae569dfbd0be072e80"
+        },
+        {
+          "id": "earlier-verdict",
+          "kind": "report",
+          "sha256": "7c5bec948c4b7afcc3f1c1d1276e9f0f7d130dd30caef7d6da1ac44da7c19602"
+        },
+        {
+          "id": "correction",
+          "kind": "report",
+          "sha256": "48232364c867a9e993faabd70058e11bc2f85a7bbb4e513f5cef88e1ff6d4733"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "0fada03045d79d2a184f94fab211a176c6aa7b372ca91040165a4724c0bbda02"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "bbb23958b22063b7e663b51812e7775eca3f23ae",
+      "changed_files": [
+        {
+          "path": "store/db/sqlite/memo_attachment.go",
+          "sha256": {
+            "base": "22ad3cdec573a86527b8f7f9431b7b3bd7efdad30a6376ec324404abdb6e9e77",
+            "reviewed": "66d6b6684ac5369cbea202a4fe44570c5f51b0546a0f6b6f8eb138d3396fcad7"
+          }
+        },
+        {
+          "path": "store/test/attachment_test.go",
+          "sha256": {
+            "base": "00eb215697d20181ed152b5e28549dd1c2632375cb57b725d7bbdaf9422556e0",
+            "reviewed": "7a678444e04a778a3181e8564774081ad07b66836570bcd1d93b0e1132ad010e"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-sqlite-immediate-mutation",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The SQLite mutation uses one connection from BEGIN IMMEDIATE through COMMIT.",
+        "The deferred rollback uses a context without cancellation. Existing record and ownership guards remain.",
+        "The authored correction rejects a universal absence of lock errors."
+      ],
+      "original_manifest_sha256": "b47adb60d488ec6bdd9c21626a4f006c10311bcd6085b0c29b7e786feaf0e3ff",
+      "reference_facts_hash": "404d8a26d066909dead9d8b8297285c6fb6bbe36be1eed72fafa9bb72eca9e0e",
+      "reference_limits_hash": "306944e75624afeff5eaf2269d6ea5385fc6bf02e6619233808d743cf3e87403",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "f9544349202d931b90e38c01982e42245ca1c605",
+      "reviewed_diff_sha256": "0fada03045d79d2a184f94fab211a176c6aa7b372ca91040165a4724c0bbda02",
+      "reviewed_tree": "762d420f8c0d4063d71b83a6a50fdeca1f089b0a",
+      "role_inputs_hash": "74971aed82b585f40224bdbfeb503995c1999a786b7ed9c83d06296e3ae6c4c5"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "f8af665eb84a2008a40177d3a71a7b5efb4016ad341e4b770dcc12d3f9ce3a36"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "68dd749ecb5eef02f51952ae63e4138a0a4d5b2902e1943e3cd0087c8e3292c3"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "14de955a90782a975bc55abc08d522e22f460f333711451b91175a52d13f7afa"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "c4221c6dfe51902d0c5f482802e670fda1b72751",
+      "changed_files": [
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "sha256": {
+            "base": "2831f216efab609b80d4caf6132c13d83000bd9496ab4a3f32f69a002c23e1c2",
+            "reviewed": "926c7eb8fa01343b52ba46b252faede37a8a5948d22c1ce84a6d3baddaad04c2"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "sha256": {
+            "base": "7865d42eb1d04bc78037c5c08dfa33dd36246af4cbe8be8cbf5a8dbff980d236",
+            "reviewed": "c1fc15ec9fcd302e30320688c9a2fbd8f72d301eadd4edfba110235ad5a2c590"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_hub_test.go",
+          "sha256": {
+            "base": "7a84b3909702529430fcf51b41693329c8feea13b9546dbc2b4c473bf0acd349",
+            "reviewed": "ff9e0e5128066b3a9a846a9b8196600bc41dccb01d023e66f3eda95fcceb1d27"
+          }
+        },
+        {
+          "path": "server/router/api/v1/test/sse_handler_test.go",
+          "sha256": {
+            "base": "d91df1100b1b045327a424f5431caa3b46128cbb1b34a481d03adbb81abc4664",
+            "reviewed": "78a438cebcb9ef71ece129096b87642e43c54c268ef37cf42397da15e12193c3"
+          }
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "sha256": {
+            "base": "fd8a0dec80521949612dfe2d9b28978cc7499e5fc5822dba43b059da98f257cb",
+            "reviewed": "f36aaa3740d1e08e8c557240fd44312f8fb633e58d3b639f07334cc431885db3"
+          }
+        },
+        {
+          "path": "web/tests/live-memo-refresh.test.tsx",
+          "sha256": {
+            "reviewed": "35303c6ba49e030aace6ac94e252154c9943562147e70473fddb23e900363421"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-sse-connection-fanout",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "Web Locks and BroadcastChannel coordinate one leader. Missing coordination permits separate visible-tab connections.",
+        "The hook retains hidden-tab delay, offline stop, refresh retry, jitter, and stable-connection reset conditions.",
+        "The hub disconnects a full-buffer client. The reports preserve the delivery and benchmark limits."
+      ],
+      "original_manifest_sha256": "ba9c8b34b8748b741797df9a48934737f81496adc242550e639a49f54bd6e948",
+      "reference_facts_hash": "6bb5de15a0d620365517ffdc15f029bc5250f06cfb47574f4205fb0a2624e62b",
+      "reference_limits_hash": "abb6f953effec78edabe3fad68697336bf9fab6e9d5341ab8f7a255752bbb223",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "dd18002b12b8632d11b57fa3d33de244bba91476",
+      "reviewed_diff_sha256": "14de955a90782a975bc55abc08d522e22f460f333711451b91175a52d13f7afa",
+      "reviewed_tree": "b7178ded2453af778c8145c6280eaf30eceb8c19",
+      "role_inputs_hash": "989b1dd2d9b6b67cd0ac94f3ab4df41bf1391f52aeaa0ef32923874dc963ee4e"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "060233d11a7e823054fef459dd4b919293e0cd6be2b5a933652f4b54b446324d"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "799d87f0af17b519ad5687246f6889665196f6c4cd09b593a38419f8740bd471"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "1a453c808fd68345df3137d6128c6c42424c7e95b8e4bd6fd4f7e1df552cb026"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "d720efb6e622c7062e02f3eba8c2f81bc42f0f36",
+      "changed_files": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "sha256": {
+            "base": "193c7da09fdb4ed341fa8c843afaee2ea45ce3e251bb9c09119991ccbc96d4f2",
+            "reviewed": "84cbd99c482b1a798f48f64df58837b1d2d32f75ec49e99e92a6bd79700d0f09"
+          }
+        },
+        {
+          "path": "server/router/api/v1/reaction_service.go",
+          "sha256": {
+            "base": "9b00a56ea58e8a4f37420c9dd907dfe01eb78a23e98552cdf8e6e351e0756730",
+            "reviewed": "f78a411aa405112e82c6f8050be90864ba9f2d64971259eb44b9ae622893c5ec"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_event_helpers.go",
+          "sha256": {
+            "reviewed": "2e8039cff461a4f79d40bf3fe754585a9ba09f680d116e124fed8ddcb8eb9e8b"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "sha256": {
+            "base": "5262e56b7434c812220355144acd6418bea896299fb6e4b78581c135eedbc89c",
+            "reviewed": "9712c6437b6525522ca8c64e892c87293495c28bedcdd8600b183989734244bc"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "sha256": {
+            "base": "c55585b6dc4e95fce1bf5d7a29f48eca10e5a024a068b179ab28fc68173dfb40",
+            "reviewed": "fa091dd0c2385b55746a82a169c85efc25e41c3727e8ef701aed60b1e7630a30"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_hub_test.go",
+          "sha256": {
+            "base": "277d98cde421ae75dc965c3c7c0dd9fd7ddca9be892a152d3f6fccfb650156c2",
+            "reviewed": "84b5668fabcbeedea6aac2b3ed7188603d68a5f3af99d35071284aabe333e02f"
+          }
+        },
+        {
+          "path": "server/router/api/v1/sse_service_test.go",
+          "sha256": {
+            "reviewed": "56d76d4d06bc75f1e46adf92a36e5b6b249128c5016f452fbd0b25f66d599d15"
+          }
+        },
+        {
+          "path": "server/router/api/v1/v1.go",
+          "sha256": {
+            "base": "a7a4f52040d38b2501444d1705be267345103b1e1e088829005b25f86a033d3d",
+            "reviewed": "3ead26debd0bac7a5bae830c8f040f7eb892ba29207f4697f5e9bded82abac99"
+          }
+        },
+        {
+          "path": "web/src/components/MemoView/MemoView.tsx",
+          "sha256": {
+            "base": "65906ded28a0eecc29dfda26a273a66ee7e326f9eb87a26016187472e4424c7d",
+            "reviewed": "944a1d96604848b3dde7d66e0e17b9abda812e1cfdd94d5f526a66b4ee370ac3"
+          }
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "sha256": {
+            "base": "b570f1960ea9de598f409a701f49853cebc02d5d56b8496f17c6b6547378a8a2",
+            "reviewed": "43d0b190fb9e8b596b18dade0fd6ea7cb5f1d23a8ccbd49d59c3db0172ace3fe"
+          }
+        },
+        {
+          "path": "web/src/hooks/useMemoQueries.ts",
+          "sha256": {
+            "base": "e9c9a5e028b5eea5b1ad2e463d8c3d6395fe050bd27b3239f43221602d38f114",
+            "reviewed": "bea1397a4bb7aff33751fd6261d6f024bbb982e002561da9d484ccf280a538b2"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-sse-event-recovery",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "Comment creation suppresses the generic event and supplies the parent-oriented event.",
+        "The event hides visibility and creator fields from JSON. Private delivery follows the owner or administrator boundary.",
+        "The browser invalidates active views after a later connection and updates parent comment caches."
+      ],
+      "original_manifest_sha256": "556771acfc018e42793608395072cc59dc2f4afeab32792ed627fd9142e845fa",
+      "reference_facts_hash": "0635e1d43e61016550766269e0d5e4525ef101be0e2c331c7921cf3075f51597",
+      "reference_limits_hash": "64cd2ca84f22f77b8ccd8d73e41732931c8d391891aea2f5e2bbda73cb0f2337",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+      "reviewed_diff_sha256": "1a453c808fd68345df3137d6128c6c42424c7e95b8e4bd6fd4f7e1df552cb026",
+      "reviewed_tree": "918a5dfffe36b2b5e9a7a90c7c069a56eab94e6f",
+      "role_inputs_hash": "4649d4cb2a4e4cd7ca6c2ba504d76777f1eb9d1634b19175f43d7de3d79b0cf9"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "f058f697bbc79dcea04b25928e65133dfab22a2c31d31121433301b9d87e1d5e"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "fa094d844711c88f507e5bfd051188335111bdbe0bf0c88bfc33f8aea8bd4e69"
+        },
+        {
+          "id": "earlier-verdict",
+          "kind": "report",
+          "sha256": "fdb524245dfff5c5b03037d24593153dc38d67d9f90c694fd013bb0a0087fd7d"
+        },
+        {
+          "id": "correction",
+          "kind": "report",
+          "sha256": "813d42784e68ff036a0e6f07a3f1ad644b0d1b44dff0c0d8f43e998c502847f2"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "63558ee933cbfc7a725af174cc5d1344bff5f493a905af59c54b26b614d23b3d"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "27de96d440d7779e8a6a5c4566540297edfd36d2",
+      "changed_files": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "sha256": {
+            "base": "e1cba67900ef3b65703a3ee3234efe99a79a3adb5b945f42080a805ca235b8a7",
+            "reviewed": "5fadaf0d9e5c91f3059aa1eba4fa7ef6460483c5676ffb9315648f17002ce6c6"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-stream-media",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The local, S3, and database branches match the stated response paths after the permission gate.",
+        "Database attachments retain their complete Blob. The authored correction rejects constant memory across all storage modes.",
+        "The source preserves the unlinked, public, and private creator conditions."
+      ],
+      "original_manifest_sha256": "74422f2c0626508b0ef86ef8a9b485f17279a143eb22a447fa24dfac08bc28d3",
+      "reference_facts_hash": "4380d7f08832ba7a0f34da7343103fa2fccfb9142c59e3601de4f39451e7089d",
+      "reference_limits_hash": "2b69b7940fbcb111e0c961899b9d6b1795a9a0dec51b23933a4df29d99326e6d",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+      "reviewed_diff_sha256": "63558ee933cbfc7a725af174cc5d1344bff5f493a905af59c54b26b614d23b3d",
+      "reviewed_tree": "7d3e307f7b1d65f868181bef801b0f802f66c4ea",
+      "role_inputs_hash": "f79ccd6c00fb38a804d7f6853236cb55afba34b1899439c90e8a29d5280de4c4"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "5bbf017e9855269ccf743101fca81b5e9e1ffeba430776615ea9cb15e06fe0a5"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "f590fe28df1bb56ec10c84a0183ecc624deddbb1523bbc3b2722c56d901a5650"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "75b3ef01be5937b2ca503f1ff13ef7548ef74e744e79e03de0c4bbd51a1b3b14"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "9da3765b193ebb6745033ed4b146a3fd6475a94c",
+      "changed_files": [
+        {
+          "path": "internal/webhook/validate.go",
+          "sha256": {
+            "base": "69874a35879c8c137af99ce25329105e4aad7f59bbbc516a67cc87832d3a4307",
+            "reviewed": "e90dc769a2a96b66b28262515478605d065445ca6d7a1bc2e3cb970aae02aa09"
+          }
+        },
+        {
+          "path": "internal/webhook/webhook_test.go",
+          "sha256": {
+            "base": "39b481a6962d9ebfdd6c0eb722bb591730b77779cb589ed74660166febef249c",
+            "reviewed": "00dce0ff889e57c10c2baafd793ec27f6232ebd096a2fa6d4ed016428213f65e"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-unspecified-webhook-address",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The reserved network list adds 0.0.0.0/8 and ::/128.",
+        "The existing allowlist and override remain. The reports claim no executed outbound request."
+      ],
+      "original_manifest_sha256": "d610b549f06930abf9d579f68ab2fc4a84d88cea960321e1abf1ed6028761ca2",
+      "reference_facts_hash": "c90207ddb059a34729ba1480798f38b25abc42f5bff9d619f11ef064d0086720",
+      "reference_limits_hash": "b2e6f7443f2b08c626f835d5982ec98f3dfe6c317ffe9c28ede4b25ab2606a90",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "607dc28413c0c24439454e973065f67a94d9fd21",
+      "reviewed_diff_sha256": "75b3ef01be5937b2ca503f1ff13ef7548ef74e744e79e03de0c4bbd51a1b3b14",
+      "reviewed_tree": "75d4036d1265d67e9aa406a837cce6117290deb9",
+      "role_inputs_hash": "894f9f83e98bbc488e9a60b8231463875269b9c4302c0570cedec22066abee71"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "72f039063629dc8c3115fa33f0ababdfcb216b64a956b57860b882ef116dcb08"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "6f2aaf699a69ee6911de6a075f62cd4a203b2dd653e3256cd9b44391c895d098"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "58842dae12c68690ebe543f62cfdbb2970ff656f4de7a769c2bfc2d10bbe1983"
+        }
+      ],
+      "authored_history": null,
+      "base_commit": "fa5e55dfc169a8ae86d35560057bb96a456d6dd7",
+      "changed_files": [
+        {
+          "path": "cmd/memos/main.go",
+          "sha256": {
+            "base": "8384d04912bef3e7e0aab0e62d7e04af03e029b471d695eb455a1e7a9fded3a8",
+            "reviewed": "e5ddb6a058ca17d028eb3168257519f0fec6a82c8b6143c2ab4242406f97705c"
+          }
+        },
+        {
+          "path": "cmd/memos/main_test.go",
+          "sha256": {
+            "base": "fd0cd6f8b80b1f333d8d1b0cb5dcd00968d10fbb7e35801c16d5a46df9e11fa9",
+            "reviewed": "fc642ff90ff19d1df261e511e0e0f22c91af6055dc3789e52a90b6ad8b6b28b9"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-version-flag",
+      "media_review_result": "not_applicable",
+      "observations": [
+        "The command adds --version and uppercase -V with a bare version line.",
+        "The existing version subcommand remains. Added tests do not establish an executed command result."
+      ],
+      "original_manifest_sha256": "5f0e87cfe5b3d520a8bdd83c555c875b1f2c663f583692a490c75e7c87f5013b",
+      "reference_facts_hash": "49b7f81717f4cb735d1568ec3d4ad1324916e0b3afe1b0616e9fe54acde78342",
+      "reference_limits_hash": "2866b7d8ae1ceb99cb3e2ca15255ddb18996a0ddfd32168a48ef7c118571a481",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "38584e8d6fe43c848cf3087b90e62ef36cb9c720",
+      "reviewed_diff_sha256": "58842dae12c68690ebe543f62cfdbb2970ff656f4de7a769c2bfc2d10bbe1983",
+      "reviewed_tree": "627116840eef8b3dbceb1653459c224011d36da1",
+      "role_inputs_hash": "e20e7f6fe5f581185488b3f18e2ab87047b6ba89973a712b940c44f5758f7885"
+    }
+  ],
+  "judge_scores_consulted": false,
+  "limits": [
+    "The review establishes source facts, not runtime correctness or packet quality.",
+    "The review inventories every changed file. It inspects behavior sources and checks added tests and documentation as source evidence.",
+    "The review supplies no executed application request, database workload, benchmark, or browser session.",
+    "Required interface media receive a separate review before those cases become ready."
+  ],
+  "model_calls_for_review": 0,
+  "reviewed_at": "2026-10-02T22:29:56.604490+00:00",
+  "reviewer": "/root/trial_runtime",
+  "schema_version": 1,
+  "scope": "Independent review of the pinned source facts, authored reports, complete change inventories, and evidence limits."
+}

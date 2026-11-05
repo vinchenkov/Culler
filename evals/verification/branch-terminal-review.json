@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-02T23:01:22.202181+00:00",
+  "reviewer": "/root/case_corpus",
+  "result": "accepted",
+  "terminal_matrix": {
+    "path": "/private/tmp/culler-eval-branch-terminal-review/matrix.json",
+    "sha256": "b702f4a07390925b48bef9c2ff08f404bf33fd0b18c7c9d01ef145b1e3a2f7e1"
+  },
+  "terminal_records": [
+    {
+      "columns": 80,
+      "color": false,
+      "state": "refused",
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-80-plain-refused.txt",
+      "sha256": "56731c1fe0bcfa580d2d79350f094cf379385389351ac57478898f7cda7f3179"
+    },
+    {
+      "columns": 80,
+      "color": false,
+      "state": "restored",
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-80-plain-restored.txt",
+      "sha256": "0ee73934629f0ff1e725ac636e3b8a5e1055ed19dfd8fba650943da52aaebcbd"
+    },
+    {
+      "columns": 80,
+      "color": true,
+      "state": "refused",
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-80-color-refused.txt",
+      "sha256": "0a0d7903fed1c182e026d3c1fce5519a80b9f448b156ab812bb25a50db5aa236"
+    },
+    {
+      "columns": 80,
+      "color": true,
+      "state": "restored",
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-80-color-restored.txt",
+      "sha256": "0ee73934629f0ff1e725ac636e3b8a5e1055ed19dfd8fba650943da52aaebcbd"
+    },
+    {
+      "columns": 40,
+      "color": false,
+      "state": "refused",
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-40-plain-refused.txt",
+      "sha256": "56731c1fe0bcfa580d2d79350f094cf379385389351ac57478898f7cda7f3179"
+    },
+    {
+      "columns": 40,
+      "color": false,
+      "state": "restored",
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-40-plain-restored.txt",
+      "sha256": "0ee73934629f0ff1e725ac636e3b8a5e1055ed19dfd8fba650943da52aaebcbd"
+    },
+    {
+      "columns": 40,
+      "color": true,
+      "state": "refused",
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-40-color-refused.txt",
+      "sha256": "0a0d7903fed1c182e026d3c1fce5519a80b9f448b156ab812bb25a50db5aa236"
+    },
+    {
+      "columns": 40,
+      "color": true,
+      "state": "restored",
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-branch-terminal-review/branch-40-color-restored.txt",
+      "sha256": "0ee73934629f0ff1e725ac636e3b8a5e1055ed19dfd8fba650943da52aaebcbd"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "evals/culler_evals/commands.py",
+      "sha256": "cfd27dc8ef28f3a4f0e3d63d90e3150ddb9f88c435d310afc6f3aea1b0521a5a"
+    },
+    {
+      "path": "evals/bridge/launch.ts",
+      "sha256": "b31b735a0765f6bc7d15c6d84245e309aebc470f2b170c8139c8e391aff3f8c0"
+    },
+    {
+      "path": "evals/tests/test_commands.py",
+      "sha256": "e9c38fa1f25f7e46a8cce994279918ae9e75664d14cb642e201c5d936be91ca4"
+    },
+    {
+      "path": "evals/tests/test_launch.py",
+      "sha256": "da8743106f2f480f67e0b640f803d0d8dac5fcf8fc438216a4a92c2073cecfea"
+    }
+  ],
+  "observations": [
+    "All eight capture hashes match their actual terminal files.",
+    "The refusal identifies the branch state and gives the exact repair action.",
+    "The successful response follows restoration of the original branch state.",
+    "Both widths and color modes preserve the same meaning.",
+    "The command adapter and launch bridge check named and detached branch states."
+  ],
+  "verification": {
+    "passed_tests": 26,
+    "unverified_test": "test_packager_terminal_matches_the_disposable_product_spine",
+    "unverified_reason": "The independent sandbox refused the disposable spine filesystem operation."
+  },
+  "limits": [
+    "The captures use a repository fixture and no model calls.",
+    "The root agent reports a separate full pass for the disposable spine dependency."
+  ],
+  "model_calls": 0
+}

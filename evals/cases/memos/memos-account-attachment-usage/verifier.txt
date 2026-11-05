@@ -1,0 +1,226 @@
+{
+  "criteria": [
+    {
+      "criterion": "The account page displays the owner's attachment storage statistic.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/user_service.proto",
+          "symbol": "UserStats"
+        },
+        {
+          "path": "server/api/v1/user_service_stats.go",
+          "symbol": "GetUserStats"
+        },
+        {
+          "path": "store/db/sqlite/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/mysql/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/postgres/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "web/src/components/Settings/UserStatsSection.tsx",
+          "symbol": "UserStatsSection"
+        },
+        {
+          "path": "web/src/hooks/useAttachmentQueries.ts",
+          "symbol": "useBatchDeleteAttachments"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The service includes the statistic only for the authenticated owner.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/user_service.proto",
+          "symbol": "UserStats"
+        },
+        {
+          "path": "server/api/v1/user_service_stats.go",
+          "symbol": "GetUserStats"
+        },
+        {
+          "path": "store/db/sqlite/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/mysql/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/postgres/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "web/src/components/Settings/UserStatsSection.tsx",
+          "symbol": "UserStatsSection"
+        },
+        {
+          "path": "web/src/hooks/useAttachmentQueries.ts",
+          "symbol": "useBatchDeleteAttachments"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "All three database drivers sum persisted sizes by creator.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/user_service.proto",
+          "symbol": "UserStats"
+        },
+        {
+          "path": "server/api/v1/user_service_stats.go",
+          "symbol": "GetUserStats"
+        },
+        {
+          "path": "store/db/sqlite/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/mysql/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/postgres/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "web/src/components/Settings/UserStatsSection.tsx",
+          "symbol": "UserStatsSection"
+        },
+        {
+          "path": "web/src/hooks/useAttachmentQueries.ts",
+          "symbol": "useBatchDeleteAttachments"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A deletion outcome invalidates account statistics.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/user_service.proto",
+          "symbol": "UserStats"
+        },
+        {
+          "path": "server/api/v1/user_service_stats.go",
+          "symbol": "GetUserStats"
+        },
+        {
+          "path": "store/db/sqlite/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/mysql/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "store/db/postgres/attachment.go",
+          "symbol": "GetAttachmentStorageUsage"
+        },
+        {
+          "path": "web/src/components/Settings/UserStatsSection.tsx",
+          "symbol": "UserStatsSection"
+        },
+        {
+          "path": "web/src/hooks/useAttachmentQueries.ts",
+          "symbol": "useBatchDeleteAttachments"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_checks": [
+      {
+        "expected_text": "currentUser != nil && currentUser.ID == userID",
+        "method": "source-text-presence",
+        "path": "server/api/v1/user_service_stats.go",
+        "result": "pass"
+      },
+      {
+        "expected_text": "SELECT COALESCE(SUM(size), 0) FROM attachment WHERE creator_id = ?",
+        "method": "source-text-presence",
+        "path": "store/db/sqlite/attachment.go",
+        "result": "pass"
+      },
+      {
+        "expected_text": "attachmentStorageBytes",
+        "method": "source-text-presence",
+        "path": "web/src/components/Settings/UserStatsSection.tsx",
+        "result": "pass"
+      },
+      {
+        "expected_text": "onSettled:",
+        "method": "source-text-presence",
+        "path": "web/src/hooks/useAttachmentQueries.ts",
+        "result": "pass"
+      }
+    ],
+    "frontend_capture": {
+      "result": "captured",
+      "provenance": "/mc/artifacts/eval/702/media/capture.json",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "images": 5
+    }
+  },
+  "media": [
+    {
+      "path": "/mc/artifacts/eval/702/media/before-total.png",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "90bef5cec0595f2e0906da3b78dc996b97246ab5097d6adf1fbc61618f472d01",
+      "description": "Before: total. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/702/media/after-total.png",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "73bf05ba6a04469f9042e529f1ea54920a67195bc0072174fa5c8eccfc09d0ed",
+      "description": "After: total. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/702/media/after-zero.png",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "05f76a2fbf39ed4bf0c6dd8e098fa5813ff93c797b431c3385478e0bbfe1ae55",
+      "description": "After: zero. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/702/media/after-pending.png",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "58b43b4f9ecb415648f752172f3610048df79fa9ad48f9d8060319a546467a25",
+      "description": "After: pending. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/702/media/after-unavailable.png",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "0bd4c457074aa1b716c2082ab9ebfcd874aeff8f2e5722d61de8dd9dbc268039",
+      "description": "After: unavailable. Fixed synthetic frontend state."
+    }
+  ],
+  "media_status": "supplied",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author inspected the pinned source and reconstructed the Git range. This is an authored record, not a captured Culler Verifier run.",
+  "task_id": 702,
+  "unverified": [
+    "The added tests exist in the reviewed source, but this case preparation did not execute them.",
+    "The total describes database attachment sizes rather than measured filesystem consumption.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ]
+}

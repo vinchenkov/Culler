@@ -1,0 +1,340 @@
+{
+  "entry": "pierre.js",
+  "packages": [
+    {
+      "name": "@pierre/diffs",
+      "version": "1.5.1",
+      "license": "apache-2.0",
+      "license_file": "LICENSE-pierre-diffs-1.5.1.txt"
+    },
+    {
+      "name": "@pierre/theme",
+      "version": "2.0.0",
+      "license": "apache-2.0",
+      "license_file": "LICENSE-pierre-theme-2.0.0.txt"
+    },
+    {
+      "name": "@pierre/theming",
+      "version": "1.0.1",
+      "license": "apache-2.0",
+      "license_file": "LICENSE-pierre-theming-1.0.1.txt"
+    },
+    {
+      "name": "@pierre/trees",
+      "version": "1.0.0-beta.6",
+      "license": "apache-2.0",
+      "license_file": "LICENSE-pierre-trees-1.0.0-beta.6.txt"
+    },
+    {
+      "name": "@shikijs/core",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-core-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/engine-javascript",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-engine-javascript-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/engine-oniguruma",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-engine-oniguruma-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/langs",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-langs-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/primitive",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-primitive-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/transformers",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-transformers-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/types",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-types-4.4.3.txt"
+    },
+    {
+      "name": "@shikijs/vscode-textmate",
+      "version": "10.0.2",
+      "license": "MIT",
+      "license_file": "LICENSE-shikijs-vscode-textmate-10.0.2.txt"
+    },
+    {
+      "name": "ccount",
+      "version": "2.0.1",
+      "license": "MIT",
+      "license_file": "LICENSE-ccount-2.0.1.txt"
+    },
+    {
+      "name": "character-entities-html4",
+      "version": "2.1.0",
+      "license": "MIT",
+      "license_file": "LICENSE-character-entities-html4-2.1.0.txt"
+    },
+    {
+      "name": "character-entities-legacy",
+      "version": "3.0.0",
+      "license": "MIT",
+      "license_file": "LICENSE-character-entities-legacy-3.0.0.txt"
+    },
+    {
+      "name": "comma-separated-tokens",
+      "version": "2.0.3",
+      "license": "MIT",
+      "license_file": "LICENSE-comma-separated-tokens-2.0.3.txt"
+    },
+    {
+      "name": "diff",
+      "version": "9.0.0",
+      "license": "BSD-3-Clause",
+      "license_file": "LICENSE-diff-9.0.0.txt"
+    },
+    {
+      "name": "hast-util-to-html",
+      "version": "9.0.5",
+      "license": "MIT",
+      "license_file": "LICENSE-hast-util-to-html-9.0.5.txt"
+    },
+    {
+      "name": "hast-util-whitespace",
+      "version": "3.0.0",
+      "license": "MIT",
+      "license_file": "LICENSE-hast-util-whitespace-3.0.0.txt"
+    },
+    {
+      "name": "html-void-elements",
+      "version": "3.0.0",
+      "license": "MIT",
+      "license_file": "LICENSE-html-void-elements-3.0.0.txt"
+    },
+    {
+      "name": "oniguruma-parser",
+      "version": "0.12.2",
+      "license": "MIT",
+      "license_file": "LICENSE-oniguruma-parser-0.12.2.txt"
+    },
+    {
+      "name": "oniguruma-to-es",
+      "version": "4.3.6",
+      "license": "MIT",
+      "license_file": "LICENSE-oniguruma-to-es-4.3.6.txt"
+    },
+    {
+      "name": "preact",
+      "version": "11.0.0-beta.0",
+      "license": "MIT",
+      "license_file": "LICENSE-preact-11.0.0-beta.0.txt"
+    },
+    {
+      "name": "property-information",
+      "version": "7.2.0",
+      "license": "MIT",
+      "license_file": "LICENSE-property-information-7.2.0.txt"
+    },
+    {
+      "name": "regex",
+      "version": "6.1.0",
+      "license": "MIT",
+      "license_file": "LICENSE-regex-6.1.0.txt"
+    },
+    {
+      "name": "regex-recursion",
+      "version": "6.0.2",
+      "license": "MIT",
+      "license_file": "LICENSE-regex-recursion-6.0.2.txt"
+    },
+    {
+      "name": "regex-utilities",
+      "version": "2.3.0",
+      "license": "MIT",
+      "license_file": "LICENSE-regex-utilities-2.3.0.txt"
+    },
+    {
+      "name": "shiki",
+      "version": "4.4.3",
+      "license": "MIT",
+      "license_file": "LICENSE-shiki-4.4.3.txt"
+    },
+    {
+      "name": "space-separated-tokens",
+      "version": "2.0.2",
+      "license": "MIT",
+      "license_file": "LICENSE-space-separated-tokens-2.0.2.txt"
+    },
+    {
+      "name": "stringify-entities",
+      "version": "4.0.4",
+      "license": "MIT",
+      "license_file": "LICENSE-stringify-entities-4.0.4.txt"
+    },
+    {
+      "name": "zwitch",
+      "version": "2.0.4",
+      "license": "MIT",
+      "license_file": "LICENSE-zwitch-2.0.4.txt"
+    },
+    {
+      "name": "tm-grammars",
+      "version": "1.32.22",
+      "license": "see LICENSE-grammars.txt",
+      "license_file": "LICENSE-grammars.txt",
+      "grammars": [
+        "css",
+        "diff",
+        "docker",
+        "dotenv",
+        "go",
+        "html",
+        "ini",
+        "java",
+        "javascript",
+        "json",
+        "jsonc",
+        "jsx",
+        "make",
+        "markdown",
+        "python",
+        "rust",
+        "shellscript",
+        "sql",
+        "toml",
+        "tsx",
+        "typescript",
+        "xml",
+        "yaml"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "file": "css-vwpt56ag.js",
+      "sha256": "a699362acdacd1c9810d60172bba3b2ae46dcacbb56a42a9a9d89622eef8488e"
+    },
+    {
+      "file": "diff-zb6nskg5.js",
+      "sha256": "836dca11447d0ae697d7586dec58894f971c49e34f24eaccbae4fef4629f458e"
+    },
+    {
+      "file": "docker-8csjjc5w.js",
+      "sha256": "8146f905b2f43f6dd2c728818080337f24a98d06da4005ff79d439ff9e2d40a8"
+    },
+    {
+      "file": "dotenv-mq103d5z.js",
+      "sha256": "3188a89e612d6e81eb79bf4f2c950e2a5e946bd90c06dc85b1cfe45f37795a09"
+    },
+    {
+      "file": "entry-1jwz692w.js",
+      "sha256": "8b74402b2527ba8468cc964dd24fa57ce08b2ff03480a73edf9de614977b3c96"
+    },
+    {
+      "file": "entry-5zran53s.js",
+      "sha256": "a1049c679a03fc70c5a412f7e8c8751d9a2738ecff10a5e9111001c2a5aee71c"
+    },
+    {
+      "file": "entry-8y89r2n8.js",
+      "sha256": "cacce7ff662cba0402fabd8cee9237e4ac6a653dde7ac4bb58d494ee8a97a8a4"
+    },
+    {
+      "file": "go-6hjg9608.js",
+      "sha256": "c4e6369e552f851221bb5fb058403191b36dac68d29e716954edb1dc34a7f7eb"
+    },
+    {
+      "file": "html-51j4t2s6.js",
+      "sha256": "efdc2d22d13708d9a11be1fa333555e54f0ac3c252d7f40135fdecb227079ede"
+    },
+    {
+      "file": "ini-6fshdk60.js",
+      "sha256": "6237b1ddfa7f6c6af8c8cbd80eb7fdd5625b288208ea1c04605742200e337338"
+    },
+    {
+      "file": "javascript-m3e68tk1.js",
+      "sha256": "8c0dd9a5d3f65e69c9b0aa3ccb28d97142b3553615b78dec3977917d968a71ef"
+    },
+    {
+      "file": "json-k67qz80s.js",
+      "sha256": "e7414be882397bf3bbb257f49b3ebb6e9679d3a8f143cb2ed8b3b58edf9e7f95"
+    },
+    {
+      "file": "jsonc-j0bqfs8g.js",
+      "sha256": "0a145c455036742421d08cc43fae3093eb89f8c30fce2cfc7e8de07f13d7e213"
+    },
+    {
+      "file": "jsx-nvxk2d20.js",
+      "sha256": "fd4c809b57c1f8a469e5de3aae74c3dc77bba03ea58b732869d1bc6b47c257bb"
+    },
+    {
+      "file": "make-p33a40c0.js",
+      "sha256": "321ef67b79c5cf171a38600570d37d462b269a5e7a1aeef809dd4903f5f66f05"
+    },
+    {
+      "file": "markdown-b1xasw8y.js",
+      "sha256": "3955f4f1efff5daa6ea989efd6019a563cbfd186d96b878a23889c300dcdc3a5"
+    },
+    {
+      "file": "pierre-dark-ha7xxyp4.js",
+      "sha256": "d223b74b86a51b976306cc9c88f339fae112819b12b52e29f68fd3e4d40d67c2"
+    },
+    {
+      "file": "pierre-light-dn9s0jyb.js",
+      "sha256": "71898db41df1f8057c7be2a435b42066bf87690eb35097fe7507c17e971c279d"
+    },
+    {
+      "file": "pierre.js",
+      "sha256": "7764e7952bdb41b96456e873cc8c4b63d532de99d9f7cb29a5de4902ed11f28b"
+    },
+    {
+      "file": "python-g092hyha.js",
+      "sha256": "7f4caf326cf03d38687cc0e0bce55dec6326cdc4a81ebdc720a30d62af3825e5"
+    },
+    {
+      "file": "rust-fhxepxp6.js",
+      "sha256": "c0d5c30a8c10c33e946b72af512ae510696893f04aa9d187a03edfaa7ee61037"
+    },
+    {
+      "file": "shellscript-zffbhb7y.js",
+      "sha256": "c0e6f161f0dc29de8136b006ec925bb362553d1bebe9e4daa52229431aa5dbc8"
+    },
+    {
+      "file": "shiki-wasm-snbws871.js",
+      "sha256": "1c489b2005e5b2e2971feaece544e750d7dcbb8df4561c82bb971061d7c9c10e"
+    },
+    {
+      "file": "sql-95yzedpw.js",
+      "sha256": "6c96f82722b34444c676c5977a9a9ba60355beb55ec2d48ab16fd56eed6651f0"
+    },
+    {
+      "file": "toml-xm9210fk.js",
+      "sha256": "892e33327dc8d93791fc91bd7d65ead91269d80f7d9060eda86330367d037177"
+    },
+    {
+      "file": "tsx-j7xsjw90.js",
+      "sha256": "1aeee17461b9a582d9410502543b1edab8687be9f981e0e5d6f277ae1ff894df"
+    },
+    {
+      "file": "typescript-hxa5ykzr.js",
+      "sha256": "9418e0540a6b4f70b09e2cecb52c674a114def89e65c6016dff94e77e4147e55"
+    },
+    {
+      "file": "xml-72aznfw3.js",
+      "sha256": "aba97bdb2b9254781e636e7b2ee074df99cf0ddb99107d2e1693406f258982a8"
+    },
+    {
+      "file": "yaml-4wesyp00.js",
+      "sha256": "50db6de6a5fcc583c246d35bfd2c7b5a41ecefc31a2c305fa51972eab7c6d63b"
+    }
+  ]
+}
