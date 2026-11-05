@@ -896,7 +896,7 @@ func TestDispatchSpawnBriefCarriesClaimedState(t *testing.T) {
 			VALUES ('prior-verifier', 'pipeline', 'verifier', 'ws-test', 1, 'correct', 'evidence/e1.md', 'corrections/c1.md')`)
 		_, got := dvDispatch(t, db, dispatch.Records{Tasks: []dispatch.Task{task}}, dispatch.Lease{}, dvConfig())
 		brief := fmt.Sprint(got["brief"])
-		for _, want := range []string{"deepen the risk proof", "corrections/c1.md", "- Unsuccessful Verifier corrections: 1"} {
+		for _, want := range []string{"deepen the risk proof", "corrections/c1.md", "evidence/e1.md"} {
 			if !strings.Contains(brief, want) {
 				t.Fatalf("Worker brief missing %q: %s", want, brief)
 			}

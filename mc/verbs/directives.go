@@ -71,6 +71,12 @@ func skillPointer(skills []RoleSkill) string {
 		"`mc` ships no help surface: bare `mc` names zero verbs and `mc --help` is an unknown " +
 		"verb. That skill is the complete surface your role may call. A verb absent from it " +
 		"does not exist for you, and a search for one wastes the run."
+	if command.Name == "mc-worker" {
+		text = "## Your command surface\n\n" +
+			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
+			"The skill lists the permitted commands; `mc` has no help command."
+	}
+
 	if len(skills) == 1 {
 		return text
 	}

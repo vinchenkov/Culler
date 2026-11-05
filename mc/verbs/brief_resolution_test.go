@@ -89,11 +89,12 @@ func requireRequirementsRevisionPart(t *testing.T, brief renderedBrief, version 
 	if part.Text != resolutionReason || part.Facts["Requirements version"] != version {
 		t.Fatalf("the %s part holds %q at the requirements version %q", partRequirementsRevision, part.Text, part.Facts["Requirements version"])
 	}
-	for _, statement := range []string{"The operator changed the requirements of this task for this reason.", "The description holds every requirement."} {
-		if !strings.Contains(part.Explanation, statement) {
-			t.Fatalf("the %s part explanation omits %q: %q", partRequirementsRevision, statement, part.Explanation)
-		}
+	if part.Explanation != "This is the operator's reason for the requirements revision." {
+		t.Fatalf("the %s part explanation is %q", partRequirementsRevision, part.Explanation)
 	}
+	requireAgentText(t, "requirements procedure", roleSkillBody(t, dispatch.RoleWorker, "mc-worker"), []string{
+		"The Task description holds every requirement; the Requirements revision reason supplies context, not additional requirements.",
+	}, nil)
 }
 
 // The dispatched Worker brief after a resolution holds the revised
@@ -195,7 +196,7 @@ func TestPacketRevisionRequestBindsTheWorker(t *testing.T) {
 	if part == nil || part.Text != request {
 		t.Fatalf("the Worker brief holds the revision request %+v", part)
 	}
-	if part.Explanation != "The operator returned the review packet with this request. You must meet the request in this run." {
+	if part.Explanation != "This is the operator's request for this revision." {
 		t.Fatalf("the %s part explanation is %q", partRevision, part.Explanation)
 	}
 	if brief.part(partRequirementsRevision) != nil {

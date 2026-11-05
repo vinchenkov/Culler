@@ -1,185 +1,128 @@
 ---
 name: mc-worker
-description: The complete and only mc verb surface for the Worker role, including the submission checks and the procedure for each case that a run brief can start; load before any mc call and before submitting the terminal — mc ships no --help, and a verb absent from this skill does not exist for this role.
+description: Worker commands, submission checks, and procedures for conditional run brief parts.
 ---
 
 # mc — Worker
 
-The agent profile sets the model and effort for this run.
-
-`<run_id>` is the `Run identifier` fact of the **Run** part of your run brief. Each `mc complete` call carries it as `--run <run_id>`. `mc run infra-failure` takes it as its first argument. `mc task block` and the reads take no run identifier. `<task>` is the `Identifier` fact of the **Task** part. `<id>` in a read is the identifier of any task. `mc` rejects a call whose run identifier does not match the live run. `mc` never applies a rejected call. A terminal is an `mc` command that ends the run. A successful terminal ends the run.
+`<id>` in a read can identify any task.
 
 ## Your repository
 
-`/workspace/source` is an independent repository for this run. It starts at the `Start commit` fact of the **Git state** part. It holds the history of the start commit and of the destination branch. The `Destination branch` fact of the **Git state** part names that branch. The Project repository stays outside your write access. Culler retains the commit that you submit after the run folder disappears.
-
-The `Base commit` fact names the commit where the first Worker run of the task started. The start commit is the checkpoint commit, else the last submitted commit of the task, else the base commit. When the **Git state** part has no `Base commit` fact, this run is the first Worker run of the task. Your repository then starts at the head of the destination branch, and that commit becomes the base commit.
-
-## Project dependencies
-
-The Project home retains dependency caches, installed tools, and Project tool configuration across runs.
-The source workspace starts fresh at the assigned commit.
-The runner executes the retained setup script before the agent starts.
-Check dependency compatibility with the current declarations and the selected image.
-Credentials, sessions, role skills, and instructions remain separate for each run.
-
-Use the project-environment-setup skill for dependency changes.
-These commands accept one JavaScript Object Notation (JSON) object on standard input:
-
-- `mc environment get`
-- `mc environment propose`
-
-The get request contains your `project_id`.
-The proposal contains the complete `configuration` and a plain-language `explanation`.
-Write `explanation` for the operator in at most two short sentences.
-Identify the Image dependencies and why the Project needs them.
-Keep check evidence, diagnostic output, and continuation instructions separate from `explanation`.
-Use the configuration object from the get response.
-Record the full committed source as `configuration.source_commit`.
-Commit the proposed Dockerfile and every build file before this report.
-Include the Dockerfile and required file contents in `dockerfile` and `build_files`.
-The proposal preserves the selected environment until approval, preparation, and source acceptance.
-After a proposal, use the checkpoint terminal to retain your source.
-Culler resumes development after the setup report and source acceptance.
-Repository test requirements still control task verification.
-Source delivery still requires the ordinary task review.
+The **Git state** part names the destination branch and, on later runs, the start and base commits.
+Your checkout starts at the Start commit when that fact is present.
+The base commit is where the first Worker run started.
+Without a Base commit fact, the initial HEAD is the base commit.
+The start commit is the checkpoint, else the last submitted commit, else the base commit.
 
 ## Task terminal
 
-If you execute the work inline and do not orchestrate, state the reason in your response before the terminal. Do not add an unsupported flag to carry the reason. Culler keeps the transcript of the run, so your response stays on record.
-
-Submit exactly one terminal. Commit the complete deliverable first. `<full HEAD sha>` is the full lowercase output of `git -C /workspace/source rev-parse HEAD`. Do not pass an abbreviation, a branch name, or a commit that you did not read back from the repository.
+Use a success terminal when the work meets the criteria:
 
 - `mc complete <task> --run <run_id> --status worked --commit <full HEAD sha>`
 - `mc complete <task> --run <run_id> --status worked --commit <full HEAD sha> --outputs <path>`
 
-The terminal examines the repository before it records anything. The repository must satisfy four conditions:
+Before submission, run these checks:
 
-1. Clean tree. `git -C /workspace/source status --porcelain=v1 --untracked-files=all` must print nothing. Untracked files count. Commit or delete each scratch file, build output, log, and notes file.
-2. Correct HEAD. HEAD must equal the commit that you pass.
-3. Correct lineage. The commit that you pass must be the start commit or a descendant of the start commit. If it is not, bring your commits onto the start commit with a rebase or a cherry-pick.
-4. Changed result. The commit that you pass must differ from the base commit. The start commit satisfies this condition when it differs from the base commit.
+1. `git -C /workspace/source status --porcelain=v1 --untracked-files=all` must print nothing, including untracked files.
+2. Read `git -C /workspace/source rev-parse HEAD` and pass that exact full lowercase identifier as `<full HEAD sha>`.
+3. HEAD must be the start commit or its descendant.
+4. HEAD must differ from the base commit.
 
-Run the two checks yourself before you submit: `status` and `rev-parse HEAD`. Nothing moves when the terminal refuses. A resubmit after the fix is safe.
+A start commit that meets these conditions and all criteria needs no new commit.
+Fix a refused submission before another attempt.
 
 ### The task execution report
 
-`--outputs` names your task execution report. The report identifies the committed files and the completion evidence. The Verifier receives its path. Write the report at `/mc/artifacts/<plane>/<task>/output/<your-file>` and pass that absolute path.
-
-A plane is one durable directory that Culler mounts under `/mc/artifacts/`. Its content stays after the run ends, and the later roles mount the same plane. List `/mc/artifacts/` and use a plane directory that already exists. The plane is writable, so create your folder with `mkdir -p`.
-
-Do not write at `/mc/artifacts/<your-file>`. Do not create a directory at that level. `/mc/artifacts/` itself is ordinary container storage. A write there succeeds, looks correct, and dies with your run. `/tmp`, `$TMPDIR`, and your working directory die with your run too.
-
-The terminal opens the file before it records the path. The terminal refuses the path in each of these cases:
-
-- the path is outside a mounted plane;
-- the file is missing;
-- the file is empty;
-- the file is over 64 MiB;
-- the file is not a regular file.
-
-The report does not replace the commit. The complete deliverable, including knowledge work and necessary local evidence, must be in the commit. Write original documents directly at the paths that the shared project-wiki skill defines. OpenWiki is the tool that generates the wiki pages of the Project under `openwiki/`. It owns each `index.md` file and its control records there. Keep those files unchanged during ordinary document work.
+`--outputs` supplies the Verifier with the absolute path of a report that identifies committed files and completion evidence.
+List `/mc/artifacts/` and select an existing plane directory.
+Create the report at `/mc/artifacts/<plane>/<task>/output/<your-file>`.
+Only mounted planes retain artifacts after the run; do not create a new directory directly under `/mc/artifacts/`.
+The report must be a nonempty regular file of at most 64 MiB.
+Apply the project-wiki skill's document and evidence rules; the report does not replace the commit.
 
 ## A run that cannot give a result
 
-Two events end a run without a result. The event selects the command. Each command in this section ends your run, so submit exactly one. No command here substitutes for the completed work.
+Complete the work with available results after an execution failure when possible.
+Otherwise select the applicable terminal below.
 
 ### A decision that only the operator can make
 
-These are examples of such decisions:
-
-- Two criteria contradict each other.
-- A criterion has no measure that you can check.
-
-The reason states the decision that you need and why. The command sets Decision Pending on the task. The operator resolves the decision with a requirements revision, or the operator cancels the task.
+Use this terminal only for a required operator decision, such as contradictory criteria or a criterion without a checkable measure:
 
 - `mc complete <task> --run <run_id> --needs-operator --reason <prose>`
-- `mc task block <task> --reason <prose>`
 
-The two commands record the same decision. Use the first command. The second command applies to your own task only and takes no `--run` flag.
+State the required decision and why it prevents completion.
+This alternative records the same decision, applies only to your task, and takes no run flag:
+
+- `mc task block <task> --reason <prose>`
 
 ### A task run failure
 
-Report the condition that prevents completion:
+Use one of these terminals for an execution condition that prevents completion:
 
 - `mc run infra-failure <run_id> --condition <observed condition>`
 - `mc complete <task> --run <run_id> --infra --reason <observed condition>`
 
-The assigned task owns three task run failure attempts.
-Each failed run after process start consumes one attempt.
-The first failure permits an automatic retry after 30 seconds.
-The second failure permits an automatic retry after two minutes.
-The third failure sets `stalled`, which the dashboard shows as Retries Exhausted.
-Forward stage progress or an operator task resume restores three attempts.
-A task resume preserves an independent Decision Pending condition.
+Report direct observations without an inferred connection diagnosis.
+Continue the assigned work after connection recovery; leave connection reports to the runner.
 
-Dispatch and launch failures before process start consume the Project infrastructure allowance.
-A required operator decision consumes zero failure or correction attempts.
-Only direct execution observations can establish a connection condition.
-An agent report retains an unknown cause.
+## Case: correction round
 
-
-### Case: correction round
-
-A **Correction from the Verifier** part means that the Verifier rejected the last submission. **The `Correction file` fact is an absolute path to a real file. Open it with ordinary file reads.** No `mc` verb returns its contents. Culler stores the path, not the prose.
-
-The file lives under `/mc/artifacts/<plane>/<task>/corrections/`. The `Evidence file` fact names the Verifier's evidence under `verification/`. Read that evidence too.
-
-Read the correction file before you change anything.
-The file names unmet criteria or task regressions and their evidence.
-Resolve task regressions even when they affect checks outside the acceptance criteria.
-New or changed tests must pass.
-Unchanged failures and unavailable host tests outside the criteria alone require no correction.
+A **Correction from the Verifier** part supplies absolute Correction file and Evidence file paths.
+Read both files with ordinary file reads; no mc verb returns their contents.
 The correction file supplies the complete objection for this run.
+Resolve its unmet criteria and task regressions, including regressions outside the acceptance criteria.
+Unchanged failures and unavailable host tests outside the criteria alone require no correction.
+If either file is missing or unreadable, use the task run failure terminal and identify the failed read.
 
-If the path is missing or unreadable, report a task run failure. Do not guess. Report `--infra` and state the failure.
+## Case: merge repair
 
-### Case: merge repair
+A **Merge candidate** part identifies the submitted commit, destination commit, and conflict paths.
+Read both changes at each conflict path.
+When both intents can hold, merge the destination commit into your work and resolve each conflict.
+Preserve both merge inputs and commit no conflict markers.
+Preserve complete Project documents and one consistent set of accepted OpenWiki control records.
+When the intents contradict, keep the work unchanged and use the operator decision terminal.
+Name each conflict path and both intents.
+Apply any conflict decision in the Task description.
+The completion report must describe the repair and any unresolved decision.
 
-Culler merges each submitted commit with the destination branch. A **Merge candidate** part means that the merge had a conflict. The part holds one JSON record with these fields:
+## Case: revision request
 
-- the `status` field is `conflict`;
-- the `submitted_commit` field and the `destination_commit` field name the two merge inputs;
-- the `conflict_paths` field names each path with a conflict.
+Meet the operator's Revision request in full before submission.
 
-Read the two changes at each conflict path. Then decide whether one commit can keep the intent of both changes.
+## Case: requirements revision
 
-- When one commit can keep both intents, merge the destination commit into your work and resolve each conflict. Your commit must preserve both merge inputs. Commit no file that contains a conflict marker.
-- When the two changes contradict, keep your work unchanged. Report the decision for the operator through the `--needs-operator` terminal. Name each conflict path and the intent of each change. The operator records the decision in the description. The next Worker run receives the revised description and the same **Merge candidate** part.
-
-The same repair procedure applies before and after operator approval.
-A merge repair clears the operator approval of the task.
-The repaired version requires verification, a new review packet, and a new operator decision.
-A later conflict starts another merge repair.
-
-Your repair must preserve complete Project documents and one consistent set of accepted OpenWiki control records. The Verifier assesses the repaired commit again.
-
-### Case: revision request
-
-The **Revision request** part holds the request of the operator. The operator returned the review packet with this request. You must meet the request in full in this run. Then submit the commit.
-
-### Case: requirements revision
-
-A **Requirements revision** part means that the operator changed the requirements of the task. The part holds the reason for the change. The reason explains why the operator changed the requirements. The reason is context and adds no requirement. The description of the **Task** part holds every requirement.
-
-1. Check the start commit against each criterion of the description.
-2. Change the work where a criterion fails.
-3. Submit the commit.
-
-When the start commit meets each criterion and differs from the base commit, submit the start commit unchanged.
-
-A **Merge candidate** part in the same run brief means that the merge repair remains open. Do the merge repair before you submit. When the description states a decision about the conflict, apply that decision in the repair.
+The Task description holds every requirement; the Requirements revision reason supplies context, not additional requirements.
+Check the start commit against the description and change the work where a criterion fails.
+If a **Merge candidate** part is also present, complete its repair before submission.
 
 ## Case: checkpoint
 
-The checkpoint terminal action asks Culler to keep your commit for another Worker run. Use it when this run cannot finish the deliverable. The terminal action applies the same four repository conditions.
+Use this terminal to retain incomplete work for another Worker run:
 
 - `mc complete <task> --run <run_id> --checkpoint --commit <full HEAD sha>`
 - `mc complete <task> --run <run_id> --checkpoint --commit <full HEAD sha> --outputs <path>`
 
-Culler retains the checkpoint commit. The task stays with the Worker, and the next Worker run starts at the checkpoint.
+The Task terminal repository checks also apply to checkpoints.
+A Checkpoint version fact means that your repository starts at that saved commit; continue the work there.
 
-A `Checkpoint version` fact in the **Git state** part means that an earlier Worker run saved a checkpoint. Your repository starts at that checkpoint. Continue the work from that commit.
+## Project dependencies
+
+Use these commands with one JavaScript Object Notation (JSON) object on standard input:
+
+- `mc environment get`
+- `mc environment propose`
+
+The get request contains your `project_id` from Project role customization.
+Use the returned configuration object for the proposal.
+Preserve the selected base and Culler's private runtime.
+Commit the proposed Dockerfile and every build file first.
+The proposal contains the complete `configuration` and an `explanation` that follows the project-environment-setup skill.
+Set `configuration.source_commit` to the full committed source identifier.
+Include the Dockerfile and required file contents in `dockerfile` and `build_files`.
+After the proposal, use the checkpoint terminal.
 
 ## Reads
 
@@ -189,48 +132,16 @@ A `Checkpoint version` fact in the **Git state** part means that an earlier Work
 - `mc activity list --kind <kind> --limit <n>`
 - `mc project list`
 
-## Out of scope
-
-Culler and the operator dispatch, verify, package, merge, and grade your work. A probe for a verb not listed here wastes the run.
-
-The runner owns `mc run model-response` and `mc homie model-response`.
-These commands record complete model responses for the current attempt.
-Do not call these runner commands.
-Continue the assigned work after connection recovery.
-
 ## Project role customization
 
-The Culler contract has priority over custom instructions.
-Custom instructions replace standard defaults in this skill within that contract.
-Follow the role directive's distinction between the contract and defaults.
-If a custom instruction conflicts with the contract during work, submit this terminal:
+For a custom instruction that conflicts with the Culler contract, use this terminal:
 
 - `mc run customization-conflict --request <json>`
 
-The JavaScript Object Notation (JSON) object contains these fields:
+The JSON object contains:
 
-- The `run` field: your run identifier.
-- The `revision` field: the customization revision from the run brief.
-- The `passage` field: the exact conflicting text from that revision.
-- The `requirement` field: the Culler contract requirement that the text contradicts.
+- The `run` field: your run identifier;
+- The `revision` field: the customization revision from the brief;
+- The `passage` field: the exact conflicting text;
+- The `requirement` field: the contract requirement that it contradicts;
 - The `reason` field: why both instructions cannot hold.
-
-The command records the Project, role, and subject from your run.
-It ends the run with a customization conflict and preserves the subject's stage and accepted work.
-A run without a subject blocks that role within its Project.
-The Project retains its pause state.
-The command preserves all failure and correction allowances.
-
-## Correction allowances
-
-The Verifier correction allowance permits three unsuccessful corrections.
-A Verifier pass restores that allowance.
-Run retries and an operator packet revision preserve that allowance.
-Each merge conflict starts a merge repair.
-A merge repair clears the operator approval of its task.
-The agent runs of a correction start first, unless an approved task in the Project waits for its merge.
-The other tasks of the Project continue while a correction waits for an operator decision.
-
-The merge repair must preserve both intents where they agree.
-Contradictory intents require an operator decision that identifies each path and both intents.
-The completion report must describe the repair and any unresolved decision.

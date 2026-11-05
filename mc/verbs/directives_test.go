@@ -159,6 +159,9 @@ func TestProseLessTerminalsRecordInlineExceptionBeforeTheCall(t *testing.T) {
 			t.Fatalf("%s skill: %v", role, err)
 		}
 		for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
+			if role == dispatch.RoleWorker && surface == "skill" {
+				continue // The Worker records this rule once, in its directive.
+			}
 			flat := strings.Join(strings.Fields(prose), " ")
 			if !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
 				t.Errorf("%s %s leaves the inline exception unrecordable", role, surface)
@@ -584,6 +587,13 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		if role == dispatch.RoleWorker {
+			requireAgentText(t, "worker directive", directive, []string{
+				"Check retained dependencies against the current declarations and the selected image before use.",
+				"apply the project-environment-setup skill",
+			}, nil)
+			continue
+		}
 		for _, required := range []string{
 			"Culler preserves the Project home at `HOME`",
 			"separate credentials, sessions, role skills, and instructions",
@@ -850,27 +860,18 @@ func TestWorkerAgentInputStatesTheStartCommitAndTheRequirementsRevision(t *testi
 		t.Fatal(err)
 	}
 	requireAgentText(t, "worker directive", strings.Join(strings.Fields(directive), " "), []string{
-		"Each part is input for this run.",
-		"The description of the **Task** part holds every requirement of the task.",
-		"After the first Worker run of the task, the part also holds the `Start commit` fact and the `Base commit` fact.",
-		"The start commit of this run is the first of these commits that exists: 1. the checkpoint commit; 2. the last submitted commit of the task; 3. the base commit.",
-		"`mc` refuses a submission or a checkpoint that equals the base commit.",
-		"You can submit the start commit unchanged when it differs from the base commit and meets each criterion of the description.",
-	}, []string{
-		"binding input",
-		"`mc` refuses a completion that submits the start commit",
-	})
+		"Before changes, read the matching mc-worker procedure",
+		"Requirements revision", "Checkpoint version", "Merge candidate",
+	}, []string{"The start commit of this run is the first"})
 	requireAgentText(t, "mc-worker skill", roleSkillBody(t, dispatch.RoleWorker, "mc-worker"), []string{
-		"4. Changed result. The commit that you pass must differ from the base commit.",
-		"### Case: requirements revision",
-		"The reason is context and adds no requirement. The description of the **Task** part holds every requirement.",
-		"When the start commit meets each criterion and differs from the base commit, submit the start commit unchanged.",
-		"A **Merge candidate** part in the same run brief means that the merge repair remains open.",
-		"You must meet the request in full in this run.",
-	}, []string{
-		"It is a binding requirement for this run.",
-		"The task blocks until the operator decides.",
-	})
+		"The start commit is the checkpoint, else the last submitted commit, else the base commit.",
+		"HEAD must be the start commit or its descendant.",
+		"HEAD must differ from the base commit.",
+		"A start commit that meets these conditions and all criteria needs no new commit.",
+		"The Task description holds every requirement; the Requirements revision reason supplies context, not additional requirements.",
+		"If a **Merge candidate** part is also present, complete its repair before submission.",
+		"Meet the operator's Revision request in full before submission.",
+	}, nil)
 }
 
 // "Operator block" names the condition that the operator sets. A role reports
@@ -894,7 +895,9 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 				t.Errorf("the %s names a customization conflict an operator block", source)
 			}
 		}
-		if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
+		if role == dispatch.RoleWorker {
+			requireAgentText(t, "worker customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in the mc-worker skill."}, nil)
+		} else if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
 			t.Errorf("the %s directive omits the customization conflict", role)
 		}
 	}
@@ -911,5 +914,17 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 	}, nil)
 	if count := strings.Count(strings.ToLower(skill.Body+homieDirective), "operator block"); count != 1 {
 		t.Errorf("the Homie input names %d operator blocks, want only the type `operator`", count)
+	}
+}
+
+func TestWorkerModelAndEffortRuleHasOneLocation(t *testing.T) {
+	directive, err := directiveForRole(dispatch.RoleWorker)
+	if err != nil {
+		t.Fatal(err)
+	}
+	requireAgentText(t, "worker directive", directive, []string{"Use the model and effort set by the agent profile."}, nil)
+	skill := roleSkillBody(t, dispatch.RoleWorker, "mc-worker")
+	if strings.Contains(skill, "agent profile") {
+		t.Fatal("Worker command skill duplicates profile ownership")
 	}
 }

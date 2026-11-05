@@ -323,6 +323,7 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 			"Never end your turn without a terminal action",
 			"Always end your turn with a terminal action",
 			"Every turn must end with the terminal action",
+			"End the run with exactly one permitted terminal action, including after an execution failure",
 		} {
 			if strings.Contains(directive, sentence) {
 				forbids = true
@@ -341,6 +342,9 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 		subjectless := role == dispatch.RoleStrategist
 		if subjectless {
 			continue
+		}
+		if role == dispatch.RoleWorker {
+			directive = roleSkillBody(t, role, "mc-worker")
 		}
 		if !strings.Contains(directive, "--infra") {
 			t.Errorf("%s directive forbids a silent exit but names no terminal for a failed run", role)
@@ -398,6 +402,12 @@ func TestEachDirectiveStatesTheWikiSchedule(t *testing.T) {
 		prose, err := roleProseDirective(role)
 		if err != nil {
 			t.Fatalf("%s: %v", role, err)
+		}
+		if role == dispatch.RoleWorker {
+			if strings.Contains(prose, "Scribe") {
+				t.Error("Worker directive contains another role's mechanics")
+			}
+			continue
 		}
 		flat := strings.Join(strings.Fields(prose), " ")
 		for _, want := range []string{

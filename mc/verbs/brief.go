@@ -283,7 +283,50 @@ func buildRunBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, i
 		"Each failure allowance permits three counted failures. An operator decision report consumes zero failure units.",
 	}})
 	addVisionPart(&b, in.Vision)
+	if sp.Role == dispatch.RoleWorker {
+		trimWorkerBrief(&b)
+	}
 	return b, nil
+}
+
+// trimWorkerBrief keeps Worker procedures in the command skill.
+func trimWorkerBrief(b *runBrief) {
+	parts := b.Parts[:0]
+	for _, part := range b.Parts {
+		switch part.Heading {
+		case "Agent credentials", "Correction allowances", "Failure controls":
+			continue
+		case partCustomization:
+			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+		case partRun:
+			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
+		case partTask:
+			part.Explanation = "Use the Identifier as `<task>` in command forms."
+			facts := part.Facts[:0]
+			for _, fact := range part.Facts {
+				if fact.Label != "Unsuccessful Verifier corrections" {
+					facts = append(facts, fact)
+				}
+			}
+			part.Facts = facts
+		case "Project environment":
+			part.Explanation = "Use these identifiers to assess dependency compatibility and prepare an environment proposal."
+		case partGitState:
+			part.Explanation = "Use these Git facts for the repository checks in the mc-worker skill."
+		case partRequirementsRevision:
+			part.Explanation = "This is the operator's reason for the requirements revision."
+		case partRevision:
+			part.Explanation = "This is the operator's request for this revision."
+		case partMergeCandidate:
+			part.Explanation = "These are the merge inputs and conflict paths."
+		case partCorrection:
+			part.Explanation = "These files contain the Verifier's objection and evidence."
+		case "Operator allowance explanation":
+			part.Explanation = "Use the operator's explanation as context for the unresolved condition."
+		}
+		parts = append(parts, part)
+	}
+	b.Parts = parts
 }
 
 // customizationPart holds the operator instructions of the role. The second
