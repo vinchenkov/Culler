@@ -3,20 +3,37 @@
 
 import argparse
 import hashlib
+import http.client
 import io
 import json
 import platform
 import re
 import tarfile
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
 PINS = Path(__file__).with_name("security") / "tools.json"
+RETRY_DELAYS = (5, 15)
+
+
+def temporary(error):
+    if isinstance(error, urllib.error.HTTPError):
+        return error.code == 429 or 500 <= error.code <= 599
+    return isinstance(error, (urllib.error.URLError, http.client.IncompleteRead, ConnectionError, TimeoutError))
 
 
 def download(record):
-    with urllib.request.urlopen(record["url"], timeout=300) as response:
-        body = response.read()
+    for attempt in range(len(RETRY_DELAYS) + 1):
+        try:
+            with urllib.request.urlopen(record["url"], timeout=300) as response:
+                body = response.read()
+            break
+        except Exception as error:
+            if attempt == len(RETRY_DELAYS) or not temporary(error):
+                raise
+            time.sleep(RETRY_DELAYS[attempt])
     if hashlib.sha256(body).hexdigest() != record["sha256"]:
         raise ValueError("The scanner download differs from its checksum.")
     return body

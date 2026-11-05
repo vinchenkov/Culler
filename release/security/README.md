@@ -2,6 +2,8 @@
 
 The release workflow uses Gitleaks and Trivy before publication.
 The tools use the versions and archive checksums in `tools.json`.
+The installer makes at most 3 attempts for each download after a temporary network or server error.
+A checksum mismatch fails the installer at once.
 Every third-party workflow action uses a full commit identifier.
 Pull request jobs hold read-only permissions and receive no provider credentials or publication credentials.
 

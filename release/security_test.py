@@ -1,12 +1,17 @@
 import copy
 import datetime
+import hashlib
+import http.client
 import io
 import json
 import tarfile
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
+from unittest import mock
 
+import security_tools
 from security_content import Content, digest
 from security_policy import apply_exceptions
 from security_scan import consume_trivy, verify_files, verify_image
@@ -139,6 +144,48 @@ class SecurityPolicyTest(unittest.TestCase):
             self.assertEqual(texts["notes.gz"], "../z/notes.gz")
             with self.assertRaises(ValueError):
                 content.add(io.BytesIO(b"plain text"), {"file": "damaged.gz", "subject": "fixture"})
+
+
+class ScannerDownloadTest(unittest.TestCase):
+    BODY = b"scanner archive"
+    RECORD = {"url": "https://example.invalid/scanner.tar.gz", "sha256": hashlib.sha256(BODY).hexdigest()}
+
+    def download(self, responses):
+        calls = []
+
+        def urlopen(url, timeout):
+            calls.append(url)
+            response = responses.pop(0)
+            if isinstance(response, BaseException):
+                raise response
+            return io.BytesIO(response)
+
+        with mock.patch.object(security_tools.urllib.request, "urlopen", urlopen), \
+                mock.patch.object(security_tools.time, "sleep") as sleep:
+            try:
+                return security_tools.download(self.RECORD), len(calls), [call.args[0] for call in sleep.call_args_list]
+            except Exception as error:
+                return error, len(calls), [call.args[0] for call in sleep.call_args_list]
+
+    def server_error(self, code):
+        return urllib.error.HTTPError(self.RECORD["url"], code, "error", {}, None)
+
+    def test_temporary_failures_receive_two_more_attempts(self):
+        for failure in (self.server_error(504), self.server_error(429), urllib.error.URLError("reset"),
+                        TimeoutError(), http.client.IncompleteRead(b"partial")):
+            with self.subTest(failure=type(failure).__name__):
+                self.assertEqual(self.download([failure, self.BODY]), (self.BODY, 2, [5]))
+        result, calls, sleeps = self.download([self.server_error(503)] * 3)
+        self.assertIsInstance(result, urllib.error.HTTPError)
+        self.assertEqual((calls, sleeps), (3, [5, 15]))
+
+    def test_permanent_failures_and_checksum_mismatches_fail_at_once(self):
+        result, calls, sleeps = self.download([self.server_error(404), self.BODY])
+        self.assertIsInstance(result, urllib.error.HTTPError)
+        self.assertEqual((calls, sleeps), (1, []))
+        result, calls, sleeps = self.download([b"different archive", self.BODY])
+        self.assertIsInstance(result, ValueError)
+        self.assertEqual((calls, sleeps), (1, []))
 
 
 if __name__ == "__main__":
