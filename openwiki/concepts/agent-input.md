@@ -72,7 +72,9 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 
 `mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Homie](homie.md) tier uses the same directive and skill mechanism but has no run brief.
 
-Each role directive states that the assigned agent profile sets the model and effort for the run.
+The agent profile sets the model and effort for each run.
+The Strategist, Arbiter, Verifier, Packager, Scribe, and setup directives state this fact.
+The Worker and Homie directives omit it.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
 

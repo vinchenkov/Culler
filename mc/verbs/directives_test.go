@@ -917,14 +917,9 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 	}
 }
 
-func TestWorkerModelAndEffortRuleHasOneLocation(t *testing.T) {
-	directive, err := directiveForRole(dispatch.RoleWorker)
-	if err != nil {
-		t.Fatal(err)
-	}
-	requireAgentText(t, "worker directive", directive, []string{"Use the model and effort set by the agent profile."}, nil)
+func TestWorkerCommandSkillOmitsTheAgentProfile(t *testing.T) {
 	skill := roleSkillBody(t, dispatch.RoleWorker, "mc-worker")
 	if strings.Contains(skill, "agent profile") {
-		t.Fatal("Worker command skill duplicates profile ownership")
+		t.Fatal("the mc-worker skill names the agent profile")
 	}
 }

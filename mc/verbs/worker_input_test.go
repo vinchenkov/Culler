@@ -54,8 +54,8 @@ func TestWorkerBriefDeliversProceduresWithoutSystemMechanics(t *testing.T) {
 			t.Errorf("delivered skill and pointer disagree: %s", path)
 		}
 	}
-	if strings.Count(profileText, "agent profile") != 1 {
-		t.Fatal("Worker must receive the model and effort rule once")
+	if strings.Contains(profileText, "agent profile") {
+		t.Fatal("the Worker input names the agent profile")
 	}
 }
 

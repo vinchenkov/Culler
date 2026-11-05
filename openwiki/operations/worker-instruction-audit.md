@@ -20,7 +20,7 @@ Both counts use Python `len(re.findall(r"\S+", text))` on the complete UTF-8 fil
 
 | File | Base words | Final words |
 | --- | ---: | ---: |
-| `mc/verbs/directives/worker.md` | 1433 | 346 |
+| `mc/verbs/directives/worker.md` | 1433 | 336 |
 | `mc/verbs/skills/worker/mc-worker/SKILL.md` | 2323 | 952 |
 
 The command skill is the only Worker-specific skill. No skill was added or removed.
@@ -31,7 +31,7 @@ The directive title identifies the role. The skill title and frontmatter identif
 
 | File | Section | Concrete reason |
 | --- | --- | --- |
-| `mc/verbs/directives/worker.md` | Culler contract | Preserves the profile-selected model and effort; binds criteria, verification, complete source delivery, write scope, truthful evidence, safety, authority, and one terminal. |
+| `mc/verbs/directives/worker.md` | Culler contract | Binds criteria, verification, complete source delivery, write scope, truthful evidence, safety, authority, and one terminal. |
 | `mc/verbs/directives/worker.md` | Project role customization | Distinguishes replaceable defaults from contract rules and selects the conflict procedure. |
 | `mc/verbs/directives/worker.md` | Cases | Selects conditional procedures before changes and retains the dependency compatibility check. |
 | `mc/verbs/directives/worker.md` | Orchestration | Controls delegation, sole-writer authority, integration, and the inline exception. |
@@ -3812,19 +3812,20 @@ Both conflict paths add this original passage: “The agent profile sets the mod
 
 | Source | Original text | Category | Retained location |
 | --- | --- | --- | --- |
-| `mc/verbs/directives/worker.md` at the destination | The agent profile sets the model and effort for this run. | duplicate | Directive, Culler contract: “Use the model and effort set by the agent profile.” |
-| `mc/verbs/skills/worker/mc-worker/SKILL.md` at the destination | The agent profile sets the model and effort for this run. | duplicate | Directive, Culler contract: “Use the model and effort set by the agent profile.” |
+| `mc/verbs/directives/worker.md` at the destination | The agent profile sets the model and effort for this run. | duplicate | None |
+| `mc/verbs/skills/worker/mc-worker/SKILL.md` at the destination | The agent profile sets the model and effort for this run. | duplicate | None |
 
-The directive gives this fact an action: use the profile-selected model and effort.
-The skill omits the duplicate. All destination runtime changes remain intact.
+The Worker directive and the skill omit this passage.
+The agent profile sets the model and effort of each Worker run.
+All destination runtime changes remain intact.
 The merge introduces no further Worker brief explanations or pointers.
 The assigned-base counts above still use the original base, not the destination commit.
 
 The other-role digest test uses the destination input as its baseline.
 A temporary inverse check removed only the destination's two profile-text additions and reproduced all five original digests.
 This check passed before the test received the destination digests.
-The Worker delivery test requires one profile reference across the rendered brief and command skill.
-The directive test requires the actionable rule at its retained location.
+The Worker delivery test requires zero profile references across the rendered brief and command skill.
+The directive test requires that the command skill omits the agent profile.
 
 ## Merge repair validation
 
