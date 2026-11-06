@@ -3,14 +3,6 @@
     {
       "scanner": "gitleaks",
       "subject": "commit:29a64e4cc8bbaa567a4324799547ca9f48919b71",
-      "file": "mc/go.sum",
-      "rule": "generic-api-key",
-      "line": 54,
-      "reason": "The value is the public Go module checksum for modernc.org/token v1.1.0."
-    },
-    {
-      "scanner": "gitleaks",
-      "subject": "commit:29a64e4cc8bbaa567a4324799547ca9f48919b71",
       "file": "mc/verbs/refusalroute_test.go",
       "rule": "generic-api-key",
       "line": 27,

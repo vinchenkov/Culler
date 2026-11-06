@@ -7,7 +7,6 @@ import http.client
 import io
 import json
 import platform
-import re
 import tarfile
 import time
 import urllib.error
@@ -52,12 +51,7 @@ def install(destination):
             path = destination / name
             path.write_bytes(archive.extractfile(member).read())
             path.chmod(0o700)
-    # Keep the established rules. Remove broad path exclusions from the default configuration.
-    config = download(pins["gitleaks"]["rules"]).decode()
-    config, count = re.subn(r"(?ms)(^\[allowlist\]\n.*?^paths = )\[.*?^\]", r"\1[]", config, count=1)
-    if count != 1:
-        raise ValueError("The Gitleaks path configuration requires review.")
-    (destination / "gitleaks.toml").write_text(config)
+    (destination / "gitleaks.toml").write_bytes(download(pins["gitleaks"]["rules"]))
 
 
 if __name__ == "__main__":

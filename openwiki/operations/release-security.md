@@ -102,7 +102,7 @@ A difference stops the publication.
 ## Secret scan inputs and evidence
 
 `security_tools.py` installs Gitleaks and Trivy from the versions and archive checksums in `release/security/tools.json`.
-It verifies each download and removes broad path exclusions from the fixed Gitleaks configuration.
+It verifies each download and uses the default Gitleaks configuration, including its path exclusions.
 `security_scan.py` checks scanner versions and records executable checksums.
 History reports also record the Gitleaks configuration checksum.
 

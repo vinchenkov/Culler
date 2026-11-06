@@ -93,7 +93,7 @@ For a pull request, the checked-out merge commit retains every new source commit
 ## Secret coverage and reports
 
 Gitleaks uses its established detection rules.
-The installer removes broad path exclusions from its fixed default configuration.
+The scan uses the default Gitleaks configuration, including its path exclusions for files such as `go.sum` and lock files.
 The scan ignores inline allow comments and repository ignore files.
 The scan preserves rule-specific false detection rules from Gitleaks.
 An ordinary variable name alone is not a credential.

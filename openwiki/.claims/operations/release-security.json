@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bcddd9036d29ed53e8a95ff9005a07c8df7868c16ede854fc9f43d45e4d76637",
+  "pageVersion": "sha256:a7a45e9539063d2c111d8062b56deac831314c84794858a027a36cadbbe8b70f",
   "claims": [
     {
       "id": "claim_1e8ef1f983bb4576baa77cd0438bd6da",
@@ -81,7 +81,7 @@
       "statement": "Scanner installation verifies downloaded archives against pinned checksums.",
       "evidence": [
         {
-          "resource": "repo://release/security_tools.py#L27-L54",
+          "resource": "repo://release/security_tools.py#L26-L53",
           "version": "repo-lines-v1:sha256:addeed1bd444f4126d07acf286a02fc84c1563c1aac556b269e0d023c122c237:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNDYxNjI5MTRmMGUwYTU4NWVmNWU2MjlhYTYxZTIzZWEyNTlmMzZlM2NiMTQ1MWE4MzMxNjU1MjliYTQ5OTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2NDY4NTk0OTE0ZjA5ZTY3MTg5MmM5ZjI0YWMxYzljZTE1ODM4YjQ1NmEzYjQzOTRjNGQwYjEwM2JlYWE4OTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlMjIxNWE4YzNlYWZiZGQ5MWU2NzJjZWY5Y2NhNDg0NGUwNmJhMzQwZGIwYmYwYmZiZjQ1ZWE1Yzk0MzU2M2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwOWZmYzhlZTI5M2FmMDE0YzU2ODk1Y2E4YzljYzdiNDgzNmE1YTEyOTU4NDY1OTg5YWMxY2U0MzE5ZGVmZDAifQ"
         }
       ]
