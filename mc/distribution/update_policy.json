@@ -1,5 +1,5 @@
 {
-  "test_releases": false,
+  "test_releases": true,
   "minimum_version": "0.1.0",
   "accepted": {}
 }
