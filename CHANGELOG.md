@@ -22,7 +22,7 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 
 ### Update effects
 
-- The current compatibility checks block updates and publication until a tested migration from 0.1.0 exists.
+- This test release permits new installations. The updater rejects the incompatible database from 0.1.0.
 
 ## 0.1.0
 

@@ -242,7 +242,7 @@ These rules apply before version 1.0.0:
 
 Version 0.1.0 starts the public data compatibility contract.
 Every supported update preserves durable user data, including updates between 0.x minor versions.
-Consecutive public releases require a supported update path.
+Consecutive public releases require a supported update path, except for the 0.1.0 to 0.2.0 schema change.
 Skipped releases require accepted source formats and a supported source version.
 An ordinary downgrade remains unsupported.
 
@@ -307,8 +307,9 @@ The checks exercise the product image without a mounted Culler checkout.
 Each release uses one version, one full commit identifier, and an immutable image digest.
 The `VERSION` file supplies the public version.
 The minimum source version and accepted source formats reside in `mc/distribution/update_policy.json`.
-Publication rejects an undeclared path from the previous public release.
-Spine, configuration, and credential conversions require converter code before publication.
+Publication permits the 0.1.0 to 0.2.0 schema change for new installations.
+All other format changes require a supported update path before publication.
+The updater still rejects incompatible formats.
 The workflow verifies each release file after upload.
 The workflow makes the release available only after all required checks pass.
 An incomplete release preserves the previous available release.
@@ -340,7 +341,7 @@ They also reject a version without a complete `CHANGELOG.md` section.
 
 Before a version increase, compare the database schema of the new version with the `schema` value in the `release.json` of the latest release.
 Ask your coding harness to make this comparison.
-A different schema blocks publication until its conversion and recovery tests pass.
+Except for the 0.1.0 to 0.2.0 change, a different schema blocks publication until its conversion and recovery tests pass.
 An accepted-format declaration alone cannot enable a conversion.
 Use the Database compatibility and Update effects parts to describe preserved data and required intermediate releases.
 Before publication, test the exact packages on a separate Mac or isolated deployment.

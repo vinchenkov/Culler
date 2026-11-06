@@ -142,7 +142,7 @@ class PublishTest(unittest.TestCase):
     def test_the_previous_release_requires_one_compatible_record(self):
         for failure in ("absent", "duplicate", "version", "format", "schema"):
             with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory:
-                latest = latest_release()
+                latest = latest_release("0.1.1" if failure == "schema" else "0.1.0")
                 previous = json.loads(latest["assets"][0]["body"])
                 if failure == "absent":
                     latest["assets"] = []
@@ -164,6 +164,22 @@ class PublishTest(unittest.TestCase):
                     publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
                 self.assertEqual(api.assets, {})
                 self.assertEqual(api.published, [])
+
+    def test_0_2_0_publishes_a_new_schema_after_0_1_0(self):
+        with tempfile.TemporaryDirectory() as directory:
+            latest = latest_release()
+            previous = json.loads(latest["assets"][0]["body"])
+            previous["schema"] = "d" * 64
+            previous["update"]["formats"]["spine"] = previous["schema"]
+            previous["update"]["accepted"]["spine"] = [previous["schema"]]
+            latest["assets"][0]["body"] = json.dumps(previous).encode()
+            api = FakeGitHub(latest=latest)
+            output = self.fixture(Path(directory))
+            self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW))
+            self.assertEqual(len(api.published), 1)
+            record = json.loads((output / "assets/release.json").read_text())
+            self.assertEqual(record["update"]["accepted"]["spine"], [record["schema"]])
+            self.assertNotEqual(record["schema"], previous["schema"])
 
     def test_an_unsupported_previous_release_during_upload_blocks_publication(self):
         class ConcurrentGitHub(FakeGitHub):

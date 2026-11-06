@@ -51,6 +51,9 @@ def require_new_public_version(candidate, previous):
     if parse_version(candidate["update"]["minimum_version"]) > parse_version(previous["version"]):
         raise ValueError("The candidate must support the previous public release.")
     for name, value in previous["update"]["formats"].items():
+        # The 0.2.0 test release permits new installations with the Collie schema.
+        if name == "spine" and (previous["version"], candidate["version"]) == ("0.1.0", "0.2.0"):
+            continue
         if value not in candidate["update"]["accepted"][name]:
             raise ValueError("The previous public release lacks a declared update path: " + name)
         if name in {"spine", "configuration", "credentials"} and value != candidate["update"]["formats"][name]:
