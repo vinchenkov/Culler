@@ -2,7 +2,7 @@ import { afterAll, beforeAll, expect, test } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Frame } from "playwright";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
+import { bootSmoke, completePageRead, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
 import { seedDeliveryPacket, type ChangeFixtureFile } from "./delivery-fixture";
 
 let smoke: Smoke;
@@ -755,8 +755,6 @@ test("a page error shows in the page error area beside the queue column and insi
     expect(await approvalRow.getAttribute("data-state")).toBe("awaits_decision");
     expect(await approvalRow.getByTestId("packet-progress").innerText()).toBe("Approval in progress");
     expect(await page.getByTestId("reader-empty").innerText()).toContain(`Task #${task.second}`);
-    // The poll stops, so no later read clears the page error.
-    await page.evaluate(() => Object.defineProperty(document, "hidden", { configurable: true, get: () => true }));
     release();
     // A failure after the reader closes shows a page error that names the task.
     const message = `The decision for Task #${task.second} failed. ${refused}`;
@@ -787,11 +785,11 @@ test("a page error shows in the page error area beside the queue column and insi
     release();
     await page.setViewportSize(WIDE);
     await page.unroute(pattern);
-    await page.evaluate(() => {
-      delete (document as { hidden?: boolean }).hidden;
-      document.dispatchEvent(new Event("visibilitychange"));
-    });
   }
+  // A later page read keeps the error of the failed decision until the operator dismisses it.
+  await completePageRead(page, "packets");
+  expect(await page.getByTestId("error").innerText()).toContain(`The decision for Task #${task.second} failed.`);
+  await page.getByTestId("error").getByRole("button", { name: "Dismiss" }).click();
   await page.getByTestId("error").waitFor({ state: "hidden" });
 }, 30000);
 
