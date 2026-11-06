@@ -19,7 +19,7 @@ generated: { by: "culler-scribe", at: "2026-11-05T05:07:38.661Z" }
 # Culler lifecycle command
 
 The `culler` command controls the local Culler deployment on the Mac host.
-The operator uses the dashboard or Homie for configuration.
+The operator uses the dashboard or Collie for configuration.
 The command accepts `--mc-home` for another deployment and `--no-color` for plain output.
 `NO_COLOR` and redirected output also select plain text.
 See [installation and deployment](install-and-deployment.md) for command installation and repair.

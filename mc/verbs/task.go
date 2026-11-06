@@ -185,7 +185,7 @@ func TaskResume(db *sql.DB, id *RunIdentity, task int64, reason string) (any, er
 // {"action":"interrupt", "stop_container":true} — and that stop never happened.
 // The resident applies effects at exactly one call site, the parsed stdout of
 // `mc dispatch`; this verb's result goes to its own caller's stdout, which for
-// a Homie is inside a container. Releasing the lease then removed the only
+// a Collie is inside a container. Releasing the lease then removed the only
 // remaining path to a stop, because the reap selects on the lease. So the
 // operator was told the run had stopped while the agent kept running and
 // writing.

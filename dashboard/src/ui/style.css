@@ -839,7 +839,7 @@ main { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 /* The address selects the first pane before the browser modules arrive. */
 html[data-initial-page] main > .panel { display: none !important; }
 html[data-initial-page="board"] #board-pane,
-html[data-initial-page="homie"] #homie-pane,
+html[data-initial-page="collie"] #collie-pane,
 html[data-initial-page="review"] #review-pane,
 html[data-initial-page="pipeline"] #pipeline-pane,
 html[data-initial-page="configs"] #configs-pane,
@@ -1946,9 +1946,9 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 .board-history-item { margin: 12px 0; padding-top: 8px; border-top: 1px solid var(--line); }
 .board-history-report { margin-top: 8px; }
 
-/* ------------------------------------------- 2. Homie and Project Vision */
+/* ------------------------------------------- 2. Collie and Project Vision */
 
-.homie-grid {
+.collie-grid {
   display: grid;
   grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   gap: 14px;
@@ -1956,8 +1956,8 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   flex: 1 1 auto;
   min-height: 0;
 }
-.homie-grid > .sidecol,
-.homie-grid > .convo { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.collie-grid > .sidecol,
+.collie-grid > .convo { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
 
 .session-list {
   display: flex;
@@ -2079,7 +2079,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 .composer:has(.conversation-uploads) textarea { flex: 1 1 calc(100% - 100px); }
 .conversation-uploads { order: 3; padding: 0 8px 6px 0; }
 
-/* The conversation pages: Homie and the Project Vision. A page head on the
+/* The conversation pages: Collie and the Project Vision. A page head on the
  * paper, then two surfaces side by side. */
 .conversation-page {
   --vb-ink: var(--ink);
@@ -2159,7 +2159,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 
 /* Two surfaces side by side, in one tray of the nest. */
 .conversation-page .vision-grid,
-#homie-pane .homie-grid {
+#collie-pane .collie-grid {
   padding: 14px;
   background: var(--tray);
   border-radius: var(--r-xl);
@@ -2185,62 +2185,62 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 .conversation-page .conversation-clear[hidden] { display: none; }
 
 /* The model control: the model behind the conversation, with a menu that
- * changes the Homie route. */
+ * changes the Collie route. */
 .conversation-page .vision-conversation > .vision-panel-bar { position: relative; }
-.conversation-page .homie-model {
+.conversation-page .collie-model {
   display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%; height: 28px; padding: 0 8px 0 10px;
   border: 1px solid var(--line-2); border-radius: 7px; background: var(--surface); color: var(--vb-ink);
   font: inherit; font-size: 12px; cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast);
 }
-.conversation-page .homie-model[hidden] { display: none; }
-.conversation-page .homie-model:hover, .conversation-page .homie-model[aria-expanded="true"] { background: var(--surface-hi); border-color: var(--line-3); }
-.conversation-page .homie-model[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(var(--navy-rgb), 0.12); }
-.conversation-page .homie-model[disabled] { cursor: default; background: transparent; border-color: var(--line); }
-.conversation-page .homie-model-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); font-size: 11.5px; font-weight: 600; }
-.conversation-page .homie-model-meta { flex: none; color: var(--vb-muted); white-space: nowrap; }
-.conversation-page .homie-model-meta[hidden] { display: none; }
-.conversation-page .homie-model-chevron { flex: none; color: var(--vb-muted); transition: transform var(--t-med) var(--ease); }
-.conversation-page .homie-model[aria-expanded="true"] .homie-model-chevron { transform: rotate(180deg); }
-.conversation-page .homie-model[disabled] .homie-model-chevron { display: none; }
-.conversation-page .homie-model[data-pending="true"]::after {
+.conversation-page .collie-model[hidden] { display: none; }
+.conversation-page .collie-model:hover, .conversation-page .collie-model[aria-expanded="true"] { background: var(--surface-hi); border-color: var(--line-3); }
+.conversation-page .collie-model[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(var(--navy-rgb), 0.12); }
+.conversation-page .collie-model[disabled] { cursor: default; background: transparent; border-color: var(--line); }
+.conversation-page .collie-model-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); font-size: 11.5px; font-weight: 600; }
+.conversation-page .collie-model-meta { flex: none; color: var(--vb-muted); white-space: nowrap; }
+.conversation-page .collie-model-meta[hidden] { display: none; }
+.conversation-page .collie-model-chevron { flex: none; color: var(--vb-muted); transition: transform var(--t-med) var(--ease); }
+.conversation-page .collie-model[aria-expanded="true"] .collie-model-chevron { transform: rotate(180deg); }
+.conversation-page .collie-model[disabled] .collie-model-chevron { display: none; }
+.conversation-page .collie-model[data-pending="true"]::after {
   content: ""; flex: none; width: 6px; height: 8px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: var(--navy-ink); order: -1;
 }
-.conversation-page .homie-model-menu {
+.conversation-page .collie-model-menu {
   position: absolute; z-index: 10; top: calc(100% + 4px); left: 12px; width: min(360px, calc(100% - 24px));
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-md); box-shadow: var(--e3);
   animation: drop-in var(--t-med) var(--ease);
 }
-.conversation-page .homie-model-menu[hidden] { display: none; }
-.conversation-page .homie-model-head { padding: 13px 14px 9px; }
-.conversation-page .homie-model-head p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--vb-muted); }
-.conversation-page .homie-model-head .homie-model-title { margin-bottom: 2px; font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--vb-ink); }
-.conversation-page .homie-model-options { display: grid; gap: 2px; max-height: 280px; overflow-y: auto; padding: 0 6px 6px; }
-.conversation-page .homie-model-option {
+.conversation-page .collie-model-menu[hidden] { display: none; }
+.conversation-page .collie-model-head { padding: 13px 14px 9px; }
+.conversation-page .collie-model-head p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--vb-muted); }
+.conversation-page .collie-model-head .collie-model-title { margin-bottom: 2px; font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--vb-ink); }
+.conversation-page .collie-model-options { display: grid; gap: 2px; max-height: 280px; overflow-y: auto; padding: 0 6px 6px; }
+.conversation-page .collie-model-option {
   display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 9px;
   border: 0; border-radius: 7px; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
   transition: background var(--t-fast);
 }
-.conversation-page .homie-model-option:hover { background: var(--wash); }
-.conversation-page .homie-model-option[aria-checked="true"] { background: var(--select); box-shadow: inset 3px 0 0 var(--navy-ink); }
-.conversation-page .homie-model-option:focus-visible { outline-offset: -2px; }
-.conversation-page .homie-model-option[disabled] { cursor: progress; opacity: 0.45; }
-.conversation-page .homie-model-option-text { display: grid; gap: 1px; flex: 1 1 auto; min-width: 0; }
-.conversation-page .homie-model-option-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--vb-ink); }
-.conversation-page .homie-model-option-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; color: var(--vb-muted); }
-.conversation-page .homie-model-option-meta:empty { display: none; }
-.conversation-page .homie-model-check { flex: none; color: var(--navy-ink); visibility: hidden; }
-.conversation-page .homie-model-option[aria-checked="true"] .homie-model-check { visibility: visible; }
-.conversation-page .homie-model-empty { margin: 0; padding: 4px 14px 10px; font-size: 12px; color: var(--vb-muted); }
-.conversation-page .homie-model-pending { display: grid; gap: 8px; justify-items: start; margin: 0 6px 6px; padding: 10px; border-radius: 7px; background: var(--surface-2); }
-.conversation-page .homie-model-pending p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--vb-ink-2); }
-.conversation-page .homie-model-error { margin: 0 14px 8px; font-size: 12px; line-height: 1.45; color: var(--brick-ink); }
-.conversation-page .homie-model-foot { border-top: 1px solid var(--vb-line); padding: 4px 6px; background: var(--surface-2); }
-.conversation-page .homie-model-manage {
+.conversation-page .collie-model-option:hover { background: var(--wash); }
+.conversation-page .collie-model-option[aria-checked="true"] { background: var(--select); box-shadow: inset 3px 0 0 var(--navy-ink); }
+.conversation-page .collie-model-option:focus-visible { outline-offset: -2px; }
+.conversation-page .collie-model-option[disabled] { cursor: progress; opacity: 0.45; }
+.conversation-page .collie-model-option-text { display: grid; gap: 1px; flex: 1 1 auto; min-width: 0; }
+.conversation-page .collie-model-option-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--vb-ink); }
+.conversation-page .collie-model-option-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; color: var(--vb-muted); }
+.conversation-page .collie-model-option-meta:empty { display: none; }
+.conversation-page .collie-model-check { flex: none; color: var(--navy-ink); visibility: hidden; }
+.conversation-page .collie-model-option[aria-checked="true"] .collie-model-check { visibility: visible; }
+.conversation-page .collie-model-empty { margin: 0; padding: 4px 14px 10px; font-size: 12px; color: var(--vb-muted); }
+.conversation-page .collie-model-pending { display: grid; gap: 8px; justify-items: start; margin: 0 6px 6px; padding: 10px; border-radius: 7px; background: var(--surface-2); }
+.conversation-page .collie-model-pending p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--vb-ink-2); }
+.conversation-page .collie-model-error { margin: 0 14px 8px; font-size: 12px; line-height: 1.45; color: var(--brick-ink); }
+.conversation-page .collie-model-foot { border-top: 1px solid var(--vb-line); padding: 4px 6px; background: var(--surface-2); }
+.conversation-page .collie-model-manage {
   width: 100%; padding: 8px 9px; border: 0; border-radius: 7px; background: transparent; text-align: left;
   font: inherit; font-size: 12.5px; font-weight: 700; color: var(--navy-ink); cursor: pointer;
 }
-.conversation-page .homie-model-manage:hover { background: var(--wash); }
+.conversation-page .collie-model-manage:hover { background: var(--wash); }
 .conversation-page .vision-destination {
   flex: 1 1 0; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-family: var(--mono); font-size: 11.5px; color: var(--vb-muted); text-align: left;
@@ -2257,7 +2257,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 .conversation-page .msg.own { max-width: min(82%, 90ch); }
 .conversation-page .msg .who { font-size: 12px; color: var(--vb-ink-2); gap: 8px; }
 .conversation-page .msg .who > span:last-child:not(.tag) { font-weight: 450; color: var(--vb-muted); }
-/* Homie signs each message with a small egg mark. */
+/* Collie signs each message with a small egg mark. */
 .conversation-page .msg:not(.own) .who::before {
   content: "" / ""; display: inline-block; width: 13px; height: 16px;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
@@ -2419,9 +2419,9 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   .conversation-page .conversation-composer .btn { margin-left: auto; }
   .conversation-page .conversation-status { flex-basis: 100%; margin: 0; text-align: left; }
   .conversation-page .vision-panel-bar { padding-block: 10px; min-height: 0; }
-  #homie-pane .homie-sessions .vision-panel-bar { row-gap: 2px; }
-  #homie-pane .homie-sessions .session-list { padding-top: 10px; }
-  .conversation-page .homie-model { max-width: 60%; }
+  #collie-pane .collie-sessions .vision-panel-bar { row-gap: 2px; }
+  #collie-pane .collie-sessions .session-list { padding-top: 10px; }
+  .conversation-page .collie-model { max-width: 60%; }
   .conversation-page .conversation-clear { order: 1; margin-left: auto; }
   .conversation-page .conversation-status { order: 2; }
   .conversation-page .vision-editor { padding: 14px 16px; }
@@ -2505,55 +2505,55 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   .board-command .conversation-composer .btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 }
 
-/* Homie keeps its session list beside the transcript. */
-.page:has(#homie-pane:not([hidden])) { height: 100dvh; min-height: 0; }
-.page:has(#homie-pane:not([hidden])) > .system-notices { position: relative; top: auto; flex-shrink: 0; }
-#homie-pane { flex: 1 1 0; min-height: 0; }
-#homie-pane > .vision-bar, #homie-composer { flex: none; }
-#homie-pane .homie-grid { flex: 1 1 0; min-height: 0; grid-template-columns: minmax(220px, 280px) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 12px; }
-#homie-pane .vision-panel-bar { background: var(--panel-head); color: var(--panel-head-ink); }
-#homie-pane .vision-panel-bar h3 { color: inherit; }
-#homie-pane .vision-panel-bar > :focus-visible { outline-color: var(--panel-head-ink); }
-#homie-pane .homie-model[disabled] { background: var(--surface); }
-#homie-pane .session-list { min-height: 0; max-height: none; padding: 8px; gap: 3px; overscroll-behavior-y: contain; }
-#homie-pane .transcript { min-height: 0; max-height: none; overscroll-behavior-y: contain; }
-#homie-pane .transcript > * { flex-shrink: 0; }
-#homie-pane #new-session { margin-left: auto; }
-#homie-pane .session-row { border: 1px solid transparent; border-radius: var(--r-sm); box-shadow: none; padding: 10px 11px; }
-#homie-pane .session-row:hover { background: var(--wash); }
-#homie-pane .session-row.selected { background: var(--select); border-color: var(--select-line); box-shadow: inset 3px 0 0 var(--navy-ink); }
-#homie-pane .session-row .id { overflow-wrap: anywhere; color: var(--vb-ink); }
-#homie-pane .session-row .when { color: var(--vb-muted); }
-#homie-pane .session-list .empty { border: 0; background: transparent; color: var(--vb-muted); font-size: 12.5px; }
-#homie-stats { font-size: 12.5px; font-weight: 600; color: var(--vb-muted); }
-#homie-pane .homie-compose-status { display: flex; align-items: center; gap: 8px; padding: 0 16px 8px; }
-#homie-pane .homie-compose-status:has(p[hidden]):has(button[hidden]) { display: none; }
-#homie-pane .homie-compose-status p { margin: 0; text-align: left; }
-#homie-pane .homie-compose-status button { flex: none; }
-#homie-pane [hidden] { display: none; }
-#homie-pane .session-name { font: inherit; font-weight: 650; overflow-wrap: anywhere; }
+/* Collie keeps its session list beside the transcript. */
+.page:has(#collie-pane:not([hidden])) { height: 100dvh; min-height: 0; }
+.page:has(#collie-pane:not([hidden])) > .system-notices { position: relative; top: auto; flex-shrink: 0; }
+#collie-pane { flex: 1 1 0; min-height: 0; }
+#collie-pane > .vision-bar, #collie-composer { flex: none; }
+#collie-pane .collie-grid { flex: 1 1 0; min-height: 0; grid-template-columns: minmax(220px, 280px) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 12px; }
+#collie-pane .vision-panel-bar { background: var(--panel-head); color: var(--panel-head-ink); }
+#collie-pane .vision-panel-bar h3 { color: inherit; }
+#collie-pane .vision-panel-bar > :focus-visible { outline-color: var(--panel-head-ink); }
+#collie-pane .collie-model[disabled] { background: var(--surface); }
+#collie-pane .session-list { min-height: 0; max-height: none; padding: 8px; gap: 3px; overscroll-behavior-y: contain; }
+#collie-pane .transcript { min-height: 0; max-height: none; overscroll-behavior-y: contain; }
+#collie-pane .transcript > * { flex-shrink: 0; }
+#collie-pane #new-session { margin-left: auto; }
+#collie-pane .session-row { border: 1px solid transparent; border-radius: var(--r-sm); box-shadow: none; padding: 10px 11px; }
+#collie-pane .session-row:hover { background: var(--wash); }
+#collie-pane .session-row.selected { background: var(--select); border-color: var(--select-line); box-shadow: inset 3px 0 0 var(--navy-ink); }
+#collie-pane .session-row .id { overflow-wrap: anywhere; color: var(--vb-ink); }
+#collie-pane .session-row .when { color: var(--vb-muted); }
+#collie-pane .session-list .empty { border: 0; background: transparent; color: var(--vb-muted); font-size: 12.5px; }
+#collie-stats { font-size: 12.5px; font-weight: 600; color: var(--vb-muted); }
+#collie-pane .collie-compose-status { display: flex; align-items: center; gap: 8px; padding: 0 16px 8px; }
+#collie-pane .collie-compose-status:has(p[hidden]):has(button[hidden]) { display: none; }
+#collie-pane .collie-compose-status p { margin: 0; text-align: left; }
+#collie-pane .collie-compose-status button { flex: none; }
+#collie-pane [hidden] { display: none; }
+#collie-pane .session-name { font: inherit; font-weight: 650; overflow-wrap: anywhere; }
 @media (max-width: 880px) {
-  #homie-pane .homie-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(80px, 0.3fr) minmax(0, 1fr); }
+  #collie-pane .collie-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(80px, 0.3fr) minmax(0, 1fr); }
 }
 @media (max-width: 720px) {
-  #homie-pane .homie-grid { gap: 10px; }
-  #homie-pane .vision-actions { width: auto; }
-  #homie-stats { display: none; }
-  #homie-pane .homie-compose-status { flex-wrap: wrap; }
-  #homie-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; }
-  #homie-controls h3 { grid-column: 1; }
-  #homie-controls .homie-model { grid-column: 1; grid-row: 2; max-width: 100%; justify-self: start; }
-  #homie-controls #new-session { grid-column: 2; grid-row: 1 / span 2; }
+  #collie-pane .collie-grid { gap: 10px; }
+  #collie-pane .vision-actions { width: auto; }
+  #collie-stats { display: none; }
+  #collie-pane .collie-compose-status { flex-wrap: wrap; }
+  #collie-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; }
+  #collie-controls h3 { grid-column: 1; }
+  #collie-controls .collie-model { grid-column: 1; grid-row: 2; max-width: 100%; justify-self: start; }
+  #collie-controls #new-session { grid-column: 2; grid-row: 1 / span 2; }
 }
 @media (max-width: 880px) and (max-height: 740px) {
-  .page:has(#homie-pane:not([hidden])) { gap: 10px; }
-  #homie-pane { gap: 8px; }
-  #homie-pane .homie-grid { padding: 8px; gap: 8px; }
+  .page:has(#collie-pane:not([hidden])) { gap: 10px; }
+  #collie-pane { gap: 8px; }
+  #collie-pane .collie-grid { padding: 8px; gap: 8px; }
 }
 
 /* Session actions: a menu and two small dialogs. */
-#homie-pane .session-item { position: relative; flex-shrink: 0; }
-#homie-pane .session-item .session-row { width: 100%; padding-right: 40px; }
+#collie-pane .session-item { position: relative; flex-shrink: 0; }
+#collie-pane .session-item .session-row { width: 100%; padding-right: 40px; }
 .session-more {
   position: absolute; right: 5px; top: 7px; width: 30px; height: 30px; border: 0; border-radius: 7px;
   background: transparent; color: var(--ink-3); font-size: 20px; line-height: 1; cursor: pointer;
@@ -2572,15 +2572,15 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 .session-menu button:hover, .session-menu button:focus-visible { background: var(--wash-2); outline: none; }
 .session-menu button.danger { color: var(--brick-ink); }
 .session-menu button.danger:hover, .session-menu button.danger:focus-visible { background: var(--brick-wash); }
-.session-delete-dialog, .homie-model-dialog {
+.session-delete-dialog, .collie-model-dialog {
   width: min(440px, calc(100vw - 32px)); padding: 26px; border-radius: var(--r-xl);
 }
-.session-delete-dialog h2, .homie-model-dialog h2,
-.session-delete-dialog h3, .homie-model-dialog h3 { margin: 0; font-family: var(--display); font-size: 21px; font-weight: 700; letter-spacing: -0.008em; }
-.session-delete-dialog p, .homie-model-dialog p { margin: 14px 0 20px; line-height: 1.55; color: var(--ink-2); }
-.session-delete-actions, .homie-model-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
-.homie-model-dialog { overflow-wrap: anywhere; }
-.homie-model-dialog-actions { flex-wrap: wrap; }
+.session-delete-dialog h2, .collie-model-dialog h2,
+.session-delete-dialog h3, .collie-model-dialog h3 { margin: 0; font-family: var(--display); font-size: 21px; font-weight: 700; letter-spacing: -0.008em; }
+.session-delete-dialog p, .collie-model-dialog p { margin: 14px 0 20px; line-height: 1.55; color: var(--ink-2); }
+.session-delete-actions, .collie-model-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.collie-model-dialog { overflow-wrap: anywhere; }
+.collie-model-dialog-actions { flex-wrap: wrap; }
 .session-rename-dialog label { display: block; margin: 16px 0 6px; font-size: 13px; font-weight: 650; }
 .session-rename-dialog input {
   width: 100%; padding: 10px 12px; border: 1px solid var(--field-line); border-radius: var(--r-sm);
@@ -2788,7 +2788,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   #review-pane[data-queue="compact"] .review-list .stat .stat-label { white-space: normal; }
   #review-pane[data-queue="compact"] .review-list .ledger-filter-row .pick { padding: 3px 4px; font-size: 11.5px; }
   #review-pane[data-queue="compact"] .review-list .packet-row { padding: 10px 11px; }
-  .view-tab[data-reader-view="homie"] { display: none; }
+  .view-tab[data-reader-view="collie"] { display: none; }
 }
 
 .packet-chat-resize-active,
@@ -2810,7 +2810,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   html.reader-open body { overflow: hidden; }
   .packet-chat-column,
   .packet-chat-resize,
-  #packet-homie-open,
+  #packet-collie-open,
   .packet-chat-header .packet-chat-close { display: none; }
   .reader-decision:not(:has(.decision-main > :not([hidden]))) { display: none; }
   .reader {
@@ -3084,7 +3084,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 .changes-deferred { padding: 20px 24px; font-size: 13px; }
 .changes-deferred p { margin: 0 0 10px; }
 
-/* The decision bar stays at the bottom of the reader. "Ask Homie" starts the
+/* The decision bar stays at the bottom of the reader. "Ask Collie" starts the
  * row of the decision buttons. */
 .reader-decision {
   display: flex;
@@ -3095,11 +3095,11 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   background: var(--surface-2);
 }
 .decision-main { display: flex; flex: 1 1 auto; flex-direction: column; align-self: center; gap: 8px; min-width: 0; }
-/* Ask Homie is the quiet button of the decision bar. Approve is its one filled action. */
-#packet-homie-open { flex: none; background: var(--surface); border-color: var(--field-line); color: var(--navy-ink); box-shadow: var(--e1); }
-#packet-homie-open:hover:not([disabled]) { background: var(--surface-hi); border-color: var(--navy-ink); color: var(--navy-ink); box-shadow: 0 2px 6px -2px rgba(var(--shade-rgb), 0.18); }
-#packet-homie-open[aria-expanded="true"] { background: var(--select); border-color: var(--select-line); color: var(--navy-ink); box-shadow: inset 0 1px 2px rgba(var(--shade-rgb), 0.08); }
-#packet-homie-open[disabled] { background: var(--field-disabled); border-color: var(--field-line); color: var(--field-disabled-ink); box-shadow: none; }
+/* Ask Collie is the quiet button of the decision bar. Approve is its one filled action. */
+#packet-collie-open { flex: none; background: var(--surface); border-color: var(--field-line); color: var(--navy-ink); box-shadow: var(--e1); }
+#packet-collie-open:hover:not([disabled]) { background: var(--surface-hi); border-color: var(--navy-ink); color: var(--navy-ink); box-shadow: 0 2px 6px -2px rgba(var(--shade-rgb), 0.18); }
+#packet-collie-open[aria-expanded="true"] { background: var(--select); border-color: var(--select-line); color: var(--navy-ink); box-shadow: inset 0 1px 2px rgba(var(--shade-rgb), 0.08); }
+#packet-collie-open[disabled] { background: var(--field-disabled); border-color: var(--field-line); color: var(--field-disabled-ink); box-shadow: none; }
 .reader-decision p { margin: 0; }
 .reader-decision .packet-decision { font-weight: 650; color: var(--ink); overflow-wrap: anywhere; }
 .reader-block { color: var(--orange-ink); font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
@@ -3120,7 +3120,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
 /* The quick chat: the header, the transcript, and the composer. Only the
  * transcript scrolls. The composer sits at the bottom, level with the
  * decision bar of the reader. */
-.reader-homie { display: flex; flex: 1 1 auto; min-width: 0; min-height: 0; background: var(--surface); }
+.reader-collie { display: flex; flex: 1 1 auto; min-width: 0; min-height: 0; background: var(--surface); }
 .packet-chat.conversation-page {
   display: flex; flex: 1 1 auto; flex-direction: column; gap: 0;
   min-width: 0; min-height: 0; background: var(--surface);
@@ -3133,7 +3133,7 @@ dialog[data-dialog-stacked="true"]::backdrop { background: rgba(var(--scrim-rgb)
   padding: 9px 12px 9px 18px; border-bottom: 1px solid var(--line);
 }
 .packet-chat-header h3 { flex: none; margin: 0; font-family: var(--display); font-size: 17px; font-weight: 700; }
-.packet-chat-header .homie-model { flex: 0 1 auto; margin-right: auto; }
+.packet-chat-header .collie-model { flex: 0 1 auto; margin-right: auto; }
 .packet-chat-title {
   flex: 1 1 100%; order: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 12.5px; font-weight: 650; color: var(--ink-2);
@@ -4652,8 +4652,8 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
 @media (max-width: 1080px) {
   /* Stacked, the panes no longer share the height of the window, so the
    * scrolling regions get bounded heights back. */
-  .homie-grid, .duo { grid-template-columns: minmax(0, 1fr); }
-  .homie-grid { flex: 0 0 auto; }
+  .collie-grid, .duo { grid-template-columns: minmax(0, 1fr); }
+  .collie-grid { flex: 0 0 auto; }
   .session-list { max-height: 34vh; }
   .transcript, .stream > .rows { max-height: 46vh; }
   .logpane { max-height: 60vh; }
@@ -4711,7 +4711,7 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
   .scope-panel { left: -6px; width: calc(100vw - 36px); max-width: none; top: calc(100% + 8px); }
   .knob { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .conversation-page .btn, .conversation-page .btn.small,
-  .conversation-page .homie-model, .conversation-page .conversation-prompt,
+  .conversation-page .collie-model, .conversation-page .conversation-prompt,
   .ws-act, .logs-source-row { min-height: 40px; }
 }
 
@@ -5056,9 +5056,9 @@ html { scrollbar-gutter: stable; }
 .journal-diagnostic { white-space: pre-wrap; overflow-wrap: anywhere; }
 .journal-health { min-width: 0; margin-bottom: 20px; padding: 20px; border: 1px solid rgba(var(--brick-rgb), .35); border-radius: var(--r-lg); background: var(--surface); }
 .journal-health h2 { margin: 0 0 12px; font-size: 20px; }
-.diagnostic-homie-action { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; max-width: 100%; }
-.diagnostic-homie-action [role="alert"] { flex-basis: 100%; overflow-wrap: anywhere; }
-.td-main > .diagnostic-homie-action { margin: 12px 0; }
+.diagnostic-collie-action { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; max-width: 100%; }
+.diagnostic-collie-action [role="alert"] { flex-basis: 100%; overflow-wrap: anywhere; }
+.td-main > .diagnostic-collie-action { margin: 12px 0; }
 
 /* Shared components keep structure separate from page content. */
 dialog.ui-dialog {
@@ -5176,7 +5176,7 @@ dialog.ui-dialog .ui-dialog-foot {
 }
 :is(.ui-dialog-head, .vision-panel-bar, .reader-bar, .packet-chat-header,
     .panelcard > h3, .stream > .head, .role-map-heading, .pipeline-activity > .panel-head,
-    .environment-heading, .journal-heading, .flow-popover > .top, .flow-side > .top, .system-health-head) :is(.btn, .reader-close, .reader-step, .homie-model) {
+    .environment-heading, .journal-heading, .flow-popover > .top, .flow-side > .top, .system-health-head) :is(.btn, .reader-close, .reader-step, .collie-model) {
   background: var(--surface);
   color: var(--ink);
   border-color: var(--field-line);
@@ -5184,7 +5184,7 @@ dialog.ui-dialog .ui-dialog-foot {
 }
 :is(.ui-dialog-head, .vision-panel-bar, .reader-bar, .packet-chat-header,
     .panelcard > h3, .stream > .head, .role-map-heading, .pipeline-activity > .panel-head,
-    .environment-heading, .journal-heading, .flow-popover > .top, .flow-side > .top, .system-health-head) :is(.btn, .reader-close, .reader-step, .homie-model):hover:not(:disabled) {
+    .environment-heading, .journal-heading, .flow-popover > .top, .flow-side > .top, .system-health-head) :is(.btn, .reader-close, .reader-step, .collie-model):hover:not(:disabled) {
   background: var(--surface-2);
   color: var(--ink);
   border-color: var(--field-line);
@@ -5204,7 +5204,7 @@ dialog.ui-dialog .ui-dialog-foot {
 .ui-dialog-head .chip.attention { color: var(--orange-ink); }
 .ui-dialog-head .chip.stale { color: var(--brick-ink); background-image: var(--crack-v); }
 .conversation-page .vision-panel-bar h3 { font-family: var(--sans); font-size: 16px; font-weight: 700; }
-.conversation-page .vision-panel-bar .homie-model[disabled] { background: var(--surface); }
+.conversation-page .vision-panel-bar .collie-model[disabled] { background: var(--surface); }
 .reader-bar .reader-nav { background: transparent; }
 .reader-bar .reader-position { color: var(--panel-head-muted); }
 .packet-chat-column, .reader { background: var(--surface); }
@@ -5238,7 +5238,7 @@ dialog.ui-dialog .ui-dialog-foot {
 }
 @media (pointer: coarse) {
   .btn, .btn.small, .filterbar .pick, .conversation-page .btn, .conversation-page .btn.small,
-  .ui-dialog .btn.dialog-close, .reader-step, .packet-chat-close, .homie-model { min-width: 44px; min-height: 44px; }
+  .ui-dialog .btn.dialog-close, .reader-step, .packet-chat-close, .collie-model { min-width: 44px; min-height: 44px; }
   .ui-dialog .btn.dialog-close, .packet-chat-close { width: 44px; height: 44px; }
 }
 
@@ -5284,14 +5284,14 @@ dialog.ui-dialog .ui-dialog-foot {
 :is(.ui-dialog-head, .vision-panel-bar, .reader-bar, .packet-chat-header,
     .panelcard > h3, .stream > .head, .role-map-heading, .pipeline-activity > .panel-head,
     .environment-heading, .journal-heading, .flow-popover > .top, .flow-side > .top, .system-health-head)
-    :is(.btn, .reader-close, .reader-step, .homie-model, .close) {
+    :is(.btn, .reader-close, .reader-step, .collie-model, .close) {
   outline: 1px solid var(--panel-head-ink);
   outline-offset: 0;
 }
 :is(.ui-dialog-head, .vision-panel-bar, .reader-bar, .packet-chat-header,
     .panelcard > h3, .stream > .head, .role-map-heading, .pipeline-activity > .panel-head,
     .environment-heading, .journal-heading, .flow-popover > .top, .flow-side > .top, .system-health-head)
-    :is(.btn, .reader-close, .reader-step, .homie-model, .close):focus-visible {
+    :is(.btn, .reader-close, .reader-step, .collie-model, .close):focus-visible {
   outline-width: 3px;
   outline-offset: 3px;
 }

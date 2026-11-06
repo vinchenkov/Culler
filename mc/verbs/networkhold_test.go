@@ -242,7 +242,7 @@ func TestModelResponsePreservesChangedConditions(t *testing.T) {
 
 func TestModelResponseScopeAndIndependentRestrictions(t *testing.T) {
 	db, id := recoveryFixture(t)
-	for _, caller := range []*RunIdentity{nil, {Tier: "homie", RunID: id.RunID}, {Tier: "pipeline", RunID: "other"}} {
+	for _, caller := range []*RunIdentity{nil, {Tier: "collie", RunID: id.RunID}, {Tier: "pipeline", RunID: "other"}} {
 		if _, err := RunModelResponse(db, caller, id.RunID); err == nil {
 			t.Fatal("A caller reported another attempt.")
 		}
@@ -265,45 +265,45 @@ func TestModelResponseScopeAndIndependentRestrictions(t *testing.T) {
 	}
 }
 
-func TestHomieModelResponseRecoveryAndLaterNetworkFailure(t *testing.T) {
+func TestCollieModelResponseRecoveryAndLaterNetworkFailure(t *testing.T) {
 	db, _ := recoveryFixture(t)
 	session := startedSession(t, db, "dashboard:recovery")
-	if _, err := HomieSend(db, nil, HomieSendArgs{Session: session, From: "dashboard:recovery", Body: "Hello"}); err != nil {
+	if _, err := CollieSend(db, nil, CollieSendArgs{Session: session, From: "dashboard:recovery", Body: "Hello"}); err != nil {
 		t.Fatal(err)
 	}
-	id := &RunIdentity{Tier: "homie", RunID: session, RuntimeBinding: PrivateRuntimeBinding{ID: "profile", Credential: "test", AuthorizationID: "authorization", ProfileRevision: "revision", Harness: "codex"}}
-	claimed, err := HomieClaim(db, id, session)
+	id := &RunIdentity{Tier: "collie", RunID: session, RuntimeBinding: PrivateRuntimeBinding{ID: "profile", Credential: "test", AuthorizationID: "authorization", ProfileRevision: "revision", Harness: "codex"}}
+	claimed, err := CollieClaim(db, id, session)
 	if err != nil {
 		t.Fatal(err)
 	}
 	attempt := claimed.(map[string]any)["message"].(map[string]any)["attempt_id"].(string)
-	for _, caller := range []*RunIdentity{nil, {Tier: "pipeline", RunID: session}, {Tier: "homie", RunID: "other"}} {
-		if _, err := HomieModelResponse(db, caller, attempt); err == nil {
-			t.Fatal("A caller reported another Homie attempt.")
+	for _, caller := range []*RunIdentity{nil, {Tier: "pipeline", RunID: session}, {Tier: "collie", RunID: "other"}} {
+		if _, err := CollieModelResponse(db, caller, attempt); err == nil {
+			t.Fatal("A caller reported another Collie attempt.")
 		}
 	}
-	out, err := HomieModelResponse(db, id, attempt)
+	out, err := CollieModelResponse(db, id, attempt)
 	if err != nil || out.(map[string]any)["recovered"] != true {
-		t.Fatalf("Homie recovery: %v %v", out, err)
+		t.Fatalf("Collie recovery: %v %v", out, err)
 	}
 	if c := recoveryStatus(t, db); c.Recovery == nil || c.Recovery.AttemptID != attempt || c.Recovery.State != "active" {
 		t.Fatalf("Recovery: %+v", c)
 	}
-	if _, err := HomieReplyFailure(db, id, attempt, "The next request disconnected.", domain.InfrastructureFailureReport{Source: "runner", NetworkError: "reset"}); err != nil {
+	if _, err := CollieReplyFailure(db, id, attempt, "The next request disconnected.", domain.InfrastructureFailureReport{Source: "runner", NetworkError: "reset"}); err != nil {
 		t.Fatal(err)
 	}
 	c := recoveryStatus(t, db)
 	if c.State != "retry_wait" || c.FailureCount != 1 || c.RetryPhase != "delay" {
-		t.Fatalf("Later Homie failure: %+v", c)
+		t.Fatalf("Later Collie failure: %+v", c)
 	}
-	if _, err := HomieModelResponse(db, id, attempt); err == nil {
+	if _, err := CollieModelResponse(db, id, attempt); err == nil {
 		t.Fatal("An ended attempt supplied recovery.")
 	}
 	if err := inTx(db, func(ctx context.Context, q Q) error { return domain.ClearNetworkRetry(ctx, q, "replacement") }); err != nil {
 		t.Fatal(err)
 	}
 	if c := recoveryStatus(t, db); c.State != "retry_wait" {
-		t.Fatal("A concurrent older run cleared the new Homie failure.")
+		t.Fatal("A concurrent older run cleared the new Collie failure.")
 	}
 }
 

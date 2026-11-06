@@ -184,7 +184,7 @@ export function createVision({ api, host, createConversation, onSaved, onStarted
         if (remote.revision !== ctx.base.revision && ctx.dirty) { compare(ctx, remote); return; }
         if (!ctx.dirty && !ctx.conflict && remote.revision !== ctx.base.revision) {
           ctx.editor.value = remote.content;
-          status(ctx, "Draft updated", "info", "Homie or another editor updated the draft.");
+          status(ctx, "Draft updated", "info", "Collie or another editor updated the draft.");
         }
         const completed = ctx.base.submission?.status !== "saved" && remote.submission?.status === "saved";
         ctx.base = remote; result(ctx); controls(ctx);
@@ -203,7 +203,7 @@ export function createVision({ api, host, createConversation, onSaved, onStarted
       ctx.editor.readOnly = true;
       ctx.outline = el("div", { class: "vision-editor-empty" },
         el("p", { class: "vision-empty-title", text: "Describe what this Project must achieve." }),
-        el("p", { text: "A short goal is enough. Homie can help you write the Vision draft." }));
+        el("p", { text: "A short goal is enough. Collie can help you write the Vision draft." }));
       ctx.status = el("p", { class: "vision-status", role: "status", testid: "vision-draft-status", data: { tone: "info" }, text: "Loading Vision draft…" });
       ctx.note = el("p", { class: "vision-note", role: "alert", hidden: true });
       ctx.status.title = "Culler reads the Vision draft.";

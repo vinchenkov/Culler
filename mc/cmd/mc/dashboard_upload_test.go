@@ -16,19 +16,19 @@ func TestDashboardUploadResumesSessionPublishesFilesAndPreservesAnExactRetry(t *
 	for _, native := range []bool{false, true} {
 		t.Run(strconv.FormatBool(native), func(t *testing.T) {
 			spine := initSpine(t)
-			started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:upload-test")
+			started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:upload-test")
 			if started.code != 0 {
 				t.Fatal(started.stderr)
 			}
 			session := started.json["session_id"].(string)
 			if native {
-				registered := runMC(t, runJSONEnv(t, spine, session, "homie", "homie"), "",
+				registered := runMC(t, runJSONEnv(t, spine, session, "collie", "collie"), "",
 					"run", "register-session", session, "--native-ref", "upload-native", "--file", "native.jsonl")
 				if registered.code != 0 {
 					t.Fatal(registered.stderr)
 				}
 			}
-			ended := runMC(t, spineEnv(spine), "", "homie", "end", session, "--reason", "idle timeout")
+			ended := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "idle timeout")
 			if ended.code != 0 {
 				t.Fatal(ended.stderr)
 			}
@@ -70,7 +70,7 @@ func TestDashboardUploadResumesSessionPublishesFilesAndPreservesAnExactRetry(t *
 					t.Fatalf("upload %d: %s %s", i, result.stdout, result.stderr)
 				}
 			}
-			history := runMC(t, spineEnv(spine), "", "homie", "history", session)
+			history := runMC(t, spineEnv(spine), "", "collie", "history", session)
 			if history.code != 0 {
 				t.Fatal(history.stderr)
 			}
@@ -125,12 +125,12 @@ func TestDashboardUploadRejectsUnavailableAccessAndInvalidFiles(t *testing.T) {
 
 func TestDashboardUploadRefusesAnEndedSessionWithoutADashboardBinding(t *testing.T) {
 	spine := initSpine(t)
-	started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "cli:upload-test")
+	started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:upload-test")
 	if started.code != 0 {
 		t.Fatal(started.stderr)
 	}
 	session := started.json["session_id"].(string)
-	ended := runMC(t, spineEnv(spine), "", "homie", "end", session, "--reason", "idle timeout")
+	ended := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "idle timeout")
 	if ended.code != 0 {
 		t.Fatal(ended.stderr)
 	}
@@ -146,7 +146,7 @@ func TestDashboardUploadRefusesAnEndedSessionWithoutADashboardBinding(t *testing
 	if result.code == 0 {
 		t.Fatal("The upload accepted a session without a dashboard binding.")
 	}
-	history := runMC(t, spineEnv(spine), "", "homie", "history", session)
+	history := runMC(t, spineEnv(spine), "", "collie", "history", session)
 	if history.code != 0 || history.json["status"] != "ended" {
 		t.Fatalf("The session must remain ended: %s %s", history.stdout, history.stderr)
 	}

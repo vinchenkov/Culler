@@ -20,7 +20,7 @@ test ! -e /opt/culler-runtime/app/node_modules/@modelcontextprotocol
 test ! -e /opt/culler-runtime/app/node_modules/zod
 test -x /opt/culler-runtime/app/node_modules/@openai/codex-linux-arm64/vendor/aarch64-unknown-linux-musl/bin/codex
 /opt/culler-runtime/bin/node --input-type=module -e 'await import("/opt/culler-runtime/openwiki/node_modules/openwiki/dist/integrations/core/session-manager.js")'
-for role in agent-runner homie-runner setup-runner; do
+for role in agent-runner collie-runner setup-runner; do
   test -s "/opt/culler-runtime/app/src/$role/main.ts"
   test -r "/opt/culler-runtime/app/src/$role/main.ts"
 done

@@ -41,7 +41,7 @@ The launch checks enforce that restriction for these uses:
 
 - Pipeline runs and wiki updates.
 - Setup agents.
-- New Homie sessions and resumed Homie sessions.
+- New Collie sessions and resumed Collie sessions.
 
 Other valid profiles remain available.
 A profile problem consumes no task attempt.

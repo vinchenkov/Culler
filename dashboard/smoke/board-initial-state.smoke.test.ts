@@ -76,7 +76,7 @@ test("The Board shows its structure until the registry identifies an empty Proje
     await expectSkeleton("board-columns");
     expect(await page.getByTestId("board-add-project").count()).toBe(0);
     const before = await page.locator("header.topbar").boundingBox();
-    await page.screenshot({ path: evidencePath("homie-board-initial-pending.png"), fullPage: true });
+    await page.screenshot({ path: evidencePath("collie-board-initial-pending.png"), fullPage: true });
     registry.release();
     await page.getByTestId("board-add-project").waitFor({ state: "attached" });
     expect(await page.getByTestId("board-add-project").isVisible()).toBe(true);
@@ -93,7 +93,7 @@ test("The Board shows its structure until the registry identifies an empty Proje
     expect(await page.getByTestId("board-project").getByRole("heading", { name: "Add your first Project" }).isVisible()).toBe(true);
     expect(await page.getByTestId("board-project").getAttribute("aria-busy")).toBe("false");
     const after = await page.locator("header.topbar").boundingBox();
-    await page.screenshot({ path: evidencePath("homie-board-initial-empty.png"), fullPage: true });
+    await page.screenshot({ path: evidencePath("collie-board-initial-empty.png"), fullPage: true });
     for (const dimension of ["x", "y", "width", "height"] as const) {
       expect(Math.abs(before![dimension] - after![dimension])).toBeLessThanOrEqual(1);
     }
@@ -109,11 +109,11 @@ test("The Board shows its structure until the registry identifies an empty Proje
       expect(card.height).toBeCloseTo(Math.min(660, chat.y - card.y - 16), 0);
       expect(chat.y + chat.height).toBeLessThanOrEqual(viewport.height);
       expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeLessThanOrEqual(viewport.height);
-      await page.screenshot({ path: evidencePath(`homie-welcome-desktop-${viewport.width}.png`), fullPage: true });
+      await page.screenshot({ path: evidencePath(`collie-welcome-desktop-${viewport.width}.png`), fullPage: true });
     }
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-    await page.screenshot({ path: evidencePath("homie-board-initial-empty-narrow.png"), fullPage: true });
+    await page.screenshot({ path: evidencePath("collie-board-initial-empty-narrow.png"), fullPage: true });
     await settled();
     expect(await page.getByTestId("board-add-project").isVisible()).toBe(true);
     expect(await page.getByTestId("error").isVisible()).toBe(false);

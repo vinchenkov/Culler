@@ -241,7 +241,7 @@ describe("the Resolve decision dialog", () => {
     const writes = createBoardWrites({
       dialog, getProjects: () => [{ id: "alpha", title: "Alpha" }], selectedProject: () => "alpha",
       api: async (path: string, options: { body: string }) => { requests.push({ path, body: JSON.parse(options.body) }); return { task_id: row.id }; },
-      onSaved: async () => {}, onHomie: () => {},
+      onSaved: async () => {}, onCollie: () => {},
     });
     writes.openAction("unblock", row, activeRun);
     const node = (testid: string) => dialog.byTestid(testid);

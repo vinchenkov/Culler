@@ -220,7 +220,7 @@ const fakeRoutingMarkdown = `# Culler routing
 | worker | fake | fake |
 | verifier | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `
 
 const defaultRoutingMarkdown = `# Culler routing
@@ -232,15 +232,15 @@ const defaultRoutingMarkdown = `# Culler routing
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `
 
 // Derived from the real registry, never hand-copied: a literal here drifts the
 // moment a verb joins the allowlist, and it fails as an envelope/registry
-// mismatch that names neither the new verb nor this stale copy. `mc homie start`
+// mismatch that names neither the new verb nor this stale copy. `mc collie start`
 // freezes the same source into the spine, so deriving it is what makes the
 // fixture agree with production by construction.
-var defaultHomieAllowlist = verbs.MaximumHomieAgentVerbs()
+var defaultCollieAllowlist = verbs.MaximumCollieAgentVerbs()
 
 func spineEnv(spine string) []string {
 	return []string{
@@ -492,11 +492,11 @@ func runJSONEnv(t *testing.T, spine, runID, tier, role string) []string {
 	return append(spineEnv(spine), "MC_RUN_JSON="+p)
 }
 
-func homieJSONEnv(t *testing.T, spine, sessionID string, allowlist []string) []string {
+func collieJSONEnv(t *testing.T, spine, sessionID string, allowlist []string) []string {
 	t.Helper()
 	p := filepath.Join(t.TempDir(), "run.json")
 	b, _ := json.Marshal(map[string]any{
-		"run_id": sessionID, "tier": "homie", "role": "homie",
+		"run_id": sessionID, "tier": "collie", "role": "collie",
 		"verb_allowlist": allowlist,
 	})
 	if err := os.WriteFile(p, b, 0o644); err != nil {
@@ -644,7 +644,7 @@ func TestInit(t *testing.T) {
 			"--timeout-minutes", "5", "--grace-minutes", "1",
 			"--heartbeat-interval-s", "1", "--spawn-grace-s", "5",
 			"--hard-deadline-minutes", "120",
-			"--review-wip-cap", "4", "--homie-idle-timeout-s", "900")
+			"--review-wip-cap", "4", "--collie-idle-timeout-s", "900")
 		db := openDB(t, spine)
 		if n := queryInt(t, db, `SELECT COUNT(*) FROM meta`); n != 1 {
 			t.Fatalf("meta rows = %d, want 1", n)
@@ -659,7 +659,7 @@ func TestInit(t *testing.T) {
 			"timeout_minutes": 5, "grace_minutes": 1,
 			"heartbeat_interval_s": 1, "spawn_grace_s": 5,
 			"hard_deadline_minutes": 120,
-			"review_wip_cap":        4, "homie_idle_timeout_s": 900,
+			"review_wip_cap":        4, "collie_idle_timeout_s": 900,
 		} {
 			if got := queryInt(t, db, `SELECT `+col+` FROM settings WHERE id = 1`); got != want {
 				t.Fatalf("settings.%s = %d, want %d", col, got, want)
@@ -679,7 +679,7 @@ func TestInit(t *testing.T) {
 			"timeout_minutes": float64(5), "grace_minutes": float64(1),
 			"heartbeat_interval_s": float64(1), "spawn_grace_s": float64(5),
 			"hard_deadline_minutes": float64(120), "review_wip_cap": float64(4),
-			"homie_idle_timeout_s": float64(900), "wiki_update_interval_s": float64(3600),
+			"collie_idle_timeout_s": float64(900), "wiki_update_interval_s": float64(3600),
 		}
 		if !reflect.DeepEqual(settings.json, wantSettings) {
 			t.Fatalf("settings get = %v, want %v", settings.json, wantSettings)
@@ -919,40 +919,40 @@ func TestInactiveProjectRefusesNewWork(t *testing.T) {
 	}
 }
 
-func TestHomieProjectPauseArchive(t *testing.T) {
+func TestCollieProjectPauseArchive(t *testing.T) {
 	spine := initSpine(t)
-	addProject(t, spine, "ws-homie", "Homie-managed")
-	started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:ops")
+	addProject(t, spine, "ws-collie", "Collie-managed")
+	started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:ops")
 	if started.code != 0 {
-		t.Fatalf("homie start failed: %s", started.stderr)
+		t.Fatalf("collie start failed: %s", started.stderr)
 	}
 	session := started.json["session_id"].(string)
-	env := homieJSONEnv(t, spine, session, defaultHomieAllowlist)
+	env := collieJSONEnv(t, spine, session, defaultCollieAllowlist)
 
-	pause := runMC(t, env, "", "project", "pause", "ws-homie")
+	pause := runMC(t, env, "", "project", "pause", "ws-collie")
 	if pause.code != 0 {
-		t.Fatalf("allowlisted Homie project pause failed (%d): %s", pause.code, pause.stderr)
+		t.Fatalf("allowlisted Collie project pause failed (%d): %s", pause.code, pause.stderr)
 	}
 	db := openDB(t, spine)
-	if got := queryStr(t, db, `SELECT status FROM projects WHERE id='ws-homie'`); got != "paused" {
-		t.Fatalf("after Homie pause status = %q", got)
+	if got := queryStr(t, db, `SELECT status FROM projects WHERE id='ws-collie'`); got != "paused" {
+		t.Fatalf("after Collie pause status = %q", got)
 	}
-	archive := runMC(t, env, "", "project", "archive", "ws-homie")
+	archive := runMC(t, env, "", "project", "archive", "ws-collie")
 	if archive.code != 0 {
-		t.Fatalf("allowlisted Homie project archive failed (%d): %s", archive.code, archive.stderr)
+		t.Fatalf("allowlisted Collie project archive failed (%d): %s", archive.code, archive.stderr)
 	}
-	if got := queryStr(t, db, `SELECT status FROM projects WHERE id='ws-homie'`); got != "archived" {
-		t.Fatalf("after Homie archive status = %q", got)
+	if got := queryStr(t, db, `SELECT status FROM projects WHERE id='ws-collie'`); got != "archived" {
+		t.Fatalf("after Collie archive status = %q", got)
 	}
 
-	narrow := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "cli:narrow", "--allow", "task.add")
+	narrow := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:narrow", "--allow", "task.add")
 	if narrow.code != 0 {
-		t.Fatalf("narrow homie start failed: %s", narrow.stderr)
+		t.Fatalf("narrow collie start failed: %s", narrow.stderr)
 	}
-	narrowEnv := homieJSONEnv(t, spine, narrow.json["session_id"].(string), []string{"task.add"})
+	narrowEnv := collieJSONEnv(t, spine, narrow.json["session_id"].(string), []string{"task.add"})
 	denied := runMC(t, narrowEnv, "", "project", "pause", "ws-test")
 	if denied.code != 1 || !strings.Contains(denied.stderr, "not allowed") {
-		t.Fatalf("narrow Homie pause = code %d stderr %q", denied.code, denied.stderr)
+		t.Fatalf("narrow Collie pause = code %d stderr %q", denied.code, denied.stderr)
 	}
 	if got := queryStr(t, db, `SELECT status FROM projects WHERE id='ws-test'`); got != "active" {
 		t.Fatalf("denied pause mutated ws-test to %q", got)
@@ -1715,7 +1715,7 @@ func TestDispatchRoutingResolution(t *testing.T) {
 		table := defaultRoutingMarkdown
 		for _, row := range []string{
 			"| strategist | claude-sdk | claude |", "| worker | claude-sdk | endpoint |",
-			"| packager | claude-sdk | endpoint |", "| homie | claude-sdk | claude |",
+			"| packager | claude-sdk | endpoint |", "| collie | claude-sdk | claude |",
 		} {
 			role := strings.Fields(row)[1]
 			table = strings.Replace(table, row, "| "+role+" | codex | chatgpt |", 1)
@@ -2160,7 +2160,7 @@ func TestRoleScopeEnforcement(t *testing.T) {
 			[]string{"arbiter", "decide", "--run", run, "--batch", "-"}, batch, "pipeline run identity"},
 		{"wrong_role_refused", runJSONEnv(t, spine, run, "pipeline", "worker"),
 			[]string{"arbiter", "decide", "--run", run, "--batch", "-"}, batch, "role mismatch"},
-		{"wrong_tier_refused", runJSONEnv(t, spine, run, "homie", "arbiter"),
+		{"wrong_tier_refused", runJSONEnv(t, spine, run, "collie", "arbiter"),
 			[]string{"arbiter", "decide", "--run", run, "--batch", "-"}, batch, "pipeline-tier"},
 		{"stale_run_refused", runJSONEnv(t, spine, run, "pipeline", "arbiter"),
 			[]string{"arbiter", "decide", "--run", "old-run", "--batch", "-"}, batch, "stale run"},
@@ -2638,11 +2638,11 @@ func TestStrategistProposeRoleAndSubjectFence(t *testing.T) {
 	})
 }
 
-// `mc homie start` is host-scope only, and the brokered lane is the ONLY one
+// `mc collie start` is host-scope only, and the brokered lane is the ONLY one
 // production reaches, so the fence must sit on the brokered lane and not only
 // on the local path. It must refuse before the broker resolves routing or
 // touches Docker, which is also what lets this test stay Docker-free.
-func TestHomieStartBrokerRefusesRunJSONCallers(t *testing.T) {
+func TestCollieStartBrokerRefusesRunJSONCallers(t *testing.T) {
 	agentRun := filepath.Join(t.TempDir(), "run.json")
 	if err := os.WriteFile(agentRun,
 		[]byte(`{"run_id":"r","tier":"pipeline","role":"worker"}`), 0o600); err != nil {
@@ -2651,7 +2651,7 @@ func TestHomieStartBrokerRefusesRunJSONCallers(t *testing.T) {
 	denied := runMC(t, []string{
 		"MC_HELPER=mc-helper-that-must-never-be-reached",
 		"MC_RUN_JSON=" + agentRun,
-	}, "", "homie", "start", "--from", "dashboard:ops")
+	}, "", "collie", "start", "--from", "dashboard:ops")
 	if denied.code != 1 || !strings.Contains(denied.stderr, "host scope only") {
 		t.Fatalf("brokered run.json caller = code %d stderr %q", denied.code, denied.stderr)
 	}
@@ -2692,18 +2692,18 @@ func TestAttachmentTreePrepareStaysHostLocal(t *testing.T) {
 	}
 }
 
-func TestHomieStartBindList(t *testing.T) {
+func TestCollieStartBindList(t *testing.T) {
 	start := func(t *testing.T, spine, from string, extra ...string) mcResult {
 		t.Helper()
-		args := []string{"homie", "start", "--from", from}
+		args := []string{"collie", "start", "--from", from}
 		args = append(args, extra...)
 		res := runMC(t, spineEnv(spine), "", args...)
 		if res.code != 0 {
-			t.Fatalf("homie start failed (%d): %s", res.code, res.stderr)
+			t.Fatalf("collie start failed (%d): %s", res.code, res.stderr)
 		}
 		return res
 	}
-	configureCustomHomie := func(t *testing.T, spine string, enabled bool) {
+	configureCustomCollie := func(t *testing.T, spine string, enabled bool) {
 		t.Helper()
 		home := filepath.Dir(spine)
 		path := filepath.Join(home, "config.toml")
@@ -2711,11 +2711,11 @@ func TestHomieStartBindList(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		cfg.Runtimes.Bindings["operator-homie"] = operatorconfig.RuntimeBinding{
-			Harness: "codex", Model: "operator-homie-model", Credential: "chatgpt",
+		cfg.Runtimes.Bindings["operator-collie"] = operatorconfig.RuntimeBinding{
+			Harness: "codex", Model: "operator-collie-model", Credential: "chatgpt",
 		}
 		if enabled {
-			cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, "operator-homie")
+			cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, "operator-collie")
 		}
 		if _, err := operatorconfig.WriteAtomic(path, cfg); err != nil {
 			t.Fatal(err)
@@ -2727,7 +2727,7 @@ func TestHomieStartBindList(t *testing.T) {
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | codex | operator-homie |
+| collie | codex | operator-collie |
 `
 		if err := os.WriteFile(filepath.Join(home, "routing.md"), []byte(routes), 0o600); err != nil {
 			t.Fatal(err)
@@ -2736,25 +2736,25 @@ func TestHomieStartBindList(t *testing.T) {
 
 	t.Run("configured_custom_binding_is_frozen_and_disabled_binding_is_inert", func(t *testing.T) {
 		spine := initSpine(t)
-		configureCustomHomie(t, spine, true)
+		configureCustomCollie(t, spine, true)
 		started := start(t, spine, "dashboard:custom")
-		if started.json["binding"] != "codex/operator-homie" {
-			t.Fatalf("custom Homie route = %v", started.json)
+		if started.json["binding"] != "codex/operator-collie" {
+			t.Fatalf("custom Collie route = %v", started.json)
 		}
 		db := openDB(t, spine)
-		if got := queryStr(t, db, `SELECT binding FROM homie_sessions`); got != "codex/operator-homie" {
-			t.Fatalf("historical custom Homie binding = %q", got)
+		if got := queryStr(t, db, `SELECT binding FROM collie_sessions`); got != "codex/operator-collie" {
+			t.Fatalf("historical custom Collie binding = %q", got)
 		}
 
 		disabledSpine := initSpine(t)
-		configureCustomHomie(t, disabledSpine, false)
-		refused := runMC(t, spineEnv(disabledSpine), "", "homie", "start", "--from", "dashboard:disabled")
+		configureCustomCollie(t, disabledSpine, false)
+		refused := runMC(t, spineEnv(disabledSpine), "", "collie", "start", "--from", "dashboard:disabled")
 		if refused.code != 1 || !strings.Contains(refused.stderr, "routing") {
-			t.Fatalf("disabled Homie binding = code %d stderr %q", refused.code, refused.stderr)
+			t.Fatalf("disabled Collie binding = code %d stderr %q", refused.code, refused.stderr)
 		}
 		disabledDB := openDB(t, disabledSpine)
-		if n := queryInt(t, disabledDB, `SELECT COUNT(*) FROM homie_sessions`); n != 0 {
-			t.Fatalf("disabled Homie route created %d partial sessions", n)
+		if n := queryInt(t, disabledDB, `SELECT COUNT(*) FROM collie_sessions`); n != 0 {
+			t.Fatalf("disabled Collie route created %d partial sessions", n)
 		}
 	})
 
@@ -2776,54 +2776,54 @@ func TestHomieStartBindList(t *testing.T) {
 
 		res := start(t, spine, "dashboard:channel-1")
 		if _, exists := res.json["action"]; exists {
-			t.Fatalf("homie start returned a host effect: %v", res.json)
+			t.Fatalf("collie start returned a host effect: %v", res.json)
 		}
 		session := res.json["session_id"].(string)
 		if !strings.HasPrefix(session, "h-") || res.json["status"] != "active" ||
 			res.json["session_path"] != "sessions/"+session || res.json["binding"] != "fake/fake" {
-			t.Fatalf("homie start result = %v", res.json)
+			t.Fatalf("collie start result = %v", res.json)
 		}
 		if got := lockSnapshot(); got != before {
-			t.Fatalf("homie start disturbed the pipeline lease:\n before %s\n after  %s", before, got)
+			t.Fatalf("collie start disturbed the pipeline lease:\n before %s\n after  %s", before, got)
 		}
 		if n := queryInt(t, db, `SELECT COUNT(*) FROM runs WHERE role IS NOT 'scribe'`); n != 1 {
-			t.Fatalf("homie start opened a Runs row: %d", n)
+			t.Fatalf("collie start opened a Runs row: %d", n)
 		}
 		if got := queryStr(t, db, `SELECT id FROM runs WHERE role IS NOT 'scribe'`); got != pipeline["run_id"] {
 			t.Fatalf("pipeline Run changed: %q", got)
 		}
 		if n := queryInt(t, db, `SELECT COUNT(*) FROM outbox`); n != 0 {
-			t.Fatalf("homie start emitted %d outbox rows", n)
+			t.Fatalf("collie start emitted %d outbox rows", n)
 		}
 		if got := queryStr(t, db, `SELECT status || '|' || container_name || '|' ||
-			session_path || '|' || binding FROM homie_sessions WHERE id = ?`, session); got != "active|mc-homie-"+session+"|sessions/"+session+"|fake/fake" {
+			session_path || '|' || binding FROM collie_sessions WHERE id = ?`, session); got != "active|mc-collie-"+session+"|sessions/"+session+"|fake/fake" {
 			t.Fatalf("registry row = %q", got)
 		}
-		allowJSON, _ := json.Marshal(defaultHomieAllowlist)
-		if got := queryStr(t, db, `SELECT verb_allowlist FROM homie_sessions WHERE id = ?`, session); got != string(allowJSON) {
+		allowJSON, _ := json.Marshal(defaultCollieAllowlist)
+		if got := queryStr(t, db, `SELECT verb_allowlist FROM collie_sessions WHERE id = ?`, session); got != string(allowJSON) {
 			t.Fatalf("frozen default allowlist = %q, want %s", got, allowJSON)
 		}
-		if got := queryStr(t, db, `SELECT surface || ':' || channel_ref FROM homie_bindings WHERE active = 1`); got != "dashboard:channel-1" {
+		if got := queryStr(t, db, `SELECT surface || ':' || channel_ref FROM collie_bindings WHERE active = 1`); got != "dashboard:channel-1" {
 			t.Fatalf("initial binding = %q", got)
 		}
-		if got := queryStr(t, db, `SELECT native_session_ref || '/' || trace_filename FROM homie_sessions WHERE id = ?`, session); got != "<NULL>" {
+		if got := queryStr(t, db, `SELECT native_session_ref || '/' || trace_filename FROM collie_sessions WHERE id = ?`, session); got != "<NULL>" {
 			t.Fatalf("start guessed runner locators: %q", got)
 		}
 
-		listed := runMC(t, spineEnv(spine), "", "homie", "list")
+		listed := runMC(t, spineEnv(spine), "", "collie", "list")
 		if listed.code != 0 {
-			t.Fatalf("homie list failed: %s", listed.stderr)
+			t.Fatalf("collie list failed: %s", listed.stderr)
 		}
 		sessions := listed.json["sessions"].([]any)
 		if len(sessions) != 1 {
-			t.Fatalf("homie list = %v", listed.json)
+			t.Fatalf("collie list = %v", listed.json)
 		}
 		row := sessions[0].(map[string]any)
 		if row["id"] != session || row["binding"] != "fake/fake" || row["status"] != "active" {
 			t.Fatalf("listed session = %v", row)
 		}
 		bindings := row["active_bindings"].([]any)
-		bindingID := queryStr(t, db, `SELECT CAST(id AS TEXT) FROM homie_bindings
+		bindingID := queryStr(t, db, `SELECT CAST(id AS TEXT) FROM collie_bindings
 			WHERE session_id=? AND active=1`, session)
 		if len(bindings) != 1 ||
 			bindings[0].(map[string]any)["channel_ref"] != "channel-1" ||
@@ -2838,47 +2838,47 @@ func TestHomieStartBindList(t *testing.T) {
 		}
 	})
 
-	t.Run("canonical_active_session_fences_Homie_operator_mutations", func(t *testing.T) {
+	t.Run("canonical_active_session_fences_Collie_operator_mutations", func(t *testing.T) {
 		spine := initSpine(t)
 		session := start(t, spine, "dashboard:operator").json["session_id"].(string)
-		env := homieJSONEnv(t, spine, session, defaultHomieAllowlist)
+		env := collieJSONEnv(t, spine, session, defaultCollieAllowlist)
 
-		added := runMC(t, env, "", "task", "add", "Homie relays operator intent", "--project", "ws-test")
+		added := runMC(t, env, "", "task", "add", "Collie relays operator intent", "--project", "ws-test")
 		if added.code != 0 {
-			t.Fatalf("allowlisted Homie task add failed: %s", added.stderr)
+			t.Fatalf("allowlisted Collie task add failed: %s", added.stderr)
 		}
 		taskID := int64(added.json["task_id"].(float64))
 		blocked := runMC(t, env, "", "task", "block", fmt.Sprint(taskID), "--reason", "operator needs to decide")
 		if blocked.code != 0 {
-			t.Fatalf("allowlisted Homie task block failed: %s", blocked.stderr)
+			t.Fatalf("allowlisted Collie task block failed: %s", blocked.stderr)
 		}
 
 		db := openDB(t, spine)
 		beforeTasks := queryInt(t, db, `SELECT COUNT(*) FROM tasks`)
-		forged := runMC(t, homieJSONEnv(t, spine, session, []string{"task.add"}), "",
+		forged := runMC(t, collieJSONEnv(t, spine, session, []string{"task.add"}), "",
 			"task", "add", "forged envelope", "--project", "ws-test")
 		if forged.code != 1 || !strings.Contains(forged.stderr, "does not match") {
 			t.Fatalf("forged allowlist = code %d stderr %q", forged.code, forged.stderr)
 		}
 		if queryInt(t, db, `SELECT COUNT(*) FROM tasks`) != beforeTasks {
-			t.Fatal("forged Homie allowlist inserted a task")
+			t.Fatal("forged Collie allowlist inserted a task")
 		}
 
-		if _, err := db.Exec(`UPDATE homie_sessions SET status = 'ended' WHERE id = ?`, session); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'ended' WHERE id = ?`, session); err != nil {
 			t.Fatal(err)
 		}
 		stale := runMC(t, env, "", "task", "add", "zombie write", "--project", "ws-test")
 		if stale.code != 1 || !strings.Contains(stale.stderr, "not active") {
-			t.Fatalf("ended Homie write = code %d stderr %q", stale.code, stale.stderr)
+			t.Fatalf("ended Collie write = code %d stderr %q", stale.code, stale.stderr)
 		}
 		if queryInt(t, db, `SELECT COUNT(*) FROM tasks`) != beforeTasks {
-			t.Fatal("ended Homie inserted a task")
+			t.Fatal("ended Collie inserted a task")
 		}
 
 		narrow := start(t, spine, "cli:narrow", "--allow", "task.add").json["session_id"].(string)
-		narrowEnv := homieJSONEnv(t, spine, narrow, []string{"task.add"})
+		narrowEnv := collieJSONEnv(t, spine, narrow, []string{"task.add"})
 		if got := runMC(t, narrowEnv, "", "task", "add", "narrow allowed", "--project", "ws-test"); got.code != 0 {
-			t.Fatalf("narrow canonical Homie task add failed: %s", got.stderr)
+			t.Fatalf("narrow canonical Collie task add failed: %s", got.stderr)
 		}
 		if got := runMC(t, narrowEnv, "", "task", "unblock", fmt.Sprint(taskID), "--reason", "The operator resolved the block."); got.code != 1 || !strings.Contains(got.stderr, "not allowed") {
 			t.Fatalf("narrow forbidden verb = code %d stderr %q", got.code, got.stderr)
@@ -2891,53 +2891,53 @@ func TestHomieStartBindList(t *testing.T) {
 		b := start(t, spine, "cli:b").json["session_id"].(string)
 		db := openDB(t, spine)
 
-		bind := runMC(t, spineEnv(spine), "", "homie", "bind", a, "--from", "discord:shared")
+		bind := runMC(t, spineEnv(spine), "", "collie", "bind", a, "--from", "discord:shared")
 		if bind.code != 0 || bind.json["bound"] != true {
 			t.Fatalf("first bind = code %d json %v stderr %q", bind.code, bind.json, bind.stderr)
 		}
-		replay := runMC(t, spineEnv(spine), "", "homie", "bind", a, "--from", "discord:shared")
+		replay := runMC(t, spineEnv(spine), "", "collie", "bind", a, "--from", "discord:shared")
 		if replay.code != 0 || replay.json["bound"] != false {
 			t.Fatalf("bind replay = code %d json %v stderr %q", replay.code, replay.json, replay.stderr)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings
 			WHERE session_id = ? AND surface = 'discord' AND channel_ref = 'shared'`, a); n != 1 {
 			t.Fatalf("bind replay appended history: %d", n)
 		}
 
-		conflict := runMC(t, spineEnv(spine), "", "homie", "bind", b, "--from", "discord:shared")
+		conflict := runMC(t, spineEnv(spine), "", "collie", "bind", b, "--from", "discord:shared")
 		if conflict.code != 1 || !strings.Contains(conflict.stderr, "already bound") {
 			t.Fatalf("cross-session bind = code %d stderr %q", conflict.code, conflict.stderr)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings WHERE surface = 'discord' AND channel_ref = 'shared'`); n != 1 {
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings WHERE surface = 'discord' AND channel_ref = 'shared'`); n != 1 {
 			t.Fatalf("conflicting bind changed history: %d", n)
 		}
 
-		unknown := runMC(t, spineEnv(spine), "", "homie", "bind", "h-missing", "--from", "dashboard:x")
-		if unknown.code != 1 || !strings.Contains(unknown.stderr, "unknown Homie session") {
+		unknown := runMC(t, spineEnv(spine), "", "collie", "bind", "h-missing", "--from", "dashboard:x")
+		if unknown.code != 1 || !strings.Contains(unknown.stderr, "unknown Collie session") {
 			t.Fatalf("unknown bind = code %d stderr %q", unknown.code, unknown.stderr)
 		}
-		if _, err := db.Exec(`UPDATE homie_sessions SET status = 'ended' WHERE id = ?`, a); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'ended' WHERE id = ?`, a); err != nil {
 			t.Fatal(err)
 		}
-		ended := runMC(t, spineEnv(spine), "", "homie", "bind", a, "--from", "dashboard:new")
+		ended := runMC(t, spineEnv(spine), "", "collie", "bind", a, "--from", "dashboard:new")
 		if ended.code != 1 || !strings.Contains(ended.stderr, "requires an active") {
 			t.Fatalf("ended bind = code %d stderr %q", ended.code, ended.stderr)
 		}
 	})
 
-	t.Run("scope_is_host_for_start_bind_and_own_session_for_homie_list", func(t *testing.T) {
+	t.Run("scope_is_host_for_start_bind_and_own_session_for_collie_list", func(t *testing.T) {
 		spine := initSpine(t)
 		a := start(t, spine, "dashboard:a").json["session_id"].(string)
 		b := start(t, spine, "cli:b", "--allow", "task.add").json["session_id"].(string)
 		db := openDB(t, spine)
-		beforeSessions := queryInt(t, db, `SELECT COUNT(*) FROM homie_sessions`)
-		beforeBindings := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings`)
+		beforeSessions := queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`)
+		beforeBindings := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings`)
 
 		pipelineEnv := runJSONEnv(t, spine, "pipeline-forgery", "pipeline", "worker")
 		for _, args := range [][]string{
-			{"homie", "start", "--from", "dashboard:pipeline"},
-			{"homie", "bind", a, "--from", "dashboard:pipeline"},
-			{"homie", "list"},
+			{"collie", "start", "--from", "dashboard:pipeline"},
+			{"collie", "bind", a, "--from", "dashboard:pipeline"},
+			{"collie", "list"},
 		} {
 			got := runMC(t, pipelineEnv, "", args...)
 			if got.code != 1 {
@@ -2946,42 +2946,42 @@ func TestHomieStartBindList(t *testing.T) {
 		}
 
 		// Structural host-only rules win even over a forged/overbroad envelope.
-		overbroad := homieJSONEnv(t, spine, a, []string{"homie.start", "homie.bind", "homie.list"})
+		overbroad := collieJSONEnv(t, spine, a, []string{"collie.start", "collie.bind", "collie.list"})
 		for _, args := range [][]string{
-			{"homie", "start", "--from", "dashboard:forged"},
-			{"homie", "bind", a, "--from", "dashboard:forged"},
+			{"collie", "start", "--from", "dashboard:forged"},
+			{"collie", "bind", a, "--from", "dashboard:forged"},
 		} {
 			got := runMC(t, overbroad, "", args...)
 			if got.code != 1 {
-				t.Fatalf("Homie %v exit = %d stderr %q", args, got.code, got.stderr)
+				t.Fatalf("Collie %v exit = %d stderr %q", args, got.code, got.stderr)
 			}
 		}
-		if queryInt(t, db, `SELECT COUNT(*) FROM homie_sessions`) != beforeSessions ||
-			queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings`) != beforeBindings {
-			t.Fatal("scope refusal mutated Homie registry")
+		if queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`) != beforeSessions ||
+			queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings`) != beforeBindings {
+			t.Fatal("scope refusal mutated Collie registry")
 		}
 
-		own := runMC(t, homieJSONEnv(t, spine, a, defaultHomieAllowlist), "", "homie", "list")
+		own := runMC(t, collieJSONEnv(t, spine, a, defaultCollieAllowlist), "", "collie", "list")
 		if own.code != 0 {
-			t.Fatalf("own Homie list failed: %s", own.stderr)
+			t.Fatalf("own Collie list failed: %s", own.stderr)
 		}
 		rows := own.json["sessions"].([]any)
 		if len(rows) != 1 || rows[0].(map[string]any)["id"] != a {
-			t.Fatalf("Homie list escaped own session: %v", own.json)
+			t.Fatalf("Collie list escaped own session: %v", own.json)
 		}
-		denied := runMC(t, homieJSONEnv(t, spine, b, []string{"task.add"}), "", "homie", "list")
+		denied := runMC(t, collieJSONEnv(t, spine, b, []string{"task.add"}), "", "collie", "list")
 		if denied.code != 1 || !strings.Contains(denied.stderr, "not allowed") {
-			t.Fatalf("narrow Homie list = code %d stderr %q", denied.code, denied.stderr)
+			t.Fatalf("narrow Collie list = code %d stderr %q", denied.code, denied.stderr)
 		}
-		if _, err := db.Exec(`UPDATE homie_sessions SET status = 'ended' WHERE id = ?`, a); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'ended' WHERE id = ?`, a); err != nil {
 			t.Fatal(err)
 		}
-		stale := runMC(t, homieJSONEnv(t, spine, a, defaultHomieAllowlist), "", "homie", "list")
+		stale := runMC(t, collieJSONEnv(t, spine, a, defaultCollieAllowlist), "", "collie", "list")
 		if stale.code != 1 || !strings.Contains(stale.stderr, "not active") {
-			t.Fatalf("ended Homie list = code %d stderr %q", stale.code, stale.stderr)
+			t.Fatalf("ended Collie list = code %d stderr %q", stale.code, stale.stderr)
 		}
 
-		host := runMC(t, spineEnv(spine), "", "homie", "list")
+		host := runMC(t, spineEnv(spine), "", "collie", "list")
 		if host.code != 0 || len(host.json["sessions"].([]any)) != 2 {
 			t.Fatalf("host list omitted resumable rows: code %d json %v stderr %q", host.code, host.json, host.stderr)
 		}
@@ -2996,17 +2996,17 @@ func TestHomieStartBindList(t *testing.T) {
 			{name: "missing_separator", args: []string{"--from", "dashboard"}, msg: "surface:channel_ref"},
 			{name: "unknown_surface", args: []string{"--from", "email:x"}, msg: "discord|dashboard|cli"},
 			{name: "empty_channel", args: []string{"--from", "dashboard:"}, msg: "channel_ref"},
-			{name: "unknown_allow", args: []string{"--from", "dashboard:x", "--allow", "dispatch"}, msg: "not a Homie-agent verb"},
+			{name: "unknown_allow", args: []string{"--from", "dashboard:x", "--allow", "dispatch"}, msg: "not a Collie-agent verb"},
 		} {
 			t.Run(tc.name, func(t *testing.T) {
 				spine := initSpine(t)
-				got := runMC(t, spineEnv(spine), "", append([]string{"homie", "start"}, tc.args...)...)
+				got := runMC(t, spineEnv(spine), "", append([]string{"collie", "start"}, tc.args...)...)
 				if got.code == 0 || !strings.Contains(got.stderr, tc.msg) {
 					t.Fatalf("exit = %d stderr %q, want failure containing %q", got.code, got.stderr, tc.msg)
 				}
 				db := openDB(t, spine)
-				if queryInt(t, db, `SELECT COUNT(*) FROM homie_sessions`) != 0 ||
-					queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings`) != 0 {
+				if queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`) != 0 ||
+					queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings`) != 0 {
 					t.Fatal("invalid start left partial registry state")
 				}
 			})
@@ -3017,68 +3017,68 @@ func TestHomieStartBindList(t *testing.T) {
 			if err := os.WriteFile(filepath.Join(filepath.Dir(spine), "routing.md"), []byte("broken\n"), 0o600); err != nil {
 				t.Fatal(err)
 			}
-			got := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:x")
+			got := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:x")
 			if got.code == 0 || !strings.Contains(got.stderr, "routing.md") {
 				t.Fatalf("bad-route start = code %d stderr %q", got.code, got.stderr)
 			}
 			db := openDB(t, spine)
-			if queryInt(t, db, `SELECT COUNT(*) FROM homie_sessions`) != 0 {
-				t.Fatal("bad route opened a Homie session")
+			if queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`) != 0 {
+				t.Fatal("bad route opened a Collie session")
 			}
 		})
 
 		t.Run("binding_insert_failure_rolls_back_registry", func(t *testing.T) {
 			spine := initSpine(t)
 			db := openDB(t, spine)
-			if _, err := db.Exec(`CREATE TRIGGER test_fail_homie_binding
-				BEFORE INSERT ON homie_bindings
+			if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_binding
+				BEFORE INSERT ON collie_bindings
 				BEGIN SELECT RAISE(ABORT, 'injected binding failure'); END`); err != nil {
 				t.Fatal(err)
 			}
-			got := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:x")
+			got := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:x")
 			if got.code != 1 || !strings.Contains(got.stderr, "injected binding failure") {
 				t.Fatalf("atomic start = code %d stderr %q", got.code, got.stderr)
 			}
-			if queryInt(t, db, `SELECT COUNT(*) FROM homie_sessions`) != 0 ||
-				queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings`) != 0 {
-				t.Fatal("failed initial binding left an orphan Homie session")
+			if queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`) != 0 ||
+				queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings`) != 0 {
+				t.Fatal("failed initial binding left an orphan Collie session")
 			}
 		})
 
 		t.Run("already_bound_origin_does_not_start_another_session", func(t *testing.T) {
 			spine := initSpine(t)
 			first := start(t, spine, "dashboard:x").json["session_id"]
-			got := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:x")
+			got := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:x")
 			if got.code != 1 || !strings.Contains(got.stderr, "already bound") {
 				t.Fatalf("duplicate-origin start = code %d stderr %q", got.code, got.stderr)
 			}
 			db := openDB(t, spine)
-			if queryInt(t, db, `SELECT COUNT(*) FROM homie_sessions`) != 1 ||
-				queryStr(t, db, `SELECT id FROM homie_sessions`) != first {
+			if queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`) != 1 ||
+				queryStr(t, db, `SELECT id FROM collie_sessions`) != first {
 				t.Fatal("duplicate-origin start created a second session")
 			}
 		})
 	})
 }
 
-func TestHomieSendHistoryEnd(t *testing.T) {
+func TestCollieSendHistoryEnd(t *testing.T) {
 	start := func(t *testing.T, spine, from string, allow ...string) string {
 		t.Helper()
-		args := []string{"homie", "start", "--from", from}
+		args := []string{"collie", "start", "--from", from}
 		if len(allow) != 0 {
 			args = append(args, "--allow", strings.Join(allow, ","))
 		}
 		res := runMC(t, spineEnv(spine), "", args...)
 		if res.code != 0 {
-			t.Fatalf("homie start failed: %s", res.stderr)
+			t.Fatalf("collie start failed: %s", res.stderr)
 		}
 		return res.json["session_id"].(string)
 	}
 	bind := func(t *testing.T, spine, session, from string) {
 		t.Helper()
-		res := runMC(t, spineEnv(spine), "", "homie", "bind", session, "--from", from)
+		res := runMC(t, spineEnv(spine), "", "collie", "bind", session, "--from", from)
 		if res.code != 0 {
-			t.Fatalf("homie bind failed: %s", res.stderr)
+			t.Fatalf("collie bind failed: %s", res.stderr)
 		}
 	}
 
@@ -3094,15 +3094,15 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 		bind(t, spine, session, "discord:disc")
 		db := openDB(t, spine)
 		lockBefore := queryStr(t, db, `SELECT run_id || '|' || owner || '|' || subject FROM leases WHERE project = 'ws-test'`)
-		if _, err := db.Exec(`UPDATE homie_sessions SET last_activity_at = datetime('now', '-1 day') WHERE id = ?`, session); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET last_activity_at = datetime('now', '-1 day') WHERE id = ?`, session); err != nil {
 			t.Fatal(err)
 		}
-		oldActivity := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session)
+		oldActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
 
-		first := runMC(t, spineEnv(spine), "", "homie", "send", session,
+		first := runMC(t, spineEnv(spine), "", "collie", "send", session,
 			"--from", "cli:terminal", "--body", "hello from CLI")
 		if first.code != 0 {
-			t.Fatalf("homie send failed: %s", first.stderr)
+			t.Fatalf("collie send failed: %s", first.stderr)
 		}
 		if first.json["seq"] != float64(1) || first.json["echoes"] != float64(2) {
 			t.Fatalf("first send result = %v", first.json)
@@ -3111,14 +3111,14 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 			FROM conversation_messages WHERE session_id = ? AND seq = 1`, session); got != `inbound|cli|terminal|hello from CLI|<null>` {
 			t.Fatalf("first conversation row = %q", got)
 		}
-		if got := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session); got == oldActivity {
+		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got == oldActivity {
 			t.Fatalf("send did not advance last_activity_at from %q", oldActivity)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings WHERE session_id = ? AND active = 1`, session); n != 3 {
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings WHERE session_id = ? AND active = 1`, session); n != 3 {
 			t.Fatalf("origin traffic did not bind CLI place: %d bindings", n)
 		}
 		if got := queryStr(t, db, `SELECT group_concat(surface || ':' || channel_ref, ',') FROM
-			(SELECT surface, channel_ref FROM outbox WHERE kind = 'homie_echo' ORDER BY surface, channel_ref)`); got != "dashboard:dash,discord:disc" {
+			(SELECT surface, channel_ref FROM outbox WHERE kind = 'collie_echo' ORDER BY surface, channel_ref)`); got != "dashboard:dash,discord:disc" {
 			t.Fatalf("echo destinations = %q", got)
 		}
 		var payload map[string]any
@@ -3134,15 +3134,15 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 			t.Fatalf("send disturbed pipeline lease: before %q after %q", lockBefore, got)
 		}
 
-		second := runMC(t, spineEnv(spine), "", "homie", "send", session,
+		second := runMC(t, spineEnv(spine), "", "collie", "send", session,
 			"--from", "dashboard:dash", "--body", "second turn")
 		if second.code != 0 || second.json["seq"] != float64(2) || second.json["echoes"] != float64(2) {
 			t.Fatalf("second send = code %d json %v stderr %q", second.code, second.json, second.stderr)
 		}
 
-		history := runMC(t, spineEnv(spine), "", "homie", "history", session)
+		history := runMC(t, spineEnv(spine), "", "collie", "history", session)
 		if history.code != 0 {
-			t.Fatalf("homie history failed: %s", history.stderr)
+			t.Fatalf("collie history failed: %s", history.stderr)
 		}
 		messages := history.json["messages"].([]any)
 		if len(messages) != 2 {
@@ -3165,13 +3165,13 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 		session := start(t, spine, "dashboard:dash")
 		bind(t, spine, session, "discord:disc")
 		db := openDB(t, spine)
-		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session)
-		if _, err := db.Exec(`CREATE TRIGGER test_fail_homie_echo
-			BEFORE INSERT ON outbox WHEN NEW.kind = 'homie_echo'
+		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
+		if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_echo
+			BEFORE INSERT ON outbox WHEN NEW.kind = 'collie_echo'
 			BEGIN SELECT RAISE(ABORT, 'injected echo failure'); END`); err != nil {
 			t.Fatal(err)
 		}
-		res := runMC(t, spineEnv(spine), "", "homie", "send", session,
+		res := runMC(t, spineEnv(spine), "", "collie", "send", session,
 			"--from", "cli:new-origin", "--body", "must roll back")
 		if res.code != 1 || !strings.Contains(res.stderr, "injected echo failure") {
 			t.Fatalf("send atomic failure = code %d stderr %q", res.code, res.stderr)
@@ -3180,10 +3180,10 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 			queryInt(t, db, `SELECT COUNT(*) FROM outbox`) != 0 {
 			t.Fatal("failed send left a message or outbox row")
 		}
-		if queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings WHERE channel_ref = 'new-origin'`) != 0 {
+		if queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings WHERE channel_ref = 'new-origin'`) != 0 {
 			t.Fatal("failed send left the implicit origin binding")
 		}
-		if got := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session); got != beforeActivity {
+		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got != beforeActivity {
 			t.Fatalf("failed send changed last_activity_at: before %q after %q", beforeActivity, got)
 		}
 	})
@@ -3192,22 +3192,22 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 		spine := initSpine(t)
 		session := start(t, spine, "dashboard:dash")
 		db := openDB(t, spine)
-		if _, err := db.Exec(`CREATE TRIGGER test_fail_homie_end_activity
-			BEFORE INSERT ON activity WHEN NEW.kind = 'homie.ended'
+		if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_end_activity
+			BEFORE INSERT ON activity WHEN NEW.kind = 'collie.ended'
 			BEGIN SELECT RAISE(ABORT, 'injected end activity failure'); END`); err != nil {
 			t.Fatal(err)
 		}
-		res := runMC(t, spineEnv(spine), "", "homie", "end", session, "--reason", "must roll back")
+		res := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "must roll back")
 		if res.code != 1 || !strings.Contains(res.stderr, "injected end activity failure") {
 			t.Fatalf("end atomic failure = code %d stderr %q", res.code, res.stderr)
 		}
-		if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, session); got != "active" {
+		if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, session); got != "active" {
 			t.Fatalf("failed end changed status: %q", got)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings WHERE session_id = ? AND active = 1`, session); n != 1 {
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings WHERE session_id = ? AND active = 1`, session); n != 1 {
 			t.Fatalf("failed end deactivated bindings: %d active", n)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM activity WHERE kind = 'homie.ended'`); n != 0 {
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM activity WHERE kind = 'collie.ended'`); n != 0 {
 			t.Fatalf("failed end left %d activity rows", n)
 		}
 	})
@@ -3216,7 +3216,7 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 		spine := initSpine(t)
 		a := start(t, spine, "dashboard:a")
 		b := start(t, spine, "cli:b")
-		if got := runMC(t, spineEnv(spine), "", "homie", "send", a,
+		if got := runMC(t, spineEnv(spine), "", "collie", "send", a,
 			"--from", "dashboard:a", "--body", "visible only in A"); got.code != 0 {
 			t.Fatalf("send fixture failed: %s", got.stderr)
 		}
@@ -3225,9 +3225,9 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 
 		pipeline := runJSONEnv(t, spine, "pipeline", "pipeline", "worker")
 		for _, args := range [][]string{
-			{"homie", "send", a, "--from", "dashboard:a", "--body", "forged"},
-			{"homie", "history", a},
-			{"homie", "end", a, "--reason", "forged"},
+			{"collie", "send", a, "--from", "dashboard:a", "--body", "forged"},
+			{"collie", "history", a},
+			{"collie", "end", a, "--reason", "forged"},
 		} {
 			got := runMC(t, pipeline, "", args...)
 			if got.code != 1 {
@@ -3235,56 +3235,56 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 			}
 		}
 		if queryInt(t, db, `SELECT COUNT(*) FROM conversation_messages`) != beforeMessages ||
-			queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, a) != "active" {
-			t.Fatal("pipeline Homie verb mutated state")
+			queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, a) != "active" {
+			t.Fatal("pipeline Collie verb mutated state")
 		}
 
-		homieA := homieJSONEnv(t, spine, a, defaultHomieAllowlist)
-		forgedSend := runMC(t, homieA, "", "homie", "send", a,
+		collieA := collieJSONEnv(t, spine, a, defaultCollieAllowlist)
+		forgedSend := runMC(t, collieA, "", "collie", "send", a,
 			"--from", "dashboard:a", "--body", "agent cannot inject transport")
 		if forgedSend.code != 1 {
-			t.Fatalf("Homie-agent send exit = %d stderr %q", forgedSend.code, forgedSend.stderr)
+			t.Fatalf("Collie-agent send exit = %d stderr %q", forgedSend.code, forgedSend.stderr)
 		}
-		ownHistory := runMC(t, homieA, "", "homie", "history", a)
+		ownHistory := runMC(t, collieA, "", "collie", "history", a)
 		if ownHistory.code != 0 || len(ownHistory.json["messages"].([]any)) != 1 {
 			t.Fatalf("own history = code %d json %v stderr %q", ownHistory.code, ownHistory.json, ownHistory.stderr)
 		}
-		otherHistory := runMC(t, homieA, "", "homie", "history", b)
+		otherHistory := runMC(t, collieA, "", "collie", "history", b)
 		if otherHistory.code != 1 || !strings.Contains(otherHistory.stderr, "own session") {
 			t.Fatalf("cross-session history = code %d stderr %q", otherHistory.code, otherHistory.stderr)
 		}
-		otherEnd := runMC(t, homieA, "", "homie", "end", b, "--reason", "hijack")
+		otherEnd := runMC(t, collieA, "", "collie", "end", b, "--reason", "hijack")
 		if otherEnd.code != 1 || !strings.Contains(otherEnd.stderr, "own session") {
 			t.Fatalf("cross-session end = code %d stderr %q", otherEnd.code, otherEnd.stderr)
 		}
 
 		lockBefore := queryStr(t, db, `SELECT COALESCE(run_id, '<free>') FROM leases WHERE project = 'ws-test'`)
-		ended := runMC(t, homieA, "", "homie", "end", a, "--reason", "operator done")
+		ended := runMC(t, collieA, "", "collie", "end", a, "--reason", "operator done")
 		if ended.code != 0 || ended.json["status"] != "ended" || ended.json["ended"] != true {
 			t.Fatalf("own end = code %d json %v stderr %q", ended.code, ended.json, ended.stderr)
 		}
-		if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, a); got != "ended" {
+		if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, a); got != "ended" {
 			t.Fatalf("ended session status = %q", got)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings WHERE session_id = ? AND active = 1`, a); n != 0 {
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings WHERE session_id = ? AND active = 1`, a); n != 0 {
 			t.Fatalf("end left %d active bindings", n)
 		}
-		if got := queryStr(t, db, `SELECT kind || '|' || subject || '|' || detail FROM activity WHERE kind = 'homie.ended'`); got != "homie.ended|"+a+"|operator done" {
+		if got := queryStr(t, db, `SELECT kind || '|' || subject || '|' || detail FROM activity WHERE kind = 'collie.ended'`); got != "collie.ended|"+a+"|operator done" {
 			t.Fatalf("end activity = %q", got)
 		}
 		if got := queryStr(t, db, `SELECT COALESCE(run_id, '<free>') FROM leases WHERE project = 'ws-test'`); got != lockBefore {
 			t.Fatalf("end disturbed pipeline lease: before %q after %q", lockBefore, got)
 		}
-		stale := runMC(t, homieA, "", "homie", "history", a)
+		stale := runMC(t, collieA, "", "collie", "history", a)
 		if stale.code != 1 || !strings.Contains(stale.stderr, "not active") {
-			t.Fatalf("ended Homie history = code %d stderr %q", stale.code, stale.stderr)
+			t.Fatalf("ended Collie history = code %d stderr %q", stale.code, stale.stderr)
 		}
-		hostHistory := runMC(t, spineEnv(spine), "", "homie", "history", a)
+		hostHistory := runMC(t, spineEnv(spine), "", "collie", "history", a)
 		if hostHistory.code != 0 || len(hostHistory.json["messages"].([]any)) != 1 {
 			t.Fatalf("host lost ended-session history: code %d json %v", hostHistory.code, hostHistory.json)
 		}
-		replay := runMC(t, spineEnv(spine), "", "homie", "end", a, "--reason", "operator done")
-		if replay.code != 0 || replay.json["ended"] != false || queryInt(t, db, `SELECT COUNT(*) FROM activity WHERE kind = 'homie.ended'`) != 1 {
+		replay := runMC(t, spineEnv(spine), "", "collie", "end", a, "--reason", "operator done")
+		if replay.code != 0 || replay.json["ended"] != false || queryInt(t, db, `SELECT COUNT(*) FROM activity WHERE kind = 'collie.ended'`) != 1 {
 			t.Fatalf("host end replay = code %d json %v stderr %q", replay.code, replay.json, replay.stderr)
 		}
 	})
@@ -3299,13 +3299,13 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 			args []string
 			msg  string
 		}{
-			{name: "missing_body", args: []string{"homie", "send", a, "--from", "dashboard:a"}, msg: "body or attachment"},
-			{name: "bad_attachments_json", args: []string{"homie", "send", a, "--from", "dashboard:a", "--attachments", `{}`}, msg: "JSON array"},
-			{name: "legacy_attachment_path", args: []string{"homie", "send", a, "--from", "dashboard:a", "--attachments", `["../secret"]`}, msg: "typed attachment publication"},
-			{name: "unknown_session", args: []string{"homie", "send", "h-missing", "--from", "dashboard:x", "--body", "x"}, msg: "unknown Homie session"},
-			{name: "origin_owned_by_other", args: []string{"homie", "send", a, "--from", "cli:b", "--body", "x"}, msg: "already bound"},
-			{name: "history_unknown", args: []string{"homie", "history", "h-missing"}, msg: "unknown Homie session"},
-			{name: "end_missing_reason", args: []string{"homie", "end", a}, msg: "requires --reason"},
+			{name: "missing_body", args: []string{"collie", "send", a, "--from", "dashboard:a"}, msg: "body or attachment"},
+			{name: "bad_attachments_json", args: []string{"collie", "send", a, "--from", "dashboard:a", "--attachments", `{}`}, msg: "JSON array"},
+			{name: "legacy_attachment_path", args: []string{"collie", "send", a, "--from", "dashboard:a", "--attachments", `["../secret"]`}, msg: "typed attachment publication"},
+			{name: "unknown_session", args: []string{"collie", "send", "h-missing", "--from", "dashboard:x", "--body", "x"}, msg: "unknown Collie session"},
+			{name: "origin_owned_by_other", args: []string{"collie", "send", a, "--from", "cli:b", "--body", "x"}, msg: "already bound"},
+			{name: "history_unknown", args: []string{"collie", "history", "h-missing"}, msg: "unknown Collie session"},
+			{name: "end_missing_reason", args: []string{"collie", "end", a}, msg: "requires --reason"},
 		} {
 			t.Run(tc.name, func(t *testing.T) {
 				beforeMessages := queryInt(t, db, `SELECT COUNT(*) FROM conversation_messages`)
@@ -3316,65 +3316,65 @@ func TestHomieSendHistoryEnd(t *testing.T) {
 				}
 				if queryInt(t, db, `SELECT COUNT(*) FROM conversation_messages`) != beforeMessages ||
 					queryInt(t, db, `SELECT COUNT(*) FROM outbox`) != beforeOutbox {
-					t.Fatal("invalid Homie message verb mutated state")
+					t.Fatal("invalid Collie message verb mutated state")
 				}
 			})
 		}
-		if _, err := db.Exec(`UPDATE homie_sessions SET status = 'ended' WHERE id = ?`, b); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'ended' WHERE id = ?`, b); err != nil {
 			t.Fatal(err)
 		}
-		// `mc homie send` binds as `cli` and resumes the bound session if it
+		// `mc collie send` binds as `cli` and resumes the bound session if it
 		// ended. The container exits when idle by design, so without this
 		// the operator's second turn refuses.
-		endedSend := runMC(t, spineEnv(spine), "", "homie", "send", b,
+		endedSend := runMC(t, spineEnv(spine), "", "collie", "send", b,
 			"--from", "cli:b", "--body", "the turn after the container exited")
 		if endedSend.code != 0 {
 			t.Fatalf("ended send = code %d stderr %q", endedSend.code, endedSend.stderr)
 		}
 		if got := queryString(t, db,
-			`SELECT status FROM homie_sessions WHERE id = ?`, b); got != "active" {
+			`SELECT status FROM collie_sessions WHERE id = ?`, b); got != "active" {
 			t.Fatalf("status after implicit resume = %q, want active", got)
 		}
 		if n := queryInt(t, db,
-			`SELECT COUNT(*) FROM activity WHERE kind = 'homie.resumed' AND subject = '`+b+`'`); n != 1 {
-			t.Fatalf("homie.resumed rows = %d, want 1", n)
+			`SELECT COUNT(*) FROM activity WHERE kind = 'collie.resumed' AND subject = '`+b+`'`); n != 1 {
+			t.Fatalf("collie.resumed rows = %d, want 1", n)
 		}
 
 		// Still scoped to the bound place: an ended session named from a
 		// place that never bound to it keeps the explicit-resume requirement.
-		if _, err := db.Exec(`UPDATE homie_sessions SET status = 'ended' WHERE id = ?`, b); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'ended' WHERE id = ?`, b); err != nil {
 			t.Fatal(err)
 		}
-		strangerSend := runMC(t, spineEnv(spine), "", "homie", "send", b,
+		strangerSend := runMC(t, spineEnv(spine), "", "collie", "send", b,
 			"--from", "cli:never-bound-here", "--body", "let me in")
 		if strangerSend.code != 1 || !strings.Contains(strangerSend.stderr, "use resume") {
 			t.Fatalf("unbound send = code %d stderr %q", strangerSend.code, strangerSend.stderr)
 		}
 		if got := queryString(t, db,
-			`SELECT status FROM homie_sessions WHERE id = ?`, b); got != "ended" {
+			`SELECT status FROM collie_sessions WHERE id = ?`, b); got != "ended" {
 			t.Fatalf("refused send flipped status to %q", got)
 		}
 	})
 }
 
-func TestHomieRunnerRegistersSessionLocators(t *testing.T) {
+func TestCollieRunnerRegistersSessionLocators(t *testing.T) {
 	spine := initSpine(t)
-	started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:reg")
+	started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:reg")
 	if started.code != 0 {
-		t.Fatalf("homie start failed: %s", started.stderr)
+		t.Fatalf("collie start failed: %s", started.stderr)
 	}
 	session := started.json["session_id"].(string)
-	runner := runJSONEnv(t, spine, session, "homie", "homie")
+	runner := runJSONEnv(t, spine, session, "collie", "collie")
 	db := openDB(t, spine)
 
 	reg := runMC(t, runner, "", "run", "register-session", session,
 		"--native-ref", "native-abc", "--file", "trace.jsonl")
 	if reg.code != 0 {
-		t.Fatalf("homie runner register-session failed (%d): %s", reg.code, reg.stderr)
+		t.Fatalf("collie runner register-session failed (%d): %s", reg.code, reg.stderr)
 	}
 	locators := func() string {
 		return queryStr(t, db, `SELECT COALESCE(native_session_ref, '<null>') || '|' ||
-			COALESCE(trace_filename, '<null>') FROM homie_sessions WHERE id = ?`, session)
+			COALESCE(trace_filename, '<null>') FROM collie_sessions WHERE id = ?`, session)
 	}
 	if got := locators(); got != "native-abc|trace.jsonl" {
 		t.Fatalf("locators = %q", got)
@@ -3395,9 +3395,9 @@ func TestHomieRunnerRegistersSessionLocators(t *testing.T) {
 	}
 
 	// Cross-session, pipeline-identity, and host attempts are all inert.
-	other := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "cli:reg2")
+	other := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:reg2")
 	if other.code != 0 {
-		t.Fatalf("second homie start failed: %s", other.stderr)
+		t.Fatalf("second collie start failed: %s", other.stderr)
 	}
 	otherSession := other.json["session_id"].(string)
 	for name, attempt := range map[string]mcResult{
@@ -3413,34 +3413,34 @@ func TestHomieRunnerRegistersSessionLocators(t *testing.T) {
 		}
 	}
 	if got := queryStr(t, db, `SELECT COALESCE(native_session_ref, '<null>')
-		FROM homie_sessions WHERE id = ?`, otherSession); got != "<null>" {
+		FROM collie_sessions WHERE id = ?`, otherSession); got != "<null>" {
 		t.Fatalf("forged registration reached %q: %q", otherSession, got)
 	}
 
 	// Registration survives session end: identity, not liveness.
-	ended := runMC(t, spineEnv(spine), "", "homie", "end", otherSession, "--reason", "test")
+	ended := runMC(t, spineEnv(spine), "", "collie", "end", otherSession, "--reason", "test")
 	if ended.code != 0 {
-		t.Fatalf("homie end failed: %s", ended.stderr)
+		t.Fatalf("collie end failed: %s", ended.stderr)
 	}
-	late := runMC(t, runJSONEnv(t, spine, otherSession, "homie", "homie"), "",
+	late := runMC(t, runJSONEnv(t, spine, otherSession, "collie", "collie"), "",
 		"run", "register-session", otherSession, "--native-ref", "late", "--file", "late.jsonl")
 	if late.code != 0 {
 		t.Fatalf("post-end locator registration refused: %s", late.stderr)
 	}
 }
 
-func TestHomieResume(t *testing.T) {
+func TestCollieResume(t *testing.T) {
 	begin := func(t *testing.T, spine, from string) string {
 		t.Helper()
-		res := runMC(t, spineEnv(spine), "", "homie", "start", "--from", from)
+		res := runMC(t, spineEnv(spine), "", "collie", "start", "--from", from)
 		if res.code != 0 {
-			t.Fatalf("homie start failed: %s", res.stderr)
+			t.Fatalf("collie start failed: %s", res.stderr)
 		}
 		return res.json["session_id"].(string)
 	}
 	register := func(t *testing.T, spine, session string) {
 		t.Helper()
-		res := runMC(t, runJSONEnv(t, spine, session, "homie", "homie"), "",
+		res := runMC(t, runJSONEnv(t, spine, session, "collie", "collie"), "",
 			"run", "register-session", session, "--native-ref", "n-"+session, "--file", session+".jsonl")
 		if res.code != 0 {
 			t.Fatalf("register locators failed: %s", res.stderr)
@@ -3448,9 +3448,9 @@ func TestHomieResume(t *testing.T) {
 	}
 	end := func(t *testing.T, spine, session string) {
 		t.Helper()
-		res := runMC(t, spineEnv(spine), "", "homie", "end", session, "--reason", "test drill")
+		res := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "test drill")
 		if res.code != 0 {
-			t.Fatalf("homie end failed: %s", res.stderr)
+			t.Fatalf("collie end failed: %s", res.stderr)
 		}
 	}
 
@@ -3461,34 +3461,34 @@ func TestHomieResume(t *testing.T) {
 		end(t, spine, session)
 		db := openDB(t, spine)
 
-		res := runMC(t, spineEnv(spine), "", "homie", "resume", session, "--from", "discord:ops")
+		res := runMC(t, spineEnv(spine), "", "collie", "resume", session, "--from", "discord:ops")
 		if res.code != 0 || res.json["resumed"] != true {
 			t.Fatalf("resume = code %d json %v stderr %q", res.code, res.json, res.stderr)
 		}
-		if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, session); got != "active" {
+		if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, session); got != "active" {
 			t.Fatalf("resumed status = %q", got)
 		}
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings
 			WHERE session_id = ? AND surface = 'discord' AND channel_ref = 'ops' AND active = 1`, session); n != 1 {
 			t.Fatalf("resume bound %d active discord:ops rows", n)
 		}
 		// Pre-end binding history is not resurrected.
-		if n := queryInt(t, db, `SELECT COUNT(*) FROM homie_bindings
+		if n := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings
 			WHERE session_id = ? AND surface = 'dashboard' AND active = 1`, session); n != 0 {
 			t.Fatalf("resume reactivated %d historical bindings", n)
 		}
 		if n := queryInt(t, db, `SELECT COUNT(*) FROM activity
-			WHERE kind = 'homie.resumed' AND subject = ?`, session); n != 1 {
-			t.Fatalf("homie.resumed activity rows = %d", n)
+			WHERE kind = 'collie.resumed' AND subject = ?`, session); n != 1 {
+			t.Fatalf("collie.resumed activity rows = %d", n)
 		}
 
 		// Crash-after-commit retry is idempotent; any other active-session
 		// resume is bind's job.
-		retry := runMC(t, spineEnv(spine), "", "homie", "resume", session, "--from", "discord:ops")
+		retry := runMC(t, spineEnv(spine), "", "collie", "resume", session, "--from", "discord:ops")
 		if retry.code != 0 || retry.json["resumed"] != false {
 			t.Fatalf("resume retry = code %d json %v stderr %q", retry.code, retry.json, retry.stderr)
 		}
-		elsewhere := runMC(t, spineEnv(spine), "", "homie", "resume", session, "--from", "cli:new")
+		elsewhere := runMC(t, spineEnv(spine), "", "collie", "resume", session, "--from", "cli:new")
 		if elsewhere.code != 1 || !strings.Contains(elsewhere.stderr, "use bind") {
 			t.Fatalf("active resume elsewhere = code %d stderr %q", elsewhere.code, elsewhere.stderr)
 		}
@@ -3499,10 +3499,10 @@ func TestHomieResume(t *testing.T) {
 		session := begin(t, spine, "dashboard:reap")
 		register(t, spine, session)
 		db := openDB(t, spine)
-		if _, err := db.Exec(`UPDATE homie_sessions SET status = 'reaped' WHERE id = ?`, session); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'reaped' WHERE id = ?`, session); err != nil {
 			t.Fatal(err)
 		}
-		res := runMC(t, spineEnv(spine), "", "homie", "resume", session, "--from", "dashboard:reap")
+		res := runMC(t, spineEnv(spine), "", "collie", "resume", session, "--from", "dashboard:reap")
 		if res.code != 0 || res.json["resumed"] != true {
 			t.Fatalf("reaped resume = code %d json %v stderr %q", res.code, res.json, res.stderr)
 		}
@@ -3513,11 +3513,11 @@ func TestHomieResume(t *testing.T) {
 		session := begin(t, spine, "cli:bare")
 		end(t, spine, session)
 		db := openDB(t, spine)
-		res := runMC(t, spineEnv(spine), "", "homie", "resume", session, "--from", "cli:bare")
+		res := runMC(t, spineEnv(spine), "", "collie", "resume", session, "--from", "cli:bare")
 		if res.code != 1 || !strings.Contains(res.stderr, "locator") {
 			t.Fatalf("locator-less resume = code %d stderr %q", res.code, res.stderr)
 		}
-		if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, session); got != "ended" {
+		if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, session); got != "ended" {
 			t.Fatalf("refused resume moved status to %q", got)
 		}
 	})
@@ -3531,15 +3531,15 @@ func TestHomieResume(t *testing.T) {
 		_ = second
 		db := openDB(t, spine)
 
-		res := runMC(t, spineEnv(spine), "", "homie", "resume", first, "--from", "cli:two")
+		res := runMC(t, spineEnv(spine), "", "collie", "resume", first, "--from", "cli:two")
 		if res.code != 1 || !strings.Contains(res.stderr, "already bound") {
 			t.Fatalf("occupied resume = code %d stderr %q", res.code, res.stderr)
 		}
-		if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, first); got != "ended" {
+		if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, first); got != "ended" {
 			t.Fatalf("aborted resume left status %q", got)
 		}
 		if n := queryInt(t, db, `SELECT COUNT(*) FROM activity
-			WHERE kind = 'homie.resumed' AND subject = ?`, first); n != 0 {
+			WHERE kind = 'collie.resumed' AND subject = ?`, first); n != 0 {
 			t.Fatalf("aborted resume left %d activity rows", n)
 		}
 	})
@@ -3551,42 +3551,42 @@ func TestHomieResume(t *testing.T) {
 		end(t, spine, session)
 		db := openDB(t, spine)
 		for name, env := range map[string][]string{
-			"pipeline":    runJSONEnv(t, spine, "r-x", "pipeline", "worker"),
-			"homie-agent": homieJSONEnv(t, spine, session, defaultHomieAllowlist),
+			"pipeline":     runJSONEnv(t, spine, "r-x", "pipeline", "worker"),
+			"collie-agent": collieJSONEnv(t, spine, session, defaultCollieAllowlist),
 		} {
-			res := runMC(t, env, "", "homie", "resume", session, "--from", "dashboard:scope")
+			res := runMC(t, env, "", "collie", "resume", session, "--from", "dashboard:scope")
 			if res.code != 1 {
 				t.Fatalf("%s resume exit = %d stderr %q", name, res.code, res.stderr)
 			}
 		}
-		if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id = ?`, session); got != "ended" {
+		if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id = ?`, session); got != "ended" {
 			t.Fatalf("denied resume moved status to %q", got)
 		}
-		unknown := runMC(t, spineEnv(spine), "", "homie", "resume", "h-missing", "--from", "cli:x")
-		if unknown.code != 1 || !strings.Contains(unknown.stderr, "unknown Homie session") {
+		unknown := runMC(t, spineEnv(spine), "", "collie", "resume", "h-missing", "--from", "cli:x")
+		if unknown.code != 1 || !strings.Contains(unknown.stderr, "unknown Collie session") {
 			t.Fatalf("unknown resume = code %d stderr %q", unknown.code, unknown.stderr)
 		}
 	})
 }
 
 // The runner transport: fenced idempotent claims of pending inbound turns
-// and the atomic reply append + completion + homie_reply fan-out. Both are
+// and the atomic reply append + completion + collie_reply fan-out. Both are
 // the runner's private own-session scope — never the model's frozen
 // operator allowlist, never host, never pipeline.
-func TestHomieClaimReply(t *testing.T) {
+func TestCollieClaimReply(t *testing.T) {
 	start := func(t *testing.T, spine, from string) string {
 		t.Helper()
-		res := runMC(t, spineEnv(spine), "", "homie", "start", "--from", from)
+		res := runMC(t, spineEnv(spine), "", "collie", "start", "--from", from)
 		if res.code != 0 {
-			t.Fatalf("homie start failed: %s", res.stderr)
+			t.Fatalf("collie start failed: %s", res.stderr)
 		}
 		return res.json["session_id"].(string)
 	}
 	send := func(t *testing.T, spine, session, from, body string) int64 {
 		t.Helper()
-		res := runMC(t, spineEnv(spine), "", "homie", "send", session, "--from", from, "--body", body)
+		res := runMC(t, spineEnv(spine), "", "collie", "send", session, "--from", from, "--body", body)
 		if res.code != 0 {
-			t.Fatalf("homie send failed: %s", res.stderr)
+			t.Fatalf("collie send failed: %s", res.stderr)
 		}
 		return int64(res.json["message_id"].(float64))
 	}
@@ -3595,7 +3595,7 @@ func TestHomieClaimReply(t *testing.T) {
 	// operator surface.
 	runner := func(t *testing.T, spine, session string) []string {
 		t.Helper()
-		return runJSONEnv(t, spine, session, "homie", "homie")
+		return runJSONEnv(t, spine, session, "collie", "collie")
 	}
 
 	t.Run("claim_stamps_and_returns_the_next_pending_turn_idempotently", func(t *testing.T) {
@@ -3604,12 +3604,12 @@ func TestHomieClaimReply(t *testing.T) {
 		m1 := send(t, spine, session, "cli:term", "first question")
 		m2 := send(t, spine, session, "cli:term", "second question")
 		db := openDB(t, spine)
-		if _, err := db.Exec(`UPDATE homie_sessions SET last_activity_at = datetime('now', '-1 day') WHERE id = ?`, session); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET last_activity_at = datetime('now', '-1 day') WHERE id = ?`, session); err != nil {
 			t.Fatal(err)
 		}
-		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session)
+		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
 
-		claim := runMC(t, runner(t, spine, session), "", "homie", "claim", session)
+		claim := runMC(t, runner(t, spine, session), "", "collie", "claim", session)
 		if claim.code != 0 {
 			t.Fatalf("claim failed (%d): %s", claim.code, claim.stderr)
 		}
@@ -3634,7 +3634,7 @@ func TestHomieClaimReply(t *testing.T) {
 		}
 
 		// A fresh runner resumes the durable claim: same turn, same stamp.
-		reclaim := runMC(t, runner(t, spine, session), "", "homie", "claim", session)
+		reclaim := runMC(t, runner(t, spine, session), "", "collie", "claim", session)
 		if reclaim.code != 0 {
 			t.Fatalf("reclaim failed: %s", reclaim.stderr)
 		}
@@ -3646,12 +3646,12 @@ func TestHomieClaimReply(t *testing.T) {
 			t.Fatalf("reclaim rewrote claim state: before %q after %q", firstClaim, got)
 		}
 		// Claiming is bookkeeping, not conversation traffic.
-		if got := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session); got != beforeActivity {
+		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got != beforeActivity {
 			t.Fatalf("claim advanced last_activity_at: before %q after %q", beforeActivity, got)
 		}
 
 		empty := start(t, spine, "cli:empty")
-		nothing := runMC(t, runner(t, spine, empty), "", "homie", "claim", empty)
+		nothing := runMC(t, runner(t, spine, empty), "", "collie", "claim", empty)
 		if nothing.code != 0 || nothing.json["message"] != nil {
 			t.Fatalf("empty claim = code %d json %v stderr %q", nothing.code, nothing.json, nothing.stderr)
 		}
@@ -3675,7 +3675,7 @@ func TestHomieClaimReply(t *testing.T) {
 			messageID, session, digest); err != nil {
 			t.Fatal(err)
 		}
-		claim := runMC(t, runner(t, spine, session), "", "homie", "claim", session)
+		claim := runMC(t, runner(t, spine, session), "", "collie", "claim", session)
 		if claim.code != 0 {
 			t.Fatalf("typed claim failed (%d): %s", claim.code, claim.stderr)
 		}
@@ -3699,23 +3699,23 @@ func TestHomieClaimReply(t *testing.T) {
 	t.Run("reply_appends_completes_and_fans_out_to_every_binding", func(t *testing.T) {
 		spine := initSpine(t)
 		session := start(t, spine, "dashboard:dash")
-		if res := runMC(t, spineEnv(spine), "", "homie", "bind", session, "--from", "discord:disc"); res.code != 0 {
+		if res := runMC(t, spineEnv(spine), "", "collie", "bind", session, "--from", "discord:disc"); res.code != 0 {
 			t.Fatalf("bind failed: %s", res.stderr)
 		}
 		m1 := send(t, spine, session, "cli:term", "please do X")
-		// The unserved inbound turn wakes Homie: the
-		// Homie effect leads the tick, and the same tick still runs ws-test's
+		// The unserved inbound turn wakes Collie: the
+		// Collie effect leads the tick, and the same tick still runs ws-test's
 		// pipeline round — the empty board spawns Strategist — because
-		// Homie and the pipelines are independent stages. Committing the wake
+		// Collie and the pipelines are independent stages. Committing the wake
 		// binds the launch, after which the runner claims from inside it.
 		tick := dispatch(t, spine)
 		actions := tickActions(t, tick)
-		if len(actions) != 2 || actions[0]["action"] != "homie-wake" ||
+		if len(actions) != 2 || actions[0]["action"] != "collie-wake" ||
 			actions[1]["action"] != "spawn" || actions[1]["role"] != "strategist(propose)" ||
 			actions[1]["project"] != "ws-test" {
-			t.Fatalf("tick = %v, want homie-wake then ws-test's strategist(propose) spawn", tick)
+			t.Fatalf("tick = %v, want collie-wake then ws-test's strategist(propose) spawn", tick)
 		}
-		if res := runMC(t, runner(t, spine, session), "", "homie", "claim", session); res.code != 0 {
+		if res := runMC(t, runner(t, spine, session), "", "collie", "claim", session); res.code != 0 {
 			t.Fatalf("claim failed: %s", res.stderr)
 		}
 
@@ -3727,12 +3727,12 @@ func TestHomieClaimReply(t *testing.T) {
 		if lockBefore == "<NULL>" {
 			t.Fatalf("pipeline lease is not held before the reply")
 		}
-		if _, err := db.Exec(`UPDATE homie_sessions SET last_activity_at = datetime('now', '-1 day') WHERE id = ?`, session); err != nil {
+		if _, err := db.Exec(`UPDATE collie_sessions SET last_activity_at = datetime('now', '-1 day') WHERE id = ?`, session); err != nil {
 			t.Fatal(err)
 		}
-		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session)
+		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
 
-		reply := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+		reply := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 			"--to", strconv.FormatInt(m1, 10), "--body", "done: X")
 		if reply.code != 0 {
 			t.Fatalf("reply failed (%d): %s", reply.code, reply.stderr)
@@ -3745,20 +3745,20 @@ func TestHomieClaimReply(t *testing.T) {
 
 		if got := queryStr(t, db, `SELECT direction || '|' || surface || '|' ||
 			COALESCE(channel_ref, '<null>') || '|' || body || '|' || COALESCE(attachments, '<null>') || '|' || reply_to
-			FROM conversation_messages WHERE id = ?`, replyID); got != `reply|homie|<null>|done: X|<null>|`+strconv.FormatInt(m1, 10) {
+			FROM conversation_messages WHERE id = ?`, replyID); got != `reply|collie|<null>|done: X|<null>|`+strconv.FormatInt(m1, 10) {
 			t.Fatalf("reply row = %q", got)
 		}
 		if got := queryStr(t, db, `SELECT COALESCE(completed_at, '<null>') FROM conversation_messages WHERE id = ?`, m1); got == "<null>" {
 			t.Fatalf("reply did not complete the claimed turn")
 		}
 		if got := queryStr(t, db, `SELECT group_concat(surface || ':' || channel_ref, ',') FROM
-			(SELECT surface, channel_ref FROM outbox WHERE kind = 'homie_reply' ORDER BY surface, channel_ref)`); got != "cli:term,dashboard:dash,discord:disc" {
+			(SELECT surface, channel_ref FROM outbox WHERE kind = 'collie_reply' ORDER BY surface, channel_ref)`); got != "cli:term,dashboard:dash,discord:disc" {
 			t.Fatalf("reply destinations = %q", got)
 		}
 		// The `cli` row is born DELIVERED and the other two are not.
 		//
 		// The cli binding has no delivery loop: it reads the conversation
-		// back with `mc homie history --follow`. Poll/ack belongs to each
+		// back with `mc collie history --follow`. Poll/ack belongs to each
 		// NATIVE surface's loop — the resident and the dashboard. Nothing
 		// drains cli, so a pending cli row is pending forever, and the outbox
 		// delivery lag climbs monotonically on a healthy board. For the CLI
@@ -3766,13 +3766,13 @@ func TestHomieClaimReply(t *testing.T) {
 		// describe.
 		if got := queryStr(t, db, `SELECT group_concat(surface || ':' ||
 			CASE WHEN delivered_at IS NULL THEN 'pending' ELSE 'delivered' END, ',') FROM
-			(SELECT surface, delivered_at FROM outbox WHERE kind = 'homie_reply' ORDER BY surface)`); got !=
+			(SELECT surface, delivered_at FROM outbox WHERE kind = 'collie_reply' ORDER BY surface)`); got !=
 			"cli:delivered,dashboard:pending,discord:pending" {
 			t.Fatalf("reply delivery stamps = %q", got)
 		}
 		var payload map[string]any
 		if err := json.Unmarshal([]byte(queryStr(t, db,
-			`SELECT payload FROM outbox WHERE kind = 'homie_reply' ORDER BY id LIMIT 1`)), &payload); err != nil {
+			`SELECT payload FROM outbox WHERE kind = 'collie_reply' ORDER BY id LIMIT 1`)), &payload); err != nil {
 			t.Fatal(err)
 		}
 		if payload["message_id"] != float64(replyID) || payload["seq"] != float64(2) ||
@@ -3780,7 +3780,7 @@ func TestHomieClaimReply(t *testing.T) {
 			len(payload["attachments"].([]any)) != 0 {
 			t.Fatalf("reply payload = %v", payload)
 		}
-		if got := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session); got == beforeActivity {
+		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got == beforeActivity {
 			t.Fatalf("reply did not advance last_activity_at from %q", beforeActivity)
 		}
 		if got := queryStr(t, db, `SELECT run_id || '|' || owner || '|' || COALESCE(subject, '-') FROM leases WHERE project = 'ws-test'`); got != lockBefore {
@@ -3788,12 +3788,12 @@ func TestHomieClaimReply(t *testing.T) {
 		}
 
 		// The completed turn leaves the pending queue; new traffic re-enters it.
-		drained := runMC(t, runner(t, spine, session), "", "homie", "claim", session)
+		drained := runMC(t, runner(t, spine, session), "", "collie", "claim", session)
 		if drained.code != 0 || drained.json["message"] != nil {
 			t.Fatalf("post-reply claim = code %d json %v", drained.code, drained.json)
 		}
 		m3 := send(t, spine, session, "cli:term", "follow-up")
-		next := runMC(t, runner(t, spine, session), "", "homie", "claim", session)
+		next := runMC(t, runner(t, spine, session), "", "collie", "claim", session)
 		if next.code != 0 {
 			t.Fatalf("follow-up claim failed: %s", next.stderr)
 		}
@@ -3806,10 +3806,10 @@ func TestHomieClaimReply(t *testing.T) {
 		spine := initSpine(t)
 		session := start(t, spine, "dashboard:dash")
 		m1 := send(t, spine, session, "dashboard:dash", "one")
-		if res := runMC(t, runner(t, spine, session), "", "homie", "claim", session); res.code != 0 {
+		if res := runMC(t, runner(t, spine, session), "", "collie", "claim", session); res.code != 0 {
 			t.Fatalf("claim failed: %s", res.stderr)
 		}
-		first := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+		first := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 			"--to", strconv.FormatInt(m1, 10), "--body", "answer")
 		if first.code != 0 {
 			t.Fatalf("reply failed: %s", first.stderr)
@@ -3819,7 +3819,7 @@ func TestHomieClaimReply(t *testing.T) {
 		beforeOutbox := queryInt(t, db, `SELECT COUNT(*) FROM outbox`)
 
 		// Crash-after-commit retry: same logical reply, nothing re-appended.
-		replay := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+		replay := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 			"--to", strconv.FormatInt(m1, 10), "--body", "answer")
 		if replay.code != 0 || replay.json["replied"] != false ||
 			replay.json["message_id"] != first.json["message_id"] {
@@ -3830,7 +3830,7 @@ func TestHomieClaimReply(t *testing.T) {
 			t.Fatal("idempotent replay appended rows")
 		}
 		// A different body against a completed turn is a second logical reply.
-		second := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+		second := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 			"--to", strconv.FormatInt(m1, 10), "--body", "different answer")
 		if second.code != 1 || !strings.Contains(second.stderr, "one logical reply") {
 			t.Fatalf("second reply = code %d stderr %q", second.code, second.stderr)
@@ -3851,7 +3851,7 @@ func TestHomieClaimReply(t *testing.T) {
 			"another_conversation": {to: m3, msg: "another conversation"},
 		} {
 			t.Run(name, func(t *testing.T) {
-				res := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+				res := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 					"--to", strconv.FormatInt(tc.to, 10), "--body", "x")
 				if res.code != 1 || !strings.Contains(res.stderr, tc.msg) {
 					t.Fatalf("exit = %d stderr %q, want failure containing %q", res.code, res.stderr, tc.msg)
@@ -3867,17 +3867,17 @@ func TestHomieClaimReply(t *testing.T) {
 		spine := initSpine(t)
 		session := start(t, spine, "dashboard:dash")
 		m1 := send(t, spine, session, "dashboard:dash", "roll me back")
-		if res := runMC(t, runner(t, spine, session), "", "homie", "claim", session); res.code != 0 {
+		if res := runMC(t, runner(t, spine, session), "", "collie", "claim", session); res.code != 0 {
 			t.Fatalf("claim failed: %s", res.stderr)
 		}
 		db := openDB(t, spine)
-		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session)
-		if _, err := db.Exec(`CREATE TRIGGER test_fail_homie_reply
-			BEFORE INSERT ON outbox WHEN NEW.kind = 'homie_reply'
+		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
+		if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_reply
+			BEFORE INSERT ON outbox WHEN NEW.kind = 'collie_reply'
 			BEGIN SELECT RAISE(ABORT, 'injected reply failure'); END`); err != nil {
 			t.Fatal(err)
 		}
-		res := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+		res := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 			"--to", strconv.FormatInt(m1, 10), "--body", "must roll back")
 		if res.code != 1 || !strings.Contains(res.stderr, "injected reply failure") {
 			t.Fatalf("reply atomic failure = code %d stderr %q", res.code, res.stderr)
@@ -3889,7 +3889,7 @@ func TestHomieClaimReply(t *testing.T) {
 		if got := queryStr(t, db, `SELECT COALESCE(completed_at, '<null>') FROM conversation_messages WHERE id = ?`, m1); got != "<null>" {
 			t.Fatalf("failed reply completed the turn: %q", got)
 		}
-		if got := queryStr(t, db, `SELECT last_activity_at FROM homie_sessions WHERE id = ?`, session); got != beforeActivity {
+		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got != beforeActivity {
 			t.Fatalf("failed reply changed last_activity_at: before %q after %q", beforeActivity, got)
 		}
 	})
@@ -3907,8 +3907,8 @@ func TestHomieClaimReply(t *testing.T) {
 			"cross-session": runner(t, spine, "h-other"),
 		} {
 			for _, args := range [][]string{
-				{"homie", "claim", session},
-				{"homie", "reply", session, "--to", to, "--body", "forged"},
+				{"collie", "claim", session},
+				{"collie", "reply", session, "--to", to, "--body", "forged"},
 			} {
 				res := runMC(t, env, "", args...)
 				if res.code != 1 {
@@ -3926,17 +3926,17 @@ func TestHomieClaimReply(t *testing.T) {
 		}
 
 		// An ended session's runner has no transport left.
-		if res := runMC(t, runner(t, spine, session), "", "homie", "claim", session); res.code != 0 {
+		if res := runMC(t, runner(t, spine, session), "", "collie", "claim", session); res.code != 0 {
 			t.Fatalf("claim failed: %s", res.stderr)
 		}
-		if res := runMC(t, spineEnv(spine), "", "homie", "end", session, "--reason", "test"); res.code != 0 {
+		if res := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "test"); res.code != 0 {
 			t.Fatalf("end failed: %s", res.stderr)
 		}
-		endedClaim := runMC(t, runner(t, spine, session), "", "homie", "claim", session)
+		endedClaim := runMC(t, runner(t, spine, session), "", "collie", "claim", session)
 		if endedClaim.code != 1 || !strings.Contains(endedClaim.stderr, "active") {
 			t.Fatalf("ended claim = code %d stderr %q", endedClaim.code, endedClaim.stderr)
 		}
-		endedReply := runMC(t, runner(t, spine, session), "", "homie", "reply", session,
+		endedReply := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
 			"--to", to, "--body", "ghost turn")
 		if endedReply.code != 1 || !strings.Contains(endedReply.stderr, "active") {
 			t.Fatalf("ended reply = code %d stderr %q", endedReply.code, endedReply.stderr)
@@ -3963,17 +3963,17 @@ func TestOutboxPollAck(t *testing.T) {
 	fixture := func(t *testing.T) (string, *sql.DB) {
 		t.Helper()
 		spine := initSpine(t)
-		started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "dashboard:dash")
+		started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:dash")
 		if started.code != 0 {
-			t.Fatalf("homie start failed: %s", started.stderr)
+			t.Fatalf("collie start failed: %s", started.stderr)
 		}
 		session := started.json["session_id"].(string)
-		if got := runMC(t, spineEnv(spine), "", "homie", "bind", session, "--from", "discord:disc"); got.code != 0 {
-			t.Fatalf("homie bind failed: %s", got.stderr)
+		if got := runMC(t, spineEnv(spine), "", "collie", "bind", session, "--from", "discord:disc"); got.code != 0 {
+			t.Fatalf("collie bind failed: %s", got.stderr)
 		}
-		if got := runMC(t, spineEnv(spine), "", "homie", "send", session,
+		if got := runMC(t, spineEnv(spine), "", "collie", "send", session,
 			"--from", "cli:origin", "--body", "deliver me"); got.code != 0 {
-			t.Fatalf("homie send failed: %s", got.stderr)
+			t.Fatalf("collie send failed: %s", got.stderr)
 		}
 		return spine, openDB(t, spine)
 	}
@@ -3991,7 +3991,7 @@ func TestOutboxPollAck(t *testing.T) {
 			t.Fatalf("dashboard poll = %v", dashboard.json)
 		}
 		row := rows[0].(map[string]any)
-		if row["surface"] != "dashboard" || row["channel_ref"] != "dash" || row["kind"] != "homie_echo" {
+		if row["surface"] != "dashboard" || row["channel_ref"] != "dash" || row["kind"] != "collie_echo" {
 			t.Fatalf("dashboard outbox row = %v", row)
 		}
 		payload := row["payload"].(map[string]any)
@@ -4064,8 +4064,8 @@ func TestOutboxPollAck(t *testing.T) {
 		spine, db := fixture(t)
 		before := outboxSnapshot(t, db)
 		pipeline := runJSONEnv(t, spine, "pipeline", "pipeline", "worker")
-		homie := homieJSONEnv(t, spine, "h-forged", defaultHomieAllowlist)
-		for name, env := range map[string][]string{"pipeline": pipeline, "homie": homie} {
+		collie := collieJSONEnv(t, spine, "h-forged", defaultCollieAllowlist)
+		for name, env := range map[string][]string{"pipeline": pipeline, "collie": collie} {
 			t.Run(name, func(t *testing.T) {
 				for _, args := range [][]string{
 					{"outbox", "poll", "--surface", "dashboard"},
@@ -4752,7 +4752,7 @@ func brokerDispatch(t *testing.T, spine, stub string) (string, string, error) {
 }
 
 // answerResidentControl answers the three control requests of one broker
-// dispatch: the hello, the Homie inventory, and the pipeline liveness. Each
+// dispatch: the hello, the Collie inventory, and the pipeline liveness. Each
 // observation is empty.
 func answerResidentControl(parent *os.File) error {
 	var prefix [4]byte
@@ -4794,7 +4794,7 @@ func answerResidentControl(parent *os.File) error {
 		return fmt.Errorf("write hello_ack: %w", err)
 	}
 	for _, exchange := range []struct{ name, request, response string }{
-		{"inventory", `{"op":"homie_inventory","seq":2}`, `{"op":"homie_inventory_result","seq":2,"containers":[]}`},
+		{"inventory", `{"op":"collie_inventory","seq":2}`, `{"op":"collie_inventory_result","seq":2,"containers":[]}`},
 		{"pipeline liveness", `{"op":"pipeline_liveness","seq":3}`, `{"op":"pipeline_liveness_result","seq":3,"observed":[]}`},
 	} {
 		if _, err := io.ReadFull(parent, prefix[:]); err != nil {
@@ -4884,7 +4884,7 @@ func TestLeaseListSettingsGetAndRunList(t *testing.T) {
 	}
 	for _, key := range []string{"timeout_minutes", "grace_minutes", "heartbeat_interval_s",
 		"spawn_grace_s", "hard_deadline_minutes", "review_wip_cap",
-		"homie_idle_timeout_s", "wiki_update_interval_s"} {
+		"collie_idle_timeout_s", "wiki_update_interval_s"} {
 		if _, ok := settings.json[key]; !ok {
 			t.Fatalf("settings get %v lacks %q", settings.json, key)
 		}
@@ -4892,9 +4892,9 @@ func TestLeaseListSettingsGetAndRunList(t *testing.T) {
 	if len(settings.json) != 8 {
 		t.Fatalf("settings get = %v, want exactly the eight settings", settings.json)
 	}
-	if settings.json["review_wip_cap"] != float64(3) || settings.json["homie_idle_timeout_s"] != float64(1800) ||
+	if settings.json["review_wip_cap"] != float64(3) || settings.json["collie_idle_timeout_s"] != float64(1800) ||
 		settings.json["wiki_update_interval_s"] != float64(3600) {
-		t.Fatalf("settings get defaults = %v, want review_wip_cap 3, homie_idle_timeout_s 1800, and wiki_update_interval_s 3600", settings.json)
+		t.Fatalf("settings get defaults = %v, want review_wip_cap 3, collie_idle_timeout_s 1800, and wiki_update_interval_s 3600", settings.json)
 	}
 
 	runs := runMC(t, spineEnv(spine), "", "run", "list")
@@ -5254,7 +5254,7 @@ func TestBackup(t *testing.T) {
 		spine := initSpine(t)
 		for name, env := range map[string][]string{
 			"pipeline": runJSONEnv(t, spine, "r-x", "pipeline", "worker"),
-			"homie":    homieJSONEnv(t, spine, "h-x", defaultHomieAllowlist),
+			"collie":   collieJSONEnv(t, spine, "h-x", defaultCollieAllowlist),
 		} {
 			res := runMC(t, env, "", "backup")
 			if res.code != 1 {
@@ -5452,7 +5452,7 @@ func TestDoctor(t *testing.T) {
 		spine := initSpine(t)
 		for name, env := range map[string][]string{
 			"pipeline": runJSONEnv(t, spine, "r-x", "pipeline", "worker"),
-			"homie":    homieJSONEnv(t, spine, "h-x", defaultHomieAllowlist),
+			"collie":   collieJSONEnv(t, spine, "h-x", defaultCollieAllowlist),
 		} {
 			res := runMC(t, env, "", "doctor")
 			if res.code != 1 {
@@ -5528,7 +5528,7 @@ func TestReset(t *testing.T) {
 		spine := initSpine(t)
 		for name, env := range map[string][]string{
 			"pipeline": runJSONEnv(t, spine, "r-x", "pipeline", "worker"),
-			"homie":    homieJSONEnv(t, spine, "h-x", defaultHomieAllowlist),
+			"collie":   collieJSONEnv(t, spine, "h-x", defaultCollieAllowlist),
 		} {
 			res := runMC(t, env, "", "__reset", "--confirm")
 			if res.code != 1 {
@@ -5581,8 +5581,8 @@ func TestOnboard(t *testing.T) {
 			"pipeline": func(spine string) []string {
 				return runJSONEnv(t, spine, "r-x", "pipeline", "worker")
 			},
-			"homie": func(spine string) []string {
-				return homieJSONEnv(t, spine, "h-x", defaultHomieAllowlist)
+			"collie": func(spine string) []string {
+				return collieJSONEnv(t, spine, "h-x", defaultCollieAllowlist)
 			},
 		} {
 			deniedHome, deniedSpine, _ := freshHome(t)
@@ -6305,11 +6305,11 @@ func TestOnboard(t *testing.T) {
 		}
 	})
 
-	// homie_idle_timeout is an operator knob, but the value the wake selector
-	// reads is settings.homie_idle_timeout_s — so a config.toml the spine
+	// collie_idle_timeout is an operator knob, but the value the wake selector
+	// reads is settings.collie_idle_timeout_s — so a config.toml the spine
 	// never receives is decoration. The tunables section owns that
 	// reconciliation exactly as it does for the five lease tunables.
-	t.Run("the homie idle timeout reaches the spine settings", func(t *testing.T) {
+	t.Run("the collie idle timeout reaches the spine settings", func(t *testing.T) {
 		home, spine, env := freshHome(t)
 		if res := runMC(t, env, "", "onboard", "home"); res.code != 0 {
 			t.Fatalf("home failed: %s", res.stderr)
@@ -6320,25 +6320,25 @@ func TestOnboard(t *testing.T) {
 		}
 		defer db.Close()
 		if negative := runMC(t, env, "", "onboard", "tunables",
-			"--homie-idle-timeout-s", "-1"); negative.code != 2 {
+			"--collie-idle-timeout-s", "-1"); negative.code != 2 {
 			t.Fatalf("negative idle timeout = code %d stderr %q", negative.code, negative.stderr)
 		}
-		set := runMC(t, env, "", "onboard", "tunables", "--homie-idle-timeout-s", "900")
+		set := runMC(t, env, "", "onboard", "tunables", "--collie-idle-timeout-s", "900")
 		if set.code != 0 || sectionStatus(t, set)["tunables"]["status"] != "done" {
 			t.Fatalf("idle timeout = code %d json %v stderr %q", set.code, set.json, set.stderr)
 		}
 		if got := queryStr(t, db,
-			`SELECT homie_idle_timeout_s FROM settings WHERE id = 1`); got != "900" {
-			t.Fatalf("settings.homie_idle_timeout_s = %q, want 900", got)
+			`SELECT collie_idle_timeout_s FROM settings WHERE id = 1`); got != "900" {
+			t.Fatalf("settings.collie_idle_timeout_s = %q, want 900", got)
 		}
 		cfg, err := operatorconfig.Load(filepath.Join(home, "config.toml"))
 		if err != nil {
 			t.Fatal(err)
 		}
-		if cfg.Timing.HomieIdleTimeoutS != 900 {
-			t.Fatalf("config.toml homie_idle_timeout_s = %d, want 900", cfg.Timing.HomieIdleTimeoutS)
+		if cfg.Timing.CollieIdleTimeoutS != 900 {
+			t.Fatalf("config.toml collie_idle_timeout_s = %d, want 900", cfg.Timing.CollieIdleTimeoutS)
 		}
-		replay := runMC(t, env, "", "onboard", "tunables", "--homie-idle-timeout-s", "900")
+		replay := runMC(t, env, "", "onboard", "tunables", "--collie-idle-timeout-s", "900")
 		if replay.code != 0 || sectionStatus(t, replay)["tunables"]["status"] != "ok" {
 			t.Fatalf("idle replay = code %d json %v", replay.code, replay.json)
 		}
@@ -6349,8 +6349,8 @@ func TestOnboard(t *testing.T) {
 			t.Fatalf("default reset = code %d json %v", reset.code, reset.json)
 		}
 		if got := queryStr(t, db,
-			`SELECT homie_idle_timeout_s FROM settings WHERE id = 1`); got != "1800" {
-			t.Fatalf("reset settings.homie_idle_timeout_s = %q, want 1800", got)
+			`SELECT collie_idle_timeout_s FROM settings WHERE id = 1`); got != "1800" {
+			t.Fatalf("reset settings.collie_idle_timeout_s = %q, want 1800", got)
 		}
 	})
 }
@@ -6591,7 +6591,7 @@ func dashReadHome(t *testing.T) (string, []string) {
 		"| strategist | claude-sdk | claude |\n| arbiter | codex | chatgpt |\n" +
 		"| worker | claude-sdk | endpoint |\n| verifier | codex | chatgpt |\n" +
 		"| packager | claude-sdk | endpoint |\n" +
-		"| homie | claude-sdk | claude |\n"
+		"| collie | claude-sdk | claude |\n"
 	if err := os.WriteFile(filepath.Join(home, "routing.md"), []byte(routing), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -6636,8 +6636,8 @@ func TestRoutingShowCLI(t *testing.T) {
 		t.Fatalf("routing show routes = %#v", res.json["routes"])
 	}
 	body, _ := json.Marshal(res.json)
-	if !strings.Contains(string(body), `"homie"`) {
-		t.Fatalf("routing show omits the homie row: %s", body)
+	if !strings.Contains(string(body), `"collie"`) {
+		t.Fatalf("routing show omits the collie row: %s", body)
 	}
 
 	home := t.TempDir()

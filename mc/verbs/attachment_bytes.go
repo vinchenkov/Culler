@@ -32,7 +32,7 @@ var attachmentInlineMediaTypes = map[string]bool{
 
 // AttachmentBytesArgs addresses one conversation attachment claim by the
 // spine's own canonical identity — the attachment_objects primary key
-// (session_id, direction, sha256, size), exactly as `mc homie
+// (session_id, direction, sha256, size), exactly as `mc collie
 // history` exposes it. It deliberately carries no path: every field is a
 // closed identifier, and the on-disk location is derived from MC_HOME plus
 // the confirmed spine row alone.

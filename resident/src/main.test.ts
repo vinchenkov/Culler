@@ -138,7 +138,7 @@ describe("resident backup chore", () => {
   });
 });
 
-test("Homie reads the current Project catalog and rejects a failed read", async () => {
+test("Collie reads the current Project catalog and rejects a failed read", async () => {
   const roots = [{ id: "second", root: "/host/second" }];
   const calls: string[][] = [];
   let current: unknown[] = [];

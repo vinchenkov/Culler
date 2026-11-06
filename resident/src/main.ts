@@ -33,7 +33,7 @@ import {
   execMcVia,
   type ResidentControlIdentity,
 } from "./resident-control";
-import { HomieRuntimeRegistry } from "./homie-runtime";
+import { CollieRuntimeRegistry } from "./collie-runtime";
 import { collectPipelineLiveness } from "./pipeline-liveness";
 import { AttachmentConfinementHealth } from "./attachment-health";
 import { startAttachmentHealthGuard } from "./attachment-health-guard";
@@ -552,12 +552,12 @@ async function main(): Promise<void> {
   });
   const rawDocker = execVia(config.dockerPath ?? "docker");
   const docker: Exec = projectContainers(rawDocker, (...args) => runMc(...args));
-  const homieRuntime = new HomieRuntimeRegistry();
+  const collieRuntime = new CollieRuntimeRegistry();
 	const runMc = execMcVia(
 		[config.mcPath],
 		residentControlIdentity(config),
 		docker,
-		homieRuntime,
+		collieRuntime,
 		() => collectPipelineLiveness({
 			docker,
 			runMc,
@@ -763,7 +763,7 @@ async function main(): Promise<void> {
     log,
     maintenance: () => lane.pauseCheck(),
     afterTick: () => lane.request("tick"),
-    homieStarted: (containerId) => lane.followHomie(containerId),
+    collieStarted: (containerId) => lane.followCollie(containerId),
     beforeTick: async () => {
       environmentLane.assertPrepared();
       await applyPendingVisions(runMc, log);
@@ -790,7 +790,7 @@ async function main(): Promise<void> {
     prepareAttachmentTree: (session) =>
       prepareAttachmentTreeViaMc(runMc, config.mcHome, session),
     credentials: credentialHandle.projector,
-    homieRuntime,
+    collieRuntime,
     config,
   };
 

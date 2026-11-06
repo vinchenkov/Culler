@@ -45,8 +45,8 @@ func RegisterSession(db *sql.DB, id *RunIdentity, runID, nativeRef, file string)
 	if id != nil && id.Tier == "setup" {
 		return RegisterSetupSession(db, id, runID, nativeRef, file)
 	}
-	if id != nil && id.Tier == "homie" {
-		return registerHomieSessionLocators(db, id, runID, nativeRef, file)
+	if id != nil && id.Tier == "collie" {
+		return registerCollieSessionLocators(db, id, runID, nativeRef, file)
 	}
 	if err := requireOwnRun(id, runID); err != nil {
 		return nil, err
@@ -86,17 +86,17 @@ func RegisterSession(db *sql.DB, id *RunIdentity, runID, nativeRef, file string)
 	return map[string]any{"run_id": runID, "native_session_ref": nativeRef, "trace_filename": file}, nil
 }
 
-// registerHomieSessionLocators is the Homie arm: the Homie runner records the
-// native locator pair on its own canonical homie_sessions row.
+// registerCollieSessionLocators is the Collie arm: the Collie runner records the
+// native locator pair on its own canonical collie_sessions row.
 // Same grammar as the pipeline arm — set-once, same-value retries
 // idempotent — and no liveness requirement: a session that ended before its
 // runner registered must still record its locators or resumability is lost
 // forever. The frozen verb_allowlist governs only the model's
 // operator verbs, not this runner-private lifecycle write.
-func registerHomieSessionLocators(db *sql.DB, id *RunIdentity, sessionID, nativeRef, file string) (any, error) {
+func registerCollieSessionLocators(db *sql.DB, id *RunIdentity, sessionID, nativeRef, file string) (any, error) {
 	if id.RunID == "" || id.RunID != sessionID {
 		return nil, &DomainError{Code: domain.CodeStaleRun,
-			Msg: fmt.Sprintf("a Homie runner registers only its own session; run.json identifies %q, target is %q", id.RunID, sessionID)}
+			Msg: fmt.Sprintf("a Collie runner registers only its own session; run.json identifies %q, target is %q", id.RunID, sessionID)}
 	}
 	if nativeRef == "" || file == "" {
 		return nil, Usagef("mc run register-session requires --native-ref and --file")
@@ -104,10 +104,10 @@ func registerHomieSessionLocators(db *sql.DB, id *RunIdentity, sessionID, native
 	err := inTx(db, func(ctx context.Context, q Q) error {
 		var existingRef, existingFile sql.NullString
 		err := q.QueryRowContext(ctx, `
-			SELECT native_session_ref, trace_filename FROM homie_sessions WHERE id = ?`, sessionID,
+			SELECT native_session_ref, trace_filename FROM collie_sessions WHERE id = ?`, sessionID,
 		).Scan(&existingRef, &existingFile)
 		if err == sql.ErrNoRows {
-			return Domainf("unknown Homie session %q", sessionID)
+			return Domainf("unknown Collie session %q", sessionID)
 		}
 		if err != nil {
 			return err
@@ -117,10 +117,10 @@ func registerHomieSessionLocators(db *sql.DB, id *RunIdentity, sessionID, native
 				existingRef.String == nativeRef && existingFile.String == file {
 				return nil // same-value lifecycle retry is idempotent
 			}
-			return Domainf("Homie session %q locators are immutable once registered", sessionID)
+			return Domainf("Collie session %q locators are immutable once registered", sessionID)
 		}
 		_, err = q.ExecContext(ctx, `
-			UPDATE homie_sessions SET native_session_ref = ?, trace_filename = ? WHERE id = ?`,
+			UPDATE collie_sessions SET native_session_ref = ?, trace_filename = ? WHERE id = ?`,
 			nativeRef, file, sessionID)
 		return err
 	})

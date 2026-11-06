@@ -5,7 +5,7 @@ description: The Bun process on the host that drives dispatch, starts containers
 tags: [resident, daemon, dispatch, credentials, lanes]
 sources:
   - id: openwiki-source-eed667c35ca68dcc2f3009a3
-    resource: repo://mc/verbs/homierestart_test.go
+    resource: repo://mc/verbs/collierestart_test.go
   - id: openwiki-source-6dc928cb15677dde622f6a7e
     resource: repo://resident/src/discord-config.ts
   - id: openwiki-source-e028a0037f071b894557c29d
@@ -13,7 +13,7 @@ sources:
   - id: openwiki-source-7092e09d830ef9ed23536948
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-cc407c2584427eee9ef62f7d
-    resource: repo://resident/src/homie-runtime.ts
+    resource: repo://resident/src/collie-runtime.ts
   - id: openwiki-source-76e2df8149603feba8077d5b
     resource: repo://resident/src/install-maintenance.ts
   - id: openwiki-source-b65f5016ff00568fc3622948
@@ -48,7 +48,7 @@ This matters because `mc` is the sole spine writer. Its transactions, triggers, 
 
 ### The dispatch control channel
 
-`mc dispatch` is the only verb that gets more than stdio. `execControlledDispatch` creates a kernel socketpair and passes it to the child as fd 3. Within `HELLO_TIMEOUT_MS` (2 seconds) it exchanges `hello`/`hello_ack` frames. The frames carry the release build ID, `GATEWAY_CONTROL_VERSION`, the deployment UUID, and `SPINE_SCHEMA_ID`, a SHA-256 of `mc/substrate/schema.sql`, `delivery.sql` and `environments.sql`. The channel then answers Homie inventory and pipeline liveness requests. The resident collects pipeline liveness (`collectPipelineLiveness` in `pipeline-liveness.ts`, from `mc lease list` plus `docker inspect`) before the child starts, outside the 2-second budget. A timeout fails that tick only, and the next tick retries. Every other verb gets `/dev/null` on fd 3.
+`mc dispatch` is the only verb that gets more than stdio. `execControlledDispatch` creates a kernel socketpair and passes it to the child as fd 3. Within `HELLO_TIMEOUT_MS` (2 seconds) it exchanges `hello`/`hello_ack` frames. The frames carry the release build ID, `GATEWAY_CONTROL_VERSION`, the deployment UUID, and `SPINE_SCHEMA_ID`, a SHA-256 of `mc/substrate/schema.sql`, `delivery.sql` and `environments.sql`. The channel then answers Collie inventory and pipeline liveness requests. The resident collects pipeline liveness (`collectPipelineLiveness` in `pipeline-liveness.ts`, from `mc lease list` plus `docker inspect`) before the child starts, outside the 2-second budget. A timeout fails that tick only, and the next tick retries. Every other verb gets `/dev/null` on fd 3.
 
 ## Startup
 
@@ -81,11 +81,11 @@ The [lifecycle command](../operations/culler-lifecycle.md) uses that result befo
 4. Calls `applyEffect` (`effects.ts`) for each action. A failed action leaves the others intact.
 5. Writes `MC_HOME/health/resident-tick.json` through a rename (`publishTickReceipt`).
 
-`applyEffect` handles `spawn`, `reap`, and the Homie actions `homie-wake`, `homie-adopt`, `homie-stop`, and `homie-remove`. It logs a `refused` effect verbatim and does nothing else, because `mc` already applied the consequence. An unknown action is logged and ignored. `spawn` refuses an effect that lacks a brief or a Git identity decision. It prepares the isolated repository, writes the launch envelope `MC_HOME/runs/<run_id>.json` (mounted read-only at `/mc/run.json`), and runs `docker create` and `docker start`. `TZ` comes from `hostZone()` (`host-zone.ts`): `TZ` in the environment, else the `/etc/localtime` link. `reap` stops `mc-setup-<run>` and `mc-<project>-<run>`.
+`applyEffect` handles `spawn`, `reap`, and the Collie actions `collie-wake`, `collie-adopt`, `collie-stop`, and `collie-remove`. It logs a `refused` effect verbatim and does nothing else, because `mc` already applied the consequence. An unknown action is logged and ignored. `spawn` refuses an effect that lacks a brief or a Git identity decision. It prepares the isolated repository, writes the launch envelope `MC_HOME/runs/<run_id>.json` (mounted read-only at `/mc/run.json`), and runs `docker create` and `docker start`. `TZ` comes from `hostZone()` (`host-zone.ts`): `TZ` in the environment, else the `/etc/localtime` link. `reap` stops `mc-setup-<run>` and `mc-<project>-<run>`.
 
 The runtime envelope carries a configured effort when the profile selects one.
 The setup lane uses the same value for setup agent runs.
-For a Homie wake, the resident reads the conversation's stored effort and puts it in the launch envelope.
+For a Collie wake, the resident reads the conversation's stored effort and puts it in the launch envelope.
 The current profile still supplies the connection and model access for that launch.
 
 ## Project storage at launch
@@ -109,14 +109,14 @@ See [Project environments](../workflows/project-environments.md#runtime-and-per-
 
 - **Environment lane** (`environment-lane.ts`). It executes setup, image build, source acceptance, and recovery operations outside the task pipeline. Its preparation guard runs before dispatch. See [Project environments](../workflows/project-environments.md).
 - **Repository lane** (`repository-lane.ts`). It registers an owner number, sends `mc delivery start` at each start event, heartbeats every 20 seconds, and runs each repository execution. It exits the resident when `mc` reports a stale owner. See [Git delivery](../workflows/git-delivery.md).
-- **Trace lane** (`trace-lane.ts`). It copies run, Homie, and setup agent traces into `MC_HOME/agentsview/traces/` on a 2-second copy timer and reconciles AgentsView sessions on separate timers.
+- **Trace lane** (`trace-lane.ts`). It copies run, Collie, and setup agent traces into `MC_HOME/agentsview/traces/` on a 2-second copy timer and reconciles AgentsView sessions on separate timers.
 - **Wiki lane** (`wiki-lane.ts`). Every 20 seconds it runs `mc __wiki-export` with one call in flight. See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md).
 
 The lanes keep slow host work off the dispatch path. A tick never waits for a merge, a trace copy, or a wiki export.
 
 ## Wake and control surfaces
 
-- **Nudge socket** (`nudge-socket.ts`): an owner-only Unix socket at `MC_HOME/resident.socket`. It accepts one line of at most 64 bytes: a Homie session ID, `vision-save`, `project-start`, or `packet-decide`. `routeNudge` in `main.ts` sends `packet-decide` to the repository lane and wakes the tick for every other value. The socket refuses a stale path that is not an owned socket.
+- **Nudge socket** (`nudge-socket.ts`): an owner-only Unix socket at `MC_HOME/resident.socket`. It accepts one line of at most 64 bytes: a Collie session ID, `vision-save`, `project-start`, or `packet-decide`. `routeNudge` in `main.ts` sends `packet-decide` to the repository lane and wakes the tick for every other value. The socket refuses a stale path that is not an owned socket.
 - **Install maintenance** (`install-maintenance.ts`). When `MC_HOME/state/install-maintenance.json` exists as an owner-only regular file, the resident writes an acknowledgement. The acknowledgement is `ready` only when no repository operation is active. This lets `install.sh` wait for a quiet resident.
 - **Discord** (`discord.ts`). An optional native surface that routes messages through `mc` and drains the outbox. Its header states that it never opens the spine and never interprets natural language.
 
@@ -127,7 +127,7 @@ Each container receives a temporary Culler token and a public certificate author
 The host proxy adds provider credentials only to outbound provider requests.
 The host keeps account renewal data outside agent containers.
 The provider proxy checks each container token against its assigned connection, model, operations, and lifetime.
-The resident restarts Homie when its profile or authorization changes.
+The resident restarts Collie when its profile or authorization changes.
 
 Before dispatch, the resident selects account `token_refresh` conditions in `unknown` or `retry_wait` state.
 It starts renewal without a wait for the provider response, so dispatch can continue.
@@ -168,7 +168,7 @@ On SIGINT or SIGTERM, `shutdown` stops Discord and the credential projector, the
 - `split-brain.test.ts`: builds the real test-tagged `mc` and drives the ordinary tick loop and repository lane through injected faults at spawn, Worker Git, approval and merge, and outbox boundaries.
 - `dispatch-control-crossing.test.ts`: the dispatch control channel against the real binary.
 
-Related: [system overview](system-overview.md), [mc CLI and verb scope](mc-cli-and-verb-scope.md), [runners](runners.md), [dispatch and tick loop](../workflows/dispatch-and-tick-loop.md), [Homie](../concepts/homie.md), [logging](../concepts/logging.md), [install and deployment](../operations/install-and-deployment.md).
+Related: [system overview](system-overview.md), [mc CLI and verb scope](mc-cli-and-verb-scope.md), [runners](runners.md), [dispatch and tick loop](../workflows/dispatch-and-tick-loop.md), [Collie](../concepts/collie.md), [logging](../concepts/logging.md), [install and deployment](../operations/install-and-deployment.md).
 
 ## Discord service lifecycle
 

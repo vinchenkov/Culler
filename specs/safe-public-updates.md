@@ -101,7 +101,7 @@ Agent completion cannot delay the update.
 The stop covers these processes:
 
 - The resident, dashboard, AgentsView, and their child processes.
-- Pipeline agents, setup agents, and Homie containers.
+- Pipeline agents, setup agents, and Collie containers.
 - Repository operations, image operations, and native harness processes.
 - Trace and wiki processes that can write protected data.
 

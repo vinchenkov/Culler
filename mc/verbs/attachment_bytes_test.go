@@ -14,7 +14,7 @@ import (
 
 // attachmentBytesFixture publishes one real inbound attachment through the
 // production publisher and records the conversation claim that carries it,
-// returning the exact address `mc homie history` would expose.
+// returning the exact address `mc collie history` would expose.
 func attachmentBytesFixture(
 	t *testing.T, mediaType, displayName, body string,
 ) (*sql.DB, string, AttachmentBytesArgs) {
@@ -385,9 +385,9 @@ func TestAttachmentBytesServesTheOutboundPublishedTree(t *testing.T) {
 
 // The transcript read exposes the typed claim identity the byte read accepts:
 // nothing about a chip's address has to be derived outside the spine.
-func TestHomieHistorySurfacesTypedAttachmentClaims(t *testing.T) {
+func TestCollieHistorySurfacesTypedAttachmentClaims(t *testing.T) {
 	db, _, address := attachmentBytesFixture(t, "image/png", "capture.png", "1234567")
-	out, err := HomieHistory(db, nil, address.Session, false)
+	out, err := CollieHistory(db, nil, address.Session, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -396,7 +396,7 @@ func TestHomieHistorySurfacesTypedAttachmentClaims(t *testing.T) {
 		t.Fatal("transcript is empty")
 	}
 	last := messages[len(messages)-1]
-	claims, ok := last["attachments"].([]HomieAttachmentClaim)
+	claims, ok := last["attachments"].([]CollieAttachmentClaim)
 	if !ok || len(claims) != 1 {
 		t.Fatalf("attachments = %#v", last["attachments"])
 	}

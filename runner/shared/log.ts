@@ -62,10 +62,10 @@ export const EVENTS = [
   "agentsview.available", "agentsview.unavailable", "agentsview.request_failed", "agentsview.health_failed",
   "wiki.exported", "wiki.export_failed",
   "vision.save_failed", "vision.queue_failed",
-  "homie.wake_refused", "homie.created", "homie.create_failed", "homie.envelope_refused",
-  "homie.bind_refused", "homie.adopt_refused", "homie.started", "homie.start_failed",
-  "homie.idle_exit", "homie.stop_skipped", "homie.stop_failed", "homie.remove_refused",
-  "homie.remove_failed", "homie.draft_stopped",
+  "collie.wake_refused", "collie.created", "collie.create_failed", "collie.envelope_refused",
+  "collie.bind_refused", "collie.adopt_refused", "collie.started", "collie.start_failed",
+  "collie.idle_exit", "collie.stop_skipped", "collie.stop_failed", "collie.remove_refused",
+  "collie.remove_failed", "collie.draft_stopped",
   // Best-effort removal of launch residue: the work the run asked for is done
   // or refused either way, and the metronome's sweep is the backstop. Never an
   // error, because nothing the operator asked for failed to happen.

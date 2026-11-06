@@ -124,7 +124,7 @@ const (
 		JOIN attachment_attempts a ON a.batch_id=p.batch_id
 		JOIN attachment_batches b ON b.id=p.batch_id
 		JOIN attachment_ingresses i ON i.id=a.ingress_id
-		JOIN homie_sessions s ON s.id=p.session_id
+		JOIN collie_sessions s ON s.id=p.session_id
 		WHERE p.id=? AND p.session_id=? AND p.owner_token=? AND p.owner_generation=?
 		  AND p.state=? AND datetime('now')<p.publisher_lease_until
 		  AND datetime('now')<p.hard_deadline
@@ -723,7 +723,7 @@ type AttachmentTreeReceipt struct {
 }
 
 // PrepareAttachmentTree materializes and revalidates the stable per-session
-// two-direction tree before the resident creates the Homie's first launch
+// two-direction tree before the resident creates the Collie's first launch
 // artifact. It is host-only and idempotent; a symlink, widened directory, or
 // non-operator owner refuses rather than being repaired in place.
 func PrepareAttachmentTree(

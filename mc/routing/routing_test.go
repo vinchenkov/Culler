@@ -13,7 +13,7 @@ const canonical = `# Culler routing
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `
 
 func referenceRegistry(t *testing.T) Registry {
@@ -140,7 +140,7 @@ func TestRowsReturnsEveryRoleInStableOrder(t *testing.T) {
 			t.Fatalf("Rows()[%d].Role = %q, want %q", i, rows[i].Role, role)
 		}
 	}
-	if last := rows[len(rows)-1]; last.Role != "homie" || last.Harness != "claude-sdk" {
-		t.Fatalf("homie row = %+v", last)
+	if last := rows[len(rows)-1]; last.Role != "collie" || last.Harness != "claude-sdk" {
+		t.Fatalf("collie row = %+v", last)
 	}
 }

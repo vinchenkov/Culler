@@ -84,7 +84,7 @@ func TestOnboardStateReplaysAllSpineSections(t *testing.T) {
 			AcceptGeneratedSandbox: true},
 		{Section: "tunables", TimeoutMinutes: 17, GraceMinutes: 15,
 			HeartbeatIntervalS: 60, SpawnGraceS: 60,
-			HardDeadlineMinutes: 240, HomieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600, ReviewWIPCap: 5},
+			HardDeadlineMinutes: 240, CollieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600, ReviewWIPCap: 5},
 		{Section: "surfaces"},
 	}
 	for _, args := range cases {

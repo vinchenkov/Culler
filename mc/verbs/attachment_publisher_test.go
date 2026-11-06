@@ -197,7 +197,7 @@ func TestPrepareAttachmentTreeRefusesUnsafeOrWidenedRoots(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := PrepareAttachmentTree(
-		&RunIdentity{Tier: "homie", RunID: "h-tree"}, home, "h-tree",
+		&RunIdentity{Tier: "collie", RunID: "h-tree"}, home, "h-tree",
 	); err == nil || !strings.Contains(err.Error(), "host scope only") {
 		t.Fatalf("run.json caller preparation error = %v", err)
 	}
@@ -228,13 +228,13 @@ func TestPrepareAttachmentTreeRefusesUnsafeOrWidenedRoots(t *testing.T) {
 func TestAttachmentIngressConsumeProductionBoundaryIsHostOnly(t *testing.T) {
 	if _, err := AttachmentIngressConsume(
 		nil,
-		&RunIdentity{Tier: "homie", RunID: "h-scope"},
+		&RunIdentity{Tier: "collie", RunID: "h-scope"},
 		AttachmentIngressConsumeArgs{
 			Session: "h-scope", From: "discord:channel", Body: "body",
 			AttemptID: "0011223344556677",
 		},
 	); err == nil || !strings.Contains(err.Error(), "host scope only") {
-		t.Fatalf("Homie-scoped attachment consume error = %v", err)
+		t.Fatalf("Collie-scoped attachment consume error = %v", err)
 	}
 }
 
@@ -580,7 +580,7 @@ func TestAttachmentPublicationCreatorRecoveryRehashesExactLocation(t *testing.T)
 	}
 }
 
-func TestHomieSendConsumesMaterializedIngressAtomicallyAndReplays(t *testing.T) {
+func TestCollieSendConsumesMaterializedIngressAtomicallyAndReplays(t *testing.T) {
 	const manifest = `[{"ordinal":1,"size":7,"media_type":"text/plain","display_name":"seven.txt"}]`
 	db, session, reservation, home := attachmentPublisherFixture(t, manifest)
 	published, err := AttachmentPublicationPublish(
@@ -588,7 +588,7 @@ func TestHomieSendConsumesMaterializedIngressAtomicallyAndReplays(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieBind(db, nil, session, "dashboard:mirror"); err != nil {
+	if _, err := CollieBind(db, nil, session, "dashboard:mirror"); err != nil {
 		t.Fatal(err)
 	}
 	tx, err := db.Begin()
@@ -740,7 +740,7 @@ func TestHomieSendConsumesMaterializedIngressAtomicallyAndReplays(t *testing.T) 
 		t.Fatal(err)
 	}
 	if err := db.QueryRow(`SELECT COUNT(*) FROM outbox
-		WHERE kind='homie_echo' AND session_id=? AND surface='dashboard'
+		WHERE kind='collie_echo' AND session_id=? AND surface='dashboard'
 		  AND json_array_length(json_extract(payload,'$.attachments'))=1`,
 		session).Scan(&outboxRows); err != nil {
 		t.Fatal(err)
@@ -754,7 +754,7 @@ func TestHomieSendConsumesMaterializedIngressAtomicallyAndReplays(t *testing.T) 
 		t.Fatalf("consume ownership = refs %d edges %d messages %d receipts %d outbox %d stored %s returned %s",
 			refs, edges, messages, receipts, outboxRows, consumeReceipt, firstJSON)
 	}
-	if _, err := db.Exec(`UPDATE homie_sessions SET status='ended' WHERE id=?`, session); err != nil {
+	if _, err := db.Exec(`UPDATE collie_sessions SET status='ended' WHERE id=?`, session); err != nil {
 		t.Fatal(err)
 	}
 	replayAny, err := attachmentIngressConsume(db, args)
@@ -798,7 +798,7 @@ func TestHomieSendConsumesMaterializedIngressAtomicallyAndReplays(t *testing.T) 
 	}
 }
 
-func TestHomieSendIngressConsumeFailureRollsBackEveryOwner(t *testing.T) {
+func TestCollieSendIngressConsumeFailureRollsBackEveryOwner(t *testing.T) {
 	const manifest = `[{"ordinal":1,"size":7,"media_type":"text/plain","display_name":"seven.txt"}]`
 	db, session, reservation, home := attachmentPublisherFixture(t, manifest)
 	if _, err := AttachmentPublicationPublish(
@@ -806,7 +806,7 @@ func TestHomieSendIngressConsumeFailureRollsBackEveryOwner(t *testing.T) {
 		bytes.NewReader([]byte("1234567"))); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieBind(db, nil, session, "dashboard:mirror"); err != nil {
+	if _, err := CollieBind(db, nil, session, "dashboard:mirror"); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := db.Exec(`CREATE TRIGGER test_fail_ingress_consume
@@ -855,7 +855,7 @@ func TestHomieSendIngressConsumeFailureRollsBackEveryOwner(t *testing.T) {
 	}
 }
 
-func TestHomieSendConsumesAttachmentOnlyIngress(t *testing.T) {
+func TestCollieSendConsumesAttachmentOnlyIngress(t *testing.T) {
 	const manifest = `[{"ordinal":1,"size":7,"media_type":"text/plain","display_name":"seven.txt"}]`
 	db, session, reservation, home := attachmentPublisherFixtureBody(t, manifest, "")
 	if _, err := AttachmentPublicationPublish(
@@ -882,7 +882,7 @@ func TestHomieSendConsumesAttachmentOnlyIngress(t *testing.T) {
 	}
 }
 
-func TestHomieSendConcurrentIngressConsumeReturnsOneReceipt(t *testing.T) {
+func TestCollieSendConcurrentIngressConsumeReturnsOneReceipt(t *testing.T) {
 	const manifest = `[{"ordinal":1,"size":7,"media_type":"text/plain","display_name":"seven.txt"}]`
 	db, session, reservation, home := attachmentPublisherFixture(t, manifest)
 	if _, err := AttachmentPublicationPublish(
@@ -1163,16 +1163,16 @@ func TestAttachmentTerminalReconcilePagesMoreThan128Rows(t *testing.T) {
 	firstSession := ""
 	for index := 0; index < 129; index++ {
 		from := fmt.Sprintf("cli:terminal-page-%03d", index)
-		startedAny, err := HomieStart(db, nil, HomieStartArgs{From: from})
+		startedAny, err := CollieStart(db, nil, CollieStartArgs{From: from})
 		if err != nil {
 			t.Fatal(err)
 		}
-		session := startedAny.(HomieStartResult).SessionID
+		session := startedAny.(CollieStartResult).SessionID
 		if index == 0 {
 			firstSession = session
 		}
 		var bindingID int64
-		if err := db.QueryRow(`SELECT id FROM homie_bindings
+		if err := db.QueryRow(`SELECT id FROM collie_bindings
 			WHERE session_id=? AND surface='cli' AND active=1`,
 			session).Scan(&bindingID); err != nil {
 			t.Fatal(err)

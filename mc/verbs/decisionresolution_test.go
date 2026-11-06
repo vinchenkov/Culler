@@ -385,26 +385,26 @@ func TestResolveDecisionWithAReasonEndsTheOtherConditions(t *testing.T) {
 	}
 }
 
-func TestHomieRevisionResolvesAReport(t *testing.T) {
+func TestCollieRevisionResolvesAReport(t *testing.T) {
 	f, task, base, commit := verifierDecisionReport(t)
 	const session = "h-aaaaaaaaaaaaaaaa"
-	dvExec(t, f.db, `INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding)
-		VALUES (?, 'mc-homie-'||?, '["board.write"]', 'sessions/h-a', 'claude')`, session, session)
-	homie := &RunIdentity{Tier: "homie", RunID: session, VerbAllowlist: []string{"board.write"}}
-	_, err := BoardWrite(f.db, homie, BoardWriteRequest{OperationID: "homie-reason", Action: "unblock", TaskID: task,
+	dvExec(t, f.db, `INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding)
+		VALUES (?, 'mc-collie-'||?, '["board.write"]', 'sessions/h-a', 'claude')`, session, session)
+	collie := &RunIdentity{Tier: "collie", RunID: session, VerbAllowlist: []string{"board.write"}}
+	_, err := BoardWrite(f.db, collie, BoardWriteRequest{OperationID: "collie-reason", Action: "unblock", TaskID: task,
 		ExpectedVersion: boardVersion(t, f.db, task), Reason: boardText("The operator decided.")})
 	requireBoardCode(t, err, domain.CodeIllegalTransition)
-	value, err := BoardWrite(f.db, homie, reviseRequest(t, f, task, "homie-revision", "The export includes the date. The export check runs outside the agent container."))
+	value, err := BoardWrite(f.db, collie, reviseRequest(t, f, task, "collie-revision", "The export includes the date. The export check runs outside the agent container."))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if value.(map[string]any)["revision_state"] != "applied" {
-		t.Fatalf("the Homie revision did not apply: %v", value)
+		t.Fatalf("the Collie revision did not apply: %v", value)
 	}
 	if got := dfStr(t, f.db, `SELECT blocked||'/'||COALESCE(blocked_kind,'')||'/'||status||'/'||base_commit||'/'||input_commit FROM tasks WHERE id=?`, task); got != "0//seeded/"+base+"/"+commit {
-		t.Fatalf("the Homie revision left %s", got)
+		t.Fatalf("the Collie revision left %s", got)
 	}
-	if got := dfStr(t, f.db, `SELECT actor FROM requirements_revisions WHERE task_id=?`, task); got != "homie:"+session {
+	if got := dfStr(t, f.db, `SELECT actor FROM requirements_revisions WHERE task_id=?`, task); got != "collie:"+session {
 		t.Fatalf("the revision actor is %s", got)
 	}
 }

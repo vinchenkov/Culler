@@ -20,14 +20,14 @@ import { boardColumns, boardStatItems, boardStats, leaseBadge, taskDetail, visio
 import {
   conversationName,
   composeState,
-  homieListed,
+  collieListed,
   pollTight,
   provisionalRow,
   tabOpenAction,
   sessionRows,
   sessionStats,
   transcriptRows,
-} from "./homiefmt.js";
+} from "./colliefmt.js";
 import {
   FRAME_SANDBOX,
   decisionPayload,
@@ -87,7 +87,7 @@ import {
 const TIGHT_MS = 1000;
 const LAZY_MS = 10000;
 // The header's lease badge is live on every page, but it is a spine read like
-// any other: it keeps its own lazy cadence so a tight Homie poll cannot
+// any other: it keeps its own lazy cadence so a tight Collie poll cannot
 // turn one `mc lease list` + `mc settings get` per ten seconds into one per
 // second.
 const LEASE_MS = 10000;
@@ -185,19 +185,19 @@ const state = {
   logsProcess: "resident",
   logsProcessRecords: [],
   focusReason: false,
-  /** True while the open Homie session is active and owes a reply. */
+  /** True while the open Collie session is active and owes a reply. */
   pollTight: false,
   sendInFlight: false,
-  homieSessionBusy: false,
-  homieReplyBusy: false,
-  homieRevision: 0,
-  homieHistorySession: null,
-  homieHasMessages: false,
+  collieSessionBusy: false,
+  collieReplyBusy: false,
+  collieRevision: 0,
+  collieHistorySession: null,
+  collieHasMessages: false,
   /** True while the view waits for a resume. A tab open that lands during
    * a resume requests no other one. */
-  homieResumeInFlight: false,
-  /** True from a tab open until the next Homie refresh consumes it. */
-  homieOpened: false,
+  collieResumeInFlight: false,
+  /** True from a tab open until the next Collie refresh consumes it. */
+  collieOpened: false,
   timer: null,
   // artifact-target → host root, fetched once. It translates the container
   // paths a packet render cites (the Packager authors inside a container and
@@ -877,7 +877,7 @@ const boardWrites = createBoardWrites({
   dialog: $("board-write-dialog"), api,
   getProjects: () => boardProjects,
   selectedProject: () => state.projectReady ? state.project : null,
-  onHomie: () => { closeTask(); openPage("homie"); },
+  onCollie: () => { closeTask(); openPage("collie"); },
   onSaved: async (result, submitted) => {
     const scope = state.scopeSerial;
     const shown = state.boardOpen;
@@ -1059,7 +1059,7 @@ function renderTaskDialog() {
       error: read?.error ?? null,
       runs,
       discussion: (d.blocked || d.stalled || d.stale || d.connectionWait || d.projectInfrastructure)
-        ? diagnosticButton(taskDiagnostic(row, d), askDiagnostic, "task-ask-homie") : null,
+        ? diagnosticButton(taskDiagnostic(row, d), askDiagnostic, "task-ask-collie") : null,
       controls,
       history: read?.row ? boardHistoryNode(row, apiBytes) : null,
       onRun: openRunDiagnostics,
@@ -1465,7 +1465,7 @@ async function refreshBoard() {
   ]);
 }
 
-// ----------------------------------------------------------------- 2. Homie
+// ----------------------------------------------------------------- 2. Collie
 
 function sessionNode(row) {
   const select = el(
@@ -1493,12 +1493,12 @@ function sessionNode(row) {
   const more = el("button", {
     type: "button", class: "session-more", text: "…", testid: "session-menu-button",
     "aria-label": `Conversation options for ${row.name}`, "aria-haspopup": "menu", "aria-expanded": "false",
-    disabled: state.sendInFlight || state.homieSessionBusy,
+    disabled: state.sendInFlight || state.collieSessionBusy,
     onclick: event => openSessionMenu(row.id, event.currentTarget),
   });
   const item = el("div", { class: "session-item", data: { key: row.id }, oncontextmenu: event => {
     event.preventDefault();
-    if (!state.sendInFlight && !state.homieSessionBusy) openSessionMenu(row.id, event.currentTarget.querySelector(".session-more"));
+    if (!state.sendInFlight && !state.collieSessionBusy) openSessionMenu(row.id, event.currentTarget.querySelector(".session-more"));
   } }, select, more);
   return item;
 }
@@ -1560,29 +1560,29 @@ function renameSession(id, opener) {
   const save = el("button", { type: "submit", class: "btn primary", text: "Save name", testid: "session-rename-save" });
   const form = el("form");
   const dialog = el("dialog", { class: "session-delete-dialog session-rename-dialog", "aria-labelledby": "session-rename-title" });
-  const header = dialogHeader({ title: "Rename conversation", titleId: "session-rename-title", onClose: () => { if (!state.homieSessionBusy) dialog.close(); } });
+  const header = dialogHeader({ title: "Rename conversation", titleId: "session-rename-title", onClose: () => { if (!state.collieSessionBusy) dialog.close(); } });
   const closeButton = header.querySelector(".ui-dialog-close");
   dialogFrame(dialog, { header, shell: form,
     body: dialogBody({}, el("label", { for: "session-rename-input", text: "Conversation name" }), input,
-      el("p", { class: "muted", text: "Use up to 100 characters. Homie will preserve this name." }), notice),
+      el("p", { class: "muted", text: "Use up to 100 characters. Collie will preserve this name." }), notice),
     footer: dialogFooter({ class: "session-delete-actions" }, cancel, save) });
   form.addEventListener("submit", async event => {
     event.preventDefault();
-    if (state.homieSessionBusy) return;
+    if (state.collieSessionBusy) return;
     if (!input.value.trim() || Array.from(input.value.trim()).length > 100) {
       notice.textContent = "Use a name with 1 to 100 characters.";
       notice.hidden = false;
       input.focus();
       return;
     }
-    state.homieSessionBusy = true;
+    state.collieSessionBusy = true;
     save.disabled = cancel.disabled = closeButton.disabled = input.disabled = true;
-    renderHomieControls();
+    renderCollieControls();
     try {
       const result = await api(`/api/sessions/${id}/title`, {
         method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ title: input.value.trim() }),
       });
-      state.homieRevision++;
+      state.collieRevision++;
       state.sessions = state.sessions.map(row => row.id === id ? { ...row, title: result.title } : row);
       dialog.close();
       clearError();
@@ -1590,13 +1590,13 @@ function renameSession(id, opener) {
       notice.textContent = error.message;
       notice.hidden = false;
     } finally {
-      state.homieSessionBusy = false;
+      state.collieSessionBusy = false;
       save.disabled = cancel.disabled = closeButton.disabled = input.disabled = false;
       renderSessions();
     }
     if (!dialog.open) await tick();
   });
-  dialog.addEventListener("cancel", event => { if (state.homieSessionBusy) event.preventDefault(); });
+  dialog.addEventListener("cancel", event => { if (state.collieSessionBusy) event.preventDefault(); });
   dialog.addEventListener("close", () => { dialog.remove(); if (opener.isConnected) opener.focus(); else ordinaryComposer.input.focus(); });
   document.body.append(dialog);
   showDialog(dialog);
@@ -1608,20 +1608,20 @@ function confirmSessionDelete(id, opener) {
   const notice = el("p", { role: "alert", hidden: true });
   const cancel = el("button", { type: "button", class: "btn", text: "Cancel", onclick: () => dialog.close() });
   const remove = el("button", { type: "button", class: "btn danger", text: "Delete conversation", testid: "session-delete-confirm", onclick: async () => {
-    if (state.sendInFlight || state.homieSessionBusy) return;
-    state.homieSessionBusy = true;
+    if (state.sendInFlight || state.collieSessionBusy) return;
+    state.collieSessionBusy = true;
     remove.disabled = cancel.disabled = closeButton.disabled = true;
-    renderHomieControls();
+    renderCollieControls();
     try {
       await api(`/api/sessions/${id}`, { method: "DELETE" });
-      state.homieRevision++;
+      state.collieRevision++;
       state.sessions = state.sessions.filter(row => row.id !== id);
       if (state.selected === id) {
         state.selected = null;
         ordinaryComposer.input.value = "";
         ordinaryComposer.resize();
         ordinaryUploads.clear();
-        state.homieOpened = true;
+        state.collieOpened = true;
       }
       dialog.close();
       clearError();
@@ -1629,20 +1629,20 @@ function confirmSessionDelete(id, opener) {
       notice.textContent = error.message;
       notice.hidden = false;
     } finally {
-      state.homieSessionBusy = false;
+      state.collieSessionBusy = false;
       remove.disabled = cancel.disabled = closeButton.disabled = false;
-      renderHomieControls();
+      renderCollieControls();
     }
     if (!dialog.open) await tick();
   } });
   const dialog = el("dialog", { class: "session-delete-dialog", "aria-labelledby": "session-delete-title" });
-  const header = dialogHeader({ title: "Delete this conversation?", titleId: "session-delete-title", onClose: () => { if (!state.homieSessionBusy) dialog.close(); } });
+  const header = dialogHeader({ title: "Delete this conversation?", titleId: "session-delete-title", onClose: () => { if (!state.collieSessionBusy) dialog.close(); } });
   const closeButton = header.querySelector(".ui-dialog-close");
   dialogFrame(dialog, { header,
-    body: dialogBody({}, el("p", { text: "This removes the conversation from Homie and stops its replies. You cannot restore it." }),
+    body: dialogBody({}, el("p", { text: "This removes the conversation from Collie and stops its replies. You cannot restore it." }),
       el("p", { class: "muted", text: "Culler retains internal records and files." }), notice),
     footer: dialogFooter({ class: "session-delete-actions" }, cancel, remove) });
-  dialog.addEventListener("cancel", event => { if (state.homieSessionBusy) event.preventDefault(); });
+  dialog.addEventListener("cancel", event => { if (state.collieSessionBusy) event.preventDefault(); });
   dialog.addEventListener("close", () => { dialog.remove(); if (opener.isConnected) opener.focus(); else ordinaryComposer.input.focus(); });
   document.body.append(dialog);
   showDialog(dialog);
@@ -1657,33 +1657,33 @@ const messageNode = row => renderMessage(row.direction === "send" ? { ...row, bo
 
 const commandBar = createCommandBar({
   api, renderMessage,
-  openConversation: id => { state.selected = id; openPage("homie"); },
+  openConversation: id => { state.selected = id; openPage("collie"); },
   changed: () => { requests.invalidate(); if (state.tab === "board") void tick(); },
 });
 $("board-command-root").replaceWith(commandBar.node);
 
-const ordinaryComposer = createComposer({ prefix: "homie", inputID: "send-body", sendID: "send", formID: "send-form" });
-$("homie-composer").replaceWith(ordinaryComposer.form);
+const ordinaryComposer = createComposer({ prefix: "collie", inputID: "send-body", sendID: "send", formID: "send-form" });
+$("collie-composer").replaceWith(ordinaryComposer.form);
 const ordinaryUploads = ordinaryComposer.uploads;
-const homieModel = createModelPicker({
-  api, prefix: "homie",
+const collieModel = createModelPicker({
+  api, prefix: "collie",
   session: () => ({
     id: state.selected,
     binding: state.sessions.find(row => row.id === state.selected)?.binding,
-    messages: state.homieHistorySession !== state.selected || state.homieHasMessages || state.sendInFlight,
+    messages: state.collieHistorySession !== state.selected || state.collieHasMessages || state.sendInFlight,
   }),
-  switchModel: switchHomieModel, onRouting: routingChanged,
-  openProfiles: entry => agentProfiles.open("homie", false, entry),
+  switchModel: switchCollieModel, onRouting: routingChanged,
+  openProfiles: entry => agentProfiles.open("collie", false, entry),
 });
-$("homie-controls").querySelector("h3").after(...homieModel.nodes);
+$("collie-controls").querySelector("h3").after(...collieModel.nodes);
 
-function homieEmpty() {
+function collieEmpty() {
   return conversationEmpty({
-    title: "What can Homie help you with?",
-    description: state.selected ? "Ask a question, describe a goal, or attach files for Homie to review." : "Pick a session, or start a new one. Homie can help you explore a question or plan your next step.",
+    title: "What can Collie help you with?",
+    description: state.selected ? "Ask a question, describe a goal, or attach files for Collie to review." : "Pick a session, or start a new one. Collie can help you explore a question or plan your next step.",
     prompts: ["Help me plan my next step.", "Help me compare two approaches.", "Ask me questions about my goal."],
     choose: async text => {
-      if (!state.selected && !await newHomieSession()) return;
+      if (!state.selected && !await newCollieSession()) return;
       const input = ordinaryComposer.input;
       if (input.disabled) return;
       input.value = text; ordinaryComposer.resize(); input.focus();
@@ -1691,22 +1691,22 @@ function homieEmpty() {
   });
 }
 
-function renderHomieControls() {
+function renderCollieControls() {
   const row = state.sessions.find((s) => s.id === state.selected) ?? null;
   const compose = composeState(row);
-  const connectionFailure = systemView?.snapshot?.conditions?.find(condition => condition.group === "connections" && condition.roles?.includes("homie"));
-  const disabled = !compose.canSend || Boolean(connectionFailure) || state.sendInFlight || state.homieSessionBusy;
+  const connectionFailure = systemView?.snapshot?.conditions?.find(condition => condition.group === "connections" && condition.roles?.includes("collie"));
+  const disabled = !compose.canSend || Boolean(connectionFailure) || state.sendInFlight || state.collieSessionBusy;
   $("send-body").disabled = disabled;
   $("send").disabled = disabled;
   ordinaryUploads.setDisabled(disabled);
-  $("new-session").disabled = state.sendInFlight || state.homieSessionBusy;
-  for (const button of document.querySelectorAll(".session-more")) button.disabled = state.sendInFlight || state.homieSessionBusy;
+  $("new-session").disabled = state.sendInFlight || state.collieSessionBusy;
+  for (const button of document.querySelectorAll(".session-more")) button.disabled = state.sendInFlight || state.collieSessionBusy;
   // A packet conversation keeps the agent profile that it started with.
-  homieModel.setDisabled(state.sendInFlight || state.homieSessionBusy || state.homieReplyBusy || state.homieHistorySession !== state.selected || !state.selected || row?.packet != null);
+  collieModel.setDisabled(state.sendInFlight || state.collieSessionBusy || state.collieReplyBusy || state.collieHistorySession !== state.selected || !state.selected || row?.packet != null);
   $("resume").hidden = !compose.canResume;
-  $("homie-hint").textContent = connectionFailure ? "Homie cannot reply. Repair the connection in System health." : compose.hint;
-  $("homie-hint").hidden = !connectionFailure && compose.hint === "";
-  $("homie-head").textContent = row
+  $("collie-hint").textContent = connectionFailure ? "Collie cannot reply. Repair the connection in System health." : compose.hint;
+  $("collie-hint").hidden = !connectionFailure && compose.hint === "";
+  $("collie-head").textContent = row
     ? row.status === "active" ? "Active session" : "Resume this session"
     : state.sessionsRead ? "No session selected" : "Loading sessions…";
 }
@@ -1714,51 +1714,51 @@ function renderHomieControls() {
 function renderSessions() {
   const rows = sessionRows(state.sessions, Date.now(), state.selected);
   const counts = sessionStats(state.sessions);
-  $("homie-stats").textContent = `${counts.total} ${counts.total === 1 ? "session" : "sessions"} · ${counts.active} active · ${counts.discord} from Discord`;
+  $("collie-stats").textContent = `${counts.total} ${counts.total === 1 ? "session" : "sessions"} · ${counts.active} active · ${counts.discord} from Discord`;
   if (!sessionMenu.matches(":popover-open") && !document.querySelector(".session-delete-dialog[open]")) {
-    reconcileChildren($("session-list"), rows.length ? rows.map(sessionNode) : [el("div", { class: "empty", text: "No Homie sessions yet." })]);
+    reconcileChildren($("session-list"), rows.length ? rows.map(sessionNode) : [el("div", { class: "empty", text: "No Collie sessions yet." })]);
   }
-  renderHomieControls();
+  renderCollieControls();
 }
 
 /** Resumes one session and records that a resume is in flight. When the
  * resume fails, the view keeps the session open and the resume button stays
  * available. */
 async function resumeSession(id) {
-  state.homieResumeInFlight = true;
+  state.collieResumeInFlight = true;
   try {
     await api(`/api/sessions/${id}/resume`, { method: "POST" });
   } finally {
-    state.homieResumeInFlight = false;
+    state.collieResumeInFlight = false;
   }
 }
 
-async function refreshHomie() {
-  const revision = state.homieRevision;
-  void homieModel.load();
+async function refreshCollie() {
+  const revision = state.collieRevision;
+  void collieModel.load();
   const scope = state.scopeSerial;
   const selected = state.selected;
   const history = selected ? api(`/api/sessions/${selected}/history`).then(data => ({ data }), error => ({ error })) : null;
-  const opened = state.homieOpened;
+  const opened = state.collieOpened;
   const res = await api("/api/sessions", opened ? { maxAge: 0 } : {});
-  if (scope !== state.scopeSerial || state.tab !== "homie") return;
-  if (state.homieSessionBusy || revision !== state.homieRevision) return;
-  state.homieOpened = false;
+  if (scope !== state.scopeSerial || state.tab !== "collie") return;
+  if (state.collieSessionBusy || revision !== state.collieRevision) return;
+  state.collieOpened = false;
   state.sessionsRead = true;
-  state.sessions = (res.sessions ?? []).filter(homieListed);
+  state.sessions = (res.sessions ?? []).filter(collieListed);
   if (state.selected && !state.sessions.some(row => row.id === state.selected)) {
     state.selected = null;
   }
   if (opened && !state.sessions.length) {
-    if (!await newHomieSession(true)) {
-      throw new Error("Homie could not prepare a conversation. Select Retry or New session.");
+    if (!await newCollieSession(true)) {
+      throw new Error("Collie could not prepare a conversation. Select Retry or New session.");
     }
     return;
   }
-  const action = tabOpenAction(state.sessions, state.selected, state.homieResumeInFlight, Date.now(), opened);
+  const action = tabOpenAction(state.sessions, state.selected, state.collieResumeInFlight, Date.now(), opened);
   if (action.kind === "select" || action.kind === "resume") state.selected = action.id;
   if (action.kind !== "resume") {
-    await readRegion("homie-transcript", () => refreshTranscript(selected === state.selected ? history : null));
+    await readRegion("collie-transcript", () => refreshTranscript(selected === state.selected ? history : null));
     return;
   }
   try {
@@ -1769,7 +1769,7 @@ async function refreshHomie() {
     throw err;
   }
   const again = await api("/api/sessions");
-  state.sessions = (again.sessions ?? []).filter(homieListed);
+  state.sessions = (again.sessions ?? []).filter(collieListed);
   await refreshTranscript();
 }
 
@@ -1778,8 +1778,8 @@ async function refreshTranscript(preloaded = null) {
   renderSessions();
   if (!state.selected) {
     state.pollTight = false;
-    setChildren($("homie-transcript"),
-      homieEmpty(),
+    setChildren($("collie-transcript"),
+      collieEmpty(),
     );
     return;
   }
@@ -1795,28 +1795,28 @@ async function refreshTranscript(preloaded = null) {
   // sent turn; the rows the send painted stay until the send returns.
   if (state.sendInFlight) return;
   const rows = transcriptRows(history, Date.now());
-  state.homieReplyBusy = history.status === "active" && rows.some(row => row.provisional && row.replyState !== "failed");
-  const pane = $("homie-transcript");
+  state.collieReplyBusy = history.status === "active" && rows.some(row => row.provisional && row.replyState !== "failed");
+  const pane = $("collie-transcript");
   const atBottom = pane.scrollHeight - pane.scrollTop - pane.clientHeight < 40;
-  state.homieHistorySession = requested;
-  state.homieHasMessages = rows.length > 0;
-  renderHomieControls();
-  homieModel.paint();
-  reconcileChildren(pane, rows.length ? rows.map(messageNode) : [homieEmpty()]);
+  state.collieHistorySession = requested;
+  state.collieHasMessages = rows.length > 0;
+  renderCollieControls();
+  collieModel.paint();
+  reconcileChildren(pane, rows.length ? rows.map(messageNode) : [collieEmpty()]);
   // A conversation reads bottom-up: a new reply should be visible, but not at
   // the cost of yanking an operator who scrolled back through history.
   if (atBottom) pane.scrollTop = pane.scrollHeight;
-  // History is the render source for homie_reply/homie_echo, so the drain's
+  // History is the render source for collie_reply/collie_echo, so the drain's
   // trivial acks are bookkeeping only.
   await api("/api/outbox/drain", { method: "POST" });
 }
 
 function selectSession(id) {
-  if (state.homieSessionBusy || state.sendInFlight) return;
+  if (state.collieSessionBusy || state.sendInFlight) return;
   state.selected = id === "" || id === null ? null : id;
-  setChildren($("homie-transcript"), el("div", { class: "loading", text: "Loading transcript…" }));
+  setChildren($("collie-transcript"), el("div", { class: "loading", text: "Loading transcript…" }));
   clearError();
-  renderHomieControls();
+  renderCollieControls();
   tick();
 }
 
@@ -1915,24 +1915,24 @@ async function readArtifactRoots() {
   return state.artifactRoots;
 }
 
-// The quick chat holds one Homie conversation about the open packet. At 960
+// The quick chat holds one Collie conversation about the open packet. At 960
 // px and more it fills the chat column beside the reader; below 960 px it
-// fills the Homie view of the reader. The browser keeps the open state across
+// fills the Collie view of the reader. The browser keeps the open state across
 // packets, pages, and reloads.
-const CHAT_KEY = "mc.packet-homie";
+const CHAT_KEY = "mc.packet-collie";
 try { state.chatOpen = localStorage.getItem(CHAT_KEY) === "open"; } catch { state.chatOpen = false; }
 
 const packetChat = createPacketChat({
   api, renderMessage,
   projectArchived: id => state.pause?.projects.find(row => row.id === id)?.status === "archived",
-  openConversation: id => { state.selected = id; openPage("homie"); },
+  openConversation: id => { state.selected = id; openPage("collie"); },
   changed: () => { requests.invalidate(); if (state.tab === "review") void tick(); },
   close: () => {
     setChatOpen(false);
-    $("packet-homie-open").focus();
+    $("packet-collie-open").focus();
   },
   onRouting: result => routingChanged(result),
-  openProfiles: entry => agentProfiles.open("homie", false, entry),
+  openProfiles: entry => agentProfiles.open("collie", false, entry),
 });
 const packetChatResize = createPacketChatResize({
   pane: $("review-pane"), column: $("packet-chat-column"), handle: $("packet-chat-resize"),
@@ -1944,13 +1944,13 @@ function setChatOpen(value) {
   applyChatLayout();
 }
 
-/** Places the quick chat in the chat column or in the Homie view, shows it
+/** Places the quick chat in the chat column or in the Collie view, shows it
  * when it is open, and applies the queue rule. A move between the two places
  * keeps the conversation, the draft, and the keyboard focus. */
 function applyChatLayout() {
   const wide = !narrowReader.matches;
   const shown = state.chatOpen && state.selectedPacket !== null;
-  const host = wide ? $("packet-chat-column") : $("reader-homie-view");
+  const host = wide ? $("packet-chat-column") : $("reader-collie-view");
   // A closed quick chat leaves the document. Its drafts and its conversation
   // stay in memory.
   if (!shown) packetChat.node.remove();
@@ -1962,13 +1962,13 @@ function applyChatLayout() {
   }
   $("packet-chat-column").hidden = !(wide && shown);
   $("packet-chat-resize").hidden = !(wide && shown);
-  $("packet-homie-open").setAttribute("aria-expanded", String(wide && shown));
+  $("packet-collie-open").setAttribute("aria-expanded", String(wide && shown));
   if (state.selectedPacket !== null) paintReaderViews();
   packetChatResize.update();
   packetChat.setOpen(shown);
 }
 
-$("packet-homie-open").addEventListener("click", () => {
+$("packet-collie-open").addEventListener("click", () => {
   const opening = !state.chatOpen;
   setChatOpen(opening);
   if (opening) packetChat.focus();
@@ -2356,13 +2356,13 @@ const changeView = createChangeView({
   readText: (path, signal) => api(path, { bytes: true, maxAge: 0, signal }).then((result) => result.body),
 });
 
-const READER_VIEWS = { packet: "packet-render", changes: "changes-view", homie: "reader-homie-view" };
+const READER_VIEWS = { packet: "packet-render", changes: "changes-view", collie: "reader-collie-view" };
 
 /** Shows one view in the content area: the packet, the files changed, or,
- * below 960 px with an open quick chat, the Homie view. Each other view keeps
+ * below 960 px with an open quick chat, the Collie view. Each other view keeps
  * its content and its position, and takes no input. */
 function paintReaderViews() {
-  const shown = state.chatOpen && narrowReader.matches ? "homie" : state.readerView;
+  const shown = state.chatOpen && narrowReader.matches ? "collie" : state.readerView;
   for (const [key, id] of Object.entries(READER_VIEWS)) {
     const on = key === shown;
     $(id).classList.toggle("view-inactive", !on);
@@ -2382,12 +2382,12 @@ function setReaderView(name, moveFocus = true) {
   if (moveFocus) document.querySelector(`[data-reader-view="${name}"]`).focus();
 }
 
-/** Follows a view selection of the operator. Below 960 px "Homie" opens the
+/** Follows a view selection of the operator. Below 960 px "Collie" opens the
  * quick chat, and "Packet" and "Files changed" close it. */
 function selectReaderView(name, moveFocus) {
-  if (name === "homie") {
+  if (name === "collie") {
     setChatOpen(true);
-    if (moveFocus) $("view-homie").focus();
+    if (moveFocus) $("view-collie").focus();
     return;
   }
   if (narrowReader.matches && state.chatOpen) setChatOpen(false);
@@ -2396,11 +2396,11 @@ function selectReaderView(name, moveFocus) {
 
 // The view tabs follow the tab pattern: the arrow keys, Home, and End move
 // the selection between the visible views. A pointer or Enter selection of
-// "Homie" moves the focus to the composer.
+// "Collie" moves the focus to the composer.
 for (const tab of document.querySelectorAll("[data-reader-view]")) {
   tab.addEventListener("click", () => {
     selectReaderView(tab.dataset.readerView, false);
-    if (tab.dataset.readerView === "homie") packetChat.focus();
+    if (tab.dataset.readerView === "collie") packetChat.focus();
   });
   tab.addEventListener("keydown", (event) => {
     const names = Object.keys(READER_VIEWS)
@@ -2905,7 +2905,7 @@ function routingChanged(result) {
   if (flow.view) renderTopology(pipelineFlowmap(routingRoutes, Date.now()), flow.bindings);
   renderConfigs();
   vision.setRouting(result);
-  homieModel.set(result);
+  collieModel.set(result);
   packetChat.setRouting(result);
 }
 let systemPaint = "";
@@ -2965,13 +2965,13 @@ async function systemAction(condition) {
       systemActionRequests.delete(key);
     }
     else if (condition.action === "Retry reply") {
-      await api("/api/homie/reply-retry", { method: "POST", body: JSON.stringify({
+      await api("/api/collie/reply-retry", { method: "POST", body: JSON.stringify({
         session_id: condition.session_id, message_id: condition.message_id, request_id: requestID,
       }) });
       if (state.tab === "vision") await vision.refresh();
       else if (state.tab === "board") commandBar.refresh();
       else if (state.tab === "review" && packetChat.shows(condition.session_id)) packetChat.refresh();
-      else openPage("homie");
+      else openPage("collie");
     } else {
       openPage("board");
       if (condition.project_id) selectProject(condition.project_id);
@@ -3007,7 +3007,7 @@ function renderSystemIssues() {
     systemView.unavailable && systemView.lastCompleteAt && el("p", { class: "system-helper", text: `Last confirmed: ${stampLabel(systemView.lastCompleteAt)}.` }),
     systemConditionNodes(conditions,
       condition => { issuesDialog.dialog.close(); return systemAction(condition); },
-      condition => { issuesDialog.dialog.close(); void systemDetails(condition); }, conditionHomieButton));
+      condition => { issuesDialog.dialog.close(); void systemDetails(condition); }, conditionCollieButton));
 }
 function openSystemIssues() {
   const conditions = systemIssues(systemView.snapshot?.conditions);
@@ -3114,7 +3114,7 @@ async function systemHistory(condition) {
         error.hidden = true;
         outcomes = result.refresh_outcomes ?? {};
         renderTotals();
-        const operations = { token_refresh: "Credential refresh", model_access: "Model access", connection_access: "Connection check", strategist: "Strategist", homie_reply: "Homie reply" };
+        const operations = { token_refresh: "Credential refresh", model_access: "Model access", connection_access: "Connection check", strategist: "Strategist", collie_reply: "Collie reply" };
         const outcomesText = { ready: "Verified", failed: "Failed", succeeded: "Succeeded", resumed: "Resumed" };
         for (const event of diagnosticResults(result.events ?? [])) events.append(el("li", { class: "system-history-event" },
           el("div", { class: "system-history-heading" },
@@ -3155,11 +3155,11 @@ function renderSystemHealth() {
   systemPaint = key;
   const profileHealth = JSON.stringify([systemView.unavailable, systemView.snapshot?.connections]);
   if (profileHealth !== profileHealthPaint) { profileHealthPaint = profileHealth; agentProfiles.refreshHealth(); }
-  const nodes = (items) => systemConditionNodes(items, systemAction, systemDetails, conditionHomieButton);
+  const nodes = (items) => systemConditionNodes(items, systemAction, systemDetails, conditionCollieButton);
   const noticeKey = JSON.stringify([conditions, systemView.recovered, systemView.pending, systemView.unavailable]);
   if (noticeKey !== noticePaint) {
     noticePaint = noticeKey;
-    setChildren($("system-notices"), systemNoticeNode(systemView, systemAction, openSystemIssues, conditionHomieButton));
+    setChildren($("system-notices"), systemNoticeNode(systemView, systemAction, openSystemIssues, conditionCollieButton));
   }
   const summary = $("system-health-summary");
   summary.textContent = systemView.pending ? "Loading status…" : systemView.unavailable ? "Status unavailable" : conditions.length
@@ -3176,7 +3176,7 @@ function renderSystemHealth() {
   const execution = conditions.filter(item => item.group === "execution");
   $("system-execution-section").hidden = execution.length === 0;
   setChildren($("system-execution"), nodes(execution));
-  renderHomieControls();
+  renderCollieControls();
   if ($("board-system-status")) setChildren($("board-system-status"), nodes(conditions.filter(item => item.project_id === state.project && item.id.startsWith("strategist:"))));
 }
 
@@ -3185,7 +3185,7 @@ $("configs-profiles").addEventListener("click", () => agentProfiles.open());
 const vision = createVision({
   api, host: $("vision-pane"),
   createConversation: projectID => createConversation({
-    api, renderMessage, projectID, onRouting: routingChanged, openProfiles: entry => agentProfiles.open("homie", false, entry),
+    api, renderMessage, projectID, onRouting: routingChanged, openProfiles: entry => agentProfiles.open("collie", false, entry),
   }),
   onSaved: async () => { await refreshPipelinePause(true); },
   onStarted: id => {
@@ -3209,7 +3209,7 @@ const environmentPage = createEnvironment({
   },
   onChanged: () => refreshPipelinePause(true),
 });
-const roleCustomization = createRoleCustomization({ api, openHomie: () => openPage("homie") });
+const roleCustomization = createRoleCustomization({ api, openCollie: () => openPage("collie") });
 const projectControls = createProjectControls({
   api,
   openModels: () => agentProfiles.open(), openVision: id => openPage("vision", [id]),
@@ -3231,7 +3231,7 @@ async function setRoute(role, binding) {
     routingRoutes = res.routes ?? [];
     flow.bindings = res.bindings ?? [];
     vision.setRouting(res);
-    homieModel.set(res);
+    collieModel.set(res);
   } catch (err) {
     flow.pickError = err.message;
   } finally {
@@ -3249,11 +3249,11 @@ function projectWikiState() {
   return flow.wikiStates === null ? null : ownRows(flow.wikiStates)[0];
 }
 
-/** The Pipeline graph of the selected Project. Homie is outside the pipeline,
- * so the graph omits Homie. */
+/** The Pipeline graph of the selected Project. Collie is outside the pipeline,
+ * so the graph omits Collie. */
 function pipelineFlowmap(routes, now) {
   const topology = topologyView(ownRows(state.leases), flow.runs, routes, now, state.settings, projectWikiState());
-  topology.nodes = topology.nodes.filter((node) => node.role !== "homie");
+  topology.nodes = topology.nodes.filter((node) => node.role !== "collie");
   return flowmapView(topology, flow.tasks, state.pause?.projects, {
     loaded: flow.loaded, leases: ownRows(state.leases), runs: flow.runs, nowMs: now, wikiState: projectWikiState(),
     paused: state.pause?.projects?.some(project => project.id === state.project && project.status === "paused"),
@@ -3501,7 +3501,7 @@ function renderDoctor() {
       view.state === "ok" ? "is-ready" : "needs-attention"),
       view.state !== "ok" && diagnosticButton({ title: label, state: view.state, recorded_at: view.checkedAt,
         summary: [view.summary, ...view.findings.filter(item => item.failing).map(item => `${item.check}: ${item.detail}`)].join("\n"),
-      }, askDiagnostic, "deployment-ask-homie"));
+      }, askDiagnostic, "deployment-ask-collie"));
     setChildren($("deployment-checks"),
       el("p", { class: "system-helper", text: view.summary }),
       findingRows(view.findings, "doctor-finding"));
@@ -3528,7 +3528,7 @@ function renderHealth(view) {
     view.summary, view.state === "ok" ? "is-ready" : "needs-attention"),
     view.state !== "ok" && diagnosticButton({ title: "Resident requires attention", state: view.state,
       summary: view.summary,
-    }, askDiagnostic, "resident-ask-homie"));
+    }, askDiagnostic, "resident-ask-collie"));
   setChildren($("resident-findings"), findingRows(view.findings, "health-finding"));
   setChildren($("pipeline-health-attention"), view.attention.length > 0 &&
     el("div", { class: "logpane healthlines" }, view.attention.map(line =>
@@ -3808,7 +3808,7 @@ function renderConfigs() {
                 el(
                   "tr",
                   { testid: "routing-row", data: { role: row.role } },
-                  el("td", {}, el("button", { type: "button", class: "btn small", text: row.label, testid: `config-route-${row.role}`, "aria-haspopup": "dialog", "aria-expanded": String(configRole === row.role), onclick: () => { configRole = row.role; renderConfigRoute(); } }), row.homie ? tag("outside the pipeline") : null),
+                  el("td", {}, el("button", { type: "button", class: "btn small", text: row.label, testid: `config-route-${row.role}`, "aria-haspopup": "dialog", "aria-expanded": String(configRole === row.role), onclick: () => { configRole = row.role; renderConfigRoute(); } }), row.collie ? tag("outside the pipeline") : null),
                   el("td", { class: "mono", data: { label: "Harness" }, text: row.harness }),
                   el("td", { class: "mono", data: { label: "Agent profile" }, text: row.profileName }),
                   el("td", { class: "mono", data: { label: "Model" }, text: row.model || "—" }),
@@ -3921,11 +3921,11 @@ let logsRenderedSource = null;
 function renderLogs(res, { older = false } = {}) {
   const runID = state.logsUnit === RUN_LANE && res.run_id === state.logsRun ? state.logsRun : null;
   const failure = [...(res.records ?? [])].reverse().find(record => record?.level === "error" || record?.level === "warn");
-  setChildren($("logs-homie"), runID ? diagnosticButton({
+  setChildren($("logs-collie"), runID ? diagnosticButton({
     title: "Run diagnostics", run_id: runID,
     summary: failure?.condition || failure?.error?.message || failure?.msg || "Inspect the recorded result and trace of this run.",
     recorded_at: failure?.ts,
-  }, askDiagnostic, "run-ask-homie") : null);
+  }, askDiagnostic, "run-ask-collie") : null);
   const view = logsView(res, { grep: state.logsGrep, levels: [...state.logsLevels] });
   state.logsLast = view;
   const pane = $("logs-lines");
@@ -4172,7 +4172,7 @@ function openPage(page, rest = [], refresh = true) {
   if (page === "review" && rest.length === 0 && !keepPacket) state.readerAuto = true;
   if (state.tab === "vision" && page !== "vision") vision.leave();
   if (state.tab === "environment" && page !== "environment") environmentPage.leave();
-  if (state.tab === "homie" && page !== "homie") homieModel.dispose();
+  if (state.tab === "collie" && page !== "collie") collieModel.dispose();
   $("vision-pane").hidden = page !== "vision";
   $("environment-pane").hidden = page !== "environment";
   if (page === "environment") {
@@ -4187,7 +4187,7 @@ function openPage(page, rest = [], refresh = true) {
   if (flow.view) paintFlowmap();
   renderConfigRoute();
   renderProjectContext();
-  if (page === "homie") state.homieOpened = true;
+  if (page === "collie") state.collieOpened = true;
   for (const other of document.querySelectorAll("nav .tab[data-panel]")) {
     const on = other === button;
     other.classList.toggle("active", on);
@@ -4255,10 +4255,10 @@ window.addEventListener("scroll", () => {
   $("system-notices").classList.toggle("folded", folded);
 }, { passive: true });
 
-/** The poll cadence: tight only while the Homie view shows an active session
+/** The poll cadence: tight only while the Collie view shows an active session
  * that owes a reply. */
 function pollMs() {
-  return state.tab === "vision" || (state.tab === "homie" && state.pollTight) ? TIGHT_MS : LAZY_MS;
+  return state.tab === "vision" || (state.tab === "collie" && state.pollTight) ? TIGHT_MS : LAZY_MS;
 }
 
 function schedule() {
@@ -4268,7 +4268,7 @@ function schedule() {
 
 const REFRESHERS = {
   board: refreshBoard,
-  homie: refreshHomie,
+  collie: refreshCollie,
   vision: async () => {
     if (!visionRead) return vision.refresh();
     const read = visionRead;
@@ -4299,7 +4299,7 @@ async function refreshLease() {
 }
 
 const pageReads = new Map();
-const pageRegions = { vision: "vision-pane", environment: "environment-pane", board: "board-columns", homie: "session-list", review: "packets", pipeline: "pipeline-topology", configs: "configs-content", logs: "logs-lines" };
+const pageRegions = { vision: "vision-pane", environment: "environment-pane", board: "board-columns", collie: "session-list", review: "packets", pipeline: "pipeline-topology", configs: "configs-content", logs: "logs-lines" };
 const regionReads = new Map();
 async function readRegion(id, read) {
   const host = $(id);
@@ -4324,7 +4324,7 @@ async function readRegion(id, read) {
       const placeholder = host.children.length === 1 && host.firstElementChild.classList.contains("loading");
       if (placeholder) setChildren(host, emptyBox("Not loaded.", false, "failed"));
       setChildren(notice, el("span", { text: `${retained ? "Last known data. " : ""}${error.message}` }),
-        el("button", { class: "btn small", type: "button", text: "Retry", onclick: () => { if (id === "session-list") state.homieOpened = true; tick(); } }));
+        el("button", { class: "btn small", type: "button", text: "Retry", onclick: () => { if (id === "session-list") state.collieOpened = true; tick(); } }));
       notice.hidden = false;
     }
     throw error;
@@ -4373,7 +4373,7 @@ const prefetchPages = {
   board: ["/api/tasks", "/api/leases", "/api/settings", "/api/projects", "/api/packets"],
   review: ["/api/packets", "/api/leases", "/api/settings"],
   pipeline: ["/api/tasks", "/api/leases", "/api/settings", "/api/packets", "/api/runs", "/api/routing", "/api/wiki-states"],
-  homie: ["/api/sessions"],
+  collie: ["/api/sessions"],
   configs: ["/api/config", "/api/routing", "/api/projects"],
   logs: ["/api/logs/runs", "/api/runs"],
 };
@@ -4400,19 +4400,19 @@ $("resume").addEventListener("click", async () => {
   }
 });
 
-let homieModelRequest = null;
-async function switchHomieModel(binding, retry = false) {
-  if (state.homieSessionBusy || state.sendInFlight || state.homieReplyBusy || !state.selected) {
+let collieModelRequest = null;
+async function switchCollieModel(binding, retry = false) {
+  if (state.collieSessionBusy || state.sendInFlight || state.collieReplyBusy || !state.selected) {
     throw new Error("Wait for the current conversation operation to finish.");
   }
-  if (!homieModelRequest || homieModelRequest.binding !== binding ||
-      (!retry && ![homieModelRequest.previous, homieModelRequest.result?.session_id].includes(state.selected))) {
-    homieModelRequest = { binding, previous: state.selected, request_id: crypto.randomUUID(), empty: !state.homieHasMessages };
+  if (!collieModelRequest || collieModelRequest.binding !== binding ||
+      (!retry && ![collieModelRequest.previous, collieModelRequest.result?.session_id].includes(state.selected))) {
+    collieModelRequest = { binding, previous: state.selected, request_id: crypto.randomUUID(), empty: !state.collieHasMessages };
   }
-  const operation = homieModelRequest;
-  state.homieSessionBusy = true;
-  state.homieRevision++;
-  renderHomieControls();
+  const operation = collieModelRequest;
+  state.collieSessionBusy = true;
+  state.collieRevision++;
+  renderCollieControls();
   try {
     const result = operation.result ?? await api(`/api/sessions/${operation.previous}/model`, {
       method: "POST", body: JSON.stringify({ binding, request_id: operation.request_id }),
@@ -4425,10 +4425,10 @@ async function switchHomieModel(binding, retry = false) {
     const existing = state.sessions.find(row => row.id === result.session_id);
     if (state.selected !== result.session_id) {
       state.selected = result.session_id;
-      state.homieHistorySession = null;
-      state.homieHasMessages = false;
-      state.homieReplyBusy = false;
-      $("homie-transcript").replaceChildren(homieEmpty());
+      state.collieHistorySession = null;
+      state.collieHasMessages = false;
+      state.collieReplyBusy = false;
+      $("collie-transcript").replaceChildren(collieEmpty());
     }
     state.sessions = state.sessions.filter(row => row.id !== result.replaced && row.id !== result.session_id);
     state.sessions.push({ ...existing, id: result.session_id, status: result.status, binding: result.binding });
@@ -4436,11 +4436,11 @@ async function switchHomieModel(binding, retry = false) {
     catch (err) { throw new Error(`The model change succeeded. Culler could not load the conversation. ${err.message} Select Retry.`); }
     let routing;
     try {
-      routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "homie", binding }) });
+      routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "collie", binding }) });
     } catch (err) {
       throw new Error(`The conversation uses the selected model. Culler could not set the default model. ${err.message} Select Retry.`);
     }
-    homieModelRequest = null;
+    collieModelRequest = null;
     clearError();
     return { routing, notice: result.preserved && operation.empty
       ? "Another message reached the previous conversation. Culler kept that conversation and opened a new conversation." : "" };
@@ -4448,63 +4448,63 @@ async function switchHomieModel(binding, retry = false) {
     if (!operation.result) throw new Error(`${err.message} Your draft remains available. Select Retry to check this model change.`);
     throw err;
   } finally {
-    state.homieRevision++;
-    state.homieSessionBusy = false;
-    renderHomieControls();
+    state.collieRevision++;
+    state.collieSessionBusy = false;
+    renderCollieControls();
   }
 }
 
 const openDiagnostic = createDiagnosticChat({ api, openConversation: async session => {
-  state.homieRevision++;
+  state.collieRevision++;
   state.selected = session.session_id;
   if (!state.sessions.some(row => row.id === session.session_id)) {
     state.sessions.push({ id: session.session_id, status: session.status, binding: session.binding });
   }
-  state.homieHistorySession = null;
-  state.homieHasMessages = true;
-  state.homieReplyBusy = true;
+  state.collieHistorySession = null;
+  state.collieHasMessages = true;
+  state.collieReplyBusy = true;
   state.pollTight = true;
-  setChildren($("homie-transcript"), el("div", { class: "loading", text: "Culler reads the conversation…" }));
+  setChildren($("collie-transcript"), el("div", { class: "loading", text: "Culler reads the conversation…" }));
   renderSessions();
   for (const dialog of document.querySelectorAll("dialog[open]")) dialog.close();
-  openPage("homie");
-  await readRegion("homie-transcript", refreshTranscript).catch(showError);
+  openPage("collie");
+  await readRegion("collie-transcript", refreshTranscript).catch(showError);
 } });
 
 async function askDiagnostic(context) {
-  if (state.sendInFlight || state.homieSessionBusy) throw new Error("Wait for the current conversation request to complete.");
-  state.homieSessionBusy = true;
-  renderHomieControls();
+  if (state.sendInFlight || state.collieSessionBusy) throw new Error("Wait for the current conversation request to complete.");
+  state.collieSessionBusy = true;
+  renderCollieControls();
   try { await openDiagnostic(context); }
   finally {
-    state.homieSessionBusy = false;
-    renderHomieControls();
-    if (state.tab === "homie") { void tick(); $("send-body").focus(); }
+    state.collieSessionBusy = false;
+    renderCollieControls();
+    if (state.tab === "collie") { void tick(); $("send-body").focus(); }
   }
 }
 
-function conditionHomieButton(condition) {
+function conditionCollieButton(condition) {
   return diagnosticButton(conditionDiagnostic(condition, systemView.unavailable), askDiagnostic);
 }
 
-async function newHomieSession(ensure = false) {
-  if (state.homieSessionBusy || state.sendInFlight) return false;
-  state.homieSessionBusy = true;
-  renderHomieControls();
+async function newCollieSession(ensure = false) {
+  if (state.collieSessionBusy || state.sendInFlight) return false;
+  state.collieSessionBusy = true;
+  renderCollieControls();
   try {
     const res = await api("/api/sessions", { method: "POST", body: JSON.stringify(ensure ? { ensure: true } : {}) });
-    state.homieRevision++;
+    state.collieRevision++;
     state.selected = res.session_id;
-    state.homieHistorySession = res.session_id;
-    state.homieHasMessages = false;
-    state.homieReplyBusy = false;
+    state.collieHistorySession = res.session_id;
+    state.collieHasMessages = false;
+    state.collieReplyBusy = false;
     const row = { id: res.session_id, status: res.status, binding: res.binding };
     state.sessions.push(row);
     if (ensure && row.status !== "active") {
       await resumeSession(row.id);
       row.status = "active";
     }
-    $("homie-transcript").replaceChildren(homieEmpty());
+    $("collie-transcript").replaceChildren(collieEmpty());
     clearError();
     await refreshTranscript();
     return true;
@@ -4512,17 +4512,17 @@ async function newHomieSession(ensure = false) {
     showError(err);
     return false;
   } finally {
-    state.homieSessionBusy = false;
-    renderHomieControls();
+    state.collieSessionBusy = false;
+    renderCollieControls();
   }
 }
-$("new-session").addEventListener("click", () => newHomieSession());
+$("new-session").addEventListener("click", () => newCollieSession());
 
-/** The transcript shows the sent message and a pending Homie row before the
+/** The transcript shows the sent message and a pending Collie row before the
  * send reaches the spine. The next history read renders the same rows from
  * the record, or drops them when the send failed. */
 function showSentTurn(body) {
-  const pane = $("homie-transcript");
+  const pane = $("collie-transcript");
   const empty = pane.querySelector(".empty, .conversation-empty");
   if (empty) empty.remove();
   pane.append(
@@ -4547,7 +4547,7 @@ $("send-form").addEventListener("submit", async (event) => {
   // read that shows the reply returns the loop to the lazy cadence.
   state.pollTight = true;
   state.sendInFlight = true;
-  renderHomieControls();
+  renderCollieControls();
   try {
     const files = await ordinaryUploads.files();
     uploadID = ordinaryUploads.requestID(body);
@@ -4556,10 +4556,10 @@ $("send-form").addEventListener("submit", async (event) => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(files.length ? { body, files, request_id: uploadID } : { body }),
     });
-    if (state.selected === sessionID) { state.homieHistorySession = sessionID; state.homieHasMessages = true; }
+    if (state.selected === sessionID) { state.collieHistorySession = sessionID; state.collieHasMessages = true; }
     const session = state.sessions.find(row => row.id === sessionID);
     if (session && session.first_message == null) session.first_message = body;
-    state.homieReplyBusy = true;
+    state.collieReplyBusy = true;
     renderSessions();
     ordinaryUploads.clear();
     clearError();
@@ -4569,7 +4569,7 @@ $("send-form").addEventListener("submit", async (event) => {
     showError(err);
   } finally {
     state.sendInFlight = false;
-    renderHomieControls();
+    renderCollieControls();
   }
   tick();
 });

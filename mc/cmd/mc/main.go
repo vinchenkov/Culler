@@ -127,8 +127,8 @@ func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int 
 	if args[0] == "__dispatch-plan" || args[0] == "__dispatch-prepare" || args[0] == "__dispatch-commit" {
 		return runPrivateDispatch(args, stdin, stdout, stderr)
 	}
-	if args[0] == "__homie-start" {
-		return runPrivateHomieStart(args, stdin, stdout, stderr)
+	if args[0] == "__collie-start" {
+		return runPrivateCollieStart(args, stdin, stdout, stderr)
 	}
 	if args[0] == "__attachment-health-guard" {
 		return runAttachmentHealthGuard(args, stdin, stdout, stderr)
@@ -269,8 +269,8 @@ func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int 
 	if shouldDelegateToHelper() && args[0] == "__acceptance" {
 		return brokerAcceptance(args, stdout, stderr)
 	}
-	if shouldDelegateToHelper() && len(args) > 1 && args[0] == "homie" && args[1] == "start" {
-		return brokerHomieStart(args, stdout, stderr)
+	if shouldDelegateToHelper() && len(args) > 1 && args[0] == "collie" && args[1] == "start" {
+		return brokerCollieStart(args, stdout, stderr)
 	}
 	if shouldDelegateToHelper() && (args[0] == "__attachment-attempt-abort" ||
 		args[0] == "__attachment-attempts-expire-due" ||
@@ -302,7 +302,7 @@ func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int 
 	// whole purpose is to answer while the spine is unreachable and Docker is
 	// down. Routing it through the helper would make it need the very things it
 	// exists to report on.
-	if len(args) > 1 && ((args[0] == "run" || args[0] == "homie") && args[1] == "launch-check") {
+	if len(args) > 1 && ((args[0] == "run" || args[0] == "collie") && args[1] == "launch-check") {
 		return runLocal(args, stdin, stdout, stderr)
 	}
 	if args[0] == "discord" || args[0] == "__discord-config" || args[0] == "evaluation" || args[0] == "system" || args[0] == "connection" || args[0] == "agent-profile" || args[0] == "config" || args[0] == "routing" || args[0] == "logs" || args[0] == "health" {
@@ -900,8 +900,8 @@ func dispatchVerb(args []string, stdin io.Reader) (any, error) {
 		return cmdStrategist(rest, stdin)
 	case "attachment":
 		return cmdAttachment(rest)
-	case "homie":
-		return cmdHomie(rest)
+	case "collie":
+		return cmdCollie(rest)
 	case "outbox":
 		return cmdOutbox(rest)
 	case "verifier":
@@ -1036,7 +1036,7 @@ func dispatchVerb(args []string, stdin io.Reader) (any, error) {
 	case "agent-profile":
 		return commandAgentProfile(rest, stdin)
 	case "routing":
-		// Host-side only: the role-to-runtime table, homie included. `show`
+		// Host-side only: the role-to-runtime table, collie included. `show`
 		// reads it; `set` replaces one role's binding under the same
 		// validation as onboarding.
 		usage := "usage: mc routing show | mc routing set --role <role> --binding <binding>"
@@ -1269,7 +1269,7 @@ func parseOnboardArgs(args []string) (verbs.OnboardArgs, error) {
 	fs.IntVar(&a.HeartbeatIntervalS, "heartbeat-interval-s", 0, "heartbeat interval")
 	fs.IntVar(&a.SpawnGraceS, "spawn-grace-s", 0, "first-heartbeat watchdog")
 	fs.IntVar(&a.HardDeadlineMinutes, "hard-deadline-minutes", 0, "non-renewable hard deadline")
-	fs.IntVar(&a.HomieIdleTimeoutS, "homie-idle-timeout-s", 0, "Homie conversation idle timeout")
+	fs.IntVar(&a.CollieIdleTimeoutS, "collie-idle-timeout-s", 0, "Collie conversation idle timeout")
 	fs.IntVar(&a.ReviewWIPCap, "review-wip-cap", 0, "maximum live review packets")
 	fs.BoolVar(&a.TunablesConfirmed, "accept-default-tunables", false, "accept recommended tunable defaults")
 	fs.BoolVar(&a.AcceptDefaultGitIdentity, "accept-default-git-identity", false,
@@ -1371,7 +1371,7 @@ func parseOnboardArgs(args []string) (verbs.OnboardArgs, error) {
 		{"heartbeat-interval-s", a.HeartbeatIntervalS},
 		{"spawn-grace-s", a.SpawnGraceS},
 		{"hard-deadline-minutes", a.HardDeadlineMinutes},
-		{"homie-idle-timeout-s", a.HomieIdleTimeoutS},
+		{"collie-idle-timeout-s", a.CollieIdleTimeoutS},
 	} {
 		if item.value < 0 {
 			return verbs.OnboardArgs{}, verbs.Usagef("mc onboard --%s must be non-negative", item.name)
@@ -1430,7 +1430,7 @@ func cmdInit(args []string) (any, error) {
 	fs.IntVar(&a.SpawnGraceS, "spawn-grace-s", 0, "first-heartbeat watchdog")
 	fs.IntVar(&a.HardDeadlineMinutes, "hard-deadline-minutes", 0, "non-renewable hard deadline")
 	fs.IntVar(&a.ReviewWIPCap, "review-wip-cap", 0, "maximum live review packets per Project")
-	fs.IntVar(&a.HomieIdleTimeoutS, "homie-idle-timeout-s", 0, "Homie session idle timeout")
+	fs.IntVar(&a.CollieIdleTimeoutS, "collie-idle-timeout-s", 0, "Collie session idle timeout")
 	if err := parse(fs, args); err != nil {
 		return nil, err
 	}
@@ -1630,7 +1630,7 @@ func cmdProject(args []string) (any, error) {
 			return nil, err
 		}
 		out, err := withSpine(func(db *sql.DB) (any, error) { return verbs.ProjectAdd(db, id, a) })
-		// Host scope only: a Homie's in-container add cannot reach the host
+		// Host scope only: a Collie's in-container add cannot reach the host
 		// store, and the resident creates that Project's directories the
 		// first time it spawns a run there.
 		if err == nil && id == nil {
@@ -1865,7 +1865,7 @@ func cmdAttachment(args []string) (any, error) {
 			return nil, err
 		}
 		fs := newFlags("mc attachment ingress-enqueue")
-		bindingID := fs.Int64("binding", 0, "exact active Homie binding id")
+		bindingID := fs.Int64("binding", 0, "exact active Collie binding id")
 		surface := fs.String("surface", "", "discord|dashboard|cli")
 		messageID := fs.String("message-id", "", "stable native surface message id")
 		body := fs.String("body", "", "bounded inbound text")
@@ -1913,13 +1913,13 @@ func cmdAttachment(args []string) (any, error) {
 	}
 }
 
-func cmdHomie(args []string) (any, error) {
+func cmdCollie(args []string) (any, error) {
 	if len(args) == 0 {
-		return nil, verbs.Usagef("usage: mc homie start|bind|send|claim|reply|list|history|resume|end …")
+		return nil, verbs.Usagef("usage: mc collie start|bind|send|claim|reply|list|history|resume|end …")
 	}
 	switch args[0] {
 	case "start":
-		start, err := parseHomieStartArgs(args[1:])
+		start, err := parseCollieStartArgs(args[1:])
 		if err != nil {
 			return nil, err
 		}
@@ -1928,15 +1928,15 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieStart(db, id, start)
+			return verbs.CollieStart(db, id, start)
 		})
 
 	case "title":
-		session, rest, err := positional("mc homie title", args[1:])
+		session, rest, err := positional("mc collie title", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie title")
+		fs := newFlags("mc collie title")
 		title := fs.String("title", "", "conversation title")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
@@ -1945,78 +1945,78 @@ func cmdHomie(args []string) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		return withSpine(func(db *sql.DB) (any, error) { return verbs.HomieTitle(db, id, session, *title) })
+		return withSpine(func(db *sql.DB) (any, error) { return verbs.CollieTitle(db, id, session, *title) })
 
 	case "delete":
 		if len(args) != 2 {
-			return nil, verbs.Usagef("mc homie delete requires one session")
+			return nil, verbs.Usagef("mc collie delete requires one session")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
-		return withSpine(func(db *sql.DB) (any, error) { return verbs.HomieDelete(db, id, args[1]) })
+		return withSpine(func(db *sql.DB) (any, error) { return verbs.CollieDelete(db, id, args[1]) })
 
 	case "bind":
-		sessionID, rest, err := positional("mc homie bind", args[1:])
+		sessionID, rest, err := positional("mc collie bind", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie bind")
+		fs := newFlags("mc collie bind")
 		from := fs.String("from", "", "surface:channel_ref")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
 		}
 		if *from == "" {
-			return nil, verbs.Usagef("mc homie bind requires --from <surface:channel_ref>")
+			return nil, verbs.Usagef("mc collie bind requires --from <surface:channel_ref>")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieBind(db, id, sessionID, *from)
+			return verbs.CollieBind(db, id, sessionID, *from)
 		})
 
 	case "resume":
-		sessionID, rest, err := positional("mc homie resume", args[1:])
+		sessionID, rest, err := positional("mc collie resume", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie resume")
+		fs := newFlags("mc collie resume")
 		from := fs.String("from", "", "surface:channel_ref")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
 		}
 		if *from == "" {
-			return nil, verbs.Usagef("mc homie resume requires --from <surface:channel_ref>")
+			return nil, verbs.Usagef("mc collie resume requires --from <surface:channel_ref>")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieResume(db, id, sessionID, *from)
+			return verbs.CollieResume(db, id, sessionID, *from)
 		})
 
 	case "list":
 		if len(args) != 1 {
-			return nil, verbs.Usagef("usage: mc homie list")
+			return nil, verbs.Usagef("usage: mc collie list")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpineRead(func(db *sql.DB) (any, error) {
-			return verbs.HomieList(db, id)
+			return verbs.CollieList(db, id)
 		})
 
 	case "send":
-		sessionID, rest, err := positional("mc homie send", args[1:])
+		sessionID, rest, err := positional("mc collie send", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie send")
+		fs := newFlags("mc collie send")
 		sourceMessage := fs.String("source-message", "", "Discord source message identifier")
 		from := fs.String("from", "", "origin surface:channel_ref")
 		body := fs.String("body", "", "inbound text")
@@ -2026,7 +2026,7 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		if *from == "" {
-			return nil, verbs.Usagef("mc homie send requires --from <surface:channel_ref>")
+			return nil, verbs.Usagef("mc collie send requires --from <surface:channel_ref>")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
@@ -2036,7 +2036,7 @@ func cmdHomie(args []string) (any, error) {
 			if *ingressAttempt != "" {
 				if *attachments != "" || *sourceMessage != "" {
 					return nil, verbs.Usagef(
-						"mc homie send --ingress-attempt cannot be combined with --attachments",
+						"mc collie send --ingress-attempt cannot be combined with --attachments",
 					)
 				}
 				return verbs.AttachmentIngressConsume(
@@ -2046,17 +2046,17 @@ func cmdHomie(args []string) (any, error) {
 					},
 				)
 			}
-			return verbs.HomieSend(db, id, verbs.HomieSendArgs{
+			return verbs.CollieSend(db, id, verbs.CollieSendArgs{
 				Session: sessionID, From: *from, Body: *body, Attachments: *attachments, SourceMessage: *sourceMessage,
 			})
 		})
 
 	case "launch-failure", "launch-check":
-		session, rest, err := positional("Homie launch", args[1:])
+		session, rest, err := positional("Collie launch", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("Homie launch")
+		fs := newFlags("Collie launch")
 		launch := fs.String("launch", "", "launch identity")
 		connection := fs.String("connection", "", "connection")
 		authorization := fs.String("authorization", "", "authorization identity")
@@ -2070,7 +2070,7 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		if args[0] == "launch-check" {
-			if err := verbs.RequireHostScope(id, "Homie launch check"); err != nil {
+			if err := verbs.RequireHostScope(id, "Collie launch check"); err != nil {
 				return nil, err
 			}
 			required, err := systemRequirements()
@@ -2084,15 +2084,15 @@ func cmdHomie(args []string) (any, error) {
 				}
 			}
 			if !valid {
-				return nil, verbs.Domainf("The connection changed before the Homie launch.")
+				return nil, verbs.Domainf("The connection changed before the Collie launch.")
 			}
-			return systemSpineCall("homie-launch-check", homieLaunchRequest{Session: session, Launch: *launch, Connection: *connection, Authorization: *authorization, Profile: *profile, ProfileRevision: *revision})
+			return systemSpineCall("collie-launch-check", collieLaunchRequest{Session: session, Launch: *launch, Connection: *connection, Authorization: *authorization, Profile: *profile, ProfileRevision: *revision})
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
 			if args[0] == "launch-failure" {
-				return verbs.HomieLaunchFailure(db, id, session, *launch)
+				return verbs.CollieLaunchFailure(db, id, session, *launch)
 			}
-			return verbs.HomieLaunchCheck(db, id, session, *launch, *connection, *authorization, *profile, *revision)
+			return verbs.CollieLaunchCheck(db, id, session, *launch, *connection, *authorization, *profile, *revision)
 		})
 
 	case "model-response":
@@ -2103,7 +2103,7 @@ func cmdHomie(args []string) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		return withSpine(func(db *sql.DB) (any, error) { return verbs.HomieModelResponse(db, id, args[1]) })
+		return withSpine(func(db *sql.DB) (any, error) { return verbs.CollieModelResponse(db, id, args[1]) })
 	case "reply-failure":
 		attempt, rest, err := positional("reply failure", args[1:])
 		if err != nil {
@@ -2123,7 +2123,7 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieReplyFailure(db, id, attempt, *condition, domain.InfrastructureFailureReport{ProxyRequestID: *proxyRequest, HTTPStatus: optionalResponseStatus(*responseStatus), ProviderErrorCode: *providerCode, NetworkError: *networkError})
+			return verbs.CollieReplyFailure(db, id, attempt, *condition, domain.InfrastructureFailureReport{ProxyRequestID: *proxyRequest, HTTPStatus: optionalResponseStatus(*responseStatus), ProviderErrorCode: *providerCode, NetworkError: *networkError})
 		})
 	case "reply-retry":
 		session, rest, err := positional("reply retry", args[1:])
@@ -2140,30 +2140,30 @@ func cmdHomie(args []string) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		return withSpine(func(db *sql.DB) (any, error) { return verbs.HomieReplyRetry(db, id, session, *message, *key) })
+		return withSpine(func(db *sql.DB) (any, error) { return verbs.CollieReplyRetry(db, id, session, *message, *key) })
 
 	case "claim":
-		sessionID, rest, err := positional("mc homie claim", args[1:])
+		sessionID, rest, err := positional("mc collie claim", args[1:])
 		if err != nil {
 			return nil, err
 		}
 		if len(rest) != 0 {
-			return nil, verbs.Usagef("mc homie claim: unexpected argument %q", rest[0])
+			return nil, verbs.Usagef("mc collie claim: unexpected argument %q", rest[0])
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieClaim(db, id, sessionID)
+			return verbs.CollieClaim(db, id, sessionID)
 		})
 
 	case "reply":
-		sessionID, rest, err := positional("mc homie reply", args[1:])
+		sessionID, rest, err := positional("mc collie reply", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie reply")
+		fs := newFlags("mc collie reply")
 		attempt := fs.String("attempt", "", "reply attempt identity")
 		to := fs.Int64("to", 0, "claimed inbound message id")
 		body := fs.String("body", "", "reply text")
@@ -2172,24 +2172,24 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		if *to <= 0 {
-			return nil, verbs.Usagef("mc homie reply requires --to <inbound message id>")
+			return nil, verbs.Usagef("mc collie reply requires --to <inbound message id>")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieReply(db, id, verbs.HomieReplyArgs{
+			return verbs.CollieReply(db, id, verbs.CollieReplyArgs{
 				Session: sessionID, To: *to, Body: *body, Attempt: *attempt, Attachments: *attachments,
 			})
 		})
 
 	case "draft":
-		sessionID, rest, err := positional("mc homie draft", args[1:])
+		sessionID, rest, err := positional("mc collie draft", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie draft")
+		fs := newFlags("mc collie draft")
 		attempt := fs.String("attempt", "", "reply attempt identity")
 		to := fs.Int64("to", 0, "claimed inbound message id")
 		body := fs.String("body", "", "provisional reply text so far")
@@ -2197,43 +2197,43 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		if *to <= 0 {
-			return nil, verbs.Usagef("mc homie draft requires --to <inbound message id>")
+			return nil, verbs.Usagef("mc collie draft requires --to <inbound message id>")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieDraft(db, id, verbs.HomieDraftArgs{
+			return verbs.CollieDraft(db, id, verbs.CollieDraftArgs{
 				Session: sessionID, To: *to, Body: *body, Attempt: *attempt,
 			})
 		})
 
 	case "packet-context":
-		sessionID, rest, err := positional("mc homie packet-context", args[1:])
+		sessionID, rest, err := positional("mc collie packet-context", args[1:])
 		if err != nil {
 			return nil, err
 		}
 		if len(rest) != 0 {
-			return nil, verbs.Usagef("mc homie packet-context: unexpected argument %q", rest[0])
+			return nil, verbs.Usagef("mc collie packet-context: unexpected argument %q", rest[0])
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpineRead(func(db *sql.DB) (any, error) {
-			return verbs.HomiePacketContext(db, id, sessionID)
+			return verbs.ColliePacketContext(db, id, sessionID)
 		})
 
 	case "history":
-		sessionID, rest, err := positional("mc homie history", args[1:])
+		sessionID, rest, err := positional("mc collie history", args[1:])
 		if err != nil {
 			return nil, err
 		}
 		// The CLI read channel: `--follow` returns when the session produces
 		// its next reply, so the caller needs no delivery loop of its own.
 		// Bounded, and expiry is an ordinary unchanged transcript.
-		fs := newFlags("mc homie history")
+		fs := newFlags("mc collie history")
 		follow := fs.Bool("follow", false, "wait for the session's next reply before returning")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
@@ -2243,83 +2243,83 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		return withSpineRead(func(db *sql.DB) (any, error) {
-			return verbs.HomieHistory(db, id, sessionID, *follow)
+			return verbs.CollieHistory(db, id, sessionID, *follow)
 		})
 
 	case "end":
-		sessionID, rest, err := positional("mc homie end", args[1:])
+		sessionID, rest, err := positional("mc collie end", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie end")
+		fs := newFlags("mc collie end")
 		reason := fs.String("reason", "", "end reason")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
 		}
 		if *reason == "" {
-			return nil, verbs.Usagef("mc homie end requires --reason")
+			return nil, verbs.Usagef("mc collie end requires --reason")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieEnd(db, id, sessionID, *reason)
+			return verbs.CollieEnd(db, id, sessionID, *reason)
 		})
 
 	case "launch-bind":
 		// Resident-private pre-start bind receipt.
-		sessionID, rest, err := positional("mc homie launch-bind", args[1:])
+		sessionID, rest, err := positional("mc collie launch-bind", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie launch-bind")
+		fs := newFlags("mc collie launch-bind")
 		launch := fs.String("launch", "", "16-hex current launch id")
 		containerID := fs.String("container-id", "", "64-hex Docker container id")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
 		}
 		if *launch == "" || *containerID == "" {
-			return nil, verbs.Usagef("mc homie launch-bind requires --launch and --container-id")
+			return nil, verbs.Usagef("mc collie launch-bind requires --launch and --container-id")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieLaunchBind(db, id, sessionID, *launch, *containerID)
+			return verbs.CollieLaunchBind(db, id, sessionID, *launch, *containerID)
 		})
 
 	case "runner-started":
 		// Runner-private lifecycle receipt.
-		sessionID, rest, err := positional("mc homie runner-started", args[1:])
+		sessionID, rest, err := positional("mc collie runner-started", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie runner-started")
+		fs := newFlags("mc collie runner-started")
 		launch := fs.String("launch", "", "16-hex current launch id")
 		containerID := fs.String("container-id", "", "64-hex Docker container id")
 		if err := parse(fs, rest); err != nil {
 			return nil, err
 		}
 		if *launch == "" || *containerID == "" {
-			return nil, verbs.Usagef("mc homie runner-started requires --launch and --container-id")
+			return nil, verbs.Usagef("mc collie runner-started requires --launch and --container-id")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieRunnerStarted(db, id, sessionID, *launch, *containerID)
+			return verbs.CollieRunnerStarted(db, id, sessionID, *launch, *containerID)
 		})
 
 	case "exit":
 		// Resident-observed exit receipt.
-		sessionID, rest, err := positional("mc homie exit", args[1:])
+		sessionID, rest, err := positional("mc collie exit", args[1:])
 		if err != nil {
 			return nil, err
 		}
-		fs := newFlags("mc homie exit")
+		fs := newFlags("mc collie exit")
 		launch := fs.String("launch", "", "16-hex current launch id")
 		containerID := fs.String("container-id", "", "64-hex Docker container id")
 		reason := fs.String("reason", "", "exit reason")
@@ -2327,17 +2327,17 @@ func cmdHomie(args []string) (any, error) {
 			return nil, err
 		}
 		if *launch == "" || *containerID == "" || *reason == "" {
-			return nil, verbs.Usagef("mc homie exit requires --launch, --container-id, and --reason")
+			return nil, verbs.Usagef("mc collie exit requires --launch, --container-id, and --reason")
 		}
 		id, err := verbs.LoadIdentity()
 		if err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieExit(db, id, sessionID, *launch, *containerID, *reason)
+			return verbs.CollieExit(db, id, sessionID, *launch, *containerID, *reason)
 		})
 	}
-	return nil, verbs.Usagef("unknown subverb: mc homie %s", args[0])
+	return nil, verbs.Usagef("unknown subverb: mc collie %s", args[0])
 }
 
 func cmdOutbox(args []string) (any, error) {

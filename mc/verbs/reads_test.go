@@ -355,7 +355,7 @@ func TestActivityProjectAssociation(t *testing.T) {
 		{"dispatch.result", "", "dispatch", `{"project":"ws-test"}`, true},
 		{"run.test", "run-source", "system", "", true},
 		{"run.test", "", "run-source", "", true},
-		{"homie.test", "11", "operator", "", false},
+		{"collie.test", "11", "operator", "", false},
 		{"task.test", "11junk", "operator", "", false},
 		{"dispatch.health", "", "dispatch", "", false},
 		{"task.test", "13", "operator", "", false},

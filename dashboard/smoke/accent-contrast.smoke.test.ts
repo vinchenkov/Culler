@@ -153,7 +153,7 @@ test("fields and task panels retain contrast in both themes and at narrow widths
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
     await page.getByTestId("task-dialog-close").click();
     await page.setViewportSize({ width: 1440, height: 1000 });
-    for (const tab of ["homie", "pipeline", "configs"]) {
+    for (const tab of ["collie", "pipeline", "configs"]) {
       await page.getByTestId(`tab-${tab}`).click();
       await page.getByTestId(`${tab}-pane`).waitFor();
       await settled();

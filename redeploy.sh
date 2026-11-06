@@ -35,7 +35,7 @@
 # the current schema. The script omits the database check. Before the first
 # build step, the script names the deployment home and asks the operator to
 # type a word at a terminal. A run without a terminal or without that word
-# changes nothing. The reset removes the agent and Homie containers that use
+# changes nothing. The reset removes the agent and Collie containers that use
 # the database. The reset keeps the Project repositories and worktrees, the
 # credentials, config.toml, and the deployment identity. The tunables section
 # then copies the config.toml settings into the database. The empty database
@@ -228,11 +228,11 @@ if [ "$RESET_DATABASE" -eq 1 ]; then
   say ""
   paragraph "The reset deletes all database records, for example these records:"
   item "Projects, tasks, runs, and review packets."
-  item "Homie conversations."
+  item "Collie conversations."
   item "Project setup records and Project role customizations."
   item "The settings outside config.toml."
   say ""
-  paragraph "The reset stops the agent and Homie containers that use the database."
+  paragraph "The reset stops the agent and Collie containers that use the database."
   say ""
   paragraph "The reset keeps these items:"
   item "The Project repositories and worktrees."

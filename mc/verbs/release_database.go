@@ -14,8 +14,8 @@ type ReleaseDatabase struct {
 	Leases                int                   `json:"leases"`
 	RepositoryOperations  int                   `json:"repository_operations"`
 	EnvironmentOperations int                   `json:"environment_operations"`
-	HomieLaunches         int                   `json:"homie_launches"`
-	HomieContainers       []string              `json:"homie_containers"`
+	CollieLaunches        int                   `json:"collie_launches"`
+	CollieContainers      []string              `json:"collie_containers"`
 	ProjectImages         []ReleaseProjectImage `json:"project_images"`
 }
 
@@ -27,7 +27,7 @@ type ReleaseProjectImage struct {
 }
 
 func (r ReleaseDatabase) Idle() bool {
-	return r.Runs == 0 && r.Leases == 0 && r.RepositoryOperations == 0 && r.EnvironmentOperations == 0 && r.HomieLaunches == 0
+	return r.Runs == 0 && r.Leases == 0 && r.RepositoryOperations == 0 && r.EnvironmentOperations == 0 && r.CollieLaunches == 0
 }
 
 func InspectReleaseDatabase(spine string) (ReleaseDatabase, error) {
@@ -63,12 +63,12 @@ func InspectReleaseDatabase(spine string) (ReleaseDatabase, error) {
 		(SELECT COUNT(*) FROM repository_executions WHERE ended_at IS NULL) +
 		(SELECT COUNT(*) FROM merge_operations WHERE operation='apply' AND finished=0),
 		(SELECT COUNT(*) FROM environment_operations WHERE status='running'),
-		(SELECT COUNT(*) FROM homie_sessions WHERE status='active' AND current_launch_id IS NOT NULL AND current_container_id IS NULL),
-		(SELECT json_group_array(current_container_id) FROM homie_sessions WHERE status='active' AND current_container_id IS NOT NULL)`).Scan(&r.Runs, &r.Leases, &r.RepositoryOperations, &r.EnvironmentOperations, &r.HomieLaunches, &containers)
+		(SELECT COUNT(*) FROM collie_sessions WHERE status='active' AND current_launch_id IS NOT NULL AND current_container_id IS NULL),
+		(SELECT json_group_array(current_container_id) FROM collie_sessions WHERE status='active' AND current_container_id IS NOT NULL)`).Scan(&r.Runs, &r.Leases, &r.RepositoryOperations, &r.EnvironmentOperations, &r.CollieLaunches, &containers)
 	if err != nil {
 		return r, err
 	}
-	err = json.Unmarshal([]byte(containers), &r.HomieContainers)
+	err = json.Unmarshal([]byte(containers), &r.CollieContainers)
 	if err != nil {
 		return r, err
 	}

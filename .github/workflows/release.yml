@@ -108,7 +108,7 @@ jobs:
           (cd dashboard && mise exec -- bun install --frozen-lockfile)
       - name: Run every fast check
         run: |
-          for component in mc runner/fake-harness runner/agent-runner runner/homie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
+          for component in mc runner/fake-harness runner/agent-runner runner/collie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
             log="$RUNNER_TEMP/culler-check-${component//\//-}.log"
             if ! "./$component/check.sh" > "$log" 2>&1; then
               cat "$log"

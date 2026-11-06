@@ -61,7 +61,7 @@ export const ROUTING = `# Culler routing
 | verifier | fake | fake |
 | scribe | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `;
 
 /** A loopback stand-in for AgentsView. Each API address requires the bearer

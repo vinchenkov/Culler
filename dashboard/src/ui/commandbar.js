@@ -1,6 +1,6 @@
 import { el, reconcileChildren } from "./dom.js";
 import { createComposer } from "./conversation.js";
-import { pollTight, provisionalRow, transcriptRows } from "./homiefmt.js";
+import { pollTight, provisionalRow, transcriptRows } from "./colliefmt.js";
 
 const CONTEXT = "Dashboard Board context:\n";
 const REQUEST = "\n\nOperator request:\n";
@@ -23,19 +23,19 @@ export function createCommandBar({ api, renderMessage, openConversation, changed
   let current = null, visible = true, contextReady = false, sequence = 0;
 
   function conversation(project) {
-    const storageKey = `mc.board-homie.${project?.id ?? "global"}`;
+    const storageKey = `mc.board-collie.${project?.id ?? "global"}`;
     let sessionID = null, busy = false, reading = false, owed = false;
     let contextAvailable = false;
     let active = false, expanded = false, timer = null, error = "", rows = [], available = false;
     let version = 0, requestState = "idle";
     try { sessionID = localStorage.getItem(storageKey); } catch {}
     if (sessionID && !/^h-[a-z0-9-]+$/.test(sessionID)) sessionID = null;
-    const composer = createComposer({ prefix: `board-homie-${++sequence}` });
-    composer.input.dataset.testid = "board-homie-message";
-    composer.send.dataset.testid = "board-homie-send";
+    const composer = createComposer({ prefix: `board-collie-${++sequence}` });
+    composer.input.dataset.testid = "board-collie-message";
+    composer.send.dataset.testid = "board-collie-send";
     let suggestionIndex = 0, suggestionTimer = null, suggestionAnimations = [];
     composer.input.placeholder = SUGGESTIONS[0];
-    const suggestion = el("div", { class: "board-command-suggestion", "aria-hidden": "true", testid: "board-homie-suggestion" },
+    const suggestion = el("div", { class: "board-command-suggestion", "aria-hidden": "true", testid: "board-collie-suggestion" },
       el("span", { text: SUGGESTIONS[0] }));
     const inputWrap = el("div", { class: "board-command-input" }, composer.input, suggestion);
     function settleSuggestion() {
@@ -63,24 +63,24 @@ export function createCommandBar({ api, renderMessage, openConversation, changed
     composer.input.addEventListener("input", settleSuggestion);
     const attach = composer.form.querySelector(".conversation-attach");
     const hint = composer.form.querySelector(".conversation-hint");
-    hint.id = `board-homie-hint-${sequence}`;
+    hint.id = `board-collie-hint-${sequence}`;
     composer.input.setAttribute("aria-describedby", hint.id);
     composer.form.replaceChildren(attach, inputWrap, composer.send, composer.uploads.node, hint);
-    const transcript = el("div", { class: "transcript", id: `board-homie-transcript-${sequence}`, testid: "board-homie-transcript",
-      role: "log", "aria-label": "Board conversation with Homie", "aria-live": "polite", hidden: true });
-    const status = el("p", { class: "conversation-status", testid: "board-homie-status", role: "status" });
-    const notice = el("p", { class: "board-command-error", testid: "board-homie-error", role: "alert", hidden: true });
-    const toggle = el("button", { class: "board-command-toggle", type: "button", testid: "board-homie-toggle",
+    const transcript = el("div", { class: "transcript", id: `board-collie-transcript-${sequence}`, testid: "board-collie-transcript",
+      role: "log", "aria-label": "Board conversation with Collie", "aria-live": "polite", hidden: true });
+    const status = el("p", { class: "conversation-status", testid: "board-collie-status", role: "status" });
+    const notice = el("p", { class: "board-command-error", testid: "board-collie-error", role: "alert", hidden: true });
+    const toggle = el("button", { class: "board-command-toggle", type: "button", testid: "board-collie-toggle",
       "aria-controls": transcript.id, "aria-expanded": "false", text: "Conversation", hidden: !sessionID,
       onclick: () => {
         expanded = !expanded; paint();
         if (expanded) { transcript.scrollTop = transcript.scrollHeight; void refresh(); composer.input.focus(); }
       } });
-    const full = el("button", { class: "btn small", type: "button", testid: "board-homie-open", text: "Open in Homie",
+    const full = el("button", { class: "btn small", type: "button", testid: "board-collie-open", text: "Open in Collie",
       onclick: () => { if (sessionID && !busy) { menu.open = false; openConversation(sessionID); } } });
-    const fresh = el("button", { class: "board-command-toggle", type: "button", testid: "board-homie-new", text: "New conversation",
+    const fresh = el("button", { class: "board-command-toggle", type: "button", testid: "board-collie-new", text: "New conversation",
       onclick: async () => { await startNewConversation(); if (active) composer.input.focus(); } });
-    const retry = el("button", { class: "btn small", type: "button", testid: "board-homie-refresh", text: "Retry connection",
+    const retry = el("button", { class: "btn small", type: "button", testid: "board-collie-refresh", text: "Retry connection",
       hidden: true, onclick: () => {
         if (!sessionID) { void startNewConversation(); return; }
         error = ""; paint(); void refresh();
@@ -93,9 +93,9 @@ export function createCommandBar({ api, renderMessage, openConversation, changed
     });
     menu.addEventListener("focusout", event => { if (!menu.contains(event.relatedTarget)) menu.open = false; });
     const statusRow = el("div", { class: "board-command-status" }, status, retry);
-    const view = el("section", { class: "board-command conversation-page", "aria-label": "Homie command bar" },
+    const view = el("section", { class: "board-command conversation-page", "aria-label": "Collie command bar" },
       el("header", { class: "board-command-header" },
-        el("div", { class: "board-command-title" }, el("h3", { text: "Homie" })),
+        el("div", { class: "board-command-title" }, el("h3", { text: "Collie" })),
         el("div", { class: "board-command-actions" }, fresh, toggle, menu)),
       transcript, statusRow, notice, composer.form);
 
@@ -116,10 +116,10 @@ export function createCommandBar({ api, renderMessage, openConversation, changed
       retry.hidden = !error || busy;
       notice.hidden = !error; notice.textContent = error;
       menu.hidden = !sessionID;
-      status.textContent = requestState === "send" ? "Your message goes to Homie…"
+      status.textContent = requestState === "send" ? "Your message goes to Collie…"
         : requestState === "start" ? "Culler starts a new conversation…"
         : error ? "The last request failed."
-        : owed ? "Homie prepares a reply…"
+        : owed ? "Collie prepares a reply…"
         : rows.some(row => row.replyState === "failed") ? "A reply failed. Open the conversation to retry the reply."
         : "";
       statusRow.hidden = !status.textContent && retry.hidden;
@@ -163,7 +163,7 @@ export function createCommandBar({ api, renderMessage, openConversation, changed
         if (wasOwed && !owed) changed();
       } catch (err) {
         if (revision !== version || requested !== sessionID) return;
-        if (err.status === 400 && err.message === `unknown Homie session "${requested}"`) await startNewConversation();
+        if (err.status === 400 && err.message === `unknown Collie session "${requested}"`) await startNewConversation();
         else error = `The conversation could not refresh. ${err.message}`;
       } finally { reading = false; paint(); schedule(); }
     }

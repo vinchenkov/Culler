@@ -206,12 +206,12 @@ func TestCapabilityConsumingFinalIsTheBrokersConverseFence(t *testing.T) {
 		final string
 		want  bool
 	}{
-		"a homie wake consumes the catalog":     {`{"action":"homie-wake","session":"h-1"}`, true},
+		"a collie wake consumes the catalog":    {`{"action":"collie-wake","session":"h-1"}`, true},
 		"a carried runtime binding consumes it": {`{"action":"future-launch","runtime_binding":{"id":"claude"}}`, true},
-		"an idle end does not":                  {`{"action":"homie-stop","session":"h-1"}`, false},
+		"an idle end does not":                  {`{"action":"collie-stop","session":"h-1"}`, false},
 		"a pipeline spawn effect does not":      {`{"action":"spawn","run_id":"r-1"}`, false},
 		"an unreadable body owes the fence":     {`{"action":`, true},
-		"a non-object body owes the fence":      {`"homie-wake"`, true},
+		"a non-object body owes the fence":      {`"collie-wake"`, true},
 	} {
 		t.Run(name, func(t *testing.T) {
 			if got := capabilityConsumingFinal([]byte(tc.final)); got != tc.want {
@@ -233,10 +233,10 @@ func TestPrivateHelperVerbErrorKeepsTheHelpersContractCode(t *testing.T) {
 		wantCode string
 	}{
 		{"helper domain rejection", &privateHelperExitError{
-			message: "private helper __homie-start failed: already bound", code: 1,
+			message: "private helper __collie-start failed: already bound", code: 1,
 		}, "domain-rejection"},
 		{"helper usage refusal", &privateHelperExitError{
-			message: "private helper __homie-start failed: bad frame", code: 2,
+			message: "private helper __collie-start failed: bad frame", code: 2,
 		}, "usage"},
 		// A crossing that never produced an exit code at all (timeout, docker
 		// missing) is an environment failure, not a domain verdict.
@@ -245,7 +245,7 @@ func TestPrivateHelperVerbErrorKeepsTheHelpersContractCode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			var stdout, stderr bytes.Buffer
 			code := writeVerbError(&stdout, &stderr,
-				privateHelperVerbError("private Homie start", tc.err))
+				privateHelperVerbError("private Collie start", tc.err))
 			wantExit := map[string]int{"domain-rejection": 1, "usage": 2}[tc.wantCode]
 			if code != wantExit {
 				t.Fatalf("exit = %d, want %d", code, wantExit)
@@ -285,8 +285,8 @@ func TestBrokerTickRecordsTheRoundThatEndedIt(t *testing.T) {
 			}
 
 			tick = brokerTick{}
-			if ended, first, err := tick.fold("", json.RawMessage(`{"action":"homie-wake","session":"h-1"}`), nil); ended || first != nil || err != nil {
-				t.Fatalf("homie round: ended=%v first=%+v err=%v", ended, first, err)
+			if ended, first, err := tick.fold("", json.RawMessage(`{"action":"collie-wake","session":"h-1"}`), nil); ended || first != nil || err != nil {
+				t.Fatalf("collie round: ended=%v first=%+v err=%v", ended, first, err)
 			}
 			ended, first, err = tick.fold("a", json.RawMessage(tc.effect), tc.refusal)
 			if err != nil || !ended || first != nil {
@@ -305,7 +305,7 @@ func TestBrokerTickRecordsTheRoundThatEndedIt(t *testing.T) {
 				t.Fatal(err)
 			}
 			if got.Action != "tick" || len(got.Actions) != 2 || len(got.Idle) != 0 {
-				t.Fatalf("tick = %s, want the Homie effect then the refusal envelope", encoded)
+				t.Fatalf("tick = %s, want the Collie effect then the refusal envelope", encoded)
 			}
 			var envelope struct {
 				Error struct {
@@ -325,7 +325,7 @@ func TestBrokerTickRecordsTheRoundThatEndedIt(t *testing.T) {
 
 // TestBrokerTickListsPipelineIdleRoundsOnly pins the tick's idle list: a
 // pipeline round's idle result is listed with its Project and reason, the
-// Homie stage's idle result is recorded nowhere, and every other effect is
+// Collie stage's idle result is recorded nowhere, and every other effect is
 // an element of actions in round order.
 func TestBrokerTickListsPipelineIdleRoundsOnly(t *testing.T) {
 	var tick brokerTick
@@ -355,7 +355,7 @@ func TestBrokerTickListsPipelineIdleRoundsOnly(t *testing.T) {
 func TestBrokerTickFoldsAWikiRound(t *testing.T) {
 	var tick brokerTick
 	if ended, first, err := tick.fold("", json.RawMessage(`{"action":"idle","reason":"nothing-to-do"}`), nil); ended || first != nil || err != nil {
-		t.Fatalf("homie round: ended=%v first=%+v err=%v", ended, first, err)
+		t.Fatalf("collie round: ended=%v first=%+v err=%v", ended, first, err)
 	}
 	pipeline := &brokerTickRefusal{code: "health.helper_unavailable", err: errors.New("pipeline round refused")}
 	if ended, first, err := tick.fold("a", nil, pipeline); !ended || first != nil || err != nil {
@@ -431,7 +431,7 @@ func TestHelperTimeLimitEndsTheWikiLoop(t *testing.T) {
 			var stderr bytes.Buffer
 			brokerWikiRounds(&tick, home, "de41cafe-0000-4000-8000-000000000001", []string{"a", "b", "c"},
 				map[string]string{}, verbs.ResolveRuntimeCapability(home),
-				[]verbs.PrivateHomieContainer{}, []verbs.PrivatePipelineLiveness{}, &stderr)
+				[]verbs.PrivateCollieContainer{}, []verbs.PrivatePipelineLiveness{}, &stderr)
 
 			recorded, err := os.ReadFile(calls)
 			if err != nil {
@@ -485,7 +485,7 @@ func TestPrivateHelperTimeLimitMark(t *testing.T) {
 // The dashboard acts on the code of a refused packet preparation, so the
 // broker relays a domain rejection of the helper with its own code and
 // message. Each other helper failure keeps the text of the crossing.
-func TestHomieStartBrokerRelaysTheHelperRefusal(t *testing.T) {
+func TestCollieStartBrokerRelaysTheHelperRefusal(t *testing.T) {
 	const envelope = `{"error":{"code":"record-conflict","message":"The review packet changed. Open the current packet."}}`
 	for name, tc := range map[string]struct {
 		stdout   string
@@ -495,10 +495,10 @@ func TestHomieStartBrokerRelaysTheHelperRefusal(t *testing.T) {
 	}{
 		"a domain rejection":      {envelope, 1, 1, envelope},
 		"an uncoded rejection":    {`{"error":{"code":"domain-rejection","message":"The selected agent profile is unavailable."}}`, 1, 1, `{"error":{"code":"domain-rejection","message":"The selected agent profile is unavailable."}}`},
-		"a usage refusal":         {`{"error":{"code":"usage","message":"invalid private Homie start frame"}}`, 2, 2, `"message":"private Homie start: private helper __homie-start failed`},
-		"two envelopes":           {envelope + "\n" + envelope, 1, 1, `"message":"private Homie start: private helper __homie-start failed`},
-		"an envelope with a key":  {`{"error":{"code":"record-conflict","message":"changed","detail":"x"}}`, 1, 1, `"message":"private Homie start: private helper __homie-start failed`},
-		"an envelope of no error": {`{"packets":[]}`, 1, 1, `"message":"private Homie start: private helper __homie-start failed`},
+		"a usage refusal":         {`{"error":{"code":"usage","message":"invalid private Collie start frame"}}`, 2, 2, `"message":"private Collie start: private helper __collie-start failed`},
+		"two envelopes":           {envelope + "\n" + envelope, 1, 1, `"message":"private Collie start: private helper __collie-start failed`},
+		"an envelope with a key":  {`{"error":{"code":"record-conflict","message":"changed","detail":"x"}}`, 1, 1, `"message":"private Collie start: private helper __collie-start failed`},
+		"an envelope of no error": {`{"packets":[]}`, 1, 1, `"message":"private Collie start: private helper __collie-start failed`},
 	} {
 		t.Run(name, func(t *testing.T) {
 			stubDir := t.TempDir()
@@ -507,16 +507,16 @@ func TestHomieStartBrokerRelaysTheHelperRefusal(t *testing.T) {
 				t.Fatal(err)
 			}
 			t.Setenv("PATH", stubDir+string(os.PathListSeparator)+os.Getenv("PATH"))
-			var result verbs.HomieStartResult
-			err := callPrivateHelper("__homie-start", verbs.PrivateHomieStartRequest{Version: 1, From: "dashboard:dash-0a1b2c3d", Packet: 41, PacketVersion: 88}, &result)
+			var result verbs.CollieStartResult
+			err := callPrivateHelper("__collie-start", verbs.PrivateCollieStartRequest{Version: 1, From: "dashboard:dash-0a1b2c3d", Packet: 41, PacketVersion: 88}, &result)
 			var stdout, stderr bytes.Buffer
-			if code := writeVerbError(&stdout, &stderr, privateHelperRefusal("private Homie start", err)); code != tc.wantExit {
+			if code := writeVerbError(&stdout, &stderr, privateHelperRefusal("private Collie start", err)); code != tc.wantExit {
 				t.Fatalf("exit = %d, want %d (%s)", code, tc.wantExit, stdout.String())
 			}
 			if !strings.Contains(stdout.String(), tc.want) {
 				t.Fatalf("envelope = %s, want %s", stdout.String(), tc.want)
 			}
-			if wrapped := privateHelperVerbError("private dispatch prepare", err); !strings.Contains(wrapped.Error(), "private helper __homie-start failed") {
+			if wrapped := privateHelperVerbError("private dispatch prepare", err); !strings.Contains(wrapped.Error(), "private helper __collie-start failed") {
 				t.Fatalf("the crossing text changed: %v", wrapped)
 			}
 		})

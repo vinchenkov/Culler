@@ -2,7 +2,7 @@
 type: integration
 title: Discord setup, account access, and delivery
 description: The optional Discord connection, its dashboard setup, host authority, delivery lifecycle, and verification boundaries.
-tags: [discord, homie, configuration, alerts]
+tags: [discord, collie, configuration, alerts]
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -32,7 +32,7 @@ verified:
 
 # Discord setup, account access, and delivery
 
-Culler connects one bot to one server and one channel for Homie conversations and selected alerts.
+Culler connects one bot to one server and one channel for Collie conversations and selected alerts.
 The operator uses **Configs → Discord** after the first Project completes initial source acceptance.
 The connection serves the installation, independently of a selected Project.
 Culler must run on the Mac for Discord access.
@@ -46,7 +46,7 @@ Culler must run on the Mac for Discord access.
 | `mc/cmd/mc/discord.go` | Host authority, configuration revisions, saved policy, and coordinated activation. |
 | `mc/verbs/discord.go` | Durable availability, alert routes, and retirement of old delivery destinations. |
 | `resident/src/discord-config.ts` | Discord checks, temporary credentials, confirmation receivers, and connection activation. |
-| `resident/src/discord.ts` | Gateway events, authorized Homie messages, and outbox delivery. |
+| `resident/src/discord.ts` | Gateway events, authorized Collie messages, and outbox delivery. |
 
 The host command communicates with the resident through `MC_HOME/discord.socket`.
 It verifies an operator-owned socket with mode 0600 before use.
@@ -155,16 +155,16 @@ Only **Send test message** performs that explicit delivery check.
 
 Ordinary inbound messages require a non-bot author in the allowed account list and the configured server.
 The destination must be the configured channel or a recognized thread below it.
-The connector consumes bare confirmation codes before ordinary Homie routing.
-The Homie directive and runner prompt assign Discord credentials and account approval to host controls.
-See [Homie](../concepts/homie.md) for conversation records and run authority.
+The connector consumes bare confirmation codes before ordinary Collie routing.
+The Collie directive and runner prompt assign Discord credentials and account approval to host controls.
+See [Collie](../concepts/collie.md) for conversation records and run authority.
 
 ### Thread conversations
 
-Each authorized channel message starts a public thread attached to that message and one Homie session.
-The resident verifies the thread before it sends the initial message to Homie.
+Each authorized channel message starts a public thread attached to that message and one Collie session.
+The resident verifies the thread before it sends the initial message to Collie.
 Each reply in that thread continues the associated session.
-If a start stops before the initial message reaches Homie, the resident checks the bot-owned thread and recovers the original channel message.
+If a start stops before the initial message reaches Collie, the resident checks the bot-owned thread and recovers the original channel message.
 The source message identifier keeps a repeated Discord message to one transcript entry.
 
 The dashboard lists sessions from both surfaces and can continue a Discord session.
@@ -181,7 +181,7 @@ New connections enable Blocked tasks and System health alerts.
 The host changes only the Discord routes and preserves dashboard routes.
 A failed alert save leaves the browser's confirmed snapshot in place.
 
-Connection retirement deactivates Discord Homie bindings and marks pending Discord outbox rows with `retired_at`.
+Connection retirement deactivates Discord Collie bindings and marks pending Discord outbox rows with `retired_at`.
 Those rows retain their original destination and remain undelivered.
 Outbox polling excludes them, and acknowledgement refuses them.
 The schema prevents a later change to a retirement timestamp.
@@ -200,7 +200,7 @@ Project data, conversation history, and access to the Discord section remain ava
 | `mc/config/recovery_test.go` | Configuration restore and failed recovery reporting. |
 | `resident/src/discord-config.test.ts` | Confirmation, expiry, invalidation, account replacement, inactive previews, and failed activation preparation. |
 | `resident/src/discord.test.ts` | Inbound authorization and connector delivery behavior. |
-| `mc/verbs/homiethread_test.go` | Thread identity, repeated messages, resume, retirement, and dashboard delivery bindings. |
+| `mc/verbs/colliethread_test.go` | Thread identity, repeated messages, resume, retirement, and dashboard delivery bindings. |
 | `dashboard/smoke/discord-conversation.smoke.test.ts` | One conversation across a Discord thread and the dashboard, plus a separate channel conversation. |
 | `dashboard/smoke/discord.smoke.test.ts` | Browser setup through real host commands with simulated Discord responses. |
 
@@ -211,7 +211,7 @@ The smoke harness rejects a scratch `discord.socket` path above 103 bytes before
 The CI browser job sets `MC_SMOKE_ROOT` below `$RUNNER_TEMP/smoke` to keep this path short.
 
 The [retained verification report](../../.tracking/discord-configuration/REPORT.md) records automated and live checks from 28 October 2026.
-It reports live account confirmation, inbound Gateway delivery, both alert types, and a scripted Homie reply after a retry.
+It reports live account confirmation, inbound Gateway delivery, both alert types, and a scripted Collie reply after a retry.
 It explicitly leaves a reply from a live agent unverified.
 It also records Unix socket path-length limits with a long macOS temporary path.
 These are attributed historical results, not a fresh test run or production acceptance by this wiki update.

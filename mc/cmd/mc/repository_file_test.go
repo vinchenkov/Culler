@@ -64,8 +64,8 @@ func TestRepositoryFileCommandReadsAFileAtAnExactCommitOnTheHost(t *testing.T) {
 			t.Fatalf("__repository-file %v gave %d %v", args, refused.code, refused.json)
 		}
 	}
-	agent := runMC(t, homieJSONEnv(t, spine, "h-0123456789abcdef", []string{}), "", "__repository-file", root, after, "notes.md")
+	agent := runMC(t, collieJSONEnv(t, spine, "h-0123456789abcdef", []string{}), "", "__repository-file", root, after, "notes.md")
 	if agent.code != 1 || !strings.Contains(agent.stderr, "host scope only") {
-		t.Fatalf("a Homie caller gave %d %q", agent.code, agent.stderr)
+		t.Fatalf("a Collie caller gave %d %q", agent.code, agent.stderr)
 	}
 }

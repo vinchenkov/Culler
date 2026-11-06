@@ -1,6 +1,6 @@
 // nudge-socket.ts — the resident's wake listener.
 //
-// A Homie message, Vision submission, Project start, or packet decision can
+// A Collie message, Vision submission, Project start, or packet decision can
 // wake the resident. Each request contains one recognized value followed by a
 // newline.
 
@@ -13,7 +13,7 @@ export const NUDGE_SOCKET_NAME = "resident.socket";
 /** Each wake request fits within this byte limit. */
 export const MAX_NUDGE_LINE_BYTES = 64;
 
-const homieSessionID = /^h-[0-9a-f]{16}$/;
+const collieSessionID = /^h-[0-9a-f]{16}$/;
 
 export function nudgeSocketPath(mcHome: string): string {
   return join(mcHome, NUDGE_SOCKET_NAME);
@@ -21,7 +21,7 @@ export function nudgeSocketPath(mcHome: string): string {
 
 /** Returns the recognized wake request. */
 export function parseNudgeLine(line: string): string | null {
-  return homieSessionID.test(line) || line === "vision-save" || line === "project-start" ||
+  return collieSessionID.test(line) || line === "vision-save" || line === "project-start" ||
     line === "packet-decide" ? line : null;
 }
 

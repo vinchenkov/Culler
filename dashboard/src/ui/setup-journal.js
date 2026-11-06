@@ -299,16 +299,16 @@ function retryNode(model, actions) {
     actions.actionError && el("p", { class: "journal-action-error", role: "alert", testid: "setup-action-error", text: actions.actionError }));
 }
 
-/** The Ask Homie action of the current setup failure. The action stays with
+/** The Ask Collie action of the current setup failure. The action stays with
  * the setup controls because the stream contains no action controls. */
 function diagnosticNode(model, ask) {
   const row = model.operations.find(row => row.current && (row.operation.error || row.operation.status === "failed"));
   if (row) {
     const failure = setupFailureDisplay(row.operation.error, row.operation.metadata?.failure_details);
-    return diagnosticButton(setupDiagnostic(model.projectID, row.operation, row.title, failure.message), ask, "setup-ask-homie");
+    return diagnosticButton(setupDiagnostic(model.projectID, row.operation, row.title, failure.message), ask, "setup-ask-collie");
   }
   return model.retry
-    ? diagnosticButton(setupDiagnostic(model.projectID, null, "Setup needs attention", model.cause || errorFallback), ask, "setup-ask-homie")
+    ? diagnosticButton(setupDiagnostic(model.projectID, null, "Setup needs attention", model.cause || errorFallback), ask, "setup-ask-collie")
     : null;
 }
 

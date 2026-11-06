@@ -89,12 +89,12 @@ func reconcileUpdateDB(db *sql.DB) (UpdateReconciliation, error) {
 				return err
 			}
 		}
-		sessions, err := updateIDs(ctx, q, `SELECT id FROM homie_sessions WHERE status='active' AND current_launch_id IS NOT NULL`)
+		sessions, err := updateIDs(ctx, q, `SELECT id FROM collie_sessions WHERE status='active' AND current_launch_id IS NOT NULL`)
 		if err != nil {
 			return err
 		}
 		for _, session := range sessions {
-			if _, _, err := homieEndTx(ctx, q, "resident", session, "The update interrupted this session. Resume the session to continue."); err != nil {
+			if _, _, err := collieEndTx(ctx, q, "resident", session, "The update interrupted this session. Resume the session to continue."); err != nil {
 				return err
 			}
 			result.Sessions++

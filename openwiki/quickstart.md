@@ -102,7 +102,7 @@ Culler is a local-first orchestration system for AI coding agents with one human
 | Spine | `mc/substrate/schema.sql` | One SQLite database. It is the message bus and the ground truth. |
 | Resident | `resident/` (Bun) | The host daemon. It runs the tick loop, starts containers, and runs the repository, environment, trace, and wiki lanes. |
 | Dashboard | `dashboard/` (Bun) | The operator UI on `127.0.0.1:7333`. Its API mirrors `mc` verbs. |
-| Runners | `runner/` | Container code that runs one agent harness per run, plus Homie and setup runners, the fake harness, Project images, and the private runtime. |
+| Runners | `runner/` | Container code that runs one agent harness per run, plus Collie and setup runners, the fake harness, Project images, and the private runtime. |
 | AgentsView | `mc/deployment/agentsview.json` | The pinned third-party trace viewer that launchd supervises. |
 | Evals | `evals/` (Python) | The evaluation harness for agent roles. |
 
@@ -114,8 +114,8 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 - **Task**: one unit of work. Each task delivers one Git commit.
 - **Roles**: the Strategist proposes, the Arbiter selects, the Worker builds, the Verifier judges, the Scribe updates the project wiki, and the Packager writes the review packet. See [The task pipeline roles](workflows/task-pipeline.md).
 - **Run**: one role execution in a fresh container. The launch envelope `MC_HOME/runs/<run_id>.json` is mounted at `/mc/run.json`.
-- **Lease**: each Project has at most one agent run with its lease. Homie, Scribe runs, and repository operations take no lease.
-- **Homie**: the conversational tier for the operator. See [Homie](concepts/homie.md).
+- **Lease**: each Project has at most one agent run with its lease. Collie, Scribe runs, and repository operations take no lease.
+- **Collie**: the conversational tier for the operator. See [Collie](concepts/collie.md).
 
 ## Common tasks
 
@@ -132,7 +132,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Change the host daemon | [The resident](architecture/resident.md) |
 | Change container or harness behavior | [Runners](architecture/runners.md) |
 | Configure Discord conversations and alerts | [Discord setup and delivery](integrations/discord.md) |
-| Discuss a review packet with Homie | [Packet conversations](workflows/packet-conversations.md) |
+| Discuss a review packet with Collie | [Packet conversations](workflows/packet-conversations.md) |
 | Inspect task runs and evidence from Review | [Task details from Review](architecture/dashboard.md#task-details-from-review) |
 | Inspect a Verifier correction | [Task correction details](architecture/dashboard.md#verifier-correction-details) |
 | Change the operator UI | [The dashboard](architecture/dashboard.md) |
@@ -194,7 +194,7 @@ See [setup progress and history](workflows/project-environments.md#setup-progres
 
 ```sh
 ./mc/check.sh && ./runner/fake-harness/check.sh && ./runner/agent-runner/check.sh && \
-./runner/homie-runner/check.sh && ./runner/setup-runner/check.sh && ./runner/shared/check.sh && ./runner/image/check.sh && \
+./runner/collie-runner/check.sh && ./runner/setup-runner/check.sh && ./runner/shared/check.sh && ./runner/image/check.sh && \
 ./resident/check.sh && ./dashboard/check.sh
 ```
 
@@ -253,11 +253,11 @@ Select **Task** in the reader to open the task description, run history, trace l
 The evidence control copies its host path. Escape closes the task dialog and keeps the reader open.
 See [task details from Review](architecture/dashboard.md#task-details-from-review) for refresh and layout behavior.
 
-The Review reader offers a Homie conversation tied to the selected packet and version.
-Select Ask Homie in the wide decision bar, or the Homie view in the narrow layout.
-The quick chat model control selects the profile for new Homie conversations.
+The Review reader offers a Collie conversation tied to the selected packet and version.
+Select Ask Collie in the wide decision bar, or the Collie view in the narrow layout.
+The quick chat model control selects the profile for new Collie conversations.
 A different profile starts a new packet conversation; confirmation protects a conversation with messages.
-The same conversation remains available on the Homie page after its first message.
+The same conversation remains available on the Collie page after its first message.
 The runner supplies the report context and read-only access to that task's artifacts.
 See [packet conversations](workflows/packet-conversations.md) for preparation, report limits, decisions, and recovery.
 
@@ -283,7 +283,7 @@ The proposal page contains component diagrams, data-flow examples, and glossarie
 Its scope covers these groups:
 
 - Release checks, dashboard access, secret storage, and release identity.
-- Provider credentials, Project secrets, network access, and Homie file access.
+- Provider credentials, Project secrets, network access, and Collie file access.
 - Sandboxes, external actions, tool isolation, hostile Projects, and tools across runs.
 
 The Tools across runs section proposes separate role tool state and verified disposable download caches.
@@ -304,14 +304,14 @@ The implementation inventory records earlier check results. Those results are se
 
 ## Discuss a diagnostic issue
 
-Select **Ask Homie** from an issue view to open an ordinary conversation with its summary and relevant record identifiers.
+Select **Ask Collie** from an issue view to open an ordinary conversation with its summary and relevant record identifiers.
 The action asks for an explanation and proposed action, and preserves the existing conversation and composer draft.
 The [diagnostic conversation guide](architecture/dashboard.md#diagnostic-conversations) explains the available views, evidence limits, and retry behavior.
-The [Homie authority guide](concepts/homie.md#diagnostic-context-and-authority) explains current-state reads, unavailable evidence, and explicit confirmation before state changes.
+The [Collie authority guide](concepts/collie.md#diagnostic-context-and-authority) explains current-state reads, unavailable evidence, and explicit confirmation before state changes.
 
 ## Resolve an operator decision report
 
-Open Resolve decision for the task on the Board, or discuss the report with Homie.
+Open Resolve decision for the task on the Board, or discuss the report with Collie.
 The task dialog offers no Require decision control.
 For an operator decision report, the resolution requires a changed description and a reason.
 Put every requirement in the description. Use the reason to explain the change.
@@ -333,7 +333,7 @@ Select **Set up Discord**, check the bot, choose a channel, and send the explici
 Use **Refresh list** if the server or channel is absent.
 Send only the displayed code in the selected Discord channel, then approve the identified account in the dashboard.
 Discord remains optional, and one connection serves the installation.
-Each new channel message starts a Homie conversation in its own thread.
+Each new channel message starts a Collie conversation in its own thread.
 Continue the conversation in that thread or open the same session in the dashboard.
 The bot needs Create Public Threads and Send Messages in Threads permissions.
 

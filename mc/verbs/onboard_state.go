@@ -39,7 +39,7 @@ type OnboardStateRequest struct {
 	HeartbeatIntervalS  int  `json:"heartbeat_interval_s,omitempty"`
 	SpawnGraceS         int  `json:"spawn_grace_s,omitempty"`
 	HardDeadlineMinutes int  `json:"hard_deadline_minutes,omitempty"`
-	HomieIdleTimeoutS   int  `json:"homie_idle_timeout_s,omitempty"`
+	CollieIdleTimeoutS  int  `json:"collie_idle_timeout_s,omitempty"`
 	WikiUpdateIntervalS int  `json:"wiki_update_interval_s,omitempty"`
 	ReviewWIPCap        int  `json:"review_wip_cap,omitempty"`
 	TunablesConfirmed   bool `json:"tunables_confirmed,omitempty"`
@@ -123,7 +123,7 @@ func onboardStateBase(a OnboardArgs, releaseBuildID string, controlVersion, conf
 		ProjectVision:          a.ProjectVision,
 		TimeoutMinutes:         a.TimeoutMinutes, GraceMinutes: a.GraceMinutes,
 		HeartbeatIntervalS: a.HeartbeatIntervalS, SpawnGraceS: a.SpawnGraceS,
-		HardDeadlineMinutes: a.HardDeadlineMinutes, HomieIdleTimeoutS: a.HomieIdleTimeoutS,
+		HardDeadlineMinutes: a.HardDeadlineMinutes, CollieIdleTimeoutS: a.CollieIdleTimeoutS,
 		WikiUpdateIntervalS: a.WikiUpdateIntervalS,
 		ReviewWIPCap:        a.ReviewWIPCap, TunablesConfirmed: a.TunablesConfirmed,
 	}
@@ -152,7 +152,7 @@ func PrepareOnboardState(a OnboardArgs, releaseBuildID string, controlVersion, c
 			return OnboardStateRequest{}, err
 		}
 	case "tunables":
-		for _, value := range []int{a.TimeoutMinutes, a.GraceMinutes, a.HeartbeatIntervalS, a.SpawnGraceS, a.HardDeadlineMinutes, a.HomieIdleTimeoutS, a.WikiUpdateIntervalS, a.ReviewWIPCap} {
+		for _, value := range []int{a.TimeoutMinutes, a.GraceMinutes, a.HeartbeatIntervalS, a.SpawnGraceS, a.HardDeadlineMinutes, a.CollieIdleTimeoutS, a.WikiUpdateIntervalS, a.ReviewWIPCap} {
 			if value < 0 {
 				return OnboardStateRequest{}, Usagef("mc onboard tunables values must be non-negative")
 			}
@@ -213,7 +213,7 @@ func validateOnboardStateIdentity(req OnboardStateRequest, releaseBuildID string
 		req.ProjectSandboxProfile != "" || req.ProjectToolHomeDir != "" ||
 		req.ProjectVision != ""
 	tunableFields := req.TimeoutMinutes != 0 || req.GraceMinutes != 0 || req.HeartbeatIntervalS != 0 ||
-		req.SpawnGraceS != 0 || req.HardDeadlineMinutes != 0 || req.HomieIdleTimeoutS != 0 ||
+		req.SpawnGraceS != 0 || req.HardDeadlineMinutes != 0 || req.CollieIdleTimeoutS != 0 ||
 		req.WikiUpdateIntervalS != 0 || req.ReviewWIPCap != 0 || req.TunablesConfirmed
 	surfaceFields := len(req.AlertRoutes) != 0
 	switch req.Section {
@@ -262,7 +262,7 @@ func onboardArgsFromState(spine string, req OnboardStateRequest) OnboardArgs {
 		ProjectVision:          req.ProjectVision,
 		TimeoutMinutes:         req.TimeoutMinutes, GraceMinutes: req.GraceMinutes,
 		HeartbeatIntervalS: req.HeartbeatIntervalS, SpawnGraceS: req.SpawnGraceS,
-		HardDeadlineMinutes: req.HardDeadlineMinutes, HomieIdleTimeoutS: req.HomieIdleTimeoutS,
+		HardDeadlineMinutes: req.HardDeadlineMinutes, CollieIdleTimeoutS: req.CollieIdleTimeoutS,
 		WikiUpdateIntervalS: req.WikiUpdateIntervalS,
 		ReviewWIPCap:        req.ReviewWIPCap, TunablesConfirmed: req.TunablesConfirmed,
 	}

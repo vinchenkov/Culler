@@ -111,7 +111,7 @@ describe("Discord typing indicator", () => {
     timers.advance(TYPING_INTERVAL_MS);
     expect(typed.length).toBe(4);
     const runMc = queued([
-      { stdout: JSON.stringify({ surface: "discord", rows: [{ id: 42, kind: "homie_reply", session_id: "h", surface: "discord", channel_ref: "2", payload: { body: "reply" } }] }) },
+      { stdout: JSON.stringify({ surface: "discord", rows: [{ id: 42, kind: "collie_reply", session_id: "h", surface: "discord", channel_ref: "2", payload: { body: "reply" } }] }) },
       { stdout: JSON.stringify({ id: 42, acked: true }) },
     ], []);
     await drainDiscordOutbox(policy, runMc, { triggerTyping: async () => {}, postMessage: async () => {} }, undefined, loop);
@@ -170,7 +170,7 @@ describe("Discord native surface", () => {
       expect(authorizedDiscordMessage(policy, rejected)).toBe(false);
       const calls: string[][] = [];
       expect(await routeDiscordFreeText(policy, rejected, queued([{ stdout: JSON.stringify({ sessions: [] }) }], calls), undefined, undefined, { async ensure() {} })).toBe("ignored");
-      expect(calls.every(call => call.join(" ") === "homie list")).toBe(true);
+      expect(calls.every(call => call.join(" ") === "collie list")).toBe(true);
     }
   });
 
@@ -186,9 +186,9 @@ describe("Discord native surface", () => {
       { async ensure(value) { threads.push(value.message_id); } })).toBe("started");
     expect(threads).toEqual(["100"]);
     expect(calls).toEqual([
-      ["homie", "list"],
-      ["homie", "start", "--from", "discord:100", "--discord-guild", "1", "--discord-parent", "2"],
-      ["homie", "send", "h-new", "--from", "discord:100", "--body", "hello", "--source-message", "100"],
+      ["collie", "list"],
+      ["collie", "start", "--from", "discord:100", "--discord-guild", "1", "--discord-parent", "2"],
+      ["collie", "send", "h-new", "--from", "discord:100", "--body", "hello", "--source-message", "100"],
     ]);
   });
 
@@ -202,7 +202,7 @@ describe("Discord native surface", () => {
         { stdout: JSON.stringify({ message_id: 1 }) },
       ], calls);
       expect(await routeDiscordFreeText(policy, { ...message, parent_channel_id: null }, runMc, id => nudges.push(id))).toBe(status === "active" ? "sent" : "resumed");
-      expect(calls.at(-1)).toEqual(["homie", "send", "h-existing", "--from", "discord:20", "--body", "hello", "--source-message", "100"]);
+      expect(calls.at(-1)).toEqual(["collie", "send", "h-existing", "--from", "discord:20", "--body", "hello", "--source-message", "100"]);
       expect(nudges).toEqual(["h-existing"]);
     }
   });
@@ -214,7 +214,7 @@ describe("Discord native surface", () => {
       expect(await routeDiscordFreeText(policy, message, queued([
         { stdout: JSON.stringify({ sessions: [{ id: "h", status: "active", discord_thread: thread }] }) },
       ], calls), undefined, undefined, { async ensure() {} })).toBe("ignored");
-      expect(calls).toEqual([["homie", "list"]]);
+      expect(calls).toEqual([["collie", "list"]]);
     }
   });
 
@@ -223,7 +223,7 @@ describe("Discord native surface", () => {
     await expect(routeDiscordFreeText(policy, { ...message, channel_id: "2" }, queued([
       { stdout: JSON.stringify({ sessions: [] }) },
     ], calls), undefined, undefined, { async ensure() { throw new Error("Permission denied"); } })).rejects.toThrow("Permission denied");
-    expect(calls).toEqual([["homie", "list"]]);
+    expect(calls).toEqual([["collie", "list"]]);
   });
 
   test("thread creation recovers an existing thread and refuses another parent", async () => {
@@ -312,7 +312,7 @@ describe("Discord native surface", () => {
   test("posts a durable outbox row before its ack", async () => {
     const calls: string[][] = [];
     const runMc = queued([
-      { stdout: JSON.stringify({ surface: "discord", rows: [{ id: 42, kind: "homie_reply", session_id: "h", surface: "discord", channel_ref: "2", payload: { body: "reply" } }] }) },
+      { stdout: JSON.stringify({ surface: "discord", rows: [{ id: 42, kind: "collie_reply", session_id: "h", surface: "discord", channel_ref: "2", payload: { body: "reply" } }] }) },
       { stdout: JSON.stringify({ id: 42, acked: true }) },
     ], calls);
     const posts: unknown[] = [];
@@ -329,7 +329,7 @@ describe("Discord native surface", () => {
     const runMc: Exec = async argv => {
       calls.push(argv);
       return { exitCode: 0, stderr: "", stdout: JSON.stringify(argv[1] === "poll"
-        ? { surface: "discord", rows: [{ id: 42, kind: "homie_reply", surface: "discord", payload: { body } }] }
+        ? { surface: "discord", rows: [{ id: 42, kind: "collie_reply", surface: "discord", payload: { body } }] }
         : { acked: true }) };
     };
     const rest = { async postMessage(_channel: string, post: { content: string; nonce: string }) {
@@ -367,7 +367,7 @@ describe("Discord native surface", () => {
     const calls: string[][] = [];
     const runMc = queued([
       { stdout: JSON.stringify({ surface: "discord", rows: [{
-        id: 43, kind: "homie_reply", session_id: "h", surface: "discord", channel_ref: "2",
+        id: 43, kind: "collie_reply", session_id: "h", surface: "discord", channel_ref: "2",
         payload: {
           code: "attachment_publish_failed", attachment_ingress_id: 7,
           attempt_id: "0123456789abcdef", attempt: 3, outcome: "failed",
@@ -434,14 +434,14 @@ describe("Discord native surface", () => {
   });
 
   test("does not ack when Discord post fails or a row carries an unsupported kind", async () => {
-    const poll = { stdout: JSON.stringify({ surface: "discord", rows: [{ id: 42, kind: "homie_reply", session_id: "h", surface: "discord", channel_ref: "2", payload: { body: "reply" } }] }) };
+    const poll = { stdout: JSON.stringify({ surface: "discord", rows: [{ id: 42, kind: "collie_reply", session_id: "h", surface: "discord", channel_ref: "2", payload: { body: "reply" } }] }) };
     const calls: string[][] = [];
     await expect(drainDiscordOutbox(policy, queued([poll], calls), { triggerTyping: async () => {}, postMessage: async () => { throw new Error("network down"); } })).rejects.toThrow("network down");
     expect(calls).toEqual([["outbox", "poll", "--surface", "discord"]]);
     await expect(drainDiscordOutbox(policy, queued([{ stdout: JSON.stringify({ surface: "discord", rows: [{ id: 9, kind: "banner", session_id: null, surface: "discord", channel_ref: null, payload: { body: "brief" } }] }) }], []), { triggerTyping: async () => {}, postMessage: async () => {} })).rejects.toThrow("unsupported outbox kind");
   });
 
-  test("verifies every typed Homie attachment before one post and its ack", async () => {
+  test("verifies every typed Collie attachment before one post and its ack", async () => {
     const calls: string[][] = [];
     const posts: unknown[] = [];
     const reads: unknown[] = [];
@@ -453,7 +453,7 @@ describe("Discord native surface", () => {
     const poll = { stdout: JSON.stringify({
       surface: "discord",
       rows: [{
-        id: 44, kind: "homie_echo", session_id: session, surface: "discord",
+        id: 44, kind: "collie_echo", session_id: session, surface: "discord",
         channel_ref: "2", payload: {
           body: "attachment",
           attachments: [
@@ -518,7 +518,7 @@ describe("Discord native surface", () => {
       media_type: "text/plain", display_name: "sealed.txt",
     };
     const row = {
-      id: 45, kind: "homie_echo", session_id: session, surface: "discord",
+      id: 45, kind: "collie_echo", session_id: session, surface: "discord",
       channel_ref: "2", payload: { body: "attachment", attachments: [reference] },
     };
     for (const attachments of [
@@ -648,8 +648,8 @@ describe("Discord native surface", () => {
       id: "102", guild_id: "1", channel_id: "44", content: "attacker", author: { id: "4", bot: false },
     } });
     expect(calls).toEqual([
-      ["homie", "list"],
-      ["homie", "send", "h-new", "--from", "discord:44", "--body", "thread text", "--source-message", "101"],
+      ["collie", "list"],
+      ["collie", "send", "h-new", "--from", "discord:44", "--body", "thread text", "--source-message", "101"],
     ]);
     const resume: unknown[] = [];
     state.resume({ send: (frame: string) => { resume.push(JSON.parse(frame)); }, close: () => {} });

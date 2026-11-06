@@ -178,7 +178,7 @@ test("an imported Vision survives registration and an external file requires com
   expect(await page.getByTestId("project-start").innerText()).toBe("View setup");
 }, 40000);
 
-test("a stale edit preserves both drafts and Homie failure leaves the editor available", async () => {
+test("a stale edit preserves both drafts and Collie failure leaves the editor available", async () => {
   const { page } = smoke;
   const id = page.url().split("#vision/")[1];
   const initial = await post("vision-draft", { id });
@@ -196,7 +196,7 @@ test("a stale edit preserves both drafts and Homie failure leaves the editor ava
   expect(await page.getByTestId("project-save").isDisabled()).toBe(true);
   await page.unroute("**/api/projects/vision-edit");
   await page.getByTestId("vision-keep-local").click(); await savedDraft();
-  await page.route("**/api/sessions", route => route.fulfill({ status: 503, json: { error: { message: "Homie is unavailable." } } }));
+  await page.route("**/api/sessions", route => route.fulfill({ status: 503, json: { error: { message: "Collie is unavailable." } } }));
   await page.reload(); await visionReady();
   expect(await page.getByTestId("project-field-vision").isEnabled()).toBe(true);
   expect(await page.getByTestId("project-save").isEnabled()).toBe(true);
@@ -211,7 +211,7 @@ test("Vision conversations retain their Project and the shared upload control pr
   await page.getByTestId("vision-message").fill("Help me state the goal.");
   await page.getByTestId("vision-send").click();
   await page.getByTestId("vision-transcript").getByText("Help me state the goal.", { exact: true }).waitFor();
-  let sessions = (await mc(["homie", "list"])).sessions as any[];
+  let sessions = (await mc(["collie", "list"])).sessions as any[];
   const first = sessions.find(row => row.vision_project === firstID);
   expect(first).toBeDefined();
   await page.reload(); await visionReady();
@@ -220,13 +220,13 @@ test("Vision conversations retain their Project and the shared upload control pr
   await page.getByTestId("vision-message").fill("Discuss this other Project.");
   await page.getByTestId("vision-send").click();
   await page.getByTestId("vision-transcript").getByText("Discuss this other Project.", { exact: true }).waitFor();
-  sessions = (await mc(["homie", "list"])).sessions as any[];
+  sessions = (await mc(["collie", "list"])).sessions as any[];
   const second = sessions.find(row => row.vision_project === secondID);
   expect(second.id).not.toBe(first.id);
   expect(await page.getByTestId("vision-transcript").getByText("Help me state the goal.", { exact: true }).count()).toBe(0);
-  await page.getByTestId("tab-homie").click();
+  await page.getByTestId("tab-collie").click();
   expect(await page.getByTestId("session-row").filter({ hasText: first.id }).count()).toBe(0);
-  expect(await page.getByTestId("homie-uploads").count()).toBe(1);
+  expect(await page.getByTestId("collie-uploads").count()).toBe(1);
   await page.evaluate(id => { location.hash = `#vision/${id}`; }, firstID);
   await page.getByTestId("vision-transcript").getByText("Help me state the goal.", { exact: true }).waitFor();
   await page.getByTestId("vision-uploads").setInputFiles({ name: "goal.txt", mimeType: "text/plain", buffer: Buffer.from("A file goal.") });
@@ -330,19 +330,19 @@ test("reply retry shows immediate progress across controls and survives a histor
   await page.getByTestId("vision-message").fill("Inspect this Project.");
   await page.getByTestId("vision-send").click();
   await page.getByTestId("vision-transcript").getByText("Inspect this Project.", { exact: true }).waitFor();
-  const session = (await mc(["homie", "list"])).sessions.find((row: any) => row.vision_project === id);
+  const session = (await mc(["collie", "list"])).sessions.find((row: any) => row.vision_project === id);
   let replyState = "failed", calls = 0;
   let release!: () => void;
   let held = new Promise<void>(resolve => { release = resolve; });
   const historyPath = `**/api/sessions/${session.id}/history`;
-  const condition = { id: "reply:1", name: "Homie", group: "execution", state: "failed", action: "Retry reply", session_id: session.id, message_id: 1, attempt_id: "old-attempt" };
+  const condition = { id: "reply:1", name: "Collie", group: "execution", state: "failed", action: "Retry reply", session_id: session.id, message_id: 1, attempt_id: "old-attempt" };
   await page.route(historyPath, route => route.fulfill({ json: {
     session_id: session.id, status: "active", messages: [{ id: 1, direction: "inbound", body: "Inspect this Project.", created_at: "2020-01-01T00:00:00Z", reply_state: replyState, attempt_id: replyState === "failed" ? "old-attempt" : "new-attempt" }],
   } }));
   await page.route("**/api/system/status", route => route.fulfill({ json: {
     complete: true, observed_at: new Date().toISOString(), connections: [], conditions: replyState === "failed" ? [condition] : [],
   } }));
-  await page.route("**/api/homie/reply-retry", async route => {
+  await page.route("**/api/collie/reply-retry", async route => {
     calls++;
     await held;
     if (calls === 1) await route.fulfill({ status: 503, json: { error: { message: "Retry request failed." } } });
@@ -384,7 +384,7 @@ test("reply retry shows immediate progress across controls and survives a histor
     release();
     await page.unroute(historyPath);
     await page.unroute("**/api/system/status");
-    await page.unroute("**/api/homie/reply-retry");
+    await page.unroute("**/api/collie/reply-retry");
     await page.getByTestId("tab-board").click();
   }
 }, 40000);
@@ -404,7 +404,7 @@ test("Clear ends the Vision conversation and a reload shows the empty conversati
   await page.getByTestId("vision-clear").click();
   await page.getByTestId("vision-clear").waitFor({ state: "hidden" });
   expect(await page.getByTestId("vision-transcript").getByText("An old goal.", { exact: true }).count()).toBe(0);
-  const sessions = ((await mc(["homie", "list"])).sessions as any[]).filter(row => row.vision_project === id);
+  const sessions = ((await mc(["collie", "list"])).sessions as any[]).filter(row => row.vision_project === id);
   expect(sessions.map(row => row.status)).toEqual(["ended", "active"]);
   await page.reload(); await visionReady();
   await page.getByTestId("vision-transcript").getByText("Start with the goal").waitFor();
@@ -412,7 +412,7 @@ test("Clear ends the Vision conversation and a reload shows the empty conversati
   await page.getByTestId("vision-message").fill("A new goal.");
   await page.getByTestId("vision-send").click();
   await page.getByTestId("vision-transcript").getByText("A new goal.", { exact: true }).waitFor();
-  const after = ((await mc(["homie", "list"])).sessions as any[]).filter(row => row.vision_project === id);
+  const after = ((await mc(["collie", "list"])).sessions as any[]).filter(row => row.vision_project === id);
   expect(after.map(row => row.id)).toEqual(sessions.map(row => row.id));
 }, 40000);
 

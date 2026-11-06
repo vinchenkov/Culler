@@ -62,7 +62,7 @@ function send(path: string, bytes: string): Promise<void> {
 }
 
 describe("parseNudgeLine", () => {
-  test("accepts exactly a Homie session id", () => {
+  test("accepts exactly a Collie session id", () => {
     expect(parseNudgeLine(sessionId)).toBe(sessionId);
     for (const bad of ["", "h-", "h-0123456789ABCDEF", "h-0123456789abcde", "h-0123456789abcdef0",
       "r-0123456789abcdef", ` ${sessionId}`, `${sessionId} `, "dispatch"]) {

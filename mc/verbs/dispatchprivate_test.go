@@ -28,7 +28,7 @@ func privateRequest(uuid string) PrivateDispatchPrepareRequest {
 		DeploymentUUID:      uuid,
 		DispatchRequestID:   dfRequestID,
 		Project:             "ws-test",
-		HomieInventory:      []PrivateHomieContainer{},
+		CollieInventory:     []PrivateCollieContainer{},
 		PipelineLiveness:    []PrivatePipelineLiveness{},
 		RuntimeCapability:   shippedCapability(),
 	}
@@ -43,17 +43,17 @@ func readyPrivateRequest(t *testing.T, db *sql.DB) PrivateDispatchPrepareRequest
 	return req
 }
 
-// homieStageRequest is the tick's Homie-stage prepare request: the same
-// identity as a pipeline round, with no Project (the Homie rounds are
+// collieStageRequest is the tick's Collie-stage prepare request: the same
+// identity as a pipeline round, with no Project (the Collie rounds are
 // deployment-wide and lease-free).
-func homieStageRequest(uuid string) PrivateDispatchPrepareRequest {
+func collieStageRequest(uuid string) PrivateDispatchPrepareRequest {
 	req := privateRequest(uuid)
 	req.Project = ""
 	return req
 }
 
-func homieRuntimeProof() *PrivateHomieRuntimeAttestation {
-	return &PrivateHomieRuntimeAttestation{
+func collieRuntimeProof() *PrivateCollieRuntimeAttestation {
+	return &PrivateCollieRuntimeAttestation{
 		EnvelopeDigest:    strings.Repeat("e", 64),
 		RuntimeGeneration: strings.Repeat("f", 64),
 	}
@@ -419,13 +419,13 @@ func TestPrivateDispatchPrepareReturnsFinalWithoutAttest(t *testing.T) {
 	}
 }
 
-func TestPrivateDispatchPrepareRemovesHomieOrphanBeforePipelineWork(t *testing.T) {
+func TestPrivateDispatchPrepareRemovesCollieOrphanBeforePipelineWork(t *testing.T) {
 	db := dvSpine(t)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
 		ContainerID: strings.Repeat("a", 64),
 		Launch:      strings.Repeat("b", 16),
-		Name:        "mc-homie-h-orphan",
+		Name:        "mc-collie-h-orphan",
 		Session:     "h-orphan",
 		State:       "running",
 	}}
@@ -445,30 +445,30 @@ func TestPrivateDispatchPrepareRemovesHomieOrphanBeforePipelineWork(t *testing.T
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-remove" ||
+	if effect["action"] != "collie-remove" ||
 		effect["session"] != "h-orphan" ||
 		effect["launch"] != strings.Repeat("b", 16) ||
 		effect["container_id"] != strings.Repeat("a", 64) ||
-		effect["container_name"] != "mc-homie-h-orphan" ||
+		effect["container_name"] != "mc-collie-h-orphan" ||
 		effect["reason"] != "orphan" {
 		t.Fatalf("orphan cleanup effect = %+v", effect)
 	}
 }
 
-func TestPrivateDispatchPrepareKeepsExactActiveHomieContainer(t *testing.T) {
+func TestPrivateDispatchPrepareKeepsExactActiveCollieContainer(t *testing.T) {
 	db := dvSpine(t)
 	hwSession(t, db, "h-live")
 	containerID := strings.Repeat("c", 64)
 	launchID := strings.Repeat("d", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-live'`, launchID, containerID)
 	req := readyPrivateRequest(t, db)
-	req.HomieInventory = []PrivateHomieContainer{{
-		ContainerID: containerID, Launch: launchID, Name: "mc-homie-h-live",
-		RuntimeAttestation: homieRuntimeProof(), Session: "h-live", State: "running",
+	req.CollieInventory = []PrivateCollieContainer{{
+		ContainerID: containerID, Launch: launchID, Name: "mc-collie-h-live",
+		RuntimeAttestation: collieRuntimeProof(), Session: "h-live", State: "running",
 	}}
 
 	var prepared PrivateDispatchPrepareResponse
@@ -484,26 +484,26 @@ func TestPrivateDispatchPrepareKeepsExactActiveHomieContainer(t *testing.T) {
 		if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 			t.Fatal(err)
 		}
-		if effect["action"] == "homie-remove" {
+		if effect["action"] == "collie-remove" {
 			t.Fatalf("exact active container was classified as an orphan: %+v", effect)
 		}
 	}
 }
 
-func TestPrivateDispatchPrepareAdoptsOnlyAttestedExactCreatedHomie(t *testing.T) {
+func TestPrivateDispatchPrepareAdoptsOnlyAttestedExactCreatedCollie(t *testing.T) {
 	db := dvSpine(t)
 	hwSession(t, db, "h-created")
 	containerID := strings.Repeat("c", 64)
 	launchID := strings.Repeat("d", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = NULL
 		WHERE id = 'h-created'`, launchID, containerID)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
-		ContainerID: containerID, Launch: launchID, Name: "mc-homie-h-created",
-		RuntimeAttestation: homieRuntimeProof(), Session: "h-created", State: "created",
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
+		ContainerID: containerID, Launch: launchID, Name: "mc-collie-h-created",
+		RuntimeAttestation: collieRuntimeProof(), Session: "h-created", State: "created",
 	}}
 
 	var prepared PrivateDispatchPrepareResponse
@@ -521,17 +521,17 @@ func TestPrivateDispatchPrepareAdoptsOnlyAttestedExactCreatedHomie(t *testing.T)
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-adopt" ||
+	if effect["action"] != "collie-adopt" ||
 		effect["session"] != "h-created" ||
 		effect["launch"] != launchID ||
 		effect["container_id"] != containerID ||
-		effect["container_name"] != "mc-homie-h-created" ||
+		effect["container_name"] != "mc-collie-h-created" ||
 		effect["envelope_digest"] != strings.Repeat("e", 64) ||
 		effect["runtime_generation"] != strings.Repeat("f", 64) {
 		t.Fatalf("adoption effect = %+v", effect)
 	}
 	var started any
-	if err := db.QueryRow(`SELECT launch_started_at FROM homie_sessions
+	if err := db.QueryRow(`SELECT launch_started_at FROM collie_sessions
 		WHERE id = 'h-created'`).Scan(&started); err != nil {
 		t.Fatal(err)
 	}
@@ -540,18 +540,18 @@ func TestPrivateDispatchPrepareAdoptsOnlyAttestedExactCreatedHomie(t *testing.T)
 	}
 }
 
-func TestPrivateDispatchPrepareRemovesUnattestedExactCreatedHomie(t *testing.T) {
+func TestPrivateDispatchPrepareRemovesUnattestedExactCreatedCollie(t *testing.T) {
 	db := dvSpine(t)
 	hwSession(t, db, "h-created")
 	containerID := strings.Repeat("c", 64)
 	launchID := strings.Repeat("d", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now')
 		WHERE id = 'h-created'`, launchID, containerID)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
-		ContainerID: containerID, Launch: launchID, Name: "mc-homie-h-created",
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
+		ContainerID: containerID, Launch: launchID, Name: "mc-collie-h-created",
 		Session: "h-created", State: "created",
 	}}
 
@@ -570,29 +570,29 @@ func TestPrivateDispatchPrepareRemovesUnattestedExactCreatedHomie(t *testing.T) 
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-remove" || effect["reason"] != "orphan" ||
+	if effect["action"] != "collie-remove" || effect["reason"] != "orphan" ||
 		effect["container_id"] != containerID {
 		t.Fatalf("unattested exact-created effect = %+v", effect)
 	}
 }
 
-func TestPrivateDispatchPrepareRemovesExactTransitionalHomieContainer(t *testing.T) {
+func TestPrivateDispatchPrepareRemovesExactTransitionalCollieContainer(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `INSERT INTO activity (actor, kind, created_at)
 		VALUES ('strategist', 'daily.briefing', datetime('now'))`)
 	hwSession(t, db, "h-paused")
 	containerID := strings.Repeat("c", 64)
 	launchID := strings.Repeat("d", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-paused'`, launchID, containerID)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
 		ContainerID: containerID,
 		Launch:      launchID,
-		Name:        "mc-homie-h-paused",
+		Name:        "mc-collie-h-paused",
 		Session:     "h-paused",
 		State:       "paused",
 	}}
@@ -612,17 +612,17 @@ func TestPrivateDispatchPrepareRemovesExactTransitionalHomieContainer(t *testing
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-remove" ||
+	if effect["action"] != "collie-remove" ||
 		effect["session"] != "h-paused" ||
 		effect["launch"] != launchID ||
 		effect["container_id"] != containerID ||
-		effect["container_name"] != "mc-homie-h-paused" ||
+		effect["container_name"] != "mc-collie-h-paused" ||
 		effect["reason"] != "paused" {
 		t.Fatalf("transitional cleanup effect = %+v", effect)
 	}
 	var status, gotLaunch, gotContainer string
 	hwGet(t, db, `SELECT status, current_launch_id, current_container_id
-		FROM homie_sessions WHERE id = 'h-paused'`,
+		FROM collie_sessions WHERE id = 'h-paused'`,
 		&status, &gotLaunch, &gotContainer)
 	if status != "active" || gotLaunch != launchID || gotContainer != containerID {
 		t.Fatalf("cleanup selection mutated spine state: status=%q launch=%q container=%q",
@@ -630,7 +630,7 @@ func TestPrivateDispatchPrepareRemovesExactTransitionalHomieContainer(t *testing
 	}
 }
 
-func TestPrivateDispatchPrepareHomieCleanupOrdersByCaseThenActivity(t *testing.T) {
+func TestPrivateDispatchPrepareCollieCleanupOrdersByCaseThenActivity(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `INSERT INTO activity (actor, kind, created_at)
 		VALUES ('strategist', 'daily.briefing', datetime('now'))`)
@@ -640,31 +640,31 @@ func TestPrivateDispatchPrepareHomieCleanupOrdersByCaseThenActivity(t *testing.T
 	transitionalContainer := strings.Repeat("b", 64)
 	terminalLaunch := strings.Repeat("c", 16)
 	transitionalLaunch := strings.Repeat("d", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET last_activity_at = datetime('now', '-10 minutes'),
 		    current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-terminal'`, terminalLaunch, terminalContainer)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET last_activity_at = datetime('now', '-1 minute'),
 		    current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-transitional'`, transitionalLaunch, transitionalContainer)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{
 		{
 			ContainerID: terminalContainer,
 			Launch:      terminalLaunch,
-			Name:        "mc-homie-h-terminal",
+			Name:        "mc-collie-h-terminal",
 			Session:     "h-terminal",
 			State:       "dead",
 		},
 		{
 			ContainerID: transitionalContainer,
 			Launch:      transitionalLaunch,
-			Name:        "mc-homie-h-transitional",
+			Name:        "mc-collie-h-transitional",
 			Session:     "h-transitional",
 			State:       "restarting",
 		},
@@ -690,24 +690,24 @@ func TestPrivateDispatchPrepareHomieCleanupOrdersByCaseThenActivity(t *testing.T
 	}
 }
 
-func TestPrivateDispatchPrepareIdleThresholdWinsForSameHomieContainer(t *testing.T) {
+func TestPrivateDispatchPrepareIdleThresholdWinsForSameCollieContainer(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `INSERT INTO activity (actor, kind, created_at)
 		VALUES ('strategist', 'daily.briefing', datetime('now'))`)
 	hwSession(t, db, "h-idle-paused")
 	containerID := strings.Repeat("e", 64)
 	launchID := strings.Repeat("f", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET last_activity_at = '2000-01-01 00:00:00',
 		    current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-idle-paused'`, launchID, containerID)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
 		ContainerID: containerID,
 		Launch:      launchID,
-		Name:        "mc-homie-h-idle-paused",
+		Name:        "mc-collie-h-idle-paused",
 		Session:     "h-idle-paused",
 		State:       "paused",
 	}}
@@ -727,34 +727,34 @@ func TestPrivateDispatchPrepareIdleThresholdWinsForSameHomieContainer(t *testing
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-stop" || effect["session"] != "h-idle-paused" ||
+	if effect["action"] != "collie-stop" || effect["session"] != "h-idle-paused" ||
 		effect["container_id"] != containerID || effect["reason"] != "idle" {
 		t.Fatalf("idle-threshold effect = %+v, want branch 6 ownership", effect)
 	}
 	var status string
-	hwGet(t, db, `SELECT status FROM homie_sessions WHERE id = 'h-idle-paused'`, &status)
+	hwGet(t, db, `SELECT status FROM collie_sessions WHERE id = 'h-idle-paused'`, &status)
 	if status != "ended" {
 		t.Fatalf("idle-threshold session status = %q, want ended", status)
 	}
 }
 
-func TestPrivateDispatchPrepareEndsStartedHomieAfterCleanupConfirmsAbsence(t *testing.T) {
+func TestPrivateDispatchPrepareEndsStartedCollieAfterCleanupConfirmsAbsence(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `INSERT INTO activity (actor, kind, created_at)
 		VALUES ('strategist', 'daily.briefing', datetime('now'))`)
 	hwSession(t, db, "h-exited")
 	containerID := strings.Repeat("a", 64)
 	launchID := strings.Repeat("b", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-exited'`, launchID, containerID)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
 		ContainerID: containerID,
 		Launch:      launchID,
-		Name:        "mc-homie-h-exited",
+		Name:        "mc-collie-h-exited",
 		Session:     "h-exited",
 		State:       "exited",
 	}}
@@ -774,16 +774,16 @@ func TestPrivateDispatchPrepareEndsStartedHomieAfterCleanupConfirmsAbsence(t *te
 	if err := json.Unmarshal(*cleanup.Final, &cleanupEffect); err != nil {
 		t.Fatal(err)
 	}
-	if cleanupEffect["action"] != "homie-remove" || cleanupEffect["reason"] != "exited" {
+	if cleanupEffect["action"] != "collie-remove" || cleanupEffect["reason"] != "exited" {
 		t.Fatalf("cleanup effect = %+v, want exact exited removal", cleanupEffect)
 	}
 	var status string
-	hwGet(t, db, `SELECT status FROM homie_sessions WHERE id = 'h-exited'`, &status)
+	hwGet(t, db, `SELECT status FROM collie_sessions WHERE id = 'h-exited'`, &status)
 	if status != "active" {
 		t.Fatalf("first tick status = %q, want active until absence is observed", status)
 	}
 
-	req.HomieInventory = []PrivateHomieContainer{}
+	req.CollieInventory = []PrivateCollieContainer{}
 	var ended PrivateDispatchPrepareResponse
 	if err := inTx(db, func(ctx context.Context, q Q) error {
 		var err error
@@ -799,19 +799,19 @@ func TestPrivateDispatchPrepareEndsStartedHomieAfterCleanupConfirmsAbsence(t *te
 	if err := json.Unmarshal(*ended.Final, &endedEffect); err != nil {
 		t.Fatal(err)
 	}
-	if endedEffect["action"] != "homie-stop" ||
+	if endedEffect["action"] != "collie-stop" ||
 		endedEffect["session"] != "h-exited" ||
 		endedEffect["reason"] != "exited" ||
 		endedEffect["container_id"] != nil {
 		t.Fatalf("absence effect = %+v, want no-container exited stop", endedEffect)
 	}
-	hwGet(t, db, `SELECT status FROM homie_sessions WHERE id = 'h-exited'`, &status)
+	hwGet(t, db, `SELECT status FROM collie_sessions WHERE id = 'h-exited'`, &status)
 	if status != "ended" {
 		t.Fatalf("second tick status = %q, want ended", status)
 	}
 	var actor, detail string
 	hwGet(t, db, `SELECT actor, detail FROM activity
-		WHERE kind = 'homie.ended' AND subject = 'h-exited'`, &actor, &detail)
+		WHERE kind = 'collie.ended' AND subject = 'h-exited'`, &actor, &detail)
 	if actor != "dispatch" || detail != "exited" {
 		t.Fatalf("end activity actor=%q detail=%q, want dispatch/exited", actor, detail)
 	}
@@ -827,20 +827,20 @@ func TestPrivateDispatchPrepareConfirmsStartedAbsencePerGeneration(t *testing.T)
 	liveContainer := strings.Repeat("d", 64)
 	absentLaunch := strings.Repeat("e", 16)
 	liveLaunch := strings.Repeat("f", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-absent'`, absentLaunch, absentContainer)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = datetime('now'),
 		    launch_started_at = datetime('now')
 		WHERE id = 'h-live'`, liveLaunch, liveContainer)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
-		ContainerID: liveContainer, Launch: liveLaunch, Name: "mc-homie-h-live",
-		RuntimeAttestation: homieRuntimeProof(), Session: "h-live", State: "running",
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
+		ContainerID: liveContainer, Launch: liveLaunch, Name: "mc-collie-h-live",
+		RuntimeAttestation: collieRuntimeProof(), Session: "h-live", State: "running",
 	}}
 
 	var prepared PrivateDispatchPrepareResponse
@@ -858,34 +858,34 @@ func TestPrivateDispatchPrepareConfirmsStartedAbsencePerGeneration(t *testing.T)
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-stop" || effect["session"] != "h-absent" ||
+	if effect["action"] != "collie-stop" || effect["session"] != "h-absent" ||
 		effect["reason"] != "exited" || effect["container_id"] != nil {
 		t.Fatalf("per-generation absence effect = %+v", effect)
 	}
 	var absentStatus, liveStatus string
-	hwGet(t, db, `SELECT status FROM homie_sessions WHERE id = 'h-absent'`, &absentStatus)
-	hwGet(t, db, `SELECT status FROM homie_sessions WHERE id = 'h-live'`, &liveStatus)
+	hwGet(t, db, `SELECT status FROM collie_sessions WHERE id = 'h-absent'`, &absentStatus)
+	hwGet(t, db, `SELECT status FROM collie_sessions WHERE id = 'h-live'`, &liveStatus)
 	if absentStatus != "ended" || liveStatus != "active" {
 		t.Fatalf("statuses absent=%q live=%q, want ended/active", absentStatus, liveStatus)
 	}
 }
 
-func TestPrivateDispatchPrepareRemovesUnstartedRunningHomieAfterSpawnGrace(t *testing.T) {
+func TestPrivateDispatchPrepareRemovesUnstartedRunningCollieAfterSpawnGrace(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `INSERT INTO activity (actor, kind, created_at)
 		VALUES ('strategist', 'daily.briefing', datetime('now'))`)
 	hwSession(t, db, "h-starting")
 	containerID := strings.Repeat("a", 64)
 	launchID := strings.Repeat("b", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'fresh',
 		    current_container_id = ?, launch_bound_at = '2000-01-01 00:00:00',
 		    launch_started_at = NULL
 		WHERE id = 'h-starting'`, launchID, containerID)
-	req := homieStageRequest(dfUUID(t, db))
-	req.HomieInventory = []PrivateHomieContainer{{
-		ContainerID: containerID, Launch: launchID, Name: "mc-homie-h-starting",
-		RuntimeAttestation: homieRuntimeProof(), Session: "h-starting", State: "running",
+	req := collieStageRequest(dfUUID(t, db))
+	req.CollieInventory = []PrivateCollieContainer{{
+		ContainerID: containerID, Launch: launchID, Name: "mc-collie-h-starting",
+		RuntimeAttestation: collieRuntimeProof(), Session: "h-starting", State: "running",
 	}}
 
 	var prepared PrivateDispatchPrepareResponse
@@ -903,7 +903,7 @@ func TestPrivateDispatchPrepareRemovesUnstartedRunningHomieAfterSpawnGrace(t *te
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-remove" ||
+	if effect["action"] != "collie-remove" ||
 		effect["session"] != "h-starting" ||
 		effect["launch"] != launchID ||
 		effect["container_id"] != containerID ||
@@ -912,7 +912,7 @@ func TestPrivateDispatchPrepareRemovesUnstartedRunningHomieAfterSpawnGrace(t *te
 	}
 	var status, gotLaunch, gotContainer string
 	hwGet(t, db, `SELECT status, current_launch_id, current_container_id
-		FROM homie_sessions WHERE id = 'h-starting'`,
+		FROM collie_sessions WHERE id = 'h-starting'`,
 		&status, &gotLaunch, &gotContainer)
 	if status != "active" || gotLaunch != launchID || gotContainer != containerID {
 		t.Fatalf("starting cleanup mutated spine: status=%q launch=%q container=%q",
@@ -922,17 +922,17 @@ func TestPrivateDispatchPrepareRemovesUnstartedRunningHomieAfterSpawnGrace(t *te
 
 func TestPrivateDispatchPrepareReemitsConfirmedAbsentNativeLaunchDebt(t *testing.T) {
 	db := dvSpine(t)
-	dvExec(t, db, `INSERT INTO homie_sessions
+	dvExec(t, db, `INSERT INTO collie_sessions
 		(id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('h-native', 'mc-homie-h-native', '[]', 'sessions/h-native',
+		VALUES ('h-native', 'mc-collie-h-native', '[]', 'sessions/h-native',
 		        'claude-sdk/claude')`)
 	launchID := strings.Repeat("e", 16)
-	dvExec(t, db, `UPDATE homie_sessions
+	dvExec(t, db, `UPDATE collie_sessions
 		SET current_launch_id = ?, current_launch_mode = 'native',
 		    native_session_ref = 'native-frozen',
 		    trace_filename = 'trace/frozen.jsonl'
 		WHERE id = 'h-native'`, launchID)
-	req := homieStageRequest(dfUUID(t, db))
+	req := collieStageRequest(dfUUID(t, db))
 
 	var prepared PrivateDispatchPrepareResponse
 	if err := inTx(db, func(ctx context.Context, q Q) error {
@@ -949,7 +949,7 @@ func TestPrivateDispatchPrepareReemitsConfirmedAbsentNativeLaunchDebt(t *testing
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-wake" ||
+	if effect["action"] != "collie-wake" ||
 		effect["session"] != "h-native" ||
 		effect["launch"] != launchID ||
 		effect["mode"] != "native" ||
@@ -960,7 +960,7 @@ func TestPrivateDispatchPrepareReemitsConfirmedAbsentNativeLaunchDebt(t *testing
 	}
 	var gotLaunch string
 	var resumeOwed int
-	hwGet(t, db, `SELECT current_launch_id, resume_owed FROM homie_sessions
+	hwGet(t, db, `SELECT current_launch_id, resume_owed FROM collie_sessions
 		WHERE id = 'h-native'`, &gotLaunch, &resumeOwed)
 	if gotLaunch != launchID || resumeOwed != 0 {
 		t.Fatalf("re-emission mutated frozen launch debt: launch=%q resume_owed=%d", gotLaunch, resumeOwed)
@@ -1607,17 +1607,17 @@ func TestPrivateDispatchRecheckStalesOnMountEvidenceDrift(t *testing.T) {
 	}
 }
 
-// TestPrivateDispatchPrepareCarriesTheRuntimeCapabilityIntoAHomieWake pins the
+// TestPrivateDispatchPrepareCarriesTheRuntimeCapabilityIntoACollieWake pins the
 // crossing the lease-free branch owes: the capability is host input to PREPARE
 // (the wake finalizes there and never reaches attest), the wake resolves its
 // frozen binding against it, and the response names the exact catalog it used
 // so the host can fence drift immediately.
-func TestPrivateDispatchPrepareCarriesTheRuntimeCapabilityIntoAHomieWake(t *testing.T) {
+func TestPrivateDispatchPrepareCarriesTheRuntimeCapabilityIntoACollieWake(t *testing.T) {
 	db := dvSpine(t)
 	hwSession(t, db, "h-1")
 	hwPendingInbound(t, db, "h-1", 1)
 
-	req := homieStageRequest(dfUUID(t, db))
+	req := collieStageRequest(dfUUID(t, db))
 	var prepared PrivateDispatchPrepareResponse
 	if err := inTx(db, func(ctx context.Context, q Q) error {
 		var err error
@@ -1627,14 +1627,14 @@ func TestPrivateDispatchPrepareCarriesTheRuntimeCapabilityIntoAHomieWake(t *test
 		t.Fatal(err)
 	}
 	if prepared.Kind != "final" || prepared.Final == nil {
-		t.Fatalf("prepared frame = %+v, want a final homie wake", prepared)
+		t.Fatalf("prepared frame = %+v, want a final collie wake", prepared)
 	}
 	var effect map[string]any
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-wake" {
-		t.Fatalf("final effect = %+v, want a homie wake", effect)
+	if effect["action"] != "collie-wake" {
+		t.Fatalf("final effect = %+v, want a collie wake", effect)
 	}
 	runtime, ok := effect["runtime_binding"].(map[string]any)
 	if !ok || runtime["id"] != "claude" || runtime["harness"] != "claude-sdk" {
@@ -1652,12 +1652,12 @@ func TestPrivateDispatchPrepareCarriesTheRuntimeCapabilityIntoAHomieWake(t *test
 func TestPrivateDispatchPrepareNamesNoCatalogForARuntimeFreeFinal(t *testing.T) {
 	db := dvSpine(t)
 	hwSession(t, db, "h-1")
-	dvExec(t, db, `UPDATE homie_sessions SET last_activity_at = '2000-01-01 00:00:00' WHERE id = 'h-1'`)
+	dvExec(t, db, `UPDATE collie_sessions SET last_activity_at = '2000-01-01 00:00:00' WHERE id = 'h-1'`)
 
 	var prepared PrivateDispatchPrepareResponse
 	if err := inTx(db, func(ctx context.Context, q Q) error {
 		var err error
-		prepared, err = DispatchPreparePrivate(ctx, q, homieStageRequest(dfUUID(t, db)))
+		prepared, err = DispatchPreparePrivate(ctx, q, collieStageRequest(dfUUID(t, db)))
 		return err
 	}); err != nil {
 		t.Fatal(err)
@@ -1666,7 +1666,7 @@ func TestPrivateDispatchPrepareNamesNoCatalogForARuntimeFreeFinal(t *testing.T) 
 	if err := json.Unmarshal(*prepared.Final, &effect); err != nil {
 		t.Fatal(err)
 	}
-	if effect["action"] != "homie-stop" {
+	if effect["action"] != "collie-stop" {
 		t.Fatalf("final effect = %+v, want the idle end", effect)
 	}
 	if prepared.RuntimeCapabilityDigest != "" {

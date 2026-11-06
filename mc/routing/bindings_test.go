@@ -131,7 +131,7 @@ func TestConfiguredBindingCatalogDrivesEnabledRouting(t *testing.T) {
 	}
 	candidate := strings.NewReplacer(
 		"| strategist | claude-sdk | claude |", "| strategist | claude-sdk | studio |",
-		"| homie | claude-sdk | claude |", "| homie | claude-sdk | studio |",
+		"| collie | claude-sdk | claude |", "| collie | claude-sdk | studio |",
 	).Replace(canonical)
 	if _, err := Parse([]byte(candidate), registry); err == nil ||
 		!strings.Contains(err.Error(), `unresolved binding "endpoint"`) {

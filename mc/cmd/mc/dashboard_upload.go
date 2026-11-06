@@ -104,7 +104,7 @@ func commandDashboardUpload(args []string, stdin io.Reader) (any, error) {
 		return nil, err
 	}
 	lease.Close()
-	catalog, err := dashboardUploadCommand(nil, "homie", "list")
+	catalog, err := dashboardUploadCommand(nil, "collie", "list")
 	if err != nil {
 		return nil, err
 	}
@@ -124,10 +124,10 @@ func commandDashboardUpload(args []string, stdin io.Reader) (any, error) {
 				if ref == "" {
 					continue
 				}
-				if _, err := dashboardUploadCommand(nil, "homie", "resume", req.SessionID, "--from", "dashboard:"+ref); err != nil {
+				if _, err := dashboardUploadCommand(nil, "collie", "resume", req.SessionID, "--from", "dashboard:"+ref); err != nil {
 					return nil, err
 				}
-				current, err := dashboardUploadCommand(nil, "homie", "list")
+				current, err := dashboardUploadCommand(nil, "collie", "list")
 				if err != nil {
 					return nil, err
 				}
@@ -200,7 +200,7 @@ func commandDashboardUpload(args []string, stdin io.Reader) (any, error) {
 			return nil, err
 		}
 	}
-	return dashboardUploadCommand(nil, "homie", "send", req.SessionID, "--from", "dashboard:"+channel, "--body", req.Body, "--ingress-attempt", reservation.AttemptID)
+	return dashboardUploadCommand(nil, "collie", "send", req.SessionID, "--from", "dashboard:"+channel, "--body", req.Body, "--ingress-attempt", reservation.AttemptID)
 }
 
 func dashboardUploadCommand(stdin io.Reader, args ...string) (map[string]any, error) {

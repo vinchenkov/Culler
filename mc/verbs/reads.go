@@ -34,7 +34,7 @@ func SettingsGet(db *sql.DB) (any, error) {
 	rows, err := db.Query(`
 		SELECT timeout_minutes, grace_minutes, heartbeat_interval_s,
 		       spawn_grace_s, hard_deadline_minutes, review_wip_cap,
-		       homie_idle_timeout_s, wiki_update_interval_s
+		       collie_idle_timeout_s, wiki_update_interval_s
 		FROM settings WHERE id = 1`)
 	if err != nil {
 		return nil, classify(err)
@@ -107,7 +107,7 @@ func RunList(db *sql.DB, selection RunSelection) (any, error) {
 	return map[string]any{"runs": out}, nil
 }
 
-// agentsViewSession is the computed "agentsview" key of a run or Homie
+// agentsViewSession is the computed "agentsview" key of a run or Collie
 // session row: the AgentsView session of its main trace, or nil when the row
 // has no main trace.
 func agentsViewSession(binding, nativeRef any) any {
@@ -195,7 +195,7 @@ func ActivityList(db *sql.DB, kind string, limit int, project string) (any, erro
             CASE WHEN a.project IS NOT NULL THEN a.project
             WHEN a.kind LIKE 'project.%' THEN
                 (SELECT w.id FROM projects w WHERE w.id = a.subject)
-            WHEN a.kind NOT LIKE 'homie.%' THEN COALESCE(
+            WHEN a.kind NOT LIKE 'collie.%' THEN COALESCE(
                 (SELECT t.project FROM tasks t WHERE t.id = CAST(a.subject AS INTEGER) AND CAST(t.id AS TEXT) = a.subject),
                 (SELECT r.project FROM runs r WHERE r.id = a.subject AND r.tier = 'pipeline'),
                 CASE WHEN json_valid(a.dispatch_result) THEN json_extract(a.dispatch_result, '$.project') END,

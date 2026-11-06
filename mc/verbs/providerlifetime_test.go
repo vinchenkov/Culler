@@ -9,11 +9,11 @@ import (
 	"time"
 )
 
-func TestProviderLifetimeUsesCurrentHomieLaunchAndActivity(t *testing.T) {
+func TestProviderLifetimeUsesCurrentCollieLaunchAndActivity(t *testing.T) {
 	db := hbSpine(t)
 	now := time.Now().UTC().Truncate(time.Second)
-	dvExec(t, db, `UPDATE homie_sessions SET last_activity_at=? WHERE id='sess-1'`, now.Format(spineTime))
-	dvExec(t, db, `UPDATE settings SET homie_idle_timeout_s=60 WHERE id=1`)
+	dvExec(t, db, `UPDATE collie_sessions SET last_activity_at=? WHERE id='sess-1'`, now.Format(spineTime))
+	dvExec(t, db, `UPDATE settings SET collie_idle_timeout_s=60 WHERE id=1`)
 	clock := domain.VMClock{BootID: "fixture", Uptime: time.Hour}
 	launch := ProviderLaunchIdentity{RunID: "sess-1", LaunchID: hbLaunch}
 	expires, err := providerLaunchExpiry(context.Background(), db, launch, now, clock)
@@ -26,7 +26,7 @@ func TestProviderLifetimeUsesCurrentHomieLaunchAndActivity(t *testing.T) {
 		t.Fatalf("The old launch retained authority: %v %v", expires, err)
 	}
 	launch.LaunchID = hbLaunch
-	dvExec(t, db, `UPDATE homie_sessions SET status='ended' WHERE id='sess-1'`)
+	dvExec(t, db, `UPDATE collie_sessions SET status='ended' WHERE id='sess-1'`)
 	expires, err = providerLaunchExpiry(context.Background(), db, launch, now, clock)
 	if err != nil || !expires.IsZero() {
 		t.Fatalf("The ended session retained authority: %v %v", expires, err)

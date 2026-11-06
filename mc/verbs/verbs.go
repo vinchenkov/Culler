@@ -201,20 +201,20 @@ func RequireHostScope(id *RunIdentity, verb string) error {
 	return nil
 }
 
-// RequireOperatorVerb admits the host and a Homie only when the verb was
+// RequireOperatorVerb admits the host and a Collie only when the verb was
 // frozen into that session's allowlist. Pipeline identities are categorically
 // denied operator provenance.
 func RequireOperatorVerb(id *RunIdentity, verb string) error {
 	if id == nil {
 		return nil
 	}
-	if id.Tier == "homie" {
+	if id.Tier == "collie" {
 		for _, allowed := range id.VerbAllowlist {
 			if allowed == verb {
 				return nil
 			}
 		}
-		return Domainf("Homie session is not allowed operator verb %s", verb)
+		return Domainf("Collie session is not allowed operator verb %s", verb)
 	}
 	return Domainf("%s is an operator verb, denied to pipeline runs", verb)
 }

@@ -171,7 +171,7 @@ func DependencyInventory(root string) ([]DependencyPin, error) {
 	paths := []string{
 		"VERSION", "mc/distribution/update_policy.json", ".mise.toml", "mc/go.mod", "mc/go.sum", "mc/deployment/hostbun.json", "mc/deployment/agentsview.json", "mc/opencodecatalog/catalog.json",
 		"dashboard/package.json", "dashboard/bun.lock", "dashboard/pierre/package.json", "dashboard/pierre/bun.lock", "resident/package.json",
-		"runner/homie-runner/package.json", "runner/agent-runner/package.json", "runner/agent-runner/bun.lock",
+		"runner/collie-runner/package.json", "runner/agent-runner/package.json", "runner/agent-runner/bun.lock",
 		"runner/opencode/package.json", "runner/opencode/package-lock.json", "runner/opencode/control/package.json",
 		"release/opencode/pins.json", "release/opencode/package.json", "release/opencode/build.sh", "release/opencode/extract.mjs",
 		"runner/openwiki/package.json", "runner/openwiki/package-lock.json", "runner/openwiki/patch-upstream.mjs", "runner/openwiki/project-documents.mjs",

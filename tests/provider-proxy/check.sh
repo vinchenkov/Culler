@@ -69,7 +69,7 @@ run dependencies prepare_dependencies
 run build-real env MC_TEST_IMAGE="$real_image" ./runner/image/build.sh --real
 run build-control env MC_TEST_IMAGE="$fake_image" ./runner/image/build.sh
 docker image inspect --format '{{.Id}}' "$real_image" "$fake_image" > "$evidence/images.txt"
-for component in mc runner/fake-harness runner/agent-runner runner/homie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
+for component in mc runner/fake-harness runner/agent-runner runner/collie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
   run "${component//\//-}" "./$component/check.sh"
 done
 go_group() {
@@ -92,7 +92,7 @@ PY
 }
 run docker-boundary go_group docker-boundary docker_boundary ./boundarydocker/... '.'
 run scribe-native mise exec -- bun tests/provider-proxy/scribe-native.ts --image "$real_image"
-run resident-container go_group resident-container docker_e2e ./e2e/... '^TestCredentialProjection|^TestHomieNativeProxyDockerBoundary$'
-run provider-failure-repair env CULLER_PROXY_TEST_IMAGE="$real_image" MC_SMOKE_REPORT="$evidence/provider-failure-repair.xml" MC_SMOKE_EVIDENCE_DIR="$evidence/provider-failure-repair" ./dashboard/smoke.sh ../tests/provider-proxy/failure-repair.test.ts ../tests/provider-proxy/failure-origin.test.ts ../tests/provider-proxy/account-origin.test.ts ../tests/provider-proxy/homie-stream.test.ts
+run resident-container go_group resident-container docker_e2e ./e2e/... '^TestCredentialProjection|^TestCollieNativeProxyDockerBoundary$'
+run provider-failure-repair env CULLER_PROXY_TEST_IMAGE="$real_image" MC_SMOKE_REPORT="$evidence/provider-failure-repair.xml" MC_SMOKE_EVIDENCE_DIR="$evidence/provider-failure-repair" ./dashboard/smoke.sh ../tests/provider-proxy/failure-repair.test.ts ../tests/provider-proxy/failure-origin.test.ts ../tests/provider-proxy/account-origin.test.ts ../tests/provider-proxy/collie-stream.test.ts
 run dashboard-browser env MC_SMOKE_REPORT="$evidence/dashboard.xml" MC_SMOKE_EVIDENCE_DIR="$evidence/browser" ./dashboard/smoke.sh
 printf '%s\n' 'The controlled host suite passed. Real provider checks use tests/live-model/.'

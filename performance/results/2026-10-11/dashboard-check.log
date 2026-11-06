@@ -93,7 +93,7 @@ src/server.test.ts:
 src/api.test.ts:
 (pass) verb mirror > release status and installer actions use the shared host commands [0.26ms]
 (pass) verb mirror > the AgentsView token route reads the host command and is never cached [0.10ms]
-(pass) verb mirror > GET /api/sessions passes mc homie list through [0.02ms]
+(pass) verb mirror > GET /api/sessions passes mc collie list through [0.02ms]
 (pass) verb mirror > GET /api/sessions/:id/history passes through
 (pass) verb mirror > POST /api/sessions starts with a generated dashboard ref [0.14ms]
 (pass) verb mirror > a domain rejection surfaces as 400 with the mc envelope [0.05ms]
@@ -574,7 +574,7 @@ src/ui/flowmap.test.ts:
 (pass) flowmapView nodes > one node running for two Projects names both [0.03ms]
 (pass) flowmapView nodes > a silent heartbeat reads as stale, not as running [0.03ms]
 (pass) flowmapView nodes > an idle node says when it last ran, or that it never ran [0.04ms]
-(pass) flowmapView nodes > Homie carries no state word: it holds no lease [0.03ms]
+(pass) flowmapView nodes > Collie carries no state word: it holds no lease [0.03ms]
 (pass) flowmapView nodes > every topology node is drawn in both layouts [0.03ms]
 (pass) flowmapView nodes > each edge starts and ends on the box of its role [0.12ms]
 (pass) flowmapView nodes > the Scribe node is inside the graph and touches no edge, no label, and no other node [0.19ms]
@@ -647,8 +647,8 @@ src/ui/configs.test.ts:
 (pass) configuration editors > only supported editors appear in groups and counts [0.34ms]
 (pass) configuration editors > the filter matches keys and preserves typed drafts
 (pass) configuration editors > empty and unsupported responses expose no editor
-(pass) routingRows > the task roles in pipeline order, then the Scribe, then Homie; an unknown role follows in input order [0.17ms]
-(pass) routingRows > labels are capitalised and the homie row is marked, not hidden [0.05ms]
+(pass) routingRows > the task roles in pipeline order, then the Scribe, then Collie; an unknown role follows in input order [0.17ms]
+(pass) routingRows > labels are capitalised and the collie row is marked, not hidden [0.05ms]
 (pass) routingRows > family carries the harness; a missing model falls back to empty [0.02ms]
 (pass) routingRows > empty input [0.01ms]
 (pass) projectRows > preserves the verb's order and marks the live rows [0.02ms]
@@ -736,7 +736,7 @@ src/ui/review.test.ts:
 (pass) reportDocument > a link that appears only on a later parse gets the link rules [0.19ms]
 (pass) reportDocument > a report without a stable serialization shows as plain text [0.02ms]
 
-src/ui/homiefmt.test.ts:
+src/ui/colliefmt.test.ts:
 (pass) sessionLabel > names the session, its status and its relative age
 (pass) sessionLabel > drops the age when the session never recorded activity
 (pass) sessionLabel > uses the fallback name with no clock and no row
@@ -753,7 +753,7 @@ src/ui/homiefmt.test.ts:
 (pass) sessionStats > zeroes out on an empty or absent registry
 (pass) transcriptRows > attributes a non-dashboard send as the echo it is
 (pass) transcriptRows > attributes a dashboard send to the operator at this keyboard
-(pass) transcriptRows > attributes a reply to Homie and never claims it as the operator's
+(pass) transcriptRows > attributes a reply to Collie and never claims it as the operator's
 (pass) transcriptRows > passes attachment refs through untouched
 (pass) transcriptRows > keeps ids and seq so the pane can key and order rows [1.12ms]
 (pass) transcriptRows > does not invent a surface for a send that carries none [0.03ms]
@@ -792,11 +792,11 @@ src/ui/homiefmt.test.ts:
 (pass) composeState > offers the resume instead of an error on an ended or reaped session [0.03ms]
 (pass) Every failed reply remains visible after another inbound message [0.11ms]
 (pass) a retry uses its current state instead of the original message age [0.16ms]
-(pass) homieModelView > a conversation without a session shows the Homie route [0.10ms]
-(pass) homieModelView > a session keeps its own model after the route changes
-(pass) homieModelView > a profile without a model shows the profile name
-(pass) homieModelView > a session binding outside the enabled list keeps its identifier [0.06ms]
-(pass) homieModelView > absent routing shows no model
+(pass) collieModelView > a conversation without a session shows the Collie route [0.10ms]
+(pass) collieModelView > a session keeps its own model after the route changes
+(pass) collieModelView > a profile without a model shows the profile name
+(pass) collieModelView > a session binding outside the enabled list keeps its identifier [0.06ms]
+(pass) collieModelView > absent routing shows no model
 (pass) conversation names use a stored title, a bounded excerpt, or an empty state [0.17ms]
 
 src/ui/changes.test.ts:

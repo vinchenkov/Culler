@@ -74,7 +74,7 @@ func setupTunableAnswers(a verbs.OnboardArgs) map[string]int {
 		"review-wip-cap": a.ReviewWIPCap, "timeout-minutes": a.TimeoutMinutes,
 		"grace-minutes": a.GraceMinutes, "heartbeat-interval-s": a.HeartbeatIntervalS,
 		"spawn-grace-s": a.SpawnGraceS, "hard-deadline-minutes": a.HardDeadlineMinutes,
-		"homie-idle-timeout-s": a.HomieIdleTimeoutS,
+		"collie-idle-timeout-s": a.CollieIdleTimeoutS,
 	}
 }
 
@@ -99,7 +99,7 @@ func (w *setupWizard) arguments() verbs.OnboardArgs {
 	a.HeartbeatIntervalS = s.Tunables["heartbeat-interval-s"]
 	a.SpawnGraceS = s.Tunables["spawn-grace-s"]
 	a.HardDeadlineMinutes = s.Tunables["hard-deadline-minutes"]
-	a.HomieIdleTimeoutS = s.Tunables["homie-idle-timeout-s"]
+	a.CollieIdleTimeoutS = s.Tunables["collie-idle-timeout-s"]
 	return a
 }
 
@@ -278,7 +278,7 @@ func setupTunableFields(d operatorconfig.Config) []setupTunableField {
 		{"heartbeat-interval-s", "Agent heartbeat interval in seconds", d.Timing.HeartbeatIntervalS},
 		{"spawn-grace-s", "First heartbeat grace in seconds", d.Timing.SpawnGraceS},
 		{"hard-deadline-minutes", "Maximum agent run in minutes", d.Timing.HardDeadlineMinutes},
-		{"homie-idle-timeout-s", "Operator assistance idle limit in seconds", d.Timing.HomieIdleTimeoutS},
+		{"collie-idle-timeout-s", "Operator assistance idle limit in seconds", d.Timing.CollieIdleTimeoutS},
 	}
 
 }

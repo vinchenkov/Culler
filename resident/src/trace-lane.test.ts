@@ -61,9 +61,9 @@ function claudeRow(id: string, fields: Partial<TraceSession> = {}): TraceSession
 
 function codexRow(id: string, fields: Partial<TraceSession> = {}): TraceSession {
   return {
-    kind: "homie", id, session_path: `sessions/${id}`, format: "codex", native_session_ref: CODEX_REF,
+    kind: "collie", id, session_path: `sessions/${id}`, format: "codex", native_session_ref: CODEX_REF,
     trace_filename: CODEX_FILE, agentsview_session: `codex:${CODEX_REF}`,
-    display_name: `Homie · Culler · ${id}`, ended: false, ...fields,
+    display_name: `Collie · Culler · ${id}`, ended: false, ...fields,
   };
 }
 
@@ -743,7 +743,7 @@ describe("the lane timers", () => {
 
 describe("AgentsView", () => {
   const CLAUDE_NAME = "Culler · worker · Add the trace lane · r-claude";
-  const CODEX_NAME = "Homie · Culler · h-codex";
+  const CODEX_NAME = "Collie · Culler · h-codex";
 
   async function copied(r: TraceRig): Promise<void> {
     r.rows = [claudeRow("r-claude"), codexRow("h-codex")];
@@ -923,7 +923,7 @@ describe("AgentsView", () => {
     await r.lane.reconcilePass();
     expect(await r.health()).toEqual({
       observed_at: new Date(r.scheduler.now).toISOString(),
-      overdue: [{ kind: "homie", id: "h-codex", agentsview_session: `codex:${CODEX_REF}`, changed_at: changedAt }],
+      overdue: [{ kind: "collie", id: "h-codex", agentsview_session: `codex:${CODEX_REF}`, changed_at: changedAt }],
     });
     expect((await stat(r.paths.health)).mode & 0o777).toBe(0o600);
 

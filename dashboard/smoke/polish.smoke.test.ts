@@ -71,7 +71,7 @@ test("Every main page fits desktop, tablet, and narrow viewports", async () => {
   const { page } = smoke;
   for (const width of [1440, 900, 390]) {
     await page.setViewportSize({ width, height: width === 390 ? 844 : 960 });
-    for (const name of ["board", "homie", "review", "pipeline", "configs", "logs"]) {
+    for (const name of ["board", "collie", "review", "pipeline", "configs", "logs"]) {
       await page.getByTestId(`tab-${name}`).click();
       await page.getByTestId(`${name}-pane`).waitFor();
       if (name === "board") await page.getByTestId("board-card").first().waitFor();
@@ -81,7 +81,7 @@ test("Every main page fits desktop, tablet, and narrow viewports", async () => {
         expect(await project.evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
         expect(await project.locator(".scope-name").evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
       }
-      if (name === "homie") await page.waitForFunction(() => !(document.getElementById("send-body") as HTMLTextAreaElement).disabled);
+      if (name === "collie") await page.waitForFunction(() => !(document.getElementById("send-body") as HTMLTextAreaElement).disabled);
       if (name === "review") await page.waitForFunction(() => !document.getElementById("review-empty")?.hidden);
       if (name === "pipeline") await page.getByTestId("topology-node-worker").waitFor();
       if (name === "pipeline" && width === 390) {

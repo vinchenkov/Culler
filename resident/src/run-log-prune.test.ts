@@ -108,7 +108,7 @@ describe("the run log prune", () => {
     expect(r.discarded).toEqual([]);
   });
 
-  test("a Homie session's container is recognised by its own label", async () => {
+  test("a Collie session's container is recognised by its own label", async () => {
     const runs: Array<{ id: string; ended_at: string | null }> = endedRuns(KEEP_RUN_LOGS);
     runs.unshift({ id: "h-abc", ended_at: "2026-08-01 00:00:00" });
     const r = rig({

@@ -30,7 +30,7 @@ func TestOutboxAckRenderedSkipsOtherProjectsAndSurfaces(t *testing.T) {
 	if err != nil || result.(map[string]any)["acked"] != int64(1) {
 		t.Fatalf("health: %v, %v", result, err)
 	}
-	if _, err := OutboxAckRendered(db, nil, "dashboard", "homie_reply", []int64{7}); err == nil {
+	if _, err := OutboxAckRendered(db, nil, "dashboard", "collie_reply", []int64{7}); err == nil {
 		t.Fatal("accepted an unsupported kind")
 	}
 	if _, err := OutboxAckRendered(db, nil, "dashboard", "health", []int64{-1}); err == nil {

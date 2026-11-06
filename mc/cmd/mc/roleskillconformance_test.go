@@ -45,15 +45,15 @@ func TestEveryRoleSkillCommandIsRecognizedByTheRealCLI(t *testing.T) {
 		}
 		skills[string(role)] = skill.Body
 	}
-	// The Homie tier is not a dispatch role and takes no lease, but its
+	// The Collie tier is not a dispatch role and takes no lease, but its
 	// surface is shipped the same way and drifts the same way, so it is judged
 	// by the same binary. Its verbs are operator-scope: refused to a pipeline
 	// identity, reachable here, and either way never for "unknown verb".
-	homie, err := verbs.HomieSkill()
+	collie, err := verbs.CollieSkill()
 	if err != nil {
-		t.Fatalf("homie: %v", err)
+		t.Fatalf("collie: %v", err)
 	}
-	skills["homie"] = homie.Body
+	skills["collie"] = collie.Body
 
 	for tier, body := range skills {
 		commands := verbs.ParseSkillCommands(body)
@@ -286,7 +286,7 @@ func TestConformanceHarnessDetectsAnInventedVerb(t *testing.T) {
 }
 
 // requiresFlag matches a refusal that names exactly one required flag, e.g.
-// `mc homie end requires --reason`. Deliberately narrow: "requires exactly one
+// `mc collie end requires --reason`. Deliberately narrow: "requires exactly one
 // of --status, --needs-operator, --infra" names a CHOICE, and a template that
 // carries any one of them is correct, so the anchored single-flag form is the
 // only one this test can judge mechanically.

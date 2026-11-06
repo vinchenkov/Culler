@@ -32,7 +32,7 @@ The separate model test establishes inference access for the selected model.
 | Final live-suite unit checks | Passed: 20 tests, 92 assertions; zero model calls | `/private/tmp/culler-live-focused-final.log` |
 | Other component checks | Passed | `/private/tmp/culler-provider-proxy-final3-evidence/` |
 | Docker boundary suite | Passed | `/private/tmp/culler-provider-proxy-final3-evidence/docker-boundary.jsonl` |
-| Resident and native Homie containers | Passed | `/private/tmp/culler-provider-proxy-final3-evidence/resident-container.jsonl` |
+| Resident and native Collie containers | Passed | `/private/tmp/culler-provider-proxy-final3-evidence/resident-container.jsonl` |
 | Complete failure and repair cases | Passed: 20 tests, 528 assertions | `/private/tmp/culler-provider-complete-final.xml` |
 | Complete dashboard suite | Passed: 291 tests across 50 files | `/private/tmp/culler-dashboard-final-all.xml` |
 | Evaluation framework | Passed: 655 tests; zero model calls | `/private/tmp/culler-evals-final.log` |
@@ -42,9 +42,9 @@ The separate model test establishes inference access for the selected model.
 
 The complete failure cases use both native harnesses and both connection methods.
 They cover provider rate limits, provider overload, host credential failures, and proxy failures.
-They also cover first-use key rejection, rejected key replacement, successful repair, and preliminary Homie text.
+They also cover first-use key rejection, rejected key replacement, successful repair, and preliminary Collie text.
 
-The native Homie tests use the resident, helper, container, adapter, proxy, and actual spine writes.
+The native Collie tests use the resident, helper, container, adapter, proxy, and actual spine writes.
 Each test records a draft before terminal release and a durable reply with exactly one synthetic provider request.
 Separate browser tests display those draft semantics through the actual dashboard.
 

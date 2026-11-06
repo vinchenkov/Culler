@@ -616,7 +616,7 @@ for target in default named; do
     }
     for text in "The database reset replaces the database of the deployment at $shown with an empty database." \
                 "The reset deletes all database records, for example these records:" \
-                "- Homie conversations." "- The settings outside config.toml." \
+                "- Collie conversations." "- The settings outside config.toml." \
                 "The reset keeps these items:" "- The Project repositories and worktrees." \
                 "- The credentials and config.toml." "- The deployment identity." \
                 "After the reset, redeploy.sh copies the config.toml settings into the new database, including the Discord alert destinations. Then add each Project again in the dashboard." \
@@ -624,7 +624,7 @@ for target in default named; do
                 "the deployment database is a new empty database"; do
       contains "$case_root/out" "$text" || { cat "$case_root/out" >&2; fail "the confirmed reset ($target) omits: $text"; }
     done
-    contains "$case_root/out" "Homie bindings" && fail "the reset confirmation names Homie bindings"
+    contains "$case_root/out" "Collie bindings" && fail "the reset confirmation names Collie bindings"
     contains "$case_root/out" "Alert routes" && fail "the reset confirmation names alert routes"
     prompt_line=$(grep -n '^Type reset: ' "$case_root/out" | cut -d: -f1)
     release_line=$(grep -n '^== release ' "$case_root/out" | cut -d: -f1)

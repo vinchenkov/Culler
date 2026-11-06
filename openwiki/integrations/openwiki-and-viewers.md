@@ -46,7 +46,7 @@ verified:
 
 # OpenWiki export and AgentsView trace viewer
 
-Culler integrates two third-party tools. **OpenWiki** (package version 0.7.0) maintains a Claim-checked knowledge base under each Project's `openwiki/` folder. The Scribe role writes it, and the operator reads it through the wiki address. **AgentsView** is a local trace viewer that shows the native transcripts of pipeline runs, Homie sessions, and setup operations. Both are optional to the pipeline's correctness, so failures in either one are logged and never block dispatch. Both listen on loopback addresses that agent containers can reach, so each protects itself with a viewer secret.
+Culler integrates two third-party tools. **OpenWiki** (package version 0.7.0) maintains a Claim-checked knowledge base under each Project's `openwiki/` folder. The Scribe role writes it, and the operator reads it through the wiki address. **AgentsView** is a local trace viewer that shows the native transcripts of pipeline runs, Collie sessions, and setup operations. Both are optional to the pipeline's correctness, so failures in either one are logged and never block dispatch. Both listen on loopback addresses that agent containers can reach, so each protects itself with a viewer secret.
 
 ## OpenWiki for the Scribe
 
@@ -137,11 +137,11 @@ Failures show a specific access state with a path back through Culler.
 
 ### The trace lane
 
-`resident/src/trace-lane.ts` runs on its own timers, outside the tick loop. Every 2 seconds it copies traces. It obtains sessions from `mc __trace-sessions` (`mc/verbs/tracesessions.go`), which returns each run, Homie session, and setup operation with its format, native session ref, AgentsView session id, and display name. The lane writes Claude traces to `MC_HOME/agentsview/traces/claude/projects/culler/` and Codex traces to `MC_HOME/agentsview/traces/codex/sessions/`.
+`resident/src/trace-lane.ts` runs on its own timers, outside the tick loop. Every 2 seconds it copies traces. It obtains sessions from `mc __trace-sessions` (`mc/verbs/tracesessions.go`), which returns each run, Collie session, and setup operation with its format, native session ref, AgentsView session id, and display name. The lane writes Claude traces to `MC_HOME/agentsview/traces/claude/projects/culler/` and Codex traces to `MC_HOME/agentsview/traces/codex/sessions/`.
 
 `resident/src/trace-copy.ts` copies only new bytes and stops at the last complete line. The copy size is the resume position, so a restart produces no duplicate and no gap. It opens files and folders with `O_NOFOLLOW` and checks that each one is inside the real session folder, because an agent can swap a folder for a symlink. Each pass has work limits and per-file retry backoff. A separate reconcile pass sets display names and reports main trace copies that AgentsView has not imported.
 
-`mc/trace/trace.go` is the single source of AgentsView identity. `Format` maps `claude-sdk` to `claude` and `codex` to `codex`. `SessionID` returns the bare ref for Claude and `codex:<ref>` for Codex. `Path` builds `/sessions/…?msg=last` links. `RunDisplayName` and `HomieDisplayName` join their parts with ` · `. A native ref that is not a plain identifier gets no trace, because the ref becomes a file name and a link path.
+`mc/trace/trace.go` is the single source of AgentsView identity. `Format` maps `claude-sdk` to `claude` and `codex` to `codex`. `SessionID` returns the bare ref for Claude and `codex:<ref>` for Codex. `Path` builds `/sessions/…?msg=last` links. `RunDisplayName` and `CollieDisplayName` join their parts with ` · `. A native ref that is not a plain identifier gets no trace, because the ref becomes a file name and a link path.
 
 ## Doctor checks
 

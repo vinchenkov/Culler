@@ -442,11 +442,11 @@ describe("topology tables", () => {
       "verifier",
       "packager",
       "scribe",
-      "homie",
+      "collie",
     ]);
     const lanes = Object.fromEntries(TOPOLOGY_NODES.map((n) => [n.role, n.lane]));
     expect(lanes["worker"]).toBe("pipeline");
-    expect(lanes["homie"]).toBe("outside");
+    expect(lanes["collie"]).toBe("outside");
     expect(TOPOLOGY_NODES.every((n) => typeof n.blurb === "string" && n.blurb.length > 0)).toBe(true);
     expect(TOPOLOGY_NODES.every((n) => typeof n.name === "string" && n.name.length > 0)).toBe(true);
     expect(TOPOLOGY_NODES.find((n) => n.role === "strategist")).toMatchObject({
@@ -462,7 +462,7 @@ describe("topology tables", () => {
     expect(io["verifier"]).toEqual(["worked", "verified"]);
     expect(io["packager"]).toEqual(["verified", "packaged"]);
     expect(io["scribe"]).toEqual([null, null]);
-    expect(io["homie"]).toEqual([null, null]);
+    expect(io["collie"]).toEqual([null, null]);
   });
 
   test("edges connect the task roles and task correction paths, and no edge names the Scribe", () => {
@@ -478,7 +478,7 @@ describe("topology tables", () => {
       { from: "verifier", to: "worker", kind: "correction" },
     ]);
     expect(TOPOLOGY_EDGES.filter((e) => e.kind === "verification")).toEqual([]);
-    expect(TOPOLOGY_EDGES.some((e) => e.from === "homie" || e.to === "homie")).toBe(false);
+    expect(TOPOLOGY_EDGES.some((e) => e.from === "collie" || e.to === "collie")).toBe(false);
     const roles = new Set(TOPOLOGY_NODES.map((n) => n.role));
     expect(TOPOLOGY_EDGES.every((e) => roles.has(e.from) && roles.has(e.to))).toBe(true);
   });
@@ -491,7 +491,7 @@ describe("topologyView", () => {
     { role: "worker", harness: "claude-sdk", binding: "endpoint", model: "endpoint-model" },
     { role: "verifier", harness: "codex", binding: "chatgpt", model: "gpt" },
     { role: "packager", harness: "claude-sdk", binding: "endpoint", model: "endpoint-model" },
-    { role: "homie", harness: "claude-sdk", binding: "claude", model: "opus" },
+    { role: "collie", harness: "claude-sdk", binding: "claude", model: "opus" },
   ];
 
   const byRole = (view: { nodes: any[] }) => Object.fromEntries(view.nodes.map((n) => [n.role, n]));
@@ -561,7 +561,7 @@ describe("topologyView", () => {
     const nodes = byRole(topologyView([FREE_LEASE], [], ROUTES, NOW));
     expect(nodes["worker"]).toMatchObject({ harness: "claude-sdk", binding: "endpoint", model: "endpoint-model" });
     expect(nodes["strategist"]).toMatchObject({ harness: "claude-sdk", binding: "claude" });
-    expect(nodes["homie"].harness).toBe("claude-sdk");
+    expect(nodes["collie"].harness).toBe("claude-sdk");
   });
 
   test("a routing table with no row for a role reports unknown, never a guess", () => {

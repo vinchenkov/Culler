@@ -1,6 +1,6 @@
 import AppKit
 
-let directory = URL(fileURLWithPath: "/Users/vinchenkov/dev/ai/homie/work")
+let directory = URL(fileURLWithPath: "/Users/vinchenkov/dev/ai/collie/work")
 let width = 1200
 let height = 1130
 let scale = 2

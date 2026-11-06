@@ -228,7 +228,7 @@ export function conditionSummary(condition) {
     return "infra failed";
   }
   if (condition.proposal_decision_id) return "Decision Pending";
-  if (condition.attempt_id) return "Homie could not reply";
+  if (condition.attempt_id) return "Collie could not reply";
   if (condition.allowance_condition === "verifier") return "Verifier correction limit reached";
   if (condition.task_id) return "Task requires attention";
   return condition.name;
@@ -278,9 +278,9 @@ export function conditionImpact(condition) {
     const roles = condition.roles ?? [];
     if (!roles.length) return "No roles use this connection.";
     if (condition.state === "ready") return `${roles.length} ${roles.length === 1 ? "role uses" : "roles use"} this connection.`;
-    const pipeline = roles.filter(role => role !== "homie").length;
-    if (roles.includes("homie")) {
-      return pipeline ? `Homie and ${pipeline} ${pipeline === 1 ? "pipeline role" : "pipeline roles"} cannot start.` : "Homie cannot start a reply.";
+    const pipeline = roles.filter(role => role !== "collie").length;
+    if (roles.includes("collie")) {
+      return pipeline ? `Collie and ${pipeline} ${pipeline === 1 ? "pipeline role" : "pipeline roles"} cannot start.` : "Collie cannot start a reply.";
     }
     return `${pipeline} ${pipeline === 1 ? "pipeline role cannot" : "pipeline roles cannot"} start.`;
   }

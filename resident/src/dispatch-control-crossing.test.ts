@@ -8,7 +8,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { execMcVia } from "./resident-control";
-import { HomieRuntimeRegistry } from "./homie-runtime";
+import { CollieRuntimeRegistry } from "./collie-runtime";
 import { collectPipelineLiveness, type PipelineLivenessEntry } from "./pipeline-liveness";
 import type { Effect, Exec, ExecResult } from "./types";
 import { applyEffect } from "./effects";
@@ -31,7 +31,7 @@ const fakeRouting = `# Culler routing
 | verifier | fake | fake |
 | scribe | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `;
 
 // Captured from Docker 29.4.0. The resident's own gatherer treats exactly this
@@ -177,8 +177,8 @@ async function dispatchThroughRealBinary(
     const exec = execMcVia(
       [mcBin],
       { mcHome: home, releaseBuildId: "development", configSchemaVersion: 1 },
-      noHomieContainers,
-      new HomieRuntimeRegistry(Buffer.alloc(32, 5)),
+      noCollieContainers,
+      new CollieRuntimeRegistry(Buffer.alloc(32, 5)),
       liveness,
     );
     return await exec(["dispatch"]);
@@ -190,7 +190,7 @@ async function dispatchThroughRealBinary(
   }
 }
 
-const noHomieContainers: Exec = async (argv) => {
+const noCollieContainers: Exec = async (argv) => {
   if (argv[0] === "ps") return { exitCode: 0, stdout: "", stderr: "" };
   throw new Error(`unexpected resident docker call: ${argv.join(" ")}`);
 };

@@ -62,33 +62,33 @@ describe("verb mirror", () => {
     expect(mc.calls).toEqual([["__release", "status"], ["__release", "open"]]);
   });
 
-  test("GET /api/sessions passes mc homie list through", async () => {
-    const mc = new FakeMc().on(["homie", "list"], ok({ sessions: [{ id: "h-1" }] }));
+  test("GET /api/sessions passes mc collie list through", async () => {
+    const mc = new FakeMc().on(["collie", "list"], ok({ sessions: [{ id: "h-1" }] }));
     const res = await handleApi(...apiReq("GET", "/api/sessions"), deps({ mc }));
     expect(res?.status).toBe(200);
     expect(await res?.json()).toEqual({ sessions: [{ id: "h-1" }] });
-    expect(mc.calls).toEqual([["homie", "list"]]);
+    expect(mc.calls).toEqual([["collie", "list"]]);
   });
 
   test("GET /api/sessions/:id/history passes through", async () => {
     const mc = new FakeMc().on(
-      ["homie", "history", "h-1"],
+      ["collie", "history", "h-1"],
       ok({ session_id: "h-1", status: "active", messages: [] }),
     );
     const res = await handleApi(...apiReq("GET", "/api/sessions/h-1/history"), deps({ mc }));
     expect(res?.status).toBe(200);
-    expect(mc.calls).toEqual([["homie", "history", "h-1"]]);
+    expect(mc.calls).toEqual([["collie", "history", "h-1"]]);
   });
 
   test("POST /api/sessions starts with a generated dashboard ref", async () => {
-    const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-new", status: "active" }));
+    const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-new", status: "active" }));
     const res = await handleApi(...apiReq("POST", "/api/sessions"), deps({ mc }));
     expect(res?.status).toBe(200);
-    expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:dash-feedf00d"]]);
+    expect(mc.calls).toEqual([["collie", "start", "--from", "dashboard:dash-feedf00d"]]);
   });
 
   test("a domain rejection surfaces as 400 with the mc envelope", async () => {
-    const mc = new FakeMc().on(["homie", "history"], domain('unknown Homie session "h-x"'));
+    const mc = new FakeMc().on(["collie", "history"], domain('unknown Collie session "h-x"'));
     const res = await handleApi(...apiReq("GET", "/api/sessions/h-x/history"), deps({ mc }));
     expect(res?.status).toBe(400);
     const body = (await res?.json()) as { error: { code: string; message: string } };
@@ -96,7 +96,7 @@ describe("verb mirror", () => {
   });
 
   test("an environment failure surfaces as 500 without leaking argv advice", async () => {
-    const mc = new FakeMc().on(["homie", "list"], environment("spine unreachable"));
+    const mc = new FakeMc().on(["collie", "list"], environment("spine unreachable"));
     const res = await handleApi(...apiReq("GET", "/api/sessions"), deps({ mc }));
     expect(res?.status).toBe(500);
     const body = (await res?.json()) as { error: { code: string; message: string } };
@@ -115,45 +115,45 @@ describe("verb mirror", () => {
 describe("channel ref derivation", () => {
   test("send reuses the session's existing dashboard binding", async () => {
     const mc = new FakeMc()
-      .on(["homie", "list"], listWithSession("h-1", [
+      .on(["collie", "list"], listWithSession("h-1", [
         { surface: "cli", channel_ref: "term" },
         { surface: "dashboard", channel_ref: "dash-11223344", bound_at: "t" },
       ]))
-      .on(["homie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 3, echoes: 1 }));
+      .on(["collie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 3, echoes: 1 }));
     const res = await handleApi(
       ...apiReq("POST", "/api/sessions/h-1/send", { body: "hello" }),
       deps({ mc }),
     );
     expect(res?.status).toBe(200);
     expect(mc.calls[1]).toEqual([
-      "homie", "send", "h-1", "--from", "dashboard:dash-11223344", "--body", "hello",
+      "collie", "send", "h-1", "--from", "dashboard:dash-11223344", "--body", "hello",
     ]);
   });
 
   test("send generates a fresh ref when the session has no dashboard binding", async () => {
     const mc = new FakeMc()
-      .on(["homie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
-      .on(["homie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 1, echoes: 0 }));
+      .on(["collie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
+      .on(["collie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 1, echoes: 0 }));
     await handleApi(...apiReq("POST", "/api/sessions/h-1/send", { body: "hello" }), deps({ mc }));
     expect(mc.calls[1]?.[4]).toBe("dashboard:dash-feedf00d");
   });
 
   test("resume derives the ref the same way", async () => {
     const mc = new FakeMc()
-      .on(["homie", "list"], ok({ sessions: [] }))
-      .on(["homie", "resume"], ok({ session_id: "h-1", status: "active", resumed: true }));
+      .on(["collie", "list"], ok({ sessions: [] }))
+      .on(["collie", "resume"], ok({ session_id: "h-1", status: "active", resumed: true }));
     await handleApi(...apiReq("POST", "/api/sessions/h-1/resume"), deps({ mc }));
-    expect(mc.calls[1]).toEqual(["homie", "resume", "h-1", "--from", "dashboard:dash-feedf00d"]);
+    expect(mc.calls[1]).toEqual(["collie", "resume", "h-1", "--from", "dashboard:dash-feedf00d"]);
   });
 
   test("start, send, and resume nudge the resident with the session id after the verb succeeds", async () => {
     const nudges: string[] = [];
     const nudgeResident = async (id: string) => { nudges.push(id); };
     const mc = new FakeMc()
-      .on(["homie", "start"], ok({ session_id: "h-new", status: "active" }))
-      .on(["homie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
-      .on(["homie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 1, echoes: 0 }))
-      .on(["homie", "resume"], ok({ session_id: "h-1", status: "active", resumed: true }));
+      .on(["collie", "start"], ok({ session_id: "h-new", status: "active" }))
+      .on(["collie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
+      .on(["collie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 1, echoes: 0 }))
+      .on(["collie", "resume"], ok({ session_id: "h-1", status: "active", resumed: true }));
     expect((await handleApi(...apiReq("POST", "/api/sessions"), deps({ mc, nudgeResident })))?.status).toBe(200);
     expect((await handleApi(...apiReq("POST", "/api/sessions/h-1/send", { body: "hi" }), deps({ mc, nudgeResident })))?.status).toBe(200);
     expect((await handleApi(...apiReq("POST", "/api/sessions/h-1/resume"), deps({ mc, nudgeResident })))?.status).toBe(200);
@@ -163,8 +163,8 @@ describe("channel ref derivation", () => {
   test("a refused verb nudges nothing", async () => {
     const nudges: string[] = [];
     const mc = new FakeMc()
-      .on(["homie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
-      .on(["homie", "send"], domain("session h-1 has ended"));
+      .on(["collie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
+      .on(["collie", "send"], domain("session h-1 has ended"));
     const res = await handleApi(...apiReq("POST", "/api/sessions/h-1/send", { body: "hi" }),
       deps({ mc, nudgeResident: async (id) => { nudges.push(id); } }));
     expect(res?.status).toBe(400);
@@ -174,8 +174,8 @@ describe("channel ref derivation", () => {
   test("a missing resident socket is logged and never fails the request", async () => {
     const log = makeTestLogger("dashboard");
     const mc = new FakeMc()
-      .on(["homie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
-      .on(["homie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 1, echoes: 0 }));
+      .on(["collie", "list"], listWithSession("h-1", [{ surface: "cli", channel_ref: "term" }]))
+      .on(["collie", "send"], ok({ session_id: "h-1", message_id: 7, seq: 1, echoes: 0 }));
     const res = await handleApi(...apiReq("POST", "/api/sessions/h-1/send", { body: "hi" }), deps({
       mc, log,
       nudgeResident: (id) => nudgeResident(residentSocketPath("/nonexistent/mc-home"), id),
@@ -208,7 +208,7 @@ describe("channel ref derivation", () => {
   });
 
   test("an mc usage envelope (exit 2) is a caller-caused 400, not a 500", async () => {
-    const mc = new FakeMc().on(["homie", "history"], {
+    const mc = new FakeMc().on(["collie", "history"], {
       code: 2,
       json: { error: { code: "usage", message: "flag provided but not defined" } },
       stderr: "usage",
@@ -229,8 +229,8 @@ describe("outbox drain", () => {
       .on(["outbox", "poll"], ok({
         surface: "dashboard",
         rows: [
-          { id: 4, kind: "homie_reply", payload: {} },
-          { id: 9, kind: "homie_echo", payload: {} },
+          { id: 4, kind: "collie_reply", payload: {} },
+          { id: 9, kind: "collie_echo", payload: {} },
         ],
       }))
       .on(["outbox", "ack"], ok({ acked: true }));
@@ -248,7 +248,7 @@ describe("outbox drain", () => {
     const mc = new FakeMc()
       .on(["outbox", "poll"], ok({
         surface: "dashboard",
-        rows: [{ id: 4, kind: "homie_reply" }, { id: 9, kind: "homie_echo" }],
+        rows: [{ id: 4, kind: "collie_reply" }, { id: 9, kind: "collie_echo" }],
       }))
       .on(["outbox", "ack", "4"], domain("outbox row 4 belongs to surface \"cli\""))
       .on(["outbox", "ack", "9"], ok({ acked: true }));
@@ -260,12 +260,12 @@ describe("outbox drain", () => {
     // Structured, not prose: the row and the kind are fields, so an operator
     // can find every refused ack across the file without a regex.
     expect(log.records).toMatchObject([
-      { level: "warn", comp: "dashboard", event: "outbox.ack_failed", row: 4, kind: "homie_reply" },
+      { level: "warn", comp: "dashboard", event: "outbox.ack_failed", row: 4, kind: "collie_reply" },
     ]);
   });
 
   test("acks only the kinds history renders; blocked and health rows survive the drain", async () => {
-    // The trivial ack covers homie_reply and homie_echo, because for those
+    // The trivial ack covers collie_reply and collie_echo, because for those
     // two the history pane is the render source. Every other kind reaches the operator
     // through a pane of its own, and acking one here converts a missed
     // delivery into an unreplayable one.
@@ -273,10 +273,10 @@ describe("outbox drain", () => {
       .on(["outbox", "poll"], ok({
         surface: "dashboard",
         rows: [
-          { id: 1, kind: "homie_reply", payload: {} },
+          { id: 1, kind: "collie_reply", payload: {} },
           { id: 3, kind: "blocked_alert", payload: { task_id: 8 } },
           { id: 4, kind: "health", payload: {} },
-          { id: 5, kind: "homie_echo", payload: {} },
+          { id: 5, kind: "collie_echo", payload: {} },
         ],
       }))
       .on(["outbox", "ack"], ok({ acked: true }));
@@ -853,7 +853,7 @@ describe("outbox delivery lag", () => {
       )
       .on(
         ["outbox", "poll", "--surface", "cli"],
-        ok(pollFor("cli", [{ id: 40, kind: "homie_reply", created_at: "2026-08-08 22:14:21" }])),
+        ok(pollFor("cli", [{ id: 40, kind: "collie_reply", created_at: "2026-08-08 22:14:21" }])),
       );
     const res = await handleApi(...apiReq("GET", "/api/outbox/lag"), deps({ mc }));
     expect(res?.status).toBe(200);
@@ -969,7 +969,7 @@ describe("pipeline, configs, and logs reads", () => {
   });
 
   test("GET /api/routing mirrors mc routing show", async () => {
-    const mc = new FakeMc().on(["routing", "show"], ok({ routes: [{ role: "homie" }] }));
+    const mc = new FakeMc().on(["routing", "show"], ok({ routes: [{ role: "collie" }] }));
     const res = await handleApi(...apiReq("GET", "/api/routing"), deps({ mc }));
     expect(res?.status).toBe(200);
     expect(mc.calls).toEqual([["routing", "show"]]);
@@ -1251,9 +1251,9 @@ test("Outbox reads start concurrently and preserve every surface", async () => {
 });
 
 describe("packet conversation", () => {
-  test("a packet preparation maps to homie start with the packet and the version", async () => {
+  test("a packet preparation maps to collie start with the packet and the version", async () => {
     const nudges: string[] = [];
-    const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-packet", status: "active" }));
+    const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-packet", status: "active" }));
     const prepared = await handleApi(...apiReq("POST", "/api/sessions", { packet_id: 41, version_id: 88 }),
       deps({ mc, nudgeResident: async (id) => { nudges.push(id); } }));
     expect(prepared?.status).toBe(200);
@@ -1261,14 +1261,14 @@ describe("packet conversation", () => {
     const cleared = await handleApi(...apiReq("POST", "/api/sessions", { packet_id: 41, version_id: 88, clear: true }), deps({ mc }));
     expect(cleared?.status).toBe(200);
     expect(mc.calls).toEqual([
-      ["homie", "start", "--from", "dashboard:dash-feedf00d", "--packet", "41", "--version", "88"],
-      ["homie", "start", "--from", "dashboard:dash-feedf00d", "--packet", "41", "--version", "88", "--clear"],
+      ["collie", "start", "--from", "dashboard:dash-feedf00d", "--packet", "41", "--version", "88"],
+      ["collie", "start", "--from", "dashboard:dash-feedf00d", "--packet", "41", "--version", "88", "--clear"],
     ]);
     expect(nudges).toEqual(["h-packet"]);
   });
 
   test("a packet preparation for a replaced packet is a conflict", async () => {
-    const mc = new FakeMc().on(["homie", "start"], {
+    const mc = new FakeMc().on(["collie", "start"], {
       code: 1,
       json: { error: { code: "record-conflict", message: "The review packet changed. Open the current packet." } },
       stderr: "",
@@ -1301,17 +1301,17 @@ describe("packet conversation", () => {
 
 describe("Project Vision", () => {
   test("a Vision conversation retains its explicit Project", async () => {
-    const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-vision" }));
+    const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-vision" }));
     const response = await handleApi(...apiReq("POST", "/api/sessions", { vision_project: "garden" }), deps({ mc }));
     expect(response?.status).toBe(200);
-    expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:vision-garden", "--vision-project", "garden"]]);
+    expect(mc.calls).toEqual([["collie", "start", "--from", "dashboard:vision-garden", "--vision-project", "garden"]]);
   });
 
   test("a clear starts an empty Vision conversation and refuses an ordinary one", async () => {
-    const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-fresh" }));
+    const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-fresh" }));
     const response = await handleApi(...apiReq("POST", "/api/sessions", { vision_project: "garden", clear: true }), deps({ mc }));
     expect(response?.status).toBe(200);
-    expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:vision-garden", "--vision-project", "garden", "--clear"]]);
+    expect(mc.calls).toEqual([["collie", "start", "--from", "dashboard:vision-garden", "--vision-project", "garden", "--clear"]]);
     const refused = await handleApi(...apiReq("POST", "/api/sessions", { clear: true }), deps({ mc }));
     expect(refused?.status).toBe(400);
     expect(await refused?.json()).toEqual({ error: { code: "usage", message: "Only a Vision or packet conversation can be cleared." } });
@@ -1340,37 +1340,37 @@ describe("Project Vision", () => {
 });
 
 test("automatic conversation creation uses the atomic session command", async () => {
-  const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-new", status: "active" }));
+  const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-new", status: "active" }));
   const res = await handleApi(...apiReq("POST", "/api/sessions", { ensure: true }), deps({ mc }));
   expect(res?.status).toBe(200);
-  expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:dash-feedf00d", "--ensure"]]);
+  expect(mc.calls).toEqual([["collie", "start", "--from", "dashboard:dash-feedf00d", "--ensure"]]);
 });
 
 test("conversation deletion passes the session identity and its failure through", async () => {
-  const mc = new FakeMc().on(["homie", "delete"], domain("The conversation is unavailable."));
+  const mc = new FakeMc().on(["collie", "delete"], domain("The conversation is unavailable."));
   const res = await handleApi(...apiReq("DELETE", "/api/sessions/h-one"), deps({ mc }));
   expect(res?.status).toBe(400);
-  expect(mc.calls).toEqual([["homie", "delete", "h-one"]]);
+  expect(mc.calls).toEqual([["collie", "delete", "h-one"]]);
 });
 
 
 test("conversation rename forwards its title and reports a domain rejection", async () => {
-  const mc = new FakeMc().on(["homie", "title"], ok({ session_id: "h-1", title: "Database options", changed: true }));
+  const mc = new FakeMc().on(["collie", "title"], ok({ session_id: "h-1", title: "Database options", changed: true }));
   const result = await handleApi(...apiReq("POST", "/api/sessions/h-1/title", { title: "Database options" }), deps({ mc }));
   expect(result?.status).toBe(200);
-  expect(mc.calls).toEqual([["homie", "title", "h-1", "--title", "Database options"]]);
+  expect(mc.calls).toEqual([["collie", "title", "h-1", "--title", "Database options"]]);
   const invalid = await handleApi(...apiReq("POST", "/api/sessions/h-1/title", { title: 3 }), deps({ mc }));
   expect(invalid?.status).toBe(400);
-  const rejected = new FakeMc().on(["homie", "title"], domain("The conversation is unavailable."));
+  const rejected = new FakeMc().on(["collie", "title"], domain("The conversation is unavailable."));
   expect((await handleApi(...apiReq("POST", "/api/sessions/h-1/title", { title: "Gone" }), deps({ mc: rejected })))?.status).toBe(400);
 });
 
 test("model selection forwards the conversation, profile, and retry identity", async () => {
-  const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-new", replaced: "h-old", binding: "fake/fake" }));
+  const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-new", replaced: "h-old", binding: "fake/fake" }));
   const response = await handleApi(...apiReq("POST", "/api/sessions/h-old/model", { binding: "fake", request_id: "request-model-0001" }), deps({ mc }));
   expect(response?.status).toBe(200);
   expect(await response?.json()).toMatchObject({ session_id: "h-new", replaced: "h-old" });
-  expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:dash-feedf00d", "--previous", "h-old", "--binding", "fake", "--request", "request-model-0001"]]);
+  expect(mc.calls).toEqual([["collie", "start", "--from", "dashboard:dash-feedf00d", "--previous", "h-old", "--binding", "fake", "--request", "request-model-0001"]]);
   const refused = await handleApi(...apiReq("POST", "/api/sessions/h-old/model", { binding: "fake" }), deps({ mc }));
   expect(refused?.status).toBe(400);
   expect(mc.calls.length).toBe(1);

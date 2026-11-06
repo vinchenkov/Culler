@@ -127,7 +127,7 @@ func TestReleaseDatabaseCheckPreservesOperatorPauses(t *testing.T) {
 	}
 }
 
-func TestReleaseDatabaseSeparatesHomieHistoryAndContainerProof(t *testing.T) {
+func TestReleaseDatabaseSeparatesCollieHistoryAndContainerProof(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "spine.db")
 	if _, err := OnboardSpine(path, absentMirrorRequest()); err != nil {
 		t.Fatal(err)
@@ -138,19 +138,19 @@ func TestReleaseDatabaseSeparatesHomieHistoryAndContainerProof(t *testing.T) {
 	}
 	defer db.Close()
 	for _, status := range []string{"active", "ended"} {
-		if _, err := db.Exec(`INSERT INTO homie_sessions(id,status,container_name,verb_allowlist,session_path,binding,current_launch_id,current_launch_mode,current_container_id,launch_bound_at) VALUES(?,?,?,'[]','/fixture/session','fixture',?,'fresh',?,datetime('now'))`, status, status, status, strings.Repeat("a", 16), strings.Repeat("b", 64)); err != nil {
+		if _, err := db.Exec(`INSERT INTO collie_sessions(id,status,container_name,verb_allowlist,session_path,binding,current_launch_id,current_launch_mode,current_container_id,launch_bound_at) VALUES(?,?,?,'[]','/fixture/session','fixture',?,'fresh',?,datetime('now'))`, status, status, status, strings.Repeat("a", 16), strings.Repeat("b", 64)); err != nil {
 			t.Fatal(err)
 		}
 	}
 	result, err := InspectReleaseDatabase(path)
-	if err != nil || !result.Idle() || len(result.HomieContainers) != 1 || result.HomieContainers[0] != strings.Repeat("b", 64) {
-		t.Fatalf("Homie proof: %#v %v", result, err)
+	if err != nil || !result.Idle() || len(result.CollieContainers) != 1 || result.CollieContainers[0] != strings.Repeat("b", 64) {
+		t.Fatalf("Collie proof: %#v %v", result, err)
 	}
-	if _, err := db.Exec(`UPDATE homie_sessions SET current_container_id=NULL,launch_bound_at=NULL WHERE id='active'`); err != nil {
+	if _, err := db.Exec(`UPDATE collie_sessions SET current_container_id=NULL,launch_bound_at=NULL WHERE id='active'`); err != nil {
 		t.Fatal(err)
 	}
 	result, err = InspectReleaseDatabase(path)
-	if err != nil || result.Idle() || result.HomieLaunches != 1 || len(result.HomieContainers) != 0 {
+	if err != nil || result.Idle() || result.CollieLaunches != 1 || len(result.CollieContainers) != 0 {
 		t.Fatalf("unbound launch: %#v %v", result, err)
 	}
 }

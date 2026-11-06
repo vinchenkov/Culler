@@ -477,15 +477,15 @@ func TestEnvironmentRunEvidenceBelongsToItsAssignedLiveRun(t *testing.T) {
 	}
 }
 
-func TestEnvironmentHomieReadUsesItsFrozenAuthority(t *testing.T) {
+func TestEnvironmentCollieReadUsesItsFrozenAuthority(t *testing.T) {
 	db := dvSpine(t)
-	dvExec(t, db, `INSERT INTO homie_sessions(id,container_name,verb_allowlist,session_path,binding,vision_project_id) VALUES('environment-homie','mc-environment-homie','["environment.get"]','sessions/environment-homie','fake/fake','ws-test')`)
-	id := &RunIdentity{Tier: "homie", RunID: "environment-homie", VerbAllowlist: []string{"environment.get"}}
+	dvExec(t, db, `INSERT INTO collie_sessions(id,container_name,verb_allowlist,session_path,binding,vision_project_id) VALUES('environment-collie','mc-environment-collie','["environment.get"]','sessions/environment-collie','fake/fake','ws-test')`)
+	id := &RunIdentity{Tier: "collie", RunID: "environment-collie", VerbAllowlist: []string{"environment.get"}}
 	req := EnvironmentRequest{ProjectID: "ws-test"}
 	environmentCall(t, db, id, "get", req)
 	for _, action := range []string{"save", "approve", "work", "operation-result", "deny"} {
 		if _, err := ProjectEnvironment(db, id, action, req); err == nil {
-			t.Fatalf("Homie gained environment mutation %s.", action)
+			t.Fatalf("Collie gained environment mutation %s.", action)
 		}
 	}
 	narrow := *id

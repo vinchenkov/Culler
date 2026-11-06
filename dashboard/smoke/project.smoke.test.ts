@@ -78,7 +78,7 @@ test("One Project scopes each project page", async () => {
     expect(await page.getByTestId("activity-errors").innerText()).not.toContain(`${other} error`);
     await page.getByTestId("pipeline-runs").locator(`[title="${ws}-run"]`).waitFor();
     expect(await page.getByTestId("pipeline-runs").locator(`[title="${other}-run"]`).count()).toBe(0);
-    expect(await page.getByTestId("topology-node-homie").count()).toBe(0);
+    expect(await page.getByTestId("topology-node-collie").count()).toBe(0);
   }
   await page.reload();
   await page.getByTestId("topology-node-worker").waitFor();
@@ -97,11 +97,11 @@ test("empty and archived Projects remain selectable; global pages mute the selec
   await page.getByTestId("project-listbox").waitFor({ state: "visible" });
   expect(await page.getByTestId("project-row-archived").getByRole("button", { name: /^(Pause|Resume) / }).count()).toBe(0);
   // A page change closes the Project list and disables its button.
-  await page.evaluate(() => { location.hash = "#homie"; });
+  await page.evaluate(() => { location.hash = "#collie"; });
   await page.getByTestId("project-listbox").waitFor({ state: "hidden" });
   expect(await page.getByTestId("project-button").getAttribute("aria-expanded")).toBe("false");
   expect(await page.getByTestId("project-context").isVisible()).toBe(true);
-  for (const tab of ["homie", "configs", "logs"]) {
+  for (const tab of ["collie", "configs", "logs"]) {
     await page.getByTestId(`tab-${tab}`).click();
     expect(await page.getByTestId("project-context").isVisible()).toBe(true);
     expect(await page.getByTestId("project-button").isDisabled()).toBe(true);
@@ -143,7 +143,7 @@ test("page changes preserve the navigation positions", async () => {
         const { x, y, width, height } = node.getBoundingClientRect();
         return { x: x + (node.closest("nav.seg")?.scrollLeft ?? 0), y, width, height };
       }));
-      for (const tab of ["logs", "homie", "configs", "review", "pipeline", "board"]) {
+      for (const tab of ["logs", "collie", "configs", "review", "pipeline", "board"]) {
         await page.evaluate((tab) => { location.hash = `#${tab}`; }, tab);
         await page.waitForFunction((tab) => document.querySelector(`.tab[data-page="${tab}"]`)?.getAttribute("aria-current") === "page", tab);
         expect(await page.locator(controls).evaluateAll((nodes) => nodes.map((node) => {

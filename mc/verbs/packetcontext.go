@@ -25,10 +25,10 @@ const maxPacketReportTextBytes = 128 << 10
 // address such as "metadata:" intact.
 var packetMediaAddress = regexp.MustCompile(`(?i)\bdata:([a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+)?((?:;[a-z0-9!#$&^_.+=-]+)*?)(;base64)?,([^"'\s()<>]*)`)
 
-// HomiePacketContext returns the packet context of a packet conversation. The
-// Homie runner reads it at the first turn of each native session.
-func HomiePacketContext(db *sql.DB, id *RunIdentity, sessionID string) (any, error) {
-	if err := requireHomieRunner(id, sessionID, "mc homie packet-context"); err != nil {
+// ColliePacketContext returns the packet context of a packet conversation. The
+// Collie runner reads it at the first turn of each native session.
+func ColliePacketContext(db *sql.DB, id *RunIdentity, sessionID string) (any, error) {
+	if err := requireCollieRunner(id, sessionID, "mc collie packet-context"); err != nil {
 		return nil, err
 	}
 	ctx := context.Background()
@@ -39,17 +39,17 @@ func HomiePacketContext(db *sql.DB, id *RunIdentity, sessionID string) (any, err
 	defer tx.Rollback()
 	var packet, version sql.NullInt64
 	err = tx.QueryRowContext(ctx, `
-		SELECT s.packet_id, p.version_id FROM homie_sessions s
+		SELECT s.packet_id, p.version_id FROM collie_sessions s
 		LEFT JOIN review_versions p ON p.id = s.packet_id
 		WHERE s.id = ?`, sessionID).Scan(&packet, &version)
 	if err == sql.ErrNoRows {
-		return nil, Domainf("unknown Homie session %q", sessionID)
+		return nil, Domainf("unknown Collie session %q", sessionID)
 	}
 	if err != nil {
 		return nil, classify(err)
 	}
 	if !packet.Valid {
-		return nil, Domainf("Homie session %q is not a packet conversation", sessionID)
+		return nil, Domainf("Collie session %q is not a packet conversation", sessionID)
 	}
 	text, err := BuildPacketContext(ctx, tx, ArtifactsMountRoot(), packet.Int64)
 	if err != nil {
@@ -62,7 +62,7 @@ func HomiePacketContext(db *sql.DB, id *RunIdentity, sessionID string) (any, err
 
 // BuildPacketContext describes one packet as the operator reviewed it: its
 // identity, its content in full up to the size limit, and the identifiers of
-// the records that Homie reads on demand. The artifact paths resolve under
+// the records that Collie reads on demand. The artifact paths resolve under
 // artifactsRoot.
 func BuildPacketContext(ctx context.Context, q Q, artifactsRoot string, packetID int64) (string, error) {
 	var project, projectTitle, taskTitle, thesis, criteria, renderPath, reportDigest, inputCommit, resultCommit string

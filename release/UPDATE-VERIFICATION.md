@@ -17,7 +17,7 @@ These checks use scratch data and leave the production deployment unchanged.
 | `./dashboard/check.sh` | Passed 905 tests. |
 | `./dashboard/smoke.sh` | Passed 301 tests across all 51 files, with 4,704 assertions. |
 | `./runner/agent-runner/check.sh` | Passed 149 tests. |
-| `./runner/homie-runner/check.sh` | Passed 54 tests. |
+| `./runner/collie-runner/check.sh` | Passed 54 tests. |
 | `./runner/setup-runner/check.sh` | Passed nine tests. |
 | `./runner/fake-harness/check.sh` | Passed 43 tests. |
 | `./runner/shared/check.sh` | Passed 118 tests. |

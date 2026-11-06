@@ -5,19 +5,19 @@ import (
 	"testing"
 )
 
-// A Homie session reads the current record of the packet of its conversation
+// A Collie session reads the current record of the packet of its conversation
 // with a task selection. The read needs no allowlist entry.
-func TestHomieWithAnEmptyAllowlistSelectsOnePacket(t *testing.T) {
+func TestCollieWithAnEmptyAllowlistSelectsOnePacket(t *testing.T) {
 	spine := initSpine(t)
 	taskID := proposalTask(t, spine, "packet with a task selection")
 	packageTask(t, spine, taskID)
 	packet := reviewedPacket(t, spine, taskID)
 
-	started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "cli:empty-allowlist", "--allow", "none")
+	started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:empty-allowlist", "--allow", "none")
 	if started.code != 0 {
-		t.Fatalf("homie start failed (%d): %s", started.code, started.stderr)
+		t.Fatalf("collie start failed (%d): %s", started.code, started.stderr)
 	}
-	env := homieJSONEnv(t, spine, started.json["session_id"].(string), []string{})
+	env := collieJSONEnv(t, spine, started.json["session_id"].(string), []string{})
 
 	all := runMC(t, env, "", "packet", "list")
 	selected := runMC(t, env, "", "packet", "list", "--task", fmt.Sprint(taskID))

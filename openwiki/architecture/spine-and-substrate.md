@@ -32,13 +32,13 @@ verified:
 
 # The spine: SQLite substrate and schema
 
-The spine is the single SQLite database that holds all Culler state. It is the message bus between components and the ground truth for Projects, tasks, runs, leases, activity, Homie sessions, and repository executions. Only the `mc` binary opens it (see [Culler system architecture](system-overview.md)). This page covers the package that defines and opens it, `mc/substrate`, and the Go layer above it, `mc/domain`.
+The spine is the single SQLite database that holds all Culler state. It is the message bus between components and the ground truth for Projects, tasks, runs, leases, activity, Collie sessions, and repository executions. Only the `mc` binary opens it (see [Culler system architecture](system-overview.md)). This page covers the package that defines and opens it, `mc/substrate`, and the Go layer above it, `mc/domain`.
 
 ## Schema files
 
 The DDL lives in three files embedded into the `mc` binary by `mc/substrate/substrate.go`:
 
-- `mc/substrate/schema.sql`: core records, including `meta`, `sandbox_profiles`, `projects`, `tasks`, `settings`, `leases`, `runs`, `infrastructure_failures`, `activity`, `homie_sessions`, and `homie_bindings`.
+- `mc/substrate/schema.sql`: core records, including `meta`, `sandbox_profiles`, `projects`, `tasks`, `settings`, `leases`, `runs`, `infrastructure_failures`, `activity`, `collie_sessions`, and `collie_bindings`.
 - `mc/substrate/delivery.sql`: the Git delivery model, including `repository_runs`, `task_versions`, `merge_candidates`, `merge_operations`, `repository_executions`, and artifact retention.
 - `mc/substrate/environments.sql`: Project environments, revisions, operations, and source associations.
 
@@ -53,7 +53,7 @@ The schema enforces the state machine directly. CHECK constraints restrict enume
 - `activity` is append-only: `activity_append_only_update` and `activity_append_only_delete` abort every update and delete. Its dispatch receipt keys are CHECKed by both character length and byte length, so a value with an embedded NUL cannot pass as a valid hex key.
 - Many record kinds are never deleted (`tasks_no_delete`, `runs_no_delete`, `projects_no_delete`) or are immutable once written (`task_versions_immutable`, `version_verdicts_immutable`, `merge_candidates_immutable`).
 
-`mc/substrate/substrate_test.go` proves these rules against a real database. `TestTransitionMatrix` tries every status pair for tasks, and expects exactly the legal edges to succeed. Other tests cover singletons, append-only tables, no-delete backstops, and Homie launch fences.
+`mc/substrate/substrate_test.go` proves these rules against a real database. `TestTransitionMatrix` tries every status pair for tasks, and expects exactly the legal edges to succeed. Other tests cover singletons, append-only tables, no-delete backstops, and Collie launch fences.
 
 ## The domain layer above the schema
 
@@ -137,9 +137,9 @@ Once set, this flag survives Project deletion and Discord disconnect.
 The connection field records a digest of the host policy; the bot token stays in host configuration.
 
 `DiscordApply` replaces only Discord alert routes in one transaction.
-A retired connection deactivates its Discord Homie bindings and marks pending Discord outbox rows with `retired_at`.
+A retired connection deactivates its Discord Collie bindings and marks pending Discord outbox rows with `retired_at`.
 It also retires the stored Discord thread associations.
-`homie_discord_threads` keeps one session, server, configured channel, and thread identifier together.
+`collie_discord_threads` keeps one session, server, configured channel, and thread identifier together.
 The thread identifier is unique, and the schema requires it to differ from the configured channel identifier.
 Those rows retain their original destination and remain undelivered.
 The schema permits retirement only for an undelivered Discord row and prevents a later change to its retirement timestamp.

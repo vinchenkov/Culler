@@ -47,12 +47,12 @@ The stage definitions preserve Board and Pipeline associations.
 | Setup Journal | Panel header, text, controls, and secondary regions | Milestones, progress, reports, files, and image decisions |
 | Review queue | Surfaces, text, controls, status, and selection | Queue scope, packet selection, and reader entry |
 | Packet reader | Structural headers, controls, and side panel surfaces | Wide and narrow layouts, documents, decisions, and evidence |
-| Review side panels | Blue structural headers, bodies, controls, and close actions | Homie, run history, records, and retained conversation behavior |
+| Review side panels | Blue structural headers, bodies, controls, and close actions | Collie, run history, records, and retained conversation behavior |
 | Pipeline | Common text, controls, surfaces, and status | Active work, role details, stage associations, and recent activity |
 | Agent profile assignment | Shared dialog header, body, cross, fields, and selection | Compact layout and immediate assignment |
 | Model configuration | Shared header, body, cross, fields, and actions | Side panel layout, profile checks, and access state |
 | Agent profile forms | Shared header, body, cross, fields, notices, and actions | Create, edit, repair, model tests, and domain checks |
-| Homie | Blue panel headers, body surface, fields, controls, and status | Sessions, transcripts, attachments, model selection, and composer |
+| Collie | Blue panel headers, body surface, fields, controls, and status | Sessions, transcripts, attachments, model selection, and composer |
 | Session actions | Shared dialog regions, fields, danger controls, and actions | Rename, delete, model change, cancellation, and confirmation |
 | Configs | Shared surfaces, fields, controls, status, and page text | Sidebar sections, drafts, Project controls, and authorization |
 | Add Project | Shared dialog regions, fields, cross, notices, and actions | Folder checks, source access, retained draft, and import |

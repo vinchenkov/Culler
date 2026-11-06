@@ -12,7 +12,7 @@ import (
 	"mc/verbs"
 )
 
-// attachmentBytesCLIFixture stands up a spine with one Homie conversation
+// attachmentBytesCLIFixture stands up a spine with one Collie conversation
 // whose inbound turn claims a single published attachment, and returns the
 // session id plus the claim's canonical digest. Bytes go through the real
 // publisher, so the on-disk tree is exactly what production materializes.
@@ -20,14 +20,14 @@ func attachmentBytesCLIFixture(
 	t *testing.T, spine, mediaType, displayName, body string,
 ) (string, string) {
 	t.Helper()
-	started := runMC(t, spineEnv(spine), "", "homie", "start",
+	started := runMC(t, spineEnv(spine), "", "collie", "start",
 		"--from", "discord:bytes-channel")
 	if started.code != 0 {
-		t.Fatalf("homie start failed: %s", started.stderr)
+		t.Fatalf("collie start failed: %s", started.stderr)
 	}
 	session := started.json["session_id"].(string)
 	db := openDB(t, spine)
-	binding := queryInt(t, db, `SELECT id FROM homie_bindings
+	binding := queryInt(t, db, `SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='discord' AND active=1`, session)
 	manifest := `[{"ordinal":1,"size":` + strconv.Itoa(len(body)) +
 		`,"media_type":"` + mediaType + `","display_name":"` + displayName + `"}]`
@@ -108,7 +108,7 @@ func TestAttachmentBytesCLIServesOnlySpineConfirmedClaims(t *testing.T) {
 	}
 
 	// The transcript read exposes the exact address the byte read accepted.
-	history := runMC(t, spineEnv(spine), "", "homie", "history", session)
+	history := runMC(t, spineEnv(spine), "", "collie", "history", session)
 	if history.code != 0 {
 		t.Fatalf("history = code %d stderr %q", history.code, history.stderr)
 	}

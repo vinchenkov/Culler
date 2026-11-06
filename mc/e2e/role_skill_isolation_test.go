@@ -136,42 +136,42 @@ bun /mc/behaviors/scribe.ts`),
 	}
 }
 
-// The Homie container carries its own skill and the shared skills.
-func TestHomieSkillIsolationDockerBoundary(t *testing.T) {
+// The Collie container carries its own skill and the shared skills.
+func TestCollieSkillIsolationDockerBoundary(t *testing.T) {
 	f := setup(t)
-	if err := os.WriteFile(filepath.Join(f.base, "behaviors", "homie.json"), []byte(`{"steps":[
+	if err := os.WriteFile(filepath.Join(f.base, "behaviors", "collie.json"), []byte(`{"steps":[
 		{"do":"sleep","seconds":10},
-		{"do":"succeed","output":"homie ack"}]}`), 0o644); err != nil {
-		t.Fatalf("write skill-probe Homie behavior: %v", err)
+		{"do":"succeed","output":"collie ack"}]}`), 0o644); err != nil {
+		t.Fatalf("write skill-probe Collie behavior: %v", err)
 	}
 
-	start := f.mcOK("", "homie", "start", "--from", "dashboard:chan-1")
+	start := f.mcOK("", "collie", "start", "--from", "dashboard:chan-1")
 	session, ok := start["session_id"].(string)
 	if !ok || session == "" {
-		t.Fatalf("mc homie start returned no session_id: %v", start)
+		t.Fatalf("mc collie start returned no session_id: %v", start)
 	}
 	f.startResident()
-	if send := f.mcOK("", "homie", "send", session, "--from", "dashboard:chan-1", "--body", "ping"); send["message_id"] == nil {
-		t.Fatalf("mc homie send returned no message_id: %v", send)
+	if send := f.mcOK("", "collie", "send", session, "--from", "dashboard:chan-1", "--body", "ping"); send["message_id"] == nil {
+		t.Fatalf("mc collie send returned no message_id: %v", send)
 	}
 
-	containerName := "mc-homie-" + session
+	containerName := "mc-collie-" + session
 	t.Cleanup(func() { _ = exec.Command("docker", "rm", "-f", containerName).Run() })
 
-	f.waitFor(60*time.Second, "the Homie container carries its own skill and the shared skills", func() (bool, string) {
+	f.waitFor(60*time.Second, "the Collie container carries its own skill and the shared skills", func() (bool, string) {
 		out, err := exec.Command(
 			"docker", "exec", containerName,
 			"sh", "-c", `set -e
 root="$HOME/.agents/skills"
 test -n "$HOME" || { echo "NO CONTAINER HOME"; exit 1; }
 test -d "$root" || { echo "NO SKILL ROOT: $root"; exit 1; }
-test -f "$root/mc-homie/SKILL.md" || { echo "OWN SKILL MISSING"; exit 1; }
-grep -q '^name: mc-homie$' "$root/mc-homie/SKILL.md" || { echo "FRONTMATTER NAME WRONG"; exit 1; }
+test -f "$root/mc-collie/SKILL.md" || { echo "OWN SKILL MISSING"; exit 1; }
+grep -q '^name: mc-collie$' "$root/mc-collie/SKILL.md" || { echo "FRONTMATTER NAME WRONG"; exit 1; }
 for skill in writing project-wiki project-environment-setup; do
   test -f "$root/$skill/SKILL.md" || { echo "SHARED SKILL MISSING: $skill"; exit 1; }
   grep -q "^name: $skill$" "$root/$skill/SKILL.md" || { echo "SHARED SKILL NAME WRONG: $skill"; exit 1; }
 done
-foreign=$(ls -A "$root" | grep -Ev '^(mc-homie|writing|project-wiki|project-environment-setup)$' || true)
+foreign=$(ls -A "$root" | grep -Ev '^(mc-collie|writing|project-wiki|project-environment-setup)$' || true)
 test -z "$foreign" || { echo "FOREIGN SKILL PRESENT: $foreign"; exit 1; }
 echo OK`,
 		).CombinedOutput()
@@ -184,11 +184,11 @@ echo OK`,
 		return true, ""
 	})
 
-	// Homie excludes pipeline role skills.
+	// Collie excludes pipeline role skills.
 	if out, err := exec.Command(
 		"docker", "exec", containerName, "sh", "-c", `test -e "$HOME/.agents/skills/mc-worker"`,
 	).CombinedOutput(); err == nil {
-		t.Fatalf("a pipeline role skill is present in a Homie container: %s", out)
+		t.Fatalf("a pipeline role skill is present in a Collie container: %s", out)
 	}
 }
 

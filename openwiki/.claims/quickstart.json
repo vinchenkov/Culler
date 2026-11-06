@@ -190,7 +190,7 @@
     },
     {
       "id": "claim_63f997e95e784022889469385c662aec",
-      "statement": "The Review page offers a packet conversation that also opens on the Homie page.",
+      "statement": "The Review page offers a packet conversation that also opens on the Collie page.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
@@ -252,7 +252,7 @@
     },
     {
       "id": "claim_8c766e410e5c42a7afeb7b5bb41a452d",
-      "statement": "Ask Homie opens an ordinary conversation with the selected diagnostic issue and requests an explanation and proposed action.",
+      "statement": "Ask Collie opens an ordinary conversation with the selected diagnostic issue and requests an explanation and proposed action.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/diagnosticchat.js#L13-L32",

@@ -63,8 +63,8 @@ export function configGroups(families, query = "") {
   return groups;
 }
 
-// The table lists the task roles in pipeline order, then the Scribe, then Homie.
-const ROLE_ORDER = ["strategist", "arbiter", "worker", "verifier", "packager", "scribe", "homie"];
+// The table lists the task roles in pipeline order, then the Scribe, then Collie.
+const ROLE_ORDER = ["strategist", "arbiter", "worker", "verifier", "packager", "scribe", "collie"];
 
 /** The role table retains unknown roles after the known pipeline roles. */
 export function routingRows(routes) {
@@ -84,7 +84,7 @@ export function routingRows(routes) {
       profileName: r?.name ?? r?.binding ?? "—",
       model: r?.model ?? "",
       family: r?.harness ?? "—",
-      homie: role === "homie",
+      collie: role === "collie",
     };
   });
 }

@@ -577,14 +577,14 @@ env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
     --runtime-bindings chatgpt,claude --acquire-runtime-auth \
     --routing-file "$case_root/routing answers.md" \
     --review-wip-cap 5 --timeout-minutes 45 --grace-minutes 10 \
-    --heartbeat-interval-s 30 --spawn-grace-s 40 --homie-idle-timeout-s 900 \
+    --heartbeat-interval-s 30 --spawn-grace-s 40 --collie-idle-timeout-s 900 \
     --git-author-name "MC Roles" --git-author-email "roles@example.invalid" \
     --dashboard-bind 0.0.0.0:7443 \
     --dashboard-auth-token-file "$case_root/dashboard token" \
     --discord-mode disabled \
     --confirm-live-spend --restore-latest --activate \
     >/dev/null 2>&1 || fail "production-forwarding did not reach the whole wizard"
-expected=$(printf 'CALL\t__onboard\t--project\tprimary\t--workspace-root\t%s\t--accept-generated-sandbox\t--project-vision\tlater\t--project-git-author-name\tPrimary Bot\t--project-git-author-email\tprimary@example.test\t--runtime-bindings\tchatgpt,claude\t--routing-file\t%s\t--review-wip-cap\t5\t--timeout-minutes\t45\t--grace-minutes\t10\t--heartbeat-interval-s\t30\t--spawn-grace-s\t40\t--homie-idle-timeout-s\t900\t--git-author-name\tMC Roles\t--git-author-email\troles@example.invalid\t--dashboard-bind\t0.0.0.0:7443\t--dashboard-auth-token-file\t%s\t--discord-mode\tdisabled\t--acquire\t--confirm-live-spend\t--restore-latest\t--activate' \
+expected=$(printf 'CALL\t__onboard\t--project\tprimary\t--workspace-root\t%s\t--accept-generated-sandbox\t--project-vision\tlater\t--project-git-author-name\tPrimary Bot\t--project-git-author-email\tprimary@example.test\t--runtime-bindings\tchatgpt,claude\t--routing-file\t%s\t--review-wip-cap\t5\t--timeout-minutes\t45\t--grace-minutes\t10\t--heartbeat-interval-s\t30\t--spawn-grace-s\t40\t--collie-idle-timeout-s\t900\t--git-author-name\tMC Roles\t--git-author-email\troles@example.invalid\t--dashboard-bind\t0.0.0.0:7443\t--dashboard-auth-token-file\t%s\t--discord-mode\tdisabled\t--acquire\t--confirm-live-spend\t--restore-latest\t--activate' \
   "$case_workspace_space" "$case_root/routing answers.md" "$case_root/dashboard token")
 actual=$(tail -n 1 "$forward_log")
 [ "$actual" = "$expected" ] || {

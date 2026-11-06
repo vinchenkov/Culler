@@ -134,16 +134,16 @@ type PrivateDispatchPrepareRequest struct {
 	ConfigSchemaVersion int                 `json:"config_schema_version"`
 	DeploymentUUID      string              `json:"deployment_uuid"`
 	DispatchRequestID   string              `json:"dispatch_request_id"`
-	// Project names the round this prepare evaluates: "" is the Homie
+	// Project names the round this prepare evaluates: "" is the Collie
 	// stage, a Project id is that Project's pipeline round or wiki round.
 	Project string `json:"project"`
-	// Round is "" for the Homie stage and a pipeline round, and "wiki" for a
+	// Round is "" for the Collie stage and a pipeline round, and "wiki" for a
 	// wiki round.
 	Round string `json:"round,omitempty"`
 	// AcceptedCommit is the host observation of the accepted commit of the
 	// Project. Only a wiki round carries it.
-	AcceptedCommit string                  `json:"accepted_commit,omitempty"`
-	HomieInventory []PrivateHomieContainer `json:"homie_inventory"`
+	AcceptedCommit  string                   `json:"accepted_commit,omitempty"`
+	CollieInventory []PrivateCollieContainer `json:"collie_inventory"`
 	// PipelineLiveness is the host's observation of whether recently-launched
 	// pipeline runs still have containers — the fact the lock domain cannot
 	// measure for itself, since only the host holds the container control
@@ -152,7 +152,7 @@ type PrivateDispatchPrepareRequest struct {
 	PipelineLiveness []PrivatePipelineLiveness `json:"pipeline_liveness"`
 	// RuntimeCapability is the host-resolved enabled runtime catalog, carried
 	// INTO prepare rather than resolved at attest. A pipeline spawn resolves its
-	// route between prepare and commit, but the lease-free Homie wake finalizes
+	// route between prepare and commit, but the lease-free Collie wake finalizes
 	// inside the prepare transaction, so the only place a
 	// wake can learn what this deployment can currently run is here. The host
 	// re-reads config.toml immediately after prepare and abandons the effect on
@@ -198,7 +198,7 @@ type PrivateDispatchPrepareResponse struct {
 	Final               *json.RawMessage          `json:"final"`
 	Candidate           *PrivateDispatchCandidate `json:"candidate"`
 	// RuntimeCapabilityDigest is set exactly when the returned final consumed
-	// the carried capability (today: a Homie wake). It is the host's drift
+	// the carried capability (today: a Collie wake). It is the host's drift
 	// fence input: the host recomputes the digest immediately and abandons a
 	// final resolved against a catalog that has since changed.
 	RuntimeCapabilityDigest string `json:"runtime_capability_digest"`
@@ -279,7 +279,7 @@ func NewPrivateDispatchPrepareRequest(
 	releaseBuildID, deploymentUUID string,
 	controlVersion, configVersion int,
 	project string,
-	homieInventory []PrivateHomieContainer,
+	collieInventory []PrivateCollieContainer,
 	pipelineLiveness []PrivatePipelineLiveness,
 	capability PrivateRuntimeCapability,
 ) (PrivateDispatchPrepareRequest, error) {
@@ -290,7 +290,7 @@ func NewPrivateDispatchPrepareRequest(
 	if err := validatePrivateRoundProject(project); err != nil {
 		return PrivateDispatchPrepareRequest{}, err
 	}
-	if err := ValidatePrivateHomieInventory(homieInventory); err != nil {
+	if err := ValidatePrivateCollieInventory(collieInventory); err != nil {
 		return PrivateDispatchPrepareRequest{}, err
 	}
 	if err := ValidatePrivatePipelineLiveness(pipelineLiveness); err != nil {
@@ -305,13 +305,13 @@ func NewPrivateDispatchPrepareRequest(
 		ConfigSchemaVersion: configVersion, DeploymentUUID: deploymentUUID,
 		DispatchRequestID: requestID,
 		Project:           project,
-		HomieInventory:    homieInventory,
+		CollieInventory:   collieInventory,
 		PipelineLiveness:  pipelineLiveness,
 		RuntimeCapability: capability,
 	}, nil
 }
 
-// validatePrivateRoundProject admits the Homie stage ("") or a bounded
+// validatePrivateRoundProject admits the Collie stage ("") or a bounded
 // structural Project id. Whether the id names a Project of this spine
 // is the helper's reload to decide, inside its own transaction.
 func validatePrivateRoundProject(project string) error {
@@ -383,7 +383,7 @@ func DispatchPreparePrivate(ctx context.Context, q Q, req PrivateDispatchPrepare
 		req.SpineSchemaID, req.ConfigSchemaVersion, req.DeploymentUUID, req.DispatchRequestID); err != nil {
 		return PrivateDispatchPrepareResponse{}, err
 	}
-	if err := ValidatePrivateHomieInventory(req.HomieInventory); err != nil {
+	if err := ValidatePrivateCollieInventory(req.CollieInventory); err != nil {
 		return PrivateDispatchPrepareResponse{}, err
 	}
 	if err := ValidatePrivatePipelineLiveness(req.PipelineLiveness); err != nil {
@@ -405,7 +405,7 @@ func DispatchPreparePrivate(ctx context.Context, q Q, req PrivateDispatchPrepare
 		prepared, err = wikiPrepare(ctx, q, identity, req.DeploymentUUID, req.DispatchRequestID,
 			req.PipelineLiveness, req.RuntimeCapability, req.Project, req.AcceptedCommit)
 	} else {
-		prepared, err = dispatchPrepareWithIdentityInventory(ctx, q, identity, req.DeploymentUUID, req.DispatchRequestID, req.HomieInventory,
+		prepared, err = dispatchPrepareWithIdentityInventory(ctx, q, identity, req.DeploymentUUID, req.DispatchRequestID, req.CollieInventory,
 			req.PipelineLiveness, req.RuntimeCapability, req.Project, privateVisionCheck(req.VisionCheck))
 	}
 	if err != nil {

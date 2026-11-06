@@ -38,7 +38,7 @@ func TestFakeRoutingDoesNotRestoreRemovedProductionBindings(t *testing.T) {
 | worker | fake | fake |
 | verifier | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `
 	if err := os.WriteFile(routingInput, []byte(body), 0o600); err != nil {
 		t.Fatal(err)

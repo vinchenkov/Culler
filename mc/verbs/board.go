@@ -158,7 +158,7 @@ func BoardWrite(db *sql.DB, id *RunIdentity, request BoardWriteRequest) (any, er
 		}
 		actor := "operator"
 		if id != nil {
-			actor = "homie:" + id.RunID
+			actor = "collie:" + id.RunID
 		}
 		task := request.TaskID
 		previous := map[string]any{}

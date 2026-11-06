@@ -1,7 +1,7 @@
 package main_test
 
 // `mc __uninstall` destroys the whole deployment, so the only thing standing
-// between a prompt-injected Homie and an erased machine is the host-scope
+// between a prompt-injected Collie and an erased machine is the host-scope
 // fence: scope follows from the read-only run.json a container carries, never
 // from an argument. `onboard` and `reset` stay outside every container's reach
 // for the same reason; uninstall belongs in that class and this pins it.
@@ -22,7 +22,7 @@ func TestUninstallRefusesEveryContainerCaller(t *testing.T) {
 		body string
 	}{
 		{"pipeline worker", `{"run_id":"r","tier":"pipeline","role":"worker"}`},
-		{"homie session", `{"run_id":"h","tier":"homie","role":"homie","verb_allowlist":["uninstall"]}`},
+		{"collie session", `{"run_id":"h","tier":"collie","role":"collie","verb_allowlist":["uninstall"]}`},
 	} {
 		t.Run(identity.name, func(t *testing.T) {
 			runJSON := filepath.Join(t.TempDir(), "run.json")

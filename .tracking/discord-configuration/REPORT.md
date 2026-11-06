@@ -14,7 +14,7 @@ The resident applies connection changes without a process restart.
 | `./mc/check.sh` | Passed. This includes deployment, installation, release contract, and Go checks. |
 | `./runner/fake-harness/check.sh` | Passed: 43 tests. |
 | `./runner/agent-runner/check.sh` | Passed: 130 tests. |
-| `./runner/homie-runner/check.sh` | Passed: 51 tests. |
+| `./runner/collie-runner/check.sh` | Passed: 51 tests. |
 | `./runner/setup-runner/check.sh` | Passed: 9 tests. |
 | `./runner/shared/check.sh` | Passed: 116 tests. |
 | `./runner/image/check.sh` | Passed, including release and OpenWiki checks. |
@@ -35,8 +35,8 @@ The evaluation, Project deletion, and Activity tests checked their final state b
 The corrected tests close the parent dialog and wait for the required state.
 The checks retain their original assertions.
 
-One earlier full run timed out after a Homie model change.
-The isolated repeat passed without a Homie change.
+One earlier full run timed out after a Collie model change.
+The isolated repeat passed without a Collie change.
 The final complete browser run also passed that check.
 
 ## Live Discord checks
@@ -57,17 +57,17 @@ Each outbound message identified itself as a Culler test.
 | System health alert delivery | Passed through the configured alert route. |
 | Disconnect and token removal | Passed. |
 | New account confirmation | Passed with the operator's actual Discord reply. |
-| Authorized Discord message receipt | Passed through the live Gateway into Homie. |
-| Homie reply delivery | Passed with a scripted reply after a retry of the original Discord message. |
+| Authorized Discord message receipt | Passed through the live Gateway into Collie. |
+| Collie reply delivery | Passed with a scripted reply after a retry of the original Discord message. |
 | Reply from a live agent | Unverified. The test used a scripted reply. |
 
 The temporary test script caused two failures after account confirmation.
 Its first check required exact message text and missed the operator's additional sentence.
 Its next check compared a text message identifier with a numeric identifier.
-That check stopped after the live Gateway delivered the operator's message into Homie.
+That check stopped after the live Gateway delivered the operator's message into Collie.
 
-The corrected script replayed the original Discord message through the same Homie route.
-It submitted a labeled test reply through Homie's claim and reply operations.
+The corrected script replayed the original Discord message through the same Collie route.
+It submitted a labeled test reply through Collie's claim and reply operations.
 Discord confirmed delivery, and Culler recorded the delivery receipt.
 The test then disconnected and removed the token.
 These corrections changed the temporary test script only.

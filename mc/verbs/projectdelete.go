@@ -17,7 +17,7 @@ type ProjectDeletion struct {
 
 // projectSessions selects the Vision conversations of the Project and the
 // packet conversations of its tasks.
-const projectSessions = `SELECT id FROM homie_sessions WHERE vision_project_id=:project
+const projectSessions = `SELECT id FROM collie_sessions WHERE vision_project_id=:project
 	OR packet_id IN (SELECT id FROM review_versions WHERE task_id IN (SELECT id FROM tasks WHERE project=:project))`
 
 // Each predicate identifies records that belong to the selected Project.
@@ -26,14 +26,14 @@ var projectDeletionTables = []struct{ table, where string }{
 	{"projects", "id=:project"},
 	{"tasks", "project=:project"},
 	{"runs", "project=:project"},
-	{"homie_sessions", "id IN (" + projectSessions + ")"},
+	{"collie_sessions", "id IN (" + projectSessions + ")"},
 	{"activity", "project=:project OR (project IS NULL AND (subject IN (SELECT id FROM tasks WHERE project=:project) OR subject IN (SELECT id FROM runs WHERE project=:project) OR subject IN (" + projectSessions + ")))"},
 	{"vision_drafts", "project_id=:project"},
 	{"vision_submissions", "project_id=:project"},
 	{"leases", "project=:project"},
 	{"infrastructure_failures", "run_id IN (SELECT id FROM runs WHERE project=:project)"},
-	{"homie_bindings", "session_id IN (" + projectSessions + ")"},
-	{"homie_discord_threads", "session_id IN (" + projectSessions + ")"},
+	{"collie_bindings", "session_id IN (" + projectSessions + ")"},
+	{"collie_discord_threads", "session_id IN (" + projectSessions + ")"},
 	{"conversation_messages", "session_id IN (" + projectSessions + ")"},
 	{"attachment_objects", "session_id IN (" + projectSessions + ")"},
 	{"conversation_attachment_refs", "session_id IN (" + projectSessions + ")"},
@@ -49,8 +49,8 @@ var projectDeletionTables = []struct{ table, where string }{
 	{"requirements_revisions", "task_id IN (SELECT id FROM tasks WHERE project=:project)"},
 	{"requirements_evidence", "task_id IN (SELECT id FROM tasks WHERE project=:project)"},
 	{"run_requirements", "run_id IN (SELECT id FROM runs WHERE project=:project) OR task_id IN (SELECT id FROM tasks WHERE project=:project)"},
-	{"diagnostic_events", "project_id=:project OR run_id IN (SELECT id FROM runs WHERE project=:project) OR reply_attempt_id IN (SELECT attempt_id FROM homie_reply_attempts WHERE session_id IN (" + projectSessions + "))"},
-	{"homie_reply_attempts", "session_id IN (" + projectSessions + ")"},
+	{"diagnostic_events", "project_id=:project OR run_id IN (SELECT id FROM runs WHERE project=:project) OR reply_attempt_id IN (SELECT attempt_id FROM collie_reply_attempts WHERE session_id IN (" + projectSessions + "))"},
+	{"collie_reply_attempts", "session_id IN (" + projectSessions + ")"},
 	{"evaluation_captures", "project=:project"},
 	{"proposal_decisions", "project=:project"},
 	{"proposal_decision_tasks", "decision_id IN (SELECT id FROM proposal_decisions WHERE project=:project)"},
@@ -168,7 +168,7 @@ func ProjectContainerTargets(db *sql.DB, id *RunIdentity, project string) (map[s
 	out := map[string]any{"project_id": project}
 	for key, query := range map[string]string{
 		"runs": `SELECT id FROM runs WHERE project=? UNION SELECT run_id FROM repository_executions WHERE project=?`,
-		"sessions": `SELECT id FROM homie_sessions WHERE vision_project_id=?
+		"sessions": `SELECT id FROM collie_sessions WHERE vision_project_id=?
 			OR packet_id IN (SELECT id FROM review_versions WHERE task_id IN (SELECT id FROM tasks WHERE project=?))`,
 		"operations": `SELECT id FROM environment_operations WHERE project_id=?`,
 	} {

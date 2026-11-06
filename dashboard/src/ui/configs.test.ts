@@ -49,7 +49,7 @@ describe("configuration editors", () => {
 
 describe("routingRows", () => {
   const ROUTES = [
-    { role: "homie", harness: "claude-sdk", binding: "resident", model: "opus" },
+    { role: "collie", harness: "claude-sdk", binding: "resident", model: "opus" },
     { role: "worker", harness: "codex", binding: "cli", model: "gpt" },
     { role: "auditor", harness: "codex", binding: "cli", model: "gpt" },
     { role: "strategist", harness: "claude-sdk", binding: "cli", model: "opus" },
@@ -59,7 +59,7 @@ describe("routingRows", () => {
     { role: "packager", harness: "claude-sdk", binding: "cli", model: "opus" },
   ];
 
-  test("the task roles in pipeline order, then the Scribe, then Homie; an unknown role follows in input order", () => {
+  test("the task roles in pipeline order, then the Scribe, then Collie; an unknown role follows in input order", () => {
     expect(routingRows(ROUTES).map((r) => r.role)).toEqual([
       "strategist",
       "arbiter",
@@ -67,12 +67,12 @@ describe("routingRows", () => {
       "verifier",
       "packager",
       "scribe",
-      "homie",
+      "collie",
       "auditor",
     ]);
   });
 
-  test("labels are capitalised and the homie row is marked, not hidden", () => {
+  test("labels are capitalised and the collie row is marked, not hidden", () => {
     const rows = routingRows(ROUTES);
     expect(rows.map((r) => r.label)).toEqual([
       "Strategist",
@@ -81,10 +81,10 @@ describe("routingRows", () => {
       "Verifier",
       "Packager",
       "Scribe",
-      "Homie",
+      "Collie",
       "Auditor",
     ]);
-    expect(rows.filter((r) => r.homie).map((r) => r.role)).toEqual(["homie"]);
+    expect(rows.filter((r) => r.collie).map((r) => r.role)).toEqual(["collie"]);
   });
 
   test("family carries the harness; a missing model falls back to empty", () => {
@@ -97,7 +97,7 @@ describe("routingRows", () => {
       profileName: "cli",
       model: "",
       family: "claude-sdk",
-      homie: false,
+      collie: false,
     });
   });
 
@@ -111,7 +111,7 @@ describe("projectRows", () => {
   test("preserves the verb's order and marks the live rows", () => {
     const rows = projectRows([
       {
-        id: "homie",
+        id: "collie",
         title: "Culler",
         jurisdiction: "self",
         sandbox_profile: "trusted",
@@ -119,7 +119,7 @@ describe("projectRows", () => {
       },
       { id: "later", title: "Later", status: "retired" },
     ]);
-    expect(rows.map((r) => r.id)).toEqual(["homie", "later"]);
+    expect(rows.map((r) => r.id)).toEqual(["collie", "later"]);
     expect(rows.map((r) => r.live)).toEqual([true, false]);
     expect(rows[0].profile).toBe("trusted");
   });

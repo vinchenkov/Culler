@@ -11,7 +11,7 @@ const good = (name: string) => `---\nname: ${name}\ndescription: ${name} help\n-
 
 test("the Project store preserves the operator skill paths for each role", () => {
   const shipped = readdirSync(resolve(import.meta.dir, "..", "..", "mc", "verbs", "skills"))
-    .filter((name) => name !== "homie" && name !== "shared")
+    .filter((name) => name !== "collie" && name !== "shared")
     .map((name) => name === "strategist" ? "strategist-propose" : name)
     .sort();
   expect([...SKILL_STORE_ROLE_DIRS]).toEqual(shipped);
@@ -19,9 +19,9 @@ test("the Project store preserves the operator skill paths for each role", () =>
 
 describe("the store directory the effect names", () => {
   test("is joined under MC_HOME only when it is a clean path under skills/", () => {
-    expect(skillStoreHostDir("/mc", "skills/homie")).toBe("/mc/skills/homie");
+    expect(skillStoreHostDir("/mc", "skills/collie")).toBe("/mc/skills/collie");
     expect(skillStoreHostDir("/mc", "skills/projects/ws/worker")).toBe("/mc/skills/projects/ws/worker");
-    for (const bad of ["", "skills", "runs/x", "../skills/homie", "skills/../runs", "skills//homie", "skills/a\\b", 7, null]) {
+    for (const bad of ["", "skills", "runs/x", "../skills/collie", "skills/../runs", "skills//collie", "skills/a\\b", 7, null]) {
       expect(skillStoreHostDir("/mc", bad)).toBeUndefined();
     }
   });
@@ -122,7 +122,7 @@ describe("the effect's shipped set", () => {
 
 describe("creating a Project's store directories at first spawn", () => {
   test("extends an existing store with the Project and one directory per role", async () => {
-    const fs = new FakeFs().dir("/mc/skills/homie");
+    const fs = new FakeFs().dir("/mc/skills/collie");
     await ensureProjectSkillStore("/mc", "ws-one", fs.fs);
     expect(fs.events).toEqual([
       "mkdir:/mc/skills/projects/ws-one",

@@ -107,7 +107,7 @@ describe("closed adapter selection", () => {
     for (const harness of ["codex", "claude-sdk"]) {
       const run = routed(harness, "configured-binding", { role: "scribe" });
       expect(adapterInvocation(run).argv).toContain("--openwiki");
-      expect(adapterInvocation({ ...run, role: "homie" }).argv).not.toContain("--openwiki");
+      expect(adapterInvocation({ ...run, role: "collie" }).argv).not.toContain("--openwiki");
       expect(adapterInvocation({ ...run, role: "worker" }).argv).not.toContain("--openwiki");
     }
   });
@@ -250,7 +250,7 @@ describe("repository preamble", () => {
   });
 });
 
-for (const role of ["homie", "setup", "worker", "verifier", "packager", "scribe"]) {
+for (const role of ["collie", "setup", "worker", "verifier", "packager", "scribe"]) {
   test(`${role} rejects unsupported runtime channels and custom endpoints`, () => {
     for (const harness of ["codex", "claude-sdk"]) {
       for (const patch of [{ channel: "static" }, { channel: "none" }, { channel: "" },

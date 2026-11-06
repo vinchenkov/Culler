@@ -114,11 +114,11 @@ func TestProjectDeleteIncludesVisionAndSetupConversations(t *testing.T) {
 	db := dvSpine(t)
 	draft := newVisionDraft(t, db)
 	draftCall(t, db, "vision-submit", draftSubmission(draft))
-	value, err := HomieStart(db, nil, HomieStartArgs{From: "dashboard:vision-ws-test", VisionProject: "ws-test"})
+	value, err := CollieStart(db, nil, CollieStartArgs{From: "dashboard:vision-ws-test", VisionProject: "ws-test"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	session := value.(HomieStartResult).SessionID
+	session := value.(CollieStartResult).SessionID
 	hwPendingInbound(t, db, session, 1)
 	hwSession(t, db, "ordinary")
 	hwPendingInbound(t, db, "ordinary", 1)
@@ -130,7 +130,7 @@ func TestProjectDeleteIncludesVisionAndSetupConversations(t *testing.T) {
 			t.Errorf("Deletion retained %s", table)
 		}
 	}
-	if n := dfInt(t, db, `SELECT count(*) FROM homie_sessions WHERE id=?`, session); n != 0 {
+	if n := dfInt(t, db, `SELECT count(*) FROM collie_sessions WHERE id=?`, session); n != 0 {
 		t.Fatal("Deletion retained the setup conversation.")
 	}
 	if n := dfInt(t, db, `SELECT count(*) FROM conversation_messages WHERE session_id='ordinary'`); n != 1 {
@@ -164,7 +164,7 @@ func TestProjectDeletePreservesTaskAndReviewIdentifiersAcrossReimport(t *testing
 }
 
 func TestProjectDeleteRefusesEveryAgentIdentity(t *testing.T) {
-	for _, tier := range []string{"pipeline", "setup", "homie", ""} {
+	for _, tier := range []string{"pipeline", "setup", "collie", ""} {
 		id := &RunIdentity{Tier: tier, VerbAllowlist: []string{"project.delete", "project.delete-preview"}}
 		if _, err := ProjectDelete(nil, id, "project"); err == nil {
 			t.Fatalf("Deletion admitted the agent tier %q", tier)
@@ -199,11 +199,11 @@ func TestProjectDeleteRemovesActiveAndStaleRecords(t *testing.T) {
 				dvExec(t, db, `INSERT INTO environment_operations(id,project_id,revision_id,kind,status,inputs_digest,image_digest)
 				 VALUES('operation','ws-test','revision','setup',?,'digest','image')`, status)
 			case "conversation":
-				value, err := HomieStart(db, nil, HomieStartArgs{From: "dashboard:vision-ws-test", VisionProject: "ws-test"})
+				value, err := CollieStart(db, nil, CollieStartArgs{From: "dashboard:vision-ws-test", VisionProject: "ws-test"})
 				if err != nil {
 					t.Fatal(err)
 				}
-				dvExec(t, db, `UPDATE homie_sessions SET current_launch_id=?,current_launch_mode='fresh' WHERE id=?`, strings.Repeat("a", 16), value.(HomieStartResult).SessionID)
+				dvExec(t, db, `UPDATE collie_sessions SET current_launch_id=?,current_launch_mode='fresh' WHERE id=?`, strings.Repeat("a", 16), value.(CollieStartResult).SessionID)
 			case "vision":
 				draftCall(t, db, "vision-submit", draftSubmission(draft))
 				dvExec(t, db, `UPDATE vision_submissions SET attempted=1 WHERE project_id='ws-test'`)
@@ -353,7 +353,7 @@ func TestProjectDeleteRemovesPacketConversations(t *testing.T) {
 	hpSend(t, db, first, "A question about the packet.")
 	current := hpMustPrepare(t, db, packet, version, true)
 	hpSend(t, db, current, "Another question.")
-	dvExec(t, db, `INSERT INTO homie_discord_threads(session_id,guild_id,channel_id,thread_id) VALUES(?,'1','2','100')`, first.SessionID)
+	dvExec(t, db, `INSERT INTO collie_discord_threads(session_id,guild_id,channel_id,thread_id) VALUES(?,'1','2','100')`, first.SessionID)
 	ordinary := threadSession(t, db, "101")
 	hwPendingInbound(t, db, ordinary, 1)
 
@@ -369,9 +369,9 @@ func TestProjectDeleteRemovesPacketConversations(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, session := range []string{first.SessionID, current.SessionID} {
-		for _, table := range []string{"homie_sessions", "homie_bindings", "homie_discord_threads", "conversation_messages"} {
+		for _, table := range []string{"collie_sessions", "collie_bindings", "collie_discord_threads", "conversation_messages"} {
 			column := "session_id"
-			if table == "homie_sessions" {
+			if table == "collie_sessions" {
 				column = "id"
 			}
 			if n := dfInt(t, db, `SELECT count(*) FROM `+table+` WHERE `+column+`=?`, session); n != 0 {
@@ -382,7 +382,7 @@ func TestProjectDeleteRemovesPacketConversations(t *testing.T) {
 	if n := dfInt(t, db, `SELECT count(*) FROM conversation_messages WHERE session_id=?`, ordinary); n != 1 {
 		t.Fatal("the deletion changed an ordinary conversation")
 	}
-	if n := dfInt(t, db, `SELECT count(*) FROM homie_discord_threads WHERE session_id=? AND thread_id='101'`, ordinary); n != 1 {
+	if n := dfInt(t, db, `SELECT count(*) FROM collie_discord_threads WHERE session_id=? AND thread_id='101'`, ordinary); n != 1 {
 		t.Fatal("The deletion changed an ordinary Discord thread association.")
 	}
 	if n := dfInt(t, db, `SELECT count(*) FROM pragma_foreign_key_check`); n != 0 {

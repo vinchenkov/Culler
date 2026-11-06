@@ -20,7 +20,7 @@ func TestSkillStoreRoleDirsPreserveOperatorSkillPaths(t *testing.T) {
 	}
 	var shipped []string
 	for _, e := range entries {
-		if e.IsDir() && e.Name() != HomieSkillBasename && e.Name() != SharedSkillBasename {
+		if e.IsDir() && e.Name() != CollieSkillBasename && e.Name() != SharedSkillBasename {
 			name := e.Name()
 			if name == "strategist" {
 				name = "strategist-propose"
@@ -45,7 +45,7 @@ func TestEnsureSkillStoreCreatesTheScaffoldShape(t *testing.T) {
 	if err != nil || !changed {
 		t.Fatalf("first ensure: changed=%v err=%v", changed, err)
 	}
-	for _, dir := range []string{"skills", "skills/homie"} {
+	for _, dir := range []string{"skills", "skills/collie"} {
 		st, err := os.Stat(filepath.Join(home, dir))
 		if err != nil || !st.IsDir() {
 			t.Fatalf("%s: stat=%v err=%v", dir, st, err)
@@ -148,18 +148,18 @@ func TestRoleSkillStoreRelDirPreservesOperatorSkillPaths(t *testing.T) {
 	if _, err := RoleSkillStoreRelDir("ws-one", dispatch.Role("janitor")); err == nil {
 		t.Fatal("unknown role got a store directory")
 	}
-	if HomieSkillStoreRelDir != "skills/homie" {
-		t.Fatalf("HomieSkillStoreRelDir = %q", HomieSkillStoreRelDir)
+	if CollieSkillStoreRelDir != "skills/collie" {
+		t.Fatalf("CollieSkillStoreRelDir = %q", CollieSkillStoreRelDir)
 	}
 }
 
-func TestHomieWakeEffectCarriesTheHomieStoreDir(t *testing.T) {
-	effect, err := homieWakeEffect("h-1", "l-1", "fresh", "fake/fake", "mc-homie-h-1", "sessions/h-1",
+func TestCollieWakeEffectCarriesTheCollieStoreDir(t *testing.T) {
+	effect, err := collieWakeEffect("h-1", "l-1", "fresh", "fake/fake", "mc-collie-h-1", "sessions/h-1",
 		sql.NullString{}, sql.NullString{}, PrivateRuntimeBinding{}, []string{}, 1800)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if effect["skill_store_dir"] != "skills/homie" {
+	if effect["skill_store_dir"] != "skills/collie" {
 		t.Fatalf("skill_store_dir = %v", effect["skill_store_dir"])
 	}
 }

@@ -7,18 +7,18 @@
       "statement": "Packet preparation accepts only the task's current packet and matching version, and shares one current conversation across repeated or concurrent preparations.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/homie.go",
+          "resource": "repo://mc/verbs/collie.go",
           "version": "repo-file-v1:sha256:2fb9d913abd44e8b7f95e5761b17d7444c301173ff6944d2341cb17a231e9624"
         },
         {
-          "resource": "repo://mc/verbs/homiepacket_test.go",
+          "resource": "repo://mc/verbs/colliepacket_test.go",
           "version": "repo-file-v1:sha256:a8e5baea6ad4c59fc14166e8ae81b36ba0a12aa2a887368338fe6fd2af93a4a5"
         }
       ]
     },
     {
       "id": "claim_9eb65f6b1c5c49b7b471dd2ae7b48512",
-      "statement": "The spine prevents changes to a Homie session's packet identifier and excludes a simultaneous Vision Project identity.",
+      "statement": "The spine prevents changes to a Collie session's packet identifier and excludes a simultaneous Vision Project identity.",
       "evidence": [
         {
           "resource": "repo://mc/substrate/schema.sql#L732-L876",
@@ -56,10 +56,10 @@
     },
     {
       "id": "claim_a576e4c0a0564dd69d799f726b2186e8",
-      "statement": "The Homie runner requests packet context before a turn without a native session reference and validates its session, packet, and version identities.",
+      "statement": "The Collie runner requests packet context before a turn without a native session reference and validates its session, packet, and version identities.",
       "evidence": [
         {
-          "resource": "repo://runner/homie-runner/main.ts",
+          "resource": "repo://runner/collie-runner/main.ts",
           "version": "repo-file-v1:sha256:1d741227fdaf86dfed72262aa6e5a6b351547033a2c79ca899648bf158634ba8"
         }
       ]
@@ -90,10 +90,10 @@
     },
     {
       "id": "claim_6e26ff559f4f4c919481a1f4bcc0aed3",
-      "statement": "The Homie directive requires current packet reads and explicit operator confirmation before a new state change in a packet conversation.",
+      "statement": "The Collie directive requires current packet reads and explicit operator confirmation before a new state change in a packet conversation.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/homie.md#L205-L214",
+          "resource": "repo://mc/verbs/directives/collie.md#L205-L214",
           "version": "repo-lines-v1:sha256:b8078c6ac24bb529bded51527b9c43eb61c01df247c96b82fce3393d1c34c99b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzN2M5NDA2OWU4NDVhM2E3MmExODFhMWE4ZWYwZmQ2ZDcwNGNiNTc2ZjU3YTE3NjI0ZWI1NDAwMzVkMTFjZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNWIyZWUyMDhhMTBlMWU2ZmM2NGZjNzM5MWIwMzVhMjI0YjM2ZWNjODUyZTVjNWU0NjQxNDkwNjkzOGZlYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNmJjZjVmZTFlZGViM2IyY2I5OWQwZDdmOGQ2MjkwMWZkMWZiYTBlM2VjNGE4OTFjZjdhMWE5N2UxZjVkYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkN2M3NTRiMDQ5YTBlNWJmODhhZjE2YWUzZDBjZjNmY2E1YTUyNjc3MDFkMWExNmIzZmM3YzgzMGExOWI2NzcifQ"
         }
       ]
@@ -113,14 +113,14 @@
       "statement": "The packet artifact Docker test verifies read-only access to the task report and evidence and isolation from another task.",
       "evidence": [
         {
-          "resource": "repo://mc/e2e/homie_packet_artifacts_test.go",
+          "resource": "repo://mc/e2e/collie_packet_artifacts_test.go",
           "version": "repo-file-v1:sha256:3931ea6dfb9f183add5173d35cf990b9b222029dbca2588384de51725db8ac8b"
         }
       ]
     },
     {
       "id": "claim_14cefbafbfaf47cd9aa72e086eaa0833",
-      "statement": "The Review quick chat selects a packet model by updating the Homie route and creating a replacement conversation when one exists with another profile.",
+      "statement": "The Review quick chat selects a packet model by updating the Collie route and creating a replacement conversation when one exists with another profile.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
@@ -144,14 +144,14 @@
     },
     {
       "id": "claim_e5e5cb439fd44055ba3abbd6f7d6a056",
-      "statement": "The packet list and Homie command skill expose the task title with packet and version identifiers.",
+      "statement": "The packet list and Collie command skill expose the task title with packet and version identifiers.",
       "evidence": [
         {
           "resource": "repo://mc/verbs/packet.go#L98-L145",
           "version": "repo-lines-v1:sha256:a475f1c7a059f87423ed6f0d2a8f325f310b64d1216f363271ee65449eb30a10:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhYjFlMTVmZDJlZGQ2MGU3MDY5ZWE3YjE0YWZkMmM4N2U5ZTljZDg2YzNhNzJmMmExMDYxNWI1ZmY4YTgwMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlYjViN2UxNTE3YjY2MjYzMGU0Y2RlMDU3MTQ2YTQ2MDU0OTU3OGU4YTcxMjg4Zjk0NzQxNTg2Yjg3MjJlYjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1NWM4NjJlZDBjYWQ2MjJlNmMwYjJkYTY0ZTcxZTY2NThlZWZkZjY4OGE3MzAzNmZmZTNhOWNhMWI4OWI1NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2YjJlY2NkY2U4NGFlOTI0NWZmMmIyYTNkOGYyYjdjM2Q5MGRkOGY3NDAwMTNiYTczYzBkNGI5ZDZiYzgzODEifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/homie/mc-homie/SKILL.md#L89-L93",
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L89-L93",
           "version": "repo-lines-v1:sha256:c49f97fa0ea747f5852e239a5c0dc4fff5eaf1b6869e44576ab71d5352493428:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY2MjZiNmVmYTYwNDRmZTU0NWVkZTQzY2ZkZWY1NGEyYTczNmMxMzczY2Y3MTc0NzBjYTI3Nzg2MDUwZmI1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE1YWViZTViYjcwMDZjNzM3NDUyYTlkNzlkNDllMDIxYTZkYzI1MDRmNmIzYjFkM2FmODQ2MDFiZGRhYmE3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRhZDZhMGFiMTE1YzZlYTIzYjIyMDcxZmIxNzExMTcwOTdhNDM0OGQ1NjgyZWE2ZjQ5ZmZlZTkwNDBkMTk0ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYxNzljOWRhZTNlNzA3Mjc3NDg4N2RmZDE5MzZiYzdhM2MzYjE3ZWRkODAzOWY4YWY2NGQ2ODgwOGQzNjdjOCJ9"
         }
       ]
@@ -182,7 +182,7 @@
     },
     {
       "id": "claim_84079c23440b446e902a77c26ec79221",
-      "statement": "The Homie divider supports pointer resize, 24-pixel arrow steps, Home and End limits, and a double-click reset.",
+      "statement": "The Collie divider supports pointer resize, 24-pixel arrow steps, Home and End limits, and a double-click reset.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js#L46-L124",

@@ -62,7 +62,7 @@ heartbeat_interval_s = 60
 spawn_grace_s = 60
 hard_deadline_minutes = 240
 tick_interval_s = 60
-homie_idle_timeout_s = 1800
+collie_idle_timeout_s = 1800
 # The minimum time in seconds between the starts of two wiki updates of one Project.
 wiki_update_interval_s = 3600
 backup_interval_s = 3600

@@ -52,7 +52,7 @@ const fakeRouting = `# Culler routing
 | verifier | fake | fake |
 | scribe | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `;
 
 interface ProcessOptions {
@@ -129,7 +129,7 @@ async function mcJson(
 }
 
 /** The one pipeline effect of a tick. The fixture has exactly one Project
- * with a current wiki and no Homie session, so a tick holds at most one
+ * with a current wiki and no Collie session, so a tick holds at most one
  * action. A round that committed nothing reports as the idle effect with its
  * reason. */
 function tickEffect(tick: JsonObject): JsonObject {
@@ -552,7 +552,7 @@ class FixtureLane {
           this.inFlight -= 1;
         }
       },
-      // The fixture has no Homie container and no heartbeat container list.
+      // The fixture has no Collie container and no heartbeat container list.
       docker: (argv, stdin, options) => argv[0] === "ps" ? Promise.resolve(ok("")) : deps.docker(argv, stdin, options),
       log: deps.log,
       fs: deps.fs,
@@ -2172,14 +2172,14 @@ describe("split-brain convergence: message and outbox delivery boundary", () => 
     const fixture = await makeFixture();
     try {
       const started = await mcJson(fixture.home, fixture.spine, [
-        "homie", "start", "--from", "dashboard:operator",
+        "collie", "start", "--from", "dashboard:operator",
       ]);
       const session = started.session_id;
       if (typeof session !== "string") {
-        throw new Error(`homie start returned no session: ${JSON.stringify(started)}`);
+        throw new Error(`collie start returned no session: ${JSON.stringify(started)}`);
       }
       await mcJson(fixture.home, fixture.spine, [
-        "homie", "bind", session, "--from", "discord:ops",
+        "collie", "bind", session, "--from", "discord:ops",
       ]);
       const baselineLock = await lock(fixture);
       const baselineTask = await task(fixture);
@@ -2188,7 +2188,7 @@ describe("split-brain convergence: message and outbox delivery boundary", () => 
       // One real CLI transaction appends the source conversation row and
       // resolves its one non-origin destination into the outbox.
       const sent = await mcJson(fixture.home, fixture.spine, [
-        "homie", "send", session,
+        "collie", "send", session,
         "--from", "dashboard:operator",
         "--body", "deliver this durable turn",
       ]);
@@ -2204,7 +2204,7 @@ describe("split-brain convergence: message and outbox delivery boundary", () => 
       expect(initialRows).toHaveLength(1);
       const row = initialRows[0]!;
       expect(row).toMatchObject({
-        kind: "homie_echo",
+        kind: "collie_echo",
         session_id: session,
         surface: "discord",
         channel_ref: "ops",
@@ -2333,7 +2333,7 @@ describe("split-brain convergence: message and outbox delivery boundary", () => 
       });
       expect(external.attempts).toEqual([row.id, row.id]);
       const history = await mcJson(fixture.home, fixture.spine, [
-        "homie", "history", session,
+        "collie", "history", session,
       ]);
       expect(history.messages).toEqual([
         expect.objectContaining({

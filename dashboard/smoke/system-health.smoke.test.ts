@@ -36,7 +36,7 @@ afterAll(async()=>{await teardown(smoke);});
 
 test("multiple failures use a compact notice and keep independent repair actions",async()=>{
   const {page}=smoke;
-  for(const tab of ["board","pipeline","configs","homie","logs"]){
+  for(const tab of ["board","pipeline","configs","collie","logs"]){
     await page.getByTestId(`tab-${tab}`).click();
     const notice=page.getByTestId("system-notices");
     expect(await notice.innerText()).toContain("2 issues need attention");

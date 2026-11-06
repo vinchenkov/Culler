@@ -147,7 +147,7 @@ test("Repeated scratch observations separate browser latency from command time",
       retained_samples: rows[0].retains_records === undefined ? undefined : rows.filter(item => item.retains_records).length,
     };
   });
-  const directory = process.env.LATENCY_EVIDENCE ?? "/tmp/homie-latency-performance";
+  const directory = process.env.LATENCY_EVIDENCE ?? "/tmp/collie-latency-performance";
   mkdirSync(directory, { recursive: true });
   writeFileSync(`${directory}/results.json`, JSON.stringify({ delay_ms: delay, projects: 2, tasks: 24, synthetic_runs: 500, synthetic_packets: 500, summary, observations, commands }, null, 2));
   console.log(JSON.stringify(summary));

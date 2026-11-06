@@ -142,32 +142,32 @@ func TestBoardHistoryReportRequiresItsTask(t *testing.T) {
 	}
 }
 
-func TestBoardHomieUsesTheOperatorRequestContract(t *testing.T) {
+func TestBoardCollieUsesTheOperatorRequestContract(t *testing.T) {
 	spine := initSpine(t)
-	started := runMC(t, spineEnv(spine), "", "homie", "start", "--from", "cli:board-controls")
+	started := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:board-controls")
 	if started.code != 0 {
-		t.Fatalf("start Homie: %s", started.stderr)
+		t.Fatalf("start Collie: %s", started.stderr)
 	}
 	session := started.json["session_id"].(string)
-	body := `{"operation_id":"homie-create","action":"create","scope":"task","project":"ws-test","title":"The requested task","description":"The operator can verify each result."}`
-	env := homieJSONEnv(t, spine, session, defaultHomieAllowlist)
+	body := `{"operation_id":"collie-create","action":"create","scope":"task","project":"ws-test","title":"The requested task","description":"The operator can verify each result."}`
+	env := collieJSONEnv(t, spine, session, defaultCollieAllowlist)
 	created := runMC(t, env, body, "board", "write")
 	if created.code != 0 {
-		t.Fatalf("Homie create: %s", created.stderr)
+		t.Fatalf("Collie create: %s", created.stderr)
 	}
 	db := openDB(t, spine)
 	task := int64(created.json["task_id"].(float64))
 	if got := queryString(t, db, `SELECT status || '/' || origin || '/' || scope FROM tasks WHERE id=?`, task); got != "seeded/user/task" {
-		t.Fatalf("Homie creation = %q", got)
+		t.Fatalf("Collie creation = %q", got)
 	}
-	if got := queryString(t, db, `SELECT actor FROM board_operations WHERE operation_id='homie-create'`); got != "homie:"+session {
+	if got := queryString(t, db, `SELECT actor FROM board_operations WHERE operation_id='collie-create'`); got != "collie:"+session {
 		t.Fatalf("actor = %q", got)
 	}
-	if _, err := db.Exec(`UPDATE homie_sessions SET status='ended' WHERE id=?`, session); err != nil {
+	if _, err := db.Exec(`UPDATE collie_sessions SET status='ended' WHERE id=?`, session); err != nil {
 		t.Fatal(err)
 	}
 	if rejected := runMC(t, env, body, "board", "write"); rejected.code != 1 {
-		t.Fatalf("ended Homie = %v; %s", rejected.json, rejected.stderr)
+		t.Fatalf("ended Collie = %v; %s", rejected.json, rejected.stderr)
 	}
 	if rejected := runMC(t, runJSONEnv(t, spine, "pipeline-fixture", "pipeline", "worker"), body, "board", "write"); rejected.code != 1 {
 		t.Fatalf("pipeline write = %v; %s", rejected.json, rejected.stderr)

@@ -11,10 +11,10 @@ import (
 	"mc/deployment"
 )
 
-func TestHomieLaunchCheckUsesTransactionAndPreservesRestrictions(t *testing.T) {
+func TestCollieLaunchCheckUsesTransactionAndPreservesRestrictions(t *testing.T) {
 	spine := initSpine(t)
 	env := spineEnv(spine)
-	started := runMC(t, env, "", "homie", "start", "--from", "dashboard:launch-check")
+	started := runMC(t, env, "", "collie", "start", "--from", "dashboard:launch-check")
 	if started.code != 0 {
 		t.Fatal(started.stderr)
 	}
@@ -22,7 +22,7 @@ func TestHomieLaunchCheckUsesTransactionAndPreservesRestrictions(t *testing.T) {
 	const launch = "0123456789abcdef"
 	db := openDB(t, spine)
 	defer db.Close()
-	if _, err := db.Exec(`UPDATE homie_sessions SET current_launch_id=?,current_launch_mode='fresh' WHERE id=?`, launch, session); err != nil {
+	if _, err := db.Exec(`UPDATE collie_sessions SET current_launch_id=?,current_launch_mode='fresh' WHERE id=?`, launch, session); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := db.Exec(`INSERT INTO connection_health(connection_id,operation,authorization_id,state) VALUES('test-connection','connection_access','test-authorization','ready')`); err != nil {
@@ -32,7 +32,7 @@ func TestHomieLaunchCheckUsesTransactionAndPreservesRestrictions(t *testing.T) {
 		name, launch, authorization, state, refusal string
 	}{
 		{"current launch", launch, "test-authorization", "ready", ""},
-		{"stale launch", "fedcba9876543210", "test-authorization", "ready", "The Homie launch changed."},
+		{"stale launch", "fedcba9876543210", "test-authorization", "ready", "The Collie launch changed."},
 		{"stale authorization", launch, "old-authorization", "ready", "The connection authorization changed."},
 		{"stopped connection", launch, "test-authorization", "stopped", "The connection requires attention."},
 	} {
@@ -47,7 +47,7 @@ func TestHomieLaunchCheckUsesTransactionAndPreservesRestrictions(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			result := runMC(t, env, string(body), "__system-state", "homie-launch-check")
+			result := runMC(t, env, string(body), "__system-state", "collie-launch-check")
 			if tc.refusal == "" {
 				if result.code != 0 || result.json["allowed"] != true {
 					t.Fatalf("Launch check failed: %s %s", result.stdout, result.stderr)
@@ -55,7 +55,7 @@ func TestHomieLaunchCheckUsesTransactionAndPreservesRestrictions(t *testing.T) {
 			} else if result.code == 0 || !strings.Contains(result.stdout+result.stderr, tc.refusal) {
 				t.Fatalf("Expected %q: %s %s", tc.refusal, result.stdout, result.stderr)
 			}
-			if got := queryStr(t, db, `SELECT status FROM homie_sessions WHERE id=?`, session); got != "active" {
+			if got := queryStr(t, db, `SELECT status FROM collie_sessions WHERE id=?`, session); got != "active" {
 				t.Fatalf("The check changed the session status to %q.", got)
 			}
 		})

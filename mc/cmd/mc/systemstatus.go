@@ -361,7 +361,7 @@ func commandConnection(args []string, stdin io.Reader) (any, error) {
 	return nil, verbs.Usagef("The connection action is invalid.")
 }
 
-type homieLaunchRequest struct {
+type collieLaunchRequest struct {
 	Session         string `json:"session"`
 	Launch          string `json:"launch"`
 	Connection      string `json:"connection"`
@@ -402,13 +402,13 @@ func commandSystemSpine(action string, stdin io.Reader) (any, error) {
 			return nil, err
 		}
 		return withSpineRead(func(db *sql.DB) (any, error) { return verbs.RunLaunchCheck(db, id, a.Run, a.Requirements) })
-	case "homie-launch-check":
-		var a homieLaunchRequest
+	case "collie-launch-check":
+		var a collieLaunchRequest
 		if err := decodeDiagnosticRequest(stdin, &a); err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) {
-			return verbs.HomieLaunchCheck(db, id, a.Session, a.Launch, a.Connection, a.Authorization, a.Profile, a.ProfileRevision)
+			return verbs.CollieLaunchCheck(db, id, a.Session, a.Launch, a.Connection, a.Authorization, a.Profile, a.ProfileRevision)
 		})
 	case "probe":
 		return withSpine(func(db *sql.DB) (any, error) {

@@ -142,7 +142,7 @@ func TestPacketContextHoldsTheIdentityTheContentAndTheIdentifiers(t *testing.T) 
 
 	// The verb reads the artifact files under the artifact root of the container.
 	session := hpMustPrepare(t, f.db, f.packet, f.version, false).SessionID
-	result, err := HomiePacketContext(f.db, &RunIdentity{Tier: "homie", Role: "homie", RunID: session}, session)
+	result, err := ColliePacketContext(f.db, &RunIdentity{Tier: "collie", Role: "collie", RunID: session}, session)
 	if err != nil {
 		t.Fatal(err)
 	}

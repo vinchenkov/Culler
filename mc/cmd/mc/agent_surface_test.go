@@ -121,7 +121,7 @@ func TestFrontDoorNamespaceCarriesTheMechanics(t *testing.T) {
 	}
 }
 
-// Every moved verb is refused outside host scope: a pipeline or Homie
+// Every moved verb is refused outside host scope: a pipeline or Collie
 // container that somehow names a `__` mechanic is turned away on identity,
 // before any state is touched.
 func TestFrontDoorNamespaceRefusesContainerCallers(t *testing.T) {

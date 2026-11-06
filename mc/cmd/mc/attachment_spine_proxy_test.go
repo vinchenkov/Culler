@@ -152,7 +152,7 @@ func TestAttachmentPublisherRunsUnchangedAcrossClosedSpineProxy(t *testing.T) {
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `), 0o600); err != nil {
 		t.Fatal(err)
 	}
@@ -160,16 +160,16 @@ func TestAttachmentPublisherRunsUnchangedAcrossClosedSpineProxy(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	startedAny, err := verbs.HomieStart(
-		direct, nil, verbs.HomieStartArgs{From: "discord:proxy-test"},
+	startedAny, err := verbs.CollieStart(
+		direct, nil, verbs.CollieStartArgs{From: "discord:proxy-test"},
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	session := startedAny.(verbs.HomieStartResult).SessionID
+	session := startedAny.(verbs.CollieStartResult).SessionID
 	var binding int64
 	if err := direct.QueryRow(`
-		SELECT id FROM homie_bindings
+		SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='discord' AND active=1`,
 		session).Scan(&binding); err != nil {
 		t.Fatal(err)
@@ -323,7 +323,7 @@ func TestAttachmentTerminalReconciliationRunsAcrossItsOwnClosedSpineProxy(t *tes
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `), 0o600); err != nil {
 		t.Fatal(err)
 	}
@@ -331,16 +331,16 @@ func TestAttachmentTerminalReconciliationRunsAcrossItsOwnClosedSpineProxy(t *tes
 	if err != nil {
 		t.Fatal(err)
 	}
-	startedAny, err := verbs.HomieStart(
-		direct, nil, verbs.HomieStartArgs{From: "discord:terminal-proxy"},
+	startedAny, err := verbs.CollieStart(
+		direct, nil, verbs.CollieStartArgs{From: "discord:terminal-proxy"},
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-	session := startedAny.(verbs.HomieStartResult).SessionID
+	session := startedAny.(verbs.CollieStartResult).SessionID
 	var binding int64
 	if err := direct.QueryRow(`
-		SELECT id FROM homie_bindings
+		SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='discord' AND active=1`,
 		session).Scan(&binding); err != nil {
 		t.Fatal(err)

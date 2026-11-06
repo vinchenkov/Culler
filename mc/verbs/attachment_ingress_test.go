@@ -16,13 +16,13 @@ const attachmentManifestFixture = `[
 func attachmentIngressFixture(t *testing.T) (*sql.DB, string, int64) {
 	t.Helper()
 	db := dvSpine(t)
-	startedAny, err := HomieStart(db, nil, HomieStartArgs{From: "discord:channel-1"})
+	startedAny, err := CollieStart(db, nil, CollieStartArgs{From: "discord:channel-1"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	started := startedAny.(HomieStartResult)
+	started := startedAny.(CollieStartResult)
 	var bindingID int64
-	if err := db.QueryRow(`SELECT id FROM homie_bindings
+	if err := db.QueryRow(`SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='discord' AND active=1`,
 		started.SessionID).Scan(&bindingID); err != nil {
 		t.Fatal(err)
@@ -70,10 +70,10 @@ func TestAttachmentIngressEnqueueIsDurableCanonicalAndIdempotent(t *testing.T) {
 		!strings.Contains(err.Error(), "different sealed content") {
 		t.Fatalf("changed replay error = %v", err)
 	}
-	if _, err := AttachmentIngressEnqueue(db, &RunIdentity{Tier: "homie", RunID: session}, args); err == nil {
-		t.Fatal("Homie-scoped caller enqueued native ingress")
+	if _, err := AttachmentIngressEnqueue(db, &RunIdentity{Tier: "collie", RunID: session}, args); err == nil {
+		t.Fatal("Collie-scoped caller enqueued native ingress")
 	}
-	if _, err := HomieEnd(db, nil, session, "binding turnover"); err != nil {
+	if _, err := CollieEnd(db, nil, session, "binding turnover"); err != nil {
 		t.Fatal(err)
 	}
 	afterEnd, err := AttachmentIngressEnqueue(db, nil, args)
@@ -86,13 +86,13 @@ func TestAttachmentIngressQueuedIsAHostOnlyStableBoundedPage(t *testing.T) {
 	db := dvSpine(t)
 	start := func(from string) (string, int64) {
 		t.Helper()
-		startedAny, err := HomieStart(db, nil, HomieStartArgs{From: from})
+		startedAny, err := CollieStart(db, nil, CollieStartArgs{From: from})
 		if err != nil {
 			t.Fatal(err)
 		}
-		session := startedAny.(HomieStartResult).SessionID
+		session := startedAny.(CollieStartResult).SessionID
 		var binding int64
-		if err := db.QueryRow(`SELECT id FROM homie_bindings
+		if err := db.QueryRow(`SELECT id FROM collie_bindings
 			WHERE session_id=? AND active=1`, session).Scan(&binding); err != nil {
 			t.Fatal(err)
 		}
@@ -143,7 +143,7 @@ func TestAttachmentIngressQueuedIsAHostOnlyStableBoundedPage(t *testing.T) {
 		got.AttemptCount != 0 || got.CreatedAt == "" {
 		t.Fatalf("queued row = %#v", got)
 	}
-	if _, err := HomieEnd(db, nil, dashboardSession, "retain native inbox"); err != nil {
+	if _, err := CollieEnd(db, nil, dashboardSession, "retain native inbox"); err != nil {
 		t.Fatal(err)
 	}
 	historical, err := AttachmentIngressQueued(db, nil, AttachmentIngressQueuedArgs{
@@ -220,14 +220,14 @@ func TestAttachmentIngressQueuedIsAHostOnlyStableBoundedPage(t *testing.T) {
 	}
 	if _, err := AttachmentIngressQueued(
 		db,
-		&RunIdentity{Tier: "homie", RunID: session},
+		&RunIdentity{Tier: "collie", RunID: session},
 		AttachmentIngressQueuedArgs{Surface: "discord", After: "0", Limit: 1},
 	); err == nil {
-		t.Fatal("Homie-scoped caller read the native attachment inbox")
+		t.Fatal("Collie-scoped caller read the native attachment inbox")
 	}
 	if _, err := AttachmentIngressQueued(
 		nil,
-		&RunIdentity{Tier: "homie", RunID: session},
+		&RunIdentity{Tier: "collie", RunID: session},
 		AttachmentIngressQueuedArgs{Surface: "discord", After: "0", Limit: 1},
 	); err == nil {
 		t.Fatal("host-scope check touched the database before refusing")
@@ -251,14 +251,14 @@ func TestAttachmentIngressReserveCreatesTheOldestExactBatchAtomically(t *testing
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := RegisterSession(db, &RunIdentity{Tier: "homie", RunID: session},
+	if _, err := RegisterSession(db, &RunIdentity{Tier: "collie", RunID: session},
 		session, "native-session-1", "native.jsonl"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieEnd(db, nil, session, "rotate native binding"); err != nil {
+	if _, err := CollieEnd(db, nil, session, "rotate native binding"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieResume(db, nil, session, "dashboard:replacement"); err != nil {
+	if _, err := CollieResume(db, nil, session, "dashboard:replacement"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -488,7 +488,7 @@ func TestAttachmentAttemptAbortRequeuesTwiceThenFailsOnce(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err := db.QueryRow(`SELECT COUNT(*) FROM outbox
-		WHERE session_id=? AND kind='homie_reply'
+		WHERE session_id=? AND kind='collie_reply'
 		  AND json_extract(payload,'$.attachment_ingress_id')=?`,
 		session, first.IngressID).Scan(&failureEvents); err != nil {
 		t.Fatal(err)
@@ -542,11 +542,11 @@ func TestAttachmentAttemptAbortRefusesWrongCapabilityWithoutMutation(t *testing.
 		t.Fatalf("refused abort changed ingress to %q with %d failures", state, failures)
 	}
 	if _, err := AttachmentAttemptAbort(db,
-		&RunIdentity{Tier: "homie", RunID: session}, AttachmentAttemptAbortArgs{
+		&RunIdentity{Tier: "collie", RunID: session}, AttachmentAttemptAbortArgs{
 			Session: session, AttemptID: reserved.AttemptID,
 			OwnerToken: reserved.OwnerToken, OwnerGeneration: "native-boot-1",
 		}); err == nil {
-		t.Fatal("Homie-scoped caller reached host-native attempt abort")
+		t.Fatal("Collie-scoped caller reached host-native attempt abort")
 	}
 }
 
@@ -570,9 +570,9 @@ func TestAttachmentAttemptHardExpiryUsesDatabaseDeadline(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := AttachmentAttemptExpire(db,
-		&RunIdentity{Tier: "homie", RunID: session},
+		&RunIdentity{Tier: "collie", RunID: session},
 		reserved.AttemptID); err == nil {
-		t.Fatal("Homie-scoped caller reached host-native hard expiry")
+		t.Fatal("Collie-scoped caller reached host-native hard expiry")
 	}
 	if _, err := attachmentAttemptExpireAt(db, nil, reserved.AttemptID,
 		deadline.Add(-time.Second).Format(spineTime)); err == nil {
@@ -599,13 +599,13 @@ func TestAttachmentAttemptHardExpiryUsesDatabaseDeadline(t *testing.T) {
 
 func TestAttachmentAttemptHardExpiryScanIsBoundedAndCursorPaged(t *testing.T) {
 	db, firstSession, firstBinding := attachmentIngressFixture(t)
-	startedAny, err := HomieStart(db, nil, HomieStartArgs{From: "dashboard:channel-2"})
+	startedAny, err := CollieStart(db, nil, CollieStartArgs{From: "dashboard:channel-2"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	secondSession := startedAny.(HomieStartResult).SessionID
+	secondSession := startedAny.(CollieStartResult).SessionID
 	var secondBinding int64
-	if err := db.QueryRow(`SELECT id FROM homie_bindings
+	if err := db.QueryRow(`SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='dashboard' AND active=1`,
 		secondSession).Scan(&secondBinding); err != nil {
 		t.Fatal(err)
@@ -669,8 +669,8 @@ func TestAttachmentAttemptHardExpiryScanIsBoundedAndCursorPaged(t *testing.T) {
 		t.Fatal("expiry scan accepted a page larger than 128")
 	}
 	if _, err := AttachmentAttemptsExpireDue(db,
-		&RunIdentity{Tier: "homie", RunID: firstSession}, "", 128); err == nil {
-		t.Fatal("Homie-scoped caller reached host-native expiry scan")
+		&RunIdentity{Tier: "collie", RunID: firstSession}, "", 128); err == nil {
+		t.Fatal("Collie-scoped caller reached host-native expiry scan")
 	}
 }
 
@@ -780,9 +780,9 @@ func TestAttachmentPublicationRenewRefusesLeaseAndDeadlineBoundaries(t *testing.
 	}
 	fixture := newAttachmentLeaseBoundaryFixture(t, "-1 second", "+10 minutes")
 	if _, err := AttachmentPublicationRenew(fixture.db,
-		&RunIdentity{Tier: "homie", RunID: fixture.session},
+		&RunIdentity{Tier: "collie", RunID: fixture.session},
 		fixture.renewArgs()); err == nil {
-		t.Fatal("Homie-scoped caller reached host-native publication renewal")
+		t.Fatal("Collie-scoped caller reached host-native publication renewal")
 	}
 }
 
@@ -793,7 +793,7 @@ func TestAttachmentAttemptTerminalRollsBackAtEveryDurableCut(t *testing.T) {
 	}{
 		{"outbox", `CREATE TRIGGER test_attachment_terminal_fault
 			BEFORE INSERT ON outbox
-			WHEN NEW.kind='homie_reply' AND json_extract(NEW.payload,'$.code')='attachment_publish_failed'
+			WHEN NEW.kind='collie_reply' AND json_extract(NEW.payload,'$.code')='attachment_publish_failed'
 			BEGIN SELECT RAISE(ABORT,'injected attachment outbox fault'); END`},
 		{"receipt", `CREATE TRIGGER test_attachment_terminal_fault
 			BEFORE INSERT ON attachment_batch_receipts

@@ -49,15 +49,15 @@ type controlHello struct {
 	DeploymentUUID      string `json:"deployment_uuid"`
 }
 
-type homieInventoryRequest struct {
+type collieInventoryRequest struct {
 	Op  string `json:"op"`
 	Seq int    `json:"seq"`
 }
 
-type homieInventoryResponse struct {
-	Op         string                        `json:"op"`
-	Seq        int                           `json:"seq"`
-	Containers []verbs.PrivateHomieContainer `json:"containers"`
+type collieInventoryResponse struct {
+	Op         string                         `json:"op"`
+	Seq        int                            `json:"seq"`
+	Containers []verbs.PrivateCollieContainer `json:"containers"`
 }
 
 type pipelineLivenessRequest struct {
@@ -85,7 +85,7 @@ func brokerDispatch(args []string, stdin io.Reader, stdout, stderr io.Writer) in
 	if err := exchangeControlHello(conn, deploymentUUID); err != nil {
 		return writeBrokerRefusal(stdout, stderr, "preflight.frame_invalid", err)
 	}
-	inventory, err := requestHomieInventory(conn)
+	inventory, err := requestCollieInventory(conn)
 	if err != nil {
 		return writeBrokerRefusal(stdout, stderr, "preflight.frame_invalid", err)
 	}
@@ -200,29 +200,29 @@ func helloAckMismatchDetail(got, want controlHello) string {
 	return strings.Join(differs, "; ")
 }
 
-func requestHomieInventory(conn net.Conn) ([]verbs.PrivateHomieContainer, error) {
+func requestCollieInventory(conn net.Conn) ([]verbs.PrivateCollieContainer, error) {
 	if err := conn.SetDeadline(time.Now().Add(2 * time.Second)); err != nil {
 		return nil, fmt.Errorf("set resident control inventory deadline: %w", err)
 	}
 	defer conn.SetDeadline(time.Time{})
-	if err := writeControlFrame(conn, homieInventoryRequest{Op: "homie_inventory", Seq: 2}); err != nil {
-		return nil, fmt.Errorf("write resident control Homie inventory request: %w", err)
+	if err := writeControlFrame(conn, collieInventoryRequest{Op: "collie_inventory", Seq: 2}); err != nil {
+		return nil, fmt.Errorf("write resident control Collie inventory request: %w", err)
 	}
-	var response homieInventoryResponse
+	var response collieInventoryResponse
 	if err := readCanonicalControlFrame(conn, &response); err != nil {
-		return nil, fmt.Errorf("read resident control Homie inventory response: %w", err)
+		return nil, fmt.Errorf("read resident control Collie inventory response: %w", err)
 	}
-	if response.Op != "homie_inventory_result" || response.Seq != 2 {
-		return nil, fmt.Errorf("resident control Homie inventory response identity mismatch")
+	if response.Op != "collie_inventory_result" || response.Seq != 2 {
+		return nil, fmt.Errorf("resident control Collie inventory response identity mismatch")
 	}
-	if err := verbs.ValidatePrivateHomieInventory(response.Containers); err != nil {
+	if err := verbs.ValidatePrivateCollieInventory(response.Containers); err != nil {
 		return nil, err
 	}
 	return response.Containers, nil
 }
 
 // requestPipelineLiveness reads the resident's host observation of recently
-// launched pipeline runs (seq 3, after the Homie inventory). The resident
+// launched pipeline runs (seq 3, after the Collie inventory). The resident
 // gathers it BEFORE it spawns this process, precisely because this exchange
 // carries a 2s deadline on both sides that serial `docker inspect` calls would
 // blow — and a blown control exchange refuses the whole tick.

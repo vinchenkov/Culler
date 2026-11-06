@@ -47,15 +47,15 @@ func ProjectEnvironment(db *sql.DB, id *RunIdentity, action string, req Environm
 				return Domainf("This operation requires its setup agent identity.")
 			}
 		} else if action == "get" && id != nil {
-			if id.Tier == "homie" {
+			if id.Tier == "collie" {
 				if err := RequireOperatorVerb(id, "environment.get"); err != nil {
 					return err
 				}
-				if err := requireActiveHomieVerb(ctx, q, id, "environment.get"); err != nil {
+				if err := requireActiveCollieVerb(ctx, q, id, "environment.get"); err != nil {
 					return err
 				}
 				var project sql.NullString
-				if err := q.QueryRowContext(ctx, `SELECT vision_project_id FROM homie_sessions WHERE id=?`, id.RunID).Scan(&project); err != nil {
+				if err := q.QueryRowContext(ctx, `SELECT vision_project_id FROM collie_sessions WHERE id=?`, id.RunID).Scan(&project); err != nil {
 					return err
 				}
 				if project.Valid && project.String != req.ProjectID {

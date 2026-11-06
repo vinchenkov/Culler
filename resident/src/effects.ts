@@ -25,7 +25,7 @@
 import { posix } from "node:path";
 import { parseProviderAccess } from "../../runner/agent-runner/adapters/provider-access";
 import type { Effect, MountPlan, PacketIdentity, RuntimeBinding, TickDeps } from "./types";
-import { canonicalHomieDockerEnvelope } from "./homie-envelope";
+import { canonicalCollieDockerEnvelope } from "./collie-envelope";
 import {
   composeRunSkills, ensureProjectSkillStore, readOperatorSkills, shippedSkillsFrom, skillStoreHostDir,
   type RunSkill, type StoreFs,
@@ -72,24 +72,24 @@ export async function applyEffect(effect: Effect, deps: TickDeps): Promise<void>
       // An operator interrupt arrives here too, as an ordinary reap carrying
       // reason "interrupted".
       return reap(effect, deps);
-    case "homie-wake": {
+    case "collie-wake": {
       let started = false;
-      try { started = await homieWake(effect, deps) === true; }
+      try { started = await collieWake(effect, deps) === true; }
       finally {
         if (!started) {
           deps.credentials?.revoke?.(effect.session, effect.launch);
           await removeProviderAccessFile(effect.session, effect.launch, deps);
         }
-        if (!started) await deps.runMc(["homie", "launch-failure", effect.session, "--launch", effect.launch]);
+        if (!started) await deps.runMc(["collie", "launch-failure", effect.session, "--launch", effect.launch]);
       }
       return;
     }
-    case "homie-adopt":
-      return homieAdopt(effect, deps);
-    case "homie-stop":
-      return homieStop(effect, deps);
-    case "homie-remove":
-      return homieRemove(effect, deps);
+    case "collie-adopt":
+      return collieAdopt(effect, deps);
+    case "collie-stop":
+      return collieStop(effect, deps);
+    case "collie-remove":
+      return collieRemove(effect, deps);
     default: {
       // The action is unhandled, but the effect usually explains itself, so
       // the whole effect is logged. Bounded so a hostile or runaway effect
@@ -276,20 +276,20 @@ function resolvedRuntime(value: unknown): RuntimeBinding | null {
  * discovering it inside a started container. */
 const ADAPTER_HARNESS_FAMILIES = new Set(["claude-sdk", "codex", "opencode", "fake"]);
 
-/** The Homie container's memory cap, as Docker takes it and as it reports it. */
-const HOMIE_MEMORY = "1024m";
-const HOMIE_MEMORY_BYTES = 1024 * 1024 * 1024;
-const HOMIE_PIDS_LIMIT = 128;
-const HOMIE_USER = "10002:10002";
-/** Where a Homie container reads each session folder. The Homie role directive
- * and the `mc-homie` skill name this path. */
-const HOMIE_TRACE_MOUNT = "/mc/traces";
+/** The Collie container's memory cap, as Docker takes it and as it reports it. */
+const COLLIE_MEMORY = "1024m";
+const COLLIE_MEMORY_BYTES = 1024 * 1024 * 1024;
+const COLLIE_PIDS_LIMIT = 128;
+const COLLIE_USER = "10002:10002";
+/** Where a Collie container reads each session folder. The Collie role directive
+ * and the `mc-collie` skill name this path. */
+const COLLIE_TRACE_MOUNT = "/mc/traces";
 /** The artifact root of a Project, relative to its folder. */
 const PROJECT_ARTIFACT_DIR = ".mc-artifacts";
 /** The container root of each recorded artifact path. */
 const ARTIFACTS_MOUNT = "/mc/artifacts";
 
-/** The empty folder that each Homie container sees at the artifact root of
+/** The empty folder that each Collie container sees at the artifact root of
  * each Project folder. */
 function artifactMaskDir(mcHome: string): string {
   return `${runsDir(mcHome)}/artifact-mask`;
@@ -328,8 +328,8 @@ async function taskArtifactMount(
 ): Promise<{ destination: string; source: string | null }> {
   const result = await deps.runMc(["__task-artifacts", root, String(task)]);
   if (result.exitCode !== 0) {
-    log.warn("homie.wake_refused",
-      `homie-wake ${session}: mc __task-artifacts exited ${result.exitCode}: ${result.stderr.trim()}`);
+    log.warn("collie.wake_refused",
+      `collie-wake ${session}: mc __task-artifacts exited ${result.exitCode}: ${result.stderr.trim()}`);
     throw new Error("The artifact files of the packet are unavailable. Restore the Project access and retry the message.");
   }
   let mount: { destination?: unknown; source?: unknown } = {};
@@ -351,7 +351,7 @@ async function taskArtifactMount(
     !destination.startsWith(`${ARTIFACTS_MOUNT}/`) ||
     (source !== null && !taskFolder(source))
   ) {
-    throw new Error(`homie-wake ${session}: the artifact mount of the packet is malformed`);
+    throw new Error(`collie-wake ${session}: the artifact mount of the packet is malformed`);
   }
   return { destination, source };
 }
@@ -423,23 +423,23 @@ function runtimeEnvelope(runtime: RuntimeBinding) {
 
 type SpawnEffect = Extract<Effect, { action: "spawn" }>;
 type ReapEffect = Extract<Effect, { action: "reap" }>;
-type HomieWakeEffect = Extract<Effect, { action: "homie-wake" }>;
-type HomieAdoptEffect = Extract<Effect, { action: "homie-adopt" }>;
-type HomieStopEffect = Extract<Effect, { action: "homie-stop" }>;
-type HomieRemoveEffect = Extract<Effect, { action: "homie-remove" }>;
+type CollieWakeEffect = Extract<Effect, { action: "collie-wake" }>;
+type CollieAdoptEffect = Extract<Effect, { action: "collie-adopt" }>;
+type CollieStopEffect = Extract<Effect, { action: "collie-stop" }>;
+type CollieRemoveEffect = Extract<Effect, { action: "collie-remove" }>;
 
-/** The lease-free Homie wake effector. The dispatch
+/** The lease-free Collie wake effector. The dispatch
  * tick has already minted and persisted the launch generation; the resident's
  * only authority here is the container: materialize the folder + a heartbeat-
- * free tier:"homie" run.json, create the container over a fixed operator-read-
+ * free tier:"collie" run.json, create the container over a fixed operator-read-
  * scope mount set (the workspace is bound RO, its artifact root is masked, and
  * a packet conversation gets the artifact folder of its task RO), CAS the exact
- * docker id onto the launch (`mc homie launch-bind`) BEFORE start so a fenced
+ * docker id onto the launch (`mc collie launch-bind`) BEFORE start so a fenced
  * or ended session never gets a running container, then start it. The runner
- * reports `mc homie runner-started` from inside once it boots (never here).
- * There is no lease, no heartbeat, and no reservation: many Homie containers
+ * reports `mc collie runner-started` from inside once it boots (never here).
+ * There is no lease, no heartbeat, and no reservation: many Collie containers
  * run concurrently. */
-async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boolean | void> {
+async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boolean | void> {
   const { config } = deps;
   const {
     session, launch, mode, binding, session_path, native_session_ref,
@@ -448,7 +448,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // Every record this function writes names its session and launch as FIELDS,
   // whether or not the sentence that produced it remembered to. A refusal that
   // says only "wake refused" is unattributable the moment two sessions overlap,
-  // and Homie sessions overlap by design — there is no lease here.
+  // and Collie sessions overlap by design — there is no lease here.
   const log = deps.log.child({ session, launch });
   const availableWorkspaces = await deps.readWorkspaces();
   const workspaces = effect.vision_project_id === undefined
@@ -462,16 +462,16 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // packet must be in that list.
   const packet = effect.packet === undefined ? undefined : packetIdentity(effect.packet);
   if (packet === null || (packet !== undefined && effect.vision_project_id !== undefined)) {
-    throw new Error(`homie-wake ${session}: the packet identity is malformed`);
+    throw new Error(`collie-wake ${session}: the packet identity is malformed`);
   }
   const packetWorkspace = packet && workspaces.find((workspace) => workspace.id === packet.project_id);
   if (packet !== undefined && packetWorkspace === undefined) {
     throw new Error("The packet Project folder is unavailable. Restore its access and retry the message.");
   }
-  const behavior = config.roleBehaviors["homie"];
+  const behavior = config.roleBehaviors["collie"];
 
   if (typeof effect.directive !== "string" || effect.directive.trim() === "") {
-    throw new Error(`homie-wake ${session}: the Homie directive is required`);
+    throw new Error(`collie-wake ${session}: the Collie directive is required`);
   }
 
   // The spine freezes all four resume locators. The session folder grammar is
@@ -479,22 +479,22 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // guessing; native mode requires the complete immutable pair. Refuse before
   // the first filesystem or Docker effect.
   if (!SAFE_ID.test(session) || session_path !== `sessions/${session}`) {
-    throw new Error(`homie-wake ${session}: session_path does not match the frozen session id`);
+    throw new Error(`collie-wake ${session}: session_path does not match the frozen session id`);
   }
-  if (!/^[0-9a-f]{16}$/.test(launch) || container_name !== `mc-homie-${session}`) {
-    throw new Error(`homie-wake ${session}: launch/container identity is malformed`);
+  if (!/^[0-9a-f]{16}$/.test(launch) || container_name !== `mc-collie-${session}`) {
+    throw new Error(`collie-wake ${session}: launch/container identity is malformed`);
   }
   if (mode !== "fresh" && mode !== "native" && mode !== "rows") {
-    throw new Error(`homie-wake ${session}: unsupported mode ${JSON.stringify(mode)}`);
+    throw new Error(`collie-wake ${session}: unsupported mode ${JSON.stringify(mode)}`);
   }
   if (mode === "native" && (
     typeof native_session_ref !== "string" || native_session_ref === "" ||
     typeof trace_filename !== "string" || trace_filename === ""
   )) {
-    throw new Error(`homie-wake ${session}: native mode requires the immutable locator pair`);
+    throw new Error(`collie-wake ${session}: native mode requires the immutable locator pair`);
   }
   if (mode !== "native" && (native_session_ref !== undefined || trace_filename !== undefined)) {
-    throw new Error(`homie-wake ${session}: native locators are forbidden in ${mode} mode`);
+    throw new Error(`collie-wake ${session}: native locators are forbidden in ${mode} mode`);
   }
 
   // Resolve the frozen historical route from the capability the dispatch tick
@@ -505,18 +505,18 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // stand-ins. Projection happens before the first launch file exists.
   const bindingParts = binding.split("/");
   if (bindingParts.length !== 2 || bindingParts.some((part) => part === "")) {
-    log.warn("homie.wake_refused", `homie-wake ${session}: malformed historical binding ${JSON.stringify(binding)}; refusing`);
+    log.warn("collie.wake_refused", `collie-wake ${session}: malformed historical binding ${JSON.stringify(binding)}; refusing`);
     return;
   }
   const [harness, modelBinding] = bindingParts as [string, string];
   const runtime = resolvedRuntime(effect.runtime_binding);
   if (runtime === null) {
-    log.warn("homie.wake_refused", `homie-wake ${session}: carries no resolved runtime capability; refusing`);
+    log.warn("collie.wake_refused", `collie-wake ${session}: carries no resolved runtime capability; refusing`);
     return;
   }
   if (runtime.harness !== harness || runtime.id !== modelBinding) {
-    log.warn("homie.wake_refused",
-      `homie-wake ${session}: resolved capability ${JSON.stringify(`${runtime.harness}/${runtime.id}`)} ` +
+    log.warn("collie.wake_refused",
+      `collie-wake ${session}: resolved capability ${JSON.stringify(`${runtime.harness}/${runtime.id}`)} ` +
       `does not describe the frozen binding ${JSON.stringify(binding)}; refusing`,
     );
     return;
@@ -524,15 +524,15 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   const isFakeFamily = runtime.harness === "fake" && runtime.id === "fake";
   const usesFakeAdapter = isFakeFamily || (config.agentRunnerRoutes?.includes(binding) ?? false);
   if (!usesFakeAdapter && !ADAPTER_HARNESS_FAMILIES.has(runtime.harness)) {
-    log.warn("homie.wake_refused", `homie-wake ${session}: this image ships no ${JSON.stringify(runtime.harness)} adapter; refusing`);
+    log.warn("collie.wake_refused", `collie-wake ${session}: this image ships no ${JSON.stringify(runtime.harness)} adapter; refusing`);
     return;
   }
   if (usesFakeAdapter && behavior === undefined) {
-    log.warn("homie.wake_refused", `homie-wake ${session}: fake adapter has no Homie behavior; refusing`);
+    log.warn("collie.wake_refused", `collie-wake ${session}: fake adapter has no Collie behavior; refusing`);
     return;
   }
   if (!isFakeFamily) {
-    const admission = await deps.runMc(["homie", "launch-check", session, "--launch", launch,
+    const admission = await deps.runMc(["collie", "launch-check", session, "--launch", launch,
       "--connection", runtime.credential, "--authorization", runtime.authorization_id ?? "",
       "--profile", runtime.id, "--profile-revision", runtime.profile_revision ?? ""]);
     if (admission.exitCode !== 0) return;
@@ -545,8 +545,8 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
       refused: "runtime credential projector unavailable",
     };
   if (projection !== null && "refused" in projection) {
-    log.warn("homie.wake_refused",
-      `homie-wake ${session}: credential projection unavailable for ${binding}: ` +
+    log.warn("collie.wake_refused",
+      `collie-wake ${session}: credential projection unavailable for ${binding}: ` +
       `${projection.refused}`,
     );
     return;
@@ -564,13 +564,13 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
 
   // The frozen operator-verb allowlist must be present and well-shaped BEFORE
   // any launch artifact exists, for the same reason the projection shape is
-  // checked here: a Homie launched without it comes up able to read and nothing
+  // checked here: a Collie launched without it comes up able to read and nothing
   // else, and the model's only documentation says it owns twelve write verbs, so
   // it retries them against a gate that can never admit it. Refusing is the
-  // recoverable outcome; a warm useless Homie is not.
+  // recoverable outcome; a warm useless Collie is not.
   const verbAllowlist = effect.verb_allowlist;
   if (!Array.isArray(verbAllowlist) || verbAllowlist.some((v) => typeof v !== "string")) {
-    log.warn("homie.wake_refused", `homie-wake ${session}: wake carries no frozen verb allowlist; refusing`);
+    log.warn("collie.wake_refused", `collie-wake ${session}: wake carries no frozen verb allowlist; refusing`);
     return;
   }
 
@@ -586,7 +586,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
 
   // The stable attachment tree is a sibling of sessions/, never trace content.
   // Provision/revalidate it before the first launch artifact so a failed
-  // ownership/mode/symlink fence produces no warm Homie or partial envelope.
+  // ownership/mode/symlink fence produces no warm Collie or partial envelope.
   deps.attachmentConfinement.assertHealthy();
   const attachmentTree = await deps.prepareAttachmentTree(session);
 
@@ -611,10 +611,10 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // 2. run.json — lease-free: no heartbeat interval, run_id == session. The
   // binding is the historical route key ("harness/model_binding"); the runner
   // gates on it symmetric with the agent-runner. harness_config.behavior is a
-  // fake-adapter concept, carried only when the deployment supplies a homie
+  // fake-adapter concept, carried only when the deployment supplies a collie
   // behavior fixture (a real harness needs none).
-  // The session's skill set: the Homie tier's shipped skills from the wake,
-  // then every operator skill in the store's `homie` directory. Read now, so the container holds the set that
+  // The session's skill set: the Collie tier's shipped skills from the wake,
+  // then every operator skill in the store's `collie` directory. Read now, so the container holds the set that
   // existed when it started.
   const runSkills = await runSkillSet(effect, config.mcHome, deps.fs);
   const runJson = {
@@ -623,7 +623,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     session_id: session,
     ...(effect.vision_project_id === undefined ? {} : { vision_project_id: effect.vision_project_id }),
     ...(packet === undefined ? {} : { packet }),
-    tier: "homie",
+    tier: "collie",
     directive: effect.directive,
     mode,
     binding,
@@ -638,7 +638,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     // the run's log; absence reads as "none".
     ...runSkills,
     // NOT under the omit-whole-rather-than-half rule the skill uses: this key is
-    // the Homie's entire write capability. `mc` in the container admits an
+    // the Collie's entire write capability. `mc` in the container admits an
     // operator verb only by scanning run.json's verb_allowlist and then matching
     // it against the frozen registry value, so an absent key is indistinguishable
     // from "no verbs" and silently reduces the session to reads. It is carried
@@ -649,7 +649,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     ...(usesFakeAdapter ? { harness_config: { behavior: behavior! } } : {}),
     mounts: {
       session: "/mc/session",
-      // The Project folders of a Homie are read-only. The per-launch scratch
+      // The Project folders of a Collie are read-only. The per-launch scratch
       // is the writable cwd, and it dies with the --rm container.
       workspace: "/mc/scratch",
       workspaces: workspaces.map((w) => ({ id: w.id, path: `/workspaces/${w.id}` })),
@@ -667,30 +667,30 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     await deps.fs.writeFile(providerAccessPath, projection!.proxyConfig!, { mode: 0o644 });
   }
 
-  // 3. container. The container name is session-fixed (mc-homie-<session>), so a
+  // 3. container. The container name is session-fixed (mc-collie-<session>), so a
   // prior now-dead generation — an ended-then-resumed session whose old --rm
   // container has not yet idled out — may still hold it. The launch fence
   // guarantees at most one LIVE generation per session, so force-remove any
   // stale same-named container before create (a no-op if absent). Labelled
-  // mc-tier=homie for the inventory/reap sweep; --rm so the container is gone
+  // mc-tier=collie for the inventory/reap sweep; --rm so the container is gone
   // once the runner exits; mount set is fixed operator read-scope. The memory
-  // cap has no swap headroom and no CPU cap: the Homie answers the operator
+  // cap has no swap headroom and no CPU cap: the Collie answers the operator
   // and must not be throttled while it does.
   await deps.docker(["rm", "-f", container_name]);
-  deps.homieRuntime.revokeSession(session);
+  deps.collieRuntime.revokeSession(session);
   const createPrefix = [
     "create", "--rm",
     ...(isFakeFamily ? ["--network", "none"] : []),
     // The pipeline profile: uid 10002 without capabilities reaches the
     // spine only through the setuid mc.
-    "--user", HOMIE_USER,
+    "--user", COLLIE_USER,
     "--cap-drop", "ALL",
-    "--memory", HOMIE_MEMORY,
-    "--memory-swap", HOMIE_MEMORY,
-    "--pids-limit", String(HOMIE_PIDS_LIMIT),
+    "--memory", COLLIE_MEMORY,
+    "--memory-swap", COLLIE_MEMORY,
+    "--pids-limit", String(COLLIE_PIDS_LIMIT),
     "--name", container_name,
     "--label", "mc-managed=true", ...deploymentArguments(config.mcHome),
-    "--label", "mc-tier=homie",
+    "--label", "mc-tier=collie",
     "--label", `mc-session-id=${session}`,
     ...(effect.vision_project_id ? ["--label", `com.culler.project=${effect.vision_project_id}`] : []),
     ...(packet ? ["--label", `com.culler.project=${packet.project_id}`] : []),
@@ -701,8 +701,8 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     ...openCodeArguments(config.mcHome, runtime?.harness),
     ...(config.runtimeVolume ? ["--entrypoint", `${CULLER_RUNTIME}/bin/bun`] : []),
     "-v", `${sessionDir}:/mc/session`,
-    // Homie can read the trace of each run and each Homie session.
-    "-v", `${config.mcHome}/sessions:${HOMIE_TRACE_MOUNT}:ro`,
+    // Collie can read the trace of each run and each Collie session.
+    "-v", `${config.mcHome}/sessions:${COLLIE_TRACE_MOUNT}:ro`,
     "-v", `${runJsonPath}:/mc/run.json:ro`,
     "-v", `${attachmentTree.inbound_published}:/mc/attachments/in:ro`,
     "-v", `${attachmentTree.outbound}:/mc/private/attachments/out`,
@@ -710,7 +710,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     "-v", `${runsLogDir}:/mc/logs`,
     "-v", `${config.behaviorsDir}:/mc/behaviors:ro`,
     ...(!config.runtimeVolume ? ["-v", `${config.runnerSrcDir}:/app/src:ro`] : []),
-    // Homie can read the current Project folders.
+    // Collie can read the current Project folders.
     ...(workspaces.length ? ["-v", `${workspaces[0].root}:/workspace/source:ro`] : []),
     ...workspaces.flatMap((w) => ["-v", `${w.root}:/workspaces/${w.id}:ro`]),
     // The empty mask hides the artifact files of each task in each Project
@@ -728,7 +728,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     ]),
     "-v", `${config.spineVolume}:${posix.dirname(config.spineDbPath)}`,
     "-e", `MC_SPINE=${config.spineDbPath}`,
-    // Stated, not inherited. The Homie tier has no synthetic home to bind — it
+    // Stated, not inherited. The Collie tier has no synthetic home to bind — it
     // holds no lease and no Project identity. The runner derives the skill
     // root from HOME, and an unset one makes the install a silent no-op, so
     // pin it to the image home of uid 10002. The container is `--rm`, so this
@@ -740,18 +740,18 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
       ? ["-e", `MC_AGENT_RUNNER_ROUTES=${config.agentRunnerRoutes.join(",")}`]
       : []),
     config.image,
-    ...(config.runtimeVolume ? (config.homieCmd ?? config.agentCmd).slice(1) : config.homieCmd ?? config.agentCmd),
+    ...(config.runtimeVolume ? (config.collieCmd ?? config.agentCmd).slice(1) : config.collieCmd ?? config.agentCmd),
   ];
-  const envelope_digest = deps.homieRuntime.digestEnvelope(JSON.stringify({
+  const envelope_digest = deps.collieRuntime.digestEnvelope(JSON.stringify({
     provider_access: projection?.proxyConfig ?? null,
     create_argv: [...createPrefix, ...createPayload],
     run_json: runJsonBody,
   }));
-  const runtime_generation = deps.homieRuntime.register({ session, launch, envelope_digest },
+  const runtime_generation = deps.collieRuntime.register({ session, launch, envelope_digest },
     projection?.proxyConfig === undefined ? undefined : () => deps.credentials?.has?.(session, launch) === true);
   const revokeRuntime = () => {
     deps.credentials?.revoke?.(session, launch);
-    return deps.homieRuntime.revoke({ session, launch, envelope_digest, runtime_generation });
+    return deps.collieRuntime.revoke({ session, launch, envelope_digest, runtime_generation });
   };
   const cleanup = async (containerIdentity = container_name) => {
     await deps.docker(["rm", containerIdentity]);
@@ -767,7 +767,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   ];
   const created = await deps.docker(createArgs);
   if (created.exitCode !== 0) {
-    log.warn("homie.create_failed", `homie-wake ${session}: docker create failed (exit ${created.exitCode}): ${created.stderr.trim()}`);
+    log.warn("collie.create_failed", `collie-wake ${session}: docker create failed (exit ${created.exitCode}): ${created.stderr.trim()}`);
     revokeRuntime();
     await deps.fs.rm(runJsonPath);
     if (providerAccessPath !== undefined) await deps.fs.rm(providerAccessPath);
@@ -775,7 +775,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   }
   const containerId = created.stdout.trim();
   if (!/^[0-9a-f]{64}$/.test(containerId)) {
-    log.warn("homie.create_failed", `homie-wake ${session}: docker create returned a non-canonical id; abandoning container ${container_name}`);
+    log.warn("collie.create_failed", `collie-wake ${session}: docker create returned a non-canonical id; abandoning container ${container_name}`);
     await cleanup();
     return;
   }
@@ -791,12 +791,12 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     }
     const values = (flag: string) => createArgs.flatMap((arg, index) =>
       arg === flag && createArgs[index + 1] !== undefined ? [createArgs[index + 1]!] : []);
-    dockerEnvelope = canonicalHomieDockerEnvelope(records[0], {
+    dockerEnvelope = canonicalCollieDockerEnvelope(records[0], {
       binds: values("-v"),
       mounts: values("--mount"),
       tmpfs: values("--tmpfs"),
       cap_drop: ["ALL"],
-      cmd: config.runtimeVolume ? (config.homieCmd ?? config.agentCmd).slice(1) : config.homieCmd ?? config.agentCmd,
+      cmd: config.runtimeVolume ? (config.collieCmd ?? config.agentCmd).slice(1) : config.collieCmd ?? config.agentCmd,
       ...(config.runtimeVolume ? { entrypoint: [`${CULLER_RUNTIME}/bin/bun`] } : {}),
       container_id: containerId,
       env: values("-e"),
@@ -808,26 +808,26 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
         "mc-managed": "true",
         "mc-runtime-generation": runtime_generation,
         "mc-session-id": session,
-        "mc-tier": "homie",
+        "mc-tier": "collie",
       },
-      memory: HOMIE_MEMORY_BYTES,
-      memory_swap: HOMIE_MEMORY_BYTES,
+      memory: COLLIE_MEMORY_BYTES,
+      memory_swap: COLLIE_MEMORY_BYTES,
       name: container_name,
       network_modes: isFakeFamily ? ["none"] : ["default", "bridge"],
-      pids_limit: HOMIE_PIDS_LIMIT,
+      pids_limit: COLLIE_PIDS_LIMIT,
       security_opt: [],
       state: "created",
-      user: HOMIE_USER,
+      user: COLLIE_USER,
     });
   } catch (err) {
-    log.warn("homie.envelope_refused", `homie-wake ${session}: post-create envelope inspection refused: ${
+    log.warn("collie.envelope_refused", `collie-wake ${session}: post-create envelope inspection refused: ${
       err instanceof Error ? err.message : String(err)
     }`);
     await cleanup(containerId);
     return;
   }
   try {
-    deps.homieRuntime.bind({
+    deps.collieRuntime.bind({
       container_id: containerId,
       docker_envelope: dockerEnvelope,
       envelope_digest,
@@ -836,7 +836,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
       session,
     });
   } catch (err) {
-    log.warn("homie.bind_refused", `homie-wake ${session}: runtime bind refused: ${err instanceof Error ? err.message : String(err)}`);
+    log.warn("collie.bind_refused", `collie-wake ${session}: runtime bind refused: ${err instanceof Error ? err.message : String(err)}`);
     await cleanup(containerId);
     return;
   }
@@ -846,10 +846,10 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // session ended, or a newer generation superseded it) — abandon the
   // container rather than start an orphan.
   const bind = await deps.runMc([
-    "homie", "launch-bind", session, "--launch", launch, "--container-id", containerId,
+    "collie", "launch-bind", session, "--launch", launch, "--container-id", containerId,
   ]);
   if (bind.exitCode !== 0) {
-    log.warn("homie.bind_refused", `homie-wake ${session}: launch-bind failed (exit ${bind.exitCode}): ${bind.stderr.trim()}`);
+    log.warn("collie.bind_refused", `collie-wake ${session}: launch-bind failed (exit ${bind.exitCode}): ${bind.stderr.trim()}`);
     await cleanup(containerId);
     return;
   }
@@ -857,12 +857,12 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   try {
     bound = JSON.parse(bind.stdout) as { fenced?: boolean };
   } catch {
-    log.warn("homie.bind_refused", `homie-wake ${session}: launch-bind returned unparseable receipt; abandoning`);
+    log.warn("collie.bind_refused", `collie-wake ${session}: launch-bind returned unparseable receipt; abandoning`);
     await cleanup(containerId);
     return;
   }
   if (bound.fenced === false) {
-    log.warn("homie.bind_refused", `homie-wake ${session}: launch ${launch} fenced at bind; abandoning container ${container_name}`);
+    log.warn("collie.bind_refused", `collie-wake ${session}: launch ${launch} fenced at bind; abandoning container ${container_name}`);
     await cleanup(containerId);
     return;
   }
@@ -870,12 +870,12 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // 4b. Republish run.json with the now-known container id BEFORE start. The
   // envelope is a RO file bind, so the container reads this updated content at
   // runtime; it is how the in-container runner learns its own 64-hex id to
-  // report `mc homie runner-started` (the fence needs the exact bound id).
+  // report `mc collie runner-started` (the fence needs the exact bound id).
   const finalRunJsonBody =
     JSON.stringify({ ...runJson, container_id: containerId }, null, 2) + "\n";
   await deps.fs.writeFile(runJsonPath, finalRunJsonBody);
   try {
-    deps.homieRuntime.sealArtifacts({
+    deps.collieRuntime.sealArtifacts({
       artifact_envelope: JSON.stringify({
         provider_access: projection?.proxyConfig ?? null,
         run_json: finalRunJsonBody,
@@ -887,7 +887,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
       session,
     });
   } catch (err) {
-    log.warn("homie.envelope_refused", `homie-wake ${session}: runtime artifact seal refused: ${
+    log.warn("collie.envelope_refused", `collie-wake ${session}: runtime artifact seal refused: ${
       err instanceof Error ? err.message : String(err)
     }`);
     await cleanup(containerId);
@@ -897,32 +897,32 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   // 5. start — the runner reports runner-started from inside once it boots.
   const started = await deps.docker(["start", containerId]);
   if (started.exitCode !== 0) {
-    log.warn("homie.start_failed", `homie-wake ${session}: docker start failed (exit ${started.exitCode}): ${started.stderr.trim()}`);
+    log.warn("collie.start_failed", `collie-wake ${session}: docker start failed (exit ${started.exitCode}): ${started.stderr.trim()}`);
     return false;
   }
-  deps.homieStarted?.(containerId);
+  deps.collieStarted?.(containerId);
   return true;
 }
 
-/** The Homie idle-end effector. The dispatch tick already flipped the session
+/** The Collie idle-end effector. The dispatch tick already flipped the session
  * to ended and deactivated its bindings; the resident's only remaining job is
  * to stop the container the launch was bound to, if any. A pre-bind idle end
  * (the session idled before its container ever started) carries no id and
  * stops nothing. A --rm container that already idled out from inside is gone;
  * a failed stop is logged, not retried (the inventory sweep is the backstop). */
-async function homieStop(effect: HomieStopEffect, deps: TickDeps): Promise<void> {
+async function collieStop(effect: CollieStopEffect, deps: TickDeps): Promise<void> {
   const log = deps.log.child({ session: effect.session });
   deps.credentials?.revoke?.(effect.session);
   await removeProviderAccessFiles(effect.session, deps);
   if (effect.container_id === undefined) {
-    log.debug("homie.stop_skipped", `homie-stop ${effect.session}: no container bound; nothing to stop`);
+    log.debug("collie.stop_skipped", `collie-stop ${effect.session}: no container bound; nothing to stop`);
     return;
   }
   const stopped = await deps.docker(["stop", effect.container_id]);
   if (stopped.exitCode !== 0) {
-    log.warn("homie.stop_failed", `homie-stop ${effect.session}: docker stop exited ${stopped.exitCode}: ${stopped.stderr.trim()}`);
+    log.warn("collie.stop_failed", `collie-stop ${effect.session}: docker stop exited ${stopped.exitCode}: ${stopped.stderr.trim()}`);
   } else {
-    deps.homieRuntime.revokeContainer(effect.session, effect.container_id);
+    deps.collieRuntime.revokeContainer(effect.session, effect.container_id);
   }
 }
 
@@ -930,16 +930,16 @@ async function homieStop(effect: HomieStopEffect, deps: TickDeps): Promise<void>
  * echoes the current inventory proof; the resident re-inspects the exact id,
  * recomputes the immutable Docker envelope, rechecks its boot-local row, and
  * starts only if the proof is still byte-identical. */
-async function homieAdopt(effect: HomieAdoptEffect, deps: TickDeps): Promise<void> {
+async function collieAdopt(effect: CollieAdoptEffect, deps: TickDeps): Promise<void> {
   if (
     !/^h-[a-z0-9-]+$/.test(effect.session) ||
     !/^[0-9a-f]{16}$/.test(effect.launch) ||
     !/^[0-9a-f]{64}$/.test(effect.container_id) ||
-    effect.container_name !== `mc-homie-${effect.session}` ||
+    effect.container_name !== `mc-collie-${effect.session}` ||
     !/^[0-9a-f]{64}$/.test(effect.envelope_digest) ||
     !/^[0-9a-f]{64}$/.test(effect.runtime_generation)
   ) {
-    deps.log.warn("homie.adopt_refused", "homie-adopt: malformed identity or proof; refusing");
+    deps.log.warn("collie.adopt_refused", "collie-adopt: malformed identity or proof; refusing");
     return;
   }
   const inspected = await deps.docker([
@@ -972,7 +972,7 @@ async function homieAdopt(effect: HomieAdoptEffect, deps: TickDeps): Promise<voi
       record.State?.Status !== "created" ||
       labelMap["mc-managed"] !== "true" ||
       labelMap["mc-deployment"] !== deploymentIdentity(deps.config.mcHome) ||
-      labelMap["mc-tier"] !== "homie" ||
+      labelMap["mc-tier"] !== "collie" ||
       labelMap["mc-session-id"] !== effect.session ||
       labelMap["mc-launch-id"] !== effect.launch ||
       labelMap["mc-runtime-generation"] !== effect.runtime_generation ||
@@ -1012,10 +1012,10 @@ async function homieAdopt(effect: HomieAdoptEffect, deps: TickDeps): Promise<voi
       provider_access: providerAccess,
       run_json: await deps.fs.readFile(runJsonHostPath(deps.config.mcHome, effect.session)),
     });
-    const proof = deps.homieRuntime.attestEnvelope({
+    const proof = deps.collieRuntime.attestEnvelope({
       artifact_envelope: artifactEnvelope,
       container_id: effect.container_id,
-      docker_envelope: canonicalHomieDockerEnvelope(records[0]),
+      docker_envelope: canonicalCollieDockerEnvelope(records[0]),
       envelope_digest: planDigest,
       launch: effect.launch,
       runtime_generation: effect.runtime_generation,
@@ -1027,46 +1027,46 @@ async function homieAdopt(effect: HomieAdoptEffect, deps: TickDeps): Promise<voi
       throw new Error("current runtime envelope does not match the dispatched proof");
     }
   } catch (err) {
-    deps.log.warn("homie.adopt_refused", `homie-adopt ${effect.session}/${effect.launch}: ${
+    deps.log.warn("collie.adopt_refused", `collie-adopt ${effect.session}/${effect.launch}: ${
       err instanceof Error ? err.message : String(err)
     }; refusing start`);
     return;
   }
   const started = await deps.docker(["start", effect.container_id]);
   if (started.exitCode !== 0) {
-    deps.log.warn("homie.start_failed",
-      `homie-adopt ${effect.session}/${effect.launch}: docker start failed ` +
+    deps.log.warn("collie.start_failed",
+      `collie-adopt ${effect.session}/${effect.launch}: docker start failed ` +
       `(exit ${started.exitCode}): ${started.stderr.trim()}`,
     );
     return;
   }
-  deps.homieStarted?.(effect.container_id);
+  deps.collieStarted?.(effect.container_id);
 }
 
 /** Exact orphan/reconciliation cleanup selected by the helper from the
  * resident-owned inventory. The resident revalidates the closed identity and
  * reason grammar, then removes only the observed Docker id; a name is never
  * used as authority. */
-async function homieRemove(effect: HomieRemoveEffect, deps: TickDeps): Promise<void> {
+async function collieRemove(effect: CollieRemoveEffect, deps: TickDeps): Promise<void> {
   if (
     !/^h-[a-z0-9-]+$/.test(effect.session) ||
     !/^[0-9a-f]{16}$/.test(effect.launch) ||
     !/^[0-9a-f]{64}$/.test(effect.container_id) ||
-    effect.container_name !== `mc-homie-${effect.session}` ||
+    effect.container_name !== `mc-collie-${effect.session}` ||
     !["orphan", "paused", "restarting", "removing", "exited", "dead", "starting-timeout"].includes(effect.reason)
   ) {
-    deps.log.warn("homie.remove_refused", `homie-remove: malformed identity; refusing`);
+    deps.log.warn("collie.remove_refused", `collie-remove: malformed identity; refusing`);
     return;
   }
   deps.credentials?.revoke?.(effect.session, effect.launch);
   await deps.fs.rm(providerAccessHostPath(deps.config.mcHome, effect.session, effect.launch));
   const removed = await deps.docker(["rm", "-f", effect.container_id]);
   if (removed.exitCode !== 0) {
-    deps.log.warn("homie.remove_failed",
-      `homie-remove ${effect.session}/${effect.launch}: docker rm exited ${removed.exitCode}: ${removed.stderr.trim()}`,
+    deps.log.warn("collie.remove_failed",
+      `collie-remove ${effect.session}/${effect.launch}: docker rm exited ${removed.exitCode}: ${removed.stderr.trim()}`,
     );
   } else {
-    deps.homieRuntime.revokeObserved(effect.session, effect.launch, effect.container_id);
+    deps.collieRuntime.revokeObserved(effect.session, effect.launch, effect.container_id);
   }
 }
 
@@ -1337,7 +1337,7 @@ async function spawnAttempt(
   // they live only in the host-side plan sibling.
   // The run's skill set: the role's shipped skills from the effect, then
   // every operator skill in the store directory the effect names. Read now, so the container holds the set that
-  // existed when it started. A Project registered from inside a Homie
+  // existed when it started. A Project registered from inside a Collie
   // container has no store directories yet; they are created here, once.
   await ensureProjectSkillStore(config.mcHome, effect.project, deps.fs);
   const runSkills = await runSkillSet(effect, config.mcHome, deps.fs);
@@ -1594,7 +1594,7 @@ export const DISCARD_RETRY_MS = [100, 400] as const;
 // deployment raised to debug is raised everywhere rather than only on the host.
 //
 // It is one more `-e` on both create argvs and deliberately NOT a run.json
-// field: that would be an envelope change on both tiers. The Homie envelope
+// field: that would be an envelope change on both tiers. The Collie envelope
 // digest already covers `-e` rows, so create and attest stay consistent for
 // free. Absent means absent — the container's own parseLevel then chooses the
 // default, rather than this side baking one in.

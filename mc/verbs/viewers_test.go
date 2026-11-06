@@ -156,7 +156,7 @@ func TestUnavailableAgentsViewIsAConditionWithTheRepair(t *testing.T) {
 	if condition.ID != "agentsview:unavailable" || condition.Group != "execution" || condition.State != "failed" ||
 		condition.Name != "AgentsView" || condition.Action != "View details" ||
 		condition.Condition != "AgentsView does not answer at http://127.0.0.1:7334. Trace links do not open. "+
-			"Runs and Homie continue. To repair AgentsView, run install.sh again." {
+			"Runs and Collie continue. To repair AgentsView, run install.sh again." {
 		t.Fatalf("condition = %+v", condition)
 	}
 }
@@ -189,7 +189,7 @@ func TestAgentsViewConditionNamesTheRepairOfItsFault(t *testing.T) {
 	}))
 	_, conditions := ViewerStatus(home, time.Now(), deployment.PingAgentsView)
 	want := "Another service answers at the AgentsView address " + other + ". Trace links do not open. " +
-		"Runs and Homie continue. Stop the other service, or ask your coding harness to set another AgentsView port " +
+		"Runs and Collie continue. Stop the other service, or ask your coding harness to set another AgentsView port " +
 		"in config.toml. Then run install.sh again."
 	if len(conditions) != 1 || conditions[0].Condition != want {
 		t.Fatalf("conditions = %+v, want %q", conditions, want)
@@ -197,7 +197,7 @@ func TestAgentsViewConditionNamesTheRepairOfItsFault(t *testing.T) {
 	plain := serve(http.NotFoundHandler())
 	_, conditions = ViewerStatus(home, time.Now(), deployment.PingAgentsView)
 	want = "The service at " + plain + " answers with HTTP status 404. Trace links do not open. " +
-		"Runs and Homie continue. If another service uses this port, stop that service, or ask your coding harness " +
+		"Runs and Collie continue. If another service uses this port, stop that service, or ask your coding harness " +
 		"to set another AgentsView port in config.toml. Then run install.sh again."
 	if len(conditions) != 1 || conditions[0].Condition != want {
 		t.Fatalf("conditions = %+v, want %q", conditions, want)
@@ -208,7 +208,7 @@ func TestAgentsViewConditionNamesTheRepairOfItsFault(t *testing.T) {
 	}
 	_, conditions = ViewerStatus(home, time.Now(), deployment.PingAgentsView)
 	want = "The AgentsView token file " + token + " must be a regular file with mode 0600 that the operator owns. " +
-		"Trace links do not open. Runs and Homie continue. " +
+		"Trace links do not open. Runs and Collie continue. " +
 		"Ask your coding harness to remove the AgentsView token file, then run install.sh again."
 	if len(conditions) != 1 || conditions[0].Condition != want {
 		t.Fatalf("conditions = %+v, want %q", conditions, want)
@@ -224,7 +224,7 @@ func TestOverdueTraceImportsAreOneCondition(t *testing.T) {
 
 	writeAgentsViewHealth(t, home, now.Add(-time.Minute), []map[string]string{
 		{"kind": "run", "id": "r-1a2b", "agentsview_session": "s-1", "changed_at": "2026-09-29T11:50:00Z"},
-		{"kind": "homie", "id": "h-9f8e", "agentsview_session": "s-2", "changed_at": "2026-09-29T11:51:00Z"},
+		{"kind": "collie", "id": "h-9f8e", "agentsview_session": "s-2", "changed_at": "2026-09-29T11:51:00Z"},
 		{"kind": "run", "id": "r-1a2b", "agentsview_session": "s-1", "changed_at": "2026-09-29T11:50:00Z"},
 		{"kind": "task", "id": "r-other"},
 		{"kind": "run", "id": "../r-other"},
@@ -235,7 +235,7 @@ func TestOverdueTraceImportsAreOneCondition(t *testing.T) {
 	}
 	if conditions[0].ID != "agentsview:overdue" || conditions[0].Name != "AgentsView" ||
 		conditions[0].Condition != "AgentsView did not import new trace lines of 2 sessions within 5 minutes: "+
-			"run r-1a2b, Homie session h-9f8e. Their trace links can show an incomplete trace. "+
+			"run r-1a2b, Collie session h-9f8e. Their trace links can show an incomplete trace. "+
 			"Culler continues to copy the traces." {
 		t.Fatalf("overdue condition = %+v", conditions[0])
 	}

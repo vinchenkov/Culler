@@ -30,16 +30,16 @@ Keep \`Enter\` as send and \`Shift+Enter\` as newline.`;
 const NOTES = `Second pass. The Verifier asked for a test that proves the ten-line cap, not the growth.`;
 
 async function seed(smoke: Smoke) {
-  await mc(["project", "add", "homie", "--title", "Homie", "--kind", "repo"]);
+  await mc(["project", "add", "collie", "--title", "Collie", "--kind", "repo"]);
   await mc(["project", "add", "llm-council", "--title", "Council", "--kind", "repo"]);
   await mc(["project", "add", "docs", "--title", "Docs", "--kind", "repo"]);
   const packetTask = await mc([
     "task", "add", "Wire the Packager's diff explainer end to end",
-    "--project", "homie", "--description", REQUIREMENTS,
+    "--project", "collie", "--description", REQUIREMENTS,
   ]);
   const packetTaskID = Number(packetTask["task_id"]);
   const a = await mc([
-    "task", "add", "The Homie composer grows with its text",
+    "task", "add", "The Collie composer grows with its text",
     "--project", "llm-council", "--priority", "-1", "--description", DESCRIPTION,
   ]);
   const b = await mc([
@@ -71,8 +71,8 @@ async function seed(smoke: Smoke) {
   db = new Database(join(smoke.home, "spine.db"));
   db.run(
     `INSERT INTO tasks (title, description, scope, status, project) VALUES
-     ('Render explain-diff-html into the packet directory', 'Call the skill from the Packager brief and write packet/diff.html.', 'task', 'seeded', 'homie'),
-     ('Open the diff explainer from the Review page', NULL, 'task', 'seeded', 'homie')`,
+     ('Render explain-diff-html into the packet directory', 'Call the skill from the Packager brief and write packet/diff.html.', 'task', 'seeded', 'collie'),
+     ('Open the diff explainer from the Review page', NULL, 'task', 'seeded', 'collie')`,
   );
   const c1 = (db.query(`SELECT id FROM tasks WHERE title LIKE 'Render explain%'`).get() as { id: number }).id;
   const c2 = (db.query(`SELECT id FROM tasks WHERE title LIKE 'Open the diff%'`).get() as { id: number }).id;
@@ -92,18 +92,18 @@ async function seed(smoke: Smoke) {
   ended.forEach(([role, outcome, from, to], i) => {
     db.run(
       `INSERT INTO runs (id, tier, role, project, subject, created_at, ended_at, outcome)
-       VALUES (?, 'pipeline', ?, 'homie', ?, datetime('now', ?), datetime('now', ?), ?)`,
+       VALUES (?, 'pipeline', ?, 'collie', ?, datetime('now', ?), datetime('now', ?), ?)`,
       [`run-c2-${i}`, role, c2, from, to, outcome],
     );
   });
   db.run(
     `INSERT INTO runs (id, tier, role, project, subject, created_at, ended_at, outcome)
-     VALUES ('run-worker-live', 'pipeline', 'worker', 'homie', ?, datetime('now', '-12 minutes'), NULL, NULL)`,
+     VALUES ('run-worker-live', 'pipeline', 'worker', 'collie', ?, datetime('now', '-12 minutes'), NULL, NULL)`,
     [c2],
   );
   db.run(
     `UPDATE leases SET run_id = 'run-worker-live', subject = ?, owner = 'worker', acquired_at = datetime('now', '-12 minutes'),
-       last_heartbeat_at = datetime('now', '-5 seconds'), hard_deadline_at = datetime('now', '+1 hour') WHERE project = 'homie'`,
+       last_heartbeat_at = datetime('now', '-5 seconds'), hard_deadline_at = datetime('now', '+1 hour') WHERE project = 'collie'`,
     [c2],
   );
   // The stale run in docs: a worker whose heartbeat stopped twenty minutes ago.
@@ -194,7 +194,7 @@ try {
   await page.screenshot({ path: join(OUT, "02-dialog-prose-notes-facts.png") });
   const box = await dialog.boundingBox();
   check(box !== null && box.width >= 1440 * 0.7 && box.height >= 1000 * 0.55, `story 1: the dialog covers most of the window (${JSON.stringify(box)})`);
-  check(((await dialog.locator("#task-dialog-title").textContent()) ?? "") === "The Homie composer grows with its text", "story 1: the head names the task");
+  check(((await dialog.locator("#task-dialog-title").textContent()) ?? "") === "The Collie composer grows with its text", "story 1: the head names the task");
   check((await dialog.locator(".td-head .tag.stage").count()) === 1, "story 1: the head carries the stage pill");
   check((await dialog.locator(".td-head .tag.priority").count()) === 1, "story 1: the head carries the expedited pill");
   check((await dialog.locator(".td-main .md ol li").count()) === 3, "story 1: the description's ordered list renders as three items");

@@ -34,8 +34,8 @@ func TestTaskArtifactsCommandResolvesTheTaskFolderOnTheHost(t *testing.T) {
 			t.Fatalf("__task-artifacts %v gave %d %v", args, refused.code, refused.json)
 		}
 	}
-	agent := runMC(t, homieJSONEnv(t, spine, "h-0123456789abcdef", []string{}), "", "__task-artifacts", workspace, "21")
+	agent := runMC(t, collieJSONEnv(t, spine, "h-0123456789abcdef", []string{}), "", "__task-artifacts", workspace, "21")
 	if agent.code != 1 || !strings.Contains(agent.stderr, "host scope only") {
-		t.Fatalf("a Homie caller gave %d %q", agent.code, agent.stderr)
+		t.Fatalf("a Collie caller gave %d %q", agent.code, agent.stderr)
 	}
 }

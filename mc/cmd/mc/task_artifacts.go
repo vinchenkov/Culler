@@ -8,7 +8,7 @@ import (
 )
 
 // taskArtifactsCommand resolves the read-only bind of the artifact files of
-// one task for the Homie container of a packet conversation. It runs on the
+// one task for the Collie container of a packet conversation. It runs on the
 // host, because the helper container sees neither the mount allowlist nor the
 // artifact files.
 func taskArtifactsCommand(args []string) (any, error) {

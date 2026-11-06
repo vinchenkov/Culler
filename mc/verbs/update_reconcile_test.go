@@ -56,10 +56,10 @@ func TestUpdateReconcilePreservesAllowancePausesAndRunFiles(t *testing.T) {
 	}
 }
 
-func TestUpdateReconcileKeepsNativeHomieHistory(t *testing.T) {
+func TestUpdateReconcileKeepsNativeCollieHistory(t *testing.T) {
 	db := hbSpine(t)
 	hbBound(t, db)
-	dvExec(t, db, `UPDATE homie_sessions SET native_session_ref='saved-native',trace_filename='native.jsonl' WHERE id='sess-1'`)
+	dvExec(t, db, `UPDATE collie_sessions SET native_session_ref='saved-native',trace_filename='native.jsonl' WHERE id='sess-1'`)
 	result, err := reconcileUpdateDB(db)
 	if err != nil {
 		t.Fatal(err)
@@ -67,7 +67,7 @@ func TestUpdateReconcileKeepsNativeHomieHistory(t *testing.T) {
 	if result.Sessions != 1 || hbStatus(t, db) != "ended" {
 		t.Fatalf("session result %+v", result)
 	}
-	if dfStr(t, db, `SELECT native_session_ref FROM homie_sessions WHERE id='sess-1'`) != "saved-native" {
+	if dfStr(t, db, `SELECT native_session_ref FROM collie_sessions WHERE id='sess-1'`) != "saved-native" {
 		t.Fatal("native history locator changed")
 	}
 }

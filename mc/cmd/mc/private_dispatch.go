@@ -194,19 +194,19 @@ type brokerTickRefusal struct {
 }
 
 // brokerPrepareCommit runs ONE TICK over the private crossing: the plan
-// frame names the Projects the tick walks; the Homie stage is one prepare
+// frame names the Projects the tick walks; the Collie stage is one prepare
 // round with project ""; then
 // one round per Project — prepare, and for a candidate attest → commit.
 // The wiki loop follows: one wiki round for each Project.
 // The tick object {"action":"tick","actions":[...],"idle":[...]} is written
-// once. A broker refusal of the Homie stage or of a pipeline round appends
+// once. A broker refusal of the Collie stage or of a pipeline round appends
 // the refusal envelope to actions and ends the loop of the pipeline rounds.
 // The wiki loop still runs, the tick is written, and the exit code is 0 when
 // at least one round completed, so the resident effects what was committed.
 // A failure before any round completed keeps the single-refusal behaviour.
 func brokerPrepareCommit(
 	deploymentUUID string,
-	homieInventory []verbs.PrivateHomieContainer,
+	collieInventory []verbs.PrivateCollieContainer,
 	pipelineLiveness []verbs.PrivatePipelineLiveness,
 	stdout, stderr io.Writer,
 ) int {
@@ -215,9 +215,9 @@ func brokerPrepareCommit(
 		return writeBrokerRefusal(stdout, stderr, "preflight.frame_invalid", err)
 	}
 	// The enabled runtime catalog is host authority, resolved before prepare
-	// because the lease-free Homie branch finalizes inside prepare and never
+	// because the lease-free Collie branch finalizes inside prepare and never
 	// reaches attest. An unreadable config resolves the explicit unavailable
-	// capability: the pipeline lane still refuses at attest, and the Homie lane
+	// capability: the pipeline lane still refuses at attest, and the Collie lane
 	// simply launches nothing.
 	capability := verbs.ResolveRuntimeCapability(home)
 
@@ -238,7 +238,7 @@ func brokerPrepareCommit(
 	var tick brokerTick
 	rounds := append([]string{""}, order.Projects...)
 	for _, project := range rounds {
-		effect, refusal := brokerRound(home, deploymentUUID, project, "", "", "", capability, homieInventory, pipelineLiveness)
+		effect, refusal := brokerRound(home, deploymentUUID, project, "", "", "", capability, collieInventory, pipelineLiveness)
 		ended, first, err := tick.fold(project, effect, refusal)
 		if err != nil {
 			fmt.Fprintln(stderr, "mc: write tick entry:", err)
@@ -252,7 +252,7 @@ func brokerPrepareCommit(
 			break
 		}
 	}
-	brokerWikiLoop(&tick, home, deploymentUUID, order.Projects, capability, homieInventory, pipelineLiveness, stderr)
+	brokerWikiLoop(&tick, home, deploymentUUID, order.Projects, capability, collieInventory, pipelineLiveness, stderr)
 	encoded, err := tick.marshal()
 	if err != nil {
 		fmt.Fprintln(stderr, "mc: write tick result:", err)
@@ -273,7 +273,7 @@ func brokerWikiLoop(
 	home, deploymentUUID string,
 	projects []string,
 	capability verbs.PrivateRuntimeCapability,
-	homieInventory []verbs.PrivateHomieContainer,
+	collieInventory []verbs.PrivateCollieContainer,
 	pipelineLiveness []verbs.PrivatePipelineLiveness,
 	stderr io.Writer,
 ) {
@@ -286,7 +286,7 @@ func brokerWikiLoop(
 		return
 	}
 	brokerWikiRounds(tick, home, deploymentUUID, projects, projectRootsOf(listed),
-		capability, homieInventory, pipelineLiveness, stderr)
+		capability, collieInventory, pipelineLiveness, stderr)
 }
 
 // brokerWikiRounds runs one wiki round for each Project of the tick order. It
@@ -299,7 +299,7 @@ func brokerWikiRounds(
 	projects []string,
 	roots map[string]string,
 	capability verbs.PrivateRuntimeCapability,
-	homieInventory []verbs.PrivateHomieContainer,
+	collieInventory []verbs.PrivateCollieContainer,
 	pipelineLiveness []verbs.PrivatePipelineLiveness,
 	stderr io.Writer,
 ) {
@@ -310,7 +310,7 @@ func brokerWikiRounds(
 	observations := acceptedCommitsAt(selected)
 	for _, project := range projects {
 		effect, refusal := brokerWikiRound(home, deploymentUUID, project, selected[project], observations[project],
-			capability, homieInventory, pipelineLiveness)
+			capability, collieInventory, pipelineLiveness)
 		if refusal != nil {
 			fmt.Fprintln(stderr, "mc:", refusal.err.Error())
 		}
@@ -331,7 +331,7 @@ func brokerWikiRounds(
 func brokerWikiRound(
 	home, deploymentUUID, project, root, observation string,
 	capability verbs.PrivateRuntimeCapability,
-	homieInventory []verbs.PrivateHomieContainer,
+	collieInventory []verbs.PrivateCollieContainer,
 	pipelineLiveness []verbs.PrivatePipelineLiveness,
 ) (effect json.RawMessage, refusal *brokerTickRefusal) {
 	defer func() {
@@ -341,7 +341,7 @@ func brokerWikiRound(
 		}
 	}()
 	return brokerRound(home, deploymentUUID, project, verbs.PrivateWikiRound, root, observation,
-		capability, homieInventory, pipelineLiveness)
+		capability, collieInventory, pipelineLiveness)
 }
 
 // brokerTick is the tick object under assembly: the ordered committed effects,
@@ -354,7 +354,7 @@ type brokerTick struct {
 	refusal   *brokerTickRefusal
 }
 
-// fold folds the outcome of the Homie stage or of one pipeline round into the
+// fold folds the outcome of the Collie stage or of one pipeline round into the
 // tick. A round that the crossing refused, or whose committed effect the broker
 // cannot read, ends the loop of the pipeline rounds: before any round completed
 // it is returned as first (the caller writes it as the single broker refusal);
@@ -362,7 +362,7 @@ type brokerTick struct {
 // {"error":{"code","message"}}, the same element the in-process seam appends,
 // and ended is true. The effects of the wiki loop follow that envelope. Every
 // other effect is appended to actions, except a pipeline round's idle result,
-// which is listed under idle with its reason (the Homie stage's idle result is
+// which is listed under idle with its reason (the Collie stage's idle result is
 // recorded nowhere).
 func (t *brokerTick) fold(project string, effect json.RawMessage, refusal *brokerTickRefusal) (ended bool, first *brokerTickRefusal, err error) {
 	if refusal == nil {
@@ -454,18 +454,18 @@ func probeEffect(effect []byte) (action, reason string, err error) {
 }
 
 // brokerRound runs one round of the tick: prepare for project ("" is the
-// Homie stage) and, for a candidate frame, attest and
+// Collie stage) and, for a candidate frame, attest and
 // commit. It returns the round's committed effect bytes, or the broker
 // refusal that ended the round.
 //
-// round is "" for the Homie stage and a pipeline round. A wiki round carries
+// round is "" for the Collie stage and a pipeline round. A wiki round carries
 // the accepted commit of the Project in place of the Vision check: observation
 // in the prepare frame, and a new read of the repository at root in the commit
 // frame.
 func brokerRound(
 	home, deploymentUUID, project, round, root, observation string,
 	capability verbs.PrivateRuntimeCapability,
-	homieInventory []verbs.PrivateHomieContainer,
+	collieInventory []verbs.PrivateCollieContainer,
 	pipelineLiveness []verbs.PrivatePipelineLiveness,
 ) (json.RawMessage, *brokerTickRefusal) {
 	refuse := func(code string, err error) (json.RawMessage, *brokerTickRefusal) {
@@ -473,7 +473,7 @@ func brokerRound(
 	}
 	request, err := verbs.NewPrivateDispatchPrepareRequest(
 		releaseBuildID, deploymentUUID, gatewayControlVersion, configSchemaVersion,
-		project, homieInventory, pipelineLiveness, capability)
+		project, collieInventory, pipelineLiveness, capability)
 	if err != nil {
 		return refuse("preflight.frame_invalid", err)
 	}
@@ -567,7 +567,7 @@ func capabilityConsumingFinal(final []byte) bool {
 	if err := json.Unmarshal(final, &probe); err != nil {
 		return true
 	}
-	return probe.Action == "homie-wake" || len(probe.RuntimeBinding) != 0
+	return probe.Action == "collie-wake" || len(probe.RuntimeBinding) != 0
 }
 
 func writeOrdinaryResult(w io.Writer, result []byte) error {

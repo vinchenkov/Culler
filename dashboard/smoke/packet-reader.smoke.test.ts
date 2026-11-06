@@ -478,7 +478,7 @@ test("the Ledger filter fits the narrow queue column beside the chat column", as
   await page.getByTestId("packet-view-ledger").click();
   await page.getByTestId("ledger-filter-all").click();
   await readerShows("merged");
-  await page.getByTestId("packet-homie-open").click();
+  await page.getByTestId("packet-collie-open").click();
   await page.getByTestId("packet-chat-column").waitFor({ state: "visible" });
   try {
     expect(await page.getByTestId("review-pane").getAttribute("data-queue")).toBe("compact");
@@ -492,8 +492,8 @@ test("the Ledger filter fits the narrow queue column beside the chat column", as
     const title = row("merged").getByTestId("packet-title");
     expect(await title.innerText()).toBe("merged task");
     expect(inside((await title.boundingBox())!, (await row("merged").boundingBox())!)).toBe(true);
-    // A decided packet keeps "Ask Homie" in the decision bar.
-    expect(inside(await box("packet-homie-open"), await box("packet-decision-bar"))).toBe(true);
+    // A decided packet keeps "Ask Collie" in the decision bar.
+    expect(inside(await box("packet-collie-open"), await box("packet-decision-bar"))).toBe(true);
     await page.screenshot({ path: evidencePath("reader-ledger-chat-1920.png") });
   } finally {
     await page.getByTestId("packet-chat-close").click();
@@ -1013,14 +1013,14 @@ test("at 390 px the reader covers the window and fits its width", async () => {
     // The view row is one row: the three views and the Task button.
     const views = await box("reader-views");
     expect(views.height).toBeLessThan(64);
-    expect(await page.getByTestId("reader-views").getByRole("tab").allInnerTexts()).toEqual(["Packet", "Files changed · 3", "Homie"]);
-    for (const testid of ["reader-view-packet", "reader-view-changes", "reader-view-homie", "packet-task-open"]) {
+    expect(await page.getByTestId("reader-views").getByRole("tab").allInnerTexts()).toEqual(["Packet", "Files changed · 3", "Collie"]);
+    for (const testid of ["reader-view-packet", "reader-view-changes", "reader-view-collie", "packet-task-open"]) {
       expect(inside(await box(testid), views)).toBe(true);
     }
-    expect(await page.getByTestId("packet-homie-open").isVisible()).toBe(false);
+    expect(await page.getByTestId("packet-collie-open").isVisible()).toBe(false);
     expect(await page.getByTestId("reader-view-changes").evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
     // Each reader control is at least 40 px tall.
-    for (const testid of ["reader-close", "reader-previous", "reader-next", "reader-view-packet", "reader-view-changes", "reader-view-homie",
+    for (const testid of ["reader-close", "reader-previous", "reader-next", "reader-view-packet", "reader-view-changes", "reader-view-collie",
       "packet-task-open", "packet-approve", "packet-revise", "packet-cancel"]) {
       expect((await box(testid)).height).toBeGreaterThanOrEqual(40);
     }

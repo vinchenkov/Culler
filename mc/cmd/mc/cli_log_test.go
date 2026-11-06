@@ -18,7 +18,7 @@ func TestInvocationShapeKeepsNamesAndDropsValues(t *testing.T) {
 	}{
 		{[]string{"task", "list"}, "task", "list", ""},
 		{[]string{"activity", "list", "--kind", "dispatch.health", "--limit", "50"}, "activity", "list", "kind,limit"},
-		{[]string{"homie", "send", "--session", "h-1", "--body", "ship it please"}, "homie", "send", "body,session"},
+		{[]string{"collie", "send", "--session", "h-1", "--body", "ship it please"}, "collie", "send", "body,session"},
 		{[]string{"doctor"}, "doctor", "", ""},
 		{[]string{"logs", "--stream=events", "--tail=20"}, "logs", "", "stream,tail"},
 		// A leading flag is not a subverb, and a repeated flag is one name.
@@ -55,8 +55,8 @@ func TestInvocationShapeLeaksNoArgumentValue(t *testing.T) {
 		args   []string
 		values []string // the tokens that are VALUES and must not be recorded
 	}{
-		{[]string{"homie", "send", "--session", secret, "--body", secret, secret}, []string{secret}},
-		{[]string{"homie", "--flag=" + secret}, []string{secret}},
+		{[]string{"collie", "send", "--session", secret, "--body", secret, secret}, []string{secret}},
+		{[]string{"collie", "--flag=" + secret}, []string{secret}},
 		// First position is where the values actually leaked: each of these
 		// was written to the live deployment's log as a `sub` field.
 		{[]string{"__mount-recheck", "/Users/op/.culler/runs/7a75.mounts.json"},

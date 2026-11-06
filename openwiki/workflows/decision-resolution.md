@@ -43,7 +43,7 @@ The Worker, Verifier, or Packager records that report through its terminal actio
 `mc/verbs/complete.go` records Decision Pending with `blocked_kind = 'report'`.
 The task retains its stage until a resolution changes it.
 
-The operator resolves the report through the dashboard or Homie.
+The operator resolves the report through the dashboard or Collie.
 Both use the requirements revision operation in `mc/verbs/board.go`.
 The description holds every requirement of the task.
 The reason explains why the operator changed those requirements.
@@ -53,7 +53,7 @@ Task cancellation is the other resolution.
 
 The spine stores the condition type in `tasks.blocked_kind`.
 Task reads, packet reads, and system conditions expose that type.
-The dashboard and Homie use it to select the applicable control.
+The dashboard and Collie use it to select the applicable control.
 
 | Type | Cause | Resolution |
 | --- | --- | --- |
@@ -155,7 +155,7 @@ The source and tests establish the behavior on this page.
 
 | Source | Behavior checked |
 | --- | --- |
-| `mc/verbs/decisionresolution_test.go` | Report resolution, unchanged-description refusal, delayed application, retained commits, independent conditions, Homie parity, and merge repair preservation. |
+| `mc/verbs/decisionresolution_test.go` | Report resolution, unchanged-description refusal, delayed application, retained commits, independent conditions, Collie parity, and merge repair preservation. |
 | `mc/verbs/brief_resolution_test.go` | Worker reason context, later runs, original base commits, and reason omission for Verifier and Packager. |
 | `mc/verbs/deliveryonecommit_test.go` | Refusal of submissions and checkpoints equal to the task base. |
 | `mc/substrate/substrate_test.go` | Required condition types and immutable base commits. |

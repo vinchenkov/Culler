@@ -118,7 +118,7 @@ func wholeSectionArgs(section string, a verbs.OnboardArgs) []string {
 			{"timeout-minutes", a.TimeoutMinutes}, {"grace-minutes", a.GraceMinutes},
 			{"heartbeat-interval-s", a.HeartbeatIntervalS}, {"spawn-grace-s", a.SpawnGraceS},
 			{"hard-deadline-minutes", a.HardDeadlineMinutes},
-			{"homie-idle-timeout-s", a.HomieIdleTimeoutS},
+			{"collie-idle-timeout-s", a.CollieIdleTimeoutS},
 		} {
 			if item.value != 0 {
 				args = append(args, "--"+item.name, fmt.Sprint(item.value))

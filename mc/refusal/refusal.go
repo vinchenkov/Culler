@@ -4,7 +4,7 @@
 //
 // It is deliberately pure and storage-free. Deciding a class is a total
 // function of (code, source authority); applying the consequence — block the
-// subject task, record deployment health, or launch-fence-end a Homie — is the
+// subject task, record deployment health, or launch-fence-end a Collie — is the
 // dispatch seam's job, under its own transaction. Keeping the two apart is what
 // lets the whole table be proven by table-driven tests with no spine at all.
 //
@@ -36,7 +36,7 @@ const (
 
 	// ClassCandidate is the candidate-policy row. The consequence is
 	// subject-dependent — block the subject task, health when subjectless, or a
-	// launch-fenced Homie end — so the class alone does not name it.
+	// launch-fenced Collie end — so the class alone does not name it.
 	ClassCandidate Class = "candidate"
 )
 

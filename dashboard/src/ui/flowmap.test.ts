@@ -28,7 +28,7 @@ const ROUTES = [
 
 const RUNS = [
   { id: "r-1", role: "arbiter", created_at: "2026-08-17 11:48:00", ended_at: "2026-08-17 11:50:00", outcome: "completed" },
-  { id: "r-2", role: "homie", created_at: "2026-08-17 11:54:00", ended_at: "2026-08-17 11:55:00", outcome: "completed" },
+  { id: "r-2", role: "collie", created_at: "2026-08-17 11:54:00", ended_at: "2026-08-17 11:55:00", outcome: "completed" },
 ];
 
 const task = (over: Record<string, unknown> = {}) => ({ id: 1, status: "seeded", blocked: 0, blocked_reason: null, project: "alpha", ...over });
@@ -86,9 +86,9 @@ describe("flowmapView nodes", () => {
     expect(nodes["packager"].detail.harness).toBeNull();
   });
 
-  test("Homie carries no state word: it holds no lease", () => {
-    const homie = byRole(flowmapView(topologyView([FREE], RUNS, ROUTES, NOW), []))["homie"];
-    expect(homie).toMatchObject({ lane: "outside", stateLabel: null, line: "last run 6m ago" });
+  test("Collie carries no state word: it holds no lease", () => {
+    const collie = byRole(flowmapView(topologyView([FREE], RUNS, ROUTES, NOW), []))["collie"];
+    expect(collie).toMatchObject({ lane: "outside", stateLabel: null, line: "last run 6m ago" });
   });
 
 });
@@ -246,7 +246,7 @@ describe("flowmapView routing facts", () => {
   const ROUTED = [
     ...ROUTES,
     { role: "strategist", harness: "codex", binding: "chatgpt", model: "gpt" },
-    { role: "homie", harness: "claude-sdk", binding: "claude", model: "opus" },
+    { role: "collie", harness: "claude-sdk", binding: "claude", model: "opus" },
   ];
 
   test("every node carries its agent and current binding for the picker", () => {
@@ -254,8 +254,8 @@ describe("flowmapView routing facts", () => {
     expect(nodes["worker"].agent).toBe("worker");
     expect(nodes["worker"].binding).toBe("claude");
     expect(nodes["arbiter"].binding).toBe("chatgpt");
-    expect(nodes["homie"].agent).toBe("homie");
-    expect(nodes["homie"].binding).toBe("claude");
+    expect(nodes["collie"].agent).toBe("collie");
+    expect(nodes["collie"].binding).toBe("claude");
     expect(nodes["packager"].binding).toBeNull();
   });
 

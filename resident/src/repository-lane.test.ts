@@ -4,7 +4,7 @@
 
 import { describe, expect, test } from "bun:test";
 import {
-  createRepositoryLane, EARLIER_OWNER_POLL_MS, HEARTBEAT_INTERVAL_MS, HOMIE_TURN_ENDED, PRE_CONTAINER_ATTEMPTS,
+  createRepositoryLane, EARLIER_OWNER_POLL_MS, HEARTBEAT_INTERVAL_MS, COLLIE_TURN_ENDED, PRE_CONTAINER_ATTEMPTS,
   RETRY_DELAY_MS, type LaneDeps, type RepositoryLane,
 } from "./repository-lane";
 import type { StartedExecution } from "./repository";
@@ -262,7 +262,7 @@ describe("start requests", () => {
     await lane.started();
     lane.lane.request("packet-decision");
     lane.lane.request("tick");
-    lane.lane.request("homie-turn");
+    lane.lane.request("collie-turn");
     await settle();
     expect(lane.starts).toHaveLength(1);
     response.resolve(startResponse());
@@ -381,33 +381,33 @@ describe("start requests", () => {
   });
 });
 
-describe("Homie turns", () => {
-  test("a Homie turn line causes a start request", async () => {
+describe("Collie turns", () => {
+  test("a Collie turn line causes a start request", async () => {
     const lane = new LaneRig();
     const id = "d".repeat(64);
     const docker = lane.docker;
-    lane.docker = (argv) => argv[0] === "ps" && argv.includes("label=mc-tier=homie") ? ok(`${id.slice(0, 12)}\n`) : docker(argv);
+    lane.docker = (argv) => argv[0] === "ps" && argv.includes("label=mc-tier=collie") ? ok(`${id.slice(0, 12)}\n`) : docker(argv);
     await lane.started();
     const [follower] = lane.followers.matching("logs");
     expect(follower!.argv).toEqual(["logs", "--follow", "--tail", "0", id.slice(0, 12)]);
-    lane.lane.followHomie(id);
+    lane.lane.followCollie(id);
     expect(lane.followers.matching("logs")).toHaveLength(1);
     const before = lane.starts.length;
     follower!.onLine("the harness wrote this line");
     await settle();
     expect(lane.starts.length).toBe(before);
-    follower!.onLine(HOMIE_TURN_ENDED);
+    follower!.onLine(COLLIE_TURN_ENDED);
     await settle();
     expect(lane.starts.length).toBe(before + 1);
     await lane.lane.stop();
     expect(follower!.stopped).toBe(true);
   });
 
-  test("a new Homie container gets its own follower", async () => {
+  test("a new Collie container gets its own follower", async () => {
     const lane = new LaneRig();
     await lane.started();
-    lane.lane.followHomie("e".repeat(64));
-    lane.lane.followHomie("not a container id");
+    lane.lane.followCollie("e".repeat(64));
+    lane.lane.followCollie("not a container id");
     expect(lane.followers.matching("logs").map((follower) => follower.argv.at(-1))).toEqual(["e".repeat(64)]);
     expect(lane.events("repository.follow_failed")).toHaveLength(1);
     await lane.lane.stop();

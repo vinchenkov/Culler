@@ -30,8 +30,8 @@ var scribeDirective string
 //go:embed directives/packager.md
 var packagerDirective string
 
-//go:embed directives/homie.md
-var homieDirective string
+//go:embed directives/collie.md
+var collieDirective string
 
 // directiveForRole assembles what the model is actually handed: the frozen
 // prose plus one line naming the role's command contract. The contract itself

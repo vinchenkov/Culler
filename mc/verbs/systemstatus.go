@@ -174,7 +174,7 @@ func SystemStatus(db *sql.DB, id *RunIdentity, a SystemStatusRequest) (any, erro
 				c.Model = scope.ProfileModels[scope.ProfileID]
 			}
 			for _, role := range scope.Roles {
-				if role != "homie" {
+				if role != "collie" {
 					c.Projects = projectIDs
 					break
 				}
@@ -367,13 +367,13 @@ func SystemStatus(db *sql.DB, id *RunIdentity, a SystemStatusRequest) (any, erro
 	}
 	out.Conditions = append(out.Conditions, wikiMerges...)
 	rows, err = tx.QueryContext(ctx, `SELECT a.attempt_id,a.session_id,a.message_id,COALESCE(d.condition,'The reply attempt failed.'),COALESCE(a.latest_diagnostic_id,0)
- FROM homie_reply_attempts a LEFT JOIN diagnostic_events d ON d.id=a.latest_diagnostic_id JOIN homie_sessions s ON s.id=a.session_id
- WHERE s.deleted_at IS NULL AND a.state='failed' AND a.rowid=(SELECT MAX(b.rowid) FROM homie_reply_attempts b WHERE b.message_id=a.message_id) ORDER BY a.rowid`)
+ FROM collie_reply_attempts a LEFT JOIN diagnostic_events d ON d.id=a.latest_diagnostic_id JOIN collie_sessions s ON s.id=a.session_id
+ WHERE s.deleted_at IS NULL AND a.state='failed' AND a.rowid=(SELECT MAX(b.rowid) FROM collie_reply_attempts b WHERE b.message_id=a.message_id) ORDER BY a.rowid`)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		c := SystemCondition{Group: "execution", State: "failed", Name: "Homie", Action: "Retry reply"}
+		c := SystemCondition{Group: "execution", State: "failed", Name: "Collie", Action: "Retry reply"}
 		if err := rows.Scan(&c.AttemptID, &c.SessionID, &c.MessageID, &c.Condition, &c.DiagnosticID); err != nil {
 			rows.Close()
 			return nil, err
@@ -547,9 +547,9 @@ func connectionAttemptStatus(ctx context.Context, q Q, scope ConnectionRequireme
  WHERE r.connection_id=? AND r.authorization_id=? AND r.profile_id=? AND r.profile_revision=?
  AND ((r.ended_at IS NULL AND r.connection_revision=(SELECT SUM(revision) FROM connection_health WHERE connection_id=r.connection_id AND (profile_id='' OR profile_id=r.profile_id))) OR r.id=?)
  UNION ALL
- SELECT '',a.attempt_id,a.session_id,'homie','','',0,a.created_at,
+ SELECT '',a.attempt_id,a.session_id,'collie','','',0,a.created_at,
  CASE WHEN a.state<>'active' THEN a.state WHEN s.status<>'active' OR a.launch_id<>COALESCE(s.current_launch_id,'') THEN 'stopping' ELSE 'active' END
- FROM homie_reply_attempts a JOIN homie_sessions s ON s.id=a.session_id
+ FROM collie_reply_attempts a JOIN collie_sessions s ON s.id=a.session_id
  WHERE a.connection_id=? AND a.authorization_id=? AND a.profile_id=? AND a.profile_revision=?
  AND ((a.state='active' AND a.connection_revision=(SELECT SUM(revision) FROM connection_health WHERE connection_id=a.connection_id AND (profile_id='' OR profile_id=a.profile_id))) OR a.attempt_id=?)
  ORDER BY 8,1,2`, now.Format(time.RFC3339Nano), scope.ID, scope.AuthorizationID, scope.ProfileID, scope.ProfileRevision, recoveredRun, scope.ID, scope.AuthorizationID, scope.ProfileID, scope.ProfileRevision, recoveredAttempt)

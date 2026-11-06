@@ -71,14 +71,14 @@ export const TOPOLOGY_NODES = [
     blurb: "The Scribe updates the Project wiki on a schedule. It has no task.",
   },
   {
-    role: "homie",
-    agent: "homie",
-    name: "Homie",
-    label: "Homie",
+    role: "collie",
+    agent: "collie",
+    name: "Collie",
+    label: "Collie",
     lane: "outside",
     from: null,
     to: null,
-    blurb: "Homie talks with the operator. It is outside the pipeline and holds no lease.",
+    blurb: "Collie talks with the operator. It is outside the pipeline and holds no lease.",
   },
 ];
 

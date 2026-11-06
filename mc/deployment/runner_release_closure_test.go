@@ -14,7 +14,7 @@ import (
 func runnerReleaseEntryClosure(t *testing.T, runnerRoot string) map[string]bool {
 	t.Helper()
 	seen := map[string]bool{}
-	stack := append([]string{"agent-runner/main.ts", "homie-runner/main.ts", "setup-runner/main.ts", "shared/check-project.ts", "shared/project-files.ts"},
+	stack := append([]string{"agent-runner/main.ts", "collie-runner/main.ts", "setup-runner/main.ts", "shared/check-project.ts", "shared/project-files.ts"},
 		runnerSpawnTargets(t, runnerRoot)...)
 	for len(stack) > 0 {
 		rel := stack[len(stack)-1]

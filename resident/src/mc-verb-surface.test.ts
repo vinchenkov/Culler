@@ -36,7 +36,7 @@ const GROUP_VERBS = new Set([
   "credential",
   "delivery",
   "environment",
-  "homie",
+  "collie",
   "outbox",
   "run",
   "task",
@@ -124,7 +124,7 @@ test("the extractor still sees the resident's grouped and flat calls", () => {
   const argvs = invocations().map((argv) => argv.join(" "));
   expect(argvs).toContain("dispatch");
   expect(argvs).toContain("run stopped");
-  expect(argvs).toContain("homie launch-bind");
+  expect(argvs).toContain("collie launch-bind");
   expect(argvs).toContain("wiki-state list");
   expect(argvs).toContain("__trace-sessions");
   expect(argvs).toContain("__trace-register-setup");

@@ -18,7 +18,7 @@ const (
 
 	RefusalSubjectlessPipeline RefusalCandidateKind = "subjectless_pipeline"
 
-	RefusalHomie RefusalCandidateKind = "homie"
+	RefusalCollie RefusalCandidateKind = "collie"
 
 	// RefusalWikiUpdate is the Scribe run of a wiki update. Only
 	// applyWikiRefusal accepts it.
@@ -110,8 +110,8 @@ func applyCandidatePolicy(ctx context.Context, q Q, cand RefusalCandidate, r ref
 		}
 		return effect, requestID != "", nil
 
-	case RefusalHomie:
-		held, err := homieLaunchFenceHolds(ctx, q, cand.SessionID, cand.LaunchID)
+	case RefusalCollie:
+		held, err := collieLaunchFenceHolds(ctx, q, cand.SessionID, cand.LaunchID)
 		if err != nil {
 			return nil, false, err
 		}
@@ -121,11 +121,11 @@ func applyCandidatePolicy(ctx context.Context, q Q, cand RefusalCandidate, r ref
 			effect["launch_superseded"] = true
 			return effect, false, nil
 		}
-		ended, status, err := homieEndTx(ctx, q, "dispatch", cand.SessionID, confinementReason(r.Code))
+		ended, status, err := collieEndTx(ctx, q, "dispatch", cand.SessionID, confinementReason(r.Code))
 		if err != nil {
 			return nil, false, err
 		}
-		effect["consequence"] = "homie_ended"
+		effect["consequence"] = "collie_ended"
 		effect["session_id"] = cand.SessionID
 		effect["ended"] = ended
 		effect["status"] = status
@@ -192,7 +192,7 @@ func applyWikiRefusal(ctx context.Context, q Q, now time.Time, cand RefusalCandi
 }
 
 func chargeDispatchHealth(ctx context.Context, q Q, cand RefusalCandidate, r refusal.Refusal, effect map[string]any) error {
-	if cand.Kind == RefusalHomie {
+	if cand.Kind == RefusalCollie {
 		return nil
 	}
 	charge, err := domain.ChargeProjectInfrastructure(ctx, q, cand.Project, r.Code, "")
@@ -215,7 +215,7 @@ func recordDispatchHealth(ctx context.Context, q Q, cand RefusalCandidate, d ref
 	switch cand.Kind {
 	case RefusalSubjectTask:
 		subject = strconv.FormatInt(*cand.TaskID, 10)
-	case RefusalHomie:
+	case RefusalCollie:
 		subject = cand.SessionID
 	}
 	var key any // NULL until the prepare slice derives one
@@ -247,12 +247,12 @@ func validateRefusalCandidate(c RefusalCandidate) error {
 			return Domainf("a subject-task refusal candidate needs a task id; the router never invents a subject to blame")
 		}
 	case RefusalSubjectlessPipeline:
-	case RefusalHomie:
+	case RefusalCollie:
 		if c.SessionID == "" {
-			return Domainf("a Homie refusal candidate needs a session id")
+			return Domainf("a Collie refusal candidate needs a session id")
 		}
 		if c.LaunchID != "" && !validLowercaseHex(c.LaunchID, 16) {
-			return Domainf("a Homie refusal candidate's observed launch id must be empty or exactly 16 lowercase hex characters")
+			return Domainf("a Collie refusal candidate's observed launch id must be empty or exactly 16 lowercase hex characters")
 		}
 	default:
 		return Domainf("dispatch: unknown refusal candidate kind %q", c.Kind)
@@ -260,10 +260,10 @@ func validateRefusalCandidate(c RefusalCandidate) error {
 	return nil
 }
 
-func homieLaunchFenceHolds(ctx context.Context, q Q, sessionID, observed string) (bool, error) {
+func collieLaunchFenceHolds(ctx context.Context, q Q, sessionID, observed string) (bool, error) {
 	var current sql.NullString
 	err := q.QueryRowContext(ctx,
-		`SELECT current_launch_id FROM homie_sessions WHERE id = ?`, sessionID).Scan(&current)
+		`SELECT current_launch_id FROM collie_sessions WHERE id = ?`, sessionID).Scan(&current)
 	if err == sql.ErrNoRows {
 		return true, nil
 	}

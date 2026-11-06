@@ -1,13 +1,13 @@
-// packetchat.js — the quick chat of the Review page: one Homie conversation
+// packetchat.js — the quick chat of the Review page: one Collie conversation
 // about the open packet. The spine records the packet of each conversation,
-// so `mc homie list` names the current conversation of each packet. The page
+// so `mc collie list` names the current conversation of each packet. The page
 // keeps only the unsent draft of each packet, in memory.
 
 import { el, reconcileChildren } from "./dom.js";
 import { createComposer, createModelPicker } from "./conversation.js";
-import { homieModelView, pollTight, provisionalRow, transcriptRows } from "./homiefmt.js";
+import { collieModelView, pollTight, provisionalRow, transcriptRows } from "./colliefmt.js";
 
-const EMPTY_TEXT = "Ask Homie about this packet. Homie receives its thesis, its criteria, and its report text.";
+const EMPTY_TEXT = "Ask Collie about this packet. Collie receives its thesis, its criteria, and its report text.";
 // mc gives the same text when it refuses a conversation of an archived Project.
 const ARCHIVED_TEXT = "The Project of this packet is archived. Conversations about its packets are unavailable.";
 
@@ -19,9 +19,9 @@ const CHAT_MIN = 320;
 const PANE_GAP = 12;
 const READER_MIN = 640;
 const READER_RESIZE_MIN = 400;
-const CHAT_WIDTH_KEY = "mc.packet-homie-width";
+const CHAT_WIDTH_KEY = "mc.packet-collie-width";
 
-/** The current conversation of one packet from the Homie list: the newest
+/** The current conversation of one packet from the Collie list: the newest
  * conversation of the packet, when the operator did not delete it. */
 export function currentConversation(sessions, packetID) {
   return (Array.isArray(sessions) ? sessions : [])
@@ -141,37 +141,37 @@ export function createPacketChat({ api, renderMessage, openConversation, project
   const composer = createComposer({ prefix: "packet-chat", attachments: false });
   composer.input.placeholder = "Ask about this packet";
   const title = el("span", { class: "packet-chat-title", testid: "packet-chat-title" });
-  const openHomie = el("button", { class: "btn small", type: "button", testid: "packet-chat-open-homie", text: "Open in Homie",
+  const openCollie = el("button", { class: "btn small", type: "button", testid: "packet-chat-open-collie", text: "Open in Collie",
     onclick: () => { if (hasMessages()) { menu.open = false; openConversation(current.id); } } });
   const fresh = el("button", { class: "btn small", type: "button", testid: "packet-chat-new", text: "New conversation",
     onclick: () => startNewConversation() });
   const menu = el("details", { class: "board-command-menu packet-chat-menu", testid: "packet-chat-menu" },
     el("summary", { testid: "packet-chat-menu-button", "aria-label": "Conversation actions", title: "Conversation actions", text: "···" }),
-    el("div", { class: "board-command-menu-items" }, openHomie, fresh));
+    el("div", { class: "board-command-menu-items" }, openCollie, fresh));
   menu.addEventListener("focusout", event => { if (!menu.contains(event.relatedTarget)) menu.open = false; });
-  // A model selection sets the Homie route. A current conversation with
+  // A model selection sets the Collie route. A current conversation with
   // another model then gives its place to a new conversation of the packet.
   const model = createModelPicker({
     api, prefix: "packet-chat", onRouting, openProfiles,
     session: () => ({ id: current?.id ?? null, binding: current?.binding ?? null, messages: hasMessages() || sending.has(packet?.packet_id) }),
     switchModel: async binding => {
       let routing;
-      try { routing = await post("/api/routing", { role: "homie", binding }); }
-      catch (err) { throw new Error(`${err.message} Homie keeps its current model.`); }
-      if (current !== null && homieModelView(routing, current.binding).current?.id !== binding && !await startNewConversation()) {
+      try { routing = await post("/api/routing", { role: "collie", binding }); }
+      catch (err) { throw new Error(`${err.message} Collie keeps its current model.`); }
+      if (current !== null && collieModelView(routing, current.binding).current?.id !== binding && !await startNewConversation()) {
         throw new Error("New conversations use the selected model. Culler could not start a new conversation for this packet. Select Retry.");
       }
       return { routing, notice: "" };
     },
   });
   const closer = el("button", { class: "packet-chat-close", type: "button", testid: "packet-chat-close",
-    "aria-label": "Close Homie", text: "Close", onclick: () => close() });
+    "aria-label": "Close Collie", text: "Close", onclick: () => close() });
   const transcript = el("div", { class: "transcript", testid: "packet-chat-transcript", role: "log", "aria-live": "polite",
-    "aria-label": "Conversation with Homie about this packet" });
+    "aria-label": "Conversation with Collie about this packet" });
   const status = el("p", { class: "conversation-status packet-chat-status", testid: "packet-chat-status", role: "status", hidden: true });
   const error = el("p", { class: "packet-chat-error", testid: "packet-chat-error", role: "alert", hidden: true });
   const node = el("section", { class: "packet-chat conversation-page", testid: "packet-chat" },
-    el("header", { class: "packet-chat-header" }, el("h3", { text: "Homie" }), ...model.nodes, menu, closer, title),
+    el("header", { class: "packet-chat-header" }, el("h3", { text: "Collie" }), ...model.nodes, menu, closer, title),
     transcript, status, error, composer.form);
 
   const post = (path, body) => api(path, { method: "POST", body: JSON.stringify(body) });
@@ -183,7 +183,7 @@ export function createPacketChat({ api, renderMessage, openConversation, project
     if (archived()) return el("div", { class: "conversation-empty packet-chat-empty", testid: "packet-chat-empty" }, el("p", { text: ARCHIVED_TEXT }));
     return el("div", { class: "conversation-empty packet-chat-empty", testid: "packet-chat-empty" },
       el("p", { text: EMPTY_TEXT }),
-      earlier && el("a", { class: "packet-chat-earlier", testid: "packet-chat-earlier", href: "#homie",
+      earlier && el("a", { class: "packet-chat-earlier", testid: "packet-chat-earlier", href: "#collie",
         text: "Continue the conversation about the earlier packet",
         onclick: event => { event.preventDefault(); openConversation(earlier.id); } }));
   }
@@ -201,15 +201,15 @@ export function createPacketChat({ api, renderMessage, openConversation, project
     else reconcileChildren(transcript, shown.length ? shown.map(row => renderMessage(row, current?.id ?? "local")) : [emptyState()]);
     if (follow || local.length) transcript.scrollTop = transcript.scrollHeight;
     const closed = archived();
-    openHomie.disabled = !hasMessages();
+    openCollie.disabled = !hasMessages();
     fresh.disabled = !hasMessages() || clearing || sending.has(id) || closed;
     model.setDisabled(!packet || !read || closed || clearing || sending.has(id) || owed || preparing?.packetID === id);
     composer.input.disabled = closed;
     composer.send.disabled = !packet || sending.has(id) || clearing || closed;
-    status.textContent = sending.has(id) ? "Your message goes to Homie…"
+    status.textContent = sending.has(id) ? "Your message goes to Collie…"
       : clearing ? "Culler starts a new conversation…"
         : preparing?.packetID === id ? "Culler prepares the conversation…"
-          : owed ? "Homie prepares a reply…"
+          : owed ? "Collie prepares a reply…"
             : closed && shown.length ? ARCHIVED_TEXT : "";
     status.hidden = status.textContent === "";
     error.textContent = failures.get(id) ?? readError;
@@ -350,7 +350,7 @@ export function createPacketChat({ api, renderMessage, openConversation, project
   }
 
   /** Ends the current conversation of the open packet and starts an empty
-   * conversation with the current Homie route. Returns whether it started. */
+   * conversation with the current Collie route. Returns whether it started. */
   async function startNewConversation() {
     const target = packet;
     if (!target || archived() || clearing || sending.has(target.packet_id)) return false;
@@ -427,7 +427,7 @@ export function createPacketChat({ api, renderMessage, openConversation, project
     focus() { composer.input.focus(); },
     /** Whether the open quick chat shows one conversation. */
     shows(sessionID) { return open && current !== null && current.id === sessionID; },
-    /** Shows a Homie route that another control changed. */
+    /** Shows a Collie route that another control changed. */
     setRouting(result) { model.set(result); },
     /** Reads the conversation again, for example after a reply retry. */
     refresh() { void refresh(); },

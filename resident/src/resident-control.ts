@@ -6,8 +6,8 @@ import type { Readable } from "node:stream";
 import { join } from "node:path";
 import { dlopen, FFIType, ptr } from "bun:ffi";
 import type { Exec, ExecResult } from "./types";
-import type { HomieRuntimeRegistry } from "./homie-runtime";
-import { canonicalHomieDockerEnvelope } from "./homie-envelope";
+import type { CollieRuntimeRegistry } from "./collie-runtime";
+import { canonicalCollieDockerEnvelope } from "./collie-envelope";
 import type { PipelineLivenessEntry } from "./pipeline-liveness";
 
 export const GATEWAY_CONTROL_VERSION = 4;
@@ -22,7 +22,7 @@ export const CONFIG_SCHEMA_VERSION = 1;
 const MAX_FRAME_BYTES = 64 * 1024;
 // Budget for the ENTIRE control exchange with a freshly spawned dispatch
 // child — hello through pipeline_liveness_result, including the docker
-// inventory calls collectHomieInventory makes after hello_ack — not just the
+// inventory calls collectCollieInventory makes after hello_ack — not just the
 // first frame, despite the name and the error message. The number is a chosen
 // bound, not a measurement: no hello round-trip has been timed under idle or
 // loaded conditions, so it means only "far above the idle cost of a local
@@ -67,12 +67,12 @@ interface HelloFrame {
   deployment_uuid: string;
 }
 
-interface HomieInventoryRequest {
-  op: "homie_inventory";
+interface CollieInventoryRequest {
+  op: "collie_inventory";
   seq: 2;
 }
 
-export interface HomieContainerInventory {
+export interface CollieContainerInventory {
   container_id: string;
   launch: string;
   name: string;
@@ -84,10 +84,10 @@ export interface HomieContainerInventory {
   state: "created" | "running" | "paused" | "restarting" | "removing" | "exited" | "dead";
 }
 
-interface HomieInventoryResponse {
-  op: "homie_inventory_result";
+interface CollieInventoryResponse {
+  op: "collie_inventory_result";
   seq: 2;
-  containers: HomieContainerInventory[];
+  containers: CollieContainerInventory[];
 }
 
 interface PipelineLivenessRequest {
@@ -110,7 +110,7 @@ export function execMcVia(
   command: string[],
   identity: ResidentControlIdentity,
   docker: Exec,
-  homieRuntime: HomieRuntimeRegistry,
+  collieRuntime: CollieRuntimeRegistry,
   /** The resident observes each active agent run before the dispatch child
    * starts. An agent run holds the Project lease, or it is the Scribe run of a
    * wiki update. */
@@ -123,7 +123,7 @@ export function execMcVia(
         throw new Error("resident: dispatch does not accept an stdin frame");
       }
       return execControlledDispatch(
-        [...command, ...argv], identity, docker, homieRuntime, collectLiveness,
+        [...command, ...argv], identity, docker, collieRuntime, collectLiveness,
       );
     }
     return execPlain([...command, ...argv], identity, stdin, options?.signal);
@@ -165,7 +165,7 @@ async function execControlledDispatch(
   command: string[],
   identity: ResidentControlIdentity,
   docker: Exec,
-  homieRuntime: HomieRuntimeRegistry,
+  collieRuntime: CollieRuntimeRegistry,
   collectLiveness: () => Promise<PipelineLivenessEntry[]>,
 ): Promise<ExecResult> {
   const deploymentUUID = await readDeploymentUUID(identity.mcHome);
@@ -215,7 +215,7 @@ async function execControlledDispatch(
   const exited = child.exited;
   try {
     await withTimeout(
-      serveControl(control, docker, homieRuntime, liveness, {
+      serveControl(control, docker, collieRuntime, liveness, {
         op: "hello",
         seq: 1,
         release_build_id: identity.releaseBuildId,
@@ -284,7 +284,7 @@ function helloMismatchDetail(got: HelloFrame, expected: HelloFrame): string {
 async function serveControl(
   control: BunControlChannel,
   docker: Exec,
-  homieRuntime: HomieRuntimeRegistry,
+  collieRuntime: CollieRuntimeRegistry,
   liveness: PipelineLivenessEntry[],
   expected: HelloFrame,
 ): Promise<void> {
@@ -309,23 +309,23 @@ async function serveControl(
   }
   await control.writeFrame({ ...expected, op: "hello_ack" });
 
-  const requestBody = await readControlBody(control, "Homie inventory request");
+  const requestBody = await readControlBody(control, "Collie inventory request");
   let request: unknown;
   try {
     request = JSON.parse(requestBody.toString("utf8"));
   } catch (err) {
-    throw new Error(`resident control Homie inventory request is not JSON: ${String(err)}`);
+    throw new Error(`resident control Collie inventory request is not JSON: ${String(err)}`);
   }
-  const expectedRequest: HomieInventoryRequest = { op: "homie_inventory", seq: 2 };
+  const expectedRequest: CollieInventoryRequest = { op: "collie_inventory", seq: 2 };
   if (requestBody.toString("utf8") !== JSON.stringify(expectedRequest) ||
       JSON.stringify(request) !== JSON.stringify(expectedRequest)) {
-    throw new Error("resident control Homie inventory request is not the closed canonical frame");
+    throw new Error("resident control Collie inventory request is not the closed canonical frame");
   }
   await control.writeFrame({
-    op: "homie_inventory_result",
+    op: "collie_inventory_result",
     seq: 2,
-    containers: await collectHomieInventory(docker, homieRuntime),
-  } satisfies HomieInventoryResponse);
+    containers: await collectCollieInventory(docker, collieRuntime),
+  } satisfies CollieInventoryResponse);
 
   const livenessBody = await readControlBody(control, "pipeline liveness request");
   let livenessRequest: unknown;
@@ -358,46 +358,46 @@ async function readControlBody(control: BunControlChannel, describe: string): Pr
   return control.readExactly(length);
 }
 
-/** Read only the label-scoped Homie set and collapse Docker's wide inspect
+/** Read only the label-scoped Collie set and collapse Docker's wide inspect
  * record into the exact identity/state carrier the helper is allowed to see. */
-export async function collectHomieInventory(
+export async function collectCollieInventory(
   docker: Exec,
-  homieRuntime: HomieRuntimeRegistry,
-): Promise<HomieContainerInventory[]> {
+  collieRuntime: CollieRuntimeRegistry,
+): Promise<CollieContainerInventory[]> {
   const listed = await docker([
     "ps", "-aq", "--no-trunc",
     "--filter", "label=mc-managed=true",
-    "--filter", "label=mc-tier=homie",
+    "--filter", "label=mc-tier=collie",
   ]);
   if (listed.exitCode !== 0) {
-    throw new Error(`Homie inventory list failed (exit ${listed.exitCode}): ${listed.stderr.trim()}`);
+    throw new Error(`Collie inventory list failed (exit ${listed.exitCode}): ${listed.stderr.trim()}`);
   }
   const ids = listed.stdout.split("\n").filter((id) => id !== "");
   if (ids.length > 128 || ids.some((id) => !/^[0-9a-f]{64}$/.test(id)) ||
       new Set(ids).size !== ids.length) {
-    throw new Error("Homie inventory returned a duplicate, oversized, or non-canonical container id set");
+    throw new Error("Collie inventory returned a duplicate, oversized, or non-canonical container id set");
   }
   if (ids.length === 0) return [];
   ids.sort();
   const inspected = await docker(["inspect", "--type", "container", ...ids]);
   if (inspected.exitCode !== 0) {
-    throw new Error(`Homie inventory inspect failed (exit ${inspected.exitCode}): ${inspected.stderr.trim()}`);
+    throw new Error(`Collie inventory inspect failed (exit ${inspected.exitCode}): ${inspected.stderr.trim()}`);
   }
   let records: unknown;
   try {
     records = JSON.parse(inspected.stdout);
   } catch {
-    throw new Error("Homie inventory inspect returned invalid JSON");
+    throw new Error("Collie inventory inspect returned invalid JSON");
   }
   if (!Array.isArray(records) || records.length !== ids.length) {
-    throw new Error("Homie inventory inspect disagrees with the listed identity set");
+    throw new Error("Collie inventory inspect disagrees with the listed identity set");
   }
-  const allowedStates = new Set<HomieContainerInventory["state"]>([
+  const allowedStates = new Set<CollieContainerInventory["state"]>([
     "created", "running", "paused", "restarting", "removing", "exited", "dead",
   ]);
-  const out = records.map((value): HomieContainerInventory => {
+  const out = records.map((value): CollieContainerInventory => {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
-      throw new Error("Homie inventory inspect returned a non-object record");
+      throw new Error("Collie inventory inspect returned a non-object record");
     }
     const record = value as {
       Id?: unknown;
@@ -407,7 +407,7 @@ export async function collectHomieInventory(
     };
     const labels = record.Config?.Labels;
     if (labels === null || typeof labels !== "object" || Array.isArray(labels)) {
-      throw new Error("Homie inventory record carries no exact label set");
+      throw new Error("Collie inventory record carries no exact label set");
     }
     const labelMap = labels as Record<string, unknown>;
     const mcLabels = Object.keys(labelMap).filter((key) => key.startsWith("mc-")).sort();
@@ -420,7 +420,7 @@ export async function collectHomieInventory(
     ];
     if (JSON.stringify(mcLabels) !== JSON.stringify(legacyLabels) &&
         JSON.stringify(mcLabels) !== JSON.stringify(attestedLabels)) {
-      throw new Error("Homie inventory record carries an unexpected Culler label set");
+      throw new Error("Collie inventory record carries an unexpected Culler label set");
     }
     const id = record.Id;
     const session = labelMap["mc-session-id"];
@@ -429,16 +429,16 @@ export async function collectHomieInventory(
     if (typeof id !== "string" || !ids.includes(id) ||
         typeof session !== "string" || !/^h-[a-z0-9-]+$/.test(session) ||
         typeof launch !== "string" || !/^[0-9a-f]{16}$/.test(launch) ||
-        labelMap["mc-managed"] !== "true" || labelMap["mc-tier"] !== "homie" ||
-        record.Name !== `/mc-homie-${session}` ||
-        typeof state !== "string" || !allowedStates.has(state as HomieContainerInventory["state"])) {
-      throw new Error("Homie inventory record identity is malformed or ambiguous");
+        labelMap["mc-managed"] !== "true" || labelMap["mc-tier"] !== "collie" ||
+        record.Name !== `/mc-collie-${session}` ||
+        typeof state !== "string" || !allowedStates.has(state as CollieContainerInventory["state"])) {
+      throw new Error("Collie inventory record identity is malformed or ambiguous");
     }
     const envelopeDigest = labelMap["mc-envelope-digest"];
     const runtimeGeneration = labelMap["mc-runtime-generation"];
     let dockerEnvelope: string | undefined;
     try {
-      dockerEnvelope = canonicalHomieDockerEnvelope(value);
+      dockerEnvelope = canonicalCollieDockerEnvelope(value);
     } catch {
       // Physical identity must still cross for exact-id cleanup. An incomplete
       // or unknown inspect shape simply cannot carry adoption proof.
@@ -447,7 +447,7 @@ export async function collectHomieInventory(
       typeof envelopeDigest === "string" &&
       typeof runtimeGeneration === "string" &&
       dockerEnvelope !== undefined
-        ? homieRuntime.attestEnvelope({
+        ? collieRuntime.attestEnvelope({
         container_id: id,
         docker_envelope: dockerEnvelope,
         envelope_digest: envelopeDigest,
@@ -463,12 +463,12 @@ export async function collectHomieInventory(
       name: record.Name.slice(1),
       ...(runtimeAttestation === undefined ? {} : { runtime_attestation: runtimeAttestation }),
       session,
-      state: state as HomieContainerInventory["state"],
+      state: state as CollieContainerInventory["state"],
     };
   });
   out.sort((a, b) => a.container_id.localeCompare(b.container_id));
   if (out.some((record, index) => record.container_id !== ids[index])) {
-    throw new Error("Homie inventory inspect substituted a listed container identity");
+    throw new Error("Collie inventory inspect substituted a listed container identity");
   }
   return out;
 }

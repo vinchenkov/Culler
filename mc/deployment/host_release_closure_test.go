@@ -13,7 +13,7 @@ import (
 // hostReleaseFiles is hand-maintained, and on 2026-07-31 it had silently
 // drifted seven modules behind the resident it ships: the installed release
 // passed ValidateHostRelease and then died at startup with "Cannot find module
-// './homie-runtime'". The manifest agreed with itself and with nothing else.
+// './collie-runtime'". The manifest agreed with itself and with nothing else.
 //
 // This derives the real transitive import graph from the two host entry points
 // and requires the manifest to contain every file in it. A module added to the

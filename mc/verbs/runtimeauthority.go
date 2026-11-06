@@ -15,7 +15,7 @@ import (
 )
 
 // runtimeAuthority is the single host-side projection of config.toml used by
-// Doctor, Homie route capture, and dispatch attestation. It contains no secret
+// Doctor, Collie route capture, and dispatch attestation. It contains no secret
 // values: only the validated enabled catalog, its route registry, and the
 // canonical digest that fences reconfiguration across an in-flight dispatch.
 type runtimeAuthority struct {
@@ -110,7 +110,7 @@ func UnavailableRuntimeCapability() PrivateRuntimeCapability {
 // ResolveRuntimeCapability is the ONE host crossing that reads config.toml for
 // the prepare-side carrier. A deployment whose config is missing or invalid
 // resolves the explicit unavailable capability rather than an error: the
-// pipeline lane still owes its own config refusal at attest, and the Homie lane
+// pipeline lane still owes its own config refusal at attest, and the Collie lane
 // simply launches nothing until the operator repairs config.toml.
 func ResolveRuntimeCapability(home string) PrivateRuntimeCapability {
 	authority, err := loadRuntimeAuthority(home)
@@ -132,7 +132,7 @@ func RuntimeCapabilityDrifted(home, consumedDigest string) bool {
 	return ResolveRuntimeCapability(home).Digest != consumedDigest
 }
 
-// resolveFrozenHomieBinding resolves a Homie session's frozen historical
+// resolveFrozenCollieBinding resolves a Collie session's frozen historical
 // binding ("<harness>/<id>") against the carried enabled capability.
 //
 // It deliberately never consults routing.md: the session's route is frozen at
@@ -141,7 +141,7 @@ func RuntimeCapabilityDrifted(home, consumedDigest string) bool {
 // no longer a capability this deployment has at all, so the session cannot wake
 // on it. Resolution failure is inert: the caller mutates nothing, and the
 // session idles out through branch 6 like any other quiet session.
-func resolveFrozenHomieBinding(capability PrivateRuntimeCapability, binding string) (PrivateRuntimeBinding, bool) {
+func resolveFrozenCollieBinding(capability PrivateRuntimeCapability, binding string) (PrivateRuntimeBinding, bool) {
 	if !validLowercaseHex(capability.Digest, 64) {
 		return PrivateRuntimeBinding{}, false
 	}

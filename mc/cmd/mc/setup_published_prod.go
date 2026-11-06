@@ -504,7 +504,7 @@ func (p *publishedSetup) stopAndRecheck(ctx context.Context, stop func(string) e
 			checkErr = errors.New("Culler work began before the services stopped. Finish that work, then run install.sh.")
 		}
 		if checkErr == nil {
-			checkErr = p.requireIdleContainers(ctx, database.HomieContainers...)
+			checkErr = p.requireIdleContainers(ctx, database.CollieContainers...)
 		}
 	}
 	if checkErr != nil {
@@ -817,7 +817,7 @@ func (p *publishedSetup) drain(ctx context.Context) error {
 				return err
 			}
 			if database.Idle() {
-				if err := p.requireIdleContainers(ctx, database.HomieContainers...); err == nil {
+				if err := p.requireIdleContainers(ctx, database.CollieContainers...); err == nil {
 					return nil
 				}
 			}
@@ -834,14 +834,14 @@ func (p *publishedSetup) drain(ctx context.Context) error {
 	}
 }
 
-func (p *publishedSetup) requireIdleContainers(ctx context.Context, homieIDs ...string) error {
+func (p *publishedSetup) requireIdleContainers(ctx context.Context, collieIDs ...string) error {
 	names, err := deployment.RuntimeNames(p.home)
 	if err != nil {
 		return err
 	}
-	for _, id := range homieIDs {
+	for _, id := range collieIDs {
 		if !validContainerID(id) {
-			return errors.New("The Homie container identity is invalid.")
+			return errors.New("The Collie container identity is invalid.")
 		}
 		body, err := p.docker(ctx, "container", "inspect", "--format", "{{json .}}", id)
 		if err != nil && dockerObjectMissing(body) {
@@ -850,7 +850,7 @@ func (p *publishedSetup) requireIdleContainers(ctx context.Context, homieIDs ...
 		if err != nil {
 			return err
 		}
-		return errors.New("A Homie session still uses its agent container. Close the session, then retry install.sh.")
+		return errors.New("A Collie session still uses its agent container. Close the session, then retry install.sh.")
 	}
 	body, err := p.docker(ctx, "container", "ls", "--all", "--no-trunc", "--quiet", "--filter", "volume="+names.Volume)
 	if err != nil {

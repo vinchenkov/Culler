@@ -55,7 +55,7 @@ const realTypingTimers: DiscordTypingTimers = {
 };
 
 // DiscordTypingLoop shows the typing indicator in a channel from the moment an
-// inbound message is sent to Homie until the outbox delivers a reply for that
+// inbound message is sent to Collie until the outbox delivers a reply for that
 // session, or the deadline passes. One loop per session; a second inbound
 // message restarts its deadline. A failed call is logged and the loop goes on.
 export class DiscordTypingLoop {
@@ -146,7 +146,7 @@ export interface DiscordOutboxRow {
 
 const decimalID = /^[0-9]{1,20}$/;
 export const discordConfirmationCode = /^[0-9A-F]{16}$/i;
-const homieSessionID = /^h-[0-9a-f]{16}$/;
+const collieSessionID = /^h-[0-9a-f]{16}$/;
 const attachmentDigest = /^[0-9a-f]{64}$/;
 const maxAttachmentObjects = 32;
 const maxAttachmentObjectBytes = 256 * 1024 * 1024;
@@ -188,7 +188,7 @@ export function validateDiscordPolicy(policy: DiscordPolicy | undefined): Discor
 }
 
 // authorizedDiscordMessage is intentionally a pure no-op gate. In particular,
-// it is evaluated before `homie list`, so an attacker cannot use a rejected
+// it is evaluated before `collie list`, so an attacker cannot use a rejected
 // event to observe timing or cause a host-side action.
 export function authorizedDiscordMessage(policy: DiscordPolicy, message: DiscordInboundMessage): boolean {
   return policy.enabled && message.author_is_bot !== true &&
@@ -199,37 +199,37 @@ export function authorizedDiscordMessage(policy: DiscordPolicy, message: Discord
     message.content.length > 0 && message.content.length <= 2_000 && !discordConfirmationCode.test(message.content.trim());
 }
 
-interface HomieBinding {
+interface CollieBinding {
   binding_id: string;
   surface: string;
   channel_ref: string;
 }
 
-interface HomieSession {
+interface CollieSession {
   discord_thread?: { guild_id: string; channel_id: string; thread_id: string; retired: boolean; initial_received?: boolean };
   id: string;
   status: string;
-  active_bindings?: HomieBinding[];
-  known_bindings?: HomieBinding[];
+  active_bindings?: CollieBinding[];
+  known_bindings?: CollieBinding[];
 }
 
-function parseSessions(result: ExecResult): HomieSession[] {
-  if (result.exitCode !== 0) throw mcFailure("mc homie list", result);
+function parseSessions(result: ExecResult): CollieSession[] {
+  if (result.exitCode !== 0) throw mcFailure("mc collie list", result);
   let value: unknown;
   try {
     value = JSON.parse(result.stdout);
   } catch {
-    throw new Error("mc homie list returned invalid JSON");
+    throw new Error("mc collie list returned invalid JSON");
   }
   if (value === null || typeof value !== "object" || !Array.isArray((value as { sessions?: unknown }).sessions)) {
-    throw new Error("mc homie list returned an invalid session list");
+    throw new Error("mc collie list returned an invalid session list");
   }
   const sessions = (value as { sessions: unknown[] }).sessions;
   if (!sessions.every((s) => s !== null && typeof s === "object" &&
-      typeof (s as HomieSession).id === "string" && typeof (s as HomieSession).status === "string")) {
-    throw new Error("mc homie list returned a malformed session");
+      typeof (s as CollieSession).id === "string" && typeof (s as CollieSession).status === "string")) {
+    throw new Error("mc collie list returned a malformed session");
   }
-  for (const session of sessions as HomieSession[]) {
+  for (const session of sessions as CollieSession[]) {
     for (const bindings of [session.active_bindings, session.known_bindings]) {
       if (bindings === undefined) continue;
       if (!Array.isArray(bindings) || !bindings.every((binding) =>
@@ -237,11 +237,11 @@ function parseSessions(result: ExecResult): HomieSession[] {
         canonicalBindingID(binding.binding_id) &&
         typeof binding.surface === "string" &&
         typeof binding.channel_ref === "string")) {
-        throw new Error("mc homie list returned a malformed session binding");
+        throw new Error("mc collie list returned a malformed session binding");
       }
     }
   }
-  return sessions as HomieSession[];
+  return sessions as CollieSession[];
 }
 
 function canonicalBindingID(value: unknown): value is string {
@@ -259,19 +259,19 @@ async function requireMc(runMc: Exec, argv: string[], label: string): Promise<un
   }
 }
 
-/** Wakes the resident's round for one Homie session after a message write. */
-export type HomieNudge = (sessionId: string) => void;
+/** Wakes the resident's round for one Collie session after a message write. */
+export type CollieNudge = (sessionId: string) => void;
 
-const noNudge: HomieNudge = () => {};
+const noNudge: CollieNudge = () => {};
 
 // routeDiscordFreeText maps only the surface reference. Its body is opaque
-// operator text and travels straight to Homie; no command grammar belongs on
+// operator text and travels straight to Collie; no command grammar belongs on
 // the Discord side of this boundary. A successful send nudges the round.
 export async function routeDiscordFreeText(
   policy: DiscordPolicy,
   message: DiscordInboundMessage,
   runMc: Exec,
-  nudge: HomieNudge = noNudge,
+  nudge: CollieNudge = noNudge,
   typing?: Pick<DiscordTypingLoop, "start">,
   threads: DiscordThreads = nativeDiscordThreads(policy),
 ): Promise<"ignored" | "sent" | "started" | "resumed"> {
@@ -279,7 +279,7 @@ export async function routeDiscordFreeText(
   const root = message.channel_id === policy.channel_id;
   const channelRef = root ? message.message_id : message.channel_id;
   const from = `discord:${channelRef}`;
-  const sessions = parseSessions(await runMc(["homie", "list"]));
+  const sessions = parseSessions(await runMc(["collie", "list"]));
   let session = sessions.find(candidate => {
     const thread = candidate.discord_thread;
     return thread && !thread.retired && thread.guild_id === policy.guild_id &&
@@ -301,16 +301,16 @@ export async function routeDiscordFreeText(
       return routeDiscordFreeText(policy, message, runMc, nudge, typing, threads);
     }
     await threads.ensure(message);
-    const started = await requireMc(runMc, ["homie", "start", "--from", from,
-      "--discord-guild", policy.guild_id, "--discord-parent", policy.channel_id], "mc homie start") as { session_id?: string };
-    if (typeof started?.session_id !== "string") throw new Error("mc homie start returned no session id");
+    const started = await requireMc(runMc, ["collie", "start", "--from", from,
+      "--discord-guild", policy.guild_id, "--discord-parent", policy.channel_id], "mc collie start") as { session_id?: string };
+    if (typeof started?.session_id !== "string") throw new Error("mc collie start returned no session id");
     session = { id: started.session_id, status: "active" };
     disposition = "started";
   } else if (session.status !== "active") {
     disposition = "resumed";
   }
-  const sent = await requireMc(runMc, ["homie", "send", session.id, "--from", from, "--body", message.content,
-    "--source-message", message.message_id], "mc homie send") as { duplicate?: boolean };
+  const sent = await requireMc(runMc, ["collie", "send", session.id, "--from", from, "--body", message.content,
+    "--source-message", message.message_id], "mc collie send") as { duplicate?: boolean };
   if (!sent.duplicate) {
     nudge(session.id);
     typing?.start(channelRef, session.id);
@@ -374,11 +374,11 @@ function discordAttachmentReferences(row: DiscordOutboxRow): DiscordAttachmentRe
   if (value === undefined) return [];
   if (!Array.isArray(value) || value.length > maxAttachmentObjects ||
       (value.length > 0 &&
-        (typeof row.session_id !== "string" || !homieSessionID.test(row.session_id)))) {
-    throw new Error("Discord Homie attachment payload is malformed");
+        (typeof row.session_id !== "string" || !collieSessionID.test(row.session_id)))) {
+    throw new Error("Discord Collie attachment payload is malformed");
   }
-  const expectedDirection = row.kind === "homie_echo" ? "in" :
-    row.kind === "homie_reply" ? "out" : undefined;
+  const expectedDirection = row.kind === "collie_echo" ? "in" :
+    row.kind === "collie_reply" ? "out" : undefined;
   const references: DiscordAttachmentReference[] = [];
   let total = 0;
   for (const raw of value) {
@@ -398,11 +398,11 @@ function discordAttachmentReferences(row: DiscordOutboxRow): DiscordAttachmentRe
         (reference.size as number) > maxAttachmentObjectBytes ||
         !safeAttachmentMediaType(reference.media_type) ||
         !safeAttachmentDisplayName(reference.display_name)) {
-      throw new Error("Discord Homie attachment payload is malformed");
+      throw new Error("Discord Collie attachment payload is malformed");
     }
     total += reference.size as number;
     if (total > maxAttachmentBatchBytes) {
-      throw new Error("Discord Homie attachment payload exceeds its sealed batch");
+      throw new Error("Discord Collie attachment payload exceeds its sealed batch");
     }
     references.push(reference as unknown as DiscordAttachmentReference);
   }
@@ -410,24 +410,24 @@ function discordAttachmentReferences(row: DiscordOutboxRow): DiscordAttachmentRe
 }
 
 async function discordPostFor(row: DiscordOutboxRow, filePlane: DiscordFilePlane | undefined): Promise<Omit<DiscordPost, "nonce">> {
-  if (row.kind === "homie_echo" || row.kind === "homie_reply") {
+  if (row.kind === "collie_echo" || row.kind === "collie_reply") {
     const references = discordAttachmentReferences(row);
     if (references.length === 0) return { content: discordText(row) };
     if (filePlane === undefined) {
-      throw new Error("Discord Homie attachment delivery has no file-plane reader");
+      throw new Error("Discord Collie attachment delivery has no file-plane reader");
     }
     const files: DiscordUpload[] = [];
     let total = 0;
     for (const reference of references) {
       if (reference.size > maxDiscordAttachmentBytes) {
-        throw new Error("Discord Homie attachment exceeds the provider file limit");
+        throw new Error("Discord Collie attachment exceeds the provider file limit");
       }
       const file = await filePlane.readAttachment(reference);
       total += file.bytes.byteLength;
       if (file.bytes.byteLength !== reference.size ||
           createHash("sha256").update(file.bytes).digest("hex") !== reference.sha256 ||
           total > maxDiscordMultipartBytes) {
-        throw new Error("Discord Homie attachments exceed the bounded multipart request");
+        throw new Error("Discord Collie attachments exceed the bounded multipart request");
       }
       files.push({
         name: reference.display_name,
@@ -479,7 +479,7 @@ export async function drainDiscordOutbox(
             nonce: `mc-${row.id.toString(36)}${index === 0 ? "" : `-${index.toString(36)}`}`,
           });
         }
-        if (row.kind === "homie_reply" && typeof row.session_id === "string") typing?.replied(row.session_id);
+        if (row.kind === "collie_reply" && typeof row.session_id === "string") typing?.replied(row.session_id);
         await requireMc(runMc, ["outbox", "ack", String(row.id), "--surface", "discord"], "mc outbox ack");
         delivered++;
       } catch (error) { failed.add(channel); failure ??= error; }
@@ -533,7 +533,7 @@ export function nativeDiscordThreads(policy: DiscordPolicy, request: typeof fetc
     let result: Response;
     try { result = await request(`${discordAPI}/channels/${policy.channel_id}/messages/${message.message_id}/threads`, {
       method: "POST", headers: discordAuthorization(policy), signal: AbortSignal.timeout(10_000),
-      body: JSON.stringify({ name: "Homie conversation", auto_archive_duration: 1440 }),
+      body: JSON.stringify({ name: "Collie conversation", auto_archive_duration: 1440 }),
     }); } catch (error) {
       if (await lookup(message)) return;
       throw error;
@@ -605,7 +605,7 @@ export function nativeDiscordRest(policy: DiscordPolicy, request: typeof fetch =
 export function nativeDiscordFilePlane(mcHome: string): DiscordFilePlane {
   return {
     async readAttachment(reference) {
-      if (!homieSessionID.test(reference.session_id) ||
+      if (!collieSessionID.test(reference.session_id) ||
           (reference.direction !== "in" && reference.direction !== "out") ||
           !attachmentDigest.test(reference.sha256) ||
           !Number.isSafeInteger(reference.size) || reference.size < 0 ||
@@ -681,7 +681,7 @@ function gatewayObject(value: unknown): Record<string, unknown> | undefined {
 }
 
 // DiscordGatewayState owns only short-lived transport state. No sequence,
-// token, or message is made durable here: the durable record is the Homie
+// token, or message is made durable here: the durable record is the Collie
 // send/outbox transaction that follows the strict inbound filter.
 export class DiscordGatewayState {
   private sequence: number | null = null;
@@ -696,7 +696,7 @@ export class DiscordGatewayState {
     private readonly policy: DiscordPolicy,
     private readonly runMc: Exec,
     private readonly log: Logger,
-    private readonly nudge: HomieNudge = noNudge,
+    private readonly nudge: CollieNudge = noNudge,
     private readonly typing?: Pick<DiscordTypingLoop, "start">,
     private readonly observe?: (message: DiscordInboundMessage) => void,
     private readonly accept: () => boolean = () => true,
@@ -829,7 +829,7 @@ export class DiscordGatewayState {
 // leaves durable outbox work unacked and retries with capped backoff; it never
 // terminates the dispatch resident merely because Discord is unavailable.
 export async function startDiscordSurface(
-  policy: DiscordPolicy, runMc: Exec, log: Logger, mcHome: string, nudge: HomieNudge = noNudge,
+  policy: DiscordPolicy, runMc: Exec, log: Logger, mcHome: string, nudge: CollieNudge = noNudge,
   options: { preview?: boolean; observe?: (message: DiscordInboundMessage) => void } = {},
 ): Promise<DiscordSurfaceHandle> {
   const rest = nativeDiscordRest(policy);

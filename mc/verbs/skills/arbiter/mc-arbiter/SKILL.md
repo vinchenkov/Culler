@@ -168,7 +168,7 @@ These operations belong to the operator and to Culler:
 
 A search for a command that this skill does not list wastes the run.
 
-The runner owns `mc run model-response` and `mc homie model-response`.
+The runner owns `mc run model-response` and `mc collie model-response`.
 These commands record complete model responses for the current attempt.
 Do not call these runner commands.
 Continue the assigned work after connection recovery.

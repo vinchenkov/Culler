@@ -12,7 +12,7 @@ import (
 
 // Operators supply additional skills under MC_HOME:
 //
-//	homie/<skill-name>/SKILL.md
+//	collie/<skill-name>/SKILL.md
 //	projects/<project-id>/<role-directory>/<skill-name>/SKILL.md
 //
 // Both paths start under skills/. Culler creates the directories and preserves their contents.
@@ -24,9 +24,9 @@ const skillStoreDirName = "skills"
 // skillStoreProjectsDirName holds one directory per Project.
 const skillStoreProjectsDirName = "projects"
 
-// HomieSkillStoreRelDir is the MC_HOME-relative store directory of the Homie
+// CollieSkillStoreRelDir is the MC_HOME-relative store directory of the Collie
 // tier, which is not a pipeline role and not specific to a Project.
-const HomieSkillStoreRelDir = skillStoreDirName + "/" + HomieSkillBasename
+const CollieSkillStoreRelDir = skillStoreDirName + "/" + CollieSkillBasename
 
 // SkillStoreRoleDirs lists the sorted role directories of a Project's store.
 func SkillStoreRoleDirs() []string {
@@ -80,10 +80,10 @@ func validSkillStoreSegment(id string) bool {
 }
 
 // EnsureSkillStore creates the empty store shape the home scaffold owns:
-// `skills/` and `skills/homie/`. Reports whether anything was created.
+// `skills/` and `skills/collie/`. Reports whether anything was created.
 func EnsureSkillStore(home string) (bool, error) {
 	changed := false
-	for _, dir := range []string{SkillStoreRoot(home), filepath.Join(SkillStoreRoot(home), HomieSkillBasename)} {
+	for _, dir := range []string{SkillStoreRoot(home), filepath.Join(SkillStoreRoot(home), CollieSkillBasename)} {
 		created, err := ensureSkillStoreDir(dir)
 		if err != nil {
 			return false, err

@@ -1,10 +1,10 @@
 import { dialogHeader, dialogBody, dialogFooter, dialogFrame, showDialog } from "./components.js";
 import { el, markdownNodes, reconcileChildren, svg } from "./dom.js";
 import { parseMarkdown } from "./markdown.js";
-import { attachmentView, homieModelView, transcriptRows } from "./homiefmt.js";
+import { attachmentView, collieModelView, transcriptRows } from "./colliefmt.js";
 import { systemActionButton } from "./systemhealth.js";
 
-const PLACEHOLDER = "Tell Homie your goal or ask a question";
+const PLACEHOLDER = "Tell Collie your goal or ask a question";
 
 export function createMessageRenderer({ token, unavailable, retry, showError }) {
   // Attachment downloads use authenticated requests.
@@ -92,7 +92,7 @@ export function createMessageRenderer({ token, unavailable, retry, showError }) 
       "div",
       {
         class: `msg${row.own ? " own" : ""}${row.provisional ? " draft" : ""}`,
-        testid: pending ? "homie-pending" : row.provisional ? "homie-draft" : "homie-message",
+        testid: pending ? "collie-pending" : row.provisional ? "collie-draft" : "collie-message",
         data: { key: `${sessionID}:${row.id ?? "draft"}` },
       },
       el(
@@ -198,23 +198,23 @@ const EXAMPLE_PROMPTS = [
   "Ask me questions about my goal.",
 ];
 
-const chevron = () => svg("svg", { viewBox: "0 0 16 16", width: 12, height: 12, "aria-hidden": "true", class: "homie-model-chevron" },
+const chevron = () => svg("svg", { viewBox: "0 0 16 16", width: 12, height: 12, "aria-hidden": "true", class: "collie-model-chevron" },
   svg("path", { d: "m4 6 4 4 4-4", fill: "none", stroke: "currentColor", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round" }));
-const check = () => svg("svg", { viewBox: "0 0 16 16", width: 14, height: 14, "aria-hidden": "true", class: "homie-model-check" },
+const check = () => svg("svg", { viewBox: "0 0 16 16", width: 14, height: 14, "aria-hidden": "true", class: "collie-model-check" },
   svg("path", { d: "m3.5 8.5 3 3 6-7", fill: "none", stroke: "currentColor", "stroke-width": 1.8, "stroke-linecap": "round", "stroke-linejoin": "round" }));
 
-export function createModelPicker({ api, session, startOver, switchModel, onRouting, openProfiles, prefix = "vision-homie" }) {
+export function createModelPicker({ api, session, startOver, switchModel, onRouting, openProfiles, prefix = "vision-collie" }) {
   let routing = null, loading = null, failedAt = 0, busy = false, error = "", disabled = false, retryBinding = null;
   let confirmation = null;
-  const name = el("span", { class: "homie-model-name", text: "Loading model…" });
-  const meta = el("span", { class: "homie-model-meta" });
+  const name = el("span", { class: "collie-model-name", text: "Loading model…" });
+  const meta = el("span", { class: "collie-model-meta" });
   const button = el("button", {
-    class: "homie-model", type: "button", testid: `${prefix}-model`, disabled: true,
+    class: "collie-model", type: "button", testid: `${prefix}-model`, disabled: true,
     "aria-haspopup": "dialog", "aria-expanded": "false",
     onclick: () => (menu.hidden ? show() : hide()),
     onkeydown: event => { if (event.key === "ArrowDown" && menu.hidden) { event.preventDefault(); show(); } },
   }, name, meta, chevron());
-  const menu = el("div", { class: "homie-model-menu", role: "dialog", "aria-label": "Homie model", testid: `${prefix}-model-menu`, hidden: true });
+  const menu = el("div", { class: "collie-model-menu", role: "dialog", "aria-label": "Collie model", testid: `${prefix}-model-menu`, hidden: true });
   const items = () => [...menu.querySelectorAll("button:not([disabled])")];
   menu.addEventListener("keydown", event => {
     const list = items(), at = list.indexOf(document.activeElement);
@@ -231,7 +231,7 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
   const outside = event => { if (!menu.contains(event.target) && !button.contains(event.target)) hide(); };
 
   function paint() {
-    const view = homieModelView(routing, session().binding);
+    const view = collieModelView(routing, session().binding);
     if (!view.current) {
       name.textContent = routing || failedAt ? "Model unavailable" : "Loading model…";
       meta.hidden = true; button.disabled = true;
@@ -244,33 +244,33 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
     button.dataset.pending = view.pending ? "true" : "false";
     button.title = view.pending
       ? `This conversation uses ${view.current.label}. New conversations use ${view.next.label}.`
-      : `Homie uses ${view.current.label} through the ${view.current.name} agent profile.`;
+      : `Collie uses ${view.current.label} through the ${view.current.name} agent profile.`;
     if (menu.hidden) return;
     const focused = document.activeElement?.dataset?.binding;
     menu.replaceChildren(...[
-      el("div", { class: "homie-model-head" },
-        el("p", { class: "homie-model-title", text: "Homie model" }),
+      el("div", { class: "collie-model-head" },
+        el("p", { class: "collie-model-title", text: "Collie model" }),
         el("p", { text: session().messages
           ? (switchModel ? "Selecting another model starts a new conversation. This conversation stays in your list."
-            : "Select another model to start a new conversation. Homie forgets this conversation.")
+            : "Select another model to start a new conversation. Collie forgets this conversation.")
           : "Select a model for this conversation." })),
-      el("div", { class: "homie-model-options", role: "radiogroup", "aria-label": "Agent profiles" },
+      el("div", { class: "collie-model-options", role: "radiogroup", "aria-label": "Agent profiles" },
         view.options.map(option => el("button", {
-          class: "homie-model-option", type: "button", role: "radio", testid: `${prefix}-model-option`,
+          class: "collie-model-option", type: "button", role: "radio", testid: `${prefix}-model-option`,
           "aria-checked": (option.id === view.current.id) ? "true" : "false", disabled: busy || disabled, data: { binding: option.id },
           onclick: () => choose(option.id),
         },
-        el("span", { class: "homie-model-option-text" },
-          el("span", { class: "homie-model-option-name", text: option.label }),
-          el("span", { class: "homie-model-option-meta", text: [option.model ? option.name : "", option.harness].filter(Boolean).join(" · ") })),
+        el("span", { class: "collie-model-option-text" },
+          el("span", { class: "collie-model-option-name", text: option.label }),
+          el("span", { class: "collie-model-option-meta", text: [option.model ? option.name : "", option.harness].filter(Boolean).join(" · ") })),
         check()))),
-      view.options.length === 0 && el("p", { class: "homie-model-empty", text: "No agent profile is enabled." }),
+      view.options.length === 0 && el("p", { class: "collie-model-empty", text: "No agent profile is enabled." }),
       busy && el("p", { role: "status", text: "Prepare the selected model…" }),
-      error && el("p", { class: "homie-model-error", role: "alert", text: error }),
+      error && el("p", { class: "collie-model-error", role: "alert", text: error }),
       error && retryBinding && el("button", { class: "btn small", type: "button", text: "Retry", disabled: busy || disabled,
         onclick: () => choose(retryBinding, true) }),
-      el("div", { class: "homie-model-foot" },
-        el("button", { class: "homie-model-manage", type: "button", testid: `${prefix}-model-manage`,
+      el("div", { class: "collie-model-foot" },
+        el("button", { class: "collie-model-manage", type: "button", testid: `${prefix}-model-manage`,
           text: "Manage agent profiles", onclick: () => { hide(); openProfiles(button); } })),
     ].filter(Boolean));
     menu.querySelector(`[data-binding="${CSS.escape(focused ?? "")}"]`)?.focus();
@@ -285,7 +285,7 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
   }
   async function choose(binding, retry = false) {
     if (busy || disabled || confirmation) return;
-    const currentID = homieModelView(routing, session().binding).current?.id;
+    const currentID = collieModelView(routing, session().binding).current?.id;
     if (!retry && binding === currentID) { hide(); button.focus(); return; }
     if (!retry && session().messages) {
       const current = session();
@@ -302,7 +302,7 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
         retryBinding = null;
         onRouting?.(routing);
       } else {
-        routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "homie", binding }) });
+        routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "collie", binding }) });
         onRouting?.(routing);
         const current = session();
         if (current.binding && current.binding !== binding && !await startOver(false)) {
@@ -310,22 +310,22 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
         }
         retryBinding = null;
       }
-    } catch (err) { error = switchModel ? err.message : `${err.message} Homie keeps its current model.`; }
+    } catch (err) { error = switchModel ? err.message : `${err.message} Collie keeps its current model.`; }
     finally { busy = false; paint(); }
-    if (!error && !homieModelView(routing, session().binding).pending) { hide(); button.focus(); }
+    if (!error && !collieModelView(routing, session().binding).pending) { hide(); button.focus(); }
   }
   function confirmModelChange(binding) {
     hide();
-    const label = homieModelView(routing, session().binding).options.find(option => option.id === binding)?.label ?? binding;
+    const label = collieModelView(routing, session().binding).options.find(option => option.id === binding)?.label ?? binding;
     return new Promise(resolve => {
       const cancel = el("button", { class: "btn", type: "button", text: "Cancel", onclick: () => dialog.close() });
-      const dialog = el("dialog", { class: "homie-model-dialog", testid: `${prefix}-model-confirm`,
+      const dialog = el("dialog", { class: "collie-model-dialog", testid: `${prefix}-model-confirm`,
         "aria-labelledby": `${prefix}-model-confirm-title`, "aria-describedby": `${prefix}-model-confirm-description` });
       dialogFrame(dialog, { header: dialogHeader({ title: "Start a new conversation?", titleId: `${prefix}-model-confirm-title`, onClose: () => dialog.close() }),
-      body: dialogBody({}, el("p", { text: `Homie will use ${label}.` }),
+      body: dialogBody({}, el("p", { text: `Collie will use ${label}.` }),
       el("p", { id: `${prefix}-model-confirm-description`, text: switchModel ? "Your current conversation stays in the session list."
-        : "Homie will forget the current conversation. You cannot restore it." })),
-      footer: dialogFooter({ class: "homie-model-dialog-actions" }, cancel,
+        : "Collie will forget the current conversation. You cannot restore it." })),
+      footer: dialogFooter({ class: "collie-model-dialog-actions" }, cancel,
         el("button", { class: "btn primary", type: "button", text: "Start new conversation", onclick: () => dialog.close("confirm") })) });
       confirmation = dialog;
       dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
@@ -365,7 +365,7 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
 /** The message input of a conversation. A composer without attachments has
  * no attach control and sends text only; a pasted image adds nothing. */
 export function createComposer({ prefix, inputID = `${prefix}-message`, sendID = `${prefix}-send`, formID, attachments = true }) {
-  const input = el("textarea", { rows: 1, testid: inputID, id: inputID, "aria-label": "Message Homie", placeholder: PLACEHOLDER });
+  const input = el("textarea", { rows: 1, testid: inputID, id: inputID, "aria-label": "Message Collie", placeholder: PLACEHOLDER });
   let measuredWidth = 0, measuredValue = null;
   function resize() {
     const width = input.getBoundingClientRect().width;
@@ -432,13 +432,13 @@ export function createConversation({ api, renderMessage, projectID, onRouting, o
     if (readOnly) return el("div", { class: "conversation-empty" }, el("p", { text: "This conversation has no messages." }));
     return conversationEmpty({
       title: "Start with the goal",
-      description: "Tell Homie what this Project must achieve. Homie can read the Project files and help you write the Vision draft.",
+      description: "Tell Collie what this Project must achieve. Collie can read the Project files and help you write the Vision draft.",
       prompts: EXAMPLE_PROMPTS,
       choose: text => { if (!readOnly && !pending) { input.value = text; resize(); input.focus(); } },
     });
   }
-  const transcript = el("div", { class: "transcript", testid: "vision-transcript", "aria-label": "Conversation with Homie" }, emptyState());
-  const status = el("p", { class: "conversation-status", role: "status", testid: "vision-homie-status", text: "Homie connects to this Project when you send a message." });
+  const transcript = el("div", { class: "transcript", testid: "vision-transcript", "aria-label": "Conversation with Collie" }, emptyState());
+  const status = el("p", { class: "conversation-status", role: "status", testid: "vision-collie-status", text: "Collie connects to this Project when you send a message." });
   const post = (path, body = {}) => api(path, { method: "POST", body: JSON.stringify(body) });
   async function connect() {
     const result = await post("/api/sessions", { vision_project: projectID });
@@ -470,7 +470,7 @@ export function createConversation({ api, renderMessage, projectID, onRouting, o
       reconcileChildren(transcript, rows.length ? rows.map(row => renderMessage(row, sessionID)) : [emptyState()]);
       clear.hidden = readOnly || !rows.length;
       if (bottom) transcript.scrollTop = transcript.scrollHeight;
-      status.textContent = readOnly ? "This Project is archived. You can read its conversation." : sendFailure ?? "Homie can read this Project and the Vision draft.";
+      status.textContent = readOnly ? "This Project is archived. You can read its conversation." : sendFailure ?? "Collie can read this Project and the Vision draft.";
     } catch (err) { if (active) status.textContent = `${err.message} You can continue to edit and save the Vision.`; }
     finally { await modelRead; refreshBusy = false; }
   }
@@ -489,34 +489,34 @@ export function createConversation({ api, renderMessage, projectID, onRouting, o
       await post(`/api/sessions/${id}/${files.length ? "upload" : "send"}`, files.length ? { body, files, request_id: uploadID } : { body });
       if (input.value === originalText) { input.value = ""; resize(); }
       if (uploads.requestID() === uploadID) uploads.clear();
-      status.textContent = "Homie prepares a reply…";
+      status.textContent = "Collie prepares a reply…";
     } catch (err) { if (active) status.textContent = sendFailure = `${err.message} Your message remains available. Retry Send.`; }
     finally { busy = false; send.disabled = readOnly; await refresh(); }
   });
-  // Clear ends the session and starts an empty one with the current Homie route.
+  // Clear ends the session and starts an empty one with the current Collie route.
   async function startOver(ask) {
     if (readOnly || busy) return false;
-    if (ask && hasMessages && !confirm("Clear this conversation? Homie forgets it, and you cannot restore it.")) return false;
+    if (ask && hasMessages && !confirm("Clear this conversation? Collie forgets it, and you cannot restore it.")) return false;
     busy = true; clear.disabled = true;
     try {
       const result = await post("/api/sessions", { vision_project: projectID, clear: true });
       if (!active) return false;
       sessionID = result.session_id; sessionBinding = result.binding ?? null; hasMessages = false; sendFailure = null;
       transcript.replaceChildren(emptyState()); clear.hidden = true;
-      status.textContent = "Homie connects to this Project when you send a message.";
+      status.textContent = "Collie connects to this Project when you send a message.";
       return true;
     } catch (err) { if (active) status.textContent = `${err.message} The conversation remains.`; return false; }
     finally { busy = false; clear.disabled = false; model.paint(); }
   }
   const clear = el("button", { class: "btn small conversation-clear", type: "button", testid: "vision-clear", text: "Clear", hidden: true,
-    title: "Start an empty conversation. Homie forgets this conversation.", onclick: () => startOver(true) });
+    title: "Start an empty conversation. Collie forgets this conversation.", onclick: () => startOver(true) });
   const model = createModelPicker({
     api, session: () => ({ id: sessionID, binding: sessionBinding, messages: hasMessages }), startOver, onRouting,
     openProfiles: entry => openProfiles?.(entry),
   });
   return {
-    node: el("section", { class: "vision-panel vision-conversation", "aria-label": "Homie" },
-      el("div", { class: "vision-panel-bar" }, el("h3", { text: "Homie" }), ...model.nodes, status, clear), transcript, form),
+    node: el("section", { class: "vision-panel vision-conversation", "aria-label": "Collie" },
+      el("div", { class: "vision-panel-bar" }, el("h3", { text: "Collie" }), ...model.nodes, status, clear), transcript, form),
     refresh, dispose() { active = false; model.dispose(); uploads.clear(); },
     setRouting: model.set,
     setPending(value) {

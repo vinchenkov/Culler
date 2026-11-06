@@ -222,7 +222,7 @@ export function openFileSink(o: {
     }
   };
 
-  /** Long-lived writers (the resident, a homie runner) outlive rotations
+  /** Long-lived writers (the resident, a collie runner) outlive rotations
    * performed by short-lived `mc` processes. Without this an fd keeps writing
    * into an inode that has already been gzipped and unlinked, and the records
    * go nowhere at full speed. */

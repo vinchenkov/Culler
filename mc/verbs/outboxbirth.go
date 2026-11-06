@@ -4,8 +4,8 @@ package verbs
 // session's bindings resolve the destinations at write time. One of those
 // destinations can never be drained.
 //
-// The `cli` binding has no delivery loop. `mc homie send` binds as `cli`, then
-// reads the conversation back with `mc homie history --follow`. The poll and
+// The `cli` binding has no delivery loop. `mc collie send` binds as `cli`, then
+// reads the conversation back with `mc collie history --follow`. The poll and
 // the ack belong to each native surface's delivery loop, and the native
 // surfaces are the resident and the dashboard. The CLI is neither. So a row is
 // born with nobody to drain it, and every CLI turn left one pending forever.
@@ -14,13 +14,13 @@ package verbs
 //
 // A row that nothing can drain must not be born pending. For the CLI the
 // conversation row IS the delivery: a chat message is a spine row and a reply
-// is a spine row. `mc homie history` reads those rows directly, so there is no
+// is a spine row. `mc collie history` reads those rows directly, so there is no
 // second hop for `delivered_at` to describe. The code still writes the row,
 // one per binding; only its truth value changes.
 //
 // WHAT THIS IS NOT. It is deliberately not "let the reader ack". An ack from
-// `mc homie history` looks natural and is a trap: the DASHBOARD serves
-// `/api/homie/history` with that same verb (dashboard/src/api.ts), and polls
+// `mc collie history` looks natural and is a trap: the DASHBOARD serves
+// `/api/collie/history` with that same verb (dashboard/src/api.ts), and polls
 // it once a second during an active exchange. The dashboard would then
 // silently drain the CLI's rows for replies that no terminal ever read.
 

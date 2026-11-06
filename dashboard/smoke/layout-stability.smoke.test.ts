@@ -2,7 +2,7 @@ import { afterAll, beforeAll, expect, test } from "bun:test";
 import { bootSmoke, evidencePath, gotoReady, mc, seedProject, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
-const pages = ["board", "homie", "review", "pipeline", "configs", "logs", "vision/layout", "environment/layout"];
+const pages = ["board", "collie", "review", "pipeline", "configs", "logs", "vision/layout", "environment/layout"];
 beforeAll(async () => {
   smoke = await bootSmoke();
   await seedProject(smoke, "layout", { title: "Layout Project" });
@@ -75,7 +75,7 @@ test("Review retains its layout after a minute in another window", async () => {
 
 const structure = {
   board: ["#board-heading", "#board-stats", "#board-columns", ".board-command-host"],
-  homie: ["#homie-pane > .vision-bar", "#homie-pane .homie-grid", "#send-form"],
+  collie: ["#collie-pane > .vision-bar", "#collie-pane .collie-grid", "#send-form"],
   review: ["#review-list", "#reader-empty"],
   pipeline: ["#pipeline-pane > .panel-head", "#pipeline-topology", "#activity-pane"],
   configs: [".config-nav", "#configs-content", ".config-section:not([hidden]) > .config-section-head"],
@@ -195,11 +195,11 @@ test("A hidden document retains the Board command bar, draft, and scroll positio
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto(`${server.url}?visibility#board`);
   await settled();
-  const input = page.getByTestId("board-homie-message");
+  const input = page.getByTestId("board-collie-message");
   await input.fill("Keep this draft.\nKeep this second line.");
   await page.evaluate(() => {
     window.scrollTo(0, document.documentElement.scrollHeight);
-    (window as any).retainedComposer = document.querySelector('[data-testid="board-homie-message"]');
+    (window as any).retainedComposer = document.querySelector('[data-testid="board-collie-message"]');
   });
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   const before = await page.getByTestId("board-command").boundingBox();

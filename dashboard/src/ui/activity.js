@@ -17,7 +17,7 @@ export function splitStreams(rows) {
 function kindTone(kind) {
   const k = typeof kind === "string" ? kind : "";
   if (k === "dispatch.health" || k === "dispatch.wait_started") return "rust";
-  if (k.startsWith("homie.")) return "sky";
+  if (k.startsWith("collie.")) return "sky";
   if (k.startsWith("task.") || k.startsWith("packet.")) return "leaf";
   return "stone";
 }

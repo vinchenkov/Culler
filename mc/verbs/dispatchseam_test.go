@@ -2,7 +2,7 @@ package verbs
 
 // The dispatch seam's pure primitives. The canonical prepare
 // projection, the preparation token, and the commit-side dispatch_key are a
-// frozen cross-harness wire contract exactly like homieCandidateState: the
+// frozen cross-harness wire contract exactly like collieCandidateState: the
 // golden vectors below pin the bytes, and the derivation tests pin the
 // domain-separated hashing with the separators written as literals (never the
 // production constants), so a drifted separator or field order fails here
@@ -26,7 +26,7 @@ func strp(s string) *string { return &s }
 
 // dsGoldenPrepare is a fully-populated canonical prepare projection: one task
 // with every nullable field set, one with every nullable field null, a held
-// lease, one Homie candidate state, and a spawn candidate. Values are synthetic
+// lease, one Collie candidate state, and a spawn candidate. Values are synthetic
 // — the vector freezes the wire shape, not a reachable spine state.
 func dsGoldenPrepare() canonicalPrepare {
 	return canonicalPrepare{
@@ -70,7 +70,7 @@ func dsGoldenPrepare() canonicalPrepare {
 			TimeoutMinutes: 120, GraceMinutes: 30, HeartbeatIntervalS: 30,
 			SpawnGraceS: 300, HardDeadlineMinutes: 480,
 		},
-		Homies: []homieCandidateState{
+		Collies: []collieCandidateState{
 			{
 				SessionID: "sess-1", LaunchID: strp("aaaaaaaaaaaaaaaa"),
 				LaunchMode: strp("rows"), PrimeSeq: i64p(7), PrimeCount: i64p(3),
@@ -133,7 +133,7 @@ func dsGoldenPrepareJSON() string {
 			`"deadline_uptime_ms":28800000}`,
 		`"tunables":{"timeout_minutes":120,"grace_minutes":30,"heartbeat_interval_s":30,` +
 			`"spawn_grace_s":300,"hard_deadline_minutes":480}`,
-		`"homies":[{"session_id":"sess-1","launch_id":"aaaaaaaaaaaaaaaa","launch_mode":"rows",` +
+		`"collies":[{"session_id":"sess-1","launch_id":"aaaaaaaaaaaaaaaa","launch_mode":"rows",` +
 			`"prime_through_seq":7,"prime_row_count":3,"resume_owed":0,"resume_mode":null,` +
 			`"resume_prime_through_seq":null,"resume_prime_row_count":null,` +
 			`"binding":"claude","input_seq":4}]`,
@@ -504,8 +504,8 @@ func TestDispatchSeamBuildCanonicalPrepareNormalizes(t *testing.T) {
 	if got.Packets[0].TaskID != 7 || got.Packets[1].TaskID != 9 || got.Packets[1].CreatedAt >= got.Packets[2].CreatedAt {
 		t.Fatalf("packets not sorted by (task_id, created_at): %+v", got.Packets)
 	}
-	if got.Homies == nil {
-		t.Fatalf("nil homies must normalize to an empty slice")
+	if got.Collies == nil {
+		t.Fatalf("nil collies must normalize to an empty slice")
 	}
 	if got.Candidate.ProposedPool == nil || got.Candidate.DedupeTitles == nil {
 		t.Fatalf("nil candidate slices must normalize to empty slices: %+v", got.Candidate)
@@ -526,36 +526,36 @@ func TestDispatchSeamBuildCanonicalPrepareNormalizes(t *testing.T) {
 	}
 }
 
-// loadHomieProjection is the launch-generation observation the Homie-end
-// fence compares: every active session's frozen homieCandidateState, ordered
+// loadCollieProjection is the launch-generation observation the Collie-end
+// fence compares: every active session's frozen collieCandidateState, ordered
 // by session id. It must agree byte-for-byte with the single-session
-// homiePrePrepareState — the marker-key comparison in the future selector
+// colliePrePrepareState — the marker-key comparison in the future selector
 // depends on the two never drifting.
-func TestDispatchSeamHomieProjection(t *testing.T) {
+func TestDispatchSeamCollieProjection(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `
-		INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('h-bbbbbbbbbbbbbbbb', 'mc-homie-h-bbbbbbbbbbbbbbbb', '[]', 'sessions/h-b', 'claude')`)
+		INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding)
+		VALUES ('h-bbbbbbbbbbbbbbbb', 'mc-collie-h-bbbbbbbbbbbbbbbb', '[]', 'sessions/h-b', 'claude')`)
 	dvExec(t, db, `
-		INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('h-aaaaaaaaaaaaaaaa', 'mc-homie-h-aaaaaaaaaaaaaaaa', '[]', 'sessions/h-a', 'claude')`)
+		INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding)
+		VALUES ('h-aaaaaaaaaaaaaaaa', 'mc-collie-h-aaaaaaaaaaaaaaaa', '[]', 'sessions/h-a', 'claude')`)
 	dvExec(t, db, `
-		UPDATE homie_sessions
+		UPDATE collie_sessions
 		SET current_launch_id = 'aaaaaaaaaaaaaaaa', current_launch_mode = 'rows',
 		    current_prime_through_seq = 7, current_prime_row_count = 3
 		WHERE id = 'h-aaaaaaaaaaaaaaaa'`)
 	dvExec(t, db, `
-		INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding, status)
-		VALUES ('h-cccccccccccccccc', 'mc-homie-h-cccccccccccccccc', '[]', 'sessions/h-c', 'claude', 'ended')`)
+		INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding, status)
+		VALUES ('h-cccccccccccccccc', 'mc-collie-h-cccccccccccccccc', '[]', 'sessions/h-c', 'claude', 'ended')`)
 
-	var got []homieCandidateState
+	var got []collieCandidateState
 	err := inTx(db, func(ctx context.Context, q Q) error {
 		var e error
-		got, e = loadHomieProjection(ctx, q)
+		got, e = loadCollieProjection(ctx, q)
 		return e
 	})
 	if err != nil {
-		t.Fatalf("loadHomieProjection: %v", err)
+		t.Fatalf("loadCollieProjection: %v", err)
 	}
 	if len(got) != 2 {
 		t.Fatalf("projection covers active sessions only, got %d entries: %+v", len(got), got)
@@ -570,16 +570,16 @@ func TestDispatchSeamHomieProjection(t *testing.T) {
 		t.Fatalf("no-launch session must project a null launch id: %+v", got[1])
 	}
 
-	// Drift guard: the projection row equals homiePrePrepareState's.
+	// Drift guard: the projection row equals colliePrePrepareState's.
 	for _, want := range got {
-		var single homieCandidateState
+		var single collieCandidateState
 		err := inTx(db, func(ctx context.Context, q Q) error {
 			var e error
-			single, _, e = homiePrePrepareState(ctx, q, want.SessionID)
+			single, _, e = colliePrePrepareState(ctx, q, want.SessionID)
 			return e
 		})
 		if err != nil {
-			t.Fatalf("homiePrePrepareState(%q): %v", want.SessionID, err)
+			t.Fatalf("colliePrePrepareState(%q): %v", want.SessionID, err)
 		}
 		pb, err := single.key()
 		if err != nil {
@@ -590,7 +590,7 @@ func TestDispatchSeamHomieProjection(t *testing.T) {
 			t.Fatalf("key: %v", err)
 		}
 		if pb != wb {
-			t.Fatalf("projection drifted from homiePrePrepareState for %q:\n%+v\n%+v", want.SessionID, want, single)
+			t.Fatalf("projection drifted from colliePrePrepareState for %q:\n%+v\n%+v", want.SessionID, want, single)
 		}
 	}
 }

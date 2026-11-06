@@ -477,7 +477,7 @@ test("the Configs tab renders knobs with layers, the routing table, and projects
 
   await page.getByTestId("config-nav-agents").click();
   const routing = (await page.textContent('[data-testid="configs-routing"]')) ?? "";
-  expect(routing).toContain("Homie");
+  expect(routing).toContain("Collie");
   expect(routing).toContain("fake");
   expect(await page.locator('[data-testid="routing-row"]').count()).toBe(7);
   expect(routing).toContain("Scribe");
@@ -1142,11 +1142,11 @@ test("the header keeps one height for any number of runs", async () => {
     acquired_at: stamp(240_000), last_heartbeat_at: stamp(heartbeatAgo), binding: "fake",
   });
   const cases = [
-    { leases: [], board: /^No agents are running$/, homie: /^No agents are running$/ },
-    { leases: [run("ws-smoke", "verifier", 1)], board: /^Verifier running on task #1 · \dm$/, homie: /^1 agent running$/ },
-    { leases: [run("ws-smoke", "verifier", 1), run("ws-other", "worker", 2)], board: /^Verifier running on task #1 · \dm$/, homie: /^2 agents running$/ },
+    { leases: [], board: /^No agents are running$/, collie: /^No agents are running$/ },
+    { leases: [run("ws-smoke", "verifier", 1)], board: /^Verifier running on task #1 · \dm$/, collie: /^1 agent running$/ },
+    { leases: [run("ws-smoke", "verifier", 1), run("ws-other", "worker", 2)], board: /^Verifier running on task #1 · \dm$/, collie: /^2 agents running$/ },
     { leases: [run("ws-smoke", "verifier", 1, 600_000), run("ws-other", "strategist", null)],
-      board: /^Heartbeat stopped 1\dm ago · Verifier on task #1$/, homie: /^1 heartbeat stopped · 2 agents running$/ },
+      board: /^Heartbeat stopped 1\dm ago · Verifier on task #1$/, collie: /^1 heartbeat stopped · 2 agents running$/ },
   ];
   let leases: unknown[] = [];
   await page.route("**/api/leases", (route) => route.fulfill({ json: { leases } }));
@@ -1158,7 +1158,7 @@ test("the header keeps one height for any number of runs", async () => {
       leases = entry.leases;
       await page.reload();
       await page.waitForSelector("body[data-ready]", { timeout: 15000 });
-      for (const tab of ["board", "homie"] as const) {
+      for (const tab of ["board", "collie"] as const) {
         await page.getByTestId(`tab-${tab}`).click();
         const pattern = entry[tab];
         await page.waitForFunction((source) =>

@@ -3,7 +3,7 @@ import { chmodSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:
 import { join } from "node:path";
 import { evidencePath, bootSmoke, gotoReady, mc, teardown, type Smoke } from "./harness";
 
-const ROLES = ["Strategist", "Arbiter", "Worker", "Verifier", "Scribe", "Packager", "Homie"];
+const ROLES = ["Strategist", "Arbiter", "Worker", "Verifier", "Scribe", "Packager", "Collie"];
 let smoke: Smoke;
 
 // The state after setup with one Codex subscription: the chatgpt reference binding serves each role,

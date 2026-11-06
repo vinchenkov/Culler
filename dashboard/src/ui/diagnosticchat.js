@@ -103,13 +103,13 @@ export function createDiagnosticChat({ api, openConversation }) {
 const actionStates = new WeakMap();
 let actionSequence = 0;
 
-export function diagnosticButton(context, ask, testid = "diagnostic-homie") {
+export function diagnosticButton(context, ask, testid = "diagnostic-collie") {
   if (!ask) return null;
   if (!actionStates.has(ask)) actionStates.set(ask, new Map());
   const states = actionStates.get(ask), key = diagnosticMessage(context);
   if (!states.has(key)) states.set(key, { id: `diagnostic-action-${++actionSequence}`, pending: false, error: "" });
   const state = states.get(key);
-  const label = () => state.pending ? "Culler prepares the conversation…" : "Ask Homie";
+  const label = () => state.pending ? "Culler prepares the conversation…" : "Ask Collie";
   function paint() {
     for (const node of document.querySelectorAll(`[data-diagnostic-action="${state.id}"]`)) {
       const button = node.querySelector("button"), error = node.querySelector('[role="alert"]');
@@ -123,7 +123,7 @@ export function diagnosticButton(context, ask, testid = "diagnostic-homie") {
   const error = el("span", { class: "system-helper", role: "alert", hidden: !state.error, text: state.error });
   const button = el("button", { type: "button", class: "btn small", testid, text: label(),
     disabled: state.pending, "aria-busy": String(state.pending),
-    title: "Open a Homie conversation with this issue and its references.",
+    title: "Open a Collie conversation with this issue and its references.",
     onclick: async () => {
       if (state.pending) return;
       state.pending = true;
@@ -131,11 +131,11 @@ export function diagnosticButton(context, ask, testid = "diagnostic-homie") {
       paint();
       try { await ask(context); }
       catch (err) {
-        state.error = `${err.message} Select Ask Homie to retry.`;
+        state.error = `${err.message} Select Ask Collie to retry.`;
       } finally {
         state.pending = false;
         paint();
       }
     } });
-  return el("span", { class: "diagnostic-homie-action", data: { diagnosticAction: state.id } }, button, error);
+  return el("span", { class: "diagnostic-collie-action", data: { diagnosticAction: state.id } }, button, error);
 }

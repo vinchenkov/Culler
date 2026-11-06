@@ -10,7 +10,7 @@ import (
 )
 
 var requiredRoles = []string{
-	"strategist", "arbiter", "worker", "verifier", "scribe", "packager", "homie",
+	"strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie",
 }
 
 // Roles returns the routed roles in table order.
@@ -53,7 +53,7 @@ type Table struct {
 }
 
 // Rows returns every route in requiredRoles order (stable; Parse guarantees
-// all seven exist, homie included). The read surface for `mc routing show`.
+// all seven exist, collie included). The read surface for `mc routing show`.
 func (t Table) Rows() []Route {
 	out := make([]Route, 0, len(requiredRoles))
 	for _, role := range requiredRoles {

@@ -100,7 +100,7 @@
     },
     {
       "id": "claim_21541735964b4b07ab630d32270336c6",
-      "statement": "The resident verifies or creates a Discord thread before it starts and sends a channel message to Homie.",
+      "statement": "The resident verifies or creates a Discord thread before it starts and sends a channel message to Collie.",
       "evidence": [
         {
           "resource": "repo://resident/src/discord.ts#L276-L319",

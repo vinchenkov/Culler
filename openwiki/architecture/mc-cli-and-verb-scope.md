@@ -44,8 +44,8 @@ The entry point is `mc/cmd/mc/main.go`. `main` calls `run`, which opens the CLI 
 
 `dispatchArgs` routes the first argument in three stages:
 
-1. **Special crossings.** Private verbs prefixed with `__` (for example `__dispatch-prepare`, `__onboard`, `__release`, `__attachment-*`, `__reset`, `__uninstall`) and a few public verbs (`onboard`, `doctor`, `backup`, `homie start`, `dispatch`) go to dedicated broker functions. A broker does host-side work and sends only a closed, path-free frame into the helper. The `__` names are the front doors' spelling for install-time mechanics. Agent-facing `onboard` accepts only the operator setup sections. `mc/cmd/mc/agent_surface_test.go` checks that removed release verbs return `unknown verb` and that `__` mechanics refuse container callers with `host scope only`.
-2. **Host-local verbs.** Verbs that read host files under `MC_HOME` run in the host process even on macOS: `health`, `logs`, `config`, `routing`, `system`, `connection`, `agent-profile`, `evaluation`, and the `run`/`homie launch-check` identity rechecks. `health` must answer when Docker is down, so it cannot depend on the helper.
+1. **Special crossings.** Private verbs prefixed with `__` (for example `__dispatch-prepare`, `__onboard`, `__release`, `__attachment-*`, `__reset`, `__uninstall`) and a few public verbs (`onboard`, `doctor`, `backup`, `collie start`, `dispatch`) go to dedicated broker functions. A broker does host-side work and sends only a closed, path-free frame into the helper. The `__` names are the front doors' spelling for install-time mechanics. Agent-facing `onboard` accepts only the operator setup sections. `mc/cmd/mc/agent_surface_test.go` checks that removed release verbs return `unknown verb` and that `__` mechanics refuse container callers with `host scope only`.
+2. **Host-local verbs.** Verbs that read host files under `MC_HOME` run in the host process even on macOS: `health`, `logs`, `config`, `routing`, `system`, `connection`, `agent-profile`, `evaluation`, and the `run`/`collie launch-check` identity rechecks. `health` must answer when Docker is down, so it cannot depend on the helper.
 3. **Everything else.** On a host that delegates, `mc` ensures the helper is running and forwards the whole argv. Otherwise it calls `runLocal`.
 
 `runLocal` calls `dispatchVerb`, a large `switch` over verb names that parses flags with the standard `flag` package, opens the spine through `withSpine` or `withSpineRead`, and calls a function in `mc/verbs`. The `mc/verbs` package comment states the contract: each verb returns one JSON-marshalable value, and rejections are typed. An unrecognized verb returns a usage error, `unknown verb "<name>"`.
@@ -77,13 +77,13 @@ On macOS the spine lives in a Docker named volume that the host cannot open. The
 
 ## Verb scope from /mc/run.json
 
-`mc` decides who is calling from one fact: whether the launch envelope exists. `verbs.LoadIdentity` (`mc/verbs/verbs.go`) reads `RunJSONPath()`. If the file is absent it returns `nil`, which means host scope. If it is present, it parses a `RunIdentity` with `run_id`, `tier` (`pipeline` or `homie`), `role`, `pool_ids`, `verb_allowlist`, and the writable mounts. No flag or argument can set tier or role.
+`mc` decides who is calling from one fact: whether the launch envelope exists. `verbs.LoadIdentity` (`mc/verbs/verbs.go`) reads `RunJSONPath()`. If the file is absent it returns `nil`, which means host scope. If it is present, it parses a `RunIdentity` with `run_id`, `tier` (`pipeline` or `collie`), `role`, `pool_ids`, `verb_allowlist`, and the writable mounts. No flag or argument can set tier or role.
 
 Scope checks build on that value:
 
 - `RequireHostScope` refuses any caller with an identity: `<verb> is host scope only; run.json callers are refused`.
 - `requirePipeline`, `requireRole`, and `requireExactRole` require tier `pipeline` and a matching role. A mismatch returns the coded `role-mismatch` refusal. `requireExactRole` checks the exact wire identifier in the launch envelope.
-- `RequireOperatorVerb` admits the host, admits a Homie session only for verbs frozen into its `verb_allowlist`, and denies every pipeline run.
+- `RequireOperatorVerb` admits the host, admits a Collie session only for verbs frozen into its `verb_allowlist`, and denies every pipeline run.
 
 Scope is checked before the spine is opened. `TestScopeRefusalPrecedesSpineOpen` points a pipeline identity at a fresh spine path and checks that refused verbs leave no database file behind.
 
@@ -101,9 +101,9 @@ Agents run as `mc-model` (uid 10002). The spine directory `/mc/spine` is owned b
 ## Supporting packages
 
 - **`mc/config`** owns `MC_HOME/config.toml`, the machine-wide operator policy: runtimes and credential sources, budgets, timing, container limits, surfaces, and Git identity. `Load`, `Parse`, and the atomic write helpers validate it. `Ensure` writes the embedded `config.example.toml` when no file exists.
-- **`mc/routing`** parses `MC_HOME/routing.md`, a single Markdown table `| role | harness | binding |` covering seven roles: strategist, arbiter, worker, verifier, scribe, packager, homie. `Parse` rejects prose, unknown or duplicate roles, unresolved bindings, and harness mismatches. `registry_active.go` uses only the production catalog. `registry_active_fake.go`, built only with `test_fake_routing`, adds the `fake` harness family.
+- **`mc/routing`** parses `MC_HOME/routing.md`, a single Markdown table `| role | harness | binding |` covering seven roles: strategist, arbiter, worker, verifier, scribe, packager, collie. `Parse` rejects prose, unknown or duplicate roles, unresolved bindings, and harness mismatches. `registry_active.go` uses only the production catalog. `registry_active_fake.go`, built only with `test_fake_routing`, adds the `fake` harness family.
 - **`mc/boundary`** is the pure, fail-closed confinement policy for profile admission and dispatch planning. It covers the TOML mount allowlist (`ParseMountAllowlist`, `ResolveAccess`, which never downgrades RW to RO), the denied-path jurisdiction (`ResolveJurisdiction`, which takes the owner uid as a parameter and never reads ambient identity), a shipped blocked-path floor (`.ssh`, `.aws`, `*.pem`, `auth.json`, and others) that operator additions can extend but not remove, and an environment guard with a shipped forbidden-variable floor.
-- **`mc/refusal`** classifies dispatch refusals. Each code maps to one of three classes: `stale` (retry, no durable effect), `health` (record deployment health, charge no task), or `candidate` (consequence depends on the subject: block the task, record health, or end a Homie session). The package is storage-free so the whole table can be tested without a spine. It imports the `mount.*` codes from `mc/boundary` rather than copying them. See [Failure controls](../concepts/failure-controls.md).
+- **`mc/refusal`** classifies dispatch refusals. Each code maps to one of three classes: `stale` (retry, no durable effect), `health` (record deployment health, charge no task), or `candidate` (consequence depends on the subject: block the task, record health, or end a Collie session). The package is storage-free so the whole table can be tested without a spine. It imports the `mount.*` codes from `mc/boundary` rather than copying them. See [Failure controls](../concepts/failure-controls.md).
 
 ## Other commands under mc/cmd
 

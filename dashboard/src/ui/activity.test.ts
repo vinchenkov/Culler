@@ -14,7 +14,7 @@ const NOW = Date.parse("2026-08-17T12:00:00Z");
 const rows = [
   { id: 9, created_at: "2026-08-17 11:57:00", actor: "worker", kind: "task.seeded", subject: "12", subject_kind: "task", detail: "picked up" },
   { id: 8, created_at: "2026-08-17 11:50:00", actor: null, kind: "dispatch.health", subject: null, detail: "lease stale" },
-  { id: 7, created_at: "2026-08-17 09:00:00", actor: "homie", kind: "homie.reply", subject: null, detail: null },
+  { id: 7, created_at: "2026-08-17 09:00:00", actor: "collie", kind: "collie.reply", subject: null, detail: null },
   { id: 6, created_at: "2026-08-17 08:00:00", actor: "packager", kind: "packet.rendered", subject: "12", subject_kind: "task", detail: "" },
   { id: 5, created_at: "2026-08-16 12:00:00", actor: "operator", kind: "config.set", subject: null, detail: "knob" },
 ];
@@ -48,8 +48,8 @@ describe("activityRows", () => {
     expect(tone("dispatch.health")).toBe("rust");
     expect(tone("dispatch.wait_started")).toBe("rust");
     expect(tone("dispatch.wait_ended")).toBe("stone");
-    expect(tone("homie.reply")).toBe("sky");
-    expect(tone("homie.session.started")).toBe("sky");
+    expect(tone("collie.reply")).toBe("sky");
+    expect(tone("collie.session.started")).toBe("sky");
     expect(tone("task.seeded")).toBe("leaf");
     expect(tone("packet.rendered")).toBe("leaf");
     expect(tone("config.set")).toBe("stone");
@@ -107,9 +107,9 @@ describe("activityRows", () => {
 describe("kindOptions", () => {
   test("suggests only the unique kinds this read contained, sorted", () => {
     expect(kindOptions(rows)).toEqual([
+      "collie.reply",
       "config.set",
       "dispatch.health",
-      "homie.reply",
       "packet.rendered",
       "task.seeded",
     ]);

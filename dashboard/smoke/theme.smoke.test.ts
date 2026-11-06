@@ -240,13 +240,13 @@ test("Each main page keeps in the dark theme the text contrast of the light them
   const { page } = smoke;
   await page.reload();
   await page.waitForSelector("body[data-ready]");
-  for (const name of ["board", "homie", "review", "pipeline", "configs", "logs"]) {
+  for (const name of ["board", "collie", "review", "pipeline", "configs", "logs"]) {
     await page.emulateMedia({ colorScheme: "light" });
     await until("light");
     await page.getByTestId(`tab-${name}`).click();
     await page.getByTestId(`${name}-pane`).waitFor();
     if (name === "board") await page.getByTestId("board-card").first().waitFor();
-    if (name === "homie") await page.waitForFunction(() => !(document.getElementById("send-body") as HTMLTextAreaElement).disabled);
+    if (name === "collie") await page.waitForFunction(() => !(document.getElementById("send-body") as HTMLTextAreaElement).disabled);
     if (name === "review") await page.waitForFunction(() => !document.getElementById("review-empty")?.hidden);
     if (name === "pipeline") await page.getByTestId("topology-node-worker").waitFor();
     if (name === "configs") await page.getByTestId("config-section-system").waitFor();

@@ -21,7 +21,7 @@ type TraceSession struct {
 	Ended             bool   `json:"ended"`
 }
 
-// TraceSessions lists pipeline, Homie, and setup traces. Retained setup operations
+// TraceSessions lists pipeline, Collie, and setup traces. Retained setup operations
 // without locators supply candidates for bounded recovery by the resident.
 func TraceSessions(db *sql.DB) (any, error) {
 	ctx := context.Background()
@@ -68,7 +68,7 @@ func TraceSessions(db *sql.DB) (any, error) {
 		SELECT h.id, COALESCE(h.vision_project_id, ''), COALESCE(w.title, ''), h.session_path, h.binding,
 		       h.native_session_ref, COALESCE(h.trace_filename, ''),
 		       h.deleted_at IS NOT NULL OR h.status <> 'active'
-		FROM homie_sessions h
+		FROM collie_sessions h
 		LEFT JOIN projects w ON w.id = h.vision_project_id
 		WHERE h.native_session_ref IS NOT NULL
 		ORDER BY h.rowid`)
@@ -83,11 +83,11 @@ func TraceSessions(db *sql.DB) (any, error) {
 			rows.Close()
 			return nil, classify(err)
 		}
-		session.Kind = "homie"
+		session.Kind = "collie"
 		if visionProject != "" {
 			visionTitle = trace.ProjectName(visionTitle, visionProject)
 		}
-		session.DisplayName = trace.HomieDisplayName(visionTitle, session.ID)
+		session.DisplayName = trace.CollieDisplayName(visionTitle, session.ID)
 		if traceSession(&session, binding) {
 			sessions = append(sessions, session)
 		}

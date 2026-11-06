@@ -33,7 +33,7 @@ type InitArgs struct {
 	SpawnGraceS         int
 	HardDeadlineMinutes int
 	ReviewWIPCap        int
-	HomieIdleTimeoutS   int
+	CollieIdleTimeoutS  int
 }
 
 // Init provisions a fresh spine: applies substrate.Schema, seeds meta, one
@@ -152,7 +152,7 @@ func applyTunables(ctx context.Context, q Q, a InitArgs) error {
 		"spawn_grace_s":         a.SpawnGraceS,
 		"hard_deadline_minutes": a.HardDeadlineMinutes,
 		"review_wip_cap":        a.ReviewWIPCap,
-		"homie_idle_timeout_s":  a.HomieIdleTimeoutS,
+		"collie_idle_timeout_s": a.CollieIdleTimeoutS,
 	} {
 		if err := set(col, v); err != nil {
 			return err

@@ -17,7 +17,7 @@ type attachmentConsumePublication struct {
 }
 
 // AttachmentIngressConsumeArgs names the exact already-materialized native
-// ingress attempt consumed by `mc homie send --ingress-attempt`. It carries no
+// ingress attempt consumed by `mc collie send --ingress-attempt`. It carries no
 // caller path or byte authority.
 type AttachmentIngressConsumeArgs struct {
 	Session   string
@@ -177,7 +177,7 @@ func attachmentIngressConsume(db *sql.DB, a attachmentIngressConsumeArgs) (any, 
 	if err != nil {
 		return nil, err
 	}
-	return homieSendAttachmentIngress(db, a, from)
+	return collieSendAttachmentIngress(db, a, from)
 }
 
 // AttachmentIngressConsume atomically transfers a complete materialized
@@ -189,18 +189,18 @@ func AttachmentIngressConsume(
 	id *RunIdentity,
 	a AttachmentIngressConsumeArgs,
 ) (any, error) {
-	if err := RequireHostScope(id, "mc homie send --ingress-attempt"); err != nil {
+	if err := RequireHostScope(id, "mc collie send --ingress-attempt"); err != nil {
 		return nil, err
 	}
 	if a.Session == "" || !safeAttachmentHex(a.AttemptID, 16) {
 		return nil, Usagef(
-			"mc homie send --ingress-attempt requires an exact session and 16-lowercase-hex attempt id",
+			"mc collie send --ingress-attempt requires an exact session and 16-lowercase-hex attempt id",
 		)
 	}
 	return attachmentIngressConsume(db, a)
 }
 
-func homieSendAttachmentIngress(
+func collieSendAttachmentIngress(
 	db *sql.DB, a attachmentIngressConsumeArgs, from SurfaceRef,
 ) (any, error) {
 	var returned map[string]any
@@ -215,7 +215,7 @@ func homieSendAttachmentIngress(
 			JOIN attachment_ingresses i ON i.id=r.ingress_id
 			LEFT JOIN attachment_attempts a ON a.id=r.attempt_id AND a.batch_id=r.batch_id
 			LEFT JOIN attachment_batches b ON b.id=r.batch_id
-			JOIN homie_bindings origin ON origin.id=i.binding_id
+			JOIN collie_bindings origin ON origin.id=i.binding_id
 			WHERE r.attempt_id=? AND r.outcome='consumed'
 			  AND i.state='consumed'
 			  AND (
@@ -264,8 +264,8 @@ func homieSendAttachmentIngress(
 			FROM attachment_attempts a
 			JOIN attachment_ingresses i ON i.id=a.ingress_id
 			JOIN attachment_batches b ON b.id=a.batch_id
-			JOIN homie_sessions s ON s.id=a.session_id
-			JOIN homie_bindings origin ON origin.id=i.binding_id
+			JOIN collie_sessions s ON s.id=a.session_id
+			JOIN collie_bindings origin ON origin.id=i.binding_id
 			WHERE a.id=?`,
 			a.AttemptID).Scan(
 			&ingressID, &batchID, &generation, &objectCount, &byteCount,
@@ -372,7 +372,7 @@ func homieSendAttachmentIngress(
 			})
 		}
 
-		payload, err := json.Marshal(homieEchoPayload{
+		payload, err := json.Marshal(collieEchoPayload{
 			MessageID: messageID, Seq: seq, Body: ingressBody,
 			Attachments: echoAttachments, Origin: from,
 		})
@@ -380,7 +380,7 @@ func homieSendAttachmentIngress(
 			return err
 		}
 		destinations, err := q.QueryContext(ctx, `
-			SELECT surface,channel_ref FROM homie_bindings
+			SELECT surface,channel_ref FROM collie_bindings
 			WHERE session_id=? AND active=1
 			  AND NOT (surface=? AND channel_ref=?)
 			ORDER BY surface,channel_ref,id`,
@@ -395,7 +395,7 @@ func homieSendAttachmentIngress(
 				destinations.Close()
 				return err
 			}
-			if _, err := insertFanoutOutboxRow(ctx, q, "homie_echo",
+			if _, err := insertFanoutOutboxRow(ctx, q, "collie_echo",
 				sessionID, destination.Surface, destination.ChannelRef, string(payload)); err != nil {
 				destinations.Close()
 				return err
@@ -409,7 +409,7 @@ func homieSendAttachmentIngress(
 			return err
 		}
 		result, err := q.ExecContext(ctx, `
-			UPDATE homie_sessions SET last_activity_at=datetime('now')
+			UPDATE collie_sessions SET last_activity_at=datetime('now')
 			WHERE id=? AND status='active'`, sessionID)
 		if err != nil {
 			return err

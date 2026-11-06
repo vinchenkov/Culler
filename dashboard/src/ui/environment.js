@@ -288,7 +288,7 @@ export function createEnvironment({ api, host, openConfigs, onChanged, askDiagno
           disabled: archived || ctx.busy, onclick: () => mutate(ctx, "retry", { project_id: ctx.id }) }),
         progress.repair && diagnosticButton(setupDiagnostic(ctx.id,
           view.operations?.find(row => row.id === env.active_operation_id) || view.operations?.[0],
-          progress.title, progress.cause || progress.explanation), askDiagnostic, "environment-ask-homie")),
+          progress.title, progress.cause || progress.explanation), askDiagnostic, "environment-ask-collie")),
       !summary && el("div", { class: "environment-results-none", testid: "environment-results" }, el("span", { text: "Setup report" }),
         el("span", { class: "environment-results-tally", text: "No report yet" })),
       summary && el("section", { class: "environment-results", testid: "environment-results" },

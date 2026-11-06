@@ -99,7 +99,7 @@ func visionSubmissionTx(ctx context.Context, q Q, project, submission string) (V
 	return out, err
 }
 
-// VisionDraftContext supplies the current shared document for a Homie turn.
+// VisionDraftContext supplies the current shared document for a Collie turn.
 func VisionDraftContext(ctx context.Context, q Q, project string) (map[string]any, error) {
 	draft, err := visionDraftTx(ctx, q, project)
 	if err != nil {
@@ -131,11 +131,11 @@ func requireVisionAccess(ctx context.Context, q Q, id *RunIdentity, action, proj
 		}
 		if id != nil {
 			var bound sql.NullString
-			if err := q.QueryRowContext(ctx, `SELECT vision_project_id FROM homie_sessions WHERE id=?`, id.RunID).Scan(&bound); err != nil {
+			if err := q.QueryRowContext(ctx, `SELECT vision_project_id FROM collie_sessions WHERE id=?`, id.RunID).Scan(&bound); err != nil {
 				return err
 			}
 			if !bound.Valid || bound.String != project {
-				return Domainf("This Homie conversation cannot access that Project's Vision draft.")
+				return Domainf("This Collie conversation cannot access that Project's Vision draft.")
 			}
 		}
 		return nil

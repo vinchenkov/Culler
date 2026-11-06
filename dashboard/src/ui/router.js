@@ -1,4 +1,4 @@
-export const PAGES = ["board", "homie", "review", "pipeline", "configs", "logs", "vision", "environment"];
+export const PAGES = ["board", "collie", "review", "pipeline", "configs", "logs", "vision", "environment"];
 
 /** The page (and its extra path segments) a location hash names, or null. */
 export function parseRoute(hash) {

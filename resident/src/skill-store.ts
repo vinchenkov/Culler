@@ -34,7 +34,7 @@ export const SKILL_FILE = "SKILL.md";
  * lets the runner join it under a root it wipes. */
 export const SKILL_NAME = /^[a-z0-9][a-z0-9-]*$/;
 
-/** The resident creates these directories for Projects that Homie adds.
+/** The resident creates these directories for Projects that Collie adds.
  * The Strategist directory preserves access to existing operator skills. */
 export const SKILL_STORE_ROLE_DIRS = [
   "arbiter",
