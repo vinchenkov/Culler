@@ -267,6 +267,12 @@ RELEASE_BUILD_ID=$(git -C "$REPO_DIR" rev-parse --verify 'HEAD^{commit}') || \
 case "$RELEASE_BUILD_ID" in
   *[!0-9a-f]*|'') fail "release commit is not lowercase hexadecimal" ;;
 esac
+RELEASE_VERSION=$(cat "$REPO_DIR/VERSION" 2>/dev/null) || fail "the VERSION file is absent"
+case "$RELEASE_VERSION" in
+  *[!0-9.]*|'') fail "the VERSION file must hold one version, for example 0.1.0" ;;
+esac
+printf '%s\n' "$RELEASE_VERSION" | grep -Eqx '(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' || \
+  fail "the VERSION file must hold one version, for example 0.1.0"
 
 if [ -n "${MC_BIN_DIR:-}" ]; then
   BIN_DIR=$MC_BIN_DIR
@@ -287,7 +293,7 @@ say "== release $RELEASE_BUILD_ID"
 
 say "== build: host mc"
 ( cd "$REPO_DIR/mc" && mise exec -- go build \
-    -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID" \
+    -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION" \
     -o "$SCRATCH/mc" ./cmd/mc ) || fail "host mc build failed; the deployment was not touched"
 
 IMAGE_RELEASE=$(docker image inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' mc-prod 2>/dev/null) || \
@@ -296,7 +302,7 @@ IMAGE_RELEASE=$(docker image inspect --format '{{index .Config.Labels "org.openc
 if [ "$RESET_DATABASE" -eq 0 ]; then
   say "== build: Linux mc (the database check)"
   ( cd "$REPO_DIR/mc" && GOFLAGS= GOENV=off CGO_ENABLED=0 GOOS=linux GOARCH=arm64 mise exec -- go build \
-      -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID" \
+      -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION" \
       -o "$SCRATCH/mc-linux" ./cmd/mc ) || fail "Linux mc build failed; the deployment was not touched"
 
   say "== check: mc __redeploy-check (the deployed database, read-only)"

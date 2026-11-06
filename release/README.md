@@ -5,6 +5,26 @@ The check needs no credentials, no network access, and no Docker.
 The release workflow runs the scripts of this directory on the release inputs.
 [security/README.md](security/README.md) describes the vulnerability scans and the secret scanning.
 
+## Versions and release notes
+
+`release/version.py check` checks the `VERSION` file and `CHANGELOG.md`.
+The check requires one `MAJOR.MINOR.PATCH` line in `VERSION`, for example `0.1.0`.
+It requires the first `CHANGELOG.md` section to have the version in `VERSION`.
+Each section must have the parts Changes, Known limits, Database compatibility, and Update effects, in that order.
+The sections go from the newest version to the oldest version.
+`./release/check.sh` runs this check, so the `fast-suite-macos` job checks each pull request.
+
+`release/build.sh` puts the version into each `mc` binary through `-X main.releaseVersion`.
+It also writes `version` and `release-notes.md` into the release inputs.
+
+For a push to `main`, the `release-version` job runs `release/publish.py --decide`.
+That job writes `publish=true` only for a version above the version of the latest release.
+With the same version, the image upload job and the publication job do not run.
+A lower version fails the `release-version` job.
+`release/publish.py` compares the versions again immediately before publication.
+A higher version also requires a commit after the commit of the latest release.
+The publisher tags the release `v<version>`, adds the version to `release.json`, names the release `Culler <version>`, and uses the changelog section as the release description.
+
 ## Image archive checks
 
 The image checks read the archives that `docker image save` writes for the default Project image and the product image.

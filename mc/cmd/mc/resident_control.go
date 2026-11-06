@@ -34,6 +34,11 @@ const (
 // binaries intentionally match only residents configured for development.
 var releaseBuildID = "development"
 
+// releaseVersion is replaced by builds with
+// -ldflags '-X main.releaseVersion=<VERSION file>'. Development binaries
+// have no version.
+var releaseVersion = ""
+
 type controlHello struct {
 	Op                  string `json:"op"`
 	Seq                 int    `json:"seq"`

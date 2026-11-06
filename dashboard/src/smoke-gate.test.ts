@@ -128,7 +128,7 @@ test("the release workflow requires the dashboard browser job before publication
 
   const publication = workflow.jobs["release-downloads"];
   expect(publication.needs).toContain("dashboard-browser");
-  expect(publication.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main'");
+  expect(publication.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'");
   expect(workflow.jobs["product-image"].needs).toContain("dashboard-browser");
   expect(workflow.jobs["release-images"].needs).toContain("fast-suite-macos");
 

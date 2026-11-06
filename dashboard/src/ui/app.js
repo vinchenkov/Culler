@@ -3598,8 +3598,8 @@ async function checkRelease() {
   const view = releaseView(result);
   setChildren($("release-status"),
     el("strong", { text: view.title }),
-    el("p", { class: "system-helper", title: view.installed, text: `Installed: ${view.installed.slice(0, 12)}` }),
-    el("p", { class: "system-helper", title: view.available, text: `Available: ${view.available.slice(0, 12)}` }),
+    el("p", { class: "system-helper", title: view.installed, text: `Installed: ${view.installedLabel}` }),
+    el("p", { class: "system-helper", title: view.available, text: `Available: ${view.availableLabel}` }),
     el("p", { class: "system-helper", text: view.detail }),
     view.preparation && el("p", { class: "system-helper", text: view.preparation }),
     view.workflowURL && el("a", { href: view.workflowURL, target: "_blank", rel: "noopener noreferrer", text: "View release workflow" }));

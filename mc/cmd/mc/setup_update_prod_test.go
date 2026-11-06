@@ -89,15 +89,23 @@ func TestSetupReleaseReportsOlderCommitAndLocalChanges(t *testing.T) {
 		}
 		return strings.TrimSpace(string(body))
 	}
+	writeVersion := func(version string) {
+		t.Helper()
+		if err := os.WriteFile(filepath.Join(args.HostReleaseSource, "VERSION"), []byte(version+"\n"), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
 	git("init", "-q")
+	writeVersion("0.1.0")
 	git("add", ".")
 	git("commit", "-qm", "First release")
 	older := git("rev-parse", "HEAD")
-	git("commit", "--allow-empty", "-qm", "Second release")
+	writeVersion("0.2.0")
+	git("commit", "-qam", "Second release")
 	newer := git("rev-parse", "HEAD")
-	previous := releaseBuildID
-	releaseBuildID = older
-	t.Cleanup(func() { releaseBuildID = previous })
+	previous, previousVersion := releaseBuildID, releaseVersion
+	releaseBuildID, releaseVersion = older, "0.1.0"
+	t.Cleanup(func() { releaseBuildID, releaseVersion = previous, previousVersion })
 	body, _ := json.Marshal(map[string]string{"releaseBuildId": newer})
 	if err := os.WriteFile(filepath.Join(home, "supervision", "resident.json"), body, 0600); err != nil {
 		t.Fatal(err)
@@ -108,6 +116,9 @@ func TestSetupReleaseReportsOlderCommitAndLocalChanges(t *testing.T) {
 	state := inspectSetupRelease(home, args, onboarding.DockerStatus{})
 	if state.Relation != "older" || state.SourceState != "modified" || state.Installed != newer || state.Proposed != older {
 		t.Fatalf("release comparison: %+v", state)
+	}
+	if state.InstalledDisplay != "0.2.0 ("+newer[:12]+")" || state.ProposedDisplay != "0.1.0 ("+older[:12]+")" {
+		t.Fatalf("release labels: %q %q", state.InstalledDisplay, state.ProposedDisplay)
 	}
 }
 

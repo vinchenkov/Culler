@@ -44,6 +44,9 @@ type Workflow struct {
 	State  string `json:"state"`
 	URL    string `json:"url,omitempty"`
 	Commit string `json:"commit,omitempty"`
+	// Version is the VERSION file of the main commit, or empty when that
+	// commit has no valid VERSION file.
+	Version string `json:"version,omitempty"`
 }
 
 func NewClient(repository, token string) *Client {
@@ -243,6 +246,16 @@ func (c *Client) Workflow(ctx context.Context) (Workflow, error) {
 	if json.Unmarshal(data, &head) != nil || !commitDigest.MatchString(head.SHA) {
 		return Workflow{}, errors.New("GitHub main commit is invalid")
 	}
+	version := ""
+	data, err = c.get(ctx, "/repos/"+c.Repository+"/contents/VERSION?ref="+head.SHA, "application/vnd.github.raw+json", 64)
+	if err == nil {
+		version = strings.TrimSuffix(string(data), "\n")
+		if !ValidVersion(version) {
+			version = ""
+		}
+	} else if !errors.Is(err, ErrNoRelease) {
+		return Workflow{}, err
+	}
 	data, err = c.get(ctx, "/repos/"+c.Repository+"/actions/workflows/release.yml/runs?branch=main&event=push&head_sha="+head.SHA+"&per_page=1", "application/vnd.github+json", 1<<20)
 	if err != nil {
 		return Workflow{}, err
@@ -259,7 +272,7 @@ func (c *Client) Workflow(ctx context.Context) (Workflow, error) {
 		return Workflow{}, errors.New("GitHub workflow response is invalid")
 	}
 	if len(response.Runs) == 0 || response.Runs[0].Commit != head.SHA {
-		return Workflow{State: "unknown", Commit: head.SHA}, nil
+		return Workflow{State: "unknown", Commit: head.SHA, Version: version}, nil
 	}
 	run := response.Runs[0]
 	state := "preparing"
@@ -272,7 +285,7 @@ func (c *Client) Workflow(ctx context.Context) (Workflow, error) {
 			state = "cancelled"
 		}
 	}
-	return Workflow{State: state, URL: run.URL, Commit: run.Commit}, nil
+	return Workflow{State: state, URL: run.URL, Commit: run.Commit, Version: version}, nil
 }
 func (c *Client) Username(ctx context.Context) (string, error) {
 	data, err := c.get(ctx, "/user", "application/vnd.github+json", 1<<20)

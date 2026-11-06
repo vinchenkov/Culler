@@ -25,26 +25,32 @@ type releaseRemote interface {
 }
 
 type releaseStatus struct {
-	State         string                `json:"state"`
-	Installed     string                `json:"installed"`
-	Available     string                `json:"available,omitempty"`
-	Detail        string                `json:"detail"`
-	Compatibility string                `json:"compatibility"`
-	Workflow      distribution.Workflow `json:"workflow"`
-	CheckedAt     time.Time             `json:"checked_at"`
+	State     string `json:"state"`
+	Installed string `json:"installed"`
+	Available string `json:"available,omitempty"`
+	// A version is empty when Culler cannot find the version of that release.
+	InstalledVersion string                `json:"installed_version,omitempty"`
+	AvailableVersion string                `json:"available_version,omitempty"`
+	Detail           string                `json:"detail"`
+	Compatibility    string                `json:"compatibility"`
+	Workflow         distribution.Workflow `json:"workflow"`
+	CheckedAt        time.Time             `json:"checked_at"`
 }
 
 func initialReleaseStatus(home string) (releaseStatus, distribution.Record, error) {
 	s := releaseStatus{State: "unknown", Installed: "unknown", Compatibility: "unknown", CheckedAt: time.Now().UTC()}
 	installed, installedErr := distribution.Load(filepath.Join(home, distribution.InstalledRecord))
 	if installedErr == nil {
-		s.Installed = installed.Commit
+		s.Installed, s.InstalledVersion = installed.Commit, installed.Version
 	} else {
 		var service struct {
 			Release string `json:"releaseBuildId"`
 		}
 		if body, err := os.ReadFile(filepath.Join(home, "supervision", "resident.json")); err == nil && json.Unmarshal(body, &service) == nil {
 			s.Installed = service.Release
+			if service.Release == releaseBuildID {
+				s.InstalledVersion = releaseVersion
+			}
 		}
 	}
 	return s, installed, installedErr
@@ -58,7 +64,9 @@ func inspectPublishedRelease(ctx context.Context, home string, remote releaseRem
 		return s
 	}
 	workflow, workflowErr := remote.Workflow(ctx)
-	if workflowErr != nil {
+	// Only a main commit with a version above the available release can
+	// become a new release.
+	if workflowErr != nil || distribution.CompareVersions(workflow.Version, available.Version) <= 0 {
 		workflow = distribution.Workflow{State: "unknown"}
 	}
 	s.Workflow = workflow
@@ -66,7 +74,7 @@ func inspectPublishedRelease(ctx context.Context, home string, remote releaseRem
 		s.State, s.Detail = "none", "No complete release is available. Check the release workflow on GitHub."
 		return s
 	}
-	s.Available = available.Commit
+	s.Available, s.AvailableVersion = available.Commit, available.Version
 	s.State, s.Detail = "available", "A complete release is available. Open the installer to review this update."
 	if installedErr != nil && !errors.Is(installedErr, os.ErrNotExist) {
 		s.State, s.Detail = "unknown", "The installed release record is invalid. Run install.sh to inspect the deployment."
@@ -157,32 +165,36 @@ func readPublishedReleaseStatus(ctx context.Context, home string) releaseStatus 
 }
 
 func renderReleaseStatus(terminal *onboarding.Terminal, status releaseStatus) {
-	short := func(id string) string {
-		if len(id) > 12 {
-			return id[:12]
-		}
-		return id
-	}
-	lines := []string{"Installed release: " + short(status.Installed)}
+	lines := []string{"Installed release: " + terminalReleaseLabel(distribution.Label(status.InstalledVersion, status.Installed))}
 	if status.Available != "" {
-		lines = append(lines, "Available release: "+short(status.Available))
+		lines = append(lines, "Available release: "+terminalReleaseLabel(distribution.Label(status.AvailableVersion, status.Available)))
 	}
 	lines = append(lines, status.Detail)
-	if status.Workflow.Commit != "" && status.Workflow.Commit != status.Available {
+	previous := ""
+	if status.Available != "" {
+		previous = " The previous release remains available."
+	}
+	if version := status.Workflow.Version; status.Workflow.Commit != "" && status.Workflow.Commit != status.Available && version != "" {
 		switch status.Workflow.State {
 		case "preparing":
-			lines = append(lines, "GitHub is preparing the latest main commit. It is not available yet.")
+			lines = append(lines, "Version "+version+" is not available yet. Its workflow is in progress.")
 		case "failed":
-			lines = append(lines, "The workflow for the latest main commit failed. The previous release remains available.")
+			lines = append(lines, "The workflow for version "+version+" failed."+previous)
 		case "cancelled":
-			lines = append(lines, "The workflow for the latest main commit was cancelled. The previous release remains available.")
+			lines = append(lines, "The workflow for version "+version+" stopped before it completed."+previous)
 		case "published":
-			lines = append(lines, "GitHub completed the workflow for the latest main commit. Run install.sh --check-updates again to refresh the available release.")
+			lines = append(lines, "GitHub completed the workflow for version "+version+". Run install.sh --check-updates again to refresh the available release.")
 		default:
-			lines = append(lines, "The latest main commit has no complete release. Its workflow state is unknown.")
+			lines = append(lines, "Version "+version+" has no complete release. Its workflow state is unknown.")
 		}
 	}
 	terminal.Panel("Culler releases", lines)
+}
+
+// terminalReleaseLabel keeps the version and the commit of a release label
+// on one terminal line.
+func terminalReleaseLabel(label string) string {
+	return strings.Replace(label, " (", "\u00a0(", 1)
 }
 
 func writeReleaseResult(stdout, stderr io.Writer, value any) int {

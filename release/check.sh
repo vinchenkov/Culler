@@ -11,6 +11,7 @@ if suite.countTestCases() == 0:
 result = unittest.TextTestRunner().run(suite)
 raise SystemExit(0 if result.wasSuccessful() else 1)
 PY
+python3 "$HERE/version.py" check
 sh -n "$HERE/build.sh"
 sh -n "$HERE/opencode/build.sh"
 sh -n "$HERE/opencode/check.sh"

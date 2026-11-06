@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"mc/deployment"
+	"mc/distribution"
 	"mc/onboarding"
 	"mc/verbs"
 )
@@ -140,10 +141,15 @@ func inspectSetupRelease(home string, args verbs.OnboardArgs, docker onboarding.
 			continue
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-		out, err := exec.CommandContext(ctx, "git", "-C", args.HostReleaseSource, "rev-parse", "--short=12", "--verify", id.value+"^{commit}").Output()
+		out, err := exec.CommandContext(ctx, "git", "-C", args.HostReleaseSource, "rev-parse", "--verify", id.value+"^{commit}").Output()
+		version := releaseVersion
+		if err == nil && id.value != releaseBuildID {
+			body, _ := exec.CommandContext(ctx, "git", "-C", args.HostReleaseSource, "show", id.value+":VERSION").Output()
+			version = strings.TrimSuffix(string(body), "\n")
+		}
 		cancel()
 		if err == nil {
-			*id.display = strings.TrimSpace(string(out))
+			*id.display = distribution.Label(version, strings.TrimSpace(string(out)))
 		}
 	}
 	return r
@@ -184,7 +190,7 @@ func (r setupRelease) lines() []string {
 	if proposed == "" {
 		proposed = "unknown"
 	}
-	lines := []string{"Installed release: " + installed, "Proposed release: " + proposed}
+	lines := []string{"Installed release: " + terminalReleaseLabel(installed), "Proposed release: " + terminalReleaseLabel(proposed)}
 	switch r.SourceState {
 	case "modified":
 		lines = append(lines, "The proposed release includes local source changes.")
@@ -201,10 +207,14 @@ func (r setupRelease) lines() []string {
 		line := c.Name + ": " + c.Status + "."
 		if c.Name == "Agent image" {
 			imageRelease := c.Installed
-			if imageRelease == "" {
+			switch {
+			case imageRelease == "":
 				imageRelease = "unknown"
-			}
-			if r.SourceState == "published" {
+			case imageRelease == r.Installed && r.InstalledDisplay != "":
+				imageRelease = terminalReleaseLabel(r.InstalledDisplay)
+			case imageRelease == r.Proposed && r.ProposedDisplay != "":
+				imageRelease = terminalReleaseLabel(r.ProposedDisplay)
+			default:
 				imageRelease = shortPublishedID(imageRelease)
 			}
 			line = "Agent image: " + c.Status + ". Release: " + imageRelease + "."

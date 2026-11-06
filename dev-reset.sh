@@ -142,9 +142,12 @@ fi
 # Before anything is torn down, so a build failure costs nothing.
 if [ "$REBUILD" = 1 ]; then
 	HEAD_SHA="$(git -C "$REPO" rev-parse HEAD)"
+	VERSION="$(cat "$REPO/VERSION")"
+	case "$VERSION" in *[!0-9.]*|'') die "the VERSION file must hold one version, for example 0.1.0" ;; esac
+	printf '%s\n' "$VERSION" | grep -Eqx '(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' || die "the VERSION file must hold one version, for example 0.1.0"
 	say "REBUILD host mc at $HEAD_SHA"
 	( cd "$REPO/mc" && mise exec -- go build \
-		-ldflags "-w -X main.releaseBuildID=$HEAD_SHA" \
+		-ldflags "-w -X main.releaseBuildID=$HEAD_SHA -X main.releaseVersion=$VERSION" \
 		-o "$HOME/.local/bin/mc" ./cmd/mc )
 	say "REBUILD mc-prod image at $HEAD_SHA"
 	MC_RELEASE_BUILD_ID="$HEAD_SHA" "$REPO/runner/image/build-prod.sh"

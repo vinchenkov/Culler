@@ -84,9 +84,9 @@ func inspectPublishedSetupRelease(home string, args verbs.OnboardArgs, docker on
 	}
 	r.Components = append(r.Components, component)
 	if r.Installed != "unknown" {
-		r.InstalledDisplay = shortPublishedID(r.Installed)
+		r.InstalledDisplay = distribution.Label(cullerInstalledVersion(home, r.Installed), r.Installed)
 	}
-	r.ProposedDisplay = proposed.Commit[:12]
+	r.ProposedDisplay = proposed.Label()
 	return r
 }
 

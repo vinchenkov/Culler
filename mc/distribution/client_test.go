@@ -16,7 +16,7 @@ import (
 )
 
 func fixtureRecord() Record {
-	r := Record{Format: 1, Commit: strings.Repeat("a", 40), ReleaseID: strings.Repeat("a", 40), Tag: "culler-" + strings.Repeat("a", 40), Sequence: 7, PublishedAt: time.Date(2026, 9, 26, 0, 0, 0, 0, time.UTC), Platform: "darwin-arm64", Schema: strings.Repeat("f", 64), Runtimes: RuntimeVersions{Bun: "1.3.9", Go: "1.25.12"}, Image: "ghcr.io/owner/culler@sha256:" + strings.Repeat("b", 64), Installer: Asset{Name: "installer.sh", SHA256: strings.Repeat("c", 64), Size: 12}, Package: Asset{Name: "culler-darwin-arm64.tar.gz", SHA256: strings.Repeat("d", 64), Size: 14}, AgentsView: &AgentsViewRelease{Version: "0.44.0", ArchiveSHA256: strings.Repeat("1", 64), ExecutableSHA256: strings.Repeat("2", 64)}, HostBun: fixtureHostBun()}
+	r := Record{Format: 1, Version: "0.1.0", Commit: strings.Repeat("a", 40), ReleaseID: strings.Repeat("a", 40), Tag: "v0.1.0", Sequence: 7, PublishedAt: time.Date(2026, 9, 26, 0, 0, 0, 0, time.UTC), Platform: "darwin-arm64", Schema: strings.Repeat("f", 64), Runtimes: RuntimeVersions{Bun: "1.3.9", Go: "1.25.12"}, Image: "ghcr.io/owner/culler@sha256:" + strings.Repeat("b", 64), Installer: Asset{Name: "installer.sh", SHA256: strings.Repeat("c", 64), Size: 12}, Package: Asset{Name: "culler-darwin-arm64.tar.gz", SHA256: strings.Repeat("d", 64), Size: 14}, AgentsView: &AgentsViewRelease{Version: "0.44.0", ArchiveSHA256: strings.Repeat("1", 64), ExecutableSHA256: strings.Repeat("2", 64)}, HostBun: fixtureHostBun()}
 	for _, name := range RequiredChecks {
 		r.Checks = append(r.Checks, Check{Name: name, Passed: true})
 	}
@@ -73,6 +73,9 @@ func TestIncompleteReleaseRejected(t *testing.T) {
 		{"duplicate-check", func(r *Record) { r.Checks = append(r.Checks, r.Checks[0]) }},
 		{"mutable-image", func(r *Record) { r.Image = "ghcr.io/owner/culler:latest" }},
 		{"commit-mismatch", func(r *Record) { r.ReleaseID = strings.Repeat("b", 40) }},
+		{"no-version", func(r *Record) { r.Version, r.Tag = "", "v" }},
+		{"commit-tag", func(r *Record) { r.Tag = "culler-" + r.Commit }},
+		{"tag-of-another-version", func(r *Record) { r.Tag = "v0.2.0" }},
 		{"checksum", func(r *Record) { r.Package.SHA256 = "invalid" }},
 		{"agentsview-version", func(r *Record) { r.AgentsView.Version = "latest" }},
 		{"agentsview-archive", func(r *Record) { r.AgentsView.ArchiveSHA256 = strings.Repeat("A", 64) }},
@@ -195,6 +198,13 @@ func TestWorkflowUsesCurrentMainCommit(t *testing.T) {
 					json.NewEncoder(w).Encode(map[string]string{"sha": head})
 					return
 				}
+				if strings.HasSuffix(r.URL.Path, "/contents/VERSION") {
+					if r.URL.Query().Get("ref") != head || r.Header.Get("Accept") != "application/vnd.github.raw+json" {
+						t.Error("version request omitted the current commit or the raw media type")
+					}
+					_, _ = w.Write([]byte("0.2.0\n"))
+					return
+				}
 				if r.URL.Query().Get("head_sha") != head {
 					t.Error("workflow query omitted current commit")
 				}
@@ -212,12 +222,70 @@ func TestWorkflowUsesCurrentMainCommit(t *testing.T) {
 			if stale {
 				want = "unknown"
 			}
-			if got.State != want || got.Commit != head {
+			if got.State != want || got.Commit != head || got.Version != "0.2.0" {
 				t.Fatalf("wrong workflow: %+v", got)
 			}
 		})
 	}
 }
+
+func TestWorkflowWithoutAValidVersionFileHasNoVersion(t *testing.T) {
+	head := strings.Repeat("a", 40)
+	for name, body := range map[string]string{"absent": "", "invalid": "next\n"} {
+		t.Run(name, func(t *testing.T) {
+			client := fixtureClient(t, func(w http.ResponseWriter, r *http.Request) {
+				switch {
+				case strings.HasSuffix(r.URL.Path, "/commits/main"):
+					json.NewEncoder(w).Encode(map[string]string{"sha": head})
+				case strings.HasSuffix(r.URL.Path, "/contents/VERSION") && body == "":
+					http.NotFound(w, r)
+				case strings.HasSuffix(r.URL.Path, "/contents/VERSION"):
+					_, _ = w.Write([]byte(body))
+				default:
+					json.NewEncoder(w).Encode(map[string]any{"workflow_runs": []any{map[string]string{"head_sha": head, "status": "completed", "conclusion": "success"}}})
+				}
+			})
+			got, err := client.Workflow(context.Background())
+			if err != nil || got.State != "published" || got.Version != "" {
+				t.Fatalf("wrong workflow: %+v %v", got, err)
+			}
+		})
+	}
+}
+
+func TestReleaseVersionsAndLabels(t *testing.T) {
+	r := fixtureRecord()
+	if err := r.Validate(); err != nil || r.Label() != "0.1.0 (aaaaaaaaaaaa)" {
+		t.Fatalf("wrong label: %q %v", r.Label(), err)
+	}
+	for _, invalid := range []string{"", "0.1", "v0.1.0", "0.01.0", "0.1.0-rc.1", " 0.1.0"} {
+		r.Version, r.Tag = invalid, "v"+invalid
+		if r.Validate() == nil || ValidVersion(invalid) {
+			t.Fatalf("invalid version accepted: %q", invalid)
+		}
+	}
+	for _, c := range []struct {
+		a, b string
+		want int
+	}{{"0.10.0", "0.9.0", 1}, {"0.1.9", "0.2.0", -1}, {"1.0.0", "1.0.0", 0}, {"0.1.0", "", 1}, {"", "0.1.0", -1}, {"", "", 0}, {"bad", "0.0.0", -1}} {
+		if got := CompareVersions(c.a, c.b); got != c.want {
+			t.Fatalf("CompareVersions(%q, %q) = %d, want %d", c.a, c.b, got, c.want)
+		}
+	}
+	if Label("", "development") != "development" || Label("", strings.Repeat("c", 40)) != "cccccccccccc" ||
+		Label("0.2.0", strings.Repeat("c", 40)) != "0.2.0 (cccccccccccc)" {
+		t.Fatal("wrong label for an identity")
+	}
+}
+
+func TestARecordWithAVersionFieldReadsIntoTheRecord(t *testing.T) {
+	var r Record
+	body := `{"format":1,"version":"0.1.0","commit":"` + strings.Repeat("a", 40) + `"}`
+	if err := json.Unmarshal([]byte(body), &r); err != nil || r.Version != "0.1.0" {
+		t.Fatalf("version field lost: %+v %v", r, err)
+	}
+}
+
 func TestCredentialFileRequiresPrivateOwnerMode(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "token")
 	t.Setenv("CULLER_GITHUB_TOKEN_FILE", path)

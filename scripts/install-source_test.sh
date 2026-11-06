@@ -13,8 +13,8 @@ fail() {
 }
 
 # Each mc build omits DWARF data. The release builds carry the release identity.
-[ "$(grep -c -F -- '-ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID"' "$ROOT/scripts/install-source.sh")" = 2 ] ||
-  fail "a go build of install-source.sh does not omit DWARF data"
+[ "$(grep -c -F -- '-ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION"' "$ROOT/scripts/install-source.sh")" = 2 ] ||
+  fail "a release build of install-source.sh lacks -w, the release identity, or the release version"
 grep -F -- '-tags test_fake_routing -ldflags "-w" -o "$BIN_DIR/mc" ./cmd/mc' "$ROOT/scripts/install-source.sh" >/dev/null ||
   fail "the development build of install-source.sh does not omit DWARF data"
 

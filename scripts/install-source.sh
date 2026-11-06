@@ -575,12 +575,19 @@ if terminal_setup; then
   esac
   [ "${#RELEASE_BUILD_ID}" -ge 40 ] && [ "${#RELEASE_BUILD_ID}" -le 64 ] || \
     fail "The release identity is invalid. Run install.sh from a complete repository checkout."
+  RELEASE_VERSION=$(cat "$REPO_DIR/VERSION" 2>/dev/null) || \
+    fail "The release version is unavailable. Run install.sh from a complete repository checkout."
+  case "$RELEASE_VERSION" in
+    *[!0-9.]*|'') fail "The VERSION file must hold one version, for example 0.1.0. Repair the VERSION file, then run install.sh again." ;;
+  esac
+  printf '%s\n' "$RELEASE_VERSION" | grep -Eqx '(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' || \
+    fail "The VERSION file must hold one version, for example 0.1.0. Repair the VERSION file, then run install.sh again."
   [ -n "$BIN_DIR" ] || BIN_DIR="${MC_BIN_DIR:-$HOME/.local/bin}"
   SETUP_SCRATCH=$(mktemp -d "${TMPDIR:-/tmp}/mc-setup.XXXXXX")
   trap 'rm -rf "$SETUP_SCRATCH"' EXIT HUP INT TERM
   say "› Build the setup program"
   ( cd "$REPO_DIR/mc" && mise exec -- go build \
-      -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID" \
+      -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION" \
       -o "$SETUP_SCRATCH/mc" ./cmd/mc >/dev/null 2>&1 ) || \
     fail "The setup program build failed. Repair the host tools, then run install.sh again."
   say "✓ The setup program is ready"
@@ -629,6 +636,12 @@ case "$RELEASE_BUILD_ID" in
 esac
 [ "${#RELEASE_BUILD_ID}" -ge 40 ] && [ "${#RELEASE_BUILD_ID}" -le 64 ] || \
   fail "release commit has an unsupported length"
+RELEASE_VERSION=$(cat "$REPO_DIR/VERSION" 2>/dev/null) || fail "the VERSION file is absent"
+case "$RELEASE_VERSION" in
+  *[!0-9.]*|'') fail "the VERSION file must hold one version, for example 0.1.0" ;;
+esac
+printf '%s\n' "$RELEASE_VERSION" | grep -Eqx '(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' || \
+  fail "the VERSION file must hold one version, for example 0.1.0"
 
 # --- 2. Build / install mc --------------------------------------------------
 
@@ -645,7 +658,7 @@ else
   mkdir -p "$BIN_DIR"
   say "== build (production)"
   ( cd "$REPO_DIR/mc" && mise exec -- go build \
-      -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID" \
+      -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION" \
       -o "$BIN_DIR/mc" ./cmd/mc )
   say "== build (production image, native arm64)"
   ( cd "$REPO_DIR" && MC_RELEASE_BUILD_ID="$RELEASE_BUILD_ID" ./runner/image/build-prod.sh ) || \

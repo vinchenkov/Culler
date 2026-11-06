@@ -339,10 +339,12 @@ func cullerObservationFixture(t *testing.T) (string, cullerObservations) {
 		t.Fatal(err)
 	}
 	w.home = canonical
-	previous := releaseBuildID
-	releaseBuildID = strings.Repeat("a", 40)
-	t.Cleanup(func() { releaseBuildID = previous })
-	if err := distribution.Save(filepath.Join(w.home, distribution.InstalledRecord), publishedTestRecord(releaseBuildID, 1)); err != nil {
+	previous, previousVersion := releaseBuildID, releaseVersion
+	releaseBuildID, releaseVersion = strings.Repeat("a", 40), "0.1.0"
+	t.Cleanup(func() { releaseBuildID, releaseVersion = previous, previousVersion })
+	record := publishedTestRecord(releaseBuildID, 1)
+	record.Version, record.Tag = releaseVersion, "v"+releaseVersion
+	if err := distribution.Save(filepath.Join(w.home, distribution.InstalledRecord), record); err != nil {
 		t.Fatal(err)
 	}
 	if err := writePublishedState(filepath.Join(w.home, "supervision", "resident.json"), cullerRuntime{Release: releaseBuildID, Home: w.home, Program: "/fixture/bin/mc", Docker: "/fixture/bin/docker"}); err != nil {
@@ -425,6 +427,25 @@ func TestCullerDevelopmentIdentityMatchesInstalledDevelopment(t *testing.T) {
 	var out bytes.Buffer
 	if code := runCuller([]string{"version", "--mc-home", home}, nil, &out, &out); code != 0 || strings.Contains(out.String(), "mismatch") || strings.Count(out.String(), "development") != 2 {
 		t.Fatalf("%d %s", code, out.String())
+	}
+}
+
+func TestCullerVersionShowsTheVersionAndTheShortCommit(t *testing.T) {
+	home, _ := cullerObservationFixture(t)
+	var out bytes.Buffer
+	if code := runCuller([]string{"version", "--no-color", "--mc-home", home}, nil, &out, &out); code != 0 ||
+		strings.Count(out.String(), "0.1.0 (aaaaaaaaaaaa)") != 2 || strings.Contains(out.String(), "mismatch") {
+		t.Fatalf("%d %s", code, out.String())
+	}
+	releaseBuildID, releaseVersion = strings.Repeat("b", 40), "0.2.0"
+	out.Reset()
+	runCuller([]string{"version", "--no-color", "--mc-home", home}, nil, &out, &out)
+	if !strings.Contains(out.String(), "0.2.0 (bbbbbbbbbbbb)") || !strings.Contains(out.String(), "0.1.0 (aaaaaaaaaaaa)") ||
+		!strings.Contains(out.String(), "Release mismatch") {
+		t.Fatalf("%s", out.String())
+	}
+	if got := cullerReleaseLabel("Not installed", "0.2.0"); got != "Not installed" {
+		t.Fatalf("a state received a version: %q", got)
 	}
 }
 

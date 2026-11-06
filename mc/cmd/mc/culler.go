@@ -24,7 +24,7 @@ type cullerOptions struct {
 
 var cullerCommands = []struct{ name, usage, description string }{
 	{"status", "status", "Show the deployment state."},
-	{"version", "version", "Show the release identities."},
+	{"version", "version", "Show the release versions."},
 	{"start", "start [service]", "Start Culler services."},
 	{"stop", "stop [service]", "Stop Culler services safely."},
 	{"restart", "restart [service]", "Restart Culler services."},
@@ -190,7 +190,7 @@ func cullerHelp(t *onboarding.Terminal, command string) {
 		}
 		detail := map[string][]string{
 			"status":    {"Show local service checks without external network requests.", "A deliberate stop remains distinct from a service failure."},
-			"version":   {"Show the full command and installed release identities.", "This command works without active services."},
+			"version":   {"Show the versions of the command and the installed release.", "This command works without active services."},
 			"start":     {"An omitted service selects all services.", "A ready service remains active without a restart."},
 			"stop":      {"An omitted service selects all services.", "The resident waits up to three minutes for active work.", "A stop remains in effect after login and computer restart."},
 			"restart":   {"An omitted service selects all services.", "The resident waits for active work before it stops.", "A dashboard restart leaves the resident active."},
@@ -220,7 +220,7 @@ func cullerHelp(t *onboarding.Terminal, command string) {
 	t.CommandItem("--no-color", "Disable color.")
 	t.CommandItem("--help", "Show help.")
 	if command == "help" {
-		t.CommandItem("--version", "Show the release identities.")
+		t.CommandItem("--version", "Show the release versions.")
 	}
 }
 

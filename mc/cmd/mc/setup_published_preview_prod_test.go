@@ -51,7 +51,7 @@ func setupPreviewPublished(t *testing.T, name string) setupPreviewCase {
 	w, _ := setupTestWizard(t)
 	state := completeSetupDeployment()
 	state.Update = true
-	state.Release = setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("b", 40), InstalledDisplay: strings.Repeat("a", 12), ProposedDisplay: strings.Repeat("b", 12), SourceState: "published", Relation: "newer", Components: []setupReleaseComponent{{Name: "Service release", Status: "different"}, {Name: "Host files", Status: "different"}, {Name: "Runner files", Status: "different"}, {Name: "Agent image", Installed: "unknown", Status: "incomplete"}}}
+	state.Release = setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("b", 40), InstalledDisplay: "0.1.0 (" + strings.Repeat("a", 12) + ")", ProposedDisplay: "0.2.0 (" + strings.Repeat("b", 12) + ")", SourceState: "published", Relation: "newer", Components: []setupReleaseComponent{{Name: "Service release", Status: "different"}, {Name: "Host files", Status: "different"}, {Name: "Runner files", Status: "different"}, {Name: "Agent image", Installed: "unknown", Status: "incomplete"}}}
 	w.deps.inspect = func(string, verbs.OnboardArgs) (setupDeployment, error) { return state, nil }
 	w.deps.stop = func(string) error { return nil }
 	preview := setupPreviewCase{wizard: w, steps: []setupPreviewStep{{Wait: "q exit", Send: "\r", Name: "Published release update"}}}
@@ -74,12 +74,14 @@ func setupPreviewPublished(t *testing.T, name string) setupPreviewCase {
 	}
 	if name == "published-newer" {
 		state.Release.Relation = "older"
+		state.Release.InstalledDisplay, state.Release.ProposedDisplay = "0.2.0 ("+strings.Repeat("a", 12)+")", "0.1.0 ("+strings.Repeat("b", 12)+")"
 		preview.steps = []setupPreviewStep{}
 	}
 	if name == "published-recovery" {
 		preview.steps = []setupPreviewStep{}
 		prior := publishedTestRecord(strings.Repeat("a", 40), 20)
 		pending := publishedTestRecord(strings.Repeat("b", 40), 21)
+		prior.Version, prior.Tag, pending.Version, pending.Tag = "0.1.0", "v0.1.0", "0.2.0", "v0.2.0"
 		if err := distribution.Save(filepath.Join(w.home, distribution.InstalledRecord), prior); err != nil {
 			t.Fatal(err)
 		}
@@ -119,7 +121,7 @@ func setupPreviewPublishedComplete(t *testing.T, name string) setupPreviewCase {
 	stopped := name == "published-update-stops" || name == "published-update-all-stopped" || strings.HasSuffix(name, "dashboard-stopped")
 	state := completeSetupDeployment()
 	state.Services = setupServiceMap(true)
-	state.Release = setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("a", 40), InstalledDisplay: strings.Repeat("a", 12), ProposedDisplay: strings.Repeat("a", 12), SourceState: "published", Components: []setupReleaseComponent{{Name: "Service release", Status: "same"}}}
+	state.Release = setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("a", 40), InstalledDisplay: "0.1.0 (" + strings.Repeat("a", 12) + ")", ProposedDisplay: "0.1.0 (" + strings.Repeat("a", 12) + ")", SourceState: "published", Components: []setupReleaseComponent{{Name: "Service release", Status: "same"}}}
 	if stopped {
 		state.Stops = deployment.ServiceStops{"dashboard": true}
 		state.Services["dashboard"] = false
@@ -182,7 +184,7 @@ func setupPreviewPublishedComplete(t *testing.T, name string) setupPreviewCase {
 	}
 	if strings.HasPrefix(name, "published-update") {
 		state.Update = true
-		state.Release = setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("b", 40), InstalledDisplay: strings.Repeat("a", 12), ProposedDisplay: strings.Repeat("b", 12), SourceState: "published", Relation: "newer", Components: []setupReleaseComponent{{Name: "Service release", Status: "different"}}}
+		state.Release = setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("b", 40), InstalledDisplay: "0.1.0 (" + strings.Repeat("a", 12) + ")", ProposedDisplay: "0.2.0 (" + strings.Repeat("b", 12) + ")", SourceState: "published", Relation: "newer", Components: []setupReleaseComponent{{Name: "Service release", Status: "different"}}}
 		w.deps.inspect = func(string, verbs.OnboardArgs) (setupDeployment, error) { return state, nil }
 		w.deps.stop = func(string) error { return nil }
 		w.deps.beforeChange = func(_ string, _ verbs.OnboardArgs, report func(string)) error {

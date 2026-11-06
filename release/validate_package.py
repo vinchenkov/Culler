@@ -131,9 +131,12 @@ def local_release_record(output, metadata, host_bun):
     if not isinstance(schema, str) or not re.fullmatch(r"[0-9a-f]{64}", schema):
         raise ValueError("The package build record lacks its schema identity.")
     installer = output / "assets" / "installer.sh"
+    version = (output / "version").read_text().strip()
+    if not re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", version):
+        raise ValueError("The release inputs lack the version.")
     # This local record reaches setup validation. It never authorizes publication.
     return {
-        "format": 1, "commit": commit, "release_id": commit, "tag": "culler-" + commit,
+        "format": 1, "version": version, "commit": commit, "release_id": commit, "tag": "v" + version,
         "sequence": 1, "published_at": "2000-01-01T00:00:00Z", "platform": "darwin-arm64",
         "schema": schema, "runtimes": metadata["runtimes"], "agentsview": metadata["agentsview"], "host_bun": host_bun,
         "package": {key: metadata[key] for key in ("name", "size", "sha256")},

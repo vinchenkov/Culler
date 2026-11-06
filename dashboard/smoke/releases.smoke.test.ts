@@ -7,9 +7,9 @@ let opened = 0;
 beforeAll(async () => {
   smoke = await bootSmoke();
   status = {
-    state: "current", installed: "a".repeat(40), available: "a".repeat(40),
+    state: "current", installed: "a".repeat(40), available: "a".repeat(40), installed_version: "0.1.0", available_version: "0.1.0",
     detail: "The installed release matches the available release. Service health appears separately.",
-    workflow: { state: "preparing", commit: "b".repeat(40), url: "https://github.com/owner/repo/actions/runs/123" },
+    workflow: { state: "preparing", commit: "b".repeat(40), version: "0.2.0", url: "https://github.com/owner/repo/actions/runs/123" },
   };
   await smoke.page.route("**/api/releases/status", route => route.fulfill({ json: status }));
   await smoke.page.route("**/api/releases/open", async route => {
@@ -28,7 +28,8 @@ test("release controls distinguish publication from service health and preserve 
   const panel = page.getByTestId("release-controls");
   await panel.getByRole("button", { name: "Check for updates" }).click();
   await page.waitForFunction(() => document.querySelector("#release-status")?.textContent?.includes("Culler is current"));
-  expect(await panel.innerText()).toContain("GitHub is preparing the latest main commit.");
+  expect(await panel.innerText()).toContain("Installed: 0.1.0 (aaaaaaaaaaaa)");
+  expect(await panel.innerText()).toContain("Version 0.2.0 is not available yet. Its workflow is in progress.");
   expect(await panel.getByRole("link", { name: "View release workflow" }).getAttribute("href")).toEndWith("/123");
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });

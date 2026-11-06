@@ -69,6 +69,7 @@ class PackageValidationTests(unittest.TestCase):
                     "host_bun": json.loads(json.dumps(HOST_BUN))}
         (self.output / "package.json").write_text(json.dumps(metadata))
         (self.output / "assets" / "installer.sh").write_text("#!/bin/sh\nexit 99\n")
+        (self.output / "version").write_text("0.1.0\n")
 
     def handoff(self, command, *, cwd, env, **options):
         setup = cwd.name == "setup"
@@ -85,9 +86,10 @@ class PackageValidationTests(unittest.TestCase):
         self.assertEqual(bootstrap.resolve(), cwd / "bootstrap")
         record = json.loads((bootstrap / "release.json").read_text())
         self.assertEqual(record["commit"], "a" * 40)
+        self.assertEqual(record["version"], "0.1.0")
         self.assertEqual(record["schema"], "b" * 64)
         self.assertEqual(record["release_id"], record["commit"])
-        self.assertEqual(record["tag"], "culler-" + record["commit"])
+        self.assertEqual(record["tag"], "v0.1.0")
         self.assertEqual(record["runtimes"], {"bun": "1.3.9", "go": "1.25.12"})
         self.assertEqual(record["agentsview"], self.identity)
         self.assertEqual(record["package"]["sha256"], hashlib.sha256(self.archive.read_bytes()).hexdigest())

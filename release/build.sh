@@ -10,6 +10,9 @@ mkdir -p "$output"
 output=$(CDPATH= cd -- "$output" && pwd -P)
 case "$output/" in "$ROOT/"*) echo 'The release output must stay outside the checkout.' >&2; exit 2 ;; esac
 mkdir -p "$output/assets" "$output/image/runner/image" "$output/image/runner/openwiki" "$output/image/runner/agent-runner"
+version=$(python3 "$ROOT/release/version.py" show)
+python3 "$ROOT/release/version.py" notes >"$output/release-notes.md"
+printf '%s\n' "$version" >"$output/version"
 # The AgentsView release archive stays outside the output, so the release inputs hold only its packaged executable.
 agentsview_scratch=$(mktemp -d "${TMPDIR:-/tmp}/culler-agentsview.XXXXXX")
 hostbun_scratch=$(mktemp -d "${TMPDIR:-/tmp}/culler-hostbun.XXXXXX")
@@ -56,9 +59,9 @@ fi
 export GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0
 cd "$ROOT/mc"
 GOOS=darwin GOARCH=arm64 mise exec -- go build -trimpath -mod=readonly \
-  -ldflags "-w -X main.releaseBuildID=$commit" -o "$output/mc-darwin" ./cmd/mc
+  -ldflags "-w -X main.releaseBuildID=$commit -X main.releaseVersion=$version" -o "$output/mc-darwin" ./cmd/mc
 GOOS=linux GOARCH=arm64 mise exec -- go build -trimpath -mod=readonly \
-  -ldflags "-w -X main.releaseBuildID=$commit" -o "$output/image/runner/image/mc-prod-bin" ./cmd/mc
+  -ldflags "-w -X main.releaseBuildID=$commit -X main.releaseVersion=$version" -o "$output/image/runner/image/mc-prod-bin" ./cmd/mc
 mise exec -- go run ./cmd/culler-package --verify-binary "$output/image/runner/image/mc-prod-bin" \
   --platform linux-arm64 --commit "$commit"
 mise exec -- go run ./cmd/culler-package --root "$ROOT" --binary "$output/mc-darwin" \
