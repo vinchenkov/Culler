@@ -3,6 +3,13 @@ import { projectName, stampLabel } from "./format.js";
 
 const replyRetries = new Set();
 
+// A release label shows the version and the short commit, for example "0.1.0 (1a2b3c4d5e6f)".
+// An unknown version gives the short commit only.
+export function releaseLabel(version, commit) {
+  const short = String(commit ?? "unknown").slice(0, 12);
+  return typeof version === "string" && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(version) ? `${version} (${short})` : short;
+}
+
 export function releaseView(status) {
   const labels = {
     current: "Culler is current",
@@ -12,21 +19,25 @@ export function releaseView(status) {
     unknown: "Release availability is unknown",
   };
   const workflow = status?.workflow;
-  const preparation = workflow?.commit && workflow.commit !== status.available
+  const version = workflow?.version;
+  const previous = status?.available ? " The previous release remains available." : "";
+  const preparation = workflow?.commit && version && workflow.commit !== status.available
     ? ({
-      preparing: "GitHub is preparing the latest main commit.",
-      failed: "The workflow for the latest main commit failed.",
-      cancelled: "The workflow for the latest main commit was cancelled.",
-      published: "GitHub completed the workflow for the latest main commit. Check for updates again to refresh the available release.",
+      preparing: `Version ${version} is not available yet. Its workflow is in progress.`,
+      failed: `The workflow for version ${version} failed.${previous}`,
+      cancelled: `The workflow for version ${version} stopped before it completed.${previous}`,
+      published: `GitHub completed the workflow for version ${version}. Check for updates again to refresh the available release.`,
     }[workflow.state]
-      ?? "The latest main commit has no complete release. Its workflow state is unknown.") : "";
+      ?? `Version ${version} has no complete release. Its workflow state is unknown.`) : "";
   return {
     title: labels[status?.state] ?? labels.unknown,
     detail: status?.detail ?? "Check the network and GitHub access, then retry.",
     installed: status?.installed ?? "unknown",
     available: status?.available ?? "unknown",
+    installedLabel: releaseLabel(status?.installed_version, status?.installed ?? "unknown"),
+    availableLabel: releaseLabel(status?.available_version, status?.available ?? "unknown"),
     preparation,
-    workflowURL: typeof workflow?.url === "string" && /^https:\/\/github\.com\/[^/]+\/[^/]+\/actions\/runs\/\d+$/.test(workflow.url) ? workflow.url : null,
+    workflowURL: preparation && typeof workflow?.url === "string" && /^https:\/\/github\.com\/[^/]+\/[^/]+\/actions\/runs\/\d+$/.test(workflow.url) ? workflow.url : null,
   };
 }
 

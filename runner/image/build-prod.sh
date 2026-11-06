@@ -9,6 +9,11 @@ if [[ ! "$MC_RELEASE_BUILD_ID" =~ ^[0-9a-f]{40,64}$ ]]; then
   echo "build-prod.sh: MC_RELEASE_BUILD_ID must be a 40..64 lowercase-hex commit" >&2
   exit 2
 fi
+MC_RELEASE_VERSION="$(cat ../../VERSION)"
+if [[ ! "$MC_RELEASE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+  echo "build-prod.sh: the VERSION file must hold one version, for example 0.1.0" >&2
+  exit 2
+fi
 
 # A loaded deployment uses the shared image tag. Its image identity must stay unchanged.
 units=
@@ -44,7 +49,7 @@ fi
 echo "build-prod.sh: compiling linux/arm64 mc WITHOUT test_fake_routing..." >&2
 printf 'setup-progress: compile-linux\n' >&2
 (cd ../../mc && GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH=arm64 mise exec -- go build -trimpath -mod=readonly \
-  -ldflags "-w -X main.releaseBuildID=$MC_RELEASE_BUILD_ID" \
+  -ldflags "-w -X main.releaseBuildID=$MC_RELEASE_BUILD_ID -X main.releaseVersion=$MC_RELEASE_VERSION" \
   -o ../runner/image/mc-prod-bin ./cmd/mc)
 printf 'setup-progress: compile-dispatcher\n' >&2
 (cd ../.. && GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH=arm64 mise exec -- go build -trimpath -ldflags "-w" -o runner/image/mc-dispatch ./runner/image/mc_dispatch.go)

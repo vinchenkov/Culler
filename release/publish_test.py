@@ -1,19 +1,26 @@
 import datetime
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
-from publish import CHECKS, file_record, publish
+from publish import CHECKS, file_record, publish, write_decision
 
 COMMIT = "a" * 40
 IMAGE = "ghcr.io/example/culler/runner@sha256:" + "b" * 64
 NOW = datetime.datetime(2026, 9, 26, tzinfo=datetime.timezone.utc)
 AGENTSVIEW = {"version": "0.44.0", "archive_sha256": "e" * 64, "executable_sha256": "f" * 64}
+NOTES = "### Changes\n\n- A change.\n"
 HOST_BUN = {"version": "1.3.9", "archives": {"darwin-arm64": {
     "name": "bun-darwin-aarch64.zip",
     "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.3.9/bun-darwin-aarch64.zip",
     "size": 22000000, "sha256": "d" * 64}}}
+
+
+def latest_release(version="0.1.0"):
+    return {"tag_name": "v" + version}
 
 
 class FakeGitHub:
@@ -23,7 +30,9 @@ class FakeGitHub:
         self.corrupt = corrupt
         self.assets = {}
         self.published = []
+        self.created = []
         self.release = None
+        self.compared = []
 
     def request(self, method, path, body=None, binary=False):
         if method == "GET":
@@ -32,6 +41,7 @@ class FakeGitHub:
             if path.endswith("...main"):
                 return {"status": "identical"}
             if path.startswith("/compare/"):
+                self.compared.append(path)
                 return {"status": self.relation}
             if path.startswith("/releases/tags/"):
                 return self.release
@@ -41,6 +51,7 @@ class FakeGitHub:
                 asset = self.assets[int(path.rsplit("/", 1)[1])]
                 return b"corrupt" if asset["name"] == self.corrupt else asset["body"]
         if method == "POST" and path == "/releases":
+            self.created.append(body)
             self.release = {"id": 1, "draft": True, "assets": [], "upload_url": "https://uploads.github.com/releases/1/assets{?name}"}
             return self.release
         if method == "POST" and "?name=" in path:
@@ -70,6 +81,8 @@ class PublishTest(unittest.TestCase):
         (output / "package.json").write_text(json.dumps(package))
         (output / "opencode.json").write_text(json.dumps(file_record(assets / "culler-opencode-linux-arm64.tar.gz")))
         (output / "sequence").write_text("17\n")
+        (output / "version").write_text("0.2.0\n")
+        (output / "release-notes.md").write_text(NOTES)
         return output
 
     def test_publication_follows_all_download_checks(self):
@@ -78,8 +91,17 @@ class PublishTest(unittest.TestCase):
             output = self.fixture(root)
             api = FakeGitHub()
             self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW))
-            self.assertEqual(api.published, [{"draft": False, "make_latest": "true"}])
+            self.assertEqual(api.published, [{"name": "Culler 0.2.0", "body": NOTES, "draft": False, "make_latest": "true"}])
+            self.assertEqual(api.created[0]["name"], "Culler 0.2.0")
+            self.assertEqual(api.created[0]["body"], NOTES)
+            self.assertEqual(api.created[0]["tag_name"], "v0.2.0")
+            self.assertFalse(api.created[0]["prerelease"])
             record = json.loads((output / "assets/release.json").read_text())
+            self.assertEqual(record["version"], "0.2.0")
+            self.assertEqual(record["format"], 1)
+            self.assertEqual(record["tag"], "v0.2.0")
+            self.assertEqual(record["release_id"], COMMIT)
+            self.assertEqual(record["sequence"], 17)
             self.assertEqual(record["commit"], COMMIT)
             self.assertEqual(record["workflow_seconds"], 60)
             self.assertEqual(record["runtimes"], {"go": "1.25.12", "bun": "1.3.9"})
@@ -143,23 +165,57 @@ class PublishTest(unittest.TestCase):
                 publish(api, self.fixture(root), COMMIT, IMAGE, 1, NOW)
             self.assertEqual(api.published, [])
 
-    def test_old_workflow_cannot_replace_newer_release(self):
+    def test_a_higher_version_replaces_the_latest_release(self):
+        for previous in ("0.1.0", "0.1.9"):
+            with self.subTest(previous=previous), tempfile.TemporaryDirectory() as directory:
+                api = FakeGitHub(latest=latest_release(previous))
+                self.assertTrue(publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW))
+                self.assertEqual(api.compared[-1], "/compare/v" + previous + "..." + COMMIT)
+                self.assertEqual(len(api.published), 1)
+
+    def test_the_version_of_the_latest_release_publishes_nothing(self):
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            api = FakeGitHub(latest={"tag_name": "culler-" + "d" * 40}, relation="behind")
-            self.assertFalse(publish(api, self.fixture(root), COMMIT, IMAGE, 1, NOW))
+            api = FakeGitHub(latest=latest_release("0.2.0"))
+            self.assertFalse(publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW))
             self.assertEqual(api.published, [])
             self.assertEqual(api.assets, {})
 
-    def test_diverged_history_requires_a_publication_decision(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            api = FakeGitHub(latest={"tag_name": "culler-" + "d" * 40}, relation="diverged")
-            with self.assertRaises(ValueError):
-                publish(api, self.fixture(root), COMMIT, IMAGE, 1, NOW)
-            self.assertEqual(api.published, [])
+    def test_a_lower_version_fails_publication(self):
+        for previous in ("0.3.0", "0.10.0", "1.0.0"):
+            with self.subTest(previous=previous), tempfile.TemporaryDirectory() as directory:
+                api = FakeGitHub(latest=latest_release(previous))
+                with self.assertRaisesRegex(ValueError, "lower than version " + previous):
+                    publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
+                self.assertEqual(api.published, [])
+                self.assertEqual(api.assets, {})
 
-    def test_newer_publication_during_upload_preserves_availability(self):
+    def test_a_higher_version_requires_a_later_commit(self):
+        for relation in ("behind", "identical", "diverged"):
+            with self.subTest(relation=relation), tempfile.TemporaryDirectory() as directory:
+                api = FakeGitHub(latest=latest_release("0.1.0"), relation=relation)
+                with self.assertRaisesRegex(ValueError, "requires a commit after"):
+                    publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
+                self.assertEqual(api.published, [])
+
+    def test_a_latest_release_without_a_version_tag_fails_publication(self):
+        for tag in ("v0.1", "0.1.0", "v01.0.0", "culler-" + "d" * 40, ""):
+            with self.subTest(tag=tag), tempfile.TemporaryDirectory() as directory:
+                api = FakeGitHub(latest={"tag_name": tag})
+                with self.assertRaisesRegex(ValueError, "not a version tag"):
+                    publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
+                self.assertEqual(api.published, [])
+
+    def test_a_release_without_notes_or_with_a_malformed_version_is_not_published(self):
+        for name, text in (("release-notes.md", "\n"), ("version", "0.2\n")):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                output = self.fixture(Path(directory))
+                (output / name).write_text(text)
+                api = FakeGitHub()
+                with self.assertRaises(ValueError):
+                    publish(api, output, COMMIT, IMAGE, 1, NOW)
+                self.assertEqual(api.assets, {})
+
+    def test_the_same_version_published_during_upload_preserves_availability(self):
         class ConcurrentGitHub(FakeGitHub):
             reads = 0
 
@@ -167,8 +223,7 @@ class PublishTest(unittest.TestCase):
                 if method == "GET" and path == "/releases/latest":
                     self.reads += 1
                     if self.reads > 1:
-                        self.latest = {"tag_name": "culler-" + "d" * 40}
-                        self.relation = "behind"
+                        self.latest = latest_release("0.2.0")
                 return super().request(method, path, body, binary)
 
         with tempfile.TemporaryDirectory() as directory:
@@ -190,6 +245,16 @@ class PublishTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 publish(api, output, COMMIT, IMAGE, 1, NOW)
             self.assertEqual(api.published, [])
+
+    def test_the_decision_reaches_the_step_outputs_and_the_summary(self):
+        for new, value in ((True, "publish=true\n"), (False, "publish=false\n")):
+            with self.subTest(new=new), tempfile.TemporaryDirectory() as directory:
+                outputs, summary = Path(directory) / "outputs", Path(directory) / "summary"
+                with mock.patch.dict(os.environ, {"GITHUB_OUTPUT": str(outputs), "GITHUB_STEP_SUMMARY": str(summary)}), \
+                        mock.patch("builtins.print"):
+                    write_decision("0.2.0", new)
+                self.assertEqual(outputs.read_text(), value)
+                self.assertIn("Version 0.2.0", summary.read_text())
 
 
 if __name__ == "__main__":

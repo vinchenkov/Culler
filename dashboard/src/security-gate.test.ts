@@ -62,6 +62,22 @@ test("the scans and the upload use the exact checked images", () => {
   expect(runs(workflow.jobs["fast-suite-macos"])).toContain("./release/check.sh");
 });
 
+test("only a new version reaches the image upload and the publication", () => {
+  const decision = workflow.jobs["release-version"];
+  expect(decision.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main'");
+  expect(decision.permissions).toEqual({ contents: "read" });
+  expect(runs(decision)).toContain("release/publish.py --decide");
+  expect(decision.outputs.publish).toBe("${{ steps.decide.outputs.publish }}");
+  for (const name of ["product-image", "release-downloads"]) {
+    const job = workflow.jobs[name];
+    expect(job.needs).toContain("release-version");
+    expect(job.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'");
+  }
+  expect(workflow.jobs["release-checks"].needs).not.toContain("release-version");
+  expect(runs(workflow.jobs["fast-suite-macos"])).toContain("./release/check.sh");
+  expect(readFileSync(resolve(root, "release/check.sh"), "utf8")).toContain('version.py" check');
+});
+
 test("the nightly workflow retains results without a source change", () => {
   const nightly = Bun.YAML.parse(readFileSync(resolve(root, ".github/workflows/security-nightly.yml"), "utf8")) as any;
   expect(nightly.on.schedule.length).toBe(1);

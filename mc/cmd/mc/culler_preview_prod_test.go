@@ -38,7 +38,7 @@ func TestCullerTerminalPreview(t *testing.T) {
 		args, expected = []string{"logs", "--tail", "0"}, 2
 	case scenario == "version-mismatch":
 		args = []string{"version"}
-		releaseBuildID = strings.Repeat("b", 40)
+		releaseBuildID, releaseVersion = strings.Repeat("b", 40), "0.2.0"
 	case scenario == "version-files-mismatch":
 		args, expected = []string{"version"}, 1
 		path := filepath.Join(home, "culler")
@@ -111,7 +111,7 @@ func TestCullerTerminalPreview(t *testing.T) {
 				_ = process.Signal(os.Interrupt)
 				<-ctx.Done()
 			}
-			s := releaseStatus{Installed: releaseBuildID, Available: strings.Repeat("b", 40), State: "available", Detail: "A newer Culler release is available."}
+			s := releaseStatus{Installed: releaseBuildID, InstalledVersion: releaseVersion, Available: strings.Repeat("b", 40), AvailableVersion: "0.2.0", State: "available", Detail: "A newer Culler release is available."}
 			if scenario == "update-unknown" {
 				s.State, s.Available, s.Detail = "unknown", "", "The release source is unavailable. Check your connection, then retry the release check."
 			}

@@ -26,7 +26,7 @@ func setupPreviewExisting(t *testing.T, name string) setupPreviewCase {
 	w, _ := setupTestWizard(t)
 	preview := setupPreviewCase{wizard: w}
 	state := completeSetupDeployment()
-	state.Release = setupRelease{Installed: "cb37a2d1c9016710aa5e3f8c7c4c6f43b173ab99", Proposed: "cb37a2d1c9016710aa5e3f8c7c4c6f43b173ab99", SourceState: "clean", InstalledDisplay: "cb37a2d1c901", ProposedDisplay: "cb37a2d1c901", Components: []setupReleaseComponent{
+	state.Release = setupRelease{Installed: "cb37a2d1c9016710aa5e3f8c7c4c6f43b173ab99", Proposed: "cb37a2d1c9016710aa5e3f8c7c4c6f43b173ab99", SourceState: "clean", InstalledDisplay: "0.1.0 (cb37a2d1c901)", ProposedDisplay: "0.1.0 (cb37a2d1c901)", Components: []setupReleaseComponent{
 		{Name: "Service release", Status: "same"}, {Name: "Host files", Status: "same"}, {Name: "Runner files", Status: "same"}, {Name: "Agent image", Status: "same"},
 	}}
 
@@ -119,11 +119,11 @@ func setupPreviewExisting(t *testing.T, name string) setupPreviewCase {
 		}
 	case "existing-update", "existing-update-stopped", "existing-update-blocked", "existing-update-mixed", "existing-update-files", "existing-update-older", "existing-update-unknown", "existing-update-components":
 		state.Update = true
-		state.Release.Installed, state.Release.InstalledDisplay = "a3def3e5dca098246219bc631f35fcd290158471", "a3def3e5dca09"
+		state.Release.Installed, state.Release.InstalledDisplay = "a3def3e5dca098246219bc631f35fcd290158471", "a3def3e5dca0"
 		for i := range state.Release.Components {
 			state.Release.Components[i].Status = "different"
 		}
-		state.Release.Components[3].Installed = state.Release.InstalledDisplay
+		state.Release.Components[3].Installed = state.Release.Installed
 		state.Active = name != "existing-update-stopped"
 		state.Checks[0].Status = "fail"
 		state.Checks[0].Detail = "The installed files differ from this installer."
@@ -149,6 +149,7 @@ func setupPreviewExisting(t *testing.T, name string) setupPreviewCase {
 		}
 		if name == "existing-update-older" {
 			state.Release.Relation = "older"
+			state.Release.InstalledDisplay = "0.1.0 (a3def3e5dca0)"
 		}
 		if name == "existing-update-unknown" {
 			state.Release.Installed = "unknown"

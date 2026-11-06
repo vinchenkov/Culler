@@ -41,7 +41,7 @@ ROOT=$(CDPATH= cd -- "$TMP/source" && pwd)
 fail() { printf 'redeploy_test.sh: %s\n' "$*" >&2; exit 1; }
 
 # Each mc build omits DWARF data and carries the release identity.
-[ "$(grep -c -F -- '-ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID"' "$ROOT/redeploy.sh")" = 2 ] ||
+[ "$(grep -c -F -- '-ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION"' "$ROOT/redeploy.sh")" = 2 ] ||
   fail "a go build of redeploy.sh does not omit DWARF data"
 
 make_fakes() {

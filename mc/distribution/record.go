@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -21,6 +22,7 @@ var hexDigest = regexp.MustCompile(`^[0-9a-f]{64}$`)
 var commitDigest = regexp.MustCompile(`^[0-9a-f]{40}$`)
 var imageDigest = regexp.MustCompile(`^ghcr\.io/[a-z0-9][a-z0-9/._-]*@sha256:[0-9a-f]{64}$`)
 var runtimeVersion = regexp.MustCompile(`^[0-9]+\.[0-9]+\.[0-9]+$`)
+var productVersion = regexp.MustCompile(`^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$`)
 
 type Asset struct {
 	Name   string `json:"name"`
@@ -64,6 +66,8 @@ type HostBunRelease struct {
 const HostBunPlatform = "darwin-arm64"
 
 type Record struct {
+	// Version is the VERSION file of the release commit. Tag is "v" + Version.
+	Version         string          `json:"version"`
 	OpenCode        *Asset          `json:"opencode,omitempty"`
 	WorkflowSeconds int64           `json:"workflow_seconds,omitempty"`
 	Format          int             `json:"format"`
@@ -88,11 +92,70 @@ type Record struct {
 	HostBun *HostBunRelease `json:"host_bun,omitempty"`
 }
 
+// ValidVersion reports whether v is a MAJOR.MINOR.PATCH version without
+// leading zeros.
+func ValidVersion(v string) bool { return productVersion.MatchString(v) }
+
+// CompareVersions returns -1, 0, or 1 when a is lower than, equal to, or
+// higher than b. An absent or invalid version is lower than each valid
+// version.
+func CompareVersions(a, b string) int {
+	parts := func(v string) []int {
+		if !ValidVersion(v) {
+			return nil
+		}
+		var n []int
+		for _, field := range strings.Split(v, ".") {
+			value, _ := strconv.Atoi(field)
+			n = append(n, value)
+		}
+		return n
+	}
+	x, y := parts(a), parts(b)
+	switch {
+	case x == nil && y == nil:
+		return 0
+	case x == nil:
+		return -1
+	case y == nil:
+		return 1
+	}
+	for i := range x {
+		if x[i] != y[i] {
+			if x[i] < y[i] {
+				return -1
+			}
+			return 1
+		}
+	}
+	return 0
+}
+
+// Label names a release for a person: the version and the short commit,
+// for example "0.1.0 (1a2b3c4d5e6f)". An unknown version gives the short
+// commit only.
+func Label(version, commit string) string {
+	short := commit
+	if len(short) > 12 {
+		short = short[:12]
+	}
+	if !ValidVersion(version) {
+		return short
+	}
+	return version + " (" + short + ")"
+}
+
+// Label names the release for a person.
+func (r Record) Label() string { return Label(r.Version, r.Commit) }
+
 func (r Record) Validate() error {
 	if r.Format != 1 {
 		return errors.New("unsupported release record format")
 	}
-	if !commitDigest.MatchString(r.Commit) || r.ReleaseID != r.Commit || r.Tag != "culler-"+r.Commit {
+	if !ValidVersion(r.Version) {
+		return errors.New("release version is invalid")
+	}
+	if !commitDigest.MatchString(r.Commit) || r.ReleaseID != r.Commit || r.Tag != "v"+r.Version {
 		return errors.New("release identity does not match its commit")
 	}
 	if r.Sequence <= 0 || r.PublishedAt.IsZero() {

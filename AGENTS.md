@@ -45,6 +45,8 @@ The local fast suite runs these checks:
 
 The GitHub Actions workflow at `.github/workflows/release.yml` verifies release inputs after a push to `main`.
 The workflow publishes a release only after its required checks pass.
+The workflow publishes a release only when the `VERSION` file holds a version above the version of the latest release.
+Each version needs a `CHANGELOG.md` section, and `./release/check.sh` checks both files.
 Pull requests and pushes to `main` also run the `dashboard-browser` job.
 That job runs the complete `dashboard/smoke/` suite through `./dashboard/smoke.sh` on Linux arm64.
 The job uses the Go and Bun versions of `.mise.toml` and the Node.js version of the default Project image.

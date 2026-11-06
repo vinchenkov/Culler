@@ -32,10 +32,10 @@ type cullerService struct {
 	Stopped             bool
 }
 type cullerStatus struct {
-	Home, Release, CLI, Address, Overall, Detail, Operation string
-	Services                                                []cullerService
-	Next, NextCommand                                       string
-	OK                                                      bool
+	Home, Release, Version, CLI, Address, Overall, Detail, Operation string
+	Services                                                         []cullerService
+	Next, NextCommand                                                string
+	OK                                                               bool
 }
 
 type cullerRuntime struct {
@@ -51,6 +51,29 @@ func cullerBuild() string {
 		return "development"
 	}
 	return cullerReleaseIdentity(releaseBuildID)
+}
+
+// cullerReleaseLabel names a release identity for a person: the version
+// and the short commit. A state such as "development" or "Not installed"
+// stays unchanged.
+func cullerReleaseLabel(id, version string) string {
+	if len(id) != 40 || strings.Trim(id, "0123456789abcdef") != "" {
+		return id
+	}
+	return distribution.Label(version, id)
+}
+
+// cullerInstalledVersion returns the version of the installed release id.
+func cullerInstalledVersion(home, id string) string {
+	for _, path := range []string{distribution.InstalledRecord, filepath.Join("state", "pending-release.json")} {
+		if r, err := distribution.Load(filepath.Join(home, path)); err == nil && r.Commit == id {
+			return r.Version
+		}
+	}
+	if id == releaseBuildID {
+		return releaseVersion
+	}
+	return ""
 }
 
 func cullerReleaseIdentity(id string) string {
@@ -182,8 +205,8 @@ func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, dep
 	diagnosticHome = home
 	if o.command == "version" {
 		installed, err := cullerInstalled(home)
-		out.Field("CLI release", cullerBuild())
-		out.Field("Culler release", installed)
+		out.Field("CLI release", cullerReleaseLabel(cullerBuild(), releaseVersion))
+		out.Field("Culler release", cullerReleaseLabel(installed, cullerInstalledVersion(home, installed)))
 		if installed != "Not installed" && installed != "Unknown" && installed != cullerBuild() {
 			out.Panel("Release mismatch", []string{"The command and installed Culler use different releases.", "Use the installer to repair the release:"})
 			out.Literal(deployment.CLICommand(home, "update"))
@@ -287,9 +310,9 @@ func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, dep
 					s.Detail = setupSafeDiagnostic(checkErr.Error())
 				}
 			}
-			out.Field("Installed", s.Installed)
+			out.Field("Installed", cullerReleaseLabel(s.Installed, s.InstalledVersion))
 			if s.Available != "" {
-				out.Field("Available", s.Available)
+				out.Field("Available", cullerReleaseLabel(s.Available, s.AvailableVersion))
 			}
 			if s.State == "unknown" {
 				out.CommandResult("Release availability is unknown", false)
@@ -353,9 +376,9 @@ func renderCullerChangeResult(out *onboarding.Terminal, command, service string)
 func renderCullerStatus(t *onboarding.Terminal, s cullerStatus) {
 	t.CommandResult(s.Overall, s.OK && s.Overall == "Ready")
 	t.Field("Home", s.Home)
-	t.Field("Culler release", s.Release)
+	t.Field("Culler release", cullerReleaseLabel(s.Release, s.Version))
 	if s.CLI != s.Release && s.Release != "Not installed" && s.Release != "Unknown" {
-		t.Field("CLI release", s.CLI)
+		t.Field("CLI release", cullerReleaseLabel(s.CLI, releaseVersion))
 		t.Panel("Release mismatch", []string{"The command and Culler use different releases."})
 	}
 	for _, service := range s.Services {
@@ -435,6 +458,7 @@ func inspectCullerWith(ctx context.Context, home string, observe cullerObservati
 	s := cullerStatus{Home: home, CLI: cullerBuild(), Overall: "Status unavailable"}
 	var err error
 	s.Release, err = cullerInstalled(home)
+	s.Version = cullerInstalledVersion(home, s.Release)
 	if err != nil {
 		s.Detail = setupSafeDiagnostic(err.Error())
 	}

@@ -146,7 +146,7 @@ def asset(filename,id,name=None):
  return a
 bun=root/'bun.zip'
 host_bun={'version':'1.3.9','archives':{'darwin-arm64':{'name':'bun-darwin-aarch64.zip','url':'https://github.com/oven-sh/bun/releases/download/bun-v1.3.9/bun-darwin-aarch64.zip','size':bun.stat().st_size,'sha256':hashlib.sha256(bun.read_bytes()).hexdigest()}}}
-record={'format':1,'commit':commit,'release_id':commit,'tag':'culler-'+commit,'sequence':7,'published_at':'2026-09-26T00:00:00Z','platform':'darwin-arm64','schema':'f'*64,'runtimes':{'go':'1.25.12','bun':'1.3.9'},'host_bun':host_bun,'image':'ghcr.io/owner/culler@sha256:'+'b'*64,'checks':[{'name':n,'passed':True} for n in ['fast-suite-macos','deployment-linux','application-package','product-image','release-downloads']],'installer':asset('installer.sh',2),'package':asset('package.tar.gz',3,'culler-darwin-arm64.tar.gz')}
+record={'format':1,'version':'0.1.0','commit':commit,'release_id':commit,'tag':'v0.1.0','sequence':7,'published_at':'2026-09-26T00:00:00Z','platform':'darwin-arm64','schema':'f'*64,'runtimes':{'go':'1.25.12','bun':'1.3.9'},'host_bun':host_bun,'image':'ghcr.io/owner/culler@sha256:'+'b'*64,'checks':[{'name':n,'passed':True} for n in ['fast-suite-macos','deployment-linux','application-package','product-image','release-downloads']],'installer':asset('installer.sh',2),'package':asset('package.tar.gz',3,'culler-darwin-arm64.tar.gz')}
 (root/'release.json').write_text(json.dumps(record));assets.append({'id':1,'name':'release.json','size':(root/'release.json').stat().st_size})
 (root/'github-release.json').write_text(json.dumps({'tag_name':record['tag'],'draft':False,'prerelease':False,'assets':assets}))
 PY
@@ -273,7 +273,7 @@ python3 - "$TMP/fixtures" <<'PYFIXTURE'
 import hashlib,json,sys
 from pathlib import Path
 root=Path(sys.argv[1]);record=json.loads((root/'release.json').read_text());installer=root/'installer.sh'
-record.update(commit='b'*40,release_id='b'*40,tag='culler-'+'b'*40,sequence=8)
+record.update(version='0.2.0',commit='b'*40,release_id='b'*40,tag='v0.2.0',sequence=8)
 record['installer']['sha256']=hashlib.sha256(installer.read_bytes()).hexdigest();record['installer']['size']=installer.stat().st_size
 (root/'release.json').write_text(json.dumps(record))
 github=json.loads((root/'github-release.json').read_text());github['tag_name']=record['tag']
@@ -284,6 +284,21 @@ PYFIXTURE
 CULLER_FIXTURE_NEW="$TMP/new-installer" sh "$TMP/outside/install.sh" --check-updates >"$TMP/new.out" 2>&1 || fail 'saved launcher rejected the newer release'
 [ -f "$TMP/new-installer" ] || fail 'saved launcher reused its old installer'
 for file in installer.sh release.json github-release.json; do cp "$TMP/$file.original" "$TMP/fixtures/$file"; done
+for field in tag version; do
+  python3 - "$TMP/fixtures" "$field" <<'PYFIXTURE'
+import json,sys
+from pathlib import Path
+root=Path(sys.argv[1]);record=json.loads((root/'release.json').read_text())
+if sys.argv[2]=='tag': record['tag']='culler-'+record['commit']
+else: del record['version']
+(root/'release.json').write_text(json.dumps(record))
+PYFIXTURE
+  rm -f "$TMP/args"
+  if sh "$TMP/outside/install.sh" >"$TMP/identity-$field.out" 2>&1; then fail "a release record with a wrong $field succeeded"; fi
+  [ ! -e "$TMP/args" ] || fail "a release record with a wrong $field executed code"
+  grep -Eq 'release identities differ|release record is incomplete' "$TMP/identity-$field.out" || fail "a release record with a wrong $field gave another failure"
+  cp "$TMP/release.json.original" "$TMP/fixtures/release.json"
+done
 cp "$TMP/fixtures/installer.sh" "$TMP/valid-installer"
 printf '\n# corruption\n' >>"$TMP/fixtures/installer.sh"
 rm -f "$TMP/args"

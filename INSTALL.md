@@ -1,6 +1,7 @@
 # Install and update Culler
 
 Culler supports Macs with Apple silicon.
+Culler is in early access. The [version rules](#versions) describe what a 0.x version means.
 A published release supplies the executable, runtime files, and container image.
 The release also supplies AgentsView, the trace viewer of the `kenn-io/agentsview` project.
 The Mac requires no Culler checkout or Go compiler.
@@ -136,7 +137,7 @@ Help, status, and version repeat this boundary.
 | --- | --- |
 | `culler help` | Show the commands and their options. |
 | `culler status` | Show current service checks and saved stop choices. |
-| `culler version` | Show the full command and installed release identities. |
+| `culler version` | Show the versions of the command and the installed release. |
 | `culler start [service]` | Start the selected services. |
 | `culler stop [service]` | Stop the selected services safely. |
 | `culler restart [service]` | Restart the selected services. |
@@ -213,14 +214,35 @@ The command accepts these additional paths for recovery:
 Each path option accepts repeated uses.
 The command reports each failure and returns a nonzero exit code after incomplete removal.
 
+## Versions
+
+Culler is in early access, and the major version 0 states this.
+Each release has a version in the form MAJOR.MINOR.PATCH, for example `0.1.0`.
+`culler version`, `culler update --check`, setup, and the dashboard show the version first and the short commit second.
+For example, they show `0.1.0 (1a2b3c4d5e6f)`.
+
+These rules apply before version 1.0.0:
+
+- A compatible fix increases the patch number, for example from 0.1.0 to 0.1.1.
+- A feature or an incompatible change increases the minor number, for example from 0.1.1 to 0.2.0.
+- Version 1.0.0 declares a stable public contract. After version 1.0.0, an incompatible change increases the major number.
+
+[CHANGELOG.md](CHANGELOG.md) has one section for each version.
+Each section gives the changes, the known limits, the database compatibility, and the update effects.
+Read the section of a new version before you update.
+
 ## Release files
 
-GitHub Releases stores these files for one commit:
+GitHub Releases stores these files for each version:
 
 - `install.sh`, the permanent launcher.
 - `installer.sh`, the installer for that release.
 - `culler-darwin-arm64.tar.gz`, the application package.
+- `culler-opencode-linux-arm64.tar.gz`, the OpenCode program and its web search plugin.
 - `release.json`, the release record.
+
+The release record holds the version, the commit, and the tag of the release.
+The release tag is `v<version>`, for example `v0.1.0`.
 
 GitHub Container Registry stores the matching container image.
 The release record identifies its exact digest.
@@ -263,11 +285,35 @@ GitHub secret scanning checks the repository for secrets.
 These scans report their results and never prevent a release.
 
 The checks exercise the product image without a mounted Culler checkout.
-Each release uses one full commit identifier and an immutable image digest.
+Each release uses one version, one full commit identifier, and an immutable image digest.
 The workflow verifies each release file after upload.
 The workflow makes the release available only after all required checks pass.
 An incomplete release preserves the previous available release.
-An older workflow preserves a newer available release.
+
+### Versions and release notes
+
+The `VERSION` file holds the version of the next release.
+A push to `main` publishes a release only when `VERSION` holds a version above the version of the latest release.
+With the same version, the workflow runs the checks and publishes no release.
+A lower version fails the `release-version` job, and the workflow publishes no release.
+The release name is `Culler <version>`.
+The release description is the `CHANGELOG.md` section of that version.
+The workflow never marks a release as a prerelease, because Culler installs only releases that are not prereleases.
+
+To publish a release, make one change with these edits:
+
+1. Increase the version in `VERSION` by the [version rules](#versions).
+2. Add a `## <version>` section at the top of `CHANGELOG.md`.
+3. Give the section these parts in this order: `### Changes`, `### Known limits`, `### Database compatibility`, and `### Update effects`.
+
+The pull request checks reject an absent or malformed `VERSION` file.
+They also reject a version without a complete `CHANGELOG.md` section.
+
+Before a version increase, compare the database schema of the new version with the `schema` value in the `release.json` of the latest release.
+Ask your coding harness to make this comparison.
+A different schema stops each update from the latest release at the database check, and the update keeps the installed release.
+State that result in the Database compatibility and Update effects parts.
+After publication, update the test Mac from the previous release and confirm the result that those parts state.
 
 The repository's Actions page shows each workflow and its result.
 The Releases page shows complete releases.
@@ -277,6 +323,7 @@ Later updates use the same saved launcher.
 
 The coding harness can run `./release/check.sh` to check the release tools locally.
 That check uses local fixtures and requires no publication credential.
+It also checks `VERSION` and `CHANGELOG.md`.
 
 The [release security guide](release/security/README.md) describes the security scans and the nightly image scans.
 It also describes the GitHub ruleset of the `main` branch.

@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { systemIssues, acceptSystemStatus, actionControl, conditionTitle, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, DEPLOYMENT_CHECK_MS, diagnosticResults, refreshSummary, conditionExplanation, conditionRetry, conditionSummary, conditionImpact, recoveryText, releaseView, repairText } from "./systemhealth.js";
+import { systemIssues, acceptSystemStatus, actionControl, conditionTitle, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, DEPLOYMENT_CHECK_MS, diagnosticResults, refreshSummary, conditionExplanation, conditionRetry, conditionSummary, conditionImpact, recoveryText, releaseLabel, releaseView, repairText } from "./systemhealth.js";
 
 test("one shared decision represents its task blocks and preserves the full question", () => {
   const decision = { id: "proposal-decision:4", project_id: "project", proposal_decision_id: 4,
@@ -50,21 +50,38 @@ test("a partial response preserves an independent task after its shared decision
 test("release status keeps a failed check separate from a current release", () => {
   expect(releaseView({ state: "unknown", installed: "a", available: "a" }).title).toBe("Release availability is unknown");
   expect(releaseView({ state: "current", installed: "a", available: "a" }).title).toBe("Culler is current");
-  const pending = releaseView({ state: "current", available: "a", workflow: { state: "preparing", commit: "b", url: "https://github.com/owner/repo/actions/runs/123" } });
+  const pending = releaseView({ state: "current", available: "a", workflow: { state: "preparing", commit: "b", version: "0.2.0", url: "https://github.com/owner/repo/actions/runs/123" } });
   expect(pending.title).toBe("Culler is current");
-  expect(pending.preparation).toContain("GitHub is preparing");
+  expect(pending.preparation).toBe("Version 0.2.0 is not available yet. Its workflow is in progress.");
+  expect(releaseView({ state: "current", available: "a", workflow: { state: "failed", commit: "b", version: "0.2.0" } }).preparation)
+    .toBe("The workflow for version 0.2.0 failed. The previous release remains available.");
+  expect(releaseView({ state: "none", workflow: { state: "cancelled", commit: "b", version: "0.1.0" } }).preparation)
+    .toBe("The workflow for version 0.1.0 stopped before it completed.");
   expect(pending.workflowURL).toEndWith("/123");
   expect(releaseView({ workflow: { url: "javascript:alert(1)" } }).workflowURL).toBeNull();
 });
 
-test("a completed newer workflow asks for another release check", () => {
-  const view = releaseView({ state: "current", installed: "a", available: "a", workflow: { state: "published", commit: "b" } });
+test("a completed workflow of a new version asks for another release check", () => {
+  const view = releaseView({ state: "current", installed: "a", available: "a", workflow: { state: "published", commit: "b", version: "0.2.0" } });
   expect(view.available).toBe("a");
-  expect(view.preparation).toContain("GitHub completed the workflow for the latest main commit.");
-  expect(view.preparation).toContain("Check for updates again");
-  expect(view.preparation).not.toContain("no complete release");
-  expect(view.preparation).not.toContain("state is unknown");
-  expect(releaseView({ available: "b", workflow: { state: "published", commit: "b" } }).preparation).toBe("");
+  expect(view.preparation).toBe("GitHub completed the workflow for version 0.2.0. Check for updates again to refresh the available release.");
+  expect(releaseView({ available: "b", workflow: { state: "published", commit: "b", version: "0.2.0" } }).preparation).toBe("");
+});
+
+test("a main commit without a new version shows no workflow", () => {
+  const view = releaseView({ state: "current", available: "a", workflow: { state: "unknown", url: "https://github.com/owner/repo/actions/runs/123" } });
+  expect(view.preparation).toBe("");
+  expect(view.workflowURL).toBeNull();
+});
+
+test("release labels show the version first and the short commit second", () => {
+  const commit = "573c79b19fa334c59ab89679a01b7198443f94bc";
+  const view = releaseView({ state: "available", installed: commit, available: "b".repeat(40), available_version: "0.1.0" });
+  expect(view.installedLabel).toBe("573c79b19fa3");
+  expect(view.availableLabel).toBe("0.1.0 (bbbbbbbbbbbb)");
+  expect(releaseLabel("0.10.2", commit)).toBe("0.10.2 (573c79b19fa3)");
+  expect(releaseLabel("v0.1.0", commit)).toBe("573c79b19fa3");
+  expect(releaseView({}).installedLabel).toBe("unknown");
 });
 
 test("Current recovery removes only its own condition and preserves history references", () => {

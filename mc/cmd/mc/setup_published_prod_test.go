@@ -180,7 +180,8 @@ func TestPublishedMaintenanceRequiresMatchingReceiptAndIdleDatabase(t *testing.T
 }
 
 func publishedTestRecord(commit string, sequence int64) distribution.Record {
-	r := distribution.Record{Format: 1, Commit: commit, ReleaseID: commit, Tag: "culler-" + commit, Sequence: sequence, PublishedAt: time.Now().UTC(), Platform: "darwin-arm64", Schema: strings.Repeat("c", 64), Image: "ghcr.io/test/culler@sha256:" + strings.Repeat("d", 64), Runtimes: distribution.RuntimeVersions{Bun: "1.3.9", Go: "1.25.12"}, Installer: distribution.Asset{Name: "installer.sh", SHA256: strings.Repeat("e", 64), Size: 1}, Package: distribution.Asset{Name: "culler-darwin-arm64.tar.gz", SHA256: strings.Repeat("f", 64), Size: 1},
+	version := "0." + strconv.FormatInt(sequence, 10) + ".0"
+	r := distribution.Record{Format: 1, Version: version, Commit: commit, ReleaseID: commit, Tag: "v" + version, Sequence: sequence, PublishedAt: time.Now().UTC(), Platform: "darwin-arm64", Schema: strings.Repeat("c", 64), Image: "ghcr.io/test/culler@sha256:" + strings.Repeat("d", 64), Runtimes: distribution.RuntimeVersions{Bun: "1.3.9", Go: "1.25.12"}, Installer: distribution.Asset{Name: "installer.sh", SHA256: strings.Repeat("e", 64), Size: 1}, Package: distribution.Asset{Name: "culler-darwin-arm64.tar.gz", SHA256: strings.Repeat("f", 64), Size: 1},
 		HostBun: &distribution.HostBunRelease{Version: "1.3.9", Archives: map[string]distribution.HostBunArchive{distribution.HostBunPlatform: {Name: "bun-darwin-aarch64.zip", URL: "https://github.com/oven-sh/bun/releases/download/bun-v1.3.9/bun-darwin-aarch64.zip", Size: 1, SHA256: strings.Repeat("a", 64)}}}}
 	for _, name := range distribution.RequiredChecks {
 		r.Checks = append(r.Checks, distribution.Check{Name: name, Passed: true})
@@ -440,6 +441,7 @@ func TestPublishedInspectionUsesImageRevision(t *testing.T) {
 	home := t.TempDir()
 	prior := publishedTestRecord(strings.Repeat("a", 40), 20)
 	proposed := publishedTestRecord(strings.Repeat("b", 40), 21)
+	prior.Version, prior.Tag, proposed.Version, proposed.Tag = "0.1.0", "v0.1.0", "0.2.0", "v0.2.0"
 	if err := distribution.Save(filepath.Join(home, distribution.InstalledRecord), prior); err != nil {
 		t.Fatal(err)
 	}
@@ -455,6 +457,9 @@ func TestPublishedInspectionUsesImageRevision(t *testing.T) {
 			t.Fatal(err)
 		}
 		state := inspectPublishedSetupRelease(home, verbs.OnboardArgs{}, onboarding.DockerStatus{State: onboarding.DockerReady}, path)
+		if state.InstalledDisplay != "0.1.0 (aaaaaaaaaaaa)" || state.ProposedDisplay != "0.2.0 (bbbbbbbbbbbb)" {
+			t.Fatalf("release labels: %q %q", state.InstalledDisplay, state.ProposedDisplay)
+		}
 		found := false
 		for _, component := range state.Components {
 			if component.Name != "Agent image" {
@@ -834,5 +839,38 @@ func TestPublishedPrepareRetainsTheInstalledRecordWithoutRemovals(t *testing.T) 
 	installed, err := distribution.Load(filepath.Join(home, distribution.InstalledRecord))
 	if err != nil || installed.Commit != prior.Commit {
 		t.Fatalf("an incomplete update changed the installed record: %#v %v", installed, err)
+	}
+}
+
+func TestPublishedRecoveryLinesShowTheVersions(t *testing.T) {
+	home := t.TempDir()
+	installed := publishedTestRecord(strings.Repeat("a", 40), 20)
+	pending := publishedTestRecord(strings.Repeat("b", 40), 21)
+	installed.Version, installed.Tag, pending.Version, pending.Tag = "0.1.0", "v0.1.0", "0.2.0", "v0.2.0"
+	for path, record := range map[string]distribution.Record{distribution.InstalledRecord: installed, filepath.Join("state", "pending-release.json"): pending} {
+		if err := distribution.Save(filepath.Join(home, path), record); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := writePublishedState(filepath.Join(home, "supervision", "resident.json"), map[string]string{"releaseBuildId": pending.Commit}); err != nil {
+		t.Fatal(err)
+	}
+	got := strings.Join(publishedRecoveryLines(home), "\n")
+	want := "Service release: 0.2.0\u00a0(bbbbbbbbbbbb).\nLast verified release: 0.1.0\u00a0(aaaaaaaaaaaa).\nRelease awaiting verification: 0.2.0\u00a0(bbbbbbbbbbbb)."
+	if got != want {
+		t.Fatalf("recovery lines:\n%s", got)
+	}
+}
+
+func TestSetupReleaseLinesLabelTheAgentImageRelease(t *testing.T) {
+	r := setupRelease{Installed: strings.Repeat("a", 40), Proposed: strings.Repeat("b", 40), InstalledDisplay: "0.1.0 (aaaaaaaaaaaa)", ProposedDisplay: "0.2.0 (bbbbbbbbbbbb)", SourceState: "published",
+		Components: []setupReleaseComponent{{Name: "Agent image", Installed: strings.Repeat("a", 40), Status: "different"}}}
+	if lines := strings.Join(r.lines(), "\n"); !strings.Contains(lines, "Agent image: different. Release: 0.1.0\u00a0(aaaaaaaaaaaa).") ||
+		!strings.Contains(lines, "Proposed release: 0.2.0\u00a0(bbbbbbbbbbbb)") {
+		t.Fatalf("release lines:\n%s", lines)
+	}
+	r.Components[0].Installed = strings.Repeat("c", 40)
+	if lines := strings.Join(r.lines(), "\n"); !strings.Contains(lines, "Agent image: different. Release: cccccccccccc.") {
+		t.Fatalf("release lines:\n%s", lines)
 	}
 }

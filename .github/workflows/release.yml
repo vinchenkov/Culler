@@ -427,10 +427,32 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+  # A push to main publishes a release only for a version above the version of the latest release.
+  # The same version publishes nothing. A lower version fails this job.
+  release-version:
+    name: release-version
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      publish: ${{ steps.decide.outputs.publish }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Compare the version with the latest release
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 release/publish.py --decide
+
   product-image:
     name: product-image
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images, release-checks]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images, release-checks, release-version]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 60
     permissions:
@@ -494,8 +516,8 @@ jobs:
 
   release-downloads:
     name: release-downloads and publication
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [fast-suite-macos, deployment-linux, dashboard-browser, product-image, release-checks]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, product-image, release-checks, release-version]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 30
     permissions:

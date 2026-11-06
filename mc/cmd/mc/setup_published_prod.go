@@ -307,14 +307,22 @@ func publishedRecoveryLines(home string) []string {
 	var resident struct {
 		Release string `json:"releaseBuildId"`
 	}
+	installed, installedErr := distribution.Load(filepath.Join(home, distribution.InstalledRecord))
+	pending, pendingErr := distribution.Load(filepath.Join(home, "state", "pending-release.json"))
 	if body, err := os.ReadFile(filepath.Join(home, "supervision", "resident.json")); err == nil && json.Unmarshal(body, &resident) == nil && validReleaseBuildID(resident.Release) {
-		lines = append(lines, "Service release: "+shortPublishedID(resident.Release)+".")
+		label := shortPublishedID(resident.Release)
+		if pendingErr == nil && pending.Commit == resident.Release {
+			label = pending.Label()
+		} else if installedErr == nil && installed.Commit == resident.Release {
+			label = installed.Label()
+		}
+		lines = append(lines, "Service release: "+terminalReleaseLabel(label)+".")
 	}
-	if record, err := distribution.Load(filepath.Join(home, distribution.InstalledRecord)); err == nil {
-		lines = append(lines, "Last verified release: "+record.Commit[:12]+".")
+	if installedErr == nil {
+		lines = append(lines, "Last verified release: "+terminalReleaseLabel(installed.Label())+".")
 	}
-	if record, err := distribution.Load(filepath.Join(home, "state", "pending-release.json")); err == nil {
-		lines = append(lines, "Release awaiting verification: "+record.Commit[:12]+".")
+	if pendingErr == nil {
+		lines = append(lines, "Release awaiting verification: "+terminalReleaseLabel(pending.Label())+".")
 	}
 	return lines
 }
