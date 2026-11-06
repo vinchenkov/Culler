@@ -6,6 +6,8 @@ description: The complete and only mc verb surface for the Packager role; load b
 # mc — Packager
 
 The agent profile sets the model and effort for this run.
+The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
+Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
 
 `<run_id>` is the `Run identifier` fact of the **Run** part of the run brief. Each `mc complete` call carries it as `--run <run_id>`. `mc run infra-failure` takes it as its first argument. `mc task block` and the reads take no run identifier. `<task>` is the `Identifier` fact of the **Task** part. `<id>` in a read is the identifier of any task. `mc` rejects a call whose run identifier does not match the live run. It applies no part of that call. A terminal is an `mc` command that ends the run.
 

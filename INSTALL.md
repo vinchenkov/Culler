@@ -283,7 +283,8 @@ The workflow checks these release inputs:
 - The file contents and the sizes of both images.
 - The uploaded release files and the container image download.
 
-The workflow also scans the source history for likely secrets and both images for known dependency vulnerabilities.
+The workflow also scans both images for known dependency vulnerabilities.
+GitHub secret scanning checks the repository for secrets.
 These scans report their results and never prevent a release.
 
 The checks exercise the product image without a mounted Culler checkout.
@@ -302,8 +303,8 @@ Later updates use the same saved launcher.
 The coding harness can run `./release/check.sh` to check the release tools locally.
 That check uses local fixtures and requires no publication credential.
 
-The [release security guide](release/security/README.md) describes the security scans and the local secret check.
-It also describes the required GitHub ruleset and the nightly image scans.
+The [release security guide](release/security/README.md) describes the security scans and the nightly image scans.
+It also describes the required GitHub ruleset.
 The repository owner must activate the required ruleset before a pull request can merge.
 A failed or unverified required check prevents release publication.
 
@@ -317,3 +318,24 @@ Development installation retains its separate command:
 
 That command requires a checkout.
 The local deployment scripts retain their separate purpose.
+
+### Other API providers
+
+**Use another provider's API key** selects an OpenCode connection.
+The provider search accepts a name, identifier, or full model address.
+Culler sends keys only to providers in its release catalog.
+The provider rows show the address and website before the concealed key prompt.
+A release integration keeps its existing harness when its address matches a catalog entry.
+
+The first OpenCode connection starts a separate download of the pinned harness and web search plugin.
+The model and effort lists remain available during the download.
+The agent test waits for the download.
+A failed download keeps the connection and its key and offers **Retry**.
+The model list shows the context limit and prices for each million input and output tokens.
+**Default** uses the provider default; each other effort selects a model variant.
+The page states whether agents can search the web.
+
+An installation without an OpenCode connection downloads no OpenCode program.
+An update replaces an existing OpenCode volume with the archive of that release.
+Both uninstall modes remove the OpenCode volume.
+A local source deployment obtains the pinned packages from its unchanged source commit when the first connection requires them.

@@ -4,6 +4,8 @@
 package trace
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -29,7 +31,7 @@ func Format(binding string) string {
 	switch harness {
 	case "claude-sdk":
 		return FormatClaude
-	case "codex":
+	case "codex", "opencode":
 		return FormatCodex
 	}
 	return ""
@@ -47,6 +49,9 @@ func SessionID(binding, nativeRef string) string {
 	case FormatClaude:
 		return nativeRef
 	case FormatCodex:
+		if strings.HasPrefix(binding, "opencode/") {
+			nativeRef = OpenCodeID(nativeRef)
+		}
 		return "codex:" + nativeRef
 	}
 	return ""
@@ -62,9 +67,20 @@ func Path(binding, nativeRef string) string {
 	case FormatClaude:
 		return "/sessions/" + nativeRef + "?msg=last"
 	case FormatCodex:
+		if strings.HasPrefix(binding, "opencode/") {
+			nativeRef = OpenCodeID(nativeRef)
+		}
 		return "/sessions/codex/" + nativeRef + "?msg=last"
 	}
 	return ""
+}
+
+// OpenCodeID supplies the stable trace identifier that AgentsView requires.
+func OpenCodeID(nativeRef string) string {
+	value := sha256.Sum256([]byte("culler-opencode-trace\x00" + nativeRef))
+	value[6] = value[6]&15 | 128
+	value[8] = value[8]&63 | 128
+	return fmt.Sprintf("%x-%x-%x-%x-%x", value[:4], value[4:6], value[6:8], value[8:10], value[10:16])
 }
 
 // ProjectName returns the Project title, or the Project ID when the Project

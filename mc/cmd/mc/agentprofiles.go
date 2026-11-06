@@ -12,6 +12,7 @@ import (
 
 	"mc/config"
 	"mc/deployment"
+	"mc/opencodecatalog"
 	"mc/routing"
 	"mc/verbs"
 )
@@ -63,7 +64,7 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 		if err != nil {
 			return nil, err
 		}
-		if err := deployment.RunAgentProfileOperation(home, *id, image, verified); err != nil {
+		if err := deployment.RunAgentProfileOperation(home, *id, image, verified, prepareModelVerification); err != nil {
 			return nil, verbs.Domainf("%s", err)
 		}
 		if err := recordModelVerification(home, *id); err != nil {
@@ -175,10 +176,26 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 				Channel:  spec.Channel,
 				TokenURL: spec.TokenURL, ClientID: spec.ClientID}
 		}
+		for id, row := range catalog {
+			source := cfg.Runtimes.Credentials[row.Credential]
+			if source.Kind == config.CredentialKindOpenCodeAPIKey {
+				if provider, ok := opencodecatalog.Find(source.CatalogEntry); ok {
+					row.OpenCode = &provider
+				}
+				catalog[id] = row
+			}
+		}
 		connections := map[string]deployment.ResidentRuntimeBinding{}
 
 		for id, source := range cfg.Runtimes.Credentials {
 			connections[id] = deployment.ResidentRuntimeBinding{Harness: source.Harness(), Credential: id, Channel: source.Channel(), Kind: source.Kind, InferenceURL: source.InferenceURL, TokenURL: source.TokenURL, ClientID: source.ClientID}
+			if source.Kind == config.CredentialKindOpenCodeAPIKey {
+				row := connections[id]
+				if provider, ok := opencodecatalog.Find(source.CatalogEntry); ok {
+					row.OpenCode = &provider
+				}
+				connections[id] = row
+			}
 			for _, profileID := range cfg.Runtimes.EnabledBindings {
 				if cfg.Runtimes.Bindings[profileID].Credential == id {
 					row := connections[id]

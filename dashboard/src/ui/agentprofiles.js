@@ -10,8 +10,8 @@ const CONNECTION_TYPES = {
   subscription: "Connect a subscription account",
   api_key: "Connect with an API key",
 };
-const CONNECTION_KINDS = ["codex-oauth", "claude-oauth", "codex-api-key", "claude-api-key"];
-const apiKeyConnection = (source) => ["codex-api-key", "claude-api-key"].includes(source?.kind);
+const CONNECTION_KINDS = ["codex-oauth", "claude-oauth", "codex-api-key", "claude-api-key", "opencode-api-key"];
+const apiKeyConnection = (source) => ["codex-api-key", "claude-api-key", "opencode-api-key"].includes(source?.kind);
 const accessLabel = (value) => ({ connected: "Credential saved", disconnected: "Disconnected", unavailable: "Host credential store unavailable" }[value] || value);
 // A connected account has a saved credential.
 const usable = (value) => value === "connected";
@@ -52,13 +52,20 @@ export function listsModels(connection) {
 // The choices keep a configured model that the provider does not offer.
 export function modelChoices(models, current) {
   const choices = (models ?? []).map((model) => ({
-    value: model.id, text: model.name && model.name !== model.id ? `${model.name} (${model.id})` : model.id, selected: model.id === current,
+    value: model.id, text: (model.name && model.name !== model.id ? `${model.name} (${model.id})` : model.id) + (model.context ? ` · ${model.context.toLocaleString()} tokens · $${model.input_price} input / $${model.output_price} output per million tokens` : ""), selected: model.id === current,
   }));
   if (current && !choices.some((choice) => choice.selected)) choices.unshift({ value: current, text: `${current} (not offered)`, selected: true });
   return choices;
 }
 
-export const effortLabel = (effort) => ({ "": "Default", none: "None", minimal: "Minimal", low: "Low", medium: "Medium", high: "High", xhigh: "Extra high", max: "Max", ultra: "Ultra" }[effort || ""] || effort);
+export const effortLabel = (effort) => ({ "": "Default", none: "None", minimal: "Minimal", low: "Low", medium: "Medium", high: "High", xhigh: "Extra high", max: "Max", ultra: "Ultra", thinking: "Thinking" }[effort || ""] || effort);
+
+export function providerChoices(providers, query = "") {
+  const search = query.trim().toLowerCase();
+  return (providers || []).filter(provider => search
+    ? [provider.name, provider.catalog_entry, provider.id, provider.address].some(value => String(value || "").toLowerCase().includes(search))
+    : provider.harness !== "opencode");
+}
 
 export function effortChoices(model, current = "") {
   const levels = ["", ...(model?.effort_levels || [])];
@@ -68,7 +75,7 @@ export function effortChoices(model, current = "") {
 }
 
 export function profileStatus(profile) {
-  const reconnect = !usable(profile.access_status);
+  const reconnect = !usable(profile.access_status) || !!profile.problem;
   const label = accessLabel(profile.access_status) || "Access unknown";
   return { reconnect, attention: reconnect, label, tone: reconnect ? "attention" : profile.access_status === "connected" ? "connected" : "quiet" };
 }
@@ -90,6 +97,7 @@ export function elapsedLabel(start, now = Date.now()) {
 }
 
 export function currentProfileStatus(profile, system) {
+  if (profile.problem) return { label: "Model unavailable", action: "Edit profile", reconnect: false, attention: true, tone: "attention" };
   if (!system) return profileStatus(profile);
   const rows = (system.snapshot?.connections ?? []).filter(item => item.connection_id === profile.connection_id && (!item.profile_id || item.profile_id === profile.id));
   const failure = rows.find(item => item.state === "stopped" || item.state === "retry_wait");
@@ -127,6 +135,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   let disconnectID = null;
   let reads = new AbortController();
   let modelLists = new Map();
+  let downloadTimer;
   const expandedProfiles = new Set();
   const dialog = el("dialog", { class: "agent-profiles", testid: "agent-profiles-panel", "aria-labelledby": "agent-profiles-title" });
   document.body.append(dialog);
@@ -182,7 +191,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     try {
       const result = await post("models", { connection_id: source.id });
       if (!Array.isArray(result?.models) || !result.models.length) throw new Error("The provider model list is invalid. Retry later.");
-      Object.assign(entry, { status: "ready", models: result.models });
+      Object.assign(entry, { status: "ready", models: result.models, web_search: result.web_search });
     } catch (err) {
       Object.assign(entry, { status: "failed", error: err.message || "The provider model list is unavailable. Retry later." });
     }
@@ -210,6 +219,8 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     reads.abort();
     reads = new AbortController();
     clearTimeout(timer);
+    clearTimeout(downloadTimer);
+    downloadTimer = null;
     clearInterval(clock);
     clock = null;
     if (operation && !TERMINAL.has(operation.status)) {
@@ -466,6 +477,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       el("div", { class: "profile-model-head" },
         el("div", { class: "profile-model-identity" },
           el("h3", { text: profile.model }),
+          profile.problem && el("p", { class: "profile-error", text: profile.problem }),
           el("p", { class: "profile-hint", text: `Effort: ${effortLabel(profile.effort)}` }),
           el("p", { class: "profile-connection" },
             el("span", { class: "profile-name", text: profileName }),
@@ -564,6 +576,29 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       actionsNode(back),
     ];
   }
+  function downloadNode(source) {
+    if (source?.harness !== "opencode") return null;
+    const status = catalog.opencode;
+    if (status && !TERMINAL.has(status.status) && !downloadTimer) {
+      const serial = generation;
+      downloadTimer = setTimeout(async () => {
+        downloadTimer = null;
+        try {
+          const next = await post("operation-status", { operation_id: status.operation_id });
+          if (generation !== serial || !dialog.open) return;
+          catalog.opencode = next;
+        } catch (error) {
+          if (generation === serial) catalog.opencode = { ...status, status: "failed", message: error.message };
+        }
+        if (generation === serial && dialog.open) render();
+      }, 1000);
+    }
+    return el("section", { testid: "profile-opencode-download", role: "status" },
+      el("p", { text: status?.message || "OpenCode requires a download." }),
+      (!status || status.status === "failed") && button("Retry", () => perform(async () => {
+        catalog.opencode = await post("operation-start", { operation_id: uuid(), kind: "opencode_download" });
+      }), "profile-opencode-retry"));
+  }
   function modelNode(source) {
     if (!listsModels(source)) return field("Model", "model");
     if (!modelLists.has(source.id)) loadModels(source);
@@ -584,7 +619,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
           disabled: loading || busy || operationActive(), onchange: (event) => { update("model", event.target.value); render(); },
         }, placeholder, choices.map((choice) => el("option", choice))),
         el("span", { class: "profile-hint", id: "profile-model-hint", role: loading ? "status" : null,
-          text: loading ? "Loading models for this connection…" : "The provider lists the models that this connection can use." })),
+          text: loading ? "Loading models for this connection…" : source.harness === "opencode" ? "The release catalog lists these models. Prices apply to each million input and output tokens." : "The provider lists the models that this connection can use." })),
       !offered && el("p", { class: "profile-error", role: "alert", text: `This connection does not offer the model ${draft.model}. Select a model from the list.` }),
     ];
   }
@@ -592,7 +627,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     const model = modelLists.get(source?.id)?.models?.find(model => model.id === draft.model);
     const unavailable = draft.effort && model && !model.effort_levels?.includes(draft.effort);
     const hint = !model ? "Select a model from the model list to see its effort levels."
-      : model.effort_support_known ? "The model lists these effort levels. Default uses the harness default."
+      : model.effort_support_known ? "The model lists these effort levels. Default uses the provider default."
       : "The model lists no effort levels. These are harness levels; Test model checks your selection.";
     return el("label", { class: "profile-field" },
       el("span", { text: "Effort" }),
@@ -617,7 +652,9 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       draft.mode === "existing" && !choices.length && note("No connection has usable access. Select Back to sign in to an account."),
       source && note(`Connection access: ${accessLabel(source.access_status)}`),
       source?.authorization_message && note(source.authorization_message),
+      downloadNode(source),
       modelNode(source),
+      source?.harness === "opencode" && note(modelLists.get(source.id)?.web_search ? "The agents of this connection can search the web." : "The agents of this connection cannot search the web."),
       effortNode(source),
       field("Agent profile name", "name"),
       duplicate(catalog.profiles, draft.name, draft.id) && el("p", { class: "profile-error", role: "alert", text: "This agent profile name already exists. Enter another name." }),
@@ -654,7 +691,9 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false }),
       primary(button("Save key", () => perform(async () => {
         if (!draft.api_key) throw new Error("Enter the API key.");
-        const integration = catalog.integrations.find((item) => item.kind === source.kind);
+        const integration = source.harness === "opencode"
+          ? (catalog.providers || []).find(item => item.catalog_entry === source.catalog_entry && item.harness === "opencode")
+          : catalog.integrations.find((item) => item.kind === source.kind);
         if (!integration) throw new Error("The connection type is unavailable.");
         const serial = generation;
         const result = await post("connection-save", { submission_id: uuid(), revision: catalog.revision, id: source.id,
@@ -711,10 +750,17 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       duplicate(catalog.connections, draft.connection_name, draft.connection_edit_id) && el("p", { class: "profile-error", role: "alert", text: "This connection name already exists. Enter another name." })];
     if (draft.mode === "api_key") return el("div", {}, nameNode,
       el("label", { class: "profile-field" }, el("span", { text: "Provider" }),
-        el("select", { class: "field", testid: "profile-key-provider", "aria-label": "Provider", disabled: busy || Boolean(draft.connection_id),
-          onchange: (event) => { update("integration", event.target.value); render(); } },
-          el("option", { value: "", selected: !draft.integration, text: "Select a provider" }),
-          catalog.integrations.filter(apiKeyConnection).map((integration) => el("option", { value: integration.id, selected: draft.integration === integration.id, text: integration.name })))),
+        el("input", { class: "field", type: "search", testid: "profile-key-provider", "aria-label": "Provider", value: draft.provider_query || "", disabled: busy || Boolean(draft.connection_id),
+          placeholder: "Search by provider or address", oninput: event => { draft.provider_query = event.target.value; render(); } })),
+      note("Culler sends keys only to the providers in its catalog."),
+      el("div", { testid: "profile-provider-results" },
+        providerChoices(catalog.providers || catalog.integrations.filter(apiKeyConnection), draft.provider_query).map(provider =>
+          el("article", { class: "profile-card", testid: "profile-provider-result" },
+            button(provider.name, () => { update("integration", provider.id); suggest("connection_name", provider.name); render(); }, `profile-provider-${provider.id}`, Boolean(draft.connection_id)),
+            el("p", { text: provider.address || "" }),
+            provider.website && el("a", { href: provider.website, target: "_blank", rel: "noopener noreferrer", text: provider.website }),
+            draft.integration === provider.id && el("p", { text: "Selected", role: "status" })))),
+      draft.integration && note(`Selected provider: ${(catalog.providers || catalog.integrations).find(row => row.id === draft.integration)?.name || draft.integration}`),
       connection()?.access_status === "connected" && !draft.auth_failed
         ? note("The API key is saved. Continue to select the model.")
         : field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false }),
@@ -741,10 +787,11 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   function reviewNode(back) {
     const source = connection();
     const testing = operationActive() && operation.kind === "model_test";
-    const test = button("Test model", () => perform(() => startOperation("model_test", draft.connection_id)), "profile-test", !draft.connection_id || !draft.model || !draft.name.trim());
+    const test = button("Test model", () => perform(() => startOperation("model_test", draft.connection_id)), "profile-test", !draft.connection_id || !draft.model || !draft.name.trim() || source?.harness === "opencode" && catalog.opencode?.status !== "succeeded");
     const keep = button("Save", () => perform(save), "profile-save", !draft.test_id);
     primary(draft.test_id ? keep : test);
     return [
+      downloadNode(source),
       el("section", { class: "profile-review", testid: "profile-review" },
         draft.mode === "existing" && el("h4", { text: "Test and save" }),
         el("dl", {},

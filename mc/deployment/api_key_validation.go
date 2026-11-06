@@ -37,7 +37,7 @@ func (err *APIKeyReplacementError) Error() string {
 }
 
 func validateAPIKeyReplacement(home string, req AgentConnectionRequest, source operatorconfig.CredentialSource) (string, error) {
-	if !agentAPIKeyKind(source.Kind) {
+	if !agentAPIKeyKind(source.Kind) || source.Kind == operatorconfig.CredentialKindOpenCodeAPIKey {
 		return "", nil
 	}
 	id, err := agentProfileID(req.ID, req.SubmissionID)

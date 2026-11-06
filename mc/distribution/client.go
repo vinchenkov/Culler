@@ -174,7 +174,11 @@ func (c *Client) Latest(ctx context.Context) (Record, error) {
 	if record.Tag != release.Tag {
 		return Record{}, errors.New("release record and GitHub tag disagree")
 	}
-	for _, a := range []Asset{record.Installer, record.Package} {
+	assets := []Asset{record.Installer, record.Package}
+	if record.OpenCode != nil {
+		assets = append(assets, *record.OpenCode)
+	}
+	for _, a := range assets {
 		found, err := findAsset(release, a.Name)
 		if err != nil {
 			return Record{}, err
@@ -191,7 +195,7 @@ func (c *Client) Download(ctx context.Context, r Record, a Asset, destination st
 	if err := r.Validate(); err != nil {
 		return err
 	}
-	if a != r.Installer && a != r.Package {
+	if a != r.Installer && a != r.Package && (r.OpenCode == nil || a != *r.OpenCode) {
 		return errors.New("asset does not belong to selected release")
 	}
 	release, err := c.release(ctx, r.Tag)

@@ -746,7 +746,7 @@ CREATE TABLE homie_sessions (
     session_path       TEXT NOT NULL,   -- the four locators
     binding            TEXT NOT NULL,
     effort             TEXT NOT NULL DEFAULT ''
-                       CHECK (effort IN ('', 'none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra')),
+                       CHECK (effort IN ('', 'none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra', 'thinking')),
     native_session_ref TEXT,
     trace_filename     TEXT,
 

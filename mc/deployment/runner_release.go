@@ -16,6 +16,7 @@ const maxRunnerReleaseFileBytes = 4 << 20
 var runnerReleaseFiles = []string{
 	"agent-runner/adapters/claude.ts",
 	"agent-runner/adapters/codex.ts",
+	"agent-runner/adapters/opencode.ts",
 	"agent-runner/adapters/provider-access.ts",
 	"agent-runner/adapters/openwiki.ts",
 	"agent-runner/adapters/session-store.ts",
@@ -39,6 +40,7 @@ var runnerReleaseFiles = []string{
 	"shared/log.ts",
 	"shared/network-error.ts",
 	"shared/provider-token.ts",
+	"shared/opencode-trace.ts",
 	"shared/setup-error.ts",
 	"shared/model-response.ts",
 }

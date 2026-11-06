@@ -175,6 +175,9 @@ func toolResultHasMarker(block map[string]any) bool {
 // accepts provider-native stream/tool shapes only; the final assistant text
 // cannot spoof tool evidence.
 func InspectLiveProviderOutput(harness string, output []byte) (LiveProviderObservation, error) {
+	if harness == "opencode" {
+		return inspectOpenCodeOutput(output)
+	}
 	var observation LiveProviderObservation
 	var claudeDelta bool
 	var sequence, sessionStarts, turnCompletes, turnCompleteAt int
@@ -366,4 +369,66 @@ func InspectLiveProviderOutput(harness string, output []byte) (LiveProviderObser
 		return observation, err
 	}
 	return observation, nil
+}
+
+func inspectOpenCodeOutput(output []byte) (LiveProviderObservation, error) {
+	var observation LiveProviderObservation
+	var nativeSession string
+	var sequence, sessions, steps, tools, toolAt, textAt, finishAt, completions int
+	for _, line := range bytes.Split(output, []byte{'\n'}) {
+		var event map[string]any
+		if json.Unmarshal(line, &event) != nil {
+			continue
+		}
+		sequence++
+		if event["event"] == "infrastructure-failure" || event["type"] == "error" {
+			return observation, fmt.Errorf("OpenCode reported a provider error")
+		}
+		if event["event"] == "session-start" {
+			sessions++
+			observation.SessionID = stringField(event, "session_id")
+			observation.NativeFile = stringField(event, "native_file")
+		}
+		if id := stringField(event, "sessionID"); id != "" {
+			if nativeSession != "" && nativeSession != id {
+				return observation, fmt.Errorf("OpenCode changed its native session")
+			}
+			nativeSession = id
+			observation.StreamEvents++
+		}
+		part, _ := event["part"].(map[string]any)
+		switch event["type"] {
+		case "step_start":
+			steps++
+		case "tool_use":
+			tools++
+			state, _ := part["state"].(map[string]any)
+			metadata, _ := state["metadata"].(map[string]any)
+			exit, exitOK := numberField(metadata["metadata"], "exit")
+			if steps == 1 && stringField(part, "tool") == "shell" && stringField(part, "id") != "" &&
+				state["status"] == "completed" && exitOK && exit == 0 && strings.Contains(stringField(state, "output"), liveProviderToolMarker) {
+				observation.ToolUses++
+				observation.ToolResults++
+				toolAt = sequence
+			}
+		case "text":
+			if steps == 2 && toolAt > 0 && part["text"] == liveProviderTurnMarker {
+				textAt = sequence
+			}
+		case "step_finish":
+			if part["reason"] == "stop" && textAt > toolAt && toolAt > 0 {
+				finishAt = sequence
+			}
+		}
+		if event["event"] == "turn-complete" {
+			completions++
+			if event["status"] != "success" || event["output"] != liveProviderTurnMarker || finishAt == 0 || sequence <= finishAt {
+				return observation, fmt.Errorf("OpenCode returned an incomplete model test")
+			}
+		}
+	}
+	if sessions != 1 || steps != 2 || tools != 1 || completions != 1 || nativeSession == "" || nativeSession != observation.SessionID {
+		return observation, fmt.Errorf("OpenCode lacks one ordered native session, tool call, and reply")
+	}
+	return observation, validLiveProviderObservation(observation)
 }

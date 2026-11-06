@@ -144,7 +144,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Install, redeploy, or release | [Installation and deployment](operations/install-and-deployment.md) |
 | Check image contents, update size, or image cleanup | [Image delivery and update cleanup](operations/image-delivery.md) |
 | Check or control local services | [Culler lifecycle command](operations/culler-lifecycle.md) |
-| Assess release scans, exceptions, or nightly reports | [Release security scans](operations/release-security.md) |
+| Assess release scans, secret scanning, or nightly reports | [Release security scans](operations/release-security.md) |
 | Understand reuse of image compatibility results | [Recorded runtime checks](workflows/project-environments.md#reuse-of-recorded-runtime-checks) |
 | Understand persistent dependencies and separate role files | [Project storage](workflows/project-environments.md#runtime-and-per-run-dependencies) |
 | Check dependency reuse across containers | [Dependency reuse checks](tests/checks-and-test-lanes.md#project-dependency-reuse-checks) |

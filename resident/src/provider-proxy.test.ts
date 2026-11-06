@@ -758,3 +758,45 @@ test("an invalid replacement certificate preserves the current listener", async 
   expect(response.status).toBe(200);
   await response.text();
 });
+
+describe("OpenCode provider routes", () => {
+  for (const placement of ["bearer", "x-api-key", "x-goog-api-key"] as const) {
+    test(`the ${placement} route permits same-host JSON endpoints and replaces only its key header`, async () => {
+      const selected: ProviderRoute = { baseURL: "https://provider.invalid", openCode: { keyPlacement: placement, modelLocation: "body" }, operations: [{ id: "model", method: "POST", path: "/" }] };
+      const { handle, sent } = proxy({}, { official: selected });
+      const grant = handle.issue(authorization({ operations: ["model"] }));
+      const headers = { [placement === "bearer" ? "authorization" : placement]: placement === "bearer" ? `Bearer ${grant.token}` : grant.token,
+        "content-type": "application/json", "x-provider-option": "on", "organization": "account-choice", "cookie": "private", "proxy-extra": "private" };
+      for (const path of ["/v1/chat/completions", "/tools/search", "/outside/base/path"]) {
+        const response = await call(handle, grant.token, { headers, body: JSON.stringify({ model: "small-model" }) }, path);
+        expect(response.status).toBe(200);
+        expect(sent.at(-1)!.url).toBe(`https://provider.invalid${path}`);
+      }
+      expect((await call(handle, grant.token, { headers, method: "GET", body: undefined }, "/anything")).status).toBe(200);
+      const forwarded = new Headers(sent[0]!.init.headers);
+      expect(forwarded.get(placement === "bearer" ? "authorization" : placement)).toBe(placement === "bearer" ? `Bearer ${providerSecret}` : providerSecret);
+      expect(forwarded.get("x-provider-option")).toBe("on");
+      expect(forwarded.get("organization")).toBe("account-choice");
+      expect(forwarded.has("cookie")).toBe(false);
+      expect(forwarded.has("proxy-extra")).toBe(false);
+      const count = sent.length;
+      for (const wrong of ["authorization", "x-api-key", "x-goog-api-key"].filter(name => name !== (placement === "bearer" ? "authorization" : placement))) {
+        expect((await call(handle, grant.token, { headers: { [wrong]: wrong === "authorization" ? `Bearer ${grant.token}` : grant.token, "content-type": "application/json" } })).status).toBe(401);
+      }
+      expect((await call(handle, grant.token, { headers, body: JSON.stringify({ model: "another-model" }) })).status).toBe(403);
+      expect((await call(handle, grant.token, { headers, body: "[]" })).status).toBe(400);
+      expect((await call(handle, grant.token, { headers, method: "DELETE", body: undefined })).status).toBe(403);
+      expect(sent).toHaveLength(count);
+    });
+  }
+  test("a model in the path must match the profile model", async () => {
+    const selected: ProviderRoute = { baseURL: "https://provider.invalid", openCode: { keyPlacement: "x-goog-api-key", modelLocation: "path" }, operations: [{ id: "model", method: "POST", path: "/" }] };
+    const { handle, sent } = proxy({}, { official: selected });
+    const { token } = handle.issue(authorization({ operations: ["model"] }));
+    const headers = { "x-goog-api-key": token, "content-type": "application/json" };
+    expect((await call(handle, token, { headers, body: "{}" }, "/v1beta/models/small-model:streamGenerateContent?alt=sse")).status).toBe(200);
+    expect((await call(handle, token, { headers, body: "{}" }, "/v1beta/models/other:streamGenerateContent")).status).toBe(403);
+    expect((await call(handle, token, { headers, body: "{}" }, "/v1beta/models/small-model:streamGenerateContent?key=leak")).status).toBe(403);
+    expect(sent).toHaveLength(1);
+  });
+});

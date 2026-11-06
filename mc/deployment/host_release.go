@@ -11,6 +11,7 @@ import (
 
 var hostReleaseFiles = []string{
 	"runner/shared/provider-token.ts",
+	"runner/shared/opencode-trace.ts",
 	"runner/agent-runner/adapters/provider-access.ts",
 	"mc/substrate/schema.sql",
 	"mc/substrate/delivery.sql",

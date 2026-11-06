@@ -67,6 +67,16 @@ export function runtimeArguments(deps: Pick<Dependencies, "config">): string[] {
     "-e", `MC_HARNESS_CLI=${CULLER_RUNTIME}/app/src/fake-harness/cli.ts`];
 }
 
+export function openCodeVolume(home: string): string {
+  const suffix = createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12);
+  return `mc-opencode-${suffix}`;
+}
+
+export function openCodeArguments(home: string, harness?: string): string[] {
+  return harness === "opencode" ? ["--mount", `type=volume,src=${openCodeVolume(home)},dst=/opt/culler-opencode,readonly,volume-nocopy`,
+    "--tmpfs", "/etc/opencode:ro,nosuid,nodev,noexec,mode=0555"] : [];
+}
+
 function namespace(home: string): string { return createHash("sha256").update(home).digest("hex").slice(0, 16); }
 
 export function environmentContainerName(home: string, operation: string): string {
@@ -177,10 +187,11 @@ function runtimeCheckKey(image: string, operation: EnvironmentOperation, deps: D
 export async function checkRuntimeCompatibility(image: string, operation: EnvironmentOperation, deps: Dependencies): Promise<void> {
   await requireImages(image, operation, deps);
   const checks = runtimeCheckCache(deps);
-  const key = runtimeCheckKey(image, operation, deps);
+  const openCode = await deps.docker(["volume", "inspect", openCodeVolume(deps.config.mcHome)]);
+  const key = runtimeCheckKey(image, operation, deps) + (openCode.exitCode === 0 ? ":opencode" : "");
   const existing = checks.get(key);
   if (existing) return existing;
-  const check = performRuntimeCompatibility(image, operation, deps);
+  const check = performRuntimeCompatibility(image, operation, deps, openCode.exitCode === 0);
   checks.set(key, check);
   try { await check; }
   catch (error) { checks.delete(key); throw error; }
@@ -190,14 +201,17 @@ export async function checkRuntimeCompatibility(image: string, operation: Enviro
  * same image and runtime need no second check after a resident restart. */
 export async function confirmRecordedCompatibility(image: string, operation: EnvironmentOperation, deps: Dependencies): Promise<void> {
   await requireImages(image, operation, deps);
+  const openCode = await deps.docker(["volume", "inspect", openCodeVolume(deps.config.mcHome)]);
+  if (openCode.exitCode === 0) return checkRuntimeCompatibility(image, operation, deps);
   runtimeCheckCache(deps).set(runtimeCheckKey(image, operation, deps), Promise.resolve());
 }
 
-async function performRuntimeCompatibility(image: string, operation: EnvironmentOperation, deps: Dependencies): Promise<void> {
+async function performRuntimeCompatibility(image: string, operation: EnvironmentOperation, deps: Dependencies, openCode: boolean): Promise<void> {
   await command(deps, "image-check", { base_digest: operation.configuration.base_digest, image_digest: image });
   const name = `${environmentContainerName(deps.config.mcHome, operation.id)}-check`;
   const prior = await inspect(deps, "container", name);
   if (prior) await succeeded(deps.docker(["rm", "-f", name]), "The prior compatibility container could not close");
+  const openCodeMount = openCode ? [...openCodeArguments(deps.config.mcHome, "opencode"), "--tmpfs", "/tmp:rw,nosuid,nodev,mode=1777"] : [];
   const script = `
     const fs = await import('node:fs/promises');
     const { constants } = await import('node:fs');
@@ -217,13 +231,19 @@ async function performRuntimeCompatibility(image: string, operation: Environment
       const entry = await fs.lstat(path);
       if (!entry.isDirectory() || entry.isSymbolicLink()) throw new Error('Invalid reserved directory.');
     }
+    if (${openCodeMount.length > 0}) {
+      const result = Bun.spawnSync(['/opt/culler-opencode/node_modules/@opencode/cli-linux-arm64/bin/opencode', '--version'], {
+        env: { ...process.env, XDG_DATA_HOME: '/tmp/data', XDG_CONFIG_HOME: '/tmp/config', XDG_CACHE_HOME: '/tmp/cache', XDG_STATE_HOME: '/tmp/state' },
+      });
+      if (result.exitCode !== 0) throw new Error('The OpenCode program cannot use this image.');
+    }
     console.log(JSON.stringify({bun:Bun.version,node:node.stdout.toString().trim()}));
   `;
   await succeeded(deps.docker(["run", "--rm", "--name", name, "--network", "none", "--read-only",
     "--label", "mc-managed=true", "--label", `mc-project=${operation.project_id}`,
     "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
     "--pids-limit", "128", "--memory", "512m", "--cpus", "1", "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
-    ...runtimeArguments(deps), image, "-e", script]), "The image cannot use the Culler runtime");
+    ...runtimeArguments(deps), ...openCodeMount, image, "-e", script]), "The image cannot use the Culler runtime");
 }
 
 async function measureEnvironment(project: string, image: string, deps: Dependencies, clear = false): Promise<void> {
@@ -420,7 +440,8 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
   const fake = runtime.harness === "fake" && runtime.id === "fake";
   if (!fake && (runtime.base_url !== "" ||
       !((runtime.harness === "codex" && runtime.channel === "codex") ||
-        (runtime.harness === "claude-sdk" && runtime.channel === "claude")))) {
+        (runtime.harness === "claude-sdk" && runtime.channel === "claude") ||
+        (runtime.harness === "opencode" && runtime.channel === "opencode")))) {
     throw new Error("The setup agent requires a supported connection.");
   }
   await checkRuntimeCompatibility(operation.image_digest, operation, deps);
@@ -437,7 +458,7 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
     if (Object.keys(projection.env).length || typeof projection.proxyConfig !== "string") {
       throw new Error("The setup provider access configuration is invalid.");
     }
-    const access = parseProviderAccess(projection.proxyConfig, runtime.harness as "codex" | "claude-sdk");
+    const access = parseProviderAccess(projection.proxyConfig, runtime.harness as "codex" | "claude-sdk" | "opencode");
     const previousRedactor = deps.redact ?? diagnosticRedactor();
     deps.redact = value => previousRedactor(value.split(access.token).join("[redacted]"));
   }
@@ -493,7 +514,7 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
     "--label", `com.culler.environment.inputs=${operation.inputs_digest}`,
     ...projectExecutionArguments(runtime.harness === "fake", deps.hostZone()),
     "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
-    ...runtimeArguments(deps), ...projectCacheArguments(deps.config.mcHome, operation.project_id, operation.image_digest),
+    ...runtimeArguments(deps), ...openCodeArguments(deps.config.mcHome, runtime?.harness), ...projectCacheArguments(deps.config.mcHome, operation.project_id, operation.image_digest),
     ...projectHomeArguments(home),
     "--mount", `type=bind,src=${workspace},dst=/workspace/source`,
     "--mount", `type=bind,src=${root}/run.json,dst=/mc/run.json,readonly`,

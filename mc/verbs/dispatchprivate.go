@@ -235,6 +235,7 @@ type PrivateRuntimeBinding struct {
 	Channel                string   `json:"channel"`
 	Credential             string   `json:"credential"`
 	AuthKind               string   `json:"auth_kind"`
+	CatalogEntry           string   `json:"catalog_entry,omitempty"`
 	Delivery               string   `json:"delivery"`
 	ProviderCredentialKeys []string `json:"provider_credential_keys"`
 	DeclaredStaticKey      string   `json:"declared_static_key"`
@@ -668,7 +669,7 @@ func privateRuntimeBindingFromSpec(spec routing.BindingSpec) PrivateRuntimeBindi
 	return PrivateRuntimeBinding{
 		AuthorizationID: spec.AuthorizationID, ProfileRevision: spec.ProfileRevision,
 		ID: spec.ID, Harness: spec.Harness, Model: spec.Model, Effort: spec.Effort, Channel: spec.Channel,
-		Credential: spec.Credential, AuthKind: spec.AuthKind, Delivery: string(spec.Delivery),
+		Credential: spec.Credential, AuthKind: spec.AuthKind, CatalogEntry: spec.CatalogEntry, Delivery: string(spec.Delivery),
 		ProviderCredentialKeys: keys,
 		DeclaredStaticKey:      spec.DeclaredStaticKey, BaseURL: spec.BaseURL,
 		TokenURL: spec.TokenURL, ClientID: spec.ClientID,
@@ -701,7 +702,7 @@ func bindingSpecFromPrivate(binding PrivateRuntimeBinding) routing.BindingSpec {
 	return routing.BindingSpec{
 		AuthorizationID: binding.AuthorizationID, ProfileRevision: binding.ProfileRevision,
 		ID: binding.ID, Harness: binding.Harness, Model: binding.Model, Effort: binding.Effort, Channel: binding.Channel,
-		Credential: binding.Credential, AuthKind: binding.AuthKind,
+		Credential: binding.Credential, AuthKind: binding.AuthKind, CatalogEntry: binding.CatalogEntry,
 		Delivery:               routing.CredentialDelivery(binding.Delivery),
 		ProviderCredentialKeys: append([]string(nil), binding.ProviderCredentialKeys...),
 		DeclaredStaticKey:      binding.DeclaredStaticKey, BaseURL: binding.BaseURL,
@@ -745,7 +746,7 @@ func validatePrivateRuntimeBindingShape(binding PrivateRuntimeBinding, harness, 
 	// The carrier names its credential source. The rebuilt one-binding config
 	// keys the source by that name, so the same validation the operator
 	// config passes applies to the carried shape.
-	source := operatorconfig.CredentialSource{Kind: binding.AuthKind, TokenURL: binding.TokenURL, ClientID: binding.ClientID}
+	source := operatorconfig.CredentialSource{Kind: binding.AuthKind, CatalogEntry: binding.CatalogEntry, TokenURL: binding.TokenURL, ClientID: binding.ClientID}
 	cfg := operatorconfig.Default()
 	cfg.Runtimes.EnabledBindings = []string{id}
 	cfg.Runtimes.Credentials = map[string]operatorconfig.CredentialSource{binding.Credential: source}

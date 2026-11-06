@@ -58,7 +58,7 @@ func normalizeProviderCredential(id string, value any) (ProviderCredentialRecord
 		return record, err
 	}
 	defer clear(body)
-	if decodeRuntimeAuthJSON(body, &record) != nil || record.Credential != id || (record.Channel != "codex" && record.Channel != "claude") {
+	if decodeRuntimeAuthJSON(body, &record) != nil || record.Credential != id || (record.Channel != "codex" && record.Channel != "claude" && record.Channel != "opencode") {
 		return record, fmt.Errorf("The connection credential is invalid.")
 	}
 	if _, err := agentProfileID(id, ""); err != nil {
@@ -80,7 +80,7 @@ func normalizeProviderCredential(id string, value any) (ProviderCredentialRecord
 			return record, fmt.Errorf("The API key credential is invalid.")
 		}
 	case "account":
-		if record.RefreshToken == "" || record.APIKey != "" || record.ExpiresAtMS < 0 || record.RefreshExpiresAtMS < 0 {
+		if record.Channel == "opencode" || record.RefreshToken == "" || record.APIKey != "" || record.ExpiresAtMS < 0 || record.RefreshExpiresAtMS < 0 {
 			return record, fmt.Errorf("The account credential is invalid.")
 		}
 	default:

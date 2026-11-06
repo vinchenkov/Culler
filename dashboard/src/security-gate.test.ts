@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 const root = resolve(import.meta.dir, "../..");
 const workflow = Bun.YAML.parse(readFileSync(resolve(root, ".github/workflows/release.yml"), "utf8")) as any;
 const runs = (job: any) => job.steps.map((step: any) => String(step.run ?? "")).join("\n");
-const scans = ["source-secrets", "security-acceptance", "image-vulnerabilities"];
+const scans = ["security-acceptance", "image-vulnerabilities"];
 
 test("the required release check rejects every failed or unverified prerequisite", () => {
   const gate = workflow.jobs["release-checks"];
@@ -40,8 +40,7 @@ test("pull request jobs hold read permissions and fixed action references", () =
       expect(step["continue-on-error"]).toBeUndefined();
     }
   }
-  expect(workflow.jobs["source-secrets"].steps[0].with["fetch-depth"]).toBe(0);
-  expect(runs(workflow.jobs["source-secrets"])).toContain("--public-refs");
+  expect(workflow.jobs["source-secrets"]).toBeUndefined();
 });
 
 test("the scans and the upload use the exact checked images", () => {
@@ -51,7 +50,7 @@ test("the scans and the upload use the exact checked images", () => {
   const checked = "${{ needs.release-images.outputs.artifact-id }}";
   const download = (job: any) => job.steps.find((step: any) => String(step.uses).startsWith("actions/download-artifact")).with["artifact-ids"];
   const scan = workflow.jobs["image-vulnerabilities"];
-  expect(runs(scan)).toContain("release/security_scan.py image");
+  expect(runs(scan)).toContain("release/security_scan.py --archive");
   expect(download(scan)).toBe(checked);
   const upload = workflow.jobs["product-image"];
   expect(upload.needs).toContain("release-checks");

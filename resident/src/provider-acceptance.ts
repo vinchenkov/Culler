@@ -77,7 +77,7 @@ export async function handleProviderAcceptanceRequest(body: string, _releaseBuil
   }
   const config = await ops.authorize(request);
   try {
-    if (config.harness !== "codex" && config.harness !== "claude-sdk") throw new Error("Invalid harness.");
+    if (config.harness !== "codex" && config.harness !== "claude-sdk" && config.harness !== "opencode") throw new Error("Invalid harness.");
     parseProviderAccess(JSON.stringify(config), config.harness);
   } catch {
     ops.revoke(request.run_id, request.launch_id);

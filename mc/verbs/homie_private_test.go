@@ -1,11 +1,15 @@
 package verbs
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	operatorconfig "mc/config"
+	"mc/routing"
 )
 
 // The host must resolve config.toml before crossing into the helper. Removing
@@ -74,5 +78,87 @@ func TestPrivateHomieStartCarriesThePacket(t *testing.T) {
 	}
 	if frame, err := json.Marshal(ordinary); err != nil || strings.Contains(string(frame), "packet_id") || strings.Contains(string(frame), "version_id") {
 		t.Fatalf("the ordinary private frame is %s (%v)", frame, err)
+	}
+}
+
+func TestOpenCodePrivateCapabilityStartsHomieAndPreservesItsEffort(t *testing.T) {
+	db := dvSpine(t)
+	config := filepath.Join(os.Getenv("MC_HOME"), "config.toml")
+	_, err := operatorconfig.UpdateAtomic(config, func(cfg *operatorconfig.Config) error {
+		cfg.Runtimes.Credentials["catalog"] = operatorconfig.CredentialSource{Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
+		cfg.Runtimes.Bindings["catalog"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: "kimi-k3", Effort: "high", Credential: "catalog"}
+		cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, "catalog")
+		return cfg.Validate()
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	req, err := ResolvePrivateHomieStartRequest(HomieStartArgs{From: "cli:catalog"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	dvExec(t, db, `INSERT INTO connection_health(connection_id,operation,authorization_id,state,verified_at) VALUES('catalog','connection_access','unavailable','ready',datetime('now'))`)
+	req.Binding = "opencode/catalog"
+	frame, err := json.Marshal(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(frame), `"catalog_entry":"moonshotai"`) {
+		t.Fatal("The private capability lost the catalog entry.")
+	}
+	var carried PrivateHomieStartRequest
+	if err := json.Unmarshal(frame, &carried); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(config); err != nil {
+		t.Fatal(err)
+	}
+	started, err := HomieStartPrivateDB(db, carried)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if started.Binding != "opencode/catalog" {
+		t.Fatal(started.Binding)
+	}
+	var effort string
+	if err := db.QueryRow(`SELECT effort FROM homie_sessions WHERE id=?`, started.SessionID).Scan(&effort); err != nil || effort != "high" {
+		t.Fatalf("The Homie effort differs: %s: %v", effort, err)
+	}
+	hwPendingInbound(t, db, started.SessionID, 1)
+	wake, handled := hwWakeRoundWith(t, db, 1800, carried.RuntimeCapability)
+	if !handled || wake["effort"] != "high" || wake["runtime_binding"].(map[string]any)["catalog_entry"] != "moonshotai" {
+		t.Fatalf("The wake lost its catalog entry or effort: %+v", wake)
+	}
+
+	prepare := homieStageRequest(dfUUID(t, db))
+	prepare.RuntimeCapability = carried.RuntimeCapability
+	if err := inTx(db, func(ctx context.Context, q Q) error {
+		_, err := DispatchPreparePrivate(ctx, q, prepare)
+		return err
+	}); err != nil {
+		t.Fatalf("The dispatch rejected the enabled catalog: %v", err)
+	}
+	for _, binding := range carried.RuntimeCapability.Bindings {
+		if binding.ID != "catalog" {
+			continue
+		}
+		if err := validatePrivateRuntimeBinding(binding, "opencode", "catalog"); err != nil {
+			t.Fatal(err)
+		}
+		spec := bindingSpecFromPrivate(binding)
+		other := spec
+		other.CatalogEntry = "moonshotai-cn"
+		if routing.ProfileRevision(spec) == routing.ProfileRevision(other) {
+			t.Fatal("The profile revision ignores the catalog entry.")
+		}
+		binding.CatalogEntry = ""
+		if validatePrivateRuntimeBinding(binding, "opencode", "catalog") == nil {
+			t.Fatal("The private capability accepted an absent catalog entry.")
+		}
+		binding.CatalogEntry = "moonshotai"
+		binding.BaseURL = "https://unapproved.invalid"
+		if validatePrivateRuntimeBinding(binding, "opencode", "catalog") == nil {
+			t.Fatal("The private capability accepted a custom address.")
+		}
 	}
 }

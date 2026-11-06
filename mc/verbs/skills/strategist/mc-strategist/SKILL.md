@@ -6,6 +6,8 @@ description: The complete mc command surface for the Strategist. Load this skill
 # mc — Strategist
 
 The agent profile sets the model and effort for this run.
+The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
+Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
 
 Every write carries `--run <run_id>`. `<run_id>` is the `Run identifier` fact of the **Run** part of the run brief. Copy the value without change. `mc` rejects a call whose run identifier does not match the live run. `mc` applies no part of a rejected call. A terminal action is an `mc` command that ends the run.
 

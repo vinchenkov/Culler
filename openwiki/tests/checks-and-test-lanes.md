@@ -253,8 +253,7 @@ The workflow runs on pull requests and pushes to `main`. Its default permission 
 | `fast-suite-macos` | `macos-15` | Installs locked dependencies, runs all ten `check.sh` scripts with a zero-pass guard and `./release/check.sh`, then `release/build.sh` and `release/validate_package.py`. |
 | `deployment-linux` | `ubuntu-24.04-arm` | `./mc/test.sh -count=1 ./deployment/` and the Linux filesystem-guard tests in `./substrate/` without `test_scratch_spine`. |
 | `dashboard-browser` | `ubuntu-24.04-arm` | Runs the complete `./dashboard/smoke.sh` suite and retains its log, report, and browser evidence. |
-| `source-secrets` | `ubuntu-24.04-arm` | Reports Gitleaks results for the complete fetched source history. No job waits for it. |
-| `security-acceptance` | `ubuntu-24.04-arm` | Exercises real scanners with controlled secrets and advisory databases. No job waits for it. |
+| `security-acceptance` | `ubuntu-24.04-arm` | Exercises the real Trivy scanner with controlled advisory databases. No job waits for it. |
 | `release-images` | `ubuntu-24.04-arm` | Builds both images, checks both browsers and image contents, writes a size report, and saves the exact checked archives. |
 | `image-vulnerabilities` | `ubuntu-24.04-arm` | Reports Trivy vulnerability results for the exact saved archives. No job waits for it. |
 | `release-checks` | `ubuntu-24.04-arm` | Requires the fast suite, deployment, browser, and image jobs to succeed; failed, cancelled, or skipped results fail the gate. |
@@ -271,25 +270,24 @@ The Python tests cover the image archive reader, image content rules, and size r
 
 ## Release security scans
 
-`./release/check.sh` runs the unit tests of the scan reports, the exceptions, and the image load without scanner downloads or network access.
-It also checks the syntax of `release/secret-check.sh`.
+`./release/check.sh` runs the unit tests of the scan reports and the image load without scanner downloads or network access.
 The scans report results only, so no scan result fails a release check.
 
 | Test source | Behavior under test |
 | --- | --- |
-| `release/security_test.py` | Exact secret exceptions, the secret-only exception file, severity counts, packages without a version, masked reports, job summaries, and archive paths. |
+| `release/security_test.py` | Severity counts, packages without a version, absent inventories and version records, masked reports, job summaries, and scanner download retries. |
 | `release/image_load_test.py` | The image identity is the digest of the image configuration, and the check refuses an image of another commit. |
 | `dashboard/src/security-gate.test.ts` | Required `release-checks` prerequisites, no job that waits for a scan job, fixed action references, read-only pull request jobs, exact image reuse, and nightly report retention. |
-| `release/security_acceptance.py` | Real scanners report synthetic credentials in deleted commits, binary blobs, and nested archives. A failed tool or an absent image layer leaves the scan unverified. |
+| `release/security_acceptance.py` | The real Trivy scanner reports a new advisory for an unchanged image. A failed tool or an absent image layer leaves the scan unverified. The report of a failed tool omits a credential from the tool output. |
 
-The acceptance lane needs the fixed scanner executables and the Go tool in `release/security/fixture-db`.
+The acceptance lane needs the fixed Trivy executable and the Go tool in `release/security/fixture-db`.
 It stays separate from `./release/check.sh`.
 Its advisory fixture changes only the database download response for one unchanged image.
 Trivy identifies the added high-severity advisory, and the report of that image lists it.
 A scanner outage or incomplete coverage leaves the scan unverified.
 
 The nightly workflow scans the current release images with fresh advisory data and retains reports for 90 days.
-See [Release security scans](../operations/release-security.md) for report contents, coverage limits, and the local scan procedure.
+See [Release security scans](../operations/release-security.md) for report contents, coverage limits, and GitHub secret scanning.
 These descriptions establish test contracts, not a new scanner execution or live release assessment.
 
 ## Required browser checks

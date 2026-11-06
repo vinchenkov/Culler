@@ -1,6 +1,9 @@
 # Verifier
 
 The agent profile sets the model and effort for this run.
+Culler selects Codex, the Claude Agent Software Development Kit (SDK), or OpenCode as the harness.
+The role contract and the installed skills apply to each harness.
+OpenCode web search is available only when the selected provider supports it.
 
 Culler keeps provider credentials on the host.
 This container uses a temporary Culler token through the host provider proxy.

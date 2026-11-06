@@ -46,6 +46,8 @@ sources:
     resource: repo://release/installer.sh
   - id: openwiki-source-6926a7f59d9d7d096748e09e
     resource: repo://release/publish.py
+  - id: openwiki-source-985fc8702c7fef3be1d90e4d
+    resource: repo://release/security/README.md
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
   - id: openwiki-source-074a0c31b85dc048be2b3972
@@ -157,8 +159,7 @@ Onboarding copies `config.example.toml` into `MC_HOME/config.toml`, and only tha
 - `fast-suite-macos` runs every component `check.sh` on `macos-15`. It fails a non-`mc` component whose log shows zero successful tests. It then runs `./release/check.sh`, `release/build.sh`, and `release/validate_package.py` and uploads the release inputs with their digest.
 - `deployment-linux` runs the portable `./deployment/` tests and the Linux filesystem-guard tests on `ubuntu-24.04-arm`.
 - `dashboard-browser` runs the complete browser suite on Linux arm64 for pull requests and pushes to `main`. It uses the Project image Playwright lock file and matching Chromium.
-- `source-secrets` reports Gitleaks results for the complete fetched source history. No job waits for it.
-- `security-acceptance` checks real scanners with controlled secret and advisory fixtures. No job waits for it.
+- `security-acceptance` checks the real Trivy scanner with controlled advisory fixtures. No job waits for it.
 - `release-images` builds both images with read-only permissions. It checks product behavior, inspects layers, and saves each checked archive.
 - The image checks verify file contents and write a fresh install and update size report. See [image delivery and update cleanup](image-delivery.md).
 - `image-vulnerabilities` reports Trivy vulnerability results for the saved archives. No job waits for it.
@@ -177,9 +178,10 @@ See [browser checks](../tests/checks-and-test-lanes.md#required-browser-checks) 
 `release/build.sh` requires a clean tree at `CULLER_COMMIT`. It verifies the pinned AgentsView archive, cross-compiles `mc` for darwin and linux arm64 with the commit stamped in, and assembles the package and image inputs outside the checkout. `publish.py` creates a draft `culler-<commit>` release and uploads `install.sh`, `installer.sh`, the package, and `release.json` with all five checks. It publishes only if the commit is on `main` and strictly ahead of the available release. So an older workflow never replaces a newer release, and a published release is immutable. `release/check.sh` runs the Python unit tests for these tools locally, without credentials. It fails when it selects zero tests.
 
 Both publication jobs also require `release-checks`.
-The security scans report their results in job summaries and artifacts, and a scan result never prevents a release.
+The vulnerability scans report their results in job summaries and artifacts, and a scan result never prevents a release.
+GitHub secret scanning reports secrets on the **Security** tab of the repository.
 `publish.py` downloads each uploaded release file again and compares it with the local file.
-See [Release security scans](release-security.md) for coverage, exceptions, reports, nightly scans, and repository ruleset enforcement.
+See [Release security scans](release-security.md) for coverage, reports, secret scanning, nightly scans, and repository ruleset enforcement.
 
 ## Contract tests
 

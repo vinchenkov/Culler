@@ -369,3 +369,30 @@ describe("canonical Homie Docker envelope", () => {
     expect(canonicalHomieDockerEnvelope(drifted)).not.toBe(original);
   });
 });
+
+test("the OpenCode volume and empty configuration mount match the Docker create plan", () => {
+  const volume = "mc-opencode-fixture";
+  const target = "/opt/culler-opencode";
+  const options = "ro,nosuid,nodev,noexec,mode=0555";
+  const record = inspectRecord() as any;
+  record.HostConfig.Mounts = [{ Type: "volume", Source: volume, Target: target, ReadOnly: true, VolumeOptions: { NoCopy: true } }];
+  record.HostConfig.Tmpfs = { "/etc/opencode": options };
+  record.Mounts.push({ Type: "volume", Name: volume, Source: `/var/lib/docker/volumes/${volume}/_data`, Destination: target, Driver: "local", Mode: "z", RW: false, Propagation: "" });
+  const plan = { ...expected, mounts: [`type=volume,src=${volume},dst=${target},readonly,volume-nocopy`], tmpfs: [`/etc/opencode:${options}`] };
+  const canonical = canonicalHomieDockerEnvelope(record, plan);
+  expect(canonicalHomieDockerEnvelope(record)).toBe(canonical);
+  for (const change of [
+    (r: any) => { r.Mounts.at(-1).RW = true; },
+    (r: any) => { r.Mounts.at(-1).Name = "another-volume"; },
+    (r: any) => { r.HostConfig.Mounts[0].VolumeOptions.NoCopy = false; },
+    (r: any) => { r.HostConfig.Tmpfs["/etc/opencode"] = "rw"; },
+    (r: any) => { delete r.HostConfig.Tmpfs; },
+    (r: any) => { r.HostConfig.Tmpfs["/workspace"] = "rw"; },
+  ]) {
+    const changed = structuredClone(record);
+    change(changed);
+    expect(() => canonicalHomieDockerEnvelope(changed, plan)).toThrow();
+    expect(canonicalHomieDockerEnvelope(changed)).not.toBe(canonical);
+  }
+  expect(() => canonicalHomieDockerEnvelope(record, expected)).toThrow();
+});

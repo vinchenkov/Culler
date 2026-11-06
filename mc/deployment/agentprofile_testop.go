@@ -18,6 +18,7 @@ import (
 	"time"
 
 	operatorconfig "mc/config"
+	"mc/opencodecatalog"
 )
 
 var agentProfileOperationID = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_-]{7,127}$`)
@@ -57,10 +58,11 @@ type agentProfileOperationRecord struct {
 
 // These dependencies keep authorization and model requests outside the fast suite.
 type agentProfileOperationDependencies struct {
-	Launch    func(home, id string) error
-	Authorize func(context.Context, string, string, func(string, string)) (any, error)
-	Test      func(context.Context, string, RuntimeCatalog, string) (LiveProviderObservation, error)
-	Verify    func(home, connection string) error
+	Launch      func(home, id string) error
+	Authorize   func(context.Context, string, string, func(string, string)) (any, error)
+	Test        func(context.Context, string, RuntimeCatalog, string) (LiveProviderObservation, error)
+	Verify      func(home, connection string) error
+	PrepareTest func(connection, authorization string) (func() error, error)
 }
 
 func agentProfileOperationsRoot(home string) (string, error) {
@@ -217,6 +219,9 @@ func StartAgentProfileOperation(home string, req AgentProfileOperationRequest) (
 	return startAgentProfileOperation(home, req, agentProfileOperationDependencies{})
 }
 func startAgentProfileOperation(home string, req AgentProfileOperationRequest, deps agentProfileOperationDependencies) (AgentProfileOperation, error) {
+	if req.Kind == "opencode_download" {
+		return StartOpenCodeDownload(home, true)
+	}
 	var empty AgentProfileOperation
 	root, err := agentProfileOperationsRoot(home)
 	if err != nil {
@@ -409,7 +414,10 @@ func updateAgentProfileOperation(home, id string, change func(*agentProfileOpera
 
 // RunAgentProfileOperation runs the model test in the agent image.
 // The verified function reports whether the spine records ready access for the connection.
-func RunAgentProfileOperation(home, id, image string, verified func(connection string) (bool, error)) error {
+func RunAgentProfileOperation(home, id, image string, verified func(connection string) (bool, error), prepareTest func(connection, authorization string) (func() error, error)) error {
+	if id == openCodeOperation {
+		return runOpenCodeDownload(home, image)
+	}
 	return runAgentProfileOperation(home, id, agentProfileOperationDependencies{
 		Test: func(ctx context.Context, home string, catalog RuntimeCatalog, binding string) (LiveProviderObservation, error) {
 			return testAgentProfileModel(ctx, home, image, catalog, binding)
@@ -417,6 +425,7 @@ func RunAgentProfileOperation(home, id, image string, verified func(connection s
 		Verify: func(home, connection string) error {
 			return verifyAgentConnectionAccess(home, connection, verified)
 		},
+		PrepareTest: prepareTest,
 	})
 }
 func runAgentProfileOperation(home, id string, deps agentProfileOperationDependencies) error {
@@ -509,7 +518,16 @@ func runAgentProfileOperation(home, id string, deps agentProfileOperationDepende
 			}
 		}
 		if err == nil {
-			observation, err = deps.Test(ctx, home, catalog, binding)
+			finish := func() error { return nil }
+			if deps.PrepareTest != nil {
+				finish, err = deps.PrepareTest(record.ConnectionID, record.AuthorizationID)
+			}
+			if err == nil {
+				observation, err = deps.Test(ctx, home, catalog, binding)
+				if closeErr := finish(); err == nil {
+					err = closeErr
+				}
+			}
 			if err == nil {
 				err = validLiveProviderObservation(observation)
 			}
@@ -557,6 +575,13 @@ func runAgentProfileOperation(home, id string, deps agentProfileOperationDepende
 		if operationErr != nil {
 			current.Status = "failed"
 			current.ErrorCode, current.Message = agentProfileOperationError(record.Kind, operationErr)
+			if current.ErrorCode == "authorization" {
+				if catalog, err := LoadRuntimeCatalog(home); err == nil {
+					if provider, ok := opencodecatalog.Find(catalog.Credentials[record.ConnectionID].CatalogEntry); ok {
+						current.Message = provider.RefusedKey()
+					}
+				}
+			}
 			current.Detail = agentProfileOperationDetail(operationErr)
 			return nil
 		}

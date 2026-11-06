@@ -10,6 +10,7 @@ import (
 type AccessChoice struct {
 	Mode           string `json:"mode"`
 	Model          string `json:"model,omitempty"`
+	Effort         string `json:"effort,omitempty"`
 	Step           string `json:"step"`
 	Harness        string `json:"harness,omitempty"`
 	Template       string `json:"template,omitempty"`
@@ -25,15 +26,15 @@ func (choice AccessChoice) validate() error {
 	}
 	validStep := choice.Step == "account-name" || choice.Step == "check"
 	if choice.Mode == "api_key" {
-		validStep = choice.Step == "key-choice" || choice.Step == "key" || choice.Step == "model" || choice.Step == "check"
+		validStep = choice.Step == "provider" || choice.Step == "key-choice" || choice.Step == "key" || choice.Step == "model" || choice.Step == "effort" || choice.Step == "download" || choice.Step == "check"
 	}
 	if !validStep {
 		return fmt.Errorf("the saved account prompt is invalid")
 	}
-	if choice.Harness != "" && choice.Harness != "codex" && choice.Harness != "claude-sdk" {
+	if choice.Harness != "" && choice.Harness != "codex" && choice.Harness != "claude-sdk" && choice.Harness != "opencode" {
 		return fmt.Errorf("the saved account harness is invalid")
 	}
-	for _, value := range []string{choice.Template, choice.Binding, choice.Name, choice.CreatedBinding} {
+	for _, value := range []string{strings.TrimPrefix(choice.Template, "opencode:"), choice.Binding, choice.Name, choice.CreatedBinding, choice.Effort} {
 		if value != "" && !validIdentifier(value) {
 			return fmt.Errorf("the saved account configuration name is invalid")
 		}

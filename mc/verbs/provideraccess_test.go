@@ -105,6 +105,41 @@ func TestProviderAccessAPIKeyRejectionAndRepairAction(t *testing.T) {
 	}
 }
 
+func TestProviderAccessReplacementKeyTestRetainsRefusalAfterTheCheckCloses(t *testing.T) {
+	db := proxyHealth(t, "connection_access")
+	check := ConnectionCheck{ConnectionID: "proxy-test", Operation: "connection_access",
+		AuthorizationID: "authorization-2", CheckID: domain.DiagnosticID()}
+	started, err := ConnectionCheckStart(db, nil, check)
+	if err != nil || started.(map[string]any)["allowed"] != true || proxyState(t, db, "") != "unknown" {
+		t.Fatalf("The replacement key test did not start: %v %v", started, err)
+	}
+	a := proxyObservation("provider", 401)
+	a.AuthorizationRevision, a.CurrentAuthorizationRevision = check.AuthorizationID, check.AuthorizationID
+	a.CredentialRef, a.CurrentCredentialRef, a.CurrentCredentialType = "credential-2", "credential-2", "api_key"
+	if !observeProxy(t, db, a).Applied {
+		t.Fatal("The replacement key refusal lost its diagnostic.")
+	}
+	if _, err := ConnectionCheckCancel(db, nil, check); err != nil {
+		t.Fatal(err)
+	}
+	stale := proxyObservation("provider", 401)
+	stale.CurrentAuthorizationRevision, stale.CurrentCredentialRef = check.AuthorizationID, "credential-2"
+	stale.CurrentCredentialType = "api_key"
+	if observeProxy(t, db, stale).Applied {
+		t.Fatal("The old key refusal changed the replacement key condition.")
+	}
+	status, err := SystemStatus(db, nil, SystemStatusRequest{Connections: []ConnectionRequirement{{
+		ID: check.ConnectionID, Kind: "api_key", Operation: check.Operation, AuthorizationID: check.AuthorizationID,
+	}}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	conditions := status.(SystemStatusResult).Conditions
+	if len(conditions) != 1 || conditions[0].State != "stopped" || conditions[0].Action != "Replace API key" || conditions[0].RequestID != a.RequestID {
+		t.Fatalf("The replacement key refusal lost its action: %+v", conditions)
+	}
+}
+
 func TestProviderAccessFirstRefusalCreatesTheCurrentAccountCondition(t *testing.T) {
 	for _, kind := range []string{"api_key", "account"} {
 		for _, quota := range []bool{false, true} {

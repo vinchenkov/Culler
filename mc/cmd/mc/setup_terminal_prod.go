@@ -53,6 +53,8 @@ type setupDependencies struct {
 	section        func(string, verbs.OnboardArgs) error
 	connect        func(*setupWizard, setupConnection) error
 	saveKey        func(string, deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error)
+	openCodeStatus func(string) *deployment.AgentProfileOperation
+	openCodeStart  func(string, bool) (deployment.AgentProfileOperation, error)
 	open           func(string) error
 	ready          func(string) ([]string, error)
 	runtimeReady   func(string, []string) error

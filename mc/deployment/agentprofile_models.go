@@ -14,6 +14,7 @@ import (
 	"time"
 
 	operatorconfig "mc/config"
+	"mc/opencodecatalog"
 )
 
 // CodexClientVersion is the Codex version in the runner image. The ChatGPT
@@ -31,6 +32,9 @@ type AgentModelListRequest struct {
 }
 
 type AgentModel struct {
+	Context            int      `json:"context,omitempty"`
+	InputPrice         float64  `json:"input_price"`
+	OutputPrice        float64  `json:"output_price"`
 	ID                 string   `json:"id"`
 	Name               string   `json:"name"`
 	EffortLevels       []string `json:"effort_levels"`
@@ -38,6 +42,7 @@ type AgentModel struct {
 }
 
 type AgentModelList struct {
+	WebSearch    bool         `json:"web_search"`
 	ConnectionID string       `json:"connection_id"`
 	Models       []AgentModel `json:"models"`
 }
@@ -100,6 +105,17 @@ func AgentConnectionModels(home string, req AgentModelListRequest) (AgentModelLi
 	source, ok := cfg.Runtimes.Credentials[req.ConnectionID]
 	if !ok {
 		return AgentModelList{}, fmt.Errorf("Select an available connection.")
+	}
+	if source.Kind == operatorconfig.CredentialKindOpenCodeAPIKey {
+		provider, ok := opencodecatalog.Find(source.CatalogEntry)
+		if !ok {
+			return AgentModelList{}, fmt.Errorf("The release catalog lacks this provider. Select another provider.")
+		}
+		out := AgentModelList{ConnectionID: req.ConnectionID, WebSearch: provider.WebSearch, Models: []AgentModel{}}
+		for _, model := range provider.Models {
+			out.Models = append(out.Models, AgentModel{ID: model.ID, Name: model.Name, Context: model.Context, InputPrice: model.InputPrice, OutputPrice: model.OutputPrice, EffortLevels: model.Efforts(), EffortSupportKnown: true})
+		}
+		return out, nil
 	}
 	if !listsAgentModels(source.Kind) {
 		return AgentModelList{}, fmt.Errorf("This connection does not list its models. Enter the model identifier.")

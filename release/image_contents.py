@@ -236,6 +236,8 @@ def runner_harness_packages(runner, added):
     root = RUNTIME + "app/node_modules/"
     view = runner.merged()
     failures = present(view, root + "@anthropic-ai/claude-agent-sdk", ("dir", "symlink"), "the Claude Agent SDK")
+    failures += absent(added, lambda path: "node_modules/@opencode/" in path or "node_modules/opencode-websearch/" in path or
+                       under(path, "opt/culler-opencode"), "OpenCode programs in the product image")
     failures += present(view, root + "@anthropic-ai/claude-agent-sdk-linux-arm64/claude", ("file", "link"), "the Claude program")
     failures += present(view, root + "@openai/codex-linux-arm64/vendor/aarch64-unknown-linux-musl/bin/codex", ("file", "link"),
                         "the Codex program")

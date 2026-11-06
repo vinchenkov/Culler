@@ -7,7 +7,7 @@ export interface HostCredentialRecord {
   version: 1;
   type: "api_key" | "account";
   credential: string;
-  channel: "codex" | "claude";
+  channel: "codex" | "claude" | "opencode";
   api_key?: string;
   token_url?: string;
   client_id?: string;
@@ -76,7 +76,7 @@ export function createProviderCredentials(deps: ProviderCredentialDependencies) 
       if (result.exitCode !== 0) throw new Error("read");
       const snapshot = JSON.parse(result.stdout) as HostCredentialSnapshot;
       if (!snapshot.record || snapshot.record.version !== 1 || snapshot.record.credential !== connection ||
-          !["api_key", "account"].includes(snapshot.record.type) || !["codex", "claude"].includes(snapshot.record.channel) ||
+          !["api_key", "account"].includes(snapshot.record.type) || !["codex", "claude", "opencode"].includes(snapshot.record.channel) ||
           !snapshot.authorization_id || !snapshot.credential_ref ||
           snapshot.record.type === "api_key" && !snapshot.record.api_key) throw new Error("shape");
       await observe({ request_id: crypto.randomUUID(), connection, operation: "service", origin: "credential_store",
@@ -313,10 +313,10 @@ export function createProviderCredentials(deps: ProviderCredentialDependencies) 
       const record = snapshot.record;
       const token = record.type === "api_key" ? record.api_key : record.access_token;
       if (!token) { await storeFailure(connection); throw new ProviderCredentialError("credential_store", "credential_missing"); }
-      const apiKeyHeader = protocols[record.channel].apiKeyHeader;
+      const apiKeyHeader = record.channel === "opencode" ? undefined : protocols[record.channel].apiKeyHeader;
       const headers: Record<string, string> = record.type === "api_key" && apiKeyHeader
         ? { [apiKeyHeader]: token } : { authorization: `Bearer ${token}` };
-      const identityHeader = protocols[record.channel].identityHeader;
+      const identityHeader = record.channel === "opencode" ? undefined : protocols[record.channel].identityHeader;
       if (record.type === "account" && record.account_id && identityHeader) {
         headers[identityHeader] = record.account_id;
       }

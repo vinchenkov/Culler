@@ -4,7 +4,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { makeTestLogger } from "../../runner/shared/log";
 import { createTraceLane, SESSIONS_REFRESH_MS, traceCopyPaths } from "./trace-lane";
-import { recoverSetupTrace, SETUP_RECOVERY_PER_PASS, setupTraceCandidates, type SetupTraceCandidate } from "./setup-traces";
+import { nativeTraceIdentity, recoverSetupTrace, SETUP_RECOVERY_PER_PASS, setupTraceCandidates, type SetupTraceCandidate } from "./setup-traces";
+
+test("OpenCode trace recovery retains the native session identity", () => {
+  expect(nativeTraceIdentity("codex", JSON.stringify({ type: "session_meta", payload: { id: "7e556d01-59fc-8ae6-b393-64609e645994", native_session_ref: "ses_fixture", originator: "OpenCode" } }) + "\n")).toBe("ses_fixture");
+});
 
 const homes: string[] = [];
 afterEach(async () => { await Promise.all(homes.splice(0).map(home => rm(home, { recursive: true, force: true }))); });

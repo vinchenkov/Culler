@@ -464,6 +464,9 @@ The harness in `binding` selects the layout of the session folder:
 - The harness `codex` writes each trace as a file `<year>/<month>/<day>/rollout-<time>-<id>.jsonl`.
   `trace_filename` names the main trace. Each other `rollout-*.jsonl` file in the session folder is a child trace.
 
+- The harness `opencode` writes `rollout-<trace identifier>.jsonl` with the Codex record layout.
+  Its native database stays under `opencode/` in the session folder.
+
 The session folder of a Homie session has the same layout.
 
 ### Read a trace

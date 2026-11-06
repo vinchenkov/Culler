@@ -10,12 +10,14 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"slices"
 	"sort"
 	"strings"
 	"time"
 	"unicode/utf8"
 
 	operatorconfig "mc/config"
+	"mc/opencodecatalog"
 	"mc/routing"
 )
 
@@ -46,6 +48,7 @@ type AgentConnectionRequest struct {
 }
 
 type AgentProfileView struct {
+	Problem        string   `json:"problem,omitempty"`
 	ID             string   `json:"id"`
 	Name           string   `json:"name"`
 	Model          string   `json:"model"`
@@ -59,6 +62,10 @@ type AgentProfileView struct {
 }
 
 type AgentConnectionView struct {
+	CatalogEntry           string   `json:"catalog_entry,omitempty"`
+	Address                string   `json:"address,omitempty"`
+	Website                string   `json:"website,omitempty"`
+	WebSearch              bool     `json:"web_search"`
 	ID                     string   `json:"id"`
 	Name                   string   `json:"name"`
 	Kind                   string   `json:"kind"`
@@ -71,12 +78,14 @@ type AgentConnectionView struct {
 }
 
 type AgentProfileCatalog struct {
-	Revision     string                `json:"revision"`
-	Profiles     []AgentProfileView    `json:"profiles"`
-	Connections  []AgentConnectionView `json:"connections"`
-	Integrations []AgentConnectionView `json:"integrations"`
-	ProfileID    string                `json:"profile_id,omitempty"`
-	ConnectionID string                `json:"connection_id,omitempty"`
+	OpenCode     *AgentProfileOperation `json:"opencode,omitempty"`
+	Revision     string                 `json:"revision"`
+	Profiles     []AgentProfileView     `json:"profiles"`
+	Connections  []AgentConnectionView  `json:"connections"`
+	Providers    []AgentConnectionView  `json:"providers"`
+	Integrations []AgentConnectionView  `json:"integrations"`
+	ProfileID    string                 `json:"profile_id,omitempty"`
+	ConnectionID string                 `json:"connection_id,omitempty"`
 }
 
 func agentProfileRevision(cfg operatorconfig.Config) string {
@@ -180,7 +189,12 @@ func agentProfileList(home string, includeEvidence bool) (AgentProfileCatalog, e
 	views := map[string]AgentConnectionView{}
 	for _, id := range connectionIDs {
 		source := cfg.Runtimes.Credentials[id]
-		view := AgentConnectionView{ID: id, Name: agentDisplayName(id, source.Name), Kind: source.Kind, Harness: source.Harness(), AccessStatus: "unknown", Models: []string{}}
+		view := AgentConnectionView{CatalogEntry: source.CatalogEntry, ID: id, Name: agentDisplayName(id, source.Name), Kind: source.Kind, Harness: source.Harness(), AccessStatus: "unknown", Models: []string{}}
+		if source.Kind == operatorconfig.CredentialKindOpenCodeAPIKey {
+			if provider, ok := opencodecatalog.Find(source.CatalogEntry); ok {
+				view.WebSearch, view.Website = provider.WebSearch, provider.Website
+			}
+		}
 		if includeEvidence {
 			view.AccessStatus = agentConnectionAccess(home, id, source)
 			view.AuthorizationID, _ = ReadConnectionAuthorizationIdentity(home, id)
@@ -199,6 +213,8 @@ func agentProfileList(home string, includeEvidence bool) (AgentProfileCatalog, e
 		out.Connections = append(out.Connections, view)
 	}
 	out.Integrations = agentSubscriptionIntegrations()
+	out.Providers = AgentProviderCatalog()
+	out.OpenCode = OpenCodeDownloadStatus(home)
 	ids := []string{}
 	for id := range cfg.Runtimes.Bindings {
 		ids = append(ids, id)
@@ -211,12 +227,22 @@ func agentProfileList(home string, includeEvidence bool) (AgentProfileCatalog, e
 		if assigned == nil {
 			assigned = []string{}
 		}
-		out.Profiles = append(out.Profiles, AgentProfileView{ID: id, Name: agentDisplayName(id, b.Name), Model: b.Model, Effort: b.Effort, ConnectionID: b.Credential, ConnectionName: connection.Name, Harness: b.Harness, Enabled: agentEnabled(cfg, id), AccessStatus: connection.AccessStatus, Roles: assigned})
+		problem := ""
+		if b.Harness == "opencode" {
+			if err := opencodecatalog.ValidateProfile(connection.CatalogEntry, b.Model, b.Effort); err != nil {
+				problem = err.Error()
+			}
+		}
+		out.Profiles = append(out.Profiles, AgentProfileView{Problem: problem, ID: id, Name: agentDisplayName(id, b.Name), Model: b.Model, Effort: b.Effort, ConnectionID: b.Credential, ConnectionName: connection.Name, Harness: b.Harness, Enabled: agentEnabled(cfg, id), AccessStatus: connection.AccessStatus, Roles: assigned})
 	}
 	return out, nil
 }
 
 func agentSubscriptionIntegration(id string) (operatorconfig.CredentialSource, bool) {
+	if strings.HasPrefix(id, "opencode:") {
+		provider, ok := opencodecatalog.Find(strings.TrimPrefix(id, "opencode:"))
+		return operatorconfig.CredentialSource{Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: provider.ID, Name: provider.Name}, ok
+	}
 	source, ok := operatorconfig.Default().Runtimes.Credentials[id]
 	return source, ok && agentConnectionKind(source.Kind)
 }
@@ -226,7 +252,7 @@ func agentSubscriptionKind(kind string) bool {
 }
 
 func agentAPIKeyKind(kind string) bool {
-	return kind == operatorconfig.CredentialKindCodexAPIKey || kind == operatorconfig.CredentialKindClaudeAPIKey
+	return kind == operatorconfig.CredentialKindCodexAPIKey || kind == operatorconfig.CredentialKindClaudeAPIKey || kind == operatorconfig.CredentialKindOpenCodeAPIKey
 }
 
 func agentConnectionKind(kind string) bool {
@@ -281,6 +307,11 @@ func resolveAgentProfile(cfg operatorconfig.Config, req AgentProfileRequest) (op
 	b := operatorconfig.RuntimeBinding{Name: req.Name, Harness: source.Harness(), Model: req.Model, Effort: req.Effort, Credential: req.ConnectionID}
 	if err := operatorconfig.ValidateBindingShape(id, b, source.Kind); err != nil {
 		return b, "", fmt.Errorf("Check the model: %w", err)
+	}
+	if source.Kind == operatorconfig.CredentialKindOpenCodeAPIKey {
+		if err := opencodecatalog.ValidateProfile(source.CatalogEntry, b.Model, b.Effort); err != nil {
+			return b, "", err
+		}
 	}
 	return b, id, nil
 }
@@ -434,4 +465,39 @@ func publishAgentConnectionGrant(home, id string, grant any) error {
 		}
 	}
 	return storeProviderCredential(home, id, identity, grant)
+}
+
+// AgentProviderCatalog matches release integrations by their model addresses.
+func AgentProviderCatalog() []AgentConnectionView {
+	out := []AgentConnectionView{}
+	for _, provider := range opencodecatalog.Release().Providers {
+		view := AgentConnectionView{ID: "opencode:" + provider.ID, Name: provider.Name, Kind: operatorconfig.CredentialKindOpenCodeAPIKey, Harness: "opencode", CatalogEntry: provider.ID, Website: provider.Website, WebSearch: provider.WebSearch, Models: []string{}}
+		addresses := []string{}
+		for _, model := range provider.Models {
+			if !slices.Contains(addresses, model.Address) {
+				addresses = append(addresses, model.Address)
+			}
+		}
+		view.Address = strings.Join(addresses, ", ")
+		for id, source := range operatorconfig.Default().Runtimes.Credentials {
+			if !agentAPIKeyKind(source.Kind) {
+				continue
+			}
+			integrationAddress := strings.TrimRight(source.InferenceURL, "/")
+			// The Claude SDK takes the service origin; its API paths start with /v1.
+			if source.Harness() == "claude-sdk" {
+				integrationAddress += "/v1"
+			}
+			for _, address := range addresses {
+				if strings.TrimRight(address, "/") == integrationAddress {
+					view.ID = id
+					view.Kind = source.Kind
+					view.Harness = source.Harness()
+					break
+				}
+			}
+		}
+		out = append(out, view)
+	}
+	return out
 }

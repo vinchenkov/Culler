@@ -42,7 +42,7 @@ def scan(output, tools):
         try:
             subprocess.run(["docker", "pull", reference], check=True)
             subprocess.run(["docker", "image", "save", reference, "-o", str(archive)], check=True)
-            result = subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")), "image",
+            result = subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")),
                                      "--archive", str(archive), "--image", name, "--commit", commit,
                                      "--tools", str(tools), "--report", str(output / (name + ".json"))])
             status = max(status, result.returncode)

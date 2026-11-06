@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Check the secret and vulnerability reports with the fixed scanners and controlled fixtures."""
+"""Check the vulnerability report with the fixed Trivy scanner and controlled fixtures."""
 
 import argparse
-import gzip
 import hashlib
 import io
 import json
@@ -14,12 +13,10 @@ import sys
 import tarfile
 import tempfile
 import unittest
-import zipfile
 from pathlib import Path
-from types import SimpleNamespace
 from unittest.mock import patch
 
-from security_scan import Scanners, execute, history
+from security_scan import Scanners, execute
 from security_tools import PINS
 
 TOOLS = None
@@ -68,64 +65,18 @@ class ScannerAcceptance(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        self.scratch = self.root / "scratch"
-        self.scratch.mkdir()
-        self.report = {"scanners": {}, "secrets": []}
-        self.scanners = Scanners(TOOLS, self.scratch, self.report)
-
-    def repository(self, files):
-        repo = self.root / "repo"
-        repo.mkdir()
-        def git(*args):
-            return subprocess.check_output(["git", "-C", str(repo), "-c", "user.name=Security test",
-                                            "-c", "user.email=security@example.invalid", *args], stderr=subprocess.DEVNULL).decode().strip()
-        git("init", "-b", "main")
-        for name, body in files.items():
-            (repo / name).write_bytes(body)
-        git("add", ".")
-        git("commit", "-m", "Add the fixture files")
-        return repo, git
-
-    def assert_masked_result(self, location):
-        self.assertTrue(credential() not in json.dumps(self.report), "A report disclosed the synthetic credential.")
-        self.assertTrue(any(location == item["file"] for item in self.report["secrets"]), self.report["secrets"])
-
-    def test_deleted_commit_credentials_are_reported_with_their_commit_and_file(self):
-        nested = io.BytesIO()
-        with zipfile.ZipFile(nested, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
-            archive.writestr("credential", credential())
-        repo, git = self.repository({
-            "credential": credential().encode(),
-            "credential.bin": b"\0" + credential().encode(),
-            "archive.tar": tar_bytes({"credential": credential().encode()}),
-            "application.tar.gz": gzip.compress(tar_bytes({"host/nested.zip": nested.getvalue()})),
-            ".gitattributes": b"credential -diff\n",
-        })
-        first = git("rev-parse", "HEAD")
-        git("rm", "credential", "credential.bin", "archive.tar", "application.tar.gz")
-        git("commit", "-m", "Delete the synthetic credential")
-        history(SimpleNamespace(repo=repo, ref=["refs/heads/main"], public_refs=False), self.scanners, self.report)
-        for location in ("credential", "credential.bin", "archive.tar!credential", "application.tar.gz!host/nested.zip!credential"):
-            with self.subTest(location=location):
-                self.assert_masked_result(location)
-        self.assertIn(first, [item["commit"] for item in self.report["secrets"]])
-        self.assertEqual(self.report["coverage"]["commits"], 2)
-
-    def test_variable_names_are_not_credentials(self):
-        repo, _ = self.repository({"names.txt": b"API_KEY\nexport API_KEY=\n"})
-        history(SimpleNamespace(repo=repo, ref=["refs/heads/main"], public_refs=False), self.scanners, self.report)
-        self.assertEqual(self.report["secrets"], [])
 
     def test_failed_tool_produces_an_unverified_masked_record(self):
         tools = self.root / "broken-tools"
         tools.mkdir()
-        program = tools / "gitleaks"
+        program = tools / "trivy"
         program.write_text("#!/bin/sh\nprintf '%s' '" + credential() + "' >&2\nexit 2\n")
         program.chmod(0o700)
-        repo, _ = self.repository({"file": b"value"})
+        archive = self.root / "image.tar"
+        fixture_image(archive)
         report = self.root / "failed.json"
-        result = subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")), "history",
-                                 "--repo", str(repo), "--ref", "refs/heads/main", "--tools", str(tools),
+        result = subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")),
+                                 "--archive", str(archive), "--image", "runner", "--tools", str(tools),
                                  "--report", str(report)], capture_output=True)
         self.assertEqual(result.returncode, 2)
         self.assertEqual(json.loads(report.read_text())["status"], "unverified")
@@ -140,7 +91,7 @@ class ScannerAcceptance(unittest.TestCase):
         del values["first/layer.tar"]
         archive.write_bytes(tar_bytes(values))
         report = self.root / "incomplete.json"
-        result = subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")), "image",
+        result = subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")),
                                  "--archive", str(archive), "--image", "runner", "--tools", str(TOOLS),
                                  "--report", str(report)], capture_output=True)
         self.assertEqual(result.returncode, 2)

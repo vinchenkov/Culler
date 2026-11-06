@@ -450,6 +450,14 @@ func (v *AdapterNoopVerifier) execute(
 			adapterArgs = append(adapterArgs, "--model", spec.Model)
 		}
 	}
+	if spec.Harness == "opencode" {
+		adapter = "opencode.ts"
+		volume, err := OpenCodeVolume(v.Home)
+		if err != nil {
+			return observation, err
+		}
+		argv = append(argv, "--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy", "--tmpfs", "/etc/opencode:ro,nosuid,nodev,noexec,mode=0555")
+	}
 	if spec.Effort != "" {
 		adapterArgs = append(adapterArgs, "--effort", spec.Effort)
 	}

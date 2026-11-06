@@ -56,9 +56,9 @@ The `dashboard-browser` job retains the suite log, the JUnit report, and the bro
 `release/image_contents.py` checks the file contents of both image archives, and `release/size_report.py` writes the size report of a fresh install and an update.
 The `release-checks` job requires the fast suite, deployment, browser, and image jobs.
 The publication jobs require that job before their uploads.
-The security scans report results in their job summaries and artifacts.
-No release job waits for a security scan, and a scan result never prevents a release.
-The secret scan covers only the source history of this repository.
+The vulnerability scans report results in their job summaries and artifacts.
+No release job waits for a vulnerability scan, and a scan result never prevents a release.
+GitHub secret scanning reports secrets in this repository on its Security tab.
 The read-only `release-images` job restores the build cache of the latest `main` build from the GitHub Actions cache.
 Only a push to `main` saves that cache.
 The product image builds on the default Project image of the same run.
@@ -67,7 +67,7 @@ The job saves both images and writes the size report.
 The `image-vulnerabilities` job scans those exact archives for known vulnerabilities.
 The image upload job verifies and loads those exact archives.
 The nightly security workflow scans the current release image digests with fresh advisory data.
-`release/security/README.md` describes the security scans, the local secret check, and the GitHub ruleset.
+`release/security/README.md` describes the security scans and the GitHub ruleset.
 The [installation guide](INSTALL.md) describes private access and release publication.
 
 An agent container is a container that Culler starts for a setup agent or a pipeline agent.

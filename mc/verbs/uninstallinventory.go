@@ -27,6 +27,8 @@ func CullerVolumes(names []string) []string {
 			out = append(out, name)
 		case strings.HasPrefix(name, runtimeVolumePrefix) && derivedSuffix(strings.TrimPrefix(name, runtimeVolumePrefix)):
 			out = append(out, name)
+		case strings.HasPrefix(name, "mc-opencode-") && derivedSuffix(strings.TrimPrefix(name, "mc-opencode-")):
+			out = append(out, name)
 		case strings.HasPrefix(name, e2ePrefix):
 			out = append(out, name)
 		}

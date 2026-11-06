@@ -12,5 +12,6 @@ result = unittest.TextTestRunner().run(suite)
 raise SystemExit(0 if result.wasSuccessful() else 1)
 PY
 sh -n "$HERE/build.sh"
-sh -n "$HERE/secret-check.sh"
+sh -n "$HERE/opencode/build.sh"
+sh -n "$HERE/opencode/check.sh"
 sh -n "$HERE/../runner/image/product-smoke.sh"

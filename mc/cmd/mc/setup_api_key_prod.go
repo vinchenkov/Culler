@@ -14,6 +14,9 @@ import (
 )
 
 func (w *setupWizard) apiKeyAccess(harness string) error {
+	if w.session.Access == nil && harness == "opencode" {
+		w.session.Access = &onboarding.AccessChoice{Mode: "api_key", Step: "provider", Harness: harness}
+	}
 	if w.session.Access == nil {
 		template := "codex-api-key"
 		if harness == "claude-sdk" {
@@ -38,6 +41,15 @@ func (w *setupWizard) apiKeyAccess(harness string) error {
 
 func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 	switch choice.Step {
+	case "provider":
+		return w.openCodeProvider(choice)
+	case "effort":
+		return w.openCodeEffort(choice)
+	case "download":
+		if err := w.openCodeDownload(); err != nil {
+			return err
+		}
+		choice.Step = "check"
 	case "key-choice":
 		answer, err := w.ui.Choose("Choose the API key", []onboarding.Choice{
 			setupChoice("saved-key", "Use the saved key", "Keep the key and select a model."),
@@ -72,7 +84,15 @@ func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 			}
 		}
 		if source == nil {
-			return fmt.Errorf("The API connection is unavailable.")
+			for _, provider := range catalog.Providers {
+				if provider.ID == choice.Template {
+					source = &provider
+					break
+				}
+			}
+			if source == nil {
+				return fmt.Errorf("The API connection is unavailable.")
+			}
 		}
 		save := w.deps.saveKey
 		if save == nil {
@@ -96,6 +116,9 @@ func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 		choice.Step = "model"
 		w.ui.Panel("API key saved", []string{"Choose the model that this agent uses.", "The model test verifies access and can incur provider charges."})
 	case "model":
+		if choice.Harness == "opencode" {
+			return w.openCodeModel(choice)
+		}
 		model, err := w.ask(onboarding.Prompt{Label: "Model", Value: choice.Model, Hints: []string{"Enter the model identifier for this API key."}, Check: setupModelCorrection})
 		if err != nil {
 			return err
