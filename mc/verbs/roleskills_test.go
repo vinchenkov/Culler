@@ -343,8 +343,12 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 		if subjectless {
 			continue
 		}
-		if role == dispatch.RoleWorker {
-			directive = roleSkillBody(t, role, "mc-worker")
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe {
+			name, err := RoleSkillName(role)
+			if err != nil {
+				t.Fatal(err)
+			}
+			directive = roleSkillBody(t, role, name)
 		}
 		if !strings.Contains(directive, "--infra") {
 			t.Errorf("%s directive forbids a silent exit but names no terminal for a failed run", role)
@@ -396,14 +400,14 @@ func TestProseVerbInvocationsKeepsOtherToolFlagsSeparate(t *testing.T) {
 
 // The steps of a task are the Worker, the Verifier, the Packager, and the
 // review. The Scribe has no task: it updates the Project wiki on a schedule.
-// Each directive states this model.
-func TestEachDirectiveStatesTheWikiSchedule(t *testing.T) {
+// The other directives retain the pipeline context.
+func TestDirectivesWithPipelineContextStateTheWikiSchedule(t *testing.T) {
 	for _, role := range allSpawnRoles {
 		prose, err := roleProseDirective(role)
 		if err != nil {
 			t.Fatalf("%s: %v", role, err)
 		}
-		if role == dispatch.RoleWorker {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe {
 			continue
 		}
 		flat := strings.Join(strings.Fields(prose), " ")

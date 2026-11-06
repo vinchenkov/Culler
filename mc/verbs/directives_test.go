@@ -274,10 +274,11 @@ func TestScribeTextNamesOnlyThePartsAndFactsOfItsRunBrief(t *testing.T) {
 			}
 		}
 	}
-	// The directive sends the Scribe to both parts that state the range of the wiki update.
+	// The OpenWiki procedure reads the source range and task context.
+	procedure := roleSkillBody(t, dispatch.RoleScribe, "openwiki")
 	for _, heading := range []string{partGitState, partMergedTasks} {
-		if !strings.Contains(directive, "**"+heading+"** part") {
-			t.Errorf("the Scribe directive does not name the %q part", heading)
+		if !strings.Contains(procedure, "**"+heading+"**") {
+			t.Errorf("the OpenWiki procedure does not name the %q part", heading)
 		}
 	}
 }
@@ -594,28 +595,35 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 			}, nil)
 			continue
 		}
-		for _, required := range []string{
-			"Culler preserves the Project home at `HOME`",
-			"separate credentials, sessions, role skills, and instructions",
-			"current declarations and the selected image",
-		} {
-			if !strings.Contains(directive, required) {
-				t.Errorf("The %s directive omits %q.", role, required)
+		if role == dispatch.RoleScribe {
+			requireAgentText(t, "openwiki skill", roleSkillBody(t, role, "openwiki"), []string{
+				"If research requires Project dependencies, check their compatibility with current declarations and the selected image before use.",
+				"this run performs no automatic dependency preparation",
+			}, nil)
+		} else {
+			for _, required := range []string{
+				"Culler preserves the Project home at `HOME`",
+				"separate credentials, sessions, role skills, and instructions",
+				"current declarations and the selected image",
+			} {
+				if !strings.Contains(directive, required) {
+					t.Errorf("The %s directive omits %q.", role, required)
+				}
 			}
-		}
-		if role == dispatch.RoleScribe || role == dispatch.RoleStrategist || role == dispatch.RoleArbiter {
-			if !strings.Contains(directive, "omits automatic dependency preparation") {
-				t.Errorf("The %s directive omits its preparation exemption.", role)
+			if role == dispatch.RoleStrategist || role == dispatch.RoleArbiter {
+				if !strings.Contains(directive, "omits automatic dependency preparation") {
+					t.Errorf("The %s directive omits its preparation exemption.", role)
+				}
+			} else if !strings.Contains(directive, "The runner prepares workspace dependencies before the agent starts") {
+				t.Errorf("The %s directive omits dependency preparation.", role)
 			}
-		} else if !strings.Contains(directive, "The runner prepares workspace dependencies before the agent starts") {
-			t.Errorf("The %s directive omits dependency preparation.", role)
-		}
-		if role == dispatch.RoleStrategist || role == dispatch.RoleArbiter {
-			if !strings.Contains(directive, "fresh committed projection") {
-				t.Errorf("The %s directive omits its committed projection.", role)
+			if role == dispatch.RoleStrategist || role == dispatch.RoleArbiter {
+				if !strings.Contains(directive, "fresh committed projection") {
+					t.Errorf("The %s directive omits its committed projection.", role)
+				}
+			} else if !strings.Contains(directive, "fresh source workspace") {
+				t.Errorf("The %s directive omits its fresh source workspace.", role)
 			}
-		} else if !strings.Contains(directive, "fresh source workspace") {
-			t.Errorf("The %s directive omits its fresh source workspace.", role)
 		}
 		skills, err := RoleSkillSet(role)
 		if err != nil {

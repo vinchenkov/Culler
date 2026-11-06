@@ -71,18 +71,25 @@ func skillPointer(skills []RoleSkill) string {
 		"`mc` ships no help surface: bare `mc` names zero verbs and `mc --help` is an unknown " +
 		"verb. That skill is the complete surface your role may call. A verb absent from it " +
 		"does not exist for you, and a search for one wastes the run."
-	if command.Name == "mc-worker" {
+	if command.Name == "mc-worker" || command.Name == "mc-scribe" {
+		help := "The skill lists the permitted commands; `mc` has no help command."
+		if command.Name == "mc-scribe" {
+			help = "The skill lists the permitted commands.\n`mc` has no help command."
+		}
 		text = "## Your command surface\n\n" +
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
-			"The skill lists the permitted commands; `mc` has no help command."
+			help
 	}
 
 	if len(skills) == 1 {
 		return text
 	}
-	text += "\n\n## Your other skills\n\n" +
-		"Each skill below is installed in this container under `" + installedSkillRoot + "`. " +
+	otherSkills := "Each skill below is installed in this container under `" + installedSkillRoot + "`. " +
 		"Load a skill when its description applies to the work in front of you.\n"
+	if command.Name == "mc-scribe" {
+		otherSkills = "Read each skill when its description applies.\n"
+	}
+	text += "\n\n## Your other skills\n\n" + otherSkills
 	for _, skill := range skills[1:] {
 		text += "\n- " + skill.Name + " (`" + installedSkillRoot + skill.Name + "/SKILL.md`): " + skill.Description()
 	}

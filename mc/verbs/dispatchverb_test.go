@@ -980,15 +980,14 @@ func TestDispatchSpawnBriefCarriesClaimedState(t *testing.T) {
 			heading, explanation string
 			facts                map[string]string
 		}{
-			{partCustomization, "These operator instructions replace standard defaults within the Culler contract. A contract conflict ends the wiki update as failed.",
+			{partCustomization, "This part identifies the operator's custom instructions and their revision.",
 				map[string]string{"Project": "ws-test", "Role": "scribe", "Customization revision": "0"}},
 			{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", map[string]string{"Run identifier": run}},
-			{"Agent credentials", "Culler keeps provider credentials on the host and sets the model and effort through the agent profile. This container uses a temporary Culler token through the host provider proxy.", nil},
-			{partProject, "This wiki update uses a fresh source workspace at `/workspace/source` and the persistent Project home. The Scribe omits automatic dependency preparation.", map[string]string{"Identifier": "ws-test"}},
-			{partGitState, "Your repository at `/workspace/source` starts at the start commit. Maintain `openwiki/` from original repository evidence and preserve each file outside that folder.",
+			{partProject, "The assigned repository is at `/workspace/source`.", map[string]string{"Identifier": "ws-test"}},
+			{partGitState, "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
 				map[string]string{"Start commit": wrCommitB, "Start commit of the last successful wiki update": wrCommitA}},
-			{partMergedTasks, "This part lists the tasks whose merge is in the range between the two commits of the **Git state** part, oldest first. " +
-				"When the `Omitted tasks` fact is present, the part omits that number of older tasks.", map[string]string{}},
+			{partMergedTasks, "These tasks merged after the last successful wiki update, oldest first. " +
+				"`Omitted tasks` counts older rows excluded from this part.", map[string]string{}},
 		}
 		if len(brief.Parts) != len(want)+1 {
 			t.Fatalf("sections of the Scribe brief = %v, want the directive and %d parts", brief.headings(), len(want))

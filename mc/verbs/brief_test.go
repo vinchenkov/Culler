@@ -131,8 +131,8 @@ func TestRunBriefExplainsEachPart(t *testing.T) {
 		if len(brief.Parts) < 2 {
 			t.Errorf("%s: the run brief holds %d parts", role, len(brief.Parts))
 		}
-		if role == dispatch.RoleScribe && (len(brief.Parts) != 6 || brief.part(partMergedTasks) == nil) {
-			t.Errorf("the Scribe run brief holds %d parts, want its six parts with the %s part", len(brief.Parts), partMergedTasks)
+		if role == dispatch.RoleScribe && (len(brief.Parts) != 5 || brief.part(partMergedTasks) == nil) {
+			t.Errorf("the Scribe run brief holds %d parts, want its five parts with the %s part", len(brief.Parts), partMergedTasks)
 		}
 		if role == dispatch.RoleWorker {
 			for _, heading := range []string{partRevision, partRequirementsRevision, partCorrection, partLastReport} {
@@ -243,15 +243,14 @@ func TestScribeBriefHoldsTheStartCommit(t *testing.T) {
 		heading, explanation string
 		facts                map[string]string
 	}{
-		{partCustomization, "These operator instructions replace standard defaults within the Culler contract. A contract conflict ends the wiki update as failed.",
+		{partCustomization, "This part identifies the operator's custom instructions and their revision.",
 			map[string]string{"Project": "ws-test", "Role": "scribe", "Customization revision": "0",
 				"Standard directive digest": brief.part(partCustomization).fact("Standard directive digest")}},
 		{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
 			map[string]string{"Run identifier": "run-scribe"}},
-		{"Agent credentials", "Culler keeps provider credentials on the host and sets the model and effort through the agent profile. This container uses a temporary Culler token through the host provider proxy.", nil},
-		{partProject, "This wiki update uses a fresh source workspace at `/workspace/source` and the persistent Project home. The Scribe omits automatic dependency preparation.",
+		{partProject, "The assigned repository is at `/workspace/source`.",
 			map[string]string{"Identifier": "ws-test"}},
-		{partGitState, "Your repository at `/workspace/source` starts at the start commit. Maintain `openwiki/` from original repository evidence and preserve each file outside that folder.",
+		{partGitState, "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
 			map[string]string{"Start commit": commit}},
 	}
 	// The role directive is the first section. The parts follow it.
@@ -272,7 +271,7 @@ func TestScribeBriefHoldsTheStartCommit(t *testing.T) {
 			}
 		}
 	}
-	for _, heading := range []string{"Failure controls", partVision, partProposalDecisions, partTask} {
+	for _, heading := range []string{"Agent credentials", "Failure controls", partVision, partProposalDecisions, partTask} {
 		if brief.part(heading) != nil {
 			t.Errorf("the Scribe run brief holds the part %q", heading)
 		}
@@ -280,8 +279,8 @@ func TestScribeBriefHoldsTheStartCommit(t *testing.T) {
 
 	// A run with no repository plan gets no Git facts.
 	bare := briefFor(t, db, dispatch.RoleScribe, nil, briefInputs{})
-	if bare.part(partGitState) != nil || len(bare.Parts) != 4 {
-		t.Errorf("the Scribe run brief with no repository plan holds %d parts, want four and no Git state part", len(bare.Parts))
+	if bare.part(partGitState) != nil || len(bare.Parts) != 3 {
+		t.Errorf("the Scribe run brief with no repository plan holds %d parts, want three and no Git state part", len(bare.Parts))
 	}
 }
 
@@ -384,15 +383,14 @@ func TestScribeBriefParts(t *testing.T) {
 		heading, explanation string
 		facts                []string
 	}{
-		{partCustomization, "These operator instructions replace standard defaults within the Culler contract. A contract conflict ends the wiki update as failed.",
+		{partCustomization, "This part identifies the operator's custom instructions and their revision.",
 			[]string{"Project", "Role", "Customization revision", "Standard directive digest"}},
 		{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", []string{"Run identifier"}},
-		{"Agent credentials", "Culler keeps provider credentials on the host and sets the model and effort through the agent profile. This container uses a temporary Culler token through the host provider proxy.", nil},
-		{partProject, "This wiki update uses a fresh source workspace at `/workspace/source` and the persistent Project home. The Scribe omits automatic dependency preparation.", []string{"Identifier"}},
-		{partGitState, "Your repository at `/workspace/source` starts at the start commit. Maintain `openwiki/` from original repository evidence and preserve each file outside that folder.",
+		{partProject, "The assigned repository is at `/workspace/source`.", []string{"Identifier"}},
+		{partGitState, "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
 			[]string{"Start commit", "Start commit of the last successful wiki update"}},
-		{"Merged tasks", "This part lists the tasks whose merge is in the range between the two commits of the **Git state** part, oldest first. " +
-			"When the `Omitted tasks` fact is present, the part omits that number of older tasks.", nil},
+		{"Merged tasks", "These tasks merged after the last successful wiki update, oldest first. " +
+			"`Omitted tasks` counts older rows excluded from this part.", nil},
 	}
 	if len(brief.Parts) != len(want)+1 || brief.Parts[0].Heading != "Standard Culler directive" {
 		t.Fatalf("sections of the Scribe run brief = %v, want the directive and %d parts", brief.headings(), len(want))
@@ -415,14 +413,11 @@ func TestScribeBriefParts(t *testing.T) {
 	if git.Facts["Start commit"] != wrCommitB || git.Facts["Start commit of the last successful wiki update"] != lastStart {
 		t.Errorf("Git facts = %v, want the start commit %s and the start commit %s of the last successful wiki update", git.Facts, wrCommitB, lastStart)
 	}
-	// The command surface of the Scribe explains each fact of the Git state part.
-	skill, err := RoleSkillFor(dispatch.RoleScribe)
-	if err != nil {
-		t.Fatal(err)
-	}
+	// The OpenWiki procedure uses both commits for its coverage.
+	skill := roleSkillBody(t, dispatch.RoleScribe, "openwiki")
 	for label := range git.Facts {
-		if !strings.Contains(skill.Body, "`"+label+"` fact") {
-			t.Errorf("the %s skill does not name the fact %q of the %s part", skill.Name, label, partGitState)
+		if !strings.Contains(skill, "`"+label+"`") {
+			t.Errorf("the %s skill does not name the fact %q of the %s part", "openwiki", label, partGitState)
 		}
 	}
 	wantRows := []map[string]any{
@@ -481,8 +476,8 @@ func TestScribeBriefOmitsMergedTasksForAnEmptyRange(t *testing.T) {
 			db := dvSpine(t)
 			test.setup(t, db)
 			brief := scribeBrief(t, db, wrCommitB)
-			if got := brief.headings(); !reflect.DeepEqual(got[1:], []string{partCustomization, partRun, "Agent credentials", partProject, partGitState}) {
-				t.Fatalf("parts of the Scribe run brief = %v, want five parts and no %s part", got[1:], partMergedTasks)
+			if got := brief.headings(); !reflect.DeepEqual(got[1:], []string{partCustomization, partRun, partProject, partGitState}) {
+				t.Fatalf("parts of the Scribe run brief = %v, want four parts and no %s part", got[1:], partMergedTasks)
 			}
 			if facts := brief.part(partGitState).Facts; len(facts) != 2 || facts["Start commit of the last successful wiki update"] == "" {
 				t.Fatalf("Git facts = %v, want both commits of the range", facts)
@@ -509,8 +504,8 @@ func TestScribeBriefWithNoSuccessfulWikiUpdate(t *testing.T) {
 			briefPackagedTask(t, db, 1, "merged task", "criterion")
 			briefMergeTask(t, db, 1)
 			brief := scribeBrief(t, db, wrCommitB)
-			if got := brief.headings(); !reflect.DeepEqual(got[1:], []string{partCustomization, partRun, "Agent credentials", partProject, partGitState}) {
-				t.Fatalf("parts of the Scribe run brief = %v, want five parts and no %s part", got[1:], partMergedTasks)
+			if got := brief.headings(); !reflect.DeepEqual(got[1:], []string{partCustomization, partRun, partProject, partGitState}) {
+				t.Fatalf("parts of the Scribe run brief = %v, want four parts and no %s part", got[1:], partMergedTasks)
 			}
 			if facts := brief.part(partGitState).Facts; !reflect.DeepEqual(facts, map[string]string{"Start commit": wrCommitB}) {
 				t.Fatalf("Git facts = %v, want only the start commit", facts)

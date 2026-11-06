@@ -356,13 +356,14 @@ func runPart(runID string) briefPart {
 // task: its subject is the Project wiki at the start commit of the wiki update.
 func buildScribeBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, custom RoleCustomization, in briefInputs) (runBrief, error) {
 	b := runBrief{Role: sp.Role, RunID: runID, Directive: custom.StandardDirective}
+	customization := customizationPart(sp, custom, "")
+	customization.Explanation = "This part identifies the operator's custom instructions and their revision."
 	b.Parts = append(b.Parts,
-		customizationPart(sp, custom, "A contract conflict ends the wiki update as failed."),
+		customization,
 		runPart(runID),
-		credentialPart(),
 		briefPart{
 			Heading:     partProject,
-			Explanation: "This wiki update uses a fresh source workspace at `/workspace/source` and the persistent Project home. The Scribe omits automatic dependency preparation.",
+			Explanation: "The assigned repository is at `/workspace/source`.",
 			Facts:       []briefFact{{"Identifier", sp.Project}},
 		})
 	if in.Repository == nil {
@@ -374,7 +375,7 @@ func buildScribeBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string
 	}
 	git := briefPart{
 		Heading:     partGitState,
-		Explanation: "Your repository at `/workspace/source` starts at the start commit. Maintain `openwiki/` from original repository evidence and preserve each file outside that folder.",
+		Explanation: "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
 		Facts:       []briefFact{{"Start commit", in.Repository.InputCommit}},
 	}
 	last := state.LastSucceeded
@@ -452,7 +453,7 @@ func mergedTasksPart(ctx context.Context, q Q, project string, lower int64) (*br
 	}
 	part := &briefPart{
 		Heading:     partMergedTasks,
-		Explanation: "This part lists the tasks whose merge is in the range between the two commits of the **Git state** part, oldest first. When the `Omitted tasks` fact is present, the part omits that number of older tasks.",
+		Explanation: "These tasks merged after the last successful wiki update, oldest first. `Omitted tasks` counts older rows excluded from this part.",
 		Rows:        tasks[omitted:],
 	}
 	if omitted > 0 {
