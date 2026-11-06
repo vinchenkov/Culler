@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, beforeAll, expect, test } from "bun:test";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, teardown, type Smoke } from "./harness";
+import { bootSmoke, completePageRead, evidencePath, gotoReady, mc, seedProject, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
 beforeAll(async () => { smoke = await bootSmoke(); await gotoReady(smoke); }, 60000);
@@ -153,8 +153,17 @@ test("Homie shares the conversation controls and preserves its session history",
     if (uploadRequests.length === 1) await route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: { message: "The test interrupts this upload." } }) });
     else await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ session_id: second }) });
   });
+  // The page records each change of the error box, so a brief error fails the test.
+  await page.evaluate(() => {
+    const box = document.getElementById("error")!;
+    (window as any).sendErrorChanges = [] as boolean[];
+    new MutationObserver(() => (window as any).sendErrorChanges.push(box.hidden)).observe(box, { attributes: true, attributeFilter: ["hidden"] });
+  });
   await page.getByTestId("send").click();
   await page.getByTestId("error").waitFor();
+  await completePageRead(page, "session-list");
+  expect(await page.evaluate(() => (window as any).sendErrorChanges)).toEqual([false]);
+  expect(await page.locator("#error-message").textContent()).toBe("The test interrupts this upload.");
   expect(await input.inputValue()).toBe("Please read the file.");
   expect(await pane.locator(".conversation-uploads").textContent()).toContain("notes.txt");
   await page.getByTestId("send").click();

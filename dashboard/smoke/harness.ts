@@ -337,6 +337,23 @@ export async function gotoReady(smoke: Smoke) {
   await smoke.page.waitForSelector("body[data-ready]", { timeout: 15000 });
 }
 
+/** Waits for a complete page read that starts after this call. The page starts
+ * a page read only after the previous page read ends, so the third read of the
+ * region starts after the second page read ends. */
+export async function completePageRead(page: Page, region: string) {
+  await page.evaluate(region => {
+    const record = { ends: 0, observer: null as MutationObserver | null };
+    record.observer = new MutationObserver(changes => { record.ends += changes.filter(change => change.oldValue === "true").length; });
+    record.observer.observe(document.getElementById(region)!, { attributes: true, attributeFilter: ["aria-busy"], attributeOldValue: true });
+    (window as any).smokePageReads = record;
+  }, region);
+  await page.waitForFunction(() => {
+    document.dispatchEvent(new Event("visibilitychange"));
+    return (window as any).smokePageReads.ends >= 3;
+  }, undefined, { polling: 100 });
+  await page.evaluate(() => (window as any).smokePageReads.observer.disconnect());
+}
+
 /** Selects one Project through the title switcher. The options sit inside
  * the panel, so a direct click on an option waits for a hidden element. */
 export async function selectProject(smoke: Smoke, id: string) {

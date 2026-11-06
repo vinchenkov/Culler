@@ -333,7 +333,7 @@ async function api(path, opts) {
       boardPackets = [];
       resetProjectView();
       renderPipelinePause();
-      showError(error);
+      showError(error, { read: true });
     }
     throw error;
   }
@@ -393,12 +393,14 @@ const narrowReader = window.matchMedia("(max-width: 959px)");
 /** Whether the open reader covers the page. */
 const readerCovers = () => state.selectedPacket !== null && narrowReader.matches;
 
-// Each shown page error advances this count. A page read clears only an error
-// that appeared before the read started.
+// A page read clears only the error of a page read that started before it.
+// The error of an operator action remains until a later action or page change.
 let errorSerial = 0;
+let errorFromRead = false;
 
-function showError(err) {
+function showError(err, { read = false } = {}) {
   errorSerial++;
+  errorFromRead = read;
   if (document.body.classList.contains("access-denied")) err = new Error(NO_TOKEN);
   if (isDockerUnavailable(err)) {
     state.dockerUnavailable = true;
@@ -1079,7 +1081,7 @@ function renderTaskDialog() {
         try {
           await refreshReview();
         } catch (err) {
-          showError(err);
+          showError(err, { read: true });
           return;
         }
         if (state.tab === "review") selectPacket(d.packet);
@@ -1813,6 +1815,7 @@ function selectSession(id) {
   if (state.homieSessionBusy || state.sendInFlight) return;
   state.selected = id === "" || id === null ? null : id;
   setChildren($("homie-transcript"), el("div", { class: "loading", text: "Loading transcript…" }));
+  clearError();
   renderHomieControls();
   tick();
 }
@@ -2575,6 +2578,7 @@ async function submitDecision(taskID, decision) {
       body: JSON.stringify({ ...payload, ...identity }),
     });
     if (scope !== state.scopeSerial) return;
+    clearError();
     if (decision === "approve") {
       ++reviewReadSerial;
       const row = readerRow(taskID);
@@ -2595,7 +2599,7 @@ async function submitDecision(taskID, decision) {
     try {
       await refreshReview();
     } catch (err) {
-      if (scope === state.scopeSerial) showError(`The decision was saved. Packet data is unavailable. ${err instanceof Error ? err.message : err}`);
+      if (scope === state.scopeSerial) showError(`The decision was saved. Packet data is unavailable. ${err instanceof Error ? err.message : err}`, { read: true });
     }
     if (document.activeElement === document.body || document.activeElement === null) {
       (state.selectedPacket === null ? $("packets") : $("packet-reader")).focus();
@@ -4109,7 +4113,7 @@ async function loadOlderLogs() {
   } catch (err) {
     if (selection === logsHash({ unit: state.logsUnit, stream: state.logsStream, run: state.logsRun })) {
       if (state.logsTail === requestedTail) state.logsTail = previousTail;
-      showError(err);
+      showError(err, { read: true });
     }
   } finally {
     logsOlderBusy = false;
@@ -4347,9 +4351,9 @@ function tick() {
         readRegion(pageRegions[tab], REFRESHERS[tab] ?? refreshBoard),
         readRegion("project-vision", refreshVisionNotice),
       ]);
-      if (scope === state.scopeSerial && errorSerial === errorsBefore) clearError();
+      if (scope === state.scopeSerial && errorSerial === errorsBefore && errorFromRead) clearError();
     } catch (error) {
-      if (scope === state.scopeSerial) showError(error);
+      if (scope === state.scopeSerial) showError(error, { read: true });
     } finally {
       pageReads.delete(key);
       if (scope === state.scopeSerial || (tab === state.tab && !pageReads.size)) {
