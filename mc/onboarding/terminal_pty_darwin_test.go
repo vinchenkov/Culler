@@ -3,8 +3,12 @@
 package onboarding
 
 import (
+	"context"
 	"os"
+	"os/exec"
+	"syscall"
 	"testing"
+	"time"
 	"unsafe"
 
 	"golang.org/x/sys/unix"
@@ -32,4 +36,38 @@ func testTerminalPair(t *testing.T) (*os.File, *os.File) {
 	}
 	t.Cleanup(func() { _ = slave.Close() })
 	return master, slave
+}
+
+func TestReleaseTerminalInput(t *testing.T) {
+	if os.Getenv("CULLER_TEST_RELEASE_TERMINAL") == "1" {
+		terminal := NewTerminal(os.Stdin, os.Stdout)
+		if !terminal.HasTerminal() {
+			t.Fatal("the release input requires a terminal")
+		}
+		value, err := terminal.Choose("Release input", []Choice{{ID: "first", Label: "First"}, {ID: "second", Label: "Second"}}, 0)
+		if err != nil || value != "second" {
+			t.Fatalf("the release input returned %q, %v", value, err)
+		}
+		return
+	}
+	master, slave := testTerminalPair(t)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	// The shell opens /dev/tty, as the public release launcher does.
+	cmd := exec.CommandContext(ctx, "sh", "-c", `exec "$1" -test.run '^TestReleaseTerminalInput$' </dev/tty`, "sh", os.Args[0])
+	cmd.Env = append(os.Environ(), "CULLER_TEST_RELEASE_TERMINAL=1", "TERM=xterm")
+	cmd.Stdin, cmd.Stdout, cmd.Stderr = slave, slave, slave
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setsid: true, Setctty: true, Ctty: 0}
+	if err := cmd.Start(); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { cancel(); _ = cmd.Wait() })
+	readTerminalUntil(t, master, "q exit")
+	if _, err := master.Write([]byte("\x1b[B\r")); err != nil {
+		t.Fatal(err)
+	}
+	readTerminalUntil(t, master, "PASS")
+	if err := cmd.Wait(); err != nil {
+		t.Fatalf("the release terminal failed: %v", err)
+	}
 }

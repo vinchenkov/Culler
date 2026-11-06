@@ -84,8 +84,7 @@ func (k *keyReader) readByte(escape bool) (byte, error) {
 		if escape {
 			timeout = 40
 		}
-		fds := []unix.PollFd{{Fd: int32(k.terminal.input.Fd()), Events: unix.POLLIN}}
-		count, err := unix.Poll(fds, timeout)
+		count, err := waitTerminalInput(int(k.terminal.input.Fd()), timeout)
 		if errors.Is(err, unix.EINTR) {
 			continue
 		}
@@ -97,9 +96,6 @@ func (k *keyReader) readByte(escape bool) (byte, error) {
 				return 0, io.EOF
 			}
 			continue
-		}
-		if fds[0].Revents&unix.POLLNVAL != 0 {
-			return 0, fmt.Errorf("the terminal input is unavailable")
 		}
 		return k.terminal.in.ReadByte()
 	}
