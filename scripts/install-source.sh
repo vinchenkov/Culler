@@ -1,9 +1,9 @@
 #!/bin/sh
 # Culler setup
 #
-# Usage: ./install.sh [options]
+# Usage: sh scripts/install-source.sh [options]
 #
-# Run ./install.sh for terminal setup.
+# Run sh scripts/install-source.sh for terminal setup.
 # Use --yes with explicit setup options.
 # Agent connections use Codex or Claude Code sign-in.
 #
@@ -52,6 +52,10 @@
 #   --help  Show this help.
 
 set -eu
+set +x
+umask 077
+CULLER_PARENT_PATH=${CULLER_PARENT_PATH-$PATH}
+export CULLER_PARENT_PATH
 
 say() { printf '%s\n' "$*"; }
 fail() {
@@ -99,6 +103,8 @@ show_help() {
 }
 
 REPO_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+CULLER_SOURCE_INSTALLER="$REPO_DIR/scripts/install-source.sh"
+export CULLER_SOURCE_INSTALLER
 
 DEV=0
 ASSUME_YES=0
@@ -245,7 +251,7 @@ check_runtime_bindings() {
   else
     _defined=$(binding_ids "$REPO_DIR/mc/config/config.example.toml")
     [ -n "$_defined" ] || \
-      fail "The configuration template is unavailable. Run install.sh from a complete repository checkout."
+      fail "The configuration template is unavailable. Run sh scripts/install-source.sh from a complete repository checkout."
   fi
   [ "$DEV" -eq 0 ] || _defined="${_defined}fake "
   _old_ifs=$IFS
@@ -305,10 +311,10 @@ install_mise() {
     Darwin:x86_64) _mise_platform=macos-x64 ;;
     Linux:aarch64|Linux:arm64) _mise_platform=linux-arm64 ;;
     Linux:x86_64) _mise_platform=linux-x64 ;;
-    *) fail "This computer requires a manual mise installation. Install mise, then run install.sh again." ;;
+    *) fail "This computer requires a manual mise installation. Install mise, then run sh scripts/install-source.sh again." ;;
   esac
   command -v curl >/dev/null 2>&1 && command -v shasum >/dev/null 2>&1 || \
-    fail "The download verification tools are unavailable. Repair curl and shasum, then run install.sh again."
+    fail "The download verification tools are unavailable. Repair curl and shasum, then run sh scripts/install-source.sh again."
   say "› Download and verify mise"
   _mise_temp=$(mktemp -d "${TMPDIR:-/tmp}/mc-mise.XXXXXX")
   trap 'rm -rf "$_mise_temp"' EXIT HUP INT TERM
@@ -318,7 +324,7 @@ install_mise() {
     "$_mise_release/$_mise_asset" --output "$_mise_temp/mise" >/dev/null 2>&1 && \
     curl --fail --silent --show-error --location --connect-timeout 15 --max-time 120 \
       "$_mise_release/SHASUMS256.txt" --output "$_mise_temp/checksums" >/dev/null 2>&1 || \
-    fail "The mise download failed. Check your network connection, then run install.sh again."
+    fail "The mise download failed. Check your network connection, then run sh scripts/install-source.sh again."
   _mise_checksum=$(awk -v asset="$_mise_asset" '
     NF == 2 && ($2 == asset || $2 == "./" asset) {print $1}
   ' "$_mise_temp/checksums")
@@ -329,10 +335,10 @@ install_mise() {
     fail "The mise release checksum is missing or invalid. Ask your coding harness to inspect the release files."
   printf '%s  mise\n' "$_mise_checksum" >"$_mise_temp/selected-checksum"
   ( cd "$_mise_temp" && shasum -a 256 -c selected-checksum >/dev/null 2>&1 ) || \
-    fail "The mise download failed its checksum check. Run install.sh again to retry the download."
+    fail "The mise download failed its checksum check. Run sh scripts/install-source.sh again to retry the download."
   mkdir -p "$HOME/.local/bin"
   install -m 755 "$_mise_temp/mise" "$HOME/.local/bin/mise" || \
-    fail "The mise installation failed. Check your home directory permissions, then run install.sh again."
+    fail "The mise installation failed. Check your home directory permissions, then run sh scripts/install-source.sh again."
   rm -rf "$_mise_temp"
   trap - EXIT HUP INT TERM
   PATH="$HOME/.local/bin:$PATH"
@@ -365,7 +371,7 @@ ask_again() {
     printf '%s: ' "$_prompt"
     read -r _answer || [ -n "$_answer" ] || {
       printf '\n'
-      fail "The input ended before you answered the endpoint questions. Run install.sh again."
+      fail "The input ended before you answered the endpoint questions. Run sh scripts/install-source.sh again."
     }
   done
   eval "$_var=\$_answer"
@@ -544,13 +550,13 @@ esac
 if terminal_setup; then
   if [ "$OS" = Darwin ] && ! xcode-select -p >/dev/null 2>&1; then
     bootstrap_note "! Install Apple's developer tools" \
-      "Complete the Apple installer, then run install.sh to resume setup."
+      "Complete the Apple installer, then run sh scripts/install-source.sh to resume setup."
     xcode-select --install >/dev/null 2>&1 || \
-      fail "The Apple installer is unavailable. Install the developer tools from https://developer.apple.com/download/all/, then run install.sh again."
+      fail "The Apple installer is unavailable. Install the developer tools from https://developer.apple.com/download/all/, then run sh scripts/install-source.sh again."
     exit 0
   fi
   command -v git >/dev/null 2>&1 && git --version >/dev/null 2>&1 || \
-    fail "Git is unavailable. Repair the Apple developer tools, then run install.sh again."
+    fail "Git is unavailable. Repair the Apple developer tools, then run sh scripts/install-source.sh again."
   if ! command -v mise >/dev/null 2>&1; then
     for _mise_dir in "$HOME/.local/bin" "$HOME/.local/share/mise/bin" /opt/homebrew/bin /usr/local/bin; do
       if [ -x "$_mise_dir/mise" ]; then
@@ -565,26 +571,26 @@ if terminal_setup; then
   ( cd "$REPO_DIR" && mise trust "$REPO_DIR/.mise.toml" >/dev/null 2>&1 ) || \
     fail "The repository tool configuration is unavailable. Resume setup from a complete repository checkout."
   ( cd "$REPO_DIR" && MISE_YES=1 mise install >/dev/null 2>&1 ) || \
-    fail "The host tool installation failed. Check your network connection, then run install.sh again."
+    fail "The host tool installation failed. Check your network connection, then run sh scripts/install-source.sh again."
   ( cd "$REPO_DIR" && mise exec -- go version >/dev/null 2>&1 ) || \
-    fail "The required Go tool is unavailable. Run install.sh again after you repair the mise installation."
+    fail "The required Go tool is unavailable. Run sh scripts/install-source.sh again after you repair the mise installation."
   ( cd "$REPO_DIR" && mise exec -- bun --version >/dev/null 2>&1 ) || \
-    fail "The required Bun tool is unavailable. Run install.sh again after you repair the mise installation."
+    fail "The required Bun tool is unavailable. Run sh scripts/install-source.sh again after you repair the mise installation."
   say "✓ Go and Bun are ready"
   RELEASE_BUILD_ID=$(git -C "$REPO_DIR" rev-parse --verify 'HEAD^{commit}') || \
-    fail "The release identity is unavailable. Run install.sh from a complete repository checkout."
+    fail "The release identity is unavailable. Run sh scripts/install-source.sh from a complete repository checkout."
   case "$RELEASE_BUILD_ID" in
-    *[!0-9a-f]*|'') fail "The release identity is invalid. Run install.sh from a complete repository checkout." ;;
+    *[!0-9a-f]*|'') fail "The release identity is invalid. Run sh scripts/install-source.sh from a complete repository checkout." ;;
   esac
   [ "${#RELEASE_BUILD_ID}" -ge 40 ] && [ "${#RELEASE_BUILD_ID}" -le 64 ] || \
-    fail "The release identity is invalid. Run install.sh from a complete repository checkout."
+    fail "The release identity is invalid. Run sh scripts/install-source.sh from a complete repository checkout."
   RELEASE_VERSION=$(cat "$REPO_DIR/VERSION" 2>/dev/null) || \
-    fail "The release version is unavailable. Run install.sh from a complete repository checkout."
+    fail "The release version is unavailable. Run sh scripts/install-source.sh from a complete repository checkout."
   case "$RELEASE_VERSION" in
-    *[!0-9.]*|'') fail "The VERSION file must hold one version, for example 0.1.0. Repair the VERSION file, then run install.sh again." ;;
+    *[!0-9.]*|'') fail "The VERSION file must hold one version, for example 0.1.0. Repair the VERSION file, then run sh scripts/install-source.sh again." ;;
   esac
   printf '%s\n' "$RELEASE_VERSION" | grep -Eqx '(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)' || \
-    fail "The VERSION file must hold one version, for example 0.1.0. Repair the VERSION file, then run install.sh again."
+    fail "The VERSION file must hold one version, for example 0.1.0. Repair the VERSION file, then run sh scripts/install-source.sh again."
   [ -n "$BIN_DIR" ] || BIN_DIR="${MC_BIN_DIR:-$HOME/.local/bin}"
   SETUP_SCRATCH=$(mktemp -d "${TMPDIR:-/tmp}/mc-setup.XXXXXX")
   trap 'rm -rf "$SETUP_SCRATCH"' EXIT HUP INT TERM
@@ -592,7 +598,7 @@ if terminal_setup; then
   ( cd "$REPO_DIR/mc" && mise exec -- go build \
       -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION" \
       -o "$SETUP_SCRATCH/mc" ./cmd/mc >/dev/null 2>&1 ) || \
-    fail "The setup program build failed. Repair the host tools, then run install.sh again."
+    fail "The setup program build failed. Repair the host tools, then run sh scripts/install-source.sh again."
   say "✓ The setup program is ready"
   [ -n "$MC_HOME_IN" ] || MC_HOME_IN="$HOME/.culler"
   check_runtime_bindings
@@ -658,16 +664,18 @@ if [ "$DEV" -eq 1 ]; then
   ( cd "$REPO_DIR/mc" && mise exec -- go build -tags test_fake_routing -ldflags "-w" -o "$BIN_DIR/mc" ./cmd/mc )
 else
   [ -n "$BIN_DIR" ] || BIN_DIR="${MC_BIN_DIR:-$HOME/.local/bin}"
-  mkdir -p "$BIN_DIR"
+  export MC_BIN_DIR="$BIN_DIR"
+  SETUP_SCRATCH=$(mktemp -d "${TMPDIR:-/tmp}/mc-setup.XXXXXX")
+  trap 'rm -rf "$SETUP_SCRATCH"' EXIT HUP INT TERM
   say "== build (production)"
   ( cd "$REPO_DIR/mc" && mise exec -- go build \
       -ldflags "-w -X main.releaseBuildID=$RELEASE_BUILD_ID -X main.releaseVersion=$RELEASE_VERSION" \
-      -o "$BIN_DIR/mc" ./cmd/mc )
+      -o "$SETUP_SCRATCH/mc" ./cmd/mc )
   say "== build (production image, native arm64)"
   ( cd "$REPO_DIR" && MC_RELEASE_BUILD_ID="$RELEASE_BUILD_ID" ./runner/image/build-prod.sh ) || \
     fail "production image build failed — fix the reported build/runtime error, then re-run the front door"
 fi
-say "   installed $BIN_DIR/mc"
+[ "$DEV" -eq 0 ] || say "   installed $BIN_DIR/mc"
 
 # --- 3. Hand off to the wizard ---------------------------------------------
 
@@ -714,15 +722,18 @@ collect_git_identity
 if [ "$DEV" -eq 0 ]; then
   export MC_HOME="$MC_HOME_IN"
   say "== hand-off: mc __onboard preflight"
-  "$BIN_DIR/mc" __onboard preflight
+  "$SETUP_SCRATCH/mc" __onboard preflight
   say "== hand-off: mc __onboard home (through the managed helper)"
-  set -- "$BIN_DIR/mc" __onboard home --release-source "$REPO_DIR/runner" \
+  set -- "$SETUP_SCRATCH/mc" __onboard home --release-source "$REPO_DIR/runner" \
     --host-release-source "$REPO_DIR"
   [ "$RESTORE_LATEST" -eq 0 ] || set -- "$@" --restore-latest
   "$@"
+  rm -rf "$SETUP_SCRATCH"
+  trap - EXIT HUP INT TERM
+  say "   installed $BIN_DIR/mc"
   say "== hand-off: mc __onboard agentsview (the pinned AgentsView executable)"
   "$BIN_DIR/mc" __onboard agentsview || \
-    fail "The AgentsView install failed. Fix the error above, then run install.sh again."
+    fail "The AgentsView install failed. Fix the error above, then run sh scripts/install-source.sh again."
   say "== hand-off: remaining mc onboard sections"
   if [ -n "$PROJECT$WORKSPACE_ROOT$PROJECT_GIT_AUTHOR_NAME$PROJECT_VISION" ] || [ "$ACCEPT_GENERATED_SANDBOX" -eq 1 ] || [ "$SMOKE" -eq 1 ]; then
     ask PROJECT "first Project id" "$PROJECT"

@@ -176,7 +176,7 @@ func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, dep
 		lines := strings.Split(setupDiagnosticAt(diagnosticHome, err.Error()), "\n")
 		var details, commands []string
 		for _, line := range lines {
-			if strings.HasPrefix(line, "culler ") || strings.HasPrefix(line, "curl ") || filepath.IsAbs(line) {
+			if strings.HasPrefix(line, "culler ") || strings.HasPrefix(line, "curl ") || strings.HasPrefix(line, "sh ") || filepath.IsAbs(line) {
 				commands = append(commands, line)
 			} else {
 				details = append(details, line)
@@ -429,6 +429,15 @@ func cullerNext(s cullerStatus) (string, string) {
 }
 
 func cullerInstallCommand(home string) string {
+	installer := os.Getenv("CULLER_SOURCE_INSTALLER")
+	if installer == "" {
+		if source, err := deployment.RuntimeSourceDirectory(home); err == nil {
+			installer = filepath.Join(source, "scripts", "install-source.sh")
+		}
+	}
+	if filepath.IsAbs(installer) {
+		return "sh " + cullerQuote(installer) + " --mc-home " + cullerQuote(home)
+	}
 	return "curl -fsSL " + cullerInstallerURL + " | bash -s -- --mc-home " + cullerQuote(home)
 }
 
@@ -635,14 +644,14 @@ func cullerUpdateAction(ctx context.Context, home string, noColor, restore bool,
 	info, err := os.Lstat(launcher)
 	if err != nil || !info.Mode().IsRegular() || info.Mode().Perm()&0022 != 0 {
 		t := onboarding.NewCommandTerminal(stderr, noColor)
-		t.Problem("The saved installer is unavailable", []string{"Use the public installer to resume setup."})
+		t.Problem("The saved installer is unavailable", []string{"Use the installer to resume setup."})
 		t.Literal(cullerInstallCommand(home))
 		return 1
 	}
 	owner, ok := info.Sys().(*syscall.Stat_t)
 	if !ok || owner.Uid != uint32(os.Getuid()) || owner.Nlink != 1 {
 		t := onboarding.NewCommandTerminal(stderr, noColor)
-		t.Problem("The saved installer has an invalid owner or link", []string{"Use the public installer to restore the saved installer."})
+		t.Problem("The saved installer has an invalid owner or link", []string{"Use the installer to repair setup."})
 		t.Literal(cullerInstallCommand(home))
 		return 1
 	}

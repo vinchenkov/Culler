@@ -196,6 +196,11 @@ func readRuntimeSource(home string) (runtimeSourceRecord, error) {
 	return source, nil
 }
 
+func RuntimeSourceDirectory(home string) (string, error) {
+	source, err := readRuntimeSource(home)
+	return source.Source, err
+}
+
 // ConfigureRuntimeSource retains the source of a local deployment without its optional programs.
 func ConfigureRuntimeSource(home, runner, release string) error {
 	file := filepath.Join(home, "state", "runtime-source.json")
@@ -207,6 +212,9 @@ func ConfigureRuntimeSource(home, runner, release string) error {
 		return nil
 	}
 	if err := requireOperatorSourceDirectory(root, "runtime source"); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Dir(file), 0700); err != nil {
 		return err
 	}
 	body, _ := json.Marshal(runtimeSourceRecord{Source: root, Release: release})

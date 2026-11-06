@@ -357,6 +357,27 @@ The [provider support contract](release/PROVIDER-COMPATIBILITY.md) defines saved
 With that ruleset, a pull request can merge only after its `release-checks` job passes.
 A failed or unverified required check prevents release publication.
 
+## Source installation
+
+Run the source installer from the repository root:
+
+```sh
+sh scripts/install-source.sh
+```
+
+The source installer builds Culler from the checkout and opens the same setup wizard as the published installer.
+Both paths check prerequisites, configure agent connections, request service activation, and verify dashboard access.
+The source installer uses the Go and Bun versions from `.mise.toml` through mise.
+It builds the agent image locally and downloads the pinned AgentsView executable.
+The published installer downloads verified release files and images instead.
+
+Run the source installer again to resume an incomplete source installation.
+Plain `./install.sh` selects the published release, even inside a source checkout.
+
+Use `./redeploy.sh` to deploy the checkout over an existing production installation.
+That command preserves the database and stops when the database schema differs.
+Published release updates use `culler update` and retain their separate recovery procedure.
+
 ## Development installation
 
 Development installation retains its separate command:
