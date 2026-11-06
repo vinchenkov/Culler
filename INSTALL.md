@@ -327,7 +327,13 @@ To publish a release, make one change with these edits:
 
 1. Increase the version in `VERSION` by the [version rules](#versions).
 2. Add a `## <version>` section at the top of `CHANGELOG.md`.
-3. Give the section these parts in this order: `### Changes`, `### Known limits`, `### Database compatibility`, and `### Update effects`.
+3. Include `### Changes`, then `### Known limits`.
+
+Version 0.1.0 requires only these two parts.
+For later releases, add these parts after `Known limits`, in this order:
+
+- `### Database compatibility`.
+- `### Update effects`.
 
 The pull request checks reject an absent or malformed `VERSION` file.
 They also reject a version without a complete `CHANGELOG.md` section.
@@ -336,7 +342,7 @@ Before a version increase, compare the database schema of the new version with t
 Ask your coding harness to make this comparison.
 A different schema blocks publication until its conversion and recovery tests pass.
 An accepted-format declaration alone cannot enable a conversion.
-State the preserved data and required intermediate releases in the Database compatibility and Update effects parts.
+Use the Database compatibility and Update effects parts to describe preserved data and required intermediate releases.
 Before publication, test the exact packages on a separate Mac or isolated deployment.
 Confirm the update and recovery results that those parts state.
 

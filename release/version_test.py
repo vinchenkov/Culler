@@ -4,6 +4,17 @@ from pathlib import Path
 
 from version import ROOT, parse, read_version, release_notes
 
+FIRST_SECTION = """## 0.1.0
+
+### Changes
+
+- The first release.
+
+### Known limits
+
+- A limit.
+"""
+
 SECTION = """## {version}
 
 ### Changes
@@ -30,7 +41,7 @@ class VersionTest(unittest.TestCase):
         if version is not None:
             (root / "VERSION").write_text(version)
         if changelog is None:
-            changelog = "# Changelog\n\n" + SECTION.format(version="0.2.0") + "\n" + SECTION.format(version="0.1.0")
+            changelog = "# Changelog\n\n" + SECTION.format(version="0.2.0") + "\n" + FIRST_SECTION
         (root / "CHANGELOG.md").write_text(changelog)
         return root
 
@@ -60,6 +71,27 @@ class VersionTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             notes = release_notes(self.repository(directory))
             self.assertEqual(notes, SECTION.format(version="0.2.0").split("\n", 2)[2])
+
+    def test_the_first_release_requires_no_update_parts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = self.repository(directory, version="0.1.0\n", changelog=FIRST_SECTION)
+            self.assertEqual(release_notes(root), FIRST_SECTION.split("\n", 2)[2])
+
+    def test_later_releases_require_both_update_parts(self):
+        for version in ("0.1.1", "0.2.0", "1.0.0"):
+            for heading in ("### Database compatibility", "### Update effects"):
+                changelog = SECTION.format(version=version).split(heading)[0]
+                with self.subTest(version=version, heading=heading), tempfile.TemporaryDirectory() as directory:
+                    root = self.repository(directory, version=version + "\n", changelog=changelog)
+                    with self.assertRaisesRegex(ValueError, "in this order"):
+                        release_notes(root)
+
+    def test_the_first_release_requires_nonempty_changes_and_limits(self):
+        for heading, content in (("Changes", "- The first release.\n"), ("Known limits", "- A limit.\n")):
+            with self.subTest(heading=heading), tempfile.TemporaryDirectory() as directory:
+                root = self.repository(directory, version="0.1.0\n", changelog=FIRST_SECTION.replace(content, ""))
+                with self.assertRaisesRegex(ValueError, heading + " part"):
+                    release_notes(root)
 
     def test_a_version_increase_requires_its_changelog_section(self):
         with tempfile.TemporaryDirectory() as directory:

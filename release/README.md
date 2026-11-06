@@ -10,7 +10,9 @@ The release workflow runs the scripts of this directory on the release inputs.
 `release/version.py check` checks the `VERSION` file and `CHANGELOG.md`.
 The check requires one `MAJOR.MINOR.PATCH` line in `VERSION`, for example `0.1.0`.
 It requires the first `CHANGELOG.md` section to have the version in `VERSION`.
-Each section must have the parts Changes, Known limits, Database compatibility, and Update effects, in that order.
+Each section must start with Changes, then Known limits.
+Version 0.1.0 requires only these two parts.
+Later versions must also include Database compatibility, then Update effects.
 The sections go from the newest version to the oldest version.
 `./release/check.sh` runs this check, so the `fast-suite-macos` job checks each pull request.
 

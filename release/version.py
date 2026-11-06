@@ -45,13 +45,14 @@ def sections(text):
 
 
 def check_section(version, body):
+    required = PARTS[:2] if version == "0.1.0" else PARTS
     headings = [line[4:] for line in body.splitlines() if line.startswith("### ")]
-    if headings != list(PARTS):
-        raise ValueError("The changelog section " + version + " must hold these parts in this order: " + ", ".join(PARTS) + ".")
+    if headings != list(required):
+        raise ValueError("The changelog section " + version + " must hold these parts in this order: " + ", ".join(required) + ".")
     parts = re.split(r"^### .*$", body, flags=re.MULTILINE)
     if parts[0].strip():
-        raise ValueError("The changelog section " + version + " must start with its " + PARTS[0] + " part.")
-    for name, text in zip(PARTS, parts[1:]):
+        raise ValueError("The changelog section " + version + " must start with its " + required[0] + " part.")
+    for name, text in zip(required, parts[1:]):
         if not text.strip():
             raise ValueError("The " + name + " part of the changelog section " + version + " is empty.")
 
