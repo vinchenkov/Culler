@@ -396,6 +396,7 @@ describe("Collie runtime inventory attestation", () => {
       "create", "--rm", "--network", "none",
       "--name", "mc-collie-h-abc",
       "--label", "mc-managed=true",
+      "--label", "mc-deployment=c464d4ae6e2c",
       "--label", "mc-tier=collie",
       "--label", `mc-session-id=${plan.session}`,
       "--label", `mc-launch-id=${plan.launch}`,
@@ -418,6 +419,23 @@ describe("Collie runtime inventory attestation", () => {
     );
     return docker;
   }
+
+  test("accepts prior containers and rejects unknown labels or malformed deployment identities", async () => {
+    for (const [label, value, accepted] of [
+      ["mc-deployment", undefined, true],
+      ["mc-deployment", "invalid", false],
+      ["mc-unexpected", "true", false],
+    ] as const) {
+      const record = recordFor("f".repeat(64)) as any;
+      if (value === undefined) delete record.Config.Labels[label];
+      else record.Config.Labels[label] = value;
+      const docker = new FakeExec();
+      docker.enqueue(ok(id + "\n"), ok(JSON.stringify([record])));
+      const result = collectCollieInventory(docker.exec, runtime());
+      if (accepted) expect(await result).toHaveLength(1);
+      else await expect(result).rejects.toThrow("label");
+    }
+  });
 
   test("emits proof only when this resident boot owns the exact bound generation", async () => {
     const live = runtime();

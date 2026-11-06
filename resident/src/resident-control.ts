@@ -418,9 +418,16 @@ export async function collectCollieInventory(
       "mc-envelope-digest", "mc-launch-id", "mc-managed",
       "mc-runtime-generation", "mc-session-id", "mc-tier",
     ];
+    const deploymentLabels = ["mc-deployment", ...attestedLabels];
     if (JSON.stringify(mcLabels) !== JSON.stringify(legacyLabels) &&
-        JSON.stringify(mcLabels) !== JSON.stringify(attestedLabels)) {
+        JSON.stringify(mcLabels) !== JSON.stringify(attestedLabels) &&
+        JSON.stringify(mcLabels) !== JSON.stringify(deploymentLabels)) {
       throw new Error("Collie inventory record carries an unexpected Culler label set");
+    }
+    if ("mc-deployment" in labelMap &&
+        (typeof labelMap["mc-deployment"] !== "string" ||
+         !/^[0-9a-f]{12}$/.test(labelMap["mc-deployment"]))) {
+      throw new Error("Collie inventory record carries a malformed deployment label");
     }
     const id = record.Id;
     const session = labelMap["mc-session-id"];
