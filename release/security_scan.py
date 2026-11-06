@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Report secret results in the source history and vulnerability results in the release images."""
+"""Report the vulnerability results of a release image."""
 
 import argparse
 import datetime
 import hashlib
-import io
 import json
 import os
 import re
@@ -12,11 +11,8 @@ import subprocess
 import sys
 import tarfile
 import tempfile
-import zipfile
 from pathlib import Path
 
-from security_content import Content, digest
-from security_policy import EXCEPTIONS, apply_exceptions, load_exceptions
 from security_tools import PINS
 
 SEVERITIES = ("CRITICAL", "HIGH", "MEDIUM", "LOW", "UNKNOWN")
@@ -26,69 +22,20 @@ def now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat()
 
 
-def execute(command, cwd=None, allowed=(0,)):
+def digest(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def execute(command, cwd=None):
     env = {key: value for key, value in os.environ.items()
-           if not key.startswith(("GITLEAKS_", "TRIVY_", "GIT_")) and key not in {"GH_TOKEN", "GITHUB_TOKEN"}}
-    env.update(GIT_NO_REPLACE_OBJECTS="1", GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+           if not key.startswith("TRIVY_") and key not in {"GH_TOKEN", "GITHUB_TOKEN"}}
     result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=3600)
-    if result.returncode not in allowed:
-        # Scanner output can contain source lines or environment values.
+    if result.returncode != 0:
+        # Scanner output can contain environment values.
         raise ValueError("A required command failed; its output remains private.")
     return result
-
-
-def history_objects(repo, refs, scanners):
-    objects = execute(["git", "-C", str(repo), "rev-list", "--objects", *refs]).stdout
-    object_ids = [line.split(b" ", 1)[0] for line in objects.splitlines()]
-    requests = scanners.scratch / "git-objects"
-    requests.write_bytes(b"\n".join(object_ids) + b"\n")
-    content = Content(scanners.scratch / "history-objects")
-    binary_count = 0
-    # Git patches omit binary contents. Read those blobs from the original object graph.
-    with requests.open("rb") as source, (scanners.scratch / "git-errors").open("wb") as errors:
-        env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
-        env.update(GIT_NO_REPLACE_OBJECTS="1", GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
-        process = subprocess.Popen(["git", "-C", str(repo), "cat-file", "--batch"], stdin=source,
-                                   stdout=subprocess.PIPE, stderr=errors, env=env)
-        try:
-            for expected in object_ids:
-                header = process.stdout.readline().split()
-                if len(header) != 3 or header[0] != expected:
-                    raise ValueError("The history scan omitted a required Git object.")
-                size = int(header[2])
-                if size > 512 * 1024**2:
-                    raise ValueError("A Git object exceeds the scan limit.")
-                body = process.stdout.read(size)
-                if len(body) != size or process.stdout.read(1) != b"\n":
-                    raise ValueError("The history scan received an incomplete Git object.")
-                oid = expected.decode()
-                if header[1] == b"commit":
-                    content.add(io.BytesIO(body), {"file": "commit-message", "commit": oid, "subject": "commit:" + oid})
-                elif header[1] == b"blob" and (b"\0" in body[:8000] or body.startswith((b"PK\x03\x04", b"\x1f\x8b", b"BZh", b"\xfd7zXZ"))):
-                    candidates = execute(["git", "-C", str(repo), "log", "--format=%H", "--find-object=" + oid,
-                                          "--no-patch", "--root", *refs]).stdout.decode().splitlines()
-                    location = None
-                    for commit in reversed(candidates):
-                        tree = execute(["git", "-C", str(repo), "ls-tree", "-r", "-z", commit]).stdout
-                        matches = [entry.split(b"\t", 1)[1] for entry in tree.split(b"\0")
-                                   if b"\t" in entry and entry.split(b"\t", 1)[0].split()[-1] == expected]
-                        if matches:
-                            location = {"file": matches[0].decode("utf-8", "replace"), "commit": commit,
-                                        "subject": "commit:" + commit, "blob": oid}
-                            break
-                    if location is None:
-                        raise ValueError("The history scan cannot locate a binary object in its commit.")
-                    content.add(io.BytesIO(body), location)
-                    binary_count += 1
-            if process.wait(timeout=30) != 0:
-                raise ValueError("The history object check failed.")
-        finally:
-            if process.poll() is None:
-                process.kill()
-                process.wait()
-    scanners.content(content)
-    return binary_count
 
 
 class Scanners:
@@ -101,52 +48,24 @@ class Scanners:
         self.empty.write_text("")
         self.config = scratch / "trivy.yaml"
         self.config.write_text("{}\n")
-        self.checked = set()
+        self.checked = False
 
-    def tool(self, name):
-        self.report["stage"] = "Verify the " + name + " executable."
-        path = self.tools / name
-        if name not in self.checked:
-            result = execute([str(path), "version" if name == "gitleaks" else "--version"])
-            version = self.pins[name]["version"]
+    def tool(self):
+        self.report["stage"] = "Verify the trivy executable."
+        path = self.tools / "trivy"
+        if not self.checked:
+            result = execute([str(path), "--version"])
+            version = self.pins["trivy"]["version"]
             if not re.search(r"(?<![0-9.])" + re.escape(version) + r"(?![0-9.])", result.stdout.decode()):
                 raise ValueError("The scanner version differs from its pin.")
-            self.report["scanners"][name] = {"version": version, "executable_sha256": digest(path)}
-            self.checked.add(name)
+            self.report["scanners"]["trivy"] = {"version": version, "executable_sha256": digest(path)}
+            self.checked = True
         return str(path)
-
-    def gitleaks(self, arguments, locations=None):
-        raw = self.scratch / "gitleaks.json"
-        raw.unlink(missing_ok=True)
-        config = self.tools / "gitleaks.toml"
-        binary = self.tool("gitleaks")
-        self.report["stage"] = "Check secrets with Gitleaks."
-        result = execute([binary, *arguments, "--config", str(config),
-                          "--gitleaks-ignore-path", str(self.empty), "--ignore-gitleaks-allow",
-                          "--redact=100", "--no-banner", "--no-color", "--log-level=error",
-                          "--max-target-megabytes=0", "--max-decode-depth=5", "--max-archive-depth=0",
-                          "--report-format=json", "--report-path", str(raw)],
-                         cwd=self.scratch, allowed=(0, 1))
-        findings = json.loads(raw.read_text())
-        if not isinstance(findings, list) or (result.returncode == 1 and not findings) or result.stderr:
-            raise ValueError("Gitleaks did not complete the required coverage.")
-        self.report["scanners"]["gitleaks"]["rules_sha256"] = digest(config)
-        for item in findings:
-            location = locations[Path(item["File"]).name] if locations is not None else {
-                "file": item["File"], "subject": "commit:" + item["Commit"], "commit": item["Commit"]}
-            self.report["secrets"].append({**location, "scanner": "gitleaks",
-                                           "rule": item["RuleID"], "line": item["StartLine"]})
-        raw.unlink()
-
-    def content(self, content):
-        if content.locations:
-            self.gitleaks(["dir", str(content.root)], content.locations)
-        return {"files": len(content.locations), "bytes": content.bytes}
 
     def trivy(self, archive, image):
         raw = self.scratch / "trivy.json"
         cache = self.scratch / "trivy-cache"
-        command = [self.tool("trivy"), "image", "--config", str(self.config),
+        command = [self.tool(), "image", "--config", str(self.config),
                    "--cache-dir", str(cache), "--quiet", "--timeout=45m"]
         self.report["stage"] = "Retrieve current advisory data."
         execute([*command, "--download-db-only"], cwd=self.scratch)
@@ -201,38 +120,6 @@ def consume_trivy(data, report, image, input_path=None):
     report["packages_without_version"] = sorted({item["target"] + " " + item["package"]
                                                  for item in packages if not item["version"]})
     report["operating_system"] = data.get("Metadata", {}).get("OS", {})
-
-
-def history(args, scanners, report):
-    repo = args.repo.resolve()
-    def git(*values):
-        return execute(["git", "-C", str(repo), *values]).stdout.decode().strip()
-    if git("rev-parse", "--is-shallow-repository") != "false":
-        raise ValueError("The history scan requires the complete repository history.")
-    grafts = Path(git("rev-parse", "--git-path", "info/grafts"))
-    if not grafts.is_absolute():
-        grafts = repo / grafts
-    if grafts.exists() and grafts.stat().st_size:
-        raise ValueError("The history scan requires the original commit graph.")
-    refs = list(args.ref or [])
-    if args.public_refs:
-        refs.extend(git("for-each-ref", "--format=%(refname)", "refs/remotes/origin", "refs/tags").splitlines())
-        refs.append("HEAD")
-    if not refs:
-        raise ValueError("Name every branch and tag intended for publication.")
-    resolved = {}
-    for ref in refs:
-        if not re.fullmatch(r"[A-Za-z0-9_./-]+", ref) or ref.startswith("-"):
-            raise ValueError("The public ref is invalid.")
-        resolved[ref] = git("rev-parse", "--verify", ref + "^{commit}")
-    commits = git("rev-list", *sorted(set(resolved.values()))).splitlines()
-    if not commits:
-        raise ValueError("The history scan selected zero commits.")
-    report.update(refs=resolved, commits=commits)
-    scanners.gitleaks(["git", str(repo), "--log-opts=--full-history -m --text --no-textconv " + " ".join(sorted(set(resolved.values())))])
-    binary_count = history_objects(repo, sorted(set(resolved.values())), scanners)
-    report["coverage"] = {"commits": len(commits), "binary_blobs": binary_count, "commit_messages": True,
-                          "deleted_files": True, "merge_diffs": True}
 
 
 def image(args, scanners, report):
@@ -305,24 +192,10 @@ def cell(value):
 
 
 def summary(report):
-    if report["kind"] == "history":
-        lines = ["## Secret scan of the Culler repository", ""]
-    else:
-        lines = ["## Vulnerability scan of the " + report.get("image", "") + " image", ""]
+    lines = ["## Vulnerability scan of the " + report.get("image", "") + " image", ""]
     if report["status"] != "complete":
         lines.append("The scan did not complete. The last stage was: " + report.get("stage", "the start") +
                      " The report artifact keeps the record.")
-        return "\n".join(lines) + "\n"
-    if report["kind"] == "history":
-        secrets = report["secrets"]
-        without = sum(1 for item in secrets if "reason" not in item)
-        lines += ["- Commits: " + str(report["coverage"]["commits"]), "- Gitleaks results: " + str(len(secrets)),
-                  "- Results without an exception in `release/security/exceptions.json`: " + str(without)]
-        if secrets:
-            lines += ["", "| File | Commit | Rule | Line | Exception reason |", "| --- | --- | --- | --- | --- |"]
-            for item in secrets:
-                lines.append("| " + " | ".join(cell(value) for value in (
-                    item["file"], item["commit"][:12], item["rule"], item["line"], item.get("reason", "None"))) + " |")
         return "\n".join(lines) + "\n"
     results = report["vulnerabilities"]
     lines += ["- Packages: " + str(len(report["packages"])), "- Trivy vulnerability results: " + str(len(results)),
@@ -343,32 +216,23 @@ def summary(report):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("history", "image"))
     parser.add_argument("--tools", required=True, type=Path)
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--commit", default="")
-    parser.add_argument("--exceptions", type=Path, default=EXCEPTIONS)
-    parser.add_argument("--repo", type=Path, default=Path.cwd())
-    parser.add_argument("--ref", action="append")
-    parser.add_argument("--public-refs", action="store_true")
-    parser.add_argument("--archive", type=Path)
-    parser.add_argument("--image", choices=("project", "runner"))
+    parser.add_argument("--archive", required=True, type=Path)
+    parser.add_argument("--image", required=True, choices=("project", "runner"))
     args = parser.parse_args()
-    report = {"format": 2, "kind": args.kind, "commit": args.commit, "started_at": now(),
-              "status": "unverified", "scanners": {}}
-    report["secrets" if args.kind == "history" else "vulnerabilities"] = []
+    report = {"format": 3, "kind": "image", "commit": args.commit, "started_at": now(),
+              "status": "unverified", "scanners": {}, "vulnerabilities": []}
     code = 2
     try:
-        exceptions = load_exceptions(args.exceptions)
         with tempfile.TemporaryDirectory(prefix="culler-security-") as directory:
-            scanners = Scanners(args.tools, Path(directory), report)
-            {"history": history, "image": image}[args.kind](args, scanners, report)
-        apply_exceptions(report, exceptions)
+            image(args, Scanners(args.tools, Path(directory), report), report)
         report["status"] = "complete"
         report["stage"] = "The scan completed."
         code = 0
     except (ValueError, OSError, KeyError, TypeError, AttributeError, EOFError, RuntimeError,
-            tarfile.TarError, zipfile.BadZipFile, subprocess.SubprocessError):
+            tarfile.TarError, subprocess.SubprocessError):
         report["error"] = "A required tool, input, or coverage check failed. The scan remains unverified."
     report["completed_at"] = now()
     args.report.parent.mkdir(parents=True, exist_ok=True)
@@ -376,7 +240,7 @@ def main():
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as stream:
             stream.write(summary(report))
-    print("The " + args.kind + " security scan is " + report["status"] + ".")
+    print("The image vulnerability scan is " + report["status"] + ".")
     return code
 
 

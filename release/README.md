@@ -3,7 +3,7 @@
 `./release/check.sh` runs every `*_test.py` file in this directory with `unittest` and checks the shell scripts.
 The check needs no credentials, no network access, and no Docker.
 The release workflow runs the scripts of this directory on the release inputs.
-[security/README.md](security/README.md) describes the secret scan and the vulnerability scans.
+[security/README.md](security/README.md) describes the vulnerability scans and the secret scanning.
 
 ## Image archive checks
 

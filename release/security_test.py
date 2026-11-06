@@ -2,16 +2,11 @@ import hashlib
 import http.client
 import io
 import json
-import tarfile
-import tempfile
 import unittest
 import urllib.error
-from pathlib import Path
 from unittest import mock
 
 import security_tools
-from security_content import Content
-from security_policy import apply_exceptions, load_exceptions
 from security_scan import bundled_tools, consume_trivy, summary
 
 
@@ -29,25 +24,6 @@ def image_report():
 
 
 class SecurityReportTest(unittest.TestCase):
-    def test_secret_exceptions_require_the_exact_location(self):
-        item = {"scanner": "gitleaks", "subject": "commit:abc", "file": "fixture", "rule": "rule", "line": 1}
-        for change, matched in (({}, True), ({"subject": "commit:def"}, False),
-                                ({"file": "different"}, False), ({"line": 2}, False)):
-            with self.subTest(change=change):
-                report = {"secrets": [dict(item)]}
-                exceptions = {"secrets": [{**item, **change, "reason": "The value is a synthetic fixture."}]}
-                apply_exceptions(report, exceptions)
-                self.assertEqual(report["secrets"][0].get("reason"), "The value is a synthetic fixture." if matched else None)
-
-    def test_the_exceptions_hold_only_secret_results(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "exceptions.json"
-            for data in ({"secrets": [], "vulnerabilities": []}, {"secrets": [{"scanner": "gitleaks", "reason": "partial"}]}):
-                path.write_text(json.dumps(data))
-                with self.assertRaises(ValueError):
-                    load_exceptions(path)
-        self.assertTrue(load_exceptions()["secrets"])
-
     def test_missing_bundled_versions_remain_unverified(self):
         with self.assertRaises(KeyError):
             bundled_tools({}, "runner")
@@ -91,56 +67,9 @@ class SecurityReportTest(unittest.TestCase):
         self.assertIn("| LOW | 1 | 0 |", text)
         self.assertIn("| CRITICAL | 0 | 0 |", text)
 
-    def test_the_history_summary_lists_each_result_and_its_exception(self):
-        report = {"kind": "history", "status": "complete", "coverage": {"commits": 2}, "secrets": [
-            {"file": "a|b", "commit": "c" * 40, "rule": "generic-api-key", "line": 3, "reason": "A fixture."},
-            {"file": "other", "commit": "d" * 40, "rule": "generic-api-key", "line": 4}]}
-        text = summary(report)
-        self.assertIn("- Commits: 2\n- Gitleaks results: 2\n- Results without an exception", text)
-        self.assertIn("`release/security/exceptions.json`: 1\n", text)
-        self.assertIn("| a\\|b | cccccccccccc | generic-api-key | 3 | A fixture. |", text)
-        self.assertIn("| other | dddddddddddd | generic-api-key | 4 | None |", text)
-
     def test_an_unverified_scan_names_its_last_stage(self):
         text = summary({"kind": "image", "image": "project", "status": "unverified", "stage": "Check the image with Trivy."})
         self.assertIn("The scan did not complete. The last stage was: Check the image with Trivy.", text)
-
-    def test_archive_paths_never_write_outside_the_scan_directory(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            body = io.BytesIO()
-            with tarfile.open(fileobj=body, mode="w") as archive:
-                entry = tarfile.TarInfo("../../escape")
-                entry.size = 4
-                archive.addfile(entry, io.BytesIO(b"text"))
-            body.seek(0)
-            content = Content(root / "files")
-            content.add(body, {"file": "archive", "subject": "fixture"})
-            self.assertFalse((root / "escape").exists())
-            self.assertTrue(any(item["file"] == "archive!../../escape" for item in content.locations.values()))
-
-    def test_links_with_archive_names_retain_their_target_text(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            body = io.BytesIO()
-            with tarfile.open(fileobj=body, mode="w") as archive:
-                for kind, name in ((tarfile.SYMTYPE, "usr/share/doc/x/changelog.Debian.gz"),
-                                   (tarfile.LNKTYPE, "usr/share/doc/x/copy.tar")):
-                    entry = tarfile.TarInfo(name)
-                    entry.type = kind
-                    entry.linkname = "../y/changelog.Debian.gz"
-                    archive.addfile(entry)
-            body.seek(0)
-            content = Content(root / "files")
-            content.add(body, {"file": "layer.tar", "subject": "fixture"})
-            content.add(io.BytesIO(b"../z/notes.gz"), {"file": "notes.gz", "subject": "fixture"}, expand=False)
-            texts = {item["file"]: (content.root / name).read_text() for name, item in content.locations.items()}
-            self.assertEqual(texts["layer.tar!usr/share/doc/x/changelog.Debian.gz"], "../y/changelog.Debian.gz")
-            self.assertEqual(texts["layer.tar!usr/share/doc/x/copy.tar"], "../y/changelog.Debian.gz")
-            self.assertEqual(texts["notes.gz"], "../z/notes.gz")
-            with self.assertRaises(ValueError):
-                content.add(io.BytesIO(b"plain text"), {"file": "damaged.gz", "subject": "fixture"})
-
 
 class ScannerDownloadTest(unittest.TestCase):
     BODY = b"scanner archive"

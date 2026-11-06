@@ -20,32 +20,6 @@ env:
   NO_COLOR: "1"
 
 jobs:
-  source-secrets:
-    name: source-secrets
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Install the fixed security scanners
-        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
-      # This scan reports its results. No release job waits for it.
-      - name: Report secret results in the complete public history and pull request commits
-        run: |
-          ./release/secret-check.sh --public-refs --commit "$GITHUB_SHA" \
-            --tools "$RUNNER_TEMP/security-tools" --report "$RUNNER_TEMP/security-history.json"
-      - name: Preserve the masked history report
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: culler-security-history-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/security-history.json
-          if-no-files-found: error
-          retention-days: 30
-
   security-acceptance:
     name: security-acceptance
     runs-on: ubuntu-24.04-arm
@@ -55,13 +29,13 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Install the fixed security scanners
+      - name: Install the fixed Trivy scanner
         run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
       - name: Build the controlled advisory database tool
         working-directory: release/security/fixture-db
         run: mise exec -- go build -mod=readonly -o "$RUNNER_TEMP/fixture-db" .
-      - name: Check the security scans with controlled fixtures
+      - name: Check the vulnerability scan with controlled fixtures
         run: |
           python3 release/security_acceptance.py --tools "$RUNNER_TEMP/security-tools" \
             --fixture-db "$RUNNER_TEMP/fixture-db" --report "$RUNNER_TEMP/security-acceptance.json"
@@ -432,14 +406,14 @@ jobs:
         with:
           artifact-ids: ${{ needs.release-images.outputs.artifact-id }}
           path: ${{ runner.temp }}/checked-images
-      - name: Install the fixed security scanners
+      - name: Install the fixed Trivy scanner
         run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
       # This scan reports its results. No release job waits for it.
       - name: Report vulnerability results for both release images
         run: |
           status=0
           for image in project runner; do
-            python3 release/security_scan.py image --archive "$RUNNER_TEMP/checked-images/$image.tar" \
+            python3 release/security_scan.py --archive "$RUNNER_TEMP/checked-images/$image.tar" \
               --image "$image" --commit "$GITHUB_SHA" --tools "$RUNNER_TEMP/security-tools" \
               --report "$RUNNER_TEMP/image-vulnerabilities/$image.json" || status=1
           done
