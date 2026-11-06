@@ -68,7 +68,7 @@ The `image-vulnerabilities` job scans those exact archives for known vulnerabili
 The image upload job verifies and loads those exact archives.
 The nightly security workflow scans the current release image digests with fresh advisory data.
 `release/security/README.md` describes the security scans and the GitHub ruleset.
-The [installation guide](INSTALL.md) describes private access and release publication.
+The [installation guide](INSTALL.md) describes public installation, updates, and release publication.
 
 An agent container is a container that Culler starts for a setup agent or a pipeline agent.
 The run variables are the environment variables that Culler sets in an agent container, such as `MC_*` and `CODEX_HOME`.
