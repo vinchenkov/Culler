@@ -37,7 +37,7 @@ def test_release_is_new(api, commit):
         return False
     latest = api.request("GET", "/releases/latest")
     tag = latest.get("tag_name", "") if latest else ""
-    if tag.startswith("test-"):
+    if tag:
         comparison = api.request("GET", "/compare/" + tag + "..." + commit)
         return comparison["status"] == "ahead"
     return True

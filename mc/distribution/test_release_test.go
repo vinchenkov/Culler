@@ -61,9 +61,13 @@ func TestTestReleasePolicyRestoresVersionAndMigrationChecks(t *testing.T) {
 	t.Cleanup(func() { updatePolicyDefaults = original })
 	previous := policyFixture(t)
 	previous.Version = "9.0.0"
+	previous.Tag = "v" + previous.Version
 	candidate := policyFixture(t)
 	candidate.TestRelease = true
 	candidate.Commit = strings.Repeat("e", 40)
+	candidate.ReleaseID = candidate.Commit
+	candidate.Tag = "test-" + candidate.Commit
+	candidate.Sequence++
 	candidate.Schema = strings.Repeat("d", 64)
 	candidate.Update.Formats["spine"] = candidate.Schema
 	candidate.Update.Accepted["spine"] = []string{candidate.Schema}

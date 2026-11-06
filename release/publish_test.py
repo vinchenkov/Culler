@@ -145,7 +145,7 @@ class PublishTest(unittest.TestCase):
                 self.assertEqual(record["tag"], "test-" + COMMIT)
                 self.assertTrue(record["test_release"])
                 self.assertFalse(api.created[0]["prerelease"])
-                self.assertEqual(api.compared, [])
+                self.assertEqual(api.compared, ["/compare/v" + version + "..." + COMMIT] * 2)
                 self.assertEqual(len(api.assets), 5)
                 api.release["draft"] = False
                 self.assertFalse(test_release_is_new(api, COMMIT))
@@ -161,13 +161,14 @@ class PublishTest(unittest.TestCase):
                 publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW, test_release=True)
             self.assertEqual(api.published, [])
 
-    def test_an_older_workflow_cannot_replace_a_later_test_release(self):
-        for relation in ("behind", "diverged", "identical"):
-            with self.subTest(relation=relation), tempfile.TemporaryDirectory() as directory:
-                api = FakeGitHub(latest={"tag_name": "test-" + "e" * 40}, relation=relation)
-                self.assertFalse(publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW, test_release=True))
-                self.assertEqual(api.created, [])
-                self.assertEqual(api.published, [])
+    def test_an_older_workflow_cannot_replace_a_later_release(self):
+        for tag in ("test-" + "e" * 40, "v0.1.0"):
+            for relation in ("behind", "diverged", "identical"):
+                with self.subTest(tag=tag, relation=relation), tempfile.TemporaryDirectory() as directory:
+                    api = FakeGitHub(latest={"tag_name": tag}, relation=relation)
+                    self.assertFalse(publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW, test_release=True))
+                    self.assertEqual(api.created, [])
+                    self.assertEqual(api.published, [])
 
     def test_a_later_test_commit_can_publish_the_same_version(self):
         with tempfile.TemporaryDirectory() as directory:

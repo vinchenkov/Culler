@@ -44,7 +44,7 @@ The workflow still requires every fast, deployment, browser, package, and image 
 Each test release uses `test-<full-commit>` as its tag and sets `test_release` to `true` in `release.json`.
 Each tag identifies immutable files from one commit.
 A repeated workflow run preserves a complete test release for that commit.
-An older workflow cannot replace a test release from a later commit.
+An older test workflow cannot replace a release from a later commit, including the public release after the policy reversal.
 The release name is `Culler test <short-commit> (<version>)`.
 
 The publisher selects the test release as the latest complete release.
