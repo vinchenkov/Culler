@@ -67,7 +67,7 @@ if [ "${1:-}" = go ] && [ "${2:-}" = build ]; then
 #!/bin/sh
 if [ -n "${MC_INSTALL_TEST_LOG:-}" ]; then
   if [ -n "${MC_INSTALL_TEST_ENV_LOG:-}" ]; then
-    printf '%s\n%s\n' "${MC_HOME:-}" "${MC_INSTALL_TEST_MISE:-}" >"$MC_INSTALL_TEST_ENV_LOG"
+    printf '%s\n%s\n%s\n' "${MC_HOME:-}" "${MC_INSTALL_TEST_MISE:-}" "${CULLER_PARENT_PATH:-}" >"$MC_INSTALL_TEST_ENV_LOG"
   fi
   {
     printf 'CALL'
@@ -76,9 +76,18 @@ if [ -n "${MC_INSTALL_TEST_LOG:-}" ]; then
     done
     printf '\n'
   } >>"$MC_INSTALL_TEST_LOG"
+  if [ "${MC_INSTALL_TEST_FAIL_PREFLIGHT:-0}" = 1 ] && [ "${1:-}" = __onboard ] && [ "${2:-}" = preflight ]; then
+    echo "The host requirements check failed." >&2
+    exit 1
+  fi
   if [ -n "${MC_INSTALL_TEST_FAIL_AGENTSVIEW:-}" ] && [ "${1:-}" = __onboard ] && [ "${2:-}" = agentsview ]; then
     echo "mc: download the AgentsView release archive: connection refused" >&2
     exit 1
+  fi
+  if [ "${1:-}" = __onboard ] && [ "${2:-}" = home ] && [ -n "${MC_BIN_DIR:-}" ]; then
+    mkdir -p "$MC_BIN_DIR"
+    cp "$0" "$MC_BIN_DIR/mc"
+    chmod 755 "$MC_BIN_DIR/mc"
   fi
   exit 0
 fi
@@ -88,7 +97,7 @@ SCRIPT
   exit 0
 fi
 if [ -x "${1:-}" ]; then
-  MC_INSTALL_TEST_MISE=1 exec "$@"
+  PATH="/fixture/mise/bin:$PATH" MC_INSTALL_TEST_MISE=1 exec "$@"
 fi
 exit 92
 EOF
@@ -174,7 +183,7 @@ chmod 755 "$case_root/bin/docker" "$case_root/bin/uname" "$case_root/bin/xcode-s
 mkdir -p "$case_root/home" "$case_root/project root" "$case_root/install bin"
 printf 'existing deployment executable\n' >"$case_root/install bin/mc"
 run_terminal "$case_root/terminal.out" \
-  env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+  env -u CULLER_PARENT_PATH PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_HOME= COLUMNS=60 MC_INSTALL_TEST_LOG="$case_root/forward.log" \
   MC_INSTALL_TEST_ENV_LOG="$case_root/environment.log" \
   MC_INSTALL_TEST_DOCKER_LOG="$case_root/docker.log" \
@@ -189,6 +198,8 @@ expected=$(printf 'CALL\t__setup\t--bin-dir\t%s\t--workspace-root\t%s\t--runtime
   fail "terminal setup omitted the default production home"
 [ "$(sed -n '2p' "$case_root/environment.log")" = 1 ] || \
   fail "terminal setup lost the pinned tool environment"
+[ "$(sed -n '3p' "$case_root/environment.log")" = "$case_root/bin:/usr/bin:/bin" ] || \
+  fail "The source installer lost the original shell search path."
 [ ! -e "$case_root/docker.log" ] || fail "terminal setup checked Docker before the interface"
 [ "$(cat "$case_root/install bin/mc")" = "existing deployment executable" ] || fail "terminal setup replaced the deployed executable before inspection"
 grep -F 'Culler' "$case_root/terminal.out" >/dev/null || \
@@ -200,6 +211,16 @@ if grep -E '^\+[-]+\+' "$case_root/terminal.out" >/dev/null; then
 fi
 grep -F 'deployment home (MC_HOME)' "$case_root/terminal.out" >/dev/null && \
   fail "terminal setup used a shell prompt"
+
+run_terminal "$case_root/parent-path.out" \
+  env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+  MC_HOME= CULLER_PARENT_PATH="/original/shell/bin:/usr/bin:/bin" \
+  MC_INSTALL_TEST_LOG="$case_root/parent-path.log" \
+  MC_INSTALL_TEST_ENV_LOG="$case_root/parent-path-env.log" \
+  sh "$ROOT/scripts/install-source.sh" --bin-dir "$case_root/install bin" || \
+  fail "The source installer rejected the inherited shell search path."
+[ "$(sed -n '3p' "$case_root/parent-path-env.log")" = "/original/shell/bin:/usr/bin:/bin" ] || \
+  fail "The source installer replaced the inherited shell search path."
 
 cat >"$case_root/bin/xcode-select" <<'EOF'
 #!/bin/sh
@@ -214,7 +235,7 @@ run_terminal "$case_root/apple.out" \
 [ "$(cat "$case_root/apple.log")" = "$(printf '%s\n' -p --install)" ] || \
   fail "the Apple handoff did not use the official installer"
 [ ! -e "$case_root/apple-bin/mc" ] || fail "the Apple handoff built before the host tools were ready"
-grep -F 'run install.sh to resume setup' "$case_root/apple.out" >/dev/null || \
+tr '\r\n' '  ' <"$case_root/apple.out" | tr -s ' ' | grep -F 'run sh scripts/install-source.sh to resume setup' >/dev/null || \
   fail "the Apple handoff omitted the resume action"
 
 case_root="$TMP/mise-bootstrap"
@@ -329,9 +350,14 @@ esac
 exit 94
 EOF
 chmod 755 "$case_root/bin/docker"
+mkdir -p "$case_root/install-bin"
+printf 'existing executable\n' >"$case_root/install-bin/mc"
 run_must_fail image-build-failed "production image build failed" \
   env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   sh "$ROOT/scripts/install-source.sh" --yes --bin-dir "$case_root/install-bin"
+
+[ "$(cat "$case_root/install-bin/mc")" = "existing executable" ] ||
+  fail "The failed image build replaced the installed executable."
 
 case_root="$TMP/production-forwarding"
 make_mise "$case_root/bin"
@@ -352,6 +378,18 @@ mkdir -p "$case_root/workspace" "$case_root/workspace root"
 case_workspace=$(CDPATH= cd -- "$case_root/workspace" && pwd -P)
 case_workspace_space=$(CDPATH= cd -- "$case_root/workspace root" && pwd -P)
 forward_log="$case_root/forward.log"
+mkdir -p "$case_root/preserved-bin"
+printf 'existing executable\n' >"$case_root/preserved-bin/mc"
+run_must_fail production-preflight-preserves-executable "The host requirements check failed." \
+  env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+  MC_INSTALL_TEST_LOG="$forward_log" MC_INSTALL_TEST_FAIL_PREFLIGHT=1 \
+  sh "$ROOT/scripts/install-source.sh" --yes --bin-dir "$case_root/preserved-bin" \
+    --mc-home "$case_root/mc-home" --runtime-bindings chatgpt \
+    --accept-default-routing --accept-default-tunables \
+    --accept-default-git-identity --accept-default-dashboard-bind --discord-mode disabled
+[ "$(cat "$case_root/preserved-bin/mc")" = "existing executable" ] || \
+  fail "The failed host check replaced the installed executable."
+: >"$forward_log"
 run_must_fail production-missing-home "deployment home (MC_HOME) is required" \
   env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_HOME= MC_INSTALL_TEST_LOG="$forward_log" \
@@ -485,7 +523,7 @@ if grep -Ei 'first Project|workspace root|VISION.md|sandbox profile' "$case_root
 fi
 : >"$forward_log"
 run_must_fail agentsview-install-failure \
-  "install.sh: The AgentsView install failed. Fix the error above, then run install.sh again." \
+  "install.sh: The AgentsView install failed. Fix the error above, then run sh scripts/install-source.sh again." \
   env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_INSTALL_TEST_LOG="$forward_log" MC_INSTALL_TEST_FAIL_AGENTSVIEW=1 \
   sh "$ROOT/scripts/install-source.sh" --yes --bin-dir "$case_root/install-bin" \

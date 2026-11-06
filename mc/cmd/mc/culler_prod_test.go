@@ -20,6 +20,57 @@ import (
 	"mc/verbs"
 )
 
+func TestCullerInstallCommandRetainsSourceInstallation(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("CULLER_SOURCE_INSTALLER", "")
+	if !strings.HasPrefix(cullerInstallCommand(home), "curl -fsSL ") {
+		t.Fatal("The published installation lost its recovery command.")
+	}
+	root := filepath.Join(t.TempDir(), "source checkout's files")
+	build := filepath.Join(root, "release", "opencode", "build.sh")
+	if err := os.MkdirAll(filepath.Dir(build), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(build, []byte("#!/bin/sh\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	want := "sh " + cullerQuote(filepath.Join(root, "scripts", "install-source.sh")) + " --mc-home " + cullerQuote(home)
+	t.Setenv("CULLER_SOURCE_INSTALLER", filepath.Join(root, "scripts", "install-source.sh"))
+	if got := cullerInstallCommand(home); got != want {
+		t.Fatalf("The initial source setup command differs: %s", got)
+	}
+	t.Setenv("CULLER_SOURCE_INSTALLER", "")
+	if err := deployment.ConfigureRuntimeSource(home, filepath.Join(root, "runner"), strings.Repeat("a", 40)); err != nil {
+		t.Fatal(err)
+	}
+	if got := cullerInstallCommand(home); got != want {
+		t.Fatalf("The installed source recovery command differs: %s", got)
+	}
+}
+
+func TestCullerSourceRecoveryCommandRemainsExact(t *testing.T) {
+	home, err := deployment.CanonicalHome(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("CULLER_SOURCE_INSTALLER", "/Users/operator/source checkout/scripts/install-source.sh")
+	if err := os.WriteFile(filepath.Join(home, "config.toml"), nil, 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, width := range []string{"40", "80"} {
+		t.Run(width, func(t *testing.T) {
+			t.Setenv("COLUMNS", width)
+			var out bytes.Buffer
+			if code := runCuller([]string{"version", "--mc-home", home}, nil, &out, &out); code != 1 {
+				t.Fatalf("The incomplete installation returned %d", code)
+			}
+			if !strings.Contains(out.String(), cullerInstallCommand(home)+"\n") {
+				t.Fatalf("The recovery command contains inserted line breaks:\n%s", out.String())
+			}
+		})
+	}
+}
+
 func TestCullerHelpAliasesAndGuidance(t *testing.T) {
 	for _, command := range cullerCommands {
 		for _, args := range [][]string{{command.name, "--help"}, {"help", command.name}} {

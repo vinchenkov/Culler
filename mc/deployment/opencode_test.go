@@ -16,6 +16,58 @@ import (
 	operatorconfig "mc/config"
 )
 
+func TestConfigureRuntimeSourceCreatesStateDirectory(t *testing.T) {
+	home := t.TempDir()
+	root := t.TempDir()
+	build := filepath.Join(root, "release", "opencode", "build.sh")
+	if err := os.MkdirAll(filepath.Dir(build), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(build, []byte("#!/bin/sh\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	release := strings.Repeat("a", 40)
+	if err := ConfigureRuntimeSource(home, filepath.Join(root, "runner"), release); err != nil {
+		t.Fatal(err)
+	}
+	source, err := readRuntimeSource(home)
+	if err != nil || source.Source != root || source.Release != release {
+		t.Fatalf("The runtime source differs: %+v, %v", source, err)
+	}
+	info, err := os.Stat(filepath.Join(home, "state"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if info.Mode().Perm() != 0700 {
+		t.Fatalf("The state directory permissions differ: %o", info.Mode().Perm())
+	}
+	release = strings.Repeat("b", 40)
+	if err := ConfigureRuntimeSource(home, filepath.Join(root, "runner"), release); err != nil {
+		t.Fatal(err)
+	}
+	source, err = readRuntimeSource(home)
+	if err != nil || source.Release != release {
+		t.Fatalf("The source update lost its release: %+v, %v", source, err)
+	}
+	packageRoot := t.TempDir()
+	if err := ConfigureRuntimeSource(home, filepath.Join(packageRoot, "runner"), release); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readRuntimeSource(home); !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("The package retained the local source: %v", err)
+	}
+}
+
+func TestConfigureRuntimeSourcePackageNeedsNoStateDirectory(t *testing.T) {
+	home := t.TempDir()
+	if err := ConfigureRuntimeSource(home, filepath.Join(t.TempDir(), "runner"), strings.Repeat("a", 40)); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(home, "state")); !os.IsNotExist(err) {
+		t.Fatalf("The package created a runtime source directory: %v", err)
+	}
+}
+
 func TestOpenCodeModelListUsesOnlyReleaseCatalog(t *testing.T) {
 	home := agentProfileTestHome(t)
 	_, err := operatorconfig.UpdateAtomic(filepath.Join(home, "config.toml"), func(cfg *operatorconfig.Config) error {

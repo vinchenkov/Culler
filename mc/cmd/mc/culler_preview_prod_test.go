@@ -75,7 +75,10 @@ func TestCullerTerminalPreview(t *testing.T) {
 			}
 			return true, nil
 		}
-	case scenario == "incomplete-setup":
+	case scenario == "incomplete-setup", scenario == "incomplete-source-setup":
+		if scenario == "incomplete-source-setup" {
+			t.Setenv("CULLER_SOURCE_INSTALLER", "/Users/operator/Culler/scripts/install-source.sh")
+		}
 		args, expected = []string{"start"}, 1
 		if err := os.Remove(filepath.Join(home, "supervision", "resident.json")); err != nil {
 			t.Fatal(err)
