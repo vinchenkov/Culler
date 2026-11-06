@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:827b802baa15fb7b1e003aa57cc2bf38a7eb7c1d0f09cadfe3168e76b4bd0e15",
+  "pageVersion": "sha256:bd93883906893c5db0c6b81c8fd773466b9f6465a0bcad52825344686677f270",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -27,7 +27,7 @@
       "statement": "TypeScript processes spawn mc and read one JSON object from stdout; exit code 0 is success, 1 is a domain rejection, and 2 is a usage or environment error.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L159-L159",
+          "resource": "repo://AGENTS.md#L163-L163",
           "version": "repo-lines-v1:sha256:6307f0cde28be168add86723746b9fe064fd7783baac9f6c706502a1a020ff64:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMwN2YwY2RlMjhiZTE2OGFkZDg2NzIzNzQ2YjlmZTA2NGZkNzc4M2JhYWM5ZjZjNzA2NTAyYTFhMDIwZmY2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMwN2YwY2RlMjhiZTE2OGFkZDg2NzIzNzQ2YjlmZTA2NGZkNzc4M2JhYWM5ZjZjNzA2NTAyYTFhMDIwZmY2NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQ5MGQyNzJjZTNjMjZiNmYwNjllNWFkNjM1MDFjODRjZTU0MDhkODIzYWRhMjU3ZDQ4MDNlYThhYzQ4Y2Y3ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQwYmY0NGUyMGFkZmQyOTk2YzAwMDQ5Yjk3ZTY5N2JmMDQyN2FiNmQyMDZjZDdlOTNjYmI1MDY4MDg3MTFmMSJ9"
         }
       ]
@@ -47,8 +47,8 @@
       "statement": "The release fast suite includes mc, six runner components including setup-runner, resident, and dashboard.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L136-L150",
-          "version": "repo-lines-v1:sha256:cea9c9556dde4ec98f20c82d05c9b156ff0f1180958540c9f10ba0670b95c3b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjYTEzNWIxNmY4N2E5ODRhNGE5OGE5MDM0YzM0NDI5NDMyYWE0OGQyOTc1ZjAwMTZkY2Q3ZjQyODBkMzg5OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYTkxOTM1MDZkZjNkZmVjNTQyYTRjZTFkOGQzOGFhZjU0N2I2YmQzNjNiNDgxYTJiNDcyNzE2NmU1YzRjOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzYmExZWNjMDhkOWNmMGVlNGRhNmM1ZDZkYTljMmUwMTAzZDg2MGM4NDc3YzY0ZGM3OGYyYjE1NzQwNDRhYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlYzQxMzk3ODc4NTk4N2Q1YWQwNGFkNTBmNGYzZDMzNmM5OTI2YWU1M2ZmMDU2NThhODZkYzEwYTQyODJmMTQifQ"
+          "resource": "repo://.github/workflows/release.yml#L135-L148",
+          "version": "repo-lines-v1:sha256:274bb6fd10f15c9ab90f7f43d03782c84671ec073cf2c386cd43ce4581493ed5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjYTEzNWIxNmY4N2E5ODRhNGE5OGE5MDM0YzM0NDI5NDMyYWE0OGQyOTc1ZjAwMTZkY2Q3ZjQyODBkMzg5OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MTMzM2RmNjZkNTk1YzYyMjM3NDEyZTdkMTYwN2I1Y2ZiMDExNDdmMGYzYTlkYjdiN2FjNGU3MjljNDNkMjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzYmExZWNjMDhkOWNmMGVlNGRhNmM1ZDZkYTljMmUwMTAzZDg2MGM4NDc3YzY0ZGM3OGYyYjE1NzQwNDRhYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjNDgzN2RiYzQxMDRhZmY5YWYwOGNmZjVkMjQ2NWIyNzk1ZjUwOGEwNWUxZTgwYWJhODQ2MzdlNjVlZmVmYjIifQ"
         }
       ]
     },
@@ -58,7 +58,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:3def89ca272c679efccf311ba20c41c6713ba3f4923e917c402a4d297f82369c"
+          "version": "repo-file-v1:sha256:3b7242b73f3bf1d8e3cfbebf29a4f261871ba3e762c2d2e09e41be3b2b5b27f0"
         }
       ]
     },
@@ -346,7 +346,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/release.yml",
-          "version": "repo-file-v1:sha256:84be6e2a761efb4248b15b7c10558e02b7978aba9cf3f391a5fb5e2913f38e06"
+          "version": "repo-file-v1:sha256:ce980d812982b2f741db552e8377303e8a8402a7b82e1058895779257f9ff5f1"
         }
       ]
     },
@@ -408,7 +408,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:3def89ca272c679efccf311ba20c41c6713ba3f4923e917c402a4d297f82369c"
+          "version": "repo-file-v1:sha256:3b7242b73f3bf1d8e3cfbebf29a4f261871ba3e762c2d2e09e41be3b2b5b27f0"
         }
       ]
     },

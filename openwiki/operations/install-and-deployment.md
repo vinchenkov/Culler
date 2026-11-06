@@ -6,6 +6,8 @@ tags: [install, deployment, release, launchd, onboarding]
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-7c4f80bb47c6f9d6e14cc99f
+    resource: repo://dashboard/src/security-gate.test.ts
   - id: openwiki-source-9bacaebabf4730d3f0a79cc9
     resource: repo://dashboard/src/server.ts
   - id: openwiki-source-91a533664b7e9f0fa7a313b0
@@ -38,12 +40,12 @@ sources:
     resource: repo://mc/deployment/supervision.go
   - id: openwiki-source-12f32e50a07508468db6789a
     resource: repo://redeploy.sh
+  - id: openwiki-source-2aee5c75a683753fe072cd2d
+    resource: repo://release/image_load.py
   - id: openwiki-source-2e0b70f7c6b582e5eaae24c8
     resource: repo://release/installer.sh
   - id: openwiki-source-6926a7f59d9d7d096748e09e
     resource: repo://release/publish.py
-  - id: openwiki-source-f86c7b88ebfec000979ab650
-    resource: repo://release/security_images.py
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
   - id: openwiki-source-074a0c31b85dc048be2b3972
@@ -152,15 +154,16 @@ Onboarding copies `config.example.toml` into `MC_HOME/config.toml`, and only tha
 
 `.github/workflows/release.yml` runs on pull requests and pushes to `main`. Its default permission is `contents: read`.
 
-- `fast-suite-macos` runs every component `check.sh` on `macos-15`. It fails a non-`mc` component whose log shows zero passing tests. It then runs `release/build.sh` and `release/validate_package.py` and uploads the release inputs with their digest.
+- `fast-suite-macos` runs every component `check.sh` on `macos-15`. It fails a non-`mc` component whose log shows zero successful tests. It then runs `./release/check.sh`, `release/build.sh`, and `release/validate_package.py` and uploads the release inputs with their digest.
 - `deployment-linux` runs the portable `./deployment/` tests and the Linux filesystem-guard tests on `ubuntu-24.04-arm`.
 - `dashboard-browser` runs the complete browser suite on Linux arm64 for pull requests and pushes to `main`. It uses the Project image Playwright lock file and matching Chromium.
-- `source-secrets` checks the complete fetched history before the fast suite starts.
-- `security-acceptance` checks real scanners with controlled secret and advisory fixtures.
-- `release-images` builds both images with read-only permissions. It checks product behavior, inspects layers, and scans each saved archive.
+- `source-secrets` reports Gitleaks results for the complete fetched source history. No job waits for it.
+- `security-acceptance` checks real scanners with controlled secret and advisory fixtures. No job waits for it.
+- `release-images` builds both images with read-only permissions. It checks product behavior, inspects layers, and saves each checked archive.
 - The image checks verify file contents and write a fresh install and update size report. See [image delivery and update cleanup](image-delivery.md).
-- `release-security` requires all six prerequisites to succeed, including source, package, image, deployment, browser, and scanner acceptance checks.
-- `product-image` runs only on a push to `main`. It verifies and loads the scanned archives before registry upload, then records both immutable digests.
+- `image-vulnerabilities` reports Trivy vulnerability results for the saved archives. No job waits for it.
+- `release-checks` requires the fast suite, deployment, browser, and image jobs to succeed.
+- `product-image` runs only on a push to `main`. It checks and loads the saved archives before registry upload, then records both immutable digests.
 - `release-downloads` runs only on a push to `main`. It uses `release/publish.py` under serialized publication control.
 
 The publication jobs require `dashboard-browser` from the same workflow run.
@@ -173,11 +176,10 @@ See [browser checks](../tests/checks-and-test-lanes.md#required-browser-checks) 
 
 `release/build.sh` requires a clean tree at `CULLER_COMMIT`. It verifies the pinned AgentsView archive, cross-compiles `mc` for darwin and linux arm64 with the commit stamped in, and assembles the package and image inputs outside the checkout. `publish.py` creates a draft `culler-<commit>` release and uploads `install.sh`, `installer.sh`, the package, and `release.json` with all five checks. It publishes only if the commit is on `main` and strictly ahead of the available release. So an older workflow never replaces a newer release, and a published release is immutable. `release/check.sh` runs the Python unit tests for these tools locally, without credentials. It fails when it selects zero tests.
 
-Both publication jobs also require `release-security`.
-The package job scans the application archive and installer files before it preserves the inputs.
-`publish.py` verifies those input checksums and scans the generated release record with all release files before the first upload.
-Each upload checks the scanned checksum again.
-See [Release security checks](release-security.md) for coverage, exceptions, reports, nightly scans, and repository ruleset enforcement.
+Both publication jobs also require `release-checks`.
+The security scans report their results in job summaries and artifacts, and a scan result never prevents a release.
+`publish.py` downloads each uploaded release file again and compares it with the local file.
+See [Release security scans](release-security.md) for coverage, exceptions, reports, nightly scans, and repository ruleset enforcement.
 
 ## Contract tests
 

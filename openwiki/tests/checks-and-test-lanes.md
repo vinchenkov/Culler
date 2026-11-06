@@ -88,6 +88,8 @@ sources:
     resource: repo://release/check.sh
   - id: openwiki-source-525363b51889e1eeb6aa600f
     resource: repo://release/image_contents_test.py
+  - id: openwiki-source-4b2923d58836e80cd70ddec6
+    resource: repo://release/image_load_test.py
   - id: openwiki-source-f75eda6c3cdd48976dd36eeb
     resource: repo://release/security_acceptance.py
   - id: openwiki-source-34fd3fd4d6f7d65629db18e4
@@ -248,45 +250,46 @@ The workflow runs on pull requests and pushes to `main`. Its default permission 
 
 | Job | Runs on | Checks |
 | --- | --- | --- |
-| `fast-suite-macos` | `macos-15` | Installs locked dependencies, runs all ten `check.sh` scripts with a zero-pass guard, then `release/build.sh` and `release/validate_package.py`. |
+| `fast-suite-macos` | `macos-15` | Installs locked dependencies, runs all ten `check.sh` scripts with a zero-pass guard and `./release/check.sh`, then `release/build.sh` and `release/validate_package.py`. |
 | `deployment-linux` | `ubuntu-24.04-arm` | `./mc/test.sh -count=1 ./deployment/` and the Linux filesystem-guard tests in `./substrate/` without `test_scratch_spine`. |
 | `dashboard-browser` | `ubuntu-24.04-arm` | Runs the complete `./dashboard/smoke.sh` suite and retains its log, report, and browser evidence. |
-| `source-secrets` | `ubuntu-24.04-arm` | Checks complete fetched source history with the fixed Gitleaks rules. |
-| `security-acceptance` | `ubuntu-24.04-arm` | Exercises real scanners with controlled secrets and advisory databases. |
-| `release-images` | `ubuntu-24.04-arm` | Builds both images, checks both browsers and image contents, writes a size report, and scans the exact saved archives. |
-| `release-security` | `ubuntu-24.04-arm` | Requires all six prerequisite jobs to succeed; failed, cancelled, or skipped results fail the gate. |
-| `product-image` | `ubuntu-24.04-arm` | Push only. Verifies and loads the scanned archives before registry upload. |
-| `release-downloads` | `ubuntu-24.04-arm` | Push only. Scans final release files, verifies downloads, and publishes the release. |
+| `source-secrets` | `ubuntu-24.04-arm` | Reports Gitleaks results for the complete fetched source history. No job waits for it. |
+| `security-acceptance` | `ubuntu-24.04-arm` | Exercises real scanners with controlled secrets and advisory databases. No job waits for it. |
+| `release-images` | `ubuntu-24.04-arm` | Builds both images, checks both browsers and image contents, writes a size report, and saves the exact checked archives. |
+| `image-vulnerabilities` | `ubuntu-24.04-arm` | Reports Trivy vulnerability results for the exact saved archives. No job waits for it. |
+| `release-checks` | `ubuntu-24.04-arm` | Requires the fast suite, deployment, browser, and image jobs to succeed; failed, cancelled, or skipped results fail the gate. |
+| `product-image` | `ubuntu-24.04-arm` | Push only. Checks and loads the saved archives before registry upload. |
+| `release-downloads` | `ubuntu-24.04-arm` | Push only. Uploads the release files, verifies downloads, and publishes the release. |
 
 The release record retains five required checks in `mc/distribution/record.go`.
-The browser and security requirements belong to the workflow dependency graph.
-Both publication jobs require `dashboard-browser` and `release-security` from the same workflow run.
+The browser requirement and the `release-checks` requirement belong to the workflow dependency graph.
+Both publication jobs require `dashboard-browser` and `release-checks` from the same workflow run.
 `install.sh` requires each release record check once with a successful result.
 
 `./release/check.sh` runs the release tools' Python tests locally with fixtures and no credentials. It also syntax-checks `release/build.sh` and `runner/image/product-smoke.sh`.
 The Python tests cover the image archive reader, image content rules, and size report. The release image job applies the content rules to both saved images. It writes the size report from those same archives. See [image delivery](../operations/image-delivery.md) for the checked file rules.
 
-## Release security checks
+## Release security scans
 
-`./release/check.sh` includes the policy and publication unit tests without scanner downloads or network access.
+`./release/check.sh` runs the unit tests of the scan reports, the exceptions, and the image load without scanner downloads or network access.
 It also checks the syntax of `release/secret-check.sh`.
-The package job scans application and installer contents before it preserves the release inputs.
+The scans report results only, so no scan result fails a release check.
 
 | Test source | Behavior under test |
 | --- | --- |
-| `release/security_test.py` | Exact exceptions, expiry, lower severity retention, masked reports, archive paths, and refusal of changed files or images. |
-| `release/publish_test.py` | Failed scans and changed files prevent release upload. |
-| `dashboard/src/security-gate.test.ts` | Required prerequisites, fixed action references, read-only pull request jobs, exact image reuse, and nightly report retention. |
-| `release/security_acceptance.py` | Real scanners detect synthetic credentials in history, archives, deleted layers, and image metadata. |
+| `release/security_test.py` | Exact secret exceptions, the secret-only exception file, severity counts, packages without a version, masked reports, job summaries, and archive paths. |
+| `release/image_load_test.py` | The image identity is the digest of the image configuration, and the check refuses an image of another commit. |
+| `dashboard/src/security-gate.test.ts` | Required `release-checks` prerequisites, no job that waits for a scan job, fixed action references, read-only pull request jobs, exact image reuse, and nightly report retention. |
+| `release/security_acceptance.py` | Real scanners report synthetic credentials in deleted commits, binary blobs, and nested archives. A failed tool or an absent image layer leaves the scan unverified. |
 
 The acceptance lane needs the fixed scanner executables and the Go tool in `release/security/fixture-db`.
 It stays separate from `./release/check.sh`.
 Its advisory fixture changes only the database download response for one unchanged image.
-Trivy identifies the added high-severity advisory and causes that image to fail.
-A scanner outage or incomplete coverage remains unverified.
+Trivy identifies the added high-severity advisory, and the report of that image lists it.
+A scanner outage or incomplete coverage leaves the scan unverified.
 
 The nightly workflow scans the current release images with fresh advisory data and retains reports for 90 days.
-See [Release security checks](../operations/release-security.md) for publication controls, coverage limits, and the local scan procedure.
+See [Release security scans](../operations/release-security.md) for report contents, coverage limits, and the local scan procedure.
 These descriptions establish test contracts, not a new scanner execution or live release assessment.
 
 ## Required browser checks
