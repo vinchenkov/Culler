@@ -2,6 +2,7 @@ package verbs
 
 import (
 	"io/fs"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -448,7 +449,7 @@ func TestScribeInputNamesNoTask(t *testing.T) {
 		names = append(names, skill.Name)
 		texts["skill "+skill.Name] = skill.Body
 	}
-	if strings.Join(names, ",") != "mc-scribe,openwiki,project-environment-setup,project-wiki,writing" {
+	if strings.Join(names, ",") != "mc-scribe,openwiki,openwiki-documents,openwiki-recovery,project-environment-setup,project-wiki,writing" {
 		t.Fatalf("scribe set = %v", names)
 	}
 	for surface, text := range texts {
@@ -542,6 +543,29 @@ func TestAgentInputNamesNoScribeCommitOfATask(t *testing.T) {
 		for _, fact := range []string{"Verified source commit", "Scribe input commit", "Scribe result commit"} {
 			if strings.Contains(flat, fact) {
 				t.Errorf("%s names the fact %q", name, fact)
+			}
+		}
+	}
+}
+
+func TestScribeSkillPointersResolveInTheDeliveredSet(t *testing.T) {
+	set, err := RoleSkillSet(dispatch.RoleScribe)
+	if err != nil {
+		t.Fatal(err)
+	}
+	directive, err := directiveForRole(dispatch.RoleScribe)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bodies := map[string]string{"directive": directive}
+	for _, skill := range set {
+		bodies[skill.Name] = skill.Body
+	}
+	pointer := regexp.MustCompile(`~/.agents/skills/([a-z-]+)/SKILL.md`)
+	for source, body := range bodies {
+		for _, match := range pointer.FindAllStringSubmatch(body, -1) {
+			if _, ok := bodies[match[1]]; !ok {
+				t.Errorf("%s points to an absent delivered skill: %s", source, match[0])
 			}
 		}
 	}

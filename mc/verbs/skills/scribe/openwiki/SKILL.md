@@ -5,12 +5,11 @@ description: Use before each wiki change to research, plan, write, and complete 
 
 ## Coverage and evidence
 
-Read the commits in **Git state**.
-Cover each source change from the `Start commit of the last successful wiki update` to the `Start commit`.
-Include effects on related pages.
-Without a previous update or generated content, cover the whole repository.
-Use the Git history to establish the changes, including commits absent from **Merged tasks**.
-Read **Merged tasks** for the intent of each task.
+Use **Git state** to identify the `Start commit` and the `Start commit of the last successful wiki update`.
+Use OpenWiki's `pageUpdateWindows` to establish each page's source changes.
+Cover related pages and source changes outside **Merged tasks**.
+Read **Merged tasks** for task intent.
+For an initial wiki, establish coverage for the whole repository.
 
 Read `openwiki/INSTRUCTIONS.md` when it exists.
 Its scope and priorities define the required coverage.
@@ -21,32 +20,15 @@ Explain relevant original project documents through generated pages that cite th
 If research requires Project dependencies, check their compatibility with current declarations and the selected image before use.
 The Project home retains dependencies, but this run performs no automatic dependency preparation.
 
-## Imported original documents
-
-Apply this section when the wiki contains original Markdown documents.
-Each original document must exist in the start commit.
-Its filename must differ from `index.md`.
-Its frontmatter must contain `document: true`, a title, and a descriptive type.
-Correct only its `title`, `type`, `document`, and `tags` fields.
-Preserve its body, attribution, path, and task provenance, including when its content contains an error.
-Commit metadata repairs before `openwiki_begin`.
-Preserve those documents throughout the generated page work.
-
 ## Begin or resume
 
 Call `openwiki_begin` with the assigned repository as `root`.
 Use `mode: init` only when generated content and metadata are absent.
 Otherwise, use `mode: update`.
-Preserve an incompatible wiki and report the compatibility issue through the mc-scribe failure terminal.
-Keep the returned `runId` for later operations.
-The optional `language` field selects the output language.
+Use OpenWiki's returned `runId` for subsequent OpenWiki calls.
 
-Continue an active page queue before a new plan.
-A resumed queue retains its original scope.
 If required coverage remains absent after completion, begin another update with `force: true` and include that coverage.
-A `noop` result completes the update.
-A `noop` result can still change navigation files.
-For that result, proceed to the result terminal in mc-scribe.
+For a `noop` result, proceed to result submission.
 
 ## Repository map and page plan
 
@@ -74,25 +56,8 @@ An initial plan includes `/openwiki/quickstart.md`.
 That page introduces the project and directs readers to pages for common tasks and key concepts.
 An ordinary update preserves that page and refreshes it after navigation changes.
 
-Call `openwiki_submit_plan` with this structure:
-
-```json
-{
-  "runId": "<returned run identifier>",
-  "pages": [{
-    "path": "/openwiki/architecture/example.md",
-    "title": "Example architecture",
-    "purpose": "Explain the system responsibilities and state flow.",
-    "seedPaths": ["src/example.ts"],
-    "relatedPages": ["/openwiki/quickstart.md"],
-    "instructions": ["Explain the verified failure behavior."]
-  }],
-  "deletePages": []
-}
-```
-
-The `seedPaths`, `relatedPages`, `instructions`, and `deletePages` fields are optional.
-An update can submit an empty `pages` array.
+Submit the page plan through `openwiki_submit_plan`.
+An update can submit an empty page plan when no page requires review.
 
 Call `openwiki_next_page` with `runId`.
 Complete every returned page job yourself, one job at a time.
@@ -144,40 +109,24 @@ Every source reference starts with `repo://` and uses a repository-relative path
 Cite original repository evidence directly.
 Generated pages supply context but cannot support another Claim.
 
-For a Claim outside the job's issue list, first call `openwiki_inspect_page_claims` with `runId` and `jobId`.
+After the final page edit, call `openwiki_inspect_page_claims` with `runId` and `jobId`.
+Check the returned Claims against the page and current evidence before submission.
 Issue-free Claims remain intact when the submission omits them.
 Each stale or unresolved Claim requires one explicit decision.
-Confirm a Claim only after you check its current evidence.
 Revise an existing Claim through its `id` field.
 Retract a Claim after you remove or correct its assertion in the page.
 Submit a new Claim without an identifier.
 
-Call `openwiki_submit_page` with this structure:
+Submit the Claim decisions through `openwiki_submit_page`.
 
-```json
-{
-  "runId": "<returned run identifier>",
-  "jobId": "<returned page job identifier>",
-  "confirmedClaimIds": ["<existing claim identifier>"],
-  "claims": [{
-    "statement": "The service retries a failed request three times.",
-    "evidence": [{"resource": "repo://src/example.ts#L20-L48"}]
-  }],
-  "retractedClaimIds": []
-}
-```
-
-The three Claim decision arrays are optional.
 A rejected submission leaves its page job incomplete.
 Correct the page or Claim decisions, then repeat the submission.
 
 ## Complete the update
 
-Repeat `openwiki_next_page` until it returns `status: complete`.
+Continue page work until `openwiki_next_page` returns `status: complete`.
 Call `openwiki_finish` with `runId`.
 Completion requires a successful `complete` response.
-A source change invalidates affected page work.
-Call `openwiki_begin` again and submit a replacement plan after that condition.
 
 Use OpenWiki operations for generated control fields, navigation files, and Claim state.
 Do not edit these files directly:
@@ -187,5 +136,4 @@ Do not edit these files directly:
 - `.run.json`.
 - `.page-manifest.json`.
 - `.last-update.json`.
-
-OpenWiki creates the completion receipt after a successful `complete` or `noop` result.
+- `.verification.json`.

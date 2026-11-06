@@ -1,9 +1,12 @@
+import { recoveryPatches } from "./recovery-patches.mjs";
 import { readFile, writeFile, copyFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 
 const originalHashes = {
+  "generation/page-manifest.js": "e375f4fda0da32b503f6e30f2b3ded38cff59aec6eb91fbc4d31aaa1ff0ec496",
+  "claims/brains/code/preflight.js": "e7924cf4c7303759d754f849f2c0a020bb239ed88c42545867317f4c273892f1",
   "integrations/mcp/server.js": "068551c0918ca74fd7ad3fea0efff18612ab11e54e5cf814f51a3222200974bd",
   "agent/utils.js": "e5f7b8840cfaf6ab640c7e521bd5edcbe3fad5751d8e713da4913ff9af88223e",
   "claims/evidence/repository/resolver.js": "c74185081e7d7e61cb50a6fa2e8aef48de3780622f283c0d1e7f0b379927133d",
@@ -20,6 +23,8 @@ export async function patchUpstream(root) {
   const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
   if (manifest.version !== "0.7.0") throw new Error("The OpenWiki package version requires compatibility tests.");
   const patches = [
+    ["generation/page-manifest.js", []],
+    ["claims/brains/code/preflight.js", []],
     ["integrations/mcp/server.js", [
       ["instructions: INSTRUCTIONS", "instructions: \"Read ~/.agents/skills/openwiki/SKILL.md before any wiki change.\""],
     ]],
@@ -57,17 +62,23 @@ export async function patchUpstream(root) {
       ['for (const filePath of await listMarkdownFiles(backend, root)) {', 'for (const filePath of await listMarkdownFiles(backend, root)) {\n        if (isProjectDocument(filePath)) continue;'],
     ]],
   ];
+  for (const [relative, replacements] of Object.entries(recoveryPatches)) {
+    patches.find(([name]) => name === relative)[1].push(...replacements);
+  }
   const files = [];
   for (const [relative, replacements] of patches) {
     const path = join(root, "dist", relative);
     let text = await readFile(path, "utf8");
     if (text.startsWith(patchMarker)) {
-      text = text.slice(patchMarker.length);
-      for (const [before, after] of [...replacements].reverse()) text = text.replaceAll(after, before);
+      text = await readFile(`${path}.culler-original`, "utf8");
+      let expected = text;
+      for (const [before, after] of replacements) expected = expected.replaceAll(before, after);
+      if (await readFile(path, "utf8") !== patchMarker + expected) throw new Error(`The OpenWiki package file requires review: ${relative}`);
     }
     if (createHash("sha256").update(text).digest("hex") !== originalHashes[relative]) {
       throw new Error(`The OpenWiki package file requires review: ${relative}`);
     }
+    await writeFile(`${path}.culler-original`, text);
     for (const [before, after] of replacements) {
       if (!text.includes(before)) throw new Error(`The OpenWiki patch requires review: ${relative}`);
       text = text.replaceAll(before, after);
@@ -76,6 +87,7 @@ export async function patchUpstream(root) {
   }
   for (const file of files) await writeFile(file.path, file.text);
   await copyFile(new URL("./project-documents.mjs", import.meta.url), join(root, "dist", "culler.js"));
+  await copyFile(new URL("./recovery.mjs", import.meta.url), join(root, "dist", "culler-recovery.js"));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
