@@ -78,6 +78,36 @@ func TestCLIPathFailureCannotClaimAvailability(t *testing.T) {
 	}
 }
 
+func TestCLIUninstallCanRemoveCommandAfterDeploymentFiles(t *testing.T) {
+	home, userHome, directory := cliInstallFixture(t)
+	if _, err := installCLIPath(home, userHome, directory, "release", "/bin", cliFixtureShellVerify); err != nil {
+		t.Fatal(err)
+	}
+	remove, err := PrepareCLIUninstall(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	command := filepath.Join(directory, "culler")
+	if _, err := os.Stat(command); err != nil {
+		t.Fatal("The uninstall removed its command before file removal.")
+	}
+	if err := os.RemoveAll(home); err != nil {
+		t.Fatal(err)
+	}
+	if err := remove(); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(command); !os.IsNotExist(err) {
+		t.Fatal("The uninstall retained its command after file removal.")
+	}
+	for _, name := range []string{".zprofile", ".zshrc", ".bash_profile", ".bashrc"} {
+		body, err := os.ReadFile(filepath.Join(userHome, name))
+		if err != nil || strings.Contains(string(body), "culler") {
+			t.Fatalf("The uninstall retained a shell entry: %s, %v", body, err)
+		}
+	}
+}
+
 func TestCLIConflictPreservesUnrelatedExecutableAndSymlink(t *testing.T) {
 	home := t.TempDir()
 	path := filepath.Join(home, "culler")

@@ -312,13 +312,26 @@ func CLIAvailability(home, parentPath string) ([]string, error) {
 }
 
 func RemoveCLIInstallation(home string) error {
-	r, err := ReadCLIInstallation(home)
-	if errors.Is(err, os.ErrNotExist) {
-		return nil
-	}
+	remove, err := PrepareCLIUninstall(home)
 	if err != nil {
 		return err
 	}
+	return remove()
+}
+
+// PrepareCLIUninstall retains ownership data for command cleanup after directory removal.
+func PrepareCLIUninstall(home string) (func() error, error) {
+	r, err := ReadCLIInstallation(home)
+	if errors.Is(err, os.ErrNotExist) {
+		return func() error { return nil }, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	return func() error { return removeCLIInstallation(home, r) }, nil
+}
+
+func removeCLIInstallation(home string, r CLIInstallation) error {
 	for _, edit := range r.Shells {
 		path, body, mode, err := cliShellFile(edit.Path)
 		if err != nil {
@@ -339,5 +352,8 @@ func RemoveCLIInstallation(home string) error {
 			}
 		}
 	}
-	return os.Remove(filepath.Join(home, CLIInstallRecord))
+	if err := os.Remove(filepath.Join(home, CLIInstallRecord)); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	return nil
 }

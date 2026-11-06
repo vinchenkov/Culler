@@ -22,6 +22,10 @@ func TestCullerTerminalPreview(t *testing.T) {
 	if scenario == "" {
 		return
 	}
+	if strings.HasPrefix(scenario, "uninstall") {
+		cullerUninstallPreview(t, scenario)
+		return
+	}
 	home, observe := cullerObservationFixture(t)
 	args, expected := []string{"status"}, 0
 	deps := cullerDependencies{inspect: func(ctx context.Context, home string) cullerStatus { return inspectCullerWith(ctx, home, observe) }, manager: newCullerManager, release: readPublishedReleaseStatus}
@@ -176,7 +180,9 @@ func TestCullerTerminalPreview(t *testing.T) {
 			args = append(args, service)
 		}
 	}
-	args = append(args, "--mc-home", home)
+	if scenario != "help-uninstall" {
+		args = append(args, "--mc-home", home)
+	}
 	code := runCullerWith(args, os.Stdin, os.Stdout, os.Stderr, deps)
 	if path := os.Getenv("CULLER_PREVIEW_RESULT"); path != "" {
 		body, _ := json.Marshal(map[string]any{"cli_arguments": args, "cli_exit_status": code, "expected_cli_exit_status": expected, "fixture_success": code == expected})

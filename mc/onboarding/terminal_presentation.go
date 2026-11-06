@@ -260,9 +260,17 @@ func (t *Terminal) inputLines(prompt Prompt, runes []rune, cursor int) ([]termin
 	for _, hint := range hints {
 		lines = append(lines, t.hangingLines(hint, textMuted, 2, 2)...)
 	}
-	lines = append(lines, t.lines("enter confirm  ctrl+b back  ctrl+c exit", textMuted, 0)...)
+	controls := "enter confirm  ctrl+b back  ctrl+c exit"
+	if prompt.CancelOnly {
+		controls = "enter confirm  ctrl+c cancel"
+	}
+	lines = append(lines, t.lines(controls, textMuted, 0)...)
 	if !t.ansi {
-		lines = append(lines, t.lines(":back or :exit also work.", textMuted, 0)...)
+		hint := ":back or :exit also work."
+		if prompt.CancelOnly {
+			hint = ":exit also cancels."
+		}
+		lines = append(lines, t.lines(hint, textMuted, 0)...)
 		return append(lines, terminalLine{"> ", ""}), 0
 	}
 	text, offset := inputView(runes, cursor, t.Width()-3, secret)

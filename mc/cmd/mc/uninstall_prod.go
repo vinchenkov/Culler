@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -34,6 +35,8 @@ type uninstallReport struct {
 	Diagnostics    []string                 `json:"diagnostics"`
 	Workspaces     []verbs.WorkspaceCleanup `json:"workspaces"`
 	Binaries       []string                 `json:"binaries"`
+	Commands       []string                 `json:"commands,omitempty"`
+	Shells         []string                 `json:"shells,omitempty"`
 	KeptHomes      []string                 `json:"kept_homes"`
 	KeptVolumes    []string                 `json:"kept_volumes"`
 	Problems       []string                 `json:"problems"`
@@ -44,11 +47,26 @@ const uninstallWorkspaceManifest = "uninstall-workspaces.json"
 
 var uninstallHostSecrets = deployment.DeleteInstallationHostSecrets
 
+type uninstallPresentation struct {
+	plan     func(uninstallReport)
+	problems func([]string)
+	progress func(string)
+	confirm  func(uninstallReport) bool
+}
+
 func brokerUninstall(args []string, stdout, stderr io.Writer) int {
 	return runUninstall(args, stdout, stderr, []string{"/tmp", os.TempDir()})
 }
 
 func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) int {
+	return runUninstallWith(context.Background(), args, stdout, stderr, tempRoots, uninstallPresentation{
+		plan:     func(report uninstallReport) { renderUninstallPlan(stderr, report) },
+		problems: func(problems []string) { renderUninstallProblems(stderr, problems) },
+		progress: func(message string) { fmt.Fprintln(stderr, message) },
+	})
+}
+
+func runUninstallWith(ctx context.Context, args []string, stdout, stderr io.Writer, tempRoots []string, ui uninstallPresentation) int {
 	fs := newFlags("mc __uninstall")
 	confirm := fs.Bool("confirm", false, "confirm removal")
 	dryRun := fs.Bool("dry-run", false, "show the plan without removing anything")
@@ -79,7 +97,7 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 	problem := func(format string, a ...any) { report.Problems = append(report.Problems, fmt.Sprintf(format, a...)) }
 	finish := func() int {
 		if len(report.Problems) > 0 {
-			renderUninstallProblems(stderr, report.Problems)
+			ui.problems(report.Problems)
 		}
 		report.Uninstalled = !report.DryRun && len(report.Problems) == 0
 		if err := writeJSON(stdout, report); err != nil {
@@ -118,6 +136,46 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 			continue
 		}
 		homes = unionNames(homes, []string{home})
+	}
+	var locks []*os.File
+	defer func() {
+		for _, lock := range locks {
+			_ = lock.Close()
+		}
+	}()
+	if !*dryRun && len(report.Problems) == 0 {
+		lockedHomes := map[string]bool{}
+		for _, home := range homes {
+			if _, err := os.Stat(home); os.IsNotExist(err) {
+				continue
+			}
+			lock, err := lockPublishedSetup(home)
+			if err != nil {
+				problem("lock the deployment %s: %v", home, err)
+				return finish()
+			}
+			locks = append(locks, lock)
+			lockedHomes[home] = true
+		}
+		labels, plists, plistHomes, err = uninstallLaunchAgents()
+		report.LaunchAgents = labels
+		if err != nil {
+			problem("inspect startup units after the deployment locks: %v", err)
+			return finish()
+		}
+		for _, path := range unionNames(homes, plistHomes) {
+			home, err := deployment.CanonicalHome(path)
+			if err != nil {
+				problem("resolve the deployment directory %s: %v", path, err)
+				continue
+			}
+			if _, err := os.Stat(home); !os.IsNotExist(err) && !lockedHomes[home] {
+				problem("The installation changed during the preview. Retry culler uninstall.")
+			}
+		}
+		if len(report.Problems) > 0 {
+			return finish()
+		}
 	}
 	report.Containers = unionNames(
 		dockerNames(docker, problem, "ps", "-a", "--filter", "label=mc-managed=true", "--format", "{{.Names}}"),
@@ -237,12 +295,50 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 		}
 		report.Binaries = appendExisting(report.Binaries, binary, problem)
 	}
-	renderUninstallPlan(stderr, report)
+	var removeCommands []func() error
+	for _, home := range homes {
+		command, err := deployment.ReadCLIInstallation(home)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			problem("inspect the Culler command for %s: %v", home, err)
+			continue
+		}
+		for _, file := range append(command.Previous, deployment.CLIExecutable{Path: command.Path, SHA256: command.SHA256}) {
+			if digest, err := deployment.CLIFileDigest(file.Path); err == nil && digest == file.SHA256 {
+				report.Commands = unionNames(report.Commands, []string{file.Path})
+			}
+		}
+		for _, edit := range command.Shells {
+			report.Shells = unionNames(report.Shells, []string{edit.Path})
+		}
+		remove, err := deployment.PrepareCLIUninstall(home)
+		if err != nil {
+			problem("prepare removal of the Culler command: %v", err)
+		} else {
+			removeCommands = append(removeCommands, remove)
+		}
+	}
+	ui.plan(report)
 	if *dryRun || len(report.Problems) > 0 {
 		return finish()
 	}
+	if ctx.Err() != nil || (ui.confirm != nil && !ui.confirm(report)) {
+		return 130
+	}
+	progress := func(message string) bool {
+		if ctx.Err() != nil {
+			problem("The uninstall stopped after cancellation. Some resources can remain.")
+			return false
+		}
+		ui.progress(message)
+		return true
+	}
 
-	fmt.Fprintln(stderr, "Stopping Culler services...")
+	if !progress("Stopping Culler services...") {
+		return finish()
+	}
 	for _, label := range report.LaunchAgents {
 		if err := launchctlBootout(label); err != nil {
 			problem("stop %s: %v", label, err)
@@ -271,7 +367,9 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 			problem("remove %s: %v", plist, err)
 		}
 	}
-	fmt.Fprintln(stderr, "Removing containers and images...")
+	if !progress("Removing containers and images...") {
+		return finish()
+	}
 	for _, name := range report.Containers {
 		if out, err := docker.CombinedOutput("container", "rm", "-f", name); err != nil {
 			problem("remove container %s: %v: %s", name, err, strings.TrimSpace(string(out)))
@@ -295,7 +393,9 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 		return finish()
 	}
 	if *fullWipe {
-		fmt.Fprintln(stderr, "Removing Culler data...")
+		if !progress("Removing Culler data...") {
+			return finish()
+		}
 		for _, workspace := range report.Workspaces {
 			if _, err := verbs.CleanWorkspace(workspace.Workspace, false); err != nil {
 				problem("clean Project %s: %v", workspace.Workspace, err)
@@ -331,13 +431,7 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 			return finish()
 		}
 	}
-	fmt.Fprintln(stderr, "Removing installed files...")
-	for _, home := range homes {
-		if err := deployment.RemoveCLIInstallation(home); err != nil {
-			problem("remove the Culler command: %v", err)
-		}
-	}
-	if len(report.Problems) > 0 {
+	if !progress("Removing installed files...") {
 		return finish()
 	}
 	for _, root := range unionNames(report.Software, report.HostBuns, report.SmokeRoots, report.Homes, report.Diagnostics) {
@@ -352,6 +446,14 @@ func runUninstall(args []string, stdout, stderr io.Writer, tempRoots []string) i
 	for _, binary := range report.Binaries {
 		if err := os.Remove(binary); err != nil && !os.IsNotExist(err) {
 			problem("remove %s: %v", binary, err)
+		}
+	}
+	if len(report.Problems) > 0 {
+		return finish()
+	}
+	for _, remove := range removeCommands {
+		if err := remove(); err != nil {
+			problem("remove the Culler command: %v", err)
 		}
 	}
 	return finish()
@@ -450,6 +552,8 @@ func renderUninstallPlan(w io.Writer, report uninstallReport) {
 	section("Images", report.Images)
 	section("Startup units", report.LaunchAgents)
 	section("Programs", report.Binaries)
+	section("Culler commands", report.Commands)
+	section("Culler entries in shell files", report.Shells)
 	for _, workspace := range report.Workspaces {
 		removed := append([]string{}, workspace.Removed...)
 		for _, branch := range workspace.Branches {

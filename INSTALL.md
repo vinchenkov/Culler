@@ -167,6 +167,9 @@ Help, status, and version repeat this boundary.
 | `culler restart [service]` | Restart the selected services. |
 | `culler update --check` | Check release availability. |
 | `culler update` | Open the same installer in this terminal. |
+| `culler uninstall` | Preview removal of all Culler installations, then ask for confirmation. |
+| `culler uninstall --keep-data` | Remove software and preserve Culler data after confirmation. |
+| `culler uninstall --dry-run` | Show the removal plan without a change. |
 | `culler logs [service] --tail 100` | Show recent service diagnostics and exit. |
 
 The service names are:
@@ -184,7 +187,7 @@ The command attempts to restore the previous service state and reports the curre
 An explicit stop persists after login and computer restart.
 An explicit start or restart clears that stop choice.
 
-Use `--mc-home /absolute/path` to select another deployment.
+Use `--mc-home /absolute/path` to select another deployment for commands other than uninstall.
 The option overrides `MC_HOME`; the default deployment is `~/.culler`.
 Use `--no-color` for plain text.
 The `NO_COLOR` variable also disables color.
@@ -196,6 +199,44 @@ The exit codes are:
 - `1`: The operation failed or a required check remains unavailable.
 - `2`: The command, service, or environment is invalid.
 - `130`: The operator cancelled the command.
+
+## Uninstall Culler
+
+`culler uninstall` uses the installed executable and requires no checkout or Go compiler.
+The command removes all detected Culler installations, including old Mission Control installations.
+It shows the removal plan before confirmation.
+
+The default mode is `--full-wipe`.
+This mode removes these resources:
+
+- Culler software and its commands.
+- Culler data and credentials.
+- Culler task branches and review files.
+
+Type `wipe` to confirm this mode.
+Use `--keep-data` to preserve configuration, credentials, and history for reinstallation.
+Type `uninstall` to confirm that mode.
+Reinstall at the same deployment paths to reuse retained data.
+
+Both modes stop active agents.
+Removal can discard unfinished work.
+Both modes preserve Project repositories and shared host tools.
+Culler removes only its own command files and shell entries.
+
+Use `--dry-run` to inspect the plan without removal.
+Press Enter without text or press Ctrl-C to cancel the confirmation.
+A command without a terminal requires `--yes` to authorize removal without a prompt.
+
+The uninstall command rejects `--mc-home` because removal covers all detected installations.
+`MC_HOME` includes an additional deployment; it does not restrict removal to that deployment.
+The command accepts these additional paths for recovery:
+
+- `--home /absolute/path`: Include another deployment.
+- `--workspace /absolute/path`: Include another Project.
+- `--binary /absolute/path/mc`: Include a custom runtime executable.
+
+Each path option accepts repeated uses.
+The command reports each failure and returns a nonzero exit code after incomplete removal.
 
 ## Release files
 

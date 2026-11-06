@@ -51,6 +51,7 @@ def capture(binary, scenario, columns, color, output, redirected=False):
                                      preexec_fn=setup_terminal_session)
             os.close(slave)
             deadline = time.monotonic() + 30
+            answer_sent = False
             try:
                 while time.monotonic() < deadline:
                     if select.select([master], [], [], 0.05)[0]:
@@ -63,6 +64,16 @@ def capture(binary, scenario, columns, color, output, redirected=False):
                         if not data:
                             break
                         raw.extend(data)
+                        if not answer_sent and b"to confirm removal" in raw:
+                            answers = {
+                                "uninstall": b"wipe\r",
+                                "uninstall-keep": b"uninstall\r",
+                                "uninstall-cancel": b"\r",
+                                "uninstall-interrupt": b"\x03",
+                            }
+                            if scenario in answers:
+                                os.write(master, answers[scenario])
+                                answer_sent = True
                     elif child.poll() is not None:
                         break
                 process_code = child.wait(timeout=2)
@@ -104,7 +115,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     for columns in (80, 40):
         for color in (True, False):
-            for scenario in args.scenario or ("help", "help-start", "help-stop", "help-restart", "help-logs", "help-update", "help-status", "help-version", "usage", "logs", "logs-empty", "update-check", "update-check-wait", "update-check-cancel", "update-unknown", "status-cancel", "incomplete-setup", "version", "version-mismatch", "status-absent", "status-ready",
+            for scenario in args.scenario or ("help", "help-start", "help-stop", "help-restart", "help-logs", "help-update", "help-uninstall", "help-status", "help-version", "usage", "logs", "logs-empty", "update-check", "update-check-wait", "update-check-cancel", "update-unknown", "status-cancel", "incomplete-setup", "version", "version-mismatch", "status-absent", "status-ready",
                              "status-stopped", "status-partial", "status-unknown", "start", "stop",
                              "restart", "restart-failure", "service-timeout", "wait-timeout", "cancel", "update-recovery"):
                 capture(args.binary.resolve(), scenario, columns, color, args.output, args.redirected)
