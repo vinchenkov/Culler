@@ -301,7 +301,7 @@
       "statement": "No release job waits for a security scan job.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/security-gate.test.ts#L21-L29",
+          "resource": "repo://dashboard/src/security-gate.test.ts#L22-L30",
           "version": "repo-lines-v1:sha256:9f7dc5ad039b00dca4637243fc479102c13a1f28b419bece82d5befc48a81317:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFhM2RlYmNiM2JlMzc5NTJlODBkYTAzMTVmMjJiZTYwNjk1YzcyZjIwOWFmYzFkODNkMjU2OTI0YjM2NmY5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA2NzYxMGY3NDMyZDkyMzdiM2QyYjkwZjgzNWM3MTFjYjUwZTQ2NDkxZDAwOGEwNmUxZjU4MmQ1OGNmN2VkMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzEzYzUxZDdlZjAxMTI2YmE2MDg0ZDFlZjliZTBlZDgxODczMTlmYzZkZWNiMzdkNTlhYTE1M2M3YzRhNTM5MyJ9"
         },
         {

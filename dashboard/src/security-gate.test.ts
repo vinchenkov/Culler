@@ -14,6 +14,7 @@ test("the required release check rejects every failed or unverified prerequisite
   expect(runs(gate)).toContain('item["result"] != "success"');
   const rules = JSON.parse(readFileSync(resolve(root, ".github/release-ruleset.json"), "utf8"));
   expect(rules.enforcement).toBe("active");
+  expect(rules.bypass_actors).toEqual([{ actor_id: 5, actor_type: "RepositoryRole", bypass_mode: "always" }]);
   expect(rules.rules[0].parameters.required_status_checks).toEqual([{ context: "release-checks", integration_id: 15368 }]);
   expect(rules.rules[0].parameters.strict_required_status_checks_policy).toBe(true);
 });

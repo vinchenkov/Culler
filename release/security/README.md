@@ -53,11 +53,11 @@ The upload job checks the source revision and the loaded image identity of each 
 The upload job performs no image build.
 The existing download checks remain in effect.
 
-The repository ruleset in [release-ruleset.json](../../.github/release-ruleset.json) requires `release-checks` from GitHub Actions.
-The ruleset requires the current base commit and provides no bypass actors.
-The repository owner imports this ruleset through **Settings → Rules → Rulesets**.
-A local ruleset file alone provides no GitHub enforcement.
-Private repositories require a GitHub plan that supports rulesets.
+The repository ruleset in [release-ruleset.json](../../.github/release-ruleset.json) applies to the `main` branch.
+A commit reaches `main` only after `release-checks` from GitHub Actions passes for that commit.
+A pull request branch must contain the current `main` commit before the merge.
+The repository admin role can bypass the ruleset, so the repository owner can push directly to `main`.
+GitHub applies only the copy in **Settings → Rules → Rulesets**, and that copy must match this file.
 
 The repository setting **Cache retention** must be 90 days.
 The repository owner sets it through **Settings → Actions → General → Cache settings**.

@@ -304,8 +304,8 @@ The coding harness can run `./release/check.sh` to check the release tools local
 That check uses local fixtures and requires no publication credential.
 
 The [release security guide](release/security/README.md) describes the security scans and the nightly image scans.
-It also describes the required GitHub ruleset.
-The repository owner must activate the required ruleset before a pull request can merge.
+It also describes the GitHub ruleset of the `main` branch.
+With that ruleset, a pull request can merge only after its `release-checks` job passes.
 A failed or unverified required check prevents release publication.
 
 ## Development installation

@@ -133,11 +133,11 @@ Custom Project images remain outside this release workflow.
 
 ## Repository enforcement and nightly scans
 
-`.github/release-ruleset.json` requires `release-checks` from GitHub Actions and the current base commit.
-It declares no bypass actors.
-The repository owner imports the ruleset through **Settings → Rules → Rulesets**.
-The committed file alone does not establish active GitHub enforcement.
-The [release checks procedure](../../release/security/README.md#required-release-checks) explains the plan limits.
+`.github/release-ruleset.json` requires `release-checks` from GitHub Actions and the current base commit on `main`.
+The repository admin role can bypass the ruleset, so the repository owner can push directly to `main`.
+Other collaborators merge through pull requests after `release-checks` passes.
+GitHub applies only the copy in **Settings → Rules → Rulesets**, and that copy must match the file.
+The [release checks procedure](../../release/security/README.md#required-release-checks) describes the ruleset.
 
 `.github/workflows/security-nightly.yml` runs nightly and also supports a manual run.
 `security_nightly.py` reads the current release record and retrieves both immutable registry image references.

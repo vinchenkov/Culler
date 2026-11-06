@@ -114,7 +114,7 @@
       "sourceFingerprint": "sha256:68f48f8f08af302e6fa817024861bb6e64c41c64fe1945368f9f7d82c5f95668"
     },
     "/openwiki/operations/release-security.md": {
-      "pageVersion": "sha256:83efc498296f20c15907618ac0aafb3cf5dabe863c90c587b34e58a0d2f6b22d",
+      "pageVersion": "sha256:dbc4e0ec3b82daacd3daed4661568bdff88dd96f2e49680a3eee865c18a31459",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",

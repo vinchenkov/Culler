@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:83efc498296f20c15907618ac0aafb3cf5dabe863c90c587b34e58a0d2f6b22d",
+  "pageVersion": "sha256:dbc4e0ec3b82daacd3daed4661568bdff88dd96f2e49680a3eee865c18a31459",
   "claims": [
     {
       "id": "claim_1e8ef1f983bb4576baa77cd0438bd6da",
@@ -17,7 +17,7 @@
       "statement": "The scan jobs and the release check jobs use read-only permissions and fixed action references.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/security-gate.test.ts#L31-L44",
+          "resource": "repo://dashboard/src/security-gate.test.ts#L32-L45",
           "version": "repo-lines-v1:sha256:4756c09498f8e37613e9270d31a289434108c84b1011708accab900f7868980e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2MDk3ZTk2NjdjNmNjZTk1ZmVmMWFjNmNjZjBmZmJiZjUyOWZlMzFjYTRmODYxMTY1MjNjYWJkMzFkM2UyNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5OWU4ZGExY2M0MGRkM2VkNTRkYmI3YzQ4YzI4YmI5YjMyNDQyZGU1ZWFiNjliOWU0OTg0YzQwZmQ0NTM2YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkZjQ1ODNjOWY3NDNmYTIyMjcwNGZkYTJhNDBkZmU0YjcxZTllZWU5ZjJlOWYxOGU2OTk0Nzk2ZDliYzJhOTIifQ"
         }
       ]
@@ -27,7 +27,7 @@
       "statement": "No release job waits for a security scan job, and the fast suite and image jobs run no scan.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/security-gate.test.ts#L21-L29",
+          "resource": "repo://dashboard/src/security-gate.test.ts#L22-L30",
           "version": "repo-lines-v1:sha256:9f7dc5ad039b00dca4637243fc479102c13a1f28b419bece82d5befc48a81317:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFhM2RlYmNiM2JlMzc5NTJlODBkYTAzMTVmMjJiZTYwNjk1YzcyZjIwOWFmYzFkODNkMjU2OTI0YjM2NmY5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA2NzYxMGY3NDMyZDkyMzdiM2QyYjkwZjgzNWM3MTFjYjUwZTQ2NDkxZDAwOGEwNmUxZjU4MmQ1OGNmN2VkMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzEzYzUxZDdlZjAxMTI2YmE2MDg0ZDFlZjliZTBlZDgxODczMTlmYzZkZWNiMzdkNTlhYTE1M2M3YzRhNTM5MyJ9"
         },
         {
@@ -196,15 +196,15 @@
     },
     {
       "id": "claim_f12bf7798707481f91002bff2583b0f4",
-      "statement": "The committed ruleset requires release-checks but needs import to establish GitHub enforcement.",
+      "statement": "The active ruleset requires release-checks on main, and the repository admin role can bypass it.",
       "evidence": [
         {
           "resource": "repo://.github/release-ruleset.json",
-          "version": "repo-file-v1:sha256:4184ffc07f6d46c25b0fb35347d4d3b5d75d076234e0a76f2317ef5ebd8b5d61"
+          "version": "repo-file-v1:sha256:84fa8326be5288e8e3ff76665ee2fb6b60d1e393ca207c4dde25d224ede778fe"
         },
         {
           "resource": "repo://release/security/README.md#L56-L60",
-          "version": "repo-lines-v1:sha256:a3c9a9a9969fcc1537787f8c55e938bf2973d3ec13e0b45b402ce2c70fc19e0f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjBiNzZkNmU3OTljY2M5NGEwY2VjNTRhOWUzYTc1NTBiMDc2MjAzNTQyYzFmMDE2Mjk0OTQ0NTdjMWE4MDc2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJkNmI2YzE5ZDAwMWY0NzQ3ZmY0MjM4ZWNkMmNjM2FmZjY3Nzk3NWU3YTdlOGM3YzYwYjQxODBiMzcyNWFhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWY3ZjVlMDQzZjk4YmNiMjI5OWRkNzllZGRlMzhjYzkxZDcxMWRiMjFiMGU1ZDI1YWZlOGQyYTBhY2QyZmQ0ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzgzZjEyNDE0Y2VkYzFiYWQ1YWMyMTk1YmE5YTdkZWY0MDZhZDdjM2ViYzQ0ODg4MzVjNzMwOTk3ZjU2Y2U4OCJ9"
+          "version": "repo-lines-v1:sha256:72ad77194a2e4a56c098bb6ff4701195969024c862a5da9a857144a808c7a304:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWZiYTI4ZDZiNzdlZTZkYzdhNDljZTViM2NmZGYyMmEwM2ZjOWY5NTMyYjQ4YWZhNDlmM2JiOWMxZjczYTNjZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODZhNzljZDQ1NzMxYWI2MWZiODVkYmQ5NGM1MzNjOGUzMTc0YzUzODliYWYxNWM2ZDczYjFmNzU2MDg4NTA1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWY3ZjVlMDQzZjk4YmNiMjI5OWRkNzllZGRlMzhjYzkxZDcxMWRiMjFiMGU1ZDI1YWZlOGQyYTBhY2QyZmQ0ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzgzZjEyNDE0Y2VkYzFiYWQ1YWMyMTk1YmE5YTdkZWY0MDZhZDdjM2ViYzQ0ODg4MzVjNzMwOTk3ZjU2Y2U4OCJ9"
         }
       ]
     },
