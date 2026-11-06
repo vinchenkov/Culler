@@ -507,8 +507,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-  # A push to main publishes a release only for a version above the version of the latest release.
-  # The same version publishes nothing. A lower version fails this job.
+  # The release policy selects a version release or a test release for this commit.
   release-version:
     name: release-version
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -523,7 +522,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Compare the version with the latest release
+      - name: Select publication through the release policy
         id: decide
         env:
           GH_TOKEN: ${{ github.token }}

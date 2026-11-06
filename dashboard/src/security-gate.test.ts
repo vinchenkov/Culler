@@ -62,7 +62,7 @@ test("the scans and the upload use the exact checked images", () => {
   expect(runs(workflow.jobs["fast-suite-macos"])).toContain("./release/check.sh");
 });
 
-test("only a new version reaches the image upload and the publication", () => {
+test("the release policy controls the image upload and the publication", () => {
   const decision = workflow.jobs["release-version"];
   expect(decision.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main'");
   expect(decision.permissions).toEqual({ contents: "read" });

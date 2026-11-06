@@ -187,6 +187,34 @@ sh "$TMP/outside/install.sh" --mc-home "$TMP/deployment home" --yes --activate >
 contains "$TMP/reuse.out" 'Bun 1.3.9 is already installed.' || fail 'second install did not report the installed host Bun'
 if contains "$TMP/reuse.out" 'Download and verify Bun'; then fail 'second install reported a Bun download'; fi
 [ "$(sed -n '6p' "$TMP/env")" = "$bun_home/bin" ] || fail 'second install lost the host Bun PATH'
+# Test releases use the normal installer and one exact commit tag.
+cp "$TMP/fixtures/release.json" "$TMP/public-release.json"
+cp "$TMP/fixtures/github-release.json" "$TMP/public-github-release.json"
+python3 - "$TMP/fixtures" <<'PYTEST'
+import json, sys
+from pathlib import Path
+root = Path(sys.argv[1])
+record = json.loads((root/'release.json').read_text())
+record['test_release'] = True
+record['tag'] = 'test-' + record['commit']
+(root/'release.json').write_text(json.dumps(record))
+release = json.loads((root/'github-release.json').read_text())
+release['tag_name'] = record['tag']
+(root/'github-release.json').write_text(json.dumps(release))
+PYTEST
+sh "$TMP/outside/install.sh" --mc-home "$TMP/deployment home" --yes --activate >"$TMP/test-release.out" 2>&1 || { cat "$TMP/test-release.out" >&2; fail 'test release install failed'; }
+python3 - "$TMP/fixtures/release.json" <<'PYTEST'
+import json, sys
+from pathlib import Path
+path = Path(sys.argv[1]); record = json.loads(path.read_text())
+record['tag'] = 'test-' + 'b' * 40
+path.write_text(json.dumps(record))
+PYTEST
+rm -f "$TMP/args"
+if sh "$TMP/outside/install.sh" --mc-home "$TMP/deployment home" --yes --activate >"$TMP/test-tag.out" 2>&1; then fail 'test release accepted a different commit tag'; fi
+[ ! -e "$TMP/args" ] || fail 'invalid test tag started setup'
+mv "$TMP/public-release.json" "$TMP/fixtures/release.json"
+mv "$TMP/public-github-release.json" "$TMP/fixtures/github-release.json"
 # A Bun archive with another checksum stops the install before setup and leaves no Bun.
 rm -f "$TMP/args"
 if CULLER_FIXTURE_BUN_CORRUPT=1 sh "$TMP/outside/install.sh" --mc-home "$TMP/corrupt home" --yes --activate >"$TMP/bun-hash.out" 2>&1; then fail 'corrupt Bun archive succeeded'; fi

@@ -25,6 +25,13 @@ type UpdatePolicy struct {
 //go:embed update_policy.json
 var updatePolicyDefaults []byte
 
+func testReleasesEnabled() bool {
+	var policy struct {
+		TestReleases bool `json:"test_releases"`
+	}
+	return json.Unmarshal(updatePolicyDefaults, &policy) == nil && policy.TestReleases
+}
+
 var updateFormatNames = []string{"spine", "configuration", "credentials", "claude", "codex", "opencode", "opencode-websearch", "openwiki", "agentsview"}
 
 func (p *UpdatePolicy) validate(version, schema string) error {
@@ -57,6 +64,9 @@ func (p *UpdatePolicy) validate(version, schema string) error {
 func ValidateUpdateSource(candidate, previous Record) error {
 	if err := candidate.Update.validate(candidate.Version, candidate.Schema); err != nil {
 		return err
+	}
+	if candidate.TestRelease && testReleasesEnabled() {
+		return nil
 	}
 	if previous.Update == nil || previous.Version == "" {
 		return errors.New("This installation predates the public compatibility baseline. Its formats require an explicit import before a public update.")

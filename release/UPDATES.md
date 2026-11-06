@@ -28,8 +28,6 @@ The release record contains these compatibility values:
 - Checksums of dependency manifests, lock files, and direct tool pins.
 
 Consecutive public releases require a supported path.
-The 0.2.0 and 0.2.1 test releases permit a different spine schema from version 0.1.0.
-The exception permits publication for new installations. The updater still rejects a database with an incompatible schema.
 Skipped releases work when the candidate accepts all installed formats and the minimum version.
 A required intermediate release remains available with its exact artifacts.
 Ordinary downgrades remain unsupported.
@@ -98,8 +96,12 @@ Use a task worktree and leave publication to the maintainer.
 8. Review the release record and recovery evidence before publication.
 
 The source policy in `mc/distribution/update_policy.json` declares the minimum version and accepted source formats.
-The release workflow publishes nothing when `VERSION` equals the latest public version.
+With `test_releases` absent or false, the workflow publishes nothing when `VERSION` equals the latest public version.
 It checks compatibility with the previous public release before publication of a higher version.
+With `test_releases` true, each new commit can produce a test release through the normal install path.
+That policy bypasses version and migration-path gates without a data conversion or reset.
+An incompatible database requires a fresh install in a separate deployment home.
+[The test release procedure](README.md#test-releases) describes the policy and its reversal before the public release.
 
 Use these checks for the affected dependency:
 

@@ -21,6 +21,43 @@ from version import read_version
 CHECKS = ["fast-suite-macos", "deployment-linux", "application-package", "product-image", "release-downloads"]
 
 
+def test_releases_enabled():
+    policy = Path(__file__).resolve().parent.parent / "mc/distribution/update_policy.json"
+    value = json.loads(policy.read_text()).get("test_releases", False)
+    if not isinstance(value, bool):
+        raise ValueError("The test release policy requires a boolean.")
+    return value
+
+
+def test_release_is_new(api, commit):
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise ValueError("The release requires a full commit identifier.")
+    release = api.request("GET", "/releases/tags/test-" + commit)
+    if release is not None and not release.get("draft", False):
+        return False
+    latest = api.request("GET", "/releases/latest")
+    tag = latest.get("tag_name", "") if latest else ""
+    if tag.startswith("test-"):
+        comparison = api.request("GET", "/compare/" + tag + "..." + commit)
+        return comparison["status"] == "ahead"
+    return True
+
+
+def latest_public_release(api):
+    latest = api.request("GET", "/releases/latest")
+    if latest is None or not latest.get("tag_name", "").startswith("test-"):
+        return latest
+    page = 1
+    while True:
+        releases = api.request("GET", "/releases?per_page=100&page=" + str(page))
+        for release in releases:
+            if not release.get("draft") and not release.get("prerelease") and not release.get("tag_name", "").startswith("test-"):
+                return release
+        if len(releases) < 100:
+            return None
+        page += 1
+
+
 class SafeRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, request, file, code, message, headers, url):
         if urllib.parse.urlsplit(url).scheme != "https":
@@ -112,7 +149,7 @@ def version_is_new(api, version, commit, candidate=None):
 
     A lower version fails.
     """
-    latest = api.request("GET", "/releases/latest")
+    latest = latest_public_release(api)
     previous = latest_version(latest)
     if previous is None:
         return True
@@ -149,7 +186,7 @@ def ensure_asset(api, release, path):
         raise ValueError("The uploaded release file differs: " + path.name)
 
 
-def publish(api, output, commit, image, run_id, now=None, project_image=None):
+def publish(api, output, commit, image, run_id, now=None, project_image=None, test_release=False):
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
         raise ValueError("The release requires a full commit identifier.")
     if not re.fullmatch(r"ghcr\.io/[a-z0-9._/-]+@sha256:[0-9a-f]{64}", image):
@@ -177,9 +214,11 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     branch = api.request("GET", "/compare/" + commit + "...main")
     if branch["status"] not in {"identical", "ahead"}:
         raise ValueError("The release commit is outside the current main history.")
-    if not version_is_new(api, version, commit, package):
+    new = test_release_is_new(api, commit) if test_release else version_is_new(api, version, commit, package)
+    if not new:
         return False
-    tag = "v" + version
+    tag = "test-" + commit if test_release else "v" + version
+    title = "Culler test " + commit[:12] + " (" + version + ")" if test_release else "Culler " + version
     release = api.request("GET", "/releases/tags/" + tag)
     if release is not None and not release.get("draft"):
         raise ValueError("The published release is immutable.")
@@ -197,6 +236,8 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
         "checks": [{"name": name, "passed": True} for name in CHECKS],
         "workflow_seconds": max(0, int((now - started).total_seconds())),
     }
+    if test_release:
+        record["test_release"] = True
     if project_image is not None:
         record["project_image"] = project_image
     record_path = assets / "release.json"
@@ -208,22 +249,25 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     record_path.write_text(json.dumps(record, indent=2) + "\n")
     if release is None:
         release = api.request("POST", "/releases", {
-            "tag_name": tag, "target_commitish": commit, "name": "Culler " + version, "body": notes,
+            "tag_name": tag, "target_commitish": commit, "name": title, "body": notes,
             "draft": True, "prerelease": False, "make_latest": "false",
         })
     for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz", "culler-opencode-linux-arm64.tar.gz", "release.json"):
         ensure_asset(api, release, assets / name)
     # The workflow serializes this final comparison and publication.
-    if not version_is_new(api, version, commit, package):
+    new = test_release_is_new(api, commit) if test_release else version_is_new(api, version, commit, package)
+    if not new:
         return False
     api.request("PATCH", "/releases/" + str(release["id"]), {
-        "name": "Culler " + version, "body": notes, "draft": False, "make_latest": "true",
+        "name": title, "body": notes, "draft": False, "make_latest": "true",
     })
     return True
 
 
-def write_decision(version, new):
-    text = ("Version " + version + " is new. The workflow publishes it after the required checks." if new else
+def write_decision(version, new, test_release=False):
+    text = ("The workflow publishes this commit as a test release after the required checks." if new else
+            "This commit already has a complete test release.") if test_release else (
+            "Version " + version + " is new. The workflow publishes it after the required checks." if new else
             "Version " + version + " is the version of the latest release. The workflow publishes no release.")
     print(text)
     with open(os.environ["GITHUB_OUTPUT"], "a") as output:
@@ -236,7 +280,7 @@ def write_decision(version, new):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--decide", action="store_true",
-                        help="write publish=true to the step outputs when VERSION is above the latest release, then stop")
+                        help="write the publication decision for the selected release policy, then stop")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--image")
     parser.add_argument("--project-image")
@@ -245,9 +289,11 @@ def main():
         raise ValueError("Publication requires the main push workflow.")
     commit = os.environ["GITHUB_SHA"]
     api = GitHub(os.environ["GITHUB_REPOSITORY"], os.environ["GH_TOKEN"])
+    test_release = test_releases_enabled()
     if args.decide:
         version = read_version()
-        write_decision(version, version_is_new(api, version, commit))
+        new = test_release_is_new(api, commit) if test_release else version_is_new(api, version, commit)
+        write_decision(version, new, test_release)
         return
     if args.output is None or args.image is None or args.project_image is None:
         parser.error("Publication requires --output, --image, and --project-image.")
@@ -258,8 +304,8 @@ def main():
     if not re.fullmatch(r"ghcr\.io/[a-z0-9._/-]+@sha256:[0-9a-f]{64}", args.project_image):
         raise ValueError("The release requires an immutable Project image digest.")
     subprocess.run(["docker", "pull", args.project_image], check=True, stdout=subprocess.DEVNULL)
-    published = publish(api, args.output, commit, args.image, os.environ["GITHUB_RUN_ID"], project_image=args.project_image)
-    print("The release is available." if published else "A complete release already has this version.")
+    published = publish(api, args.output, commit, args.image, os.environ["GITHUB_RUN_ID"], project_image=args.project_image, test_release=test_release)
+    print("The release is available." if published else "The selected release is already available.")
 
 
 if __name__ == "__main__":

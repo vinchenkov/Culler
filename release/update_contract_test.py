@@ -65,7 +65,7 @@ class UpdateContractTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "converter"):
             require_new_public_version(candidate, previous)
 
-    def test_schema_exception_covers_only_the_declared_test_releases(self):
+    def test_public_releases_require_a_schema_update_path_at_each_version(self):
         for source, target in (("0.1.0", "0.2.0"), ("0.1.0", "0.1.1"),
                                ("0.1.0", "0.2.1"), ("0.1.0", "0.2.2"), ("0.1.1", "0.2.0"), ("0.2.0", "0.3.0")):
             with self.subTest(source=source, target=target):
@@ -77,13 +77,10 @@ class UpdateContractTest(unittest.TestCase):
                 candidate["update"]["formats"]["spine"] = candidate["schema"]
                 candidate["update"]["accepted"]["spine"] = [candidate["schema"]]
                 validate_update_contract(candidate)
-                if source == "0.1.0" and target in {"0.2.0", "0.2.1"}:
+                with self.assertRaisesRegex(ValueError, "spine"):
                     require_new_public_version(candidate, previous)
-                else:
-                    with self.assertRaisesRegex(ValueError, "spine"):
-                        require_new_public_version(candidate, previous)
 
-    def test_schema_exception_preserves_configuration_and_credential_checks(self):
+    def test_public_releases_require_configuration_and_credential_converters(self):
         for version in ("0.2.0", "0.2.1"):
             for name in ("configuration", "credentials"):
                 with self.subTest(version=version, name=name):

@@ -23,12 +23,43 @@ The sections go from the newest version to the oldest version.
 It also writes `version` and `release-notes.md` into the release inputs.
 
 For a push to `main`, the `release-version` job runs `release/publish.py --decide`.
-That job writes `publish=true` only for a version above the version of the latest release.
+The `test_releases` field in `mc/distribution/update_policy.json` selects the publication policy.
+An absent field or `false` selects public releases.
+That policy writes `publish=true` only for a version above the latest public version.
 With the same version, the image upload job and the publication job do not run.
 A lower version fails the `release-version` job.
 `release/publish.py` compares the versions again immediately before publication.
 A higher version also requires a commit after the commit of the latest release.
-The publisher tags the release `v<version>`, adds the version to `release.json`, names the release `Culler <version>`, and uses the changelog section as the release description.
+The publisher tags the public release `v<version>` and names it `Culler <version>`.
+The release record contains the version, and the changelog section supplies the release description.
+
+## Test releases
+
+The value `"test_releases": true` selects test releases for new commits on `main`.
+The version can stay unchanged or decrease.
+Publication requires no update path from the previous release.
+The package still requires a valid version, complete release notes, and valid format identities.
+The workflow still requires every fast, deployment, browser, package, and image check.
+
+Each test release uses `test-<full-commit>` as its tag and sets `test_release` to `true` in `release.json`.
+Each tag identifies immutable files from one commit.
+A repeated workflow run preserves a complete test release for that commit.
+An older workflow cannot replace a test release from a later commit.
+The release name is `Culler test <short-commit> (<version>)`.
+
+The publisher selects the test release as the latest complete release.
+GitHub's prerelease flag stays false because the normal installer selects `/releases/latest`.
+The public install command and `culler update` use the same release files and image digests.
+An older saved launcher can reject the test tag. Download the current launcher through the public install command.
+
+The test build bypasses version and migration-path checks for an update to a test release.
+This bypass provides no data conversion and removes no data.
+A database with an incompatible schema still requires a separate deployment home for a fresh install.
+
+Set `test_releases` to `false` before the public release.
+This change restores both gates in the publisher and subsequent builds.
+The public policy compares against the latest public release and excludes test tags.
+The package concurrency and caches remain active.
 
 ## Image archive checks
 

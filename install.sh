@@ -205,9 +205,16 @@ commit=$(required_json "$record" commit)
 case "$commit" in ''|*[!0-9a-f]*) fail "The release identity is invalid." ;; esac
 version=$(required_json "$record" version)
 printf '%s\n' "$version" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' || fail "The release identity is invalid."
+tag=v$version
+test_release=$(json "$record" test_release || true)
+case "$test_release" in
+  true) tag=test-$commit ;;
+  false|'') ;;
+  *) fail "The release identities differ. Run install.sh again." ;;
+esac
 [ "${#commit}" = 40 ] && [ "$(json "$record" release_id)" = "$commit" ] && \
-  [ "$(json "$record" tag)" = "v$version" ] && \
-  [ "$(json "$CULLER_BOOTSTRAP_DIR/github-release.json" tag_name)" = "v$version" ] || fail "The release identities differ. Run install.sh again."
+  [ "$(json "$record" tag)" = "$tag" ] && \
+  [ "$(json "$CULLER_BOOTSTRAP_DIR/github-release.json" tag_name)" = "$tag" ] || fail "The release identities differ. Run install.sh again."
 for required in fast-suite-macos deployment-linux application-package product-image release-downloads; do
   index=0
   found=0

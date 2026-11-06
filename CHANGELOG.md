@@ -10,6 +10,9 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 
 - The dashboard browser test waits for profile recovery before it checks Save.
 - The test closes the profile dialog after a failure to protect subsequent tests.
+- The application package builds alongside the component checks, so the image build can start sooner.
+- The workflow retains the Go build cache for each commit and preserves the separate image cache.
+- The test release policy permits repeated versions and schema changes through the normal install path.
 
 ### Known limits
 

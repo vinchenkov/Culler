@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from publish import CHECKS, file_record, publish, write_decision
+from publish import CHECKS, file_record, latest_public_release, main, publish, test_release_is_new, test_releases_enabled, write_decision
 
 COMMIT = "a" * 40
 IMAGE = "ghcr.io/example/culler/runner@sha256:" + "b" * 64
@@ -51,7 +51,7 @@ class FakeGitHub:
                 self.compared.append(path)
                 return {"status": self.relation}
             if path.startswith("/releases/tags/"):
-                return self.release
+                return self.release if self.release and self.release["tag_name"] == path.rsplit("/", 1)[1] else None
             if path.startswith("/actions/runs/"):
                 return {"created_at": "2026-09-25T23:59:00Z"}
             if path.startswith("/releases/assets/"):
@@ -62,7 +62,7 @@ class FakeGitHub:
                 return b"corrupt" if asset["name"] == self.corrupt else asset["body"]
         if method == "POST" and path == "/releases":
             self.created.append(body)
-            self.release = {"id": 1, "draft": True, "assets": [], "upload_url": "https://uploads.github.com/releases/1/assets{?name}"}
+            self.release = {"id": 1, "tag_name": body["tag_name"], "draft": True, "assets": [], "upload_url": "https://uploads.github.com/releases/1/assets{?name}"}
             return self.release
         if method == "POST" and "?name=" in path:
             name = path.split("?name=", 1)[1]
@@ -99,6 +99,98 @@ class PublishTest(unittest.TestCase):
         (output / "version").write_text("0.2.0\n")
         (output / "release-notes.md").write_text(NOTES)
         return output
+
+    def test_policy_switch_controls_the_workflow_decision_and_publication(self):
+        env = {"GITHUB_ACTIONS": "true", "GITHUB_EVENT_NAME": "push", "GITHUB_REF": "refs/heads/main",
+               "GITHUB_SHA": COMMIT, "GITHUB_REPOSITORY": "example/culler", "GH_TOKEN": "fixture", "GITHUB_RUN_ID": "1"}
+        for enabled in (True, False):
+            with self.subTest(enabled=enabled), mock.patch.dict(os.environ, env):
+                with mock.patch("publish.test_releases_enabled", return_value=enabled), \
+                     mock.patch("publish.GitHub", return_value=FakeGitHub(latest=latest_release("0.2.0"))), \
+                     mock.patch("publish.read_version", return_value="0.2.0"), \
+                     mock.patch("publish.write_decision") as decision, \
+                     mock.patch("sys.argv", ["publish.py", "--decide"]):
+                    main()
+                    decision.assert_called_once_with("0.2.0", enabled, enabled)
+                with mock.patch("publish.test_releases_enabled", return_value=enabled), \
+                     mock.patch("publish.GitHub") as github, \
+                     mock.patch("publish.publish", return_value=True) as publication, \
+                     mock.patch("publish.subprocess.run"), \
+                     mock.patch("sys.argv", ["publish.py", "--output", "/fixture", "--image", IMAGE, "--project-image", IMAGE]):
+                    main()
+                    publication.assert_called_once_with(github.return_value, Path("/fixture"), COMMIT, IMAGE, "1",
+                                                        project_image=IMAGE, test_release=enabled)
+
+    def test_policy_switch_defaults_to_public_releases_and_requires_a_boolean(self):
+        for value, expected in (({}, False), ({"test_releases": False}, False), ({"test_releases": True}, True)):
+            with self.subTest(value=value), mock.patch.object(Path, "read_text", return_value=json.dumps(value)):
+                self.assertEqual(test_releases_enabled(), expected)
+        for value in ("true", 1, None):
+            with self.subTest(value=value), mock.patch.object(Path, "read_text", return_value=json.dumps({"test_releases": value})):
+                with self.assertRaisesRegex(ValueError, "boolean"):
+                    test_releases_enabled()
+
+    def test_test_releases_allow_reused_and_lower_versions_and_changed_formats(self):
+        for version in ("0.2.0", "9.0.0"):
+            with self.subTest(previous=version), tempfile.TemporaryDirectory() as directory:
+                api = FakeGitHub(latest=latest_release(version))
+                output = self.fixture(Path(directory))
+                package = json.loads((output / "package.json").read_text())
+                package["schema"] = "d" * 64
+                package["update"]["formats"]["spine"] = package["schema"]
+                package["update"]["accepted"]["spine"] = [package["schema"]]
+                (output / "package.json").write_text(json.dumps(package))
+                self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW, test_release=True))
+                record = json.loads((output / "assets/release.json").read_text())
+                self.assertEqual(record["tag"], "test-" + COMMIT)
+                self.assertTrue(record["test_release"])
+                self.assertFalse(api.created[0]["prerelease"])
+                self.assertEqual(api.compared, [])
+                self.assertEqual(len(api.assets), 5)
+                api.release["draft"] = False
+                self.assertFalse(test_release_is_new(api, COMMIT))
+                self.assertFalse(publish(api, output, COMMIT, IMAGE, 1, NOW, test_release=True))
+                next_commit = "e" * 40
+                self.assertTrue(publish(api, output, next_commit, IMAGE, 2, NOW, test_release=True))
+                self.assertEqual([item["tag_name"] for item in api.created], ["test-" + COMMIT, "test-" + next_commit])
+
+    def test_test_releases_keep_download_checks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            api = FakeGitHub(corrupt="installer.sh")
+            with self.assertRaisesRegex(ValueError, "uploaded release file differs"):
+                publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW, test_release=True)
+            self.assertEqual(api.published, [])
+
+    def test_an_older_workflow_cannot_replace_a_later_test_release(self):
+        for relation in ("behind", "diverged", "identical"):
+            with self.subTest(relation=relation), tempfile.TemporaryDirectory() as directory:
+                api = FakeGitHub(latest={"tag_name": "test-" + "e" * 40}, relation=relation)
+                self.assertFalse(publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW, test_release=True))
+                self.assertEqual(api.created, [])
+                self.assertEqual(api.published, [])
+
+    def test_a_later_test_commit_can_publish_the_same_version(self):
+        with tempfile.TemporaryDirectory() as directory:
+            api = FakeGitHub(latest={"tag_name": "test-" + "e" * 40})
+            self.assertTrue(publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW, test_release=True))
+            self.assertEqual(len(api.published), 1)
+
+    def test_public_release_selection_ignores_test_releases_and_reads_all_pages(self):
+        previous = latest_release()
+        calls = []
+
+        class API:
+            def request(self, method, path):
+                calls.append(path)
+                test = {"tag_name": "test-" + COMMIT}
+                if path == "/releases/latest":
+                    return test
+                if path.endswith("page=1"):
+                    return [test] * 100
+                return [{"tag_name": "v99.0.0", "draft": True}, {"tag_name": "v98.0.0", "prerelease": True}, previous]
+
+        self.assertEqual(latest_public_release(API()), previous)
+        self.assertEqual(len(calls), 3)
 
     def test_publication_follows_all_download_checks(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -164,43 +256,6 @@ class PublishTest(unittest.TestCase):
                     publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
                 self.assertEqual(api.assets, {})
                 self.assertEqual(api.published, [])
-
-    def test_0_2_0_publishes_a_new_schema_after_0_1_0(self):
-        with tempfile.TemporaryDirectory() as directory:
-            latest = latest_release()
-            previous = json.loads(latest["assets"][0]["body"])
-            previous["schema"] = "d" * 64
-            previous["update"]["formats"]["spine"] = previous["schema"]
-            previous["update"]["accepted"]["spine"] = [previous["schema"]]
-            latest["assets"][0]["body"] = json.dumps(previous).encode()
-            api = FakeGitHub(latest=latest)
-            output = self.fixture(Path(directory))
-            self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW))
-            self.assertEqual(len(api.published), 1)
-            record = json.loads((output / "assets/release.json").read_text())
-            self.assertEqual(record["update"]["accepted"]["spine"], [record["schema"]])
-            self.assertNotEqual(record["schema"], previous["schema"])
-
-    def test_0_2_1_publishes_a_new_schema_after_0_1_0(self):
-        with tempfile.TemporaryDirectory() as directory:
-            latest = latest_release()
-            previous = json.loads(latest["assets"][0]["body"])
-            previous["schema"] = "d" * 64
-            previous["update"]["formats"]["spine"] = previous["schema"]
-            previous["update"]["accepted"]["spine"] = [previous["schema"]]
-            latest["assets"][0]["body"] = json.dumps(previous).encode()
-            api = FakeGitHub(latest=latest)
-            output = self.fixture(Path(directory))
-            (output / "version").write_text("0.2.1\n")
-            package_path = output / "package.json"
-            package = json.loads(package_path.read_text())
-            package["version"] = "0.2.1"
-            package_path.write_text(json.dumps(package))
-            self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW))
-            self.assertEqual(len(api.published), 1)
-            record = json.loads((output / "assets/release.json").read_text())
-            self.assertEqual(record["update"]["accepted"]["spine"], [record["schema"]])
-            self.assertNotEqual(record["schema"], previous["schema"])
 
     def test_an_unsupported_previous_release_during_upload_blocks_publication(self):
         class ConcurrentGitHub(FakeGitHub):

@@ -45,7 +45,12 @@ The local fast suite runs these checks:
 
 The GitHub Actions workflow at `.github/workflows/release.yml` verifies release inputs after a push to `main`.
 The workflow publishes a release only after its required checks pass.
-The workflow publishes a release only when the `VERSION` file holds a version above the version of the latest release.
+The `test_releases` field in `mc/distribution/update_policy.json` selects the release policy.
+An absent field or `false` requires a version above the latest public version and a supported update path.
+The value `true` permits each new commit to publish a test release through the normal install path.
+Test releases use immutable `test-<full-commit>` tags and bypass version and migration-path gates.
+Set the field to `false` before the public release to restore both gates in the publisher and subsequent builds.
+The bypass provides no data conversion or reset.
 Each version needs a `CHANGELOG.md` section, and `./release/check.sh` checks both files.
 Pull requests and pushes to `main` also run the `dashboard-browser` job.
 That job runs the complete `dashboard/smoke/` suite through `./dashboard/smoke.sh` on Linux arm64.

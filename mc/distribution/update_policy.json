@@ -1,4 +1,5 @@
 {
+  "test_releases": false,
   "minimum_version": "0.1.0",
   "accepted": {}
 }

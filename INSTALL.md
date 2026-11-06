@@ -243,7 +243,6 @@ These rules apply before version 1.0.0:
 Version 0.1.0 starts the public data compatibility contract.
 Every supported update preserves durable user data, including updates between 0.x minor versions.
 Consecutive public releases require a supported update path.
-The 0.2.0 and 0.2.1 test releases permit a different spine schema from version 0.1.0.
 Skipped releases require accepted source formats and a supported source version.
 An ordinary downgrade remains unsupported.
 
@@ -262,7 +261,8 @@ GitHub Releases stores these files for each version:
 - `release.json`, the release record.
 
 The release record holds the version, the commit, and the tag of the release.
-The release tag is `v<version>`, for example `v0.1.0`.
+The public release tag is `v<version>`, for example `v0.1.0`.
+Test releases use `test-<full-commit>` and the same install command.
 
 GitHub Container Registry stores the matching container image.
 The release record identifies its exact digest.
@@ -308,9 +308,9 @@ The checks exercise the product image without a mounted Culler checkout.
 Each release uses one version, one full commit identifier, and an immutable image digest.
 The `VERSION` file supplies the public version.
 The minimum source version and accepted source formats reside in `mc/distribution/update_policy.json`.
-Publication permits the schema change from 0.1.0 to the 0.2.0 and 0.2.1 test releases for new installations.
-All other format changes require a supported update path before publication.
-The updater still rejects incompatible formats.
+Public releases require a supported update path before publication.
+The temporary `test_releases` policy bypasses version and migration-path gates for test releases.
+The policy provides no data conversion or reset.
 The workflow verifies each release file after upload.
 The workflow makes the release available only after all required checks pass.
 An incomplete release preserves the previous available release.
@@ -318,7 +318,8 @@ An incomplete release preserves the previous available release.
 ### Versions and release notes
 
 The `VERSION` file holds the version of the next release.
-A push to `main` publishes a release only when `VERSION` holds a version above the version of the latest release.
+These rules apply when `test_releases` is absent or false in `mc/distribution/update_policy.json`.
+A push to `main` publishes a public release only when `VERSION` exceeds the latest public version.
 With the same version, the workflow runs the checks and publishes no release.
 A lower version fails the `release-version` job, and the workflow publishes no release.
 The release name is `Culler <version>`.
@@ -340,14 +341,27 @@ For later releases, add these parts after `Known limits`, in this order:
 The pull request checks reject an absent or malformed `VERSION` file.
 They also reject a version without a complete `CHANGELOG.md` section.
 
-Before a version increase, compare the database schema of the new version with the `schema` value in the `release.json` of the latest release.
+Before a version increase, compare the candidate schema with `schema` in the latest public `release.json`.
 Ask your coding harness to make this comparison.
 A different schema blocks publication until its conversion and recovery tests pass.
-The schema change from 0.1.0 to the 0.2.0 and 0.2.1 test releases is an exception.
 An accepted-format declaration alone cannot enable a conversion.
 Use the Database compatibility and Update effects parts to describe preserved data and required intermediate releases.
 Before publication, test the exact packages on a separate Mac or isolated deployment.
 Confirm the update and recovery results that those parts state.
+
+### Test releases
+
+The value `"test_releases": true` in `mc/distribution/update_policy.json` permits a release for each new commit on `main`.
+The version can stay unchanged or decrease, and publication requires no migration path from the previous release.
+Every package, browser, image, and component check remains required.
+Each release uses an immutable `test-<full-commit>` tag and becomes the latest complete release.
+The normal install command downloads its verified release files and images.
+An older saved launcher can reject test tags. Download the current launcher through the public install command.
+
+The test build also bypasses the version and migration-path checks of an update to a test release.
+An incompatible database still requires a fresh install in a separate deployment home.
+Set `test_releases` to `false` before the public release to restore both gates in the publisher and subsequent builds.
+This change preserves the package concurrency and caches.
 
 The repository's Actions page shows each workflow and its result.
 The Releases page shows complete releases.

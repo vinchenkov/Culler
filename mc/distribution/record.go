@@ -66,8 +66,9 @@ type HostBunRelease struct {
 const HostBunPlatform = "darwin-arm64"
 
 type Record struct {
-	// Version is the VERSION file of the release commit. Tag is "v" + Version.
+	// Version is the VERSION file of the release commit.
 	Version         string          `json:"version"`
+	TestRelease     bool            `json:"test_release,omitempty"`
 	Update          *UpdatePolicy   `json:"update,omitempty"`
 	Dependencies    []DependencyPin `json:"dependencies,omitempty"`
 	OpenCode        *Asset          `json:"opencode,omitempty"`
@@ -173,7 +174,11 @@ func (r Record) Validate() error {
 	if !ValidVersion(r.Version) {
 		return errors.New("release version is invalid")
 	}
-	if !commitDigest.MatchString(r.Commit) || r.ReleaseID != r.Commit || r.Tag != "v"+r.Version {
+	tag := "v" + r.Version
+	if r.TestRelease {
+		tag = "test-" + r.Commit
+	}
+	if !commitDigest.MatchString(r.Commit) || r.ReleaseID != r.Commit || r.Tag != tag {
 		return errors.New("release identity does not match its commit")
 	}
 	if r.Sequence <= 0 || r.PublishedAt.IsZero() {
