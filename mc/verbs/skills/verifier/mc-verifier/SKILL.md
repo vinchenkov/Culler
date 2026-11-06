@@ -22,9 +22,8 @@ A merge repair merges the destination branch into the work of the task. The diff
     git -C /workspace/source log --first-parent --merges <Base commit>..<Submitted commit>
 
 Judge the changes of this task against its criteria and assess broad checks for task regressions.
-Apply the project-wiki skill to requested reports and original project documents outside `openwiki/`.
-Check the committed deliverable in its requested format; a task execution report does not replace it.
-Return task-authored wiki changes to the Worker; accepted wiki updates from the destination branch are separate changes.
+Return wiki changes from the task to the Worker.
+Exclude accepted destination changes from that judgment.
 
 ## Project dependencies
 

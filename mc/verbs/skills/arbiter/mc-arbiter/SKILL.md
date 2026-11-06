@@ -11,7 +11,6 @@ The agent profile sets the model and effort for this run.
 Use that value in each terminal action.
 The **Project** and **Proposed pool** parts define the assignment.
 Read source files and project knowledge at the **Project** part's `Repository copy` path.
-Apply the project-wiki skill to proposed document deliverables and the Scribe's sole authority over `openwiki/`.
 The Strategist normally supplies two task proposals.
 This proposal run has no task subject.
 `mc` refuses a terminal action from another run and applies zero changes.

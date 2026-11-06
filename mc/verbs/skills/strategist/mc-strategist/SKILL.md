@@ -38,10 +38,6 @@ Propose two tasks in one batch. Submit fewer only when fewer valid tasks satisfy
 
 ## Acceptance criteria
 
-Requested reports and original project documents are committed deliverables outside `openwiki/`.
-Apply the project-wiki skill to their locations and formats.
-The Scribe owns wiki maintenance on its schedule.
-
 Each criterion describes task behavior and identifies evidence available in an agent container.
 New or changed tests must pass on the submitted commit.
 Whole-suite success requirements, such as `./mc/check.sh passes`, are invalid criteria.

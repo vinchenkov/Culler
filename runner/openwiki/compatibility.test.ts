@@ -55,7 +55,7 @@ async function finishPage(provider, root: string, runId: string) {
   return call(provider, "openwiki_finish", { runId });
 }
 
-test("the server supplies instructions for its six lifecycle tools", async () => {
+test("the server exposes six tools and points to the shipped procedure", async () => {
   const { create } = await fixture();
   const server = upstream.createOpenWikiMcpServer(await create());
   const client = new Client({ name: "culler-test", version: "1.0.0" });
@@ -69,9 +69,10 @@ test("the server supplies instructions for its six lifecycle tools", async () =>
       "openwiki_inspect_page_claims", "openwiki_submit_page", "openwiki_finish",
     ]);
     const instructions = client.getInstructions() ?? "";
-    expect(instructions).toContain("call openwiki_begin");
-    expect(instructions).toContain("call openwiki_finish");
-    for (const name of instructions.match(/openwiki_[a-z_]+/g) ?? []) expect(names).toContain(name);
+    const pointer = instructions.match(/~\/\.agents\/skills\/([a-z-]+)\/SKILL\.md/);
+    expect(pointer).not.toBeNull();
+    const skill = await readFile(resolve(import.meta.dir, "../../mc/verbs/skills/scribe", pointer![1], "SKILL.md"), "utf8");
+    expect(skill).toContain(`name: ${pointer![1]}`);
   } finally {
     await client.close();
     await server.close();
@@ -321,7 +322,7 @@ test("original reports require committed content and durable evidence links", as
   const { root, create } = await fixture();
   await put(root, "openwiki/reports/research.md", report);
   const provider = await create();
-  await expect(call(provider, "openwiki_begin", { root, mode: "init" })).rejects.toThrow("Commit project documents");
+  await expect(call(provider, "openwiki_begin", { root, mode: "init" })).rejects.toThrow("uncommitted changes");
   await put(root, ".mc-artifacts/1/capture.md", "Temporary evidence.\n");
   await put(root, "openwiki/reports/research.md", report + "\n[Evidence](../../.mc-artifacts/1/capture.md)\n");
   await commit(root);

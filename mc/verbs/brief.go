@@ -700,7 +700,7 @@ func addGitStateParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn,
 		}
 	}
 	if len(facts) > 0 {
-		explanation := "These Git facts identify the task repository; `openwiki/` is read-only and original documents belong outside it."
+		explanation := "These Git facts identify the task repository."
 		switch {
 		case role == dispatch.RolePackager:
 			explanation += " The Files changed view of the dashboard shows the commit identifiers and the complete diff to the operator."
@@ -752,7 +752,7 @@ func loadBriefDelivery(ctx context.Context, q Q, task int64) (briefDelivery, err
 
 func addArbiterParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn) error {
 	b.Parts = append(b.Parts, projectPart(sp.Project,
-		"Read this Project's committed source files and knowledge at the read-only repository copy. Proposed document deliverables belong outside `openwiki/`, which the Scribe maintains."))
+		"Read this Project's committed files at the read-only repository copy."))
 	pool := make([]briefBoardRow, 0, len(sp.ProposedPool))
 	for _, id := range sp.ProposedPool {
 		task, err := loadBriefTask(ctx, q, id)
@@ -796,7 +796,7 @@ func projectPart(project, explanation string) briefPart {
 
 func addProposeParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn) error {
 	project := projectPart(sp.Project,
-		"Read this Project's committed files at the read-only repository copy. Propose repository deliverables outside `openwiki/` with criteria that agents can check in a container.")
+		"Read this Project's committed files at the read-only repository copy.")
 	b.Parts = append(b.Parts, project)
 
 	// A blocked proposal stays in this list: it dispatches to nobody, so it is

@@ -574,6 +574,12 @@ The task then keeps that type, and `delivery.allowance_condition` in the task re
 Resolve the limit first with the `allow-corrections` action or the `revise` action.
 `mc` refuses the `unblock` action until the limit ends.
 
+## Wiki updates
+
+A wiki update has no task and holds no Project lease.
+It can run at the same time as a task run.
+Culler merges an accepted wiki commit without operator review.
+
 ## Task failures
 
 The dashboard shows `blocked` as Decision Pending and `stalled` as Retries Exhausted.

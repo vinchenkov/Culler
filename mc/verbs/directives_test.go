@@ -456,7 +456,6 @@ func TestHomieAgentInputStatesTheRepositoryOperationModel(t *testing.T) {
 	directive := strings.Join(strings.Fields(homieDirective), " ")
 	for _, want := range []string{
 		"The Project lease permits one agent run of a Project at a time.",
-		"The Scribe run of a wiki update holds no Project lease and can run at the same time.",
 		"Repository operations, such as a merge, can run at the same time as an agent run.",
 		"The merge starts without a wait for the active agent run.",
 		"A task interrupt stops the current agent run of the task.",

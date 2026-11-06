@@ -14,7 +14,7 @@ The server uses the OpenWiki host modules without the standalone model agent.
 These changes have these purposes:
 
 - Culler controls repository setup and automatic wiki work.
-- The server supplies instructions for the six Scribe tools.
+- The server points to the shipped OpenWiki skill for its procedure.
 - Initialization preserves project documents and the user's wiki brief.
 - Project documents remain outside generated Claim state.
 - Generated page operations preserve complete project documents.
@@ -115,7 +115,7 @@ A failed check ends the wiki update as failed.
 An entry under `openwiki/` that is no regular file is, for example, a symbolic link or a submodule.
 The cause of the failed wiki update names the commit and the entry.
 A wiki update fails while the start commit holds such an entry.
-A task can remove the entry.
+The operator can repair the entry in the Project repository.
 
 A Git failure during a check of the terminal gives no check result.
 `mc` then refuses the command and changes no state.

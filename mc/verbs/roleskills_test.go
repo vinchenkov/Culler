@@ -398,10 +398,8 @@ func TestProseVerbInvocationsKeepsOtherToolFlagsSeparate(t *testing.T) {
 	}
 }
 
-// The steps of a task are the Worker, the Verifier, the Packager, and the
-// review. The Scribe has no task: it updates the Project wiki on a schedule.
-// The other directives retain the pipeline context.
-func TestDirectivesWithPipelineContextStateTheWikiSchedule(t *testing.T) {
+// Task roles retain their pipeline context; Homie reads the wiki procedure from its command skill.
+func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 	for _, role := range allSpawnRoles {
 		prose, err := roleProseDirective(role)
 		if err != nil {
@@ -413,23 +411,22 @@ func TestDirectivesWithPipelineContextStateTheWikiSchedule(t *testing.T) {
 		flat := strings.Join(strings.Fields(prose), " ")
 		for _, want := range []string{
 			"The Worker builds each task. The Verifier judges the result. The Packager writes the review packet that the operator approves or rejects.",
-			"The Scribe has no task. It updates the Project wiki on a schedule.",
 		} {
 			if !strings.Contains(flat, want) {
 				t.Errorf("%s directive omits %q", role, want)
 			}
 		}
-		if strings.Contains(flat, "The Scribe updates the project wiki.") {
-			t.Errorf("%s directive states the Scribe as a step of a task", role)
-		}
 	}
-	homie := strings.Join(strings.Fields(homieDirective), " ")
+	homie, err := HomieSkill()
+	if err != nil {
+		t.Fatal(err)
+	}
 	for _, want := range []string{
-		"The Scribe updates the Project wiki on a schedule. It has no task.",
-		"Culler merges its wiki commit with no review.",
+		"A wiki update has no task and holds no Project lease.",
+		"Culler merges an accepted wiki commit without operator review.",
 	} {
-		if !strings.Contains(homie, want) {
-			t.Errorf("homie directive omits %q", want)
+		if !strings.Contains(homie.Body, want) {
+			t.Errorf("homie command skill omits %q", want)
 		}
 	}
 }
@@ -488,12 +485,16 @@ func TestSharedWikiSkillStatesTheSchedule(t *testing.T) {
 			continue
 		}
 		for _, want := range []string{
-			"Only the Scribe maintains `openwiki/`.",
-			"The wiki is read-only for every other role.",
-			"The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages.",
-			"The Scribe does this work on a schedule.",
-			"A generated page or a navigation page can be behind the accepted commit until the next wiki update.",
+			"Read before repository work or wiki questions.",
+			"The ownership and document boundaries form part of the Culler contract.",
+			"Each role reads knowledge from its assigned repository version.",
+			"Treat `openwiki/` as read-only unless you are the Scribe.",
+			"The wiki can lag behind the accepted commit until the next scheduled update.",
 			"Current repository evidence takes precedence over a generated page.",
+			"Requested project reports and other original documents are repository deliverables outside `openwiki/`.",
+			"Use the task's requested format.",
+			"Use Markdown when no requested or established format applies.",
+			"Use task artifacts for reports about task execution, checks, and completion evidence.",
 		} {
 			if !strings.Contains(body, want) {
 				t.Errorf("%s project-wiki skill omits %q", tier, want)
@@ -502,33 +503,14 @@ func TestSharedWikiSkillStatesTheSchedule(t *testing.T) {
 	}
 }
 
-// Each Homie container masks the artifact files of each task. The shared wiki
-// skill limits the run envelope of artifact planes to pipeline runs and
-// states the artifact access of a packet conversation, as the Homie directive
-// does.
-func TestSharedWikiSkillStatesTheHomieArtifactAccess(t *testing.T) {
-	set, err := HomieSkillSet()
-	if err != nil {
-		t.Fatal(err)
-	}
-	body := ""
-	for _, skill := range set {
-		if skill.Name == "project-wiki" {
-			body = strings.Join(strings.Fields(skill.Body), " ")
-		}
-	}
+func TestHomieDirectiveStatesArtifactAccess(t *testing.T) {
 	for _, want := range []string{
-		"The run envelope of a pipeline run identifies each mounted artifact plane under `/mc/artifacts/`.",
-		"A Homie container shows an empty `.mc-artifacts/` folder in each Project mount.",
-		"A packet conversation reads the artifact files of its task only at the paths in its packet context.",
+		"A packet conversation can read the artifact files of its task at the paths in its packet context.",
+		"No other artifact files are available to you.",
 	} {
-		if !strings.Contains(body, want) {
-			t.Errorf("the Homie project-wiki skill omits %q", want)
+		if !strings.Contains(strings.Join(strings.Fields(homieDirective), " "), want) {
+			t.Errorf("the Homie directive omits %q", want)
 		}
-	}
-	if !strings.Contains(strings.Join(strings.Fields(homieDirective), " "),
-		"A packet conversation can read the artifact files of its task at the paths in its packet context.") {
-		t.Error("the Homie directive omits the artifact access of a packet conversation")
 	}
 }
 

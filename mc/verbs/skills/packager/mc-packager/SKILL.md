@@ -39,9 +39,6 @@ A refusal writes nothing. Do not answer a refusal with a path that you did not w
 
 ## Repository
 
-Apply the project-wiki skill to original deliverables and task execution reports.
-Requested reports and original project documents reside in the submitted commit outside `openwiki/`.
-
 The repository at `/workspace/source` is an independent copy of the Project repository. It starts at the `Start commit` fact of the **Git state** part. It is also your working directory. The Project repository itself stays outside your write access.
 
 Preserve the start commit and its files. Make no commit in `/workspace/source`. The terminal refuses the packet when `HEAD` differs from the start commit. The terminal also refuses the packet when `git -C /workspace/source status --porcelain=v1 --untracked-files=all` prints a path. A file that the Project ignores does not count.

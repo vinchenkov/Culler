@@ -9,9 +9,13 @@ const execute = promisify(execFile);
 export const VERSION = "0.7.0";
 export const REVISION = "sha512-Tw3AZE9eEmB9P8078lWCfjtrd7Xrl2rwBKfX5suie6sUH3gPLzEeGVIIugGtg1fnWfyJiVcqmw6WbXzujA1N7A==";
 const STATE = "openwiki/.culler-run.json";
-const LIFECYCLE_TOOLS = new Set([
-  "openwiki_begin", "openwiki_submit_plan", "openwiki_next_page",
-  "openwiki_inspect_page_claims", "openwiki_submit_page", "openwiki_finish",
+const LIFECYCLE_TOOLS = new Map([
+  ["openwiki_begin", "Start or resume an OpenWiki update."],
+  ["openwiki_submit_plan", "Submit the page plan for an active run."],
+  ["openwiki_next_page", "Read the next page job."],
+  ["openwiki_inspect_page_claims", "Inspect the complete Claim set for a page job."],
+  ["openwiki_submit_page", "Submit the page job's Claim decisions after the page edit."],
+  ["openwiki_finish", "Validate and complete an OpenWiki update."],
 ]);
 const regularCommit = /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/;
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -220,7 +224,7 @@ export async function createIntegration({ root, inputCommit, receiptPath, upstre
     } finally { await rm(temporary, { force: true }); }
     return receipt;
   }
-  const tools = manager.tools().filter((tool) => LIFECYCLE_TOOLS.has(tool.name)).map((tool) => ({ ...tool, handle: async (input) => {
+  const tools = manager.tools().filter((tool) => LIFECYCLE_TOOLS.has(tool.name)).map((tool) => ({ ...tool, description: LIFECYCLE_TOOLS.get(tool.name), handle: async (input) => {
     if (busy) throw new Error("An OpenWiki operation is active.");
     busy = true;
     try {
@@ -230,14 +234,14 @@ export async function createIntegration({ root, inputCommit, receiptPath, upstre
         const files = await wikiFiles(root);
         const documents = documentsIn(files, upstream);
         const existingGenerated = [...files.keys()].filter((name) => name.endsWith(".md") && name !== "openwiki/INSTRUCTIONS.md" && !documents[name]);
-        if (input.mode === "init" && existingGenerated.length && !files.has("openwiki/.run.json")) throw new Error("The existing wiki requires an update. Its replacement requires an explicit document task.");
+        if (input.mode === "init" && existingGenerated.length && !files.has("openwiki/.run.json")) throw new Error("The existing wiki requires an update. Preserve its generated content.");
         if (input.mode === "update" && existingGenerated.length && !files.has("openwiki/.last-update.json") && !files.has("openwiki/.run.json")) throw new Error("The existing wiki lacks compatible OpenWiki metadata.");
         const source = (await git(root, "rev-parse", "HEAD")).trim();
         await git(root, "merge-base", "--is-ancestor", inputCommit, source);
         const changed = (await git(root, "diff", "--name-only", "-z", "HEAD", "--")).split("\0").filter(Boolean);
         const untracked = (await git(root, "ls-files", "--others", "--exclude-standard", "-z")).split("\0").filter(Boolean);
         if ([...changed, ...untracked].some((name) => documents[name] || (!name.startsWith("openwiki/")))) {
-          throw new Error("Commit project documents and source files before generated page work.");
+          throw new Error("The source or an original document has uncommitted changes. Restore the source and commit only permitted wiki metadata repairs.");
         }
         const repaired = (await git(root, "diff", "--name-only", "-z", inputCommit, source, "--")).split("\0").filter(Boolean);
         const imported = await referencedDocuments(root, files, upstream, repaired);

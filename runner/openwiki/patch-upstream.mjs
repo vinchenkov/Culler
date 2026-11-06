@@ -21,7 +21,7 @@ export async function patchUpstream(root) {
   if (manifest.version !== "0.7.0") throw new Error("The OpenWiki package version requires compatibility tests.");
   const patches = [
     ["integrations/mcp/server.js", [
-      ["instructions: INSTRUCTIONS", "instructions: \"OpenWiki exposes a deterministic resumable page-job lifecycle.\\n\" + INSTRUCTIONS.slice(INSTRUCTIONS.indexOf(\"Resolve the absolute Git top-level\"))"],
+      ["instructions: INSTRUCTIONS", "instructions: \"Read ~/.agents/skills/openwiki/SKILL.md before any wiki change.\""],
     ]],
     ["claims/evidence/repository/resource.js", [
       ['normalizedLower.startsWith(".git/") ||\n        normalizedLower === "openwiki" ||\n        normalizedLower.startsWith("openwiki/")', 'normalizedLower.startsWith(".git/") || normalizedLower === ".mc-artifacts" || normalizedLower.startsWith(".mc-artifacts/")'],

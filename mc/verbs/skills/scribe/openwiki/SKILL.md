@@ -10,8 +10,7 @@ Cover each source change from the `Start commit of the last successful wiki upda
 Include effects on related pages.
 Without a previous update or generated content, cover the whole repository.
 Use the Git history to establish the changes, including commits absent from **Merged tasks**.
-Task descriptions explain intent.
-Repository evidence establishes behavior.
+Read **Merged tasks** for the intent of each task.
 
 Read `openwiki/INSTRUCTIONS.md` when it exists.
 Its scope and priorities define the required coverage.

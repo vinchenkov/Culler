@@ -77,8 +77,7 @@ The main components have these responsibilities:
 - A repository operation is Git work or file work that the resident executes
   on the host. Examples are the capture of a submitted commit, the cleanup of a
   temporary repository, and the merge of an approved task.
-- The Project lease permits one agent run of a Project at a time. The Scribe
-  run of a wiki update holds no Project lease and can run at the same time.
+- The Project lease permits one agent run of a Project at a time.
   Repository operations, such as a merge, can run at the same time as an agent
   run. Different Projects can have concurrent runs. Homie holds no Project
   lease.
@@ -95,8 +94,8 @@ The main components have these responsibilities:
 - The Verifier checks the result against the success criteria. It records
   evidence and can return the task for correction.
 - The Packager prepares the Review Packet after verification.
-- The Scribe updates the Project wiki on a schedule. It has no task. Culler
-  merges its wiki commit with no review.
+
+For wiki update questions, read **Wiki updates** in the mc-homie skill.
 
 A task normally advances through these stages:
 
@@ -132,7 +131,7 @@ An approved task holds the agent runs and the merges of unrelated tasks in its P
 The merge candidate steps and the review packets of the other tasks continue.
 A merge conflict starts a merge repair and clears the approval of its task.
 Without an approved task, the agent runs of a correction start first.
-Three distinct tasks that require attention stop new task work only within their Project. A wiki update still runs.
+Three distinct tasks that require attention stop new task work only within their Project.
 An approved task can cancel until a merge authorization exists.
 An unresolved authorization requires receipt recovery before cancellation.
 Other Projects and Homie remain available.
