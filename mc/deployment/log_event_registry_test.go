@@ -59,7 +59,7 @@ func logEventRegistry(t *testing.T, repoRoot string) map[string]bool {
 // drift worth failing over.
 func logSourceFiles(t *testing.T, repoRoot string) []string {
 	t.Helper()
-	roots := []string{"resident/src", "dashboard/src", "runner/agent-runner", "runner/homie-runner", "runner/shared"}
+	roots := []string{"resident/src", "dashboard/src", "runner/agent-runner", "runner/collie-runner", "runner/shared"}
 	files := []string{}
 	for _, root := range roots {
 		err := filepath.WalkDir(filepath.Join(repoRoot, root), func(path string, d os.DirEntry, err error) error {

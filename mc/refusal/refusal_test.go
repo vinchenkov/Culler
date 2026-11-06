@@ -270,7 +270,7 @@ func TestDetailNullItemIndex(t *testing.T) {
 // leaking; a closed enum is leak-proof by construction.
 func TestDetailRejectsUnenumeratedIdentifiers(t *testing.T) {
 	hostile := []string{
-		"/Users/vinchenkov/Documents/dev/ai/homie",
+		"/Users/vinchenkov/Documents/dev/ai/collie",
 		"AWS_SECRET_ACCESS_KEY=hunter2",
 		"sk-ant-api03-abcdef",
 		"https://evil.example/?token=deadbeef",

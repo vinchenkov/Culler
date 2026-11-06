@@ -44,7 +44,7 @@ func TestS7BrokerDecodesTheExactPrivateLockSnapshot(t *testing.T) {
 	wantSettings := deployment.S7SettingsSnapshot{
 		TimeoutMinutes: 60, GraceMinutes: 15, HeartbeatIntervalS: 60,
 		SpawnGraceS: 60, HardDeadlineMinutes: 240, ReviewWIPCap: 3,
-		HomieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
+		CollieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
 	}
 	if got.Settings != wantSettings {
 		t.Fatalf("decoded settings = %+v, want %+v", got.Settings, wantSettings)
@@ -80,7 +80,7 @@ func TestS7ProductionOrchestrationRunsWithReadOnlyFakesAndNoLaunchdLoad(t *testi
 		Settings: deployment.S7SettingsSnapshot{
 			TimeoutMinutes: 60, GraceMinutes: 15, HeartbeatIntervalS: 60,
 			SpawnGraceS: 60, HardDeadlineMinutes: 240, ReviewWIPCap: 3,
-			HomieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
+			CollieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
 		},
 	}
 	witness := deployment.S7SleepWitness{

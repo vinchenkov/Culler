@@ -17,7 +17,7 @@ An immutable version identifies the submitted Git commit.
 An immutable candidate records the Git merge of that version with a specific destination commit.
 An operator decision identifies an exact review of that submitted version.
 
-Homie operates separately from the Project lease.
+Collie operates separately from the Project lease.
 Repository operations claim no Project lease.
 They run at the same time as the agent run of the Project.
 
@@ -195,7 +195,7 @@ The run uses the agent profile and the custom instructions of the Scribe role.
 The run receives the Project repository at the start commit in its own temporary repository.
 The destination commit of that repository is the start commit, and the reference `refs/mc/destination` names it.
 The repository holds no later commit of `main`.
-The run can be active at the same time as the agent run of the Project, a Homie session, and each repository operation.
+The run can be active at the same time as the agent run of the Project, a Collie session, and each repository operation.
 
 The connection check of an agent run applies before the start.
 A failed check starts no run and records no connection wait for the Project.
@@ -309,7 +309,7 @@ The resident sends a start request at each of these start events:
 - An execution ends.
 - A tick ends.
 - The dashboard records a packet decision.
-- A Homie turn ends.
+- A Collie turn ends.
 - The earliest due time from the latest start response arrives.
 - An artifact expiry call ends.
 - An install pause request starts or ends.
@@ -459,7 +459,7 @@ Receipt recovery starts only after these conditions hold:
 Approval gives the task the Project priority at once.
 The merge starts without a wait for the active agent run.
 `mc packet list` states the merge state of each approved packet: the reason that the merge is not complete.
-The dashboard and Homie show that text without their own derivation.
+The dashboard and Collie show that text without their own derivation.
 The task retains that priority through destination changes until its merge completes or the task cancels.
 The other packaged tasks receive their merge candidate steps and review packets during that priority.
 The operator controls the merge order through approvals.
@@ -485,7 +485,7 @@ When no open correction can start an agent run, the ordinary rules select the ne
 The other tasks of the Project continue while a correction is blocked or stalled.
 
 A Git refusal in the operator checkout blocks the task at once, before and after approval.
-Other Projects and Homie continue.
+Other Projects and Collie continue.
 
 The initial Verifier rejection starts a correction sequence at zero.
 Three subsequent rejected corrections require an operator grant.
@@ -653,7 +653,7 @@ A proposal run without a subject blocks its role within its Project.
 This applies to Strategist proposal runs and Arbiter proposal reviews.
 The block preserves all failure and correction allowances and the Project pause state.
 Other work follows the ordinary dispatch rules.
-The operator clears the block through Homie or the dashboard.
+The operator clears the block through Collie or the dashboard.
 A customization save preserves the block.
 
 A contract conflict of a wiki update run ends the wiki update as failed and blocks no role.

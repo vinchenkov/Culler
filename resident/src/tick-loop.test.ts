@@ -190,15 +190,15 @@ describe("the tick's action list", () => {
 
   test("an action that throws is logged and the next action still runs", async () => {
     const rig = makeRig();
-    rig.deps.homieRuntime.revokeContainer = () => { throw new Error("the runtime registry refused"); };
+    rig.deps.collieRuntime.revokeContainer = () => { throw new Error("the runtime registry refused"); };
     rig.docker.enqueue(ok(""), ok("id-b\n"), ok(""));
     rig.mc.enqueue(tickOf([
-      { action: "homie-stop", session: "h-test", container_id: "c".repeat(64) },
+      { action: "collie-stop", session: "h-test", container_id: "c".repeat(64) },
       spawn("r2", "ws-b"),
     ]));
     startTickLoop(rig.deps);
     await rig.timer.fire();
-    expect(rig.logs.some((line) => line.includes("action 0 (homie-stop) failed: the runtime registry refused"))).toBe(true);
+    expect(rig.logs.some((line) => line.includes("action 0 (collie-stop) failed: the runtime registry refused"))).toBe(true);
     expect(createdNames(rig)).toEqual(["mc-ws-b-r2"]);
   });
 

@@ -63,7 +63,7 @@ func TestProductionImageHasNoFakeRouteDockerBoundary(t *testing.T) {
 	// to resolve ANY of them.
 	routing := "# routing\n| role | harness | binding |\n| --- | --- | --- |\n" +
 		"| worker | fake | fake |\n| strategist | fake | fake |\n| arbiter | fake | fake |\n" +
-		"| verifier | fake | fake |\n| scribe | fake | fake |\n| packager | fake | fake |\n| homie | fake | fake |\n"
+		"| verifier | fake | fake |\n| scribe | fake | fake |\n| packager | fake | fake |\n| collie | fake | fake |\n"
 	if err := os.WriteFile(filepath.Join(home, "routing.md"), []byte(routing), 0o644); err != nil {
 		t.Fatal(err)
 	}

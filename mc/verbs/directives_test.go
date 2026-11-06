@@ -391,15 +391,15 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 		}
 	}
 
-	homie, err := HomieSkill()
+	collie, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(flat(homie.Body), "the one read-scope exception") {
-		t.Error("homie skill does not name itself the one read-scope exception")
+	if !strings.Contains(flat(collie.Body), "the one read-scope exception") {
+		t.Error("collie skill does not name itself the one read-scope exception")
 	}
-	if !strings.Contains(flat(homie.Body), "write that reply before tools for the operator’s request") {
-		t.Error("the Homie skill must require a reply before tools for the operator’s request")
+	if !strings.Contains(flat(collie.Body), "write that reply before tools for the operator’s request") {
+		t.Error("the Collie skill must require a reply before tools for the operator’s request")
 	}
 }
 
@@ -448,12 +448,12 @@ func TestVerifierDirectiveBackgroundsLongGates(t *testing.T) {
 	}
 }
 
-// Homie explains approvals and merges to the operator. Its agent input must
+// Collie explains approvals and merges to the operator. Its agent input must
 // state that a merge and a wiki update run beside the agent run of the
 // Project, and it must explain each merge state that `mc packet list` can
 // report.
-func TestHomieAgentInputStatesTheRepositoryOperationModel(t *testing.T) {
-	directive := strings.Join(strings.Fields(homieDirective), " ")
+func TestCollieAgentInputStatesTheRepositoryOperationModel(t *testing.T) {
+	directive := strings.Join(strings.Fields(collieDirective), " ")
 	for _, want := range []string{
 		"The Project lease permits one agent run of a Project at a time.",
 		"Repository operations, such as a merge, can run at the same time as an agent run.",
@@ -461,11 +461,11 @@ func TestHomieAgentInputStatesTheRepositoryOperationModel(t *testing.T) {
 		"A task interrupt stops the current agent run of the task.",
 	} {
 		if !strings.Contains(directive, want) {
-			t.Errorf("homie directive omits %q", want)
+			t.Errorf("collie directive omits %q", want)
 		}
 	}
 
-	skill, err := HomieSkill()
+	skill, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -477,18 +477,18 @@ func TestHomieAgentInputStatesTheRepositoryOperationModel(t *testing.T) {
 		dispatch.MergeStateRetry, dispatch.MergeStateBlocked,
 	} {
 		if !strings.Contains(body, "The state `"+string(kind)+"` means") {
-			t.Errorf("homie skill does not explain the merge state %q", kind)
+			t.Errorf("collie skill does not explain the merge state %q", kind)
 		}
 	}
 	if !strings.Contains(body, "Report `merge_state_text` to the operator.") {
-		t.Error("homie skill does not require the merge state text of mc")
+		t.Error("collie skill does not require the merge state text of mc")
 	}
 }
 
 // An approval starts its merge without a wait for the agent run or the tick.
 // No directive or skill can state the earlier wait.
 func TestAgentInputStatesNoApprovalWait(t *testing.T) {
-	texts := map[string]string{"homie directive": homieDirective}
+	texts := map[string]string{"collie directive": collieDirective}
 	for _, role := range allSpawnRoles {
 		prose, err := roleProseDirective(role)
 		if err != nil {
@@ -517,12 +517,12 @@ func TestAgentInputStatesNoApprovalWait(t *testing.T) {
 	}
 }
 
-func TestHomieAgentInputDefinesFirstResponseTitle(t *testing.T) {
-	skill, err := HomieSkill()
+func TestCollieAgentInputDefinesFirstResponseTitle(t *testing.T) {
+	skill, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
-	for name, text := range map[string]string{"directive": homieDirective, "skill": skill.Body} {
+	for name, text := range map[string]string{"directive": collieDirective, "skill": skill.Body} {
 		for _, rule := range []string{
 			"first response", "container restart",
 			"Continue your response if the command fails or is unavailable.",
@@ -534,18 +534,18 @@ func TestHomieAgentInputDefinesFirstResponseTitle(t *testing.T) {
 			}
 		}
 	}
-	if !strings.Contains(skill.Body, "mc homie title <session> --title <text>") {
+	if !strings.Contains(skill.Body, "mc collie title <session> --title <text>") {
 		t.Error("the skill omits the title command")
 	}
 }
 
-// Homie explains agent decisions from the traces. Its agent input must name
+// Collie explains agent decisions from the traces. Its agent input must name
 // the trace mount, give the rules for trace evidence, and list the read that
 // finds the runs of one task.
-func TestHomieAgentInputStatesTheTraceAccess(t *testing.T) {
-	directive := strings.Join(strings.Fields(homieDirective), " ")
+func TestCollieAgentInputStatesTheTraceAccess(t *testing.T) {
+	directive := strings.Join(strings.Fields(collieDirective), " ")
 	for _, want := range []string{
-		"A trace is the native record that the harness writes for one run or one Homie session.",
+		"A trace is the native record that the harness writes for one run or one Collie session.",
 		"at `/mc/traces/<id>`",
 		"Your trace access is read-only.",
 		"Base each explanation of an agent decision on the trace of that run.",
@@ -554,18 +554,18 @@ func TestHomieAgentInputStatesTheTraceAccess(t *testing.T) {
 		"Replace each credential value from a trace with a placeholder in each text that you write.",
 	} {
 		if !strings.Contains(directive, want) {
-			t.Errorf("homie directive omits %q", want)
+			t.Errorf("collie directive omits %q", want)
 		}
 	}
 
-	skill, err := HomieSkill()
+	skill, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
 	body := strings.Join(strings.Fields(skill.Body), " ")
 	for _, want := range []string{
 		"- `mc run list [--task <id>] [--project <id>]`",
-		"The trace mount `/mc/traces` holds one session folder for each run and each Homie session.",
+		"The trace mount `/mc/traces` holds one session folder for each run and each Collie session.",
 		"The path of the main trace is `/mc/traces/<run identifier>/<trace_filename>`.",
 		"A null `trace_filename` means that the run has no main trace.",
 		"Each child trace is a file `subagents/agent-<id>.jsonl`.",
@@ -576,7 +576,7 @@ func TestHomieAgentInputStatesTheTraceAccess(t *testing.T) {
 		"### Records of the `codex` harness",
 	} {
 		if !strings.Contains(body, want) {
-			t.Errorf("homie skill omits %q", want)
+			t.Errorf("collie skill omits %q", want)
 		}
 	}
 }
@@ -653,12 +653,12 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 }
 
 // A packet conversation answers from its packet context and reads the current
-// packet record on demand. The Homie agent input must state the rules of that
+// packet record on demand. The Collie agent input must state the rules of that
 // conversation, its read-only artifact access, and the procedure of each case.
 // The skill must quote the refusal that `mc packet decide` returns for an
 // obsolete packet.
-func TestHomieAgentInputStatesThePacketConversation(t *testing.T) {
-	directive := strings.Join(strings.Fields(homieDirective), " ")
+func TestCollieAgentInputStatesThePacketConversation(t *testing.T) {
+	directive := strings.Join(strings.Fields(collieDirective), " ")
 	for _, want := range []string{
 		"A packet conversation belongs to one packet. Answer about that packet from the packet context first.",
 		"Read the current packet record before an answer about the decision, the merge, or a block.",
@@ -670,11 +670,11 @@ func TestHomieAgentInputStatesThePacketConversation(t *testing.T) {
 		"No other artifact files are available to you.",
 	} {
 		if !strings.Contains(directive, want) {
-			t.Errorf("homie directive omits %q", want)
+			t.Errorf("collie directive omits %q", want)
 		}
 	}
 
-	skill, err := HomieSkill()
+	skill, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -683,7 +683,7 @@ func TestHomieAgentInputStatesThePacketConversation(t *testing.T) {
 		selection = selection || command == "mc packet list [--task <id>]"
 	}
 	if !selection {
-		t.Error("the homie skill lists no packet read with a task selection")
+		t.Error("the collie skill lists no packet read with a task selection")
 	}
 	body := strings.Join(strings.Fields(skill.Body), " ")
 	for _, want := range []string{
@@ -701,12 +701,12 @@ func TestHomieAgentInputStatesThePacketConversation(t *testing.T) {
 		"Decide a newer packet only after a new description of the action and an explicit operator confirmation for that packet.",
 	} {
 		if !strings.Contains(body, want) {
-			t.Errorf("homie skill omits %q", want)
+			t.Errorf("collie skill omits %q", want)
 		}
 	}
 	// The runner reads the packet context. The model receives no command for it.
 	if strings.Contains(body, "packet-context") {
-		t.Error("the homie skill names the packet context command of the runner")
+		t.Error("the collie skill names the packet context command of the runner")
 	}
 
 	db := dvSpine(t)
@@ -719,17 +719,17 @@ func TestHomieAgentInputStatesThePacketConversation(t *testing.T) {
 		}
 		if !strings.Contains(body, `For the refusal "`+err.Error()+`", use "The refusal of an obsolete packet"`) ||
 			!strings.Contains(body, "`mc packet decide` refuses with \""+err.Error()+"\"") {
-			t.Errorf("the homie skill does not quote the %s refusal %q", decision, err.Error())
+			t.Errorf("the collie skill does not quote the %s refusal %q", decision, err.Error())
 		}
 	}
 }
 
-// The packet procedures of the Homie skill read the lines and the media
+// The packet procedures of the Collie skill read the lines and the media
 // references of a real packet context and the fields of the current packet
 // record. The decode command of the skill must find the same data addresses as
 // the builder, in the same order.
-func TestHomieSkillProceduresMatchThePacketContext(t *testing.T) {
-	skill, err := HomieSkill()
+func TestCollieSkillProceduresMatchThePacketContext(t *testing.T) {
+	skill, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -739,7 +739,7 @@ func TestHomieSkillProceduresMatchThePacketContext(t *testing.T) {
 	for _, label := range []string{"Destination commit", "Merge candidate commit", "Report file",
 		"Verifier evidence", "Change data inventory", "Change data patch"} {
 		if !strings.Contains(skill.Body, `"`+label+`"`) {
-			t.Errorf("the homie skill names no %q line", label)
+			t.Errorf("the collie skill names no %q line", label)
 		}
 		if !strings.Contains(text, "\n- "+label+": ") {
 			t.Errorf("the packet context has no %q line:\n%s", label, text)
@@ -754,7 +754,7 @@ func TestHomieSkillProceduresMatchThePacketContext(t *testing.T) {
 	_, rest, found := strings.Cut(skill.Body, "matchAll(/")
 	source, _, closed := strings.Cut(rest, "/gi)")
 	if !found || !closed {
-		t.Fatal("the homie skill has no case-insensitive decode expression")
+		t.Fatal("the collie skill has no case-insensitive decode expression")
 	}
 	// In JavaScript, \s also matches Unicode space characters. RE2 matches
 	// only the ASCII space characters.
@@ -776,7 +776,7 @@ func TestHomieSkillProceduresMatchThePacketContext(t *testing.T) {
 	// A stall refuses the approval of the current packet. The current packet
 	// record then shows the same identifiers, and only `ready` shows the cause.
 	if !strings.Contains(strings.Join(strings.Fields(skill.Body), " "), "A `ready` value of 0 means that the packet cannot receive an approval now.") {
-		t.Error("the homie skill does not explain the ready value")
+		t.Error("the collie skill does not explain the ready value")
 	}
 	dvExec(t, f.db, `UPDATE tasks SET dispatch_retries=0 WHERE id=1`)
 	if _, err := PacketDecide(f.db, nil, 1, "approve", "", f.packet, f.version); err == nil || err.Error() != "the reviewed packet is obsolete" {
@@ -908,19 +908,19 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 			t.Errorf("the %s directive omits the customization conflict", role)
 		}
 	}
-	skill, err := HomieSkill()
+	skill, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
-	requireAgentText(t, "mc-homie skill", strings.Join(strings.Fields(skill.Body), " "), []string{
+	requireAgentText(t, "mc-collie skill", strings.Join(strings.Fields(skill.Body), " "), []string{
 		"- The type `operator` is an operator block.",
 		"For the type `report`, Resolve decision opens a form that saves a requirements revision.",
 		"`mc` refuses the `unblock` action and the `block` action for this type.",
 		"Use the `unblock` action only for these types: - the type `customization` - the type `confinement` - the type `checkout` - the type `operator`",
 		"Resolve the limit first with the `allow-corrections` action or the `revise` action.",
 	}, nil)
-	if count := strings.Count(strings.ToLower(skill.Body+homieDirective), "operator block"); count != 1 {
-		t.Errorf("the Homie input names %d operator blocks, want only the type `operator`", count)
+	if count := strings.Count(strings.ToLower(skill.Body+collieDirective), "operator block"); count != 1 {
+		t.Errorf("the Collie input names %d operator blocks, want only the type `operator`", count)
 	}
 }
 

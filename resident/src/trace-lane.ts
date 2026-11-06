@@ -1,5 +1,5 @@
 // trace-lane.ts — the trace lane of the resident. The lane copies the traces
-// of each pipeline run, Homie session, and setup operation into the copies that AgentsView
+// of each pipeline run, Collie session, and setup operation into the copies that AgentsView
 // reads. It gives each main AgentsView session its display name, and it
 // reports each main trace copy that AgentsView did not import. The lane runs
 // on its own timers, so the tick never waits for it.
@@ -60,7 +60,7 @@ const TIME_TOLERANCE_MS = 1_000;
 const MARK_WINDOWS = [4 << 10, 64 << 10, 1 << 20];
 
 export interface TraceSession {
-  kind: "run" | "homie" | "setup";
+  kind: "run" | "collie" | "setup";
   id: string;
   session_path: string;
   format: "claude" | "codex";
@@ -72,7 +72,7 @@ export interface TraceSession {
 }
 
 export interface OverdueCopy {
-  kind: "run" | "homie" | "setup";
+  kind: "run" | "collie" | "setup";
   id: string;
   agentsview_session: string;
   changed_at: string;
@@ -208,7 +208,7 @@ export async function copyMark(path: string, end: number): Promise<number | null
 }
 
 function invalidRow(row: Record<string, unknown>): string | undefined {
-  if (row.kind !== "run" && row.kind !== "homie" && row.kind !== "setup") return "the kind is not run, homie, or setup";
+  if (row.kind !== "run" && row.kind !== "collie" && row.kind !== "setup") return "the kind is not run, collie, or setup";
   if (typeof row.id !== "string" || !SAFE_ID.test(row.id)) return "the ID is not valid";
   if (row.session_path !== (row.kind === "setup" ? `environment-runs/${row.id}/session` : `sessions/${row.id}`)) return "the session path does not match its operation";
   if (typeof row.native_session_ref !== "string" || !NATIVE_REF.test(row.native_session_ref)) {

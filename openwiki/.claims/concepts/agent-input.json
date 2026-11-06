@@ -4,7 +4,7 @@
   "claims": [
     {
       "id": "claim_0e880ef8eb5e4b06b827221b7df78b3a",
-      "statement": "The role directives are Markdown files embedded into the mc binary with go:embed, one per role plus homie.md.",
+      "statement": "The role directives are Markdown files embedded into the mc binary with go:embed, one per role plus collie.md.",
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives.go#L11-L34",
@@ -212,20 +212,20 @@
     },
     {
       "id": "claim_e4c50cb84c0a4e28bd3819c4c8afbabb",
-      "statement": "The Homie runner requests packet context for a turn without a native session reference and checks the session, packet, and version identifiers.",
+      "statement": "The Collie runner requests packet context for a turn without a native session reference and checks the session, packet, and version identifiers.",
       "evidence": [
         {
-          "resource": "repo://runner/homie-runner/main.ts",
+          "resource": "repo://runner/collie-runner/main.ts",
           "version": "repo-file-v1:sha256:1d741227fdaf86dfed72262aa6e5a6b351547033a2c79ca899648bf158634ba8"
         }
       ]
     },
     {
       "id": "claim_2f280a35eb8945a9b587d08750b171d2",
-      "statement": "The Homie directive requires current packet reads for mutable state and decisions, and explicit confirmation before a new state change.",
+      "statement": "The Collie directive requires current packet reads for mutable state and decisions, and explicit confirmation before a new state change.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/homie.md#L203-L215",
+          "resource": "repo://mc/verbs/directives/collie.md#L203-L215",
           "version": "repo-lines-v1:sha256:03544b20aa10afe822723457282c794f8fdfa76f311f3797bccff0cf45ef8026:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyYmMzMjc5MDcwNTk1ZDQ5OWFiNDdhYzczZDM1NGJmMmYxMWYyZWVhOTlkYWZhNGYxMjY2OTc1NmNlZGQxZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwNzNlZDQ4NTg3OTdlMjAxOTgwNjc4NWQ3Yjc0YWZhNmE1ZTQ4ZDYwZDcyZTZlOTY1NGY2ZDk2MDAyN2I4NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkMmM0ZmE2MjBlYTQ4OTZmOGI0ZmExNjUyMGI4OTFlZDE4N2M0OTliZTk4MmJmODIyMTUzMjU4ZmUxOWRhZjEifQ"
         }
       ]
@@ -340,10 +340,10 @@
     },
     {
       "id": "claim_d3d3a8741bd5428ebf1683b7c6ec0204",
-      "statement": "The Homie command skill directs Discord configuration to Configs → Discord and states that setup codes grant no agent authority.",
+      "statement": "The Collie command skill directs Discord configuration to Configs → Discord and states that setup codes grant no agent authority.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/homie/mc-homie/SKILL.md#L29-L35",
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L29-L35",
           "version": "repo-lines-v1:sha256:63325461f7b51a0d388310ccfb9db5d913521c2776c3cb47977061a95ca74650:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFlNGE3YmI5YjhlZDU0NjgxMWIxODAzNDU4YjhlOWNmZjgwNzU3MjVkZDkxNDJhYjk4YzBkN2Y2Nzc2NDM2NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWM0YTFlZGJkNDQzZDc4NjBjM2NiOWRkZTUxNjg0NmNhZjU0OWY5YjZkNzlmY2ZjMzY3MDg5NTRlYzBjZDkxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjhhZTFhNTNmNWJhOTljNTRmOWY0ZTYwODRiZTJhY2FhMzBmOTdmZTlkNWM4ZDE3MWYzNDc5MDRlMzk4NWQxNiJ9"
         }
       ]
@@ -400,14 +400,14 @@
     },
     {
       "id": "claim_b5f294a104d44c03879f13216b5c10ba",
-      "statement": "The Homie directive and skill describe a Discord thread and the dashboard as two surfaces of one Homie session.",
+      "statement": "The Collie directive and skill describe a Discord thread and the dashboard as two surfaces of one Collie session.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/homie.md#L15-L19",
+          "resource": "repo://mc/verbs/directives/collie.md#L15-L19",
           "version": "repo-lines-v1:sha256:f1687636b47a6b04cf5eb2e558f575afea44d96b26e7b6ce932a8afd9f3f7255:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyMjY4YThjYWVlNzIzYWJlMDBhMTZkMGY1NGI5NGRkM2QwYWZlNGRjYzE0NDAwYmUwMTA0M2VkZTJkMTZlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjFmYWFjZjQyMjU0Y2VhZTE5ZjE1YzhiM2JhMjAxZDhkZDI0NTA0MjA3NjM0Y2MxM2U3YmY0YzJkYTllMjQ5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODUyNWZhOTdiYzY5NGRkNTgxYzExNjI2ZjQ1MmE0ZWEzNGY5N2FiMDM3MDlmMmE3MjhkZDMyNzg2ZGZjZjEzMyJ9"
         },
         {
-          "resource": "repo://mc/verbs/skills/homie/mc-homie/SKILL.md#L23-L29",
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L23-L29",
           "version": "repo-lines-v1:sha256:3311b0f033e03386c6bcbfed70074009b81f03120599178c8fcd3be21897e95b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThiMzIzZWUzMGIwYWZiNjg0YTIyNGJmM2YxMmI3ZWNhNzRiM2JmNTdmZDMwNzkxMmY2ZGI3MmIxOTBlYzJlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFlNGE3YmI5YjhlZDU0NjgxMWIxODAzNDU4YjhlOWNmZjgwNzU3MjVkZDkxNDJhYjk4YzBkN2Y2Nzc2NDM2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWM0YTFlZGJkNDQzZDc4NjBjM2NiOWRkZTUxNjg0NmNhZjU0OWY5YjZkNzlmY2ZjMzY3MDg5NTRlYzBjZDkxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTdlYmQzN2U5MGRjMzIwOTJmM2IwMWRhMWZjYmE5YmExYmNiYTViNzEyMjQ3ZjYxYTFhZTIyMWFmYjgwNTk5NSJ9"
         }
       ]

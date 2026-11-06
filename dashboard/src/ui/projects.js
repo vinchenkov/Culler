@@ -133,7 +133,7 @@ export function createProjectControls({ api, onSaved, openVision }) {
         note("Choose an existing folder, or enter a new folder path inside a folder that exists."),
         el("p", { role: "status", testid: "project-folder-status", hidden: !checking, text: "Culler checks the folder…" }),
         field("Project name", "title", { maxlength: 200 })),
-      footer: dialogFooter({ class: "project-dialog-foot" }, note("Next: develop the Vision with Homie."),
+      footer: dialogFooter({ class: "project-dialog-foot" }, note("Next: develop the Vision with Collie."),
         el("button", { class: "btn primary", type: "button", text: busy ? "Please wait…" : "Continue", testid: "project-next", onclick: register })),
     });
     controls();

@@ -79,12 +79,12 @@ The comparison uses this command:
 ```
 
 `LATENCY_EVIDENCE` selects the output directory.
-The default directory is `/tmp/homie-latency-performance`.
+The default directory is `/tmp/collie-latency-performance`.
 
 ## Request policy
 
 A normal page read has a maximum freshness interval of ten seconds.
-An unanswered Homie conversation uses one second.
+An unanswered Collie conversation uses one second.
 System status uses five seconds.
 Explicit status checks after window focus invalidate the prior status result.
 Profile forms and explicit report reads require a current response.

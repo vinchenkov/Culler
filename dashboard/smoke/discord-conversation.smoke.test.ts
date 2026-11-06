@@ -55,17 +55,17 @@ async function discord(id: string, channel: string, content: string, author = "3
 }
 const flush = () => drainDiscordOutbox(policy, runMc, nativeDiscordRest(policy, request));
 async function sessionFor(thread: string) {
-  const result = await mc(["homie", "list"]) as any;
+  const result = await mc(["collie", "list"]) as any;
   return result.sessions.find((row: any) => row.discord_thread?.thread_id === thread)?.id as string;
 }
 async function reply(session: string, body: string) {
   const identity = join(smoke.scratch, `${session}.json`);
-  await Bun.write(identity, JSON.stringify({ run_id: session, tier: "homie", role: "homie" }));
+  await Bun.write(identity, JSON.stringify({ run_id: session, tier: "collie", role: "collie" }));
   const env = { MC_RUN_JSON: identity };
   await mc(["run", "register-session", session, "--native-ref", `native-${session}`, "--file", "native.jsonl"], env);
-  const claim = await mc(["homie", "claim", session], env) as any;
+  const claim = await mc(["collie", "claim", session], env) as any;
   expect(claim.message).toBeTruthy();
-  await mc(["homie", "reply", session, "--to", String(claim.message.id), "--body", body], env);
+  await mc(["collie", "reply", session, "--to", String(claim.message.id), "--body", body], env);
 }
 async function sendDashboard(body: string) {
   await smoke.page.getByTestId("send-body").fill(body);
@@ -79,7 +79,7 @@ afterAll(async () => { if (smoke) await teardown(smoke); });
 
 test("one conversation continues between Discord and the dashboard across idle periods and a connector restart", async () => {
   const { page } = smoke;
-  await page.getByTestId("tab-homie").click();
+  await page.getByTestId("tab-collie").click();
   await page.waitForFunction(() => !(document.getElementById("send-body") as HTMLTextAreaElement)?.disabled);
   const privateSession = await page.locator(".session-row.selected").getAttribute("data-session");
   await sendDashboard("This conversation starts in the dashboard.");
@@ -95,32 +95,32 @@ test("one conversation continues between Discord and the dashboard across idle p
   expect(deliveries.map(row => row.thread)).toEqual(["100"]);
   await page.reload();
   await page.locator(`[data-session="${session}"]`).click();
-  await page.getByTestId("homie-transcript").getByText("Plan the release.", { exact: true }).waitFor();
-  await page.getByTestId("homie-transcript").getByText("First, check the release tests.", { exact: true }).waitFor();
+  await page.getByTestId("collie-transcript").getByText("Plan the release.", { exact: true }).waitFor();
+  await page.getByTestId("collie-transcript").getByText("First, check the release tests.", { exact: true }).waitFor();
 
   await sendDashboard("I checked the tests from the dashboard.");
   await reply(session, "Next, inspect the release files.");
   await flush();
   expect(deliveries.slice(-2).map(row => row.content)).toEqual(["I checked the tests from the dashboard.", "Next, inspect the release files."]);
-  await mc(["homie", "end", session, "--reason", "The session is idle."]);
+  await mc(["collie", "end", session, "--reason", "The session is idle."]);
   gateway = receiver();
   await discord("101", "100", "The release files look correct.");
   await reply(session, "The same conversation can continue.");
   await flush();
-  await page.getByTestId("homie-transcript").getByText("The release files look correct.", { exact: true }).waitFor();
+  await page.getByTestId("collie-transcript").getByText("The release files look correct.", { exact: true }).waitFor();
 
-  await mc(["homie", "end", session, "--reason", "The session is idle again."]);
+  await mc(["collie", "end", session, "--reason", "The session is idle again."]);
   await page.reload();
   await page.locator(`[data-session="${session}"]`).click();
   if (await page.getByTestId("resume").isVisible()) await page.getByTestId("resume").click();
   await page.waitForFunction(() => !(document.getElementById("send-body") as HTMLTextAreaElement)?.disabled, undefined, { timeout: 5000 }).catch(async error => {
-    throw new Error(`${error}\n${await page.locator("#homie-pane").innerText()}\n${await page.locator('[role="alert"]').allTextContents()}`);
+    throw new Error(`${error}\n${await page.locator("#collie-pane").innerText()}\n${await page.locator('[role="alert"]').allTextContents()}`);
   });
   await sendDashboard("I am back in the dashboard.");
   await reply(session, "The thread still receives this reply.");
   refuseDelivery = true;
   await expect(flush()).rejects.toThrow("403");
-  await page.getByTestId("homie-transcript").getByText("The thread still receives this reply.", { exact: true }).waitFor();
+  await page.getByTestId("collie-transcript").getByText("The thread still receives this reply.", { exact: true }).waitFor();
   refuseDelivery = false;
   await flush();
   expect(deliveries.slice(-2).map(row => row.content)).toEqual(["I am back in the dashboard.", "The thread still receives this reply."]);
@@ -130,7 +130,7 @@ test("one conversation continues between Discord and the dashboard across idle p
   await discord("102", "100", "An unauthorized message", "8");
   await discord("103", "100", "A bot echo", "3", true);
   await discord("104", "999", "An unrelated thread");
-  const history = await mc(["homie", "history", session]) as any;
+  const history = await mc(["collie", "history", session]) as any;
   expect(history.messages.map((row: any) => row.body)).toEqual([
     "Plan the release.", "First, check the release tests.",
     "I checked the tests from the dashboard.", "Next, inspect the release files.",
@@ -151,7 +151,7 @@ test("one conversation continues between Discord and the dashboard across idle p
   await reply(second, "This reply belongs to the second thread.");
   await flush();
   expect(deliveries.at(-1)?.thread).toBe("200");
-  const secondHistory = await mc(["homie", "history", second]) as any;
+  const secondHistory = await mc(["collie", "history", second]) as any;
   expect(secondHistory.messages.map((row: any) => row.body)).toEqual(["Start a different conversation.", "This reply belongs to the second thread."]);
   await Bun.write(evidencePath("discord-transport.json"), JSON.stringify({ deliveries, session, second }, null, 2));
 }, 60000);
@@ -183,7 +183,7 @@ test("an interrupted thread start recovers after restart and a failed thread per
   ]);
   gateway = receiver();
   await discord("400", "2", "Keep this initial message after a restart.");
-  const history = await mc(["homie", "history", session]) as any;
+  const history = await mc(["collie", "history", session]) as any;
   expect(history.messages.filter((row: any) => row.direction === "inbound").map((row: any) => row.body)).toEqual([
     "Keep this initial message after a restart.", "Continue the interrupted conversation.",
   ]);
@@ -196,11 +196,11 @@ test("an interrupted initial message recovers inside its existing session", asyn
   await discord("600", "2", "Preserve the first message in the existing session.");
   const session = await sessionFor("600");
   expect(session).toBeTruthy();
-  expect((await mc(["homie", "history", session]) as any).messages).toHaveLength(0);
+  expect((await mc(["collie", "history", session]) as any).messages).toHaveLength(0);
   gateway = receiver();
   await discord("601", "600", "Continue after the interruption.");
   expect(await sessionFor("600")).toBe(session);
-  const history = await mc(["homie", "history", session]) as any;
+  const history = await mc(["collie", "history", session]) as any;
   expect(history.messages.map((row: any) => row.body)).toEqual([
     "Preserve the first message in the existing session.", "Continue after the interruption.",
   ]);

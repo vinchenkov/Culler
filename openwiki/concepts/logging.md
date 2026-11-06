@@ -85,7 +85,7 @@ Rotation is best-effort and never blocks a write. If another appender holds a li
 - `stderrSink` writes the same NDJSON to stderr for processes without a log directory.
 - `openRunSink` writes the per-run `runner.ndjson` with no rotation and a hard 4 MiB cap (`RUN_SINK_MAX_BYTES`). It writes one `log.sink_failed` record when it reaches the cap.
 
-The resident writes `resident.ndjson` and the dashboard writes `dashboard.ndjson`, both through `openFileSink`. The agent runner, the Homie runner, and the Claude and Codex adapters use `runLogSink`. It selects the log directory from `MC_RUN_LOG_DIR`, with `/mc/logs` as the default. It uses `openRunSink` when that directory exists, and `stderrSink` otherwise.
+The resident writes `resident.ndjson` and the dashboard writes `dashboard.ndjson`, both through `openFileSink`. The agent runner, the Collie runner, and the Claude and Codex adapters use `runLogSink`. It selects the log directory from `MC_RUN_LOG_DIR`, with `/mc/logs` as the default. It uses `openRunSink` when that directory exists, and `stderrSink` otherwise.
 
 The shared module must stay under `runner/`. `mc/deployment/runner_release.go` addresses files relative to `runner/` and cannot express `../`, while the host manifest can reach `runner/` from the repository root.
 
@@ -97,7 +97,7 @@ The comment above `renderGolden` in `log_parity_test.go` names `log.test.ts` as 
 
 - `runner/shared/golden.test.ts` checks that `renderText` reproduces every golden `text` and that `serialize` re-emits every golden line byte for byte. It also checks that the fixture is non-empty and still covers all four levels, a record with no context, `null`, `true`, numbers, an em dash inside `msg`, and an empty `msg`.
 - `mc/deployment/log_parity_test.go` checks that `mclog.RenderText` matches each golden `text` (`TestGoAndTypeScriptRenderTheSameText`). It also checks that non-records are refused and that the Go writer emits the agreed key order with a `toISOString`-shaped timestamp.
-- `mc/deployment/log_event_registry_test.go` parses `EVENTS` out of `log.ts`. It fails when any non-test TypeScript `log.<level>("…")` call in `resident/src`, `dashboard/src`, `runner/agent-runner`, `runner/homie-runner`, or `runner/shared` names an unregistered event. It also fails when a registered name breaks the grammar, when the removed `legacy.line` event reappears, when a repository event has no call site, or when the Go and TypeScript rotation constants disagree.
+- `mc/deployment/log_event_registry_test.go` parses `EVENTS` out of `log.ts`. It fails when any non-test TypeScript `log.<level>("…")` call in `resident/src`, `dashboard/src`, `runner/agent-runner`, `runner/collie-runner`, or `runner/shared` names an unregistered event. It also fails when a registered name breaks the grammar, when the removed `legacy.line` event reappears, when a repository event has no call site, or when the Go and TypeScript rotation constants disagree.
 
 These Go tests live in `mc/deployment/` rather than `mc/mclog/` because they read files outside the Go module. Go's test cache does not track such files, so `mc/check.sh` runs `go test -count=1 ./deployment/` to prevent a stale cached pass. No TypeScript typechecker runs in this repository, so the registry test is the only check against a misspelled event name.
 

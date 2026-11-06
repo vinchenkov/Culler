@@ -34,7 +34,7 @@ afterEach(() => {
 });
 
 describe("Codex production adapter", () => {
-  test("normalizes only a completed agent message into the Homie reply", () => {
+  test("normalizes only a completed agent message into the Collie reply", () => {
     expect(codexReplyFromEvent(JSON.stringify({
       type: "item.completed",
       item: { type: "agent_message", text: "codex reply" },
@@ -159,7 +159,7 @@ describe("Codex production adapter", () => {
 });
 
 describe("Claude-SDK production adapter", () => {
-  test("normalizes only a successful result message into the Homie reply", () => {
+  test("normalizes only a successful result message into the Collie reply", () => {
     expect(claudeReplyFromMessage({
       type: "result", is_error: false, result: "claude reply",
     })).toBe("claude reply");

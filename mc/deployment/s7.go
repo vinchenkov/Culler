@@ -52,7 +52,7 @@ type S7SettingsSnapshot struct {
 	SpawnGraceS         int `json:"spawn_grace_s"`
 	HardDeadlineMinutes int `json:"hard_deadline_minutes"`
 	ReviewWIPCap        int `json:"review_wip_cap"`
-	HomieIdleTimeoutS   int `json:"homie_idle_timeout_s"`
+	CollieIdleTimeoutS  int `json:"collie_idle_timeout_s"`
 	WikiUpdateIntervalS int `json:"wiki_update_interval_s"`
 }
 

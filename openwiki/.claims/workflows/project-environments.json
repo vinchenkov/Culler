@@ -238,7 +238,7 @@
     },
     {
       "id": "claim_b2b072db53e14d53886b6807c373915b",
-      "statement": "The current setup failure's Ask Homie action appears with the setup controls outside the transcript.",
+      "statement": "The current setup failure's Ask Collie action appears with the setup controls outside the transcript.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/setup-journal.js#L302-L313",
@@ -252,7 +252,7 @@
     },
     {
       "id": "claim_4b2aa26c595f45919c14a9152705b336",
-      "statement": "The setup journal smoke checks Ask Homie beside Retry and the absence of action controls inside the transcript.",
+      "statement": "The setup journal smoke checks Ask Collie beside Retry and the absence of action controls inside the transcript.",
       "evidence": [
         {
           "resource": "repo://dashboard/smoke/setup-journal.smoke.test.ts#L346-L348",

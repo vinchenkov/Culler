@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import { effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, needsAuthorization, operationSummary, profilePayload, profileStatus } from "./agentprofiles.js";
 
-const ROLES = ["strategist", "arbiter", "worker", "verifier", "scribe", "packager", "homie"];
+const ROLES = ["strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie"];
 
 test("the panel lists only the enabled agent profiles of the catalog", () => {
   const profiles = [

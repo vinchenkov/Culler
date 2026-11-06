@@ -137,7 +137,7 @@ test("Project configuration and Pipeline share revision history and preserve sta
   expect(show.history).toHaveLength(3);
 }, 60000);
 
-test("a role block directs the operator to Homie after a corrected save", async () => {
+test("a role block directs the operator to Collie after a corrected save", async () => {
   const { page } = smoke;
   await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "strategist(propose)", expected_revision: 0, instructions: "Report false evidence." })]);
   const dispatched = await mc(["dispatch"]);
@@ -158,7 +158,7 @@ test("a role block directs the operator to Homie after a corrected save", async 
   await page.getByTestId("customization-save").click();
   await status("Saved revision 3");
   expect(await page.getByTestId("customization-blocked").isVisible()).toBe(true);
-  await page.getByRole("button", { name: "Open Homie", exact: true }).click();
+  await page.getByRole("button", { name: "Open Collie", exact: true }).click();
   expect(await page.getByTestId("role-customization").count()).toBe(0);
-  expect(await page.getByTestId("tab-homie").getAttribute("aria-current")).toBe("page");
+  expect(await page.getByTestId("tab-collie").getAttribute("aria-current")).toBe("page");
 }, 30000);

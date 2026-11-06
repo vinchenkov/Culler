@@ -401,7 +401,7 @@ BEGIN
 END;
 
 ------------------------------------------------------------------------------
--- settings — the one deployment-wide settings row. The lease tunables, the review WIP cap, the Homie idle timeout,
+-- settings — the one deployment-wide settings row. The lease tunables, the review WIP cap, the Collie idle timeout,
 -- and the wiki update interval live here and nowhere else; `mc init` writes
 -- the row's values, and the schema seeds the defaults so every fresh spine
 -- carries exactly one row. It holds no lease state.
@@ -424,11 +424,11 @@ CREATE TABLE settings (
     -- trigger counts per Project against this value.
     review_wip_cap        INTEGER NOT NULL DEFAULT 3
                           CHECK (review_wip_cap > 0),
-    -- homie_idle_timeout_s: how long after a Homie session's last_activity_at
+    -- collie_idle_timeout_s: how long after a Collie session's last_activity_at
     -- the wake selector ends it and the launch-bind/runner-started non-idle
     -- CAS refuses (the session lives as long as the conversation).
-    homie_idle_timeout_s  INTEGER NOT NULL DEFAULT 1800
-                          CHECK (homie_idle_timeout_s > 0),
+    collie_idle_timeout_s  INTEGER NOT NULL DEFAULT 1800
+                          CHECK (collie_idle_timeout_s > 0),
     -- wiki_update_interval_s: the minimum time between the starts of two
     -- wiki updates of one Project.
     wiki_update_interval_s INTEGER NOT NULL DEFAULT 3600
@@ -500,9 +500,9 @@ END;
 
 CREATE TABLE runs (
     id                 TEXT PRIMARY KEY,
-    tier               TEXT NOT NULL CHECK (tier IN ('pipeline', 'homie')),
+    tier               TEXT NOT NULL CHECK (tier IN ('pipeline', 'collie')),
     role               TEXT CHECK (role IN
-                       ('strategist', 'arbiter', 'worker', 'verifier', 'scribe', 'packager', 'homie')),
+                       ('strategist', 'arbiter', 'worker', 'verifier', 'scribe', 'packager', 'collie')),
     project         TEXT REFERENCES projects(id),
     subject            INTEGER REFERENCES tasks(id),
     created_at         TEXT NOT NULL DEFAULT (datetime('now')),
@@ -726,10 +726,10 @@ BEGIN
 END;
 
 ------------------------------------------------------------------------------
--- Homie tier: session registry, bindings, conversation rows.
+-- Collie tier: session registry, bindings, conversation rows.
 ------------------------------------------------------------------------------
 
-CREATE TABLE homie_sessions (
+CREATE TABLE collie_sessions (
     id                 TEXT PRIMARY KEY,   -- also the session's run_id
     vision_project_id  TEXT REFERENCES projects(id),
     packet_id          INTEGER REFERENCES review_versions(id)
@@ -740,7 +740,7 @@ CREATE TABLE homie_sessions (
     created_at         TEXT NOT NULL DEFAULT (datetime('now')),
     last_activity_at   TEXT NOT NULL DEFAULT (datetime('now')),
     container_name     TEXT NOT NULL,
-    verb_allowlist     TEXT NOT NULL    -- frozen at mc homie start
+    verb_allowlist     TEXT NOT NULL    -- frozen at mc collie start
                        CHECK (json_valid(verb_allowlist)
                               AND json_type(verb_allowlist) = 'array'),
     session_path       TEXT NOT NULL,   -- the four locators
@@ -835,33 +835,33 @@ CREATE TABLE homie_sessions (
 
 -- The newest session of a Project is its Vision conversation. A clear starts
 -- a newer session.
-CREATE INDEX homie_sessions_vision_project ON homie_sessions (vision_project_id)
+CREATE INDEX collie_sessions_vision_project ON collie_sessions (vision_project_id)
     WHERE vision_project_id IS NOT NULL;
 
 -- The newest conversation of a packet is its current conversation when the
 -- operator did not delete it. A New conversation action starts a newer one.
-CREATE INDEX homie_sessions_packet ON homie_sessions (packet_id)
+CREATE INDEX collie_sessions_packet ON collie_sessions (packet_id)
     WHERE packet_id IS NOT NULL;
 
 -- Ended and reaped sessions remain available for resume until explicit deletion.
-CREATE TRIGGER homie_sessions_no_delete
-BEFORE DELETE ON homie_sessions
+CREATE TRIGGER collie_sessions_no_delete
+BEFORE DELETE ON collie_sessions
 WHEN NOT EXISTS (SELECT 1 FROM project_deletion_records
-    WHERE table_name='homie_sessions' AND row_id=OLD.rowid)
+    WHERE table_name='collie_sessions' AND row_id=OLD.rowid)
 BEGIN
     SELECT RAISE(ABORT, 'These records require explicit Project deletion');
 END;
 
-CREATE TRIGGER homie_sessions_deletion_immutable
-BEFORE UPDATE OF deleted_at ON homie_sessions
+CREATE TRIGGER collie_sessions_deletion_immutable
+BEFORE UPDATE OF deleted_at ON collie_sessions
 WHEN OLD.deleted_at IS NOT NULL AND NEW.deleted_at IS NOT OLD.deleted_at
 BEGIN
     SELECT RAISE(ABORT, 'a deleted conversation cannot be restored');
 END;
 
-CREATE TRIGGER homie_sessions_identity_immutable
+CREATE TRIGGER collie_sessions_identity_immutable
 BEFORE UPDATE OF id, created_at, container_name, verb_allowlist, session_path, binding, effort, vision_project_id, packet_id
-ON homie_sessions
+ON collie_sessions
 WHEN NEW.id <> OLD.id
   OR NEW.created_at <> OLD.created_at
   OR NEW.container_name <> OLD.container_name
@@ -872,25 +872,25 @@ WHEN NEW.id <> OLD.id
   OR NEW.binding <> OLD.binding
   OR NEW.effort <> OLD.effort
 BEGIN
-    SELECT RAISE(ABORT, 'Homie session identity, route, effort, path, and allowlist are frozen at start');
+    SELECT RAISE(ABORT, 'Collie session identity, route, effort, path, and allowlist are frozen at start');
 END;
 
-CREATE TRIGGER homie_sessions_native_locators_immutable
-BEFORE UPDATE OF native_session_ref, trace_filename ON homie_sessions
+CREATE TRIGGER collie_sessions_native_locators_immutable
+BEFORE UPDATE OF native_session_ref, trace_filename ON collie_sessions
 WHEN OLD.native_session_ref IS NOT NULL
   AND (NEW.native_session_ref IS NOT OLD.native_session_ref
        OR NEW.trace_filename IS NOT OLD.trace_filename)
 BEGIN
-    SELECT RAISE(ABORT, 'Homie native session locators are immutable once registered');
+    SELECT RAISE(ABORT, 'Collie native session locators are immutable once registered');
 END;
 
 -- One row per bind *event*: active bindings clear when the session ends,
 -- a resume creates a fresh binding for the requesting surface, and the row
 -- and its binding history persists until explicit Project deletion.
 -- Each surface and place has at most one active binding.
-CREATE TABLE homie_bindings (
+CREATE TABLE collie_bindings (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id  TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id  TEXT NOT NULL REFERENCES collie_sessions(id),
     surface     TEXT NOT NULL CHECK (surface IN ('discord', 'dashboard', 'cli')),
     channel_ref TEXT NOT NULL,
     bound_at    TEXT NOT NULL DEFAULT (datetime('now')),
@@ -898,20 +898,20 @@ CREATE TABLE homie_bindings (
 );
 
 CREATE UNIQUE INDEX bindings_one_active
-    ON homie_bindings (surface, channel_ref) WHERE active = 1;
+    ON collie_bindings (surface, channel_ref) WHERE active = 1;
 
-CREATE TRIGGER homie_bindings_require_active_session
-BEFORE INSERT ON homie_bindings
+CREATE TRIGGER collie_bindings_require_active_session
+BEFORE INSERT ON collie_bindings
 WHEN NEW.active = 1 AND NOT EXISTS (
-    SELECT 1 FROM homie_sessions s
+    SELECT 1 FROM collie_sessions s
     WHERE s.id = NEW.session_id AND s.status = 'active'
 )
 BEGIN
-    SELECT RAISE(ABORT, 'an active binding requires an active Homie session');
+    SELECT RAISE(ABORT, 'an active binding requires an active Collie session');
 END;
 
-CREATE TRIGGER homie_bindings_history_immutable
-BEFORE UPDATE ON homie_bindings
+CREATE TRIGGER collie_bindings_history_immutable
+BEFORE UPDATE ON collie_bindings
 WHEN NEW.id <> OLD.id
   OR NEW.session_id <> OLD.session_id
   OR NEW.surface <> OLD.surface
@@ -924,33 +924,33 @@ END;
 
 -- Ending/reaping a session clears its active bindings in the same statement;
 -- resume creates fresh binding events rather than resurrecting history.
-CREATE TRIGGER homie_sessions_deactivate_bindings
-AFTER UPDATE OF status ON homie_sessions
+CREATE TRIGGER collie_sessions_deactivate_bindings
+AFTER UPDATE OF status ON collie_sessions
 WHEN OLD.status = 'active' AND NEW.status <> 'active'
 BEGIN
-    UPDATE homie_bindings SET active = 0
+    UPDATE collie_bindings SET active = 0
     WHERE session_id = NEW.id AND active = 1;
 END;
 
-CREATE TRIGGER homie_bindings_no_delete
-BEFORE DELETE ON homie_bindings
+CREATE TRIGGER collie_bindings_no_delete
+BEFORE DELETE ON collie_bindings
 WHEN NOT EXISTS (SELECT 1 FROM project_deletion_records
-    WHERE table_name='homie_bindings' AND row_id=OLD.rowid)
+    WHERE table_name='collie_bindings' AND row_id=OLD.rowid)
 BEGIN
     SELECT RAISE(ABORT, 'bindings history persists indefinitely');
 END;
 
 -- A Discord thread keeps its conversation across idle periods.
-CREATE TABLE homie_discord_threads (
-    session_id TEXT PRIMARY KEY REFERENCES homie_sessions(id),
+CREATE TABLE collie_discord_threads (
+    session_id TEXT PRIMARY KEY REFERENCES collie_sessions(id),
     guild_id TEXT NOT NULL CHECK (length(guild_id) BETWEEN 1 AND 20 AND guild_id NOT GLOB '*[^0-9]*'),
     channel_id TEXT NOT NULL CHECK (length(channel_id) BETWEEN 1 AND 20 AND channel_id NOT GLOB '*[^0-9]*'),
     thread_id TEXT NOT NULL UNIQUE CHECK (length(thread_id) BETWEEN 1 AND 20 AND thread_id NOT GLOB '*[^0-9]*'),
     retired_at TEXT,
     CHECK (thread_id <> channel_id)
 );
-CREATE TRIGGER homie_discord_thread_identity
-BEFORE UPDATE ON homie_discord_threads
+CREATE TRIGGER collie_discord_thread_identity
+BEFORE UPDATE ON collie_discord_threads
 WHEN NEW.session_id <> OLD.session_id OR NEW.guild_id <> OLD.guild_id
   OR NEW.channel_id <> OLD.channel_id OR NEW.thread_id <> OLD.thread_id
   OR (OLD.retired_at IS NOT NULL AND NEW.retired_at IS NOT OLD.retired_at)
@@ -958,10 +958,10 @@ BEGIN
     SELECT RAISE(ABORT, 'The Discord thread association is permanent.');
 END;
 
-CREATE TRIGGER homie_discord_thread_binding
-BEFORE INSERT ON homie_bindings
+CREATE TRIGGER collie_discord_thread_binding
+BEFORE INSERT ON collie_bindings
 WHEN NEW.surface = 'discord' AND EXISTS (
-    SELECT 1 FROM homie_discord_threads t WHERE t.thread_id = NEW.channel_ref
+    SELECT 1 FROM collie_discord_threads t WHERE t.thread_id = NEW.channel_ref
       AND (t.session_id <> NEW.session_id OR t.retired_at IS NOT NULL)
 )
 BEGIN
@@ -970,14 +970,14 @@ END;
 
 -- Conversation rows: every inbound message and reply is an
 -- append-only row with durable conversation identity and stable order,
--- alongside the pending-inbound claim state the Homie runner consumes.
+-- alongside the pending-inbound claim state the Collie runner consumes.
 -- Content columns are immutable; only the claim columns mutate.
 CREATE TABLE conversation_messages (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id   TEXT    NOT NULL REFERENCES homie_sessions(id),
+    session_id   TEXT    NOT NULL REFERENCES collie_sessions(id),
     seq          INTEGER NOT NULL,           -- stable order within the conversation
     direction    TEXT    NOT NULL CHECK (direction IN ('inbound', 'reply')),
-    surface      TEXT    NOT NULL CHECK (surface IN ('discord', 'dashboard', 'cli', 'homie')),
+    surface      TEXT    NOT NULL CHECK (surface IN ('discord', 'dashboard', 'cli', 'collie')),
     channel_ref  TEXT,
     body         TEXT    NOT NULL,
     source_message_id TEXT CHECK (source_message_id IS NULL OR
@@ -1080,11 +1080,11 @@ END;
 CREATE TRIGGER conversation_requires_active_session
 BEFORE INSERT ON conversation_messages
 WHEN NOT EXISTS (
-    SELECT 1 FROM homie_sessions s
+    SELECT 1 FROM collie_sessions s
     WHERE s.id = NEW.session_id AND s.status = 'active'
 )
 BEGIN
-    SELECT RAISE(ABORT, 'conversation rows require an active Homie session');
+    SELECT RAISE(ABORT, 'conversation rows require an active Collie session');
 END;
 
 ------------------------------------------------------------------------------
@@ -1094,7 +1094,7 @@ END;
 ------------------------------------------------------------------------------
 
 CREATE TABLE attachment_objects (
-    session_id TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id TEXT NOT NULL REFERENCES collie_sessions(id),
     direction  TEXT NOT NULL CHECK (direction IN ('in', 'out')),
     sha256     TEXT NOT NULL CHECK (typeof(sha256) = 'text' AND
                                    length(sha256) = 64 AND
@@ -1320,8 +1320,8 @@ END;
 -- staged attachment bytes and host paths never enter the spine.
 CREATE TABLE attachment_ingresses (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id          TEXT NOT NULL REFERENCES homie_sessions(id),
-    binding_id          INTEGER NOT NULL REFERENCES homie_bindings(id),
+    session_id          TEXT NOT NULL REFERENCES collie_sessions(id),
+    binding_id          INTEGER NOT NULL REFERENCES collie_bindings(id),
     surface             TEXT NOT NULL CHECK (surface IN ('discord', 'dashboard', 'cli')),
     external_message_id TEXT NOT NULL CHECK (typeof(external_message_id) = 'text' AND length(external_message_id) BETWEEN 1 AND 255),
     body                TEXT NOT NULL CHECK (typeof(body) = 'text' AND length(CAST(body AS BLOB)) <= 65536),
@@ -1340,7 +1340,7 @@ CREATE TABLE attachment_ingresses (
     UNIQUE (session_id, binding_id, surface, external_message_id)
 );
 CREATE TRIGGER attachment_ingresses_require_active_binding BEFORE INSERT ON attachment_ingresses
-WHEN NOT EXISTS (SELECT 1 FROM homie_bindings b JOIN homie_sessions s ON s.id=b.session_id WHERE b.id=NEW.binding_id AND b.session_id=NEW.session_id AND b.surface=NEW.surface AND b.active=1 AND s.status='active')
+WHEN NOT EXISTS (SELECT 1 FROM collie_bindings b JOIN collie_sessions s ON s.id=b.session_id WHERE b.id=NEW.binding_id AND b.session_id=NEW.session_id AND b.surface=NEW.surface AND b.active=1 AND s.status='active')
 BEGIN SELECT RAISE(ABORT, 'attachment ingress requires its exact active binding and session'); END;
 CREATE TRIGGER attachment_ingresses_require_queued_insert BEFORE INSERT ON attachment_ingresses
 WHEN NEW.state<>'queued' OR NEW.attempt_count<>0 OR NEW.failure_count<>0
@@ -1373,7 +1373,7 @@ BEGIN SELECT RAISE(ABORT, 'attachment ingress is durable native inbox history');
 -- outbound runner transaction without enabling that path yet.
 CREATE TABLE attachment_batches (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id      TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id      TEXT NOT NULL REFERENCES collie_sessions(id),
     direction       TEXT NOT NULL CHECK (direction IN ('in', 'out')),
     ingress_id      INTEGER REFERENCES attachment_ingresses(id),
     turn_id         INTEGER REFERENCES conversation_messages(id),
@@ -1411,7 +1411,7 @@ BEGIN SELECT RAISE(ABORT, 'attachment batch declaration is immutable'); END;
 CREATE TABLE attachment_publications (
     id                  TEXT PRIMARY KEY CHECK (typeof(id) = 'text' AND length(id) = 16 AND id GLOB '[0-9a-f]*' AND id NOT GLOB '*[^0-9a-f]*'),
     batch_id            INTEGER NOT NULL REFERENCES attachment_batches(id),
-    session_id          TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id          TEXT NOT NULL REFERENCES collie_sessions(id),
     direction           TEXT NOT NULL CHECK (direction IN ('in', 'out')),
     ordinal             INTEGER NOT NULL CHECK (typeof(ordinal) = 'integer' AND ordinal BETWEEN 1 AND 32),
     size                INTEGER NOT NULL CHECK (typeof(size) = 'integer' AND size BETWEEN 0 AND 268435456),
@@ -1623,7 +1623,7 @@ ON attachment_publications(state, publisher_lease_until, id);
 CREATE TABLE attachment_attempts (
     id                    TEXT PRIMARY KEY CHECK (typeof(id) = 'text' AND length(id) = 16 AND id GLOB '[0-9a-f]*' AND id NOT GLOB '*[^0-9a-f]*'),
     ingress_id            INTEGER NOT NULL REFERENCES attachment_ingresses(id),
-    session_id            TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id            TEXT NOT NULL REFERENCES collie_sessions(id),
     batch_id              INTEGER NOT NULL UNIQUE REFERENCES attachment_batches(id),
     generation            INTEGER NOT NULL CHECK (typeof(generation) = 'integer' AND generation >= 1),
     owner_token           TEXT NOT NULL CHECK (typeof(owner_token) = 'text' AND length(owner_token) = 32 AND owner_token GLOB '[0-9a-f]*' AND owner_token NOT GLOB '*[^0-9a-f]*'),
@@ -1671,7 +1671,7 @@ WHEN NOT EXISTS (
     SELECT 1 FROM attachment_ingresses i
     WHERE i.id=NEW.ingress_id AND i.session_id=NEW.session_id
       AND i.state='queued' AND NEW.generation=i.attempt_count+1
-      AND EXISTS (SELECT 1 FROM homie_sessions s WHERE s.id=i.session_id AND s.status='active')
+      AND EXISTS (SELECT 1 FROM collie_sessions s WHERE s.id=i.session_id AND s.status='active')
       AND NOT EXISTS (
           SELECT 1 FROM attachment_ingresses earlier
           WHERE earlier.session_id=i.session_id AND earlier.state='queued' AND earlier.id<i.id
@@ -1894,8 +1894,8 @@ INSERT INTO alert_routes (class, ordinal, surface, channel_ref) VALUES
 CREATE TABLE outbox (
     id                    INTEGER PRIMARY KEY AUTOINCREMENT,
     kind                  TEXT NOT NULL CHECK (kind IN
-                          ('homie_reply', 'homie_echo', 'blocked_alert', 'health')),
-    session_id            TEXT REFERENCES homie_sessions(id),
+                          ('collie_reply', 'collie_echo', 'blocked_alert', 'health')),
+    session_id            TEXT REFERENCES collie_sessions(id),
     surface               TEXT NOT NULL CHECK (surface IN ('discord', 'dashboard', 'cli')),
     channel_ref           TEXT,
     payload               TEXT NOT NULL    -- small inline JSON; anything large rides as a path reference
@@ -2037,7 +2037,7 @@ CREATE TABLE attachment_batch_receipts (
     batch_id               INTEGER PRIMARY KEY,
     attempt_id             TEXT NOT NULL UNIQUE CHECK (typeof(attempt_id)='text' AND length(attempt_id)=16 AND attempt_id GLOB '[0-9a-f]*' AND attempt_id NOT GLOB '*[^0-9a-f]*'),
     ingress_id             INTEGER NOT NULL REFERENCES attachment_ingresses(id),
-    session_id             TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id             TEXT NOT NULL REFERENCES collie_sessions(id),
     generation             INTEGER NOT NULL CHECK (typeof(generation)='integer' AND generation>=1),
     owner_generation       TEXT NOT NULL CHECK (typeof(owner_generation)='text' AND length(owner_generation) BETWEEN 1 AND 255 AND instr(owner_generation,char(0))=0 AND instr(owner_generation,char(10))=0 AND instr(owner_generation,char(13))=0),
     outcome                TEXT NOT NULL CHECK (outcome IN ('requeued','failed','consumed')),
@@ -2077,7 +2077,7 @@ WHEN NOT EXISTS (
             AND NEW.conversation_message_id IS NOT NULL
             AND EXISTS (
                 SELECT 1 FROM conversation_messages m
-                JOIN homie_bindings origin ON origin.id=i.binding_id
+                JOIN collie_bindings origin ON origin.id=i.binding_id
                 WHERE m.id=NEW.conversation_message_id
                   AND m.session_id=NEW.session_id
                   AND origin.session_id=i.session_id
@@ -2142,13 +2142,13 @@ WHEN NOT EXISTS (
               'attempt_id',NEW.attempt_id,
               'batch_id',NEW.batch_id,
               'body_sha256',i.body_sha256,
-              'channel_ref',(SELECT channel_ref FROM homie_bindings WHERE id=i.binding_id),
-              'echoes',(SELECT COUNT(*) FROM homie_bindings destination
+              'channel_ref',(SELECT channel_ref FROM collie_bindings WHERE id=i.binding_id),
+              'echoes',(SELECT COUNT(*) FROM collie_bindings destination
                         WHERE destination.session_id=NEW.session_id
                           AND destination.active=1
                           AND NOT (destination.surface=i.surface
                                    AND destination.channel_ref=(
-                                       SELECT channel_ref FROM homie_bindings
+                                       SELECT channel_ref FROM collie_bindings
                                        WHERE id=i.binding_id))),
               'external_message_id',i.external_message_id,
               'manifest_sha256',i.manifest_sha256,
@@ -2162,9 +2162,9 @@ WHEN NOT EXISTS (
       AND (NEW.outcome<>'consumed' OR i.body_sha256 IS NOT NULL)
       AND (NEW.outbox_id IS NULL OR EXISTS (
           SELECT 1 FROM outbox o
-          WHERE o.id=NEW.outbox_id AND o.kind='homie_reply'
+          WHERE o.id=NEW.outbox_id AND o.kind='collie_reply'
             AND o.session_id=NEW.session_id AND o.surface=i.surface
-            AND o.channel_ref=(SELECT channel_ref FROM homie_bindings WHERE id=i.binding_id)
+            AND o.channel_ref=(SELECT channel_ref FROM collie_bindings WHERE id=i.binding_id)
             AND o.payload=NEW.receipt
       ))
 )
@@ -2547,7 +2547,7 @@ CREATE TABLE diagnostic_events (
     profile_revision TEXT NOT NULL DEFAULT '',
     project_id TEXT REFERENCES projects(id),
     run_id TEXT REFERENCES runs(id),
-    reply_attempt_id TEXT REFERENCES homie_reply_attempts(attempt_id),
+    reply_attempt_id TEXT REFERENCES collie_reply_attempts(attempt_id),
     observed_at TEXT NOT NULL,
     recorded_at TEXT NOT NULL DEFAULT (datetime('now')),
     http_status INTEGER CHECK(http_status BETWEEN 100 AND 599),
@@ -2598,9 +2598,9 @@ CREATE TABLE connection_health (
     CHECK((operation = 'model_access') = (profile_id <> ''))
 );
 
-CREATE TABLE homie_reply_attempts (
+CREATE TABLE collie_reply_attempts (
     attempt_id TEXT PRIMARY KEY CHECK(length(attempt_id) = 32 AND attempt_id NOT GLOB '*[^0-9a-f]*'),
-    session_id TEXT NOT NULL REFERENCES homie_sessions(id),
+    session_id TEXT NOT NULL REFERENCES collie_sessions(id),
     message_id INTEGER NOT NULL REFERENCES conversation_messages(id),
     launch_id TEXT NOT NULL DEFAULT '',
     connection_id TEXT NOT NULL DEFAULT '',
@@ -2615,9 +2615,9 @@ CREATE TABLE homie_reply_attempts (
     retry_key TEXT UNIQUE,
     CHECK((state IN ('succeeded','failed','cancelled')) = (ended_at IS NOT NULL))
 );
-CREATE UNIQUE INDEX homie_reply_active ON homie_reply_attempts(message_id) WHERE ended_at IS NULL;
-CREATE INDEX homie_reply_message ON homie_reply_attempts(message_id, created_at);
-CREATE TRIGGER homie_reply_terminal BEFORE UPDATE ON homie_reply_attempts
+CREATE UNIQUE INDEX collie_reply_active ON collie_reply_attempts(message_id) WHERE ended_at IS NULL;
+CREATE INDEX collie_reply_message ON collie_reply_attempts(message_id, created_at);
+CREATE TRIGGER collie_reply_terminal BEFORE UPDATE ON collie_reply_attempts
 WHEN OLD.ended_at IS NOT NULL BEGIN
     SELECT RAISE(ABORT, 'a reply attempt retains its terminal result');
 END;
@@ -2627,11 +2627,11 @@ WHEN OLD.profile_id<>'' AND (NEW.connection_id<>OLD.connection_id OR NEW.authori
  OR NEW.connection_revision<>OLD.connection_revision OR NEW.profile_id<>OLD.profile_id OR NEW.profile_revision<>OLD.profile_revision)
 BEGIN SELECT RAISE(ABORT, 'the run connection identity is immutable'); END;
 
-CREATE TRIGGER homie_reply_attempt_message BEFORE INSERT ON homie_reply_attempts
+CREATE TRIGGER collie_reply_attempt_message BEFORE INSERT ON collie_reply_attempts
 WHEN NOT EXISTS(SELECT 1 FROM conversation_messages WHERE id=NEW.message_id AND session_id=NEW.session_id AND direction='inbound' AND completed_at IS NULL)
 BEGIN SELECT RAISE(ABORT, 'a reply attempt requires an unanswered message in its session'); END;
 
-CREATE TRIGGER homie_reply_attempt_identity BEFORE UPDATE ON homie_reply_attempts
+CREATE TRIGGER collie_reply_attempt_identity BEFORE UPDATE ON collie_reply_attempts
 WHEN NEW.attempt_id<>OLD.attempt_id OR NEW.session_id<>OLD.session_id OR NEW.message_id<>OLD.message_id
  OR NEW.retry_key IS NOT OLD.retry_key OR NEW.created_at<>OLD.created_at
  OR (OLD.state<>'authorized' AND (NEW.launch_id<>OLD.launch_id OR NEW.connection_id<>OLD.connection_id
@@ -2639,7 +2639,7 @@ WHEN NEW.attempt_id<>OLD.attempt_id OR NEW.session_id<>OLD.session_id OR NEW.mes
  OR NEW.profile_id<>OLD.profile_id OR NEW.profile_revision<>OLD.profile_revision))
 BEGIN SELECT RAISE(ABORT, 'the reply attempt identity is immutable'); END;
 
-CREATE TRIGGER homie_reply_attempt_transition BEFORE UPDATE OF state ON homie_reply_attempts
+CREATE TRIGGER collie_reply_attempt_transition BEFORE UPDATE OF state ON collie_reply_attempts
 WHEN NEW.state<>OLD.state AND NOT (
  (OLD.state='authorized' AND NEW.state IN ('active','failed','cancelled')) OR
  (OLD.state='active' AND NEW.state IN ('succeeded','failed','cancelled')))

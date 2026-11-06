@@ -17,7 +17,7 @@ const rsTable = `# Culler routing
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `
 
 // rsHome writes a home whose config enables the test bindings. The
@@ -66,8 +66,8 @@ func TestRoutingShowReturnsEveryRoleWithItsModel(t *testing.T) {
 	if worker["harness"] != "claude-sdk" || worker["binding"] != "endpoint" || worker["model"] != "endpoint-model" {
 		t.Fatalf("worker route = %#v", worker)
 	}
-	if homie, ok := byRole["homie"]; !ok || homie["binding"] != "claude" {
-		t.Fatalf("homie route = %#v", byRole["homie"])
+	if collie, ok := byRole["collie"]; !ok || collie["binding"] != "claude" {
+		t.Fatalf("collie route = %#v", byRole["collie"])
 	}
 	bindings := res.(map[string]any)["bindings"].([]map[string]any)
 	ids := make([]string, 0, len(bindings))

@@ -9,7 +9,7 @@ Each task has an allowance of three infrastructure failures.
 Forward stage progress restores that allowance.
 The board pauses automatic dispatch when three distinct tasks require attention.
 
-This specification covers pipeline runs, connection restrictions, Homie replies, and the board pause.
+This specification covers pipeline runs, connection restrictions, Collie replies, and the board pause.
 
 ## Terms
 
@@ -241,7 +241,7 @@ The [dispatch guide](mc/dispatch/README.md) states each rule of that wait.
 ## Connection state and diagnostic history
 
 The `connection_health` table controls connection eligibility.
-The `homie_reply_attempts` table controls each reply attempt.
+The `collie_reply_attempts` table controls each reply attempt.
 The `diagnostic_events` table retains observations and state transitions.
 The `activity` table retains dispatch activity.
 A state change and its diagnostic event commit in one transaction.

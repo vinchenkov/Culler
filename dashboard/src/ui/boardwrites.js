@@ -235,7 +235,7 @@ export function boardHistoryNode(row, readReport) {
   );
 }
 
-export function createBoardWrites({ dialog, api, getProjects, selectedProject, onSaved, onHomie }) {
+export function createBoardWrites({ dialog, api, getProjects, selectedProject, onSaved, onCollie }) {
   let draft = null;
   let busy = false;
   let previousFocus = null;
@@ -390,7 +390,7 @@ export function createBoardWrites({ dialog, api, getProjects, selectedProject, o
     if (create) {
       body.append(el("p", { class: "board-notice", testid: "board-create-explanation" },
         "Create a new task here, or ask ",
-        el("a", { href: "#homie", testid: "board-create-homie", text: "Homie", onclick: (event) => { event.preventDefault(); close(); onHomie(); } }),
+        el("a", { href: "#collie", testid: "board-create-collie", text: "Collie", onclick: (event) => { event.preventDefault(); close(); onCollie(); } }),
         " to do it for you.",
       ));
       if (draft.fixedProject) {

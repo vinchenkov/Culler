@@ -15,7 +15,7 @@ import (
 // with itself, since no test could tell its success from a real removal.
 //
 // The host-scope fence is enforced FIRST and in this build too, deliberately.
-// It is the property that stops a prompt-injected Homie from destroying the
+// It is the property that stops a prompt-injected Collie from destroying the
 // deployment, so it must not be reachable only through the production path —
 // and enforcing it here is what lets the CLI suite, which compiles this build,
 // prove the refusal without Docker.

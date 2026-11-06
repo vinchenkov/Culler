@@ -30,8 +30,8 @@ type RoleSaveRequest struct {
 }
 
 func customizationReader(id *RunIdentity) error {
-	if id != nil && id.Tier != "homie" {
-		return Domainf("Only the operator and Homie can read customization records.")
+	if id != nil && id.Tier != "collie" {
+		return Domainf("Only the operator and Collie can read customization records.")
 	}
 	return nil
 }
@@ -157,7 +157,7 @@ func ProjectRoleSave(db *sql.DB, id *RunIdentity, a RoleSaveRequest) (any, error
 		}
 		author := "operator"
 		if id != nil {
-			author = "homie:" + id.RunID
+			author = "collie:" + id.RunID
 		}
 		if _, err := q.ExecContext(ctx, `INSERT INTO role_customizations(project,role,revision,instructions,author) VALUES(?,?,?,?,?)`, a.Project, a.Role, c.Revision+1, *a.Instructions, author); err != nil {
 			return err
@@ -323,7 +323,7 @@ func ProjectRoleUnblock(db *sql.DB, id *RunIdentity, a RoleUnblockRequest) (any,
 	err := inTx(db, func(ctx context.Context, q Q) error {
 		actor := "operator"
 		if id != nil {
-			actor = "homie:" + id.RunID
+			actor = "collie:" + id.RunID
 		}
 		res, err := q.ExecContext(ctx, `UPDATE customization_conflicts SET cleared_at=datetime('now'),cleared_by=?,resolution=? WHERE run_id=? AND cleared_at IS NULL
  AND EXISTS(SELECT 1 FROM runs WHERE id=? AND subject IS NULL)`, actor, a.Reason, a.Run, a.Run)

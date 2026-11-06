@@ -21,14 +21,14 @@ export interface ApiDeps {
    * verb's verification must not be widened by this later open. Injected so
    * the byte endpoint is testable without a real attachment tree on disk. */
   openAttachment: (hostPath: string) => Promise<Blob | null>;
-  /** Wakes the resident after a Homie write or a packet decision. A rejection
+  /** Wakes the resident after a Collie write or a packet decision. A rejection
    * is logged and never fails the request; the timer is the fallback. */
   nudgeResident: (sessionId: string) => Promise<void>;
 }
 
-/** Answers a Homie verb and, when it succeeded, nudges the resident for its
+/** Answers a Collie verb and, when it succeeded, nudges the resident for its
  * session. The nudge is best effort: the request's outcome is the verb's. */
-async function homieResponse(res: McResult, sessionID: string | undefined, deps: ApiDeps): Promise<Response> {
+async function collieResponse(res: McResult, sessionID: string | undefined, deps: ApiDeps): Promise<Response> {
   const id = sessionID ?? res.json?.["session_id"];
   if (res.code === 0 && typeof id === "string") {
     try {
@@ -94,10 +94,10 @@ function pushLogWindowFlags(argv: string[], url: URL): Response | null {
   return null;
 }
 
-/** The session's existing dashboard channel ref from `mc homie list`, or a
+/** The session's existing dashboard channel ref from `mc collie list`, or a
  * fresh generated one. Returns a Response when the list itself fails. */
 async function dashboardRef(sessionID: string, deps: ApiDeps): Promise<string | Response> {
-  const list = await deps.mc.run(["homie", "list"]);
+  const list = await deps.mc.run(["collie", "list"]);
   if (list.code !== 0) {
     return verbResponse(list);
   }
@@ -140,7 +140,7 @@ async function readBody(req: Request): Promise<Record<string, unknown> | Respons
  * reaches the operator only through a surface of its own, and an ack cannot be
  * repaid — so a row this set does not name stays undelivered until something
  * renders it. Fail closed on an unknown kind for the same reason. */
-const TRIVIALLY_ACKED_KINDS = new Set(["homie_reply", "homie_echo"]);
+const TRIVIALLY_ACKED_KINDS = new Set(["collie_reply", "collie_echo"]);
 
 /** The kinds a dashboard pane renders in full from the spine, so that pane's
  * render is confirmed delivery. Not on sight and not on poll: the
@@ -346,7 +346,7 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
   }
 
   if (path === "/api/sessions" && req.method === "GET") {
-    return verbResponse(await deps.mc.run(["homie", "list"]));
+    return verbResponse(await deps.mc.run(["collie", "list"]));
   }
 
   if (path === "/api/sessions" && req.method === "POST") {
@@ -364,7 +364,7 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     if (clear !== undefined && (clear !== true || (!project && !packetConversation))) return usageError("Only a Vision or packet conversation can be cleared.");
     if (ensure !== undefined && (ensure !== true || project || clear)) return usageError("Only an ordinary conversation supports automatic creation.");
     const ref = project ? `vision-${project}` : deps.genRef();
-    return homieResponse(await deps.mc.run(["homie", "start", "--from", `dashboard:${ref}`,
+    return collieResponse(await deps.mc.run(["collie", "start", "--from", `dashboard:${ref}`,
       ...(project ? ["--vision-project", project as string] : []),
       ...(packetConversation ? ["--packet", String(packet), "--version", String(version)] : []),
       ...(clear ? ["--clear"] : []), ...(ensure ? ["--ensure"] : [])]), undefined, deps);
@@ -377,7 +377,7 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     if (typeof body.binding !== "string" || !body.binding || typeof body.request_id !== "string" || !body.request_id) {
       return usageError("A model change requires an agent profile and a request identifier.");
     }
-    return homieResponse(await deps.mc.run(["homie", "start", "--from", `dashboard:${deps.genRef()}`,
+    return collieResponse(await deps.mc.run(["collie", "start", "--from", `dashboard:${deps.genRef()}`,
       "--previous", model[1], "--binding", body.binding, "--request", body.request_id]), undefined, deps);
   }
 
@@ -386,26 +386,26 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     const body = await readBody(req);
     if (body instanceof Response) return body;
     if (typeof body["title"] !== "string") return usageError("A conversation name is required.");
-    return verbResponse(await deps.mc.run(["homie", "title", rename[1], "--title", body["title"]]));
+    return verbResponse(await deps.mc.run(["collie", "title", rename[1], "--title", body["title"]]));
   }
 
   const removal = path.match(/^\/api\/sessions\/([^/]+)$/);
   if (removal && req.method === "DELETE") {
-    return homieResponse(await deps.mc.run(["homie", "delete", removal[1]]), removal[1], deps);
+    return collieResponse(await deps.mc.run(["collie", "delete", removal[1]]), removal[1], deps);
   }
 
   const upload = path.match(/^\/api\/sessions\/([^/]+)\/upload$/);
   if (upload && req.method === "POST") {
     const body = await readBody(req);
     if (body instanceof Response) return body;
-    return homieResponse(await deps.mc.run(["__dashboard-upload"], JSON.stringify({ ...body, session_id: upload[1] })), upload[1], deps);
+    return collieResponse(await deps.mc.run(["__dashboard-upload"], JSON.stringify({ ...body, session_id: upload[1] })), upload[1], deps);
   }
 
   const session = path.match(/^\/api\/sessions\/([^/]+)\/(history|send|resume)$/);
   if (session) {
     const [, sessionID, verb] = session;
     if (verb === "history" && req.method === "GET") {
-      return verbResponse(await deps.mc.run(["homie", "history", sessionID]));
+      return verbResponse(await deps.mc.run(["collie", "history", sessionID]));
     }
     if (verb === "send" && req.method === "POST") {
       const body = await readBody(req);
@@ -420,8 +420,8 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
       if (ref instanceof Response) {
         return ref;
       }
-      return homieResponse(
-        await deps.mc.run(["homie", "send", sessionID, "--from", `dashboard:${ref}`, "--body", text]),
+      return collieResponse(
+        await deps.mc.run(["collie", "send", sessionID, "--from", `dashboard:${ref}`, "--body", text]),
         sessionID, deps,
       );
     }
@@ -430,8 +430,8 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
       if (ref instanceof Response) {
         return ref;
       }
-      return homieResponse(
-        await deps.mc.run(["homie", "resume", sessionID, "--from", `dashboard:${ref}`]),
+      return collieResponse(
+        await deps.mc.run(["collie", "resume", sessionID, "--from", `dashboard:${ref}`]),
         sessionID, deps,
       );
     }
@@ -439,7 +439,7 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
 
   // One conversation attachment's bytes. The BROWSER
   // names a claim identity — session, direction, sha256, size, verbatim the
-  // fields a typed claim in `mc homie history` carries — never a path:
+  // fields a typed claim in `mc collie history` carries — never a path:
   // `mc __attachment-bytes` confirms that identity against the spine row,
   // verifies the published file byte-for-byte, and answers with the host path
   // this mirror only streams. Its metadata is translated to headers unchanged:
@@ -673,7 +673,7 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     return verbResponse(await deps.mc.run(["agent-profile", profileAction[1]!], JSON.stringify(body)));
   }
 
-  // The shared assignments include Homie.
+  // The shared assignments include Collie.
   if (path === "/api/routing" && req.method === "GET") {
     return verbResponse(await deps.mc.run(["routing", "show"]));
   }
@@ -806,10 +806,10 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     if (typeof body.project_id !== "string") return usageError("A Project is required.");
     return verbResponse(await deps.mc.run(["system", "resume-infrastructure", body.project_id, "--request", String(body.request_id ?? "")]));
   }
-  if (path === "/api/homie/reply-retry" && req.method === "POST") {
+  if (path === "/api/collie/reply-retry" && req.method === "POST") {
     const body = await readBody(req);
     if (typeof body.session_id !== "string" || !Number.isSafeInteger(body.message_id) || typeof body.request_id !== "string") return usageError("The reply retry identity is invalid.");
-    return verbResponse(await deps.mc.run(["homie", "reply-retry", body.session_id, "--message", String(body.message_id), "--request", body.request_id]));
+    return verbResponse(await deps.mc.run(["collie", "reply-retry", body.session_id, "--message", String(body.message_id), "--request", body.request_id]));
   }
 
   if (path === "/api/doctor" && req.method === "GET") {

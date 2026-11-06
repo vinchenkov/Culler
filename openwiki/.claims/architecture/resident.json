@@ -74,7 +74,7 @@
     },
     {
       "id": "claim_cb500cb1d742495fbc847d3a33935c29",
-      "statement": "The nudge socket accepts only a Homie session id, vision-save, project-start, or packet-decide, and a packet decision goes to the repository lane while other lines wake the tick.",
+      "statement": "The nudge socket accepts only a Collie session id, vision-save, project-start, or packet-decide, and a packet decision goes to the repository lane while other lines wake the tick.",
       "evidence": [
         {
           "resource": "repo://resident/src/main.ts#L338-L343",
@@ -168,14 +168,14 @@
     },
     {
       "id": "claim_49af914e0ac340fca8b2a48808d8ff5e",
-      "statement": "The resident restarts Homie when its profile or authorization changes.",
+      "statement": "The resident restarts Collie when its profile or authorization changes.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/homierestart_test.go",
+          "resource": "repo://mc/verbs/collierestart_test.go",
           "version": "repo-file-v1:sha256:70af5b8c8c184461572b09984d558c01809c3170e441aa48a454515e464bef4b"
         },
         {
-          "resource": "repo://resident/src/homie-runtime.ts",
+          "resource": "repo://resident/src/collie-runtime.ts",
           "version": "repo-file-v1:sha256:da918712f2bc70b5b4a74223da6d3f2af7a4baa39d66d475e5c81607643144f3"
         }
       ]
@@ -210,7 +210,7 @@
     },
     {
       "id": "claim_aea6be1b3b0943ada2e9ff639b0057f8",
-      "statement": "The resident carries configured effort in launch envelopes and uses the stored conversation effort for a Homie wake.",
+      "statement": "The resident carries configured effort in launch envelopes and uses the stored conversation effort for a Collie wake.",
       "evidence": [
         {
           "resource": "repo://resident/src/effects.ts#L414-L422",

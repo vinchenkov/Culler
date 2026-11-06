@@ -62,8 +62,8 @@ type attachmentCanaryMount struct {
 // mount point for shared host storage. Which one comes back is not stable —
 // observed to differ per mount within one deployment, and between two
 // inspections of one container — so a raw string comparison refuses a correct
-// container. That killed the Homie tier outright on the live deployment
-// (resident/src/homie-envelope.ts carries the same collapse and the full
+// container. That killed the Collie tier outright on the live deployment
+// (resident/src/collie-envelope.ts carries the same collapse and the full
 // account); this is the second call site of the same class, and it gates
 // supervision activation, so the failure here is a deployment that cannot be
 // activated at all.

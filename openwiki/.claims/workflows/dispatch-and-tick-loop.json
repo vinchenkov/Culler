@@ -58,7 +58,7 @@
     },
     {
       "id": "claim_57e52ee9f6ae49c48e95d0ed2cbaf910",
-      "statement": "Dispatch runs Homie first, then Project pipeline rounds, then wiki rounds; a pipeline round error preserves committed effects.",
+      "statement": "Dispatch runs Collie first, then Project pipeline rounds, then wiki rounds; a pipeline round error preserves committed effects.",
       "evidence": [
         {
           "resource": "repo://mc/verbs/dispatchverb.go#L77-L95",
@@ -98,7 +98,7 @@
     },
     {
       "id": "claim_9ed568bc034d4b4e8ad0179f5adc572b",
-      "statement": "The nudge socket accepts only a Homie session id, vision-save, project-start, or packet-decide, each at most 64 bytes.",
+      "statement": "The nudge socket accepts only a Collie session id, vision-save, project-start, or packet-decide, each at most 64 bytes.",
       "evidence": [
         {
           "resource": "repo://resident/src/nudge-socket.ts#L11-L26",

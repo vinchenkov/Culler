@@ -108,7 +108,7 @@ A successful proposal batch restores that Project allowance. An operator decisio
 The operator resolves the shared Project decision before proposal work resumes.
 An agent diagnosis supplies an unknown cause. Culler requires direct runner or resident evidence for shared connection conditions.
 
-The runner owns `mc run model-response` and `mc homie model-response`.
+The runner owns `mc run model-response` and `mc collie model-response`.
 These commands record complete model responses for the current attempt.
 Do not call these runner commands.
 Continue the assigned work after connection recovery.

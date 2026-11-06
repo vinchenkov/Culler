@@ -11,7 +11,7 @@ import {
 import { confirmRunContainersAbsent, pipelineContainerName, PROJECT_ID, SAFE_ID } from "./pipeline-liveness";
 
 export type StartEvent = "resident-start" | "container-exit" | "execution-end" | "tick" | "packet-decision"
-  | "homie-turn" | "due-time" | "heartbeat" | "expiry-end" | "pause-drain" | "pause-end" | "retry";
+  | "collie-turn" | "due-time" | "heartbeat" | "expiry-end" | "pause-drain" | "pause-end" | "retry";
 
 export interface LaneDeps extends Pick<TickDeps, "runMc" | "docker" | "log" | "fs" | "config" | "sleep"> {
   /** One-shot timer. */
@@ -37,7 +37,7 @@ export interface RepositoryLane {
   request(event: StartEvent): void;
   /** The install pause check of the tick. It takes the lane lock. */
   pauseCheck(): Promise<boolean>;
-  followHomie(containerId: string): void;
+  followCollie(containerId: string): void;
   activeCount(): number;
   stop(): Promise<void>;
 }
@@ -49,8 +49,8 @@ export const EARLIER_OWNER_POLL_MS = 5_000;
  * heartbeats. The attempts and their waits stay inside the 90-second
  * heartbeat limit of an execution. */
 export const PRE_CONTAINER_ATTEMPTS = 3;
-/** The line that the Homie runner writes after each harness turn. */
-export const HOMIE_TURN_ENDED = "homie-turn-ended";
+/** The line that the Collie runner writes after each harness turn. */
+export const COLLIE_TURN_ENDED = "collie-turn-ended";
 
 interface StopEntry {
   run_id: string;
@@ -203,7 +203,7 @@ export function createRepositoryLane(deps: LaneDeps): RepositoryLane {
   let followerTimer: unknown;
   const delays = new Map<unknown, () => void>();
   let exitFollower: Follower | undefined;
-  const homieFollowers = new Map<string, Follower>();
+  const collieFollowers = new Map<string, Follower>();
   let lock: Promise<unknown> = Promise.resolve();
 
   const closed = () => stopping || refused;
@@ -240,8 +240,8 @@ export function createRepositoryLane(deps: LaneDeps): RepositoryLane {
     delays.clear();
     exitFollower?.stop();
     exitFollower = undefined;
-    for (const follower of homieFollowers.values()) follower.stop();
-    homieFollowers.clear();
+    for (const follower of collieFollowers.values()) follower.stop();
+    collieFollowers.clear();
   }
 
   function refuse(): void {
@@ -620,37 +620,37 @@ export function createRepositoryLane(deps: LaneDeps): RepositoryLane {
     }, RETRY_DELAY_MS);
   }
 
-  function followHomie(containerId: string): void {
+  function followCollie(containerId: string): void {
     if (closed()) return;
     if (!/^[0-9a-f]{12,64}$/.test(containerId)) {
-      deps.log.warn("repository.follow_failed", `the Homie container id ${JSON.stringify(containerId)} is invalid`);
+      deps.log.warn("repository.follow_failed", `the Collie container id ${JSON.stringify(containerId)} is invalid`);
       return;
     }
     const key = containerId.slice(0, 12);
-    if (homieFollowers.has(key)) return;
+    if (collieFollowers.has(key)) return;
     let follower: Follower;
     try {
       follower = deps.follow(["logs", "--follow", "--tail", "0", containerId], (line) => {
-        if (line.trim() === HOMIE_TURN_ENDED) request("homie-turn");
+        if (line.trim() === COLLIE_TURN_ENDED) request("collie-turn");
       });
     } catch (error) {
-      deps.log.warn("repository.follow_failed", `the Homie follower for ${key} did not start: ${message(error)}`);
+      deps.log.warn("repository.follow_failed", `the Collie follower for ${key} did not start: ${message(error)}`);
       return;
     }
-    homieFollowers.set(key, follower);
-    const forget = () => { if (homieFollowers.get(key) === follower) homieFollowers.delete(key); };
+    collieFollowers.set(key, follower);
+    const forget = () => { if (collieFollowers.get(key) === follower) collieFollowers.delete(key); };
     follower.done.then(forget, forget);
   }
 
-  async function followRunningHomies(): Promise<void> {
+  async function followRunningCollies(): Promise<void> {
     try {
-      const listed = await deps.docker(["ps", "--filter", "label=mc-tier=homie", "--format", "{{.ID}}"]);
+      const listed = await deps.docker(["ps", "--filter", "label=mc-tier=collie", "--format", "{{.ID}}"]);
       if (listed.exitCode !== 0) throw new Error(`docker ps exited ${listed.exitCode}: ${listed.stderr.trim()}`);
       for (const id of listed.stdout.split("\n").map((line) => line.trim()).filter((line) => line !== "")) {
-        followHomie(id);
+        followCollie(id);
       }
     } catch (error) {
-      deps.log.warn("repository.follow_failed", `the Homie container list failed: ${message(error)}`);
+      deps.log.warn("repository.follow_failed", `the Collie container list failed: ${message(error)}`);
     }
   }
 
@@ -679,14 +679,14 @@ export function createRepositoryLane(deps: LaneDeps): RepositoryLane {
     async start() {
       if (!await registerOwner()) return;
       startExitFollower();
-      await followRunningHomies();
+      await followRunningCollies();
       if (closed()) return;
       scheduleHeartbeat();
       request("resident-start");
     },
     request,
     pauseCheck: () => withLock(() => pauseCheckLocked()),
-    followHomie,
+    followCollie,
     activeCount: () => registry.size,
     async stop() {
       if (!stopping) {

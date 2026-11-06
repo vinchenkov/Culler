@@ -9,7 +9,7 @@ import (
 )
 
 // RoutingShow renders the role-to-runtime table for the dashboard: one row
-// per required role, homie included, with the binding's configured model,
+// per required role, collie included, with the binding's configured model,
 // plus the enabled bindings a role can move to. Routing.md is its own
 // operator file with its own fenced reader, so this is a separate verb
 // rather than a `mc config show` section.

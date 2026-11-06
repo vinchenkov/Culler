@@ -210,11 +210,11 @@ func TestVisionDraftScopesAndValidation(t *testing.T) {
 	db := dvSpine(t)
 	draft := newVisionDraft(t, db)
 	dvAddProject(t, db, "other", "paused")
-	started, err := HomieStart(db, nil, HomieStartArgs{From: "dashboard:vision-ws-test", VisionProject: draft.ID})
+	started, err := CollieStart(db, nil, CollieStartArgs{From: "dashboard:vision-ws-test", VisionProject: draft.ID})
 	if err != nil {
 		t.Fatal(err)
 	}
-	id := &RunIdentity{Tier: "homie", RunID: started.(HomieStartResult).SessionID, VerbAllowlist: MaximumHomieAgentVerbs()}
+	id := &RunIdentity{Tier: "collie", RunID: started.(CollieStartResult).SessionID, VerbAllowlist: MaximumCollieAgentVerbs()}
 	if _, err := ProjectVision(db, id, "vision-edit", VisionDraftRequest{ID: draft.ID, Revision: draft.Revision, Content: "Build a recipe archive."}); err != nil {
 		t.Fatal(err)
 	}
@@ -229,7 +229,7 @@ func TestVisionDraftScopesAndValidation(t *testing.T) {
 		{"vision-pending", VisionDraftRequest{}},
 	} {
 		if _, err := ProjectVision(db, id, item.action, item.req); err == nil {
-			t.Fatalf("Homie bypassed scope: %s", item.action)
+			t.Fatalf("Collie bypassed scope: %s", item.action)
 		}
 	}
 	if _, err := ProjectVision(db, &RunIdentity{Tier: "pipeline"}, "vision-draft", VisionDraftRequest{ID: draft.ID}); err == nil {

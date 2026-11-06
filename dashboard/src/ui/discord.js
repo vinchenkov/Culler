@@ -85,7 +85,7 @@ export function createDiscordPanel({ root, api, onAvailable }) {
         text: `#${row.name}${row.category ? ` · ${row.category}` : ""} (${row.id})` })));
     const missing = channels.find(row => row.id === channel)?.missing ?? [];
     return [el("span", { class: "tag tone-teal", text: `${draft.bot.name} verified` }),
-      el("h4", { text: "Choose a channel" }), paragraph("Each message in this channel starts a Homie conversation in a new thread. Reply in that thread to continue."),
+      el("h4", { text: "Choose a channel" }), paragraph("Each message in this channel starts a Collie conversation in a new thread. Reply in that thread to continue."),
       field("Server", serverSelect), field("Channel", channelSelect, "Choose a channel where you can read and send messages."),
       missing.length > 0 && paragraph(`The channel requires these bot permissions: ${missing.join(", ")}.`, { class: "discord-warning" }),
       el("div", { class: "discord-refresh" },
@@ -120,7 +120,7 @@ export function createDiscordPanel({ root, api, onAvailable }) {
           render();
         })),
       paragraph(expired ? "The code expired. Request a new code." : `The code expires at ${new Date(draft.expires_at).toLocaleTimeString()}. It remains valid for five minutes.`),
-      account && paragraph(`Reply received from ${account.name} (${account.id}). Allow this account to talk to Homie?`, { class: "discord-notice" }),
+      account && paragraph(`Reply received from ${account.name} (${account.id}). Allow this account to talk to Collie?`, { class: "discord-notice" }),
       requiresReplacement && field("Replace the allowed accounts", el("input", { type: "checkbox", checked: replaceAccounts,
         "aria-label": "Replace the allowed accounts", onchange: event => { replaceAccounts = event.target.checked; render(); } }),
         `These accounts will lose access: ${removes.map(row => `${row.name} (${row.id})`).join(", ")}.`),
@@ -182,9 +182,9 @@ export function createDiscordPanel({ root, api, onAvailable }) {
     else if (stage === "account") content = setupAccount();
     else if (snapshot.enabled) content = connected();
     else content = [el("div", { class: "discord-intro" }, el("div", {}, el("h4", { text: "Use Culler from Discord." }),
-      paragraph("Use one channel for Homie conversations and alerts when Culler needs your attention."), button("Set up Discord", start, true)),
+      paragraph("Use one channel for Collie conversations and alerts when Culler needs your attention."), button("Set up Discord", start, true)),
       el("div", { class: "discord-example", "aria-label": "Example Discord conversation" }, el("small", { text: "# culler · Example conversation" }),
-        el("strong", { text: "Alex" }), paragraph("What needs my attention?"), el("strong", { text: "Homie" }),
+        el("strong", { text: "Alex" }), paragraph("What needs my attention?"), el("strong", { text: "Collie" }),
         paragraph("The Website Project has one blocked task. Open Culler to review its question.")))];
     const steps = ["bot", "channel", "account"];
     root.replaceChildren(...[

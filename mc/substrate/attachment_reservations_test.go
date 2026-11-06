@@ -7,10 +7,10 @@ const sealedAttachmentDigest = `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 func TestAttachmentReservationBackstopsRequireCompleteCreditsAndOldestIngress(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id,container_name,verb_allowlist,session_path,binding)
-		VALUES ('h-attachment','mc-homie-h-attachment','[]','sessions/h-attachment','claude')`)
-	binding := mustExec(t, db, `INSERT INTO homie_bindings
+		VALUES ('h-attachment','mc-collie-h-attachment','[]','sessions/h-attachment','claude')`)
+	binding := mustExec(t, db, `INSERT INTO collie_bindings
 		(session_id,surface,channel_ref) VALUES ('h-attachment','discord','channel')`)
 	bindingID, err := binding.LastInsertId()
 	if err != nil {
@@ -77,10 +77,10 @@ func TestAttachmentReservationBackstopsRequireCompleteCreditsAndOldestIngress(t 
 
 func TestAttachmentAttemptRefusesASelfConsistentPartialManifest(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id,container_name,verb_allowlist,session_path,binding)
-		VALUES ('h-partial','mc-homie-h-partial','[]','sessions/h-partial','claude')`)
-	binding := mustExec(t, db, `INSERT INTO homie_bindings
+		VALUES ('h-partial','mc-collie-h-partial','[]','sessions/h-partial','claude')`)
+	binding := mustExec(t, db, `INSERT INTO collie_bindings
 		(session_id,surface,channel_ref) VALUES ('h-partial','discord','channel')`)
 	bindingID, _ := binding.LastInsertId()
 	manifest := `[{"ordinal":1,"size":7,"media_type":"image/png","display_name":"one.png"},{"ordinal":2,"size":11,"media_type":"text/plain","display_name":"two.txt"}]`
@@ -126,10 +126,10 @@ func TestAttachmentAttemptRefusesASelfConsistentPartialManifest(t *testing.T) {
 
 func TestAttachmentPublicationLearnedDigestIsSetOnce(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id,container_name,verb_allowlist,session_path,binding)
-		VALUES ('h-digest','mc-homie-h-digest','[]','sessions/h-digest','claude')`)
-	binding := mustExec(t, db, `INSERT INTO homie_bindings
+		VALUES ('h-digest','mc-collie-h-digest','[]','sessions/h-digest','claude')`)
+	binding := mustExec(t, db, `INSERT INTO collie_bindings
 		(session_id,surface,channel_ref) VALUES ('h-digest','discord','channel')`)
 	bindingID, _ := binding.LastInsertId()
 	ingress := mustExec(t, db, `INSERT INTO attachment_ingresses
@@ -183,10 +183,10 @@ func TestAttachmentPublicationLearnedDigestIsSetOnce(t *testing.T) {
 
 func TestAttachmentTerminalBackstopsRefuseUnreceiptedCleanupAndLeaseWidening(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id,container_name,verb_allowlist,session_path,binding)
-		VALUES ('h-terminal','mc-homie-h-terminal','[]','sessions/h-terminal','claude')`)
-	binding := mustExec(t, db, `INSERT INTO homie_bindings
+		VALUES ('h-terminal','mc-collie-h-terminal','[]','sessions/h-terminal','claude')`)
+	binding := mustExec(t, db, `INSERT INTO collie_bindings
 		(session_id,surface,channel_ref) VALUES ('h-terminal','discord','channel')`)
 	bindingID, _ := binding.LastInsertId()
 	ingress := mustExec(t, db, `INSERT INTO attachment_ingresses
@@ -282,10 +282,10 @@ func TestAttachmentTerminalBackstopsRefuseUnreceiptedCleanupAndLeaseWidening(t *
 
 func TestAttachmentFailureReceiptIsPairedWithFailedIngress(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id,container_name,verb_allowlist,session_path,binding)
-		VALUES ('h-failure','mc-homie-h-failure','[]','sessions/h-failure','claude')`)
-	binding := mustExec(t, db, `INSERT INTO homie_bindings
+		VALUES ('h-failure','mc-collie-h-failure','[]','sessions/h-failure','claude')`)
+	binding := mustExec(t, db, `INSERT INTO collie_bindings
 		(session_id,surface,channel_ref) VALUES ('h-failure','discord','channel')`)
 	bindingID, _ := binding.LastInsertId()
 	ingress := mustExec(t, db, `INSERT INTO attachment_ingresses

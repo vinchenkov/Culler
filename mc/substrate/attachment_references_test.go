@@ -7,9 +7,9 @@ import (
 
 func TestAttachmentReferencesRequireCanonicalLiveObjects(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('aabbccddeeff0011', 'homie-fixture', '[]', 'sessions/aabbccddeeff0011', 'fixture')`)
+		VALUES ('aabbccddeeff0011', 'collie-fixture', '[]', 'sessions/aabbccddeeff0011', 'fixture')`)
 	mustExec(t, db, `INSERT INTO conversation_messages
 		(session_id, seq, direction, surface, channel_ref, body)
 		VALUES ('aabbccddeeff0011', 1, 'inbound', 'discord', 'room', 'hello')`)
@@ -38,9 +38,9 @@ func TestAttachmentReferencesRequireCanonicalLiveObjects(t *testing.T) {
 
 func TestAttachmentReferenceAdmissionRejectsPathLikeOrOversizedMetadata(t *testing.T) {
 	db := openSpine(t)
-	mustExec(t, db, `INSERT INTO homie_sessions
+	mustExec(t, db, `INSERT INTO collie_sessions
 		(id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('1122334455667788', 'homie-fixture', '[]', 'sessions/1122334455667788', 'fixture')`)
+		VALUES ('1122334455667788', 'collie-fixture', '[]', 'sessions/1122334455667788', 'fixture')`)
 	mustExec(t, db, `INSERT INTO conversation_messages
 		(session_id, seq, direction, surface, channel_ref, body)
 		VALUES ('1122334455667788', 1, 'inbound', 'discord', 'room', 'hello')`)

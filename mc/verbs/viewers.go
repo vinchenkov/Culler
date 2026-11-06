@@ -111,7 +111,7 @@ func ViewerStatus(home string, now time.Time, ping AgentsViewPing) (Viewers, []S
 		viewers.AgentsView.Reason = err.Error()
 		return viewers, []SystemCondition{{
 			ID: "agentsview:unavailable", Group: "execution", State: "failed", Name: "AgentsView",
-			Condition: err.Error() + " Trace links do not open. Runs and Homie continue. " + agentsViewRepair(err),
+			Condition: err.Error() + " Trace links do not open. Runs and Collie continue. " + agentsViewRepair(err),
 			Action:    "View details",
 		}}
 	}
@@ -184,14 +184,14 @@ func agentsViewOverdue(home string, now time.Time) (SystemCondition, bool) {
 	seen := map[string]bool{}
 	names := []string{}
 	for _, item := range health.Overdue {
-		if !plainSessionID(item.ID) || (item.Kind != "run" && item.Kind != "homie") || seen[item.Kind+":"+item.ID] {
+		if !plainSessionID(item.ID) || (item.Kind != "run" && item.Kind != "collie") || seen[item.Kind+":"+item.ID] {
 			continue
 		}
 		seen[item.Kind+":"+item.ID] = true
 		if item.Kind == "run" {
 			names = append(names, "run "+item.ID)
 		} else {
-			names = append(names, "Homie session "+item.ID)
+			names = append(names, "Collie session "+item.ID)
 		}
 	}
 	if len(names) == 0 {

@@ -171,7 +171,7 @@ test("the Board approves a proposal for Image dependencies once and restores its
     await page.getByTestId("setup-approve").waitFor();
     expect(await page.getByTestId("setup-panel").innerText()).toContain(proposed.draft.explanation);
     expect(await page.getByTestId("setup-panel").getByRole("button", { name: /pause|view details/i }).count()).toBe(0);
-    expect(await page.getByTestId("setup-ask-homie").count()).toBe(0);
+    expect(await page.getByTestId("setup-ask-collie").count()).toBe(0);
     await page.waitForFunction(() => document.querySelector('[data-testid="setup-dockerfile"]')?.getAttribute("data-state") === "ready");
     expect(await page.getByTestId("setup-dockerfile").locator(".file-view-change").innerText()).toBe("Added");
     expect(await page.getByTestId("setup-dockerfile").locator("diffs-container").evaluate(node =>

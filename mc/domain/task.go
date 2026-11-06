@@ -207,7 +207,7 @@ func Unblock(ctx context.Context, q Q, taskID int64) error {
 
 // Cancel records the operator decision and archives the task.
 func Cancel(ctx context.Context, q Q, taskID int64, reason string, actor string) error {
-	if actor == "operator" || strings.HasPrefix(actor, "homie:") {
+	if actor == "operator" || strings.HasPrefix(actor, "collie:") {
 		if err := RequireOperatorTaskControl(ctx, q, taskID); err != nil {
 			return err
 		}

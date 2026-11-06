@@ -128,10 +128,10 @@ type OnboardArgs struct {
 	HeartbeatIntervalS  int
 	SpawnGraceS         int
 	HardDeadlineMinutes int
-	// HomieIdleTimeoutS is a lock tunable like the five above rather than a
-	// host-only config value: the wake selector reads lock.homie_idle_timeout_s,
+	// CollieIdleTimeoutS is a lock tunable like the five above rather than a
+	// host-only config value: the wake selector reads lock.collie_idle_timeout_s,
 	// so config.toml only means something once the section projects it.
-	HomieIdleTimeoutS          int
+	CollieIdleTimeoutS         int
 	WikiUpdateIntervalS        int
 	ReviewWIPCap               int
 	TunablesConfirmed          bool
@@ -518,7 +518,7 @@ func scaffoldOnboardHome(home string) (bool, error) {
 		}
 	}
 	// The operator skill store: the scaffold owns `skills/` and
-	// `skills/homie/`; Project registration owns the rest.
+	// `skills/collie/`; Project registration owns the rest.
 	storeChanged, err := EnsureSkillStore(home)
 	if err != nil {
 		return false, err
@@ -1665,7 +1665,7 @@ func onboardTunablesProjection(a OnboardArgs, publishConfig func() (bool, error)
 		{"review_wip_cap", a.ReviewWIPCap}, {"timeout_minutes", a.TimeoutMinutes},
 		{"grace_minutes", a.GraceMinutes}, {"heartbeat_interval_s", a.HeartbeatIntervalS},
 		{"spawn_grace_s", a.SpawnGraceS}, {"hard_deadline_minutes", a.HardDeadlineMinutes},
-		{"homie_idle_timeout_s", a.HomieIdleTimeoutS},
+		{"collie_idle_timeout_s", a.CollieIdleTimeoutS},
 		{"wiki_update_interval_s", a.WikiUpdateIntervalS},
 	}
 	for _, item := range requested {
@@ -1684,19 +1684,19 @@ func onboardTunablesProjection(a OnboardArgs, publishConfig func() (bool, error)
 	status, detail := "", ""
 	configChanged := false
 	err = inTx(db, func(ctx context.Context, q Q) error {
-		var reviewCap, timeout, grace, heartbeat, spawn, deadline, homieIdle, wikiInterval int
+		var reviewCap, timeout, grace, heartbeat, spawn, deadline, collieIdle, wikiInterval int
 		if err := q.QueryRowContext(ctx, `
 			SELECT review_wip_cap, timeout_minutes, grace_minutes, heartbeat_interval_s,
-			       spawn_grace_s, hard_deadline_minutes, homie_idle_timeout_s, wiki_update_interval_s
+			       spawn_grace_s, hard_deadline_minutes, collie_idle_timeout_s, wiki_update_interval_s
 			FROM settings WHERE id = 1`,
-		).Scan(&reviewCap, &timeout, &grace, &heartbeat, &spawn, &deadline, &homieIdle, &wikiInterval); err != nil {
+		).Scan(&reviewCap, &timeout, &grace, &heartbeat, &spawn, &deadline, &collieIdle, &wikiInterval); err != nil {
 			return err
 		}
 		current := map[string]int{
 			"review_wip_cap":  reviewCap,
 			"timeout_minutes": timeout, "grace_minutes": grace,
 			"heartbeat_interval_s": heartbeat, "spawn_grace_s": spawn,
-			"hard_deadline_minutes": deadline, "homie_idle_timeout_s": homieIdle,
+			"hard_deadline_minutes": deadline, "collie_idle_timeout_s": collieIdle,
 			"wiki_update_interval_s": wikiInterval,
 		}
 		mismatched := []onboardTunable{}

@@ -23,7 +23,7 @@ const roleResponsibilities = {
   scribe: "The Scribe keeps the Project wiki accurate as the code changes. It updates the documentation and leaves the code intact.",
 };
 
-export function createRoleCustomization({ api, openHomie }) {
+export function createRoleCustomization({ api, openCollie }) {
   let dialog = null;
   let origin = null;
   let closed = null;
@@ -70,8 +70,8 @@ export function createRoleCustomization({ api, openHomie }) {
     const contract = el("div", { testid: "customization-contract" });
     const history = el("div", { testid: "customization-history" });
     const blocked = el("aside", { class: "customization-blocked", testid: "customization-blocked", hidden: true },
-      el("p", { text: "This role has a block. After you correct its instructions, ask Homie to clear the block." }),
-      el("button", { type: "button", class: "btn small", text: "Open Homie", onclick: () => { close(); openHomie(); } }));
+      el("p", { text: "This role has a block. After you correct its instructions, ask Collie to clear the block." }),
+      el("button", { type: "button", class: "btn small", text: "Open Collie", onclick: () => { close(); openCollie(); } }));
     const historySection = el("section", { class: "customization-record" },
       el("h3", {}, "Revision history", el("span", { class: "customization-count" })), history);
     const description = el("p", { id: "customization-purpose", class: "customization-purpose" });

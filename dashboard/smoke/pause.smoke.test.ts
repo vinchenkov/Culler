@@ -89,11 +89,11 @@ test("Pause all pauses every Project and Resume all resumes each paused Project"
   await configs.getByRole("button", { name: "Pause Project empty", exact: true }).click();
   await configs.getByRole("button", { name: "Resume Project empty", exact: true }).waitFor();
   await waitProjects(["Project paused", "Project paused"]);
-  // Homie prepares a conversation while every Project is paused.
-  await page.getByTestId("tab-homie").click();
+  // Collie prepares a conversation while every Project is paused.
+  await page.getByTestId("tab-collie").click();
   await page.getByTestId("project-listbox").waitFor({ state: "hidden" });
   await page.waitForFunction(() => document.querySelectorAll('[data-testid="session-row"]').length > 0);
-  expect(((await mc(["homie", "list"])).sessions as any[]).length).toBe(1);
+  expect(((await mc(["collie", "list"])).sessions as any[]).length).toBe(1);
   expect(await pausedIDs()).toEqual(["pause-empty", "pause-one"]);
   await page.getByTestId("tab-board").click();
   await openList();
@@ -168,7 +168,7 @@ test("the header names a run in a paused Project as finishing", async () => {
     await page.getByTestId("tab-board").click();
     await selectProject(smoke, "pause-one");
     await badge(/^Project paused · Worker finishing run on task #1 · \dm$/);
-    await page.getByTestId("tab-homie").click();
+    await page.getByTestId("tab-collie").click();
     await badge(/^1 agent finishing run$/);
     await mc(["resume"]);
     await page.reload();

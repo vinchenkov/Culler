@@ -123,11 +123,11 @@ func TestProjectNamePrefersTheTitle(t *testing.T) {
 	}
 }
 
-func TestHomieDisplayNameNamesTheVisionProjectWhenPresent(t *testing.T) {
-	if got := HomieDisplayName("Culler", "h-9f8e"); got != "Homie · Culler · h-9f8e" {
+func TestCollieDisplayNameNamesTheVisionProjectWhenPresent(t *testing.T) {
+	if got := CollieDisplayName("Culler", "h-9f8e"); got != "Collie · Culler · h-9f8e" {
 		t.Fatalf("Vision Project session = %q", got)
 	}
-	if got := HomieDisplayName("", "h-9f8e"); got != "Homie · h-9f8e" {
+	if got := CollieDisplayName("", "h-9f8e"); got != "Collie · h-9f8e" {
 		t.Fatalf("ordinary session = %q", got)
 	}
 }

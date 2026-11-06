@@ -174,7 +174,7 @@ A required operator decision consumes zero failure or correction attempts.
 Only direct execution observations can establish a connection condition.
 An agent report retains an unknown cause.
 
-The runner owns `mc run model-response` and `mc homie model-response`.
+The runner owns `mc run model-response` and `mc collie model-response`.
 These commands record complete model responses for the current attempt.
 Do not call these runner commands.
 Continue the assigned work after connection recovery.

@@ -29,7 +29,7 @@ func TestConfigSavePersistsEverySupportedSetting(t *testing.T) {
 		{"timing.heartbeat_interval_s", 30},
 		{"timing.spawn_grace_s", 90},
 		{"timing.hard_deadline_minutes", 300},
-		{"timing.homie_idle_timeout_s", 3600},
+		{"timing.collie_idle_timeout_s", 3600},
 		{"timing.wiki_update_interval_s", 7200},
 		{"timing.backup_retain", 8},
 		{"container.additional_blocked_patterns", []operatorconfig.BlockedPattern{{Kind: "component", Pattern: "private"}, {Kind: "basename-glob", Pattern: "*.secret"}}},
@@ -283,7 +283,7 @@ func TestWikiUpdateIntervalSetting(t *testing.T) {
 	// The projection refuses a request with no value.
 	if _, _, err := onboardTunablesDB(OnboardArgs{
 		Spine: spine, ReviewWIPCap: 3, TimeoutMinutes: 60, GraceMinutes: 15, HeartbeatIntervalS: 60,
-		SpawnGraceS: 60, HardDeadlineMinutes: 240, HomieIdleTimeoutS: 1800,
+		SpawnGraceS: 60, HardDeadlineMinutes: 240, CollieIdleTimeoutS: 1800,
 	}); err == nil {
 		t.Fatal("a projection with no wiki update interval passed")
 	}

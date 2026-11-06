@@ -186,7 +186,7 @@ Each milestone occupies one row at its first chronological position.
 That row shows the latest state, while operation messages preserve the earlier attempts.
 A retry resets its milestone until the new attempt supplies completion evidence.
 
-Ask Homie for the current failure appears with the setup controls below the transcript.
+Ask Collie for the current failure appears with the setup controls below the transcript.
 `diagnosticNode` selects the current failed operation or the general retry condition.
 The transcript preserves each failure message without duplicate diagnostic buttons.
 The setup journal smoke checks the diagnostic button beside Retry and the absence of action controls inside the transcript.
@@ -276,7 +276,7 @@ The package manager performs that check during preparation.
 These directories belong to each container even though their parent home persists.
 Credentials and sessions use separate run locations.
 Concurrent Setup Agent, Worker, and Scribe runs therefore retain separate role instructions and harness state.
-Homie retains its separate home and session rules.
+Collie retains its separate home and session rules.
 
 ### Fresh source and preparation
 

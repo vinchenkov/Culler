@@ -137,7 +137,7 @@ The resident supplies each value only to its declared setup or agent scope.
 Setup Agent runs and pipeline runs share one persistent Project home at `/home/agent` through `HOME`.
 The home retains normal dependency caches, installed tools, and Project tool configuration.
 Each Project uses separate storage from other Projects and the operator's home.
-Homie retains its separate home and session rules.
+Collie retains its separate home and session rules.
 
 The Worker, Verifier, Packager, and Scribe receive a fresh source workspace at the assigned commit.
 The Strategist and Arbiter read a fresh committed projection.

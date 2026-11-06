@@ -11,7 +11,7 @@ index 247c8774..2604c8c4 100644
 +  }
  
    if (path === "/api/sessions" && req.method === "GET") {
-     return verbResponse(await deps.mc.run(["homie", "list"]));
+     return verbResponse(await deps.mc.run(["collie", "list"]));
 diff --git a/dashboard/src/main.ts b/dashboard/src/main.ts
 index a467b4b0..736d3788 100644
 --- a/dashboard/src/main.ts
@@ -462,7 +462,7 @@ index c7185e49..200d6768 100644
 +const DEADLINE_READ_PAIRS = new Set([
 +  "task list", "task get", "project list", "packet list", "lease list",
 +  "settings get", "pause status", "run list", "run customization",
-+  "wiki-state list", "homie list", "homie history", "activity list",
++  "wiki-state list", "collie list", "collie history", "activity list",
 +  "board history-report", "outbox poll", "system status", "system diagnostics",
 +]);
 +
@@ -792,7 +792,7 @@ index 00000000..de9cc3fa
 +	switch args[0] + " " + args[1] {
 +	case "task list", "task get", "project list", "packet list", "lease list",
 +		"settings get", "pause status", "run list", "run customization",
-+		"wiki-state list", "homie list", "homie history", "activity list",
++		"wiki-state list", "collie list", "collie history", "activity list",
 +		"board history-report", "outbox poll", "system status", "system diagnostics",
 +		"__system-state status", "__system-state diagnostics":
 +		return true

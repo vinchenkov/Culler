@@ -30,11 +30,11 @@ test("Project starts recover the Project label after a resident restart", async 
   ]);
 });
 
-test("cleanup and ordinary Homie containers remain available during Project deletion", async () => {
+test("cleanup and ordinary Collie containers remain available during Project deletion", async () => {
   const calls: string[][] = [];
   const guarded = projectContainers(async argv => { calls.push(argv); return ok(); },
     async () => { throw new Error("An unrelated command used the Project guard."); });
   await guarded(["rm", "--force", "container"]);
-  await guarded(["create", "--label", "mc-tier=homie", "image"]);
+  await guarded(["create", "--label", "mc-tier=collie", "image"]);
   expect(calls.length).toBe(2);
 });

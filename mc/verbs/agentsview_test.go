@@ -56,24 +56,24 @@ func TestRunListCarriesTheAgentsViewSessionOfEachMainTrace(t *testing.T) {
 	}
 }
 
-func TestHomieListCarriesTheAgentsViewSessionOfEachMainTrace(t *testing.T) {
+func TestCollieListCarriesTheAgentsViewSessionOfEachMainTrace(t *testing.T) {
 	db := dvSpine(t)
 	hwSessionBound(t, db, "h-claude", "claude-sdk/claude")
-	if _, err := RegisterSession(db, &RunIdentity{Tier: "homie", RunID: "h-claude"}, "h-claude", avClaudeRef, "native.jsonl"); err != nil {
+	if _, err := RegisterSession(db, &RunIdentity{Tier: "collie", RunID: "h-claude"}, "h-claude", avClaudeRef, "native.jsonl"); err != nil {
 		t.Fatal(err)
 	}
 	hwSessionBound(t, db, "h-codex", "codex/chatgpt")
-	if _, err := RegisterSession(db, &RunIdentity{Tier: "homie", RunID: "h-codex"}, "h-codex", avCodexRef,
+	if _, err := RegisterSession(db, &RunIdentity{Tier: "collie", RunID: "h-codex"}, "h-codex", avCodexRef,
 		"2026/09/29/rollout-2026-09-29T10-00-00-"+avCodexRef+".jsonl"); err != nil {
 		t.Fatal(err)
 	}
 	hwSessionBound(t, db, "h-pending", "claude-sdk/claude")
 	hwSessionBound(t, db, "h-fake", "fake/fake")
-	if _, err := RegisterSession(db, &RunIdentity{Tier: "homie", RunID: "h-fake"}, "h-fake", avClaudeRef, "native.jsonl"); err != nil {
+	if _, err := RegisterSession(db, &RunIdentity{Tier: "collie", RunID: "h-fake"}, "h-fake", avClaudeRef, "native.jsonl"); err != nil {
 		t.Fatal(err)
 	}
 
-	listed, err := HomieList(db, nil)
+	listed, err := CollieList(db, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func TestHomieListCarriesTheAgentsViewSessionOfEachMainTrace(t *testing.T) {
 		"h-pending": nil, "h-fake": nil,
 	}
 	if len(rows) != len(want) {
-		t.Fatalf("homie list = %#v", rows)
+		t.Fatalf("collie list = %#v", rows)
 	}
 	for _, row := range rows {
 		got, present := row["agentsview"]

@@ -106,7 +106,7 @@ func dvSpine(t *testing.T, initArgs ...func(*InitArgs)) *sql.DB {
 | worker | claude-sdk | endpoint |
 | verifier | codex | chatgpt |
 | packager | claude-sdk | endpoint |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `), 0o600); err != nil {
 		t.Fatalf("write routing.md: %v", err)
 	}

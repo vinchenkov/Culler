@@ -22,7 +22,7 @@ func ResolveEnvironmentRuntime() (PrivateRuntimeBinding, error) {
 	if err != nil {
 		return PrivateRuntimeBinding{}, err
 	}
-	binding, ok := resolveFrozenHomieBinding(authority.capability(), route.HistoricalBinding())
+	binding, ok := resolveFrozenCollieBinding(authority.capability(), route.HistoricalBinding())
 	if !ok {
 		return binding, Domainf("The setup agent profile is unavailable.")
 	}

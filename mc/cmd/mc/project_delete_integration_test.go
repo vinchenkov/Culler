@@ -87,10 +87,10 @@ func TestProjectDeleteStopsContainersAndPreservesOtherProjects(t *testing.T) {
 		{"mc-managed": "true", "mc-project": "ws-test", "mc-tier": "pipeline"},
 		{"mc-managed": "true", "mc-project": "ws-test", "mc-tier": "setup"},
 		{"mc-managed": "true", "mc-project": "ws-test", "mc-tier": "wiki-export"},
-		{"mc-managed": "true", "com.culler.project": "ws-test", "com.culler.home": home, "mc-tier": "homie"},
+		{"mc-managed": "true", "com.culler.project": "ws-test", "com.culler.home": home, "mc-tier": "collie"},
 		{"mc-managed": "true", "mc-project": "other"},
 		{"mc-managed": "true", "mc-project": "ws-test", "com.culler.home": home + "-other"},
-		{"mc-managed": "true", "mc-tier": "homie"},
+		{"mc-managed": "true", "mc-tier": "collie"},
 		{"mc-project": "ws-test"},
 	} {
 		fixtureContainer(t, root, strings.Repeat(string(rune('1'+i)), 64), labels, home+"/runs")

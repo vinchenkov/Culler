@@ -1,4 +1,4 @@
-// resident-nudge.ts — wakes the resident's round after a Homie write.
+// resident-nudge.ts — wakes the resident's round after a Collie write.
 //
 // The resident listens on MC_HOME/resident.socket. One nudge is the session id
 // and a newline. The socket answers nothing; the caller closes at once.

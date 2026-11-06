@@ -82,7 +82,7 @@ func TestPipelineAgentsCannotChangePauses(t *testing.T) {
 	}
 }
 
-func TestPipelinePauseAllowsHomieDispatch(t *testing.T) {
+func TestPipelinePauseAllowsCollieDispatch(t *testing.T) {
 	for _, scope := range []string{"all", "project"} {
 		t.Run(scope, func(t *testing.T) {
 			db := dvSpine(t)
@@ -103,7 +103,7 @@ func TestPipelinePauseAllowsHomieDispatch(t *testing.T) {
 				t.Fatal(err)
 			}
 			actions := dvTickActions(t, raw)
-			if len(actions) != 1 || actions[0]["action"] != "homie-wake" {
+			if len(actions) != 1 || actions[0]["action"] != "collie-wake" {
 				t.Fatalf("actions = %v", actions)
 			}
 			if n := dfInt(t, db, `SELECT count(*) FROM runs WHERE tier='pipeline'`); n != 0 {

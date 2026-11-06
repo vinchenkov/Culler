@@ -86,7 +86,7 @@ const SETTINGS = {
   spawn_grace_s: 60,
   hard_deadline_minutes: 60,
   review_wip_cap: 3,
-  homie_idle_timeout_s: 1800,
+  collie_idle_timeout_s: 1800,
   wiki_update_interval_s: 3600,
 };
 

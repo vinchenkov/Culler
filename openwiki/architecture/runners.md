@@ -1,7 +1,7 @@
 ---
 type: architecture
 title: Runner containers and harness adapters
-description: How the runner image is built, how the agent runner selects a harness adapter and reports back through the setuid mc, and how the Homie runner, fake harness, and shared runner modules fit in.
+description: How the runner image is built, how the agent runner selects a harness adapter and reports back through the setuid mc, and how the Collie runner, fake harness, and shared runner modules fit in.
 tags: [runner, docker, adapters, harness, image]
 sources:
   - id: openwiki-source-2f0a77787a810afb1a87cbbb
@@ -27,7 +27,7 @@ sources:
   - id: openwiki-source-81d4bb4f0203db5a26c2bc57
     resource: repo://runner/fake-harness/README.md
   - id: openwiki-source-46e96222197b6f4505759147
-    resource: repo://runner/homie-runner/main.ts
+    resource: repo://runner/collie-runner/main.ts
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
@@ -44,7 +44,7 @@ verified:
 
 # Runner containers and harness adapters
 
-Every agent run executes in a fresh Docker container started by the resident. The container image comes from `runner/image/`. The TypeScript code that runs inside it comes from `runner/agent-runner/` (pipeline roles), `runner/homie-runner/` (the conversational Homie tier), `runner/fake-harness/` (a deterministic test harness), and `runner/shared/` (logging and small shared helpers). The runner never opens the spine. It reports everything by spawning `mc`, which inside the container is a setuid gate that fences the agent-facing verbs (see [mc CLI and verb scope](mc-cli-and-verb-scope.md)).
+Every agent run executes in a fresh Docker container started by the resident. The container image comes from `runner/image/`. The TypeScript code that runs inside it comes from `runner/agent-runner/` (pipeline roles), `runner/collie-runner/` (the conversational Collie tier), `runner/fake-harness/` (a deterministic test harness), and `runner/shared/` (logging and small shared helpers). The runner never opens the spine. It reports everything by spawning `mc`, which inside the container is a setuid gate that fences the agent-facing verbs (see [mc CLI and verb scope](mc-cli-and-verb-scope.md)).
 
 ## The image: `runner/image/`
 
@@ -67,7 +67,7 @@ Agent containers drop all capabilities and use the default Docker seccomp profil
 The runtime also supplies `mc-land` for isolated repository operations.
 
 `mc/deployment/runner_release.go` lists the shipped source files.
-It includes the agent, Homie, and setup runners, adapters, OpenWiki files, and shared modules.
+It includes the agent, Collie, and setup runners, adapters, OpenWiki files, and shared modules.
 The production list excludes the fake harness.
 `resident/src/effects.ts` uses the runtime volume when configured; source mounts remain a fallback for test configurations.
 
@@ -131,7 +131,7 @@ See [Agent connections and access renewal](../operations/agent-connections.md) f
 Setup and pipeline containers share the persistent Project home at `/home/agent` through `HOME`.
 The resident mounts separate temporary `.agents`, `.claude`, and `.codex` directories within that home.
 Credentials and native sessions use their separate run locations.
-Homie retains its own home and session rules.
+Collie retains its own home and session rules.
 
 `runner/shared/project-environment.ts` prepares declared dependencies before Worker, Verifier, and Packager execution.
 The Scribe omits automatic preparation and checks retained dependency compatibility before use.
@@ -144,22 +144,22 @@ A preparation failure remains context when the harness can still execute.
 The setup runner uses separate environment operations and reports through their assigned identities.
 See [Project environments](../workflows/project-environments.md) for image decisions, caches, and the acceptance boundary.
 
-## The Homie runner: `runner/homie-runner/main.ts`
+## The Collie runner: `runner/collie-runner/main.ts`
 
-The Homie runner serves the lease-free conversational tier (see [Homie](../concepts/homie.md)). It reuses `adapterInvocation`, `installEnvelopeSkills`, and the diagnostics from the agent runner, but it never heartbeats and holds no lease. It reports `mc homie runner-started` once and exits if a newer launch fenced that report. It then loops: `mc homie claim` takes the oldest pending turn, the runner runs one harness turn, it posts provisional text through `mc homie draft` at most once per second, and it finishes with `mc homie reply --to <id>`. The resident stops the container on the idle timeout. The resident pins `HOME=/home/mc-model` for Homie containers, so skill installation has an absolute root.
+The Collie runner serves the lease-free conversational tier (see [Collie](../concepts/collie.md)). It reuses `adapterInvocation`, `installEnvelopeSkills`, and the diagnostics from the agent runner, but it never heartbeats and holds no lease. It reports `mc collie runner-started` once and exits if a newer launch fenced that report. It then loops: `mc collie claim` takes the oldest pending turn, the runner runs one harness turn, it posts provisional text through `mc collie draft` at most once per second, and it finishes with `mc collie reply --to <id>`. The resident stops the container on the idle timeout. The resident pins `HOME=/home/mc-model` for Collie containers, so skill installation has an absolute root.
 
-`homieTurnPrompt` adds Discord access and Diagnostic context sections to each turn prompt.
+`collieTurnPrompt` adds Discord access and Diagnostic context sections to each turn prompt.
 The Discord section assigns setup and account approval to **Configs → Discord**.
-It states that Culler consumes account confirmation codes before Homie receives messages.
-It tells Homie that each channel message starts a session in its own Discord thread.
+It states that Culler consumes account confirmation codes before Collie receives messages.
+It tells Collie that each channel message starts a session in its own Discord thread.
 The operator can continue that session from the thread or the dashboard, and a dashboard reply reaches the thread.
 The host owns this authority; the runner receives no Discord configuration command.
 See [Discord setup](../integrations/discord.md) for the host checks.
 It identifies dashboard diagnostic messages as short summaries with references for permitted reads.
 It also states that a proposed state change requires explicit operator confirmation.
 The prompt keeps the conversation identifier and operator message sequence alongside optional packet and Vision context.
-`runner/homie-runner/main.test.ts` checks the prompt text in ordinary turns and native-session continuation cases.
-See [diagnostic authority](../concepts/homie.md#diagnostic-context-and-authority) for the role's evidence and access limits.
+`runner/collie-runner/main.test.ts` checks the prompt text in ordinary turns and native-session continuation cases.
+See [diagnostic authority](../concepts/collie.md#diagnostic-context-and-authority) for the role's evidence and access limits.
 
 ## The fake harness: `runner/fake-harness/`
 
@@ -175,7 +175,7 @@ Each component's `check.sh` runs `bun test` without Docker or tokens:
 
 - `runner/agent-runner/runner-process.test.ts` runs `main()` as a subprocess against a temporary envelope and a stub `mc`. It covers route refusal, single `register-session`, heartbeats during the adapter wait, the brief gated on `process-started`, preamble refusals, and the exit-0 infra report.
 - `runner.test.ts`, `skills.test.ts`, `diagnostics.test.ts`, and `adapters/*.test.ts` cover the pure functions and the adapters.
-- `runner/homie-runner/main.test.ts` covers the Homie loop.
+- `runner/collie-runner/main.test.ts` covers the Collie loop.
 - `runner/fake-harness/behavior.test.ts` and `cli.test.ts` cover the fake harness.
 - `runner/shared/*.test.ts` covers the shared modules.
 

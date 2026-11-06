@@ -29,8 +29,8 @@ func TestTraceSessionsListEachMainTraceWithItsDisplayName(t *testing.T) {
 			VALUES (?, 'pipeline', ?, 'ws-test', ?, ?, ?, ?, ?, ?, ?)`,
 			run.id, run.role, run.subject, run.created, run.ended, "sessions/"+run.id, run.binding, run.native, run.file)
 	}
-	const homieClaudeRef = "33333333-3333-4333-8333-333333333333"
-	const homieCodexRef = "44444444-4444-4444-8444-444444444444"
+	const collieClaudeRef = "33333333-3333-4333-8333-333333333333"
+	const collieCodexRef = "44444444-4444-4444-8444-444444444444"
 	const deletedRef = "55555555-5555-4555-8555-555555555555"
 	for _, session := range []struct {
 		id, binding    string
@@ -38,15 +38,15 @@ func TestTraceSessionsListEachMainTraceWithItsDisplayName(t *testing.T) {
 		file, status   any
 		deleted        any
 	}{
-		{"h-vision", "claude-sdk/claude", "ws-test", homieClaudeRef, "native.jsonl", "active", nil},
-		{"h-plain", "codex/chatgpt", nil, homieCodexRef, "2026/09/29/rollout-" + homieCodexRef + ".jsonl", "reaped", nil},
+		{"h-vision", "claude-sdk/claude", "ws-test", collieClaudeRef, "native.jsonl", "active", nil},
+		{"h-plain", "codex/chatgpt", nil, collieCodexRef, "2026/09/29/rollout-" + collieCodexRef + ".jsonl", "reaped", nil},
 		{"h-deleted", "claude-sdk/claude", nil, deletedRef, "native.jsonl", "ended", "2026-09-29 11:00:00"},
 		{"h-pending", "claude-sdk/claude", nil, nil, nil, "active", nil},
 	} {
-		dvExec(t, db, `INSERT INTO homie_sessions (id, vision_project_id, status, deleted_at, container_name,
+		dvExec(t, db, `INSERT INTO collie_sessions (id, vision_project_id, status, deleted_at, container_name,
 			verb_allowlist, session_path, binding, native_session_ref, trace_filename)
 			VALUES (?, ?, ?, ?, ?, '[]', ?, ?, ?, ?)`,
-			session.id, session.vision, session.status, session.deleted, "mc-homie-"+session.id,
+			session.id, session.vision, session.status, session.deleted, "mc-collie-"+session.id,
 			"sessions/"+session.id, session.binding, session.native, session.file)
 	}
 
@@ -62,15 +62,15 @@ func TestTraceSessionsListEachMainTraceWithItsDisplayName(t *testing.T) {
 		{Kind: "run", ID: "r-strategist", SessionPath: "sessions/r-strategist", Format: "codex",
 			NativeSessionRef: avCodexRef, TraceFilename: codexFile, AgentsViewSession: "codex:" + avCodexRef,
 			DisplayName: "Culler · strategist · r-strategist", Ended: false},
-		{Kind: "homie", ID: "h-vision", SessionPath: "sessions/h-vision", Format: "claude",
-			NativeSessionRef: homieClaudeRef, TraceFilename: "native.jsonl", AgentsViewSession: homieClaudeRef,
-			DisplayName: "Homie · Culler · h-vision", Ended: false},
-		{Kind: "homie", ID: "h-plain", SessionPath: "sessions/h-plain", Format: "codex",
-			NativeSessionRef: homieCodexRef, TraceFilename: "2026/09/29/rollout-" + homieCodexRef + ".jsonl",
-			AgentsViewSession: "codex:" + homieCodexRef, DisplayName: "Homie · h-plain", Ended: true},
-		{Kind: "homie", ID: "h-deleted", SessionPath: "sessions/h-deleted", Format: "claude",
+		{Kind: "collie", ID: "h-vision", SessionPath: "sessions/h-vision", Format: "claude",
+			NativeSessionRef: collieClaudeRef, TraceFilename: "native.jsonl", AgentsViewSession: collieClaudeRef,
+			DisplayName: "Collie · Culler · h-vision", Ended: false},
+		{Kind: "collie", ID: "h-plain", SessionPath: "sessions/h-plain", Format: "codex",
+			NativeSessionRef: collieCodexRef, TraceFilename: "2026/09/29/rollout-" + collieCodexRef + ".jsonl",
+			AgentsViewSession: "codex:" + collieCodexRef, DisplayName: "Collie · h-plain", Ended: true},
+		{Kind: "collie", ID: "h-deleted", SessionPath: "sessions/h-deleted", Format: "claude",
 			NativeSessionRef: deletedRef, TraceFilename: "native.jsonl", AgentsViewSession: deletedRef,
-			DisplayName: "Homie · h-deleted", Ended: true},
+			DisplayName: "Collie · h-deleted", Ended: true},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("trace sessions =\n%#v\nwant\n%#v", got, want)

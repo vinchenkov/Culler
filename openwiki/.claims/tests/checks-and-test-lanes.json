@@ -209,7 +209,7 @@
       "statement": "The packet artifact Docker test checks task report and evidence reads, refused writes, and isolation from another task.",
       "evidence": [
         {
-          "resource": "repo://mc/e2e/homie_packet_artifacts_test.go",
+          "resource": "repo://mc/e2e/collie_packet_artifacts_test.go",
           "version": "repo-file-v1:sha256:3931ea6dfb9f183add5173d35cf990b9b222029dbca2588384de51725db8ac8b"
         }
       ]
@@ -219,7 +219,7 @@
       "statement": "The packet conversation tests cover current identity, shared preparation, resume, deletion, archive refusal, and model restrictions.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/homiepacket_test.go",
+          "resource": "repo://mc/verbs/colliepacket_test.go",
           "version": "repo-file-v1:sha256:a8e5baea6ad4c59fc14166e8ae81b36ba0a12aa2a887368338fe6fd2af93a4a5"
         }
       ]

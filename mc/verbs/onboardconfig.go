@@ -314,7 +314,7 @@ func applyOnboardTunableAnswers(desired *operatorconfig.Config, a OnboardArgs) {
 		desired.Timing.SpawnGraceS = defaults.Timing.SpawnGraceS
 		desired.Timing.HardDeadlineMinutes = defaults.Timing.HardDeadlineMinutes
 		desired.Timing.TickIntervalS = defaults.Timing.TickIntervalS
-		desired.Timing.HomieIdleTimeoutS = defaults.Timing.HomieIdleTimeoutS
+		desired.Timing.CollieIdleTimeoutS = defaults.Timing.CollieIdleTimeoutS
 		desired.Timing.WikiUpdateIntervalS = defaults.Timing.WikiUpdateIntervalS
 		desired.Timing.BackupIntervalS = defaults.Timing.BackupIntervalS
 		desired.Timing.BackupRetain = defaults.Timing.BackupRetain
@@ -337,7 +337,7 @@ func applyOnboardTunableAnswers(desired *operatorconfig.Config, a OnboardArgs) {
 		{a.HeartbeatIntervalS, &desired.Timing.HeartbeatIntervalS},
 		{a.SpawnGraceS, &desired.Timing.SpawnGraceS},
 		{a.HardDeadlineMinutes, &desired.Timing.HardDeadlineMinutes},
-		{a.HomieIdleTimeoutS, &desired.Timing.HomieIdleTimeoutS},
+		{a.CollieIdleTimeoutS, &desired.Timing.CollieIdleTimeoutS},
 	} {
 		if item.value > 0 {
 			*item.target = item.value
@@ -352,7 +352,7 @@ func (p OnboardTunablesPlan) Project(a OnboardArgs) OnboardArgs {
 	a.HeartbeatIntervalS = p.Desired.Timing.HeartbeatIntervalS
 	a.SpawnGraceS = p.Desired.Timing.SpawnGraceS
 	a.HardDeadlineMinutes = p.Desired.Timing.HardDeadlineMinutes
-	a.HomieIdleTimeoutS = p.Desired.Timing.HomieIdleTimeoutS
+	a.CollieIdleTimeoutS = p.Desired.Timing.CollieIdleTimeoutS
 	a.WikiUpdateIntervalS = p.Desired.Timing.WikiUpdateIntervalS
 	return a
 }

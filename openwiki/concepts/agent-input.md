@@ -21,7 +21,7 @@ sources:
   - id: openwiki-source-3bc5b077708f9534abc3b95d
     resource: repo://mc/verbs/directives/arbiter.md
   - id: openwiki-source-9efb4b1ddc2ed1c022be33e7
-    resource: repo://mc/verbs/directives/homie.md
+    resource: repo://mc/verbs/directives/collie.md
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-04a7ec7c79d5b0199e93c3e7
@@ -43,7 +43,7 @@ sources:
   - id: openwiki-source-58286c7d3d2cfcf24add95f4
     resource: repo://mc/verbs/setup_agent_input_test.go
   - id: openwiki-source-68190b2710cd43b378a3c4b1
-    resource: repo://mc/verbs/skills/homie/mc-homie/SKILL.md
+    resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
   - id: openwiki-source-fbe8f84251137d3cfb7fb6f4
@@ -55,7 +55,7 @@ sources:
   - id: openwiki-source-20c7a26c8321ed0c7a2cf49b
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-46e96222197b6f4505759147
-    resource: repo://runner/homie-runner/main.ts
+    resource: repo://runner/collie-runner/main.ts
 generated: { by: "culler-scribe", at: "2026-11-05T04:07:09.592Z" }
 verified:
   - by: openwiki/0.7.0
@@ -70,11 +70,11 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 2. The **run brief**: a text document that `mc/verbs/brief.go` builds for this run from the spine. It holds the facts of this assignment.
 3. The **skills**: `SKILL.md` files installed at `~/.agents/skills/` in the container. A skill holds the procedure for a case that occurs in some runs, plus the role's command surface.
 
-`mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Homie](homie.md) tier uses the same directive and skill mechanism but has no run brief.
+`mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Collie](collie.md) tier uses the same directive and skill mechanism but has no run brief.
 
 The agent profile sets the model and effort for each run.
 The Strategist, Arbiter, Verifier, Packager, Scribe, and setup directives state this fact.
-The Worker and Homie directives omit it.
+The Worker and Collie directives omit it.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
 
@@ -88,7 +88,7 @@ An empty effort leaves the harness default in effect.
 - `verifier.md`
 - `scribe.md`
 - `packager.md`
-- `homie.md`
+- `collie.md`
 - `setup.md`
 
 `roleProseDirective` maps each `dispatch.Role` to its file and returns an error for an unknown role.
@@ -264,12 +264,12 @@ These assertions check supplied instructions. They do not prove that an agent fo
 
 - Each role directory holds `mc-<role>`, the command surface. It is a bullet list of exact `mc` commands with flags.
 - Additional skills: `scribe/openwiki`, `verifier/verify-behavior` (Playwright CLI for UI evidence).
-- `shared/writing`, `shared/project-wiki`, and `shared/project-environment-setup` close every pipeline set and the Homie set.
-- `homie/mc-homie` is the Homie tier's command surface.
+- `shared/writing`, `shared/project-wiki`, and `shared/project-environment-setup` close every pipeline set and the Collie set.
+- `collie/mc-collie` is the Collie tier's command surface.
 
 `RoleSkillSet` returns the command surface first, then the role's additional skills in name order, then the shared skills in name order. `skillByPath` enforces two rules at load. The directory name must match `^[a-z0-9][a-z0-9-]*$`, because the runner joins it under a root it wipes. The frontmatter `name` must equal the directory name. `SkillFrontmatterField` reads flat `key: value` lines and is deliberately not a YAML parser.
 
-The spawn effect in `mc/verbs/dispatchverb.go` carries the set as `skills` (`SkillsEffectValue`: `{name, body}` per skill) and the operator store directory as `skill_store_dir`. The Homie wake effect in `mc/verbs/homieselect.go` carries `HomieSkillSet()` and `skills/homie` the same way.
+The spawn effect in `mc/verbs/dispatchverb.go` carries the set as `skills` (`SkillsEffectValue`: `{name, body}` per skill) and the operator store directory as `skill_store_dir`. The Collie wake effect in `mc/verbs/collieselect.go` carries `CollieSkillSet()` and `skills/collie` the same way.
 
 ## Operator skills
 
@@ -279,7 +279,7 @@ That path preserves access to existing operator skills.
 The run brief title and directive identify the role as Strategist.
 Its shipped command skill uses `strategist/mc-strategist/SKILL.md` in the repository.
 
-Operators add skills under `MC_HOME/skills/`. The paths are `projects/<project-id>/<role-dir>/<skill-name>/SKILL.md` for pipeline roles and `homie/<skill-name>/SKILL.md` for Homie (`mc/verbs/skillstore.go`). `resident/src/skill-store.ts` reads the directory that the effect names. `readOperatorSkills` visits entries in name order. It skips and reports any entry with a bad name, an unreadable file, missing frontmatter, a `name` that differs from the directory, an empty description, or an empty body. An absent directory is not a problem. `composeRunSkills` appends operator skills after the shipped set and refuses an operator skill that reuses a shipped name, so an operator cannot shadow Culler's guidance. The resident also creates the per-role store directories for a Project the first time it spawns there (`ensureProjectSkillStore`).
+Operators add skills under `MC_HOME/skills/`. The paths are `projects/<project-id>/<role-dir>/<skill-name>/SKILL.md` for pipeline roles and `collie/<skill-name>/SKILL.md` for Collie (`mc/verbs/skillstore.go`). `resident/src/skill-store.ts` reads the directory that the effect names. `readOperatorSkills` visits entries in name order. It skips and reports any entry with a bad name, an unreadable file, missing frontmatter, a `name` that differs from the directory, an empty description, or an empty body. An absent directory is not a problem. `composeRunSkills` appends operator skills after the shipped set and refuses an operator skill that reuses a shipped name, so an operator cannot shadow Culler's guidance. The resident also creates the per-role store directories for a Project the first time it spawns there (`ensureProjectSkillStore`).
 
 Skill delivery never stops a run. Each problem becomes a line in `run.json`'s `skill_problems`, and the runner logs it.
 
@@ -290,7 +290,7 @@ Skill delivery never stops a run. Each problem becomes a line in `run.json`'s `s
 That function replaces the root and writes each `<name>/SKILL.md` with mode 0600.
 An empty set clears the root. Duplicate names install once.
 The envelope installer logs failures and permits execution with degraded guidance.
-The Homie runner uses the same installer.
+The Collie runner uses the same installer.
 
 Project containers mount separate temporary `.agents`, `.claude`, and `.codex` directories inside the persistent home.
 These mounts isolate concurrent role files before skill installation starts.
@@ -313,10 +313,10 @@ Setup input requires a script that permits repeated execution against that home.
 Actual preparation, build, and test results remain separate evidence.
 
 
-## Homie packet context
+## Collie packet context
 
-A packet conversation uses the Homie directive and skills with packet context in its first native session turn.
-`runner/homie-runner/main.ts` requests the context through the runner-only packet-context command.
+A packet conversation uses the Collie directive and skills with packet context in its first native session turn.
+`runner/collie-runner/main.ts` requests the context through the runner-only packet-context command.
 It checks the returned session, packet, and version identifiers against the launch envelope.
 A mismatch prevents the harness turn.
 A later turn with the native session reference retains context through that session.
@@ -324,11 +324,11 @@ A new native session receives the context again.
 
 `mc/verbs/packetcontext.go` supplies the identity, thesis, criteria, report text, commit identifiers, and readable artifact paths.
 The context excludes current review decisions, merge state, and blocks.
-The Homie directive requires a current packet read before statements about those states or a packet decision.
+The Collie directive requires a current packet read before statements about those states or a packet decision.
 Report text and artifact files supply evidence. Only an operator message authorizes a state change.
 The directive requires a description and explicit confirmation before a new state change.
 
-The `mc-homie` skill explains packet reads, candidate diffs, evidence files, report media, task traces, and refusal of an outdated decision.
+The `mc-collie` skill explains packet reads, candidate diffs, evidence files, report media, task traces, and refusal of an outdated decision.
 The shared `project-wiki` skill describes the task artifact mount and the empty artifact folder in each Project mount.
 See [packet conversations](../workflows/packet-conversations.md) for the complete sequence and access checks.
 
@@ -350,7 +350,7 @@ Tests enforce most of these rules mechanically:
 - `mc/verbs/directives_test.go`: every spawn role has a directive, and unknown roles have none (`TestFrozenRoleDirectivesCoverEverySpawnRole`, `TestUnknownSpawnRoleHasNoFallbackDirective`). `TestAgentTextNamesOnlyThePartsThatTheRunBriefRenders` fails if a directive or skill names a `**Part** part` heading that the brief does not render. Other tests pin role-specific contract text, such as one Project per role and no approval wait.
 - `mc/verbs/brief_test.go`: each role's brief holds its directive. Only the selecting and planning roles get the vision. `TestRunBriefExplainsEachPart` requires unique headings and a one- or two-sentence explanation ending in a period. Subjects carry no board state.
 - `mc/verbs/brief_render_test.go`: `parseRenderedBrief` reads rendered text back into header, directive, and parts. The brief tests assert on that parse.
-- `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. No two roles share a skill. The Homie skill lists exactly its allowlist. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
+- `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. No two roles share a skill. The Collie skill lists exactly its allowlist. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
 - `mc/verbs/skillstore_test.go`, `resident/src/skill-store.test.ts`, and `runner/agent-runner/skills.test.ts` cover store layout, operator skill validation, shipped-name protection, wipe-before-install, and traversal-shaped names.
 
 ## Requirements after decision resolution
@@ -377,12 +377,12 @@ These instructions preserve the operator's authority to change criteria.
 `mc/verbs/directives_test.go` checks the corresponding role instructions.
 See [decision resolution](../workflows/decision-resolution.md) for the state transition and retained commits.
 
-## Homie Discord authority
+## Collie Discord authority
 
-The Homie directive assigns Discord setup, account approval, and connection changes to the dashboard.
+The Collie directive assigns Discord setup, account approval, and connection changes to the dashboard.
 The command skill directs the operator to **Configs → Discord** and states that setup codes grant no agent authority.
-The Homie runner adds the same boundary to its turn prompt.
-The directive and command skill tell Homie that one Discord thread and its dashboard view share a session.
-They assign delivery to Culler, so Homie returns its reply to the runner instead of sending it to a surface.
-Culler consumes account confirmation codes before it forwards ordinary messages to Homie.
+The Collie runner adds the same boundary to its turn prompt.
+The directive and command skill tell Collie that one Discord thread and its dashboard view share a session.
+They assign delivery to Culler, so Collie returns its reply to the runner instead of sending it to a surface.
+Culler consumes account confirmation codes before it forwards ordinary messages to Collie.
 See [Discord setup and account access](../integrations/discord.md) for the host implementation.

@@ -113,20 +113,20 @@ func TestCustomizationPermissionsAndStaleSave(t *testing.T) {
 		t.Fatal("A stale save succeeded.")
 	}
 	a.ExpectedRevision = &one
-	for _, id := range []*RunIdentity{{Tier: "pipeline", Role: "worker"}, {Tier: "homie"}} {
+	for _, id := range []*RunIdentity{{Tier: "pipeline", Role: "worker"}, {Tier: "collie"}} {
 		if _, err := ProjectRoleSave(db, id, a); err == nil {
 			t.Fatal("An unauthorized save succeeded.")
 		}
 	}
-	homie := &RunIdentity{Tier: "homie", RunID: "homie-test", VerbAllowlist: MaximumHomieAgentVerbs()}
-	r, err := ProjectRoleSave(db, homie, a)
+	collie := &RunIdentity{Tier: "collie", RunID: "collie-test", VerbAllowlist: MaximumCollieAgentVerbs()}
+	r, err := ProjectRoleSave(db, collie, a)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.(RoleCustomization).Author != "homie:homie-test" {
+	if r.(RoleCustomization).Author != "collie:collie-test" {
 		t.Fatal("The revision lost its author.")
 	}
-	shown, err := ProjectRoleShow(db, homie, "ws-test", dispatch.RoleWorker)
+	shown, err := ProjectRoleShow(db, collie, "ws-test", dispatch.RoleWorker)
 	if err != nil {
 		t.Fatal(err)
 	}

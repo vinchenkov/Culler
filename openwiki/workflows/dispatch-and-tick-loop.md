@@ -45,7 +45,7 @@ The flow for one tick:
 
 1. A timer or a nudge in `resident/src/tick-loop.ts` starts one tick.
 2. The tick runs `mc dispatch`.
-3. `mc` runs a Homie stage and then one pipeline round per Project, followed by wiki rounds. Each pipeline round calls `dispatch.Decide` and commits its result through the prepare/attest/commit seam.
+3. `mc` runs a Collie stage and then one pipeline round per Project, followed by wiki rounds. Each pipeline round calls `dispatch.Decide` and commits its result through the prepare/attest/commit seam.
 4. `mc` prints one tick object: `{"action":"tick","actions":[...],"idle":[...]}`.
 5. `resident/src/effects.ts` applies each action in order.
 
@@ -83,11 +83,11 @@ The tests in `mc/dispatch/priority_test.go` cover approval priority and correcti
 
 ### Per-Project leases
 
-Each Project has one lease row, so each Project has at most one agent run with its lease. Projects do not share a lease. `TickOrder` returns every Project id in sorted order, including paused Projects, because a reap can still apply to them. Homie, Scribe wiki runs, and repository operations claim no lease. The dispatch guide `mc/dispatch/README.md` states this model and the full repository-operation rules.
+Each Project has one lease row, so each Project has at most one agent run with its lease. Projects do not share a lease. `TickOrder` returns every Project id in sorted order, including paused Projects, because a reap can still apply to them. Collie, Scribe wiki runs, and repository operations claim no lease. The dispatch guide `mc/dispatch/README.md` states this model and the full repository-operation rules.
 
 ## The prepare/attest/commit seam
 
-`Dispatch` in `mc/verbs/dispatchverb.go` is the one caller of `Decide`. It reads the tick order, runs the Homie stage, then calls `dispatchRoundWithIdentity` once per Project. A round failure after the first round is appended to `actions` as an error envelope and ends the pipeline rounds early. Committed effects stay valid.
+`Dispatch` in `mc/verbs/dispatchverb.go` is the one caller of `Decide`. It reads the tick order, runs the Collie stage, then calls `dispatchRoundWithIdentity` once per Project. A round failure after the first round is appended to `actions` as an error envelope and ends the pipeline rounds early. Committed effects stay valid.
 
 Each round has three steps (`mc/verbs/dispatchseam.go`):
 
@@ -111,11 +111,11 @@ In production, the same seam crosses a process boundary. `mc/verbs/dispatchpriva
 
 ### The nudge socket
 
-`resident/src/nudge-socket.ts` listens on `MC_HOME/resident.socket` with mode 0600. Each connection sends one line of at most 64 bytes. `parseNudgeLine` accepts only a Homie session id (`h-` plus 16 hex digits), `vision-save`, `project-start`, or `packet-decide`. Other input is refused and logged. `main.ts` routes each accepted line to `handle.nudge()` and to the repository lane.
+`resident/src/nudge-socket.ts` listens on `MC_HOME/resident.socket` with mode 0600. Each connection sends one line of at most 64 bytes. `parseNudgeLine` accepts only a Collie session id (`h-` plus 16 hex digits), `vision-save`, `project-start`, or `packet-decide`. Other input is refused and logged. `main.ts` routes each accepted line to `handle.nudge()` and to the repository lane.
 
 ## Applying effects
 
-`applyEffect` in `resident/src/effects.ts` handles `idle`, `spawn`, `reap`, and the Homie actions. A `refused` effect is only logged, because `mc` already recorded its consequence. Unknown actions are logged and ignored (fail-closed).
+`applyEffect` in `resident/src/effects.ts` handles `idle`, `spawn`, `reap`, and the Collie actions. A `refused` effect is only logged, because `mc` already recorded its consequence. Unknown actions are logged and ignored (fail-closed).
 
 A **spawn** validates the run id and Project id, writes the launch envelope to `MC_HOME/runs/<run_id>.json` (mounted read-only at `/mc/run.json`), writes a host-only mount-plan sibling, runs `mc __mount-recheck`, runs `docker create`, rechecks again, and runs `docker start`. The container is named `mc-<project>-<run_id>`. Drift after create removes the unstarted container and launch files. A preparation, create, or start failure is reported through `mc run infra-failure --source resident`, which charges the Project infrastructure allowance because no agent process started (see [failure controls](../concepts/failure-controls.md)).
 
@@ -125,10 +125,10 @@ A **reap** stops `mc-setup-<run_id>` and the pipeline container. If a container 
 
 `mc pause` and `mc resume` (`mc/cmd/mc/main.go`) call `SetEveryProjectPause` in `mc/verbs/pause.go`. Pause sets every active Project to paused in one transaction. Resume sets every paused Project with `setup_status = 'ready'` back to active; Projects with incomplete setup stay paused. Pipeline agents cannot call it (`RequireHostScope`). The dashboard drives these commands.
 
-A pause makes `Decide` return `project-inactive` but still reconciles the lease, so an active run finishes and a dead run is still reaped. Homie keeps working. Tests:
+A pause makes `Decide` return `project-inactive` but still reconciles the lease, so an active run finishes and a dead run is still reaped. Collie keeps working. Tests:
 
 - `mc/dispatch/pause_test.go`: pause idles every role and resume restores the same selection.
-- `mc/verbs/pause_test.go`: `TestPauseAllAndResumeAllChangeEveryProject`, `TestPipelinePauseAllowsHomieDispatch`, `TestPausedPipelineReleasesExpiredLease`, and `TestPauseBetweenPrepareAndCommitRefusesRun`, which shows that a pause between prepare and commit makes the commit inert.
+- `mc/verbs/pause_test.go`: `TestPauseAllAndResumeAllChangeEveryProject`, `TestPipelinePauseAllowsCollieDispatch`, `TestPausedPipelineReleasesExpiredLease`, and `TestPauseBetweenPrepareAndCommitRefusesRun`, which shows that a pause between prepare and commit makes the commit inert.
 
 ## Related tests
 

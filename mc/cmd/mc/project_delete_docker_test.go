@@ -37,7 +37,7 @@ func TestProjectDeleteDockerBoundary(t *testing.T) {
 	base := []string{"--network", "none", "--read-only", "--memory", "64m", "--pids-limit", "32", "--entrypoint", "/bin/sh"}
 	loop := []string{image, "-c", "while :; do sleep 1; done"}
 	owned := []string{}
-	for _, tier := range []string{"setup", "homie", "wiki-export"} {
+	for _, tier := range []string{"setup", "collie", "wiki-export"} {
 		args := []string{"create", "--label", "mc-managed=true", "--label", "com.culler.home=" + home, "--label", "com.culler.project=ws-test", "--label", "mc-tier=" + tier}
 		args = append(args, base...)
 		args = append(args, loop...)

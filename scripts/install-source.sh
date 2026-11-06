@@ -30,7 +30,7 @@
 #   --routing-file <path>  Select an explicit file for role assignments.
 #   --accept-default-tunables  Accept the recommended service intervals and review limit.
 #   --review-wip-cap <n>  Set the maximum live review packets per Project. The default is 3.
-#   --homie-idle-timeout-s <n>  Set the Homie conversation idle limit in seconds. The default is 1800.
+#   --collie-idle-timeout-s <n>  Set the Collie conversation idle limit in seconds. The default is 1800.
 #   --timeout-minutes <n>  Set the agent lease in minutes.
 #   --grace-minutes <n>  Set the agent lease grace in minutes.
 #   --heartbeat-interval-s <n>  Set the agent heartbeat interval in seconds.
@@ -127,7 +127,7 @@ GRACE_MINUTES=""
 HEARTBEAT_INTERVAL_S=""
 SPAWN_GRACE_S=""
 HARD_DEADLINE_MINUTES=""
-HOMIE_IDLE_TIMEOUT_S=""
+COLLIE_IDLE_TIMEOUT_S=""
 ACCEPT_DEFAULT_GIT_IDENTITY=0
 GIT_AUTHOR_NAME=""
 GIT_AUTHOR_EMAIL=""
@@ -166,7 +166,7 @@ while [ $# -gt 0 ]; do
     --heartbeat-interval-s) HEARTBEAT_INTERVAL_S=${2:?--heartbeat-interval-s needs a value}; shift ;;
     --spawn-grace-s) SPAWN_GRACE_S=${2:?--spawn-grace-s needs a value}; shift ;;
     --hard-deadline-minutes) HARD_DEADLINE_MINUTES=${2:?--hard-deadline-minutes needs a value}; shift ;;
-    --homie-idle-timeout-s) HOMIE_IDLE_TIMEOUT_S=${2:?--homie-idle-timeout-s needs a value}; shift ;;
+    --collie-idle-timeout-s) COLLIE_IDLE_TIMEOUT_S=${2:?--collie-idle-timeout-s needs a value}; shift ;;
     --accept-default-git-identity) ACCEPT_DEFAULT_GIT_IDENTITY=1 ;;
     --git-author-name) GIT_AUTHOR_NAME=${2:?--git-author-name needs a value}; shift ;;
     --git-author-email) GIT_AUTHOR_EMAIL=${2:?--git-author-email needs a value}; shift ;;
@@ -208,7 +208,7 @@ esac
   fail "--accept-default-routing cannot be combined with --routing-file"
 HAS_TUNABLE_OVERRIDE=0
 for value in "$REVIEW_WIP_CAP" "$TIMEOUT_MINUTES" "$GRACE_MINUTES" \
-  "$HEARTBEAT_INTERVAL_S" "$SPAWN_GRACE_S" "$HARD_DEADLINE_MINUTES" "$HOMIE_IDLE_TIMEOUT_S"
+  "$HEARTBEAT_INTERVAL_S" "$SPAWN_GRACE_S" "$HARD_DEADLINE_MINUTES" "$COLLIE_IDLE_TIMEOUT_S"
 do
   [ -z "$value" ] || HAS_TUNABLE_OVERRIDE=1
 done
@@ -772,7 +772,7 @@ if [ "$DEV" -eq 0 ]; then
   [ -z "$HEARTBEAT_INTERVAL_S" ] || set -- "$@" --heartbeat-interval-s "$HEARTBEAT_INTERVAL_S"
   [ -z "$SPAWN_GRACE_S" ] || set -- "$@" --spawn-grace-s "$SPAWN_GRACE_S"
   [ -z "$HARD_DEADLINE_MINUTES" ] || set -- "$@" --hard-deadline-minutes "$HARD_DEADLINE_MINUTES"
-  [ -z "$HOMIE_IDLE_TIMEOUT_S" ] || set -- "$@" --homie-idle-timeout-s "$HOMIE_IDLE_TIMEOUT_S"
+  [ -z "$COLLIE_IDLE_TIMEOUT_S" ] || set -- "$@" --collie-idle-timeout-s "$COLLIE_IDLE_TIMEOUT_S"
   [ "$ACCEPT_DEFAULT_GIT_IDENTITY" -eq 0 ] || set -- "$@" --accept-default-git-identity
   [ -z "$GIT_AUTHOR_NAME" ] || set -- "$@" --git-author-name "$GIT_AUTHOR_NAME" --git-author-email "$GIT_AUTHOR_EMAIL"
   [ "$ACCEPT_DEFAULT_DASHBOARD_BIND" -eq 0 ] || set -- "$@" --accept-default-dashboard-bind
@@ -838,7 +838,7 @@ set -- "$@" --runtime-bindings "$RUNTIME_BINDINGS"
 [ -z "$HEARTBEAT_INTERVAL_S" ] || set -- "$@" --heartbeat-interval-s "$HEARTBEAT_INTERVAL_S"
 [ -z "$SPAWN_GRACE_S" ] || set -- "$@" --spawn-grace-s "$SPAWN_GRACE_S"
 [ -z "$HARD_DEADLINE_MINUTES" ] || set -- "$@" --hard-deadline-minutes "$HARD_DEADLINE_MINUTES"
-[ -z "$HOMIE_IDLE_TIMEOUT_S" ] || set -- "$@" --homie-idle-timeout-s "$HOMIE_IDLE_TIMEOUT_S"
+[ -z "$COLLIE_IDLE_TIMEOUT_S" ] || set -- "$@" --collie-idle-timeout-s "$COLLIE_IDLE_TIMEOUT_S"
 [ "$ACCEPT_DEFAULT_GIT_IDENTITY" -eq 0 ] || set -- "$@" --accept-default-git-identity
 [ -z "$GIT_AUTHOR_NAME" ] || set -- "$@" --git-author-name "$GIT_AUTHOR_NAME" --git-author-email "$GIT_AUTHOR_EMAIL"
 [ "$ACCEPT_DEFAULT_DASHBOARD_BIND" -eq 0 ] || set -- "$@" --accept-default-dashboard-bind

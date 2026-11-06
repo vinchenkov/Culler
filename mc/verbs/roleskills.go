@@ -57,17 +57,17 @@ var roleDirectiveBasename = map[dispatch.Role]string{
 	dispatch.RolePackager:   "packager",
 }
 
-// HomieSkillBasename is the Homie tier's skill directory. The tier has no
-// dispatch.Role: a Homie takes no execution lease and is not a pipeline role.
+// CollieSkillBasename is the Collie tier's skill directory. The tier has no
+// dispatch.Role: a Collie takes no execution lease and is not a pipeline role.
 // Its command surface is nonetheless just as fixed as the pipeline roles' —
-// maximumHomieAgentVerbs is compiled in, and `mc homie start` defaults to the
+// maximumCollieAgentVerbs is compiled in, and `mc collie start` defaults to the
 // whole of it — so it is one static contract. An operator may start a
 // narrower session with `--allow`, which can only ever be a SUBSET of that
 // same set, and the CLI refuses the difference by scope.
-const HomieSkillBasename = "homie"
+const CollieSkillBasename = "collie"
 
 // SharedSkillBasename is the directory of the skills every pipeline role and
-// the Homie tier ship. It has no command surface and no operator store
+// the Collie tier ship. It has no command surface and no operator store
 // directory; its skills close each tier's set.
 const SharedSkillBasename = "shared"
 
@@ -110,12 +110,12 @@ func RoleSkillSet(role dispatch.Role) ([]RoleSkill, error) {
 	return skillSetByBasename(basename)
 }
 
-// HomieSkill returns the Homie tier's command surface, on the same embed and
+// CollieSkill returns the Collie tier's command surface, on the same embed and
 // the same name derivation as the pipeline roles'.
-func HomieSkill() (RoleSkill, error) { return commandSkillByBasename(HomieSkillBasename) }
+func CollieSkill() (RoleSkill, error) { return commandSkillByBasename(CollieSkillBasename) }
 
-// HomieSkillSet returns everything the Homie tier ships, command surface first.
-func HomieSkillSet() ([]RoleSkill, error) { return skillSetByBasename(HomieSkillBasename) }
+// CollieSkillSet returns everything the Collie tier ships, command surface first.
+func CollieSkillSet() ([]RoleSkill, error) { return skillSetByBasename(CollieSkillBasename) }
 
 func commandSkillByBasename(basename string) (RoleSkill, error) {
 	return skillByPath(basename, commandSkillPrefix+basename)

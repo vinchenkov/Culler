@@ -145,13 +145,13 @@ func seedReviewVersion(t *testing.T, db *sql.DB, task int64) int64 {
 	return oneInt(t, db, `SELECT r.id FROM review_versions r JOIN tasks t ON t.id=r.task_id AND t.submitted_version=r.version_id WHERE t.id=?`, task)
 }
 
-func mkHomieSession(t *testing.T, db *sql.DB, id string) {
+func mkCollieSession(t *testing.T, db *sql.DB, id string) {
 	t.Helper()
 	mustExec(t, db, `
-		INSERT INTO homie_sessions
+		INSERT INTO collie_sessions
 			(id, container_name, verb_allowlist, session_path, binding)
-		VALUES (?, ?, '["homie.list"]', ?, 'fake/fake')`,
-		id, "mc-homie-"+id, "sessions/"+id)
+		VALUES (?, ?, '["collie.list"]', ?, 'fake/fake')`,
+		id, "mc-collie-"+id, "sessions/"+id)
 }
 
 // cancelTask applies the operator cancel bookkeeping: decision, timestamp,

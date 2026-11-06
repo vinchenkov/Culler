@@ -269,10 +269,10 @@ describe("child", () => {
   test("merges child context under the per-call context", () => {
     const sink = collector();
     const log = makeLogger({ comp: "resident", level: "info", sink, now: frozen });
-    log.child({ run_id: "ab12", tier: "pipeline" }).info("spawn.started", "up", { tier: "homie" });
+    log.child({ run_id: "ab12", tier: "pipeline" }).info("spawn.started", "up", { tier: "collie" });
     const parsed = JSON.parse(sink.lines[0]!);
     expect(parsed.run_id).toBe("ab12");
-    expect(parsed.tier).toBe("homie");
+    expect(parsed.tier).toBe("collie");
   });
 
   test("is chainable", () => {

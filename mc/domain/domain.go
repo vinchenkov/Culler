@@ -43,8 +43,8 @@ const (
 	// CodeWikiCheckFailed: the wiki commit of a Scribe terminal action failed
 	// a check. The command ended the run and the wiki update as failed.
 	CodeWikiCheckFailed = "wiki-check-failed"
-	// CodeSessionInactive: a Homie transport verb named a session that is not
-	// active. The Homie runner ends on it.
+	// CodeSessionInactive: a Collie transport verb named a session that is not
+	// active. The Collie runner ends on it.
 	CodeSessionInactive = "session-inactive"
 	// CodeRuntimeChanged: the launch uses an earlier profile or authorization.
 	CodeRuntimeChanged = "runtime-changed"

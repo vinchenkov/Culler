@@ -75,7 +75,7 @@ func TestRoleSkillSetIsTheCommandSurfaceThenTheAdditionalSkills(t *testing.T) {
 		role := role
 		sets[string(role)] = func() ([]RoleSkill, error) { return RoleSkillSet(role) }
 	}
-	sets["homie"] = HomieSkillSet
+	sets["collie"] = CollieSkillSet
 	for tier, get := range sets {
 		set, err := get()
 		if err != nil {
@@ -147,10 +147,10 @@ func TestPackagerShipsNoRoleSkill(t *testing.T) {
 }
 
 // TestEveryTierShipsTheWritingSkill pins the one shared skill: every pipeline
-// role and the Homie tier close their set with `writing`, the standard for
+// role and the Collie tier close their set with `writing`, the standard for
 // each text a human or another agent reads.
 func TestEveryTierShipsTheWritingSkill(t *testing.T) {
-	sets := map[string]func() ([]RoleSkill, error){"homie": HomieSkillSet}
+	sets := map[string]func() ([]RoleSkill, error){"collie": CollieSkillSet}
 	for _, role := range allSpawnRoles {
 		role := role
 		sets[string(role)] = func() ([]RoleSkill, error) { return RoleSkillSet(role) }
@@ -197,9 +197,9 @@ func TestNoTwoRolesShareASkill(t *testing.T) {
 	}
 }
 
-// TestHomieSkillEnumeratesExactlyItsAllowlist judges the Homie contract by the
-// authority that actually gates it: maximumHomieAgentVerbs, the compiled-in set
-// `mc homie start` freezes onto a session and the agent-scoped `mc` capability
+// TestCollieSkillEnumeratesExactlyItsAllowlist judges the Collie contract by the
+// authority that actually gates it: maximumCollieAgentVerbs, the compiled-in set
+// `mc collie start` freezes onto a session and the agent-scoped `mc` capability
 // enforces. Not by the file's own declaration.
 //
 // Both directions matter. A verb the allowlist grants and the skill omits is a
@@ -207,10 +207,10 @@ func TestNoTwoRolesShareASkill(t *testing.T) {
 // and the allowlist withholds is a call refused by scope, which is the exact
 // waste this artifact exists to prevent. The narrowed-session case does not
 // weaken this: `--allow` can only ever select a SUBSET of the same set.
-func TestHomieSkillEnumeratesExactlyItsAllowlist(t *testing.T) {
-	skill, err := HomieSkill()
+func TestCollieSkillEnumeratesExactlyItsAllowlist(t *testing.T) {
+	skill, err := CollieSkill()
 	if err != nil {
-		t.Fatalf("homie: %v", err)
+		t.Fatalf("collie: %v", err)
 	}
 	enumerated := map[string]bool{}
 	for _, command := range ParseSkillCommands(skill.Body) {
@@ -218,7 +218,7 @@ func TestHomieSkillEnumeratesExactlyItsAllowlist(t *testing.T) {
 		// "mc" plus verb plus optional subverb; the allowlist's own grammar is
 		// dotted ("packet.decide"), so normalize to that.
 		if len(fields) < 2 || fields[0] != "mc" {
-			t.Errorf("homie skill lists a non-mc command %q", command)
+			t.Errorf("collie skill lists a non-mc command %q", command)
 			continue
 		}
 		head := fields[1]
@@ -229,12 +229,12 @@ func TestHomieSkillEnumeratesExactlyItsAllowlist(t *testing.T) {
 	}
 	// The runner, not the model, calls these; the brief keeps them out of
 	// the model's vocabulary.
-	runnerOwned := map[string]bool{"homie.draft": true}
+	runnerOwned := map[string]bool{"collie.draft": true}
 	granted := map[string]bool{}
-	for _, verb := range maximumHomieAgentVerbs {
+	for _, verb := range maximumCollieAgentVerbs {
 		granted[verb] = true
 		if !enumerated[verb] && !runnerOwned[verb] {
-			t.Errorf("homie allowlist grants %q, which the skill never enumerates", verb)
+			t.Errorf("collie allowlist grants %q, which the skill never enumerates", verb)
 		}
 	}
 	// Reads are ungated and correctly absent from the allowlist, so only the
@@ -246,7 +246,7 @@ func TestHomieSkillEnumeratesExactlyItsAllowlist(t *testing.T) {
 	}
 	for head := range enumerated {
 		if !granted[head] && !reads[head] {
-			t.Errorf("homie skill names %q, which is neither on its allowlist nor an ungated read", head)
+			t.Errorf("collie skill names %q, which is neither on its allowlist nor an ungated read", head)
 		}
 	}
 }
@@ -398,7 +398,7 @@ func TestProseVerbInvocationsKeepsOtherToolFlagsSeparate(t *testing.T) {
 	}
 }
 
-// Task roles retain their pipeline context; Homie reads the wiki procedure from its command skill.
+// Task roles retain their pipeline context; Collie reads the wiki procedure from its command skill.
 func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 	for _, role := range allSpawnRoles {
 		prose, err := roleProseDirective(role)
@@ -417,7 +417,7 @@ func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 			}
 		}
 	}
-	homie, err := HomieSkill()
+	collie, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -425,8 +425,8 @@ func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 		"A wiki update has no task and holds no Project lease.",
 		"Culler merges an accepted wiki commit without operator review.",
 	} {
-		if !strings.Contains(homie.Body, want) {
-			t.Errorf("homie command skill omits %q", want)
+		if !strings.Contains(collie.Body, want) {
+			t.Errorf("collie command skill omits %q", want)
 		}
 	}
 }
@@ -464,7 +464,7 @@ func TestScribeInputNamesNoTask(t *testing.T) {
 // generated files of the Project wiki, and that those files can be behind the
 // accepted commit.
 func TestSharedWikiSkillStatesTheSchedule(t *testing.T) {
-	sets := map[string]func() ([]RoleSkill, error){"homie": HomieSkillSet}
+	sets := map[string]func() ([]RoleSkill, error){"collie": CollieSkillSet}
 	for _, role := range allSpawnRoles {
 		role := role
 		sets[string(role)] = func() ([]RoleSkill, error) { return RoleSkillSet(role) }
@@ -503,13 +503,13 @@ func TestSharedWikiSkillStatesTheSchedule(t *testing.T) {
 	}
 }
 
-func TestHomieDirectiveStatesArtifactAccess(t *testing.T) {
+func TestCollieDirectiveStatesArtifactAccess(t *testing.T) {
 	for _, want := range []string{
 		"A packet conversation can read the artifact files of its task at the paths in its packet context.",
 		"No other artifact files are available to you.",
 	} {
-		if !strings.Contains(strings.Join(strings.Fields(homieDirective), " "), want) {
-			t.Errorf("the Homie directive omits %q", want)
+		if !strings.Contains(strings.Join(strings.Fields(collieDirective), " "), want) {
+			t.Errorf("the Collie directive omits %q", want)
 		}
 	}
 }
@@ -518,7 +518,7 @@ func TestHomieDirectiveStatesArtifactAccess(t *testing.T) {
 // the run brief holds no Scribe commit of a task. No directive and no skill
 // can send an agent to such a fact.
 func TestAgentInputNamesNoScribeCommitOfATask(t *testing.T) {
-	texts := map[string]string{"homie directive": homieDirective}
+	texts := map[string]string{"collie directive": collieDirective}
 	for _, role := range allSpawnRoles {
 		prose, err := roleProseDirective(role)
 		if err != nil {

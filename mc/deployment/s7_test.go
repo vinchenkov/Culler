@@ -35,7 +35,7 @@ func s7Fixture(t *testing.T) (string, string, time.Time, S7Sample) {
 		Settings: S7SettingsSnapshot{
 			TimeoutMinutes: 60, GraceMinutes: 15, HeartbeatIntervalS: 60,
 			SpawnGraceS: 60, HardDeadlineMinutes: 240, ReviewWIPCap: 3,
-			HomieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
+			CollieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
 		},
 	}
 	return home, release, now, sample

@@ -99,9 +99,9 @@ func RunDisplayName(projectTitle, role, taskTitle, runID string) string {
 	return join(projectTitle, role, taskTitle, runID)
 }
 
-// HomieDisplayName names the main AgentsView session of a Homie session.
-func HomieDisplayName(visionProjectTitle, sessionID string) string {
-	return join("Homie", visionProjectTitle, sessionID)
+// CollieDisplayName names the main AgentsView session of a Collie session.
+func CollieDisplayName(visionProjectTitle, sessionID string) string {
+	return join("Collie", visionProjectTitle, sessionID)
 }
 
 func join(items ...string) string {

@@ -12,7 +12,7 @@ import type {
   RuntimeBinding,
   TickDeps,
 } from "./types";
-import { HomieRuntimeRegistry } from "./homie-runtime";
+import { CollieRuntimeRegistry } from "./collie-runtime";
 import { AttachmentConfinementHealth } from "./attachment-health";
 
 export function greenAttachmentCanaryReceipt(
@@ -200,9 +200,9 @@ export class FakeExec {
 }
 
 /** Build Docker's immutable inspect projection from the exact fake create
- * argv. This keeps Homie tests coupled to the same create plan production
+ * argv. This keeps Collie tests coupled to the same create plan production
  * validates, without hand-copying credentials or mount lists into fixtures. */
-export function homieInspectFromCreate(
+export function collieInspectFromCreate(
   create: string[],
   containerId: string,
   image: string,
@@ -213,7 +213,7 @@ export function homieInspectFromCreate(
     arg === flag && create[index + 1] !== undefined ? [create[index + 1]!] : []);
   const one = (flag: string): string => {
     const found = values(flag);
-    if (found.length !== 1) throw new Error(`fake Homie create needs exactly one ${flag}`);
+    if (found.length !== 1) throw new Error(`fake Collie create needs exactly one ${flag}`);
     return found[0]!;
   };
   const binds = values("-v");
@@ -233,7 +233,7 @@ export function homieInspectFromCreate(
   }));
   const labels = Object.fromEntries(values("--label").map((entry) => {
     const split = entry.indexOf("=");
-    if (split < 1) throw new Error("fake Homie label is malformed");
+    if (split < 1) throw new Error("fake Collie label is malformed");
     return [entry.slice(0, split), entry.slice(split + 1)];
   }));
   const network = values("--network")[0] ?? "default";
@@ -243,7 +243,7 @@ export function homieInspectFromCreate(
   const megabytes = (flag: string): number => {
     const value = values(flag)[0];
     if (value === undefined) return 0;
-    if (!/^[0-9]+m$/.test(value)) throw new Error(`fake Homie ${flag} needs a <n>m value`);
+    if (!/^[0-9]+m$/.test(value)) throw new Error(`fake Collie ${flag} needs a <n>m value`);
     return Number(value.slice(0, -1)) * 1024 * 1024;
   };
   const pidsLimit = values("--pids-limit")[0];
@@ -479,7 +479,7 @@ export const testConfig: ResidentConfig = {
     verifier: "/mc/behaviors/verifier.json",
     packager: "/mc/behaviors/packager.json",
     strategist: "/mc/behaviors/strategist.json",
-    homie: "/mc/behaviors/homie.json",
+    collie: "/mc/behaviors/collie.json",
   },
 };
 
@@ -542,7 +542,7 @@ export function makeRig(overrides: Partial<TickDeps> = {}): TestRig {
         },
       },
     }),
-    homieRuntime: new HomieRuntimeRegistry(Buffer.alloc(32, 7)),
+    collieRuntime: new CollieRuntimeRegistry(Buffer.alloc(32, 7)),
     fs: fakeFs.fs,
     attachmentConfinement,
     prepareAttachmentTree: async (session) => ({

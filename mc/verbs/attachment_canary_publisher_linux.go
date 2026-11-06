@@ -20,7 +20,7 @@ const attachmentCanaryOutboundRoot = "/mc/private/attachments/out"
 
 // AttachmentCanaryPublish is a canary-only, fixed-shape write through the
 // production setuid gate. It accepts no path or payload and requires an exact
-// ephemeral frame mount that production Homie containers do not carry.
+// ephemeral frame mount that production Collie containers do not carry.
 func AttachmentCanaryPublish(id *RunIdentity) (
 	out AttachmentCanaryPublisherReceipt,
 	retErr error,

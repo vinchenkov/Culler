@@ -5,7 +5,7 @@
 import type { Logger } from "../../runner/shared/log";
 import type { RepositoryPlan } from "./repository";
 
-import type { HomieRuntimeRegistry } from "./homie-runtime";
+import type { CollieRuntimeRegistry } from "./collie-runtime";
 
 /** Result of running an external command (mc or docker). */
 export interface ExecResult {
@@ -45,9 +45,9 @@ export interface ResidentConfig {
   releaseBuildId?: string;
   /** Command run inside the agent container (the skeleton agent runner). */
   agentCmd: string[];
-  /** Command run inside the Homie container (the homie runner). Falls back to
+  /** Command run inside the Collie container (the collie runner). Falls back to
    * agentCmd when unset so the fake e2e image can share one entrypoint. */
-  homieCmd?: string[];
+  collieCmd?: string[];
   /** Command run inside the merge container (the baked `mc-land` script). */
   landCmd: string[];
   /** Host dir of behavior fixtures, mounted RO at /mc/behaviors. */
@@ -56,7 +56,7 @@ export interface ResidentConfig {
   runnerSrcDir: string;
   /** Initial workspace root in the service configuration. */
   workspaceRoot: string;
-  /** Initial Project catalog. Homie reads current folders before each launch. */
+  /** Initial Project catalog. Collie reads current folders before each launch. */
   workspaceRoots?: Array<{ id: string; root: string }>;
   /** Docker named volume holding the spine. */
   spineVolume: string;
@@ -122,7 +122,7 @@ export interface TickDeps {
   clearTimer: (handle: unknown) => void;
   /** Invokes the host mc binary (self-delegating). */
   runMc: Exec;
-  /** Reads the current host-attested Project folders before a Homie launch. */
+  /** Reads the current host-attested Project folders before a Collie launch. */
   readWorkspaces(): Promise<Array<{ id: string; root: string }>>;
   /** Invokes the docker CLI. */
   docker: Exec;
@@ -145,9 +145,9 @@ export interface TickDeps {
   maintenance?: () => Promise<boolean>;
   /** Runs after each tick attempt, including a failed one. */
   afterTick?: () => void;
-  /** Receives the container id of each Homie container that the resident
+  /** Receives the container id of each Collie container that the resident
    * starts or adopts. */
-  homieStarted?: (containerId: string) => void;
+  collieStarted?: (containerId: string) => void;
   fs: {
     /** mkdir -p semantics by default; exclusive is for a newly derived,
      * run-keyed disposable root that must not adopt existing bytes.
@@ -159,7 +159,7 @@ export interface TickDeps {
     /** opts.mode applies on creation (the plan sibling must be 0600: the
      * recheck's trust seam refuses a group/other-readable plan file). */
     writeFile(path: string, data: string, opts?: { mode?: number }): Promise<void>;
-    /** Exact UTF-8 artifact recheck for Homie created-generation adoption. */
+    /** Exact UTF-8 artifact recheck for Collie created-generation adoption. */
     readFile(path: string): Promise<string>;
     rename(source: string, destination: string): Promise<void>;
     /** Entry names of one directory; rejects with an ENOENT-coded error when
@@ -176,9 +176,9 @@ export interface TickDeps {
   /** The credential projection for real agent routes. An absent projector
    * refuses every non-fake launch. */
   credentials?: CredentialProjector;
-  /** Boot-local Homie create-envelope/runtime proof. Rows are intentionally
+  /** Boot-local Collie create-envelope/runtime proof. Rows are intentionally
    * lost on restart so an old unstarted container cannot be adopted. */
-  homieRuntime: HomieRuntimeRegistry;
+  collieRuntime: CollieRuntimeRegistry;
   config: ResidentConfig;
 }
 
@@ -338,11 +338,11 @@ export type Effect =
   // its own. The reap names the Project of the run, so the container to stop
   // is `mc-<project>-<run_id>`.
   | { action: "reap"; project: string; run_id: string; reason?: string; stop_container?: boolean }
-  // The lease-free Homie tier. A wake carries no mount plan and no heartbeat
+  // The lease-free Collie tier. A wake carries no mount plan and no heartbeat
   // interval: the resident binds a fixed operator-read-scope set and the
   // runner never heartbeats. The run id is the session id.
   | {
-      action: "homie-wake";
+      action: "collie-wake";
       /** The conversation keeps its original effort across launches. */
       effort?: string;
       session: string;
@@ -359,32 +359,32 @@ export type Effect =
       /** The enabled capability `binding` resolved to at wake time. Required:
        * the resident refuses a wake it cannot describe from config. */
       runtime_binding: RuntimeBinding;
-      /** Frozen host-relative trace directory from the Homie registry. */
+      /** Frozen host-relative trace directory from the Collie registry. */
       session_path: string;
       /** Required together for native mode; absent for fresh/rows. */
       native_session_ref?: string;
       trace_filename?: string;
-      /** Container name the session is pinned to (mc-homie-<session>). */
+      /** Container name the session is pinned to (mc-collie-<session>). */
       container_name: string;
-      /** The Homie tier's shipped skills, command surface first, installed by
+      /** The Collie tier's shipped skills, command surface first, installed by
        * the runner before the harness starts. One static set for every
        * session. */
       skills: { name: string; body: string }[];
-      /** The Homie tier's operator skill store directory, MC_HOME-relative. */
+      /** The Collie tier's operator skill store directory, MC_HOME-relative. */
       skill_store_dir?: string;
       /** The session's frozen operator-verb allowlist, re-read from the
        * registry at wake, and what makes those verbs callable. It varies by
-       * session. The container's `mc` admits a Homie operator verb only when
+       * session. The container's `mc` admits a Collie operator verb only when
        * this list names it and the stored list agrees. Required, so an
-       * envelope without it ships a Homie that can only read. */
+       * envelope without it ships a Collie that can only read. */
       verb_allowlist: string[];
       /** The session idle timeout in seconds. The runner bounds its own life
        * with it when the stop never arrives. Absent from an older `mc`. */
       idle_timeout_s?: number;
     }
-  | { action: "homie-stop"; session: string; container_id?: string; reason?: string }
+  | { action: "collie-stop"; session: string; container_id?: string; reason?: string }
   | {
-      action: "homie-adopt";
+      action: "collie-adopt";
       session: string;
       launch: string;
       container_id: string;
@@ -393,7 +393,7 @@ export type Effect =
       runtime_generation: string;
     }
   | {
-      action: "homie-remove";
+      action: "collie-remove";
       session: string;
       launch: string;
       container_id: string;

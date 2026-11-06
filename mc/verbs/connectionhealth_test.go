@@ -185,7 +185,7 @@ func TestModelFailureAllowsOneRefreshAndPreservesAnotherProfile(t *testing.T) {
 	if _, err := ConnectionVerified(db, nil, model); err != nil {
 		t.Fatal(err)
 	}
-	request := SystemStatusRequest{Connections: []ConnectionRequirement{{ID: "test", AuthorizationID: "replacement", Operation: "token_refresh", Profiles: map[string]string{"profile": "revision", "other": "revision"}, Roles: []string{"worker", "homie"}, ProfileRoles: map[string][]string{"profile": {"worker"}, "other": {"homie"}}}}}
+	request := SystemStatusRequest{Connections: []ConnectionRequirement{{ID: "test", AuthorizationID: "replacement", Operation: "token_refresh", Profiles: map[string]string{"profile": "revision", "other": "revision"}, Roles: []string{"worker", "collie"}, ProfileRoles: map[string][]string{"profile": {"worker"}, "other": {"collie"}}}}}
 	request.Connections[0].ProfileModels = map[string]string{"profile": "review-model", "other": "general-model"}
 	result, err := SystemStatus(db, nil, request)
 	if err != nil {
@@ -319,48 +319,48 @@ func TestConnectionRefreshPreservesModelRestrictionAndExpiry(t *testing.T) {
 	}
 }
 
-func TestHomieReplyFailureRequiresExplicitIdempotentRetry(t *testing.T) {
+func TestCollieReplyFailureRequiresExplicitIdempotentRetry(t *testing.T) {
 	db := dvSpine(t)
 	dvExec(t, db, `DELETE FROM connection_health`)
 	session := startedSession(t, db, "dashboard:dash")
-	if _, err := HomieSend(db, nil, HomieSendArgs{Session: session, From: "dashboard:dash", Body: "Hello"}); err != nil {
+	if _, err := CollieSend(db, nil, CollieSendArgs{Session: session, From: "dashboard:dash", Body: "Hello"}); err != nil {
 		t.Fatal(err)
 	}
-	id := &RunIdentity{Tier: "homie", RunID: session}
-	claimed, err := HomieClaim(db, id, session)
+	id := &RunIdentity{Tier: "collie", RunID: session}
+	claimed, err := CollieClaim(db, id, session)
 	if err != nil {
 		t.Fatal(err)
 	}
 	message := claimed.(map[string]any)["message"].(map[string]any)
 	attempt := message["attempt_id"].(string)
-	if _, err := HomieReplyFailure(db, id, attempt, "The harness ended without a reply."); err != nil {
+	if _, err := CollieReplyFailure(db, id, attempt, "The harness ended without a reply."); err != nil {
 		t.Fatal(err)
 	}
-	next, err := HomieClaim(db, id, session)
+	next, err := CollieClaim(db, id, session)
 	if err != nil || len(next.(map[string]any)["message"].(map[string]any)) != 0 {
 		t.Fatalf("Failed attempt repeated: %v %v", next, err)
 	}
 	var messageID int64
-	if err := db.QueryRow(`SELECT message_id FROM homie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&messageID); err != nil {
+	if err := db.QueryRow(`SELECT message_id FROM collie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&messageID); err != nil {
 		t.Fatal(err)
 	}
 	key := domain.DiagnosticID()
-	first, err := HomieReplyRetry(db, nil, session, messageID, key)
+	first, err := CollieReplyRetry(db, nil, session, messageID, key)
 	if err != nil {
 		t.Fatal(err)
 	}
-	second, err := HomieReplyRetry(db, nil, session, messageID, key)
+	second, err := CollieReplyRetry(db, nil, session, messageID, key)
 	if err != nil || first.(map[string]any)["attempt_id"] != second.(map[string]any)["attempt_id"] {
 		t.Fatalf("Retry duplication: %v %v", second, err)
 	}
-	if _, err := HomieClaim(db, id, session); err != nil {
+	if _, err := CollieClaim(db, id, session); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieReply(db, id, HomieReplyArgs{Session: session, To: messageID, Body: "Hello"}); err != nil {
+	if _, err := CollieReply(db, id, CollieReplyArgs{Session: session, To: messageID, Body: "Hello"}); err != nil {
 		t.Fatal(err)
 	}
 	var failures int
-	if err := db.QueryRow(`SELECT COUNT(*) FROM homie_reply_attempts WHERE state='failed'`).Scan(&failures); err != nil || failures != 1 {
+	if err := db.QueryRow(`SELECT COUNT(*) FROM collie_reply_attempts WHERE state='failed'`).Scan(&failures); err != nil || failures != 1 {
 		t.Fatalf("history=%d err=%v", failures, err)
 	}
 }
@@ -549,32 +549,32 @@ func TestProjectInfrastructureResumeIsIndependentAndIdempotent(t *testing.T) {
 	}
 }
 
-func TestHomieRejectsTheResultOfAnEarlierAttempt(t *testing.T) {
+func TestCollieRejectsTheResultOfAnEarlierAttempt(t *testing.T) {
 	db := dvSpine(t)
 	session := startedSession(t, db, "dashboard:dash")
-	if _, err := HomieSend(db, nil, HomieSendArgs{Session: session, From: "dashboard:dash", Body: "Hello"}); err != nil {
+	if _, err := CollieSend(db, nil, CollieSendArgs{Session: session, From: "dashboard:dash", Body: "Hello"}); err != nil {
 		t.Fatal(err)
 	}
-	id := &RunIdentity{Tier: "homie", RunID: session}
-	claimed, err := HomieClaim(db, id, session)
+	id := &RunIdentity{Tier: "collie", RunID: session}
+	claimed, err := CollieClaim(db, id, session)
 	if err != nil {
 		t.Fatal(err)
 	}
 	attempt := claimed.(map[string]any)["message"].(map[string]any)["attempt_id"].(string)
 	var message int64
-	if err := db.QueryRow(`SELECT message_id FROM homie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&message); err != nil {
+	if err := db.QueryRow(`SELECT message_id FROM collie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&message); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieReplyFailure(db, id, attempt, "The harness stopped."); err != nil {
+	if _, err := CollieReplyFailure(db, id, attempt, "The harness stopped."); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieReplyRetry(db, nil, session, message, domain.DiagnosticID()); err != nil {
+	if _, err := CollieReplyRetry(db, nil, session, message, domain.DiagnosticID()); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieClaim(db, id, session); err != nil {
+	if _, err := CollieClaim(db, id, session); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := HomieReply(db, id, HomieReplyArgs{Session: session, To: message, Body: "Late reply", Attempt: attempt}); err == nil {
+	if _, err := CollieReply(db, id, CollieReplyArgs{Session: session, To: message, Body: "Late reply", Attempt: attempt}); err == nil {
 		t.Fatal("The earlier attempt completed a newer attempt.")
 	}
 	var replies int

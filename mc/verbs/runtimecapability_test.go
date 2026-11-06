@@ -57,9 +57,9 @@ func shippedCapability() PrivateRuntimeCapability {
 	return runtimeAuthority{bindings: bindings, digest: digest}.capability()
 }
 
-// dvHomieBinding is the frozen historical binding a seeded test session speaks:
-// the shipped Homie route, in the "<harness>/<id>" form HomieStart records.
-func dvHomieBinding(t *testing.T) string {
+// dvCollieBinding is the frozen historical binding a seeded test session speaks:
+// the shipped Collie route, in the "<harness>/<id>" form CollieStart records.
+func dvCollieBinding(t *testing.T) string {
 	t.Helper()
 	capability := dvCapability(t)
 	for _, spec := range capability.Bindings {
@@ -147,13 +147,13 @@ func TestValidatePrivateRuntimeCapabilityRefusesMalformedCarriers(t *testing.T) 
 	})
 }
 
-func TestResolveFrozenHomieBinding(t *testing.T) {
+func TestResolveFrozenCollieBinding(t *testing.T) {
 	capability := dvCapability(t)
-	binding := dvHomieBinding(t)
+	binding := dvCollieBinding(t)
 	harness, id, _ := strings.Cut(binding, "/")
 
 	t.Run("an enabled frozen binding resolves to its exact capability", func(t *testing.T) {
-		spec, ok := resolveFrozenHomieBinding(capability, binding)
+		spec, ok := resolveFrozenCollieBinding(capability, binding)
 		if !ok || spec.ID != id || spec.Harness != harness {
 			t.Fatalf("resolve(%q) = %+v, %v", binding, spec, ok)
 		}
@@ -165,23 +165,23 @@ func TestResolveFrozenHomieBinding(t *testing.T) {
 				disabled.Bindings = append(disabled.Bindings, spec)
 			}
 		}
-		if _, ok := resolveFrozenHomieBinding(disabled, binding); ok {
+		if _, ok := resolveFrozenCollieBinding(disabled, binding); ok {
 			t.Fatal("a binding absent from the enabled catalog resolved")
 		}
 	})
 	t.Run("the harness half must agree with the catalog", func(t *testing.T) {
-		if _, ok := resolveFrozenHomieBinding(capability, "codex/"+id); ok {
+		if _, ok := resolveFrozenCollieBinding(capability, "codex/"+id); ok {
 			t.Fatal("a binding resolved under the wrong harness family")
 		}
 	})
 	t.Run("an unavailable capability resolves nothing", func(t *testing.T) {
-		if _, ok := resolveFrozenHomieBinding(UnavailableRuntimeCapability(), binding); ok {
+		if _, ok := resolveFrozenCollieBinding(UnavailableRuntimeCapability(), binding); ok {
 			t.Fatal("a binding resolved against an unavailable catalog")
 		}
 	})
 	t.Run("malformed frozen bindings resolve nothing", func(t *testing.T) {
 		for _, malformed := range []string{"", id, "/" + id, harness + "/", harness + "/" + id + "/x"} {
-			if _, ok := resolveFrozenHomieBinding(capability, malformed); ok {
+			if _, ok := resolveFrozenCollieBinding(capability, malformed); ok {
 				t.Fatalf("malformed frozen binding %q resolved", malformed)
 			}
 		}

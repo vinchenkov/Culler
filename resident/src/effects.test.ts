@@ -6,8 +6,8 @@ import { deploymentIdentity, deploymentArguments } from "./environment-lane";
 
 import { describe, expect, test } from "bun:test";
 import { applyEffect, DISCARD_RETRY_MS } from "./effects";
-import { fail, homieInspectFromCreate, makeRig, ok, presentChild, runtimeBinding, testConfig } from "./test-helpers";
-import { canonicalHomieDockerEnvelope } from "./homie-envelope";
+import { fail, collieInspectFromCreate, makeRig, ok, presentChild, runtimeBinding, testConfig } from "./test-helpers";
+import { canonicalCollieDockerEnvelope } from "./collie-envelope";
 import { AttachmentConfinementHealth } from "./attachment-health";
 import { runExecution, type RepositoryPlan } from "./repository";
 import type { CredentialProjection, Effect, ExecResult, TickDeps } from "./types";
@@ -637,7 +637,7 @@ describe("spawn effect", () => {
 
     test("the set is the command skill first, then every deliverable operator skill by name", async () => {
       const rig = repositoryRig();
-      rig.fakeFs.dir(`${testConfig.mcHome}/skills/homie`);
+      rig.fakeFs.dir(`${testConfig.mcHome}/skills/collie`);
       rig.fakeFs.writes.set(`${storeDir}/zeta/SKILL.md`, good("zeta"));
       rig.fakeFs.writes.set(`${storeDir}/alpha/SKILL.md`, good("alpha"));
       await applyEffect(storedSpawn, rig.deps);
@@ -649,7 +649,7 @@ describe("spawn effect", () => {
 
     test("a skill the store cannot deliver is a logged problem, not a refused run", async () => {
       const rig = repositoryRig();
-      rig.fakeFs.dir(`${testConfig.mcHome}/skills/homie`);
+      rig.fakeFs.dir(`${testConfig.mcHome}/skills/collie`);
       rig.fakeFs.writes.set(`${storeDir}/fine/SKILL.md`, good("fine"));
       rig.fakeFs.dir(`${storeDir}/Bad Name`);
       rig.fakeFs.dir(`${storeDir}/empty`);
@@ -679,7 +679,7 @@ describe("spawn effect", () => {
 
     test("a Project whose store directories are missing gets them at first spawn, when the store exists", async () => {
       const rig = repositoryRig();
-      rig.fakeFs.dir(`${testConfig.mcHome}/skills/homie`);
+      rig.fakeFs.dir(`${testConfig.mcHome}/skills/collie`);
       await applyEffect(storedSpawn, rig.deps);
       const made = rig.fakeFs.events.filter((e) => e.startsWith(`mkdir:${testConfig.mcHome}/skills/`));
       expect(made).toEqual([
@@ -1833,34 +1833,34 @@ describe("container class hardening divergence", () => {
 	});
 });
 
-describe("homie tier (lease-free)", () => {
+describe("collie tier (lease-free)", () => {
   const cid = "c".repeat(64);
   const inspectedCreated = (rig: ReturnType<typeof makeRig>) =>
     (_argv: string[], calls: string[][]) => {
       const create = calls.find((call) => call[0] === "create");
-      if (create === undefined) throw new Error("missing Homie create call");
-      return ok(JSON.stringify([homieInspectFromCreate(
+      if (create === undefined) throw new Error("missing Collie create call");
+      return ok(JSON.stringify([collieInspectFromCreate(
         create,
         cid,
         rig.deps.config.image,
-        rig.deps.config.homieCmd ?? rig.deps.config.agentCmd,
+        rig.deps.config.collieCmd ?? rig.deps.config.agentCmd,
       )]));
     };
   const wake: Effect = {
-    action: "homie-wake",
+    action: "collie-wake",
     session: "h-abc",
-    directive: "# Homie\n\nYou are the operator's assistant.\n",
+    directive: "# Collie\n\nYou are the operator's assistant.\n",
     launch: "aaaaaaaaaaaaaaaa",
     mode: "fresh",
     binding: "fake/fake",
     runtime_binding: runtimeBinding("fake", "fake", { channel: "fake" }),
     session_path: "sessions/h-abc",
-    container_name: "mc-homie-h-abc",
-    skills: [{ name: "mc-homie", body: "---\nname: mc-homie\n---\nthe operator conversation surface\n" }],
+    container_name: "mc-collie-h-abc",
+    skills: [{ name: "mc-collie", body: "---\nname: mc-collie\n---\nthe operator conversation surface\n" }],
     // The frozen operator-verb allowlist. A fixture that omits it proves a
-    // Homie tier that can only read: the envelope writer needs a test that
+    // Collie tier that can only read: the envelope writer needs a test that
     // looks for it.
-    verb_allowlist: ["task add", "packet decide", "homie end"],
+    verb_allowlist: ["task add", "packet decide", "collie end"],
     idle_timeout_s: 1800,
   };
   const leaveExactCreated = async (rig: ReturnType<typeof makeRig>) => {
@@ -1871,15 +1871,15 @@ describe("homie tier (lease-free)", () => {
     rig.docker.enqueue(fail(1, "start gap"));
     await applyEffect(wake, rig.deps);
     const create = rig.docker.calls.find((call) => call[0] === "create")!;
-    const record = homieInspectFromCreate(
+    const record = collieInspectFromCreate(
       create, cid, rig.deps.config.image,
-      rig.deps.config.homieCmd ?? rig.deps.config.agentCmd,
+      rig.deps.config.collieCmd ?? rig.deps.config.agentCmd,
     ) as any;
     const planDigest = record.Config.Labels["mc-envelope-digest"] as string;
     const runtimeGeneration = record.Config.Labels["mc-runtime-generation"] as string;
-    const proof = rig.deps.homieRuntime.attestEnvelope({
+    const proof = rig.deps.collieRuntime.attestEnvelope({
       container_id: cid,
-      docker_envelope: canonicalHomieDockerEnvelope(record),
+      docker_envelope: canonicalCollieDockerEnvelope(record),
       envelope_digest: planDigest,
       launch: wake.launch,
       runtime_generation: runtimeGeneration,
@@ -1888,9 +1888,9 @@ describe("homie tier (lease-free)", () => {
     if (proof === null) throw new Error("test setup produced no runtime proof");
     return {
       effect: {
-        action: "homie-adopt" as const,
+        action: "collie-adopt" as const,
         container_id: cid,
-        container_name: "mc-homie-h-abc",
+        container_name: "mc-collie-h-abc",
         envelope_digest: proof.envelope_digest,
         launch: wake.launch,
         runtime_generation: runtimeGeneration,
@@ -1916,9 +1916,9 @@ describe("homie tier (lease-free)", () => {
     }
   });
 
-  test("Homie executes the private runtime from its protected volume", async () => {
+  test("Collie executes the private runtime from its protected volume", async () => {
     const rig = makeRig({ config: { ...testConfig, runtimeVolume: "runtime-test",
-      homieCmd: ["/opt/culler-runtime/bin/bun", "/opt/culler-runtime/app/src/homie-runner/main.ts"] } });
+      collieCmd: ["/opt/culler-runtime/bin/bun", "/opt/culler-runtime/app/src/collie-runner/main.ts"] } });
     rig.docker.enqueue(ok(""), ok(cid + "\n"), inspectedCreated(rig), ok(""));
     rig.mc.enqueue(ok(JSON.stringify({ session: "h-abc", launch: wake.launch, container_id: cid })));
     await applyEffect(wake, rig.deps);
@@ -1976,11 +1976,11 @@ describe("homie tier (lease-free)", () => {
     rig.docker.enqueue(ok("")); // start
     await applyEffect(wake, rig.deps);
 
-    // run.json is heartbeat-free and tier "homie".
+    // run.json is heartbeat-free and tier "collie".
     const runJson = rig.fakeFs.writes.get(`${testConfig.mcHome}/runs/h-abc.json`);
     expect(runJson).toBeDefined();
     const parsed = JSON.parse(runJson!);
-    expect(parsed.tier).toBe("homie");
+    expect(parsed.tier).toBe("collie");
     expect(parsed.run_id).toBe("h-abc");
     expect(parsed.session_id).toBe("h-abc");
     expect(parsed.directive).toBe(wake.directive);
@@ -1991,16 +1991,16 @@ describe("homie tier (lease-free)", () => {
     expect(parsed.trace_filename).toBeUndefined();
     // Republished with the bound container id before start (the runner reads it).
     expect(parsed.container_id).toBe(cid);
-    // The Homie tier carries its command contract the same way a pipeline
+    // The Collie tier carries its command contract the same way a pipeline
     // spawn does — the runner installs it before the first turn. It survives
     // the republish that stamps container_id, which rewrites the whole file.
     expect(parsed.skills).toEqual(wake.skills);
     // The frozen operator-verb allowlist, and the republish must not drop it.
-    // This is the Homie's ENTIRE write capability: `mc` inside the container
+    // This is the Collie's ENTIRE write capability: `mc` inside the container
     // admits an operator verb only by scanning this key (RequireOperatorVerb),
     // then matching it against the stored registry value
-    // (requireActiveHomieVerb). Production omitted it from this literal, so
-    // every live Homie could read and nothing else, while the CLI suite proved
+    // (requireActiveCollieVerb). Production omitted it from this literal, so
+    // every live Collie could read and nothing else, while the CLI suite proved
     // both gates against a run.json its own helper fabricated. Assert the exact
     // value, not merely its presence — a wrong set refuses just as hard.
     expect(parsed.verb_allowlist).toEqual(wake.verb_allowlist);
@@ -2009,11 +2009,11 @@ describe("homie tier (lease-free)", () => {
     // And HOME is pinned rather than inherited: the runner derives the skill
     // root from it, and this tier binds no synthetic home to supply one, so an
     // unset HOME would make the install a silent no-op.
-    const homieCreate = rig.docker.calls.find((call) => call[0] === "create")!;
-    expect(homieCreate).toContain("HOME=/home/mc-model");
+    const collieCreate = rig.docker.calls.find((call) => call[0] === "create")!;
+    expect(collieCreate).toContain("HOME=/home/mc-model");
     // The route key rides as `binding`; the behavior comes from config.
     expect(parsed.binding).toBe("fake/fake");
-    expect(parsed.harness_config).toEqual({ behavior: "/mc/behaviors/homie.json" });
+    expect(parsed.harness_config).toEqual({ behavior: "/mc/behaviors/collie.json" });
     expect(parsed.mounts.workspaces).toEqual([
       { id: "alpha", path: "/workspaces/alpha" },
       { id: "beta", path: "/workspaces/beta" },
@@ -2026,10 +2026,10 @@ describe("homie tier (lease-free)", () => {
     expect(parsed.mounts.workspace).toBe("/mc/scratch");
 
     // docker: rm -f (clear stale name), create, then start; launch-bind between.
-    expect(rig.docker.calls[0]).toEqual(["rm", "-f", "mc-homie-h-abc"]);
+    expect(rig.docker.calls[0]).toEqual(["rm", "-f", "mc-collie-h-abc"]);
     const create = rig.docker.calls[1];
     expect(create[0]).toBe("create");
-    expect(create).toContain("mc-tier=homie");
+    expect(create).toContain("mc-tier=collie");
     expect(create).toContain(`mc-launch-id=${wake.launch}`);
     expect(create).toContain("--rm");
     // A memory cap with no swap headroom and a pids cap; no CPU cap.
@@ -2038,7 +2038,7 @@ describe("homie tier (lease-free)", () => {
     expect(flag("--memory-swap")).toBe("1024m");
     expect(flag("--pids-limit")).toBe("128");
     expect(create).not.toContain("--cpus");
-    // No Homie runs as root: uid 10002 without capabilities reaches the spine
+    // No Collie runs as root: uid 10002 without capabilities reaches the spine
     // only through the setuid mc.
     expect(flag("--user")).toBe("10002:10002");
     expect(flag("--cap-drop")).toBe("ALL");
@@ -2066,7 +2066,7 @@ describe("homie tier (lease-free)", () => {
     const runtimeGeneration = create.find((arg) => arg.startsWith("mc-runtime-generation="))?.split("=")[1];
     expect(envelopeDigest).toMatch(/^[0-9a-f]{64}$/);
     expect(runtimeGeneration).toMatch(/^[0-9a-f]{64}$/);
-    expect(rig.deps.homieRuntime.attest({
+    expect(rig.deps.collieRuntime.attest({
       container_id: cid,
       envelope_digest: envelopeDigest!,
       launch: wake.launch,
@@ -2076,7 +2076,7 @@ describe("homie tier (lease-free)", () => {
 
     // launch-bind CASes the exact docker id onto the launch, before start.
     expect(rig.mc.calls).toEqual([
-      ["homie", "launch-bind", "h-abc", "--launch", wake.launch, "--container-id", cid],
+      ["collie", "launch-bind", "h-abc", "--launch", wake.launch, "--container-id", cid],
     ]);
   });
 
@@ -2084,7 +2084,7 @@ describe("homie tier (lease-free)", () => {
     for (const directive of [undefined, null, 7, "", " \n"]) {
       const rig = makeRig();
       await expect(applyEffect({ ...wake, directive } as Effect, rig.deps))
-        .rejects.toThrow("the Homie directive is required");
+        .rejects.toThrow("the Collie directive is required");
       expect(rig.fakeFs.writes.size).toBe(0);
       expect(rig.docker.calls).toEqual([]);
       expect(rig.mc.calls.filter(call => !["launch-check", "launch-failure"].includes(call[1]!))).toEqual([]);
@@ -2097,7 +2097,7 @@ describe("homie tier (lease-free)", () => {
     rig.docker.enqueue(ok(""), ok(cid + "\n"), inspectedCreated(rig));
     rig.mc.enqueue(ok(JSON.stringify({ session: "h-abc", launch: wake.launch, container_id: cid })));
     rig.docker.enqueue(ok(""));
-    const { idle_timeout_s: _omitted, ...older } = wake as Extract<Effect, { action: "homie-wake" }>;
+    const { idle_timeout_s: _omitted, ...older } = wake as Extract<Effect, { action: "collie-wake" }>;
     await applyEffect(older as Effect, rig.deps);
     const parsed = JSON.parse(rig.fakeFs.writes.get(`${testConfig.mcHome}/runs/h-abc.json`)!);
     expect(parsed.container_id).toBe(cid);
@@ -2109,8 +2109,8 @@ describe("homie tier (lease-free)", () => {
     rig.docker.enqueue(ok(""), ok(cid + "\n"));
     rig.docker.enqueue((_argv: string[], calls: string[][]) => {
       const create = calls.find((call) => call[0] === "create")!;
-      const record = homieInspectFromCreate(
-        create, cid, rig.deps.config.image, rig.deps.config.homieCmd ?? rig.deps.config.agentCmd,
+      const record = collieInspectFromCreate(
+        create, cid, rig.deps.config.image, rig.deps.config.collieCmd ?? rig.deps.config.agentCmd,
       ) as any;
       record.HostConfig.Memory = 0;
       return ok(JSON.stringify([record]));
@@ -2123,7 +2123,7 @@ describe("homie tier (lease-free)", () => {
       expect(rig.mc.calls.some(call => call[1] === "launch-failure")).toBe(true);
   });
 
-  test("attachment tree refusal leaves no Homie launch artifact or container", async () => {
+  test("attachment tree refusal leaves no Collie launch artifact or container", async () => {
     const rig = makeRig({
       prepareAttachmentTree: async () => {
         throw new Error("attachment tree is widened");
@@ -2136,7 +2136,7 @@ describe("homie tier (lease-free)", () => {
       expect(rig.mc.calls.some(call => call[1] === "launch-failure")).toBe(true);
   });
 
-  test("red boot-local attachment confinement leaves no Homie launch effect", async () => {
+  test("red boot-local attachment confinement leaves no Collie launch effect", async () => {
     const rig = makeRig({
       attachmentConfinement: new AttachmentConfinementHealth(),
     });
@@ -2191,7 +2191,7 @@ describe("homie tier (lease-free)", () => {
     }
   });
 
-  describe("credentialed Homie wake", () => {
+  describe("credentialed Collie wake", () => {
     const nativeWake: Effect = {
       ...wake,
       mode: "native",
@@ -2387,7 +2387,7 @@ describe("homie tier (lease-free)", () => {
     expect(rig.docker.calls[2]).toEqual(["inspect", "--type", "container", cid]);
     expect(rig.docker.calls[3]).toEqual(["rm", cid]);
     expect(rig.docker.calls.some((c) => c[0] === "start")).toBe(false);
-    expect(rig.deps.homieRuntime.revokeSession("h-abc")).toBe(0);
+    expect(rig.deps.collieRuntime.revokeSession("h-abc")).toBe(0);
   });
 
   test("wake: a failed create removes only the envelope, no bind or start", async () => {
@@ -2400,7 +2400,7 @@ describe("homie tier (lease-free)", () => {
     expect(rig.mc.calls.filter(call => !["launch-check", "launch-failure"].includes(call[1]!))).toEqual([]);
       expect(rig.mc.calls.some(call => call[1] === "launch-failure")).toBe(true);
     expect(rig.fakeFs.events).toContain(`rm:${testConfig.mcHome}/runs/h-abc.json`);
-    expect(rig.deps.homieRuntime.revokeSession("h-abc")).toBe(0);
+    expect(rig.deps.collieRuntime.revokeSession("h-abc")).toBe(0);
   });
 
   test("wake: post-create Docker drift removes the exact new id before binding or start", async () => {
@@ -2410,8 +2410,8 @@ describe("homie tier (lease-free)", () => {
       ok(cid + "\n"),
       (_argv, calls) => {
         const create = calls.find((call) => call[0] === "create")!;
-        const record = homieInspectFromCreate(
-          create, cid, testConfig.image, testConfig.homieCmd ?? testConfig.agentCmd,
+        const record = collieInspectFromCreate(
+          create, cid, testConfig.image, testConfig.collieCmd ?? testConfig.agentCmd,
         ) as any;
         record.HostConfig.NetworkMode = "bridge";
         return ok(JSON.stringify([record]));
@@ -2425,7 +2425,7 @@ describe("homie tier (lease-free)", () => {
     expect(rig.mc.calls.filter(call => !["launch-check", "launch-failure"].includes(call[1]!))).toEqual([]);
       expect(rig.mc.calls.some(call => call[1] === "launch-failure")).toBe(true);
     expect(rig.docker.calls.some((call) => call[0] === "start")).toBe(false);
-    expect(rig.deps.homieRuntime.revokeSession("h-abc")).toBe(0);
+    expect(rig.deps.collieRuntime.revokeSession("h-abc")).toBe(0);
   });
 
   test("wake: attachment source, access, destination, or mount-set drift refuses start", async () => {
@@ -2438,8 +2438,8 @@ describe("homie tier (lease-free)", () => {
         ok(cid + "\n"),
         (_argv, calls) => {
           const create = calls.find((call) => call[0] === "create")!;
-          const record = homieInspectFromCreate(
-            create, cid, testConfig.image, testConfig.homieCmd ?? testConfig.agentCmd,
+          const record = collieInspectFromCreate(
+            create, cid, testConfig.image, testConfig.collieCmd ?? testConfig.agentCmd,
           ) as any;
           const inbound = record.Mounts.find(
             (mount: any) => mount.Destination === "/mc/attachments/in",
@@ -2479,8 +2479,8 @@ describe("homie tier (lease-free)", () => {
         ok(cid + "\n"),
         (_argv, calls) => {
           const create = calls.find((call) => call[0] === "create")!;
-          const record = homieInspectFromCreate(
-            create, cid, testConfig.image, testConfig.homieCmd ?? testConfig.agentCmd,
+          const record = collieInspectFromCreate(
+            create, cid, testConfig.image, testConfig.collieCmd ?? testConfig.agentCmd,
           ) as any;
           const traces = record.Mounts.findIndex(
             (mount: any) => mount.Destination === "/mc/traces",
@@ -2577,7 +2577,7 @@ describe("homie tier (lease-free)", () => {
       await applyEffect(effect, rig.deps);
 
       const create = createOf(rig);
-      if (effect.action === "homie-wake" && effect.runtime_binding?.harness === "opencode") {
+      if (effect.action === "collie-wake" && effect.runtime_binding?.harness === "opencode") {
         expect(create).toContainEqual(expect.stringMatching(/^type=volume,src=mc-opencode-[0-9a-f]{12},dst=\/opt\/culler-opencode,readonly,volume-nocopy$/));
         expect(create).toContain("/etc/opencode:ro,nosuid,nodev,noexec,mode=0555");
       }
@@ -2609,8 +2609,8 @@ describe("homie tier (lease-free)", () => {
           ok(cid + "\n"),
           (_argv, calls) => {
             const create = calls.find((call) => call[0] === "create")!;
-            const record = homieInspectFromCreate(
-              create, cid, testConfig.image, testConfig.homieCmd ?? testConfig.agentCmd,
+            const record = collieInspectFromCreate(
+              create, cid, testConfig.image, testConfig.collieCmd ?? testConfig.agentCmd,
             ) as any;
             const index = record.Mounts.findIndex(
               (mount: any) => mount.Destination === destination,
@@ -2644,7 +2644,7 @@ describe("homie tier (lease-free)", () => {
     }
   });
 
-  test("wake: every Homie container masks the artifact root of each workspace", async () => {
+  test("wake: every Collie container masks the artifact root of each workspace", async () => {
     const workspaces = [...packetWorkspaces, { id: "gamma", root: "/host/gamma" }];
     const workspaceMasks = [
       `${maskDir}:/workspace/source/.mc-artifacts:ro`,
@@ -2780,7 +2780,7 @@ describe("homie tier (lease-free)", () => {
     ];
     for (const effect of effects) {
       const rig = packetRig();
-      await expect(applyEffect(effect, rig.deps)).rejects.toThrow("homie-wake h-abc: the packet identity is malformed");
+      await expect(applyEffect(effect, rig.deps)).rejects.toThrow("collie-wake h-abc: the packet identity is malformed");
       expect(rig.docker.calls).toEqual([]);
       expect(rig.fakeFs.events).toEqual([]);
       expect(rig.mc.calls.filter((call) => call[1] !== "launch-failure")).toEqual([]);
@@ -2823,7 +2823,7 @@ describe("homie tier (lease-free)", () => {
     for (const answer of answers) {
       const rig = packetRig(ok(answer));
       await expect(applyEffect(packetWake, rig.deps)).rejects.toThrow(
-        "homie-wake h-abc: the artifact mount of the packet is malformed",
+        "collie-wake h-abc: the artifact mount of the packet is malformed",
       );
       expect(rig.docker.calls).toEqual([]);
       expect(rig.fakeFs.events).toEqual([taskArtifactsCall]);
@@ -2846,22 +2846,22 @@ describe("homie tier (lease-free)", () => {
     expect(rig.docker.calls.filter((call) => call[0] === "rm")).toHaveLength(1);
   });
 
-  test("each started Homie container reaches the repository lane follower", async () => {
+  test("each started Collie container reaches the repository lane follower", async () => {
     const started: string[] = [];
-    const woken = makeRig({ homieStarted: (id) => started.push(`wake:${id}`) });
+    const woken = makeRig({ collieStarted: (id) => started.push(`wake:${id}`) });
     woken.docker.enqueue(ok(""), ok(cid + "\n"), inspectedCreated(woken), ok(""));
     woken.mc.enqueue(ok(JSON.stringify({ session: "h-abc", launch: wake.launch, container_id: cid })));
     await applyEffect(wake, woken.deps);
 
     const adopted = makeRig();
     const { effect, record } = await leaveExactCreated(adopted);
-    adopted.deps.homieStarted = (id) => started.push(`adopt:${id}`);
+    adopted.deps.collieStarted = (id) => started.push(`adopt:${id}`);
     adopted.docker.enqueue(ok(JSON.stringify([record])), ok(""));
     await applyEffect(effect, adopted.deps);
 
     const refused = makeRig();
     const created = await leaveExactCreated(refused);
-    refused.deps.homieStarted = (id) => started.push(`refused:${id}`);
+    refused.deps.collieStarted = (id) => started.push(`refused:${id}`);
     refused.docker.enqueue(ok(JSON.stringify([created.record])), fail(1, "start failed"));
     await applyEffect(created.effect, refused.deps);
 
@@ -2891,13 +2891,13 @@ describe("homie tier (lease-free)", () => {
   test("stop: a bound container is stopped by its id", async () => {
     const rig = makeRig();
     rig.docker.enqueue(ok(""));
-    await applyEffect({ action: "homie-stop", session: "h-abc", container_id: cid, reason: "idle" }, rig.deps);
+    await applyEffect({ action: "collie-stop", session: "h-abc", container_id: cid, reason: "idle" }, rig.deps);
     expect(rig.docker.calls).toEqual([["stop", cid]]);
   });
 
   test("stop: a pre-bind idle end stops nothing", async () => {
     const rig = makeRig();
-    await applyEffect({ action: "homie-stop", session: "h-abc", reason: "idle" }, rig.deps);
+    await applyEffect({ action: "collie-stop", session: "h-abc", reason: "idle" }, rig.deps);
     expect(rig.docker.calls).toEqual([]);
   });
 
@@ -2905,11 +2905,11 @@ describe("homie tier (lease-free)", () => {
     const rig = makeRig();
     rig.docker.enqueue(ok(""));
     await applyEffect({
-      action: "homie-remove",
+      action: "collie-remove",
       session: "h-abc",
       launch: "a".repeat(16),
       container_id: cid,
-      container_name: "mc-homie-h-abc",
+      container_name: "mc-collie-h-abc",
       reason: "orphan",
     }, rig.deps);
     expect(rig.docker.calls).toEqual([["rm", "-f", cid]]);
@@ -2919,11 +2919,11 @@ describe("homie tier (lease-free)", () => {
     const rig = makeRig();
     rig.docker.enqueue(ok(""));
     await applyEffect({
-      action: "homie-remove",
+      action: "collie-remove",
       session: "h-abc",
       launch: "a".repeat(16),
       container_id: cid,
-      container_name: "mc-homie-h-abc",
+      container_name: "mc-collie-h-abc",
       reason: "restarting",
     }, rig.deps);
     expect(rig.docker.calls).toEqual([["rm", "-f", cid]]);
@@ -2933,11 +2933,11 @@ describe("homie tier (lease-free)", () => {
     const rig = makeRig();
     rig.docker.enqueue(ok(""));
     await applyEffect({
-      action: "homie-remove",
+      action: "collie-remove",
       session: "h-abc",
       launch: "a".repeat(16),
       container_id: cid,
-      container_name: "mc-homie-h-abc",
+      container_name: "mc-collie-h-abc",
       reason: "starting-timeout",
     }, rig.deps);
     expect(rig.docker.calls).toEqual([["rm", "-f", cid]]);
@@ -2946,11 +2946,11 @@ describe("homie tier (lease-free)", () => {
   test("remove: malformed identity is refused before Docker", async () => {
     const rig = makeRig();
     await applyEffect({
-      action: "homie-remove",
+      action: "collie-remove",
       session: "h-abc",
       launch: "a".repeat(16),
       container_id: cid,
-      container_name: "mc-homie-other",
+      container_name: "mc-collie-other",
       reason: "orphan",
     }, rig.deps);
     expect(rig.docker.calls).toEqual([]);
@@ -2960,7 +2960,7 @@ describe("homie tier (lease-free)", () => {
 
 // The bind is the one thing in this change that can half-land in three
 // different ways, each of which produces an empty file that reads as "nothing
-// went wrong": a `-v` row the envelope does not declare writable, a Homie list
+// went wrong": a `-v` row the envelope does not declare writable, a Collie list
 // that forgot the same row, and a leaf mode a hardened run's uid cannot write.
 // Each tier asserts the row and the declaration from the SAME fixture.
 describe("/mc/logs — runner diagnostics survive a --rm container", () => {

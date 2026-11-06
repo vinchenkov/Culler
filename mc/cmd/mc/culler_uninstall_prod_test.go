@@ -123,12 +123,12 @@ func TestCullerUninstallRequiresTerminalOrExplicitConsent(t *testing.T) {
 }
 
 func TestCullerUninstallRejectsContainerScopeBeforeRemoval(t *testing.T) {
-	for _, role := range []string{"worker", "homie"} {
+	for _, role := range []string{"worker", "collie"} {
 		t.Run(role, func(t *testing.T) {
 			path := filepath.Join(t.TempDir(), "run.json")
 			body := `{"run_id":"fixture","tier":"pipeline","role":"worker"}`
-			if role == "homie" {
-				body = `{"run_id":"fixture","tier":"homie","role":"homie"}`
+			if role == "collie" {
+				body = `{"run_id":"fixture","tier":"collie","role":"collie"}`
 			}
 			uninstallWrite(t, path, body, 0600)
 			t.Setenv("MC_RUN_JSON", path)

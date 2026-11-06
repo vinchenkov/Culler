@@ -728,14 +728,14 @@ func setup(t *testing.T, opts ...func(*setupOptions)) *fixture {
 		image, "sleep", "infinity")
 	t.Cleanup(func() {
 		// Helper verbs run as `docker exec`, so their stderr goes to the exec,
-		// never to the container's log. Reap any straggler pipeline and Homie
+		// never to the container's log. Reap any straggler pipeline and Collie
 		// containers this run spawned by their labels, then the helper. A
-		// running Homie container holds the spine volume, the runtime volume,
+		// running Collie container holds the spine volume, the runtime volume,
 		// and the bind mounts under the fixture folder, so a later removal of
 		// each one fails while it runs. The volume filter keeps the reap away
 		// from each container of another spine.
-		homie := []string{"--filter", "label=mc-managed=true", "--filter", "label=mc-tier=homie"}
-		for _, labels := range [][]string{verbs.PipelineContainerLabelFilters(), homie} {
+		collie := []string{"--filter", "label=mc-managed=true", "--filter", "label=mc-tier=collie"}
+		for _, labels := range [][]string{verbs.PipelineContainerLabelFilters(), collie} {
 			filters := append(labels, "--filter", "volume="+f.volume)
 			if out, err := exec.Command("docker", append([]string{"ps", "-aq"}, filters...)...).Output(); err == nil {
 				for _, id := range strings.Fields(string(out)) {
@@ -800,7 +800,7 @@ const fakeRouting = `# fake E2E routing
 | verifier | fake | fake |
 | scribe | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `
 
 // workerScript is the default Worker. It reads its envelope, answers a
@@ -963,10 +963,10 @@ func (f *fixture) writeBehaviors() {
 		"strategist.json": `{"steps":[
 			{"do":"exec","command":"printf '{\"proposals\":[]}' | mc strategist propose --run \"$MC_RUN_ID\" --batch -"},
 			{"do":"succeed","output":"no proposals"}]}`,
-		// Homie: a lease-free conversational turn. The fake harness reads the
+		// Collie: a lease-free conversational turn. The fake harness reads the
 		// operator's turn on stdin and answers with this fixed reply.
-		"homie.json": `{"steps":[
-			{"do":"succeed","output":"homie ack"}]}`,
+		"collie.json": `{"steps":[
+			{"do":"succeed","output":"collie ack"}]}`,
 	}
 	for name, body := range behaviors {
 		if err := os.WriteFile(filepath.Join(dir, name), []byte(body), 0o644); err != nil {
@@ -1016,7 +1016,7 @@ func (f *fixture) writeResidentConfig(repoRoot string) {
 		"projectImage":        projectImage,
 		"runtimeVolume":       f.runtimeVolume,
 		"agentCmd":            []string{"/opt/culler-runtime/bin/bun", "/opt/culler-runtime/app/src/agent-runner/main.ts"},
-		"homieCmd":            []string{"/opt/culler-runtime/bin/bun", "/opt/culler-runtime/app/src/homie-runner/main.ts"},
+		"collieCmd":           []string{"/opt/culler-runtime/bin/bun", "/opt/culler-runtime/app/src/collie-runner/main.ts"},
 		"landCmd":             []string{"mc-land"},
 		"behaviorsDir":        filepath.Join(f.base, "behaviors"),
 		"runnerSrcDir":        filepath.Join(repoRoot, "runner"),
@@ -1030,7 +1030,7 @@ func (f *fixture) writeResidentConfig(repoRoot string) {
 			"scribe":              "/mc/behaviors/scribe.json",
 			"packager":            "/mc/behaviors/packager.json",
 			"strategist(propose)": "/mc/behaviors/strategist.json",
-			"homie":               "/mc/behaviors/homie.json",
+			"collie":              "/mc/behaviors/collie.json",
 		},
 	}
 	b, err := json.MarshalIndent(cfg, "", "  ")

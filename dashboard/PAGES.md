@@ -68,10 +68,10 @@ It closes the task dialog and clears the Activity streams.
 A response for an earlier Project cannot update the selected Project's page.
 A slow packet response cannot restore the previous packet or its decision controls.
 
-Homie, Configs, and System Logs are global pages. These pages keep the Project button visible, muted, and disabled.
+Collie, Configs, and System Logs are global pages. These pages keep the Project button visible, muted, and disabled.
 The Project button keeps its position and its selected Project name across page changes.
 The navigation places Board, Review, and Pipeline before a vertical divider.
-Homie, Configs, and Logs follow the divider. The groups have no visible labels.
+Collie, Configs, and Logs follow the divider. The groups have no visible labels.
 The first paint includes the Project button and the correct page highlight.
 The Project button keeps its space before data arrives.
 The Board, Review, and Pipeline tabs have equal spaces between their labels.
@@ -91,7 +91,7 @@ The Review badge counts the selected Project's live packets.
 ## Viewer links
 
 AgentsView is the trace viewer.
-It shows the traces of pipeline runs, Homie sessions, and setup agent operations.
+It shows the traces of pipeline runs, Collie sessions, and setup agent operations.
 The OpenWiki viewer shows the wiki of one Project.
 The header shows two links after the page tabs:
 
@@ -297,7 +297,7 @@ System health shows three groups in this order:
 
 - **Deployment checks** show the result and time of the latest inspection.
 - **Connections** show current access and the applicable repair action.
-- **Execution** shows task restrictions, failed Homie replies, Strategist restrictions, and AgentsView conditions. It also shows a merge of a wiki commit whose result Culler cannot prove, with the repair text of that merge as the repair action. When the repair text states only a condition, the repair action adds the delay before the next check of that merge and the operator instruction.
+- **Execution** shows task restrictions, failed Collie replies, Strategist restrictions, and AgentsView conditions. It also shows a merge of a wiki commit whose result Culler cannot prove, with the repair text of that merge as the repair action. When the repair text states only a condition, the repair action adds the delay before the next check of that merge and the operator instruction.
 
 Resident availability appears beside the deployment checks.
 Each connection uses one compact row.
@@ -344,7 +344,7 @@ The resident availability display separates current availability from historical
 The Board shows the selected Project's consecutive Strategist failures.
 The third consecutive failure stops proposal runs for that Project.
 **Resume Project infrastructure** requires a usable connection and preserves pipeline pauses.
-The failed Homie reply retains its partial text and offers **Retry reply**.
+The failed Collie reply retains its partial text and offers **Retry reply**.
 An old or unavailable reply state displays an explicit status instead of an indefinite activity indicator.
 
 Connection notices offer an applicable repair action:
@@ -357,8 +357,8 @@ A repair action without a dashboard control appears as text in the notice and in
 
 AgentsView conditions appear only in a deployment that prepared an AgentsView unit:
 
-- AgentsView is unavailable. The condition states that trace links do not open and that runs and Homie continue.
-- AgentsView did not import new trace lines in time. The condition names the count and the runs or Homie sessions.
+- AgentsView is unavailable. The condition states that trace links do not open and that runs and Collie continue.
+- AgentsView did not import new trace lines in time. The condition names the count and the runs or Collie sessions.
 
 The model test retains its explicit cost confirmation.
 The diagnostic history remains available after recovery.
@@ -398,14 +398,14 @@ A failure preserves the folder and name.
 The page identifies the Project and its `VISION.md` destination.
 Its address preserves that Project through a reload.
 Its conversation stays associated with that Project independently of the global selector.
-Ordinary Homie conversations remain separate.
+Ordinary Collie conversations remain separate.
 
 The Vision page contains these controls:
 
-- A Homie conversation with file uploads and persistent attachment access.
-- A **Clear** action that ends the Homie conversation and starts an empty one. A cleared conversation cannot be restored.
-- A model control in the conversation header. It shows the model and harness of the Homie conversation.
-  The control opens a list of enabled agent profiles. A selection sets the Homie route for each new Homie conversation.
+- A Collie conversation with file uploads and persistent attachment access.
+- A **Clear** action that ends the Collie conversation and starts an empty one. A cleared conversation cannot be restored.
+- A model control in the conversation header. It shows the model and harness of the Collie conversation.
+  The control opens a list of enabled agent profiles. A selection sets the Collie route for each new Collie conversation.
   A conversation keeps its agent profile. An empty conversation restarts with the selected agent profile.
   A conversation with messages offers a new conversation that uses the selected agent profile.
 - An editor for the shared draft in Culler storage.
@@ -419,7 +419,7 @@ Setup and development use agents and can make model requests.
 The conversation and editor appear together on wide screens and fill the window height.
 An empty conversation offers example messages. An empty draft shows a centered prompt.
 Both remain accessible on narrow screens.
-The editor remains available when Homie cannot reply.
+The editor remains available when Collie cannot reply.
 Direct edits persist automatically without a workspace file change.
 A conflict preserves local text and exposes the persistent text for comparison.
 A failed save shows the workspace text and requires an explicit comparison before another submission.
@@ -443,7 +443,7 @@ The draft and conversation remain available after completion.
 ## Setup Journal
 
 The Setup Journal fills the Board during initial setup.
-It replaces the task columns, empty Board content, and Homie command bar.
+It replaces the task columns, empty Board content, and Collie command bar.
 The Project navigation and persistent system notice remain available.
 The header identifies the Project and shows **Project setup**.
 Normal progress uses neutral text and the state **Setup in progress**.
@@ -469,7 +469,7 @@ Another attempt resets the milestone until its own evidence proves completion.
 Future milestones remain absent until setup reaches them.
 Milestone rows and earlier messages remain visible.
 The stream contains no composer or action controls.
-The setup controls below the stream offer **Ask Homie** for the current setup failure.
+The setup controls below the stream offer **Ask Collie** for the current setup failure.
 
 The current operation shows its recorded status beside its message.
 Its label identifies whether Culler or the setup agent performs it.
@@ -538,7 +538,7 @@ A failed page refresh retains the last confirmed data.
 
 ### Text and files
 
-Explanatory prose uses Homie's shared Markdown viewer.
+Explanatory prose uses Collie's shared Markdown viewer.
 This includes operation summaries, proposal explanations, and prose within expanded details.
 The viewer supports these elements:
 
@@ -753,30 +753,30 @@ An absent measurement remains unavailable.
 
 ## Board
 
-The normal Board includes a Homie command bar below the task columns.
+The normal Board includes a Collie command bar below the task columns.
 The command bar remains visible near the bottom of the window as the operator scrolls.
 The selected Project supplies the conversation context.
 An empty registry uses an all-Projects context.
-Each context keeps a separate ordinary Homie session and message draft.
+Each context keeps a separate ordinary Collie session and message draft.
 
 The first message creates the session when the browser has no saved session identifier.
 The browser retains the session identifier across reloads.
 An absent saved session starts a new conversation automatically.
 A connection failure preserves the saved session for another attempt.
 
-Send opens a response panel above the command bar and submits the message through the ordinary Homie interface.
+Send opens a response panel above the command bar and submits the message through the ordinary Collie interface.
 The panel shows message history, live reply text, and reply status.
-Homie previews a new state change in the conversation and requests confirmation before execution.
+Collie previews a new state change in the conversation and requests confirmation before execution.
 Explicit confirmation authorizes only the described change.
-The interface uses real Homie replies without keyword substitution or sample responses.
+The interface uses real Collie replies without keyword substitution or sample responses.
 The Board refreshes after a reply completes.
 
 Hide conversation preserves the session and the message draft.
-The header provides New conversation, including while Homie prepares a reply.
-The Conversation actions menu contains Open in Homie.
-Open in Homie selects the same session on the Homie page.
+The header provides New conversation, including while Collie prepares a reply.
+The Conversation actions menu contains Open in Collie.
+Open in Collie selects the same session on the Collie page.
 New conversation starts a session and preserves the message draft and attachments.
-The previous session remains in the Homie list.
+The previous session remains in the Collie list.
 A failed submission preserves its text and attachments for another attempt.
 The command bar remains available after the session ends.
 Send resumes the same session automatically and preserves its conversation history.
@@ -813,7 +813,7 @@ The Review and Configs stats use the same number-first layout and sentence-case 
 The Board provides a Create task form for tasks.
 The form shows the destination Project and requires a title.
 Priority 2 is the default, and Expedited represents priority -1.
-The Homie link opens the Homie tab and sends no message.
+The Collie link opens the Collie tab and sends no message.
 The command accepts new user records at Seeded after it validates their repository assignments.
 A successful creation opens the new record.
 A failed submission preserves all form values and the command error.
@@ -948,9 +948,9 @@ Culler starts the run when the connection is available.
 The Board acknowledges blocked alerts only for blocked tasks that it displays.
 An alert for another Project remains undelivered.
 
-## Homie
+## Collie
 
-**Ask Homie** opens an ordinary conversation on the Homie page and submits the selected diagnostic issue.
+**Ask Collie** opens an ordinary conversation on the Collie page and submits the selected diagnostic issue.
 These views provide the action:
 
 - The system notice and issue dialogs.
@@ -963,7 +963,7 @@ These views provide the action:
 The message contains the issue summary and relevant record identifiers.
 The message limits long evidence to a labeled excerpt.
 Full reports and complete logs remain outside the initial message.
-Homie uses its permitted reads to retrieve further evidence when needed.
+Collie uses its permitted reads to retrieve further evidence when needed.
 The message identifies an unavailable current status as the last known status.
 
 The action preserves the existing conversation and composer draft.
@@ -972,7 +972,7 @@ A retry checks the conversation history before another message after an uncertai
 The conversation requests an explanation and proposed action.
 A state change requires explicit operator confirmation.
 
-Homie displays active and ended conversations across all surfaces.
+Collie displays active and ended conversations across all surfaces.
 A packet conversation from the quick chat of the Review page appears in the list after its first message.
 The row of a packet conversation shows the task number of its packet, for example "Task #7".
 The operator can continue a packet conversation on this page with the same packet context.
@@ -981,7 +981,7 @@ A message from the quick chat shows on this page at the next refresh.
 After the operator deletes the current conversation of a packet, the quick chat of that packet shows the empty state.
 A packet conversation of an archived Project accepts no message. The page shows the cause.
 A Project selection has no effect on a conversation.
-Project pipeline pauses leave Homie available.
+Project pipeline pauses leave Collie available.
 
 The page preserves the selected conversation.
 A page open selects the conversation with the most recent activity when no conversation is selected.
@@ -992,11 +992,11 @@ Preparation starts an idle container. The first message starts a model request.
 An example message fills the composer. It sends no message.
 
 A conversation retains its permanent identifier and a separate display name.
-An empty conversation shows **New conversation**. Its first message supplies a short excerpt until Homie sets a title.
+An empty conversation shows **New conversation**. Its first message supplies a short excerpt until Collie sets a title.
 The excerpt contains at most six words and 40 Unicode code points, including the ellipsis.
-An attachment-only message shows **Conversation with attachments** until Homie sets a title.
+An attachment-only message shows **Conversation with attachments** until Collie sets a title.
 
-Homie sets a concise title through its session command during the first response.
+Collie sets a concise title through its session command during the first response.
 The title requires no separate model request.
 The command preserves an existing title. A failure leaves the excerpt available and does not stop the response.
 
@@ -1030,7 +1030,7 @@ The page prevents model changes during a message submission or an active reply.
 A model change preserves draft text and attachments.
 A concurrent message prevents removal of its conversation.
 A retry reuses the same model request.
-Both Homie and Vision accept image paste and file attachments through the same composer.
+Both Collie and Vision accept image paste and file attachments through the same composer.
 The composer shows each attachment with a remove control and each image with a preview.
 Text paste preserves normal text input behavior. A paste sends no message.
 The attachment total must not exceed 16 mebibytes per message.
@@ -1194,7 +1194,7 @@ The reader has four parts, from top to bottom:
 4. The decision bar
 
 The reader bar, the view row, and the decision bar stay in a fixed position.
-The content area shows one view at a time: the Packet view, the Files changed view, or the Homie view of the narrow layout.
+The content area shows one view at a time: the Packet view, the Files changed view, or the Collie view of the narrow layout.
 The report area is the content area of the Packet view.
 Only the content area scrolls.
 Each error of a reader action appears inside the reader.
@@ -1259,7 +1259,7 @@ When the reader bar needs two rows, these controls move to the second row togeth
 
 In the narrow layout, the reader bar holds the close control, the previous and next controls with the position, the task number and the title, and the tags.
 The "Task" control then stays at the end of the view row.
-The "Homie" view control of the view row then replaces the "Ask Homie" control.
+The "Collie" view control of the view row then replaces the "Ask Collie" control.
 
 A long task title ends with an ellipsis. A pointer hover shows the full title.
 The tags show the decision time of a packet with a decision, the review state, and "Decision Pending" for a blocked task.
@@ -1280,7 +1280,7 @@ When the task dialog closes, the keyboard focus returns to the "Task" control.
 
 The view row is one row below the reader bar.
 In the wide layout, it holds two view controls: "Packet" and "Files changed".
-In the narrow layout, it holds a third view control: "Homie".
+In the narrow layout, it holds a third view control: "Collie".
 The Packet view is the default view.
 The "Files changed" label states the number of changed files of the packet, for example "Files changed · 12".
 While the Files changed view shows its files, the view row also holds the display controls of that view.
@@ -1290,7 +1290,7 @@ The view row holds no commit and no other Git record.
 The view controls follow the tab pattern. The arrow keys, Home, and End select a view.
 Each view keeps its scroll position and its selected file while the operator uses the other view of the same packet.
 Another packet or another Project opens the Packet view.
-In the narrow layout, an open quick chat keeps the Homie view.
+In the narrow layout, an open quick chat keeps the Collie view.
 
 ### Files changed
 
@@ -1369,7 +1369,7 @@ The view shows repository text as display content only.
 
 ### Quick chat
 
-The quick chat holds one Homie conversation about the open packet.
+The quick chat holds one Collie conversation about the open packet.
 The reader offers the quick chat for each open packet, in the Live queue view and the Ledger view.
 The quick chat is closed by default.
 The browser keeps the open or closed state across packets, pages, and reloads.
@@ -1381,47 +1381,47 @@ In the chat column, the message field and the Send control share one row at the 
 Each part of the reader stays fully visible while the chat column is open.
 The text at the top of the content area stays in view when the chat column opens or closes.
 
-In the narrow layout, the quick chat fills the Homie view.
-A selection of "Homie" opens the quick chat. A selection of "Packet" or "Files changed" closes it.
-The reader bar, the view row, and the decision bar stay visible in the Homie view.
-The Packet view and the Files changed view keep their scroll positions while the Homie view shows.
+In the narrow layout, the quick chat fills the Collie view.
+A selection of "Collie" opens the quick chat. A selection of "Packet" or "Files changed" closes it.
+The reader bar, the view row, and the decision bar stay visible in the Collie view.
+The Packet view and the Files changed view keep their scroll positions while the Collie view shows.
 A change between the layouts keeps the conversation and the draft text of the quick chat.
 
 The quick chat holds these items, from top to bottom:
 
-1. The header: the name "Homie", the model control, the actions menu, the close control of the wide layout, and a second row with the task number and the task title
+1. The header: the name "Collie", the model control, the actions menu, the close control of the wide layout, and a second row with the task number and the task title
 2. The transcript, which scrolls inside the quick chat
 3. The composer, which accepts text only
 
-The actions menu holds "Open in Homie" and "New conversation".
-"Open in Homie" selects the same conversation on the Homie page.
+The actions menu holds "Open in Collie" and "New conversation".
+"Open in Collie" selects the same conversation on the Collie page.
 "New conversation" ends the current conversation of the packet and starts an empty conversation.
 Both items are available only when the current conversation holds a message.
 
 The model control shows the model and the harness of the current conversation.
-The control opens the list of enabled agent profiles. A selection sets the Homie route for each new Homie conversation.
+The control opens the list of enabled agent profiles. A selection sets the Collie route for each new Collie conversation.
 When the current conversation uses another model, a selection starts a new conversation of the packet with the selected model.
-For a conversation with messages, an in-app confirmation dialog comes first. The previous conversation stays in the session list of the Homie page.
-The model control is unavailable while a message goes to Homie, while Homie prepares a reply, and for a packet of an archived Project.
+For a conversation with messages, an in-app confirmation dialog comes first. The previous conversation stays in the session list of the Collie page.
+The model control is unavailable while a message goes to Collie, while Collie prepares a reply, and for a packet of an archived Project.
 
 A packet without messages in its current conversation shows an empty state.
-The empty state names the parts of the packet content that Homie receives.
+The empty state names the parts of the packet content that Collie receives.
 After a Revise decision, the empty state of the new packet links to the current conversation of the earlier packet.
 The earlier packet is the packet of the same task directly before the new packet.
-The link shows only when that conversation holds a message. The link selects that conversation on the Homie page.
+The link shows only when that conversation holds a message. The link selects that conversation on the Collie page.
 
 For a packet of an archived Project, the quick chat states that the Project is archived.
 The composer and "New conversation" are then unavailable. The history of the current conversation stays visible.
 
 An open of the quick chat moves the keyboard focus to the composer.
-When an arrow key, Home, or End selects "Homie" in the view row, the keyboard focus stays in the view row.
+When an arrow key, Home, or End selects "Collie" in the view row, the keyboard focus stays in the view row.
 A reload with an open quick chat moves no keyboard focus.
-The close control closes the chat column and moves the keyboard focus to the "Ask Homie" control.
-The focus on the composer prepares the conversation, so the operator can type the first message while the Homie container starts.
+The close control closes the chat column and moves the keyboard focus to the "Ask Collie" control.
+The focus on the composer prepares the conversation, so the operator can type the first message while the Collie container starts.
 
 Enter sends the message. Shift+Enter adds a line.
 A sent message shows in the transcript at once, and the composer clears.
-The quick chat shows partial reply text and reply states, as the Homie page does.
+The quick chat shows partial reply text and reply states, as the Collie page does.
 A send to an ended conversation resumes the conversation and keeps its history.
 A failed preparation or a failed send states the cause and keeps the draft text.
 
@@ -1433,8 +1433,8 @@ These items stay the same when the quick chat opens or closes:
 - The selected file of the Files changed view
 - The text of the reason field
 
-The decision controls keep their availability while the quick chat is open and while Homie writes a reply.
-The reader shows a decision that Homie records at the next data refresh of the page.
+The decision controls keep their availability while the quick chat is open and while Collie writes a reply.
+The reader shows a decision that Collie records at the next data refresh of the page.
 
 When the reader moves to another packet, the open quick chat shows the current conversation of that packet.
 A packet without a current conversation shows the empty state.
@@ -1488,8 +1488,8 @@ The page shows no error notice for an expired report.
 ### Decision bar
 
 The decision bar stays at the bottom of the reader.
-In the wide layout, the decision bar starts with the "Ask Homie" control for each open packet.
-The "Ask Homie" control uses the primary action colors of the selected theme.
+In the wide layout, the decision bar starts with the "Ask Collie" control for each open packet.
+The "Ask Collie" control uses the primary action colors of the selected theme.
 It opens and closes the chat column.
 The decision bar holds the Approve, Revise, and Cancel controls for a packet that awaits a decision and has no block.
 The decision bar omits the approval scope text and the general explanation of reason requirements.
@@ -1670,7 +1670,7 @@ The revision history includes controls that load prior text into the editor.
 Saved instructions apply to new runs.
 An empty save leaves the standard directive in effect.
 A failed save preserves the proposed text.
-A role block notice directs the operator to Homie for resolution.
+A role block notice directs the operator to Collie for resolution.
 A stale save requires a current revision read before another save.
 A save preserves each block and the Project pause state.
 
@@ -1686,7 +1686,7 @@ The command associates records through these recorded identities:
 - Dispatch result
 
 The command applies the Project and kind filters before the row limit.
-Unassigned system events and Homie events remain outside the Pipeline page.
+Unassigned system events and Collie events remain outside the Pipeline page.
 System Logs provides the global process logs.
 
 The Activity section contains one component with Events and Dispatch errors tabs.
@@ -1741,7 +1741,7 @@ The Configs sidebar contains these sections in this order:
 - **System**: deployment health, trace access, and delivery status.
 - **Agents**: shared role assignments and the Model configuration control.
 - **Projects**: the registry, environment actions, role customization, and pipeline pause controls.
-- **Discord**: Homie conversations and alerts through one configured channel.
+- **Discord**: Collie conversations and alerts through one configured channel.
 - **Advanced settings**: supported configuration editors.
 
 The Discord link appears after the first Project completes initial source acceptance.
@@ -2028,8 +2028,8 @@ The review shows the selected effort.
 A change of effort invalidates the previous model test.
 The backend validates and saves the effort with the agent profile.
 Each new run receives the selected effort through its immutable launch envelope.
-A Homie conversation retains its original effort across restarts and profile changes.
-Current connection and model access checks still control each Homie launch and reply.
+A Collie conversation retains its original effort across restarts and profile changes.
+Current connection and model access checks still control each Collie launch and reply.
 
 Each model test requires an explicit action.
 The review offers two actions: **Test model** and **Save**.

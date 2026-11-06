@@ -117,7 +117,7 @@ async function until(check: () => Promise<boolean>, what: string, timeout = 1000
 
 /** Sets the stored open state of the quick chat. The next page load uses it. */
 async function storeChat(state: "open" | "closed") {
-  await smoke.page.evaluate((value) => localStorage.setItem("mc.packet-homie", value), state);
+  await smoke.page.evaluate((value) => localStorage.setItem("mc.packet-collie", value), state);
 }
 
 /** Waits until the reader shows the packet of one task and the address names it. */
@@ -144,7 +144,7 @@ async function chatShows(name: string) {
 }
 
 async function packetConversations(): Promise<Record<string, any>[]> {
-  const list = await mc(["homie", "list"]);
+  const list = await mc(["collie", "list"]);
   return (list["sessions"] as Record<string, any>[]).filter((row) => row["packet"] != null);
 }
 
@@ -159,7 +159,7 @@ async function untilConversation(name: string): Promise<string> {
 }
 
 async function historyBodies(sessionID: string): Promise<string[]> {
-  const history = await mc(["homie", "history", sessionID]);
+  const history = await mc(["collie", "history", sessionID]);
   return (history["messages"] as Record<string, any>[]).map((message) => String(message["body"] ?? ""));
 }
 
@@ -168,28 +168,28 @@ async function historyBodies(sessionID: string): Promise<string[]> {
 async function answer(sessionID: string, expected: string, reply: string, partial = "") {
   const runJSON = join(smoke.scratch, `${sessionID}.run.json`);
   const listed = (await packetConversations()).find((row) => row.id === sessionID);
-  writeFileSync(runJSON, JSON.stringify({ run_id: sessionID, tier: "homie", role: "homie", verb_allowlist: listed?.verb_allowlist }));
+  writeFileSync(runJSON, JSON.stringify({ run_id: sessionID, tier: "collie", role: "collie", verb_allowlist: listed?.verb_allowlist }));
   let claimed: Record<string, unknown> | null = null;
   for (let i = 0; i < 40 && claimed === null; i++) {
-    const res = await mc(["homie", "claim", sessionID], { MC_RUN_JSON: runJSON });
+    const res = await mc(["collie", "claim", sessionID], { MC_RUN_JSON: runJSON });
     claimed = (res["message"] as Record<string, unknown> | null) ?? null;
     if (claimed === null) await Bun.sleep(250);
   }
   if (claimed === null) throw new Error("The sent turn never became claimable.");
   expect(claimed["body"]).toBe(expected);
   if (partial !== "") {
-    await mc(["homie", "draft", sessionID, "--to", String(claimed["id"]), "--body", partial], { MC_RUN_JSON: runJSON });
-    await transcript().getByTestId("homie-draft").filter({ hasText: partial }).waitFor({ timeout: 15000 });
+    await mc(["collie", "draft", sessionID, "--to", String(claimed["id"]), "--body", partial], { MC_RUN_JSON: runJSON });
+    await transcript().getByTestId("collie-draft").filter({ hasText: partial }).waitFor({ timeout: 15000 });
   }
-  await mc(["homie", "reply", sessionID, "--to", String(claimed["id"]), "--body", reply], { MC_RUN_JSON: runJSON });
-  await transcript().getByTestId("homie-message").filter({ hasText: reply }).waitFor({ timeout: 15000 });
+  await mc(["collie", "reply", sessionID, "--to", String(claimed["id"]), "--body", reply], { MC_RUN_JSON: runJSON });
+  await transcript().getByTestId("collie-message").filter({ hasText: reply }).waitFor({ timeout: 15000 });
 }
 
 /** Sends one message through the composer and waits until the transcript shows it. */
 async function send(text: string) {
   await composer().fill(text);
   await composer().press("Enter");
-  await transcript().getByTestId("homie-message").filter({ hasText: text }).first().waitFor({ timeout: 5000 });
+  await transcript().getByTestId("collie-message").filter({ hasText: text }).first().waitFor({ timeout: 5000 });
   expect(await composer().inputValue()).toBe("");
 }
 
@@ -240,20 +240,20 @@ const inside = (inner: Box, outer: Box) =>
   inner.x >= outer.x - 0.5 && inner.y >= outer.y - 0.5 &&
   inner.x + inner.width <= outer.x + outer.width + 0.5 && inner.y + inner.height <= outer.y + outer.height + 0.5;
 
-test("the Ask Homie control opens the chat column and a sent message gets a reply", async () => {
+test("the Ask Collie control opens the chat column and a sent message gets a reply", async () => {
   const { page } = smoke;
   await storeChat("closed");
   await load("long");
   await report().getByText("The chat report", { exact: true }).waitFor();
   expect(await page.getByTestId("packet-chat-column").isVisible()).toBe(false);
-  const control = page.getByTestId("packet-homie-open");
+  const control = page.getByTestId("packet-collie-open");
   expect(await control.getAttribute("aria-expanded")).toBe("false");
   expect(await control.getAttribute("aria-controls")).toBe("packet-chat-column");
   expect(inside(await box("packet-task-open"), await box("reader-bar"))).toBe(true);
-  // "Ask Homie" starts the row of the decision buttons.
-  expect(await control.innerText()).toBe("Ask Homie");
+  // "Ask Collie" starts the row of the decision buttons.
+  expect(await control.innerText()).toBe("Ask Collie");
   const decisionBar = await box("packet-decision-bar");
-  const ask = await box("packet-homie-open");
+  const ask = await box("packet-collie-open");
   const approve = await box("packet-approve");
   expect(inside(ask, decisionBar)).toBe(true);
   expect(ask.x + ask.width).toBeLessThan(approve.x);
@@ -262,7 +262,7 @@ test("the Ask Homie control opens the chat column and a sent message gets a repl
   await control.click();
   await page.getByTestId("packet-chat-column").waitFor({ state: "visible" });
   expect(await control.getAttribute("aria-expanded")).toBe("true");
-  expect(await page.evaluate(() => localStorage.getItem("mc.packet-homie"))).toBe("open");
+  expect(await page.evaluate(() => localStorage.getItem("mc.packet-collie"))).toBe("open");
   // The open moves the focus to the composer, and the focus prepares the
   // conversation of the open packet.
   expect(await page.evaluate(() => document.activeElement?.getAttribute("data-testid"))).toBe("packet-chat-message");
@@ -270,7 +270,7 @@ test("the Ask Homie control opens the chat column and a sent message gets a repl
   const sessionID = await untilConversation("long");
   await page.getByTestId("packet-chat-empty").waitFor();
   expect(await page.getByTestId("packet-chat-empty").innerText())
-    .toContain("Ask Homie about this packet. Homie receives its thesis, its criteria, and its report text.");
+    .toContain("Ask Collie about this packet. Collie receives its thesis, its criteria, and its report text.");
   // The prepared conversation holds no message before the first send.
   expect((await currentConversation("long"))?.first_message ?? null).toBeNull();
 
@@ -281,18 +281,18 @@ test("the Ask Homie control opens the chat column and a sent message gets a repl
   expect(await page.getByTestId("packet-chat-error").isVisible()).toBe(false);
   await page.screenshot({ path: evidencePath("packet-chat-1920.png"), animations: "disabled" });
 
-  // "Open in Homie" selects the same conversation on the Homie page, with
+  // "Open in Collie" selects the same conversation on the Collie page, with
   // the task number of its packet.
   await page.getByTestId("packet-chat-menu-button").click();
-  await page.getByTestId("packet-chat-open-homie").click();
-  await page.getByTestId("homie-pane").waitFor({ state: "visible" });
+  await page.getByTestId("packet-chat-open-collie").click();
+  await page.getByTestId("collie-pane").waitFor({ state: "visible" });
   const row = page.locator(`[data-testid="session-row"][data-session="${sessionID}"]`);
   await row.waitFor();
   expect(await row.getAttribute("aria-pressed")).toBe("true");
   expect(await row.getByTestId("session-task").innerText()).toBe(`Task #${task.long}`);
-  await page.locator('[data-testid="homie-transcript"] [data-testid="homie-message"]').filter({ hasText: "The report raises the limit to 20." }).waitFor();
+  await page.locator('[data-testid="collie-transcript"] [data-testid="collie-message"]').filter({ hasText: "The report raises the limit to 20." }).waitFor();
   // The model control is unavailable for a packet conversation.
-  await until(async () => await page.getByTestId("homie-model").isDisabled(), "the model control is unavailable");
+  await until(async () => await page.getByTestId("collie-model").isDisabled(), "the model control is unavailable");
 }, 60000);
 
 test("each part of the reader stays visible with the chat column open at 960, 1440, and 1920 px", async () => {
@@ -323,7 +323,7 @@ test("each part of the reader stays visible with the chat column open at 960, 14
     }
     // Each part of the reader stays visible inside the reader.
     for (const testid of ["reader-bar", "reader-views", "packet-frame", "packet-decision-bar", "packet-task-open",
-      "packet-homie-open", "reader-previous", "reader-next", "packet-approve", "packet-revise", "packet-cancel"]) {
+      "packet-collie-open", "reader-previous", "reader-next", "packet-approve", "packet-revise", "packet-cancel"]) {
       expect(await page.getByTestId(testid).isVisible()).toBe(true);
       expect(inside(await box(testid), reader)).toBe(true);
     }
@@ -341,7 +341,7 @@ test("each part of the reader stays visible with the chat column open at 960, 14
   await page.setViewportSize(WIDE);
 }, 90000);
 
-test("the divider resizes Homie immediately and preserves the packet and the draft", async () => {
+test("the divider resizes Collie immediately and preserves the packet and the draft", async () => {
   const { page } = smoke;
   await page.setViewportSize(WIDE);
   await storeChat("open");
@@ -351,7 +351,7 @@ test("the divider resizes Homie immediately and preserves the packet and the dra
   await composer().fill("Keep this draft after the resize.");
   const frame = await reportFrame();
   await frame.evaluate(() => { document.body.dataset.resizeCheck = "kept"; });
-  const divider = page.getByRole("separator", { name: "Homie width" });
+  const divider = page.getByRole("separator", { name: "Collie width" });
   const readerBefore = await box("packet-reader");
   const handle = await box("packet-chat-resize");
   try {
@@ -362,7 +362,7 @@ test("the divider resizes Homie immediately and preserves the packet and the dra
     expect((await box("packet-reader")).width).toBeCloseTo(readerBefore.width - 220, 0);
     await page.mouse.up();
     expect(await divider.getAttribute("aria-valuenow")).toBe("620");
-    expect(await page.evaluate(() => localStorage.getItem("mc.packet-homie-width"))).toBe("620");
+    expect(await page.evaluate(() => localStorage.getItem("mc.packet-collie-width"))).toBe("620");
     expect(await frame.evaluate(() => document.body.dataset.resizeCheck)).toBe("kept");
     expect(await composer().inputValue()).toBe("Keep this draft after the resize.");
     await readerFits(WIDE.width);
@@ -376,7 +376,7 @@ test("the divider resizes Homie immediately and preserves the packet and the dra
     expect(await composer().inputValue()).toBe("Keep this draft after the resize.");
     await page.getByTestId("packet-chat-close").click();
     expect(await divider.isVisible()).toBe(false);
-    await page.getByTestId("packet-homie-open").click();
+    await page.getByTestId("packet-collie-open").click();
     expect((await box("packet-chat-column")).width).toBe(620);
     await page.reload();
     await readerShows("long");
@@ -386,7 +386,7 @@ test("the divider resizes Homie immediately and preserves the packet and the dra
     expect((await box("packet-chat-column")).width).toBe(400);
   } finally {
     await page.mouse.up();
-    await page.evaluate(() => localStorage.removeItem("mc.packet-homie-width"));
+    await page.evaluate(() => localStorage.removeItem("mc.packet-collie-width"));
   }
 }, 60000);
 
@@ -417,8 +417,8 @@ test("the divider supports the keyboard and keeps both columns inside the window
     await readerFits(960);
     await page.setViewportSize({ width: 390, height: 844 });
     await divider.waitFor({ state: "hidden" });
-    await page.getByTestId("reader-homie-view").getByTestId("packet-chat").waitFor();
-    expect(await page.getByTestId("reader-homie-view").getByTestId("packet-chat").isVisible()).toBe(true);
+    await page.getByTestId("reader-collie-view").getByTestId("packet-chat").waitFor();
+    expect(await page.getByTestId("reader-collie-view").getByTestId("packet-chat").isVisible()).toBe(true);
     await readerFits(390);
     await page.setViewportSize({ width: 1440, height: 900 });
     await divider.waitFor();
@@ -436,7 +436,7 @@ test("the divider supports the keyboard and keeps both columns inside the window
     await page.setViewportSize(WIDE);
     await divider.waitFor();
     await divider.dblclick();
-    await page.evaluate(() => localStorage.removeItem("mc.packet-homie-width"));
+    await page.evaluate(() => localStorage.removeItem("mc.packet-collie-width"));
   }
 }, 60000);
 
@@ -447,7 +447,7 @@ test("at 1280 px the queue column hides while the chat column is open and return
   try {
     await load("second");
     expect(await page.getByTestId("review-list").isVisible()).toBe(true);
-    await page.getByTestId("packet-homie-open").click();
+    await page.getByTestId("packet-collie-open").click();
     await page.getByTestId("packet-chat-column").waitFor({ state: "visible" });
     await page.getByTestId("review-list").waitFor({ state: "hidden" });
     expect(await page.getByTestId("review-pane").getAttribute("data-queue")).toBe("hidden");
@@ -470,12 +470,12 @@ test("at 1280 px the queue column hides while the chat column is open and return
     await page.getByTestId("review-list").waitFor({ state: "visible" });
     expect(await page.getByTestId("review-pane").getAttribute("data-queue")).toBeNull();
     expect((await box("review-list")).width).toBe(264);
-    // The close moves the focus to the "Ask Homie" control.
-    expect(await page.evaluate(() => document.activeElement?.getAttribute("data-testid"))).toBe("packet-homie-open");
-    expect(await page.evaluate(() => localStorage.getItem("mc.packet-homie"))).toBe("closed");
+    // The close moves the focus to the "Ask Collie" control.
+    expect(await page.evaluate(() => document.activeElement?.getAttribute("data-testid"))).toBe("packet-collie-open");
+    expect(await page.evaluate(() => localStorage.getItem("mc.packet-collie"))).toBe("closed");
 
     // A wider window gives the queue column space again.
-    await page.getByTestId("packet-homie-open").click();
+    await page.getByTestId("packet-collie-open").click();
     await page.getByTestId("review-list").waitFor({ state: "hidden" });
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.getByTestId("review-list").waitFor({ state: "visible" });
@@ -506,7 +506,7 @@ test("at 1440 px the queue column narrows to 200 px with the chat column open", 
   }
 }, 30000);
 
-test("at 390 px the Homie view shows the quick chat with the reader bar and the decision bar", async () => {
+test("at 390 px the Collie view shows the quick chat with the reader bar and the decision bar", async () => {
   const { page } = smoke;
   const narrow = { width: 390, height: 844 };
   await storeChat("closed");
@@ -514,15 +514,15 @@ test("at 390 px the Homie view shows the quick chat with the reader bar and the 
   try {
     await load("third");
     expect(await box("packet-reader")).toEqual({ x: 0, y: 0, ...narrow });
-    expect(await page.getByTestId("packet-homie-open").isVisible()).toBe(false);
-    await page.getByTestId("reader-view-homie").click();
-    await page.getByTestId("reader-homie-view").waitFor({ state: "visible" });
-    expect(await page.getByTestId("reader-view-homie").getAttribute("aria-selected")).toBe("true");
-    expect(await page.getByTestId("reader-homie-view").getByTestId("packet-chat").count()).toBe(1);
+    expect(await page.getByTestId("packet-collie-open").isVisible()).toBe(false);
+    await page.getByTestId("reader-view-collie").click();
+    await page.getByTestId("reader-collie-view").waitFor({ state: "visible" });
+    expect(await page.getByTestId("reader-view-collie").getAttribute("aria-selected")).toBe("true");
+    expect(await page.getByTestId("reader-collie-view").getByTestId("packet-chat").count()).toBe(1);
     expect(await page.getByTestId("packet-chat-column").isVisible()).toBe(false);
     expect(await page.getByTestId("packet-chat-close").isVisible()).toBe(false);
     expect(await page.getByTestId("packet-render").isVisible()).toBe(false);
-    // A pointer selection of the Homie view moves the focus to the composer.
+    // A pointer selection of the Collie view moves the focus to the composer.
     expect(await page.evaluate(() => document.activeElement?.getAttribute("data-testid"))).toBe("packet-chat-message");
     // The reader bar, the view row, and the decision bar stay visible.
     await page.waitForFunction(() => !(document.querySelector('[data-testid="packet-approve"]') as HTMLButtonElement).disabled);
@@ -547,14 +547,14 @@ test("at 390 px the Homie view shows the quick chat with the reader bar and the 
     expect(await page.getByTestId("packet-chat-column").getByTestId("packet-chat").count()).toBe(1);
     expect(await composer().inputValue()).toBe("A draft in the narrow layout");
     await page.setViewportSize(narrow);
-    await page.getByTestId("reader-homie-view").waitFor({ state: "visible" });
+    await page.getByTestId("reader-collie-view").waitFor({ state: "visible" });
     expect(await composer().inputValue()).toBe("A draft in the narrow layout");
 
     // "Packet" closes the quick chat and shows the Packet view.
     await page.getByTestId("reader-view-packet").click();
     await page.getByTestId("packet-render").waitFor({ state: "visible" });
-    expect(await page.getByTestId("reader-homie-view").isVisible()).toBe(false);
-    expect(await page.evaluate(() => localStorage.getItem("mc.packet-homie"))).toBe("closed");
+    expect(await page.getByTestId("reader-collie-view").isVisible()).toBe(false);
+    expect(await page.evaluate(() => localStorage.getItem("mc.packet-collie"))).toBe("closed");
   } finally {
     await page.setViewportSize(WIDE);
   }
@@ -580,7 +580,7 @@ test("the view, the scroll position, the open panel, and the reason text survive
     expect(await page.getByTestId("packet-reason").inputValue()).toBe("Keep this reason.");
     expect(await paragraphInView(frame, top)).toBe(true);
   };
-  await page.getByTestId("packet-homie-open").click();
+  await page.getByTestId("packet-collie-open").click();
   await page.getByTestId("packet-chat-column").waitFor({ state: "visible" });
   await until(async () => await paragraphInView(frame, top), "the top paragraph stays in view after the open");
   await unchanged();
@@ -595,7 +595,7 @@ test("the view, the scroll position, the open panel, and the reason text survive
   await page.getByTestId("changes-path").waitFor();
   await page.getByTestId("changes-next").click();
   await page.waitForFunction(() => document.querySelector('[data-testid="changes-path"]')?.textContent === "src/limit.js");
-  await page.getByTestId("packet-homie-open").click();
+  await page.getByTestId("packet-collie-open").click();
   await page.getByTestId("packet-chat-column").waitFor({ state: "visible" });
   expect(await page.getByTestId("reader-view-changes").getAttribute("aria-selected")).toBe("true");
   expect(await page.getByTestId("changes-path").innerText()).toBe("src/limit.js");
@@ -675,15 +675,15 @@ test("a return to a packet and a reload show the same conversation with its hist
   expect(sessionID).toBeTruthy();
   const shows = async () => {
     await chatShows("long");
-    await transcript().getByTestId("homie-message").filter({ hasText: "The report raises the limit to 20." }).waitFor();
-    const keys = await transcript().getByTestId("homie-message").evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).dataset["key"] ?? ""));
+    await transcript().getByTestId("collie-message").filter({ hasText: "The report raises the limit to 20." }).waitFor();
+    const keys = await transcript().getByTestId("collie-message").evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).dataset["key"] ?? ""));
     expect(keys.length).toBe(2);
     for (const key of keys) expect(key.startsWith(`${sessionID}:`)).toBe(true);
   };
   await shows();
   await page.getByTestId("reader-next").click();
   await readerShows("second");
-  await transcript().getByTestId("homie-message").filter({ hasText: "The limit test covers it." }).waitFor();
+  await transcript().getByTestId("collie-message").filter({ hasText: "The limit test covers it." }).waitFor();
   await page.getByTestId("reader-previous").click();
   await readerShows("long");
   await shows();
@@ -705,7 +705,7 @@ test("a reply retry in the quick chat keeps the Review page", async () => {
     session_id: sessionID, status: "active",
     messages: [{ id: 1, direction: "inbound", body: "Why did the reply stop?", created_at: "2020-01-01T00:00:00Z", reply_state: replyState, attempt_id: `${replyState}-attempt` }],
   } }));
-  await page.route("**/api/homie/reply-retry", async (route) => {
+  await page.route("**/api/collie/reply-retry", async (route) => {
     retries++;
     replyState = "authorized";
     await route.fulfill({ json: { session_id: sessionID, attempt_id: "authorized-attempt" } });
@@ -723,7 +723,7 @@ test("a reply retry in the quick chat keeps the Review page", async () => {
     expect(await page.getByTestId("packet-chat-column").isVisible()).toBe(true);
   } finally {
     await page.unroute(historyPath);
-    await page.unroute("**/api/homie/reply-retry");
+    await page.unroute("**/api/collie/reply-retry");
   }
 }, 30000);
 
@@ -833,19 +833,19 @@ test("after a return the empty state of the newer packet links to the conversati
   await link.waitFor({ timeout: 10000 });
   expect(await link.innerText()).toBe("Continue the conversation about the earlier packet");
   await link.click();
-  await page.getByTestId("homie-pane").waitFor({ state: "visible" });
+  await page.getByTestId("collie-pane").waitFor({ state: "visible" });
   const row = page.locator(`[data-testid="session-row"][data-session="${earlier}"]`);
   await row.waitFor();
   expect(await row.getAttribute("aria-pressed")).toBe("true");
 }, 60000);
 
 // This test archives the Project, so it runs last.
-test("the model control of the quick chat changes the Homie route and keeps the earlier conversation", async () => {
+test("the model control of the quick chat changes the Collie route and keeps the earlier conversation", async () => {
   const { page } = smoke;
   const routing = await mc(["routing", "show"]) as { routes: { role: string; binding: string }[]; bindings: { id: string; model: string; name: string }[] };
-  const homieRoute = async () => ((await mc(["routing", "show"])) as typeof routing).routes.find((r) => r.role === "homie")?.binding;
+  const collieRoute = async () => ((await mc(["routing", "show"])) as typeof routing).routes.find((r) => r.role === "collie")?.binding;
   const label = (id: string) => { const b = routing.bindings.find((row) => row.id === id)!; return b.model || b.name; };
-  const first = (await homieRoute())!;
+  const first = (await collieRoute())!;
   const other = routing.bindings.map((b) => b.id).find((id) => id !== first)!;
   const enabled = () => page.waitForFunction(() => !(document.querySelector('[data-testid="packet-chat-model"]') as HTMLButtonElement | null)?.disabled);
   await storeChat("open");
@@ -864,7 +864,7 @@ test("the model control of the quick chat changes the Homie route and keeps the 
   await page.screenshot({ path: evidencePath("packet-chat-model-menu.png"), animations: "disabled" });
   await menu.locator(`[data-binding="${other}"]`).click();
   await menu.waitFor({ state: "hidden" });
-  expect(await homieRoute()).toBe(other);
+  expect(await collieRoute()).toBe(other);
   await page.waitForFunction((text) => document.querySelector('[data-testid="packet-chat-model"]')?.textContent?.includes(text), label(other));
   expect(await currentConversation("model")).toBeNull();
 
@@ -875,7 +875,7 @@ test("the model control of the quick chat changes the Homie route and keeps the 
   await answer(earlier, "Which model answers?", "The selected model answers.");
 
   // A conversation with messages asks first, then gives its place to a new
-  // conversation. The earlier conversation stays in the Homie list.
+  // conversation. The earlier conversation stays in the Collie list.
   await enabled();
   await control.click();
   await menu.locator(`[data-binding="${first}"]`).click();
@@ -883,7 +883,7 @@ test("the model control of the quick chat changes the Homie route and keeps the 
   await confirmation.waitFor();
   expect(await confirmation.innerText()).toContain("Your current conversation stays in the session list.");
   await confirmation.getByRole("button", { name: "Start new conversation", exact: true }).click();
-  await until(async () => (await homieRoute()) === first, "the Homie route changes");
+  await until(async () => (await collieRoute()) === first, "the Collie route changes");
   let later = "";
   await until(async () => { later = (await currentConversation("model"))?.id ?? ""; return later !== "" && later !== earlier; }, "a new conversation of the packet");
   expect(String((await currentConversation("model"))!.binding).split("/").at(-1)).toBe(first);
@@ -923,7 +923,7 @@ test("the quick chat of a packet of an archived Project accepts no message and s
   // A packet with a conversation keeps its history and states the cause.
   await load("long");
   await chatShows("long");
-  await transcript().getByTestId("homie-message").filter({ hasText: "The report raises the limit to 20." }).waitFor();
+  await transcript().getByTestId("collie-message").filter({ hasText: "The report raises the limit to 20." }).waitFor();
   await until(async () => (await page.getByTestId("packet-chat-status").innerText().catch(() => "")) === ARCHIVED,
     "the status line states the archived Project");
   expect(await composer().isDisabled()).toBe(true);

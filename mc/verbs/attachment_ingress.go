@@ -106,11 +106,11 @@ func AttachmentIngressEnqueue(db *sql.DB, id *RunIdentity, a AttachmentIngressEn
 		var active int
 		err = q.QueryRowContext(ctx, `
 			SELECT b.session_id, b.surface, b.active, s.status
-			FROM homie_bindings b JOIN homie_sessions s ON s.id=b.session_id
+			FROM collie_bindings b JOIN collie_sessions s ON s.id=b.session_id
 			WHERE b.id=?`, a.BindingID,
 		).Scan(&bindingSession, &bindingSurface, &active, &sessionStatus)
 		if err == sql.ErrNoRows {
-			return Domainf("unknown Homie binding %d", a.BindingID)
+			return Domainf("unknown Collie binding %d", a.BindingID)
 		}
 		if err != nil {
 			return err
@@ -195,7 +195,7 @@ func AttachmentIngressQueued(db *sql.DB, id *RunIdentity, a AttachmentIngressQue
 		       i.external_message_id,i.body,i.body_sha256,i.manifest,
 		       i.manifest_sha256,i.state,i.attempt_count,i.created_at
 		FROM attachment_ingresses i
-		JOIN homie_bindings b ON b.id=i.binding_id
+		JOIN collie_bindings b ON b.id=i.binding_id
 		WHERE i.id>?
 		ORDER BY i.id
 		LIMIT ?`, after, a.Limit)
@@ -334,13 +334,13 @@ func AttachmentIngressReserve(db *sql.DB, id *RunIdentity, a AttachmentIngressRe
 		err = q.QueryRowContext(ctx, `
 			SELECT i.id,i.manifest,i.manifest_sha256,i.attempt_count
 			FROM attachment_ingresses i
-			JOIN homie_sessions s ON s.id=i.session_id
+			JOIN collie_sessions s ON s.id=i.session_id
 			WHERE i.session_id=? AND i.state='queued'
 			  AND s.status='active'
 			ORDER BY i.id LIMIT 1`, a.Session,
 		).Scan(&out.IngressID, &manifestRaw, &manifestDigest, &attemptCount)
 		if err == sql.ErrNoRows {
-			return Domainf("Homie session %q has no queued attachment ingress", a.Session)
+			return Domainf("Collie session %q has no queued attachment ingress", a.Session)
 		}
 		if err != nil {
 			return err
@@ -513,7 +513,7 @@ func AttachmentPublicationRenew(db *sql.DB, id *RunIdentity, a AttachmentPublica
 			JOIN attachment_batches b ON b.id=a.batch_id
 			JOIN attachment_publications p ON p.batch_id=b.id
 			JOIN attachment_ingresses i ON i.id=a.ingress_id
-			JOIN homie_sessions s ON s.id=a.session_id
+			JOIN collie_sessions s ON s.id=a.session_id
 			WHERE a.id=? AND a.session_id=? AND a.owner_token=?
 			  AND a.owner_generation=? AND a.state='active'
 			  AND b.state='publishing' AND i.state='publishing'
@@ -782,7 +782,7 @@ func terminalizeAttachmentAttempt(ctx context.Context, q Q, attemptID, session,
 		       a.hard_deadline,i.failure_count,i.surface,b.channel_ref,ab.object_count
 		FROM attachment_attempts a
 		JOIN attachment_ingresses i ON i.id=a.ingress_id
-		JOIN homie_bindings b ON b.id=i.binding_id
+		JOIN collie_bindings b ON b.id=i.binding_id
 		JOIN attachment_batches ab ON ab.id=a.batch_id
 		WHERE a.id=? AND a.session_id=? AND a.state='active'
 		  AND i.state='publishing' AND ab.state='publishing'`,
@@ -839,7 +839,7 @@ func terminalizeAttachmentAttempt(ctx context.Context, q Q, attemptID, session,
 
 	var outboxID any
 	if out.Outcome == "failed" {
-		inserted, err := insertFanoutOutboxRow(ctx, q, "homie_reply",
+		inserted, err := insertFanoutOutboxRow(ctx, q, "collie_reply",
 			session, surface, channelRef, out.Receipt)
 		if err != nil {
 			return err

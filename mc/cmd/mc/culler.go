@@ -10,7 +10,7 @@ import (
 )
 
 const cullerLifecycleGuidance = "Use culler for lifecycle operations."
-const cullerConfigurationGuidance = "Configure Culler in the dashboard or through Homie."
+const cullerConfigurationGuidance = "Configure Culler in the dashboard or through Collie."
 const cullerInstallerURL = "https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh"
 
 type cullerOptions struct {

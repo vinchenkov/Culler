@@ -231,7 +231,7 @@ type Timing struct {
 	SpawnGraceS         int `toml:"spawn_grace_s"`
 	HardDeadlineMinutes int `toml:"hard_deadline_minutes"`
 	TickIntervalS       int `toml:"tick_interval_s"`
-	HomieIdleTimeoutS   int `toml:"homie_idle_timeout_s"`
+	CollieIdleTimeoutS  int `toml:"collie_idle_timeout_s"`
 	WikiUpdateIntervalS int `toml:"wiki_update_interval_s"`
 	BackupIntervalS     int `toml:"backup_interval_s"`
 	BackupRetain        int `toml:"backup_retain"`
@@ -345,7 +345,7 @@ func Default() Config {
 		Timing: Timing{
 			TimeoutMinutes: 60, GraceMinutes: 15, HeartbeatIntervalS: 60,
 			SpawnGraceS: 60, HardDeadlineMinutes: 240, TickIntervalS: 60,
-			HomieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
+			CollieIdleTimeoutS: 1800, WikiUpdateIntervalS: 3600,
 			BackupIntervalS: 3600, BackupRetain: 12,
 		},
 		Container: Container{
@@ -610,7 +610,7 @@ func (c Config) Validate() error {
 		"timing.spawn_grace_s":          c.Timing.SpawnGraceS,
 		"timing.hard_deadline_minutes":  c.Timing.HardDeadlineMinutes,
 		"timing.tick_interval_s":        c.Timing.TickIntervalS,
-		"timing.homie_idle_timeout_s":   c.Timing.HomieIdleTimeoutS,
+		"timing.collie_idle_timeout_s":  c.Timing.CollieIdleTimeoutS,
 		"timing.wiki_update_interval_s": c.Timing.WikiUpdateIntervalS,
 		"timing.backup_interval_s":      c.Timing.BackupIntervalS,
 		"timing.backup_retain":          c.Timing.BackupRetain,

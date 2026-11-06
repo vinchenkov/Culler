@@ -446,14 +446,14 @@
     },
     {
       "id": "claim_37c1694f05974f15850f5e429240ca14",
-      "statement": "The Review chat and the Homie page use the same packet conversation; archived Projects permit history display but refuse messages.",
+      "statement": "The Review chat and the Collie page use the same packet conversation; archived Projects permit history display but refuse messages.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
           "version": "repo-file-v1:sha256:4f91e1a2d08c9cdf4afcd1fbc1c58a8358fb0a822815a5a939e6555ab35ef0bc"
         },
         {
-          "resource": "repo://mc/verbs/homie.go",
+          "resource": "repo://mc/verbs/collie.go",
           "version": "repo-file-v1:sha256:2fb9d913abd44e8b7f95e5761b17d7444c301173ff6944d2341cb17a231e9624"
         }
       ]
@@ -574,7 +574,7 @@
     },
     {
       "id": "claim_c63278054a3e475d8ea8aac4f4d773af",
-      "statement": "Ask Homie creates an ordinary session and checks fresh history before another send after an uncertain response.",
+      "statement": "Ask Collie creates an ordinary session and checks fresh history before another send after an uncertain response.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/diagnosticchat.js#L69-L99",
@@ -597,7 +597,7 @@
       "statement": "The diagnostic browser smoke checks task, connection, environment, setup, and run conversations.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/diagnostic-homie.smoke.test.ts",
+          "resource": "repo://dashboard/smoke/diagnostic-collie.smoke.test.ts",
           "version": "repo-file-v1:sha256:8510b3244f50155cc10203c4184ece75cc305bba5e9ccd686709179901bd8f7d"
         }
       ]
@@ -642,7 +642,7 @@
     },
     {
       "id": "claim_c81fa3f783e1406e84e1ba1a6a0ca247",
-      "statement": "Ask Homie opens the wide chat from the decision bar; the narrow layout hides that control and an empty decision bar.",
+      "statement": "Ask Collie opens the wide chat from the decision bar; the narrow layout hides that control and an empty decision bar.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/index.html",
@@ -656,7 +656,7 @@
     },
     {
       "id": "claim_54a937e42fe341a3bc7f7f93200a7ee0",
-      "statement": "The quick chat model control sets the Homie route and replaces an existing conversation when its selected profile differs.",
+      "statement": "The quick chat model control sets the Collie route and replaces an existing conversation when its selected profile differs.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
@@ -778,7 +778,7 @@
     },
     {
       "id": "claim_f4933c16c25147de99e07963e253e972",
-      "statement": "Homie panel headers use the shared blue panel color and white text.",
+      "statement": "Collie panel headers use the shared blue panel color and white text.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/style.css#L2512-L2520",
@@ -812,7 +812,7 @@
     },
     {
       "id": "claim_5fd28a036dd34d08bda122fc76ee2b6d",
-      "statement": "The Setup Journal places the current failure's Ask Homie action in the setup controls outside the transcript.",
+      "statement": "The Setup Journal places the current failure's Ask Collie action in the setup controls outside the transcript.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/setup-journal.js#L302-L313",
@@ -1076,7 +1076,7 @@
     },
     {
       "id": "claim_e6765a4076024924a3919777e5c3cba3",
-      "statement": "The divider stores the preferred Homie width in browser storage and limits its visible width to preserve a 400-pixel reader.",
+      "statement": "The divider stores the preferred Collie width in browser storage and limits its visible width to preserve a 400-pixel reader.",
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js#L46-L124",
@@ -1352,7 +1352,7 @@
     },
     {
       "id": "claim_58112c82b4b9420f8683fa08955eea95",
-      "statement": "The task dialog offers no Ask Homie action for an open Verifier correction alone.",
+      "statement": "The task dialog offers no Ask Collie action for an open Verifier correction alone.",
       "evidence": [
         {
           "resource": "repo://dashboard/smoke/role-map.smoke.test.ts#L108-L114",

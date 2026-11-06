@@ -17,7 +17,7 @@ The internal configuration file retains the omitted fields for compatibility wit
 | `timing.spawn_grace_s` | Editable. | `mc/dispatch/dispatch.go` checks the first heartbeat deadline. Scribe receives at least 60 seconds. The hard deadline still applies. |
 | `timing.hard_deadline_minutes` | Editable. | `mc/verbs/dispatchverb.go` captures the deadline for a new run. Current runs retain their deadlines. |
 | `timing.tick_interval_s` | Setup. | `mc/verbs/onboardconfig.go` projects the interval into the resident configuration. `resident/src/main.ts` reads it at startup. |
-| `timing.homie_idle_timeout_s` | Editable. | `mc/verbs/dispatchseam.go` reads the spine value for Homie session expiry. The next session check uses the saved value. |
+| `timing.collie_idle_timeout_s` | Editable. | `mc/verbs/dispatchseam.go` reads the spine value for Collie session expiry. The next session check uses the saved value. |
 | `timing.wiki_update_interval_s` | Editable. | The wiki update decision in `mc/dispatch` reads the spine value. The next dispatch uses the saved value. |
 | `timing.backup_interval_s` | Setup. | `mc/verbs/onboardconfig.go` projects the interval into the host policy. `resident/src/main.ts` creates the backup timer at startup. |
 | `timing.backup_retain` | Editable. | `mc/verbs/spine_transfer.go` captures the current retention count for a backup. `mc/verbs/ops.go` applies retention. |

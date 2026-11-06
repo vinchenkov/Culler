@@ -344,7 +344,7 @@ test("setup errors use safe Markdown and remain accessible across health refresh
   expect(await failure.locator("error").count()).toBe(0);
   expect(await failure.locator("strong").count()).toBe(1);
   expect(await page.getByTestId("setup-controls").getByTestId("setup-retry").isVisible()).toBe(true);
-  expect(await page.getByTestId("setup-controls").getByTestId("setup-ask-homie").isVisible()).toBe(true);
+  expect(await page.getByTestId("setup-controls").getByTestId("setup-ask-collie").isVisible()).toBe(true);
   expect(await page.getByTestId("setup-transcript").locator("button, input, textarea, select").count()).toBe(0);
   expect(await page.locator('[data-journal-key="setup:evidence"]').count()).toBe(0);
   expect(await page.getByTestId("setup-operation-evidence").count()).toBe(0);

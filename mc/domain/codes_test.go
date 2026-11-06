@@ -6,7 +6,7 @@ import (
 	"mc/domain"
 )
 
-// The Homie runner reads this code off the wire. runner/homie-runner/main.ts
+// The Collie runner reads this code off the wire. runner/collie-runner/main.ts
 // pins the same literal; a rename on one side fails one of the two tests.
 func TestSessionInactiveCodeIsTheWireLiteral(t *testing.T) {
 	if domain.CodeSessionInactive != "session-inactive" {

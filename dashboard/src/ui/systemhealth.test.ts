@@ -311,7 +311,7 @@ test("A failed or incomplete deployment check retains the earlier evidence", asy
 test("Connections that require attention stay open and the others share one count", () => {
   const connections = [
     { id: "a", state: "ready", roles: ["worker"] },
-    { id: "b", state: "stopped", roles: ["homie"] },
+    { id: "b", state: "stopped", roles: ["collie"] },
     { id: "c", state: "unknown", roles: [] },
     { id: "d", state: "retry_wait", roles: [] },
     { id: "e", state: "unknown", roles: ["scribe"] },

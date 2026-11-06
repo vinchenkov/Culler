@@ -110,7 +110,7 @@ test("the role map shows actual run states and retains the role popup", async ()
   const dialog = page.getByTestId("task-dialog");
   await dialog.getByText("Requested a correction", { exact: true }).waitFor();
   expect(await dialog.getByText(correctionProblem).count()).toBe(0);
-  expect(await dialog.getByTestId("task-ask-homie").count()).toBe(0);
+  expect(await dialog.getByTestId("task-ask-collie").count()).toBe(0);
   expect(await dialog.locator(".callout").count()).toBe(0);
   const running = dialog.getByTestId("task-dialog-running");
   expect(await running.innerText()).toContain("Running now");

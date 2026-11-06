@@ -32,9 +32,9 @@ func TestTraceSessionsVerbListsMainTracesForTheHostOnly(t *testing.T) {
 			'native.jsonl', '2026-09-29 10:05:00')`, []any{claudeRef}},
 		{`INSERT INTO runs (id, tier, role, project, session_path, binding)
 			VALUES ('r-merge', 'pipeline', 'worker', 'ws-test', 'sessions/r-merge', 'mechanical')`, nil},
-		{`INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding,
+		{`INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding,
 			native_session_ref, trace_filename)
-			VALUES ('h-codex', 'mc-homie-h-codex', '[]', 'sessions/h-codex', 'codex/chatgpt', ?, ?)`,
+			VALUES ('h-codex', 'mc-collie-h-codex', '[]', 'sessions/h-codex', 'codex/chatgpt', ?, ?)`,
 			[]any{codexRef, codexFile}},
 	} {
 		if _, err := db.Exec(statement.query, statement.args...); err != nil {
@@ -53,8 +53,8 @@ func TestTraceSessionsVerbListsMainTracesForTheHostOnly(t *testing.T) {
 		`{"agentsview_session":"` + claudeRef + `","display_name":"Culler · strategist · r-claude","ended":true,` +
 		`"format":"claude","id":"r-claude","kind":"run","native_session_ref":"` + claudeRef + `",` +
 		`"session_path":"sessions/r-claude","trace_filename":"native.jsonl"},` +
-		`{"agentsview_session":"codex:` + codexRef + `","display_name":"Homie · h-codex","ended":false,` +
-		`"format":"codex","id":"h-codex","kind":"homie","native_session_ref":"` + codexRef + `",` +
+		`{"agentsview_session":"codex:` + codexRef + `","display_name":"Collie · h-codex","ended":false,` +
+		`"format":"codex","id":"h-codex","kind":"collie","native_session_ref":"` + codexRef + `",` +
 		`"session_path":"sessions/h-codex","trace_filename":"` + codexFile + `"}]}`
 	if string(body) != want {
 		t.Fatalf("__trace-sessions =\n%s\nwant\n%s", body, want)

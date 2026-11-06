@@ -61,7 +61,7 @@ sources:
   - id: openwiki-source-ea49a40872eecce65130f399
     resource: repo://mc/e2e/e2e_test.go
   - id: openwiki-source-b5018534042f60dde3347c5a
-    resource: repo://mc/e2e/homie_packet_artifacts_test.go
+    resource: repo://mc/e2e/collie_packet_artifacts_test.go
   - id: openwiki-source-bdb34dc5adc4a25690eda4c2
     resource: repo://mc/evalcase/README.md
   - id: openwiki-source-c2af084a67a7e25f724fdf19
@@ -73,7 +73,7 @@ sources:
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
     resource: repo://mc/verbs/directives/verifier.md
   - id: openwiki-source-5ff861069017b6a0714fcdda
-    resource: repo://mc/verbs/homiepacket_test.go
+    resource: repo://mc/verbs/colliepacket_test.go
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
     resource: repo://mc/verbs/packetcontext_test.go
   - id: openwiki-source-95d6e106a75ae807cab7e009
@@ -128,14 +128,14 @@ Each component has a `check.sh` entry point. The full fast suite is:
 
 ```sh
 ./mc/check.sh && ./runner/fake-harness/check.sh && ./runner/agent-runner/check.sh && \
-./runner/homie-runner/check.sh && ./runner/setup-runner/check.sh && ./runner/shared/check.sh && ./runner/image/check.sh && \
+./runner/collie-runner/check.sh && ./runner/setup-runner/check.sh && ./runner/shared/check.sh && ./runner/image/check.sh && \
 ./resident/check.sh && ./dashboard/check.sh
 ```
 
 | Component | What its `check.sh` runs |
 | --- | --- |
 | `mc` | The Go lint gate and test suite (below). |
-| `runner/fake-harness`, `runner/agent-runner`, `runner/homie-runner`, `runner/setup-runner`, `runner/shared` | `bun test`. `runner/shared` covers the structured logger whose output must match Go's `mc/mclog` byte for byte (see [logging](../concepts/logging.md)). |
+| `runner/fake-harness`, `runner/agent-runner`, `runner/collie-runner`, `runner/setup-runner`, `runner/shared` | `bun test`. `runner/shared` covers the structured logger whose output must match Go's `mc/mclog` byte for byte (see [logging](../concepts/logging.md)). |
 | `runner/image` | Shell tests for `build.sh`, `build-prod.sh`, the browser and toolchain smokes, `release/check.sh`, `runner/openwiki/check.sh`, and `bun test mc-land.test.ts`. |
 | `resident` | `bun test`, with fake timer, exec, and filesystem seams plus split-brain acceptance against a real test-tagged `mc` binary. |
 | `dashboard` | `bun test src/`: unit tests only, with no browser (see [the dashboard](../architecture/dashboard.md)). |
@@ -228,7 +228,7 @@ Run these at phase completion, never in the fast suite:
 
 | Lane | Command | What it proves |
 | --- | --- | --- |
-| Docker end-to-end | `cd mc && mise exec -- go test -tags docker_e2e -v -timeout 30m ./e2e/...` | One task moves through the full pipeline (tick, dispatch, lease, fake-harness Worker, `mc complete`, packet, approve, apply) through the real `mc`, the real resident on its timer, and real containers. The tests never call `mc dispatch`, so every advance is timer-driven. Other files cover backpressure, correction rallies, the fault matrix, Homie conversations, landing failure, and role skill isolation. |
+| Docker end-to-end | `cd mc && mise exec -- go test -tags docker_e2e -v -timeout 30m ./e2e/...` | One task moves through the full pipeline (tick, dispatch, lease, fake-harness Worker, `mc complete`, packet, approve, apply) through the real `mc`, the real resident on its timer, and real containers. The tests never call `mc dispatch`, so every advance is timer-driven. Other files cover backpressure, correction rallies, the fault matrix, Collie conversations, landing failure, and role skill isolation. |
 | Docker boundary | `cd mc && mise exec -- go test -tags docker_boundary -count=1 ./boundarydocker/...` | Container boundaries: agent user, agent profiles, attachment canaries, doctor probes, the landing envelope, ownership, the production image, and wiki export. |
 | Nightly properties | `cd mc && mise exec -- go test -tags nightly ./property/...` | `TestDispatchStateFuzzer` and metamorphic invisibility properties over `dispatch.Decide`. |
 | Dashboard smoke | `./dashboard/smoke.sh` | Real Chromium against a real `mc` on a scratch spine. |
@@ -367,15 +367,15 @@ Its checks cover different boundaries:
 
 | Source | Behavior under test |
 | --- | --- |
-| `mc/verbs/homiepacket_test.go` | Current packet and version checks, concurrent preparation, resume, deletion, immutable identity, archive refusal, and model restrictions. |
+| `mc/verbs/colliepacket_test.go` | Current packet and version checks, concurrent preparation, resume, deletion, immutable identity, archive refusal, and model restrictions. |
 | `mc/verbs/packetcontext_test.go` | Packet identity and content, mutable state exclusion, media replacement, report fences, size limits, digest checks, and absent artifacts. |
 | `mc/verbs/taskartifacts_test.go` | Task folder resolution, absent folders, and refusal of folders outside the expected task path. |
 | `mc/cmd/mc/packet_list_selection_test.go` | Task selection through the real command interface. |
-| `resident/src/effects.test.ts` and `homie-envelope.test.ts` | Task artifact mounts, Project artifact masks, and rejection of altered mount envelopes. |
-| `runner/homie-runner/main.test.ts` | Packet context on the first native session turn, retained context on later turns, and context identity checks. |
+| `resident/src/effects.test.ts` and `collie-envelope.test.ts` | Task artifact mounts, Project artifact masks, and rejection of altered mount envelopes. |
+| `runner/collie-runner/main.test.ts` | Packet context on the first native session turn, retained context on later turns, and context identity checks. |
 | `dashboard/src/ui/packetchat.test.ts` | Conversation selection, earlier packet links, and width calculations. |
 | `dashboard/smoke/packet-chat.smoke.test.ts` | Browser layout, shared history, draft retention, packet changes, decisions, and archived Project behavior. |
-| `mc/e2e/homie_packet_artifacts_test.go` | Real container reads of the task report and evidence, refused writes, and isolation from another task. |
+| `mc/e2e/collie_packet_artifacts_test.go` | Real container reads of the task report and evidence, refused writes, and isolation from another task. |
 
 The Go and Bun component checks cover the unit tests.
 The browser tests require `./dashboard/smoke.sh`.
@@ -384,7 +384,7 @@ Test definitions establish intended checks; they do not establish a fresh succes
 This wiki update inspects source and test assertions. It does not report a new application test run or live acceptance.
 See [packet conversations](../workflows/packet-conversations.md) for the behavior these checks address.
 
-### Homie divider browser checks
+### Collie divider browser checks
 
 `dashboard/smoke/packet-chat.smoke.test.ts` checks the divider through pointer and keyboard input.
 The pointer test expands the column from 400 to 620 pixels and checks the matching reader width reduction.
@@ -444,13 +444,13 @@ The smoke checks unavailable section access, setup, invalid tokens, failed deliv
 It saves screenshots at 1280 and 390 pixels in both themes through `evidencePath()`.
 The normal `./dashboard/smoke.sh` entry point runs these checks.
 
-`mc/verbs/homiethread_test.go` checks one session per thread, source message replay, idle resume, retirement, and dashboard replies to a thread.
+`mc/verbs/colliethread_test.go` checks one session per thread, source message replay, idle resume, retirement, and dashboard replies to a thread.
 `resident/src/discord.test.ts` checks thread creation, recovery, authorization, and outbox delivery across thread failures.
 `dashboard/smoke/discord-conversation.smoke.test.ts` checks one conversation across Discord and dashboard after an idle period and connector restart.
 It also checks a separate channel conversation, interrupted starts, and delivery when another thread fails.
 
 The retained [Discord verification report](../../.tracking/discord-configuration/REPORT.md) records separate live checks with a bot and channel.
-It reports a scripted Homie reply after a retry and explicitly leaves a live-agent reply unverified.
+It reports a scripted Collie reply after a retry and explicitly leaves a live-agent reply unverified.
 Its counts and outcomes are historical evidence; this wiki update executes no application or live Discord tests.
 See [Discord setup and delivery](../integrations/discord.md) for the implementation and recovery boundaries.
 

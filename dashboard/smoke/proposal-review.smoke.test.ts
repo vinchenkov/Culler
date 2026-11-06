@@ -61,7 +61,7 @@ test("each assigned proposal shows one shared run and remains read-only", async 
     return lines.every(line => line.left >= box.left && line.right <= box.right && line.top >= box.top && line.bottom <= box.bottom) &&
       lines.every((line, i) => lines.every((other, j) => i === j || line.bottom <= other.top || other.bottom <= line.top));
   })).toBe(true);
-  await page.getByTestId("tab-homie").click();
+  await page.getByTestId("tab-collie").click();
   await page.getByTestId("lease-badge").getByText("1 agent launch pending", { exact: false }).waitFor();
   expect(await page.getByTestId("lease-badge").innerText()).toContain("1 agent launch pending");
   await mc(["run", "process-started", run], { MC_RUN_JSON: identity });

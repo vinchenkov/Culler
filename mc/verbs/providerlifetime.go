@@ -55,7 +55,7 @@ func providerLaunchExpiry(ctx context.Context, q Q, launch ProviderLaunchIdentit
 	var current, state, last string
 	var idle int64
 	err := q.QueryRowContext(ctx, `SELECT COALESCE(current_launch_id,''),status,last_activity_at,
- (SELECT homie_idle_timeout_s FROM settings WHERE id=1) FROM homie_sessions WHERE id=?`, launch.RunID).Scan(&current, &state, &last, &idle)
+ (SELECT collie_idle_timeout_s FROM settings WHERE id=1) FROM collie_sessions WHERE id=?`, launch.RunID).Scan(&current, &state, &last, &idle)
 	if err == nil {
 		if state != "active" || current != launch.LaunchID {
 			return time.Time{}, nil

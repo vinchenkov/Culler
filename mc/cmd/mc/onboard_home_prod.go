@@ -203,7 +203,7 @@ func provisionOnboardSpine(req verbs.OnboardSpineRequest, reset bool,
 	return call(req)
 }
 
-// removeManagedDatabaseUsers removes the running agent and Homie containers
+// removeManagedDatabaseUsers removes the running agent and Collie containers
 // that use the database volume. The reset deletes the records of their runs
 // and sessions. The helper stays, because it replaces the database.
 func removeManagedDatabaseUsers(m *helperManager) error {

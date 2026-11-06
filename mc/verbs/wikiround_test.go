@@ -1082,13 +1082,13 @@ func TestWikiRoundTokenSeparatesTheRounds(t *testing.T) {
 	frame := PrivateDispatchPrepareRequest{
 		Version: 1, ReleaseBuildID: "development", ControlVersion: 4, SpineSchemaID: "current", ConfigSchemaVersion: 1,
 		DeploymentUUID: "de41cafe-0000-4000-8000-000000000001", DispatchRequestID: "00112233445566ff", Project: "ws-test",
-		HomieInventory: []PrivateHomieContainer{}, PipelineLiveness: []PrivatePipelineLiveness{},
+		CollieInventory: []PrivateCollieContainer{}, PipelineLiveness: []PrivatePipelineLiveness{},
 		RuntimeCapability: PrivateRuntimeCapability{Bindings: []PrivateRuntimeBinding{}},
 	}
 	head := `{"version":1,"release_build_id":"development","gateway_control_version":4,"spine_schema_id":"current",` +
 		`"config_schema_version":1,"deployment_uuid":"de41cafe-0000-4000-8000-000000000001",` +
 		`"dispatch_request_id":"00112233445566ff","project":"ws-test",`
-	tail := `"homie_inventory":[],"pipeline_liveness":[],"runtime_capability":{"digest":"","bindings":[]}}`
+	tail := `"collie_inventory":[],"pipeline_liveness":[],"runtime_capability":{"digest":"","bindings":[]}}`
 	body, err := json.Marshal(frame)
 	if err != nil {
 		t.Fatal(err)

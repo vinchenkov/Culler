@@ -7,7 +7,7 @@ import (
 )
 
 // TaskArtifactBind is the read-only bind of the artifact files of one task in
-// the Homie container of a packet conversation. Source is nil when the task
+// the Collie container of a packet conversation. Source is nil when the task
 // folder is absent, for example after artifact expiry.
 type TaskArtifactBind struct {
 	Destination string  `json:"destination"`

@@ -64,7 +64,7 @@
           </span>
           <span class="nav-divider" aria-hidden="true"></span>
           <span class="nav-group" role="group" aria-label="System pages">
-            <button class="tab" data-testid="tab-homie" data-panel="homie-pane" data-page="homie" type="button">Homie</button>
+            <button class="tab" data-testid="tab-collie" data-panel="collie-pane" data-page="collie" type="button">Collie</button>
             <button class="tab" data-testid="tab-logs" data-panel="logs-pane" data-page="logs" type="button">Logs</button>
             <button class="tab" data-testid="tab-configs" data-panel="configs-pane" data-page="configs" type="button">Configs</button>
           </span>
@@ -94,7 +94,7 @@
         const raw = location.hash.replace(/^#\/?/, "");
         let page = raw.includes("=") ? "board" : raw.split("/").filter(Boolean)[0];
         if (page === "activity") page = "pipeline";
-        if (!["board", "review", "pipeline", "homie", "configs", "logs", "vision", "environment"].includes(page)) page = "board";
+        if (!["board", "review", "pipeline", "collie", "configs", "logs", "vision", "environment"].includes(page)) page = "board";
         document.documentElement.dataset.initialPage = page;
         const context = document.getElementById("project-context");
         context.classList.toggle("muted", !["board", "review", "pipeline"].includes(page));
@@ -151,31 +151,31 @@
 
       <div id="board-command-root"></div>
 
-      <!-- ============================================================ 2. Homie -->
-      <section id="homie-pane" class="panel conversation-page" data-testid="homie-pane" hidden>
+      <!-- ============================================================ 2. Collie -->
+      <section id="collie-pane" class="panel conversation-page" data-testid="collie-pane" hidden>
         <header class="vision-bar">
-          <h2 class="vision-title">Homie</h2>
+          <h2 class="vision-title">Collie</h2>
           <div class="vision-actions">
-            <span id="homie-stats" data-testid="homie-stats"></span>
+            <span id="collie-stats" data-testid="collie-stats"></span>
           </div>
         </header>
-        <div class="homie-grid">
-          <aside class="vision-panel homie-sessions" aria-label="Sessions">
+        <div class="collie-grid">
+          <aside class="vision-panel collie-sessions" aria-label="Sessions">
             <div class="vision-panel-bar"><h3>Sessions</h3></div>
             <div class="session-list" id="session-list" data-testid="session-list" tabindex="0" aria-label="Sessions"><div class="loading" role="status">Loading sessions…</div></div>
           </aside>
-          <section class="vision-panel vision-conversation" aria-label="Conversation with Homie">
-            <div class="vision-panel-bar" id="homie-controls">
+          <section class="vision-panel vision-conversation" aria-label="Conversation with Collie">
+            <div class="vision-panel-bar" id="collie-controls">
               <h3>Conversation</h3>
-              <p class="sr-only" id="homie-head" data-testid="homie-head">Loading sessions…</p>
+              <p class="sr-only" id="collie-head" data-testid="collie-head">Loading sessions…</p>
               <button class="btn primary" id="new-session" data-testid="new-session" type="button">New session</button>
             </div>
-            <div class="transcript" id="homie-transcript" data-testid="homie-transcript" tabindex="0" aria-label="Conversation with Homie"><div class="empty" role="status">The transcript awaits a session.</div></div>
-            <div class="homie-compose-status">
-              <p class="conversation-status" id="homie-hint" data-testid="homie-hint" role="status" hidden></p>
+            <div class="transcript" id="collie-transcript" data-testid="collie-transcript" tabindex="0" aria-label="Conversation with Collie"><div class="empty" role="status">The transcript awaits a session.</div></div>
+            <div class="collie-compose-status">
+              <p class="conversation-status" id="collie-hint" data-testid="collie-hint" role="status" hidden></p>
               <button class="btn small" id="resume" data-testid="resume" type="button" hidden>Resume this session</button>
             </div>
-            <div id="homie-composer"></div>
+            <div id="collie-composer"></div>
           </section>
         </div>
       </section>
@@ -241,12 +241,12 @@
 
           <!-- The view row selects the content of the reader: the packet or
                the files that the change holds. Below 960 px the row also
-               selects the Homie view. -->
+               selects the Collie view. -->
           <div class="reader-views" id="reader-views" data-testid="reader-views">
             <div class="view-tabs" role="tablist" aria-label="Review content">
               <button class="view-tab" id="view-packet" data-testid="reader-view-packet" data-reader-view="packet" type="button" role="tab" aria-selected="true" aria-controls="packet-render" tabindex="0">Packet</button>
               <button class="view-tab" id="view-changes" data-testid="reader-view-changes" data-reader-view="changes" type="button" role="tab" aria-selected="false" aria-controls="changes-view" tabindex="-1">Files changed</button>
-              <button class="view-tab" id="view-homie" data-testid="reader-view-homie" data-reader-view="homie" type="button" role="tab" aria-selected="false" aria-controls="reader-homie-view" tabindex="-1">Homie</button>
+              <button class="view-tab" id="view-collie" data-testid="reader-view-collie" data-reader-view="collie" type="button" role="tab" aria-selected="false" aria-controls="reader-collie-view" tabindex="-1">Collie</button>
             </div>
             <!-- The display controls of the Files changed view. -->
             <div class="changes-tools" id="changes-tools" data-testid="changes-tools" hidden>
@@ -289,13 +289,13 @@
                 </div>
               </div>
             </section>
-            <!-- The Homie view holds the quick chat below 960 px. -->
-            <section class="reader-homie view-inactive" id="reader-homie-view" data-testid="reader-homie-view" role="tabpanel" aria-labelledby="view-homie" inert></section>
+            <!-- The Collie view holds the quick chat below 960 px. -->
+            <section class="reader-collie view-inactive" id="reader-collie-view" data-testid="reader-collie-view" role="tabpanel" aria-labelledby="view-collie" inert></section>
           </div>
 
           <div id="evaluation-control" class="evaluation-control" hidden></div>
           <div class="reader-decision" id="reader-decision" data-testid="packet-decision-bar">
-            <button class="btn primary" id="packet-homie-open" data-testid="packet-homie-open" type="button" aria-expanded="false" aria-controls="packet-chat-column">Ask Homie</button>
+            <button class="btn primary" id="packet-collie-open" data-testid="packet-collie-open" type="button" aria-expanded="false" aria-controls="packet-chat-column">Ask Collie</button>
             <div class="decision-main">
               <p class="packet-decision" id="packet-decision" data-testid="packet-decision" hidden></p>
               <p class="reader-block" id="reader-block-reason" data-testid="reader-block-reason" hidden></p>
@@ -324,10 +324,10 @@
         <!-- The chat column holds the quick chat beside the reader at 960 px
              and more. -->
         <div class="packet-chat-resize" id="packet-chat-resize" data-testid="packet-chat-resize" role="separator"
-             tabindex="0" aria-label="Homie width" aria-orientation="vertical" aria-controls="packet-chat-column"
+             tabindex="0" aria-label="Collie width" aria-orientation="vertical" aria-controls="packet-chat-column"
              aria-valuemin="320" aria-valuemax="400" aria-valuenow="400"
-             title="Drag or use the arrow keys to resize Homie. Double-click to reset the width." hidden></div>
-        <aside class="packet-chat-column" id="packet-chat-column" data-testid="packet-chat-column" aria-label="Homie" hidden></aside>
+             title="Drag or use the arrow keys to resize Collie. Double-click to reset the width." hidden></div>
+        <aside class="packet-chat-column" id="packet-chat-column" data-testid="packet-chat-column" aria-label="Collie" hidden></aside>
       </section>
 
       <!-- Pipeline -->
@@ -470,12 +470,12 @@
               <section id="config-section-projects" class="config-section" data-testid="config-section-projects" aria-labelledby="config-projects-title" hidden>
                 <header class="config-section-head"><div><h3 id="config-projects-title" tabindex="-1">Projects</h3><p>Manage each Project’s environment, role customization, and pipeline.</p></div><button class="btn" id="configs-add-project" data-testid="configs-add-project" type="button">Add Project</button></header>
                 <div class="panelcard">
-                  <p class="system-helper">A pause blocks new pipeline runs. Active runs continue. Homie remains available.</p>
+                  <p class="system-helper">A pause blocks new pipeline runs. Active runs continue. Collie remains available.</p>
                   <div id="configs-projects" data-testid="configs-projects"><div class="loading" role="status">Loading Projects…</div></div>
                 </div>
               </section>
               <section id="config-section-discord" class="config-section" data-testid="config-section-discord" aria-labelledby="config-discord-title" hidden>
-                <header class="config-section-head"><div><h3 id="config-discord-title" tabindex="-1">Discord</h3><p>Talk to Homie and receive Culler alerts in your Discord server.</p></div></header>
+                <header class="config-section-head"><div><h3 id="config-discord-title" tabindex="-1">Discord</h3><p>Talk to Collie and receive Culler alerts in your Discord server.</p></div></header>
                 <div id="discord-content" data-testid="discord-content"></div>
               </section>
               <section id="config-section-advanced" class="config-section" data-testid="config-section-advanced" aria-labelledby="config-advanced-title" hidden>
@@ -518,7 +518,7 @@
           <span class="note" id="logs-matches" aria-live="polite"></span>
           <label class="check"><input type="checkbox" id="logs-wrap" data-testid="logs-wrap"> Wrap lines</label>
           <button class="btn ghost" id="logs-copy" data-testid="logs-copy" type="button">Copy visible</button>
-          <span id="logs-homie"></span>
+          <span id="logs-collie"></span>
         </div>
         <select id="logs-unit" data-testid="logs-unit" aria-label="Unit" hidden></select>
         <select id="logs-run" data-testid="logs-run" aria-label="Run" hidden></select>

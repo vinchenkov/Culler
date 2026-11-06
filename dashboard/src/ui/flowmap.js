@@ -108,7 +108,7 @@ export function flowmapView(topology, tasks, catalog = [], options = {}) {
     live: (byRole.get(from)?.held ?? []).some((h) => !h.starting && !h.stale),
   }));
 
-  const currentRuns = topology.nodes.filter(node => node.active && node.role !== "scribe" && node.role !== "homie")
+  const currentRuns = topology.nodes.filter(node => node.active && node.role !== "scribe" && node.role !== "collie")
     .flatMap(node => node.held.map(held => {
       const lease = (options.leases ?? []).find(row => row.project === held.project && row.owner === node.agent);
       const run = (options.runs ?? []).find(row => row.id === lease?.run_id);

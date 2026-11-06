@@ -390,7 +390,7 @@ func TestPublishedSetupRestoresServicesIfWorkRacesStop(t *testing.T) {
 	}
 }
 
-func TestPublishedSetupRequiresExactHomieAbsenceAndAllVolumeUsers(t *testing.T) {
+func TestPublishedSetupRequiresExactCollieAbsenceAndAllVolumeUsers(t *testing.T) {
 	for _, exists := range []bool{false, true} {
 		home := t.TempDir()
 		id := strings.Repeat("a", 64)
@@ -398,7 +398,7 @@ func TestPublishedSetupRequiresExactHomieAbsenceAndAllVolumeUsers(t *testing.T) 
 		p := publishedSetup{home: home, docker: func(_ context.Context, args ...string) ([]byte, error) {
 			if args[1] == "inspect" {
 				if args[len(args)-1] != id {
-					t.Fatal("wrong Homie container")
+					t.Fatal("wrong Collie container")
 				}
 				if exists {
 					return []byte(`{}`), nil

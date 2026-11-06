@@ -43,10 +43,10 @@ func DiscordApply(db *sql.DB, request DiscordProjection) (any, error) {
 			return err
 		}
 		if request.Retire || (previous != "" && previous != request.Connection) {
-			if _, err := q.ExecContext(ctx, `UPDATE homie_discord_threads SET retired_at=datetime('now') WHERE retired_at IS NULL`); err != nil {
+			if _, err := q.ExecContext(ctx, `UPDATE collie_discord_threads SET retired_at=datetime('now') WHERE retired_at IS NULL`); err != nil {
 				return err
 			}
-			if _, err := q.ExecContext(ctx, `UPDATE homie_bindings SET active=0 WHERE surface='discord' AND active=1`); err != nil {
+			if _, err := q.ExecContext(ctx, `UPDATE collie_bindings SET active=0 WHERE surface='discord' AND active=1`); err != nil {
 				return err
 			}
 			if _, err := q.ExecContext(ctx, `UPDATE outbox SET retired_at=datetime('now') WHERE surface='discord' AND delivered_at IS NULL AND retired_at IS NULL`); err != nil {

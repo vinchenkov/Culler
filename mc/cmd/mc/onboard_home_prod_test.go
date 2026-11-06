@@ -102,7 +102,7 @@ func TestDatabaseResetRemovesOnlyManagedUsersOtherThanTheHelper(t *testing.T) {
 		t.Fatal(err)
 	}
 	helper := exactHelperFixture(names, "sha256:"+strings.Repeat("a", 64))
-	homie, runner := strings.Repeat("d", 64), strings.Repeat("e", 64)
+	collie, runner := strings.Repeat("d", 64), strings.Repeat("e", 64)
 	list := []string{"container", "ls", "--no-trunc", "--quiet", "--filter", "volume=" + names.Volume, "--filter", "label=mc-managed=true"}
 	inspect := dockerStep{want: []string{"container", "inspect", "--format", "{{json .}}", names.Helper}, out: inspectBytes(t, helper)}
 	for _, scenario := range []string{"users", "helper only", "invalid identity", "remove failure"} {
@@ -111,8 +111,8 @@ func TestDatabaseResetRemovesOnlyManagedUsersOtherThanTheHelper(t *testing.T) {
 			switch scenario {
 			case "users":
 				steps = append(steps,
-					dockerStep{want: list, out: helper.ID + "\n" + homie + "\n" + runner + "\n"},
-					dockerStep{want: []string{"container", "rm", "--force", homie}},
+					dockerStep{want: list, out: helper.ID + "\n" + collie + "\n" + runner + "\n"},
+					dockerStep{want: []string{"container", "rm", "--force", collie}},
 					dockerStep{want: []string{"container", "rm", "--force", runner}})
 			case "helper only":
 				steps = append(steps, dockerStep{want: list, out: helper.ID + "\n"})
@@ -120,8 +120,8 @@ func TestDatabaseResetRemovesOnlyManagedUsersOtherThanTheHelper(t *testing.T) {
 				steps = append(steps, dockerStep{want: list, out: "not-a-container\n"})
 			case "remove failure":
 				steps = append(steps,
-					dockerStep{want: list, out: homie + "\n"},
-					dockerStep{want: []string{"container", "rm", "--force", homie}, err: errors.New("exit status 1")})
+					dockerStep{want: list, out: collie + "\n"},
+					dockerStep{want: []string{"container", "rm", "--force", collie}, err: errors.New("exit status 1")})
 			}
 			runner := &scriptedDocker{t: t, steps: steps}
 			err := removeManagedDatabaseUsers(&helperManager{docker: runner, names: names, imageRef: productionImageRef})
@@ -142,7 +142,7 @@ func TestReleaseUpdateRemovesAllManagedContainersAndPreservesTheHelper(t *testin
 		t.Fatal(err)
 	}
 	helper := exactHelperFixture(names, "sha256:"+strings.Repeat("a", 64))
-	homie, setup := strings.Repeat("d", 64), strings.Repeat("e", 64)
+	collie, setup := strings.Repeat("d", 64), strings.Repeat("e", 64)
 	list := func(volume string) []string {
 		return []string{"container", "ls", "--all", "--no-trunc", "--quiet", "--filter", "volume=" + volume,
 			"--filter", "label=mc-managed=true"}
@@ -151,13 +151,13 @@ func TestReleaseUpdateRemovesAllManagedContainersAndPreservesTheHelper(t *testin
 		t.Run(scenario, func(t *testing.T) {
 			steps := []dockerStep{
 				{want: []string{"container", "inspect", "--format", "{{json .}}", names.Helper}, out: inspectBytes(t, helper)},
-				{want: list(names.Volume), out: helper.ID + "\n" + homie + "\n"},
+				{want: list(names.Volume), out: helper.ID + "\n" + collie + "\n"},
 			}
 			if scenario == "invalid identity" {
 				steps = append(steps, dockerStep{want: list(names.RuntimeVolume), out: "not-a-container\n"})
 			} else {
-				steps = append(steps, dockerStep{want: list(names.RuntimeVolume), out: homie + "\n" + setup + "\n"})
-				step := dockerStep{want: []string{"container", "rm", "--force", homie}}
+				steps = append(steps, dockerStep{want: list(names.RuntimeVolume), out: collie + "\n" + setup + "\n"})
+				step := dockerStep{want: []string{"container", "rm", "--force", collie}}
 				if scenario == "remove failure" {
 					step.err = errors.New("exit status 1")
 				}

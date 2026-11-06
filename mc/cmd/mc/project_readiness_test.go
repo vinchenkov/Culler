@@ -15,7 +15,7 @@ func TestAgentReadinessReadsOnlyTheCurrentConfiguration(t *testing.T) {
 		{Role: "verifier", Harness: "codex", Binding: "review"},
 		{Role: "scribe", Harness: "codex", Binding: "absent"},
 		{Role: "arbiter", Harness: "codex", Binding: "draft"},
-		{Role: "homie", Harness: "fake", Binding: "fake"},
+		{Role: "collie", Harness: "fake", Binding: "fake"},
 	}
 	profiles := []deployment.AgentProfileView{
 		{ID: "daily", Name: "Daily", Enabled: true, AccessStatus: "connected"},
@@ -39,7 +39,7 @@ func TestAgentReadinessReadsOnlyTheCurrentConfiguration(t *testing.T) {
 		t.Fatalf("An enabled agent profile with connection access blocked readiness: %q", issues)
 	}
 	issues, _ = agentReadinessIssues(routes[5:], profiles, false)
-	if !reflect.DeepEqual(issues, []string{"Select an agent profile for homie in Model configuration."}) {
+	if !reflect.DeepEqual(issues, []string{"Select an agent profile for collie in Model configuration."}) {
 		t.Fatalf("issues without the fake harness = %q", issues)
 	}
 }

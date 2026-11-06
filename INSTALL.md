@@ -142,7 +142,7 @@ The [update procedure](release/UPDATES.md) describes the public contract and rec
 ## Lifecycle commands
 
 The command-line interface (CLI) controls the local Culler lifecycle.
-Configure Culler in the dashboard or through Homie.
+Configure Culler in the dashboard or through Collie.
 Help, status, and version repeat this boundary.
 
 | Command | Result |

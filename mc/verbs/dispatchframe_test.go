@@ -368,13 +368,13 @@ func TestDispatchAttestedConsequencesReplayExactResult(t *testing.T) {
 		}
 	})
 
-	t.Run("homie_end", func(t *testing.T) {
+	t.Run("collie_end", func(t *testing.T) {
 		db := rrSpine(t)
 		var effect map[string]any
 		err := inTx(db, func(ctx context.Context, q Q) error {
 			var e error
 			effect, e = applyAttestedRefusal(ctx, q, dfRequestID,
-				RefusalCandidate{Kind: RefusalHomie, SessionID: "sess-1"}, refusal.Refusal{
+				RefusalCandidate{Kind: RefusalCollie, SessionID: "sess-1"}, refusal.Refusal{
 					Code:  refusal.CodeNetworkPolicyMismatch,
 					Field: refusal.FieldNetworkRule, Summary: refusal.SummaryMismatch,
 				}, rrKey)
@@ -383,12 +383,12 @@ func TestDispatchAttestedConsequencesReplayExactResult(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if effect["consequence"] != "homie_ended" {
-			t.Fatalf("effect = %v, want homie_ended", effect)
+		if effect["consequence"] != "collie_ended" {
+			t.Fatalf("effect = %v, want collie_ended", effect)
 		}
 		dfAssertExactReplay(t, db, dfRequestID, effect)
-		if status := rrHomieStatus(t, db, "sess-1"); status != "ended" {
-			t.Fatalf("Homie end replay left status=%q, want ended", status)
+		if status := rrCollieStatus(t, db, "sess-1"); status != "ended" {
+			t.Fatalf("Collie end replay left status=%q, want ended", status)
 		}
 	})
 }
@@ -602,12 +602,12 @@ func TestDispatchCommitStalesOnSpineDrift(t *testing.T) {
 	}
 }
 
-func TestDispatchCommitStalesOnHomieLaunchDrift(t *testing.T) {
+func TestDispatchCommitStalesOnCollieLaunchDrift(t *testing.T) {
 	db := dvSpine(t)
 	dvInsertTask(t, db, dvTask(1, dispatch.ScopeTask, dispatch.StatusProposed, 2))
 	dvExec(t, db, `
-		INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('h-aaaaaaaaaaaaaaaa', 'mc-homie-h-aaaaaaaaaaaaaaaa', '[]', 'sessions/h-a', 'claude')`)
+		INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding)
+		VALUES ('h-aaaaaaaaaaaaaaaa', 'mc-collie-h-aaaaaaaaaaaaaaaa', '[]', 'sessions/h-a', 'claude')`)
 	prepared := dfPrepare(t, db, dfRequestID)
 	if prepared.candidate == nil {
 		t.Fatalf("prepare should return a spawn candidate")
@@ -618,10 +618,10 @@ func TestDispatchCommitStalesOnHomieLaunchDrift(t *testing.T) {
 	}
 
 	// Drift on the launch-generation observation: a launch bound
-	// between prepare and commit changes the Homie projection, so the
+	// between prepare and commit changes the Collie projection, so the
 	// prepared candidate no longer describes the world it was selected in.
 	dvExec(t, db, `
-		UPDATE homie_sessions SET current_launch_id='bbbbbbbbbbbbbbbb', current_launch_mode='fresh'
+		UPDATE collie_sessions SET current_launch_id='bbbbbbbbbbbbbbbb', current_launch_mode='fresh'
 		WHERE id='h-aaaaaaaaaaaaaaaa'`)
 	eff := dfCommit(t, db, prepared, attested)
 	dfAssertInert(t, db, eff)
@@ -655,7 +655,7 @@ func TestDispatchCommitRefusesDoctoredCandidate(t *testing.T) {
 		if err != nil {
 			return err
 		}
-		canonical, err := buildCanonicalPrepare(uuid, dfRequestID, sel.rec, sel.lease, sel.tun, sel.homies,
+		canonical, err := buildCanonicalPrepare(uuid, dfRequestID, sel.rec, sel.lease, sel.tun, sel.collies,
 			doctored.mountState,
 			spawnCandidateProjection(doctored.runID, doctored.spawn)).bytes()
 		if err != nil {

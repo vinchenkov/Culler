@@ -4,7 +4,7 @@ package verbs
 // preparation token, and the commit-side dispatch_key.
 //
 // The canonical structs below are a frozen cross-harness wire contract, the
-// same discipline as homieCandidateState: json.Marshal over closed structs in
+// same discipline as collieCandidateState: json.Marshal over closed structs in
 // declared field order, UTF-8 strings, decimal integers, explicit zero
 // values, pointers for null, no maps or floats. Semantically unordered
 // collections are sorted by their declared key before encoding; nil slices
@@ -149,7 +149,7 @@ type canonicalPrepare struct {
 	Packets                    []canonicalPacket         `json:"packets"`
 	Lease                      canonicalLease            `json:"lease"`
 	Tunables                   canonicalTunables         `json:"tunables"`
-	Homies                     []homieCandidateState     `json:"homies"`
+	Collies                    []collieCandidateState    `json:"collies"`
 	MountState                 PrivateDispatchMountState `json:"mount_state"`
 	Candidate                  canonicalCandidate        `json:"candidate"`
 }
@@ -293,11 +293,11 @@ func spawnCandidateProjection(runID string, sp *dispatch.Spawn) canonicalCandida
 // transaction read for one Project (rec.Project names it). Records
 // arrive in SQL order, which is not part of the wire contract, so tasks sort
 // by id and packets by (task_id, created_at).
-func buildCanonicalPrepare(uuid, requestID string, rec dispatch.Records, lease dispatch.Lease, tun tunables, homies []homieCandidateState, mounts PrivateDispatchMountState, cand canonicalCandidate) canonicalPrepare {
-	return buildCanonicalPrepareWithIdentity(defaultDispatchProtocolIdentity, uuid, requestID, rec, lease, tun, homies, mounts, cand)
+func buildCanonicalPrepare(uuid, requestID string, rec dispatch.Records, lease dispatch.Lease, tun tunables, collies []collieCandidateState, mounts PrivateDispatchMountState, cand canonicalCandidate) canonicalPrepare {
+	return buildCanonicalPrepareWithIdentity(defaultDispatchProtocolIdentity, uuid, requestID, rec, lease, tun, collies, mounts, cand)
 }
 
-func buildCanonicalPrepareWithIdentity(identity dispatchProtocolIdentity, uuid, requestID string, rec dispatch.Records, lease dispatch.Lease, tun tunables, homies []homieCandidateState, mounts PrivateDispatchMountState, cand canonicalCandidate) canonicalPrepare {
+func buildCanonicalPrepareWithIdentity(identity dispatchProtocolIdentity, uuid, requestID string, rec dispatch.Records, lease dispatch.Lease, tun tunables, collies []collieCandidateState, mounts PrivateDispatchMountState, cand canonicalCandidate) canonicalPrepare {
 	tasks := make([]canonicalTask, 0, len(rec.Tasks))
 	for _, t := range rec.Tasks {
 		delivery := canonicalDelivery{VersionID: t.Delivery.VersionID, CorrectionOpen: t.Delivery.CorrectionOpen}
@@ -353,8 +353,8 @@ func buildCanonicalPrepareWithIdentity(identity dispatchProtocolIdentity, uuid, 
 		}
 	}
 
-	if homies == nil {
-		homies = []homieCandidateState{}
+	if collies == nil {
+		collies = []collieCandidateState{}
 	}
 	if mounts.Projects == nil {
 		mounts.Projects = []PrivateDispatchProject{}
@@ -388,19 +388,19 @@ func buildCanonicalPrepareWithIdentity(identity dispatchProtocolIdentity, uuid, 
 			SpawnGraceS:         tun.spawnGraceS,
 			HardDeadlineMinutes: tun.hardDeadlineMinutes,
 		},
-		Homies:     homies,
+		Collies:    collies,
 		MountState: mounts,
 		Candidate:  cand,
 	}
 }
 
-// loadHomieProjection reads every active session's frozen candidate state,
+// loadCollieProjection reads every active session's frozen candidate state,
 // ordered by session id — the launch-generation observation the prepare
-// projection binds and the Homie-end fence later compares. The
+// projection binds and the Collie-end fence later compares. The
 // column list and InputSeq subquery must stay semantically identical to
-// homiePrePrepareState's; TestDispatchSeamHomieProjection holds the two
+// colliePrePrepareState's; TestDispatchSeamCollieProjection holds the two
 // together by key equality.
-func loadHomieProjection(ctx context.Context, q Q) ([]homieCandidateState, error) {
+func loadCollieProjection(ctx context.Context, q Q) ([]collieCandidateState, error) {
 	rows, err := q.QueryContext(ctx, `
 		SELECT s.id, s.binding,
 		       s.current_launch_id, s.current_launch_mode,
@@ -410,14 +410,14 @@ func loadHomieProjection(ctx context.Context, q Q) ([]homieCandidateState, error
 		       (SELECT MAX(m.seq) FROM conversation_messages m
 		        WHERE m.session_id = s.id
 		          AND m.direction = 'inbound' AND m.completed_at IS NULL)
-		FROM homie_sessions s WHERE s.status = 'active' ORDER BY s.id`)
+		FROM collie_sessions s WHERE s.status = 'active' ORDER BY s.id`)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	out := []homieCandidateState{}
+	out := []collieCandidateState{}
 	for rows.Next() {
-		var st homieCandidateState
+		var st collieCandidateState
 		var launchID, launchMode, resumeMode sql.NullString
 		var primeSeq, primeCount, resumeSeq, resumeCount, inputSeq sql.NullInt64
 		if err := rows.Scan(
@@ -481,7 +481,7 @@ func nullInt64Ptr(v sql.NullInt64) *int64 {
 
 // preparedDispatch is what one prepare invocation produced: either a final
 // result (lock-domain consequence or receipt replay) or a candidate that owes
-// attest and commit. project names the round: "" is the Homie stage, a
+// attest and commit. project names the round: "" is the Collie stage, a
 // Project id is that Project's pipeline round.
 type preparedDispatch struct {
 	visionCheck    *ProjectVisionCheck
@@ -538,13 +538,13 @@ func dispatchPrepareWithIdentity(ctx context.Context, q Q, identity dispatchProt
 	return dispatchPrepareWithIdentityInventory(ctx, q, identity, uuid, requestID, nil, nil, capability, project)
 }
 
-// homieStageIdleReason is the Homie stage's "nothing owed" result. It is a
+// collieStageIdleReason is the Collie stage's "nothing owed" result. It is a
 // final like every other prepare result so the private frame shape is one
 // shape; the tick files it as no action at all (dispatchTick.record).
-const homieStageIdleReason = "homie-idle"
+const collieStageIdleReason = "collie-idle"
 
 // dispatchPrepareWithIdentityInventory is one round's prepare. project ""
-// is the Homie stage (lease-free, over every Project); a Project id is that
+// is the Collie stage (lease-free, over every Project); a Project id is that
 // Project's pipeline round (the control flow of mc dispatch applied to the
 // records and the lease of that Project).
 func dispatchPrepareWithIdentityInventory(
@@ -552,7 +552,7 @@ func dispatchPrepareWithIdentityInventory(
 	q Q,
 	identity dispatchProtocolIdentity,
 	uuid, requestID string,
-	homieInventory []PrivateHomieContainer,
+	collieInventory []PrivateCollieContainer,
 	pipelineLiveness []PrivatePipelineLiveness,
 	capability PrivateRuntimeCapability,
 	project string,
@@ -578,25 +578,25 @@ func dispatchPrepareWithIdentityInventory(
 		}, nil
 	}
 	if project == "" {
-		return dispatchPrepareHomieStage(ctx, q, identity, uuid, requestID, homieInventory, capability)
+		return dispatchPrepareCollieStage(ctx, q, identity, uuid, requestID, collieInventory, capability)
 	}
 	return dispatchPreparePipelineRound(ctx, q, identity, uuid, requestID, pipelineLiveness, project, vision...)
 }
 
-// dispatchPrepareHomieStage is the tick's first round: the lease-free Homie
+// dispatchPrepareCollieStage is the tick's first round: the lease-free Collie
 // tier, deployment-wide, evaluated once per tick ahead of
 // every pipeline round. The rounds run in their fixed order — exact orphan
 // cleanup, created, removal, started-absent,
 // starting-timeout, then wake/idle-end (branches 6-7) — and yield at most
-// one Homie effect, which becomes the tick's first action. A nil inventory
+// one Collie effect, which becomes the tick's first action. A nil inventory
 // means the in-process development seam has no resident-owned Docker
 // snapshot; the production private crossing always supplies a non-nil
 // (possibly empty) inventory, and only then do the inventory rounds run. The
 // wake round reads the spine alone and runs on both seams. A mutating round
 // (launch persist, session end) carries a receipt like every other mutating
-// branch. Nothing here reads a lease or a Project's records: the Homie
+// branch. Nothing here reads a lease or a Project's records: the Collie
 // stage pre-empts no pipeline round.
-func dispatchPrepareHomieStage(ctx context.Context, q Q, identity dispatchProtocolIdentity, uuid, requestID string, homieInventory []PrivateHomieContainer, capability PrivateRuntimeCapability) (preparedDispatch, error) {
+func dispatchPrepareCollieStage(ctx context.Context, q Q, identity dispatchProtocolIdentity, uuid, requestID string, collieInventory []PrivateCollieContainer, capability PrivateRuntimeCapability) (preparedDispatch, error) {
 	now, err := spineNow(ctx, q)
 	if err != nil {
 		return preparedDispatch{}, err
@@ -608,28 +608,28 @@ func dispatchPrepareHomieStage(ctx context.Context, q Q, identity dispatchProtoc
 	final := func(effect map[string]any) preparedDispatch {
 		return preparedDispatch{requestID: requestID, deploymentUUID: uuid, identity: identity, final: effect}
 	}
-	if homieInventory != nil {
-		if orphanEffect, handled, err := homieOrphanRound(ctx, q, homieInventory); err != nil {
+	if collieInventory != nil {
+		if orphanEffect, handled, err := collieOrphanRound(ctx, q, collieInventory); err != nil {
 			return preparedDispatch{}, err
 		} else if handled {
 			return final(orphanEffect), nil
 		}
-		if adoptionEffect, handled, err := homieCreatedRound(
-			ctx, q, homieInventory, now, tun.homieIdleTimeoutS,
+		if adoptionEffect, handled, err := collieCreatedRound(
+			ctx, q, collieInventory, now, tun.collieIdleTimeoutS,
 		); err != nil {
 			return preparedDispatch{}, err
 		} else if handled {
 			return final(adoptionEffect), nil
 		}
-		if removalEffect, handled, err := homieRemovalRound(
-			ctx, q, homieInventory, now, tun.homieIdleTimeoutS,
+		if removalEffect, handled, err := collieRemovalRound(
+			ctx, q, collieInventory, now, tun.collieIdleTimeoutS,
 		); err != nil {
 			return preparedDispatch{}, err
 		} else if handled {
 			return final(removalEffect), nil
 		}
-		if absenceEffect, handled, err := homieStartedAbsentRound(
-			ctx, q, homieInventory, now, tun.homieIdleTimeoutS,
+		if absenceEffect, handled, err := collieStartedAbsentRound(
+			ctx, q, collieInventory, now, tun.collieIdleTimeoutS,
 		); err != nil {
 			return preparedDispatch{}, err
 		} else if handled {
@@ -638,27 +638,27 @@ func dispatchPrepareHomieStage(ctx context.Context, q Q, identity dispatchProtoc
 			}
 			return final(absenceEffect), nil
 		}
-		if timeoutEffect, handled, err := homieStartingTimeoutRound(
-			ctx, q, homieInventory, now, tun.homieIdleTimeoutS, tun.spawnGraceS,
+		if timeoutEffect, handled, err := collieStartingTimeoutRound(
+			ctx, q, collieInventory, now, tun.collieIdleTimeoutS, tun.spawnGraceS,
 		); err != nil {
 			return preparedDispatch{}, err
 		} else if handled {
 			return final(timeoutEffect), nil
 		}
 	}
-	if homieEffect, handled, err := homieWakeRoundWithConfirmedAbsence(
-		ctx, q, now, tun.homieIdleTimeoutS, homieInventory, capability,
+	if collieEffect, handled, err := collieWakeRoundWithConfirmedAbsence(
+		ctx, q, now, tun.collieIdleTimeoutS, collieInventory, capability,
 	); err != nil {
 		return preparedDispatch{}, err
 	} else if handled {
-		if err := writeDispatchReceipt(ctx, q, requestID, homieEffect); err != nil {
+		if err := writeDispatchReceipt(ctx, q, requestID, collieEffect); err != nil {
 			return preparedDispatch{}, err
 		}
-		prepared := final(homieEffect)
-		prepared.capabilityDigest = consumedCapabilityDigest(homieEffect, capability)
+		prepared := final(collieEffect)
+		prepared.capabilityDigest = consumedCapabilityDigest(collieEffect, capability)
 		return prepared, nil
 	}
-	return final(map[string]any{"action": "idle", "reason": homieStageIdleReason}), nil
+	return final(map[string]any{"action": "idle", "reason": collieStageIdleReason}), nil
 }
 
 // dispatchPreparePipelineRound is one Project's round: select from that
@@ -683,7 +683,7 @@ func dispatchPreparePipelineRound(ctx context.Context, q Q, identity dispatchPro
 		if err != nil {
 			return preparedDispatch{}, err
 		}
-		canonical, err := buildCanonicalPrepareWithIdentity(identity, uuid, requestID, sel.rec, sel.lease, sel.tun, sel.homies, mountState,
+		canonical, err := buildCanonicalPrepareWithIdentity(identity, uuid, requestID, sel.rec, sel.lease, sel.tun, sel.collies, mountState,
 			spawnCandidateProjection(runID, sel.action.Spawn)).bytes()
 		if err != nil {
 			return preparedDispatch{}, err
@@ -735,7 +735,7 @@ func consumedCapabilityDigest(effect map[string]any, capability PrivateRuntimeCa
 	if effect == nil {
 		return ""
 	}
-	if effect["action"] != "homie-wake" {
+	if effect["action"] != "collie-wake" {
 		if _, carried := effect["runtime_binding"]; !carried {
 			return ""
 		}
@@ -907,7 +907,7 @@ func dispatchCommit(ctx context.Context, q Q, prepared preparedDispatch, atteste
 	if !reflect.DeepEqual(currentMountState, cand.mountState) {
 		return commitInertRefusal(ctx, q, prepared, rcand, refusal.CodeStale)
 	}
-	canonical, err := buildCanonicalPrepareWithIdentity(prepared.identity, attested.deploymentUUID, prepared.requestID, sel.rec, sel.lease, sel.tun, sel.homies, cand.mountState, proj).bytes()
+	canonical, err := buildCanonicalPrepareWithIdentity(prepared.identity, attested.deploymentUUID, prepared.requestID, sel.rec, sel.lease, sel.tun, sel.collies, cand.mountState, proj).bytes()
 	if err != nil {
 		return nil, err
 	}
@@ -1036,7 +1036,7 @@ func refusalReceiptSubject(c RefusalCandidate) any {
 	switch c.Kind {
 	case RefusalSubjectTask:
 		return *c.TaskID
-	case RefusalHomie:
+	case RefusalCollie:
 		return c.SessionID
 	default:
 		return nil
@@ -1098,7 +1098,7 @@ func refusalDispatchKey(prepared preparedDispatch, r refusal.Refusal, authority 
 
 // refusalCandidateFor names who a pipeline candidate's refusal is about: the
 // subject task when there is one to blame, the subjectless shape otherwise.
-// Homie candidates arrive with the future wake selector.
+// Collie candidates arrive with the future wake selector.
 func refusalCandidateFor(sp *dispatch.Spawn) RefusalCandidate {
 	if sp.SubjectID != nil {
 		return RefusalCandidate{Kind: RefusalSubjectTask, TaskID: sp.SubjectID, Project: sp.Project}
@@ -1271,7 +1271,7 @@ func writeDispatchReceipt(ctx context.Context, q Q, requestID string, effect map
 // dispatch_key is the candidate/action digest fence, while requestID/result is
 // the command's exact lost-response replay. Health writes these fields directly
 // on its action row because activity is append-only; spawn, task-block, and
-// Homie-end consequences use this receipt row. An empty detail stores NULL.
+// Collie-end consequences use this receipt row. An empty detail stores NULL.
 func writeAttestedReceipt(ctx context.Context, q Q, requestID, key string, effect map[string]any, fallbackKind string, subject any, detail string) error {
 	body, err := storableReceipt(effect)
 	if err != nil {

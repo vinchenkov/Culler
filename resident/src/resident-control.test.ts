@@ -3,16 +3,16 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import {
-  collectHomieInventory,
+  collectCollieInventory,
   execMcVia,
   GATEWAY_CONTROL_VERSION,
   SPINE_SCHEMA_ID,
   type ResidentControlIdentity,
 } from "./resident-control";
-import { HomieRuntimeRegistry } from "./homie-runtime";
-import { canonicalHomieDockerEnvelope } from "./homie-envelope";
+import { CollieRuntimeRegistry } from "./collie-runtime";
+import { canonicalCollieDockerEnvelope } from "./collie-envelope";
 import type { PipelineLivenessEntry } from "./pipeline-liveness";
-import { fail, FakeExec, homieInspectFromCreate, ok } from "./test-helpers";
+import { fail, FakeExec, collieInspectFromCreate, ok } from "./test-helpers";
 
 const homes: string[] = [];
 
@@ -20,8 +20,8 @@ const homes: string[] = [];
  * observe; tests that care about the observation supply their own. */
 const noLiveness = async (): Promise<PipelineLivenessEntry[]> => [];
 
-function runtime(fill = 3): HomieRuntimeRegistry {
-  return new HomieRuntimeRegistry(Buffer.alloc(32, fill));
+function runtime(fill = 3): CollieRuntimeRegistry {
+  return new CollieRuntimeRegistry(Buffer.alloc(32, fill));
 }
 
 afterEach(async () => {
@@ -89,7 +89,7 @@ write_frame(base64.b64decode(${JSON.stringify(encoded)}))
 if ${waitForAck ? "False" : "True"}:
     sys.exit(0)
 ack = json.loads(read_frame())
-write_request({"op": "homie_inventory", "seq": 2})
+write_request({"op": "collie_inventory", "seq": 2})
 inventory = json.loads(read_frame())
 write_request({"op": "pipeline_liveness", "seq": 3})
 liveness_body = read_frame()
@@ -128,8 +128,8 @@ describe("resident one-use dispatch control", () => {
       });
     }
     expect(docker.calls).toEqual([
-      ["ps", "-aq", "--no-trunc", "--filter", "label=mc-managed=true", "--filter", "label=mc-tier=homie"],
-      ["ps", "-aq", "--no-trunc", "--filter", "label=mc-managed=true", "--filter", "label=mc-tier=homie"],
+      ["ps", "-aq", "--no-trunc", "--filter", "label=mc-managed=true", "--filter", "label=mc-tier=collie"],
+      ["ps", "-aq", "--no-trunc", "--filter", "label=mc-managed=true", "--filter", "label=mc-tier=collie"],
     ]);
   });
 
@@ -157,7 +157,7 @@ describe("resident one-use dispatch control", () => {
     // refusal much past that means the reap path wedged behind the timeout.
     expect(elapsed).toBeGreaterThanOrEqual(1_900);
     expect(elapsed).toBeLessThan(8_000);
-    // No hello means the exchange never reached the Homie inventory: the
+    // No hello means the exchange never reached the Collie inventory: the
     // budgeted docker calls must not have happened.
     expect(docker.calls).toEqual([]);
     // Fail-closed and self-recovering, not a wedge: the same identity's next
@@ -197,17 +197,17 @@ describe("resident one-use dispatch control", () => {
     }));
   });
 
-  test("returns only a normalized exact Homie container identity", async () => {
+  test("returns only a normalized exact Collie container identity", async () => {
     const docker = new FakeExec();
     const id = "c".repeat(64);
     docker.enqueue(
       ok(id + "\n"),
       ok(JSON.stringify([{
         Id: id,
-        Name: "/mc-homie-h-abc",
+        Name: "/mc-collie-h-abc",
         Config: { Labels: {
           "mc-managed": "true",
-          "mc-tier": "homie",
+          "mc-tier": "collie",
           "mc-session-id": "h-abc",
           "mc-launch-id": "a".repeat(16),
         } },
@@ -271,7 +271,7 @@ describe("resident one-use dispatch control", () => {
     );
   });
 
-  test("refuses an ambiguous Homie inventory before accepting child output", async () => {
+  test("refuses an ambiguous Collie inventory before accepting child output", async () => {
     const docker = new FakeExec();
     docker.enqueue(ok("short-id\n"));
     const exec = execMcVia(["python3", "-I", "-c", helloChild()], await identity(), docker.exec, runtime(), noLiveness);
@@ -383,7 +383,7 @@ describe("resident one-use dispatch control", () => {
   });
 });
 
-describe("Homie runtime inventory attestation", () => {
+describe("Collie runtime inventory attestation", () => {
   const id = "c".repeat(64);
   const plan = {
     session: "h-abc",
@@ -394,19 +394,19 @@ describe("Homie runtime inventory attestation", () => {
   function recordFor(runtime_generation: string): Record<string, unknown> {
     const create = [
       "create", "--rm", "--network", "none",
-      "--name", "mc-homie-h-abc",
+      "--name", "mc-collie-h-abc",
       "--label", "mc-managed=true",
-      "--label", "mc-tier=homie",
+      "--label", "mc-tier=collie",
       "--label", `mc-session-id=${plan.session}`,
       "--label", `mc-launch-id=${plan.launch}`,
       "--label", `mc-envelope-digest=${plan.envelope_digest}`,
       "--label", `mc-runtime-generation=${runtime_generation}`,
       "-v", "/host/session:/mc/session",
       "-e", "MC_SPINE=/mc/spine/spine.db",
-      "mc-fake-e2e:test", "bun", "/app/src/homie-runner/main.ts",
+      "mc-fake-e2e:test", "bun", "/app/src/collie-runner/main.ts",
     ];
-    return homieInspectFromCreate(
-      create, id, "mc-fake-e2e:test", ["bun", "/app/src/homie-runner/main.ts"],
+    return collieInspectFromCreate(
+      create, id, "mc-fake-e2e:test", ["bun", "/app/src/collie-runner/main.ts"],
     );
   }
 
@@ -422,7 +422,7 @@ describe("Homie runtime inventory attestation", () => {
   test("emits proof only when this resident boot owns the exact bound generation", async () => {
     const live = runtime();
     const runtime_generation = live.register(plan);
-    const dockerEnvelope = canonicalHomieDockerEnvelope(recordFor(runtime_generation));
+    const dockerEnvelope = canonicalCollieDockerEnvelope(recordFor(runtime_generation));
     live.bind({ ...plan, container_id: id, docker_envelope: dockerEnvelope, runtime_generation });
     const attestedDigest = live.sealArtifacts({
       ...plan,
@@ -431,10 +431,10 @@ describe("Homie runtime inventory attestation", () => {
       runtime_generation,
     });
 
-    expect(await collectHomieInventory(dockerFor(runtime_generation).exec, live)).toEqual([{
+    expect(await collectCollieInventory(dockerFor(runtime_generation).exec, live)).toEqual([{
       container_id: id,
       launch: plan.launch,
-      name: "mc-homie-h-abc",
+      name: "mc-collie-h-abc",
       runtime_attestation: {
         envelope_digest: attestedDigest,
         runtime_generation,
@@ -443,10 +443,10 @@ describe("Homie runtime inventory attestation", () => {
       state: "created",
     }]);
 
-    expect(await collectHomieInventory(dockerFor(runtime_generation).exec, runtime(9))).toEqual([{
+    expect(await collectCollieInventory(dockerFor(runtime_generation).exec, runtime(9))).toEqual([{
       container_id: id,
       launch: plan.launch,
-      name: "mc-homie-h-abc",
+      name: "mc-collie-h-abc",
       session: plan.session,
       state: "created",
     }]);
@@ -455,10 +455,10 @@ describe("Homie runtime inventory attestation", () => {
     const drifted = recordFor(runtime_generation) as any;
     drifted.HostConfig.Memory = 1024;
     driftedDocker.enqueue(ok(id + "\n"), ok(JSON.stringify([drifted])));
-    expect(await collectHomieInventory(driftedDocker.exec, live)).toEqual([{
+    expect(await collectCollieInventory(driftedDocker.exec, live)).toEqual([{
       container_id: id,
       launch: plan.launch,
-      name: "mc-homie-h-abc",
+      name: "mc-collie-h-abc",
       session: plan.session,
       state: "created",
     }]);
@@ -468,7 +468,7 @@ describe("Homie runtime inventory attestation", () => {
     const live = runtime();
     let authorized = true;
     const runtime_generation = live.register(plan, () => authorized);
-    const docker_envelope = canonicalHomieDockerEnvelope(recordFor(runtime_generation));
+    const docker_envelope = canonicalCollieDockerEnvelope(recordFor(runtime_generation));
     live.bind({ ...plan, container_id: id, docker_envelope, runtime_generation });
     live.sealArtifacts({ ...plan, artifact_envelope: '{"run_json":"exact"}', container_id: id, runtime_generation });
     for (const state of ["created", "running"]) {
@@ -477,13 +477,13 @@ describe("Homie runtime inventory attestation", () => {
         const record = recordFor(runtime_generation) as any;
         record.State.Status = state;
         docker.enqueue(ok(id + "\n"), ok(JSON.stringify([record])));
-        return collectHomieInventory(docker.exec, live);
+        return collectCollieInventory(docker.exec, live);
       };
       authorized = true;
       expect((await inventory())[0]!.runtime_attestation).toBeDefined();
       authorized = false;
       expect(await inventory()).toEqual([{ container_id: id, launch: plan.launch,
-        name: "mc-homie-h-abc", session: plan.session, state }]);
+        name: "mc-collie-h-abc", session: plan.session, state }]);
     }
   });
 });

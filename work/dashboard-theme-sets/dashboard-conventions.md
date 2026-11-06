@@ -18,7 +18,7 @@ The conventions must cover these surfaces:
 - Board and its Setup Journal and task dialogs.
 - Review and its packet reader and panels.
 - Pipeline and its role details and agent profile assignment.
-- Homie and its sessions and conversations.
+- Collie and its sessions and conversations.
 - Configs and its system details and Project controls.
 - System Logs and its controls.
 - Project Vision and Environment.
@@ -190,7 +190,7 @@ The combined backdrop must preserve the visible context of the lower dialog.
 ## Panels and page content
 
 Named panels must use the dialog header colors for their structural headers.
-Homie's Sessions and Conversation panels must use those colors.
+Collie's Sessions and Conversation panels must use those colors.
 The same rule must cover the structural headers of Vision and Environment panels.
 The panel body must use the body surface.
 
@@ -298,7 +298,7 @@ The actual dashboard behavior must govern these cases:
 - Project deletion must retain its current checks, disclosures, and confirmation rules.
 - Task actions must retain their availability rules and current effects.
 - Review decisions must retain their current confirmation and evidence requirements.
-- Homie must retain its session, model, attachment, and transcript behavior.
+- Collie must retain its session, model, attachment, and transcript behavior.
 - Environment actions must retain their setup and image approval rules.
 
 Product actions, confirmation fields, and submission requirements must follow the actual dashboard.
@@ -349,7 +349,7 @@ The evidence must cover these dialogs and side panels:
 The evidence must cover these page states:
 
 - Each main page and both dedicated Project pages.
-- Homie sessions, the model selector, the transcript, and the composer.
+- Collie sessions, the model selector, the transcript, and the composer.
 - The Review queue, packet reader, decision controls, and side panels.
 - Pipeline role details, active work, and recent activity.
 - The Setup Journal, its approval view, and historical files.

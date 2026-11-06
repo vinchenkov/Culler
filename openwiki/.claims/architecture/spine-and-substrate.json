@@ -160,7 +160,7 @@
     },
     {
       "id": "claim_28d51bb6656846f4a4b344b4c10ca7f6",
-      "statement": "The spine stores a unique Discord thread identifier for each associated Homie session and prevents changes to its association.",
+      "statement": "The spine stores a unique Discord thread identifier for each associated Collie session and prevents changes to its association.",
       "evidence": [
         {
           "resource": "repo://mc/substrate/schema.sql#L941-L955",

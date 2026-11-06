@@ -53,7 +53,7 @@ GRACE_MINUTES="${MC_DEV_GRACE_MINUTES:-2}"
 HARD_DEADLINE_MINUTES="${MC_DEV_HARD_DEADLINE_MINUTES:-20}"
 HEARTBEAT_INTERVAL_S="${MC_DEV_HEARTBEAT_INTERVAL_S:-60}"
 SPAWN_GRACE_S="${MC_DEV_SPAWN_GRACE_S:-60}"
-HOMIE_IDLE_TIMEOUT_S="${MC_DEV_HOMIE_IDLE_TIMEOUT_S:-1800}"
+COLLIE_IDLE_TIMEOUT_S="${MC_DEV_COLLIE_IDLE_TIMEOUT_S:-1800}"
 REVIEW_WIP_CAP="${MC_DEV_REVIEW_WIP_CAP:-3}"
 
 CONFIRM=0
@@ -285,7 +285,7 @@ mc onboard tunables \
 	--heartbeat-interval-s "$HEARTBEAT_INTERVAL_S" \
 	--spawn-grace-s "$SPAWN_GRACE_S" \
 	--hard-deadline-minutes "$HARD_DEADLINE_MINUTES" \
-	--homie-idle-timeout-s "$HOMIE_IDLE_TIMEOUT_S"
+	--collie-idle-timeout-s "$COLLIE_IDLE_TIMEOUT_S"
 
 # A wiped spine has zero Projects, and activation validates the whole
 # onboarding chain — the project section refuses with "the first Project

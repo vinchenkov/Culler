@@ -116,14 +116,14 @@ func TestPrivateAttachmentSpineRequiresFixedScope(t *testing.T) {
 
 func TestAttachmentIngressCLIEnqueuesButKeepsReservationPrivate(t *testing.T) {
 	spine := initSpine(t)
-	started := runMC(t, spineEnv(spine), "", "homie", "start",
+	started := runMC(t, spineEnv(spine), "", "collie", "start",
 		"--from", "discord:attachment-channel")
 	if started.code != 0 {
-		t.Fatalf("homie start failed: %s", started.stderr)
+		t.Fatalf("collie start failed: %s", started.stderr)
 	}
 	session := started.json["session_id"].(string)
 	db := openDB(t, spine)
-	binding := queryInt(t, db, `SELECT id FROM homie_bindings
+	binding := queryInt(t, db, `SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='discord' AND active=1`, session)
 	manifest := `[{"ordinal":1,"size":7,"media_type":"image/png","display_name":"capture.png"}]`
 
@@ -367,16 +367,16 @@ func TestAttachmentIngressCLIEnqueuesButKeepsReservationPrivate(t *testing.T) {
 	}
 }
 
-func TestHomieSendConsumesAnExactMaterializedIngressAttempt(t *testing.T) {
+func TestCollieSendConsumesAnExactMaterializedIngressAttempt(t *testing.T) {
 	spine := initSpine(t)
-	started := runMC(t, spineEnv(spine), "", "homie", "start",
+	started := runMC(t, spineEnv(spine), "", "collie", "start",
 		"--from", "discord:attachment-channel")
 	if started.code != 0 {
-		t.Fatalf("homie start failed: %s", started.stderr)
+		t.Fatalf("collie start failed: %s", started.stderr)
 	}
 	session := started.json["session_id"].(string)
 	db := openDB(t, spine)
-	binding := queryInt(t, db, `SELECT id FROM homie_bindings
+	binding := queryInt(t, db, `SELECT id FROM collie_bindings
 		WHERE session_id=? AND surface='discord' AND active=1`, session)
 	manifest := `[{"ordinal":1,"size":7,"media_type":"image/png","display_name":"capture.png"}]`
 	enqueued := runMC(t, spineEnv(spine), "", "attachment", "ingress-enqueue", session,
@@ -407,14 +407,14 @@ func TestHomieSendConsumesAnExactMaterializedIngressAttempt(t *testing.T) {
 		t.Fatalf("materialize ingress: %v", err)
 	}
 
-	mixed := runMC(t, spineEnv(spine), "", "homie", "send", session,
+	mixed := runMC(t, spineEnv(spine), "", "collie", "send", session,
 		"--from", "discord:attachment-channel", "--body", "file follows",
 		"--attachments", "[]", "--ingress-attempt", reservation.AttemptID)
 	if mixed.code != 2 {
 		t.Fatalf("mixed attachment authority = code %d json %v stderr %q",
 			mixed.code, mixed.json, mixed.stderr)
 	}
-	consumed := runMC(t, spineEnv(spine), "", "homie", "send", session,
+	consumed := runMC(t, spineEnv(spine), "", "collie", "send", session,
 		"--from", "discord:attachment-channel", "--body", "file follows",
 		"--ingress-attempt", reservation.AttemptID)
 	if consumed.code != 0 || consumed.json["state"] != "consumed" ||

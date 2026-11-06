@@ -18,7 +18,7 @@ import (
 )
 
 // Dispatch is the one caller of dispatch.Decide.
-// One call is one TICK: the Homie stage (lease-free, deployment-wide) and
+// One call is one TICK: the Collie stage (lease-free, deployment-wide) and
 // then one round per Project the tick walks (dispatch.TickOrder), in id
 // order. Each round is the composition of the seam's three steps: prepare
 // under the flock and one BEGIN IMMEDIATE transaction (lock-domain branches
@@ -30,7 +30,7 @@ import (
 // Project, and only one commit can match current state.
 //
 // The result is the tick object {"action":"tick","actions":[...],"idle":[...]}:
-// the ordered list of committed effects (the Homie effect first, if any, then
+// the ordered list of committed effects (the Collie effect first, if any, then
 // one effect per Project in id order, then the effects of the wiki rounds) and
 // the Projects whose pipeline round committed nothing, each with its idle
 // reason.
@@ -60,7 +60,7 @@ func dispatchWithIdentity(db *sql.DB, identity dispatchProtocolIdentity, observe
 		return nil, err
 	}
 	// The capability is resolved BEFORE prepare and rechecked immediately after:
-	// the lease-free Homie branch finalizes inside the prepare transaction, so
+	// the lease-free Collie branch finalizes inside the prepare transaction, so
 	// there is no later attest step in which to notice that config.toml moved.
 	capability := ResolveRuntimeCapability(home)
 
@@ -75,7 +75,7 @@ func dispatchWithIdentity(db *sql.DB, identity dispatchProtocolIdentity, observe
 	}
 
 	tick := newDispatchTick()
-	// The Homie stage is the first round. A failure before any round completed
+	// The Collie stage is the first round. A failure before any round completed
 	// is the command's failure (today's refusal behaviour); a failure after one
 	// is recorded in the tick so the resident still effects what was committed.
 	effect, err := dispatchRoundWithIdentity(db, home, uuid, identity, capability, "")
@@ -106,7 +106,7 @@ func newDispatchTick() *dispatchTick {
 }
 
 // record files one round's committed effect: an idle result of a pipeline
-// round becomes an idle entry (the Homie stage's idle is nothing at all);
+// round becomes an idle entry (the Collie stage's idle is nothing at all);
 // every other effect is an action, in round order.
 func (t *dispatchTick) record(project string, effect map[string]any) {
 	if effect["action"] == "idle" {
@@ -148,7 +148,7 @@ func dispatchErrorEnvelope(err error) map[string]any {
 }
 
 // dispatchRoundWithIdentity runs ONE round of the tick for project ("" is
-// the Homie stage): prepare under the flock and transaction, then — for a
+// the Collie stage): prepare under the flock and transaction, then — for a
 // spawn candidate, then attest and commit. It returns the
 // round's committed effect; an idle effect reports the round's idle reason.
 func dispatchRoundWithIdentity(db *sql.DB, home, uuid string, identity dispatchProtocolIdentity, capability PrivateRuntimeCapability, project string) (map[string]any, error) {
@@ -217,7 +217,7 @@ type spineSelection struct {
 	lease   dispatch.Lease
 	tun     tunables
 	rec     dispatch.Records
-	homies  []homieCandidateState
+	collies []collieCandidateState
 	action  dispatch.Action
 }
 
@@ -259,10 +259,10 @@ func selectFromSpine(ctx context.Context, q Q, observed []PrivatePipelineLivenes
 	sel.rec.VisionReady = visionReady(check, root)
 	sel.rec.VisionPath = check.Path
 	sel.rec.VisionContent = check.Content
-	// The launch-generation observation: active Homie state is
+	// The launch-generation observation: active Collie state is
 	// part of the canonical projection, so a launch bound or superseded
 	// between prepare and commit stales the candidate.
-	if sel.homies, err = loadHomieProjection(ctx, q); err != nil {
+	if sel.collies, err = loadCollieProjection(ctx, q); err != nil {
 		return sel, err
 	}
 	cfg := dispatch.Config{
@@ -368,7 +368,7 @@ type tunables struct {
 	spawnGraceS         int
 	hardDeadlineMinutes int
 	reviewWIPCap        int
-	homieIdleTimeoutS   int
+	collieIdleTimeoutS  int
 	wikiUpdateIntervalS int
 }
 
@@ -386,11 +386,11 @@ func loadSettings(ctx context.Context, q Q) (tunables, error) {
 	err := q.QueryRowContext(ctx, `
 		SELECT timeout_minutes, grace_minutes, heartbeat_interval_s,
 		       spawn_grace_s, hard_deadline_minutes, review_wip_cap,
-		       homie_idle_timeout_s, wiki_update_interval_s
+		       collie_idle_timeout_s, wiki_update_interval_s
 		FROM settings WHERE id = 1`).Scan(
 		&tun.timeoutMinutes, &tun.graceMinutes, &tun.heartbeatIntervalS,
 		&tun.spawnGraceS, &tun.hardDeadlineMinutes, &tun.reviewWIPCap,
-		&tun.homieIdleTimeoutS, &tun.wikiUpdateIntervalS)
+		&tun.collieIdleTimeoutS, &tun.wikiUpdateIntervalS)
 	if err == sql.ErrNoRows {
 		return tun, Domainf("no settings row (uninitialized spine)")
 	}
@@ -777,7 +777,7 @@ func buildSpawnEffect(ctx context.Context, q Q, sp *dispatch.Spawn, tun tunables
 		"harness":              route.Harness,
 		"model_binding":        route.Binding,
 		// The attested capability travels with the spawn for the same reason it
-		// travels with a Homie wake: the resident owns no route catalog, so the
+		// travels with a Collie wake: the resident owns no route catalog, so the
 		// launch is describable only from what config.toml resolved.
 		"runtime_binding":       runtimeValue,
 		"brief":                 brief,
@@ -914,9 +914,9 @@ func resolveMCHome() (string, error) {
 	return filepath.Clean(home), nil
 }
 
-// resolveRoleRoute reads the authoritative route for the lease-free Homie
+// resolveRoleRoute reads the authoritative route for the lease-free Collie
 // registry (pipeline spawns attest routing through the dispatch seam
-// instead). Capturing Homie's exact historical binding at start makes later
+// instead). Capturing Collie's exact historical binding at start makes later
 // resume independent of routing.md drift.
 func resolveRoleRoute(role string) (routing.Route, error) {
 	home, err := resolveMCHome()

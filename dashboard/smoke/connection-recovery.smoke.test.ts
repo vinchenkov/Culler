@@ -5,7 +5,7 @@ let smoke: Smoke;
 let complete = true;
 const failure = {
   id: "connection:team:model_access:review", group: "connections", name: "Team", connection_id: "team",
-  profile_id: "review", state: "retry_wait", retry_phase: "delay", roles: ["verifier", "homie"], action: "",
+  profile_id: "review", state: "retry_wait", retry_phase: "delay", roles: ["verifier", "collie"], action: "",
   diagnostic_id: 1, network_error: "reset", latest_failure_at: "2026-10-02T18:58:12Z", next_retry_at: "2099-10-02T18:58:42Z",
 };
 let current: any = { ...failure };

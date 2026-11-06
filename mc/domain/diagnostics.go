@@ -198,7 +198,7 @@ func RecoverNetworkAttempt(ctx context.Context, q Q, run, attempt string, source
 	if run != "" {
 		err = q.QueryRowContext(ctx, `SELECT connection_id,authorization_id,profile_id,profile_revision,connection_revision,project FROM runs WHERE id=?`, run).Scan(&connection, &auth, &profile, &profileRevision, &revision, &project)
 	} else {
-		err = q.QueryRowContext(ctx, `SELECT connection_id,authorization_id,profile_id,profile_revision,connection_revision FROM homie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&connection, &auth, &profile, &profileRevision, &revision)
+		err = q.QueryRowContext(ctx, `SELECT connection_id,authorization_id,profile_id,profile_revision,connection_revision FROM collie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&connection, &auth, &profile, &profileRevision, &revision)
 	}
 	if err != nil || connection == "" || profile == "" {
 		return false, err

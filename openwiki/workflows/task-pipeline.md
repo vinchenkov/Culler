@@ -257,7 +257,7 @@ A task's description is its requirements, versioned by `requirements_version`. B
 ## Decision reports and revised requirements
 
 A Worker, Verifier, or Packager operator decision report records `blocked_kind = 'report'`.
-The dashboard and Homie resolve it through a requirements revision or task cancellation.
+The dashboard and Collie resolve it through a requirements revision or task cancellation.
 The revision requires a changed description and a reason.
 An active run or repository operation can delay application; Decision Pending remains until application succeeds.
 

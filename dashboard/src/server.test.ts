@@ -14,7 +14,7 @@ const ephemeral = { bind: "127.0.0.1:0", authToken: "s3cret" };
 const bearer = { authorization: "Bearer s3cret" };
 
 test("the dashboard refuses mutations from an earlier release", async () => {
-  const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-1" }));
+  const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-1" }));
   const server = startDashboardServer({ ...ephemeral, releaseID: "release-two" }, deps({ mc }));
   try {
     const page = await fetch(server.url);
@@ -31,17 +31,17 @@ test("the dashboard refuses mutations from an earlier release", async () => {
     expect((await fetch(`${server.url}api/sessions`, {
       method: "POST", headers: { ...bearer, "x-culler-release": "release-two" },
     })).status).toBe(200);
-    expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:dash-feedf00d"]]);
+    expect(mc.calls).toEqual([["collie", "start", "--from", "dashboard:dash-feedf00d"]]);
   } finally { server.stop(); }
 });
 
 test("an incomplete update permits reads and refuses mutations", async () => {
-  const mc = new FakeMc().on(["homie", "list"], ok({ sessions: [] }));
+  const mc = new FakeMc().on(["collie", "list"], ok({ sessions: [] }));
   const server = startDashboardServer({ ...ephemeral, maintenance: () => true }, deps({ mc }));
   try {
     expect((await fetch(`${server.url}api/sessions`, { headers: bearer })).status).toBe(200);
     expect((await fetch(`${server.url}api/sessions`, { method: "POST", headers: bearer })).status).toBe(503);
-    expect(mc.calls).toEqual([["homie", "list"]]);
+    expect(mc.calls).toEqual([["collie", "list"]]);
   } finally { server.stop(); }
 });
 
@@ -122,7 +122,7 @@ describe("fail-closed bind/auth", () => {
   });
 
   test("the token gates every /api request before any mc spawn", async () => {
-    const mc = new FakeMc().on(["homie", "list"], ok({ sessions: [] }));
+    const mc = new FakeMc().on(["collie", "list"], ok({ sessions: [] }));
     const server = startDashboardServer(ephemeral, deps({ mc }));
     try {
       const bare = await fetch(`${server.url}api/sessions`);
@@ -132,7 +132,7 @@ describe("fail-closed bind/auth", () => {
         headers: { authorization: "Bearer s3cret" },
       });
       expect(authed.status).toBe(200);
-      expect(mc.calls).toEqual([["homie", "list"]]);
+      expect(mc.calls).toEqual([["collie", "list"]]);
       // The data-free static shell stays reachable so a browser can load it
       // and then present the token.
       expect((await fetch(server.url)).status).toBe(200);
@@ -158,7 +158,7 @@ describe("fail-closed bind/auth", () => {
   });
 
   test("a foreign Host header is refused — DNS rebinding boundary", async () => {
-    const mc = new FakeMc().on(["homie", "list"], ok({ sessions: [] }));
+    const mc = new FakeMc().on(["collie", "list"], ok({ sessions: [] }));
     const server = startDashboardServer(ephemeral, deps({ mc }));
     try {
       const rebound = await fetch(`${server.url}api/sessions`, {
@@ -172,7 +172,7 @@ describe("fail-closed bind/auth", () => {
   });
 
   test("a cross-origin request is refused, same-origin passes — CSRF boundary", async () => {
-    const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-1" }));
+    const mc = new FakeMc().on(["collie", "start"], ok({ session_id: "h-1" }));
     const server = startDashboardServer(ephemeral, deps({ mc }));
     try {
       const forged = await fetch(`${server.url}api/sessions`, {
@@ -220,7 +220,7 @@ describe("static shell", () => {
       expect(page.status).toBe(200);
       expect(page.headers.get("content-type")).toContain("text/html");
       const html = await page.text();
-      expect(html).toContain("Homie");
+      expect(html).toContain("Collie");
       const js = await fetch(`${server.url}app.js`);
       expect(js.status).toBe(200);
     } finally {

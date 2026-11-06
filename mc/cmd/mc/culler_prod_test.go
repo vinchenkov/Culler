@@ -287,7 +287,7 @@ func TestCullerReadyStartAndRepeatedStopAreIdempotent(t *testing.T) {
 }
 
 func TestCullerResidentStopWaitsForEveryWorkType(t *testing.T) {
-	for _, kind := range []string{"pipeline or Scribe", "lease", "repository", "setup", "Homie"} {
+	for _, kind := range []string{"pipeline or Scribe", "lease", "repository", "setup", "Collie"} {
 		t.Run(kind, func(t *testing.T) {
 			m, control, db := cullerManagerFixture(t)
 			switch kind {
@@ -299,8 +299,8 @@ func TestCullerResidentStopWaitsForEveryWorkType(t *testing.T) {
 				db.RepositoryOperations = 1
 			case "setup":
 				db.EnvironmentOperations = 1
-			case "Homie":
-				db.HomieLaunches = 1
+			case "Collie":
+				db.CollieLaunches = 1
 			}
 			err := m.change(context.Background(), "stop", "resident", func(string) {})
 			if err == nil || len(control.ended) != 0 {

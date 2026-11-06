@@ -259,7 +259,7 @@ func TestOnboardTunablesPlanResetsEveryTunableDefaultAndCarriesGitIdentity(t *te
 	cfg.Budgets.MaxCorrectionCount = 9
 	cfg.Budgets.DispatchRetries = 8
 	cfg.Timing.TickIntervalS = 6
-	cfg.Timing.HomieIdleTimeoutS = 5
+	cfg.Timing.CollieIdleTimeoutS = 5
 	cfg.Timing.BackupIntervalS = 4
 	cfg.Timing.BackupRetain = 3
 	cfg.Git.AuthorName = "Old Identity"
@@ -277,7 +277,7 @@ func TestOnboardTunablesPlanResetsEveryTunableDefaultAndCarriesGitIdentity(t *te
 	defaults := operatorconfig.Default()
 	if plan.Desired.Budgets != defaults.Budgets ||
 		plan.Desired.Timing.TickIntervalS != defaults.Timing.TickIntervalS ||
-		plan.Desired.Timing.HomieIdleTimeoutS != defaults.Timing.HomieIdleTimeoutS ||
+		plan.Desired.Timing.CollieIdleTimeoutS != defaults.Timing.CollieIdleTimeoutS ||
 		plan.Desired.Timing.BackupIntervalS != defaults.Timing.BackupIntervalS ||
 		plan.Desired.Timing.BackupRetain != defaults.Timing.BackupRetain ||
 		plan.Desired.Git != defaults.Git {
@@ -457,14 +457,14 @@ func TestDisableOnboardRuntimeBindingMovesItsRolesToTheFirstEnabledBinding(t *te
 | worker | claude-sdk | claude |
 | verifier | claude-sdk | endpoint |
 | packager | codex | chatgpt |
-| homie | claude-sdk | claude |
+| collie | claude-sdk | claude |
 `
 	routingPath := filepath.Join(home, "routing.md")
 	if err := os.WriteFile(routingPath, []byte(table), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	moved, err := DisableOnboardRuntimeBinding("claude")
-	if err != nil || strings.Join(moved, ",") != "strategist,worker,scribe,homie" {
+	if err != nil || strings.Join(moved, ",") != "strategist,worker,scribe,collie" {
 		t.Fatalf("disable claude = moved %v err %v", moved, err)
 	}
 	cfg, err := operatorconfig.Load(path)

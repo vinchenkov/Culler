@@ -184,7 +184,7 @@ func RecordProviderAccess(ctx context.Context, q Q, a ProviderAccessObservation)
 		}
 	}
 	if a.AttemptID != "" {
-		err := q.QueryRowContext(ctx, `SELECT attempt_id FROM homie_reply_attempts WHERE attempt_id=?`, a.AttemptID).Scan(&d.ReplyAttemptID)
+		err := q.QueryRowContext(ctx, `SELECT attempt_id FROM collie_reply_attempts WHERE attempt_id=?`, a.AttemptID).Scan(&d.ReplyAttemptID)
 		if err != nil && err != sql.ErrNoRows {
 			return result, err
 		}
@@ -434,7 +434,7 @@ func RecoverProviderAttempt(ctx context.Context, q Q, run, attempt string) (bool
 	if run != "" {
 		err = q.QueryRowContext(ctx, `SELECT connection_id,authorization_id,profile_id,profile_revision FROM runs WHERE id=?`, run).Scan(&connection, &auth, &profile, &revision)
 	} else {
-		err = q.QueryRowContext(ctx, `SELECT connection_id,authorization_id,profile_id,profile_revision FROM homie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&connection, &auth, &profile, &revision)
+		err = q.QueryRowContext(ctx, `SELECT connection_id,authorization_id,profile_id,profile_revision FROM collie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&connection, &auth, &profile, &revision)
 	}
 	if err != nil || connection == "" || profile == "" {
 		return false, err

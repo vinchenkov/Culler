@@ -42,8 +42,8 @@ func TestValidateAttachmentCanaryGateReportRefusesWidening(t *testing.T) {
 // under /host_mnt, the VM's mount point for shared host storage — and which one
 // comes back is not stable. A raw comparison therefore refuses a correct canary
 // and, because the canary gates supervision activation, refuses the whole
-// deployment. The identical defect killed the Homie tier outright
-// (resident/src/homie-envelope.ts). Nothing above this check had a test,
+// deployment. The identical defect killed the Collie tier outright
+// (resident/src/collie-envelope.ts). Nothing above this check had a test,
 // because inspectAttachmentCanary reaches Docker on its first line.
 func TestAttachmentCanaryAcceptsDockerDesktopHostMntSources(t *testing.T) {
 	tree := verbs.AttachmentTreeReceipt{

@@ -8,7 +8,7 @@ import (
 // `mc task interrupt` promised the operator a stop it could not deliver.
 // The verb returned an effect-shaped result —
 // {"action":"interrupt","stop_container":true} — to its OWN caller's stdout,
-// which for a Homie is inside a container; the resident applies effects at
+// which for a Collie is inside a container; the resident applies effects at
 // exactly one call site, the parsed stdout of `mc dispatch`, and `mc dispatch`
 // had no interrupt action to emit. Worse, the same transaction released the
 // lease, which removed the only remaining path to a stop: the reap selects on

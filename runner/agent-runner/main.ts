@@ -58,7 +58,7 @@ export interface RunEnvelope {
   runtime?: RunEnvelopeRuntime;
   /** The isolated repository of the run. `input_commit` is the commit the
    * preamble pins the repository to before the model sees the tree.
-   * Proposal runs and Homie omit this field and skip the preamble. */
+   * Proposal runs and Collie omit this field and skip the preamble. */
   repository?: { input_commit: string };
   mounts: { session: string; workspace?: string };
   environment?: { configuration: ProjectEnvironment; configuration_revision: string; image_digest: string };
@@ -179,7 +179,7 @@ const spawnPreambleProcess: PreambleExec = async (argv) => {
  *
  * Returns null to proceed, or the refusal reason. Keyed on the envelope
  * carrying a repository, never on the role: a run without one (propose,
- * Homie) launches untouched. */
+ * Collie) launches untouched. */
 export async function runStorePreamble(
   run: RunEnvelope,
   exec: PreambleExec = spawnPreambleProcess,

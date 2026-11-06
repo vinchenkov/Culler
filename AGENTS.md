@@ -39,7 +39,7 @@ The local fast suite runs these checks:
 
 ```sh
 ./mc/check.sh && ./runner/fake-harness/check.sh && ./runner/agent-runner/check.sh && \
-./runner/homie-runner/check.sh && ./runner/setup-runner/check.sh && ./runner/shared/check.sh && ./runner/image/check.sh && \
+./runner/collie-runner/check.sh && ./runner/setup-runner/check.sh && ./runner/shared/check.sh && ./runner/image/check.sh && \
 ./resident/check.sh && ./dashboard/check.sh
 ```
 
@@ -164,7 +164,7 @@ This identity checks compatibility and requires no manual version number.
 
 **`mc` is the sole spine writer.** No TypeScript process opens the database. The resident, the dashboard, and the runners spawn `mc` and read one JSON object from stdout. Exit codes: 0 success, 1 domain rejection, 2 usage or environment. On the host, `MC_HELPER` makes `mc` re-exec itself as `docker exec` into the helper container that can reach the spine volume. Verb scope comes only from the presence of `/mc/run.json`, never from flags; inside the production image a setuid wrapper fences the agent-facing verbs.
 
-**Dispatch.** The resident's tick timer (`resident/src/tick-loop.ts`, one tick at a time) runs `mc dispatch`. The first tick runs at resident start. `dispatch.Decide` (`mc/dispatch/dispatch.go`) is a pure function: one Project's records plus an injected clock in, one stop, one spawn, or one idle reason out. The verbs layer executes each round through a prepare/attest/commit seam with frozen canonical JSON (`mc/verbs/dispatchseam.go`); changing any wire shape is a design decision, not a refactor. Leases are per Project: one in-flight agent run with the lease each. The Homie conversational tier and the Scribe run of a wiki update are lease-free. Repository operations claim no lease. `mc delivery start` records each due operation as an execution, and the resident starts it at once.
+**Dispatch.** The resident's tick timer (`resident/src/tick-loop.ts`, one tick at a time) runs `mc dispatch`. The first tick runs at resident start. `dispatch.Decide` (`mc/dispatch/dispatch.go`) is a pure function: one Project's records plus an injected clock in, one stop, one spawn, or one idle reason out. The verbs layer executes each round through a prepare/attest/commit seam with frozen canonical JSON (`mc/verbs/dispatchseam.go`); changing any wire shape is a design decision, not a refactor. Leases are per Project: one in-flight agent run with the lease each. The Collie conversational tier and the Scribe run of a wiki update are lease-free. Repository operations claim no lease. `mc delivery start` records each due operation as an execution, and the resident starts it at once.
 
 The [dispatch guide](mc/dispatch/README.md) describes the current control model and each retained record.
 Each Project counts its own blocked or stalled tasks.
@@ -237,12 +237,12 @@ Repository requirements still control task verification.
 Pause all pauses every active Project in one transaction.
 Resume all resumes every paused Project with complete initialization in one transaction.
 Projects with incomplete initialization remain paused.
-Pause permits active runs to finish and leaves Homie available.
+Pause permits active runs to finish and leaves Collie available.
 
 **Viewers.** launchd supervises AgentsView, the trace viewer, as the third unit of a production deployment.
 `mc/deployment/agentsview.json` pins the AgentsView release.
 The trace lane of the resident (`resident/src/trace-lane.ts`) copies each trace into `MC_HOME/agentsview/traces/` outside the tick loop.
-The trace service includes pipeline runs, Homie sessions, and setup agent operations.
+The trace service includes pipeline runs, Collie sessions, and setup agent operations.
 Setup traces use their environment operation identity and the fixed session folder under `MC_HOME/environment-runs/`.
 The runner registers each native session separately from its setup report.
 Trace failures leave setup execution and its result unchanged.
@@ -255,16 +255,16 @@ The proxy consumes the grant once and keeps the AgentsView token on the host.
 The proxy reads its service address and token through the host-only `mc __agentsview-access` command.
 The dashboard process serves each wiki export at the wiki address below the wiki key, a secret path prefix in `MC_HOME/state/wiki-key`.
 An agent container can reach the loopback addresses of the host. The token and the wiki key refuse those requests.
-Each Homie container reads the session folders in `MC_HOME/sessions` through a read-only mount at `/mc/traces`.
-The Homie container of a packet conversation reads the artifact files of its task through a read-only mount.
+Each Collie container reads the session folders in `MC_HOME/sessions` through a read-only mount at `/mc/traces`.
+The Collie container of a packet conversation reads the artifact files of its task through a read-only mount.
 Each artifact path that the spine records for that task resolves through that mount.
 The resident resolves the host folder of that mount through the host-only `mc __task-artifacts` command.
-Each Homie container shows the `.mc-artifacts` folder of each Project folder as an empty read-only folder.
+Each Collie container shows the `.mc-artifacts` folder of each Project folder as an empty read-only folder.
 
 **Shipped skills.** Each shipped skill lives at `mc/verbs/skills/<role>/<skill-name>/SKILL.md`.
 The `mc` binary embeds these files.
 Each role directory contains its `mc-<role>` command surface and additional skills.
-The `shared` directory supplies skills to pipeline agents, setup agents, and Homie.
+The `shared` directory supplies skills to pipeline agents, setup agents, and Collie.
 Its `writing` skill defines the standard for text that a person or another agent reads.
 Its `project-environment-setup` skill defines dependency preparation and reports of environment limits.
 
@@ -298,7 +298,7 @@ The directory name and the frontmatter `name` must match.
 - `OPERATOR-INPUTS.md` holds live secrets and is gitignored. Never commit, log, or copy its values into tracked files. When a Docker suite fails strangely, first diff the live Docker Desktop settings against the snapshot in that file.
 - The operator never runs `mc`. Operator-facing text must never instruct a human to run an `mc` command.
 - The operator uses `culler` for lifecycle operations and `install.sh` for setup and repair.
-- The dashboard and Homie provide configuration. Agent containers retain their internal `mc` command authority.
+- The dashboard and Collie provide configuration. Agent containers retain their internal `mc` command authority.
 - `.claude/worktrees/` holds uncommitted historical data. Never delete it; exclude it from searches.
 - The dashboard smokes' `data-testid` hooks must survive refactors; rename one only together with the smoke that uses it. One Chromium per Bun process: use the smoke harness's `bootSmoke()`/`teardown()`, never launch your own browser.
 

@@ -14,7 +14,7 @@ function catalog() {
     ],
     profiles: [
       { id: "careful", name: "Careful", connection_id: "team", connection_name: "Team account", model: "review-model:v2", access_status: "connected", enabled: true, roles: ["verifier", "packager"] },
-      { id: "daily", name: "Daily", connection_id: "team", connection_name: "Team account", model: "general-model:v3", access_status: "connected", enabled: true, roles: ["strategist", "arbiter", "worker", "scribe", "homie"] },
+      { id: "daily", name: "Daily", connection_id: "team", connection_name: "Team account", model: "general-model:v3", access_status: "connected", enabled: true, roles: ["strategist", "arbiter", "worker", "scribe", "collie"] },
       { id: "spare", name: "Spare", connection_id: "local", connection_name: "Second account", model: "local/model:v1", access_status: "disconnected", enabled: true, roles: [] },
       { id: "draft", name: "Draft", connection_id: "local", connection_name: "Second account", model: "draft/model:v1", access_status: "disconnected", enabled: false, roles: [] },
     ],

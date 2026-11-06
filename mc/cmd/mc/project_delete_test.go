@@ -16,7 +16,7 @@ func TestProjectDeleteCLIRequiresHostScopeAndConfirmation(t *testing.T) {
 	for _, env := range [][]string{
 		runJSONEnv(t, spine, "worker", "pipeline", "worker"),
 		runJSONEnv(t, spine, "setup", "setup", "setup"),
-		homieJSONEnv(t, spine, "homie", []string{"project.delete", "project.delete-preview"}),
+		collieJSONEnv(t, spine, "collie", []string{"project.delete", "project.delete-preview"}),
 	} {
 		for _, args := range [][]string{{"project", "delete-preview", "ws-test"}, {"project", "delete", "ws-test", "--confirm"}, {"project", "container-targets", "ws-test"}, {"__project-docker", "ws-test", "--", "create", "image"}} {
 			if result := runMC(t, env, "", args...); result.code != 1 {

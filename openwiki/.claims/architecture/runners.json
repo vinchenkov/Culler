@@ -112,17 +112,17 @@
     },
     {
       "id": "claim_b6375b1649c84b7499ed4b5effda835a",
-      "statement": "The Homie runner never heartbeats, holds no lease, and loops mc homie claim and mc homie reply.",
+      "statement": "The Collie runner never heartbeats, holds no lease, and loops mc collie claim and mc collie reply.",
       "evidence": [
         {
-          "resource": "repo://runner/homie-runner/main.ts#L1-L19",
+          "resource": "repo://runner/collie-runner/main.ts#L1-L19",
           "version": "repo-lines-v1:sha256:03b20f9c32b5edbfce1f2431ccd0f78bd3eb2f2d6c40987c3735ab249adcd3c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODdhNmY5ZGUwMTY2NTJhM2Y2NzkwNTU0YmFkMTI3Y2NlODdhMzQyNTdlNWFjZTcwZTMwZjAzNmFhYzhmOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4MWZiZmNlYTIzNGRiNTc1MmM2YzEwYzU0ZTZlOWExM2I5MzYyZTI4NzI4M2JiOWMyNjMxZWQ4OTM0NGUzNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjZTExMGQ1N2QyMmU1MTU2NWQ0OGMyMjk5ZjNiYWM2MzdjZmMzNDJhYTJiZjg5MGI4MjBhOGY3ZWExZDQyNGEifQ"
         }
       ]
     },
     {
       "id": "claim_7d6b6a624313490497fc9708a4a37260",
-      "statement": "The production runner manifest includes setup, agent, and Homie runners and shared environment modules, and excludes the fake harness.",
+      "statement": "The production runner manifest includes setup, agent, and Collie runners and shared environment modules, and excludes the fake harness.",
       "evidence": [
         {
           "resource": "repo://mc/deployment/runner_release.go",
@@ -214,20 +214,20 @@
     },
     {
       "id": "claim_e5e105557a71466ab7ec90b34911147c",
-      "statement": "The Homie turn prompt includes diagnostic context and requires explicit operator confirmation for a proposed state change.",
+      "statement": "The Collie turn prompt includes diagnostic context and requires explicit operator confirmation for a proposed state change.",
       "evidence": [
         {
-          "resource": "repo://runner/homie-runner/main.ts#L372-L385",
+          "resource": "repo://runner/collie-runner/main.ts#L372-L385",
           "version": "repo-lines-v1:sha256:32d17046a7c35dd39f10bfdacabd87a520ea67a0a89855907628308c2f8dd1a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5OTAxMWJmYWNhMzkyNTQ1YWJmMmExOTljMzFlZDljZWYyZjM4MTk2NTQ2MDFjOTUyYTNlNDM1ODAzYTEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjhlYzFiZDFkZmE3YTFmZDM0MjE2NDU4MjMwZDdkNTBhODk3MTdkNjBlNjNhMGI2YjlmZDE4YmY3NzlhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EifQ"
         }
       ]
     },
     {
       "id": "claim_d21702d865d14eb1a45c1dd0109cf737",
-      "statement": "The Homie turn prompt assigns Discord setup and account approval to Configs → Discord.",
+      "statement": "The Collie turn prompt assigns Discord setup and account approval to Configs → Discord.",
       "evidence": [
         {
-          "resource": "repo://runner/homie-runner/main.ts#L372-L385",
+          "resource": "repo://runner/collie-runner/main.ts#L372-L385",
           "version": "repo-lines-v1:sha256:32d17046a7c35dd39f10bfdacabd87a520ea67a0a89855907628308c2f8dd1a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5OTAxMWJmYWNhMzkyNTQ1YWJmMmExOTljMzFlZDljZWYyZjM4MTk2NTQ2MDFjOTUyYTNlNDM1ODAzYTEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjhlYzFiZDFkZmE3YTFmZDM0MjE2NDU4MjMwZDdkNTBhODk3MTdkNjBlNjNhMGI2YjlmZDE4YmY3NzlhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EifQ"
         }
       ]
@@ -254,10 +254,10 @@
     },
     {
       "id": "claim_af67d294bcdc4553bbd4be1e306b8e0d",
-      "statement": "The Homie turn prompt says a Discord channel message starts a session in a thread and dashboard replies reach that thread.",
+      "statement": "The Collie turn prompt says a Discord channel message starts a session in a thread and dashboard replies reach that thread.",
       "evidence": [
         {
-          "resource": "repo://runner/homie-runner/main.ts#L379-L379",
+          "resource": "repo://runner/collie-runner/main.ts#L379-L379",
           "version": "repo-lines-v1:sha256:156c41be9455f5a0c1fa4a7c296c1b6538da151c94cfb895962b63039159dfe4:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU2YzQxYmU5NDU1ZjVhMGMxZmE0YTdjMjk2YzFiNjUzOGRhMTUxYzk0Y2ZiODk1OTYyYjYzMDM5MTU5ZGZlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTU2YzQxYmU5NDU1ZjVhMGMxZmE0YTdjMjk2YzFiNjUzOGRhMTUxYzk0Y2ZiODk1OTYyYjYzMDM5MTU5ZGZlNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWYwNzE2ZjZiMGQ1OGUxZTBmZDcyNjg3NTNjMmU4NmU4ZmQxYTliM2VkOGE2ODkyNzNjZDhmNDE2ZDJiOTQzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGZhOTkyMzBmYWZhODk0ZmYxOTZlOTFiOTZmZjQ2YWRmNDI2Zjk2MmQ5ZmM3YWVjOWQ0YTAxYThiY2E4ZjZhZCJ9"
         }
       ]

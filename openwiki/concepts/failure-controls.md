@@ -124,7 +124,7 @@ Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki
 
 Connection conditions own neither pipeline allowance. The runners classify a request that got no service response with `runner/shared/network-error.ts` (`connect`, `reset`, `timeout`, `tls`, `other`) and pass it as `--network-error` on `mc run infra-failure`. Such a failure is a system condition. The connection then waits through its retry schedule.
 
-When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` (`mc/verbs/runner.go`) calls `domain.RecoverNetworkAttempt`, which clears only the network condition that admitted that run, and only if the connection, authorization, and profile are still current. A role terminal also clears it (`ClearNetworkRetry`). Homie uses the same reporter through `mc homie model-response`.
+When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` (`mc/verbs/runner.go`) calls `domain.RecoverNetworkAttempt`, which clears only the network condition that admitted that run, and only if the connection, authorization, and profile are still current. A role terminal also clears it (`ClearNetworkRetry`). Collie uses the same reporter through `mc collie model-response`.
 
 [Agent connections and access renewal](../operations/agent-connections.md) describes account renewal, rejected keys, and quota failures.
 

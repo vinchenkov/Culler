@@ -3329,7 +3329,7 @@ Retained location: `mc/verbs/directives/worker.md — Culler contract; mc/verbs/
 
 Source: `mc/verbs/skills/worker/mc-worker/SKILL.md`. Category: `duplicate`.
 
-> The runner owns `mc run model-response` and `mc homie model-response`.
+> The runner owns `mc run model-response` and `mc collie model-response`.
 
 The allowed command forms exclude runner commands.
 

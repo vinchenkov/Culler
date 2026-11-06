@@ -27,15 +27,15 @@ import (
 const rrKey = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 
 // rrSpine is a fixture carrying one dispatchable task (id 9, the fall-through
-// bait), one blockable subject task (id 1), and one active Homie session.
+// bait), one blockable subject task (id 1), and one active Collie session.
 func rrSpine(t *testing.T) *sql.DB {
 	t.Helper()
 	db := dvSpine(t)
 	dvInsertTask(t, db, dvTask(1, dispatch.ScopeTask, dispatch.StatusProposed, 3))
 	dvInsertTask(t, db, dvTask(9, dispatch.ScopeTask, dispatch.StatusProposed, 1))
 	dvExec(t, db, `
-		INSERT INTO homie_sessions (id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('sess-1', 'mc-homie-sess-1', '[]', 'sessions/sess-1', 'claude')`)
+		INSERT INTO collie_sessions (id, container_name, verb_allowlist, session_path, binding)
+		VALUES ('sess-1', 'mc-collie-sess-1', '[]', 'sessions/sess-1', 'claude')`)
 	return db
 }
 
@@ -108,11 +108,11 @@ func rrActivity(t *testing.T, db *sql.DB, kind string) []string {
 	return out
 }
 
-func rrHomieStatus(t *testing.T, db *sql.DB, id string) string {
+func rrCollieStatus(t *testing.T, db *sql.DB, id string) string {
 	t.Helper()
 	var s string
-	if err := db.QueryRow(`SELECT status FROM homie_sessions WHERE id = ?`, id).Scan(&s); err != nil {
-		t.Fatalf("read homie session %q: %v", id, err)
+	if err := db.QueryRow(`SELECT status FROM collie_sessions WHERE id = ?`, id).Scan(&s); err != nil {
+		t.Fatalf("read collie session %q: %v", id, err)
 	}
 	return s
 }
@@ -134,7 +134,7 @@ func TestRefusalStaleMutatesNothing(t *testing.T) {
 	cands := map[string]RefusalCandidate{
 		"subject_task": rrSubject(1),
 		"subjectless":  {Kind: RefusalSubjectlessPipeline, Project: "ws-test"},
-		"homie":        {Kind: RefusalHomie, SessionID: "sess-1"},
+		"collie":       {Kind: RefusalCollie, SessionID: "sess-1"},
 	}
 	for _, code := range codes {
 		for name, cand := range cands {
@@ -153,8 +153,8 @@ func TestRefusalStaleMutatesNothing(t *testing.T) {
 				if blocked, _ := rrTaskBlocked(t, db, 1); blocked {
 					t.Error("a stale refusal blocked the subject task")
 				}
-				if got := rrHomieStatus(t, db, "sess-1"); got != "active" {
-					t.Errorf("a stale refusal ended the Homie session (status %q)", got)
+				if got := rrCollieStatus(t, db, "sess-1"); got != "active" {
+					t.Errorf("a stale refusal ended the Collie session (status %q)", got)
 				}
 				var acts int
 				if err := db.QueryRow(`SELECT COUNT(*) FROM activity`).Scan(&acts); err != nil {
@@ -375,37 +375,37 @@ func TestRefusalCandidateSubjectlessRequiresProjectDecision(t *testing.T) {
 	}
 }
 
-// --- Candidate policy: Homie ends with confinement:<code> ------------------
+// --- Candidate policy: Collie ends with confinement:<code> ------------------
 
-func TestRefusalCandidateEndsHomie(t *testing.T) {
+func TestRefusalCandidateEndsCollie(t *testing.T) {
 	db := rrSpine(t)
 	code := refusal.CodeNetworkPolicyMismatch
-	eff, err := rrApply(t, db, RefusalCandidate{Kind: RefusalHomie, SessionID: "sess-1"}, refusal.Refusal{
+	eff, err := rrApply(t, db, RefusalCandidate{Kind: RefusalCollie, SessionID: "sess-1"}, refusal.Refusal{
 		Code: code, Field: refusal.FieldNetworkRule, Summary: refusal.SummaryMismatch,
 	}, rrKey)
 	if err != nil {
-		t.Fatalf("Homie candidate refusal errored: %v", err)
+		t.Fatalf("Collie candidate refusal errored: %v", err)
 	}
 	rrAssertInert(t, db, eff)
-	if eff["consequence"] != "homie_ended" {
-		t.Errorf("consequence = %v, want \"homie_ended\"", eff["consequence"])
+	if eff["consequence"] != "collie_ended" {
+		t.Errorf("consequence = %v, want \"collie_ended\"", eff["consequence"])
 	}
-	if got := rrHomieStatus(t, db, "sess-1"); got != "ended" {
+	if got := rrCollieStatus(t, db, "sess-1"); got != "ended" {
 		t.Errorf("session status = %q, want \"ended\"", got)
 	}
 	// The exact reason grammar.
-	details := rrActivity(t, db, "homie.ended")
+	details := rrActivity(t, db, "collie.ended")
 	if len(details) != 1 {
-		t.Fatalf("wrote %d homie.ended rows, want one", len(details))
+		t.Fatalf("wrote %d collie.ended rows, want one", len(details))
 	}
 	if want := "confinement:" + code; details[0] != want {
-		t.Errorf("homie.ended detail = %q, want %q", details[0], want)
+		t.Errorf("collie.ended detail = %q, want %q", details[0], want)
 	}
-	// A policy-invalid Homie is ended in the same transaction precisely so it
+	// A policy-invalid Collie is ended in the same transaction precisely so it
 	// cannot remain the repeatedly selected oldest active row and starve
 	// pipeline work.
 	var active int
-	if err := db.QueryRow(`SELECT COUNT(*) FROM homie_sessions WHERE status = 'active'`).Scan(&active); err != nil {
+	if err := db.QueryRow(`SELECT COUNT(*) FROM collie_sessions WHERE status = 'active'`).Scan(&active); err != nil {
 		t.Fatalf("count active: %v", err)
 	}
 	if active != 0 {
@@ -416,15 +416,15 @@ func TestRefusalCandidateEndsHomie(t *testing.T) {
 // The row persists forever and stays resumable: a null-locator conversation
 // stays recoverable through the --from-rows arm after repair, so the end must
 // not destroy the row or its locators.
-func TestRefusalHomieEndPreservesResumability(t *testing.T) {
+func TestRefusalCollieEndPreservesResumability(t *testing.T) {
 	db := rrSpine(t)
-	if _, err := rrApply(t, db, RefusalCandidate{Kind: RefusalHomie, SessionID: "sess-1"}, refusal.Refusal{
+	if _, err := rrApply(t, db, RefusalCandidate{Kind: RefusalCollie, SessionID: "sess-1"}, refusal.Refusal{
 		Code: refusal.CodeEnvInvalid, Field: refusal.FieldEnvName, Summary: refusal.SummaryForbidden,
 	}, rrKey); err != nil {
-		t.Fatalf("Homie refusal errored: %v", err)
+		t.Fatalf("Collie refusal errored: %v", err)
 	}
 	var path, binding string
-	if err := db.QueryRow(`SELECT session_path, binding FROM homie_sessions WHERE id = 'sess-1'`).
+	if err := db.QueryRow(`SELECT session_path, binding FROM collie_sessions WHERE id = 'sess-1'`).
 		Scan(&path, &binding); err != nil {
 		t.Fatalf("the ended session row is gone or unreadable: %v", err)
 	}
@@ -434,38 +434,38 @@ func TestRefusalHomieEndPreservesResumability(t *testing.T) {
 }
 
 // An already-ended or reaped session is preserved, not re-ended: the same
-// idempotence HomieEnd gives a host retry.
-func TestRefusalHomieEndIsIdempotent(t *testing.T) {
+// idempotence CollieEnd gives a host retry.
+func TestRefusalCollieEndIsIdempotent(t *testing.T) {
 	for _, status := range []string{"ended", "reaped"} {
 		t.Run(status, func(t *testing.T) {
 			db := rrSpine(t)
-			dvExec(t, db, `UPDATE homie_sessions SET status = ? WHERE id = 'sess-1'`, status)
-			eff, err := rrApply(t, db, RefusalCandidate{Kind: RefusalHomie, SessionID: "sess-1"}, refusal.Refusal{
+			dvExec(t, db, `UPDATE collie_sessions SET status = ? WHERE id = 'sess-1'`, status)
+			eff, err := rrApply(t, db, RefusalCandidate{Kind: RefusalCollie, SessionID: "sess-1"}, refusal.Refusal{
 				Code: refusal.CodeEnvInvalid, Field: refusal.FieldEnvName, Summary: refusal.SummaryForbidden,
 			}, rrKey)
 			if err != nil {
 				t.Fatalf("refusal against a %s session errored: %v", status, err)
 			}
 			rrAssertInert(t, db, eff)
-			if got := rrHomieStatus(t, db, "sess-1"); got != status {
+			if got := rrCollieStatus(t, db, "sess-1"); got != status {
 				t.Errorf("status = %q, want %q preserved", got, status)
 			}
-			if n := len(rrActivity(t, db, "homie.ended")); n != 0 {
-				t.Errorf("appended %d duplicate homie.ended rows", n)
+			if n := len(rrActivity(t, db, "collie.ended")); n != 0 {
+				t.Errorf("appended %d duplicate collie.ended rows", n)
 			}
 		})
 	}
 }
 
-// --- The Homie end is launch-fenced -----------------------------------------
+// --- The Collie end is launch-fenced -----------------------------------------
 
-// The Homie consequence is a *launch-fenced* end: it applies only to the
+// The Collie consequence is a *launch-fenced* end: it applies only to the
 // launch generation the candidate was selected against. A session that moved
 // on — a launch bound after selection, the observed launch superseded into
 // resume debt, or replaced by a newer generation — is not the thing the
 // refusal judged, so the end must not touch it. The supersede-then-select
 // order makes the mismatch detectable as a plain generation comparison.
-func TestRefusalHomieEndIsLaunchFenced(t *testing.T) {
+func TestRefusalCollieEndIsLaunchFenced(t *testing.T) {
 	launchA := strings.Repeat("a", 16)
 	launchB := strings.Repeat("b", 16)
 	for name, c := range map[string]struct {
@@ -484,12 +484,12 @@ func TestRefusalHomieEndIsLaunchFenced(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			db := rrSpine(t)
 			if c.rowLaunch != "" {
-				dvExec(t, db, `UPDATE homie_sessions
+				dvExec(t, db, `UPDATE collie_sessions
 					SET current_launch_id = ?, current_launch_mode = 'fresh'
 					WHERE id = 'sess-1'`, c.rowLaunch)
 			}
 			eff, err := rrApply(t, db, RefusalCandidate{
-				Kind: RefusalHomie, SessionID: "sess-1", LaunchID: c.observed,
+				Kind: RefusalCollie, SessionID: "sess-1", LaunchID: c.observed,
 			}, refusal.Refusal{
 				Code: refusal.CodeEnvInvalid, Field: refusal.FieldEnvName,
 				Summary: refusal.SummaryForbidden,
@@ -499,14 +499,14 @@ func TestRefusalHomieEndIsLaunchFenced(t *testing.T) {
 			}
 			rrAssertInert(t, db, eff)
 			if c.wantEnd {
-				if eff["consequence"] != "homie_ended" {
-					t.Errorf("consequence = %v, want \"homie_ended\"", eff["consequence"])
+				if eff["consequence"] != "collie_ended" {
+					t.Errorf("consequence = %v, want \"collie_ended\"", eff["consequence"])
 				}
-				if got := rrHomieStatus(t, db, "sess-1"); got != "ended" {
+				if got := rrCollieStatus(t, db, "sess-1"); got != "ended" {
 					t.Errorf("status = %q, want \"ended\"", got)
 				}
-				if n := len(rrActivity(t, db, "homie.ended")); n != 1 {
-					t.Errorf("wrote %d homie.ended rows, want one", n)
+				if n := len(rrActivity(t, db, "collie.ended")); n != 1 {
+					t.Errorf("wrote %d collie.ended rows, want one", n)
 				}
 				return
 			}
@@ -520,11 +520,11 @@ func TestRefusalHomieEndIsLaunchFenced(t *testing.T) {
 			if eff["launch_superseded"] != true {
 				t.Errorf("effect must name the fence: launch_superseded = %v", eff["launch_superseded"])
 			}
-			if got := rrHomieStatus(t, db, "sess-1"); got != "active" {
+			if got := rrCollieStatus(t, db, "sess-1"); got != "active" {
 				t.Errorf("status = %q; a superseded-generation refusal must not end the session", got)
 			}
-			if n := len(rrActivity(t, db, "homie.ended")); n != 0 {
-				t.Errorf("wrote %d homie.ended rows across the fence", n)
+			if n := len(rrActivity(t, db, "collie.ended")); n != 0 {
+				t.Errorf("wrote %d collie.ended rows across the fence", n)
 			}
 		})
 	}
@@ -533,7 +533,7 @@ func TestRefusalHomieEndIsLaunchFenced(t *testing.T) {
 // A malformed observed generation is a protocol error, refused before any
 // write — never coerced to "no launch", which would make the fence pass or
 // fail by accident.
-func TestRefusalHomieMalformedLaunchIDRefused(t *testing.T) {
+func TestRefusalCollieMalformedLaunchIDRefused(t *testing.T) {
 	for name, id := range map[string]string{
 		"short":     strings.Repeat("a", 15),
 		"long":      strings.Repeat("a", 17),
@@ -543,7 +543,7 @@ func TestRefusalHomieMalformedLaunchIDRefused(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			db := rrSpine(t)
 			_, err := rrApply(t, db, RefusalCandidate{
-				Kind: RefusalHomie, SessionID: "sess-1", LaunchID: id,
+				Kind: RefusalCollie, SessionID: "sess-1", LaunchID: id,
 			}, refusal.Refusal{
 				Code: refusal.CodeEnvInvalid, Field: refusal.FieldEnvName,
 				Summary: refusal.SummaryForbidden,
@@ -552,7 +552,7 @@ func TestRefusalHomieMalformedLaunchIDRefused(t *testing.T) {
 				t.Fatal("malformed launch id accepted")
 			}
 			rrAssertInert(t, db, nil)
-			if got := rrHomieStatus(t, db, "sess-1"); got != "active" {
+			if got := rrCollieStatus(t, db, "sess-1"); got != "active" {
 				t.Errorf("status = %q; a refused candidate must mutate nothing", got)
 			}
 		})
@@ -621,13 +621,13 @@ func TestRefusalSubjectTaskWithoutIDRefused(t *testing.T) {
 	rrAssertInert(t, db, nil)
 }
 
-func TestRefusalHomieWithoutSessionRefused(t *testing.T) {
+func TestRefusalCollieWithoutSessionRefused(t *testing.T) {
 	db := rrSpine(t)
-	_, err := rrApply(t, db, RefusalCandidate{Kind: RefusalHomie}, refusal.Refusal{
+	_, err := rrApply(t, db, RefusalCandidate{Kind: RefusalCollie}, refusal.Refusal{
 		Code: refusal.CodeEnvInvalid, Field: refusal.FieldNone, Summary: refusal.SummaryForbidden,
 	}, rrKey)
 	if err == nil {
-		t.Fatal("a Homie candidate with no session id was applied instead of refused")
+		t.Fatal("a Collie candidate with no session id was applied instead of refused")
 	}
 	rrAssertInert(t, db, nil)
 }
@@ -768,7 +768,7 @@ func TestRefusalMalformedDispatchKeyRefused(t *testing.T) {
 			Code: refusal.CodeEnvForbidden, Field: refusal.FieldEnvName, Summary: refusal.SummaryForbidden}},
 		"candidate/subjectless": {RefusalCandidate{Kind: RefusalSubjectlessPipeline, Project: "ws-test"}, refusal.Refusal{
 			Code: refusal.CodeEnvForbidden, Field: refusal.FieldEnvName, Summary: refusal.SummaryForbidden}},
-		"candidate/homie": {RefusalCandidate{Kind: RefusalHomie, SessionID: "sess-1"}, refusal.Refusal{
+		"candidate/collie": {RefusalCandidate{Kind: RefusalCollie, SessionID: "sess-1"}, refusal.Refusal{
 			Code: refusal.CodeEnvForbidden, Field: refusal.FieldEnvName, Summary: refusal.SummaryForbidden}},
 	}
 	for name, key := range bad {
@@ -790,8 +790,8 @@ func TestRefusalMalformedDispatchKeyRefused(t *testing.T) {
 				if blocked, _ := rrTaskBlocked(t, db, 1); blocked {
 					t.Error("a malformed-key refusal blocked the subject task")
 				}
-				if got := rrHomieStatus(t, db, "sess-1"); got != "active" {
-					t.Errorf("a malformed-key refusal ended the Homie session (status %q)", got)
+				if got := rrCollieStatus(t, db, "sess-1"); got != "active" {
+					t.Errorf("a malformed-key refusal ended the Collie session (status %q)", got)
 				}
 			})
 		}

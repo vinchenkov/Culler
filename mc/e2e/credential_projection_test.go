@@ -34,7 +34,7 @@ func providerAccessDockerBoundary(t *testing.T, channel string, invalidToken boo
 		binding, harness = "claude", "claude-sdk"
 	}
 	routing := "# Proxy fixture routing\n| role | harness | binding |\n| --- | --- | --- |\n"
-	for _, role := range []string{"strategist", "arbiter", "worker", "verifier", "scribe", "packager", "homie"} {
+	for _, role := range []string{"strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie"} {
 		route := "fake | fake"
 		if role == "worker" {
 			route = harness + " | " + binding

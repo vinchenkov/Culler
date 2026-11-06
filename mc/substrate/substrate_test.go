@@ -43,7 +43,7 @@ func TestPragmasAndSingletons(t *testing.T) {
 		wantAbort(t, db, `INSERT INTO settings (id) VALUES (2)`)
 		wantAbort(t, db, `DELETE FROM settings`)
 		wantAbort(t, db, `UPDATE settings SET review_wip_cap = 0 WHERE id = 1`)
-		wantAbort(t, db, `UPDATE settings SET homie_idle_timeout_s = 0 WHERE id = 1`)
+		wantAbort(t, db, `UPDATE settings SET collie_idle_timeout_s = 0 WHERE id = 1`)
 		wantAbort(t, db, `UPDATE settings SET wiki_update_interval_s = 0 WHERE id = 1`)
 	})
 
@@ -674,8 +674,8 @@ func TestNoDeleteBackstops(t *testing.T) {
 	mustExec(t, db, `INSERT INTO runs (id, tier, role, project, subject) VALUES ('r1', 'pipeline', 'worker', 'ws', ?)`, id)
 	wantAbort(t, db, `DELETE FROM runs WHERE id = 'r1'`)
 
-	mkHomieSession(t, db, "h1")
-	wantAbort(t, db, `DELETE FROM homie_sessions WHERE id = 'h1'`)
+	mkCollieSession(t, db, "h1")
+	wantAbort(t, db, `DELETE FROM collie_sessions WHERE id = 'h1'`)
 }
 
 func TestRunCreationSequenceIsMonotonicAndImmutable(t *testing.T) {
@@ -693,60 +693,60 @@ func TestRunCreationSequenceIsMonotonicAndImmutable(t *testing.T) {
 	wantAbort(t, db, `INSERT INTO runs (id, tier, created_seq) VALUES ('forged', 'pipeline', 9)`)
 }
 
-func TestHomieSessionRegistryInvariants(t *testing.T) {
+func TestCollieSessionRegistryInvariants(t *testing.T) {
 	db := openSpine(t)
 
 	// Start-time identity and resume locators are authoritative registry
 	// state, never nullable placeholders that a later component guesses.
-	wantAbort(t, db, `INSERT INTO homie_sessions (id) VALUES ('incomplete')`)
-	wantAbort(t, db, `INSERT INTO homie_sessions
+	wantAbort(t, db, `INSERT INTO collie_sessions (id) VALUES ('incomplete')`)
+	wantAbort(t, db, `INSERT INTO collie_sessions
 		(id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('bad-json', 'mc-homie-bad-json', 'not-json', 'sessions/bad-json', 'fake/fake')`)
-	wantAbort(t, db, `INSERT INTO homie_sessions
+		VALUES ('bad-json', 'mc-collie-bad-json', 'not-json', 'sessions/bad-json', 'fake/fake')`)
+	wantAbort(t, db, `INSERT INTO collie_sessions
 		(id, container_name, verb_allowlist, session_path, binding)
-		VALUES ('bad-shape', 'mc-homie-bad-shape', '{}', 'sessions/bad-shape', 'fake/fake')`)
-	mkHomieSession(t, db, "h1")
+		VALUES ('bad-shape', 'mc-collie-bad-shape', '{}', 'sessions/bad-shape', 'fake/fake')`)
+	mkCollieSession(t, db, "h1")
 
 	for name, update := range map[string]string{
 		"id":             `id = 'renamed'`,
 		"created_at":     `created_at = datetime('now', '+1 day')`,
-		"container_name": `container_name = 'mc-homie-other'`,
+		"container_name": `container_name = 'mc-collie-other'`,
 		"verb_allowlist": `verb_allowlist = '["task.add"]'`,
 		"session_path":   `session_path = 'sessions/other'`,
 		"binding":        `binding = 'codex/chatgpt'`,
 	} {
 		t.Run(name+"_immutable", func(t *testing.T) {
-			wantAbort(t, db, `UPDATE homie_sessions SET `+update+` WHERE id = 'h1'`)
+			wantAbort(t, db, `UPDATE collie_sessions SET `+update+` WHERE id = 'h1'`)
 		})
 	}
 
 	// The runner registers the remaining locator pair exactly once. A
 	// half-registration is unstorable and conflicting retries fail closed.
-	wantAbort(t, db, `UPDATE homie_sessions SET native_session_ref = 'native-1' WHERE id = 'h1'`)
-	mustExec(t, db, `UPDATE homie_sessions
+	wantAbort(t, db, `UPDATE collie_sessions SET native_session_ref = 'native-1' WHERE id = 'h1'`)
+	mustExec(t, db, `UPDATE collie_sessions
 		SET native_session_ref = 'native-1', trace_filename = 'native.jsonl'
 		WHERE id = 'h1'`)
-	wantAbort(t, db, `UPDATE homie_sessions
+	wantAbort(t, db, `UPDATE collie_sessions
 		SET native_session_ref = 'native-2', trace_filename = 'native.jsonl'
 		WHERE id = 'h1'`)
 }
 
-// Launch fencing is canonical liveness state on homie_sessions,
+// Launch fencing is canonical liveness state on collie_sessions,
 // with the pairing rules as storage CHECKs, not as Go politeness.
-func TestHomieLaunchFenceBackstops(t *testing.T) {
-	assertHomieLaunchFenceBackstops(t, openSpine(t))
+func TestCollieLaunchFenceBackstops(t *testing.T) {
+	assertCollieLaunchFenceBackstops(t, openSpine(t))
 }
 
-// assertHomieLaunchFenceBackstops checks the Homie launch constraints.
-func assertHomieLaunchFenceBackstops(t *testing.T, db *sql.DB) {
+// assertCollieLaunchFenceBackstops checks the Collie launch constraints.
+func assertCollieLaunchFenceBackstops(t *testing.T, db *sql.DB) {
 	t.Helper()
-	mkHomieSession(t, db, "launch-fence")
+	mkCollieSession(t, db, "launch-fence")
 
-	// `homie start` names only the five identity columns, so the schema's
+	// `collie start` names only the five identity columns, so the schema's
 	// defaults ARE its launch initialization: every launch/debt field must
 	// start empty/zero without the Go layer spelling it.
 	if got := oneInt(t, db, `
-		SELECT count(*) FROM homie_sessions WHERE id = 'launch-fence'
+		SELECT count(*) FROM collie_sessions WHERE id = 'launch-fence'
 		  AND current_launch_id IS NULL AND current_launch_mode IS NULL
 		  AND current_prime_through_seq IS NULL AND current_prime_row_count IS NULL
 		  AND current_container_id IS NULL
@@ -877,7 +877,7 @@ func assertHomieLaunchFenceBackstops(t *testing.T, db *sql.DB) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			const set = `
-				UPDATE homie_sessions SET
+				UPDATE collie_sessions SET
 					current_launch_id = ?, current_launch_mode = ?,
 					current_prime_through_seq = ?, current_prime_row_count = ?,
 					current_container_id = ?, launch_bound_at = ?, launch_started_at = ?,
@@ -903,56 +903,56 @@ func assertHomieLaunchFenceBackstops(t *testing.T, db *sql.DB) {
 	// SQLite. Probed from the known all-empty state so nothing else can
 	// reject vacuously.
 	mustExec(t, db, `
-		UPDATE homie_sessions SET
+		UPDATE collie_sessions SET
 			current_launch_id = NULL, current_launch_mode = NULL,
 			current_prime_through_seq = NULL, current_prime_row_count = NULL,
 			current_container_id = NULL, launch_bound_at = NULL, launch_started_at = NULL,
 			resume_owed = 0, resume_mode = NULL,
 			resume_prime_through_seq = NULL, resume_prime_row_count = NULL
 		WHERE id = 'launch-fence'`)
-	wantAbort(t, db, `UPDATE homie_sessions SET resume_owed = NULL WHERE id = 'launch-fence'`)
+	wantAbort(t, db, `UPDATE collie_sessions SET resume_owed = NULL WHERE id = 'launch-fence'`)
 }
 
-// homie_bindings is bind-event history: end -> resume on the same
+// collie_bindings is bind-event history: end -> resume on the same
 // surface/channel appends a fresh row; at most one ACTIVE row per place;
 // the history persists indefinitely.
-func TestHomieBindingsHistory(t *testing.T) {
+func TestCollieBindingsHistory(t *testing.T) {
 	db := openSpine(t)
-	mkHomieSession(t, db, "h1")
-	mkHomieSession(t, db, "h2")
-	mustExec(t, db, `INSERT INTO homie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'discord', 'chan-1')`)
+	mkCollieSession(t, db, "h1")
+	mkCollieSession(t, db, "h2")
+	mustExec(t, db, `INSERT INTO collie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'discord', 'chan-1')`)
 
 	// A second ACTIVE binding for the same place is refused.
-	wantAbort(t, db, `INSERT INTO homie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'discord', 'chan-1')`)
+	wantAbort(t, db, `INSERT INTO collie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'discord', 'chan-1')`)
 	// The place is globally unambiguous: a different active session cannot
 	// claim the same Discord/dashboard/CLI destination either.
-	wantAbort(t, db, `INSERT INTO homie_bindings (session_id, surface, channel_ref) VALUES ('h2', 'discord', 'chan-1')`)
+	wantAbort(t, db, `INSERT INTO collie_bindings (session_id, surface, channel_ref) VALUES ('h2', 'discord', 'chan-1')`)
 	// Bind-event identity is immutable; only active -> inactive is legal.
-	wantAbort(t, db, `UPDATE homie_bindings SET channel_ref = 'chan-2' WHERE session_id = 'h1'`)
+	wantAbort(t, db, `UPDATE collie_bindings SET channel_ref = 'chan-2' WHERE session_id = 'h1'`)
 
 	// Session ends: active bindings clear…
-	mustExec(t, db, `UPDATE homie_sessions SET status = 'ended' WHERE id = 'h1'`)
-	if active := oneInt(t, db, `SELECT active FROM homie_bindings WHERE session_id = 'h1'`); active != 0 {
+	mustExec(t, db, `UPDATE collie_sessions SET status = 'ended' WHERE id = 'h1'`)
+	if active := oneInt(t, db, `SELECT active FROM collie_bindings WHERE session_id = 'h1'`); active != 0 {
 		t.Fatalf("ended session retained active binding: %d", active)
 	}
-	wantAbort(t, db, `UPDATE homie_bindings SET active = 1 WHERE session_id = 'h1'`)
-	wantAbort(t, db, `INSERT INTO homie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'dashboard', 'ended-place')`)
+	wantAbort(t, db, `UPDATE collie_bindings SET active = 1 WHERE session_id = 'h1'`)
+	wantAbort(t, db, `INSERT INTO collie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'dashboard', 'ended-place')`)
 	// …and a resume from the same surface creates a FRESH binding row — the
 	// primary resume flow must be storable.
-	mustExec(t, db, `UPDATE homie_sessions SET status = 'active' WHERE id = 'h1'`)
-	mustExec(t, db, `INSERT INTO homie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'discord', 'chan-1')`)
-	if n := oneInt(t, db, `SELECT COUNT(*) FROM homie_bindings WHERE session_id = 'h1' AND surface = 'discord' AND channel_ref = 'chan-1'`); n != 2 {
+	mustExec(t, db, `UPDATE collie_sessions SET status = 'active' WHERE id = 'h1'`)
+	mustExec(t, db, `INSERT INTO collie_bindings (session_id, surface, channel_ref) VALUES ('h1', 'discord', 'chan-1')`)
+	if n := oneInt(t, db, `SELECT COUNT(*) FROM collie_bindings WHERE session_id = 'h1' AND surface = 'discord' AND channel_ref = 'chan-1'`); n != 2 {
 		t.Fatalf("bind-event rows = %d, want 2 (history, one per bind)", n)
 	}
 
 	// Bindings history persists indefinitely.
-	wantAbort(t, db, `DELETE FROM homie_bindings`)
-	wantAbort(t, db, `DELETE FROM homie_bindings WHERE active = 0`)
+	wantAbort(t, db, `DELETE FROM collie_bindings`)
+	wantAbort(t, db, `DELETE FROM collie_bindings WHERE active = 0`)
 }
 
 func TestConversationRowsAppendOnly(t *testing.T) {
 	db := openSpine(t)
-	mkHomieSession(t, db, "h1")
+	mkCollieSession(t, db, "h1")
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body, attachments)
 		 VALUES ('h1', 90, 'inbound', 'discord', 'bad', 'not-json')`)
@@ -1079,16 +1079,16 @@ func TestOutboxDeliveryBookkeepingIsFenced(t *testing.T) {
 // "a bug in mc cannot write an illegal state").
 func TestConversationRowsRequireActiveSession(t *testing.T) {
 	db := openSpine(t)
-	mkHomieSession(t, db, "h-conv")
+	mkCollieSession(t, db, "h-conv")
 	mustExec(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body)
 		 VALUES ('h-conv', 1, 'inbound', 'discord', 'hello')`)
 
-	mustExec(t, db, `UPDATE homie_sessions SET status = 'ended' WHERE id = 'h-conv'`)
+	mustExec(t, db, `UPDATE collie_sessions SET status = 'ended' WHERE id = 'h-conv'`)
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body)
-		 VALUES ('h-conv', 2, 'reply', 'homie', 'ghost turn')`)
-	mustExec(t, db, `UPDATE homie_sessions SET status = 'reaped' WHERE id = 'h-conv'`)
+		 VALUES ('h-conv', 2, 'reply', 'collie', 'ghost turn')`)
+	mustExec(t, db, `UPDATE collie_sessions SET status = 'reaped' WHERE id = 'h-conv'`)
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body)
 		 VALUES ('h-conv', 2, 'inbound', 'discord', 'ghost inbound')`)
@@ -1104,8 +1104,8 @@ func TestConversationRowsRequireActiveSession(t *testing.T) {
 // and completion state are one-way and set-once.
 func TestConversationClaimReplyLattice(t *testing.T) {
 	db := openSpine(t)
-	mkHomieSession(t, db, "h-cr")
-	mkHomieSession(t, db, "h-cr2")
+	mkCollieSession(t, db, "h-cr")
+	mkCollieSession(t, db, "h-cr2")
 	mustExec(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body)
 		 VALUES ('h-cr', 1, 'inbound', 'discord', 'question')`)
@@ -1114,17 +1114,17 @@ func TestConversationClaimReplyLattice(t *testing.T) {
 	// A reply names its inbound turn; inbound rows never carry reply_to.
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body)
-		 VALUES ('h-cr', 2, 'reply', 'homie', 'orphan reply')`)
+		 VALUES ('h-cr', 2, 'reply', 'collie', 'orphan reply')`)
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body, reply_to)
 		 VALUES ('h-cr', 2, 'inbound', 'discord', 'inbound with reply_to', ?)`, turn)
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body, reply_to)
-		 VALUES ('h-cr', 2, 'reply', 'homie', 'dangling', 999)`)
+		 VALUES ('h-cr', 2, 'reply', 'collie', 'dangling', 999)`)
 	// …and only an inbound turn of its own conversation.
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body, reply_to)
-		 VALUES ('h-cr2', 1, 'reply', 'homie', 'cross-conversation', ?)`, turn)
+		 VALUES ('h-cr2', 1, 'reply', 'collie', 'cross-conversation', ?)`, turn)
 
 	// Claim columns travel as a pair, and completion requires a claim.
 	wantAbort(t, db, `UPDATE conversation_messages SET claimed_by = 'h-cr' WHERE id = ?`, turn)
@@ -1140,14 +1140,14 @@ func TestConversationClaimReplyLattice(t *testing.T) {
 
 	mustExec(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body, reply_to)
-		 VALUES ('h-cr', 2, 'reply', 'homie', 'answer', ?)`, turn)
+		 VALUES ('h-cr', 2, 'reply', 'collie', 'answer', ?)`, turn)
 	reply := oneInt(t, db, `SELECT id FROM conversation_messages WHERE session_id = 'h-cr' AND seq = 2`)
 
 	// One logical reply per inbound turn, immutable linkage, and reply rows
 	// are never themselves claimable.
 	wantAbort(t, db,
 		`INSERT INTO conversation_messages (session_id, seq, direction, surface, body, reply_to)
-		 VALUES ('h-cr', 3, 'reply', 'homie', 'second reply', ?)`, turn)
+		 VALUES ('h-cr', 3, 'reply', 'collie', 'second reply', ?)`, turn)
 	wantAbort(t, db, `UPDATE conversation_messages SET reply_to = NULL WHERE id = ?`, reply)
 	wantAbort(t, db,
 		`UPDATE conversation_messages SET claimed_by = 'h-cr', claimed_at = datetime('now') WHERE id = ?`, reply)

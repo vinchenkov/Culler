@@ -37,14 +37,14 @@ test("The first Board read shows the structure and shares requests", async () =>
     expect(await page.getByTestId("board-stats").isVisible()).toBe(true);
     expect(await page.getByTestId("board-columns").isVisible()).toBe(true);
     expect(await page.getByTestId("board-project").isVisible()).toBe(false);
-    await page.screenshot({ path: evidencePath("homie-latency-initial-board.png"), fullPage: true });
+    await page.screenshot({ path: evidencePath("collie-latency-initial-board.png"), fullPage: true });
     release();
     await page.getByTestId("board-card").first().waitFor();
     await page.waitForFunction(() => !document.querySelector('.panel:not([hidden]) [aria-busy="true"]'));
     expect(counts.get("/api/health")).toBe(1);
     expect(await page.getByTestId("board-columns").innerText()).toContain("Alpha task");
     expect(await page.getByTestId("board-columns").innerText()).not.toContain("Beta task");
-    await page.screenshot({ path: evidencePath("homie-latency-ready-board.png"), fullPage: true });
+    await page.screenshot({ path: evidencePath("collie-latency-ready-board.png"), fullPage: true });
     await page.getByTestId("board-card-open").first().click();
     await page.getByTestId("task-dialog").waitFor();
     await page.getByTestId("task-dialog-close").click();
@@ -100,7 +100,7 @@ test("Every direct page shares initial reads and supports a narrow viewport", as
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   try {
-    for (const tab of ["board", "homie", "review", "pipeline", "configs", "logs"]) {
+    for (const tab of ["board", "collie", "review", "pipeline", "configs", "logs"]) {
       const counts = new Map<string, number>();
       const registry = page.waitForResponse(response => response.url().endsWith("/api/pause"));
       await page.route("**/api/**", async route => {
@@ -124,7 +124,7 @@ test("Every direct page shares initial reads and supports a narrow viewport", as
         await page.unrouteAll({ behavior: "wait" });
       }
     }
-    await page.screenshot({ path: evidencePath("homie-latency-narrow.png"), fullPage: true });
+    await page.screenshot({ path: evidencePath("collie-latency-narrow.png"), fullPage: true });
   } finally {
     await page.setViewportSize({ width: 1280, height: 720 });
   }

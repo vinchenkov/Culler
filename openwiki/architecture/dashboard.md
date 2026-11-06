@@ -16,7 +16,7 @@ sources:
   - id: openwiki-source-1756d5381ff309245b052d21
     resource: repo://dashboard/smoke/conventions.smoke.test.ts
   - id: openwiki-source-6a6c8da25abead4ea0d2c802
-    resource: repo://dashboard/smoke/diagnostic-homie.smoke.test.ts
+    resource: repo://dashboard/smoke/diagnostic-collie.smoke.test.ts
   - id: openwiki-source-e9e1272cb64a0826b6090ebb
     resource: repo://dashboard/smoke/files-changed.smoke.test.ts
   - id: openwiki-source-6ff7ec04aac5c9f6567d2d84
@@ -122,7 +122,7 @@ sources:
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-c2dfdb5eaae48c46003c3dd4
-    resource: repo://mc/verbs/homie.go
+    resource: repo://mc/verbs/collie.go
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
     resource: repo://mc/verbs/packet.go
   - id: openwiki-source-0024d9d1b366186698efea24
@@ -178,11 +178,11 @@ The dashboard exposes Project pipeline pause through dedicated commands:
 | `POST /api/resume` | `mc resume` (Resume all) |
 | `POST /api/projects/<id>/pause` or `/resume` | `mc project pause|resume <id>` |
 
-The work happens in `SetEveryProjectPause` (`mc/verbs/pause.go`). Pause all sets every active Project to paused in one transaction. Resume all resumes only paused Projects whose `setup_status` is `ready`, so Projects with incomplete initialization stay paused. Pipeline agents cannot change a pause (`RequireHostScope`). `mc/verbs/pause_test.go` verifies that pause still allows Homie dispatch. In the browser, `pauseAllView` (`dashboard/src/ui/format.js`) counts only non-archived, setup-ready Projects to decide whether the button reads "Pause all" or "Resume all".
+The work happens in `SetEveryProjectPause` (`mc/verbs/pause.go`). Pause all sets every active Project to paused in one transaction. Resume all resumes only paused Projects whose `setup_status` is `ready`, so Projects with incomplete initialization stay paused. Pipeline agents cannot change a pause (`RequireHostScope`). `mc/verbs/pause_test.go` verifies that pause still allows Collie dispatch. In the browser, `pauseAllView` (`dashboard/src/ui/format.js`) counts only non-archived, setup-ready Projects to decide whether the button reads "Pause all" or "Resume all".
 
 ### Side seams
 
-- `dashboard/src/resident-nudge.ts` writes one line, the session id, to `MC_HOME/resident.socket` after a Homie write or a packet decision. The nudge is best effort. A failure is logged as `dash.nudge_failed` and the resident's tick timer is the fallback (see [the resident](resident.md)).
+- `dashboard/src/resident-nudge.ts` writes one line, the session id, to `MC_HOME/resident.socket` after a Collie write or a packet decision. The nudge is best effort. A failure is logged as `dash.nudge_failed` and the resident's tick timer is the fallback (see [the resident](resident.md)).
 - `dashboard/src/hostfile.ts` serves attachment bytes after `mc __attachment-bytes` has verified a path. It opens the leaf with `O_NOFOLLOW` and re-checks through the open descriptor: a regular file, operator-owned, at most 64 MiB. Without that check, a link planted in the agent-writable attachment tree between verification and read could widen what the dashboard serves.
 
 ## The wiki server
@@ -251,7 +251,7 @@ The shared frame serves these dialogs:
 - Task details and Board task actions.
 - Project creation and deletion.
 - Agent profiles and role customization.
-- Homie model changes, conversation names, and conversation deletion.
+- Collie model changes, conversation names, and conversation deletion.
 - System details and case assessment.
 
 Board task actions refuse closure while a save is busy.
@@ -362,7 +362,7 @@ The task history appears after the other task details and has no internal sectio
 The packet reader retains its separate evidence access.
 
 The wide reader places Task beside the previous and next controls.
-The narrow reader places Task in the view row beside Packet, Files changed, and Homie.
+The narrow reader places Task in the view row beside Packet, Files changed, and Collie.
 The narrow reader excludes native dialogs from its inert background, so the task dialog accepts input.
 Escape closes the task dialog first and retains the reader and its selected view.
 Closure returns focus to Task. Without a dialog, Escape first handles the reason field, then closes a narrow reader.
@@ -402,33 +402,33 @@ See [the report style checks](../tests/checks-and-test-lanes.md#report-page-styl
 
 ### Packet quick chat
 
-The Review reader offers a Homie conversation for its selected packet in both Live queue and Ledger views.
+The Review reader offers a Collie conversation for its selected packet in both Live queue and Ledger views.
 `packetchat.js` owns the transcript, composer, draft text, and refresh requests.
 The spine owns the conversation identity and message history.
 `app.js` connects the chat to packet selection and reader layout.
 
-The wide layout starts the decision bar with the “Ask Homie” control in the selected theme’s primary action colors.
+The wide layout starts the decision bar with the “Ask Collie” control in the selected theme’s primary action colors.
 It opens and closes the chat column for Live queue and Ledger packets.
 The reader bar holds the Task control.
-Closing the chat returns focus to Ask Homie.
-The narrow layout hides Ask Homie and hides an empty decision bar.
+Closing the chat returns focus to Ask Collie.
+The narrow layout hides Ask Collie and hides an empty decision bar.
 
 The wide layout defaults to a 400-pixel chat column and uses a 200-pixel queue while the chat is open.
 The queue hides when the selected chat width would leave the reader less than 640 pixels.
-The narrow layout offers a Homie view beside Packet and Files changed.
+The narrow layout offers a Collie view beside Packet and Files changed.
 The browser preserves the open state across reloads. Unsent drafts remain in memory for each packet.
 
 `createPacketChatResize` owns the divider and its width preference in `packetchat.js`.
 The divider changes the column width without rebuilding the packet or conversation.
-A leftward drag expands Homie. The arrow keys change its width by 24 pixels.
+A leftward drag expands Collie. The arrow keys change its width by 24 pixels.
 Home selects 320 pixels. End selects the maximum that leaves a 400-pixel reader.
 A double-click restores the 400-pixel default, subject to the available width.
 The divider exposes its current width and limits through an accessible separator.
 
-The browser stores the preferred width under `mc.packet-homie-width` across packets, pages, and reloads.
+The browser stores the preferred width under `mc.packet-collie-width` across packets, pages, and reloads.
 A `ResizeObserver` limits the visible width when the window shrinks and preserves the preference for a larger window.
 If browser storage fails, the preference lasts until the page reloads.
-The narrow layout hides the divider and uses the Homie view.
+The narrow layout hides the divider and uses the Collie view.
 During a drag, the stylesheet disables text selection and iframe pointer events.
 Pointer release, cancellation, capture loss, or window blur ends the drag and saves the preference.
 
@@ -439,36 +439,36 @@ The visible chat refreshes every second during an owed reply and every ten secon
 A closed chat stops its refresh requests.
 
 New conversation ends the current conversation and creates another for the same packet.
-Open in Homie selects the same conversation on the Homie page.
+Open in Collie selects the same conversation on the Collie page.
 After a packet revision, an empty chat can link to the immediately preceding packet's conversation with messages.
 An archived Project permits history display but disables new messages.
-The Homie page hides empty packet conversations and disables their model control.
+The Collie page hides empty packet conversations and disables their model control.
 The Review quick chat provides the model control for packet conversations.
-Its header shows the model and harness beside Homie, with the task title on a second row.
+Its header shows the model and harness beside Collie, with the task title on a second row.
 
-The control lists enabled agent profiles and sets the Homie route for new conversations.
+The control lists enabled agent profiles and sets the Collie route for new conversations.
 A different selection starts a new packet conversation when a current conversation exists.
-A conversation with messages requires confirmation; its history remains in the Homie session list.
+A conversation with messages requires confirmation; its history remains in the Collie session list.
 With no current conversation, selection changes the route without creating a conversation.
 The control is unavailable during preparation, send, an owed reply, or replacement, and for archived Projects.
 A failed route update preserves the current model.
 If the route changes but conversation creation fails, the error explains that new conversations use the selected model and offers Retry.
 
-The API forwards packet and version identifiers to the Homie start command.
+The API forwards packet and version identifiers to the Collie start command.
 It stores no conversation state itself.
 `packetchat.test.ts`, `api.test.ts`, and `packet-chat.smoke.test.ts` cover these boundaries.
 The queue unit test checks the 1264-pixel panel boundary that leaves a 640-pixel reader.
-The packet chat smoke checks Ask Homie placement, focus return, compact width, model selection, and retained history.
+The packet chat smoke checks Ask Collie placement, focus return, compact width, model selection, and retained history.
 The packet reader smoke checks that Ledger filters fit the 200-pixel queue.
 These statements describe test coverage; this wiki update does not report a fresh browser test execution.
 See [packet conversations](../workflows/packet-conversations.md) for context, artifact access, and decision authority.
 
-### Homie panel headers
+### Collie panel headers
 
-The Homie session and conversation headers use the shared blue panel color and white text.
+The Collie session and conversation headers use the shared blue panel color and white text.
 The New conversation button uses the inverse colors.
 The stylesheet supplies visible focus outlines and a separate background for a disabled model control.
-These rules appear under `#homie-pane` in `dashboard/src/ui/style.css`.
+These rules appear under `#collie-pane` in `dashboard/src/ui/style.css`.
 
 ### Refreshes and visible errors
 
@@ -543,7 +543,7 @@ A successful agent process alone does not prove that preparation completed.
 The journal distinguishes a complete report from source acceptance and preserves history after development starts.
 The shared Markdown viewer renders report details. Literal file views show exact Dockerfile and build contents.
 The journal permits approval only for the current eligible revision.
-Ask Homie for the current setup failure appears beside the setup controls below the transcript.
+Ask Collie for the current setup failure appears beside the setup controls below the transcript.
 Earlier failure messages remain in the transcript without duplicate action controls.
 `setup-journal.test.ts` checks these distinctions and rejects stale decisions.
 
@@ -687,7 +687,7 @@ These checks describe test coverage. This wiki update does not report test execu
 
 ## Diagnostic conversations
 
-**Ask Homie** opens an ordinary conversation and submits the selected issue for explanation and a proposed action.
+**Ask Collie** opens an ordinary conversation and submits the selected issue for explanation and a proposed action.
 These views provide the action:
 
 - System notices, issue dialogs, and health conditions that require attention.
@@ -705,7 +705,7 @@ An unavailable current system status identifies the evidence as the last known s
 
 `createDiagnosticChat` creates the ordinary session through `POST /api/sessions` with an empty object.
 It then sends the message through the session's send endpoint.
-`dashboard/src/api.ts` forwards these requests to the Homie commands; the spine owns the durable session and message records.
+`dashboard/src/api.ts` forwards these requests to the Collie commands; the spine owns the durable session and message records.
 Concurrent requests with the same message share one pending operation in browser memory.
 After an uncertain send response, a retry reads fresh history before it sends again.
 A matching inbound message proves that the earlier send succeeded.
@@ -721,10 +721,10 @@ The CSS permits the action and error text to wrap at narrow widths.
 The module appears in the server's `UI_MODULES`, the `app.js` imports, and `mc/deployment/host_release.go`.
 These entries make the browser import available in a deployed release.
 `diagnosticchat.test.ts` covers evidence limits, relevant identifiers, concurrent clicks, and uncertain-response retries.
-`diagnostic-homie.smoke.test.ts` covers task, connection, environment, setup, and run entry points through the browser and scratch spine.
+`diagnostic-collie.smoke.test.ts` covers task, connection, environment, setup, and run entry points through the browser and scratch spine.
 It also checks draft preservation, one message after a lost response, and an unchanged task block.
 These tests establish their stated assertions; this wiki update does not execute them.
-See [Homie diagnostic authority](../concepts/homie.md#diagnostic-context-and-authority) for permitted reads and explicit confirmation.
+See [Collie diagnostic authority](../concepts/collie.md#diagnostic-context-and-authority) for permitted reads and explicit confirmation.
 
 ## Resolve decision
 
@@ -740,7 +740,7 @@ The description holds every requirement; the reason explains the change.
 
 `resolveAction` in `dashboard/src/ui/boardwrites.js` selects this form.
 `boardWritePayload` sends its save as the existing `revise` action through the Board API.
-`mc/verbs/board.go` applies the same requirements operation for the dashboard and Homie.
+`mc/verbs/board.go` applies the same requirements operation for the dashboard and Collie.
 An active run or repository operation delays application, so Decision Pending remains until the revision applies.
 The Worker then continues from retained task work.
 

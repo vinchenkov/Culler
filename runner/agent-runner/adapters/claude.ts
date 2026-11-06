@@ -139,7 +139,7 @@ export function claudeOptions(
 }
 
 /** Normalize the SDK's final successful result. Intermediate assistant/tool
- * messages remain native events and are never submitted as the Homie reply. */
+ * messages remain native events and are never submitted as the Collie reply. */
 export function claudeReplyFromMessage(message: unknown): string | undefined {
   if (message === null || typeof message !== "object") return undefined;
   const result = message as { type?: unknown; is_error?: unknown; result?: unknown };

@@ -54,7 +54,7 @@ const agentRouting = `# Culler routing
 | worker | fake | fake |
 | verifier | fake | fake |
 | packager | fake | fake |
-| homie | fake | fake |
+| collie | fake | fake |
 `
 
 // agentEndpointScript serves the scripted turns, runs the shipped runner, and
@@ -560,14 +560,14 @@ echo "submit=$?"`,
 	}
 }
 
-// The Homie container has no synthetic home. The image home of uid 10002 must
+// The Collie container has no synthetic home. The image home of uid 10002 must
 // accept the skill install.
-func TestHomieHomeIsWritableForTheModelUserDockerBoundary(t *testing.T) {
+func TestCollieHomeIsWritableForTheModelUserDockerBoundary(t *testing.T) {
 	requireProdImage(t)
 	out, err := dockerRun(t, "--user", "10002:10002", "--cap-drop", "ALL", "-e", "HOME=/home/mc-model", prodImage,
 		"sh", "-c", `mkdir -p "$HOME/.agents/skills/probe" && echo home-ok; ls /mc/spine > /dev/null; echo "spine_list=$?"`)
 	if err != nil {
-		t.Fatalf("probe the Homie home: %v\n%s", err, out)
+		t.Fatalf("probe the Collie home: %v\n%s", err, out)
 	}
 	requireOutput(t, "home", out, "home-ok", "spine_list=2")
 }

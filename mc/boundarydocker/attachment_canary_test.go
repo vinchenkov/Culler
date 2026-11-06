@@ -110,7 +110,7 @@ func TestAttachmentCanaryWarmComposedBoundaryDockerBoundary(t *testing.T) {
 	}
 }
 
-func TestAttachmentCanaryPublisherHasNoProductionHomieRouteDockerBoundary(t *testing.T) {
+func TestAttachmentCanaryPublisherHasNoProductionCollieRouteDockerBoundary(t *testing.T) {
 	requireProdImage(t)
 	t.Run("the canary-only frame is absent", func(t *testing.T) {
 		out, err := dockerRun(t, "--user", "10002:10002", prodImage,
@@ -119,18 +119,18 @@ func TestAttachmentCanaryPublisherHasNoProductionHomieRouteDockerBoundary(t *tes
 			t.Fatalf("frame-less publisher = err %v output %q", err, out)
 		}
 	})
-	t.Run("a Homie run envelope loses host scope before any frame", func(t *testing.T) {
+	t.Run("a Collie run envelope loses host scope before any frame", func(t *testing.T) {
 		root := sharedTempDir(t)
 		runJSON := filepath.Join(root, "run.json")
 		if err := os.WriteFile(runJSON,
-			[]byte(`{"run_id":"h-probe","tier":"homie","role":"homie"}`), 0o444); err != nil {
+			[]byte(`{"run_id":"h-probe","tier":"collie","role":"collie"}`), 0o444); err != nil {
 			t.Fatal(err)
 		}
 		out, err := dockerRun(t, "--user", "10002:10002",
 			"-v", runJSON+":/mc/run.json:ro",
 			prodImage, "mc", "__attachment-canary-publish")
 		if err == nil || !strings.Contains(out, "host scope only") {
-			t.Fatalf("Homie publisher route = err %v output %q", err, out)
+			t.Fatalf("Collie publisher route = err %v output %q", err, out)
 		}
 	})
 }

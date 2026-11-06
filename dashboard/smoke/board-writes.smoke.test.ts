@@ -11,7 +11,7 @@ let taskID = 0;
 
 beforeAll(async () => {
   smoke = await bootSmoke();
-  mkdirSync(evidencePath("homie-board-evidence"), { recursive: true });
+  mkdirSync(evidencePath("collie-board-evidence"), { recursive: true });
   for (const id of ["board-alpha", "board-beta"]) {
     await seedProject(smoke, id, { title: id === "board-alpha" ? "Alpha Site" : "Beta Site", environmentReady: true });
   }
@@ -82,14 +82,14 @@ test("the board creates tasks with the selected Project", async () => {
   const { page } = smoke;
   await page.getByTestId("board-create").click();
   expect(await page.getByTestId("board-create-explanation").innerText())
-    .toBe("Create a new task here, or ask Homie to do it for you.");
+    .toBe("Create a new task here, or ask Collie to do it for you.");
   expect(await page.getByTestId("board-write-destination").innerText()).toBe("Project: Alpha Site");
   expect(await page.getByTestId("board-write-priority").inputValue()).toBe("2");
   await page.getByTestId("board-write-title").fill("Browser task");
   await page.getByTestId("board-write-priority").selectOption("-1");
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/create-desktop.png"), fullPage: false });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/create-desktop.png"), fullPage: false });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/create-narrow.png"), fullPage: false });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/create-narrow.png"), fullPage: false });
   expect(await page.getByTestId("board-write-dialog").evaluate((node) => node.scrollWidth <= window.innerWidth)).toBe(true);
   await page.setViewportSize({ width: 1280, height: 900 });
   taskID = Number((await submit()).task_id);
@@ -105,7 +105,7 @@ test("the board creates tasks with the selected Project", async () => {
   await selectProject(smoke, "board-alpha");
 }, 60000);
 
-test("the Homie creation link navigates without a message or new board record", async () => {
+test("the Collie creation link navigates without a message or new board record", async () => {
   const { page } = smoke;
   const before = (await mc(["task", "list"])).tasks as any[];
   let messages = 0;
@@ -113,8 +113,8 @@ test("the Homie creation link navigates without a message or new board record", 
   page.on("request", observe);
   try {
     await page.getByTestId("board-create").click();
-    await page.getByTestId("board-create-homie").click();
-    await page.getByTestId("homie-pane").waitFor({ state: "visible" });
+    await page.getByTestId("board-create-collie").click();
+    await page.getByTestId("collie-pane").waitFor({ state: "visible" });
     expect(await page.getByTestId("board-write-dialog").isVisible()).toBe(false);
     expect(messages).toBe(0);
     expect(((await mc(["task", "list"])).tasks as any[]).length).toBe(before.length);
@@ -275,10 +275,10 @@ test("Resolve decision ends an operator decision report through a requirements r
   await page.getByTestId("board-write-requirements").fill(revised);
   expect(await save.isEnabled()).toBe(true);
   expect(await page.getByTestId("board-write-rule").isHidden()).toBe(true);
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/resolve-report-desktop.png"), fullPage: false, animations: "disabled" });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/resolve-report-desktop.png"), fullPage: false, animations: "disabled" });
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await dialog.evaluate((node) => node.scrollWidth <= window.innerWidth)).toBe(true);
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/resolve-report-narrow.png"), fullPage: false, animations: "disabled" });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/resolve-report-narrow.png"), fullPage: false, animations: "disabled" });
   await page.setViewportSize({ width: 1280, height: 900 });
 
   const request = page.waitForRequest((request) => request.url().endsWith("/api/board/write"));
@@ -386,7 +386,7 @@ test("a requirements revision preserves its superseded report as readable histor
   const packets = (await mc(["packet", "list"])).packets as any[];
   expect(packets.some((packet) => packet.task_id === reportTask && !packet.superseded && !packet.archived)).toBe(false);
   expect(packets.some((packet) => packet.task_id === reportTask && packet.review_state === "replaced")).toBe(true);
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/historical-report.png"), fullPage: false });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/historical-report.png"), fullPage: false });
 }, 30000);
 
 test("the task dialog links the review packet", async () => {
@@ -416,7 +416,7 @@ test("the task dialog links the review packet", async () => {
     expect(main).not.toContain(text);
   }
   expect(await page.locator("#task-dialog-body").innerText()).not.toMatch(/\b[0-9a-f]{40}\b/);
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/task-dialog-packet.png"), fullPage: false });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/task-dialog-packet.png"), fullPage: false });
 
 }, 30000);
 
@@ -451,7 +451,7 @@ test("an active run keeps its requirements while a task revision waits", async (
   await openTask(activeTask);
   expect(await page.getByTestId("board-revision-status").innerText()).toContain(REVISION_WAIT);
   expect(await page.getByTestId("board-revise").isDisabled()).toBe(true);
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/revision-wait-desktop.png"), fullPage: false });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/revision-wait-desktop.png"), fullPage: false });
   await closeTask();
   expect(smoke.browserLog.filter((line) => line.startsWith("pageerror:"))).toEqual([]);
 }, 60000);
@@ -485,7 +485,7 @@ test("the Verifier allowance dialog authorizes the requested correction without 
   for (const width of [1280, 390]) {
     await page.setViewportSize({ width, height: 900 });
     expect(await task.evaluate(node => node.scrollWidth <= window.innerWidth)).toBe(true);
-    await page.screenshot({ animations: "disabled", path: evidencePath(`homie-board-evidence/verifier-limit-${width}.png`), animations: "disabled" });
+    await page.screenshot({ animations: "disabled", path: evidencePath(`collie-board-evidence/verifier-limit-${width}.png`), animations: "disabled" });
   }
   await task.getByText("Technical details and evidence", { exact: true }).click();
   expect(await task.evaluate(node => node.scrollWidth <= window.innerWidth)).toBe(true);
@@ -498,7 +498,7 @@ test("the Verifier allowance dialog authorizes the requested correction without 
   const limitDialog = page.getByRole("dialog", { name: "Issue details", exact: true });
   expect(await limitDialog.innerText()).toContain(cause);
   expect(await limitDialog.innerText()).not.toContain("prevents new work");
-  await page.screenshot({ animations: "disabled", path: evidencePath("homie-board-evidence/verifier-notification.png"), animations: "disabled" });
+  await page.screenshot({ animations: "disabled", path: evidencePath("collie-board-evidence/verifier-notification.png"), animations: "disabled" });
   await limitDialog.getByRole("button", { name: "Open task", exact: true }).click();
   await page.getByTestId("board-allow-corrections").click();
   await page.getByTestId("board-write-reason").fill("Continue with the required date.");

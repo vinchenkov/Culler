@@ -6,12 +6,12 @@ import (
 	"testing"
 )
 
-// A Homie session reads run records to find the trace of a run. The read
+// A Collie session reads run records to find the trace of a run. The read
 // needs no entry in the verb allowlist, so a read-only session has it too.
-func TestHomieWithAnEmptyAllowlistSelectsRuns(t *testing.T) {
+func TestCollieWithAnEmptyAllowlistSelectsRuns(t *testing.T) {
 	spine := initSpine(t)
 	db := openDB(t, spine)
-	env := homieJSONEnv(t, spine, "h-read-only", []string{})
+	env := collieJSONEnv(t, spine, "h-read-only", []string{})
 	list := func(args ...string) []string {
 		t.Helper()
 		res := runMC(t, env, "", append([]string{"run", "list"}, args...)...)

@@ -61,7 +61,7 @@
     <ol class="assessment-actions">
       <li><strong>Add an authenticated credential proxy and enforce its network path.</strong> Start with static provider keys. Keep the proxy outside agent containers.</li>
       <li><strong>Keep the harness sandboxes disabled under the current architecture.</strong> Their privilege restrictions conflict with the protected <code>mc</code> executable.</li>
-      <li><strong>Keep Homie’s Project context and exclude credential files.</strong> Use a host-controlled file view across the same Projects and useful traces.</li>
+      <li><strong>Keep Collie’s Project context and exclude credential files.</strong> Use a host-controlled file view across the same Projects and useful traces.</li>
     </ol>
     <p class="evidence text-small">Evidence: <code>resident/src/refresh-broker.ts:32</code>; <code>resident/src/effects.ts:320, 548</code>; <code>runner/agent-runner/adapters/codex.ts:58</code>; <code>adapters/claude.ts:103</code>.</p>
 
@@ -86,7 +86,7 @@
           <tr><td>A read-only mount hides its secrets.</td><td>No. It prevents writes. Ordinary file permissions still control reads.</td></tr>
           <tr><td>Provider keys remain outside agent commands.</td><td>No. Static keys and usable access tokens enter the container.</td></tr>
           <tr><td>Containers cannot reach host services or the local network.</td><td>No enforced restriction appears in the reviewed launch paths.</td></tr>
-          <tr><td>Projects form separate confidentiality boundaries.</td><td>Pipeline workspaces have separation. Ordinary Homie sessions deliberately span Projects and traces.</td></tr>
+          <tr><td>Projects form separate confidentiality boundaries.</td><td>Pipeline workspaces have separation. Ordinary Collie sessions deliberately span Projects and traces.</td></tr>
           <tr><td>Approval of a code change prevents earlier data theft.</td><td>No. A malicious command can send data before the review step.</td></tr>
         </tbody>
       </table>
@@ -229,13 +229,13 @@
       <p class="evidence text-small"><code>resident/src/refresh-broker.ts:32–82</code>; <code>credential-projector.ts:599–617</code>; <code>refresh-broker.test.ts:69–73</code>. The synthetic-token test passed.</p>
     </div></details>
     <details class="priority-critical" open>
-      <summary class="cursor-interaction">Define Homie’s file policy and preserve its Project context</summary><div class="detail-body">
+      <summary class="cursor-interaction">Define Collie’s file policy and preserve its Project context</summary><div class="detail-body">
       <p class="finding-label text-small">High priority · Confirmed mount design · Exposure depends on local files</p>
-      <p>An ordinary Homie session receives all available Project roots and all session traces. The Vision-specific session narrows its Project roots.</p>
+      <p>An ordinary Collie session receives all available Project roots and all session traces. The Vision-specific session narrows its Project roots.</p>
       <p>A full Project mount can expose readable, untracked files such as <code>.env</code>. A read-only mount still permits their contents to leave the container.</p>
       <p>The blocked-path policy checks source addresses. It explicitly does not scan directory contents.</p>
       <p><strong>Proposal:</strong> keep all available Projects and useful traces. Replace direct folder mounts with a host-controlled view that excludes declared credential files.</p>
-      <p>Preserve tracked local edits and explicitly included untracked source. Homie still reads source across Projects; the file policy cannot detect every secret.</p>
+      <p>Preserve tracked local edits and explicitly included untracked source. Collie still reads source across Projects; the file policy cannot detect every secret.</p>
       <p class="evidence text-small"><code>resident/src/effects.ts:320–323, 548–559</code>; <code>mc/boundary/blocked.go:95–97</code>. This is a source-based exposure assessment, not a claim that I found a secret.</p>
     </div></details>
     <details class="priority-critical" open>
@@ -350,7 +350,7 @@
       <table class="table">
         <thead><tr><th>Check</th><th>Result</th><th>Meaning</th></tr></thead>
         <tbody>
-          <tr><td>Resident credential projector, refresh broker, and Homie envelope tests</td><td>61 passed; 0 failed.</td><td>Confirmed projection behavior and container-envelope validation. Confirmed arbitrary refresh-token input receives a synthetic access token.</td></tr>
+          <tr><td>Resident credential projector, refresh broker, and Collie envelope tests</td><td>61 passed; 0 failed.</td><td>Confirmed projection behavior and container-envelope validation. Confirmed arbitrary refresh-token input receives a synthetic access token.</td></tr>
           <tr><td>Dashboard server, AgentsView proxy, wiki server, and Markdown tests</td><td>51 passed; 0 failed.</td><td>Confirmed selected browser authorization and content rules.</td></tr>
           <tr><td>Selected Go boundary and Project archive tests</td><td>Both selected package groups passed.</td><td>Covered environment restrictions, blocked paths, mount allowlists, and rejection of privileged archive entries.</td></tr>
         </tbody>
