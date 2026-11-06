@@ -61,7 +61,7 @@ func (p *publishedSetup) stopForUpdate(ctx context.Context, report func(string))
 	if p.installed.Image == "" {
 		return errors.New("The update requires the previous image to record interrupted work.")
 	}
-	report("Record interrupted work and preserve its history")
+	report("Record interrupted work")
 	body, err := p.docker(ctx, "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002",
 		"--label", "mc-managed=true", "--label", "mc-deployment="+names.Suffix,
 		"--mount", "type=volume,src="+names.Volume+",dst=/mc/spine", p.installed.Image, "mc", "__update-reconcile")

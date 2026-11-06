@@ -37,8 +37,9 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 		result.run = func() { stage(1); check(w.welcome()) }
 	case "prepare":
 		reports := []string{"Compile Culler for Linux", "Install the agent tools"}
-		for _, report := range reports {
-			result.steps = append(result.steps, setupPreviewStep{Wait: report, Name: report})
+		for i, report := range reports {
+			wait := []string{"Compiling Culler for Linux", "Installing the agent tools"}[i]
+			result.steps = append(result.steps, setupPreviewStep{Wait: wait, Name: report})
 		}
 		w.deps.image = func(_ context.Context, _, _ string, report func(string)) error {
 			for _, message := range reports {

@@ -528,21 +528,10 @@ func (w *setupWizard) commandAvailability() error {
 	if os.Getenv("MC_BIN_DIR") == "" {
 		return nil
 	}
-	parentPath, ok := os.LookupEnv("CULLER_PARENT_PATH")
-	if !ok {
-		parentPath = os.Getenv("PATH")
-	}
-	lines, err := deployment.CLIAvailability(w.home, parentPath)
+	lines, err := deployment.CLIAvailability(w.home)
 	if err != nil {
 		return &setupFailure{cause: setupSafeDiagnostic(err.Error()), command: cullerInstallCommand(w.home)}
 	}
-	w.ui.Panel("Culler command", nil)
-	for _, line := range lines {
-		if terminal, ok := w.ui.(interface{ Literal(string) }); ok && (strings.HasPrefix(line, "export PATH=") || strings.HasPrefix(line, "culler ")) {
-			terminal.Literal(line)
-		} else {
-			w.ui.Panel("", []string{line})
-		}
-	}
+	w.ui.Panel("", lines)
 	return nil
 }

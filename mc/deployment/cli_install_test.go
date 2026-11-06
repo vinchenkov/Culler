@@ -44,11 +44,11 @@ func TestCLIPathPreservesShellTextAndRemovesOnlyOwnedFiles(t *testing.T) {
 			t.Fatalf("duplicate edits: %+v", r.Shells)
 		}
 	}
-	lines, err := CLIAvailability(home, "/usr/bin:/bin")
+	lines, err := CLIAvailability(home)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(strings.Join(lines, "\n"), CLIPathCommand(directory)) || !strings.Contains(lines[len(lines)-1], home) {
+	if len(lines) != 1 || lines[0] != "The culler command is installed for lifecycle operations. Continue to the dashboard for the Culler experience." {
 		t.Fatal(lines)
 	}
 	if err := os.WriteFile(filepath.Join(directory, "culler"), []byte("replacement executable"), 0755); err != nil {
@@ -73,7 +73,7 @@ func TestCLIPathFailureCannotClaimAvailability(t *testing.T) {
 	if err == nil {
 		t.Fatal("failed shell passed")
 	}
-	if _, err := CLIAvailability(home, "/bin"); err == nil {
+	if _, err := CLIAvailability(home); err == nil {
 		t.Fatal("unverified command is ready")
 	}
 }
@@ -148,7 +148,7 @@ func TestCLIPathDirectoryChangeRetainsRemovalOwnership(t *testing.T) {
 	if _, err := installCLIPath(home, userHome, next, "release", "/bin", verify); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := CLIAvailability(home, "/bin"); err != nil {
+	if _, err := CLIAvailability(home); err != nil {
 		t.Fatal(err)
 	}
 	if err := RemoveCLIInstallation(home); err != nil {

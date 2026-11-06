@@ -285,7 +285,7 @@ func verifyCLIShell(shell, mode, path, userHome, zdot, parentPath string) error 
 	return nil
 }
 
-func CLIAvailability(home, parentPath string) ([]string, error) {
+func CLIAvailability(home string) ([]string, error) {
 	r, err := ReadCLIInstallation(home)
 	if err != nil {
 		return nil, err
@@ -294,21 +294,7 @@ func CLIAvailability(home, parentPath string) ([]string, error) {
 	if err != nil || digest != r.SHA256 || !r.Verified {
 		return nil, errors.New("The Culler command requires an availability check.")
 	}
-	lines := []string{"The culler command is ready in a new terminal."}
-	found := false
-	for _, dir := range filepath.SplitList(parentPath) {
-		path := filepath.Join(dir, "culler")
-		if info, err := os.Stat(path); err == nil && info.Mode().IsRegular() && info.Mode().Perm()&0111 != 0 {
-			found = path == r.Path
-			break
-		}
-	}
-	if found {
-		lines = append(lines, "This terminal can also use culler.")
-	} else {
-		lines = append(lines, "Enable culler in this terminal:", CLIPathCommand(filepath.Dir(r.Path)))
-	}
-	return append(lines, "First command:", CLICommand(home, "status")), nil
+	return []string{"The culler command is installed for lifecycle operations. Continue to the dashboard for the Culler experience."}, nil
 }
 
 func RemoveCLIInstallation(home string) error {

@@ -161,7 +161,7 @@ func TestEachBlockHasOneBlankLineAbove(t *testing.T) {
 		terminal.columns, terminal.ansi, terminal.identity = 40, ansi, true
 		result := func(label string, err error) []string {
 			if !ansi {
-				return []string{"Active: " + label, strings.TrimSpace(string(terminal.resultLines(label, err)[0].text))}
+				return []string{"Active: " + activeProgressText(label) + "...", strings.TrimSpace(string(terminal.resultLines(label, err)[0].text))}
 			}
 			return []string{terminal.resultLines(label, err)[0].text}
 		}

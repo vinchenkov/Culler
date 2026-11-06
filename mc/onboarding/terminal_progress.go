@@ -53,9 +53,9 @@ func (t *Terminal) activityProgress(label string, action func(func(string)) erro
 	}
 	state.label = label
 	if t.ansi {
-		state.frame.paint(t.lines("› "+label+" .", textCurrent, 0), false, 0)
+		state.frame.paint(t.lines("› "+activeProgressText(label)+" .", textCurrent, 0), false, 0)
 	} else {
-		t.progressLines("Active: " + label)
+		t.progressLines("Active: " + activeProgressText(label) + "...")
 	}
 	stop := make(chan struct{})
 	done := make(chan struct{})
@@ -141,10 +141,10 @@ func (state *activityProgress) render(now time.Time, finish bool) {
 			message = state.label
 		}
 		state.phase = (state.phase + 1) % 3
-		lines := state.terminal.lines("› "+message+" "+strings.Repeat(".", state.phase+1), textCurrent, 0)
+		lines := state.terminal.lines("› "+activeProgressText(message)+" "+strings.Repeat(".", state.phase+1), textCurrent, 0)
 		state.frame.paint(lines, false, 0)
 	} else {
-		state.terminal.progressLines("Update: " + state.current)
+		state.terminal.progressLines("Update: " + activeProgressText(state.current))
 	}
 	state.display = state.current
 	state.printed = now
@@ -235,4 +235,32 @@ func progressText(text string) string {
 		count++
 	}
 	return strings.Join(strings.Fields(result.String()), " ")
+}
+
+// Keep operation names for results and use progress text only during execution.
+func activeProgressText(label string) string {
+	if label == "Docker Desktop" {
+		return "Checking Docker Desktop"
+	}
+	if strings.HasSuffix(label, " (complete)") || strings.HasSuffix(label, " (cached)") {
+		return label
+	}
+	verb, rest, found := strings.Cut(label, " ")
+	if !found {
+		return label
+	}
+	active := map[string]string{
+		"Assign": "Assigning", "Build": "Building", "Check": "Checking",
+		"Compile": "Compiling", "Configure": "Configuring", "Connect": "Connecting",
+		"Copy": "Copying", "Download": "Downloading", "Force": "Stopping",
+		"Inspect": "Inspecting", "Install": "Installing", "Open": "Opening",
+		"Prepare": "Preparing", "Protect": "Protecting", "Read": "Reading",
+		"Record": "Recording", "Restore": "Restoring", "Retain": "Retaining",
+		"Save": "Saving", "Set": "Setting", "Start": "Starting",
+		"Stop": "Stopping", "Test": "Testing", "Unpack": "Unpacking", "Use": "Using", "Verify": "Verifying", "Wait": "Waiting",
+	}[verb]
+	if active == "" {
+		return label
+	}
+	return active + " " + rest
 }
