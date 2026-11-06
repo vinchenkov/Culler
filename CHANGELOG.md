@@ -4,6 +4,26 @@ This file holds one section for each Culler version, from the newest version to 
 The release workflow copies the section of a new version into the description of its GitHub release.
 The [installation guide](INSTALL.md#versions) gives the version rules.
 
+## 0.2.0
+
+### Changes
+
+- The macOS installer accepts terminal input when the install command uses a pipe.
+- Setup shows automatic progress and a clear dashboard handoff.
+- Collie replaces the Homie name.
+
+### Known limits
+
+- Culler supports one operator on one Mac with Apple silicon.
+
+### Database compatibility
+
+- The Collie rename changes the database schema. The current update code cannot convert a 0.1.0 database.
+
+### Update effects
+
+- The current compatibility checks block updates and publication until a tested migration from 0.1.0 exists.
+
 ## 0.1.0
 
 ### Changes
