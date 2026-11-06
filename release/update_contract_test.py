@@ -58,16 +58,16 @@ class UpdateContractTest(unittest.TestCase):
     def test_schema_allowlist_alone_does_not_enable_conversion(self):
         previous = fixture()
         candidate = copy.deepcopy(previous)
-        candidate["version"] = "0.2.1"
+        candidate["version"] = "0.2.2"
         candidate["schema"] = "c" * 64
         candidate["update"]["formats"]["spine"] = candidate["schema"]
         candidate["update"]["accepted"]["spine"].append(candidate["schema"])
         with self.assertRaisesRegex(ValueError, "converter"):
             require_new_public_version(candidate, previous)
 
-    def test_schema_exception_covers_only_0_1_0_to_0_2_0(self):
+    def test_schema_exception_covers_only_the_declared_test_releases(self):
         for source, target in (("0.1.0", "0.2.0"), ("0.1.0", "0.1.1"),
-                               ("0.1.0", "0.2.1"), ("0.1.1", "0.2.0"), ("0.2.0", "0.3.0")):
+                               ("0.1.0", "0.2.1"), ("0.1.0", "0.2.2"), ("0.1.1", "0.2.0"), ("0.2.0", "0.3.0")):
             with self.subTest(source=source, target=target):
                 previous = fixture()
                 previous["version"] = source
@@ -77,19 +77,20 @@ class UpdateContractTest(unittest.TestCase):
                 candidate["update"]["formats"]["spine"] = candidate["schema"]
                 candidate["update"]["accepted"]["spine"] = [candidate["schema"]]
                 validate_update_contract(candidate)
-                if (source, target) == ("0.1.0", "0.2.0"):
+                if source == "0.1.0" and target in {"0.2.0", "0.2.1"}:
                     require_new_public_version(candidate, previous)
                 else:
                     with self.assertRaisesRegex(ValueError, "spine"):
                         require_new_public_version(candidate, previous)
 
     def test_schema_exception_preserves_configuration_and_credential_checks(self):
-        for name in ("configuration", "credentials"):
-            with self.subTest(name=name):
-                previous = fixture()
-                candidate = copy.deepcopy(previous)
-                candidate["version"] = "0.2.0"
-                candidate["update"]["formats"][name] = "2"
-                candidate["update"]["accepted"][name].append("2")
-                with self.assertRaisesRegex(ValueError, "converter.*" + name):
-                    require_new_public_version(candidate, previous)
+        for version in ("0.2.0", "0.2.1"):
+            for name in ("configuration", "credentials"):
+                with self.subTest(version=version, name=name):
+                    previous = fixture()
+                    candidate = copy.deepcopy(previous)
+                    candidate["version"] = version
+                    candidate["update"]["formats"][name] = "2"
+                    candidate["update"]["accepted"][name].append("2")
+                    with self.assertRaisesRegex(ValueError, "converter.*" + name):
+                        require_new_public_version(candidate, previous)

@@ -4,6 +4,26 @@ This file holds one section for each Culler version, from the newest version to 
 The release workflow copies the section of a new version into the description of its GitHub release.
 The [installation guide](INSTALL.md#versions) gives the version rules.
 
+## 0.2.1
+
+### Changes
+
+- The dashboard browser test waits for profile recovery before it checks Save.
+- The test closes the profile dialog after a failure to protect subsequent tests.
+
+### Known limits
+
+- Culler supports one operator on one Mac with Apple silicon.
+
+### Database compatibility
+
+- The database schema is the same as version 0.2.0.
+- The current update code cannot convert a 0.1.0 database.
+
+### Update effects
+
+- This test release permits new installations. The updater rejects the incompatible database from 0.1.0.
+
 ## 0.2.0
 
 ### Changes

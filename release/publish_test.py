@@ -181,6 +181,27 @@ class PublishTest(unittest.TestCase):
             self.assertEqual(record["update"]["accepted"]["spine"], [record["schema"]])
             self.assertNotEqual(record["schema"], previous["schema"])
 
+    def test_0_2_1_publishes_a_new_schema_after_0_1_0(self):
+        with tempfile.TemporaryDirectory() as directory:
+            latest = latest_release()
+            previous = json.loads(latest["assets"][0]["body"])
+            previous["schema"] = "d" * 64
+            previous["update"]["formats"]["spine"] = previous["schema"]
+            previous["update"]["accepted"]["spine"] = [previous["schema"]]
+            latest["assets"][0]["body"] = json.dumps(previous).encode()
+            api = FakeGitHub(latest=latest)
+            output = self.fixture(Path(directory))
+            (output / "version").write_text("0.2.1\n")
+            package_path = output / "package.json"
+            package = json.loads(package_path.read_text())
+            package["version"] = "0.2.1"
+            package_path.write_text(json.dumps(package))
+            self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW))
+            self.assertEqual(len(api.published), 1)
+            record = json.loads((output / "assets/release.json").read_text())
+            self.assertEqual(record["update"]["accepted"]["spine"], [record["schema"]])
+            self.assertNotEqual(record["schema"], previous["schema"])
+
     def test_an_unsupported_previous_release_during_upload_blocks_publication(self):
         class ConcurrentGitHub(FakeGitHub):
             reads = 0

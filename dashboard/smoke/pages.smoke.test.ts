@@ -929,7 +929,10 @@ test("profile creation from a role returns to the role selector after the save",
     await page.getByTestId("configs-profiles").click();
     await page.getByTestId("profile-save").waitFor();
     expect(await page.getByTestId("profile-model").inputValue()).toBe("new-model");
-    expect(await page.getByTestId("profile-save").isDisabled()).toBe(false);
+    await page.waitForFunction(() => {
+      const save = document.querySelector<HTMLButtonElement>('[data-testid="profile-save"]');
+      return save !== null && !save.disabled;
+    });
     expect(await page.getByTestId("profile-save").evaluate((node) => node.classList.contains("profile-primary"))).toBe(true);
     expect(await page.getByTestId("profile-review").textContent()).toContain("The model test succeeded");
     await page.getByTestId("agent-profiles-panel").screenshot({ path: evidencePath("agent-profile-test-succeeded.png") });
@@ -951,6 +954,9 @@ test("profile creation from a role returns to the role selector after the save",
     expect(assignments).toBe(2);
     await page.getByTestId("profile-close").click();
   } finally {
+    if (await page.getByTestId("agent-profiles-panel").isVisible()) {
+      await page.getByTestId("profile-close").click();
+    }
     await page.unroute(profileRoute);
     await page.unroute(assignmentRoute);
     await page.unroute("**/api/system/status");
