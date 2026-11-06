@@ -379,3 +379,13 @@ test("host and allowance failures show repair instructions without a sign-in con
   }
   expect(actionControl({action:"Replace API key", connection_id:"saved-connection"})).toBe(true);
 });
+
+
+test("a profile retry offers a model test before and after its retry time", () => {
+  const condition = { group: "connections", connection_id: "team", profile_id: "review", state: "retry_wait", action: "" };
+  for (const retry_phase of ["delay", "pending", "active"]) {
+    expect(actionControl({ ...condition, retry_phase })).toBe(true);
+  }
+  expect(actionControl({ ...condition, profile_id: "" })).toBe(false);
+  expect(actionControl({ ...condition, state: "ready" })).toBe(false);
+});

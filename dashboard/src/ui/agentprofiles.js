@@ -318,6 +318,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
         } else if (draft) draft.test_id = id;
       }
       if (TERMINAL.has(result.status)) {
+        if (result.kind === "model_test") onConnectionChanged?.();
         busy = false;
         if (result.kind === "authorization") try { sessionStorage.removeItem(OPERATION_KEY); } catch {}
       }
@@ -339,7 +340,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     stalled = false;
     const body = { operation_id: operationID, kind, connection_id: connectionID };
     if (kind === "model_test") {
-      try { validateProfile(); } catch (err) { operation = null; try { sessionStorage.removeItem(OPERATION_KEY); } catch {} throw err; }
+      try { if (view !== "test") validateProfile(); } catch (err) { operation = null; try { sessionStorage.removeItem(OPERATION_KEY); } catch {} throw err; }
       body.profile = profilePayload(draft, catalog.revision, false);
       body.confirm_spend = true;
     }
@@ -388,7 +389,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       test && timed && note("This might take a moment"),
       operation.message && note(operation.message),
       operation.detail && note(`Details: ${operation.detail}`),
-      test && operation.status === "succeeded" && draft?.test_id && note("Select Save to keep the agent profile."),
+      test && view !== "test" && operation.status === "succeeded" && draft?.test_id && note("Select Save to keep the agent profile."),
       operation.user_code && note(`Authorization code: ${operation.user_code}`),
       (link || summary.active) && el("div", { class: "profile-progress-actions" }, link,
         summary.active && stalled && el("button", { type: "button", class: "btn", text: "Check status", testid: "profile-operation-status", onclick: () => pollOperation(operation.operation_id, generation) }),
@@ -764,7 +765,6 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       connection()?.access_status === "connected" && !draft.auth_failed
         ? note("The API key is saved. Continue to select the model.")
         : field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false }),
-      note("API key connections use provider API charges. Model tests require your explicit action."),
       actionsNode(back, primary(button("Continue", () => perform(connect), "profile-key-connect"))));
     return el("div", {}, nameNode,
       catalog.integrations.filter((integration) => ["codex-oauth", "claude-oauth"].includes(integration.kind)).map((integration) => el("article", { class: "profile-card" },
@@ -800,7 +800,6 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
           el("dt", { text: "Model" }), el("dd", { text: draft.model || "Enter a model identifier." }),
           el("dt", { text: "Effort" }), el("dd", { text: effortLabel(draft.effort) }),
         ),
-        note("Each model test can consume subscription allowance or incur provider charges. Select Test model to authorize one test."),
         operation?.kind === "model_test" && operationNode(),
         !draft.test_id && !testing && note("Save requires a successful model test."),
         operation?.kind !== "authorization" && errorNodes(),
@@ -873,9 +872,11 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       view === "create" && draft && headNode(),
       !(reviewShown() && operation?.kind !== "authorization") && errorNodes(),
       notice && el("p", { role: "status", testid: "profile-notice", text: notice }),
-      (operation?.kind !== "model_test" || (view === "create" && !reviewShown())) && operationNode(),
+      (view === "test" || operation?.kind !== "model_test" || (view === "create" && !reviewShown())) && operationNode(),
       repairNode(),
-      view === "repair" ? null : view === "disconnect" ? disconnectNode() : view === "create" ? createNode() : view === "assign" ? assignmentNode() : listNode(),
+      view === "test" ? el("section", {}, el("h3", { text: draft.name }),
+        actionsNode(button("Test model", () => perform(() => startOperation("model_test", draft.connection_id)), "profile-test", operationActive())))
+        : view === "repair" ? null : view === "disconnect" ? disconnectNode() : view === "create" ? createNode() : view === "assign" ? assignmentNode() : listNode(),
       view === "repair" ? button("All agent profiles", showList, "profile-list") : null,
     );
     const actions = body.querySelector(".profile-step-actions");
@@ -926,6 +927,14 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     async repair(connectionID, action = "Reconnect", profileID = "", code = "") {
       await this.open();
       const profile = catalog.profiles.find(profile => profile.id === profileID) ?? catalog.profiles.find(profile => profile.connection_id === connectionID);
+      if (action === "Test model") {
+        const exact = catalog.profiles.find(item => item.id === profileID && item.connection_id === connectionID);
+        if (!exact) { error = "The agent profile is unavailable. Refresh System health."; render(); return; }
+        newDraft(exact);
+        view = "test";
+        await perform(() => startOperation("model_test", connectionID));
+        return;
+      }
       if (action === "Review connection") {
         newDraft(profile);
         draft.connection_id = connectionID;

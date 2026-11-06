@@ -316,6 +316,9 @@ Recorded diagnostic details retain their failure timestamp after recovery.
 The notice identifies the connection and agent profile.
 A network failure shows the observed error and the earliest retry time.
 An elapsed retry time shows **Retry pending** until an applicable attempt starts.
+A profile connection in the retry state offers **Test model** throughout the retry delay and after the delay ends.
+The control tests the saved profile through the model configuration test operation and shows its progress and result.
+A successful test refreshes connection health. The test preserves Project pauses and other execution restrictions.
 An active attempt shows its role, Project, and task or conversation.
 The notice states that Culler awaits a complete model response.
 An absent or stale heartbeat retains its separate execution status.
@@ -2028,7 +2031,7 @@ Each new run receives the selected effort through its immutable launch envelope.
 A Homie conversation retains its original effort across restarts and profile changes.
 Current connection and model access checks still control each Homie launch and reply.
 
-Each model test requires an explicit action and explains possible provider charges.
+Each model test requires an explicit action.
 The review offers two actions: **Test model** and **Save**.
 **Save** requires a successful model test of the current values.
 Each role selector offers a saved profile.

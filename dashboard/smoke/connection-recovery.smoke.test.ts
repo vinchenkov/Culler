@@ -83,3 +83,45 @@ test("the notice and System health separate the previous failure, retry, and rec
   await page.screenshot({ path: evidencePath("connection-recovery-confirmed.png"), fullPage: true });
   await close.click();
 }, 60000);
+
+
+test("the notice tests its saved profile and refreshes health without a profile save", async () => {
+  const { page } = smoke;
+  current = { ...failure, retry_phase: "pending", next_retry_at: "2026-10-02T18:58:42Z" };
+  complete = true;
+  const profile = { id: "review", name: "Review", connection_id: "team", model: "fixture-model", effort: "high", enabled: true };
+  await page.route("**/api/agent-profiles", route => route.fulfill({ json: {
+    revision: "revision-1", profiles: [profile], connections: [{ id: "team", name: "Team", kind: "codex-oauth", access_status: "connected" }],
+  } }));
+  let active: any;
+  let finish = false;
+  let starts = 0;
+  let saves = 0;
+  await page.route("**/api/agent-profiles/save", route => { saves++; return route.fulfill({ json: {} }); });
+  await page.route("**/api/agent-profiles/operation-start", route => {
+    active = route.request().postDataJSON();
+    starts++;
+    expect(active.kind).toBe("model_test");
+    expect(active.profile).toMatchObject({ id: "review", connection_id: "team", model: "fixture-model", effort: "high" });
+    return route.fulfill({ json: { ...active, status: "pending", started_at: new Date().toISOString() } });
+  });
+  await page.route("**/api/agent-profiles/operation-status", route => {
+    if (finish && starts > 1) current = { ...current, state: "ready" };
+    return route.fulfill({ json: { ...active, status: finish ? starts > 1 ? "succeeded" : "failed" : "active", message: finish ? starts > 1 ? "The model test succeeded." : "The provider is unavailable." : "The model test is active." } });
+  });
+  await refresh();
+  await page.getByTestId("system-notices").getByRole("button", { name: "Test model", exact: true }).click();
+  const panel = page.getByTestId("agent-profiles-panel");
+  await panel.getByText("The model test is active.", { exact: true }).waitFor();
+  expect(await panel.getByTestId("profile-test").isDisabled()).toBe(true);
+  expect(await panel.innerText()).not.toContain("charges");
+  finish = true;
+  await panel.getByText("The provider is unavailable.", { exact: true }).waitFor();
+  await panel.getByTestId("profile-test").click();
+  await panel.getByText("The model test succeeded.", { exact: true }).waitFor();
+  expect(await panel.innerText()).not.toContain("Select Save");
+  await page.getByTestId("system-notices").getByText("Retry pending", { exact: false }).waitFor({ state: "hidden" });
+  expect(starts).toBe(2);
+  expect(saves).toBe(0);
+  await page.getByTestId("profile-close").click();
+});

@@ -32,7 +32,7 @@ export function releaseView(status) {
 
 export function systemActionButton(condition, action, className = "btn rust") {
   if (condition.action !== "Retry reply") {
-    return el("button", { class: className, type: "button", text: condition.action, onclick: () => action(condition) });
+    return el("button", { class: className, type: "button", text: connectionTestAvailable(condition) ? "Test model" : condition.action, onclick: () => action(connectionTestAvailable(condition) ? { ...condition, action: "Test model" } : condition) });
   }
   const key = `${condition.session_id}:${condition.message_id}`;
   function updateButtons() {
@@ -227,7 +227,13 @@ export function conditionSummary(condition) {
  * instruction for the operator, and the page shows it as text. */
 const CONTROL_ACTIONS = new Set(["Retry connection", "Reconnect", "Update credential", "Replace API key", "Review connection", "Resume Project infrastructure", "Resolve proposal decision", "Retry reply", "Open task"]);
 
+export function connectionTestAvailable(condition) {
+  return condition?.group === "connections" && Boolean(condition.connection_id && condition.profile_id) &&
+    condition.state === "retry_wait";
+}
+
 export function actionControl(condition) {
+  if (connectionTestAvailable(condition)) return true;
   return Boolean(condition?.action) && condition.action !== "View details" &&
     CONTROL_ACTIONS.has(condition.action);
 }
