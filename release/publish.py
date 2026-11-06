@@ -131,6 +131,9 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     host_bun = host_bun_record(package)
     assets = output / "assets"
     package_file = file_record(assets / "culler-darwin-arm64.tar.gz")
+    opencode_file = file_record(assets / "culler-opencode-linux-arm64.tar.gz")
+    if json.loads((output / "opencode.json").read_text()) != opencode_file:
+        raise ValueError("The OpenCode archive differs from its build record.")
     if any(package.get(key) != package_file[key] for key in package_file):
         raise ValueError("The application package differs from its build record.")
     branch = api.request("GET", "/compare/" + commit + "...main")
@@ -151,6 +154,7 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
         "published_at": now.isoformat().replace("+00:00", "Z"), "platform": "darwin-arm64",
         "schema": package["schema"], "runtimes": package["runtimes"], "agentsview": agentsview, "host_bun": host_bun,
         "installer": file_record(assets / "installer.sh"), "package": package_file, "image": image,
+        "opencode": opencode_file,
         "checks": [{"name": name, "passed": True} for name in CHECKS],
         "workflow_seconds": max(0, int((now - started).total_seconds())),
     }
@@ -168,7 +172,7 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
             "tag_name": tag, "target_commitish": commit, "name": "Culler " + commit[:12],
             "draft": True, "prerelease": False, "make_latest": "false",
         })
-    for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz", "release.json"):
+    for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz", "culler-opencode-linux-arm64.tar.gz", "release.json"):
         ensure_asset(api, release, assets / name)
     # The workflow serializes this final comparison and publication.
     if not newer_than_available(api, commit):

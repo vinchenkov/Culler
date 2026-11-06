@@ -56,7 +56,7 @@ export function runtimeBinding(
 ): RuntimeBinding {
   return {
     base_url: "",
-    channel: harness === "codex" ? "codex" : harness === "claude-sdk" ? "claude" : "",
+    channel: harness === "codex" ? "codex" : harness === "claude-sdk" ? "claude" : harness === "opencode" ? "opencode" : "",
     credential: harness === "fake" && id === "fake" ? "" : id,
     harness,
     id,
@@ -217,6 +217,20 @@ export function homieInspectFromCreate(
     return found[0]!;
   };
   const binds = values("-v");
+  const mounts = values("--mount").map((value) => {
+    const fields = value.split(",");
+    return {
+      Type: "volume",
+      Source: fields.find((field) => field.startsWith("src="))!.slice(4),
+      Target: fields.find((field) => field.startsWith("dst="))!.slice(4),
+      ReadOnly: fields.includes("readonly"),
+      VolumeOptions: { NoCopy: fields.includes("volume-nocopy") },
+    };
+  });
+  const tmpfs = Object.fromEntries(values("--tmpfs").map((value) => {
+    const separator = value.indexOf(":");
+    return [value.slice(0, separator), value.slice(separator + 1)];
+  }));
   const labels = Object.fromEntries(values("--label").map((entry) => {
     const split = entry.indexOf("=");
     if (split < 1) throw new Error("fake Homie label is malformed");
@@ -251,6 +265,8 @@ export function homieInspectFromCreate(
     HostConfig: {
       AutoRemove: create.includes("--rm"),
       Binds: binds,
+      Mounts: mounts,
+      Tmpfs: tmpfs,
       CapAdd: null,
       CapDrop: values("--cap-drop").length === 0 ? null : values("--cap-drop"),
       CgroupnsMode: "private",
@@ -272,7 +288,7 @@ export function homieInspectFromCreate(
     },
     Id: containerId,
     Image: `sha256:${"1".repeat(64)}`,
-    Mounts: binds.map((bind) => {
+    Mounts: [...binds.map((bind) => {
       const [source, destination, access] = bind.split(":");
       const volume = !source!.startsWith("/");
       return {
@@ -285,7 +301,16 @@ export function homieInspectFromCreate(
         Source: volume ? `/var/lib/docker/volumes/${source}/_data` : source,
         Type: volume ? "volume" : "bind",
       };
-    }),
+    }), ...mounts.map((mount) => ({
+      Destination: mount.Target,
+      Driver: "local",
+      Mode: "z",
+      Name: mount.Source,
+      Propagation: "",
+      RW: !mount.ReadOnly,
+      Source: `/var/lib/docker/volumes/${mount.Source}/_data`,
+      Type: "volume",
+    }))],
     Name: `/${one("--name")}`,
     Path: entrypoint ?? cmd[0],
     State: { Status: state },

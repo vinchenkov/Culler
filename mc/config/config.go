@@ -33,12 +33,13 @@ const (
 )
 
 const (
-	CredentialKindCodexOAuth   = "codex-oauth"
-	CredentialKindClaudeOAuth  = "claude-oauth"
-	CredentialKindCodexAPIKey  = "codex-api-key"
-	CredentialKindClaudeAPIKey = "claude-api-key"
-	CredentialKindStaticEnv    = "static-env"
-	CredentialKindNone         = "none"
+	CredentialKindCodexOAuth     = "codex-oauth"
+	CredentialKindClaudeOAuth    = "claude-oauth"
+	CredentialKindCodexAPIKey    = "codex-api-key"
+	CredentialKindClaudeAPIKey   = "claude-api-key"
+	CredentialKindStaticEnv      = "static-env"
+	CredentialKindNone           = "none"
+	CredentialKindOpenCodeAPIKey = "opencode-api-key"
 )
 
 //go:embed config.example.toml
@@ -70,6 +71,7 @@ type Runtimes struct {
 // CredentialSource selects one supported provider connection.
 // The host credential store holds its grant under the credential source identifier.
 type CredentialSource struct {
+	CatalogEntry string `toml:"catalog_entry,omitempty"`
 	InferenceURL string `toml:"inference_url,omitempty"`
 	Name         string `toml:"name,omitempty"`
 	BaseURL      string `toml:"base_url,omitempty"`
@@ -81,7 +83,7 @@ type CredentialSource struct {
 // Delivery selects the host proxy for a supported connection.
 func (s CredentialSource) Delivery() string {
 	switch s.Kind {
-	case CredentialKindCodexOAuth, CredentialKindClaudeOAuth, CredentialKindCodexAPIKey, CredentialKindClaudeAPIKey:
+	case CredentialKindCodexOAuth, CredentialKindClaudeOAuth, CredentialKindCodexAPIKey, CredentialKindClaudeAPIKey, CredentialKindOpenCodeAPIKey:
 		return "proxy"
 	}
 	return ""
@@ -90,6 +92,8 @@ func (s CredentialSource) Delivery() string {
 // Channel is the credential channel the resident and the adapters read.
 func (s CredentialSource) Channel() string {
 	switch s.Kind {
+	case CredentialKindOpenCodeAPIKey:
+		return "opencode"
 	case CredentialKindCodexOAuth, CredentialKindCodexAPIKey:
 		return "codex"
 	case CredentialKindClaudeOAuth, CredentialKindClaudeAPIKey:
@@ -101,6 +105,8 @@ func (s CredentialSource) Channel() string {
 // Harness is the one harness family a binding on this kind can use.
 func (s CredentialSource) Harness() string {
 	switch s.Kind {
+	case CredentialKindOpenCodeAPIKey:
+		return "opencode"
 	case CredentialKindCodexOAuth, CredentialKindCodexAPIKey:
 		return "codex"
 	case CredentialKindClaudeOAuth, CredentialKindClaudeAPIKey:
@@ -151,6 +157,7 @@ type canonicalRuntimeBinding struct {
 }
 
 type canonicalCredentialSource struct {
+	CatalogEntry string `json:"catalog_entry,omitempty"`
 	ID           string `json:"id"`
 	Kind         string `json:"kind"`
 	TokenURL     string `json:"token_url"`
@@ -197,7 +204,7 @@ func RuntimeCatalogDigest(runtimes Runtimes) (string, error) {
 	for _, id := range credentialIDs {
 		source := runtimes.Credentials[id]
 		credentials = append(credentials, canonicalCredentialSource{
-			ID: id, Kind: source.Kind, TokenURL: source.TokenURL, ClientID: source.ClientID, InferenceURL: source.InferenceURL,
+			ID: id, Kind: source.Kind, CatalogEntry: source.CatalogEntry, TokenURL: source.TokenURL, ClientID: source.ClientID, InferenceURL: source.InferenceURL,
 		})
 	}
 	body, err := json.Marshal(canonicalRuntimeCatalog{
@@ -1056,6 +1063,15 @@ func validateCredentialSource(id string, source CredentialSource) error {
 	if source.BaseURL != "" {
 		return fmt.Errorf("runtimes.credentials.%s carries a forbidden base_url", id)
 	}
+	if source.Kind == CredentialKindOpenCodeAPIKey {
+		if !safeRuntimeID(source.CatalogEntry) || source.InferenceURL != "" || source.TokenURL != "" || source.ClientID != "" {
+			return fmt.Errorf("The OpenCode connection requires one catalog entry and no address.")
+		}
+		return nil
+	}
+	if source.CatalogEntry != "" {
+		return fmt.Errorf("This connection cannot select a catalog entry.")
+	}
 	for _, reference := range referenceRuntimeCatalog.Credentials {
 		if source.Kind != reference.Kind {
 			continue
@@ -1170,6 +1186,8 @@ func loopbackHost(host string) bool {
 // EffortLevels lists the levels accepted by the pinned harnesses.
 func EffortLevels(harness string) []string {
 	switch harness {
+	case "opencode":
+		return []string{"none", "minimal", "low", "medium", "high", "xhigh", "max", "thinking"}
 	case "codex":
 		return []string{"none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"}
 	case "claude-sdk":

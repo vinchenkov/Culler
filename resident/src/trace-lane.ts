@@ -16,6 +16,7 @@ import { checkInside, copyTrace, openFolderInside, type CopyLimits, type CopySta
 import { AgentsViewAnswer, type AgentsViewClient, type AgentsViewPage, type AgentsViewSession } from "./agentsview";
 import { recoverSetupTrace, setupTraceCandidates, setupTraceFolder, SETUP_RECOVERY_PER_PASS } from "./setup-traces";
 import { SAFE_ID } from "./pipeline-liveness";
+import { openCodeTraceID } from "../../runner/shared/opencode-trace";
 
 export const COPY_INTERVAL_MS = 2_000;
 /** The longest time between two session lists. */
@@ -557,7 +558,7 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
         if (registered === "timeout") throw new Error("setup trace registration exceeded the recovery deadline");
         if (registered.exitCode !== 0) throw new Error(detail(registered));
         parsed.sessions.push({ ...row, native_session_ref: found.nativeRef, trace_filename: found.filename,
-          agentsview_session: row.format === "codex" ? `codex:${found.nativeRef}` : found.nativeRef });
+          agentsview_session: row.format === "codex" ? `codex:${found.nativeRef.startsWith("ses_") ? openCodeTraceID(found.nativeRef) : found.nativeRef}` : found.nativeRef });
         failures.delete(`recovery:${row.id}`);
       } catch (error) {
         reportOnce(`recovery:${row.id}`, message(error), "trace.sessions_failed",

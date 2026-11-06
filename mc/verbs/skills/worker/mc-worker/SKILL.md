@@ -5,6 +5,9 @@ description: Worker commands, submission checks, and procedures for conditional 
 
 # mc — Worker
 
+The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
+Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
+
 `<id>` in a read can identify any task.
 
 ## Your repository

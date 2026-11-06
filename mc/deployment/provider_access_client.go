@@ -7,21 +7,32 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"mc/opencodecatalog"
 	"net"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
+	"strings"
 	"time"
 )
 
 // ProviderContainerAccess contains Culler authority and public certificate trust.
+type OpenCodeContainerAccess struct {
+	Provider    string                `json:"provider"`
+	KeyVariable string                `json:"keyVariable"`
+	WebSearch   bool                  `json:"webSearch"`
+	Model       opencodecatalog.Model `json:"model"`
+}
+
 type ProviderContainerAccess struct {
-	Version  int    `json:"version"`
-	URL      string `json:"url"`
-	Token    string `json:"token"`
-	CA       string `json:"ca"`
-	Harness  string `json:"harness"`
-	AuthMode string `json:"authMode"`
+	OpenCode *OpenCodeContainerAccess `json:"opencode,omitempty"`
+	Version  int                      `json:"version"`
+	URL      string                   `json:"url"`
+	Token    string                   `json:"token"`
+	CA       string                   `json:"ca"`
+	Harness  string                   `json:"harness"`
+	AuthMode string                   `json:"authMode"`
 }
 
 var providerAccessTokenPattern = regexp.MustCompile(`^culler_proxy_[A-Za-z0-9_-]{43}$`)
@@ -114,14 +125,28 @@ func authorizeProviderAccessContext(ctx context.Context, home, connection, profi
 func validateProviderContainerAccess(access ProviderContainerAccess) error {
 	target, err := url.Parse(access.URL)
 	if err != nil || target.Scheme != "https" || target.Hostname() != providerProxyHostname || target.Port() == "" ||
-		target.User != nil || target.RawQuery != "" || target.Fragment != "" || (target.Path != "" && target.Path != "/") ||
+		target.User != nil || target.RawQuery != "" || target.Fragment != "" || (access.Harness != "opencode" && target.Path != "" && target.Path != "/") ||
 		access.Version != 1 || !providerAccessTokenPattern.MatchString(access.Token) ||
-		(access.Harness != "codex" && access.Harness != "claude-sdk") || (access.AuthMode != "account" && access.AuthMode != "api-key") {
+		(access.Harness != "codex" && access.Harness != "claude-sdk" && access.Harness != "opencode") || (access.AuthMode != "account" && access.AuthMode != "api-key") {
 		return fmt.Errorf("The host provider access configuration is invalid.")
 	}
 	pool := x509.NewCertPool()
 	if !pool.AppendCertsFromPEM([]byte(access.CA)) {
 		return fmt.Errorf("The host provider certificate authority is invalid.")
+	}
+	if access.Harness == "opencode" {
+		if access.OpenCode == nil || access.AuthMode != "api-key" {
+			return fmt.Errorf("The OpenCode access configuration is invalid.")
+		}
+		provider, ok := opencodecatalog.Find(access.OpenCode.Provider)
+		model, found := provider.Model(access.OpenCode.Model.ID)
+		address, addressErr := url.Parse(model.Address)
+		if !ok || !found || addressErr != nil || access.OpenCode.KeyVariable != provider.KeyVariable || access.OpenCode.WebSearch != provider.WebSearch ||
+			!reflect.DeepEqual(access.OpenCode.Model, model) || strings.TrimRight(address.Path, "/") != strings.TrimRight(target.Path, "/") {
+			return fmt.Errorf("The OpenCode access differs from the release catalog.")
+		}
+	} else if access.OpenCode != nil {
+		return fmt.Errorf("This harness cannot use OpenCode access.")
 	}
 	return nil
 }

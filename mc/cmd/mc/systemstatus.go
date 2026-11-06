@@ -506,6 +506,34 @@ func commandSystemSpine(action string, stdin io.Reader) (any, error) {
 	return nil, fmt.Errorf("The system state action is invalid.")
 }
 
+func prepareModelVerification(connectionID, authorizationID string) (func() error, error) {
+	required, err := systemRequirements()
+	if err != nil {
+		return nil, err
+	}
+	for _, connection := range required.Connections {
+		if connection.ID != connectionID {
+			continue
+		}
+		if connection.AuthorizationID != authorizationID {
+			return nil, verbs.Domainf("The connection authorization changed. Retry the model test.")
+		}
+		if connection.Operation != "connection_access" || connection.Kind == "none" {
+			return func() error { return nil }, nil
+		}
+		check := verbs.ConnectionCheck{ConnectionID: connectionID, AuthorizationID: authorizationID,
+			Operation: connection.Operation, CheckID: domain.DiagnosticID()}
+		if _, err := systemSpineCall("check-start", check); err != nil {
+			return nil, err
+		}
+		return func() error {
+			_, err := systemSpineCall("check-cancel", check)
+			return err
+		}, nil
+	}
+	return nil, verbs.Domainf("The connection is absent from the configuration.")
+}
+
 func recordModelVerification(home, operation string) error {
 	proof, auth, err := deployment.AgentProfileDiagnosticResult(home, operation)
 	if err != nil || proof == nil {

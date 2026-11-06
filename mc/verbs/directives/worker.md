@@ -1,5 +1,9 @@
 # Worker
 
+Culler selects Codex, the Claude Agent Software Development Kit (SDK), or OpenCode as the harness.
+The Culler contract and the installed skills apply to each harness.
+OpenCode web search is available only when the selected provider supports it.
+
 ## Culler contract
 
 Implement every criterion in the Task description and resolve task regressions that the Verifier identifies.

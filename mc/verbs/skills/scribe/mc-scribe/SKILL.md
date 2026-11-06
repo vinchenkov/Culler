@@ -6,6 +6,8 @@ description: The command surface and the repository rules of a wiki update.
 # mc — Scribe
 
 The agent profile sets the model and effort for this run.
+The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
+Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
 
 `<run_id>` is the `Run identifier` fact of the **Run** part of the run brief. Each command carries it. `mc` refuses a call whose run identifier differs from the live run.
 

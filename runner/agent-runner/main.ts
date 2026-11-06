@@ -17,6 +17,7 @@ import { collectProjectEvidence } from "../shared/project-evidence";
 const RUN_JSON = process.env["MC_RUN_JSON"] || "/mc/run.json";
 const HARNESS_CLI = process.env["MC_HARNESS_CLI"] || "/app/src/fake-harness/cli.ts";
 const CODEX_ADAPTER = process.env["MC_CODEX_ADAPTER"] || "/app/src/agent-runner/adapters/codex.ts";
+const OPENCODE_ADAPTER = process.env["MC_OPENCODE_ADAPTER"] || "/opt/culler-runtime/app/src/agent-runner/adapters/opencode.ts";
 const CLAUDE_ADAPTER = process.env["MC_CLAUDE_ADAPTER"] || "/app/src/agent-runner/adapters/claude.ts";
 const FAKE_NATIVE_FILENAME = "native.jsonl";
 
@@ -107,12 +108,13 @@ export function adapterInvocation(
   if (runtime.harness !== run.harness || runtime.id !== run.model_binding) {
     throw new Error(`runtime capability does not describe route ${JSON.stringify(routeKey)}`);
   }
-  if (runtime.harness !== "codex" && runtime.harness !== "claude-sdk") {
+  if (runtime.harness !== "codex" && runtime.harness !== "claude-sdk" && runtime.harness !== "opencode") {
     throw new Error(`this image ships no ${JSON.stringify(runtime.harness)} adapter`);
   }
   if (runtime.base_url !== "" ||
       !((runtime.harness === "codex" && runtime.channel === "codex") ||
-        (runtime.harness === "claude-sdk" && runtime.channel === "claude"))) {
+        (runtime.harness === "claude-sdk" && runtime.channel === "claude") ||
+        (runtime.harness === "opencode" && runtime.channel === "opencode"))) {
     throw new Error("The runner requires a supported sign-in connection without a custom endpoint.");
   }
   const wikiInput = run.repository?.input_commit;
@@ -130,6 +132,9 @@ export function adapterInvocation(
   // An empty configured value means "the provider default", so it is omitted
   // rather than passed through as an empty flag value.
   const model = runtime.model === "" ? [] : ["--model", runtime.model];
+  if (runtime.harness === "opencode") {
+    return { argv: [privateBun, OPENCODE_ADAPTER, ...common, ...model, ...resume] };
+  }
   if (runtime.harness === "codex") {
     return { argv: [privateBun, CODEX_ADAPTER, ...common, "--mode", mode, ...model, ...resume] };
   }

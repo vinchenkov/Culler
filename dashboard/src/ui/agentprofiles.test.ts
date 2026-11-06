@@ -19,6 +19,11 @@ test("a listed profile with a ready connection reads Connected without an attent
   expect(status).toMatchObject({ label: "Connected", attention: false, reconnect: false, tone: "connected" });
 });
 
+test("a catalog problem stops a profile with a ready connection", () => {
+  const profile = { id: "profile", connection_id: "connection", access_status: "connected", problem: "The release catalog lacks this model. Select another model." };
+  expect(currentProfileStatus(profile, { snapshot: { connections: [{ connection_id: "connection", state: "ready" }] } })).toMatchObject({ label: "Model unavailable", action: "Edit profile", attention: true, reconnect: false });
+});
+
 test("Use an existing connection lists only supported connections with a saved sign-in", () => {
   const connections = [
     { id: "chatgpt", kind: "codex-oauth", name: "Codex account", access_status: "connected" },

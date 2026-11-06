@@ -42,7 +42,12 @@ func AgentConnectionSave(home string, req AgentConnectionRequest) (AgentProfileC
 		if err != nil {
 			return AgentProfileCatalog{}, err
 		}
-		return saveAgentConnection(home, req, revision)
+		out, err := saveAgentConnection(home, req, revision)
+		if err == nil && source.Harness() == "opencode" {
+			_, _ = StartOpenCodeDownload(home, false)
+			out.OpenCode = OpenCodeDownloadStatus(home)
+		}
+		return out, err
 	})
 }
 

@@ -26,8 +26,13 @@ const artifactEntry = {
 };
 
 function accessProjection(harness = "codex"): CredentialProjection {
-  return { env: {}, proxyConfig: JSON.stringify({ version: 1, harness, authMode: "account",
+  return { env: {}, proxyConfig: JSON.stringify({ version: 1, harness, authMode: harness === "opencode" ? "api-key" : "account",
     url: "https://host.docker.internal:7444", token: "culler_proxy_" + "c".repeat(43),
+    ...(harness === "opencode" ? { opencode: {
+      provider: "catalog-provider", keyVariable: "CATALOG_KEY", webSearch: true,
+      model: { id: "catalog-model", address: "https://provider.invalid", package: "@opencode/ai/providers/openai-compatible",
+        variants: ["high"], key_placement: "bearer", model_location: "body" },
+    } } : {}),
     ca: "-----BEGIN CERTIFICATE-----\nfixture\n-----END CERTIFICATE-----" }) };
 }
 
@@ -2554,6 +2559,16 @@ describe("homie tier (lease-free)", () => {
         ...credentialed,
         credentials: { project: () => accessProjection() },
       }],
+      [{
+        ...packetWake,
+        binding: "opencode/catalog-profile",
+        runtime_binding: runtimeBinding("opencode", "catalog-profile", {
+          credential: "catalog-key", catalog_entry: "catalog-provider",
+        }),
+      }, {
+        ...credentialed,
+        credentials: { project: () => accessProjection("opencode") },
+      }],
     ];
     for (const [effect, overrides] of families) {
       const rig = packetRig(undefined, overrides);
@@ -2561,6 +2576,10 @@ describe("homie tier (lease-free)", () => {
       await applyEffect(effect, rig.deps);
 
       const create = createOf(rig);
+      if (effect.action === "homie-wake" && effect.runtime_binding?.harness === "opencode") {
+        expect(create).toContainEqual(expect.stringMatching(/^type=volume,src=mc-opencode-[0-9a-f]{12},dst=\/opt\/culler-opencode,readonly,volume-nocopy$/));
+        expect(create).toContain("/etc/opencode:ro,nosuid,nodev,noexec,mode=0555");
+      }
       expect(create.filter((arg) => arg.includes(":/mc/artifacts/"))).toEqual([taskBind]);
       expect(create[create.indexOf(taskBind) - 1]).toBe("-v");
       // The host resolves the bind before the launch envelope exists.

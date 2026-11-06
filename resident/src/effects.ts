@@ -31,7 +31,7 @@ import {
   type RunSkill, type StoreFs,
 } from "./skill-store";
 import { configuredGitEnvironment } from "./git-identity";
-import { CULLER_RUNTIME, projectExecutionArguments, runtimeArguments, projectCacheArguments, projectHomeArguments, projectSecretValues } from "./environment-lane";
+import { CULLER_RUNTIME, projectExecutionArguments, runtimeArguments, openCodeArguments, projectCacheArguments, projectHomeArguments, projectSecretValues } from "./environment-lane";
 import { prepareRepositoryRun, repositoryRunRoot, subjectFields } from "./repository";
 import {
   inspectPipelineRunContainer, pipelineContainerName, PROJECT_ID, SAFE_ID,
@@ -250,7 +250,8 @@ function resolvedRuntime(value: unknown): RuntimeBinding | null {
   const isFakeFamily = record["harness"] === "fake" && record["id"] === "fake";
   if (!isFakeFamily && (record["credential"] === "" || record["base_url"] !== "" ||
       !((record.harness === "codex" && record.channel === "codex") ||
-        (record.harness === "claude-sdk" && record.channel === "claude")))) return null;
+        (record.harness === "claude-sdk" && record.channel === "claude") ||
+        (record.harness === "opencode" && record.channel === "opencode")))) return null;
   if (record.effort !== undefined && typeof record.effort !== "string") return null;
   const out: RuntimeBinding = {
     ...(record.effort ? { effort: record.effort as string } : {}),
@@ -273,7 +274,7 @@ function resolvedRuntime(value: unknown): RuntimeBinding | null {
  * It is the resident's own fact: a family with no adapter in the image cannot
  * be launched no matter what the operator configures, and refusing here beats
  * discovering it inside a started container. */
-const ADAPTER_HARNESS_FAMILIES = new Set(["claude-sdk", "codex", "fake"]);
+const ADAPTER_HARNESS_FAMILIES = new Set(["claude-sdk", "codex", "opencode", "fake"]);
 
 /** The Homie container's memory cap, as Docker takes it and as it reports it. */
 const HOMIE_MEMORY = "1024m";
@@ -553,7 +554,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   if (projection !== null) {
     try {
       if (Object.keys(projection.env).length || typeof projection.proxyConfig !== "string") throw new Error("The provider access configuration is absent.");
-      parseProviderAccess(projection.proxyConfig, runtime.harness as "codex" | "claude-sdk");
+      parseProviderAccess(projection.proxyConfig, runtime.harness as "codex" | "claude-sdk" | "opencode");
     } catch {
       throw new Error("The provider access configuration is invalid.");
     }
@@ -697,6 +698,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
   ];
   const createPayload = [
     ...(config.runtimeVolume ? runtimeArguments(deps) : []),
+    ...openCodeArguments(config.mcHome, runtime?.harness),
     ...(config.runtimeVolume ? ["--entrypoint", `${CULLER_RUNTIME}/bin/bun`] : []),
     "-v", `${sessionDir}:/mc/session`,
     // Homie can read the trace of each run and each Homie session.
@@ -791,6 +793,8 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
       arg === flag && createArgs[index + 1] !== undefined ? [createArgs[index + 1]!] : []);
     dockerEnvelope = canonicalHomieDockerEnvelope(records[0], {
       binds: values("-v"),
+      mounts: values("--mount"),
+      tmpfs: values("--tmpfs"),
       cap_drop: ["ALL"],
       cmd: config.runtimeVolume ? (config.homieCmd ?? config.agentCmd).slice(1) : config.homieCmd ?? config.agentCmd,
       ...(config.runtimeVolume ? { entrypoint: [`${CULLER_RUNTIME}/bin/bun`] } : {}),
@@ -1255,7 +1259,7 @@ async function spawnAttempt(
   if (projection !== null) {
     try {
       if (Object.keys(projection.env).length || typeof projection.proxyConfig !== "string") throw new Error("The provider access configuration is absent.");
-      parseProviderAccess(projection.proxyConfig, runtime.harness as "codex" | "claude-sdk");
+      parseProviderAccess(projection.proxyConfig, runtime.harness as "codex" | "claude-sdk" | "opencode");
     } catch {
       throw new Error("The provider access configuration is invalid.");
     }
@@ -1492,6 +1496,7 @@ async function spawnAttempt(
 		"--label", `mc-run-id=${run_id}`,
 		"--label", `mc-project=${effect.project}`,
     ...(config.runtimeVolume ? runtimeArguments(deps) : []),
+    ...openCodeArguments(config.mcHome, runtime?.harness),
     ...(config.runtimeVolume ? ["--entrypoint", `${CULLER_RUNTIME}/bin/bun`] : []),
     ...(environment ? projectCacheArguments(config.mcHome, effect.project, environment.image_digest) : []),
     "-v", `${sessionDir}:/mc/session`,

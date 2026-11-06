@@ -23,9 +23,10 @@ var (
 )
 
 type Choice struct {
-	ID     string
-	Label  string
-	Detail string
+	ID           string
+	Label        string
+	Detail       string
+	AlwaysDetail bool
 }
 
 type Terminal struct {

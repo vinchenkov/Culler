@@ -163,7 +163,7 @@ func TestTerminalSetupAccountMenuOffersOnlySignInAndHealthyConnections(t *testin
 			for _, choice := range prompt.choices {
 				ids = append(ids, choice.ID)
 			}
-			want := []string{"login:codex", "login:claude-sdk", "api-key:codex", "api-key:claude-sdk"}
+			want := []string{"login:codex", "login:claude-sdk", "api-key:codex", "api-key:claude-sdk", "api-key:opencode"}
 			if prompt.title != "Choose how to connect" || !slices.Equal(ids, want) || prompt.selected != 0 {
 				t.Fatalf("the account menu offers other choices or loses its primary action: %q", ids)
 			}

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"mc/opencodecatalog"
 	"net"
 	"os"
 	"path/filepath"
@@ -32,15 +33,16 @@ func validSupervisionImage(image string) bool {
 // ResidentRuntimeBinding identifies a sign-in account and its release authority.
 // The profile supplies the model through the dispatch effect.
 type ResidentRuntimeBinding struct {
-	Kind         string `json:"kind"`
-	InferenceURL string `json:"inference_url"`
-	Model        string `json:"model,omitempty"`
-	Required     bool   `json:"required,omitempty"`
-	Harness      string `json:"harness"`
-	Credential   string `json:"credential"`
-	Channel      string `json:"channel"`
-	TokenURL     string `json:"token_url,omitempty"`
-	ClientID     string `json:"client_id,omitempty"`
+	OpenCode     *opencodecatalog.Provider `json:"opencode,omitempty"`
+	Kind         string                    `json:"kind"`
+	InferenceURL string                    `json:"inference_url"`
+	Model        string                    `json:"model,omitempty"`
+	Required     bool                      `json:"required,omitempty"`
+	Harness      string                    `json:"harness"`
+	Credential   string                    `json:"credential"`
+	Channel      string                    `json:"channel"`
+	TokenURL     string                    `json:"token_url,omitempty"`
+	ClientID     string                    `json:"client_id,omitempty"`
 }
 
 // SupervisionPolicy is the config.toml half of a supervision bundle: every

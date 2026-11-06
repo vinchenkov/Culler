@@ -107,3 +107,45 @@ func TestHomieDeleteStopsAndHidesConversation(t *testing.T) {
 		t.Fatal("ordinary deletion accepted a Vision conversation")
 	}
 }
+
+func TestHomieDeleteHidesTheReplyConditionAndRetainsItsHistory(t *testing.T) {
+	db := dvSpine(t)
+	session := startedSession(t, db, "dashboard:delete-failed")
+	if _, err := HomieSend(db, nil, HomieSendArgs{Session: session, From: "dashboard:delete-failed", Body: "A question."}); err != nil {
+		t.Fatal(err)
+	}
+	id := &RunIdentity{Tier: "homie", RunID: session}
+	claimed, err := HomieClaim(db, id, session)
+	if err != nil {
+		t.Fatal(err)
+	}
+	attempt := claimed.(map[string]any)["message"].(map[string]any)["attempt_id"].(string)
+	if _, err := HomieReplyFailure(db, id, attempt, "The harness ended without a reply."); err != nil {
+		t.Fatal(err)
+	}
+	for _, deleted := range []bool{false, true} {
+		if deleted {
+			if _, err := HomieDelete(db, nil, session); err != nil {
+				t.Fatal(err)
+			}
+		}
+		status, err := SystemStatus(db, nil, SystemStatusRequest{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		found := false
+		for _, condition := range status.(SystemStatusResult).Conditions {
+			if condition.SessionID == session && condition.Action == "Retry reply" {
+				found = true
+			}
+		}
+		if found == deleted {
+			t.Fatalf("The reply condition has the wrong visibility: deleted=%t found=%t", deleted, found)
+		}
+	}
+	var state string
+	var diagnostics int
+	if err := db.QueryRow(`SELECT a.state,COUNT(d.id) FROM homie_reply_attempts a JOIN diagnostic_events d ON d.id=a.latest_diagnostic_id WHERE a.attempt_id=?`, attempt).Scan(&state, &diagnostics); err != nil || state != "failed" || diagnostics != 1 {
+		t.Fatalf("The reply history changed after deletion: state=%s diagnostics=%d error=%v", state, diagnostics, err)
+	}
+}

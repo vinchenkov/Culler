@@ -6,6 +6,8 @@ description: The complete and only mc verb surface for the Arbiter's pool pass o
 # mc — Arbiter (pool pass)
 
 The agent profile sets the model and effort for this run.
+The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
+Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
 
 `<run_id>` is the `Run identifier` fact of the **Run** part.
 Use that value in each terminal action.

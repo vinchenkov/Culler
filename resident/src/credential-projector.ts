@@ -3,10 +3,25 @@ import type { CredentialProjection, CredentialProjector, CredentialRefusal, Prov
 import { startProviderProxy, type ProviderProxyHandle, type ProviderRoute, type ProviderRequestObservation } from "./provider-proxy";
 import type { createProviderCredentials } from "./provider-credentials";
 
+export interface OpenCodeModel {
+  id: string;
+  address: string;
+  package: string;
+  key_placement: "bearer" | "x-api-key" | "x-goog-api-key";
+  model_location: "body" | "path";
+  variants: string[];
+}
+export interface OpenCodeProvider {
+  id: string;
+  key_variable: string;
+  web_search: boolean;
+  models: OpenCodeModel[];
+}
 export interface RuntimeBindingSpec {
+  opencode?: OpenCodeProvider;
   harness: string;
   credential: string;
-  channel: "claude" | "codex";
+  channel: "claude" | "codex" | "opencode";
   kind: string;
   inference_url: string;
   token_url?: string;
@@ -20,13 +35,18 @@ export type RuntimeBindingAuthorities = Record<string, { token_url: string; clie
 export function parseRuntimeCatalog(value: unknown): Record<string, RuntimeBindingSpec> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("The runtime catalog is invalid.");
   const out: Record<string, RuntimeBindingSpec> = {};
-  const fields = new Set(["harness", "credential", "channel", "kind", "inference_url", "token_url", "client_id", "model", "required"]);
+  const fields = new Set(["harness", "credential", "channel", "kind", "inference_url", "token_url", "client_id", "model", "required", "opencode"]);
   for (const [id, raw] of Object.entries(value)) {
     if (!raw || typeof raw !== "object" || Array.isArray(raw) || Object.keys(raw).some(key => !fields.has(key))) throw new Error("The runtime catalog entry is invalid.");
     const row = raw as RuntimeBindingSpec;
     if (!/^(?:connection:)?[a-z0-9][a-z0-9_.-]{0,63}$/.test(id) || !/^[a-z0-9][a-z0-9_.-]{0,63}$/.test(row.credential) ||
-        (row.channel !== "codex" && row.channel !== "claude") || row.harness !== (row.channel === "codex" ? "codex" : "claude-sdk") ||
+        !["codex", "claude", "opencode"].includes(row.channel) || row.harness !== (row.channel === "claude" ? "claude-sdk" : row.channel) ||
         ![`${row.channel}-oauth`, `${row.channel}-api-key`].includes(row.kind)) throw new Error("The runtime catalog connection is invalid.");
+    if (row.channel === "opencode") {
+      if (row.kind !== "opencode-api-key" || row.inference_url !== "") throw new Error("The OpenCode connection is invalid.");
+      out[id] = structuredClone(row);
+      continue;
+    }
     const target = new URL(row.inference_url);
     if (target.protocol !== "https:" || target.username || target.password || target.search || target.hash) throw new Error("The runtime catalog destination is invalid.");
     out[id] = { ...row };
@@ -47,6 +67,15 @@ export function resolveRuntimeBindings(overrides: RuntimeBindingAuthorities | un
 function routes(catalog: Record<string, RuntimeBindingSpec>): Record<string, ProviderRoute> {
   const out: Record<string, ProviderRoute> = {};
   for (const row of Object.values(catalog)) {
+    if (row.channel === "opencode" && !row.opencode) continue;
+    if (row.opencode) {
+      row.opencode.models.forEach((model, index) => {
+        out[`${row.credential}:${index}`] = { baseURL: new URL(model.address).origin,
+          openCode: { keyPlacement: model.key_placement, modelLocation: model.model_location },
+          operations: [{ id: "model", method: "POST", path: "/" }] };
+      });
+      continue;
+    }
     const route: ProviderRoute = {
       baseURL: row.inference_url,
       operations: structuredClone(protocols[row.channel].operations) as ProviderRoute["operations"],
@@ -99,19 +128,24 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
   });
 
   function authorize(row: RuntimeBindingSpec, profile: string, launch: ProviderLaunch, maxRequests?: number, purpose?: "model_list", managed = false): CredentialProjection {
+    if (row.channel === "opencode" && !row.opencode) throw new Error("The release catalog lacks this provider. Select another provider.");
     if (disconnected.has(row.credential)) throw new Error("The connection requires a new authorization after disconnection.");
     const key = `${launch.runId}/${launch.launchId}`;
     if (grants.has(key)) throw new Error("The container launch already has provider access.");
+    const modelIndex = row.opencode?.models.findIndex(model => model.id === launch.model);
+    const openCodeModel = modelIndex === undefined ? undefined : row.opencode!.models[modelIndex];
+    if (row.opencode && !openCodeModel) throw new Error("The release catalog lacks this model. Select another model.");
     const authorization = proxy.issue({
-      requireLiveness: managed, runId: launch.runId, launchId: launch.launchId, connection: row.credential, route: row.credential,
+      requireLiveness: managed, runId: launch.runId, launchId: launch.launchId, connection: row.credential, route: row.opencode ? `${row.credential}:${modelIndex}` : row.credential,
       models: purpose === "model_list" ? [] : [launch.model],
-      operations: purpose === "model_list" ? ["models"] : row.channel === "codex" ? ["model", "compact", "models"] : ["model", "count", "models"],
+      operations: row.opencode ? ["model"] : purpose === "model_list" ? ["models"] : row.channel === "codex" ? ["model", "compact", "models"] : ["model", "count", "models"],
       expiresAt: launch.expiresAt, ...(purpose === "model_list" || !launch.profileRevision ? {} : { profileId: profile, profileRevision: launch.profileRevision }), attemptId: launch.attemptId,
       limits: { maxBodyBytes: 16 * 1024 * 1024, maxDurationMs: 15 * 60_000, maxConcurrent: 8, requestsPerMinute: 120,
         ...(maxRequests === undefined ? {} : { maxRequests }) },
     });
     grants.set(key, { runId: launch.runId, launchId: launch.launchId, authorizationId: authorization.authorizationId, managed });
-    return { env: {}, proxyConfig: JSON.stringify({ version: 1, url: proxy.url, token: authorization.token,
+    return { env: {}, proxyConfig: JSON.stringify({ version: 1, url: proxy.url + (openCodeModel ? new URL(openCodeModel.address).pathname.replace(/\/$/, "") : ""),
+      ...(openCodeModel ? { opencode: { provider: row.opencode!.id, keyVariable: row.opencode!.key_variable, webSearch: row.opencode!.web_search, model: openCodeModel } } : {}), token: authorization.token,
       ca: tls.ca, harness: row.harness, authMode: row.kind.endsWith("-api-key") ? "api-key" : "account" }) };
   }
 
@@ -122,7 +156,7 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
       if (!row || row.credential !== runtime.credential || row.harness !== runtime.harness || row.channel !== runtime.channel) return { refused: "The provider connection changed. Refresh the agent profile." };
       if (!launch || !launch.model) return { refused: "The provider request requires its run and model." };
       try { return authorize(row, runtime.id, launch, undefined, undefined, true); }
-      catch { return { refused: "The provider proxy cannot authorize this container launch." }; }
+      catch (error) { return { refused: error instanceof Error && error.message.startsWith("The release catalog") ? error.message : "The provider proxy cannot authorize this container launch." }; }
     },
     has(runId, launchId) {
       const grant = grants.get(`${runId}/${launchId}`);
@@ -171,7 +205,7 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
       }
     },
     authorizeConnection(connection, profile, launch, maxRequests, purpose) {
-      const row = catalog[`connection:${connection}`] ?? Object.values(catalog).find(row => row.credential === connection);
+      const row = catalog[profile] ?? catalog[`connection:${connection}`] ?? Object.values(catalog).find(row => row.credential === connection);
       if (!row) throw new Error("The provider connection is unavailable.");
       return authorize(row, profile, launch, maxRequests, purpose);
     },

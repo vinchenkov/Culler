@@ -25,6 +25,7 @@ type BindingSpec struct {
 	Credential             string
 	Channel                string
 	AuthKind               string
+	CatalogEntry           string `json:",omitempty"`
 	Delivery               CredentialDelivery
 	ProviderCredentialKeys []string
 	DeclaredStaticKey      string
@@ -49,7 +50,7 @@ func bindingSpec(id string, binding operatorconfig.RuntimeBinding, source operat
 	spec := BindingSpec{
 		ID: id, Harness: binding.Harness, Model: binding.Model, Effort: binding.Effort,
 		Credential: binding.Credential, Channel: source.Channel(),
-		AuthKind: source.Kind, Delivery: CredentialDelivery(source.Delivery()),
+		AuthKind: source.Kind, CatalogEntry: source.CatalogEntry, Delivery: CredentialDelivery(source.Delivery()),
 		BaseURL: binding.BaseURL, TokenURL: source.TokenURL, ClientID: source.ClientID,
 		ProviderCredentialKeys: ProviderCredentialKeys(source.Channel()),
 	}

@@ -13,6 +13,7 @@ export interface ProviderOperation {
 
 export interface ProviderRoute {
   baseURL: string;
+  openCode?: { keyPlacement: "bearer" | "x-api-key" | "x-goog-api-key"; modelLocation: "body" | "path" };
   operations: ProviderOperation[];
   requestHeaders?: string[];
   responseHeaders?: string[];
@@ -150,8 +151,12 @@ function validateRoutes(input: Record<string, ProviderRoute>): Record<string, Pr
     const route = structuredClone(candidate);
     const url = new URL(route.baseURL);
     if (!identifier(id) || url.protocol !== "https:" || url.username || url.password || url.search || url.hash ||
-        !canonicalPath(url.pathname) || !route.operations.length) {
+        (!route.openCode && !canonicalPath(url.pathname)) || !route.operations.length) {
       throw new Error("The provider route is invalid.");
+    }
+    if (route.openCode && (!["bearer", "x-api-key", "x-goog-api-key"].includes(route.openCode.keyPlacement) ||
+        !["body", "path"].includes(route.openCode.modelLocation) || url.pathname !== "/")) {
+      throw new Error("The OpenCode route is invalid.");
     }
     const operations = new Set<string>();
     const paths = new Set<string>();
@@ -500,8 +505,10 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
       try {
         const bearer = request.headers.get("authorization");
         const key = request.headers.get("x-api-key");
-        const token = bearer?.match(/^Bearer (culler_proxy_[A-Za-z0-9_-]{43})$/)?.[1] ?? (!bearer ? key : null);
-        if (stopped || !token || !/^culler_proxy_[A-Za-z0-9_-]{43}$/.test(token) || (key && bearer)) {
+        const googleKey = request.headers.get("x-goog-api-key");
+        const supplied = [bearer, key, googleKey].filter(value => value !== null);
+        const token = bearer?.match(/^Bearer (culler_proxy_[A-Za-z0-9_-]{43})$/)?.[1] ?? key ?? googleKey;
+        if (stopped || !token || !/^culler_proxy_[A-Za-z0-9_-]{43}$/.test(token) || supplied.length !== 1) {
           return await refuse(401, "proxy_authorization", "invalid_token");
         }
         held = byDigest.get(digest(token));
@@ -510,17 +517,25 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
           return await refuse(401, "proxy_authorization", "invalid_token");
         }
         const route = routes[held.spec.route]!;
+        if (route.openCode && (route.openCode.keyPlacement === "bearer" ? !bearer : !request.headers.has(route.openCode.keyPlacement)) ||
+            !route.openCode && googleKey) return await refuse(401, "proxy_authorization", "invalid_token");
         const url = new URL(request.url);
         if (!["127.0.0.1", "localhost", "host.docker.internal"].includes(url.hostname) ||
-            !canonicalPath(url.pathname) || url.hash || url.username || url.password) {
+            (!route.openCode && !canonicalPath(url.pathname)) || url.hash || url.username || url.password) {
           return await refuse(403, "proxy_authorization", "destination_not_permitted");
         }
-        operation = route.operations.find(candidate => candidate.method === request.method && candidate.path === url.pathname);
+        operation = route.openCode && ["GET", "POST"].includes(request.method)
+          ? { id: "model", method: request.method as "GET" | "POST", path: url.pathname }
+          : route.operations.find(candidate => candidate.method === request.method && candidate.path === url.pathname);
+        if (route.openCode?.modelLocation === "path") {
+          const match = /^.*\/models\/([^/:]+):[^/]+$/.exec(decodeURIComponent(url.pathname));
+          if (!match || !held.spec.models.includes(match[1]!)) return await refuse(403, "proxy_authorization", "model_not_permitted");
+        }
         if (!operation || !held.spec.operations.includes(operation.id)) {
           return await refuse(403, "proxy_authorization", "operation_not_permitted");
         }
         const queryKeys = [...url.searchParams.keys()];
-        if (queryKeys.some(key => !operation!.queryKeys?.includes(key)) || new Set(queryKeys).size !== queryKeys.length) {
+        if ((!route.openCode && (queryKeys.some(key => !operation!.queryKeys?.includes(key)) || new Set(queryKeys).size !== queryKeys.length)) || queryKeys.some(key => /^(key|api[_-]?key|access_token|token)$/i.test(key))) {
           return await refuse(403, "proxy_authorization", "query_not_permitted");
         }
         const limits = held.spec.limits;
@@ -538,6 +553,7 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
         if (request.headers.has("content-encoding") || (length !== null && (!/^\d+$/.test(length) || Number(length) > limits.maxBodyBytes))) {
           return await refuse(413, "proxy_limit", "request_size_limit");
         }
+        let modelRequest = operation.modelRequired === true || route.openCode?.modelLocation === "path";
         let body: Uint8Array;
         try { body = await readBounded(request.body, limits.maxBodyBytes, controller.signal); }
         catch (error) {
@@ -555,6 +571,7 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
           if (requestModels(value as Record<string, unknown>, operation).some(model => typeof model !== "string" || !held!.spec.models.includes(model))) {
             return await refuse(403, "proxy_authorization", "model_not_permitted");
           }
+          modelRequest ||= route.openCode !== undefined && "model" in value;
           // The provider must receive the same object that passed the model check.
           body = Buffer.from(JSON.stringify(value));
         } else if (body.byteLength || operation.modelRequired) {
@@ -587,8 +604,13 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
         try { secrets = secretValues(credential, token); }
         catch { return await refuse(503, "credential_store", "invalid_credential"); }
         const headers = new Headers();
-        for (const name of [...defaultRequestHeaders, ...(route.requestHeaders ?? [])]) {
-          if (forbiddenHeaders.test(name)) continue;
+        const requestNames = route.openCode ? [...request.headers.keys()] : [...defaultRequestHeaders, ...(route.requestHeaders ?? [])];
+        const connectionHeaders = (request.headers.get("connection") ?? "").toLowerCase().split(",").map(name => name.trim());
+        for (const name of requestNames) {
+          const forbidden = route.openCode
+            ? /^(?:authorization|.*(?:api-key|api_key|auth-token|access-token).*|host|cookie|set-cookie|connection|keep-alive|transfer-encoding|upgrade|trailer|te|content-length|proxy-.*|forwarded|x-forwarded-.*|x-culler-.*)$/i
+            : forbiddenHeaders;
+          if (forbidden.test(name) || connectionHeaders.includes(name.toLowerCase())) continue;
           const value = request.headers.get(name);
           if (value !== null && !secrets.some(secret => value.includes(secret))) headers.set(name, value);
         }
@@ -596,7 +618,11 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
           if (/^(?:host|cookie|connection|content-length|transfer-encoding|content-encoding|forwarded|x-forwarded-.*|x-culler-.*)$/i.test(name) || value.includes(token)) {
             return await refuse(503, "credential_store", "invalid_credential");
           }
-          headers.set(name, value);
+          if (route.openCode) {
+            const placement = route.openCode.keyPlacement;
+            const secret = value.replace(/^Bearer /, "");
+            if (/authorization|api.key/i.test(name)) headers.set(placement === "bearer" ? "authorization" : placement, placement === "bearer" ? `Bearer ${secret}` : secret);
+          } else headers.set(name, value);
         }
         const ended = await checkLiveness();
         if (ended) return ended;
@@ -605,7 +631,7 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
           return await refuse(429, "proxy_limit", "request_limit");
         }
         held.requests++;
-        if (operation.modelRequired) held.modelRequests++;
+        if (modelRequest) held.modelRequests++;
         sent = true;
         let upstream: Response;
         try {

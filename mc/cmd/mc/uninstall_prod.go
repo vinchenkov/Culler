@@ -258,7 +258,7 @@ func runUninstallWith(ctx context.Context, args []string, stdout, stderr io.Writ
 	}
 	var dataVolumes []string
 	for _, volume := range volumes {
-		if strings.HasPrefix(volume, "mc-runtime-") {
+		if strings.HasPrefix(volume, "mc-runtime-") || strings.HasPrefix(volume, "mc-opencode-") {
 			report.RuntimeVolumes = append(report.RuntimeVolumes, volume)
 		} else {
 			dataVolumes = append(dataVolumes, volume)
@@ -675,7 +675,7 @@ func unlocatedDeployments(report uninstallReport, homes []string) []string {
 		out = append(out, suffix)
 	}
 	for _, name := range report.Volumes {
-		note(strings.TrimPrefix(strings.TrimPrefix(name, "mc-spine-"), "mc-runtime-"))
+		note(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(name, "mc-spine-"), "mc-runtime-"), "mc-opencode-"))
 	}
 	for _, name := range report.Containers {
 		if strings.HasPrefix(name, "mc-helper-") {

@@ -7,7 +7,11 @@ export interface ProviderAccess {
   url: string;
   token: string;
   ca: string;
-  harness: "codex" | "claude-sdk";
+  harness: "codex" | "claude-sdk" | "opencode";
+  opencode?: {
+    provider: string; keyVariable: string; webSearch: boolean;
+    model: { id: string; address: string; package: string; variants: string[]; key_placement: string; model_location: string };
+  };
   authMode: "api-key" | "account";
 }
 
@@ -15,7 +19,7 @@ export function parseProviderAccess(body: string, harness: ProviderAccess["harne
   if (Buffer.byteLength(body) > 64 * 1024) throw new Error("The provider access file exceeds its limit.");
   let value: ProviderAccess;
   try { value = JSON.parse(body); } catch { throw new Error("The provider access file contains invalid JSON."); }
-  const fields = ["version", "url", "token", "ca", "harness", "authMode"];
+  const fields = ["version", "url", "token", "ca", "harness", "authMode", "opencode"];
   if (!value || typeof value !== "object" || Array.isArray(value) ||
       Object.keys(value).some(key => !fields.includes(key)) || value.version !== 1 ||
       value.harness !== harness || !["api-key", "account"].includes(value.authMode) ||
@@ -29,6 +33,20 @@ export function parseProviderAccess(body: string, harness: ProviderAccess["harne
   if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash) {
     throw new Error("The host proxy requires an HTTPS address without credentials.");
   }
+  if (harness === "opencode") {
+    const selected = value.opencode;
+    const model = selected?.model;
+    if (value.authMode !== "api-key" || !selected || !/^[a-z0-9][a-z0-9_.-]*$/.test(selected.provider) ||
+        !/^[A-Z_][A-Z0-9_]*$/.test(selected.keyVariable) || typeof selected.webSearch !== "boolean" ||
+        !model || typeof model.id !== "string" || !model.id || !model.package?.startsWith("@opencode/ai/providers/") ||
+        !Array.isArray(model.variants) || model.variants.some(item => typeof item !== "string") ||
+        !["bearer", "x-api-key", "x-goog-api-key"].includes(model.key_placement) || !["body", "path"].includes(model.model_location)) {
+      throw new Error("The OpenCode access configuration is invalid.");
+    }
+    const target = new URL(model.address);
+    if (target.protocol !== "https:" || target.username || target.password || target.search || target.hash ||
+        target.pathname.replace(/\/$/, "") !== url.pathname.replace(/\/$/, "")) throw new Error("The OpenCode model address is invalid.");
+  } else if (value.opencode !== undefined) throw new Error("This harness cannot use OpenCode access.");
   return value;
 }
 

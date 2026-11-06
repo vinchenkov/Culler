@@ -13,7 +13,11 @@ mkdir -p "$output/assets" "$output/image/runner/image" "$output/image/runner/ope
 # The AgentsView release archive stays outside the output, so the release inputs hold only its packaged executable.
 agentsview_scratch=$(mktemp -d "${TMPDIR:-/tmp}/culler-agentsview.XXXXXX")
 hostbun_scratch=$(mktemp -d "${TMPDIR:-/tmp}/culler-hostbun.XXXXXX")
-trap 'rm -rf "$agentsview_scratch" "$hostbun_scratch"' EXIT
+opencode_scratch=$(mktemp -d "${TMPDIR:-/tmp}/culler-opencode-check.XXXXXX")
+trap 'rm -rf "$agentsview_scratch" "$hostbun_scratch" "$opencode_scratch"' EXIT
+"$ROOT/release/opencode/build.sh" "$output/assets/culler-opencode-linux-arm64.tar.gz" >"$output/opencode-build.log"
+python3 "$ROOT/release/opencode/check_archive.py" "$output/assets/culler-opencode-linux-arm64.tar.gz" >"$output/opencode.json"
+"$ROOT/release/opencode/check.sh" "$opencode_scratch"
 agentsview_pin() {
   python3 -c 'import json, sys
 value = json.load(open(sys.argv[1]))

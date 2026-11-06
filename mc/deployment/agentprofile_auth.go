@@ -204,6 +204,26 @@ func authorizeAgentProfileConnection(ctx context.Context, home, id string, notif
 }
 
 func testAgentProfileModel(ctx context.Context, home, image string, catalog RuntimeCatalog, binding string) (LiveProviderObservation, error) {
+	if catalog.Bindings[binding].Harness == "opencode" {
+		for {
+			status := OpenCodeDownloadStatus(home)
+			if status == nil {
+				return LiveProviderObservation{}, fmt.Errorf("Download OpenCode before the model test.")
+			}
+			if status.Status == "succeeded" {
+				break
+			}
+			if status.Status == "failed" {
+				return LiveProviderObservation{}, fmt.Errorf("%s Retry the OpenCode download.", status.Message)
+			}
+			select {
+			case <-ctx.Done():
+				return LiveProviderObservation{}, ctx.Err()
+			case <-time.After(250 * time.Millisecond):
+			}
+		}
+	}
+
 	spec := catalog.Bindings[binding]
 	if spec.Effort != "" {
 		models, err := AgentConnectionModels(home, AgentModelListRequest{ConnectionID: spec.Credential})

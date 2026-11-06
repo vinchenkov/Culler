@@ -2,6 +2,8 @@ const SHA256_ID = /^(?:sha256:)?[0-9a-f]{64}$/;
 
 export interface HomieCreateExpectation {
   binds: string[];
+  mounts?: string[];
+  tmpfs?: string[];
   cap_drop: string[];
   cmd: string[];
   entrypoint?: string[];
@@ -19,12 +21,7 @@ export interface HomieCreateExpectation {
   user: string;
 }
 
-/**
- * Collapse Docker's wide inspect record into the immutable Homie execution
- * envelope. Runtime state and NetworkSettings are deliberately excluded: they
- * change on start, while HostConfig.NetworkMode is the immutable network
- * choice. Every security/resource default is retained explicitly.
- */
+/** The envelope retains immutable Docker settings for the create and adopt checks. */
 export function canonicalHomieDockerEnvelope(
   value: unknown,
   expected?: HomieCreateExpectation,
@@ -51,6 +48,9 @@ export function canonicalHomieDockerEnvelope(
     a.source.localeCompare(b.source) ||
     a.type.localeCompare(b.type));
 
+  const volumeMounts = array(host.Mounts ?? [], "HostConfig.Mounts").map(volumeMount)
+    .sort((a, b) => a.destination.localeCompare(b.destination));
+  const tmpfs = stringMap(host.Tmpfs ?? {}, "HostConfig.Tmpfs");
   const envelope = {
     args: strings(record.Args, "Args"),
     config: {
@@ -65,12 +65,10 @@ export function canonicalHomieDockerEnvelope(
       working_dir: string(config.WorkingDir, "Config.WorkingDir"),
     },
     host_config: {
+      ...(volumeMounts.length ? { mounts: volumeMounts } : {}),
+      ...(Object.keys(tmpfs).length ? { tmpfs } : {}),
       auto_remove: boolean(host.AutoRemove, "HostConfig.AutoRemove"),
-      // Normalized HERE, in the envelope itself, for the same reason
-      // `Mounts[].Source` is: this object is digested and re-attested byte for
-      // byte by homieAdopt, so a spelling flip between two inspections must not
-      // change the bytes. Normalizing only at the comparison below would let
-      // the expectation check pass and the adoption still refuse.
+      // Docker Desktop can report either host path spelling between inspections.
       binds: nullableStrings(host.Binds, "HostConfig.Binds").map(normalizeBindString).sort(),
       cap_add: nullableStrings(host.CapAdd, "HostConfig.CapAdd").sort(),
       cap_drop: nullableStrings(host.CapDrop, "HostConfig.CapDrop").sort(),
@@ -114,18 +112,25 @@ export function canonicalHomieDockerEnvelope(
 
   if (expected !== undefined) {
     const state = object(record.State, "State");
-    // `HostConfig.Binds` echoes the `-v` strings, and Docker Desktop rewrites
-    // the SOURCE component of those strings with the same unstable /host_mnt
-    // spelling it applies to `Mounts[].Source`. The observed side is already
-    // normalized in the envelope above; the expected side gets the identical
-    // rule here, because two sides built by different rules compare nothing.
-    // Fixing the Mounts arm alone did not clear the tier — it MOVED the
-    // refusal one field over, to exactly this comparison.
+    // Both sides use the same Docker Desktop path normalization.
     const expectedBinds = expected.binds.map(normalizeBindString).sort();
     const expectedSecurity = [...expected.security_opt].sort();
-    const expectedDestinations = expected.binds.map(bindDestination).sort();
-    const expectedMounts = expected.binds.map(bindExpectation)
+    const expectedVolumes = (expected.mounts ?? []).map(volumeArgument)
       .sort((a, b) => a.destination.localeCompare(b.destination));
+    const expectedTmpfs = stringMap(Object.fromEntries((expected.tmpfs ?? []).map((item) => {
+      const separator = item.indexOf(":");
+      if (!item.startsWith("/") || separator < 1 || separator === item.length - 1) {
+        throw new Error("Homie create plan carries an invalid temporary mount");
+      }
+      return [item.slice(0, separator), item.slice(separator + 1)];
+    })), "expected temporary mounts");
+    if (Object.keys(expectedTmpfs).length !== (expected.tmpfs ?? []).length) {
+      throw new Error("Homie create plan carries duplicate temporary mounts");
+    }
+    const expectedMounts = [...expected.binds.map(bindExpectation), ...expectedVolumes.map((mount) => ({
+      destination: mount.destination, rw: !mount.readonly, source: mount.source, type: "volume",
+    }))].sort((a, b) => a.destination.localeCompare(b.destination));
+    const expectedDestinations = expectedMounts.map((mount) => mount.destination);
     const actualMounts = mounts.map((mount) => ({
       destination: mount.destination,
       rw: mount.rw,
@@ -160,11 +165,7 @@ export function canonicalHomieDockerEnvelope(
         throw new Error(`Homie Docker envelope mount access drifted at ${wanted.destination}`);
       }
     }
-    // Each row is (field name, holds?). The field name is what gets reported:
-    // this used to be one anonymous boolean, and a refusal that names nothing
-    // costs a whole diagnostic cycle to localize — which is exactly what it
-    // cost when the /host_mnt spelling moved from Mounts to Binds. Values are
-    // deliberately NOT included: `env` carries the projected access token.
+    // Name each failed field. Values can contain credentials.
     const checks: Array<[string, boolean]> = [
       ["container id", envelope.id === expected.container_id],
       ["name", envelope.name === `/${expected.name}`],
@@ -173,6 +174,8 @@ export function canonicalHomieDockerEnvelope(
       ["cmd", JSON.stringify(envelope.config.cmd) === JSON.stringify(expected.cmd)],
       ["entrypoint", expected.entrypoint === undefined || JSON.stringify(envelope.config.entrypoint) === JSON.stringify(expected.entrypoint)],
       ["binds", JSON.stringify(envelope.host_config.binds) === JSON.stringify(expectedBinds)],
+      ["volume options", JSON.stringify(volumeMounts) === JSON.stringify(expectedVolumes)],
+      ["temporary mounts", JSON.stringify(tmpfs) === JSON.stringify(expectedTmpfs)],
       ["network mode", expected.network_modes.includes(envelope.host_config.network_mode)],
       ["security opt",
         JSON.stringify(envelope.host_config.security_opt) === JSON.stringify(expectedSecurity)],
@@ -200,44 +203,39 @@ export function canonicalHomieDockerEnvelope(
   return JSON.stringify(envelope);
 }
 
-function bindDestination(bind: string): string {
-  return bindParts(bind).destination;
+function volumeMount(value: unknown) {
+  const row = object(value, "volume mount");
+  const options = object(row.VolumeOptions ?? {}, "volume options");
+  if (Object.keys(row).some((key) => !["Type", "Source", "Target", "ReadOnly", "VolumeOptions"].includes(key)) ||
+      Object.keys(options).some((key) => key !== "NoCopy") || row.Type !== "volume") {
+    throw new Error("Homie Docker envelope carries unsupported volume options");
+  }
+  return {
+    destination: string(row.Target, "volume target"),
+    no_copy: boolean(options.NoCopy ?? false, "volume copy control"),
+    readonly: boolean(row.ReadOnly ?? false, "volume read access"),
+    source: string(row.Source, "volume source"),
+    type: "volume",
+  };
 }
 
-/**
- * Docker Desktop reports a bind's `Source` two ways for the same directory: the
- * host path we passed to `-v`, or that path under `/host_mnt`, the VM's own
- * mount point for shared host storage. Which one comes back is not stable — it
- * was observed to differ PER MOUNT within one deployment and to change between
- * two inspections of the same container — and both spellings name the same
- * bytes by construction.
- *
- * That intermittency was fatal, not cosmetic, because this canonicalizer is an
- * attestation used at two points that must agree: the post-create expectation
- * check in `homieWake`, and the byte-identical re-attestation in `homieAdopt`.
- * A raw string comparison therefore refused a correct envelope, and the whole
- * Homie tier could never start in production — every wake was refused, roughly
- * once a minute, with no Homie container ever reaching `docker start`.
- *
- * Collapsing the prefix here rather than at either comparison is what makes the
- * two agree: the digested envelope and the expected mount table are both built
- * from this one normalization, so a representation flip between inspections
- * cannot change the attested bytes. Nothing is widened — the path after the
- * prefix must still match exactly — and the only distinction surrendered is
- * between `/host_mnt/X` and `/X`, which on this platform are the same
- * directory. A Linux host reports plain paths and never enters this branch.
- */
+function volumeArgument(value: string) {
+  const fields = value.split(",");
+  const source = fields.find((field) => field.startsWith("src="))?.slice(4);
+  const destination = fields.find((field) => field.startsWith("dst="))?.slice(4);
+  if (fields.length !== 5 || !fields.includes("type=volume") || !fields.includes("readonly") ||
+      !fields.includes("volume-nocopy") || !source || !destination?.startsWith("/")) {
+    throw new Error("Homie create plan carries an unsupported volume mount");
+  }
+  return { destination, no_copy: true, readonly: true, source, type: "volume" };
+}
+
+/** Docker Desktop uses both /host_mnt/X and /X for the same host path. */
 function normalizeBindSource(source: string): string {
   const remainder = source.slice("/host_mnt".length);
   return source.startsWith("/host_mnt") && remainder.startsWith("/") ? remainder : source;
 }
 
-/**
- * The same collapse applied to a whole `src:dest[:ro]` bind string, so a raw
- * `HostConfig.Binds` entry compares equal to the `-v` argument that produced
- * it however Docker chose to spell the source this time. Only the source
- * component is touched; a malformed bind still refuses through `bindParts`.
- */
 function normalizeBindString(bind: string): string {
   const parts = bindParts(bind);
   const head = `${normalizeBindSource(parts.source)}:${parts.destination}`;

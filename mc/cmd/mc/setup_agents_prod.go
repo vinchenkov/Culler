@@ -148,6 +148,7 @@ func (w *setupWizard) agentChoices(returnStage int) (retErr error) {
 			setupChoice("login:claude-sdk", "Sign in to Claude Code", ""),
 			setupChoice("api-key:codex", "Use "+operatorconfig.Default().Runtimes.Credentials["codex-api-key"].Name, "API charges apply."),
 			setupChoice("api-key:claude-sdk", "Use "+operatorconfig.Default().Runtimes.Credentials["claude-api-key"].Name, "API charges apply."),
+			setupChoice("api-key:opencode", "Use another provider's API key", "OpenCode runs the agent. API charges apply."),
 		)
 		choice, err := w.ui.Choose("Choose how to connect", choices, 0)
 		if err != nil {
@@ -372,6 +373,10 @@ func setupConnect(w *setupWizard, connection setupConnection) (retErr error) {
 			return err
 		}
 		if err := verifier.Verify(connection.Binding, filepath.Join(w.home, "refresh-grants")); err != nil {
+			source := cfg.Runtimes.Credentials[cfg.Runtimes.Bindings[connection.Binding].Credential]
+			if message := deployment.OpenCodeRefusalMessage(source.CatalogEntry, err); message != "" {
+				return &setupFailure{cause: message}
+			}
 			return setupRuntimeFailure(err, "The model test failed. The saved connection remains available.")
 		}
 		return nil

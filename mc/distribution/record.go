@@ -64,6 +64,7 @@ type HostBunRelease struct {
 const HostBunPlatform = "darwin-arm64"
 
 type Record struct {
+	OpenCode        *Asset          `json:"opencode,omitempty"`
 	WorkflowSeconds int64           `json:"workflow_seconds,omitempty"`
 	Format          int             `json:"format"`
 	Commit          string          `json:"commit"`
@@ -119,6 +120,9 @@ func (r Record) Validate() error {
 		if a.asset.Name != a.name || !hexDigest.MatchString(a.asset.SHA256) || a.asset.Size <= 0 {
 			return fmt.Errorf("release asset %s is invalid", a.name)
 		}
+	}
+	if a := r.OpenCode; a != nil && (a.Name != "culler-opencode-linux-arm64.tar.gz" || !hexDigest.MatchString(a.SHA256) || a.Size <= 0) {
+		return errors.New("release OpenCode archive is invalid")
 	}
 	if a := r.AgentsView; a != nil && (!runtimeVersion.MatchString(a.Version) ||
 		!hexDigest.MatchString(a.ArchiveSHA256) || !hexDigest.MatchString(a.ExecutableSHA256)) {

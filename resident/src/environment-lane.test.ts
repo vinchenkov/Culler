@@ -415,6 +415,7 @@ describe("Project environment execution", () => {
       return ok("{}");
     };
     deps.docker = async (argv) => {
+      if (argv[0] === "volume") return { exitCode: 1, stdout: "", stderr: "No such volume" };
       if (argv[0] === "image") return ok(JSON.stringify([{ Id: argv[2] }]));
       if (argv[0] === "container") return { exitCode: 1, stdout: "", stderr: "No such container" };
       if (argv[0] === "run" && argv.includes("--name")) seen.checkContainers.push(argv);

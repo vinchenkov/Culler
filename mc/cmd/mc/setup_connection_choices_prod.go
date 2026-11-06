@@ -175,8 +175,18 @@ func setupAccessBack(choice *onboarding.AccessChoice) bool {
 		switch choice.Step {
 		case "check":
 			choice.Step = "model"
+		case "download":
+			choice.Step = "effort"
+		case "effort":
+			choice.Step = "model"
 		case "model":
 			choice.Step = "key"
+		case "key":
+			if strings.HasPrefix(choice.Template, "opencode:") {
+				choice.Step = "provider"
+			} else {
+				choice.Step = ""
+			}
 		default:
 			choice.Step = ""
 		}

@@ -194,7 +194,18 @@ func copyValue(line string) bool {
 
 func (t *Terminal) choiceLines(prompt string, choices []Choice, selected int) []terminalLine {
 	lines := t.lines(prompt, textHeading, 0)
+	start, end := 0, len(choices)
+	if t.ansi && slices.ContainsFunc(choices, func(choice Choice) bool { return choice.AlwaysDetail }) {
+		start = selected / 2 * 2
+		end = min(start+2, len(choices))
+		if len(choices) > 2 {
+			lines = append(lines, t.lines(fmt.Sprintf("Choices %d to %d of %d.", start+1, end, len(choices)), textMuted, 0)...)
+		}
+	}
 	for i, choice := range choices {
+		if i < start || i >= end {
+			continue
+		}
 		prefix, style := "  ", ""
 		if i == selected {
 			prefix, style = "› ", textCurrent
@@ -203,7 +214,7 @@ func (t *Terminal) choiceLines(prompt string, choices []Choice, selected int) []
 			prefix += fmt.Sprintf("%d. ", i+1)
 		}
 		lines = append(lines, t.prefixedLines(prefix, progressText(choice.Label), style)...)
-		if i == selected && choice.Detail != "" {
+		if (i == selected || choice.AlwaysDetail) && choice.Detail != "" {
 			// A deeper indent than the label text marks the description without color.
 			lines = append(lines, t.lines(choice.Detail, textMuted, displayWidth(prefix)+2)...)
 		}

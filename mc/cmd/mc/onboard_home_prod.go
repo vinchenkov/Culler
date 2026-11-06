@@ -122,6 +122,12 @@ func brokerOnboardHome(args []string, private bool, stdout, stderr io.Writer) in
 		if err := deployment.InstallRuntimeVolume(context.Background(), home, image, releaseBuildID, nil); err != nil {
 			return writeVerbError(stdout, stderr, verbs.Domainf("install Culler runtime: %v", err))
 		}
+		if err := deployment.ConfigureRuntimeSource(home, a.ReleaseSource, releaseBuildID); err != nil {
+			return writeVerbError(stdout, stderr, verbs.Domainf("record runtime source: %v", err))
+		}
+		if err := deployment.UpdateOpenCodeVolume(context.Background(), home, image, releaseBuildID); err != nil {
+			return writeVerbError(stdout, stderr, verbs.Domainf("update OpenCode: %v", err))
+		}
 		if releaseStatus == "done" {
 			status = "done"
 		}

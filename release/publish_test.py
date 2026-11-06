@@ -60,7 +60,7 @@ class PublishTest(unittest.TestCase):
         output = root / "output"
         assets = output / "assets"
         assets.mkdir(parents=True)
-        for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz"):
+        for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz", "culler-opencode-linux-arm64.tar.gz"):
             (assets / name).write_bytes(b"verified fixture " + name.encode())
         package = file_record(assets / "culler-darwin-arm64.tar.gz")
         package["schema"] = "c" * 64
@@ -68,6 +68,7 @@ class PublishTest(unittest.TestCase):
         package["agentsview"] = dict(AGENTSVIEW)
         package["host_bun"] = json.loads(json.dumps(HOST_BUN))
         (output / "package.json").write_text(json.dumps(package))
+        (output / "opencode.json").write_text(json.dumps(file_record(assets / "culler-opencode-linux-arm64.tar.gz")))
         (output / "sequence").write_text("17\n")
         return output
 
@@ -85,7 +86,8 @@ class PublishTest(unittest.TestCase):
             self.assertEqual(record["agentsview"], AGENTSVIEW)
             self.assertEqual(record["host_bun"], HOST_BUN)
             self.assertEqual(record["checks"], [{"name": name, "passed": True} for name in CHECKS])
-            self.assertEqual(len(api.assets), 4)
+            self.assertEqual(len(api.assets), 5)
+            self.assertEqual(record["opencode"], file_record(output / "assets/culler-opencode-linux-arm64.tar.gz"))
 
     def test_a_package_without_its_agentsview_release_is_not_published(self):
         for change in (None, {"version": "latest"}, {"executable_sha256": "F" * 64}, {"extra": "value"}):
@@ -174,7 +176,7 @@ class PublishTest(unittest.TestCase):
             api = ConcurrentGitHub()
             self.assertFalse(publish(api, self.fixture(root), COMMIT, IMAGE, 1, NOW))
             self.assertEqual(api.published, [])
-            self.assertEqual(len(api.assets), 4)
+            self.assertEqual(len(api.assets), 5)
 
     def test_changed_draft_asset_is_not_overwritten(self):
         with tempfile.TemporaryDirectory() as directory:

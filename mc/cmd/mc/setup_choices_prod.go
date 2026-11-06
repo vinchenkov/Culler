@@ -16,6 +16,7 @@ import (
 	operatorconfig "mc/config"
 	"mc/deployment"
 	"mc/onboarding"
+	"mc/opencodecatalog"
 	"mc/verbs"
 )
 
@@ -205,6 +206,16 @@ func setupAgentNames(cfg operatorconfig.Config, bindings []string) []string {
 	names := make([]string, 0, len(bindings))
 	for _, id := range bindings {
 		binding := cfg.Runtimes.Bindings[id]
+		if binding.Harness == "opencode" {
+			source := cfg.Runtimes.Credentials[binding.Credential]
+			provider, _ := opencodecatalog.Find(source.CatalogEntry)
+			name := provider.Name
+			if name == "" {
+				name = source.CatalogEntry
+			}
+			names = append(names, "OpenCode ("+name+" · "+binding.Model+")")
+			continue
+		}
 		name := map[string]string{"codex": "Codex", "claude-sdk": "Claude Code"}[binding.Harness]
 		if name == "" {
 			names = append(names, id)

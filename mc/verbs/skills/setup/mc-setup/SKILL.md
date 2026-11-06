@@ -6,6 +6,8 @@ description: Use this command surface for Project setup and environment preparat
 # Project setup commands
 
 The agent profile sets the model and effort for this run.
+The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
+Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
 
 Each command accepts one JavaScript Object Notation (JSON) object on standard input.
 The immutable run identity supplies your authority.

@@ -34,6 +34,61 @@ func successfulProfileObservation() LiveProviderObservation {
 }
 func profileNoLaunch(string, string) error { return nil }
 
+func TestAgentProfileOperationRegistersCurrentAuthorizationBeforeTheModelRequest(t *testing.T) {
+	for _, outcome := range []string{"succeeded", "failed", "prepare_failed"} {
+		t.Run(outcome, func(t *testing.T) {
+			home, req := profileOperationFixture(t)
+			authorization, err := AgentConnectionAuthorizationIdentity(home, req.Profile.ConnectionID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			prepared, closed, requests := false, false, 0
+			deps := agentProfileOperationDependencies{
+				Launch: profileNoLaunch,
+				PrepareTest: func(connection, current string) (func() error, error) {
+					if connection != req.Profile.ConnectionID || current != authorization {
+						t.Fatal("The model test registered another authorization.")
+					}
+					if outcome == "prepare_failed" {
+						return nil, errors.New("The connection status is unavailable.")
+					}
+					prepared = true
+					return func() error { closed = true; return nil }, nil
+				},
+				Test: func(context.Context, string, RuntimeCatalog, string) (LiveProviderObservation, error) {
+					if !prepared || closed {
+						t.Fatal("The model request ran outside its connection check.")
+					}
+					requests++
+					if outcome == "failed" {
+						return LiveProviderObservation{}, errors.New("The provider returned 401.")
+					}
+					return successfulProfileObservation(), nil
+				},
+			}
+			if _, err := startAgentProfileOperation(home, req, deps); err != nil {
+				t.Fatal(err)
+			}
+			if err := runAgentProfileOperation(home, req.OperationID, deps); err != nil {
+				t.Fatal(err)
+			}
+			result, err := GetAgentProfileOperation(home, req.OperationID)
+			want := outcome
+			if outcome == "prepare_failed" {
+				want = "failed"
+				if requests != 0 || closed {
+					t.Fatal("An unavailable connection check allowed a model request.")
+				}
+			} else if requests != 1 || !closed {
+				t.Fatal("The model test did not close its connection check.")
+			}
+			if err != nil || result.Status != want {
+				t.Fatalf("The model test lost its result: %+v %v", result, err)
+			}
+		})
+	}
+}
+
 func TestAgentProfileOperationRequiresSpendAndDoesNotRepeatRequests(t *testing.T) {
 	home, req := profileOperationFixture(t)
 	calls := 0

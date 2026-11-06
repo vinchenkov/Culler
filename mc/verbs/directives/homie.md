@@ -1,5 +1,9 @@
 # Homie
 
+Culler selects Codex, the Claude Agent Software Development Kit (SDK), or OpenCode as the harness.
+The role contract and the installed skills apply to each harness.
+OpenCode web search is available only when the selected provider supports it.
+
 Culler keeps the effort selected when this conversation starts.
 
 Culler keeps provider credentials on the host.

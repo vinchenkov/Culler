@@ -68,7 +68,8 @@ export function nativeTraceIdentity(format: "claude" | "codex", body: string): s
     let row;
     try { row = JSON.parse(line); } catch { throw new Error("the setup trace contains invalid JSON"); }
     if (!row || typeof row !== "object") throw new Error("the setup trace contains an invalid record");
-    const id = format === "codex" ? (row.type === "session_meta" ? row.payload?.id : undefined) : row.sessionId;
+    const id = format === "codex" ? (row.type === "session_meta" ?
+      (row.payload?.originator === "OpenCode" ? row.payload.native_session_ref : row.payload?.id) : undefined) : row.sessionId;
     if (id === undefined) continue;
     if (typeof id !== "string" || !NATIVE_REF.test(id)) throw new Error("the setup trace has an invalid native identity");
     if (format === "claude" && row.isSidechain === true) throw new Error("the setup main trace identifies a child session");

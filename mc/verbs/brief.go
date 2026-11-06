@@ -341,7 +341,7 @@ func customizationPart(sp *dispatch.Spawn, custom RoleCustomization, conflict st
 }
 
 func credentialPart() briefPart {
-	return briefPart{Heading: "Agent credentials", Explanation: "Culler keeps provider credentials on the host and sets the model and effort through the agent profile. This container uses a temporary Culler token through the host provider proxy."}
+	return briefPart{Heading: "Agent credentials", Explanation: "The agent profile selects the harness, model, and effort; the same role input applies to Codex, Claude, and OpenCode. Culler keeps provider credentials on the host and supplies this container with temporary proxy access."}
 }
 
 func runPart(runID string) briefPart {
