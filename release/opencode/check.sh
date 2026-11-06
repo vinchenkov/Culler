@@ -3,6 +3,8 @@ set -eu
 root=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd -P)
 scratch=${1:?The scratch directory is required.}
 mkdir -p "$scratch"
+# npm requires a physical path when the scratch directory uses a symbolic link.
+scratch=$(CDPATH= cd -- "$scratch" && pwd -P)
 platform=$(uname -s)
 case "$platform:$(uname -m)" in
   Darwin:arm64) package=cli-darwin-arm64 ;;
