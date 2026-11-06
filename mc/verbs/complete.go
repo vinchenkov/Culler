@@ -51,10 +51,9 @@ const maxCorrectionBytes = 1 << 20
 // inlined images where a correction never would.
 const maxEvidenceBytes = 16 << 20
 
-// A deliverable that is not a repository commit — a report, an analysis, a
-// rendered output — is the work itself, so it gets the packet's bound rather
-// than prose's.
-const maxDeliverableBytes = maxPacketRenderBytes
+// A task execution report uses the same artifact size limit as a review packet.
+// The repository commit contains the task deliverable.
+const maxExecutionReportBytes = maxPacketRenderBytes
 
 // A thesis is one paragraph the operator reads in thirty seconds. The
 // bound is prose-shaped rather than generous: a thesis long enough to need
@@ -129,11 +128,11 @@ func requireDurableOutputs(id *RunIdentity, task int64, status, outputs string) 
 		return requireDurableRunArtifact(id, durableArtifactCheck{
 			Flag:    "mc complete --status worked --outputs",
 			Path:    outputs,
-			Max:     maxDeliverableBytes,
-			Why:     "the deliverable must survive the container",
-			Empty:   "an empty file is not a deliverable and not a completion report",
+			Max:     maxExecutionReportBytes,
+			Why:     "the task execution report must survive the container",
+			Empty:   "an empty file is not a task execution report",
 			Gone:    "the output never landed, so the next stage would be handed a path to nothing",
-			Bound:   "deliverable",
+			Bound:   "task execution report",
 			Leaf:    outputLeafForRole(id),
 			Subject: task,
 		}, id.ArtifactPlanes())

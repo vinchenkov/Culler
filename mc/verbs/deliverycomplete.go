@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"mc/domain"
 	"mc/repository"
+	"mc/wiki"
 	"os"
 	"path/filepath"
 )
@@ -26,7 +27,7 @@ func completeDelivery(db *sql.DB, id *RunIdentity, a CompleteArgs) (any, error) 
 	}
 	originalOutput := a.Outputs
 	if a.Outputs != "" && a.Status != "seeded" {
-		snapshot, err := snapshotRunArtifact(id, a.Outputs, maxDeliverableBytes)
+		snapshot, err := snapshotRunArtifact(id, a.Outputs, maxExecutionReportBytes)
 		if err != nil {
 			return nil, err
 		}
@@ -51,10 +52,10 @@ func completeDelivery(db *sql.DB, id *RunIdentity, a CompleteArgs) (any, error) 
 		if subject == nil || *subject != a.Task {
 			return Domainf("the submission requires its assigned task")
 		}
-		var input, base string
+		var input, base, destination string
 		var version sql.NullInt64
-		if err := q.QueryRowContext(ctx, `SELECT r.input_commit,COALESCE(t.base_commit,r.input_commit),r.version_id FROM repository_runs r
-			JOIN tasks t ON t.id=r.task_id WHERE r.run_id=? AND r.task_id=?`, a.Run, a.Task).Scan(&input, &base, &version); err != nil {
+		if err := q.QueryRowContext(ctx, `SELECT r.input_commit,COALESCE(t.base_commit,r.input_commit),r.version_id,r.destination_commit FROM repository_runs r
+			JOIN tasks t ON t.id=r.task_id WHERE r.run_id=? AND r.task_id=?`, a.Run, a.Task).Scan(&input, &base, &version, &destination); err != nil {
 			return err
 		}
 		g := repository.Git{Root: filepath.Join(completionStoreRoot(), "source")}
@@ -81,6 +82,9 @@ func completeDelivery(db *sql.DB, id *RunIdentity, a CompleteArgs) (any, error) 
 			// commit unchanged when that commit differs from the base commit.
 			if commit == base {
 				return Domainf("the submission must be a commit that differs from the base commit %s", base)
+			}
+			if err := wiki.ValidateTaskCommit(ctx, g, input, destination, commit); err != nil {
+				return Domainf("%s", err)
 			}
 			kind := "submission"
 			if a.Checkpoint {

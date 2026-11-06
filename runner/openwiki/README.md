@@ -40,10 +40,13 @@ These terms name the wiki files:
 - A Claim is one fact that a generated page states, together with the source lines that prove the fact.
 - A Claim sidecar is the file under `openwiki/.claims/` that holds the Claims of one generated page.
 - A navigation page is an `index.md` file under `openwiki/`. OpenWiki writes each navigation page.
-- A project document is an original document of the Project under `openwiki/`, such as a research report. A Worker writes it.
+- A project document is an original repository deliverable, such as a research report or specification.
 
-The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages in wiki updates.
-Only the Scribe writes those files, so two tasks cannot conflict in them.
+Only the Scribe maintains `openwiki/`, including its control records, Claim sidecars, generated pages, and navigation pages.
+Every other pipeline role treats the wiki as read-only.
+The Worker commits original project documents outside the wiki through the Project's document conventions.
+The default document location is `docs/`.
+The task's requested format takes precedence over the default text format, Markdown.
 Agents do not combine individual fields from OpenWiki control records.
 
 Project documents follow the normal Git content merge of their task.
@@ -51,38 +54,24 @@ The Worker resolves source and project document conflicts in that task.
 A merge conflict of a wiki commit ends the wiki update as failed.
 The next wiki update does the wiki work again from the accepted commit.
 
-A project document declares `document: true` in its Markdown front matter.
-Its `title` and `type` identify the document.
-A task report also identifies `task_id` and `task_status`.
-Project documents can occupy any visible folder under `openwiki/`.
-Normal page work preserves each document's complete bytes.
+An imported wiki can contain original Markdown documents.
+These documents declare `document: true`, a `title`, and a `type` in their frontmatter.
+They can also identify their original task through `task_id` and `task_status`.
+Normal page work preserves their complete bytes.
 A generated page with a Claim sidecar retains its Claim checks.
 
-For example, a report can declare this metadata:
-
-```yaml
----
-title: Queue latency report
-type: Research
-document: true
-task_id: 42
-task_status: verified
-tags: [queue, latency]
----
-```
-
 Original project documents supply evidence at their authoritative repository paths.
-Claims can cite original documents under `openwiki/` directly.
-Imported documents retain their established paths and formats.
+Generated pages explain original documents outside `openwiki/` and cite their authoritative paths.
+Imported original documents retain their established paths and formats.
 Generated explanations require original evidence and cannot substantiate each other through a cycle.
 Wiki metadata repairs enter a commit before generated page work.
-Project documents remain fixed throughout that work.
+Original documents remain fixed throughout that work.
 
 OpenWiki reserves every `index.md` path for generated navigation.
-Project documents use other filenames.
+Imported original documents use other filenames.
 The host rejects a project document at a reserved path before repository mutations.
 A wiki update fails while a project document occupies a reserved path.
-A task can move that content to another path.
+The wiki update reports the incompatible document and preserves its content.
 
 The completion receipt identifies these facts:
 
@@ -168,10 +157,10 @@ The OpenWiki viewer receives no task controls and no credentials.
 
 Culler keeps task execution artifacts under `.mc-artifacts/` outside Git.
 The repository contains complete deliverables and their necessary local evidence.
-The Worker selects document locations from project conventions, with `openwiki/` as the default.
+The Worker selects document locations outside `openwiki/` from project conventions, with `docs/` as the default.
 The Scribe preserves the body of each project document and each file outside `openwiki/`.
-It maintains wiki metadata and navigation before generated page work.
-The next wiki update after the merge of a task adds each new project document of that task to the navigation pages.
+It maintains metadata and navigation for original documents in imported wikis before generated page work.
+The next scheduled wiki update explains relevant project documents through generated pages that cite the original files.
 
 Task artifacts expire 90 days after task closure and the end of active dependencies.
 Active reviews and incomplete repository cleanup preserve their artifacts.

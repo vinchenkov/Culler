@@ -15,8 +15,8 @@ import (
 func TestArtifactExpiryPreservesActiveReviewAndRepositoryDeliverable(t *testing.T) {
 	f := newDeliveryFixture(t)
 	task := f.add("Create a durable project report")
-	document := "---\ntitle: Report\ntype: Research\ndocument: true\n---\nThe complete project report.\n"
-	f.pass(task, "openwiki/report.md", document)
+	document := "# Report\n\nThe complete project report.\n"
+	f.pass(task, "docs/report.md", document)
 	f.merge(task, "prepare")
 	now := time.Now().UTC()
 	if plan, err := ArtifactExpiryPlan(f.db, nil, now); err != nil || plan.TaskID != 0 {
@@ -75,7 +75,7 @@ func TestArtifactExpiryPreservesActiveReviewAndRepositoryDeliverable(t *testing.
 			t.Fatalf("artifact remains: %s %v", name, err)
 		}
 	}
-	if srcGit(t, f.workspace, "rev-parse", "main") != commit || srcGit(t, f.workspace, "show", "main:openwiki/report.md") == "" {
+	if srcGit(t, f.workspace, "rev-parse", "main") != commit || srcGit(t, f.workspace, "show", "main:docs/report.md") == "" {
 		t.Fatal("expiry changed the repository deliverable")
 	}
 	state, err := artifactState(context.Background(), f.db, task, plan.Paths[0])

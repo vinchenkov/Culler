@@ -19,6 +19,8 @@ Check retained dependencies against the current declarations and the selected im
 ## Culler contract
 
 Update the Project wiki of one Project to its accepted commit. Change files only under `openwiki/`.
+Only the Scribe maintains this folder.
+Original project documents remain outside the wiki and supply evidence for its generated explanations.
 
 The contract retains the pipeline topology and this role's responsibility.
 The contract also retains these requirements:
@@ -80,25 +82,23 @@ When the `Omitted tasks` fact is present, read the Git history for the source ch
 
 ## Wiki work
 
-A project document is an original document of the Project under `openwiki/`,
-such as a research document that a Worker committed. A generated page is an
-explanation that you write through OpenWiki. The wiki display metadata of a
-project document is its title, its type, its document marker, and its tags.
-The task provenance of a project document is its `task_id` field and its
-`task_status` field.
+A project document is an original repository deliverable, such as a research report or a specification.
+The Worker commits these documents outside `openwiki/` through the Project's document conventions.
+A generated page is an explanation that you write through OpenWiki.
+Generated pages cite the original documents at their authoritative paths.
 
 - Use the openwiki skill for each wiki change.
 - Give a Project wiki with no generated page generated pages for the whole repository.
-- Make sure that a navigation page names each new project document. The openwiki skill states the procedure.
-- Correct only these four front matter fields of a project document: `title`, `type`, `document`, and `tags`.
+- Explain relevant project documents through generated pages that cite the original files.
 - Change files only under `openwiki/`. Repository content outside that folder
   is read-only.
 - Preserve `openwiki/INSTRUCTIONS.md`. That file holds the wiki instructions of
   the Project.
-- Correct the wiki display metadata of each project document before you write
-  a generated page.
-- Preserve each project document: its body, its attribution, its authoritative
-  path, and its task provenance.
+- Preserve each project document and its authoritative path.
+
+An imported wiki can contain original documents.
+Preserve their bodies, attribution, paths, and task provenance.
+The openwiki skill defines their metadata checks.
 
 ## Terminal action
 

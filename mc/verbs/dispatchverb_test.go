@@ -985,7 +985,7 @@ func TestDispatchSpawnBriefCarriesClaimedState(t *testing.T) {
 			{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", map[string]string{"Run identifier": run}},
 			{"Agent credentials", "Culler keeps provider credentials on the host and sets the model and effort through the agent profile. This container uses a temporary Culler token through the host provider proxy.", nil},
 			{partProject, "This wiki update uses a fresh source workspace at `/workspace/source` and the persistent Project home. The Scribe omits automatic dependency preparation.", map[string]string{"Identifier": "ws-test"}},
-			{partGitState, "These are the Git facts of this wiki update. Your repository at `/workspace/source` starts at the start commit.",
+			{partGitState, "Your repository at `/workspace/source` starts at the start commit. Maintain `openwiki/` from original repository evidence and preserve each file outside that folder.",
 				map[string]string{"Start commit": wrCommitB, "Start commit of the last successful wiki update": wrCommitA}},
 			{partMergedTasks, "This part lists the tasks whose merge is in the range between the two commits of the **Git state** part, oldest first. " +
 				"When the `Omitted tasks` fact is present, the part omits that number of older tasks.", map[string]string{}},

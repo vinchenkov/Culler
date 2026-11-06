@@ -51,8 +51,8 @@ Culler then checks the wiki commit. A failed check ends the run and ends the wik
 - the start commit is an ancestor of the wiki commit;
 - each changed path is under `openwiki/`;
 - the file `openwiki/INSTRUCTIONS.md` is the same as in the start commit;
-- each project document is the same as in the start commit, except the fields `title`, `type`, `document`, and `tags`;
-- each project document of the wiki commit is a project document of the start commit;
+- each original document under `openwiki/` preserves its content, except the fields `title`, `type`, `document`, and `tags`;
+- each original document under `openwiki/` exists in the start commit;
 - each entry under `openwiki/` of the start commit and of the wiki commit is a regular file;
 - each path under `openwiki/` of those two commits holds no backslash and no line break;
 - each wiki file that the wiki commit changes has no executable permissions;
@@ -62,9 +62,12 @@ Culler then checks the wiki commit. A failed check ends the run and ends the wik
 
 ## Project documents
 
-Integrate each project document through links and generated pages. Change only the wiki display metadata of a project document.
+Original project documents reside outside `openwiki/`.
+Integrate relevant project documents through generated explanations that cite their authoritative paths.
+Preserve each original file and its format.
 
-An original document outside `openwiki/` stays read-only. A generated page can link to its path.
+An imported wiki can contain original documents.
+Change only their wiki display metadata through the openwiki skill.
 
 ## Evidence
 
@@ -72,7 +75,8 @@ A Claim states one factual property that evidence can confirm or refute. The ope
 
 ## A substantive error in a project document
 
-Do not correct the body of a project document. A Worker corrects it in a task.
+Do not correct the body of a project document.
+A Worker corrects original documents outside `openwiki/` in a task.
 
 ## A run that cannot give a result
 

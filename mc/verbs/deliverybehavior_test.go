@@ -215,11 +215,13 @@ func TestDeliveryAllocationSurvivesAnInterruptedRepositoryCopy(t *testing.T) {
 }
 
 func TestKnowledgeDeliveryUsesRepositoryAcceptance(t *testing.T) {
-	for _, name := range []string{"openwiki/research/competitors.md", "docs/research/competitors.md"} {
+	for name, body := range map[string]string{
+		"docs/research/competitors.md": "# Competitor report\n\nThe report preserves its original sources and conclusions.\n",
+		"kb/research/competitors.html": "<html><body>The report preserves its original sources and conclusions.</body></html>\n",
+	} {
 		t.Run(name, func(t *testing.T) {
 			f := newDeliveryFixture(t)
 			task := f.add("Create a complete competitor report")
-			body := "---\ntitle: Competitor report\ntype: Research\ndocument: true\n---\n# Competitor report\n\nThe report preserves its original sources and conclusions.\n"
 			f.pass(task, name, body)
 			before := srcGit(t, f.workspace, "rev-parse", "main")
 			f.merge(task, "prepare")

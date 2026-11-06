@@ -86,22 +86,33 @@ Worker edits require another Verifier assessment, another report, and another ap
 
 ## Project knowledge and task artifacts
 
-The Worker commits complete reports and other knowledge work directly at their authoritative paths.
+The Worker commits requested reports and original project documents outside `openwiki/`.
 A new document follows the established convention for that document type.
-The default location is `openwiki/` when the project supplies no clear convention.
+The default location is `docs/` when the Project supplies no clear convention.
 A document revision preserves its path unless the task authorizes a move.
-Imported documents retain their established formats.
+The task's requested format takes precedence over the default text format, Markdown.
+The commit includes the document's required local assets and evidence.
 
-The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages in wiki updates.
+Only the Scribe maintains `openwiki/`.
+Every other pipeline role treats the wiki as read-only.
+Task submissions and checkpoints preserve the assigned wiki or the accepted wiki from an incorporated destination commit.
+The native executor rejects a task merge candidate that changes the destination wiki.
+Git can carry accepted wiki updates during a merge repair.
+These checks enforce the role rule; task containers retain their normal repository mounts.
+The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages on its schedule.
 The [OpenWiki integration guide](runner/openwiki/README.md) defines these wiki files.
 
-The Scribe maintains wiki display metadata before generated page work.
-It preserves original content and attribution.
-Generated explanations cite original documents directly, including original documents under `openwiki/`.
-A project document is an original document under `openwiki/` whose front matter declares `document: true`.
-The next wiki update after the merge of a task adds each new project document of that task to the navigation pages.
+Generated explanations cite original project documents at their authoritative repository paths.
+The Scribe preserves each original document outside the wiki.
+An imported wiki can contain original documents with `document: true` frontmatter.
+The Scribe preserves their content, attribution, paths, and task provenance.
+The wiki supplies generated explanations; new original project knowledge remains available without it.
 
 The `.mc-artifacts/` folder stores operational records across runs and reviews.
+Task execution reports describe the work, its checks, and completion evidence.
+They remain task artifacts even when a task requires a completion report.
+Requested reports that supply the task's substantive result are repository deliverables.
+The Worker creates no project document solely to record completion or satisfy the commit requirement.
 The repository stores complete deliverables and their necessary local evidence.
 Artifacts expire 90 days after task closure and the end of active dependencies.
 Active reviews retain their artifacts.

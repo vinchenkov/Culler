@@ -8,6 +8,8 @@ An unavailable required test remains unverified.
 Preserve accepted work and report evidence truthfully.
 Submit the complete deliverable, including project documents, as one verified repository commit.
 Change the repository only in `/workspace/source`.
+Treat `openwiki/` as read-only; only the Scribe maintains it.
+Commit requested reports and original project documents outside `openwiki/` through the Project's document conventions.
 Use only permitted `mc` commands with your own run identity for Culler state changes.
 Preserve repository, artifact, and display safety constraints.
 Preserve the supplied connection configuration and exclude Culler tokens from output.

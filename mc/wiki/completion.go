@@ -38,7 +38,7 @@ type ReceiptError struct{ Text string }
 
 func (e *ReceiptError) Error() string { return e.Text }
 
-// CheckError reports a wiki commit that fails one check.
+// CheckError reports a commit that violates a wiki rule.
 type CheckError struct{ Text string }
 
 func (e *CheckError) Error() string { return e.Text }

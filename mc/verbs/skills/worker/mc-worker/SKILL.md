@@ -14,6 +14,7 @@ Your checkout starts at the Start commit when that fact is present.
 The base commit is where the first Worker run started.
 Without a Base commit fact, the initial HEAD is the base commit.
 The start commit is the checkpoint, else the last submitted commit, else the base commit.
+The project-wiki skill defines document locations and the Scribe's sole authority over `openwiki/`.
 
 ## Task terminal
 
@@ -28,6 +29,9 @@ Before submission, run these checks:
 2. Read `git -C /workspace/source rev-parse HEAD` and pass that exact full lowercase identifier as `<full HEAD sha>`.
 3. HEAD must be the start commit or its descendant.
 4. HEAD must differ from the base commit.
+5. The commit must preserve `openwiki/` from the start commit or an incorporated destination commit.
+
+Culler rejects task-authored wiki changes at submission and before merge acceptance.
 
 A start commit that meets these conditions and all criteria needs no new commit.
 Fix a refused submission before another attempt.
@@ -82,7 +86,8 @@ A **Merge candidate** part identifies the submitted commit, destination commit, 
 Read both changes at each conflict path.
 When both intents can hold, merge the destination commit into your work and resolve each conflict.
 Preserve both merge inputs and commit no conflict markers.
-Preserve complete Project documents and one consistent set of accepted OpenWiki control records.
+Preserve complete Project documents and the accepted wiki from the destination branch.
+Do not resolve wiki conflicts through edits; report the conflicting paths through the operator decision terminal.
 When the intents contradict, keep the work unchanged and use the operator decision terminal.
 Name each conflict path and both intents.
 Apply any conflict decision in the Task description.

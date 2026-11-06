@@ -84,6 +84,10 @@ func wikiCandidateCheck(ctx context.Context, candidates repository.Git, c reposi
 	return "", err
 }
 
+func taskWikiCandidateCheck(ctx context.Context, candidates repository.Git, c repository.Candidate) error {
+	return wiki.ValidateTaskCommit(ctx, candidates, c.DestinationCommit, c.DestinationCommit, c.Commit)
+}
+
 // retainedRef names the reference that retains one commit of the run:
 // refs/mc/tasks/<id>/<kind>/<run_id> for a task, and
 // refs/mc/wiki/<kind>/<run_id> for a wiki update.
@@ -313,6 +317,8 @@ func executeRepository(ctx context.Context, e RepositoryEnvelope) (RepositoryRes
 					r.Status, r.OperatorAction = "operator-attention", check
 					return r, nil
 				}
+			} else if err := taskWikiCandidateCheck(ctx, candidateRepository, *e.Candidate); err != nil {
+				return r, err
 			}
 			r.RetainedRef = e.retainedRef("candidates")
 			if err := g.Retain(ctx, root, e.Candidate.Commit, r.RetainedRef); err != nil {

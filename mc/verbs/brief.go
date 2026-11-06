@@ -374,7 +374,7 @@ func buildScribeBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string
 	}
 	git := briefPart{
 		Heading:     partGitState,
-		Explanation: "These are the Git facts of this wiki update. Your repository at `/workspace/source` starts at the start commit.",
+		Explanation: "Your repository at `/workspace/source` starts at the start commit. Maintain `openwiki/` from original repository evidence and preserve each file outside that folder.",
 		Facts:       []briefFact{{"Start commit", in.Repository.InputCommit}},
 	}
 	last := state.LastSucceeded
@@ -699,7 +699,7 @@ func addGitStateParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn,
 		}
 	}
 	if len(facts) > 0 {
-		explanation := "These are the Git facts of this work."
+		explanation := "These Git facts identify the task repository; `openwiki/` is read-only and original documents belong outside it."
 		switch {
 		case role == dispatch.RolePackager:
 			explanation += " The Files changed view of the dashboard shows the commit identifiers and the complete diff to the operator."
@@ -751,7 +751,7 @@ func loadBriefDelivery(ctx context.Context, q Q, task int64) (briefDelivery, err
 
 func addArbiterParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn) error {
 	b.Parts = append(b.Parts, projectPart(sp.Project,
-		"This is the Project that you select work for. Read its committed source files and project knowledge at the repository copy."))
+		"Read this Project's committed source files and knowledge at the read-only repository copy. Proposed document deliverables belong outside `openwiki/`, which the Scribe maintains."))
 	pool := make([]briefBoardRow, 0, len(sp.ProposedPool))
 	for _, id := range sp.ProposedPool {
 		task, err := loadBriefTask(ctx, q, id)
@@ -795,7 +795,7 @@ func projectPart(project, explanation string) briefPart {
 
 func addProposeParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn) error {
 	project := projectPart(sp.Project,
-		"Propose task behavior with criteria that agents can check in a container, without whole-suite success requirements. Read the committed files of this Project at the repository copy.")
+		"Read this Project's committed files at the read-only repository copy. Propose repository deliverables outside `openwiki/` with criteria that agents can check in a container.")
 	b.Parts = append(b.Parts, project)
 
 	// A blocked proposal stays in this list: it dispatches to nobody, so it is

@@ -9,19 +9,18 @@ The Model Context Protocol (MCP) server supplies six host operations.
 The authenticated harness supplies all model inference.
 The OpenWiki process receives no provider credentials.
 
-Wiki metadata repairs precede generated page work.
-Project documents use `document: true`, a title, and a descriptive type in their Markdown frontmatter.
-Project documents use filenames other than `index.md`.
-A task report also identifies its original task and task status.
-Generated explanations use the Claim workflow below.
-Project documents receive separate format and link checks.
-Preserve the body, the attribution, the path, and the task provenance of each project document.
+Original project documents reside outside `openwiki/` and follow the Project's format and metadata conventions.
+Generated explanations cite those original files through the Claim workflow below.
 Repository content outside `openwiki/` remains read-only.
 
-Original documents supply evidence at their authoritative repository paths, including paths under `openwiki/`.
-Generated Claims cite those documents directly.
+An imported wiki can contain original Markdown documents.
+Those documents use `document: true`, a title, and a descriptive type in their frontmatter.
+Their filenames differ from `index.md`.
+OpenWiki checks their format and links separately from generated Claims.
+Correct only their `title`, `type`, `document`, and `tags` fields before generated page work.
+Preserve their bodies, attribution, paths, and task provenance.
 Commit each wiki metadata repair before you call `openwiki_begin`.
-Project documents remain fixed during generated page work.
+Imported original documents remain fixed during generated page work.
 The setup preserves repository automation and user instructions.
 It adds no separate automatic wiki workflow.
 
@@ -36,13 +35,13 @@ The optional `language` field accepts a language code, such as `en`.
 The optional `force` field bypasses update detection.
 OpenWiki uses a universally unique identifier (UUID) for each run and page job.
 A `noop` result confirms that generated pages require no update.
-Culler still checks project documents and refreshes their navigation.
+Culler still checks imported original documents and refreshes their navigation.
 The wrapper writes the completion receipt after those checks succeed.
 
 A `noop` result with no changed file needs no commit.
-OpenWiki adds each project document to a navigation page in each run, also for a `noop` result.
+OpenWiki adds each imported original document to a navigation page in each run, also for a `noop` result.
 Do not edit an `index.md` file.
-Before the commit, make sure that a navigation page names each new project document.
+Explain new project documents outside `openwiki/` through generated pages that cite their authoritative paths.
 
 ## Initialization scope
 

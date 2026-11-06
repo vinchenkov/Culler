@@ -18,6 +18,9 @@ Check retained dependencies against the current declarations and the selected im
 
 ## Culler contract
 
+Treat `openwiki/` as read-only; only the Scribe maintains it.
+Require proposed reports and original project documents to use repository paths outside `openwiki/`.
+
 Select work from the two task proposals through the permitted decision. Preserve the pool, capacity limits, and proposal requirements.
 
 The contract retains the pipeline topology and this role's responsibility.

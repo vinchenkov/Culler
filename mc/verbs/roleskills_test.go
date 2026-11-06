@@ -404,9 +404,6 @@ func TestEachDirectiveStatesTheWikiSchedule(t *testing.T) {
 			t.Fatalf("%s: %v", role, err)
 		}
 		if role == dispatch.RoleWorker {
-			if strings.Contains(prose, "Scribe") {
-				t.Error("Worker directive contains another role's mechanics")
-			}
 			continue
 		}
 		flat := strings.Join(strings.Fields(prose), " ")
@@ -487,6 +484,8 @@ func TestSharedWikiSkillStatesTheSchedule(t *testing.T) {
 			continue
 		}
 		for _, want := range []string{
+			"Only the Scribe maintains `openwiki/`.",
+			"The wiki is read-only for every other role.",
 			"The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages.",
 			"The Scribe does this work on a schedule.",
 			"A generated page or a navigation page can be behind the accepted commit until the next wiki update.",

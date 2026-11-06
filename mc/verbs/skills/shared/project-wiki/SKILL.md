@@ -3,9 +3,9 @@ name: project-wiki
 description: Read and preserve project knowledge at its authoritative repository paths.
 ---
 
-OpenWiki supplies the code map and access to the project knowledgebase.
-The knowledgebase includes complete project documents and generated explanations.
+Project knowledge resides in source files, tests, and original project documents.
 Each document has one authoritative repository path.
+OpenWiki supplies generated explanations and navigation to that knowledge.
 Generated explanations cite original evidence directly.
 Source files and tests establish implemented behavior.
 Approved documents establish intent and decisions.
@@ -15,12 +15,22 @@ Read `openwiki/` from that repository when the Project has a wiki.
 Current repository evidence takes precedence over a generated page.
 Proposed intent remains distinct from accepted decisions and verified behavior.
 
-The Worker uses this priority for document locations:
+Only the Scribe maintains `openwiki/`.
+The wiki is read-only for every other role.
+The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages.
+The Scribe does this work on a schedule.
+A generated page or a navigation page can be behind the accepted commit until the next wiki update.
+The Scribe preserves each file outside `openwiki/`.
+
+Original project knowledge remains available when the generated wiki is absent.
+
+The Worker commits requested reports and other original project documents outside `openwiki/`.
+Use this priority for document locations outside the wiki:
 
 1. An explicit task requirement identifies the destination.
 2. A revision preserves the document's authoritative path.
 3. A new document follows the established project convention for its document type.
-4. An unclear convention selects an appropriate folder under `openwiki/`.
+4. An unclear convention selects an appropriate folder under `docs/`.
 
 Project instructions and comparable current documents establish a convention.
 Project navigation provides additional evidence.
@@ -29,25 +39,16 @@ Imported projects preserve their authoritative document paths and established fo
 An explicit task can authorize a move.
 Routine wiki maintenance preserves those paths.
 
-The Worker commits complete knowledge work directly at its intended repository path.
-A new Project uses `openwiki/` by default.
-Markdown supplies the default text format.
-Original Markdown documents under `openwiki/` declare these fields:
-
-- `document: true` identifies an original project document.
-- `title` identifies its subject.
-- `type` identifies its document type.
-- `task_id` identifies the original task for a task document.
-- `task_status` identifies that task's actual status at this version.
-
+The task's requested format takes precedence over the default text format, Markdown.
+Commit the complete document and its required local assets.
 Original documents preserve attribution and relevant source dates.
-OpenWiki owns generated `index.md` files and its control records.
-Original documents use other filenames.
-The Scribe maintains the control records, the Claim sidecars, the generated pages, and the navigation pages.
-The Scribe does this work on a schedule.
-A generated page or a navigation page can be behind the accepted commit until the next wiki update.
-The Scribe preserves the body of each project document and each file outside `openwiki/`.
+Project documents follow their own format and metadata conventions.
 The Verifier returns substantive document errors to the Worker.
+
+An original project document is a task deliverable or preserves knowledge necessary for later Project work.
+A task execution report describes the work, its checks, and its completion evidence.
+An execution report belongs in task artifacts even when the task requires that report.
+Do not create a project document solely to record task completion or satisfy the commit requirement.
 
 The repository contains durable deliverables and their necessary local evidence.
 An attributed external reference can supply independently available evidence.

@@ -22,6 +22,8 @@ Verify every acceptance criterion and new or changed test against the submitted 
 Assess broad checks for regressions from the task's changes.
 Report concrete evidence and a truthful verdict.
 Preserve repository and verdict constraints.
+Treat `openwiki/` as read-only; only the Scribe maintains it.
+Check requested reports and original project documents in the submitted commit outside `openwiki/`.
 
 The contract retains the pipeline topology and this role's responsibility.
 The contract also retains these requirements:

@@ -18,6 +18,8 @@ Check retained dependencies against the current declarations and the selected im
 
 ## Culler contract
 
+Treat `openwiki/` as read-only; only the Scribe maintains it.
+
 Produce a truthful review packet from durable records. Preserve decision evidence, material behavior, risks, and verification results. Preserve the self-contained Hypertext Markup Language (HTML) format and display safety constraints.
 
 The contract retains the pipeline topology and this role's responsibility.

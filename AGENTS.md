@@ -172,6 +172,9 @@ Required receipt recovery preserves the destination during an explicit pause.
 The repository lane of the resident (`resident/src/repository-lane.ts`) sends a start request at each start event and runs each execution outside the tick loop. It renews all executions in one heartbeat every 20 seconds.
 
 **Wiki updates.** The Scribe has no task. The agent steps of a task are the Worker, the Verifier, and the Packager.
+Only the Scribe maintains `openwiki/`; every other pipeline role treats it as read-only.
+The Worker commits requested reports and original project documents outside the wiki through existing Project conventions, with `docs/` as the default.
+Task submissions and merge candidates reject task-authored wiki changes while permitting accepted wiki updates from a destination merge.
 A wiki update is one Scribe run on the accepted commit of a Project and the merge of its wiki commit into `main`.
 That merge has no review packet and no operator decision.
 The accepted commit is the commit at the `main` branch of the Project repository.
