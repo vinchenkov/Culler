@@ -107,28 +107,28 @@
       "completedRunId": "0f161b40-6ab8-44c1-a851-f876ec09357c"
     },
     "/openwiki/operations/install-and-deployment.md": {
-      "pageVersion": "sha256:42cbd1a59dce8d08850c02de6d7ffc339e197eead6fabd81fbb7dcdeb2159b71",
+      "pageVersion": "sha256:09688633c9c18876d0793a6af72d9da4e8e0b01b5a4efcd6ace0251842b8f0fc",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
       "sourceFingerprint": "sha256:68f48f8f08af302e6fa817024861bb6e64c41c64fe1945368f9f7d82c5f95668"
     },
     "/openwiki/operations/release-security.md": {
-      "pageVersion": "sha256:a7a45e9539063d2c111d8062b56deac831314c84794858a027a36cadbbe8b70f",
+      "pageVersion": "sha256:83efc498296f20c15907618ac0aafb3cf5dabe863c90c587b34e58a0d2f6b22d",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
       "sourceFingerprint": "sha256:68f48f8f08af302e6fa817024861bb6e64c41c64fe1945368f9f7d82c5f95668"
     },
     "/openwiki/quickstart.md": {
-      "pageVersion": "sha256:bd93883906893c5db0c6b81c8fd773466b9f6465a0bcad52825344686677f270",
+      "pageVersion": "sha256:9b3659b1ce2d1802fb04c8a524a23529caac76321cd0f9b36d4b4ee4ccb262a5",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",
       "sourceFingerprint": "sha256:68f48f8f08af302e6fa817024861bb6e64c41c64fe1945368f9f7d82c5f95668"
     },
     "/openwiki/tests/checks-and-test-lanes.md": {
-      "pageVersion": "sha256:bd13f3eca221c48436c55514c75439f4dc4240bf7b648231dd3f203feaa51cd2",
+      "pageVersion": "sha256:1770f522cfd99c6e5afa115476d6bce7db3adc17cd82fdb498d5dee2fa7da4f9",
       "completedBy": "culler-scribe",
       "completedRunId": "4c278035-05e8-490d-a3a5-f2fb2f3b3a14",
       "gitHead": "e9e6cfe0a7a0196593c6e1e94f4026a31af01552",

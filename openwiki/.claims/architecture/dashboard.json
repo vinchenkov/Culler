@@ -829,7 +829,7 @@
       "statement": "The dashboard-browser continuous integration job runs the complete browser suite through dashboard/smoke.sh.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L220-L280",
+          "resource": "repo://.github/workflows/release.yml#L194-L254",
           "version": "repo-lines-v1:sha256:86297e1cb1f65a6fef6ccc5ef2045abad7981d538f120beefe92d0d058df7ae5:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNzkyMTE0NTlkNDk0YTI5NzNhNGNlOTNiN2Q4MGI2MzAzYzUxMTk1MDM2ODAxYmM2M2UyZDllNTgxYTFhYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxNzE3MjFjNzAzZDE2N2ZlNDJjODU3ZTgzOWEwNWU4YjZlZjRlODk0MDAyMzA0YjMwOWYyNDY3YmNlMWYzMTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4MTk2NjczZTI2MTVlNjA3Mjc0YjRkNzRkOGQyNzExMmIyY2E4Y2IyYzNiZDk0NDhlMWMzZWQ3ZTFmNWE4MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjNzk0NTY4ZmE5N2Q0ZGEwMjg2M2Y2MDJiOWU3ZDZkYTJjOWM3Njg0NmZiNWNkN2IwNWFkMjY2OWVjOTIzMmIifQ"
         }
       ]
@@ -1543,7 +1543,7 @@
       "statement": "The dashboard-browser job sets MC_SMOKE_ROOT below the short RUNNER_TEMP/smoke path.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L239-L247",
+          "resource": "repo://.github/workflows/release.yml#L213-L221",
           "version": "repo-lines-v1:sha256:7ec0624a5b17a1b9dbdbcd9d051bb60e68c2d0724083bc74523b42d6fbfe0f91:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjYwZGRjMDQzOWMxYzE5NjRmODBjMzIzYTRkMzViZjVkZDAwYjg0MzU5N2I5MTM0MTRmNjFiM2Y5NmIwZDhkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxNGQxZDA1MjA2NTBjM2ViYjY5Mzg1YjhlMWNmNDljNzM2MmUyMTVhNWZiZTU4YWVlMmQ4Y2ViYTIwYWE3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE1OGJlNGNjYzUzYzE0YmVlMGJhZWVjOGUzN2UyOGJjY2FjNzFlMjYxZDdhOTljMjRmNjVjNTNiNzUyNDhmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNiOWYzMGY4NWIyYzU3ZGVhOTRlMjhkNGFkMzVkODIxMjVhYjljZDA3MGZkNjA4ZTU5MWEyYjA3ODA0NmYwZSJ9"
         }
       ]

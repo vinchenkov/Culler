@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bd13f3eca221c48436c55514c75439f4dc4240bf7b648231dd3f203feaa51cd2",
+  "pageVersion": "sha256:1770f522cfd99c6e5afa115476d6bce7db3adc17cd82fdb498d5dee2fa7da4f9",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -71,7 +71,7 @@
       "statement": "The CI fast suite runs ten component checks and rejects non-mc logs without a positive pass count.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L137-L148",
+          "resource": "repo://.github/workflows/release.yml#L111-L122",
           "version": "repo-lines-v1:sha256:d0f9ef2f04dd302fe7cf41eaafafb38f76d105e96bd481c1a2dfdfb00adb23b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MGU4MjRlOWM3ZTlhZWZlYTYyZWI5YWQ4NTczMmYxNzhmZTUwNTU0MDcxZDNlNjQ2OTQxMWIwZWU4OWE4OWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MTMzM2RmNjZkNTk1YzYyMjM3NDEyZTdkMTYwN2I1Y2ZiMDExNDdmMGYzYTlkYjdiN2FjNGU3MjljNDNkMjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmOTI2OGI1NThjMGJkZWY3MTY1Mzk2MDVjZDc4MGJhNTVjMDY0YjM2ODMxNDE3YzBjM2I4NjI5ODdiZTJhMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjNDgzN2RiYzQxMDRhZmY5YWYwOGNmZjVkMjQ2NWIyNzk1ZjUwOGEwNWUxZTgwYWJhODQ2MzdlNjVlZmVmYjIifQ"
         }
       ]
@@ -81,7 +81,7 @@
       "statement": "The fast suite job runs ./release/check.sh before it builds the application package.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L149-L158",
+          "resource": "repo://.github/workflows/release.yml#L123-L132",
           "version": "repo-lines-v1:sha256:d50747deb79ce051207a72a3710ce953a6cf8e80432324e728c3c09c59979622:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlY2MwM2VjNzBhMWU5ODY3ZDJkMmIyZWE1YTE4ODcwMTMzZDI0MWQxODUxODY3NTgwMDJkOTVkOGJmYzhiZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjU2ZTJkMzQyYWQyNGU1MTEwZDRiNGNjNjI5NjgwMzBlYzI0NzMzYzM4MjhhOWIzZjgxN2RkOTAwNzE1ZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwYWU5ODE5MmMwZmU0YmRjZGI5ZTZjMTI1MTQwOTAxYWVjNDI1Y2MyNmRmNmFjYTRmMmM5ZmVmNzQwNzk2ZjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YWYxOGI0NDBlMTFmNjk4NzNlZjlkZDQyZmE3Njc2MTExYzg1Y2RmYjk2MDI4YTE4Mzg4YjVlMmVhYjE5YzgifQ"
         }
       ]
@@ -91,7 +91,7 @@
       "statement": "The deployment-linux CI job runs the portable deployment tests with -count=1 and the Linux filesystem guard tests in substrate.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L214-L224",
+          "resource": "repo://.github/workflows/release.yml#L188-L198",
           "version": "repo-lines-v1:sha256:538e610290f2839ccea0e87b178c76b9cb54b77110ef6714641ac0644a84fe46:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxNmEwYWY4NWI1NGZkOTg2OWU3OGE4MTZiNTY3OTkyZTRlMTE5NDk0NGYzNzcyNDVlMTA5OWUyOWE1OWNiOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNTU5NzljZTczMDIwMzNlNmIyZmQ3ZDg4ZjUzN2EzYjhlMDkxZWEzMDVjODExZmZhMTI3NGJmNTc2NGVhNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3ZDUzYTBhNThkMGI4MmU5MTdmOTFhMDU0MTRiM2YxYzI2NjQ3OGU3OTEzYWRiODAzNzdmMGI4NDkxYTExODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMzI2MGQ0NWVhOTQ4OGNjZmEwYmIxMzE5Mjc1OTkzYmVlYzgyN2U2ZjhhZWJmZjgwMmVkNjU2ZTZkNWI3YWIifQ"
         }
       ]
@@ -189,7 +189,7 @@
       "statement": "The Linux CI job fails if the production filesystem guard checks report any UNVERIFIED test.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L216-L224",
+          "resource": "repo://.github/workflows/release.yml#L190-L198",
           "version": "repo-lines-v1:sha256:f1262f489d91abf7bdf3c12df9dff25f72e6785dd80bf0a97e1466a12269b51b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNiNDRkMGQxOTJkMDk2YTgzMjI5NmFkODQ5ZmJiYzZiMjY5NWNhNzdjNWVhNjlmZTE1ZGNmN2E4YTVmMmFmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmY1NTk3OWNlNzMwMjAzM2U2YjJmZDdkODhmNTM3YTNiOGUwOTFlYTMwNWM4MTFmZmExMjc0YmY1NzY0ZWE1ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGJkMDY2N2I5M2YyN2MxMTk3NjRmMTJkZGVkYmZjMTc3NzI4NWFjODRhZjcyYzFhNDcwNzI3ZmI3NGE4YjA2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmEzMjYwZDQ1ZWE5NDg4Y2NmYTBiYjEzMTkyNzU5OTNiZWVjODI3ZTZmOGFlYmZmODAyZWQ2NTZlNmQ1YjdhYiJ9"
         }
       ]
@@ -269,7 +269,7 @@
       "statement": "The CI browser job installs Playwright from the default Project image lock file and installs its matching Chromium.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L261-L271",
+          "resource": "repo://.github/workflows/release.yml#L235-L245",
           "version": "repo-lines-v1:sha256:21323513a13a4674ee3699ad94455c4f5381ca115ae1fbd5e6708ba87780e665:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNWViYTUyNjY3OTNlY2Y2ZDkwN2JhODM5ZTRlNzdkMmRjMjRmODAyZThmMDA5ZmM2MThkZGYzNTkxMTNlNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ODA2MDg3M2ZjODgzYWFiOTZiOWQ1YmZiNmI3Y2Y2ZjA1MTc5MmNlZTc2ODZlYTgyYjNiZDQ2ZjA5NWIyYTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYWQ3NzlmYTBjNjQ2YmRmNDQwNzhiNjg2MTE0YTFmYTI3MDRhMTY1YjE5ZTQzODA2N2IwOWY5NmJjNDI3ZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4NDg3ZTM5ZWUyNjlkMzQyMGQ1OWY0YTYxYTZkYTY4MDRhMTE0YzU3Y2FjMGZjMGY1N2NiNWY2NDlmOWNiODIifQ"
         }
       ]
@@ -289,11 +289,11 @@
       "statement": "The published release record requires five checks, while the workflow requires dashboard-browser before both publication jobs.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L456-L459",
+          "resource": "repo://.github/workflows/release.yml#L430-L433",
           "version": "repo-lines-v1:sha256:ad59052ee3a8e2b7f431ee2adb15e22457ed889b1a04399278d67b111128f2e6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGFlNWVlNGY4YTI2Y2VlZWM0ZGMzY2QwYmE5OTA1YmEyZmExZjlhOGNmYTQ0NWFjZjdlZjQ0OTNmMGZhZDAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmYyMjQ0ZmRiYjE2MTQ2ZDVmN2FmMzljNzg4MWEzNGQ2YTU4MjI4MDgyZjBjYWFlODdkYjk0ZjQ3MjY4ZmQ0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjFjMjZlOThhNjM3NjY3ZTY3MDY4MDFhOGUyODQ5ZWRmYmNhZDczNWQ1YzVhMGQ3OGYxNTdhMzNlNjEyZWEwZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDZmMTQxZmI1MzVjMjI2ZjQ4NzNhOWQyNTNhOTE3ODkxMWZjMTBkNjhlODQ3MDdmNDE5NjNiYTliOTE0OTJhZiJ9"
         },
         {
-          "resource": "repo://.github/workflows/release.yml#L521-L524",
+          "resource": "repo://.github/workflows/release.yml#L495-L498",
           "version": "repo-lines-v1:sha256:cb4ad16fb5b04036d174f50c0ecdc2027f145642a3a350ebd104ece5d5001b8a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg3ZjIxOGVkOTc4OGE4MTdlZjc4YzI1MzQyMTNjNTIyZjA3YjU5YzI1ODZkMTQzMTU0ODdmOWIzNmE5OGE4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmNkYTFiMmFhNzBlZTBhY2M1ZDBkMjllMGIwNDFjYjIxMGZmNmExMDM2YmU5N2VkZjYxMDUyYWMwOThhM2UxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIzM2UyZGUzMjc1ZWU0M2M1NTgzMDhiNzdjYzA3MzNjNjc0NjViZDU5MzZjMDBjYTUzMGYxMWI0NjAwYzllNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTU4MDhjMmQ5ZjQ0NjVkZGQ4MTE2OGFjYjMwYTUzZWYzMWQ0OThhMThkNzhlNjkyNWVmM2I0YjJkMDNiMGE2MyJ9"
         },
         {
@@ -304,11 +304,11 @@
     },
     {
       "id": "claim_53aa0b7650ad477a815893b3cccbf0d7",
-      "statement": "Security unit tests cover exact secret exceptions, the secret-only exception file, severity counts, packages without a version, and report masking.",
+      "statement": "Security unit tests cover severity counts, packages without a version, absent inventories and version records, masked reports, job summaries, and scanner download retries.",
       "evidence": [
         {
           "resource": "repo://release/security_test.py",
-          "version": "repo-file-v1:sha256:f9ed6d883a6b92947fe566823a4c79067d2d92867bc9a89c69e1bfaa2052e20a"
+          "version": "repo-file-v1:sha256:e09eb9ed2ce23954977248725e4ae211e6dcf77c5a6dc1768905381bdd27a81e"
         }
       ]
     },
@@ -317,8 +317,18 @@
       "statement": "The scanner acceptance test reports a new high-severity advisory in an unchanged image.",
       "evidence": [
         {
-          "resource": "repo://release/security_acceptance.py#L149-L169",
+          "resource": "repo://release/security_acceptance.py#L100-L120",
           "version": "repo-lines-v1:sha256:88390462ffd058a97ef4e8b9b8249dbc34cdc85e638009ee44246392a6bd4fd1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MWI5NjIyYWRjNTIyZWE2MDgzOGFlNDIwNDU5ZTQyNTA1NzJiOGZiZmU5OTdmYTYzZjY5OTY3ZTMxNWVmMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhMzZmOGU1ZGU5ZTk3NDJjNzZlOWU1YzkyOWQyYmI2MWMyMDA4YzE0MDMyZDU1ZGRmMTRhNWNmMzJmMjI3ZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViYTg3ZjFiMTBkODAxM2FkZTgwYWUzMWU5NzEyOTczNzM4MjNjYzQxMGIwNDZlY2FiNGY3YmViZDg0NDM0NDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d872f6fbdb86455495d316b88df17d76",
+      "statement": "The scanner acceptance tests check that a failed tool or an absent image layer leaves the scan unverified and that the failed tool report omits a synthetic credential.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_acceptance.py#L69-L98",
+          "version": "repo-lines-v1:sha256:94f31962fd791fc9470de77e6684c3e1b61cb1e0c699aefd18a2c0b70d3155b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4NmY1NWQ5YjI0YzlkNWYyOGEwMDFiZmI2ODhmMDdmZWY1ODQ2NWJhNmViNmQzNzc4MjAzZmE5N2FhNjQxNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjMjNjZjJjZjRlNjAxODQyYzk5YWE5MmFjYmU4NTE5MWQzMTA0NTQwODE3NTQ3YWVmN2E4NGE2ZGM2MDVmZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NDNhYTliMzdhYzkxYjY2ZGYzZWQ2MTRmNGMxNWY1MjQ4M2MxN2MzYTlmYzU2ZWQwZTI0NjdhZmJiZTI0MzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNjcxMjU5NTdkMGExZjcyYzYwMTg2MDhhOTVmNGEzYWM4NzY2ZDlhZDhiNzU2YjY0NGM2ODJmMTMyNDJlYjYifQ"
         }
       ]
     },
@@ -328,7 +338,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/security-gate.test.ts",
-          "version": "repo-file-v1:sha256:4f33d10ddc9142aaa5301a3c02a0c5efa72fcb092dfff65de3ecebb6db474512"
+          "version": "repo-file-v1:sha256:29512fead11031414b456540787b7f772a56f88286c17986eec771a9c11cb834"
         }
       ]
     },
@@ -655,7 +665,7 @@
       "statement": "The release image job checks the contents of both saved images and writes a size report from those archives.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L387-L400",
+          "resource": "repo://.github/workflows/release.yml#L361-L374",
           "version": "repo-lines-v1:sha256:76f904bc23bea88dc727a0a56b59ef8a7010c4bcfea3375b1cfc913cab46f9bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNjU1MWQ2NTA3MzYwYTE2MjQ0YzRhZjM1MjQ5ZGU0ODViMWIzNmFkMTcyNWY5YmU2MDczMzlmMDEzMmIwNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhM2EzODVhNzczZjY4ZjYwYjA2Y2ZkMjE3YjhmYzhkMDM4NmMzZTc2MWZlYzlmN2NiZDg0ODQ3Y2QzYjM1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmY2EyNmQ5YTg1OTMzMGZkMmYxNjVjMjNjNGViYWE3MGY0YjRmYjMwNWVjMmI3MjA0OTBhNWRmZTA4MjE4NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZjIwNzYxMjU1NjQ4ZjY5NjQ3Yjc4ZGRkODAxMmJmMDBiNDM5YThmZTI4Zjg5MjA5MmU3NGRhNmFjNzEzY2EifQ"
         }
       ]
@@ -707,7 +717,7 @@
       "statement": "The CI browser job sets MC_SMOKE_ROOT below RUNNER_TEMP/smoke.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L239-L247",
+          "resource": "repo://.github/workflows/release.yml#L213-L221",
           "version": "repo-lines-v1:sha256:7ec0624a5b17a1b9dbdbcd9d051bb60e68c2d0724083bc74523b42d6fbfe0f91:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjYwZGRjMDQzOWMxYzE5NjRmODBjMzIzYTRkMzViZjVkZDAwYjg0MzU5N2I5MTM0MTRmNjFiM2Y5NmIwZDhkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxNGQxZDA1MjA2NTBjM2ViYjY5Mzg1YjhlMWNmNDljNzM2MmUyMTVhNWZiZTU4YWVlMmQ4Y2ViYTIwYWE3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE1OGJlNGNjYzUzYzE0YmVlMGJhZWVjOGUzN2UyOGJjY2FjNzFlMjYxZDdhOTljMjRmNjVjNTNiNzUyNDhmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNiOWYzMGY4NWIyYzU3ZGVhOTRlMjhkNGFkMzVkODIxMjVhYjljZDA3MGZkNjA4ZTU5MWEyYjA3ODA0NmYwZSJ9"
         }
       ]

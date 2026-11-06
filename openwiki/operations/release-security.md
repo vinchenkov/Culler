@@ -18,14 +18,12 @@ sources:
     resource: repo://release/publish.py
   - id: openwiki-source-f75eda6c3cdd48976dd36eeb
     resource: repo://release/security_acceptance.py
-  - id: openwiki-source-ed3c203997a592d233446bb2
-    resource: repo://release/security_content.py
   - id: openwiki-source-dca64798ff3720638b214064
     resource: repo://release/security_nightly.py
-  - id: openwiki-source-fd8085e3062585796475b9ad
-    resource: repo://release/security_policy.py
   - id: openwiki-source-90417f84d70bf5b2027a1f52
     resource: repo://release/security_scan.py
+  - id: openwiki-source-34fd3fd4d6f7d65629db18e4
+    resource: repo://release/security_test.py
   - id: openwiki-source-fb3816c1ae7c7356519a203a
     resource: repo://release/security_tools.py
   - id: openwiki-source-985fc8702c7fef3be1d90e4d
@@ -42,8 +40,8 @@ verified:
 
 # Release security scans
 
-The release workflows use Gitleaks and Trivy to report security results.
-Python tools under `release/` scan the source history of this repository and both release images.
+The release workflows use Trivy to report known vulnerabilities in both release images.
+GitHub secret scanning reports secrets in this repository.
 A scan result never prevents a push or a release.
 The repository owner reads the reports and decides each action.
 See [Installation, deployment, and release](install-and-deployment.md) for the full release lifecycle.
@@ -55,19 +53,23 @@ Its default permission is `contents: read`.
 Pull request jobs receive no provider credentials or publication credentials.
 Third-party actions use full commit identifiers.
 
-| Job | Scan | Report |
+| Scan | Coverage | Report |
 | --- | --- | --- |
-| `source-secrets` | Gitleaks checks the full fetched history and selected refs of this repository. | The job summary and the `culler-security-history-<attempt>` artifact. |
-| `image-vulnerabilities` | Trivy checks the saved archives of both release images for known vulnerabilities. | The job summary and the `culler-image-vulnerabilities-<attempt>` artifact. |
-| `current-release-images` | `security-nightly.yml` checks the images of the current release with fresh advisory data. | The job summary and the `culler-security-nightly-<attempt>` artifact. |
-| `security-acceptance` | The acceptance tests exercise the fixed scanners with controlled secret and advisory fixtures. | The `culler-security-acceptance-<attempt>` artifact. |
+| `image-vulnerabilities` job | Trivy checks the saved archives of both release images for known vulnerabilities. | The job summary and the `culler-image-vulnerabilities-<attempt>` artifact. |
+| `current-release-images` job | `security-nightly.yml` checks the images of the current release with fresh advisory data. | The job summary and the `culler-security-nightly-<attempt>` artifact. |
+| `security-acceptance` job | The acceptance tests exercise the fixed Trivy scanner with controlled advisory fixtures. | The `culler-security-acceptance-<attempt>` artifact. |
+| GitHub secret scanning | GitHub checks the Git history of this repository for the token formats of supported providers. | Alerts on the **Security** tab of the repository. |
 
 No job waits for a scan job.
-A secret result or a vulnerability result makes no job fail.
+A vulnerability result makes no job fail.
 A scan that cannot complete writes an unverified report and exits with status 2.
 Only the job of that scan fails.
-The secret scan covers only the source history of this repository.
-The dependencies, the release files, and the images are outside the secret scan.
+
+GitHub secret scanning is a repository setting, not a workflow job.
+The repository owner turns it on through **Settings → Advanced Security**.
+It finds the token formats of supported providers, such as GitHub tokens and AWS keys.
+It finds no generic secret without a known format.
+Push protection stays off, so a secret result never prevents a push.
 
 `image-vulnerabilities` starts after `release-images` succeeds.
 It downloads the same image archive artifact as the upload job.
@@ -99,42 +101,13 @@ The separate [image content checks](image-delivery.md) verify file layout, acces
 Each upload downloads the release file again and compares its bytes with the local file.
 A difference stops the publication.
 
-## Secret scan inputs and evidence
+## Scanner inputs and evidence
 
-`security_tools.py` installs Gitleaks and Trivy from the versions and archive checksums in `release/security/tools.json`.
-It verifies each download and uses the default Gitleaks configuration, including its path exclusions.
-`security_scan.py` checks scanner versions and records executable checksums.
-History reports also record the Gitleaks configuration checksum.
-
-The history command rejects shallow repositories and Git grafts.
-It disables Git replacement objects.
-An explicit local invocation names every intended public branch and tag with `--ref`.
-The workflow uses `--public-refs`, which includes fetched origin branches, tags, and `HEAD`.
-The scan covers deleted files, merge changes, commit messages, and binary objects.
-The [source history scan procedure](../../release/security/README.md#source-history-scan) supplies the commands for the coding harness.
-
-`security_content.py` expands tar and ZIP archives and gzip, bzip2, and xz streams in binary Git objects.
-It presents content under neutral names and maps each result back to its commit, file, and archive member.
-Binary text retains line positions after invalid bytes and zero bytes receive replacements.
-The archive depth limit is 16, and the expanded content limit is 80 gibibytes per scan group.
-The history scan limits each Git object to 512 mebibytes.
-Unreadable archives and exceeded limits leave the scan unverified.
-
-The scan ignores repository ignore files and inline Gitleaks allow comments.
-Reports retain source locations, rule identifiers, and scanner identities.
-They omit credential values, source excerpts, and raw scanner output.
-History reports retain selected refs and commit identifiers.
-
-## Exceptions
-
-`security_policy.py` matches secret results to the exceptions in `release/security/exceptions.json`.
-That file holds only secret exceptions.
-Each exception names the scanner, subject, file, rule, and line of one result, and it gives a reason.
-The subject identifies the commit of the result.
-
-The report and the job summary show the reason of each matched result.
-An exception changes no scan status and no job result.
-Exceptions contain no credential values.
+`security_tools.py` installs Trivy from the version and archive checksums in `release/security/tools.json`.
+It verifies the download and makes at most 3 attempts after a temporary network or server error.
+`security_scan.py` checks the Trivy version against its pin and records the executable checksum.
+The scan uses an empty Trivy configuration file and an empty ignore file.
+Reports omit raw scanner output and image environment values.
 
 ## Vulnerability coverage
 
@@ -177,13 +150,15 @@ This scan can detect a new advisory without a source change.
 
 ## Verification boundaries
 
-`release/security_test.py` checks exact secret exceptions, the secret-only exception file, severity counts, packages without a version, masked reports, job summaries, and archive paths.
+`release/security_test.py` checks severity counts, packages without a version, absent inventories and version records, masked reports, job summaries, and scanner download retries.
 `release/image_load_test.py` checks the image identity and the refusal of an image of another commit.
 `dashboard/src/security-gate.test.ts` checks the `release-checks` prerequisites, read-only pull request permissions, exact image reuse, and nightly report retention.
 It also checks that no job waits for a scan job.
 
-`release/security_acceptance.py` uses the real fixed scanners with synthetic credentials in deleted commits, binary blobs, and nested archives.
-It also checks that a failed tool or an absent image layer leaves the scan unverified.
+`release/security_acceptance.py` runs three tests with the real fixed Trivy executable.
+A failed tool produces an unverified report, and the report omits a synthetic credential from the tool output.
+An image archive without a layer leaves the scan unverified.
+
 Its Go fixture creates two advisory databases for one unchanged image.
 The second database adds a high-severity advisory, and the report of that same image lists it.
 These fixtures prove scanner behavior; they do not establish a clean production release.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bd93883906893c5db0c6b81c8fd773466b9f6465a0bcad52825344686677f270",
+  "pageVersion": "sha256:9b3659b1ce2d1802fb04c8a524a23529caac76321cd0f9b36d4b4ee4ccb262a5",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -47,7 +47,7 @@
       "statement": "The release fast suite includes mc, six runner components including setup-runner, resident, and dashboard.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L135-L148",
+          "resource": "repo://.github/workflows/release.yml#L109-L122",
           "version": "repo-lines-v1:sha256:274bb6fd10f15c9ab90f7f43d03782c84671ec073cf2c386cd43ce4581493ed5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjYTEzNWIxNmY4N2E5ODRhNGE5OGE5MDM0YzM0NDI5NDMyYWE0OGQyOTc1ZjAwMTZkY2Q3ZjQyODBkMzg5OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MTMzM2RmNjZkNTk1YzYyMjM3NDEyZTdkMTYwN2I1Y2ZiMDExNDdmMGYzYTlkYjdiN2FjNGU3MjljNDNkMjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIzYmExZWNjMDhkOWNmMGVlNGRhNmM1ZDZkYTljMmUwMTAzZDg2MGM4NDc3YzY0ZGM3OGYyYjE1NzQwNDRhYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjNDgzN2RiYzQxMDRhZmY5YWYwOGNmZjVkMjQ2NWIyNzk1ZjUwOGEwNWUxZTgwYWJhODQ2MzdlNjVlZmVmYjIifQ"
         }
       ]
@@ -58,7 +58,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:3b7242b73f3bf1d8e3cfbebf29a4f261871ba3e762c2d2e09e41be3b2b5b27f0"
+          "version": "repo-file-v1:sha256:b2594b8b81ea9ede5b7ecac37e819e03730a0901f2bec0d8a26e37adbe3b446f"
         }
       ]
     },
@@ -346,7 +346,7 @@
       "evidence": [
         {
           "resource": "repo://.github/workflows/release.yml",
-          "version": "repo-file-v1:sha256:ce980d812982b2f741db552e8377303e8a8402a7b82e1058895779257f9ff5f1"
+          "version": "repo-file-v1:sha256:6fe228c5d3f3260584de19739fa9d2c467a3bda9c7b04e8002df0870db89826d"
         }
       ]
     },
@@ -408,7 +408,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:3b7242b73f3bf1d8e3cfbebf29a4f261871ba3e762c2d2e09e41be3b2b5b27f0"
+          "version": "repo-file-v1:sha256:b2594b8b81ea9ede5b7ecac37e819e03730a0901f2bec0d8a26e37adbe3b446f"
         }
       ]
     },
