@@ -206,7 +206,7 @@ case "$commit" in ''|*[!0-9a-f]*) fail "The release identity is invalid." ;; esa
 version=$(required_json "$record" version)
 printf '%s\n' "$version" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' || fail "The release identity is invalid."
 tag=v$version
-test_release=$(json "$record" test_release || true)
+test_release=$(json "$record" test_release) || test_release=false
 case "$test_release" in
   true) tag=test-$commit ;;
   false|'') ;;
