@@ -27,7 +27,8 @@ The release record contains these compatibility values:
 - Accepted source identities for each format.
 - Checksums of dependency manifests, lock files, and direct tool pins.
 
-Consecutive public releases require a supported path.
+Consecutive public releases require a supported path, except for the 0.1.0 to 0.2.0 schema change.
+The exception permits publication for new installations. The updater still rejects a database with an incompatible schema.
 Skipped releases work when the candidate accepts all installed formats and the minimum version.
 A required intermediate release remains available with its exact artifacts.
 Ordinary downgrades remain unsupported.

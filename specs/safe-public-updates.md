@@ -27,7 +27,8 @@ Every supported update still preserves user data.
 
 The release record declares its accepted source formats and minimum supported public version.
 The source policy declares these compatibility values separately from `VERSION`.
-Consecutive releases have a tested update path.
+Consecutive releases have a tested update path, except for the 0.1.0 to 0.2.0 schema change.
+The exception permits publication for new installations and leaves all other publication and update checks active.
 A skipped release is supported when the candidate accepts every source format in the installed deployment.
 A required intermediate release has retained public artifacts and an explicit reason.
 The installer refuses unsupported sources before software or data replacement.
