@@ -86,7 +86,7 @@ func TestTerminalSetupRejectedAPIKeyReplacementScreens(t *testing.T) {
 				session.send("\x1b[B\r")
 				capture("Masked replacement key", "Your input stays concealed.")
 				session.send("synthetic-rejected-key\r")
-				capture("Replacement check in progress", "Check replacement key")
+				capture("Replacement check in progress", "Checking replacement key")
 				close(finishCheck)
 				failure := strings.Join(capture("Rejected replacement and retry", "Resume this step"), "\n")
 				if !strings.Contains(failure, "previous key remains saved") || strings.Contains(failure, "API key saved") || strings.Contains(failure, "✓ Check replacement key") {

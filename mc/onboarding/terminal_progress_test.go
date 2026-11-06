@@ -30,7 +30,7 @@ func TestActivityProgressReportsBeforeCompletion(t *testing.T) {
 			return nil
 		})
 	}()
-	out.waitFor(t, "Update: Download the container base")
+	out.waitFor(t, "Update: Downloading the container base")
 	if strings.Contains(out.String(), "Complete:") {
 		t.Fatal("the display declared completion before the action returned")
 	}
@@ -48,7 +48,7 @@ func TestActivityProgressReportsBeforeCompletion(t *testing.T) {
 	case <-time.After(3 * time.Second):
 		t.Fatal("the action did not return")
 	}
-	if output := out.String(); !strings.Contains(output, "Update: Save the container image") || !strings.Contains(output, "Complete: Prepare the container") {
+	if output := out.String(); !strings.Contains(output, "Update: Saving the container image") || !strings.Contains(output, "Complete: Prepare the container") {
 		t.Fatalf("the display lost the final update or result: %q", output)
 	}
 }
@@ -57,7 +57,7 @@ func TestActivityProgressShowsOnlyActiveStep(t *testing.T) {
 	out := newProgressCapture()
 	terminal := NewTerminal(nil, out)
 	clock := newProgressClock()
-	want := "Active: Prepare the container\n"
+	want := "Active: Preparing the container...\n"
 	assertOutput := func() {
 		t.Helper()
 		if output := out.String(); output != want {
@@ -76,21 +76,21 @@ func TestActivityProgressShowsOnlyActiveStep(t *testing.T) {
 		assertOutput()
 		assertSilentTicks(10 * time.Second)
 		report("Download the container base")
-		want += "Update: Download the container base\n"
+		want += "Update: Downloading the container base\n"
 		assertOutput()
 		assertSilentTicks(12 * time.Second)
 		report("Download the container base")
 		assertOutput()
 		assertSilentTicks(10 * time.Second)
 		report("Build the agent tools")
-		want += "Update: Build the agent tools\n"
+		want += "Update: Building the agent tools\n"
 		assertOutput()
 		report("Save the container image")
 		assertOutput()
 		clock.advance(time.Second)
 		clock.tick(t)
-		out.waitFor(t, "Update: Save the container image")
-		want += "Update: Save the container image\n"
+		out.waitFor(t, "Update: Saving the container image")
+		want += "Update: Saving the container image\n"
 		assertOutput()
 		assertSilentTicks(69 * time.Second)
 		return nil
@@ -119,7 +119,7 @@ func TestActivityProgressCombinesRapidReports(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if count := strings.Count(out.String(), "Update:"); count != 2 || !strings.Contains(out.String(), "Build step 999") {
+	if count := strings.Count(out.String(), "Update:"); count != 2 || !strings.Contains(out.String(), "Building step 999") {
 		t.Fatalf("the display lost the latest report: %q", out.String())
 	}
 }
@@ -196,7 +196,7 @@ func TestActivityProgressPreservesOutcomesAndStopsReports(t *testing.T) {
 					report("Download the container base")
 					clock.advance(time.Second)
 					clock.tick(t)
-					out.waitFor(t, "Update: Download the container base")
+					out.waitFor(t, "Update: Downloading the container base")
 					if tc.panicValue != nil {
 						panic(tc.panicValue)
 					}
@@ -266,14 +266,14 @@ func TestActivityProgressPreservesBrowserAddress(t *testing.T) {
 				terminal.Panel("Sign in through your browser", []string{"Use the address below."})
 				clock.advance(time.Second)
 				clock.tick(t)
-				out.waitFor(t, "Connect this account ..")
+				out.waitFor(t, "Connecting this account ..")
 				if _, err := fmt.Fprintf(terminal, "%s\n\n", address); err != nil {
 					return err
 				}
 				offset := len(out.String())
 				clock.advance(time.Second)
 				clock.tick(t)
-				out.waitFor(t, "Connect this account ...")
+				out.waitFor(t, "Connecting this account ...")
 				if strings.Contains(out.String()[offset:], "\x1b[J") {
 					t.Fatal("The progress update erased the browser address.")
 				}
@@ -371,14 +371,14 @@ func TestActivityProgressAnimatesWithoutCommandOutput(t *testing.T) {
 	err := terminal.activityProgress("Prepare the container", func(report func(string)) error {
 		clock.advance(time.Second)
 		clock.tick(t)
-		out.waitFor(t, "Prepare the container ..")
+		out.waitFor(t, "Preparing the container ..")
 		report("Install the agent tools")
 		clock.advance(time.Second)
 		clock.tick(t)
-		out.waitFor(t, "Install the agent tools ...")
+		out.waitFor(t, "Installing the agent tools ...")
 		clock.advance(time.Second)
 		clock.tick(t)
-		out.waitFor(t, "Install the agent tools .")
+		out.waitFor(t, "Installing the agent tools .")
 		if strings.Contains(out.String(), "✓") {
 			t.Fatal("The active operation reported success.")
 		}
@@ -389,5 +389,21 @@ func TestActivityProgressAnimatesWithoutCommandOutput(t *testing.T) {
 	}
 	if !strings.Contains(out.String(), "✓ Prepare the container") {
 		t.Fatal("The operation omitted its final result.")
+	}
+}
+
+func TestActiveProgressTextPreservesResults(t *testing.T) {
+	for label, want := range map[string]string{
+		"Install AgentsView":                        "Installing AgentsView",
+		"Docker Desktop":                            "Checking Docker Desktop",
+		"Wait for active agents":                    "Waiting for active agents",
+		"Set up your dashboard":                     "Setting up your dashboard",
+		"The agent image passed its identity check": "The agent image passed its identity check",
+		"Install the tools (complete)":              "Install the tools (complete)",
+		"Install the tools (cached)":                "Install the tools (cached)",
+	} {
+		if got := activeProgressText(label); got != want {
+			t.Errorf("%q = %q, want %q", label, got, want)
+		}
 	}
 }

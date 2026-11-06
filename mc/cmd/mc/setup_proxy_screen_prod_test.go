@@ -104,7 +104,7 @@ func TestTerminalSetupProviderProxyFailureScreens(t *testing.T) {
 				session.send("\r")
 				capture("Sign-in confirmation", "Sign in and connect?")
 				session.send("\r")
-				capture("Connection progress", "Connect Codex (")
+				capture("Connection progress", "Connecting Codex (")
 				close(finishFailure)
 				failure := strings.Join(capture("Local failure and saved connection retry", "Retry Codex"), "\n")
 				if strings.Contains(failure, "cause is unknown") || strings.Contains(failure, "rejected the credentials") || strings.Contains(failure, "✓ Connect Codex") {

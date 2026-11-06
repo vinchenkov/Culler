@@ -175,7 +175,7 @@ func downloadOpenCode(ctx context.Context, home, image string, progress func(str
 	if err := client.Download(ctx, record, *record.OpenCode, archive); err != nil {
 		return fmt.Errorf("The OpenCode download failed: %w", err)
 	}
-	progress("Check and unpack the OpenCode archive.")
+	progress("Unpack the OpenCode archive.")
 	return InstallOpenCodeArchive(ctx, home, image, archive, record.OpenCode.SHA256, record.Commit, nil)
 }
 
@@ -258,7 +258,7 @@ func buildOpenCodeSource(ctx context.Context, home, image string, source runtime
 		return err
 	}
 	digest := sha256.Sum256(body)
-	progress("Check and unpack the OpenCode archive.")
+	progress("Unpack the OpenCode archive.")
 	return InstallOpenCodeArchive(ctx, home, image, archive, hex.EncodeToString(digest[:]), source.Release, nil)
 }
 

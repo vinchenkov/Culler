@@ -60,7 +60,7 @@ printf '%s\n' '{"claudeAiOauth":{"accessToken":"fixture-access","refreshToken":"
 				wizard: w,
 				steps: []setupPreviewStep{
 					{Wait: "q exit", Send: "\r", Name: "Connect"},
-					{Wait: "Connect Claude Code .", Name: "Start sign-in"},
+					{Wait: "Connecting Claude Code .", Name: "Start sign-in"},
 					{Wait: "https://example.test", Name: "Browser sign-in"},
 					{Wait: "q exit", Send: "q", Name: "Connection result"},
 				},

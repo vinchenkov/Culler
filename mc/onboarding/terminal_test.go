@@ -167,7 +167,7 @@ func TestActivityReportsActualResult(t *testing.T) {
 			called := 0
 			err := terminal.Activity("Check Docker Desktop", func() error {
 				called++
-				if !strings.Contains(out.String(), "Active: Check Docker Desktop") {
+				if !strings.Contains(out.String(), "Active: Checking Docker Desktop...") {
 					t.Fatal("the operation started without a status")
 				}
 				if strings.Contains(out.String(), "Complete:") {
