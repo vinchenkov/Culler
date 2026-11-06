@@ -405,7 +405,7 @@ func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 		if err != nil {
 			t.Fatalf("%s: %v", role, err)
 		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleStrategist {
 			continue
 		}
 		flat := strings.Join(strings.Fields(prose), " ")

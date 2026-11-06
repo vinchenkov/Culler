@@ -159,8 +159,8 @@ func TestProseLessTerminalsRecordInlineExceptionBeforeTheCall(t *testing.T) {
 			t.Fatalf("%s skill: %v", role, err)
 		}
 		for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
-			if role == dispatch.RoleWorker && surface == "skill" {
-				continue // The Worker records this rule once, in its directive.
+			if surface == "skill" {
+				continue // Both roles record this rule once, in their directives.
 			}
 			flat := strings.Join(strings.Fields(prose), " ")
 			if !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
@@ -206,7 +206,11 @@ func TestAgentTextNamesOnlyThePartsThatTheRunBriefRenders(t *testing.T) {
 		}
 		count := 0
 		for surface, text := range texts {
-			for _, match := range named.FindAllStringSubmatch(strings.Join(strings.Fields(text), " "), -1) {
+			references := named
+			if role == dispatch.RoleStrategist && (surface == "directive" || surface == "skill mc-strategist") {
+				references = regexp.MustCompile(`\*\*([^*]+)\*\*`)
+			}
+			for _, match := range references.FindAllStringSubmatch(strings.Join(strings.Fields(text), " "), -1) {
 				count++
 				if !headings[match[1]] {
 					t.Errorf("%s %s names the part %q, and the run brief has no such part", role, surface, match[1])
@@ -306,8 +310,8 @@ func TestArbiterTextBindsTheDuplicateRuleToTheActiveTasksPart(t *testing.T) {
 	}
 }
 
-func TestProposalAgentTextDefinesCompactHistory(t *testing.T) {
-	for _, role := range []dispatch.Role{dispatch.RoleStrategist, dispatch.RoleArbiter} {
+func TestArbiterAgentTextDefinesCompactHistory(t *testing.T) {
+	for _, role := range []dispatch.Role{dispatch.RoleArbiter} {
 		directive, err := directiveForRole(role)
 		if err != nil {
 			t.Fatal(err)
@@ -365,12 +369,12 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 			}
 		}
 	}
-	for _, want := range []string{"in this run's Project and in no other", "reads the Project of this run only", "The pool of this Project receives every proposal"} {
+	for _, want := range []string{"in this run's Project", "Each subagent reads only this Project"} {
 		if !strings.Contains(flat(propose), want) {
 			t.Errorf("propose directive omits %q", want)
 		}
 	}
-	for _, want := range []string{"files every proposal into the pool of this run's Project", "An omitted `project` field defaults to that id", "Any other id refuses the whole batch"} {
+	for _, want := range []string{"Omit it to use the **Project** Identifier, or supply that exact identifier", "A rejected batch writes nothing"} {
 		if !strings.Contains(flat(proposeSkill.Body), want) {
 			t.Errorf("propose skill omits %q", want)
 		}
@@ -594,7 +598,16 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 			}, nil)
 			continue
 		}
-		if role == dispatch.RoleScribe {
+		if role == dispatch.RoleStrategist {
+			requireAgentText(t, "strategist dependency pointer", directive, []string{
+				"Before research uses Project dependencies, read the Research dependencies procedure in the mc-strategist skill.",
+			}, nil)
+			requireAgentText(t, "strategist dependency procedure", roleSkillBody(t, role, "mc-strategist"), []string{
+				"This run omits automatic dependency preparation.",
+				"Check retained dependencies against the current declarations and the selected image before use.",
+				"Apply the project-environment-setup skill",
+			}, nil)
+		} else if role == dispatch.RoleScribe {
 			requireAgentText(t, "openwiki skill", roleSkillBody(t, role, "openwiki"), []string{
 				"If research requires Project dependencies, check their compatibility with current declarations and the selected image before use.",
 				"this run performs no automatic dependency preparation",
@@ -904,6 +917,8 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 		}
 		if role == dispatch.RoleWorker {
 			requireAgentText(t, "worker customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in the mc-worker skill."}, nil)
+		} else if role == dispatch.RoleStrategist {
+			requireAgentText(t, "strategist customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in the mc-strategist skill."}, nil)
 		} else if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
 			t.Errorf("the %s directive omits the customization conflict", role)
 		}

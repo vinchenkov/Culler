@@ -80,6 +80,11 @@ func skillPointer(skills []RoleSkill) string {
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
 			help
 	}
+	if command.Name == "mc-strategist" {
+		text = "## Your command surface\n\n" +
+			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before each `mc` call.\n" +
+			"The skill lists the permitted commands; `mc` has no help command."
+	}
 
 	if len(skills) == 1 {
 		return text

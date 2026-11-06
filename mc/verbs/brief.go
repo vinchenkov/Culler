@@ -286,7 +286,36 @@ func buildRunBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, i
 	if sp.Role == dispatch.RoleWorker {
 		trimWorkerBrief(&b)
 	}
+	if sp.Role == dispatch.RoleStrategist {
+		trimStrategistBrief(&b)
+	}
 	return b, nil
+}
+
+func trimStrategistBrief(b *runBrief) {
+	parts := b.Parts[:0]
+	for _, part := range b.Parts {
+		switch part.Heading {
+		case "Agent credentials", "Failure controls":
+			continue
+		case partCustomization:
+			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+		case partRun:
+			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
+		case "Project environment":
+			part.Explanation = "These identifiers name the selected Project environment."
+		case partActiveTasks:
+			part.Explanation = "These proposals and active tasks are absent from the repository copy."
+		case partRejected:
+			part.Explanation = "These are recent rejected tasks."
+		case partCancelled:
+			part.Explanation = "These are recent cancelled tasks, with reason excerpts when available. Use each reason as context for the operator's preference."
+		case partVision:
+			part.Explanation = "This is the accepted `VISION.md` content."
+		}
+		parts = append(parts, part)
+	}
+	b.Parts = parts
 }
 
 // trimWorkerBrief keeps Worker procedures in the command skill.
