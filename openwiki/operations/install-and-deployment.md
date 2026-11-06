@@ -64,13 +64,28 @@ verified:
 
 Culler deploys onto one Apple-silicon Mac. Production never runs source from a clone. A deployment home (`MC_HOME`, default `~/.culler`) holds an installed copy of the exact shipped files, the configuration, and three launchd units: resident, dashboard, and AgentsView. The spine lives in a Docker named volume. Several shell scripts at the repository root are the front doors, and they are not interchangeable. The Go code behind them lives in `mc/deployment`, `mc/onboarding`, and `mc/distribution`. `release/` and `.github/workflows/release.yml` build and publish releases.
 
-The operator's vocabulary is `install.sh` and their coding harness. Operator-facing text never tells a human to run `mc`.
+The operator uses `install.sh` for setup and repair and `culler` for lifecycle operations. Operator-facing text never tells a human to run `mc`.
 
 ## The front doors
 
+The Culler repository and its release downloads are public.
+Run this command in Terminal on a Mac with Apple silicon:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh | bash
+```
+
+The launcher selects the latest complete release.
+Public installation requires no GitHub account or GitHub token.
+After installation, `culler update` opens the installer for the latest complete release.
+The command `culler update --check` checks release availability without a deployment change.
+The [installation guide](../../INSTALL.md) describes setup and updates.
+
 | Command | Purpose |
 | --- | --- |
-| `sh install.sh` | Production install or update from the latest complete GitHub release. It also installs `culler`. |
+| `sh install.sh` | Install or update from the latest complete GitHub release with a saved launcher. |
+| `culler update` | Open the installer for the latest complete GitHub release. |
+| `culler update --check` | Check release availability without a deployment change. |
 | `./install.sh --dev --mc-home <scratch>` | Development install from this checkout into a scratch home. Never `~/.culler`. |
 | `./redeploy.sh` | Move the live production deployment to this checkout and keep its database. |
 | `./redeploy.sh --reset-database` | Move the deployment and replace its database with an empty database, after a typed confirmation. |
@@ -82,7 +97,7 @@ The operator's vocabulary is `install.sh` and their coding harness. Operator-fac
 
 `install.sh` is a permanent launcher. It never builds from source in production. It first handles `--help`. With `--dev`, it `exec`s `scripts/install-source.sh`, which requires a checkout. Otherwise it requires `Darwin:arm64` and then does the following:
 
-1. It loads a GitHub credential from `~/.config/culler/github-token`, which must be a mode-600 regular file owned by the operator, or from `gh auth token`. It writes the credential into a curl config file so the token never appears in a command line.
+1. It uses an optional GitHub credential from `CULLER_GITHUB_TOKEN_FILE`, the default token file, or `gh auth token`. The default file is `~/.config/culler/github-token`. A token file must be a regular file with mode `600` and belong to the operator. The launcher keeps the token outside command arguments. Public downloads work without a credential. An invalid configured credential can stop installation.
 2. It fetches `releases/latest` and rejects drafts and prereleases.
 3. It downloads `release.json` and checks `format`, `platform`, and the 40-hex commit identity against the tag.
 4. It requires each of the five checks (`fast-suite-macos`, `deployment-linux`, `application-package`, `product-image`, `release-downloads`) to appear exactly once with `passed: true`.

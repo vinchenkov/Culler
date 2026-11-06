@@ -5,58 +5,32 @@ A published release supplies the executable, runtime files, and container image.
 The release also supplies AgentsView, the trace viewer of the `kenn-io/agentsview` project.
 The Mac requires no Culler checkout or Go compiler.
 
-## Private repository access
+## Install the public release
 
-The GitHub account requires access to the repository and its container package.
-The installer checks both resources separately.
-GitHub Container Registry requires a classic token with `read:packages` for private images.
-Private repository files require `repo` with that token.
-The [GitHub registry guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) describes these permissions.
-
-Create a classic token with `repo` and `read:packages` access.
-Save that token in a private file.
-The default path is `~/.config/culler/github-token`.
-The file must contain only the token and use mode `600`.
-The operator must own the file.
-The coding harness can prepare the file without secret values in commands or logs.
-
-With that file, `curl` can fetch the private launcher:
-
-```sh
-{
-  printf 'header = "Authorization: Bearer '
-  tr -d '\r\n' < "$HOME/.config/culler/github-token"
-  printf '"\n'
-} | curl -q --config - --fail --location \
-  --header 'Accept: application/vnd.github.raw+json' \
-  'https://api.github.com/repos/vinchenkov/Culler/contents/install.sh?ref=main' \
-  --output install.sh
-sh install.sh
-```
-
-The token travels through standard input.
-The command contains no token value.
-The installer reuses the file for updates.
-An expired credential requires renewed access.
-The installer keeps the current deployment after an access failure.
-
-The installer can also reuse a classic token that the GitHub command tool already stores.
-That token requires the same repository and package access.
-With that credential, the initial download can use this command:
-
-```sh
-gh api --header 'Accept: application/vnd.github.raw+json' \
-  'repos/vinchenkov/Culler/contents/install.sh?ref=main' > install.sh
-sh install.sh
-```
-
-## Public repository access
-
-Public distribution supports this command without a credential:
+Run this command in Terminal on a Mac with Apple silicon:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh | bash
 ```
+
+The Culler repository and its release downloads are public.
+Public installation requires no GitHub account or GitHub token.
+The launcher selects the latest complete GitHub release.
+It downloads and verifies the installer for that release.
+The command installs the published release, even when you run it from a source checkout.
+
+To save the launcher for later use, run these commands:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh -o /tmp/culler-install.sh &&
+sh /tmp/culler-install.sh
+```
+
+The installer can also use an existing GitHub credential.
+It first checks `CULLER_GITHUB_TOKEN_FILE`, or `~/.config/culler/github-token` when that variable is absent.
+Without an explicit token path or a default token file, it checks the GitHub command tool.
+A token file must contain only the token, belong to the operator, and use mode `600`.
+An invalid configured credential can stop installation even when the release is public.
 
 ## Setup and updates
 
@@ -109,22 +83,23 @@ After the connection test succeeds, setup saves the selected model name.
 Later runs use that saved model.
 The dashboard can select another model through the profile's Edit form.
 
-Run the same saved script to apply the latest complete release:
+After installation, apply the latest complete release with this command:
 
 ```sh
-sh install.sh
+culler update
 ```
-
-For a production setup that used a repository checkout, download the launcher once from the address above.
-Later updates can reuse that launcher.
 
 Check release availability without a deployment change:
 
 ```sh
-sh install.sh --check-updates
+culler update --check
 ```
 
-For a different deployment home, add `--mc-home /absolute/path`.
+If the `culler` command is unavailable, run the public installation command again.
+This also updates a production installation that used a source checkout.
+A saved launcher supports `sh /tmp/culler-install.sh` and `sh /tmp/culler-install.sh --check-updates` while that file exists.
+
+For a different deployment home, pass `--mc-home /absolute/path` to the saved launcher.
 The dashboard provides **Check for updates** and **Open installer** under **System health**.
 **Open installer** opens Terminal and uses the same script.
 The installer asks before service activation.
@@ -265,7 +240,7 @@ The repository owner publishes Git changes.
 A push to `main` starts `.github/workflows/release.yml` for that commit.
 GitHub Actions must be enabled for the repository.
 The workflow uses GitHub's temporary `GITHUB_TOKEN` for release files and container images.
-The test Mac uses its separate private download credential.
+The test Mac can download public releases without a GitHub credential.
 
 The package build downloads the AgentsView release archive that `mc/deployment/agentsview.json` pins.
 The build verifies the AgentsView release archive and executable against that pin before it packages the executable.
