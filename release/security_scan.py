@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Check source history, release files, and distributed images."""
+"""Report secret results in the source history and vulnerability results in the release images."""
 
 import argparse
-import copy
 import datetime
 import hashlib
 import io
@@ -19,6 +18,8 @@ from pathlib import Path
 from security_content import Content, digest
 from security_policy import EXCEPTIONS, apply_exceptions, load_exceptions
 from security_tools import PINS
+
+SEVERITIES = ("CRITICAL", "HIGH", "MEDIUM", "LOW", "UNKNOWN")
 
 
 def now():
@@ -142,34 +143,30 @@ class Scanners:
             self.gitleaks(["dir", str(content.root)], content.locations)
         return {"files": len(content.locations), "bytes": content.bytes}
 
-    def trivy(self, archive, image, vulnerabilities=True):
+    def trivy(self, archive, image):
         raw = self.scratch / "trivy.json"
         cache = self.scratch / "trivy-cache"
         command = [self.tool("trivy"), "image", "--config", str(self.config),
                    "--cache-dir", str(cache), "--quiet", "--timeout=45m"]
-        if vulnerabilities:
-            self.report["stage"] = "Retrieve current advisory data."
-            execute([*command, "--download-db-only"], cwd=self.scratch)
-            metadata = json.loads((cache / "db/metadata.json").read_text())
-            retrieved = now()
-            updated = datetime.datetime.fromisoformat(metadata["UpdatedAt"].replace("Z", "+00:00"))
-            age = datetime.datetime.now(datetime.timezone.utc) - updated
-            if age < datetime.timedelta(minutes=-5) or age > datetime.timedelta(days=2):
-                raise ValueError("The vulnerability advisory data is stale.")
-            self.report["advisory_data"] = {"retrieved_at": retrieved, "metadata": metadata,
-                                            "sha256": digest(cache / "db/trivy.db")}
-        args = [*command, "--input", str(archive), "--scanners", "vuln,secret" if vulnerabilities else "secret",
-                "--image-config-scanners=secret", "--secret-config=", "--ignorefile", str(self.empty),
+        self.report["stage"] = "Retrieve current advisory data."
+        execute([*command, "--download-db-only"], cwd=self.scratch)
+        metadata = json.loads((cache / "db/metadata.json").read_text())
+        retrieved = now()
+        updated = datetime.datetime.fromisoformat(metadata["UpdatedAt"].replace("Z", "+00:00"))
+        age = datetime.datetime.now(datetime.timezone.utc) - updated
+        if age < datetime.timedelta(minutes=-5) or age > datetime.timedelta(days=2):
+            raise ValueError("The vulnerability advisory data is stale.")
+        self.report["advisory_data"] = {"retrieved_at": retrieved, "metadata": metadata,
+                                        "sha256": digest(cache / "db/trivy.db")}
+        args = [*command, "--input", str(archive), "--scanners", "vuln", "--ignorefile", str(self.empty),
                 "--format=json", "--output", str(raw), "--exit-code=0", "--list-all-pkgs",
-                "--detection-priority=comprehensive"]
-        if vulnerabilities:
-            args.extend(["--skip-db-update", "--removed-pkgs"])
+                "--detection-priority=comprehensive", "--skip-db-update", "--removed-pkgs"]
         self.report["stage"] = "Check the image with Trivy."
         result = execute(args, cwd=self.scratch)
         if result.stderr:
             raise ValueError("Trivy reported incomplete coverage; its output remains private.")
         data = json.loads(raw.read_text())
-        consume_trivy(data, self.report, image, vulnerabilities, str(archive))
+        consume_trivy(data, self.report, image, str(archive))
         java_metadata = cache / "java-db/metadata.json"
         if java_metadata.exists():
             self.report["java_advisory_data"] = {"retrieved_at": now(), "metadata": json.loads(java_metadata.read_text()),
@@ -177,7 +174,7 @@ class Scanners:
         raw.unlink()
 
 
-def consume_trivy(data, report, image, vulnerabilities=True, input_path=None):
+def consume_trivy(data, report, image, input_path=None):
     if data.get("SchemaVersion") != 2 or data.get("Metadata", {}).get("ImageID") != report["image_id"]:
         raise ValueError("Trivy did not identify the exact image.")
     results = data.get("Results")
@@ -190,9 +187,6 @@ def consume_trivy(data, report, image, vulnerabilities=True, input_path=None):
             target = "/"
         elif input_path and target.startswith(input_path):
             target = "image-config" + target[len(input_path):]
-        for item in group.get("Secrets", []):
-            report["secrets"].append({"scanner": "trivy", "subject": report["image_id"],
-                                      "file": target, "rule": item["RuleID"], "line": item["StartLine"]})
         for item in group.get("Packages", []):
             packages.append({"target": target, "type": group["Type"], "package": item["Name"],
                              "version": item.get("Version", ""), "identifier": item.get("Identifier", {})})
@@ -200,13 +194,13 @@ def consume_trivy(data, report, image, vulnerabilities=True, input_path=None):
             report["vulnerabilities"].append({"image": image, "target": target, "package": item["PkgName"],
                                               "version": item["InstalledVersion"], "advisory": item["VulnerabilityID"],
                                               "severity": item["Severity"], "fixed_version": item.get("FixedVersion", "")})
-    report["packages"] = packages
-    if vulnerabilities and (not packages or not any(group.get("Class") == "os-pkgs" for group in results)):
+    if not packages or not any(group.get("Class") == "os-pkgs" for group in results):
         raise ValueError("Trivy omitted the installed package inventory.")
-    if any(not item["version"] for item in packages):
-        raise ValueError("An installed package lacks an identified version.")
-    if data.get("Metadata", {}).get("OS", {}).get("EOSL"):
-        raise ValueError("The image operating system lacks current advisory coverage.")
+    report["packages"] = packages
+    # Trivy finds no advisories for a package without a version.
+    report["packages_without_version"] = sorted({item["target"] + " " + item["package"]
+                                                 for item in packages if not item["version"]})
+    report["operating_system"] = data.get("Metadata", {}).get("OS", {})
 
 
 def history(args, scanners, report):
@@ -241,37 +235,10 @@ def history(args, scanners, report):
                           "deleted_files": True, "merge_diffs": True}
 
 
-def file_inputs(directory):
-    found = {}
-    for path in sorted(directory.rglob("*")):
-        if path.is_symlink() or not (path.is_dir() or path.is_file()):
-            raise ValueError("Release inputs must contain regular files and directories.")
-        if path.is_file():
-            found[path.relative_to(directory).as_posix()] = digest(path)
-    if not found:
-        raise ValueError("The release file scan selected zero files.")
-    return found
-
-
-def files(args, scanners, report):
-    directory = args.directory.resolve()
-    before = file_inputs(directory)
-    content = Content(scanners.scratch / "files")
-    for name, checksum in before.items():
-        with (directory / name).open("rb") as stream:
-            content.add(stream, {"file": name, "subject": "sha256:" + checksum})
-    report["inputs"] = before
-    report["coverage"] = scanners.content(content)
-    if file_inputs(directory) != before:
-        raise ValueError("The release files changed during the scan.")
-
-
 def image(args, scanners, report):
     archive_path = args.archive.resolve()
     before = digest(archive_path)
-    report.update(archive_sha256=before, image=args.image,
-                  scan_mode="vulnerabilities" if args.vulnerabilities_only else "release")
-    coverage = []
+    report.update(archive_sha256=before, image=args.image)
     records = {}
     wanted = {"usr/share/culler-project/manifest.json", "opt/culler-runtime/manifest.json", "opt/culler-runtime/artifacts.txt"}
     with tarfile.open(archive_path) as archive:
@@ -289,45 +256,28 @@ def image(args, scanners, report):
         diff_ids = config["rootfs"]["diff_ids"]
         if len(layers) != len(diff_ids):
             raise ValueError("The image configuration omits a retained layer.")
-        metadata = Content(scanners.scratch / "metadata")
-        metadata.add(io.BytesIO(config_body), {"file": "image-config.json", "subject": report["image_id"]})
-        metadata.add(io.BytesIO(json.dumps(manifest).encode()), {"file": "manifest.json", "subject": report["image_id"]})
-        coverage.append({"metadata": scanners.content(metadata)})
+        # The layers supply the version records of the bundled tools.
         for index, layer in enumerate(layers):
-            with tempfile.TemporaryDirectory(dir=scanners.scratch) as directory:
-                content = Content(Path(directory) / "files")
-                with archive.extractfile(layer) as stream:
-                    checksum = hashlib.file_digest(stream, "sha256").hexdigest()
-                if "sha256:" + checksum != diff_ids[index]:
-                    raise ValueError("A retained layer differs from the image configuration.")
-                with tarfile.open(fileobj=archive.extractfile(layer), mode="r|*") as contents:
-                    for member in contents:
-                        name = member.name.removeprefix("./").lstrip("/")
-                        if "/.wh." in name or name.startswith(".wh."):
-                            parent, _, leaf = name.rpartition("/")
-                            prefix = (parent + "/") if parent else ""
-                            if leaf == ".wh..wh..opq":
-                                records = {key: value for key, value in records.items() if not key.startswith(prefix)}
-                            else:
-                                records.pop(prefix + leaf.removeprefix(".wh."), None)
-                        location = {"file": name, "subject": report["image_id"] + "/" + diff_ids[index], "layer": diff_ids[index]}
-                        if member.isfile():
-                            body = contents.extractfile(member)
-                            if name in wanted:
-                                value = body.read()
-                                records[name] = value.decode()
-                                body = io.BytesIO(value)
-                            if not args.vulnerabilities_only:
-                                content.add(body, location)
-                        elif member.issym() or member.islnk():
-                            if name in wanted:
-                                raise ValueError("A bundled version record requires a regular file.")
-                            if not args.vulnerabilities_only:
-                                content.add(io.BytesIO(member.linkname.encode()), location, expand=False)
-                        elif not (member.isdir() or member.isdev() or member.isfifo()):
-                            raise ValueError("An image layer contains an unsupported file type.")
-                coverage.append({"layer": diff_ids[index], **scanners.content(content)})
-    report["coverage"] = coverage
+            with archive.extractfile(layer) as stream:
+                checksum = hashlib.file_digest(stream, "sha256").hexdigest()
+            if "sha256:" + checksum != diff_ids[index]:
+                raise ValueError("A retained layer differs from the image configuration.")
+            with tarfile.open(fileobj=archive.extractfile(layer), mode="r|*") as contents:
+                for member in contents:
+                    name = member.name.removeprefix("./").lstrip("/")
+                    if "/.wh." in name or name.startswith(".wh."):
+                        parent, _, leaf = name.rpartition("/")
+                        prefix = (parent + "/") if parent else ""
+                        if leaf == ".wh..wh..opq":
+                            records = {key: value for key, value in records.items() if not key.startswith(prefix)}
+                        else:
+                            records.pop(prefix + leaf.removeprefix(".wh."), None)
+                    if name not in wanted:
+                        continue
+                    if not member.isfile():
+                        raise ValueError("A bundled version record requires a regular file.")
+                    records[name] = contents.extractfile(member).read().decode()
+    report["layers"] = diff_ids
     scanners.trivy(archive_path, args.image)
     report["bundled_tools"] = bundled_tools(records, args.image)
     if digest(archive_path) != before:
@@ -350,27 +300,50 @@ def bundled_tools(records, image_name):
             for name, version in sorted(tools.items())]
 
 
-def verify_files(directory, record, commit):
-    if record.get("status") != "passed" or record.get("kind") != "files" or record.get("commit") != commit:
-        raise ValueError("The release requires a successful file scan for its source commit.")
-    if record.get("inputs") != file_inputs(directory):
-        raise ValueError("The release files differ from the scanned files.")
-    if not apply_exceptions(copy.deepcopy(record), load_exceptions()):
-        raise ValueError("The release file results include an unresolved secret.")
+def cell(value):
+    return str(value).replace("\\", "\\\\").replace("|", "\\|").replace("\n", " ")
 
 
-def verify_image(archive, record, commit):
-    if record.get("status") != "passed" or record.get("kind") != "image" or record.get("commit") != commit or record.get("scan_mode") != "release":
-        raise ValueError("The release requires a successful image scan for its source commit.")
-    if record.get("archive_sha256") != digest(archive):
-        raise ValueError("The image archive differs from the scanned image archive.")
-    if not apply_exceptions(copy.deepcopy(record), load_exceptions()):
-        raise ValueError("An image result lacks a current exception.")
+def summary(report):
+    if report["kind"] == "history":
+        lines = ["## Secret scan of the Culler repository", ""]
+    else:
+        lines = ["## Vulnerability scan of the " + report.get("image", "") + " image", ""]
+    if report["status"] != "complete":
+        lines.append("The scan did not complete. The last stage was: " + report.get("stage", "the start") +
+                     " The report artifact keeps the record.")
+        return "\n".join(lines) + "\n"
+    if report["kind"] == "history":
+        secrets = report["secrets"]
+        without = sum(1 for item in secrets if "reason" not in item)
+        lines += ["- Commits: " + str(report["coverage"]["commits"]), "- Gitleaks results: " + str(len(secrets)),
+                  "- Results without an exception in `release/security/exceptions.json`: " + str(without)]
+        if secrets:
+            lines += ["", "| File | Commit | Rule | Line | Exception reason |", "| --- | --- | --- | --- | --- |"]
+            for item in secrets:
+                lines.append("| " + " | ".join(cell(value) for value in (
+                    item["file"], item["commit"][:12], item["rule"], item["line"], item.get("reason", "None"))) + " |")
+        return "\n".join(lines) + "\n"
+    results = report["vulnerabilities"]
+    lines += ["- Packages: " + str(len(report["packages"])), "- Trivy vulnerability results: " + str(len(results)),
+              "- Advisory data update: " + report["advisory_data"]["metadata"]["UpdatedAt"]]
+    lines += ["", "| Severity | Results | Results with a fixed version |", "| --- | --- | --- |"]
+    for severity in SEVERITIES:
+        matched = [item for item in results if item["severity"] == severity]
+        lines.append("| " + severity + " | " + str(len(matched)) + " | " +
+                     str(sum(1 for item in matched if item["fixed_version"])) + " |")
+    if report["packages_without_version"]:
+        lines += ["", "Trivy found no version for these packages, so it checked no advisories for them:", ""]
+        lines += ["- `" + cell(name) + "`" for name in report["packages_without_version"]]
+    if report["operating_system"].get("EOSL"):
+        lines += ["", "The image operating system is past its end of support, so its advisory data can be incomplete."]
+    lines += ["", "The report artifact lists each result and each package."]
+    return "\n".join(lines) + "\n"
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("kind", choices=("history", "files", "image"))
+    parser.add_argument("kind", choices=("history", "image"))
     parser.add_argument("--tools", required=True, type=Path)
     parser.add_argument("--report", required=True, type=Path)
     parser.add_argument("--commit", default="")
@@ -378,28 +351,32 @@ def main():
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--ref", action="append")
     parser.add_argument("--public-refs", action="store_true")
-    parser.add_argument("--directory", type=Path)
     parser.add_argument("--archive", type=Path)
     parser.add_argument("--image", choices=("project", "runner"))
-    parser.add_argument("--vulnerabilities-only", action="store_true")
     args = parser.parse_args()
-    report = {"format": 1, "kind": args.kind, "commit": args.commit, "started_at": now(),
-              "status": "unverified", "scanners": {}, "secrets": [], "vulnerabilities": []}
+    report = {"format": 2, "kind": args.kind, "commit": args.commit, "started_at": now(),
+              "status": "unverified", "scanners": {}}
+    report["secrets" if args.kind == "history" else "vulnerabilities"] = []
     code = 2
     try:
         exceptions = load_exceptions(args.exceptions)
         with tempfile.TemporaryDirectory(prefix="culler-security-") as directory:
             scanners = Scanners(args.tools, Path(directory), report)
-            {"history": history, "files": files, "image": image}[args.kind](args, scanners, report)
-        code = 0 if apply_exceptions(report, exceptions) else 1
-        report["stage"] = "The required scan completed."
+            {"history": history, "image": image}[args.kind](args, scanners, report)
+        apply_exceptions(report, exceptions)
+        report["status"] = "complete"
+        report["stage"] = "The scan completed."
+        code = 0
     except (ValueError, OSError, KeyError, TypeError, AttributeError, EOFError, RuntimeError,
             tarfile.TarError, zipfile.BadZipFile, subprocess.SubprocessError):
-        report["error"] = "A required tool, input, or coverage check failed. The check remains unverified."
+        report["error"] = "A required tool, input, or coverage check failed. The scan remains unverified."
     report["completed_at"] = now()
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2) + "\n")
-    print("The " + args.kind + " security check is " + report["status"] + ".")
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as stream:
+            stream.write(summary(report))
+    print("The " + args.kind + " security scan is " + report["status"] + ".")
     return code
 
 

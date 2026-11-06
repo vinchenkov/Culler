@@ -14,8 +14,6 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from security_scan import verify_files
-
 CHECKS = ["fast-suite-macos", "deployment-linux", "application-package", "product-image", "release-downloads"]
 
 
@@ -106,10 +104,8 @@ def newer_than_available(api, commit):
     return True
 
 
-def ensure_asset(api, release, path, expected_sha256):
+def ensure_asset(api, release, path):
     expected = path.read_bytes()
-    if hashlib.sha256(expected).hexdigest() != expected_sha256:
-        raise ValueError("The release file changed after its secret check.")
     matches = [asset for asset in release.get("assets", []) if asset["name"] == path.name]
     if len(matches) > 1:
         raise ValueError("The draft contains duplicate release files.")
@@ -123,17 +119,7 @@ def ensure_asset(api, release, path, expected_sha256):
         raise ValueError("The uploaded release file differs: " + path.name)
 
 
-def scan_release_files(assets, output, commit, tools):
-    record = output / "security-publication.json"
-    subprocess.run([sys.executable, str(Path(__file__).with_name("security_scan.py")), "files",
-                    "--directory", str(assets), "--commit", commit, "--tools", str(tools),
-                    "--report", str(record)], check=True)
-    data = json.loads(record.read_text())
-    verify_files(assets, data, commit)
-    return data
-
-
-def publish(api, output, commit, image, run_id, now=None, project_image=None, tools=None):
+def publish(api, output, commit, image, run_id, now=None, project_image=None):
     if not re.fullmatch(r"[0-9a-f]{40}", commit):
         raise ValueError("The release requires a full commit identifier.")
     if not re.fullmatch(r"ghcr\.io/[a-z0-9._/-]+@sha256:[0-9a-f]{64}", image):
@@ -144,7 +130,6 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None, to
     agentsview = agentsview_record(package)
     host_bun = host_bun_record(package)
     assets = output / "assets"
-    verify_files(assets, json.loads((output / "security-files.json").read_text()), commit)
     package_file = file_record(assets / "culler-darwin-arm64.tar.gz")
     if any(package.get(key) != package_file[key] for key in package_file):
         raise ValueError("The application package differs from its build record.")
@@ -178,14 +163,13 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None, to
         for key in ("published_at", "workflow_seconds"):
             record[key] = old_record[key]
     record_path.write_text(json.dumps(record, indent=2) + "\n")
-    scanned = scan_release_files(assets, output, commit, tools)
     if release is None:
         release = api.request("POST", "/releases", {
             "tag_name": tag, "target_commitish": commit, "name": "Culler " + commit[:12],
             "draft": True, "prerelease": False, "make_latest": "false",
         })
     for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz", "release.json"):
-        ensure_asset(api, release, assets / name, scanned["inputs"][name])
+        ensure_asset(api, release, assets / name)
     # The workflow serializes this final comparison and publication.
     if not newer_than_available(api, commit):
         return False
@@ -198,7 +182,6 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--image", required=True)
     parser.add_argument("--project-image", required=True)
-    parser.add_argument("--tools", required=True, type=Path)
     args = parser.parse_args()
     if os.environ.get("GITHUB_ACTIONS") != "true" or os.environ.get("GITHUB_EVENT_NAME") != "push" or os.environ.get("GITHUB_REF") != "refs/heads/main":
         raise ValueError("Publication requires the main push workflow.")
@@ -211,7 +194,7 @@ def main():
         raise ValueError("The release requires an immutable Project image digest.")
     subprocess.run(["docker", "pull", args.project_image], check=True, stdout=subprocess.DEVNULL)
     api = GitHub(os.environ["GITHUB_REPOSITORY"], os.environ["GH_TOKEN"])
-    published = publish(api, args.output, commit, args.image, os.environ["GITHUB_RUN_ID"], project_image=args.project_image, tools=args.tools)
+    published = publish(api, args.output, commit, args.image, os.environ["GITHUB_RUN_ID"], project_image=args.project_image)
     print("The release is available." if published else "A complete release already includes this commit or a later commit.")
 
 

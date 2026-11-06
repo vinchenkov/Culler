@@ -1,5 +1,3 @@
-import copy
-import datetime
 import hashlib
 import http.client
 import io
@@ -12,102 +10,100 @@ from pathlib import Path
 from unittest import mock
 
 import security_tools
-from security_content import Content, digest
-from security_policy import apply_exceptions
-from security_scan import consume_trivy, verify_files, verify_image
+from security_content import Content
+from security_policy import apply_exceptions, load_exceptions
+from security_scan import bundled_tools, consume_trivy, summary
 
 
-def advisory():
-    return {"image": "runner", "target": "os", "package": "example", "version": "1.0",
-            "advisory": "CVE-2099-1234", "severity": "HIGH", "fixed_version": "1.1"}
+def trivy_data(vulnerabilities=(), packages=None):
+    group = {"Target": "os", "Class": "os-pkgs", "Type": "debian",
+             "Packages": packages if packages is not None else [{"Name": "example", "Version": "1.0"}]}
+    if vulnerabilities:
+        group["Vulnerabilities"] = [{"PkgName": "example", "InstalledVersion": "1.0", "VulnerabilityID": advisory,
+                                     "Severity": severity, "FixedVersion": fixed} for advisory, severity, fixed in vulnerabilities]
+    return {"SchemaVersion": 2, "Metadata": {"ImageID": "sha256:unchanged"}, "Results": [group]}
 
 
-class SecurityPolicyTest(unittest.TestCase):
-    def test_exact_unexpired_exception_preserves_the_result(self):
-        item = advisory()
-        exception = {key: value for key, value in item.items() if key not in {"severity", "fixed_version"}}
-        exception.update(reason="The fixture proves the exception match.", expires="2026-10-23")
-        for change, passed in [({}, True), ({"expires": "2026-10-21"}, False),
-                               ({"version": "0.9"}, False), ({"package": "other"}, False),
-                               ({"advisory": "CVE-2099-9999"}, False), ({"image": "project"}, False),
-                               ({"target": "elsewhere"}, False)]:
-            with self.subTest(change=change):
-                report = {"secrets": [], "vulnerabilities": [dict(item)]}
-                exceptions = {"secrets": [], "vulnerabilities": [{**exception, **change}]}
-                self.assertEqual(apply_exceptions(report, exceptions, datetime.date(2026, 10, 22)), passed)
-                self.assertEqual(report["vulnerabilities"][0]["advisory"], item["advisory"])
-                self.assertEqual(report["vulnerabilities"][0]["suppressed"], passed)
+def image_report():
+    return {"kind": "image", "image": "runner", "image_id": "sha256:unchanged", "vulnerabilities": []}
 
-    def test_low_severity_results_remain_visible(self):
-        report = {"secrets": [], "vulnerabilities": [{**advisory(), "severity": "LOW"}]}
-        self.assertTrue(apply_exceptions(report, {"secrets": [], "vulnerabilities": []}))
-        self.assertEqual(len(report["vulnerabilities"]), 1)
-        self.assertFalse(report["vulnerabilities"][0]["suppressed"])
 
+class SecurityReportTest(unittest.TestCase):
     def test_secret_exceptions_require_the_exact_location(self):
         item = {"scanner": "gitleaks", "subject": "commit:abc", "file": "fixture", "rule": "rule", "line": 1}
-        for change, passed in (({}, True), ({"subject": "commit:def"}, False),
-                               ({"file": "different"}, False), ({"line": 2}, False)):
-            report = {"secrets": [dict(item)], "vulnerabilities": []}
-            exceptions = {"secrets": [{**item, **change, "reason": "The value is a synthetic fixture."}], "vulnerabilities": []}
-            self.assertEqual(apply_exceptions(report, exceptions), passed)
+        for change, matched in (({}, True), ({"subject": "commit:def"}, False),
+                                ({"file": "different"}, False), ({"line": 2}, False)):
+            with self.subTest(change=change):
+                report = {"secrets": [dict(item)]}
+                exceptions = {"secrets": [{**item, **change, "reason": "The value is a synthetic fixture."}]}
+                apply_exceptions(report, exceptions)
+                self.assertEqual(report["secrets"][0].get("reason"), "The value is a synthetic fixture." if matched else None)
+
+    def test_the_exceptions_hold_only_secret_results(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "exceptions.json"
+            for data in ({"secrets": [], "vulnerabilities": []}, {"secrets": [{"scanner": "gitleaks", "reason": "partial"}]}):
+                path.write_text(json.dumps(data))
+                with self.assertRaises(ValueError):
+                    load_exceptions(path)
+        self.assertTrue(load_exceptions()["secrets"])
 
     def test_missing_bundled_versions_remain_unverified(self):
-        from security_scan import bundled_tools
         with self.assertRaises(KeyError):
             bundled_tools({}, "runner")
         with self.assertRaises(ValueError):
             bundled_tools({"usr/share/culler-project/manifest.json": json.dumps({"tools": {"bun": "unknown"}, "browser_versions": {}})}, "project")
 
     def test_new_advisory_changes_the_result_for_the_same_image(self):
-        source = {"SchemaVersion": 2, "Metadata": {"ImageID": "sha256:unchanged"}, "Results": [
-            {"Target": "os", "Class": "os-pkgs", "Type": "alpine", "Packages": [{"Name": "example", "Version": "1.0"}]}]}
-        before = {"image_id": "sha256:unchanged", "secrets": [], "vulnerabilities": []}
-        after = copy.deepcopy(before)
-        consume_trivy(source, before, "runner")
-        source["Results"][0]["Vulnerabilities"] = [{"PkgName": "example", "InstalledVersion": "1.0",
-            "VulnerabilityID": "CVE-2099-1234", "Severity": "CRITICAL", "FixedVersion": "1.1"}]
-        consume_trivy(source, after, "runner")
-        exceptions = {"secrets": [], "vulnerabilities": []}
-        self.assertTrue(apply_exceptions(before, exceptions))
-        self.assertFalse(apply_exceptions(after, exceptions))
+        before, after = image_report(), image_report()
+        consume_trivy(trivy_data(), before, "runner")
+        consume_trivy(trivy_data([("CVE-2099-1234", "CRITICAL", "1.1")]), after, "runner")
+        self.assertEqual(before["vulnerabilities"], [])
+        self.assertEqual(after["vulnerabilities"], [{"image": "runner", "target": "/", "package": "example", "version": "1.0",
+                                                     "advisory": "CVE-2099-1234", "severity": "CRITICAL", "fixed_version": "1.1"}])
         self.assertEqual(before["image_id"], after["image_id"])
 
     def test_missing_inventory_or_wrong_image_remains_unverified(self):
         for data in ({"SchemaVersion": 2, "Metadata": {"ImageID": "wrong"}},
-                     {"SchemaVersion": 2, "Metadata": {"ImageID": "expected"}, "Results": []}):
+                     {"SchemaVersion": 2, "Metadata": {"ImageID": "sha256:unchanged"}, "Results": []}):
             with self.assertRaises(ValueError):
-                consume_trivy(data, {"image_id": "expected", "secrets": [], "vulnerabilities": []}, "runner")
+                consume_trivy(data, image_report(), "runner")
 
-    def test_reports_omit_secret_match_and_image_metadata(self):
-        report = {"image_id": "expected", "secrets": [], "vulnerabilities": []}
-        data = {"SchemaVersion": 2, "Metadata": {"ImageID": "expected", "ImageConfig": {"Env": ["private-value"]}},
-                "Results": [{"Target": "config", "Secrets": [{"RuleID": "rule", "StartLine": 2,
-                    "Match": "private-value", "Code": {"Lines": [{"Content": "private-value"}]}}]}]}
-        consume_trivy(data, report, "runner", vulnerabilities=False)
+    def test_a_package_without_a_version_is_listed_in_the_report(self):
+        report = image_report()
+        consume_trivy(trivy_data(packages=[{"Name": "example", "Version": "1.0"}, {"Name": "mc"}]), report, "runner")
+        self.assertEqual(report["packages_without_version"], ["/ mc"])
+
+    def test_reports_omit_image_metadata(self):
+        report = image_report()
+        data = trivy_data()
+        data["Metadata"]["ImageConfig"] = {"Env": ["private-value"]}
+        consume_trivy(data, report, "runner")
         self.assertNotIn("private-value", json.dumps(report))
-        self.assertEqual(report["secrets"][0]["file"], "config")
 
-    def test_upload_verification_rejects_replaced_inputs_and_failed_scans(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            file = root / "install.sh"
-            file.write_text("first")
-            report = {"kind": "files", "status": "passed", "commit": "commit", "inputs": {"install.sh": digest(file)}}
-            verify_files(root, report, "commit")
-            file.write_text("second")
-            with self.assertRaises(ValueError):
-                verify_files(root, report, "commit")
-            for status in ("failed", "unverified"):
-                with self.assertRaises(ValueError):
-                    verify_files(root, {**report, "status": status}, "commit")
-            image = {"kind": "image", "scan_mode": "release", "status": "passed", "commit": "commit", "archive_sha256": digest(file)}
-            verify_image(file, image, "commit")
-            with self.assertRaises(ValueError):
-                verify_image(file, {**image, "scan_mode": "vulnerabilities"}, "commit")
-            file.write_text("third")
-            with self.assertRaises(ValueError):
-                verify_image(file, image, "commit")
+    def test_the_image_summary_counts_each_severity(self):
+        report = image_report()
+        consume_trivy(trivy_data([("CVE-1", "HIGH", "1.1"), ("CVE-2", "HIGH", ""), ("CVE-3", "LOW", "")]), report, "runner")
+        report.update(status="complete", advisory_data={"metadata": {"UpdatedAt": "2026-11-05T00:00:00Z"}})
+        text = summary(report)
+        self.assertIn("- Packages: 1\n- Trivy vulnerability results: 3\n", text)
+        self.assertIn("| HIGH | 2 | 1 |", text)
+        self.assertIn("| LOW | 1 | 0 |", text)
+        self.assertIn("| CRITICAL | 0 | 0 |", text)
+
+    def test_the_history_summary_lists_each_result_and_its_exception(self):
+        report = {"kind": "history", "status": "complete", "coverage": {"commits": 2}, "secrets": [
+            {"file": "a|b", "commit": "c" * 40, "rule": "generic-api-key", "line": 3, "reason": "A fixture."},
+            {"file": "other", "commit": "d" * 40, "rule": "generic-api-key", "line": 4}]}
+        text = summary(report)
+        self.assertIn("- Commits: 2\n- Gitleaks results: 2\n- Results without an exception", text)
+        self.assertIn("`release/security/exceptions.json`: 1\n", text)
+        self.assertIn("| a\\|b | cccccccccccc | generic-api-key | 3 | A fixture. |", text)
+        self.assertIn("| other | dddddddddddd | generic-api-key | 4 | None |", text)
+
+    def test_an_unverified_scan_names_its_last_stage(self):
+        text = summary({"kind": "image", "image": "project", "status": "unverified", "stage": "Check the image with Trivy."})
+        self.assertIn("The scan did not complete. The last stage was: Check the image with Trivy.", text)
 
     def test_archive_paths_never_write_outside_the_scan_directory(self):
         with tempfile.TemporaryDirectory() as directory:

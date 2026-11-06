@@ -24,7 +24,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - name: Check the current release images with fresh advisory data
+      - name: Report vulnerability results for the current release images
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 release/security_nightly.py --output "$RUNNER_TEMP/security-nightly" --tools "$RUNNER_TEMP/security-tools"
@@ -34,5 +34,5 @@ jobs:
         with:
           name: culler-security-nightly-${{ github.run_attempt }}
           path: ${{ runner.temp }}/security-nightly/*.json
-          if-no-files-found: error
+          if-no-files-found: ignore
           retention-days: 90

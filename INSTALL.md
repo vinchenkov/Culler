@@ -281,9 +281,10 @@ The workflow checks these release inputs:
 - The application package and its production binaries.
 - The product image and every image layer.
 - The file contents and the sizes of both images.
-- The source history, release files, and both images for likely secrets.
-- Both images for known dependency vulnerabilities.
 - The uploaded release files and the container image download.
+
+The workflow also scans the source history for likely secrets and both images for known dependency vulnerabilities.
+These scans report their results and never prevent a release.
 
 The checks exercise the product image without a mounted Culler checkout.
 Each release uses one full commit identifier and an immutable image digest.
@@ -301,10 +302,10 @@ Later updates use the same saved launcher.
 The coding harness can run `./release/check.sh` to check the release tools locally.
 That check uses local fixtures and requires no publication credential.
 
-The [release security guide](release/security/README.md) describes the local secret check before source publication.
-It also describes the required GitHub ruleset and the nightly image checks.
+The [release security guide](release/security/README.md) describes the security scans and the local secret check.
+It also describes the required GitHub ruleset and the nightly image scans.
 The repository owner must activate the required ruleset before a pull request can merge.
-An unresolved secret, high or critical vulnerability, or unverified required check prevents release publication.
+A failed or unverified required check prevents release publication.
 
 ## Development installation
 

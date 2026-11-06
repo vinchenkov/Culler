@@ -2,11 +2,9 @@ import datetime
 import json
 import tempfile
 import unittest
-from unittest.mock import patch
 from pathlib import Path
 
 from publish import CHECKS, file_record, publish
-from security_scan import file_inputs
 
 COMMIT = "a" * 40
 IMAGE = "ghcr.io/example/culler/runner@sha256:" + "b" * 64
@@ -58,11 +56,6 @@ class FakeGitHub:
 
 
 class PublishTest(unittest.TestCase):
-    def setUp(self):
-        self.scan = patch("publish.scan_release_files").start()
-        self.scan.side_effect = lambda assets, output, commit, tools: {"inputs": file_inputs(assets)}
-        self.addCleanup(patch.stopall)
-
     def fixture(self, root):
         output = root / "output"
         assets = output / "assets"
@@ -76,41 +69,7 @@ class PublishTest(unittest.TestCase):
         package["host_bun"] = json.loads(json.dumps(HOST_BUN))
         (output / "package.json").write_text(json.dumps(package))
         (output / "sequence").write_text("17\n")
-        (output / "security-files.json").write_text(json.dumps({"kind": "files", "commit": COMMIT,
-            "status": "passed", "inputs": file_inputs(assets)}))
         return output
-
-    def test_a_failed_scan_prevents_every_release_upload(self):
-        with tempfile.TemporaryDirectory() as directory:
-            output = self.fixture(Path(directory))
-            api = FakeGitHub()
-            self.scan.side_effect = ValueError("The file check failed.")
-            with self.assertRaises(ValueError):
-                publish(api, output, COMMIT, IMAGE, 1, NOW)
-            self.assertIsNone(api.release)
-            self.assertEqual(api.assets, {})
-
-    def test_replaced_files_fail_before_every_release_upload(self):
-        with tempfile.TemporaryDirectory() as directory:
-            output = self.fixture(Path(directory))
-            (output / "assets/install.sh").write_text("replacement")
-            api = FakeGitHub()
-            with self.assertRaises(ValueError):
-                publish(api, output, COMMIT, IMAGE, 1, NOW)
-            self.assertEqual(api.assets, {})
-
-    def test_a_file_change_after_the_scan_prevents_its_upload(self):
-        with tempfile.TemporaryDirectory() as directory:
-            output = self.fixture(Path(directory))
-            def change(assets, output, commit, tools):
-                checked = {"inputs": file_inputs(assets)}
-                (assets / "install.sh").write_text("replacement after the scan")
-                return checked
-            self.scan.side_effect = change
-            api = FakeGitHub()
-            with self.assertRaises(ValueError):
-                publish(api, output, COMMIT, IMAGE, 1, NOW)
-            self.assertEqual(api.assets, {})
 
     def test_publication_follows_all_download_checks(self):
         with tempfile.TemporaryDirectory() as directory:

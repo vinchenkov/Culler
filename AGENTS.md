@@ -54,16 +54,20 @@ The `product-image` job and the `release-downloads and publication` job require 
 The `dashboard-browser` job retains the suite log, the JUnit report, and the browser evidence as the `culler-dashboard-browser-<attempt>` artifact.
 `./release/check.sh` checks the release tools without credentials or publication.
 `release/image_contents.py` checks the file contents of both image archives, and `release/size_report.py` writes the size report of a fresh install and an update.
-The `release-security` job requires the source, file, image, and scanner acceptance checks.
+The `release-checks` job requires the fast suite, deployment, browser, and image jobs.
 The publication jobs require that job before their uploads.
+The security scans report results in their job summaries and artifacts.
+No release job waits for a security scan, and a scan result never prevents a release.
+The secret scan covers only the source history of this repository.
 The read-only `release-images` job restores the build cache of the latest `main` build from the GitHub Actions cache.
 Only a push to `main` saves that cache.
 The product image builds on the default Project image of the same run.
 The job runs the Project browser check, the runtime browser check, and the image content checks.
-The job saves and scans both images and writes the size report.
+The job saves both images and writes the size report.
+The `image-vulnerabilities` job scans those exact archives for known vulnerabilities.
 The image upload job verifies and loads those exact archives.
-The nightly security workflow checks the current release image digests with fresh advisory data.
-`release/security/README.md` describes the local secret check and the required GitHub ruleset.
+The nightly security workflow scans the current release image digests with fresh advisory data.
+`release/security/README.md` describes the security scans, the local secret check, and the GitHub ruleset.
 The [installation guide](INSTALL.md) describes private access and release publication.
 
 An agent container is a container that Culler starts for a setup agent or a pipeline agent.

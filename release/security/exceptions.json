@@ -40,6 +40,5 @@
       "line": 2,
       "reason": "The value is the source checksum of dashboard/src/api.ts."
     }
-  ],
-  "vulnerabilities": []
+  ]
 }

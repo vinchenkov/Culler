@@ -32,7 +32,8 @@ jobs:
           persist-credentials: false
       - name: Install the fixed security scanners
         run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
-      - name: Check the complete public history and pull request commits
+      # This scan reports its results. No release job waits for it.
+      - name: Report secret results in the complete public history and pull request commits
         run: |
           ./release/secret-check.sh --public-refs --commit "$GITHUB_SHA" \
             --tools "$RUNNER_TEMP/security-tools" --report "$RUNNER_TEMP/security-history.json"
@@ -60,9 +61,8 @@ jobs:
       - name: Build the controlled advisory database tool
         working-directory: release/security/fixture-db
         run: mise exec -- go build -mod=readonly -o "$RUNNER_TEMP/fixture-db" .
-      - name: Prove the security gates with controlled fixtures
+      - name: Check the security scans with controlled fixtures
         run: |
-          ./release/check.sh
           python3 release/security_acceptance.py --tools "$RUNNER_TEMP/security-tools" \
             --fixture-db "$RUNNER_TEMP/fixture-db" --report "$RUNNER_TEMP/security-acceptance.json"
       - name: Preserve the scanner acceptance record
@@ -74,10 +74,10 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-  release-security:
-    name: release-security
+  release-checks:
+    name: release-checks
     if: always()
-    needs: [source-secrets, security-acceptance, fast-suite-macos, deployment-linux, dashboard-browser, release-images]
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 5
     steps:
@@ -88,13 +88,12 @@ jobs:
           python3 - <<'PYTHON'
           import json, os
           results = json.loads(os.environ["RESULTS"])
-          if len(results) != 6 or any(item["result"] != "success" for item in results.values()):
+          if len(results) != 4 or any(item["result"] != "success" for item in results.values()):
               raise SystemExit("A required release check failed or remains unverified.")
           PYTHON
 
   fast-suite-macos:
     name: fast-suite-macos and application-package
-    needs: [source-secrets]
     runs-on: macos-15
     timeout-minutes: 30
     outputs:
@@ -147,6 +146,8 @@ jobs:
               exit 1
             fi
           done
+      - name: Check the release tools
+        run: ./release/check.sh
       - name: Build and validate the application package
         id: package
         env:
@@ -155,13 +156,6 @@ jobs:
         run: |
           ./release/build.sh "$CULLER_RELEASE_OUTPUT"
           python3 release/validate_package.py --output "$CULLER_RELEASE_OUTPUT"
-      - name: Install the fixed security scanners
-        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
-      - name: Scan the exact release files
-        run: |
-          python3 release/security_scan.py files --directory "$RUNNER_TEMP/culler-release/assets" \
-            --commit "$GITHUB_SHA" --tools "$RUNNER_TEMP/security-tools" \
-            --report "$RUNNER_TEMP/culler-release/security-files.json"
       - name: Record the exact release inputs
         id: inputs
         env:
@@ -186,14 +180,6 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
-      - name: Preserve the masked file report
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: culler-security-files-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/culler-release/security-files.json
-          if-no-files-found: error
-          retention-days: 30
       - name: Preserve the fast check logs
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -400,35 +386,24 @@ jobs:
           ./runner/image/browser-smoke.sh culler-runner:check --runtime
       - name: Save both images and check every layer and the image contents
         run: |
-          mkdir -p "$RUNNER_TEMP/security-images"
+          mkdir -p "$RUNNER_TEMP/checked-images"
           for image in project runner; do
-            docker image save "culler-$image:check" -o "$RUNNER_TEMP/security-images/$image.tar"
-            python3 release/image_layers.py "$RUNNER_TEMP/security-images/$image.tar"
+            docker image save "culler-$image:check" -o "$RUNNER_TEMP/checked-images/$image.tar"
+            python3 release/image_layers.py "$RUNNER_TEMP/checked-images/$image.tar"
           done
-          python3 release/image_contents.py --project "$RUNNER_TEMP/security-images/project.tar" \
-            --runner "$RUNNER_TEMP/security-images/runner.tar"
+          python3 release/image_contents.py --project "$RUNNER_TEMP/checked-images/project.tar" \
+            --runner "$RUNNER_TEMP/checked-images/runner.tar"
       - name: Write the size report
         run: |
           mkdir -p "$RUNNER_TEMP/size-report"
-          python3 release/size_report.py --project "$RUNNER_TEMP/security-images/project.tar" \
-            --runner "$RUNNER_TEMP/security-images/runner.tar" --output "$RUNNER_TEMP/size-report/size-report.md"
-      - name: Install the fixed security scanners
-        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
-      - name: Scan both release images
-        run: |
-          status=0
-          for image in project runner; do
-            python3 release/security_scan.py image --archive "$RUNNER_TEMP/security-images/$image.tar" \
-              --image "$image" --commit "$GITHUB_SHA" --tools "$RUNNER_TEMP/security-tools" \
-              --report "$RUNNER_TEMP/security-images/$image.json" || status=1
-          done
-          exit "$status"
+          python3 release/size_report.py --project "$RUNNER_TEMP/checked-images/project.tar" \
+            --runner "$RUNNER_TEMP/checked-images/runner.tar" --output "$RUNNER_TEMP/size-report/size-report.md"
       - name: Preserve the exact checked images
         id: images
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: culler-checked-images-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/security-images
+          path: ${{ runner.temp }}/checked-images
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
@@ -440,19 +415,48 @@ jobs:
           path: ${{ runner.temp }}/size-report/size-report.md
           if-no-files-found: warn
           retention-days: 90
-      - name: Preserve the masked image reports
+
+  image-vulnerabilities:
+    name: image-vulnerabilities
+    needs: [release-images]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          artifact-ids: ${{ needs.release-images.outputs.artifact-id }}
+          path: ${{ runner.temp }}/checked-images
+      - name: Install the fixed security scanners
+        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
+      # This scan reports its results. No release job waits for it.
+      - name: Report vulnerability results for both release images
+        run: |
+          status=0
+          for image in project runner; do
+            python3 release/security_scan.py image --archive "$RUNNER_TEMP/checked-images/$image.tar" \
+              --image "$image" --commit "$GITHUB_SHA" --tools "$RUNNER_TEMP/security-tools" \
+              --report "$RUNNER_TEMP/image-vulnerabilities/$image.json" || status=1
+          done
+          exit "$status"
+      - name: Preserve the image vulnerability reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: culler-security-images-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/security-images/*.json
-          if-no-files-found: error
+          name: culler-image-vulnerabilities-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/image-vulnerabilities/*.json
+          if-no-files-found: warn
           retention-days: 30
 
   product-image:
     name: product-image
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images, release-security]
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images, release-checks]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 60
     permissions:
@@ -469,7 +473,7 @@ jobs:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           artifact-ids: ${{ needs.release-images.outputs.artifact-id }}
-          path: ${{ runner.temp }}/security-images
+          path: ${{ runner.temp }}/checked-images
       - name: Load the exact checked images
         run: |
           image_repository="ghcr.io/${GITHUB_REPOSITORY,,}/runner"
@@ -479,7 +483,7 @@ jobs:
           printf 'PROJECT_IMAGE_REPOSITORY=%s/project\n' "${image_repository%/runner}" >> "$GITHUB_ENV"
           printf 'IMAGE_TAG=%s\n' "$IMAGE_TAG" >> "$GITHUB_ENV"
           printf 'PROJECT_IMAGE_TAG=%s\n' "$PROJECT_IMAGE_TAG" >> "$GITHUB_ENV"
-          python3 release/security_images.py "$RUNNER_TEMP/security-images" --commit "$GITHUB_SHA"
+          python3 release/image_load.py "$RUNNER_TEMP/checked-images" --commit "$GITHUB_SHA"
       - name: Authenticate the image upload
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
         with:
@@ -517,7 +521,7 @@ jobs:
   release-downloads:
     name: release-downloads and publication
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [fast-suite-macos, deployment-linux, dashboard-browser, product-image, release-security]
+    needs: [fast-suite-macos, deployment-linux, dashboard-browser, product-image, release-checks]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 30
     permissions:
@@ -550,19 +554,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - name: Install the fixed security scanners
-        run: python3 release/security_tools.py "$RUNNER_TEMP/security-tools"
       - name: Verify release downloads and publish the complete release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_IMAGE: ${{ needs.product-image.outputs.image }}
           PROJECT_IMAGE: ${{ needs.product-image.outputs.project-image }}
-        run: python3 release/publish.py --output "$RUNNER_TEMP/culler-release" --image "$RELEASE_IMAGE" --project-image "$PROJECT_IMAGE" --tools "$RUNNER_TEMP/security-tools"
-      - name: Preserve the masked publication report
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-        with:
-          name: culler-security-publication-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/culler-release/security-publication.json
-          if-no-files-found: error
-          retention-days: 30
+        run: python3 release/publish.py --output "$RUNNER_TEMP/culler-release" --image "$RELEASE_IMAGE" --project-image "$PROJECT_IMAGE"
