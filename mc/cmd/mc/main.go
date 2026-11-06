@@ -67,9 +67,6 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 }
 
 func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
-	if err := gateUpdateCommand(args); err != nil {
-		return writeVerbError(stdout, stderr, err)
-	}
 	if len(args) == 0 {
 		fmt.Fprintln(stderr, "usage: mc <verb> …")
 		writeErrorEnvelope(stdout, stderr, "usage", "usage: mc <verb> …")
