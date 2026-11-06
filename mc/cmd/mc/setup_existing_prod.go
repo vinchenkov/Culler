@@ -402,27 +402,43 @@ func (w *setupWizard) chooseExistingDeployment(state setupDeployment, requested 
 	title := "Continue your setup"
 	lines := []string{"Welcome back. Continue from your last completed step."}
 	action := setupChoice("continue", "Continue setup", "Keep the completed steps.")
+	needsRepair := false
 	if state.Update {
 		title = "Update Culler"
-		action = setupChoice("update", "Update Culler", "Apply the proposed release.")
+		action = setupChoice("update", "Stop and update", "Interrupt active runs and apply this release.")
 	} else if requested {
 		title = "Apply your requested changes"
 		action = setupChoice("continue", "Apply setup changes", "Apply the requested choices.")
 	}
 	if state.Update {
-		lines = []string{"Setup will update Culler from this installer."}
+		lines = nil
+		if w.deps.assessCandidate != nil {
+			disclosures, err := w.deps.assessCandidate()
+			if err != nil {
+				return "", err
+			}
+			lines = append(lines, disclosures...)
+			needsRepair = len(disclosures) > 0
+		}
 	} else if requested {
 		lines = []string{"Setup will apply your requested changes."}
 	}
 	lines = append(lines, state.Release.lines()...)
-	if state.Active {
+	if state.Active && !state.Update {
 		lines = append(lines, "Culler will pause new tasks while setup updates its services.", "Active agents can finish their tasks.")
 	}
 	lines = append(lines, "You choose when to start Culler.")
 	for {
 		w.ui.Panel(title, lines)
+		if state.Update {
+			warning := []string{"This update stops Culler and interrupts active runs.", "Saved data remains. Interrupted work can require a retry."}
+			if needsRepair {
+				warning = append(warning, "Affected profiles need repair in the dashboard. Their work stays stopped.")
+			}
+			w.ui.Panel("Before the update", warning)
+		}
 		choice, err := w.ui.Choose("Choose an action", []onboarding.Choice{
-			action, setupChoice("finish", "Close setup", "Keep the current deployment."),
+			action, setupChoice("finish", "Cancel", "Keep the current deployment."),
 		}, 0)
 		if errors.Is(err, onboarding.ErrBack) {
 			continue

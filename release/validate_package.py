@@ -13,6 +13,8 @@ import tarfile
 import tempfile
 import zipfile
 from pathlib import Path
+from update_contract import validate_update_contract
+from version import parse as parse_version
 
 
 PACKAGE_NAME = "culler-darwin-arm64.tar.gz"
@@ -132,11 +134,13 @@ def local_release_record(output, metadata, host_bun):
         raise ValueError("The package build record lacks its schema identity.")
     installer = output / "assets" / "installer.sh"
     version = (output / "version").read_text().strip()
-    if not re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", version):
-        raise ValueError("The release inputs lack the version.")
+    parse_version(version)
+    if metadata["version"] != version:
+        raise ValueError("The package version differs from the release input.")
     # This local record reaches setup validation. It never authorizes publication.
     return {
         "format": 1, "version": version, "commit": commit, "release_id": commit, "tag": "v" + version,
+        "update": metadata["update"], "dependencies": metadata["dependencies"],
         "sequence": 1, "published_at": "2000-01-01T00:00:00Z", "platform": "darwin-arm64",
         "schema": schema, "runtimes": metadata["runtimes"], "agentsview": metadata["agentsview"], "host_bun": host_bun,
         "package": {key: metadata[key] for key in ("name", "size", "sha256")},
@@ -258,6 +262,7 @@ def validate(output, pin_path=None, host_bun_pin_path=None):
     for path in (output / "package.json", archive, output / "assets" / "installer.sh"):
         regular_file(path)
     metadata = json.loads((output / "package.json").read_text())
+    validate_update_contract(metadata)
     checksum = digest(archive)
     if metadata.get("name") != PACKAGE_NAME or metadata.get("sha256") != checksum or metadata.get("size") != archive.stat().st_size:
         raise ValueError("The built package differs from its build record.")

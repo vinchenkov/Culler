@@ -1,12 +1,14 @@
 // The dashboard authenticates API requests before commands or native dialogs.
 // Browser assets remain public so the page can request the operator token.
 
-import { readFileSync } from "node:fs";
+import { closeSync, constants, fstatSync, openSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 
 import { handleApi, type ApiDeps } from "./api";
 import { accessPage } from "./agentsview-pages";
 import { accessBody, accessError, agentsViewDestination, createAgentsViewProxy } from "./agentsview-proxy";
+import { isReadRequest } from "./ui/requests.js";
 
 export const DEFAULT_BIND = "127.0.0.1:7333";
 
@@ -70,7 +72,39 @@ export interface DashboardServerOpts {
   /** host:port; defaults to 127.0.0.1:7333. Port 0 = ephemeral (tests). */
   bind?: string;
   authToken: string;
+  releaseID?: string;
+  maintenance?: () => boolean;
   chooseFolder?: () => Promise<string | null>;
+}
+
+export function updateBlocksMutations(home: string): boolean {
+  let file: number | undefined;
+  try {
+    file = openSync(join(home, "updates", "transaction.json"), constants.O_RDONLY | constants.O_NOFOLLOW);
+    const info = fstatSync(file);
+    if (!info.isFile() || info.nlink !== 1 || (info.mode & 0o777) !== 0o600 || info.uid !== process.getuid?.() || info.size > 4 * 1024 * 1024) return true;
+    const state = JSON.parse(readFileSync(file, "utf8"));
+    const deployment = createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12);
+    return state.version !== 1 || !/^[a-f0-9]{16,64}$/.test(state.id ?? "") || state.deployment !== deployment ||
+      !/^[a-f0-9]{40}$/.test(state.candidate?.commit ?? "") ||
+      (state.previous !== undefined && !/^[a-f0-9]{40}$/.test(state.previous?.commit ?? "")) ||
+      !["committed", "complete", "restored"].includes(state.phase) || updateMaintenancePresent(home, state.id);
+  } catch (error) {
+    return (error as NodeJS.ErrnoException).code !== "ENOENT";
+  } finally { if (file !== undefined) closeSync(file); }
+}
+
+function updateMaintenancePresent(home: string, id: string): boolean {
+  let file: number | undefined;
+  try {
+    file = openSync(join(home, "state", "install-maintenance.json"), constants.O_RDONLY | constants.O_NOFOLLOW);
+    const info = fstatSync(file);
+    if (!info.isFile() || info.nlink !== 1 || (info.mode & 0o777) !== 0o600 || info.uid !== process.getuid?.() || info.size > 4096) return true;
+    const request = JSON.parse(readFileSync(file, "utf8"));
+    return typeof request.id !== "string" || !/^[a-zA-Z0-9-]{16,128}$/.test(request.id) || request.id === id;
+  } catch (error) {
+    return (error as NodeJS.ErrnoException).code !== "ENOENT";
+  } finally { if (file !== undefined) closeSync(file); }
 }
 
 export interface DashboardServerHandle {
@@ -133,6 +167,9 @@ export function startDashboardServer(
     );
   }
   let choosingFolder = false;
+  if (opts.releaseID !== undefined && !/^[A-Za-z0-9][A-Za-z0-9._+-]{0,127}$/.test(opts.releaseID)) {
+    throw new Error("The dashboard release identity is invalid.");
+  }
   const agentsview = createAgentsViewProxy(deps.mc);
   const server = Bun.serve({
     hostname,
@@ -167,6 +204,13 @@ export function startDashboardServer(
             { status: 401 },
           );
         }
+        const mutation = !isReadRequest(url.pathname, { method: req.method }) && url.pathname !== "/api/agentsview/access";
+        if (mutation && opts.releaseID && req.headers.get("x-culler-release") !== opts.releaseID) {
+          return Response.json({ error: { code: "release-changed", message: "Culler updated. Reload this page before you make changes." } }, { status: 409 });
+        }
+        if (mutation && opts.maintenance?.()) {
+          return Response.json({ error: { code: "update-incomplete", message: "The Culler update requires recovery. Run install.sh to resume it." } }, { status: 503 });
+        }
       }
       if (url.pathname === "/agentsview/open" && req.method === "GET") {
         const path = agentsViewDestination(url.searchParams.get("path"));
@@ -199,6 +243,9 @@ export function startDashboardServer(
       }
       const api = await handleApi(req, url, deps);
       if (api !== null) {
+        if (url.pathname === "/api/health" && req.method === "GET" && opts.releaseID) {
+          api.headers.set("x-culler-release", opts.releaseID);
+        }
         return api;
       }
       const entry = STATIC_FILES[url.pathname];
@@ -209,8 +256,12 @@ export function startDashboardServer(
       if (!(await file.exists())) {
         return new Response("not found", { status: 404 });
       }
-      return new Response(file, { headers: {
+      const content = url.pathname === "/" && opts.releaseID
+        ? (await file.text()).replace("</head>", `<meta name="culler-release" content="${opts.releaseID}"></head>`)
+        : file;
+      return new Response(content, { headers: {
         "content-type": entry.type,
+        "cache-control": "no-store",
         ...(url.pathname === "/" ? { "content-security-policy": PAGE_POLICY } : {}),
       } });
     },

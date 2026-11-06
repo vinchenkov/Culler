@@ -353,6 +353,8 @@ async function sendRequest(path, opts = {}) {
   const deadline = isReadRequest(path, options)
     ? setTimeout(() => controller.abort(), path === "/api/doctor" ? 30000 : 15000) : null;
   const headers = { ...(options.headers ?? {}) };
+  const release = document.querySelector('meta[name="culler-release"]')?.content;
+  if (release) headers["x-culler-release"] = release;
   if (options.body) headers["content-type"] ??= "application/json";
   if (token) headers.authorization = `Bearer ${token}`;
   try {

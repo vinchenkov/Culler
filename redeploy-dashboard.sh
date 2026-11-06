@@ -32,6 +32,9 @@ HOST_ROOT="$MC_HOME/release/host"
 say() { printf '%s\n' "$*"; }
 fail() { printf 'redeploy-dashboard.sh: %s\n' "$*" >&2; exit 1; }
 
+. "$REPO_DIR/scripts/source-update-guard.sh"
+culler_require_source_update_idle "$MC_HOME" || exit 1
+
 command -v git >/dev/null 2>&1 || fail "git is required"
 [ -d "$HOST_ROOT/dashboard" ] || fail "no installed host release under $HOST_ROOT; run install.sh or redeploy.sh first"
 

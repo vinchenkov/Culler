@@ -31,7 +31,7 @@ import {
   type RunSkill, type StoreFs,
 } from "./skill-store";
 import { configuredGitEnvironment } from "./git-identity";
-import { CULLER_RUNTIME, projectExecutionArguments, runtimeArguments, openCodeArguments, projectCacheArguments, projectHomeArguments, projectSecretValues } from "./environment-lane";
+import { deploymentIdentity, deploymentArguments, CULLER_RUNTIME, projectExecutionArguments, runtimeArguments, openCodeArguments, projectCacheArguments, projectHomeArguments, projectSecretValues } from "./environment-lane";
 import { prepareRepositoryRun, repositoryRunRoot, subjectFields } from "./repository";
 import {
   inspectPipelineRunContainer, pipelineContainerName, PROJECT_ID, SAFE_ID,
@@ -689,7 +689,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
     "--memory-swap", HOMIE_MEMORY,
     "--pids-limit", String(HOMIE_PIDS_LIMIT),
     "--name", container_name,
-    "--label", "mc-managed=true",
+    "--label", "mc-managed=true", ...deploymentArguments(config.mcHome),
     "--label", "mc-tier=homie",
     "--label", `mc-session-id=${session}`,
     ...(effect.vision_project_id ? ["--label", `com.culler.project=${effect.vision_project_id}`] : []),
@@ -802,6 +802,7 @@ async function homieWake(effect: HomieWakeEffect, deps: TickDeps): Promise<boole
       env: values("-e"),
       image: config.image,
       mc_labels: {
+        "mc-deployment": deploymentIdentity(config.mcHome),
         "mc-envelope-digest": envelope_digest,
         "mc-launch-id": launch,
         "mc-managed": "true",
@@ -970,12 +971,13 @@ async function homieAdopt(effect: HomieAdoptEffect, deps: TickDeps): Promise<voi
       record.Name !== `/${effect.container_name}` ||
       record.State?.Status !== "created" ||
       labelMap["mc-managed"] !== "true" ||
+      labelMap["mc-deployment"] !== deploymentIdentity(deps.config.mcHome) ||
       labelMap["mc-tier"] !== "homie" ||
       labelMap["mc-session-id"] !== effect.session ||
       labelMap["mc-launch-id"] !== effect.launch ||
       labelMap["mc-runtime-generation"] !== effect.runtime_generation ||
       JSON.stringify(mcLabels) !== JSON.stringify([
-        "mc-envelope-digest", "mc-launch-id", "mc-managed",
+        "mc-deployment", "mc-envelope-digest", "mc-launch-id", "mc-managed",
         "mc-runtime-generation", "mc-session-id", "mc-tier",
       ])
     ) {
@@ -1449,7 +1451,7 @@ async function spawnAttempt(
 				await deps.fs.writeFile(envelopePath, JSON.stringify(envelope) + "\n", { mode: 0o644 });
 				const setup = await deps.docker([
 					"run", "--rm", "--name", `mc-setup-${run_id}`, "--network", "none",
-					"--label", "mc-managed=true", "--label", "mc-tier=pipeline", "--label", `mc-run-id=${run_id}`,
+					"--label", "mc-managed=true", ...deploymentArguments(config.mcHome), "--label", "mc-tier=pipeline", "--label", `mc-run-id=${run_id}`,
 					"--label", `mc-project=${effect.project}`,
 					"--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
 					"--cpus", "1", "--memory", "1024m", "--pids-limit", "128",
@@ -1491,7 +1493,7 @@ async function spawnAttempt(
     "create", "--rm", ...(environment ? ["--interactive"] : []),
     ...projectExecutionArguments(isFakeFamily, deps.hostZone(), scratchDir === undefined ? "/workspace/source" : "/mc/scratch"),
     "--name", name,
-    "--label", "mc-managed=true",
+    "--label", "mc-managed=true", ...deploymentArguments(config.mcHome),
     "--label", "mc-tier=pipeline",
 		"--label", `mc-run-id=${run_id}`,
 		"--label", `mc-project=${effect.project}`,

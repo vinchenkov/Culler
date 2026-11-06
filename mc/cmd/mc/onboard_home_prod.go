@@ -45,6 +45,11 @@ func brokerOnboardHome(args []string, private bool, stdout, stderr io.Writer) in
 	if err != nil {
 		return writeVerbError(stdout, stderr, err)
 	}
+	update, err := deployment.LoadUpdateJournal(home)
+	if err != nil {
+		return writeVerbError(stdout, stderr, verbs.Domainf("read update state: %v", err))
+	}
+	publicUpdate := update != nil && update.BlocksWork()
 	// Release replacement remains an offline operation, even with a compatible database.
 	releaseChanged := false
 	for _, source := range []struct {
@@ -97,7 +102,7 @@ func brokerOnboardHome(args []string, private bool, stdout, stderr io.Writer) in
 		return writeVerbError(stdout, stderr, err)
 	}
 	detail += restoreDetail
-	if releaseChanged {
+	if releaseChanged && !publicUpdate {
 		manager, err := productionHelperManager(execDockerRunner{})
 		if err != nil {
 			return writeVerbError(stdout, stderr, err)
@@ -147,7 +152,7 @@ func brokerOnboardHome(args []string, private bool, stdout, stderr io.Writer) in
 		}
 		detail += "; host release " + hostStatus
 	}
-	if private {
+	if private && !publicUpdate {
 		// The front doors own the grant store's shape. A store from a release
 		// that keyed grants by binding id moves to credential source ids here,
 		// before supervision starts a resident that reads only the new shape.

@@ -68,6 +68,8 @@ const HostBunPlatform = "darwin-arm64"
 type Record struct {
 	// Version is the VERSION file of the release commit. Tag is "v" + Version.
 	Version         string          `json:"version"`
+	Update          *UpdatePolicy   `json:"update,omitempty"`
+	Dependencies    []DependencyPin `json:"dependencies,omitempty"`
 	OpenCode        *Asset          `json:"opencode,omitempty"`
 	WorkflowSeconds int64           `json:"workflow_seconds,omitempty"`
 	Format          int             `json:"format"`
@@ -149,6 +151,22 @@ func Label(version, commit string) string {
 func (r Record) Label() string { return Label(r.Version, r.Commit) }
 
 func (r Record) Validate() error {
+	if r.Update != nil {
+		if err := r.Update.validate(r.Version, r.Schema); err != nil {
+			return err
+		}
+		seen := map[string]bool{}
+		if len(r.Dependencies) == 0 {
+			return errors.New("The release dependency inventory is absent.")
+		}
+		for _, pin := range r.Dependencies {
+			if pin.Path == "" || filepath.IsAbs(pin.Path) || filepath.Clean(pin.Path) != pin.Path || strings.HasPrefix(pin.Path, "../") || seen[pin.Path] || !hexDigest.MatchString(pin.SHA256) {
+				return errors.New("The release dependency inventory is invalid.")
+			}
+			seen[pin.Path] = true
+		}
+	}
+
 	if r.Format != 1 {
 		return errors.New("unsupported release record format")
 	}
@@ -273,5 +291,13 @@ func Save(path string, r Record) error {
 	if closeErr != nil {
 		return closeErr
 	}
-	return os.Rename(f.Name(), path)
+	if err := os.Rename(f.Name(), path); err != nil {
+		return err
+	}
+	directory, err := os.Open(filepath.Dir(path))
+	if err != nil {
+		return err
+	}
+	defer directory.Close()
+	return directory.Sync()
 }

@@ -86,11 +86,12 @@ type ExportResult struct {
 // copy of the openwiki/ tree, and Output is the empty folder that receives
 // the export.
 type ExportContainer struct {
-	Name    string
-	Image   string
-	Project string
-	Input   string
-	Output  string
+	Deployment string
+	Name       string
+	Image      string
+	Project    string
+	Input      string
+	Output     string
 }
 
 type ExportRunner func(ctx context.Context, container ExportContainer) error
@@ -554,7 +555,7 @@ func ExportDockerArgs(c ExportContainer) []string {
 		"--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
 		"--security-opt", "no-new-privileges=true", "--read-only",
 		"--cpus", "1", "--memory", "1024m", "--pids-limit", "128",
-		"--label", "mc-managed=true", "--label", "mc-tier=wiki-export", "--label", "mc-project=" + c.Project,
+		"--label", "mc-managed=true", "--label", "mc-deployment=" + c.Deployment, "--label", "mc-tier=wiki-export", "--label", "mc-project=" + c.Project,
 		"-v", c.Input + ":/input/openwiki:ro", "-v", c.Output + ":/output",
 		c.Image,
 		"/usr/bin/env", "-i", "PATH=/usr/local/bin:/usr/bin:/bin",

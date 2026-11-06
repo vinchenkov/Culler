@@ -2,12 +2,100 @@
 // serves the static shell plus the API mirror.
 
 import { describe, expect, test } from "bun:test";
+import { chmodSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createHash } from "node:crypto";
 
-import { PAGE_POLICY, parseBind, startDashboardServer } from "./server";
+import { PAGE_POLICY, parseBind, startDashboardServer, updateBlocksMutations } from "./server";
 import { FakeMc, deps, ok } from "./test-helpers";
 
 const ephemeral = { bind: "127.0.0.1:0", authToken: "s3cret" };
 const bearer = { authorization: "Bearer s3cret" };
+
+test("the dashboard refuses mutations from an earlier release", async () => {
+  const mc = new FakeMc().on(["homie", "start"], ok({ session_id: "h-1" }));
+  const server = startDashboardServer({ ...ephemeral, releaseID: "release-two" }, deps({ mc }));
+  try {
+    const page = await fetch(server.url);
+    expect(page.headers.get("cache-control")).toBe("no-store");
+    expect(await page.text()).toContain('<meta name="culler-release" content="release-two">');
+    for (const release of [undefined, "release-one"]) {
+      const response = await fetch(`${server.url}api/sessions`, {
+        method: "POST", headers: { ...bearer, ...(release ? { "x-culler-release": release } : {}) },
+      });
+      expect(response.status).toBe(409);
+      expect(await response.text()).toContain("Reload this page");
+    }
+    expect(mc.calls).toEqual([]);
+    expect((await fetch(`${server.url}api/sessions`, {
+      method: "POST", headers: { ...bearer, "x-culler-release": "release-two" },
+    })).status).toBe(200);
+    expect(mc.calls).toEqual([["homie", "start", "--from", "dashboard:dash-feedf00d"]]);
+  } finally { server.stop(); }
+});
+
+test("an incomplete update permits reads and refuses mutations", async () => {
+  const mc = new FakeMc().on(["homie", "list"], ok({ sessions: [] }));
+  const server = startDashboardServer({ ...ephemeral, maintenance: () => true }, deps({ mc }));
+  try {
+    expect((await fetch(`${server.url}api/sessions`, { headers: bearer })).status).toBe(200);
+    expect((await fetch(`${server.url}api/sessions`, { method: "POST", headers: bearer })).status).toBe(503);
+    expect(mc.calls).toEqual([["homie", "list"]]);
+  } finally { server.stop(); }
+});
+
+test("the authenticated health response identifies the dashboard release", async () => {
+  const mc = new FakeMc().on(["health"], ok({ ok: true, findings: [] }));
+  const server = startDashboardServer({ ...ephemeral, releaseID: "release-two" }, deps({ mc }));
+  try {
+    expect((await fetch(`${server.url}api/health`, { headers: bearer })).headers.get("x-culler-release")).toBe("release-two");
+    expect((await fetch(`${server.url}api/health`)).headers.get("x-culler-release")).toBeNull();
+  } finally { server.stop(); }
+});
+
+test("the update journal permits mutations only after commit or restoration", () => {
+  const home = mkdtempSync(join(tmpdir(), "culler-update-gate-"));
+  const path = join(home, "updates", "transaction.json");
+  const state = { version: 1, id: "a".repeat(32), candidate: { commit: "b".repeat(40) },
+    deployment: createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12) };
+  try {
+    expect(updateBlocksMutations(home)).toBe(false);
+    mkdirSync(join(home, "updates"));
+    for (const phase of ["stop", "prepare", "checkpoint", "replace", "verify", "restore", "unknown", "committed", "complete", "restored"]) {
+      writeFileSync(path, JSON.stringify({ ...state, phase }), { mode: 0o600 });
+      expect(updateBlocksMutations(home)).toBe(!["committed", "complete", "restored"].includes(phase));
+    }
+    mkdirSync(join(home, "state"));
+    const maintenance = join(home, "state", "install-maintenance.json");
+    for (const phase of ["committed", "complete", "restored"]) {
+      writeFileSync(path, JSON.stringify({ ...state, phase }));
+      writeFileSync(maintenance, JSON.stringify({ id: state.id }), { mode: 0o600 });
+      expect(updateBlocksMutations(home)).toBe(true);
+      writeFileSync(maintenance, JSON.stringify({ id: "ordinary-restart-1234" }));
+      expect(updateBlocksMutations(home)).toBe(false);
+      writeFileSync(maintenance, "unreadable request");
+      expect(updateBlocksMutations(home)).toBe(true);
+      rmSync(maintenance);
+      expect(updateBlocksMutations(home)).toBe(false);
+    }
+    symlinkSync(join(home, "absent"), maintenance);
+    expect(updateBlocksMutations(home)).toBe(true);
+    rmSync(maintenance);
+    writeFileSync(path, JSON.stringify({ ...state, version: 2, phase: "complete" }));
+    expect(updateBlocksMutations(home)).toBe(true);
+    writeFileSync(path, JSON.stringify({ ...state, deployment: "foreign", phase: "complete" }));
+    expect(updateBlocksMutations(home)).toBe(true);
+    writeFileSync(path, "{");
+    expect(updateBlocksMutations(home)).toBe(true);
+    writeFileSync(path, JSON.stringify({ ...state, phase: "complete" }));
+    chmodSync(path, 0o644);
+    expect(updateBlocksMutations(home)).toBe(true);
+    rmSync(path);
+    symlinkSync(join(home, "absent"), path);
+    expect(updateBlocksMutations(home)).toBe(true);
+  } finally { rmSync(home, { recursive: true, force: true }); }
+});
 
 describe("bind grammar", () => {
   test("parses host:port and bracketed IPv6", () => {

@@ -41,6 +41,7 @@ type WikiUpdate struct {
 
 // WikiRecords holds the facts that decide the wiki update of one Project.
 type WikiRecords struct {
+	UpdateRecovery       bool
 	Project              string
 	EnvironmentCondition string
 	// Status is projects.status.
@@ -88,6 +89,9 @@ func DecideWiki(rec WikiRecords, cfg Config, interval time.Duration, clk Clock) 
 	}
 	if rec.Status != "active" {
 		return idle(IdleWikiProjectInactive)
+	}
+	if rec.UpdateRecovery {
+		return idle(IdleRepositoryOperation)
 	}
 	if rec.EnvironmentCondition != "" {
 		return idle(IdleReason(rec.EnvironmentCondition))

@@ -333,7 +333,7 @@ func TestDecideWikiIgnoresPipelineFacts(t *testing.T) {
 		}
 		return names
 	}
-	if got, want := fields(WikiRecords{}), []string{"Project", "EnvironmentCondition", "Status", "AcceptedCommit", "Active",
+	if got, want := fields(WikiRecords{}), []string{"UpdateRecovery", "Project", "EnvironmentCondition", "Status", "AcceptedCommit", "Active",
 		"LastSucceeded", "LastCounted", "Unstopped"}; !reflect.DeepEqual(got, want) {
 		t.Fatalf("WikiRecords fields = %v, want %v", got, want)
 	}

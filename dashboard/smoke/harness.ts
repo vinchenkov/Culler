@@ -238,7 +238,7 @@ async function seedAcceptedEnvironment(smoke: Smoke, project: string): Promise<v
   });
 }
 
-export async function bootSmoke(options: { observedCommand?: (sample: { command: string; duration_ms: number }) => void } = {}): Promise<Smoke> {
+export async function bootSmoke(options: { releaseID?: string; observedCommand?: (sample: { command: string; duration_ms: number }) => void } = {}): Promise<Smoke> {
   if (MC_BIN === "" || !isAbsolute(MC_BIN)) {
     throw new Error("MC_SMOKE_BIN must name an absolute mc binary. Use dashboard/smoke.sh.");
   }
@@ -288,7 +288,7 @@ export async function bootSmoke(options: { observedCommand?: (sample: { command:
 
   const runner = makeMcRunner(MC_BIN);
   const server = startDashboardServer(
-    { bind: "127.0.0.1:0", authToken: SMOKE_TOKEN },
+    { bind: "127.0.0.1:0", authToken: SMOKE_TOKEN, releaseID: options.releaseID },
     {
       mc: { async run(args, input) {
         const started = performance.now();

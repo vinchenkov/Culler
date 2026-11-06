@@ -26,6 +26,7 @@ import (
 	"github.com/BurntSushi/toml"
 
 	"mc/deployment"
+	"mc/distribution"
 	"mc/substrate"
 )
 
@@ -83,6 +84,15 @@ func buildPackage(root, binary, agentsViewArchive, commit, output string) error 
 	if err != nil {
 		return err
 	}
+	version, policy, err := distribution.BuildUpdatePolicy(root, substrate.CurrentSchemaID)
+	if err != nil {
+		return err
+	}
+	inventory, err := distribution.DependencyInventory(root)
+	if err != nil {
+		return err
+	}
+	metadata["version"], metadata["update"], metadata["dependencies"] = version, policy, inventory
 	return json.NewEncoder(os.Stdout).Encode(metadata)
 }
 

@@ -20,7 +20,14 @@ HOST_BUN = {"version": "1.3.9", "archives": {"darwin-arm64": {
 
 
 def latest_release(version="0.1.0"):
-    return {"tag_name": "v" + version}
+    formats = {name: "1" for name in ("configuration", "credentials", "claude", "codex", "opencode", "opencode-websearch", "openwiki", "agentsview")}
+    formats["spine"] = "c" * 64
+    record = {"version": version, "schema": formats["spine"],
+              "update": {"minimum_version": "0.1.0", "formats": formats,
+                         "accepted": {name: [value] for name, value in formats.items()}},
+              "dependencies": [{"path": "fixture.json", "sha256": "a" * 64}]}
+    return {"tag_name": "v" + version,
+            "assets": [{"id": 1000, "name": "release.json", "body": json.dumps(record).encode()}]}
 
 
 class FakeGitHub:
@@ -48,7 +55,10 @@ class FakeGitHub:
             if path.startswith("/actions/runs/"):
                 return {"created_at": "2026-09-25T23:59:00Z"}
             if path.startswith("/releases/assets/"):
-                asset = self.assets[int(path.rsplit("/", 1)[1])]
+                asset_id = int(path.rsplit("/", 1)[1])
+                if asset_id == 1000:
+                    return self.latest["assets"][0]["body"]
+                asset = self.assets[asset_id]
                 return b"corrupt" if asset["name"] == self.corrupt else asset["body"]
         if method == "POST" and path == "/releases":
             self.created.append(body)
@@ -78,6 +88,11 @@ class PublishTest(unittest.TestCase):
         package["runtimes"] = {"go": "1.25.12", "bun": "1.3.9"}
         package["agentsview"] = dict(AGENTSVIEW)
         package["host_bun"] = json.loads(json.dumps(HOST_BUN))
+        package["version"] = "0.2.0"
+        formats = {name: "1" for name in ("configuration", "credentials", "claude", "codex", "opencode", "opencode-websearch", "openwiki", "agentsview")}
+        formats["spine"] = package["schema"]
+        package["update"] = {"minimum_version": "0.1.0", "formats": formats, "accepted": {name: [value] for name, value in formats.items()}}
+        package["dependencies"] = [{"path": "fixture.json", "sha256": "a" * 64}]
         (output / "package.json").write_text(json.dumps(package))
         (output / "opencode.json").write_text(json.dumps(file_record(assets / "culler-opencode-linux-arm64.tar.gz")))
         (output / "sequence").write_text("17\n")
@@ -110,6 +125,67 @@ class PublishTest(unittest.TestCase):
             self.assertEqual(record["checks"], [{"name": name, "passed": True} for name in CHECKS])
             self.assertEqual(len(api.assets), 5)
             self.assertEqual(record["opencode"], file_record(output / "assets/culler-opencode-linux-arm64.tar.gz"))
+            package = json.loads((output / "package.json").read_text())
+            self.assertEqual(record["update"], package["update"])
+            self.assertEqual(record["dependencies"], package["dependencies"])
+
+    def test_a_package_version_must_match_the_release_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = self.fixture(Path(directory))
+            (output / "version").write_text("0.3.0\n")
+            api = FakeGitHub()
+            with self.assertRaisesRegex(ValueError, "package version differs"):
+                publish(api, output, COMMIT, IMAGE, 1, NOW)
+            self.assertEqual(api.assets, {})
+            self.assertEqual(api.published, [])
+
+    def test_the_previous_release_requires_one_compatible_record(self):
+        for failure in ("absent", "duplicate", "version", "format", "schema"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as directory:
+                latest = latest_release()
+                previous = json.loads(latest["assets"][0]["body"])
+                if failure == "absent":
+                    latest["assets"] = []
+                elif failure == "duplicate":
+                    latest["assets"] *= 2
+                else:
+                    if failure == "version":
+                        previous["version"] = "0.1.1"
+                    elif failure == "format":
+                        previous["update"]["formats"]["opencode"] = "older"
+                        previous["update"]["accepted"]["opencode"] = ["older"]
+                    else:
+                        previous["schema"] = "d" * 64
+                        previous["update"]["formats"]["spine"] = previous["schema"]
+                        previous["update"]["accepted"]["spine"] = [previous["schema"]]
+                    latest["assets"][0]["body"] = json.dumps(previous).encode()
+                api = FakeGitHub(latest=latest)
+                with self.assertRaises(ValueError):
+                    publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
+                self.assertEqual(api.assets, {})
+                self.assertEqual(api.published, [])
+
+    def test_an_unsupported_previous_release_during_upload_blocks_publication(self):
+        class ConcurrentGitHub(FakeGitHub):
+            reads = 0
+
+            def request(self, method, path, body=None, binary=False):
+                if method == "GET" and path == "/releases/latest":
+                    self.reads += 1
+                    if self.reads > 1:
+                        self.latest = latest_release("0.1.1")
+                        record = json.loads(self.latest["assets"][0]["body"])
+                        record["update"]["formats"]["opencode"] = "older"
+                        record["update"]["accepted"]["opencode"] = ["older"]
+                        self.latest["assets"][0]["body"] = json.dumps(record).encode()
+                return super().request(method, path, body, binary)
+
+        with tempfile.TemporaryDirectory() as directory:
+            api = ConcurrentGitHub(latest=latest_release())
+            with self.assertRaisesRegex(ValueError, "opencode"):
+                publish(api, self.fixture(Path(directory)), COMMIT, IMAGE, 1, NOW)
+            self.assertEqual(len(api.assets), 5)
+            self.assertEqual(api.published, [])
 
     def test_a_package_without_its_agentsview_release_is_not_published(self):
         for change in (None, {"version": "latest"}, {"executable_sha256": "F" * 64}, {"extra": "value"}):

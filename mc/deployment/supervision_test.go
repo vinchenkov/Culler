@@ -216,6 +216,7 @@ func TestPrepareSupervisionProjectsConfiguredDashboardAndBackupPolicy(t *testing
 	}
 	if dashboard["bind"] != spec.DashboardBind ||
 		dashboard["auth_token"] != spec.DashboardAuthToken ||
+		dashboard["release_id"] != spec.ReleaseBuildID ||
 		dashboard["wiki_bind"] != spec.WikiBind {
 		t.Fatalf("dashboard config = %#v", dashboard)
 	}

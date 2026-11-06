@@ -473,6 +473,9 @@ func loadRecords(ctx context.Context, q Q, project string) (dispatch.Records, er
 	if err != nil {
 		return rec, err
 	}
+	if rec.UpdateRecovery, err = updateReceiptRecovery(ctx, q, project); err != nil {
+		return rec, err
+	}
 	rec.EnvironmentRevision = environment.SelectedRevisionID
 	rec.EnvironmentCondition = environmentCondition(environment)
 	if err := q.QueryRowContext(ctx, `SELECT EXISTS(SELECT 1 FROM proposal_decisions WHERE project=? AND resolved_at IS NULL)`, project).Scan(&rec.ProposalDecisionPending); err != nil {
@@ -949,6 +952,9 @@ func resolveRoleRouteWithAuthority(home, role string) (routing.Route, runtimeAut
 	resolved, err := table.Resolve(baseRole(role))
 	if err != nil {
 		return routing.Route{}, runtimeAuthority{}, Domainf("invalid routing.md at %q: %v (run: mc onboard routing)", path, err)
+	}
+	if _, available := authority.bindings[resolved.Binding]; !available {
+		return routing.Route{}, runtimeAuthority{}, Domainf("The selected agent profile requires repair in the dashboard before work can start.")
 	}
 	return resolved, authority, nil
 }

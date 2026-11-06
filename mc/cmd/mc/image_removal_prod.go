@@ -32,13 +32,16 @@ func (p *publishedSetup) removeSupersededImages(ctx context.Context) {
 	}
 	repository, _, _ := strings.Cut(p.record.ProjectImage, "@")
 	needed := []string{p.record.ProjectImage}
+	var problems []string
 	digests, err := p.projectImageDigests(ctx)
 	if err != nil {
 		log("The default Project images stay: the selected Project images are unknown: " + setupSafeDiagnostic(err.Error()))
 		repository = ""
+		problems = append(problems, "The selected Project images are unknown: "+setupSafeDiagnostic(err.Error()))
 	}
 	run := func(ctx context.Context, _ string, args ...string) ([]byte, error) { return p.docker(ctx, args...) }
 	record.ImageRemoval = deployment.RemoveSupersededImages(ctx, previous, repository, append(needed, digests...), run, log)
+	record.Problems = append(record.Problems, problems...)
 	p.images = record
 }
 

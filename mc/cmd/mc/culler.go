@@ -16,6 +16,7 @@ const cullerInstallerURL = "https://raw.githubusercontent.com/vinchenkov/Culler/
 type cullerOptions struct {
 	command, service, home      string
 	help, noColor, check        bool
+	restoreUpdate               bool
 	tail                        int
 	keepData, fullWipe          bool
 	dryRun, yes                 bool
@@ -28,7 +29,7 @@ var cullerCommands = []struct{ name, usage, description string }{
 	{"start", "start [service]", "Start Culler services."},
 	{"stop", "stop [service]", "Stop Culler services safely."},
 	{"restart", "restart [service]", "Restart Culler services."},
-	{"update", "update [--check]", "Install or check for an update."},
+	{"update", "update [--check | --restore]", "Install, recover, or check for an update."},
 	{"uninstall", "uninstall [options]", "Remove all Culler installations."},
 	{"logs", "logs [service] [--tail N]", "Show recent service logs."},
 	{"help", "help [command]", "Show command help."},
@@ -58,6 +59,8 @@ func parseCuller(args []string) (cullerOptions, error) {
 			version = true
 		case "--check":
 			o.check = true
+		case "--restore":
+			o.restoreUpdate = true
 		case "--keep-data":
 			o.keepData = true
 		case "--full-wipe":
@@ -147,6 +150,9 @@ func parseCuller(args []string) (cullerOptions, error) {
 	if o.check && o.command != "update" {
 		return o, fmt.Errorf("The --check option belongs to culler update.")
 	}
+	if o.restoreUpdate && (o.command != "update" || o.check) {
+		return o, fmt.Errorf("Use --restore with culler update and without --check.")
+	}
 	if tailSet && o.command != "logs" {
 		return o, fmt.Errorf("The --tail option belongs to culler logs.")
 	}
@@ -194,7 +200,7 @@ func cullerHelp(t *onboarding.Terminal, command string) {
 			"start":     {"An omitted service selects all services.", "A ready service remains active without a restart."},
 			"stop":      {"An omitted service selects all services.", "The resident waits up to three minutes for active work.", "A stop remains in effect after login and computer restart."},
 			"restart":   {"An omitted service selects all services.", "The resident waits for active work before it stops.", "A dashboard restart leaves the resident active."},
-			"update":    {"Open the current installer in this terminal.", "Use --check to inspect release availability without an update."},
+			"update":    {"Resume an incomplete update before selecting a new release.", "Use --restore to restore an incomplete update before commit.", "Use --check to inspect release availability without an update."},
 			"uninstall": {"Remove all detected Culler and old Mission Control installations.", "The default removes software and permanently deletes Culler data.", "Active agents stop. Removal can discard unfinished work.", "Project repositories and shared host tools remain.", "Review the plan, then type wipe to confirm.", "Use --keep-data to preserve configuration, credentials, and history.", "MC_HOME includes a deployment; it does not limit removal to that deployment."},
 			"logs":      {"An omitted service selects the resident.", "Show 100 recent records and exit.", "Use --tail N for 1 through 1000 records."},
 		}

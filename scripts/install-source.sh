@@ -185,6 +185,9 @@ done
 }
 parse_args "$@"
 
+. "$REPO_DIR/scripts/source-update-guard.sh"
+culler_require_source_update_idle "${MC_HOME_IN:-$HOME/.culler}" || exit 1
+
 [ "$SMOKE" -eq 0 ] || [ "$DEV" -eq 0 ] || \
   fail "--smoke is production-only; development never exercises real provider or supervision routes"
 [ -z "$SMOKE_APPROVE_TASK" ] || [ "$SMOKE" -eq 1 ] || \

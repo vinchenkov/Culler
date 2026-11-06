@@ -47,3 +47,54 @@ test("an interrupted acknowledgement permits the next request", async () => {
   expect(await maintenance(0)).toBe(true);
   expect(JSON.parse(await readFile(ack, "utf8")).id).toBe("request-1234567890");
 });
+
+test("update verification publishes receipts before normal work starts", async () => {
+  const { createHash } = await import("node:crypto");
+  const { waitForUpdateActivation, readInstallMaintenance } = await import("./install-maintenance");
+  const home = await mkdtemp(join(tmpdir(), "culler-update-start-"));
+  homes.push(home);
+  await mkdir(join(home, "updates"), { mode: 0o700 });
+  const path = join(home, "updates", "transaction.json");
+  const record = { version: 1, id: "a".repeat(32), phase: "verify", candidate: { commit: "b".repeat(40) },
+    previous: { commit: "c".repeat(40) }, deployment: createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12) };
+  const save = () => writeFile(path, JSON.stringify(record), { mode: 0o600 });
+  await save();
+  let receipts = 0;
+  await expect(waitForUpdateActivation(home, record.candidate.commit, async () => { receipts++; }, async () => {}, async () => { throw new Error("preflight failed"); })).rejects.toThrow("preflight failed");
+  expect(receipts).toBe(0);
+  expect(await readInstallMaintenance(home)).toBe(record.id);
+  await waitForUpdateActivation(home, record.candidate.commit, async () => { receipts++; }, async () => { record.phase = "committed"; await save(); });
+  expect(receipts).toBe(1);
+  expect(await readInstallMaintenance(home)).toBeNull();
+  for (const phase of ["stop", "prepare", "checkpoint", "replace", "restore"]) {
+    record.phase = phase; await save();
+    await expect(waitForUpdateActivation(home, record.candidate.commit, async () => { receipts++; })).rejects.toThrow("keeps this release stopped");
+  }
+  expect(receipts).toBe(1);
+  record.phase = "restore"; await save();
+  await waitForUpdateActivation(home, record.previous.commit, async () => { receipts++; }, async () => { record.phase = "restored"; await save(); });
+  expect(receipts).toBe(2);
+  record.phase = "unknown"; await save();
+  await expect(readInstallMaintenance(home)).rejects.toThrow("invalid identity or phase");
+});
+
+test("a visible commit keeps work stopped until its maintenance request disappears", async () => {
+  const { createHash } = await import("node:crypto");
+  const { waitForUpdateActivation } = await import("./install-maintenance");
+  const home = await mkdtemp(join(tmpdir(), "culler-update-commit-"));
+  homes.push(home);
+  await mkdir(join(home, "updates"), { mode: 0o700 });
+  await mkdir(join(home, "state"), { mode: 0o700 });
+  const id = "a".repeat(32), commit = "b".repeat(40);
+  const record = { version: 1, id, phase: "committed", candidate: { commit },
+    deployment: createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12) };
+  await writeFile(join(home, "updates", "transaction.json"), JSON.stringify(record), { mode: 0o600 });
+  const request = join(home, "state", "install-maintenance.json");
+  await writeFile(request, JSON.stringify({ id }), { mode: 0o600 });
+  let receipts = 0;
+  await waitForUpdateActivation(home, commit, async () => { receipts++; }, async () => { await rm(request); });
+  expect(receipts).toBe(1);
+  await writeFile(request, JSON.stringify({ id: "another-operation-1234" }), { mode: 0o600 });
+  await waitForUpdateActivation(home, commit, async () => { receipts++; });
+  expect(receipts).toBe(1);
+});

@@ -77,7 +77,7 @@ func TestExistingSetupUpdateStopsBeforePreparationAndPreservesChoices(t *testing
 	w.deps.inspect = func(string, verbs.OnboardArgs) (setupDeployment, error) { return state, nil }
 	stopped := false
 	w.deps.stop = func(string) error {
-		if u.choices[0][0].Label != "Update Culler" || !strings.Contains(strings.Join(u.panels, "\n"), "Culler will pause new tasks") {
+		if u.choices[0][0].Label != "Stop and update" || !strings.Contains(strings.Join(u.panels, "\n"), "This update stops Culler and interrupts active runs.") {
 			t.Fatal("setup omitted the stop explanation")
 		}
 		stopped = true
@@ -151,7 +151,7 @@ func TestExistingSetupUpdateWithStoppedServices(t *testing.T) {
 	if err != nil || handled || w.session.Stage != 1 || w.servicesStopped {
 		t.Fatalf("handled=%v stage=%d error=%v", handled, w.session.Stage, err)
 	}
-	if u.choices[0][0].Label != "Update Culler" || strings.Contains(strings.Join(u.panels, "\n"), "Culler will pause new tasks") {
+	if u.choices[0][0].Label != "Stop and update" || !strings.Contains(strings.Join(u.panels, "\n"), "Saved data remains.") {
 		t.Fatal("The update menu misrepresented the service state.")
 	}
 }

@@ -106,6 +106,9 @@ type cullerManager struct {
 }
 
 func newCullerManager(home string) (*cullerManager, error) {
+	if err := deployment.UpdateBlocksWork(home); err != nil {
+		return nil, err
+	}
 	r, err := readCullerRuntime(home)
 	if err != nil {
 		return nil, fmt.Errorf("The service configuration is absent or invalid. Use the installer to resume setup.\n%s", cullerInstallCommand(home))
@@ -223,6 +226,13 @@ func readCullerOperation(home string) (*cullerOperation, error) {
 }
 
 func cullerOperationDetail(home string) string {
+	if j, err := deployment.LoadUpdateJournal(home); err != nil {
+		return "The update recovery record is unavailable. Keep Culler stopped."
+	} else if j != nil && j.BlocksWork() {
+		return "An interrupted update keeps work stopped. Run culler update to recover."
+	} else if j != nil && j.Phase == "committed" {
+		return "The update succeeded. Run culler update to complete cleanup."
+	}
 	if op, err := readCullerOperation(home); err != nil {
 		return "The service recovery record is unavailable."
 	} else if op != nil {

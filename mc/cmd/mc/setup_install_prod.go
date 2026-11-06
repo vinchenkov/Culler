@@ -73,6 +73,18 @@ func installSetupExecutable() (path string, retErr error) {
 	if err := os.Rename(output.Name(), target); err != nil {
 		return "", err
 	}
+	if parent, err := os.Open(directory); err != nil {
+		return "", err
+	} else {
+		syncErr := parent.Sync()
+		closeErr := parent.Close()
+		if syncErr != nil {
+			return "", syncErr
+		}
+		if closeErr != nil {
+			return "", closeErr
+		}
+	}
 	return target, installCullerCommand(target, directory)
 }
 
@@ -91,6 +103,17 @@ func installCullerCommand(source, directory string) error {
 	parentPath, ok := os.LookupEnv("CULLER_PARENT_PATH")
 	if !ok {
 		parentPath = os.Getenv("PATH")
+	}
+	journal, journalErr := deployment.LoadUpdateJournal(home)
+	if journalErr != nil {
+		return journalErr
+	}
+	if journal != nil && journal.BlocksWork() {
+		if journal.Candidate.Commit != releaseBuildID {
+			return errors.New("The command differs from the selected update release.")
+		}
+		_, err = deployment.UpdateCLIInstallation(home, userHome, directory, releaseBuildID, parentPath)
+		return err
 	}
 	_, err = deployment.InstallCLIPath(home, userHome, directory, releaseBuildID, parentPath)
 	return err

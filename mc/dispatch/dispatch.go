@@ -99,6 +99,7 @@ type Packet struct {
 // status ("" in hand-built fixtures means active). Tasks and Packets are
 // that Project's rows only.
 type Records struct {
+	UpdateRecovery             bool
 	BlockedRoles               map[Role]bool
 	ConnectionStates           string
 	InfrastructureFailureCount int
@@ -354,6 +355,9 @@ func Decide(rec Records, lease Lease, cfg Config, clk Clock) Action {
 	}
 	if !recordsProjectActive(rec) {
 		return idle(IdleProjectInactive)
+	}
+	if rec.UpdateRecovery {
+		return idle(IdleRepositoryOperation)
 	}
 	if rec.EnvironmentCondition != "" {
 		return idle(IdleReason(rec.EnvironmentCondition))

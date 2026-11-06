@@ -8,8 +8,9 @@ import (
 
 // ImageRemoval lists the image references that one removal removed and kept.
 type ImageRemoval struct {
-	Removed []string    `json:"removed"`
-	Kept    []KeptImage `json:"kept"`
+	Removed  []string    `json:"removed"`
+	Kept     []KeptImage `json:"kept"`
+	Problems []string    `json:"problems,omitempty"`
 }
 
 // KeptImage names an image reference that stays and the reason.
@@ -58,6 +59,7 @@ func RemoveSupersededImages(ctx context.Context, previousImage, projectRepositor
 	images, err := listProjectImages(ctx, projectRepository, run)
 	if err != nil {
 		log(fmt.Sprintf("The default Project images stay: %v", err))
+		result.Problems = append(result.Problems, err.Error())
 		return result
 	}
 	keep := map[string]bool{}
@@ -132,6 +134,9 @@ func (r *ImageRemoval) remove(ctx context.Context, reference string, run Runtime
 
 func (r *ImageRemoval) keep(reference, reason string, log func(string)) {
 	r.Kept = append(r.Kept, KeptImage{Reference: reference, Reason: reason})
+	if reason != imageKeptNeeded && reason != imageKeptInUse && reason != imageKeptNoDigest {
+		r.Problems = append(r.Problems, reason)
+	}
 	log("Kept image " + reference + ": " + reason + ".")
 }
 

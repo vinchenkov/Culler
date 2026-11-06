@@ -39,6 +39,8 @@ Production requires Apple silicon and macOS.
   --bin-dir <path>   Select the executable directory.
   --check-updates    Report release availability.
   --yes             Use explicit setup options.
+  --interrupt-runs  Authorize interruption during an update.
+  --restore         Restore an incomplete update.
   --activate        Authorize service activation.
   --dev             Use a local source checkout.
   --help            Show this help without a download.
@@ -73,6 +75,59 @@ done
 for tool in curl plutil shasum tar unzip; do
   command -v "$tool" >/dev/null 2>&1 || fail "The required tool $tool is absent from the PATH. Add /usr/bin to the PATH, then run install.sh again."
 done
+# Recover the exact retained release before any release discovery.
+recovery_home=${MC_HOME:-$HOME/.culler}
+recovery_home_next=false
+recovery_restore=false
+recovery_check=false
+for argument do
+  if [ "$recovery_home_next" = true ]; then
+    recovery_home=$argument
+    recovery_home_next=false
+    continue
+  fi
+  case "$argument" in
+    --mc-home) recovery_home_next=true ;;
+    --restore) recovery_restore=true ;;
+    --check-updates) recovery_check=true ;;
+  esac
+done
+[ "$recovery_home_next" = false ] || fail "The --mc-home option requires a path."
+case "$recovery_home" in /*) ;; *) fail "The deployment home requires an absolute path." ;; esac
+if [ -d "$recovery_home" ]; then
+  recovery_home=$(CDPATH= cd -- "$recovery_home" && pwd -P)
+fi
+recovery_record=$recovery_home/updates/transaction.json
+if [ -e "$recovery_record" ] || [ -L "$recovery_record" ]; then
+  [ -f "$recovery_record" ] && [ ! -L "$recovery_record" ] || fail "The update record requires a private regular file."
+  [ "$(stat -f '%u %Lp %l' "$recovery_record")" = "$(id -u) 600 1" ] || fail "The update record requires owner-only access."
+  recovery_phase=$(plutil -extract phase raw -o - "$recovery_record" 2>/dev/null) || fail "The update record is unreadable. Keep Culler stopped and repair it."
+  case "$recovery_phase" in
+    complete|restored) ;;
+    stop|prepare|checkpoint|replace|verify|committed|restore)
+      [ "$recovery_check" = false ] || fail "An incomplete update requires recovery. Run culler update."
+      recovery_id=$(plutil -extract id raw -o - "$recovery_record")
+      case "$recovery_id" in ''|*[!0-9a-f]*) fail "The update identity is invalid." ;; esac
+      [ "${#recovery_id}" -ge 16 ] && [ "${#recovery_id}" -le 64 ] || fail "The update identity is invalid."
+      recovery_root=$(plutil -extract candidate_root raw -o - "$recovery_record")
+      [ "$recovery_root" = "$recovery_home/updates/$recovery_id/candidate" ] || fail "The retained update path is invalid."
+      recovery_program=$recovery_root/bin/mc
+      [ -f "$recovery_program" ] && [ ! -L "$recovery_program" ] && [ -x "$recovery_program" ] || fail "The retained update command is absent. Keep Culler stopped and repair the recovery files."
+      recovery_checksum=$(plutil -extract candidate_sha256 raw -o - "$recovery_record")
+      [ "$(shasum -a 256 "$recovery_program" | awk '{print $1}')" = "$recovery_checksum" ] || fail "The retained update command failed verification. Keep Culler stopped and repair the recovery files."
+      MC_HOME=$recovery_home
+      MC_BIN_DIR=$(plutil -extract bin_dir raw -o - "$recovery_record")
+      CULLER_PACKAGE_ROOT=$recovery_root
+      CULLER_RELEASE_RECORD=$recovery_root/release.json
+      export MC_HOME MC_BIN_DIR CULLER_PACKAGE_ROOT CULLER_RELEASE_RECORD
+      if [ ! -t 0 ] && [ -t 1 ] && [ -r /dev/tty ]; then
+        exec "$recovery_program" __setup "$@" --release-source "$recovery_root/runner" --host-release-source "$recovery_root/host" </dev/tty
+      fi
+      exec "$recovery_program" __setup "$@" --release-source "$recovery_root/runner" --host-release-source "$recovery_root/host" ;;
+    *) fail "The update phase is invalid. Keep Culler stopped and repair the update record." ;;
+  esac
+fi
+[ "$recovery_restore" = false ] || fail "This deployment has no incomplete update to restore."
 CULLER_REPOSITORY=${CULLER_REPOSITORY:-vinchenkov/Culler}
 case "$CULLER_REPOSITORY" in
   *[!a-zA-Z0-9._/-]*|/*|*/|*/*/*|*..*) fail "The GitHub repository must use owner/name." ;;

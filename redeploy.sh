@@ -206,6 +206,9 @@ for argument do
   esac
 done
 
+. "$REPO_DIR/scripts/source-update-guard.sh"
+culler_require_source_update_idle "$DEPLOYMENT_HOME" || exit 1
+
 command -v git >/dev/null 2>&1 || fail "git is required"
 command -v mise >/dev/null 2>&1 || fail "mise is required (it pins the toolchain this repo builds with)"
 command -v docker >/dev/null 2>&1 || fail "docker CLI is required"

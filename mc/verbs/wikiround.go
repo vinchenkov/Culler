@@ -67,6 +67,7 @@ type canonicalWikiTunables struct {
 // a closed struct in declared field order. The key round separates its token
 // from the token of a pipeline round.
 type canonicalWikiPrepare struct {
+	UpdateRecovery       bool                      `json:"update_recovery,omitempty"`
 	Version              int                       `json:"version"`
 	Round                string                    `json:"round"`
 	ReleaseBuildID       string                    `json:"release_build_id"`
@@ -106,14 +107,15 @@ func canonicalWikiUpdateOf(row *domain.WikiUpdateRow) *canonicalWikiUpdate {
 // wikiSelection holds the facts that one step of a wiki round read for one
 // Project, and the decision that they give.
 type wikiSelection struct {
-	project     string
-	status      string
-	now         time.Time
-	tun         tunables
-	state       domain.WikiState
-	marker      int64
-	action      dispatch.Action
-	environment EnvironmentState
+	updateRecovery bool
+	project        string
+	status         string
+	now            time.Time
+	tun            tunables
+	state          domain.WikiState
+	marker         int64
+	action         dispatch.Action
+	environment    EnvironmentState
 }
 
 func buildCanonicalWikiPrepare(identity dispatchProtocolIdentity, uuid, requestID string, sel wikiSelection, mounts PrivateDispatchMountState, cand canonicalCandidate) canonicalWikiPrepare {
@@ -133,6 +135,7 @@ func buildCanonicalWikiPrepare(identity dispatchProtocolIdentity, uuid, requestI
 		ProjectStatus:        sel.status,
 		EnvironmentRevision:  sel.environment.SelectedRevisionID,
 		EnvironmentCondition: environmentCondition(sel.environment),
+		UpdateRecovery:       sel.updateRecovery,
 		AcceptedCommit:       sel.state.AcceptedCommit,
 		MergeMarker:          sel.marker,
 		LastSucceeded:        canonicalWikiUpdateOf(sel.state.LastSucceeded),
@@ -198,9 +201,13 @@ func selectWiki(ctx context.Context, q Q, project, status, observation string, o
 	if sel.environment, err = environmentStateTx(ctx, q, project); err != nil {
 		return sel, err
 	}
+	if sel.updateRecovery, err = updateReceiptRecovery(ctx, q, project); err != nil {
+		return sel, err
+	}
 	rec := dispatch.WikiRecords{
 		Project: project, Status: status, AcceptedCommit: observation,
 		EnvironmentCondition: environmentCondition(sel.environment),
+		UpdateRecovery:       sel.updateRecovery,
 		Active:               sel.state.Active.Record(),
 		LastSucceeded:        sel.state.LastSucceeded.Record(),
 		LastCounted:          sel.state.LastCounted.Record(),

@@ -21,6 +21,36 @@ func TestReleaseDatabaseSetupWorkPreventsIdle(t *testing.T) {
 	}
 }
 
+func TestReleaseDatabaseIncludesArchivedProjectImages(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "spine.db")
+	if _, err := OnboardSpine(path, absentMirrorRequest()); err != nil {
+		t.Fatal(err)
+	}
+	db, err := substrate.Open(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	for _, status := range []string{"active", "archived"} {
+		if _, err := db.Exec(`INSERT INTO sandbox_profiles(id,workspace_root) VALUES(?,?)`, status, "/fixture/"+status); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := db.Exec(`INSERT INTO projects(id,title,sandbox_profile,status) VALUES(?,?,?,?)`, status, status, status, status); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := db.Exec(`INSERT INTO project_environments(project_id,setup_id,selected_image_digest,selected_base_digest) VALUES(?,?,?,?)`, status, "setup-"+status, "image-"+status, "base-"+status); err != nil {
+			t.Fatal(err)
+		}
+	}
+	result, err := InspectReleaseDatabase(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.ProjectImages) != 2 || result.ProjectImages[1].ProjectID != "archived" || !result.ProjectImages[1].Archived || result.ProjectImages[1].Image != "image-archived" || result.ProjectImages[1].Base != "base-archived" {
+		t.Fatalf("Project images: %#v", result.ProjectImages)
+	}
+}
+
 func TestReleaseDatabaseCheckPreservesAbsentAndIncompatibleData(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "spine.db")
 	result, err := InspectReleaseDatabase(path)

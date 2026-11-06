@@ -56,7 +56,7 @@ func TestHelperCreateArgsPinLeastPrivilegeEnvelope(t *testing.T) {
 	imageID := "sha256:" + strings.Repeat("a", 64)
 	want := []string{
 		"container", "create", "--rm", "--name", names.Helper,
-		"--label", "mc-managed=true", "--label", "mc-component=helper",
+		"--label", "mc-managed=true", "--label", "mc-component=helper", "--label", "mc-deployment=" + names.Suffix,
 		"--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
 		"--privileged=false", "--ipc", "private", "--cpus", "0.5",
 		"--memory", "512m", "--memory-swap", "512m", "--pids-limit", "128",
@@ -149,7 +149,7 @@ func exactHelperFixture(names deployment.Names, imageID string) helperContainerI
 	c.Name = "/" + names.Helper
 	c.Image = imageID
 	c.Config.User = "10002:10002"
-	c.Config.Labels = map[string]string{"mc-managed": "true", "mc-component": "helper"}
+	c.Config.Labels = map[string]string{"mc-managed": "true", "mc-component": "helper", "mc-deployment": names.Suffix}
 	c.Config.Cmd = []string{"/bin/sleep", "infinity"}
 	c.HostConfig.NetworkMode = "none"
 	c.HostConfig.IpcMode = "private"

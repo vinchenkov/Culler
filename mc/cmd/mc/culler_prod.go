@@ -321,7 +321,7 @@ func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, dep
 			out.Panel("Release check", []string{s.Detail})
 			return 0
 		}
-		return cullerUpdate(ctx, home, o.noColor, stdin, stdout, stderr)
+		return cullerUpdateAction(ctx, home, o.noColor, o.restoreUpdate, stdin, stdout, stderr)
 	default:
 		manager, err := deps.manager(home)
 		if err != nil {
@@ -624,6 +624,13 @@ func cullerReady(ctx context.Context, home, unit string, r cullerRuntime, since 
 func cullerQuote(value string) string { return "'" + strings.ReplaceAll(value, "'", "'\"'\"'") + "'" }
 
 func cullerUpdate(ctx context.Context, home string, noColor bool, stdin io.Reader, stdout, stderr io.Writer) int {
+	return cullerUpdateAction(ctx, home, noColor, false, stdin, stdout, stderr)
+}
+
+func cullerUpdateAction(ctx context.Context, home string, noColor, restore bool, stdin io.Reader, stdout, stderr io.Writer) int {
+	if code, handled := runRetainedUpdate(ctx, home, restore, noColor, stdin, stdout, stderr); handled {
+		return code
+	}
 	launcher := filepath.Join(home, "bin", "install.sh")
 	info, err := os.Lstat(launcher)
 	if err != nil || !info.Mode().IsRegular() || info.Mode().Perm()&0022 != 0 {
@@ -639,7 +646,11 @@ func cullerUpdate(ctx context.Context, home string, noColor bool, stdin io.Reade
 		t.Literal(cullerInstallCommand(home))
 		return 1
 	}
-	command := exec.CommandContext(ctx, "/bin/bash", launcher, "--mc-home", home)
+	args := []string{launcher, "--mc-home", home}
+	if restore {
+		args = append(args, "--restore")
+	}
+	command := exec.CommandContext(ctx, "/bin/bash", args...)
 	command.Cancel = func() error { return command.Process.Signal(os.Interrupt) }
 	command.Stdin, command.Stdout, command.Stderr = stdin, stdout, stderr
 	command.Env = append(os.Environ(), "CULLER_PARENT_PATH="+os.Getenv("PATH"))

@@ -1,3 +1,4 @@
+import { deploymentIdentity, deploymentArguments } from "./environment-lane";
 // effects.test.ts — the effectors against stubbed mc/docker/fs: spawn's
 // folder → repository → run.json → container order, the run.json schema, the
 // docker argv, the producer-absence fence, exact-name reap, and idle as a
@@ -1002,7 +1003,7 @@ describe("spawn effect", () => {
         "--workdir", "/workspace/source",
         "--network", "none",
         "--name", "mc-ws-e2e-run-42-worker",
-        "--label", "mc-managed=true",
+        "--label", "mc-managed=true", ...deploymentArguments("/tmp/mc-home"),
         "--label", "mc-tier=pipeline",
         "--label", "mc-run-id=run-42-worker",
         "--label", "mc-project=ws-e2e",
@@ -1059,7 +1060,7 @@ describe("spawn effect", () => {
       expect(create.slice(0, 2)).toEqual(["create", "--rm"]);
       expect(create[create.indexOf("--name") + 1]).toBe("mc-repo.v2-run-42-worker");
       const labels = create.flatMap((arg, i) => (create[i - 1] === "--label" ? [arg] : []));
-      expect(labels).toEqual(["mc-managed=true", "mc-tier=pipeline", "mc-run-id=run-42-worker", "mc-project=repo.v2"]);
+      expect(labels).toEqual(["mc-managed=true", `mc-deployment=${deploymentIdentity("/tmp/mc-home")}`, "mc-tier=pipeline", "mc-run-id=run-42-worker", "mc-project=repo.v2"]);
       expect(rig.docker.calls[1]).toEqual(["start", "mc-repo.v2-run-42-worker"]);
       const runJson = JSON.parse(rig.fakeFs.writes.get("/tmp/mc-home/runs/run-42-worker.json")!);
       expect(runJson.project).toBe("repo.v2");

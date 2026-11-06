@@ -67,6 +67,9 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 }
 
 func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+	if err := gateUpdateCommand(args); err != nil {
+		return writeVerbError(stdout, stderr, err)
+	}
 	if len(args) == 0 {
 		fmt.Fprintln(stderr, "usage: mc <verb> …")
 		writeErrorEnvelope(stdout, stderr, "usage", "usage: mc <verb> …")
@@ -111,6 +114,9 @@ func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int 
 	}
 	if args[0] == "__release" {
 		return runPrivateRelease(args[1:], stdout, stderr)
+	}
+	if args[0] == "__update-reconcile" {
+		return runPrivateUpdateReconcile(args, stdout, stderr)
 	}
 	if args[0] == "__release-database" {
 		return runPrivateReleaseDatabase(args, stdin, stdout, stderr)

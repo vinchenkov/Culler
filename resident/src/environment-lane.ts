@@ -67,6 +67,15 @@ export function runtimeArguments(deps: Pick<Dependencies, "config">): string[] {
     "-e", `MC_HARNESS_CLI=${CULLER_RUNTIME}/app/src/fake-harness/cli.ts`];
 }
 
+export function deploymentIdentity(home: string): string {
+  const suffix = createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12);
+  return suffix;
+}
+
+export function deploymentArguments(home: string): string[] {
+  return ["--label", `mc-deployment=${deploymentIdentity(home)}`];
+}
+
 export function openCodeVolume(home: string): string {
   const suffix = createHash("sha256").update("mc-deployment-v1\0" + home).digest("hex").slice(0, 12);
   return `mc-opencode-${suffix}`;
@@ -240,7 +249,7 @@ async function performRuntimeCompatibility(image: string, operation: Environment
     console.log(JSON.stringify({bun:Bun.version,node:node.stdout.toString().trim()}));
   `;
   await succeeded(deps.docker(["run", "--rm", "--name", name, "--network", "none", "--read-only",
-    "--label", "mc-managed=true", "--label", `mc-project=${operation.project_id}`,
+    "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", `mc-project=${operation.project_id}`,
     "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
     "--pids-limit", "128", "--memory", "512m", "--cpus", "1", "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
     ...runtimeArguments(deps), ...openCodeMount, image, "-e", script]), "The image cannot use the Culler runtime");
@@ -251,7 +260,7 @@ async function measureEnvironment(project: string, image: string, deps: Dependen
   if (!inspected) throw new Error("The selected Project image is unavailable.");
   const home = await prepareProjectHome(project, deps);
   const result = await succeeded(deps.docker(["run", "--rm", "--network", "none", "--user", "10002:10002",
-    "--label", "mc-managed=true", "--label", `mc-project=${project}`,
+    "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", `mc-project=${project}`,
     "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", "--memory", "512m", "--pids-limit", "128",
     "--entrypoint", `${CULLER_RUNTIME}/bin/bun`, ...runtimeArguments(deps),
     ...projectCacheArguments(deps.config.mcHome, project, image), ...projectHomeArguments(home, false), image, "-e",
@@ -358,7 +367,7 @@ async function acceptFiles(operation: EnvironmentOperation, deps: Dependencies):
   if (!container) {
     await succeeded(deps.docker(["create", "--name", name, "--network", "none", "--user", "10002:10002",
       "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", "--pids-limit", "128", "--memory", "1g",
-      "--label", "mc-managed=true", "--label", "mc-tier=setup", "--label", `mc-project=${operation.project_id}`,
+      "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=setup", "--label", `mc-project=${operation.project_id}`,
       "--label", `com.culler.environment.operation=${operation.id}`, "--label", `com.culler.environment.inputs=${operation.inputs_digest}`,
       "--entrypoint", `${CULLER_RUNTIME}/bin/bun`, ...runtimeArguments(deps),
       ...configuredGitEnvironment(deps.config.gitAuthorName, deps.config.gitAuthorEmail),
@@ -478,7 +487,7 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
     }
     await deps.fs.mkdir(workspace, { mode: 0o777 });
     await succeeded(deps.docker(["run", "--rm", "--network", "none", "--user", "10002:10002",
-      "--label", "mc-managed=true", "--label", `mc-project=${operation.project_id}`,
+      "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", `mc-project=${operation.project_id}`,
       "--label", `com.culler.environment.operation=${operation.id}`,
       "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", "--entrypoint", "/bin/bash",
       "--mount", `type=bind,src=${source},dst=/source,readonly`,
@@ -509,7 +518,7 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
     access.push("--mount", `type=bind,src=${root}/provider-access.json,dst=/mc/provider-access.json,readonly`,
       "-e", "MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json");
   }
-  await succeeded(deps.docker(["create", "--interactive", "--name", name, "--label", "mc-managed=true", "--label", "mc-tier=setup",
+  await succeeded(deps.docker(["create", "--interactive", "--name", name, "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=setup",
     "--label", `mc-project=${operation.project_id}`, "--label", `com.culler.environment.operation=${operation.id}`,
     "--label", `com.culler.environment.inputs=${operation.inputs_digest}`,
     ...projectExecutionArguments(runtime.harness === "fake", deps.hostZone()),

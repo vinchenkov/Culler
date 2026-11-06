@@ -67,6 +67,11 @@ class PackageValidationTests(unittest.TestCase):
                     "commit": "a" * 40, "schema": "b" * 64,
                     "runtimes": {"bun": "1.3.9", "go": "1.25.12"}, "agentsview": dict(self.identity),
                     "host_bun": json.loads(json.dumps(HOST_BUN))}
+        metadata["version"] = "0.1.0"
+        formats = {name: "1" for name in ("configuration", "credentials", "claude", "codex", "opencode", "opencode-websearch", "openwiki", "agentsview")}
+        formats["spine"] = metadata["schema"]
+        metadata["update"] = {"minimum_version": "0.1.0", "formats": formats, "accepted": {name: [value] for name, value in formats.items()}}
+        metadata["dependencies"] = [{"path": "fixture.json", "sha256": "a" * 64}]
         (self.output / "package.json").write_text(json.dumps(metadata))
         (self.output / "assets" / "installer.sh").write_text("#!/bin/sh\nexit 99\n")
         (self.output / "version").write_text("0.1.0\n")
@@ -167,6 +172,14 @@ class PackageValidationTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, "lacks its commit"):
                         validate(self.output)
                     run.assert_not_called()
+
+    def test_a_different_package_version_fails_before_program_execution(self):
+        self.package()
+        (self.output / "version").write_text("0.2.0\n")
+        with patch("validate_package.subprocess.run") as run:
+            with self.assertRaisesRegex(ValueError, "package version differs"):
+                validate(self.output)
+            run.assert_not_called()
 
     def test_deployment_writes_before_the_lock_fail(self):
         self.package()

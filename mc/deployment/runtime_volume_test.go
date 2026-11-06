@@ -99,7 +99,7 @@ func TestRuntimeVolumeInstallRunsTheEmbeddedProgram(t *testing.T) {
 	if err := InstallRuntimeVolume(context.Background(), "/Users/test/.culler", "product-image", "new-release", run); err != nil {
 		t.Fatal(err)
 	}
-	want := []string{"run", "--rm", "-i", "--network", "none", "--user", "0:0", "--mount",
+	want := []string{"run", "--rm", "-i", "--label", "mc-deployment=" + names.Suffix, "--network", "none", "--user", "0:0", "--mount",
 		"type=volume,src=" + names.RuntimeVolume + ",dst=/runtime-output,volume-nocopy", "product-image",
 		"/opt/culler-runtime/node/bin/node", "-", "/opt/culler-runtime", "/runtime-output", "new-release"}
 	if installs != 1 || !slices.Equal(installArgs, want) {

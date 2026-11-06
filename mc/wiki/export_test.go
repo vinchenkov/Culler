@@ -558,7 +558,7 @@ func TestExportDockerArgsIsolateTheContainer(t *testing.T) {
 	want := strings.Fields(`run --rm --name mc-wiki-export-0123456789abcdef --pull never --network none
 		--user 10002:10002 --cap-drop ALL --security-opt no-new-privileges=true --read-only
 		--cpus 1 --memory 1024m --pids-limit 128
-		--label mc-managed=true --label mc-tier=wiki-export --label mc-project=ws-alpha
+		--label mc-managed=true --label mc-deployment= --label mc-tier=wiki-export --label mc-project=ws-alpha
 		-v /home/wiki/ws-alpha/.stage-1/input/openwiki:/input/openwiki:ro -v /home/wiki/ws-alpha/.stage-1/output:/output
 		mc-prod /usr/bin/env -i PATH=/usr/local/bin:/usr/bin:/bin
 		/usr/local/bin/node /opt/openwiki/node_modules/openwiki/dist/cli/cli.js visualize /input/openwiki --export /output`)

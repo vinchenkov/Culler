@@ -5,7 +5,7 @@ let smoke: Smoke;
 let status: Record<string, unknown>;
 let opened = 0;
 beforeAll(async () => {
-  smoke = await bootSmoke();
+  smoke = await bootSmoke({ releaseID: "smoke-release" });
   status = {
     state: "current", installed: "a".repeat(40), available: "a".repeat(40), installed_version: "0.1.0", available_version: "0.1.0",
     detail: "The installed release matches the available release. Service health appears separately.",
@@ -13,6 +13,7 @@ beforeAll(async () => {
   };
   await smoke.page.route("**/api/releases/status", route => route.fulfill({ json: status }));
   await smoke.page.route("**/api/releases/open", async route => {
+    expect(route.request().headers()["x-culler-release"]).toBe("smoke-release");
     expect(route.request().postDataJSON()).toEqual({ confirm: true });
     opened += 1;
     await route.fulfill({ json: { opened: true, detail: "Continue in Terminal. The installer asks before service activation." } });

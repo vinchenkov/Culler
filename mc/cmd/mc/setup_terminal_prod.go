@@ -21,6 +21,7 @@ import (
 	"runtime"
 	"slices"
 	"strings"
+	"syscall"
 	"time"
 
 	operatorconfig "mc/config"
@@ -39,26 +40,27 @@ type setupTerminal interface {
 }
 
 type setupDependencies struct {
-	finishExisting func() error
-	beforeChange   func(string, verbs.OnboardArgs, func(string)) error
-	saveSource     func(string, verbs.OnboardArgs) error
-	agentsView     func(string) error
-	rebuildImage   func(context.Context, string, string, func(string)) error
-	stop           func(string) error
-	serviceStates  func(string) (map[string]bool, error)
-	inspect        func(string, verbs.OnboardArgs) (setupDeployment, error)
-	publish        func() error
-	docker         func(context.Context) onboarding.DockerStatus
-	image          func(context.Context, string, string, func(string)) error
-	section        func(string, verbs.OnboardArgs) error
-	connect        func(*setupWizard, setupConnection) error
-	saveKey        func(string, deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error)
-	openCodeStatus func(string) *deployment.AgentProfileOperation
-	openCodeStart  func(string, bool) (deployment.AgentProfileOperation, error)
-	open           func(string) error
-	ready          func(string) ([]string, error)
-	runtimeReady   func(string, []string) error
-	identity       func(string, string) (string, error)
+	assessCandidate func() ([]string, error)
+	finishExisting  func() error
+	beforeChange    func(string, verbs.OnboardArgs, func(string)) error
+	saveSource      func(string, verbs.OnboardArgs) error
+	agentsView      func(string) error
+	rebuildImage    func(context.Context, string, string, func(string)) error
+	stop            func(string) error
+	serviceStates   func(string) (map[string]bool, error)
+	inspect         func(string, verbs.OnboardArgs) (setupDeployment, error)
+	publish         func() error
+	docker          func(context.Context) onboarding.DockerStatus
+	image           func(context.Context, string, string, func(string)) error
+	section         func(string, verbs.OnboardArgs) error
+	connect         func(*setupWizard, setupConnection) error
+	saveKey         func(string, deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error)
+	openCodeStatus  func(string) *deployment.AgentProfileOperation
+	openCodeStart   func(string, bool) (deployment.AgentProfileOperation, error)
+	open            func(string) error
+	ready           func(string) ([]string, error)
+	runtimeReady    func(string, []string) error
+	identity        func(string, string) (string, error)
 }
 
 type setupWizard struct {
@@ -117,6 +119,18 @@ func runTerminalSetup(raw []string, stdin io.Reader, stdout, stderr io.Writer) i
 	}
 	if published != nil {
 		defer published.close()
+		ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+		defer cancel()
+		published.context = ctx
+		if code, handled := published.recoverUpdate(raw, a, stdin, stdout, stderr); handled {
+			return code
+		}
+		if slices.Contains(raw, "--restore") {
+			return writeVerbError(stdout, stderr, errors.New("This deployment has no incomplete update to restore."))
+		}
+		if code, handled := published.offerUpdate(raw, a, stdin, stdout, stderr); handled {
+			return code
+		}
 		if slices.Contains(raw, "--yes") {
 			return published.runAutomatic(raw, a, stdin, stdout, stderr)
 		}
@@ -185,7 +199,7 @@ func parseTerminalSetupArgs(raw []string) (verbs.OnboardArgs, error) {
 	args := []string{}
 	for i := 0; i < len(raw); i++ {
 		switch raw[i] {
-		case "--yes":
+		case "--yes", "--interrupt-runs", "--restore":
 			continue
 		case "--mc-home", "--bin-dir":
 			i++
@@ -782,6 +796,11 @@ func setupCheckDashboard(home string) error {
 	}
 	if health.OK == nil || len(health.Findings) == 0 {
 		return &setupFailure{cause: "The dashboard returned an incomplete readiness result.", details: []string{"The health result requires an ok field and at least one check."}}
+	}
+	if update, err := checkUpdateDashboardIdentity(home, res.Header.Get("X-Culler-Release")); err != nil {
+		return err
+	} else if update {
+		return nil
 	}
 	if !*health.OK {
 		body, _ := json.Marshal(health.Findings)

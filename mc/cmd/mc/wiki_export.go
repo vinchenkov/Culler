@@ -58,6 +58,11 @@ func runWikiExport(args []string, stdout, stderr io.Writer) int {
 		if _, err := readProjectTargets(container.Project); err != nil {
 			return err
 		}
+		names, err := deployment.RuntimeNames(home)
+		if err != nil {
+			return err
+		}
+		container.Deployment = names.Suffix
 		return wiki.DockerExport(ctx, container)
 	}}
 	results, err := exporter.Export(ctx, projects)

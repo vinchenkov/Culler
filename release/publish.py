@@ -13,6 +13,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+from update_contract import validate_update_contract, require_new_public_version
 
 from version import parse as parse_version
 from version import read_version
@@ -91,9 +92,8 @@ def host_bun_record(package):
     return record
 
 
-def latest_version(api):
+def latest_version(latest):
     """Return the version of the latest complete release, or None without a release."""
-    latest = api.request("GET", "/releases/latest")
     if latest is None:
         return None
     tag = latest.get("tag_name", "")
@@ -107,12 +107,13 @@ def latest_version(api):
     return version
 
 
-def version_is_new(api, version, commit):
+def version_is_new(api, version, commit, candidate=None):
     """Return True for a version above the latest release and False for the version of the latest release.
 
     A lower version fails.
     """
-    previous = latest_version(api)
+    latest = api.request("GET", "/releases/latest")
+    previous = latest_version(latest)
     if previous is None:
         return True
     if parse_version(version) == parse_version(previous):
@@ -122,6 +123,14 @@ def version_is_new(api, version, commit):
     comparison = api.request("GET", "/compare/v" + previous + "..." + commit)
     if comparison["status"] != "ahead":
         raise ValueError("Version " + version + " requires a commit after the commit of the latest release.")
+    if candidate is not None:
+        records = [asset for asset in latest.get("assets", []) if asset["name"] == "release.json"]
+        if len(records) != 1:
+            raise ValueError("The available release lacks its unique release record.")
+        previous_record = json.loads(api.request("GET", "/releases/assets/" + str(records[0]["id"]), binary=True))
+        if previous_record.get("version") != previous:
+            raise ValueError("The available release record names a different version from its tag.")
+        require_new_public_version(candidate, previous_record)
     return True
 
 
@@ -153,6 +162,9 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     if not notes.strip():
         raise ValueError("The release requires its changelog section.")
     package = json.loads((output / "package.json").read_text())
+    validate_update_contract(package)
+    if package["version"] != version:
+        raise ValueError("The package version differs from the release input.")
     agentsview = agentsview_record(package)
     host_bun = host_bun_record(package)
     assets = output / "assets"
@@ -165,7 +177,7 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     branch = api.request("GET", "/compare/" + commit + "...main")
     if branch["status"] not in {"identical", "ahead"}:
         raise ValueError("The release commit is outside the current main history.")
-    if not version_is_new(api, version, commit):
+    if not version_is_new(api, version, commit, package):
         return False
     tag = "v" + version
     release = api.request("GET", "/releases/tags/" + tag)
@@ -176,6 +188,7 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     started = datetime.datetime.fromisoformat(workflow["created_at"].replace("Z", "+00:00"))
     record = {
         "format": 1, "version": version, "commit": commit, "release_id": commit, "tag": tag,
+        "update": package["update"], "dependencies": package["dependencies"],
         "sequence": int((output / "sequence").read_text()),
         "published_at": now.isoformat().replace("+00:00", "Z"), "platform": "darwin-arm64",
         "schema": package["schema"], "runtimes": package["runtimes"], "agentsview": agentsview, "host_bun": host_bun,
@@ -201,7 +214,7 @@ def publish(api, output, commit, image, run_id, now=None, project_image=None):
     for name in ("install.sh", "installer.sh", "culler-darwin-arm64.tar.gz", "culler-opencode-linux-arm64.tar.gz", "release.json"):
         ensure_asset(api, release, assets / name)
     # The workflow serializes this final comparison and publication.
-    if not version_is_new(api, version, commit):
+    if not version_is_new(api, version, commit, package):
         return False
     api.request("PATCH", "/releases/" + str(release["id"]), {
         "name": "Culler " + version, "body": notes, "draft": False, "make_latest": "true",

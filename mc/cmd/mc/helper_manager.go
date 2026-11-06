@@ -218,6 +218,7 @@ func (m *helperManager) createArgs(imageID string) []string {
 		"--name", m.names.Helper,
 		"--label", "mc-managed=true",
 		"--label", "mc-component=helper",
+		"--label", "mc-deployment=" + m.names.Suffix,
 		"--network", "none",
 		"--user", "10002:10002",
 		"--cap-drop", "ALL",
@@ -323,12 +324,12 @@ func helperOwned(c helperContainerInspect) bool {
 	return c.Config.Labels["mc-managed"] == "true" && c.Config.Labels["mc-component"] == "helper"
 }
 
-func helperLabelsExact(labels map[string]string) bool {
-	if labels["mc-managed"] != "true" || labels["mc-component"] != "helper" {
+func helperLabelsExact(labels map[string]string, deployment string) bool {
+	if labels["mc-managed"] != "true" || labels["mc-component"] != "helper" || labels["mc-deployment"] != deployment {
 		return false
 	}
 	for key := range labels {
-		if strings.HasPrefix(key, "mc-") && key != "mc-managed" && key != "mc-component" {
+		if strings.HasPrefix(key, "mc-") && key != "mc-managed" && key != "mc-component" && key != "mc-deployment" {
 			return false
 		}
 	}
@@ -362,7 +363,7 @@ func (m *helperManager) helperExact(c helperContainerInspect, imageID string) bo
 	oomDisabled := c.HostConfig.OomKillDisable == nil || !*c.HostConfig.OomKillDisable
 	return strings.TrimPrefix(c.Name, "/") == m.names.Helper && c.Image == imageID &&
 		c.Config.User == "10002:10002" && stringSliceEqual(c.Config.Cmd, []string{"/bin/sleep", "infinity"}) &&
-		helperLabelsExact(c.Config.Labels) &&
+		helperLabelsExact(c.Config.Labels, m.names.Suffix) &&
 		c.HostConfig.NetworkMode == "none" && c.HostConfig.IpcMode == "private" && c.HostConfig.PidMode == "" &&
 		c.HostConfig.UTSMode == "" && c.HostConfig.UsernsMode == "" && c.HostConfig.CgroupnsMode == "private" &&
 		!c.HostConfig.Privileged && len(c.HostConfig.Binds) == 0 && len(c.HostConfig.CapAdd) == 0 &&

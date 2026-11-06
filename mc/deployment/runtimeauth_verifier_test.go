@@ -74,7 +74,7 @@ func verifierFixture(t *testing.T, harness, mode string, requests int) (*Adapter
 		t.Fatal(err)
 	}
 	access := newProviderAccessFixture(t, harness, mode, requests)
-	verifier := &AdapterNoopVerifier{Image: "fixture-image", Catalog: signInCatalog(t), RunnerSourceDir: verifierRunnerSource(t, root), Access: access.access}
+	verifier := &AdapterNoopVerifier{Home: root, Image: "fixture-image", Catalog: signInCatalog(t), RunnerSourceDir: verifierRunnerSource(t, root), Access: access.access}
 	return verifier, stage, access
 }
 

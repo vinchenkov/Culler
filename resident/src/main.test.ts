@@ -301,3 +301,50 @@ test("the canonical observer exposes read and renewal diagnostic failures withou
     await service.drain();
   }
 });
+
+test("resident update checks refuse incomplete runtime and profile data before listener checks", async () => {
+  const { verifyResidentUpdate } = await import("./main");
+  const checks = ["mc-home", "spine", "deployment-identity", "container-runtime"];
+  const config = { mcHome: "/fixture" };
+  let listeners = 0;
+  const calls: string[][] = [];
+  const runMc = async (argv: string[]) => {
+    calls.push(argv);
+    return { exitCode: 0, stderr: "", stdout: argv[0] === "doctor"
+      ? JSON.stringify({ findings: checks.map(check => ({ check, status: "ok" })) })
+      : JSON.stringify({ bindings: {} }) };
+  };
+  await verifyResidentUpdate(config, runMc, async () => { listeners++; });
+  expect(listeners).toBe(1);
+  expect(calls).toEqual([["doctor"], ["agent-profile", "runtime-catalog"]]);
+  await expect(verifyResidentUpdate(config, async () => ({ exitCode: 0, stderr: "", stdout: JSON.stringify({ findings: [] }) }), async () => { listeners++; })).rejects.toThrow("check failed");
+  expect(listeners).toBe(1);
+  await expect(verifyResidentUpdate(config, runMc, async () => { throw new Error("socket occupied"); })).rejects.toThrow("socket occupied");
+});
+
+test("resident update checks preserve an unsafe socket file", async () => {
+  const { checkUpdateListeners } = await import("./main");
+  const { writeFile } = await import("node:fs/promises");
+  const home = await mkdtemp(join(tmpdir(), "culler-update-listener-"));
+  try {
+    const path = join(home, "resident.socket");
+    await writeFile(path, "preserve this file");
+    await expect(checkUpdateListeners(home)).rejects.toThrow("unsafe file");
+    expect(await readFile(path, "utf8")).toBe("preserve this file");
+    await rm(path);
+    await checkUpdateListeners(home);
+  } finally { await rm(home, { recursive: true, force: true }); }
+});
+
+
+test("resident verification records a current response with ordinary work disabled", async () => {
+  const { publishResidentAvailability } = await import("./main");
+  const home = await mkdtemp(join(tmpdir(), "culler-update-availability-"));
+  const now = new Date("2026-11-05T12:00:00Z");
+  try {
+    await publishResidentAvailability(home, "verification-instance", false, now);
+    expect(JSON.parse(await readFile(join(home, "health", "resident-availability.json"), "utf8"))).toEqual({
+      resident_instance_id: "verification-instance", observed_at: now.toISOString(), can_commit: false,
+    });
+  } finally { await rm(home, { recursive: true, force: true }); }
+});

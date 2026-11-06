@@ -11,6 +11,12 @@ import { parseConfig } from "./main";
 const KEY = "7a".repeat(32);
 
 describe("parseConfig", () => {
+  test("accepts a release identity and refuses unsafe identities", () => {
+    expect(parseConfig('{"mc_bin":"/x/mc","auth_token":"t","release_id":"release-two"}').release_id).toBe("release-two");
+    for (const release_id of ["", 3, "<script>", "a b"]) {
+      expect(() => parseConfig(JSON.stringify({ mc_bin: "/x/mc", auth_token: "t", release_id }))).toThrow("release_id");
+    }
+  });
   test("accepts the minimal and the full shape", () => {
     expect(parseConfig('{"mc_bin":"/x/mc","auth_token":"t"}')).toEqual({
       mc_bin: "/x/mc",

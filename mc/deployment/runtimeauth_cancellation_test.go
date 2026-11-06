@@ -134,6 +134,7 @@ esac
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			verifier := &AdapterNoopVerifier{
+				Home:    root,
 				Image:   "fixture-image",
 				Context: ctx, Catalog: signInCatalog(t), RunnerSourceDir: verifierRunnerSource(t, root),
 				Access: newProviderAccessFixture(t, "claude-sdk", "account", 1).access,
@@ -172,6 +173,7 @@ func TestAdapterNoopVerifierCancellationPreservesSavedNativeConnection(t *testin
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	verifier := &AdapterNoopVerifier{
+		Home:    home,
 		Image:   "fixture-image",
 		Context: ctx, Catalog: signInCatalog(t), RunnerSourceDir: verifierRunnerSource(t, home),
 		Access: newProviderAccessFixture(t, "codex", "account", 1).access,

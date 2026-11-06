@@ -556,6 +556,7 @@ func PrepareSupervision(home string, spec SupervisionSpec, loaded LaunchdLoadedP
 	dashboardConfigBody := map[string]string{
 		"auth_token": spec.DashboardAuthToken, "bind": spec.DashboardBind, "mc_bin": mcPath,
 		"wiki_bind": spec.WikiBind, "wiki_key": wikiKey,
+		"release_id": spec.ReleaseBuildID,
 	}
 	dashboardJSON, _ := json.MarshalIndent(dashboardConfigBody, "", "  ")
 	dashboardJSON = append(dashboardJSON, '\n')

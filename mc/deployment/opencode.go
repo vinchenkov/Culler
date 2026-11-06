@@ -136,6 +136,17 @@ func runOpenCodeDownloadWith(home string, download func(context.Context, func(st
 }
 
 func downloadOpenCode(ctx context.Context, home, image string, progress func(string)) error {
+	if update, err := LoadUpdateJournal(home); err != nil {
+		return err
+	} else if update != nil && update.BlocksWork() && update.Phase != "restore" {
+		if update.Candidate.OpenCode == nil {
+			return fmt.Errorf("The candidate lacks the required OpenCode archive.")
+		}
+		archive := filepath.Join(UpdateDirectory(home, update.ID), update.Candidate.OpenCode.Name)
+		progress("Check the retained OpenCode archive.")
+		return InstallOpenCodeArchive(ctx, home, image, archive, update.Candidate.OpenCode.SHA256, update.Candidate.Commit, nil)
+	}
+
 	if source, err := readRuntimeSource(home); err == nil {
 		return buildOpenCodeSource(ctx, home, image, source, progress)
 	} else if !errors.Is(err, os.ErrNotExist) {

@@ -335,6 +335,34 @@ if sh "$TMP/outside/install.sh" >"$TMP/archive-link.out" 2>&1; then fail 'packag
 contains "$TMP/archive-link.out" 'file link or special file' || fail 'archive link refusal was absent'
 [ ! -e "$TMP/args" ] || fail 'archive symbolic link executed code'
 if CULLER_FIXTURE_OS=Linux sh "$TMP/outside/install.sh" >"$TMP/platform.out" 2>&1; then fail 'unsupported platform succeeded'; fi
+# An interrupted update uses the retained candidate without release discovery.
+recovery_home=$TMP/recovery
+recovery_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+recovery_root=$recovery_home/updates/$recovery_id/candidate
+mkdir -p "$recovery_root/bin"
+recovery_home=$(CDPATH= cd -- "$recovery_home" && pwd -P)
+recovery_root=$recovery_home/updates/$recovery_id/candidate
+cp "$TMP/package/bin/mc" "$recovery_root/bin/mc"
+python3 - "$recovery_home" "$recovery_root" <<'PYRECOVERY'
+import hashlib,json,sys
+from pathlib import Path
+home,root=map(Path,sys.argv[1:])
+record={'version':1,'id':'a'*32,'phase':'replace','candidate_root':str(root),'candidate_sha256':hashlib.sha256((root/'bin/mc').read_bytes()).hexdigest(),'bin_dir':str(home/'commands')}
+path=home/'updates/transaction.json'
+path.write_text(json.dumps(record));path.chmod(0o600)
+PYRECOVERY
+rm -f "$TMP/curl-args" "$TMP/args"
+CULLER_FIXTURE_HTTP=503 sh "$TMP/outside/install.sh" --mc-home "$recovery_home" --restore >"$TMP/recovery.out" 2>&1 || { cat "$TMP/recovery.out" >&2; fail 'offline retained recovery failed'; }
+[ ! -e "$TMP/curl-args" ] || fail 'recovery queried a newer release'
+grep -Fx -- --restore "$TMP/args" >/dev/null || fail 'recovery lost the restore choice'
+[ "$(sed -n '3p' "$TMP/env")" = "$recovery_root" ] || fail 'recovery selected another package'
+printf '# changed\n' >>"$recovery_root/bin/mc"
+rm "$TMP/args"
+if sh "$TMP/outside/install.sh" --mc-home "$recovery_home" >"$TMP/recovery-corrupt.out" 2>&1; then fail 'corrupt recovery executable succeeded'; fi
+[ ! -e "$TMP/args" ] && [ ! -e "$TMP/curl-args" ] || fail 'corrupt recovery invoked code or network'
+contains "$TMP/recovery-corrupt.out" 'failed verification' || fail 'corrupt recovery refusal was unclear'
+if sh "$TMP/outside/install.sh" --mc-home "$TMP/absent-recovery" --restore >"$TMP/recovery-absent.out" 2>&1; then fail 'absent recovery succeeded'; fi
+[ ! -e "$TMP/curl-args" ] || fail 'absent recovery queried a newer release'
 # Preserve the source and development contracts through their separate entry point.
 # That test receives the tools of the caller, not the stubs of this test.
 env PATH="$CALLER_PATH" HOME="$CALLER_HOME" sh "$ROOT/scripts/install-source_test.sh"

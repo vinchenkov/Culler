@@ -3,7 +3,7 @@
 // This module runs one execution to its record or to its failure report.
 
 import type { TickDeps } from "./types";
-import { CULLER_RUNTIME, runtimeArguments, projectCacheArguments, projectSecretValues } from "./environment-lane";
+import { deploymentArguments, CULLER_RUNTIME, runtimeArguments, projectCacheArguments, projectSecretValues } from "./environment-lane";
 import {
   confirmRunContainersAbsent, pipelineContainerName, PRODUCER_ABSENCE_ATTEMPTS, PROJECT_ID, SAFE_ID,
 } from "./pipeline-liveness";
@@ -357,7 +357,7 @@ async function checkCandidateEnvironment(execution: StartedExecution, facts: Rep
   try {
     if (ctx.signal.aborted) throw new ExecutionStopped();
     const result = await deps.docker(["run", "--rm", "--interactive", "--name", name,
-      "--label", "mc-managed=true", "--label", "mc-tier=pipeline", "--label", `mc-run-id=${execution.run_id}`,
+      "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=pipeline", "--label", `mc-run-id=${execution.run_id}`,
       "--label", `mc-project=${execution.project}`,
       "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
       "--memory", "4g", "--cpus", "2", "--pids-limit", "512",
@@ -445,7 +445,7 @@ async function mergeContainer(
     if (ctx.signal.aborted) throw new ExecutionStopped();
     result = await deps.docker([
       "run", "--rm", "--network", "none", "--name", name,
-      "--label", "mc-managed=true", "--label", "mc-tier=pipeline",
+      "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=pipeline",
       "--label", `mc-run-id=${run}`, "--label", `mc-project=${execution.project}`,
       "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
       "--cpus", "1", "--memory", "1024m", "--memory-swap", "1024m", "--pids-limit", "128",

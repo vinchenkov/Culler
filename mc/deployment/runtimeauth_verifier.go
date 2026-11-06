@@ -375,8 +375,12 @@ func (v *AdapterNoopVerifier) execute(
 			return defaultRuntimeAuthRunContext(ctx, argv, stdin)
 		}
 	}
+	names, err := RuntimeNames(v.Home)
+	if err != nil {
+		return observation, err
+	}
 	argv := []string{
-		"run", "--rm", "-i", "--label", "mc-managed=true", "--label", "mc-tier=runtime-auth-verify",
+		"run", "--rm", "-i", "--label", "mc-managed=true", "--label", "mc-tier=runtime-auth-verify", "--label", "mc-deployment=" + names.Suffix,
 		// The agent container profile: no harness runs as root.
 		"--user", "10002:10002", "--cap-drop", "ALL",
 		"-e", "MC_PRIVATE_BUN=" + RuntimeRoot + "/bin/bun", "-e", "MC_PRIVATE_NODE=" + RuntimeRoot + "/bin/node",

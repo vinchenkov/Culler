@@ -14,6 +14,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"syscall"
@@ -28,27 +29,31 @@ import (
 )
 
 type publishedSetup struct {
-	home             string
-	root             string
-	record           distribution.Record
-	installed        distribution.Record
-	agentsView       deployment.AgentsViewPin
-	lock             *os.File
-	maintenanceID    string
-	prepared         bool
-	forceMaintenance bool
-	context          context.Context
-	interrupted      *cullerOperation
-	recoverOperation func(*cullerOperation) error
-	started          time.Time
-	docker           func(context.Context, ...string) ([]byte, error)
-	pull             func(context.Context, distribution.Record, func(string)) error
-	states           func(string) (map[string]bool, error)
-	restore          func(string, map[string]bool) error
-	now              func() time.Time
-	sleep            func(time.Duration)
-	images           *imageRemovalRecord
-	hostBunProblem   string
+	update              *deployment.UpdateJournal
+	stagedUpdate        *deployment.UpdateJournal
+	resumingUpdate      bool
+	candidateAssessment *updateCandidateAssessment
+	home                string
+	root                string
+	record              distribution.Record
+	installed           distribution.Record
+	agentsView          deployment.AgentsViewPin
+	lock                *os.File
+	maintenanceID       string
+	prepared            bool
+	forceMaintenance    bool
+	context             context.Context
+	interrupted         *cullerOperation
+	recoverOperation    func(*cullerOperation) error
+	started             time.Time
+	docker              func(context.Context, ...string) ([]byte, error)
+	pull                func(context.Context, distribution.Record, func(string)) error
+	states              func(string) (map[string]bool, error)
+	restore             func(string, map[string]bool) error
+	now                 func() time.Time
+	sleep               func(time.Duration)
+	images              *imageRemovalRecord
+	hostBunProblem      string
 }
 
 func loadPublishedSetup(home string, args verbs.OnboardArgs) (*publishedSetup, error) {
@@ -115,7 +120,7 @@ func loadPublishedSetup(home string, args verbs.OnboardArgs) (*publishedSetup, e
 	now := time.Now()
 	setup := &publishedSetup{home: home, root: root, record: r, agentsView: pin, lock: lock, pull: pullPublishedImage,
 		docker: func(ctx context.Context, args ...string) ([]byte, error) {
-			return exec.CommandContext(ctx, "docker", args...).CombinedOutput()
+			return exec.CommandContext(ctx, publishedUpdateDockerProgram(home), args...).CombinedOutput()
 		},
 		states: setupServiceStates, restore: restorePublishedServices, started: publishedInstallStartedAt(os.Getenv("CULLER_INSTALL_STARTED_AT"), now), now: time.Now, sleep: time.Sleep}
 	var prior struct {
@@ -123,6 +128,25 @@ func loadPublishedSetup(home string, args verbs.OnboardArgs) (*publishedSetup, e
 	}
 	if body, err := os.ReadFile(filepath.Join(home, "state", "install-maintenance.json")); err == nil && json.Unmarshal(body, &prior) == nil {
 		setup.maintenanceID = prior.ID
+	}
+	journal, err := deployment.LoadUpdateJournal(home)
+	if err != nil {
+		_ = lock.Close()
+		return nil, err
+	}
+	if journal != nil && journal.Phase != "complete" && journal.Phase != "restored" {
+		if !samePublishedRecord(journal.Candidate, r) {
+			_ = lock.Close()
+			return nil, errors.New("An incomplete update requires its retained release. Run culler update.")
+		}
+		if err := deployment.RetainUpdateCandidate(home, journal, journal.CandidateRoot); err != nil {
+			_ = lock.Close()
+			return nil, err
+		}
+		setup.update, setup.maintenanceID, setup.started = journal, journal.ID, journal.StartedAt
+		if journal.Previous != nil {
+			setup.installed = *journal.Previous
+		}
 	}
 	return setup, nil
 }
@@ -161,23 +185,47 @@ func lockPublishedSetup(home string) (*os.File, error) {
 }
 
 func (p *publishedSetup) close() {
-	p.releaseMaintenance()
+	if p.update == nil || !p.update.BlocksWork() {
+		p.releaseMaintenance()
+	}
+	if p.stagedUpdate != nil {
+		_ = os.RemoveAll(deployment.UpdateDirectory(p.home, p.stagedUpdate.ID))
+	}
 	if p.lock != nil {
 		_ = p.lock.Close()
 	}
 }
 
-func (p *publishedSetup) releaseMaintenance() {
-	if p.maintenanceID != "" {
-		path := filepath.Join(p.home, "state", "install-maintenance.json")
-		body, err := os.ReadFile(path)
-		var request struct {
-			ID string `json:"id"`
-		}
-		if err == nil && json.Unmarshal(body, &request) == nil && request.ID == p.maintenanceID {
-			_ = os.Remove(path)
-		}
+func (p *publishedSetup) releaseMaintenance() error {
+	if p.maintenanceID == "" {
+		return nil
 	}
+	path := filepath.Join(p.home, "state", "install-maintenance.json")
+	body, err := os.ReadFile(path)
+	if errors.Is(err, os.ErrNotExist) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	var request struct {
+		ID string `json:"id"`
+	}
+	if json.Unmarshal(body, &request) != nil {
+		return errors.New("The maintenance request is unreadable. Run culler update to repair recovery.")
+	}
+	if request.ID != p.maintenanceID {
+		return errors.New("Another operation owns the maintenance request. Keep Culler stopped and inspect its recovery record.")
+	}
+	if err := os.Remove(path); err != nil {
+		return err
+	}
+	directory, err := os.Open(filepath.Dir(path))
+	if err != nil {
+		return err
+	}
+	defer directory.Close()
+	return directory.Sync()
 }
 
 func (p *publishedSetup) operationContext() context.Context {
@@ -188,6 +236,9 @@ func (p *publishedSetup) operationContext() context.Context {
 }
 
 func (p *publishedSetup) cancelOperation() error {
+	if p.update != nil {
+		return errors.New("The update remains stopped. Run culler update to retry or restore it.")
+	}
 	if p.interrupted == nil {
 		return nil
 	}
@@ -208,6 +259,18 @@ func (p *publishedSetup) cancelOperation() error {
 }
 
 func (p *publishedSetup) configure(deps *setupDependencies) {
+	deps.assessCandidate = func() ([]string, error) {
+		if err := p.retainCandidate(); err != nil {
+			return nil, err
+		}
+		if err := p.assessCandidate(p.operationContext()); err != nil {
+			return nil, err
+		}
+		if p.candidateAssessment == nil {
+			return nil, nil
+		}
+		return p.candidateAssessment.Lines(), nil
+	}
 	deps.finishExisting = func() error { return p.finishExisting() }
 	deps.image = func(ctx context.Context, _ string, _ string, report func(string)) error {
 		ctx, cancel := context.WithTimeout(p.operationContext(), 30*time.Minute)
@@ -218,16 +281,15 @@ func (p *publishedSetup) configure(deps *setupDependencies) {
 	deps.beforeChange = func(_ string, _ verbs.OnboardArgs, report func(string)) error {
 		ctx, cancel := context.WithTimeout(p.operationContext(), 30*time.Minute)
 		defer cancel()
-		if err := p.prepare(ctx, report); err != nil {
-			return publishedSetupFailure(err)
-		}
-		report("Wait for active agents and repository work to finish")
-		return publishedSetupFailure(p.drain(ctx))
+		return publishedSetupFailure(p.beforeUpdate(ctx, report))
 	}
 	deps.saveSource = func(home string, _ verbs.OnboardArgs) error { return p.stageInstalled() }
 	deps.agentsView = func(string) error { return p.installAgentsView() }
 	stop := deps.stop
 	deps.stop = func(home string) error {
+		if p.update != nil {
+			return nil
+		}
 		ctx, cancel := context.WithTimeout(p.operationContext(), 30*time.Second)
 		defer cancel()
 		return p.stopAndRecheck(ctx, stop)
@@ -236,6 +298,11 @@ func (p *publishedSetup) configure(deps *setupDependencies) {
 	deps.section = func(name string, args verbs.OnboardArgs) error {
 		if err := p.operationContext().Err(); err != nil {
 			return errors.Join(onboarding.ErrExit, err)
+		}
+		if name == "supervision" && p.update != nil {
+			if err := p.updatePhase("verify"); err != nil {
+				return err
+			}
 		}
 		err := section(name, args)
 		if p.operationContext().Err() != nil {
@@ -281,6 +348,9 @@ func (p *publishedSetup) stageInstalled() error {
 }
 
 func (p *publishedSetup) finishExisting() error {
+	if p.update != nil && p.update.BlocksWork() {
+		return errors.New("The incomplete update requires recovery before completion.")
+	}
 	if os.Getenv("MC_BIN_DIR") != "" {
 		if _, err := installSetupExecutable(); err != nil {
 			return err
@@ -345,19 +415,44 @@ func (p *publishedSetup) complete() error {
 	if err := distribution.Save(filepath.Join(p.home, distribution.InstalledRecord), p.record); err != nil {
 		return err
 	}
+	if err := os.Remove(filepath.Join(p.home, "state", "pending-release.json")); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	if p.update != nil && !p.update.Committed() {
+		if err := deployment.SyncUpdateDeployment(p.operationContext(), p.home, p.update, p.updateDocker); err != nil {
+			return p.updateFailure(err)
+		}
+		if err := p.updatePhase("committed"); err != nil {
+			return err
+		}
+	}
+	if err := p.releaseMaintenance(); err != nil {
+		return p.updateFailure(err)
+	}
+	p.hostBunProblem = ""
 	if err := p.removePreviousHostBun(); err != nil {
 		p.hostBunProblem = setupSafeDiagnostic(err.Error())
 	}
 	p.removeSupersededImages(context.Background())
+	if p.update != nil && (p.hostBunProblem != "" || (p.images != nil && len(p.images.Problems) > 0)) {
+		problems := []string{}
+		if p.hostBunProblem != "" {
+			problems = append(problems, p.hostBunProblem)
+		}
+		if p.images != nil {
+			problems = append(problems, p.images.Problems...)
+		}
+		err := fmt.Errorf("The update is active. Run culler update to retry cleanup: %s", strings.Join(problems, "; "))
+		return p.updateFailure(errors.Join(err, p.operation("cleanup")))
+	}
 	if err := p.operation("complete"); err != nil {
 		return err
 	}
 	p.interrupted = nil
-	err := os.Remove(filepath.Join(p.home, "state", "pending-release.json"))
-	if os.IsNotExist(err) {
-		return nil
+	if p.update != nil {
+		return p.cleanupUpdate(p.operationContext())
 	}
-	return err
+	return nil
 }
 
 func (p *publishedSetup) operation(phase string) error {
@@ -471,7 +566,15 @@ func copyPublishedFile(source, target string, mode os.FileMode) error {
 	if err := output.Close(); err != nil {
 		return err
 	}
-	return os.Rename(output.Name(), target)
+	if err := os.Rename(output.Name(), target); err != nil {
+		return err
+	}
+	directory, err := os.Open(filepath.Dir(target))
+	if err != nil {
+		return err
+	}
+	defer directory.Close()
+	return directory.Sync()
 }
 
 func (p *publishedSetup) prepare(ctx context.Context, report func(string)) error {
@@ -479,7 +582,9 @@ func (p *publishedSetup) prepare(ctx context.Context, report func(string)) error
 		return nil
 	}
 	if prior, err := distribution.Load(filepath.Join(p.home, distribution.InstalledRecord)); err == nil {
-		p.installed = prior
+		if p.update == nil {
+			p.installed = prior
+		}
 		if prior.Sequence > p.record.Sequence {
 			return errors.New("The installed release is newer. Setup left it intact.")
 		}
@@ -502,9 +607,16 @@ func (p *publishedSetup) prepare(ctx context.Context, report func(string)) error
 	} else if !os.IsNotExist(err) {
 		return err
 	}
-	report("Download the agent image")
-	if err := p.pull(ctx, p.record, report); err != nil {
-		return err
+	if p.update != nil && p.update.Checkpoint != nil {
+		report("Verify the retained agent image")
+		if err := p.verifyRetainedImages(ctx); err != nil {
+			return err
+		}
+	} else {
+		report("Download the agent image")
+		if err := p.pull(ctx, p.record, report); err != nil {
+			return err
+		}
 	}
 	report("Check database compatibility")
 	if _, err := p.database(ctx); err != nil {
@@ -628,6 +740,7 @@ func (p *publishedSetup) database(ctx context.Context) (verbs.ReleaseDatabase, e
 		return r, errors.New("The deployment database volume identity is invalid.")
 	}
 	body, err = p.docker(ctx, "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002",
+		"--label", "mc-managed=true", "--label", "mc-deployment="+names.Suffix,
 		"--mount", "type=volume,src="+names.Volume+",dst=/mc/spine,readonly", p.record.Image, "mc", "__release-database")
 	if err != nil {
 		return r, &setupFailure{cause: "This release cannot use the database. Setup left the installed release intact.", details: []string{setupSafeDiagnostic(string(body))}}
@@ -762,17 +875,28 @@ func writePublishedState(path string, value any) error {
 	if closeErr != nil {
 		return closeErr
 	}
-	return os.Rename(file.Name(), path)
+	if err := os.Rename(file.Name(), path); err != nil {
+		return err
+	}
+	dir, err := os.Open(filepath.Dir(path))
+	if err != nil {
+		return err
+	}
+	defer dir.Close()
+	return dir.Sync()
 }
 
 func (p *publishedSetup) runAutomatic(raw []string, a verbs.OnboardArgs, stdin io.Reader, stdout, stderr io.Writer) int {
+	if p.update != nil {
+		return p.runUpdate(raw, a, stdin, stdout, stderr)
+	}
 	state, err := inspectSetupDeployment(p.home, a)
 	if err != nil {
 		return writeVerbError(stdout, stderr, err)
 	}
 	requested := a
 	requested.ActivateSupervision = false
-	if state.Release.Relation == "older" || state.complete() && !setupRequestedChanges(requested) {
+	if !p.resumingUpdate && (state.Release.Relation == "older" || state.complete() && !setupRequestedChanges(requested)) {
 		if state.Release.Relation != "older" {
 			if err := p.finishExisting(); err != nil {
 				return writeVerbError(stdout, stderr, err)
@@ -780,6 +904,14 @@ func (p *publishedSetup) runAutomatic(raw []string, a verbs.OnboardArgs, stdin i
 		}
 		_ = writeJSON(stdout, map[string]any{"ok": true, "release": state.Release.Installed, "changed": false})
 		return 0
+	}
+	if state.Exists {
+		if _, err := os.Stat(filepath.Join(p.home, distribution.InstalledRecord)); err == nil {
+			return p.runUpdate(raw, a, stdin, stdout, stderr)
+		}
+	}
+	if state.Exists && !p.resumingUpdate && !slices.Contains(raw, "--interrupt-runs") {
+		return writeVerbError(stdout, stderr, verbs.Usagef("Use --interrupt-runs to authorize interruption of active work during an unattended update."))
 	}
 	if !a.ActivateSupervision {
 		return writeVerbError(stdout, stderr, verbs.Usagef("Use install.sh --yes --activate to authorize service activation."))
@@ -797,16 +929,15 @@ func (p *publishedSetup) runAutomatic(raw []string, a verbs.OnboardArgs, stdin i
 	}
 	ctx, cancel := context.WithTimeout(p.operationContext(), 30*time.Minute)
 	defer cancel()
-	if err := p.prepare(ctx, func(line string) { fmt.Fprintln(stderr, line) }); err != nil {
+	if err := p.assessCandidate(ctx); err != nil {
 		return writeVerbError(stdout, stderr, err)
 	}
 	if state.Exists {
-		if err := p.drain(ctx); err != nil {
+		if err := p.beforeUpdate(ctx, func(line string) { fmt.Fprintln(stderr, line) }); err != nil {
 			return writeVerbError(stdout, stderr, err)
 		}
-		if err := p.stopAndRecheck(ctx, stopSetupServices); err != nil {
-			return writeVerbError(stdout, stderr, err)
-		}
+	} else if err := p.prepare(ctx, func(line string) { fmt.Fprintln(stderr, line) }); err != nil {
+		return writeVerbError(stdout, stderr, err)
 	}
 	program, err := installSetupExecutable()
 	if err != nil {
@@ -822,7 +953,12 @@ func (p *publishedSetup) runAutomatic(raw []string, a verbs.OnboardArgs, stdin i
 	previous := productionWholeRunSection
 	defer func() { productionWholeRunSection = previous }()
 	productionWholeRunSection = func(args []string, input io.Reader, output, diagnostic io.Writer) int {
-		command := exec.Command(program, args...)
+		if p.update != nil && len(args) > 1 && args[1] == "supervision" {
+			if err := p.updatePhase("verify"); err != nil {
+				return writeVerbError(output, diagnostic, err)
+			}
+		}
+		command := exec.CommandContext(ctx, program, args...)
 		command.Stdin, command.Stdout, command.Stderr = input, output, diagnostic
 		if err := command.Run(); err != nil {
 			var exit *exec.ExitError
@@ -838,6 +974,11 @@ func (p *publishedSetup) runAutomatic(raw []string, a verbs.OnboardArgs, stdin i
 		_, _ = stdout.Write(result.Bytes())
 		return code
 	}
+	if p.update != nil {
+		if err := p.updatePhase("verify"); err != nil {
+			return writeVerbError(stdout, stderr, err)
+		}
+	}
 	if _, err := setupFinalReadiness(p.home, a); err != nil {
 		return writeVerbError(stdout, stderr, err)
 	}
@@ -852,7 +993,7 @@ func (p *publishedSetup) automaticArgs(args []string, a verbs.OnboardArgs, exist
 	result := []string{}
 	for i := 0; i < len(args); i++ {
 		switch args[i] {
-		case "--yes":
+		case "--yes", "--interrupt-runs", "--restore":
 			continue
 		case "--mc-home", "--bin-dir":
 			i++

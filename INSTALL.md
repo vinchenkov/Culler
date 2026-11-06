@@ -97,7 +97,8 @@ culler update --check
 ```
 
 If the `culler` command is unavailable, run the public installation command again.
-This also updates a production installation that used a source checkout.
+Public updates require a published installation with a declared public compatibility baseline.
+An internal source installation requires a separate deployment home for the first public release.
 A saved launcher supports `sh /tmp/culler-install.sh` and `sh /tmp/culler-install.sh --check-updates` while that file exists.
 
 For a different deployment home, pass `--mc-home /absolute/path` to the saved launcher.
@@ -105,7 +106,8 @@ The dashboard provides **Check for updates** and **Open installer** under **Syst
 **Open installer** opens Terminal and uses the same script.
 The installer asks before service activation.
 
-Each install or update invocation fetches the current installer for one complete release.
+Each new update fetches the current installer for one complete release.
+Recovery uses the exact retained candidate before it requests another release.
 The installer verifies download checksums and the container image digest.
 An incomplete release never replaces the available release.
 An update preserves these resources:
@@ -118,14 +120,24 @@ An update preserves these resources:
 - The AgentsView archive, its trace copies, and their display names.
 - The AgentsView token and the wiki key.
 
-The installer waits for active work before service replacement.
+The installer warns before it stops services and interrupts active runs.
+After confirmation, the stop phase has a thirty-second deadline.
+An agent run cannot delay that deadline.
+An interrupted Project command can leave a partial file.
+The update preserves that file and saved native history.
 An incompatible database blocks activation.
 The installer never authorizes a database reset.
 A healthy deployment of the available release requires no service restart.
 
-After an interruption, run the same script again.
-The installer retains valid setup choices and reports the active release.
+After an interruption, run `culler update` to retry the exact candidate.
+Use `culler update --restore` to restore the previous software and checkpoint before commit.
+An incomplete update keeps ordinary work stopped.
+The updater verifies the candidate before it records a commit and permits work.
+After commit, cleanup removes previous software and temporary checkpoints.
+Cleanup preserves selected Project images and separate user backups.
+An ordinary downgrade remains unsupported.
 Release availability remains separate from service health.
+The [update procedure](release/UPDATES.md) describes the public contract and recovery checks.
 
 ## Lifecycle commands
 
@@ -143,6 +155,7 @@ Help, status, and version repeat this boundary.
 | `culler restart [service]` | Restart the selected services. |
 | `culler update --check` | Check release availability. |
 | `culler update` | Open the same installer in this terminal. |
+| `culler update --restore` | Restore an incomplete update before its commit. |
 | `culler uninstall` | Preview removal of all Culler installations, then ask for confirmation. |
 | `culler uninstall --keep-data` | Remove software and preserve Culler data after confirmation. |
 | `culler uninstall --dry-run` | Show the removal plan without a change. |
@@ -227,6 +240,12 @@ These rules apply before version 1.0.0:
 - A feature or an incompatible change increases the minor number, for example from 0.1.1 to 0.2.0.
 - Version 1.0.0 declares a stable public contract. After version 1.0.0, an incompatible change increases the major number.
 
+Version 0.1.0 starts the public data compatibility contract.
+Every supported update preserves durable user data, including updates between 0.x minor versions.
+Consecutive public releases require a supported update path.
+Skipped releases require accepted source formats and a supported source version.
+An ordinary downgrade remains unsupported.
+
 [CHANGELOG.md](CHANGELOG.md) has one section for each version.
 Each section gives the changes, the known limits, the database compatibility, and the update effects.
 Read the section of a new version before you update.
@@ -286,6 +305,10 @@ These scans report their results and never prevent a release.
 
 The checks exercise the product image without a mounted Culler checkout.
 Each release uses one version, one full commit identifier, and an immutable image digest.
+The `VERSION` file supplies the public version.
+The minimum source version and accepted source formats reside in `mc/distribution/update_policy.json`.
+Publication rejects an undeclared path from the previous public release.
+Spine, configuration, and credential conversions require converter code before publication.
 The workflow verifies each release file after upload.
 The workflow makes the release available only after all required checks pass.
 An incomplete release preserves the previous available release.
@@ -311,9 +334,11 @@ They also reject a version without a complete `CHANGELOG.md` section.
 
 Before a version increase, compare the database schema of the new version with the `schema` value in the `release.json` of the latest release.
 Ask your coding harness to make this comparison.
-A different schema stops each update from the latest release at the database check, and the update keeps the installed release.
-State that result in the Database compatibility and Update effects parts.
-After publication, update the test Mac from the previous release and confirm the result that those parts state.
+A different schema blocks publication until its conversion and recovery tests pass.
+An accepted-format declaration alone cannot enable a conversion.
+State the preserved data and required intermediate releases in the Database compatibility and Update effects parts.
+Before publication, test the exact packages on a separate Mac or isolated deployment.
+Confirm the update and recovery results that those parts state.
 
 The repository's Actions page shows each workflow and its result.
 The Releases page shows complete releases.
@@ -327,6 +352,8 @@ It also checks `VERSION` and `CHANGELOG.md`.
 
 The [release security guide](release/security/README.md) describes the security scans and the nightly image scans.
 It also describes the GitHub ruleset of the `main` branch.
+The [update procedure](release/UPDATES.md) describes dependency changes, migration evidence, and emergency recovery.
+The [provider support contract](release/PROVIDER-COMPATIBILITY.md) defines saved-model checks and repair behavior.
 With that ruleset, a pull request can merge only after its `release-checks` job passes.
 A failed or unverified required check prevents release publication.
 

@@ -12,7 +12,7 @@ import { makeGenRef } from "./api";
 import { openAttachmentFile } from "./hostfile";
 import { makeMcRunner, type McCompletionRecord } from "./mc";
 import { nudgeResident, residentSocketPath } from "./resident-nudge";
-import { DEFAULT_BIND, startDashboardServer } from "./server";
+import { DEFAULT_BIND, startDashboardServer, updateBlocksMutations } from "./server";
 import { DEFAULT_WIKI_BIND, startWikiServer, WIKI_KEY } from "./wiki-server";
 
 export interface DashboardConfig {
@@ -23,6 +23,7 @@ export interface DashboardConfig {
    * address does not start. */
   wiki_key?: string;
   auth_token: string;
+  release_id?: string;
 }
 
 export function observeCommand(log: Logger, record: McCompletionRecord): void {
@@ -60,12 +61,16 @@ export function parseConfig(raw: string): DashboardConfig {
   if (typeof cfg["auth_token"] !== "string" || cfg["auth_token"] === "") {
     throw new Error('dashboard config requires "auth_token" — every bind is token-gated');
   }
+  if (cfg["release_id"] !== undefined && (typeof cfg["release_id"] !== "string" || !/^[A-Za-z0-9][A-Za-z0-9._+-]{0,127}$/.test(cfg["release_id"]))) {
+    throw new Error('dashboard config "release_id" is invalid');
+  }
   return {
     mc_bin: cfg["mc_bin"],
     bind: cfg["bind"] as string | undefined,
     wiki_bind: cfg["wiki_bind"] as string | undefined,
     wiki_key: cfg["wiki_key"] as string | undefined,
     auth_token: cfg["auth_token"],
+    ...(cfg["release_id"] === undefined ? {} : { release_id: cfg["release_id"] as string }),
   };
 }
 
@@ -95,7 +100,8 @@ if (import.meta.main) {
     sink: openFileSink({ dir: logsDir, name: "dashboard.ndjson" }),
   });
   const server = startDashboardServer(
-    { bind: cfg.bind ?? DEFAULT_BIND, authToken: cfg.auth_token },
+    { bind: cfg.bind ?? DEFAULT_BIND, authToken: cfg.auth_token, releaseID: cfg.release_id,
+      maintenance: () => updateBlocksMutations(mcHome) },
     {
       mc: makeMcRunner(cfg.mc_bin, {
         onComplete: (record) => observeCommand(log, record),

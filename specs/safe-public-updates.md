@@ -13,16 +13,19 @@ Culler retains that file for recovery; it does not promise atomic completion of 
 
 ## Public support boundary
 
-The first public release establishes the compatibility baseline at version 1.0.0.
+The first public release establishes the compatibility baseline at version 0.1.0.
 Unreleased internal formats require no conversion support.
 Each release has an immutable identity, an ordered publication sequence, and a public version.
 The public version follows Semantic Versioning.
+The `VERSION` file supplies the public version.
 Patch releases preserve public behavior and persistent formats.
 Minor releases can introduce tested forward migrations.
-Major releases can change the public interface.
+Before version 1.0.0, minor releases can change the public interface.
+After version 1.0.0, an incompatible public interface change requires a major release.
 Every supported update still preserves user data.
 
 The release record declares its accepted source formats and minimum supported public version.
+The source policy declares these compatibility values separately from `VERSION`.
 Consecutive releases have a tested update path.
 A skipped release is supported when the candidate accepts every source format in the installed deployment.
 A required intermediate release has retained public artifacts and an explicit reason.
@@ -110,7 +113,9 @@ The failure identifies the affected process and the retry action.
 The update records interrupted runs after it verifies their exit.
 An update interruption preserves task retry allowances and Project failure allowances.
 It does not cancel a task.
-Recovery reconciles leases and repository operation receipts before normal work resumes.
+Recovery reconciles leases before normal work resumes.
+An unfinished repository receipt blocks new pipeline and wiki work in its affected Project.
+Receipt recovery remains available while that block applies.
 An operation with an unknown external result retains its evidence until reconciliation resolves that result.
 Repository recovery preserves completed effects and prevents duplicate operations.
 The update preserves the operator's Project pause choices.
@@ -177,6 +182,7 @@ The first implementation refuses a persistent format conversion without a declar
 The checkpoint contains a consistent spine snapshot when the update can write the spine.
 It includes configuration, mutable credential references, and applicable native or plugin stores.
 It protects host stores that home preparation can migrate or retire.
+It includes both installed commands and the deployment's login service definitions.
 The checkpoint identifies preserved Keychain references without writing secrets into release records or logs.
 The candidate cannot invalidate the only usable credential as part of an unsuccessful update.
 
@@ -205,6 +211,8 @@ The recovery set also retains previous host files, executables, runtime material
 Runtime reconstruction and restoration require no download after checkpoint completion.
 
 Successful verification precedes the durable committed phase.
+The updater synchronizes installed host files and runtime data before it records that phase.
+The matching maintenance request blocks work until the durable commit completes and the updater removes that request.
 The durable committed phase precedes normal work and obsolete artifact removal.
 After commit, cleanup removes obsolete software and temporary update checkpoints.
 Cleanup preserves these resources:
@@ -277,6 +285,20 @@ OpenCode request tests cover distinct adapter behavior and exact effort forwardi
 A model catalog lookup never counts as proof of remote availability.
 
 ## Acceptance criteria
+
+### Implementation order
+
+| Order | Affected area | Prerequisite | Acceptance |
+| --- | --- | --- | --- |
+| 1 | Release record and source policy | The first public baseline | Unsupported versions and formats refuse before replacement. |
+| 2 | Update record and maintenance | The serialized lifecycle operation | An interruption preserves the exact candidate and blocks ordinary work. |
+| 3 | Services, containers, and execution records | The durable stop intent | Exit verification meets the stop deadline and preserves history and allowances. |
+| 4 | Checkpoints and restoration | Verified process exit | A failed restore preserves its sources and permits another attempt. |
+| 5 | Configuration and selected Project images | The fixed candidate | Local compatibility checks preserve choices and identify affected work. |
+| 6 | Component verification and commit | A complete checkpoint and compatible candidate | Exact component identities pass before the durable commit releases maintenance. |
+| 7 | Cleanup and release evidence | The durable commit | Cleanup preserves current data; packaged host acceptance covers the complete path. |
+
+### Required checks
 
 The completed implementation satisfies these checks:
 

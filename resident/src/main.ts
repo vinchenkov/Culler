@@ -15,13 +15,13 @@
 
 import { projectContainers } from "./project-containers";
 import { acquireConnectionOwner } from "./connection-owner";
-import { chmod, mkdir, open, readFile, readdir, realpath, rename, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, lstat, mkdir, open, readFile, readdir, realpath, rename, rm, stat, writeFile } from "node:fs/promises";
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { makeLogger, parseLevel, type Logger } from "../../runner/shared/log";
 import { openFileSink } from "../../runner/shared/log-sink";
 import { startTickLoop } from "./tick-loop";
-import { createInstallMaintenance, readInstallMaintenance } from "./install-maintenance";
+import { createInstallMaintenance, readInstallMaintenance, waitForUpdateActivation } from "./install-maintenance";
 import { createRepositoryLane, type StartEvent } from "./repository-lane";
 import { createEnvironmentLane } from "./environment-lane";
 import { createAgentProfileRuntimeRefresh, readAgentProfileRuntimeCatalog } from "./agent-profile-runtime";
@@ -233,6 +233,14 @@ export async function publishTickReceipt(
   await rename(stage, final);
 }
 
+export async function publishResidentAvailability(home: string, instance: string, canCommit: boolean, now = new Date()): Promise<void> {
+  const directory = join(home, "health");
+  await mkdir(directory, { recursive: true, mode: 0o700 });
+  const stage = join(directory, `.resident-availability.${process.pid}.next`);
+  await writeFile(stage, JSON.stringify({ resident_instance_id: instance, observed_at: now.toISOString(), can_commit: canCommit }), { mode: 0o600 });
+  await rename(stage, join(directory, "resident-availability.json"));
+}
+
 export async function refreshConnectionCheck(runMc: Exec, renew: (connection: string) => Promise<{ record: { expires_at_ms?: number } }>, connection: string) {
   const check = crypto.randomUUID().replaceAll("-", "");
   const started = await runMc(["connection", "check-start"], new TextEncoder().encode(JSON.stringify({ connection_id: connection, check_id: check })));
@@ -281,8 +289,10 @@ export async function observeProviderAccess(runMc: Exec, log: Logger, observatio
 
 async function startProjector(mcPath: string, mcHome: string, log: Logger,
   catalog: Record<string, RuntimeBindingSpec>, runMc: Exec): Promise<CredentialProjectorHandle> {
-  const migration = await runMc(["agent-profile", "credential-migrate"]);
-  if (migration.exitCode !== 0) throw new Error("The host credential store requires recovery.");
+  if (!(await Bun.file(join(mcHome, "state", "published-release.json")).exists())) {
+    const migration = await runMc(["agent-profile", "credential-migrate"]);
+    if (migration.exitCode !== 0) throw new Error("The host credential store requires recovery.");
+  }
   const certificate = await runMc(["agent-profile", "proxy-tls"]);
   if (certificate.exitCode !== 0) throw new Error("The host proxy certificate is unavailable.");
   const tls = JSON.parse(certificate.stdout);
@@ -405,6 +415,42 @@ function execVia(binary: string): Exec {
   };
 }
 
+export async function checkUpdateListeners(home: string): Promise<void> {
+  const paths = [join(home, "resident.socket"), join(home, "discord.socket"), join(home, "health", "provider-acceptance.sock")];
+  await mkdir(join(home, "health"), { recursive: true, mode: 0o700 });
+  for (const path of paths) {
+    try {
+      const existing = await lstat(path);
+      if (!existing.isSocket() || existing.uid !== process.getuid?.()) throw new Error("A resident socket path has an unsafe file.");
+      await rm(path);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+    const listener = Bun.listen({ unix: path, socket: { open(socket) { socket.end(); }, data(socket) { socket.end(); } } });
+    listener.stop(true);
+    await rm(path, { force: true });
+  }
+  const server = Bun.serve({ hostname: "127.0.0.1", port: 0, fetch: () => new Response(null, { status: 503 }) });
+  server.stop(true);
+}
+
+export async function verifyResidentUpdate(
+  config: Pick<MainConfig, "mcHome" | "runtimeBindingAuthorities">,
+  runMc: Exec,
+  listeners: (home: string) => Promise<void> = checkUpdateListeners,
+): Promise<void> {
+  const result = await runMc(["doctor"]);
+  if (result.exitCode !== 0) throw new Error("The update cannot verify the resident runtime.");
+  const report = JSON.parse(result.stdout);
+  for (const check of ["mc-home", "spine", "deployment-identity", "container-runtime"]) {
+    if (!Array.isArray(report.findings) || report.findings.filter((finding: any) => finding?.check === check && finding.status === "ok").length !== 1) {
+      throw new Error(`The resident update check failed: ${check}.`);
+    }
+  }
+  await readAgentProfileRuntimeCatalog(runMc, config.runtimeBindingAuthorities);
+  await listeners(config.mcHome);
+}
+
 async function main(): Promise<void> {
   const idx = process.argv.indexOf("--config");
   const configPath = idx >= 0 ? process.argv[idx + 1] : undefined;
@@ -467,6 +513,16 @@ async function main(): Promise<void> {
     console.error(`resident: invalid tick interval ${JSON.stringify(envInterval)}`);
     process.exit(2);
   }
+  const verificationInstance = crypto.randomUUID();
+  let verificationSequence = 0;
+  let verificationCompleted: Date | undefined;
+  await waitForUpdateActivation(config.mcHome, config.releaseBuildId, async () => {
+    const now = new Date();
+    await publishTickReceipt(config.mcHome, config.releaseBuildId, config.configSchemaVersion,
+      verificationInstance, ++verificationSequence, now, verificationCompleted);
+    await publishResidentAvailability(config.mcHome, verificationInstance, false, now);
+    verificationCompleted = now;
+  }, undefined, () => verifyResidentUpdate(config, execVia(config.mcPath)));
   // The structured channel. It is a file this process OPENS AND OWNS, not the
   // launchd redirect: supervision.go pins StandardErrorPath and launchd holds
   // that descriptor for the process lifetime, so a rotation there would leave
@@ -604,13 +660,7 @@ async function main(): Promise<void> {
   setInterval(() => void recoverEvaluationCases(), 60_000);
   void recoverEvaluationCases();
   const residentInstanceId = crypto.randomUUID();
-  const writeAvailability = async (canCommit: boolean) => {
-    const directory = join(config.mcHome, "health");
-    await mkdir(directory, { recursive: true, mode: 0o700 });
-    const stage = join(directory, `.resident-availability.${process.pid}.next`);
-    await writeFile(stage, JSON.stringify({ resident_instance_id: residentInstanceId, observed_at: new Date().toISOString(), can_commit: canCommit }), { mode: 0o600 });
-    await rename(stage, join(directory, "resident-availability.json"));
-  };
+  const writeAvailability = (canCommit: boolean) => publishResidentAvailability(config.mcHome, residentInstanceId, canCommit);
   await writeAvailability(false).catch(() => log.warn("tick.failed", "The resident cannot publish its availability."));
   let availabilityActive = false;
   const publishAvailability = async () => {

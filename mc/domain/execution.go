@@ -166,6 +166,8 @@ func FenceExecution(ctx context.Context, q Q, runID string) (ActiveExecution, er
 	return x, err
 }
 
+const UpdateInterruptionCondition = "The update interrupted this repository operation."
+
 // ExecutionEnd is the end of one active execution.
 type ExecutionEnd struct {
 	RunID     string
@@ -173,6 +175,7 @@ type ExecutionEnd struct {
 	Outcome   string // for a result: completed or obsolete
 	Condition string // the operator text of a failure, or of a result of a wiki update that names a repair
 	Stopped   bool   // the owner confirms that its host work stopped
+	NoCharge  bool   // an update interrupts this execution after its owner stops
 	Now       time.Time
 }
 
@@ -196,6 +199,9 @@ func (r ExecutionEndResult) Subject() dispatch.Subject {
 // EndExecution ends one active execution and its run in the caller's transaction.
 func EndExecution(ctx context.Context, q Q, end ExecutionEnd) (ExecutionEndResult, error) {
 	var res ExecutionEndResult
+	if end.NoCharge && (end.Reason != EndOwnerChange || !end.Stopped) {
+		return res, Errf(CodeInvalidRequest, "An update must confirm the execution stop before it preserves the allowance.")
+	}
 	outcome, runReason := end.Outcome, ""
 	switch end.Reason {
 	case EndResult:
@@ -258,9 +264,12 @@ func EndExecution(ctx context.Context, q Q, end ExecutionEnd) (ExecutionEndResul
 		}
 		res.Failed = previous.String == EndOwnerChange
 	}
+	if end.NoCharge {
+		res.Failed = false
+	}
 	// A failure of a wiki update uses no failure allowance. A capture of a
 	// cancelled task repeats until it succeeds, so the charge limits its retries.
-	charge := res.Failed && !wiki && (!cancelled || x.Operation == "capture")
+	charge := res.Failed && !end.NoCharge && !wiki && (!cancelled || x.Operation == "capture")
 
 	var retry any
 	if end.Reason != EndResult {
@@ -317,6 +326,9 @@ func EndExecution(ctx context.Context, q Q, end ExecutionEnd) (ExecutionEndResul
 	// The record of a wiki update keeps the condition of each end with no
 	// result, and the condition that a result names.
 	var condition any
+	if end.NoCharge {
+		condition = UpdateInterruptionCondition
+	}
 	if wiki {
 		text := cutCondition(strings.TrimSpace(end.Condition))
 		if end.Reason != EndResult {

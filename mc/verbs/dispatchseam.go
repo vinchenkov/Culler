@@ -125,6 +125,7 @@ type canonicalCandidate struct {
 
 // canonicalPrepare freezes the selected Project and its attention tasks.
 type canonicalPrepare struct {
+	UpdateRecovery             bool                      `json:"update_recovery,omitempty"`
 	ProposalDecisionPending    bool                      `json:"proposal_decision_pending"`
 	ConnectionStates           string                    `json:"connection_states"`
 	InfrastructureFailureCount int                       `json:"infrastructure_failure_count"`
@@ -373,6 +374,7 @@ func buildCanonicalPrepareWithIdentity(identity dispatchProtocolIdentity, uuid, 
 		Project:              rec.Project,
 		ProjectStatus:        rec.ProjectStatus,
 		EnvironmentCondition: rec.EnvironmentCondition,
+		UpdateRecovery:       rec.UpdateRecovery,
 		EnvironmentRevision:  rec.EnvironmentRevision,
 		VisionReady:          rec.VisionReady, VisionPath: rec.VisionPath, VisionContent: rec.VisionContent,
 		AttentionTaskIDs: append([]int64{}, rec.AttentionTaskIDs...),
@@ -782,7 +784,11 @@ func dispatchAttest(home string, prepared preparedDispatch) (attestedDispatch, e
 	}
 	cand.binding = route.Binding
 	cand.bindingCatalog = authority.configuredBindings
-	cand.bindingSpec = authority.bindings[route.Binding]
+	binding, available := authority.bindings[route.Binding]
+	if !available {
+		return configRefusal(reattestedUUID, refusal.SummaryUnresolved, errors.New("The selected agent profile requires repair in the dashboard before work can start.")), nil
+	}
+	cand.bindingSpec = binding
 	cand.forbiddenEnv = append([]string(nil), authority.config.Runtimes.ForbiddenEnv...)
 	// The operator's blocked-pattern additions come from the SAME config
 	// snapshot this attestation already resolved its routing authority from, so

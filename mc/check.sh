@@ -19,7 +19,7 @@ mise exec -- go vet ./...
 # exactly how a changed domain signature can break a tagged suite and stay
 # unnoticed until a review finds it.
 # vet is cheap and needs neither Docker nor a nightly budget.
-for tag in nightly docker_e2e docker_boundary test_fake_routing test_scratch_spine; do
+for tag in nightly docker_e2e docker_boundary update_docker test_fake_routing test_scratch_spine; do
     mise exec -- go vet -tags "$tag" ./...
 done
 
@@ -40,6 +40,7 @@ mise exec -- env GOOS=linux GOARCH=arm64 go vet -tags test_scratch_spine ./...
 sh ../install_test.sh
 # redeploy.sh is the release-move front door. The same Docker-free probe checks its sequence.
 sh ../redeploy_test.sh
+sh ../scripts/source-update-guard_test.sh
 sh ../uninstall_test.sh
 
 # The default limit of go test is ten minutes for one package. The verbs package can need that much time.
