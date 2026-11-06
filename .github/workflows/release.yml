@@ -51,7 +51,7 @@ jobs:
   release-checks:
     name: release-checks
     if: always()
-    needs: [fast-suite-macos, deployment-linux, dashboard-browser, release-images]
+    needs: [fast-suite-macos, application-package, deployment-linux, dashboard-browser, release-images]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 5
     steps:
@@ -62,14 +62,87 @@ jobs:
           python3 - <<'PYTHON'
           import json, os
           results = json.loads(os.environ["RESULTS"])
-          if len(results) != 4 or any(item["result"] != "success" for item in results.values()):
+          if len(results) != 5 or any(item["result"] != "success" for item in results.values()):
               raise SystemExit("A required release check failed or remains unverified.")
           PYTHON
 
   fast-suite-macos:
-    name: fast-suite-macos and application-package
+    name: fast-suite-macos
     runs-on: macos-15
     timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select scratch tool directories
+        run: |
+          test "$(uname -s)" = Darwin
+          test "$(uname -m)" = arm64
+          printf 'MISE_DATA_DIR=%s\n' "$RUNNER_TEMP/mise" >> "$GITHUB_ENV"
+          printf 'GOCACHE=%s\n' "$RUNNER_TEMP/go-build" >> "$GITHUB_ENV"
+          printf 'GOMODCACHE=%s\n' "$RUNNER_TEMP/go-mod-cache" >> "$GITHUB_ENV"
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          package-manager-cache: false
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: |
+            ${{ runner.temp }}/go-mod-cache
+            ~/.bun/install/cache
+            ~/.npm
+          key: culler-dependencies-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/agent-runner/bun.lock', 'runner/openwiki/package-lock.json', 'dashboard/bun.lock') }}
+          restore-keys: culler-dependencies-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+      - name: Restore the Go build cache
+        id: go-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-fast-suite-macos-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-${{ github.sha }}
+          restore-keys: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-fast-suite-macos-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-
+      - name: Install locked test dependencies
+        run: |
+          npm ci --prefix runner/openwiki --ignore-scripts
+          node runner/openwiki/patch-upstream.mjs runner/openwiki/node_modules/openwiki
+          (cd runner/agent-runner && mise exec -- bun install --frozen-lockfile)
+          (cd dashboard && mise exec -- bun install --frozen-lockfile)
+      - name: Run every fast check
+        run: |
+          for component in mc runner/fake-harness runner/agent-runner runner/collie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
+            log="$RUNNER_TEMP/culler-check-${component//\//-}.log"
+            if ! "./$component/check.sh" > "$log" 2>&1; then
+              cat "$log"
+              exit 1
+            fi
+            cat "$log"
+            if [[ "$component" != mc ]] && ! grep -Eq '^[[:space:]]*[1-9][0-9]* pass([[:space:]]|$)' "$log"; then
+              echo "The component check selected zero successful tests: $component" >&2
+              exit 1
+            fi
+          done
+      - name: Check the release tools
+        run: ./release/check.sh
+      - name: Preserve the fast check logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: culler-checks-macos-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/culler-check-*.log
+          retention-days: 7
+      - name: Save the Go build cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.go-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: ${{ steps.go-cache.outputs.cache-primary-key }}
+
+  application-package:
+    name: application-package
+    runs-on: macos-15
+    timeout-minutes: 15
     outputs:
       artifact-id: ${{ steps.upload.outputs.artifact-id }}
       archive-sha256: ${{ steps.inputs.outputs.archive-sha256 }}
@@ -94,34 +167,18 @@ jobs:
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
-            ${{ runner.temp }}/go-build
             ${{ runner.temp }}/go-mod-cache
             ~/.bun/install/cache
             ~/.npm
-          key: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/agent-runner/bun.lock', 'runner/openwiki/package-lock.json', 'dashboard/bun.lock') }}
-          restore-keys: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
-      - name: Install locked test dependencies
-        run: |
-          npm ci --prefix runner/openwiki --ignore-scripts
-          node runner/openwiki/patch-upstream.mjs runner/openwiki/node_modules/openwiki
-          (cd runner/agent-runner && mise exec -- bun install --frozen-lockfile)
-          (cd dashboard && mise exec -- bun install --frozen-lockfile)
-      - name: Run every fast check
-        run: |
-          for component in mc runner/fake-harness runner/agent-runner runner/collie-runner runner/setup-runner runner/shared runner/image resident dashboard; do
-            log="$RUNNER_TEMP/culler-check-${component//\//-}.log"
-            if ! "./$component/check.sh" > "$log" 2>&1; then
-              cat "$log"
-              exit 1
-            fi
-            cat "$log"
-            if [[ "$component" != mc ]] && ! grep -Eq '^[[:space:]]*[1-9][0-9]* pass([[:space:]]|$)' "$log"; then
-              echo "The component check selected zero successful tests: $component" >&2
-              exit 1
-            fi
-          done
-      - name: Check the release tools
-        run: ./release/check.sh
+          key: culler-dependencies-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/opencode/package-lock.json') }}
+          restore-keys: culler-dependencies-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+      - name: Restore the Go build cache
+        id: go-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-application-package-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-${{ github.sha }}
+          restore-keys: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-application-package-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-
       - name: Build and validate the application package
         id: package
         env:
@@ -154,13 +211,12 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
-      - name: Preserve the fast check logs
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      - name: Save the Go build cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.go-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
-          name: culler-checks-macos-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/culler-check-*.log
-          retention-days: 7
+          path: ${{ runner.temp }}/go-build
+          key: ${{ steps.go-cache.outputs.cache-primary-key }}
 
   deployment-linux:
     name: deployment-linux
@@ -182,10 +238,16 @@ jobs:
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
-            ${{ runner.temp }}/go-build
             ${{ runner.temp }}/go-mod-cache
-          key: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum') }}
-          restore-keys: culler-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+          key: culler-dependencies-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum') }}
+          restore-keys: culler-dependencies-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+      - name: Restore the Go build cache
+        id: go-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-deployment-linux-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-${{ github.sha }}
+          restore-keys: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-deployment-linux-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-
       - name: Run portable deployment checks
         run: ./mc/test.sh -count=1 ./deployment/
       - name: Run the production Linux filesystem guard checks
@@ -196,6 +258,12 @@ jobs:
             echo "The production Linux filesystem guard checks require a block-device filesystem." >&2
             exit 1
           fi
+      - name: Save the Go build cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.go-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: ${{ steps.go-cache.outputs.cache-primary-key }}
 
   dashboard-browser:
     name: dashboard-browser
@@ -228,13 +296,19 @@ jobs:
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
-            ${{ runner.temp }}/go-build
             ${{ runner.temp }}/go-mod-cache
             ~/.npm
-          key: culler-browser-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/image/project-tools/package-lock.json') }}
-          restore-keys: culler-browser-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
+          key: culler-dependencies-v1-browser-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-${{ hashFiles('mc/go.sum', 'runner/image/project-tools/package-lock.json') }}
+          restore-keys: culler-dependencies-v1-browser-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.mise.toml') }}-
       # The default Project image installs Playwright from this lock file.
       # The same Playwright installs its matching Chromium build.
+      - name: Restore the Go build cache
+        id: go-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-dashboard-browser-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-${{ github.sha }}
+          restore-keys: culler-go-build-v1-${{ runner.os }}-${{ runner.arch }}-dashboard-browser-${{ hashFiles('.mise.toml', 'mc/go.sum') }}-
       - name: Install the locked Playwright and its matching Chromium
         run: |
           tools="$RUNNER_TEMP/project-tools"
@@ -255,10 +329,16 @@ jobs:
           path: ${{ runner.temp }}/culler-smoke
           if-no-files-found: warn
           retention-days: 7
+      - name: Save the Go build cache
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.go-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/go-build
+          key: ${{ steps.go-cache.outputs.cache-primary-key }}
 
   release-images:
     name: release-images
-    needs: [fast-suite-macos, deployment-linux]
+    needs: [application-package]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 90
     permissions:
@@ -277,11 +357,11 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          artifact-ids: ${{ needs.fast-suite-macos.outputs.artifact-id }}
+          artifact-ids: ${{ needs.application-package.outputs.artifact-id }}
           path: ${{ runner.temp }}/culler-inputs
       - name: Verify and unpack the release inputs
         env:
-          ARCHIVE_SHA256: ${{ needs.fast-suite-macos.outputs.archive-sha256 }}
+          ARCHIVE_SHA256: ${{ needs.application-package.outputs.archive-sha256 }}
         run: |
           printf '%s  %s\n' "$ARCHIVE_SHA256" "$RUNNER_TEMP/culler-inputs/culler-release-inputs.tar.gz" | sha256sum -c -
           mkdir "$RUNNER_TEMP/culler-release"
@@ -517,7 +597,7 @@ jobs:
   release-downloads:
     name: release-downloads and publication
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'
-    needs: [fast-suite-macos, deployment-linux, dashboard-browser, product-image, release-checks, release-version]
+    needs: [application-package, deployment-linux, dashboard-browser, product-image, release-checks, release-version]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 30
     permissions:
@@ -535,11 +615,11 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
-          artifact-ids: ${{ needs.fast-suite-macos.outputs.artifact-id }}
+          artifact-ids: ${{ needs.application-package.outputs.artifact-id }}
           path: ${{ runner.temp }}/culler-inputs
       - name: Verify and unpack the release inputs
         env:
-          ARCHIVE_SHA256: ${{ needs.fast-suite-macos.outputs.archive-sha256 }}
+          ARCHIVE_SHA256: ${{ needs.application-package.outputs.archive-sha256 }}
         run: |
           printf '%s  %s\n' "$ARCHIVE_SHA256" "$RUNNER_TEMP/culler-inputs/culler-release-inputs.tar.gz" | sha256sum -c -
           mkdir "$RUNNER_TEMP/culler-release"
@@ -556,3 +636,25 @@ jobs:
           RELEASE_IMAGE: ${{ needs.product-image.outputs.image }}
           PROJECT_IMAGE: ${{ needs.product-image.outputs.project-image }}
         run: python3 release/publish.py --output "$RUNNER_TEMP/culler-release" --image "$RELEASE_IMAGE" --project-image "$PROJECT_IMAGE"
+
+  go-cache-cleanup:
+    name: go-cache-cleanup
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [fast-suite-macos, application-package, deployment-linux, dashboard-browser]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: write
+    concurrency:
+      group: culler-go-cache-cleanup
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Retain two Go build caches per job and platform
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 release/prune_go_cache.py

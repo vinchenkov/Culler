@@ -56,13 +56,19 @@ The `product-image` job and the `release-downloads and publication` job require 
 The `dashboard-browser` job retains the suite log, the JUnit report, and the browser evidence as the `culler-dashboard-browser-<attempt>` artifact.
 `./release/check.sh` checks the release tools without credentials or publication.
 `release/image_contents.py` checks the file contents of both image archives, and `release/size_report.py` writes the size report of a fresh install and an update.
-The `release-checks` job requires the fast suite, deployment, browser, and image jobs.
+The `application-package` job builds the package alongside the fast suite and the browser suite.
+The `release-images` job starts after the package job.
+The `release-checks` job requires the fast suite, package, deployment, browser, and image jobs.
 The publication jobs require that job before their uploads.
 The vulnerability scans report results in their job summaries and artifacts.
 No release job waits for a vulnerability scan, and a scan result never prevents a release.
 GitHub secret scanning reports secrets in this repository on its Security tab.
 The read-only `release-images` job restores the build cache of the latest `main` build from the GitHub Actions cache.
 Only a push to `main` saves that cache.
+The Go build caches use a separate key for each commit, job, and platform.
+Each job restores the latest compatible Go build cache.
+The cleanup job retains two Go build caches per job and platform on `main`.
+The cleanup preserves the image caches and the dependency caches.
 The product image builds on the default Project image of the same run.
 The job runs the Project browser check, the runtime browser check, and the image content checks.
 The job saves both images and writes the size report.

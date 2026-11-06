@@ -10,7 +10,7 @@ const scans = ["security-acceptance", "image-vulnerabilities"];
 test("the required release check rejects every failed or unverified prerequisite", () => {
   const gate = workflow.jobs["release-checks"];
   expect(gate.if).toBe("always()");
-  expect(gate.needs).toEqual(["fast-suite-macos", "deployment-linux", "dashboard-browser", "release-images"]);
+  expect(gate.needs).toEqual(["fast-suite-macos", "application-package", "deployment-linux", "dashboard-browser", "release-images"]);
   expect(runs(gate)).toContain('item["result"] != "success"');
   const rules = JSON.parse(readFileSync(resolve(root, ".github/release-ruleset.json"), "utf8"));
   expect(rules.enforcement).toBe("active");
@@ -31,7 +31,7 @@ test("no job waits for a security scan", () => {
 
 test("pull request jobs hold read permissions and fixed action references", () => {
   expect(workflow.permissions).toEqual({ contents: "read" });
-  for (const name of [...scans, "fast-suite-macos", "release-images", "release-checks"]) {
+  for (const name of [...scans, "fast-suite-macos", "application-package", "release-images", "release-checks"]) {
     const job = workflow.jobs[name];
     expect(job.if).toBe(name === "release-checks" ? "always()" : undefined);
     expect(job.permissions ?? workflow.permissions).toEqual({ contents: "read" });

@@ -3,6 +3,9 @@
 `./release/check.sh` runs every `*_test.py` file in this directory with `unittest` and checks the shell scripts.
 The check needs no credentials, no network access, and no Docker.
 The release workflow runs the scripts of this directory on the release inputs.
+The package job runs alongside the fast suite and the browser suite.
+The image job starts when the package job completes.
+Publication requires every check and uses the exact checked package and images.
 [security/README.md](security/README.md) describes the vulnerability scans and the secret scanning.
 
 ## Versions and release notes

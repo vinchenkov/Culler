@@ -35,7 +35,8 @@ Push protection stays off, so a secret result never prevents a push.
 
 The `release-checks` job requires each of these jobs to finish with `success`:
 
-- `fast-suite-macos`, which also runs `./release/check.sh` and builds the application package.
+- `fast-suite-macos`, which also runs `./release/check.sh`.
+- `application-package`, which builds the application package alongside the checks.
 - `deployment-linux`.
 - `dashboard-browser`.
 - `release-images`.
@@ -43,6 +44,7 @@ The `release-checks` job requires each of these jobs to finish with `success`:
 Failures, cancellations, and skipped prerequisites fail the `release-checks` job.
 The publication jobs require the `release-checks` job.
 
+The image job starts after the package job.
 The image job builds both images with read-only permissions.
 The image job restores the build cache of the latest `main` build from the GitHub Actions cache.
 Only a push to `main` saves a cache entry.
@@ -52,6 +54,14 @@ The job checks the Project browser and the runtime browser, then saves each imag
 The upload job checks the source revision and the loaded image identity of each archive before the registry upload.
 The upload job performs no image build.
 The existing download checks remain in effect.
+
+The Go build caches and dependency caches use separate entries.
+Each successful push to `main` saves Go build results under a commit-specific key.
+Each job restores the latest compatible cache for its platform and toolchain.
+The cleanup job retains two Go build caches per job and platform on `main`.
+The cleanup preserves image caches, dependency caches, and caches from other branches.
+Cache cleanup holds Actions write permission only after a push to `main`.
+Publication proceeds independently of cache cleanup.
 
 The repository ruleset in [release-ruleset.json](../../.github/release-ruleset.json) applies to the `main` branch.
 A commit reaches `main` only after `release-checks` from GitHub Actions passes for that commit.
