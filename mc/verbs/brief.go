@@ -375,7 +375,7 @@ func buildScribeBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string
 	}
 	git := briefPart{
 		Heading:     partGitState,
-		Explanation: "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
+		Explanation: "The repository starts at the accepted `Start commit`. The previous update identifies the earlier source version when available.",
 		Facts:       []briefFact{{"Start commit", in.Repository.InputCommit}},
 	}
 	last := state.LastSucceeded

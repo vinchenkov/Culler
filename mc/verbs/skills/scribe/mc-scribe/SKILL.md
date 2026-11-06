@@ -8,7 +8,6 @@ description: Submit a wiki result, report a failure, or report a conflict with P
 ## Repository checks
 
 Keep the start commit as an ancestor of the result.
-Git metadata remains writable for commits.
 Each wiki entry must be a regular file.
 Its path must contain no backslash or line break.
 Each changed wiki file must have no executable permissions.
@@ -35,8 +34,8 @@ Correct the stated error and repeat the call.
 Culler then checks the wiki result against the contract and the receipt.
 A failed result check ends the run with exit code 1.
 Do not submit again after a failed result check.
+Submit the result without operator confirmation.
 Leave the merge to Culler.
-Operator review is not required.
 
 ## Report a failure
 

@@ -235,7 +235,6 @@ export async function createIntegration({ root, inputCommit, receiptPath, upstre
         const documents = documentsIn(files, upstream);
         const existingGenerated = [...files.keys()].filter((name) => name.endsWith(".md") && name !== "openwiki/INSTRUCTIONS.md" && !documents[name]);
         if (input.mode === "init" && existingGenerated.length && !files.has("openwiki/.run.json")) throw new Error("The existing wiki requires an update. Preserve its generated content.");
-        if (input.mode === "update" && existingGenerated.length && !files.has("openwiki/.last-update.json") && !files.has("openwiki/.run.json")) throw new Error("The existing wiki lacks compatible OpenWiki metadata.");
         const source = (await git(root, "rev-parse", "HEAD")).trim();
         await git(root, "merge-base", "--is-ancestor", inputCommit, source);
         const changed = (await git(root, "diff", "--name-only", "-z", "HEAD", "--")).split("\0").filter(Boolean);

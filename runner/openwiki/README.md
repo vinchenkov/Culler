@@ -73,6 +73,37 @@ The host rejects a project document at a reserved path before repository mutatio
 A wiki update fails while a project document occupies a reserved path.
 The wiki update reports the incompatible document and preserves its content.
 
+## Recovery from external edits
+
+OpenWiki treats an edited generated page or Claim sidecar as a required page review.
+The review preserves accurate content and checks each Claim against current source evidence.
+A malformed or absent Claim sidecar requires new Claims for its page.
+A deleted generated page requires an explicit restoration or deletion in the page plan.
+The existing page remains available throughout that review.
+A legacy page without a complete verification record requires one review before reuse.
+
+`openwiki/.verification.json` binds each verified page to its Claim sidecar and its source inventory.
+Each inventory records source paths and content hashes under the repository access limits.
+Each source hash also covers the file type and executable mode.
+It detects added, deleted, and edited source files without the previous Git commit.
+Each page retains its own source inventory until its next successful review.
+OpenWiki removes inventories that no page uses.
+
+A Git comparison returns a known result or an unavailable result.
+An unavailable result never means that the source remains unchanged.
+OpenWiki uses a saved source inventory when one exists.
+Without an inventory, a successful Git comparison supplies the changed source paths.
+When neither comparison works, only the affected page group requires a full review.
+The Scribe assesses added source files even when no existing Claim cites them.
+
+The Scribe inspects the Claims after its final page edit.
+Submission rejects a subsequent page or Claim edit.
+Completion rejects an external edit to a verified page.
+A resumed update retains valid page completions and reopens invalid page completions.
+The verification record advances only after the page, Claims, and page manifest pass their checks.
+An interrupted write can require another review, but it never proves a partial result complete.
+Original project documents and repository access limits retain their existing protection.
+
 The completion receipt identifies these facts:
 
 - The assigned input commit: the start commit of the wiki update.

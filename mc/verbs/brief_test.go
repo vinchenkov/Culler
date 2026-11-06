@@ -250,7 +250,7 @@ func TestScribeBriefHoldsTheStartCommit(t *testing.T) {
 			map[string]string{"Run identifier": "run-scribe"}},
 		{partProject, "The assigned repository is at `/workspace/source`.",
 			map[string]string{"Identifier": "ws-test"}},
-		{partGitState, "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
+		{partGitState, "The repository starts at the accepted `Start commit`. The previous update identifies the earlier source version when available.",
 			map[string]string{"Start commit": commit}},
 	}
 	// The role directive is the first section. The parts follow it.
@@ -387,7 +387,7 @@ func TestScribeBriefParts(t *testing.T) {
 			[]string{"Project", "Role", "Customization revision", "Standard directive digest"}},
 		{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", []string{"Run identifier"}},
 		{partProject, "The assigned repository is at `/workspace/source`.", []string{"Identifier"}},
-		{partGitState, "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
+		{partGitState, "The repository starts at the accepted `Start commit`. The previous update identifies the earlier source version when available.",
 			[]string{"Start commit", "Start commit of the last successful wiki update"}},
 		{"Merged tasks", "These tasks merged after the last successful wiki update, oldest first. " +
 			"`Omitted tasks` counts older rows excluded from this part.", nil},
