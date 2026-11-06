@@ -33,6 +33,17 @@ class UpdateContractTest(unittest.TestCase):
         candidate["version"] = "0.1.1"
         require_new_public_version(candidate, previous)
 
+    def test_an_internal_version_without_a_policy_precedes_the_public_baseline(self):
+        previous = {"version": "0.1.0"}
+        candidate = fixture()
+        with self.assertRaisesRegex(ValueError, "Increase"):
+            require_new_public_version(candidate, previous)
+        candidate["version"] = "0.1.1"
+        require_new_public_version(candidate, previous)
+        previous["update"] = None
+        with self.assertRaisesRegex(ValueError, "absent or invalid"):
+            require_new_public_version(candidate, previous)
+
     def test_previous_native_producer_needs_declared_compatibility(self):
         previous = fixture()
         candidate = copy.deepcopy(previous)

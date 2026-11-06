@@ -15,6 +15,7 @@ Culler retains that file for recovery; it does not promise atomic completion of 
 
 The first public release establishes the compatibility baseline at version 0.1.0.
 Unreleased internal formats require no conversion support.
+The public compatibility policy identifies a supported baseline, including when internal releases already contain a version.
 Each release has an immutable identity, an ordered publication sequence, and a public version.
 The public version follows Semantic Versioning.
 The `VERSION` file supplies the public version.

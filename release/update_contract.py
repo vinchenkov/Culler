@@ -40,11 +40,13 @@ def validate_update_contract(record):
 
 
 def require_new_public_version(candidate, previous):
-    # Internal releases precede the public baseline and have no public version.
+    # Internal releases can lack a version or the public compatibility policy.
     if previous.get("version") is None:
         return
     if parse_version(candidate["version"]) <= parse_version(previous["version"]):
         raise ValueError("Increase the public version before publication of a different release.")
+    if "update" not in previous:
+        return
     validate_update_contract(previous)
     if parse_version(candidate["update"]["minimum_version"]) > parse_version(previous["version"]):
         raise ValueError("The candidate must support the previous public release.")

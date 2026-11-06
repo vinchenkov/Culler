@@ -278,20 +278,32 @@ test("a connection failure preserves the saved conversation until a successful r
   const { page } = smoke;
   const saved = await savedSession();
   const before = (await mc(["homie", "list"]) as { sessions: unknown[] }).sessions.length;
-  await page.route(`**/api/sessions/${saved}/history`, route => route.fulfill({
+  const historyPath = `/api/sessions/${saved}/history`;
+  await page.clock.install({ time: Date.now() - 1000 });
+  await page.route(`**${historyPath}`, route => route.fulfill({
     status: 503, contentType: "application/json", body: JSON.stringify({ error: { message: "The server is unavailable." } }),
   }));
-  await page.reload();
-  await page.waitForSelector("body[data-ready]");
-  await page.getByTestId("board-homie-error").waitFor();
-  expect(await savedSession()).toBe(saved);
-  expect((await mc(["homie", "list"]) as { sessions: unknown[] }).sessions).toHaveLength(before);
-  expect(await page.getByTestId("board-homie-new").isEnabled()).toBe(true);
-  await page.unroute(`**/api/sessions/${saved}/history`);
-  await page.getByTestId("board-homie-refresh").click();
-  await readyToSend();
-  expect(await savedSession()).toBe(saved);
-  expect(await page.getByTestId("board-homie-error").isVisible()).toBe(false);
+  try {
+    await page.reload();
+    await page.waitForSelector("body[data-ready]");
+    await page.getByTestId("board-homie-error").waitFor();
+    // Stop periodic reads and finish each failed request before the manual retry.
+    await page.clock.pauseAt(Date.now());
+    await page.waitForLoadState("networkidle");
+    expect(await savedSession()).toBe(saved);
+    expect((await mc(["homie", "list"]) as { sessions: unknown[] }).sessions).toHaveLength(before);
+    expect(await page.getByTestId("board-homie-new").isEnabled()).toBe(true);
+    await page.unroute(`**${historyPath}`);
+    const retried = page.waitForResponse(response => new URL(response.url()).pathname === historyPath && response.status() === 200);
+    await page.getByTestId("board-homie-refresh").click();
+    expect((await (await retried).json()).session_id).toBe(saved);
+    await readyToSend();
+    expect(await savedSession()).toBe(saved);
+    expect(await page.getByTestId("board-homie-error").isVisible()).toBe(false);
+  } finally {
+    await page.unroute(`**${historyPath}`);
+    await page.clock.resume();
+  }
 }, 30000);
 
 test("a deleted conversation recovers and preserves its draft and attachments after a failed start", async () => {

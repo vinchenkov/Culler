@@ -196,6 +196,8 @@ func (p *publishedSetup) close() {
 	}
 }
 
+var saveUpdateActivationJournal = deployment.SaveUpdateJournal
+
 func (p *publishedSetup) releaseMaintenance() error {
 	if p.maintenanceID == "" {
 		return nil
@@ -216,6 +218,22 @@ func (p *publishedSetup) releaseMaintenance() error {
 	}
 	if request.ID != p.maintenanceID {
 		return errors.New("Another operation owns the maintenance request. Keep Culler stopped and inspect its recovery record.")
+	}
+	journal, err := deployment.LoadUpdateJournal(p.home)
+	if err != nil {
+		return err
+	}
+	if p.update != nil && (journal == nil || journal.ID != p.update.ID || journal.Phase != p.update.Phase) {
+		return errors.New("The update record changed. Run culler update again.")
+	}
+	if journal != nil && journal.ID == request.ID {
+		if journal.BlocksWork() {
+			return errors.New("The incomplete update must keep its maintenance request. Run culler update to recover.")
+		}
+		// A visible rename can precede a failed directory sync.
+		if err := saveUpdateActivationJournal(p.home, journal); err != nil {
+			return err
+		}
 	}
 	if err := os.Remove(path); err != nil {
 		return err

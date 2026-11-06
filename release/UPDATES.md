@@ -2,6 +2,8 @@
 
 Culler supports one complete release on one Mac.
 Version 0.1.0 starts the public compatibility baseline.
+The public compatibility policy in the release record identifies a supported public baseline.
+An internal record without that policy requires a separate deployment home, even when it contains a version.
 Internal source installations use the separate source redeploy procedure.
 Source redeploys refuse an incomplete public update.
 Source redeploys cannot run concurrently with public lifecycle commands.

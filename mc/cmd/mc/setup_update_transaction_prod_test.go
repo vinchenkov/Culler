@@ -403,6 +403,85 @@ func TestCompletedUpdateRemovesMaintenanceWithoutCandidate(t *testing.T) {
 	}
 }
 
+func TestUpdateMaintenanceReleaseRequiresDurableTerminalJournal(t *testing.T) {
+	for _, phase := range []string{"committed", "complete", "restored"} {
+		t.Run(phase, func(t *testing.T) {
+			p := updateTransactionFixture(t, phase)
+			p.now = time.Now
+			p.started = time.Now()
+			if phase == "committed" {
+				if err := os.MkdirAll(p.update.CandidateRoot, 0700); err != nil {
+					t.Fatal(err)
+				}
+			}
+			p.docker = func(_ context.Context, args ...string) ([]byte, error) {
+				if args[0] == "exec" {
+					return []byte(`{"digests":[]}`), nil
+				}
+				t.Fatalf("unexpected Docker command %v", args)
+				return nil, nil
+			}
+			path := filepath.Join(p.home, "state", "install-maintenance.json")
+			if err := writePublishedState(path, map[string]string{"id": p.update.ID}); err != nil {
+				t.Fatal(err)
+			}
+			previousSave := saveUpdateActivationJournal
+			t.Cleanup(func() { saveUpdateActivationJournal = previousSave })
+			failure := errors.New("directory sync failed after journal rename")
+			saves := 0
+			saveUpdateActivationJournal = func(home string, journal *deployment.UpdateJournal) error {
+				saves++
+				if err := deployment.SaveUpdateJournal(home, journal); err != nil {
+					return err
+				}
+				return failure
+			}
+			recover := func() error {
+				if phase == "committed" {
+					return p.complete()
+				}
+				return finishUpdateCleanup(context.Background(), p.home, p.update)
+			}
+			if err := recover(); !errors.Is(err, failure) {
+				t.Fatalf("recovery lost the durability failure: %v", err)
+			}
+			journal := p.update
+			p.update = nil
+			p.close()
+			p.update = journal
+			if saves != 2 {
+				t.Fatalf("recovery and deferred close made %d journal saves", saves)
+			}
+			if _, err := os.Stat(path); err != nil {
+				t.Fatal("a failed journal sync removed maintenance")
+			}
+			if err := deployment.UpdateBlocksWork(p.home); err == nil {
+				t.Fatal("a failed journal sync permitted work")
+			}
+			saveUpdateActivationJournal = previousSave
+			if err := recover(); err != nil {
+				t.Fatal(err)
+			}
+			if err := deployment.UpdateBlocksWork(p.home); err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}
+
+func TestSetupClosePreservesIncompleteUpdateMaintenance(t *testing.T) {
+	p := updateTransactionFixture(t, "verify")
+	path := filepath.Join(p.home, "state", "install-maintenance.json")
+	if err := writePublishedState(path, map[string]string{"id": p.update.ID}); err != nil {
+		t.Fatal(err)
+	}
+	p.update = nil
+	p.close()
+	if _, err := os.Stat(path); err != nil {
+		t.Fatal("setup close removed incomplete update maintenance")
+	}
+}
+
 func TestUpdateLocalCredentialCheckAcceptsRemovedCatalogChoices(t *testing.T) {
 	home := t.TempDir()
 	if err := os.Chmod(home, 0700); err != nil {
