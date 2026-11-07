@@ -7,7 +7,7 @@ let complete = true;
 let releaseStatus: Promise<void> | null = null;
 const failed = {
   id: "connection:team:model_access:review", group: "connections", name: "Team account",
-  connection_id: "team", profile_id: "review", model: "review-model:v2", state: "stopped",
+  connection_id: "team", profile_id: "review", profile_name: "Review", model: "review-model:v2", state: "stopped",
   roles: ["verifier", "packager"], action: "Review connection", http_status: 403,
   latest_failure_at: "2026-10-03T01:42:10Z", diagnostic_id: 1,
 };
@@ -97,8 +97,10 @@ test("the Board keeps a shared failure notice and only the selected Project's ta
 test("issue details identify the model and open the correct profile for repair", async () => {
   const { page } = smoke;
   const notice = page.getByTestId("system-notices");
+  expect(await notice.innerText()).toContain("Team account / Review");
   await notice.getByRole("button", { name: "View details" }).click();
   const dialog = page.getByRole("dialog", { name: "Issue details", exact: true });
+  expect(await dialog.locator(".system-context").innerText()).toContain("Agent profile\nReview");
   expect(await dialog.locator(".system-context").innerText()).toContain("review-model:v2");
   expect(await dialog.locator(".system-context").innerText()).toContain("verifier, packager");
   expect(await dialog.innerText()).toContain("The provider rejected access to this model.");
@@ -110,6 +112,7 @@ test("issue details identify the model and open the correct profile for repair",
     await capture(`details-${width}`);
   }
   await dialog.getByText("Technical details", { exact: true }).click();
+  expect(await dialog.locator(".system-facts").innerText()).toContain("Profile identifier\nreview");
   expect(await dialog.locator(".system-facts").innerText()).toContain("403");
   expect(await dialog.locator(".system-facts").innerText()).toContain("Oct");
   expect(await dialog.getByText("Roles that use this profile", { exact: true }).count()).toBe(1);
@@ -150,6 +153,7 @@ test("a delayed or incomplete status preserves details until confirmed recovery"
   try {
     await notice.getByRole("button", { name: "View details" }).click();
     const dialog = page.getByRole("dialog", { name: "Issue details", exact: true });
+    expect(await dialog.locator(".system-context").innerText()).toContain("Agent profile\nReview");
     expect(await dialog.locator(".system-context").innerText()).toContain("review-model:v2");
     complete = false;
     releaseStatus = null;

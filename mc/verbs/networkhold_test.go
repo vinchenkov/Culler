@@ -334,3 +334,47 @@ func TestModelResponseRetainsTaskFailureAndTerminalRecovery(t *testing.T) {
 		}
 	})
 }
+
+func TestProviderTimeoutKeepsItsActiveAttemptVisible(t *testing.T) {
+	for _, role := range []string{"worker", "collie"} {
+		t.Run(role, func(t *testing.T) {
+			db, id := recoveryFixture(t)
+			a := proxyObservation("provider_network", 200)
+			a.Connection, a.AuthorizationRevision, a.CurrentAuthorizationRevision = "test", "authorization", "authorization"
+			a.ProfileRevision = "revision"
+			a.RunID, a.LaunchID = id.RunID, id.RunID
+			a.Outcome, a.NetworkError = "interrupted", "timeout"
+			if role == "collie" {
+				session := startedSession(t, db, "dashboard:timeout")
+				if _, err := CollieSend(db, nil, CollieSendArgs{Session: session, From: "dashboard:timeout", Body: "Hello"}); err != nil {
+					t.Fatal(err)
+				}
+				caller := &RunIdentity{Tier: "collie", RunID: session, RuntimeBinding: PrivateRuntimeBinding{ID: "profile", Credential: "test", AuthorizationID: "authorization", ProfileRevision: "revision", Harness: "codex"}}
+				claimed, err := CollieClaim(db, caller, session)
+				if err != nil {
+					t.Fatal(err)
+				}
+				a.AttemptID = claimed.(map[string]any)["message"].(map[string]any)["attempt_id"].(string)
+				a.RunID, a.LaunchID = "", ""
+			}
+			if !observeProxy(t, db, a).Applied {
+				t.Fatal("The timeout did not change the connection status.")
+			}
+			for _, retryAt := range []string{"2099-01-01T00:00:00Z", "2000-01-01T00:00:00Z"} {
+				dvExec(t, db, `UPDATE connection_health SET next_retry_at=? WHERE profile_id='profile'`, retryAt)
+				c := recoveryStatus(t, db)
+				if c.RetryPhase != "active" || len(c.Attempts) != 1 || c.Attempts[0].Role != role || c.Attempts[0].RunID != a.RunID || c.Attempts[0].AttemptID != a.AttemptID {
+					t.Fatalf("The timeout hid its active attempt or included another attempt: %+v", c)
+				}
+			}
+			c := SystemCondition{State: "retry_wait", DiagnosticID: recoveryStatus(t, db).DiagnosticID}
+			scope := ConnectionRequirement{ID: "test", AuthorizationID: "authorization", ProfileID: "profile", ProfileRevision: "other"}
+			if err := connectionAttemptStatus(context.Background(), db, scope, &c, time.Now()); err != nil {
+				t.Fatal(err)
+			}
+			if len(c.Attempts) != 0 || c.RetryPhase != "pending" {
+				t.Fatalf("A different profile revision appeared as a retry: %+v", c)
+			}
+		})
+	}
+}
