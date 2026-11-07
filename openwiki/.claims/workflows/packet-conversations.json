@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:19607390978b1dcbb5a51af11e414a0ad451c56e5f5d9192504b3bf43386431a",
+  "pageVersion": "sha256:16c33b91ba8f714538a95ca05088d5ae980b88b8dc45366b7b53527ba4d5cfa6",
   "claims": [
     {
       "id": "claim_f5647172c54b4f69a4ccfea72e9040de",
       "statement": "Packet preparation accepts only the task's current packet and matching version, and shares one current conversation across repeated or concurrent preparations.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go",
-          "version": "repo-file-v1:sha256:2fb9d913abd44e8b7f95e5761b17d7444c301173ff6944d2341cb17a231e9624"
+          "resource": "repo://mc/verbs/collie.go#L517-L574",
+          "version": "repo-lines-v1:sha256:17d17df492dc27b5a7f7032e0496028b6e9525c689d432fa33e73adefa63b83b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5Y2RkMDA0NTIxNjE5YTQxNjM5OTA2YzlhNjFhZjNiZTc2NTkxYzIzNTE2MjkzNjNlMTNkOWUzMTBkMDQ2NWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ODFiNjhiZGQ1NjI3NGVlNDQ3MzlkZDRhYmI5M2Q1OTUxYzI3ZGU2NDMyZmNkMmQ1MTkwOTBhOTM4MWExMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZGFkZTFkZjI1N2U4YTVlMmM0MmQxZGQwNDQ5ZWNmZDU1MzM2MGZkZjQyZDM3ZDk2ZTAzMzVlM2M1MjYzNjgifQ"
         },
         {
-          "resource": "repo://mc/verbs/colliepacket_test.go",
-          "version": "repo-file-v1:sha256:a8e5baea6ad4c59fc14166e8ae81b36ba0a12aa2a887368338fe6fd2af93a4a5"
+          "resource": "repo://mc/verbs/colliepacket_test.go#L277-L312",
+          "version": "repo-lines-v1:sha256:5146ae9d234a4975126e81fde655f2b0c9268a546db4a5e6df8864fb070e0bf2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzNjMTQ4YWI0MzA3ZGU3YTM2MWEyODg0OGQwNzBkZjgwODhhYTllMzhlYTZmZGUzZjJkNzk0ZjEzYmYzZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1MTY2Y2I1NGMzNzE3NTk5M2JjNGI2OTE1MDhlY2Q2ZDA1MDQxNmM0NTNlMTQ3YzkwYjRjZjcyZDU3OWYyY2QifQ"
         }
       ]
     },
@@ -21,8 +21,12 @@
       "statement": "The spine prevents changes to a Collie session's packet identifier and excludes a simultaneous Vision Project identity.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L732-L876",
-          "version": "repo-lines-v1:sha256:bcfdf0b6271236d42aee84781264a5e36b49178f4605dc3580502825d2d86d7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJiYmY2OTdlYjg5N2E2OTg1ODcxNWYwYmVjNDNlYTc1MDhjZTczNmQ3MzUwNTA2NzVlMmQ2MGUxMjY2M2VjMjQxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2Yzc4MmU0ODBkNDQzZTMzOTg5Nzc5YzYyYzk0ODY4NDk5YmE1NjJkYWEyOTc3YjVkOGViZDJhNDdiZjhjNDAzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjZTYxM2ZhMmQxNTUyNmUyMjY0ODAwZjY2OTRiMjc2OGEwY2E0NGJhZTY3M2ZiODg0ZTdlYzNhN2MzZDY5ZmU0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1N2YyOWQ1MjdlMTAwNGQ2MWEzM2YyOGFkM2ZkZDZmNjViMTNjZjExNGY1ZDY0NTVhNDg4YmVlYzZiN2NjMTcxIn0"
+          "resource": "repo://mc/substrate/schema.sql#L829-L845",
+          "version": "repo-lines-v1:sha256:7a00e3c052b3a587defb8b1cd3ceb5c92b4dc3d0c35e006e611fbd528de4b2a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MTg1OTE3NTEyZmIyY2MxYzdlMWUxN2I3ODc1Y2NjMThmZDU1MzkxZDhjOTM3MjczYTMxMDk0ZjgwNjlhNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhMGUwNTE1YTMwNmRjMDdkOWEyZDRlMWI3MGQ0OGY2MTc1MTdlODlhMDVjZjg0MjM2YTY5NzY0ZTAzNTAwNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3NDczZjhiOWI4MDNlM2M0Yzg0NTcxZWU5NGU5MTEzYWRmNzljZjVhNzA4OTU4OTRmYzRhODA1ZTM3MjQ2NWMifQ"
+        },
+        {
+          "resource": "repo://mc/substrate/schema.sql#L860-L875",
+          "version": "repo-lines-v1:sha256:4ea7ddc8db8723dca27d78e7490bf48a7192c22c9fcec2821950c8c9db3aa5f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNThhYzE4ZmIzYWRiMmU1Y2QzYTM3OTIwMmI5OGNlMzgyZGM5NTE4NmFjY2E5NmZmMTNlNDM2ZjMwYmVkMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkYWJkNjRiZmZmYjJjOWM5ZDA1M2E2ZGEzMWIzNThhNGMwYzAzNTdhNDk0Y2M5N2I5ZTU2ZjQ1ODU0MjAyYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUyNzI2MGFiZWRkYTJhZTdkZjIwMjQzZDk1NTliYzExMzAzODNhZGFmMWE4ZTc0ZjZhZDM0MTRkZTI5NjkzNGMifQ"
         }
       ]
     },
@@ -31,16 +35,16 @@
       "statement": "The resident resolves one task artifact mount, mounts it read-only, and masks Project artifact directories with an empty read-only directory.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/taskartifacts.go",
-          "version": "repo-file-v1:sha256:6ad6178bac48785978bf04f72ce5e1a743b78c0cb6f7354d5ec3d77d8973898c"
+          "resource": "repo://mc/verbs/taskartifacts.go#L17-L65",
+          "version": "repo-lines-v1:sha256:5d01f5ec75ddfa1248ad06d8455a73a90d0f45b6476634caab2d93fcb81be96a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjYWQ0MDFjNjE0MWM0ZTVmNDgwNjkyN2M1NmFlNzUzYWQwY2ZjYzAxOTFiZWE0YjdlNTNjYjk4NTJmOTBjMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmODNlZDRkZTk3OTkwYjVlMGY2ZWU1MzllMzg3MzgwZTFiNWVkZGMyZmZiNDQ3ZjM5NjRjZmEzZmFhNDJjODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://resident/src/effects.ts#L582-L608",
-          "version": "repo-lines-v1:sha256:acb4d269b5e78ad54b2ea11f95a58deeaaea4754685af97f9105192a627e063e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2OWI4NzVkMmRhN2JkMDExNmE5NTBjYzM1MTM0M2ZhYWQ0MjUxNTlmZDNkNjJiZmE2NzdiOTFhNDliOWVjNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNWE4NzliMGJmYTA3ZGVjODcxMGU2NmJiZDJmMDNhZDA0MmMxNjI2Yjc2YWU3MTA2OTc0ZWNmNTMwZWVhY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2NmRkMTUyMzYwNDgyMzE0NzJlYzhiN2U4ZjcxNmRhMGQzYWI3YTc0YzNjY2E0ZmJhMDExMzNmNTdkZDA1NGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwNTQ2NzUwNDcyNDU1OTlmZWVmMmJiMWQ4NWU1YTM3YWQ5OGY0MTk1ZTk2NGViZDhkMDc0ZjRhMGVkMWM3MzMifQ"
+          "resource": "repo://resident/src/effects.ts#L583-L585",
+          "version": "repo-lines-v1:sha256:37211c8576cffb07a01f4045269f8d3df554c0632accb69e2b8182d37bb37dd5:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY5Yjg3NWQyZGE3YmQwMTE2YTk1MGNjMzUxMzQzZmFhZDQyNTE1OWZkM2Q2MmJmYTY3N2I5MWE0OWI5ZWM2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmNiNmMwMjEyZDRiZmFkNmUyYTFkNGYzOTVhYTIwZWY3NzY2NmE0NGUyNjdmNzU2MGQyZWE2NGI2MTM4ZTU0OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTY2ZGQxNTIzNjA0ODIzMTQ3MmVjOGI3ZThmNzE2ZGEwZDNhYjdhNzRjM2NjYTRmYmEwMTEzM2Y1N2RkMDU0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjlhNGM5N2ZhODc2MjQ0YjUzNzEyMDljNGU2NWY1Nzg2ODcyNzJhMDk1OTA1ODg0M2QwMTZkZjNjMjE4MWUzYiJ9"
         },
         {
-          "resource": "repo://resident/src/effects.ts#L711-L722",
-          "version": "repo-lines-v1:sha256:9daad335bd768c9f10930ef5d48d53cd5e0d9aa2bead061ccc5b8434f223c14e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4MDUzYjNhNDMyMDRiODkyYjQ2NzkxMDU2ZDg2MzQ4NDNlYzQyOWFhYmEzZjg1OTczMDNmMjU3ODdhODU0YjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MTU3M2RjOTJlMjUxMjgwOTllNmM3YzBhYzI4ZjdhNjhlNmRmNmZmZjg2ZGQxMTVkMDNiZDhjMWYxODU4MjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1YmQ1MTdmMzc4NDZiMDBjZGFkZjZlZDQ2M2ZjMjY4NmIzM2M5ZTc1ZDMwYTRjMTQ3MjljNmEyNmYzYmYyZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmODYyNWI2ZjYzMjBhMWVhMWYzZGZlZmRkYTNkMTdkOGE2N2Q1MDJhOWYxNjNiMjZiMDFiZjQzNDVmNjU5MjkifQ"
+          "resource": "repo://resident/src/effects.ts#L713-L725",
+          "version": "repo-lines-v1:sha256:34f5fc27b700653a31c988e4c430e9bcd85a6fa9e9c9a016ef1301e9095ffa43:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3YzZjNTZiMWIyY2U0MDU5ZmI2MzJlMGQ4YjMyOTQwYTJjZTgzY2VjOTEyNTJlMzVkMTk1NmRhOGIxZjMzNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NGFlOTk2MTkzOGFhZGYwMTlmYWQ1NDIyMWE4MThkNmIzNDE4YWQ0Y2M5NjA3YTg1ODM5MWNmZTA3MjZjMWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1YmQ1MTdmMzc4NDZiMDBjZGFkZjZlZDQ2M2ZjMjY4NmIzM2M5ZTc1ZDMwYTRjMTQ3MjljNmEyNmYzYmYyZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMWI0MjIwN2I4MTlkODY1MTE0NTY4M2NjMDc0YTg4NGZjMDAyNGI4NDU5NTI0ZTVhYjc3MTI0NDgyZGE1NmUifQ"
         }
       ]
     },
@@ -49,8 +53,8 @@
       "statement": "The task artifact resolver refuses a task directory that resolves to another location and returns a null source for an absent task folder.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/taskartifacts.go",
-          "version": "repo-file-v1:sha256:6ad6178bac48785978bf04f72ce5e1a743b78c0cb6f7354d5ec3d77d8973898c"
+          "resource": "repo://mc/verbs/taskartifacts.go#L39-L65",
+          "version": "repo-lines-v1:sha256:fa7202cecb5c2a5de7d12eb84206cb39bccc5fe78e3bd7ce39e96c299e4bb560:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0MGRkNTRlMzgxNTIwYzMwZGJiNjU3ZjgxODllNTdmNTg0N2IyYzg2MDIwOTVjMzhiNGE0ZDRjZGExYTQ3YzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlODczMTMyMWNlMjc0NTBjYTNmZTYzMzBiMGM5YWQyMjA2NDVlZjE2MzQ5OGMzOTJjODJiMTY2ZWRiN2UwMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -59,8 +63,12 @@
       "statement": "The Collie runner requests packet context before a turn without a native session reference and validates its session, packet, and version identities.",
       "evidence": [
         {
-          "resource": "repo://runner/collie-runner/main.ts",
-          "version": "repo-file-v1:sha256:1d741227fdaf86dfed72262aa6e5a6b351547033a2c79ca899648bf158634ba8"
+          "resource": "repo://runner/collie-runner/main.ts#L389-L410",
+          "version": "repo-lines-v1:sha256:de41824443e3074a4389f667bab4cf39074876cda83252e6a2096faae73aa0d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiYmY3Y2JkZjU5NmYzOWE5MDVmZDc4MTkwYTNhNjYzZWZhY2VjMDIyMDhkZGNlYTljMWY4NWQ4YzQ3MTdmMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3Zjk5NTRmYjY3NDdlYzQ0Y2U4ZWUxYjQwODA4MGIwMDE2MzE2MzhmNDE2N2Q0YTc5YzNlNmRhZWRmZTBjM2QifQ"
+        },
+        {
+          "resource": "repo://runner/collie-runner/main.ts#L662-L677",
+          "version": "repo-lines-v1:sha256:5d1028df63a5debb091f9f30695cb8e452e0c591f1f7a2bd2f0ea696ea59e90e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlZGU0ODg2ZWEzODFmYWMwZTRiMGM5ZWQxZWFiOTg5NDdmMDBlMDc2MzBlODAyZjllODI0NTEyYWI3NjA4NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYjlhNjZmNWU0MDliYmVkZDFjY2Q1ZDdjNDA3YzIyNjU5NDNjZjAwNWY2ZDhlZTdhZjdiMTlkMjVmNjc4YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiZmVmZmNlNjhiNjc4ZDkxNTAxYTI3YzUxZGEyY2VjYTRkY2FjYTVkMjQzM2M1ZDdmYTk2YmNkNGQ1ODZlODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxY2QzOWFlNTcxY2NmM2ZhNGJmNDFiMDQwM2ZiODc4NWY2ZGRmZjRmMGU1NzZlOGE0NTQyYzg5NmFmNzNkODMifQ"
         }
       ]
     },
@@ -93,8 +101,8 @@
       "statement": "The Collie directive requires current packet reads and explicit operator confirmation before a new state change in a packet conversation.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/collie.md#L205-L214",
-          "version": "repo-lines-v1:sha256:b8078c6ac24bb529bded51527b9c43eb61c01df247c96b82fce3393d1c34c99b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzN2M5NDA2OWU4NDVhM2E3MmExODFhMWE4ZWYwZmQ2ZDcwNGNiNTc2ZjU3YTE3NjI0ZWI1NDAwMzVkMTFjZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNWIyZWUyMDhhMTBlMWU2ZmM2NGZjNzM5MWIwMzVhMjI0YjM2ZWNjODUyZTVjNWU0NjQxNDkwNjkzOGZlYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNmJjZjVmZTFlZGViM2IyY2I5OWQwZDdmOGQ2MjkwMWZkMWZiYTBlM2VjNGE4OTFjZjdhMWE5N2UxZjVkYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkN2M3NTRiMDQ5YTBlNWJmODhhZjE2YWUzZDBjZjNmY2E1YTUyNjc3MDFkMWExNmIzZmM3YzgzMGExOWI2NzcifQ"
+          "resource": "repo://mc/verbs/directives/collie.md#L208-L217",
+          "version": "repo-lines-v1:sha256:b8078c6ac24bb529bded51527b9c43eb61c01df247c96b82fce3393d1c34c99b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzN2M5NDA2OWU4NDVhM2E3MmExODFhMWE4ZWYwZmQ2ZDcwNGNiNTc2ZjU3YTE3NjI0ZWI1NDAwMzVkMTFjZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNWIyZWUyMDhhMTBlMWU2ZmM2NGZjNzM5MWIwMzVhMjI0YjM2ZWNjODUyZTVjNWU0NjQxNDkwNjkzOGZlYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNmJjZjVmZTFlZGViM2IyY2I5OWQwZDdmOGQ2MjkwMWZkMWZiYTBlM2VjNGE4OTFjZjdhMWE5N2UxZjVkYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyZGQxMzI0ZWJmYjg0ZjA3MTQ0OGM2MjlmZGQ4Y2U2MDMzZDkxZGI3ZDYyNjYzYjY5NmJkNjU3YmY0YjE3NTkifQ"
         }
       ]
     },
@@ -103,8 +111,12 @@
       "statement": "Project deletion includes packet conversations in its cleanup scope.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/projectdelete.go",
-          "version": "repo-file-v1:sha256:3369463244b2f7f416cc4203643033dc0dea67f68523573f687f81f32e921a06"
+          "resource": "repo://mc/verbs/projectdelete.go#L169-L174",
+          "version": "repo-lines-v1:sha256:d6e21fcfa2cda1fe1a75ef255ea5ca94a163f30afbf63531799c956a5e585f1d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWVmZGVkZGM3MWNkMTU3ZTI5MjAwNDRhYTk2ZGIxYTY2YmI4MzQyNjllY2I5OTY0ZGE1OWI5NDUyNTQ0NjA3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjBhOWZhZTFlNzIzNzNjMjM0ZTVjZWMyMWI4ZDcxYzNlYzJmOWE0YmUxZGFhOTdhODc1ZjU3NDlmMWQ2OGE3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWRmMjY0ZDM0MzI5NTBlZmI4ZDdiNTcwNGFhNGFlNDBkMDU0MzJkM2FlNDg3NDhjY2NhZWZmNTM1M2ViZTViMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzkzMzEzYzA3NDhiZmEwM2YyYjQzYjBlZDYwYjY4ZmRjMjZhNDk1Njg2NWQzZDZlMTY2NWI2MWU4NTVlM2ZjNCJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/projectdelete.go#L18-L23",
+          "version": "repo-lines-v1:sha256:55236b2e05b5818b26dfccac93f086fc09574aeed91b63d1c9c6537136c37494:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODI3YWY5Y2Q4NmM3ZjJlOTI2MjY0ZGQ5ZDkwOTEwOGM2ZTRmZDA1Y2FjZTI1NWE4NTFlZmNjMWE3NTA5MTU0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmYwN2MzODhlZjQwMmIxMjIyNDU5NzY3NzljZGI2ZWZmMDE1NTQ2Y2QyODczZjVjOTA4MjRkZWJiZjQ4NjViMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDRlMDFhMTNhMTQ1M2RhZDBkYzgzNmI2NTJmNGRhNDk1YTViODQwMDRiOGYyMjRiMzE0ZmRhOTRlNTE0MTc2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjdiN2JiMWI4MzM2Njk4MjU1MWM1ZDVhMDRkYmMxYWVhNWZiNTAwMGE1ZjU3YzQ3OGVkZTlhNWFlOTZjNDM5MyJ9"
         }
       ]
     },
@@ -114,7 +126,7 @@
       "evidence": [
         {
           "resource": "repo://mc/e2e/collie_packet_artifacts_test.go",
-          "version": "repo-file-v1:sha256:3931ea6dfb9f183add5173d35cf990b9b222029dbca2588384de51725db8ac8b"
+          "version": "repo-file-v1:sha256:3fa72e1a44322386d9d91dd04df5a478fa185ad3c68fdabc07827411031f0056"
         }
       ]
     },
@@ -123,8 +135,8 @@
       "statement": "The Review quick chat selects a packet model by updating the Collie route and creating a replacement conversation when one exists with another profile.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:4f91e1a2d08c9cdf4afcd1fbc1c58a8358fb0a822815a5a939e6555ab35ef0bc"
+          "resource": "repo://dashboard/src/ui/packetchat.js#L152-L167",
+          "version": "repo-lines-v1:sha256:d1f9e832805c7ab8169ee1c8208eff76c899e919afd20d5b7500e8f9350bb6a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzMDVhYmJhOTQ0Y2NmN2EwMDdmODg3NDc3NDhjMjU5MzcwMjE0OWM4YzUxMDM5OWI4ZTNhMjQ5ZTBiZjJkM2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2ZkNjVmY2U0ZDA4YjJlNGQ2ZmQ5NDdhZjBjMGVmNjc0ZWU1NjQ4NjAyOGNkOTNkYjg1ZmI1YTlhODRkOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0MDY2MWEzN2Y5OWY5MDNiN2Y3MWU4ZWRiZDhjNzcxOTE4MWM4YmY3NDA3OGRjOTkyZTVkOWU1ODkxZGI4YmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNTNmOWU1Mzc3NWQ0MTRjZGM2NjQwODAxMDJmNWJmNWQ1MTAzODAwMGVlNmQyODMyZTUzYzliYTQ4ZWYxNTYifQ"
         }
       ]
     },
@@ -133,12 +145,12 @@
       "statement": "The quick chat asks for confirmation before a model change with messages and keeps the earlier conversation in the session list.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/packet-chat.smoke.test.ts",
-          "version": "repo-file-v1:sha256:017216dab8d3007d88fc0792c148d36c0ad4c0abbf26affaf156ffe084f09b2f"
+          "resource": "repo://dashboard/src/ui/conversation.js#L286-L317",
+          "version": "repo-lines-v1:sha256:b48fe85c7436fce0f740d67ed5116d6e93c1bbb550fa86e6d7394389f1e49312:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNDQ4ZTA0ZDNhMWNhNTY1NjFlNzljOGY5ZDM0ZmMxYjYzNGM1Zjg3MjQ0ZmJjMzZiMzc5M2VjZmFlMjkxYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MDZmYTUwZmRhN2U1YmYxYzI2YWU4NWRhMWQ2MzQ2MzExZjk2OTJmZDM3MDVhYWFiZWZjNjdiYjZlMTliZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhMmZiM2U3NDExNTM2NDYwYzY4MjNjZDY2OTNiODJjODE0NTZmZjM4Y2EzZGEzYjBjYjM4ZGJkZmQxMzViOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliYzcxZGZhYjcxM2YxMDE0N2FkZWZhYWJlNDFhNWI2ZjE5NDZhYTllM2MwMWEzNGM2MGY1NTBiNmEzMDBiODQifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/conversation.js",
-          "version": "repo-file-v1:sha256:b2f2fc38b2cff005e6fc5c83b32ff1296ee314a892a876e8fb8192cb8eb8b84a"
+          "resource": "repo://mc/verbs/collie.go#L541-L553",
+          "version": "repo-lines-v1:sha256:ea0d79bd121268b26131dc632b280d216fe2d4643b862ff576ed0bce2701ec5a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyMDIwZDAzOWJhYTZiNTgzMDY0NThjYzM3MzY4YzRhMTU4YzFhOTRlNjg4Nzk4Y2JhNGU1YjY3NWYwMTkwNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMjgxM2Q5NTQ0NWNmZDE5NGVjYzlmYWZmNzVkODAwMmFiNDdmNzYzZTk2ZDM4ODFjYzFlZWE4MGI2YjNiZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyYWJkNzE0MzliY2Q5ZmM1ZmI2MzMxZDNkZmViZGRmOGQyMWNkNTU0N2MzZmFhMzE2MzNhOTdiOWIxZDE4ZjkifQ"
         }
       ]
     },
@@ -161,7 +173,7 @@
       "statement": "The Review reader and quick chat use the packet row title; quick chat falls back to the conversation task title.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2455-L2459",
+          "resource": "repo://dashboard/src/ui/app.js#L2460-L2464",
           "version": "repo-lines-v1:sha256:5bd572da827d63e46505739a7c581991607be11424588e65329149a190a2a2d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmZmJmMWFjMWYwMDk2ZDk0YzM3NDRmM2YyYWQyYzFhMWZhMzY2MDkxMzg3OWZhMTcxNWJhZWIwOTM3MDJjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ3YzkxYzQ1Yjc1MTg0NDM2MThmOGU5N2NiMTAzOWIyNzk5OWFjZmUzNmIwN2NjMmM2ZWZhMTFlMjJkZGRhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDE3ZjliYzgzZGU3Nzc3OGI5MjI3N2JiZGY0NDE3ODNmMTI3NjRlNmQ5MWM4MzE4ZDdhNWM4YzZlNjYyYjgzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQxNTI0OGM3ZjViMTE1MGI2YThiMDJmOGYzNjE5NDljMDRlYWY0MjQ2OGFmZGJkYjcyMmE1OWU0MjQyZjA0MSJ9"
         },
         {
@@ -195,14 +207,28 @@
       "statement": "The divider browser check waits for the narrow conversation before its visibility assertion and restores the desktop viewport before reset.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/packet-chat.smoke.test.ts#L414-L439",
-          "version": "repo-lines-v1:sha256:261098c91d2794fd13ea07f8ca512c75fa5e1ea62b5214433859837c037f0c3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODhjNzU4ZTc2Zjg3YWIxYmQwZWU1MGIzNTNmZjVkYjBlYzg0YzdjMGVkZTRlNWJkYzkzNWE5MDRiZjNlODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2EwOThmOTQ0MmE3YjBlZWJlYmY1YTJiNWYyODVjYTBlMmQ2YjJiZTMxN2I5OWExMTdjNTI4ZDY3OWNkYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMzhlMDY3MTM4NzZhZGM3Y2RmZTJhMDdjZTMzNWNkMTc3NjMxODA2ZGIwY2Q5NWQ0OThjMjQ0OWYwNDgwYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5ZWMzOWQ2ODgxYjY1YTg2MmNkZjY2M2U0NTllZGFjNzNkM2ZjOTgzOGNjNzI4YWUzODc4OTFmNDgyMWM2MGYifQ"
+          "resource": "repo://dashboard/smoke/packet-chat.smoke.test.ts#L414-L440",
+          "version": "repo-lines-v1:sha256:1a59c8af2bc9828ab00d126cfa03e343a03c8b0e4a64847cd9880ba8451cdaee:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxODhjNzU4ZTc2Zjg3YWIxYmQwZWU1MGIzNTNmZjVkYjBlYzg0YzdjMGVkZTRlNWJkYzkzNWE5MDRiZjNlODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMzhlMDY3MTM4NzZhZGM3Y2RmZTJhMDdjZTMzNWNkMTc3NjMxODA2ZGIwY2Q5NWQ0OThjMjQ0OWYwNDgwYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkNTE1NjU0OGE4ODkyMDJhZmRmZDdmOTBmZDUxY2M5Y2Y5NzA0NTk0MGI0ZDRjNmVmN2JjYmQyZDBiMGU4ODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ac6339fc59a440cacac2b01a920882e",
+      "statement": "An interrupted Collie reply retains its message, draft, and native context, and requires an explicit retry rather than a session resume alone.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/conversation.js#L100-L110",
+          "version": "repo-lines-v1:sha256:1c0111d3c911d7905ee0226a71474dbf074721666f1dcb1b9a48c76fbce54e51:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMjRiOWI4M2Y4MjJhNzQzYjc5NGEwYWI1NTgzNTY0NWFiYWY4MmVlYWI5ZmIxNDhkZGI1MTk0NGMwMTViZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlZmJjYjczNzllODNhNjk4NjZiNmVlODg4YmE2YjMwOTc0YmZiYzVhMTk1YTYyYWNkZWQxNWJkOWEyNWViYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlZWFmNzU1NmI2MjA5OTJhZTZhZmQ0Yzc1M2E5YTk5YWU4MDAzOGIyZTA1Zjc3YzkyNWJiZWYyZWQ2MTIzYjAifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/collierestart_test.go#L11-L79",
+          "version": "repo-lines-v1:sha256:77e34e8e7709eca44a01c646806ed6e531a794021e080f62ce0aecf846250574:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYjRlNzc1M2RmNDUwZjg5NDgxZDFkNzM1YTQ1YWRhNWU0YzFlZmE1MzMzN2NhNTQ0MzRlMmI5OTdmMmNkYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNzNiMjYyZTQ2YmNmODY0NzNmZDFhYzM4NGIyZGRlN2ZiZTRjOGI4NGM5Y2Q2MzI5NzJiNWNhOTFiNDZlY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMWRiMWQzZmU0ZjViOTgwZmU3OGY1NDZjMjc5YzUwZmQwNzk4ZGNiMzYyMzM2NDk1MTMwYmUzMGFjMDBkNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwMzk5NDVmNzEzY2VjY2MyYTJiZTk4MWFiNWM1ZWVhMzdmOTVmOTc2OWU1NzVjZDhlZDlhOWZjYmFmZGYwNmEifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-05T04:07:09.592Z"
+    "at": "2026-11-07T01:30:07.289Z"
   }
 }

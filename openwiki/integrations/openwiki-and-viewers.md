@@ -34,14 +34,20 @@ sources:
     resource: repo://resident/src/agentsview.ts
   - id: openwiki-source-32f0aa3264ff5051674a12ed
     resource: repo://resident/src/wiki-lane.ts
+  - id: openwiki-source-1e8e75808ab8bc689f8e57e8
+    resource: repo://runner/agent-runner/adapters/opencode.ts
   - id: openwiki-source-dea7f0a13923e087ab24e792
     resource: repo://runner/agent-runner/adapters/openwiki.ts
+  - id: openwiki-source-bd92323608bb4fe6f961f632
+    resource: repo://runner/openwiki/README.md
   - id: openwiki-source-ace63dad3a5b181560e37003
     resource: repo://runner/openwiki/server.ts
-generated: { by: "culler-scribe", at: "2026-10-19T23:23:34.817Z" }
+  - id: openwiki-source-a37b5e4aedd4e9eae5294f1a
+    resource: repo://runner/shared/opencode-trace.ts
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-10-19T23:23:34.817Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # OpenWiki export and AgentsView trace viewer
@@ -70,6 +76,31 @@ On a Scribe run, the agent runner passes `--openwiki` and the input commit to th
 The Scribe's procedure is the shipped skill `mc/verbs/skills/scribe/openwiki/SKILL.md`, alongside its command surface `mc-scribe`. The skill tells the Scribe to resolve the repository root, call `openwiki_begin` in `init` or `update` mode, keep the returned `runId`, and treat content outside `openwiki/` as read-only.
 
 When the Scribe submits, `mc/verbs/wikicomplete.go` calls `wiki.ValidateCompletion` in `mc/wiki/completion.go`. The receipt must be a regular file. It must name the input commit, the source commit, the OpenWiki version and revision, and a wiki digest that matches the submitted Git objects. The check also enforces the wiki write scope and preservation of verified document content. The Scribe submits a separate wiki update, outside the task pipeline.
+
+### Page verification and recovery
+
+`openwiki/.verification.json` binds each verified page to its Claim sidecar and source inventory.
+The inventory records source paths, file content, file types, and executable modes.
+It detects source changes when the previous Git commit is unavailable.
+OpenWiki uses a Git comparison when no saved inventory exists.
+If neither comparison works, the affected page group requires a full review.
+Added source files also require assessment, even when no existing Claim cites them.
+
+An external edit to a generated page or Claim sidecar requires page review.
+A malformed or absent sidecar requires new Claims.
+A deleted generated page requires explicit restoration or deletion in the plan.
+A legacy page without complete verification records requires review before reuse.
+Original project documents retain their content protection.
+
+The Scribe inspects Claims after the final page edit.
+Submission rejects a later edit to the page or its Claims.
+Completion rejects an external edit to a verified page.
+A resumed update keeps valid page completions and reopens invalid completions.
+These rules prevent an interrupted write from establishing a complete result.
+`runner/openwiki/README.md` describes the contract; `integration.mjs` implements its checks.
+
+The receipt protects against an incomplete OpenWiki run by an honest Scribe.
+The Scribe can write the receipt file, so the receipt cannot establish trust against a hostile Scribe.
 
 ### Export: `mc __wiki-export` and `mc/wiki/export.go`
 
@@ -141,7 +172,14 @@ Failures show a specific access state with a path back through Culler.
 
 `resident/src/trace-copy.ts` copies only new bytes and stops at the last complete line. The copy size is the resume position, so a restart produces no duplicate and no gap. It opens files and folders with `O_NOFOLLOW` and checks that each one is inside the real session folder, because an agent can swap a folder for a symlink. Each pass has work limits and per-file retry backoff. A separate reconcile pass sets display names and reports main trace copies that AgentsView has not imported.
 
-`mc/trace/trace.go` is the single source of AgentsView identity. `Format` maps `claude-sdk` to `claude` and `codex` to `codex`. `SessionID` returns the bare ref for Claude and `codex:<ref>` for Codex. `Path` builds `/sessions/…?msg=last` links. `RunDisplayName` and `CollieDisplayName` join their parts with ` · `. A native ref that is not a plain identifier gets no trace, because the ref becomes a file name and a link path.
+`mc/trace/trace.go` is the single source of AgentsView identity.
+`Format` maps `claude-sdk` to `claude` and both `codex` and `opencode` to `codex`.
+`SessionID` returns the bare ref for the Claude format and a `codex:` prefix for the Codex format.
+For OpenCode, Go and `runner/shared/opencode-trace.ts` derive the same stable trace identifier from the native session reference.
+`runner/agent-runner/adapters/opencode.ts` writes OpenCode events in the Codex trace format and removes the token from trace text.
+`Path` builds `/sessions/…?msg=last` links.
+`RunDisplayName` and `CollieDisplayName` join their parts with ` · `.
+A native ref that is not a plain identifier gets no trace, because the ref becomes a file name and link path.
 
 ## Doctor checks
 

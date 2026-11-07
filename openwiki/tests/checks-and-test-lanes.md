@@ -50,30 +50,34 @@ sources:
     resource: repo://mc/deployment/agentprofile_testop_test.go
   - id: openwiki-source-31704b283966353f2dbd4bbd
     resource: repo://mc/deployment/cli_install_test.go
+  - id: openwiki-source-cf4736c38e48c2b892615899
+    resource: repo://mc/deployment/opencode_test.go
   - id: openwiki-source-f2370cd7c903f813dbc4ad1c
     resource: repo://mc/deployment/runtimeauth_host_sources_test.go
   - id: openwiki-source-e1cbcf72fcc0e3291147da09
     resource: repo://mc/deployment/runtimeauth_verifier_test.go
+  - id: openwiki-source-f7942d03e00cb4bf890dfd6f
+    resource: repo://mc/deployment/update_checkpoint_docker_test.go
   - id: openwiki-source-4df7c93afbb316f003a94e95
     resource: repo://mc/distribution/record.go
+  - id: openwiki-source-587a5c662cbe23556b5136d7
+    resource: repo://mc/e2e/collie_packet_artifacts_test.go
   - id: openwiki-source-d30dd1702c428f2ab74b5b6d
     resource: repo://mc/e2e/credential_projection_test.go
   - id: openwiki-source-ea49a40872eecce65130f399
     resource: repo://mc/e2e/e2e_test.go
-  - id: openwiki-source-b5018534042f60dde3347c5a
-    resource: repo://mc/e2e/collie_packet_artifacts_test.go
   - id: openwiki-source-bdb34dc5adc4a25690eda4c2
     resource: repo://mc/evalcase/README.md
   - id: openwiki-source-c2af084a67a7e25f724fdf19
     resource: repo://mc/property/dispatch_case_test.go
   - id: openwiki-source-01b61ecca94c01db2c10f8d3
     resource: repo://mc/test.sh
+  - id: openwiki-source-3a72fe65b15fd6f2f9988f26
+    resource: repo://mc/verbs/colliepacket_test.go
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
     resource: repo://mc/verbs/directives/verifier.md
-  - id: openwiki-source-5ff861069017b6a0714fcdda
-    resource: repo://mc/verbs/colliepacket_test.go
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
     resource: repo://mc/verbs/packetcontext_test.go
   - id: openwiki-source-95d6e106a75ae807cab7e009
@@ -108,12 +112,16 @@ sources:
     resource: repo://resident/src/setup-proxy-start.test.ts
   - id: openwiki-source-cb29828fa65995fca70eafea
     resource: repo://runner/agent-runner/adapters/adapters.test.ts
+  - id: openwiki-source-049143960b4daa8f1c93b13c
+    resource: repo://runner/agent-runner/opencode.test.ts
+  - id: openwiki-source-4f081c9b33aa27c81df3d636
+    resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-05T10:01:23.917Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -148,10 +156,10 @@ There is no TypeScript lint, format, or typecheck command; `bun test` is the onl
 
 1. `gofmt -l .`, failing on any listed file.
 2. `go vet ./...` untagged.
-3. `go vet -tags <tag> ./...` for `nightly`, `docker_e2e`, `docker_boundary`, `test_fake_routing`, and `test_scratch_spine`. Tagged suites do not run in the fast lane, but they must still compile. Otherwise a signature change could break them unnoticed.
+3. `go vet -tags <tag> ./...` for `nightly`, `docker_e2e`, `docker_boundary`, `update_docker`, `test_fake_routing`, and `test_scratch_spine`. Tagged suites do not run in the fast lane, but they must still compile.
 4. `GOOS=linux GOARCH=arm64 go vet ./...`, without a tag and with `test_scratch_spine`. The fast lane normally runs on macOS, but the only production implementation of the spine lock-domain guard (`mc/substrate/lockdomain_linux.go`) is Linux-only.
 5. `./test.sh -count=1 ./deployment/ ./testenv/`. These tests read files outside the Go module, which Go's test cache does not track. `-count=1` prevents a stale cached pass.
-6. `sh ../install_test.sh`, `sh ../redeploy_test.sh`, and `sh ../uninstall_test.sh`. These are Docker-free contract tests of the deployment front doors, with fake tools (see [installation and deployment](../operations/install-and-deployment.md)).
+6. The shell contract tests: `install_test.sh`, `redeploy_test.sh`, `scripts/source-update-guard_test.sh`, and `uninstall_test.sh`. These Docker-free tests use fake tools (see [installation and deployment](../operations/install-and-deployment.md)).
 7. `./test.sh -timeout 20m ./...`, which runs all Go tests without a tag on macOS and with `test_scratch_spine` on Linux.
 8. On Linux only, `./test.sh -count=1 -tags= ./substrate/ -run '...'`. This step runs the filesystem guard tests again without `test_scratch_spine`, so the production guard stays proven.
 
@@ -232,6 +240,11 @@ Run these at phase completion, never in the fast suite:
 | Docker boundary | `cd mc && mise exec -- go test -tags docker_boundary -count=1 ./boundarydocker/...` | Container boundaries: agent user, agent profiles, attachment canaries, doctor probes, the landing envelope, ownership, the production image, and wiki export. |
 | Nightly properties | `cd mc && mise exec -- go test -tags nightly ./property/...` | `TestDispatchStateFuzzer` and metamorphic invisibility properties over `dispatch.Decide`. |
 | Dashboard smoke | `./dashboard/smoke.sh` | Real Chromium against a real `mc` on a scratch spine. |
+| Update checkpoint | `cd mc && mise exec -- go test -tags update_docker -count=1 ./deployment -run '^TestUpdateCheckpointDocker' -timeout 12m` | Scratch spine and optional runtime recovery after an interrupted restore. |
+
+The update checkpoint lane requires `MC_UPDATE_TEST_IMAGE` and an absolute `MC_UPDATE_TEST_BINARY` for a Linux command built from the checkout.
+It uses existing images and scratch volumes without host service activation.
+`release/UPDATES.md` describes the separate packaged acceptance procedure on a Mac or isolated deployment.
 
 `mc/e2e/doc.go` carries no build tag, so the untagged toolchain reports `mc/e2e [no test files]` instead of "matched no packages". The property package shares its case generator between lanes. The untagged `TestGeneratorHonesty` and `TestPlantedMutantsKilled` run in the fast suite and use the same corpus as the nightly properties. As a result, the fast lane cannot certify a different generator than the one the nightly lane uses.
 
@@ -250,18 +263,20 @@ The workflow runs on pull requests and pushes to `main`. Its default permission 
 
 | Job | Runs on | Checks |
 | --- | --- | --- |
-| `fast-suite-macos` | `macos-15` | Installs locked dependencies, runs all ten `check.sh` scripts with a zero-pass guard and `./release/check.sh`, then `release/build.sh` and `release/validate_package.py`. |
+| `fast-suite-macos` | `macos-15` | Installs locked dependencies and runs nine component checks with a zero-pass guard, then `./release/check.sh`. |
+| `application-package` | `macos-15` | Runs `release/build.sh` and `release/validate_package.py` alongside the checks and preserves the release inputs. |
 | `deployment-linux` | `ubuntu-24.04-arm` | `./mc/test.sh -count=1 ./deployment/` and the Linux filesystem-guard tests in `./substrate/` without `test_scratch_spine`. |
 | `dashboard-browser` | `ubuntu-24.04-arm` | Runs the complete `./dashboard/smoke.sh` suite and retains its log, report, and browser evidence. |
 | `security-acceptance` | `ubuntu-24.04-arm` | Exercises the real Trivy scanner with controlled advisory databases. No job waits for it. |
 | `release-images` | `ubuntu-24.04-arm` | Builds both images, checks both browsers and image contents, writes a size report, and saves the exact checked archives. |
 | `image-vulnerabilities` | `ubuntu-24.04-arm` | Reports Trivy vulnerability results for the exact saved archives. No job waits for it. |
-| `release-checks` | `ubuntu-24.04-arm` | Requires the fast suite, deployment, browser, and image jobs to succeed; failed, cancelled, or skipped results fail the gate. |
+| `release-checks` | `ubuntu-24.04-arm` | Requires the fast suite, package, deployment, browser, and image jobs to succeed; failed, cancelled, or skipped results fail the gate. |
 | `product-image` | `ubuntu-24.04-arm` | Push only. Checks and loads the saved archives before registry upload. |
 | `release-downloads` | `ubuntu-24.04-arm` | Push only. Uploads the release files, verifies downloads, and publishes the release. |
 
 The release record retains five required checks in `mc/distribution/record.go`.
 The browser requirement and the `release-checks` requirement belong to the workflow dependency graph.
+The image job starts after `application-package`.
 Both publication jobs require `dashboard-browser` and `release-checks` from the same workflow run.
 `install.sh` requires each release record check once with a successful result.
 
@@ -498,3 +513,24 @@ Deliberate leak controls prove that the credential detectors reject contaminated
 
 These are source-defined assertions, not fresh execution results from this wiki update.
 See [Agent connections and access renewal](../operations/agent-connections.md) for the behavior and related test paths.
+
+## OpenCode and update recovery checks
+
+`runner/agent-runner/opencode.test.ts` checks model variants, local plugins, role skills, OpenWiki readiness, session identity, continuation, completion, and token removal.
+`mc/deployment/opencode_test.go` checks catalog-only model lists, download retry, unsafe archives, interrupted extraction, native version checks, and model-test evidence.
+These checks use controlled fixtures and do not establish live provider availability.
+
+`mc/cmd/mc/setup_update_transaction_prod_test.go` checks retained candidate recovery, configuration changes, maintenance, durable commit, refused post-commit restore, and cleanup retry.
+`mc/deployment/update_checkpoint_docker_test.go` checks real scratch volume recovery after an interrupted optional-runtime copy.
+It compares the restored configuration, spine identity, and optional runtime bytes.
+The [retained update verification report](../../release/UPDATE-VERIFICATION.md) records prior results and leaves complete packaged recovery through macOS launchd unverified.
+The release acceptance procedure in `release/UPDATES.md` retains that separate requirement.
+
+## OpenWiki recovery checks
+
+`runner/openwiki/compatibility.test.ts` uses the fixed upstream package without model calls.
+It checks original document preservation, Claim evidence, navigation, and receipt access across user identities.
+The recovery cases cover external page and sidecar edits, absent Git history, source inventory changes, deleted pages, and malformed metadata.
+They also check edits after inspection, edits during evidence resolution, rejected completion, and resumed updates with valid prior page completions.
+`runner/openwiki/check.sh` runs through the image component check.
+See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md#page-verification-and-recovery) for the contract.

@@ -27,7 +27,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-11-05T10:01:23.917Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Discord setup, account access, and delivery

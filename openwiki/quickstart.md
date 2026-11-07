@@ -48,8 +48,6 @@ sources:
     resource: repo://mc/deployment/agentprofile_auth.go
   - id: openwiki-source-a4b6d508300704786e4ce1a2
     resource: repo://mc/dispatch/delivery.go
-  - id: openwiki-source-3007affdd6a005d3387629bc
-    resource: repo://mc/mclog/mclog.go
   - id: openwiki-source-45770f873ba593d4d685f66f
     resource: repo://mc/substrate/substrate.go
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
@@ -82,10 +80,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-05T09:00:19.897Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Culler quickstart
@@ -142,6 +140,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Work on the wiki export or trace viewer | [OpenWiki and AgentsView](integrations/openwiki-and-viewers.md) |
 | Configure agent sign-in or inspect access renewal | [Agent connections](operations/agent-connections.md) |
 | Install, redeploy, or release | [Installation and deployment](operations/install-and-deployment.md) |
+| Retry or restore an interrupted published update | [Update recovery](operations/culler-lifecycle.md) |
 | Check image contents, update size, or image cleanup | [Image delivery and update cleanup](operations/image-delivery.md) |
 | Check or control local services | [Culler lifecycle command](operations/culler-lifecycle.md) |
 | Assess release scans, secret scanning, or nightly reports | [Release security scans](operations/release-security.md) |
@@ -154,6 +153,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Interpret performance or agent experiment results | [Performance and evaluations](tests/performance-and-evaluations.md) |
 | Understand task verdicts and unchanged test failures | [Task verification and base comparisons](tests/checks-and-test-lanes.md#task-verification-and-base-comparisons) |
 | Understand invalid proposal rejection | [Invalid criteria and all-reject batches](workflows/task-pipeline.md#invalid-criteria-and-all-reject-batches) |
+| Read the original Worker instruction audit | [Audit context](workflows/task-pipeline.md#worker-instruction-audit) |
 | Run the right checks before a commit | [Checks and test lanes](tests/checks-and-test-lanes.md) |
 
 The Pipeline page places the Project wiki section beside the current task run banner, above the task path.
@@ -346,6 +346,10 @@ It leaves a reply from a live agent unverified.
 ## Agent sign-in
 
 Culler supports account sign-in and static API keys for Codex and Claude Code.
+**Use another provider's API key** selects an OpenCode connection from the release catalog.
+The first such connection starts a separate download of OpenCode and its web search plugin.
+The catalog defines available models, effort levels, provider destinations, and web search support.
+An installation without an OpenCode connection downloads no OpenCode program.
 The host retains provider credentials and supplies temporary Culler tokens to agent containers.
 Profiles select a connection, model, and optional effort; several profiles can share a connection.
 The model list offers its supported effort levels when it supplies them.
@@ -353,6 +357,14 @@ The model test checks a selected effort before the profile is saved.
 The role assignment dialog offers an Edit action for each enabled profile.
 The release defines permitted provider destinations.
 See [Agent connections and access renewal](operations/agent-connections.md) for configuration, host storage, runner behavior, and verification boundaries.
+
+## Recover a published update
+
+After an interruption, `culler update` retries the exact retained candidate.
+Before the update commits, `culler update --restore` restores the previous software and checkpoint.
+An incomplete update keeps ordinary work stopped.
+The updater verifies the candidate before it records the commit and permits work.
+See [the lifecycle guide](operations/culler-lifecycle.md) for commands and [installation and deployment](operations/install-and-deployment.md) for the update boundaries.
 
 
 ## Resolve a shared proposal decision

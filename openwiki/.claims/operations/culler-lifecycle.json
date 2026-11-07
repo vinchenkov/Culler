@@ -1,14 +1,18 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a82d08915910aa650a73e0b3f4ea00fc54865f17dc6ec14d4d4928d2df48f6d1",
+  "pageVersion": "sha256:76beab69ca81f2461958b2682f8b20db8243abf7998512902191745484ac0ca4",
   "claims": [
     {
       "id": "claim_40bf16bc04264ce683e954dec92e3a71",
-      "statement": "The culler command routes status, version, lifecycle, update, and logs operations on the Mac host.",
+      "statement": "The culler command routes status, version, lifecycle, update, uninstall, and logs operations on the Mac host.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/culler_prod.go#L135-L260",
-          "version": "repo-lines-v1:sha256:146aabc0580c46280649cce96bef755b08e50ad3f117792d5694a5f247bea030:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjNzZmY2ZmN2Q0YmVlZDZlZmYzOGNhNzRjY2FlMGFiNmI0YzY0MjA5M2E1NzkwNzAwMDc5ZWRjMTg2NjJlYTJlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiODI1YzUyOGZjMTU1OGVlMzk2NjE0ZDcxOWMxYzFiODQwZGZmNDJhNjJlMTEzZjNiZTA4NmRiNjFhNWRkZGMyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5YjJmZmU4MTNlNGQyODFiZWJjNjMxMjA3ZmY2OWZmNzgxZmFjZWE5MzY4YzI2NWM3MWM3YzdjZDM3NzlhODllIn0"
+          "resource": "repo://mc/cmd/mc/culler_prod.go#L165-L282",
+          "version": "repo-lines-v1:sha256:3d899deb5b22865ccbf5471a1621c24247b20e7c647c4e7f2e6b0a3ff085065c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4NGI5M2U2MTdjYmU0OTYzMmJkMjRhNDQxN2M5N2M4MjE4MDQzZmJiMTc2YmRlN2M2Y2U5ZGM1ZGIzMzEzMmJkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1ZThmY2RmNzgyN2M4NjczNDM2MGMyOTllNGU1ZDdjODkyMWUyOWNlNzQxYWJkZGEzZjczNzkxYjc0Y2FlMmNlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzYzAxZGVjMDRkM2U5OTljODc2MDQyZGU4OGQ2MTE5MDJjODVmODhiYzk4OWE4NTFlYjk0YzM0NGJkNzg5MzE0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4NTExNjQzMTExZmE2YTVlNmEyMjJkYjkxODczZjk5NjM5ODYxZjU1ZTgyYjFkOWZhZGRlYTIwYmM0NDAzNGNlIn0"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/culler_prod.go#L315-L377",
+          "version": "repo-lines-v1:sha256:00a319105be26768ed961cda6ce60ccc8723d9264ed1b3e4e17389886cc20749:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YzdmYWU2NDA5MGM3Y2M0OWMzNGU2ODMyNmVjZTgxMmEwM2MxMzdkYmI4MDY3OWFjMDgwZDIwZTAwOTkxZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2MjAzOTk0YzEyYWU5MDQ5NzA5OWE0NjNiOGVkZjgxOWY2NzNhNWMxMGE4N2IzNjVlOWNhZGM4NTgxZmIwZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZTQwNmUxYTIxZjk0NmY2MjMzYmI2NDVkNmQxYzc3NThhM2RjMTcyNmRkOWZjMzg5ODk1NDFkMzhjOGE1M2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlMjVlOTg0NzMxYzdmZjBkZjg0ODA0OWJmMDI5OTMxYTYxMDk4ZTNiODA2MWUzYTE3MTk3NWU2NzdhNjU2ODcifQ"
         }
       ]
     },
@@ -17,7 +21,7 @@
       "statement": "An explicit service stop persists in the deployment stop record.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L321-L339",
+          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L331-L349",
           "version": "repo-lines-v1:sha256:532bbf28c00cf9c347db90d7910195ba730f584ba5903951ef15b6caf0599c8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkYzc2MDIwYmFlNzA1NzdlNjRiMzMwZGNhODNmZGYyNGYzZDc1OTNhMDE1NGQ4YWJlYzZkYzYzZjU4OTdmZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkZTc2N2Q1ZjZmMjRhOWMyNGQ1NGE4ZjVjOTZlNzZjZThhMDllNWQ3ZmI5MDEwZmY0MWFmMmNmOGMxNTJiODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1ZjE4Yzk0OTkwMDA5MjI5YTJjMzllOGU4Mjg1M2M5OTFlM2E1YTNjMDcwZmIzYmQyMDEyOTZjYjI0MDdjNDUifQ"
         },
         {
@@ -31,7 +35,7 @@
       "statement": "A resident stop waits up to three minutes for active work before service transition.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L359-L366",
+          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L369-L376",
           "version": "repo-lines-v1:sha256:8c3e3056ef88979c554fe4987cd4524ac8eed5cf47e38b20f23f66abdee35254:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlkNTc4MzRjYTc2OTdhNDdhYWQzYzNjNWY4N2E1ZmI0NDViMjk4OGI2ZDhhMTg0Y2VlMzBhY2Q2NjYyYzBmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTY1M2RlMjcyZjExNDEwMzMwZmRhMGVhZGFlNWZjOGNhZTY0MjU4MGU2MTliYmQzODMzYTc5YWYwMjBiMDJhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWVjMWQ1ZDUxMTg0MjhkNmM2MDEzMTI4MmIyOTlmYTFhODI0N2U5MmM0MDg3N2MzN2I3OWQ5MGU0OGJiYmM1ZCJ9"
         }
       ]
@@ -41,14 +45,44 @@
       "statement": "A failed service change attempts to restore the prior state and stop choices.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L245-L336",
+          "resource": "repo://mc/cmd/mc/culler_services_prod.go#L255-L346",
           "version": "repo-lines-v1:sha256:7beabb50f54c93250638a39ac2a481b47ad7b141c0fc7c9e42c6b3afbabf3c24:eyJzZWxlY3RlZExpbmVDb3VudCI6OTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2MTY0NTE2NWI4ODkxMGIzZDkyN2RhNzFmMGNiMWI1MmUxMDlhYjA5MjgxN2E4ZjdiMWRkZDg4MzYwNzI5YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwMmJjZGU0Yjg5OTcxNDk1MmFkMmQ5ZjY2ZWM2Njk0NmY0ZDQ3NzM2M2RkOTIyMjcxNzNjMmE5ZDM5YWRmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1NTIxOWY5MjA4YWEzOTZjZmQwZWM3OTJjMDY2MzliMzIxNWMxYTA5NWJmNmZjODNmM2QxM2E5ZmEzMGJlNWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f23d9ecf38914d2cbb976a598e4e0aeb",
+      "statement": "Public updates stop deployment work after confirmation, retain an exact candidate and checkpoint, and permit restore only before commit.",
+      "evidence": [
+        {
+          "resource": "repo://release/UPDATES.md#L39-L76",
+          "version": "repo-lines-v1:sha256:e99df36725fb7519601ce5ec49f00b4caf00b8fd0b6ba6361c2d93f12c92be94:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1YzE1YmY4NTViMzgzMWFiZWVkYjdmMTI4MWY2MDA2ZjQyOGMwYjcwNmVlNDk0NjhhOGVjMjVkYjQwNTI2OTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDM1ZjkyMTFlNWFjNzc1ZDcwMTNhODM5NGE1ZGNjMTU5YmU1Y2QyOTVlYTk5YzJlY2EzNGI0Y2JiYTU2ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlN2ViNmVkZTBiMWEzMWIwMDVkNmY2YThlY2QyY2NjZjJlNzlhZTIzOTFhZmJlNDkyOWFjZDkyZjFmYzM0MjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiMmRjM2RmNjYyODY0NzdhMzczNjEwOWIzYzdhZTFiZWFkYjdiY2IzZDdlOWEyYWZjNWQ0MGUwODk5MzljMWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_13c7e665a16a4150a6d6bc82cd9495d4",
+      "statement": "The retained safe-update verification report leaves complete packaged update and restore through macOS launchd unverified.",
+      "evidence": [
+        {
+          "resource": "repo://release/UPDATE-VERIFICATION.md#L61-L70",
+          "version": "repo-lines-v1:sha256:776c6ae6c21d5d20b2fc6dae670e6bdf35bc7e0cd55faad735cd365a542a9a4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiNDBkYzQ4MzcxOTk1ODY0YTEwMjIwNjUwMTE2ZWE2NDJhOTBiODA0NDYwMGFkYjMwZjE4MzQ2ZDRjNDFkMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZjUwNTMzZWZiNDIyZDM5YzQ1YjI1MWJhNWZhMWJhYjA3NzNhOTVkNGM3ODAwZDZhNTJmMTA4ODIzMDY5OTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjNThiYmFmMmZjNGQ2ZjA2ZTk4NzRkMTZlOGVmMTNlNWI5Mzc4ZWI1ODFkMzBmMmUxMzA4MjIwOTc1NGYwMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e794fbda67d485faefad4600f33345c",
+      "statement": "Uninstall covers all detected installations; both modes preserve Project repositories and shared tools, while keep-data preserves configuration, credentials, and history.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L197-L233",
+          "version": "repo-lines-v1:sha256:8d3d0ab59848ad605e8e9bf74afc838bfc6fd670293bef9db54945d160db09fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyOTkzZjllZDhlNGU1MzdmODBjZGNkMGVlZWRlYWY3YTQzODVmZGRmYmQyYmYwMDg1NTdmNzA0ZWZiOTNlN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMzYzM2EwYzM0ZjIxYWJjNDhhYmVlZmE5NWIwMDg5YzU5MTBiYmVmZWJhMDUwZDk3M2QxZjBhNDY4MDQ4MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5YmZiNzBkNTRmNmM0NTRlYmIzMTJkZGY1OWI3MmY3NTNhZTgzZmUzMmRlNzNhZDk1MjU5NjAxZjExNmQxZmMifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-05T05:07:38.661Z"
+    "at": "2026-11-07T01:30:07.289Z"
   }
 }

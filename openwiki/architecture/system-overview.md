@@ -30,10 +30,10 @@ sources:
     resource: repo://resident/src/resident-control.ts
   - id: openwiki-source-ecd0ea64f1d6275775d38f43
     resource: repo://runner/agent-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-10-29T16:53:36.977Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-10-29T16:53:36.977Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Culler system architecture
@@ -44,7 +44,7 @@ Stated intent for the project as a whole lives in `VISION.md` (the current produ
 
 ## One state store, one writer
 
-All durable state lives in one SQLite database, called the spine. The spine is the message bus and the ground truth for every Project, task, run, lease, and activity record. Its schema is in `mc/substrate/schema.sql` (plus `delivery.sql` and `environments.sql`); see [The spine: SQLite substrate and schema](spine-and-substrate.md).
+The spine stores Culler operational records in one SQLite database. Host configuration, credentials, source repositories, and artifacts use their separate storage boundaries. The spine is the message bus and the ground truth for every Project, task, run, lease, and activity record. Its schema is in `mc/substrate/schema.sql` (plus `delivery.sql` and `environments.sql`); see [The spine: SQLite substrate and schema](spine-and-substrate.md).
 
 The Go binary `mc` (`mc/cmd/mc`) is the only program that opens the spine. The package comment on `mc/cmd/mc/main.go` calls it "the sole spine writer" and pins the verb contract: one JSON object on stdout, diagnostics on stderr, exit 0 for success, 1 for a domain rejection, 2 for a usage or environment error. Every other component is a client of that contract. `AGENTS.md` makes this a hard rule: never open the spine from TypeScript.
 
@@ -120,6 +120,8 @@ The task pipeline contains Worker, Verifier, and Packager steps.
 | `state/projects/<project>/home` | Persistent Project dependency caches, tools, and tool configuration, bound at `/home/agent` |
 | `state/wiki-key` | Secret prefix for wiki viewer paths |
 | `backups/` | Spine snapshots written by `VACUUM INTO` |
+| `bun/<version>/` | Pinned host Bun for published installations |
+| `updates/transaction.json` | Durable update transaction and recovery phase |
 | `supervision/`, `release/`, `bin/` | Generated launchd bundle, shipped release files, AgentsView executable |
 
 The spine itself is not in `MC_HOME` in production. Its fixed path inside the helper and agent containers is `/mc/spine/spine.db`.

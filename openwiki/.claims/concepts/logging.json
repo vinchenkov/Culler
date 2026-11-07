@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:46b9e6f8978fdbefd6d831a78f04fb49e4764accc4abe35901a5a70de626f67c",
+  "pageVersion": "sha256:ee2223383dd19924737c131fab0236e743935dbaad2277b91be029a9835106f9",
   "claims": [
     {
       "id": "claim_c6e25cc807834d7d99ccddf38b762076",
@@ -150,7 +150,7 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/log_event_registry_test.go#L32-L110",
-          "version": "repo-lines-v1:sha256:ab22cdfa3c643b9a203911ff5cf531d5c901afd3bef44098106f12c08365f246:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZGJjYTNlM2YwY2RjNzQ4ZjY2OTg2YmZjMGM3ZjUyYmVkYmY2MGEzZTIyZWE2MzdmMGZlNTExMDZkMzRiMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4YzdhZGZhNzEwYTU5MjJmNjc5NzBmMTdkNDU5MDBlMDIxZmI4NDRkNzE5NDczMDI4ZGRmNGUxYmIyODViNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2ZmRiNjE5MTAwZmUyNmQzNTZjMDI3OTc2NTc3OTBiOThiNTQ1OGFiMjI4YjBjOThhNTdhNWMyNjY4NGUwYWUifQ"
+          "version": "repo-lines-v1:sha256:dc939c8f9e8d88e4c2ef66a361d9028ddfd8d2d8b2b402799f459f85bb74af16:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZGJjYTNlM2YwY2RjNzQ4ZjY2OTg2YmZjMGM3ZjUyYmVkYmY2MGEzZTIyZWE2MzdmMGZlNTExMDZkMzRiMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4YzdhZGZhNzEwYTU5MjJmNjc5NzBmMTdkNDU5MDBlMDIxZmI4NDRkNzE5NDczMDI4ZGRmNGUxYmIyODViNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2ZmRiNjE5MTAwZmUyNmQzNTZjMDI3OTc2NTc3OTBiOThiNTQ1OGFiMjI4YjBjOThhNTdhNWMyNjY4NGUwYWUifQ"
         }
       ]
     },
@@ -191,7 +191,7 @@
       "statement": "The CLI invocation record includes process identifier and whole-command duration.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/cli_log.go#L180-L192",
+          "resource": "repo://mc/cmd/mc/cli_log.go#L182-L194",
           "version": "repo-lines-v1:sha256:bfb2dad4f1937e69338fc58593a115eb4b9310fbe7f46632eae386e04d60857d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0MTUxNjVhZGEyMGY4NjNjZjlhNWNlMTc0ZjQ4OWY2N2QzODI2ZjE3Mzg1YWJmYWI0NzVlY2RiNzMzYjg0ZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5OTE4ZTc0MWRkNzA1OWRlNzY4OGQ2ZWM0OGJmNmRkNjkyN2UyYzVlN2E4MDQxZDEyMGFiNzJmYTU4NzUzZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhZTA4ZWM2YTg5ZjU0NTNiODZjZTRkNDExOWFhNzA4ODMyMzcxN2E0NjYyYTc4NjhhYWQ2ZGNhOWJlNTk5YWUifQ"
         }
       ]
@@ -209,6 +209,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-19T19:56:40.385Z"
+    "at": "2026-11-07T01:30:07.289Z"
   }
 }

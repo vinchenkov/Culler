@@ -15,7 +15,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-10-19T19:56:40.385Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-10-19T19:56:40.385Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Performance experiments and agent evaluations

@@ -27,7 +27,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-11-03T21:04:30.847Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-03T21:04:30.847Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # The spine: SQLite substrate and schema

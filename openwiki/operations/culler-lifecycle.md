@@ -3,24 +3,31 @@ type: operations
 title: Culler lifecycle command
 description: The operator command controls local services, reports their state, and checks for updates.
 tags: [operations, lifecycle, launchd]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-05T05:07:38.661Z
 sources:
+  - id: openwiki-source-096a781fb160ef979fa31121
+    resource: repo://INSTALL.md
   - id: openwiki-source-de03631980be3775e6b20749
     resource: repo://mc/cmd/mc/culler_prod.go
   - id: openwiki-source-c0c8c1965a051d7700920804
     resource: repo://mc/cmd/mc/culler_services_prod.go
   - id: openwiki-source-a69635b1c1f62a5cb37186fd
     resource: repo://mc/deployment/lifecycle.go
-generated: { by: "culler-scribe", at: "2026-11-05T05:07:38.661Z" }
+  - id: openwiki-source-26d5c493ee5be4c7eb7219f5
+    resource: repo://release/UPDATE-VERIFICATION.md
+  - id: openwiki-source-09c5383289d9635a85a372a3
+    resource: repo://release/UPDATES.md
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+verified:
+  - by: openwiki/0.7.0
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Culler lifecycle command
 
 The `culler` command controls the local Culler deployment on the Mac host.
 The operator uses the dashboard or Collie for configuration.
-The command accepts `--mc-home` for another deployment and `--no-color` for plain output.
+Commands other than uninstall accept `--mc-home` for another deployment.
+The command accepts `--no-color` for plain output.
 `NO_COLOR` and redirected output also select plain text.
 See [installation and deployment](install-and-deployment.md) for command installation and repair.
 
@@ -35,7 +42,11 @@ See [installation and deployment](install-and-deployment.md) for command install
 | `culler stop [service]` | Stop selected services. |
 | `culler restart [service]` | Restart selected services. |
 | `culler update --check` | Check release availability. |
-| `culler update` | Open the installer in the terminal. |
+| `culler update` | Resume an incomplete update or open the installer for a new update. |
+| `culler update --restore` | Restore an incomplete update before its commit. |
+| `culler uninstall` | Preview removal of all detected installations and request confirmation. |
+| `culler uninstall --keep-data` | Remove software and preserve Culler data after confirmation. |
+| `culler uninstall --dry-run` | Show the removal plan. |
 | `culler logs [service] --tail N` | Show recent service records. |
 
 The service names are `resident`, `dashboard`, and `agentsview`.
@@ -62,6 +73,47 @@ A start checks service readiness against the installed release.
 An unhealthy active service requires inspection before a start command can proceed.
 If a change fails, the command attempts to restore the prior service state and stop choices.
 See [the resident](../architecture/resident.md) for its tick and maintenance behavior.
+
+## Public updates and recovery
+
+`culler update` resumes an incomplete update with its retained candidate before it selects another release.
+The installer warns about interruption and affected saved profiles before confirmation.
+It then stops services and containers immediately, forces termination after ten seconds, and verifies exit within thirty seconds.
+An unknown process state refuses replacement.
+This stop procedure differs from the three-minute wait for an ordinary resident stop.
+
+The update record blocks ordinary work throughout replacement and verification.
+The updater checks the candidate, saved configuration, and every selected Project image.
+It verifies a checkpoint before replacement and checks component identities and local readiness before commit.
+It synchronizes files and records the commit before it releases maintenance.
+An incomplete update keeps work stopped.
+
+`culler update --restore` restores the checkpoint before commit.
+Recovery verifies the retained package and requires no download after checkpoint completion.
+A failed restore preserves the checkpoint for another attempt.
+After commit, cleanup can retry without restoring old data over the current deployment.
+Cleanup preserves selected Project images and images that containers use.
+An ordinary downgrade remains unsupported.
+
+The checkpoint covers the spine, optional OpenCode volume, configuration, host software, commands, service definitions, and applicable AgentsView data.
+Project repositories, worktrees, homes, artifacts, and native sessions remain in place.
+Provider grants retain their newest saved values.
+The checkpoint assumes intact storage; it does not replace a separate backup for disk loss.
+
+`release/UPDATES.md` defines the public update contract and emergency recovery procedure.
+The [retained verification report](../../release/UPDATE-VERIFICATION.md) records scratch checks from 6 November 2026.
+It leaves complete packaged update and restore through macOS launchd unverified.
+Those historical results are separate from this wiki review and from required public release acceptance.
+
+## Removal
+
+Uninstall covers all detected Culler installations and rejects `--mc-home`.
+`MC_HOME` adds a deployment to discovery; it does not restrict removal to that deployment.
+The default full wipe removes software, Culler data, credentials, task branches, and review files after the operator types `wipe`.
+The keep-data mode preserves configuration, credentials, and history after the operator types `uninstall`.
+Both modes preserve Project repositories and shared host tools.
+Removal stops active agents and can discard unfinished work.
+The [installation guide](../../INSTALL.md#uninstall-culler) describes recovery paths and unattended authorization.
 
 ## Results and diagnostics
 

@@ -4,16 +4,16 @@ title: The resident host daemon
 description: The Bun process on the host that drives dispatch, starts containers, runs repository, trace, and wiki lanes, and supplies provider access through a host proxy. It reaches the spine through mc.
 tags: [resident, daemon, dispatch, credentials, lanes]
 sources:
-  - id: openwiki-source-eed667c35ca68dcc2f3009a3
+  - id: openwiki-source-81e49db5f10e4699bcadf8d3
     resource: repo://mc/verbs/collierestart_test.go
+  - id: openwiki-source-1655883a2300ff18955c5910
+    resource: repo://resident/src/collie-runtime.ts
   - id: openwiki-source-6dc928cb15677dde622f6a7e
     resource: repo://resident/src/discord-config.ts
   - id: openwiki-source-e028a0037f071b894557c29d
     resource: repo://resident/src/effects.ts
   - id: openwiki-source-7092e09d830ef9ed23536948
     resource: repo://resident/src/environment-lane.ts
-  - id: openwiki-source-cc407c2584427eee9ef62f7d
-    resource: repo://resident/src/collie-runtime.ts
   - id: openwiki-source-76e2df8149603feba8077d5b
     resource: repo://resident/src/install-maintenance.ts
   - id: openwiki-source-b65f5016ff00568fc3622948
@@ -30,15 +30,15 @@ sources:
     resource: repo://resident/src/run-log-prune.ts
   - id: openwiki-source-79628d0b1a3667fb37eebff9
     resource: repo://resident/src/tick-loop.ts
-generated: { by: "culler-scribe", at: "2026-11-05T05:07:38.661Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T05:07:38.661Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # The resident host daemon
 
-The resident is a Bun/TypeScript process (`resident/src/main.ts`) that launchd supervises on the operator's Mac. It has no state of its own. It turns decisions that `mc` commits into host actions: Docker containers, run folders, trace copies, wiki exports, and short-lived credentials. `bun src/main.ts --config <path>` starts it.
+The resident is a Bun/TypeScript process (`resident/src/main.ts`) that launchd supervises on the operator's Mac. It has no state of its own. It turns decisions that `mc` commits into host actions: Docker containers, run folders, trace copies, wiki exports, and short-lived credentials. The deployed supervision configuration starts it with the pinned host Bun.
 
 ## The invariant: never open the spine
 
@@ -51,6 +51,11 @@ This matters because `mc` is the sole spine writer. Its transactions, triggers, 
 `mc dispatch` is the only verb that gets more than stdio. `execControlledDispatch` creates a kernel socketpair and passes it to the child as fd 3. Within `HELLO_TIMEOUT_MS` (2 seconds) it exchanges `hello`/`hello_ack` frames. The frames carry the release build ID, `GATEWAY_CONTROL_VERSION`, the deployment UUID, and `SPINE_SCHEMA_ID`, a SHA-256 of `mc/substrate/schema.sql`, `delivery.sql` and `environments.sql`. The channel then answers Collie inventory and pipeline liveness requests. The resident collects pipeline liveness (`collectPipelineLiveness` in `pipeline-liveness.ts`, from `mc lease list` plus `docker inspect`) before the child starts, outside the 2-second budget. A timeout fails that tick only, and the next tick retries. Every other verb gets `/dev/null` on fd 3.
 
 ## Startup
+
+Before normal startup, `waitForUpdateActivation` checks the saved update transaction and maintenance request.
+Only the expected candidate or restored release can proceed through the applicable update phase.
+During release verification, it publishes receipts while the update keeps normal work paused.
+`resident/src/install-maintenance.ts` owns this check and validates the transaction's identity, ownership, mode, and phase.
 
 `main()` validates its inputs and exits with code 2 on any refusal. The checks cover config schema and release identity, the Git identity (`git-identity.ts`), the runner route allowlist, `dockerPath`, workspace roots, the AgentsView bind, and the tick interval (`MC_TICK_INTERVAL_MS` or `tickIntervalMs`, default 60 seconds). It opens `MC_HOME/logs/resident.ndjson`, then runs these steps in order:
 
@@ -117,7 +122,7 @@ The lanes keep slow host work off the dispatch path. A tick never waits for a me
 ## Wake and control surfaces
 
 - **Nudge socket** (`nudge-socket.ts`): an owner-only Unix socket at `MC_HOME/resident.socket`. It accepts one line of at most 64 bytes: a Collie session ID, `vision-save`, `project-start`, or `packet-decide`. `routeNudge` in `main.ts` sends `packet-decide` to the repository lane and wakes the tick for every other value. The socket refuses a stale path that is not an owned socket.
-- **Install maintenance** (`install-maintenance.ts`). When `MC_HOME/state/install-maintenance.json` exists as an owner-only regular file, the resident writes an acknowledgement. The acknowledgement is `ready` only when no repository operation is active. This lets `install.sh` wait for a quiet resident.
+- **Install maintenance** (`install-maintenance.ts`). When `MC_HOME/state/install-maintenance.json` exists as an owner-only regular file, the resident writes an acknowledgement. The acknowledgement is `ready` only when no repository or environment operation is active. This lets `install.sh` wait for a quiet resident.
 - **Discord** (`discord.ts`). An optional native surface that routes messages through `mc` and drains the outbox. Its header states that it never opens the spine and never interprets natural language.
 
 ## Credentials for runs

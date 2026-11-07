@@ -34,8 +34,6 @@ sources:
     resource: repo://mc/verbs/directives/strategist.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
     resource: repo://mc/verbs/directives/verifier.md
-  - id: openwiki-source-116843f6a2d38ecfc11c910e
-    resource: repo://mc/verbs/directives/worker.md
   - id: openwiki-source-6a1e391719e8dc303420ffc3
     resource: repo://mc/verbs/dispatchverb_test.go
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
@@ -44,10 +42,12 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-01T12:39:55.183Z" }
+  - id: openwiki-source-1ea8a5db4f70db6483d19a8a
+    resource: repo://openwiki/operations/worker-instruction-audit.md
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # The task pipeline roles
@@ -286,6 +286,19 @@ After the check, `snapshotRunArtifact` in `mc/verbs/artifactsnapshot.go` copies 
 - `mc/verbs/artifactpath_test.go` and `artifactsnapshot_test.go` cover host path resolution and snapshotting.
 - `mc/verbs/dispatchcorrection_test.go` and `dispatchlifecycle_test.go` drive the full status lifecycle through dispatch.
 
+## Worker instruction audit
+
+The original [Worker instruction audit](../operations/worker-instruction-audit.md) records the instruction review for task 56.
+It explains which rules the Worker directive and command skill retain, and why each rule belongs there.
+Conditional procedures reside in the command skill, while brief explanations identify the supplied data.
+The audit records shorter instructions with unchanged runtime authority, command forms, terminal handlers, and approval behavior.
+Its counts and validation results describe that task and its merge repair.
+The recorded checks include an unchanged operator-home failure and unavailable host checks.
+They do not establish verification of the current accepted commit.
+
+The current `mc/verbs/directives/worker.md` and `mc/verbs/skills/worker/mc-worker/SKILL.md` define the present Worker instructions.
+See [agent input](../concepts/agent-input.md) for their delivery and the shared skills.
+
 ## Environment and merge repairs
 
 Project setup precedes this pipeline and permits a complete report with unavailable capabilities.
@@ -316,7 +329,7 @@ Shared dependencies preserve files; they do not establish a Verifier pass.
 Repository requirements and actual execution evidence still determine task completion.
 See [Project environments](project-environments.md#runtime-and-per-run-dependencies) and [agent input](../concepts/agent-input.md#dependency-context).
 
-The role directives also describe the provider credential boundary.
+The shared environment skill describes the provider credential boundary.
 Each run receives a temporary Culler token for the host proxy.
 The host retains and renews provider credentials.
 Agents preserve the supplied access configuration and exclude token values from output.

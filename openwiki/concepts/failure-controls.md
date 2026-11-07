@@ -32,10 +32,10 @@ sources:
     resource: repo://mc/verbs/runner.go
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
-generated: { by: "culler-scribe", at: "2026-10-21T23:26:36.318Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-03T00:11:39.952Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Failure controls and retry allowances
@@ -116,7 +116,8 @@ The attention threshold is a count of distinct unarchived tasks with `blocked` o
 
 ## Heartbeats and run deadlines
 
-Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki runs use `DecideWiki` and separate liveness records. The agent runner sends `mc heartbeat` at session start and every `heartbeat_interval_s` (default 60). The `settings` table defaults are: spawn grace 60 seconds, lease timeout 60 minutes plus 15 minutes grace, and hard deadline 240 minutes of awake time. A run that never heartbeats past the spawn grace, falls silent past timeout plus grace, or passes its hard deadline is reaped and charged. These limits use VM uptime, so host sleep uses none of them.
+Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki runs use `DecideWiki` and separate liveness records. The agent runner sends `mc heartbeat` at session start and every `heartbeat_interval_s` (default 60). The `settings` table defaults are: spawn grace 60 seconds, lease timeout 60 minutes plus 15 minutes grace, and hard deadline 240 minutes of awake time. An ordinary task run that exceeds its applicable liveness limit ends through the reap path and its allowance classification.
+The Scribe receives at least 60 seconds for its first heartbeat. Its hard deadline still applies, and wiki failure charges no allowance. These limits use VM uptime, so host sleep uses none of them.
 
 `resident/src/pipeline-liveness.ts` supplies the container-gone evidence. `collectPipelineLiveness` reads `mc lease list`, measures each run's launch age from its launch record, and inspects its container. Only Docker's exact not-found counts as absent; an ambiguous inspect yields no observation. `confirmRunContainersAbsent` also gates repository cleanup.
 
@@ -124,7 +125,13 @@ Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki
 
 Connection conditions own neither pipeline allowance. The runners classify a request that got no service response with `runner/shared/network-error.ts` (`connect`, `reset`, `timeout`, `tls`, `other`) and pass it as `--network-error` on `mc run infra-failure`. Such a failure is a system condition. The connection then waits through its retry schedule.
 
-When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` (`mc/verbs/runner.go`) calls `domain.RecoverNetworkAttempt`, which clears only the network condition that admitted that run, and only if the connection, authorization, and profile are still current. A role terminal also clears it (`ClearNetworkRetry`). Collie uses the same reporter through `mc collie model-response`.
+When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` in `mc/verbs/runner.go` calls `domain.RecoverNetworkAttempt`.
+That function first checks provider recovery, then clears an eligible network condition under the current connection, authorization, and profile. A role terminal also clears it (`ClearNetworkRetry`). Collie uses the same reporter through `mc collie model-response`.
+
+A network timeout can change the connection revision before the process ends.
+System status retains the active run or Collie reply attempt that the current diagnostic identifies.
+`mc/verbs/networkhold_test.go` checks this visibility for both execution types.
+An interrupted Collie reply preserves its partial draft and requires explicit retry; see [Collie](collie.md#interrupted-replies-and-explicit-retry).
 
 [Agent connections and access renewal](../operations/agent-connections.md) describes account renewal, rejected keys, and quota failures.
 

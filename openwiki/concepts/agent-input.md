@@ -20,12 +20,10 @@ sources:
     resource: repo://mc/verbs/directives.go
   - id: openwiki-source-3bc5b077708f9534abc3b95d
     resource: repo://mc/verbs/directives/arbiter.md
-  - id: openwiki-source-9efb4b1ddc2ed1c022be33e7
+  - id: openwiki-source-6c249547ec5cf1c015cbdcb1
     resource: repo://mc/verbs/directives/collie.md
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
-  - id: openwiki-source-04a7ec7c79d5b0199e93c3e7
-    resource: repo://mc/verbs/directives/scribe.md
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
     resource: repo://mc/verbs/directives/setup.md
   - id: openwiki-source-72313a4f79741897a46d7a11
@@ -42,8 +40,14 @@ sources:
     resource: repo://mc/verbs/roleskills.go
   - id: openwiki-source-58286c7d3d2cfcf24add95f4
     resource: repo://mc/verbs/setup_agent_input_test.go
-  - id: openwiki-source-68190b2710cd43b378a3c4b1
+  - id: openwiki-source-332034bad01f6c1d71fb1474
     resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-f7b77b556b18b6d3270e2193
+    resource: repo://mc/verbs/skills/scribe/openwiki-documents/SKILL.md
+  - id: openwiki-source-f50fb8f0947937402f7ebff6
+    resource: repo://mc/verbs/skills/scribe/openwiki-recovery/SKILL.md
+  - id: openwiki-source-0b1c56f800b720f3a116da01
+    resource: repo://mc/verbs/skills/scribe/openwiki/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
   - id: openwiki-source-fbe8f84251137d3cfb7fb6f4
@@ -54,12 +58,12 @@ sources:
     resource: repo://resident/src/skill-store.ts
   - id: openwiki-source-20c7a26c8321ed0c7a2cf49b
     resource: repo://runner/agent-runner/skills.ts
-  - id: openwiki-source-46e96222197b6f4505759147
+  - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-05T04:07:09.592Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -73,8 +77,8 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 `mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Collie](collie.md) tier uses the same directive and skill mechanism but has no run brief.
 
 The agent profile sets the model and effort for each run.
-The Strategist, Arbiter, Verifier, Packager, Scribe, and setup directives state this fact.
-The Worker and Collie directives omit it.
+The Strategist, Arbiter, Verifier, Packager, and setup directives state this fact.
+They name Codex, the Claude SDK, and OpenCode as supported harnesses.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
 
@@ -263,13 +267,29 @@ These assertions check supplied instructions. They do not prove that an agent fo
 `mc/verbs/roleskills.go` embeds `skills/*/*/SKILL.md`. The layout is `mc/verbs/skills/<role-basename>/<skill-name>/SKILL.md`. One map, `roleDirectiveBasename`, gives each role both its directive file and its skill directory, so the two cannot drift apart. The current tree:
 
 - Each role directory holds `mc-<role>`, the command surface. It is a bullet list of exact `mc` commands with flags.
-- Additional skills: `scribe/openwiki`, `verifier/verify-behavior` (Playwright CLI for UI evidence).
+- The Scribe receives `openwiki`, `openwiki-documents`, and `openwiki-recovery`.
+- The Verifier receives `verify-behavior` for browser evidence.
 - `shared/writing`, `shared/project-wiki`, and `shared/project-environment-setup` close every pipeline set and the Collie set.
 - `collie/mc-collie` is the Collie tier's command surface.
 
 `RoleSkillSet` returns the command surface first, then the role's additional skills in name order, then the shared skills in name order. `skillByPath` enforces two rules at load. The directory name must match `^[a-z0-9][a-z0-9-]*$`, because the runner joins it under a root it wipes. The frontmatter `name` must equal the directory name. `SkillFrontmatterField` reads flat `key: value` lines and is deliberately not a YAML parser.
 
 The spawn effect in `mc/verbs/dispatchverb.go` carries the set as `skills` (`SkillsEffectValue`: `{name, body}` per skill) and the operator store directory as `skill_store_dir`. The Collie wake effect in `mc/verbs/collieselect.go` carries `CollieSkillSet()` and `skills/collie` the same way.
+
+## Scribe coverage and recovery
+
+The Scribe directive defines the wiki scope, preservation requirements, permitted state changes, and one terminal action.
+The role skills supply the detailed procedure:
+
+- `mc-scribe` defines commit checks, completion evidence, failure reports, and customization conflicts.
+- `openwiki` defines repository coverage, page jobs, source Claims, inspection, and finalization.
+- `openwiki-documents` protects original documents and permits only specified metadata repairs before page work.
+- `openwiki-recovery` requires review after external edits, incomplete records, interrupted work, or unavailable source history.
+
+Each page uses its own source comparison window.
+Unavailable Git history requires a saved source inventory or a full review of the affected pages.
+The Scribe inspects Claims after the final page edit and submits explicit decisions for stale or unresolved Claims.
+See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md) for the verification record and completion receipt.
 
 ## Operator skills
 
@@ -308,7 +328,7 @@ The shared environment skill requires compatibility checks against current decla
 
 The retained setup script prepares each fresh Worker, Verifier, and Packager workspace.
 The Scribe, Strategist, and Arbiter omit automatic dependency preparation.
-The Scribe brief states its exemption and access to the persistent home.
+The OpenWiki skill states the Scribe exemption and requires dependency compatibility checks before use.
 Setup input requires a script that permits repeated execution against that home.
 Actual preparation, build, and test results remain separate evidence.
 
@@ -329,7 +349,7 @@ Report text and artifact files supply evidence. Only an operator message authori
 The directive requires a description and explicit confirmation before a new state change.
 
 The `mc-collie` skill explains packet reads, candidate diffs, evidence files, report media, task traces, and refusal of an outdated decision.
-The shared `project-wiki` skill describes the task artifact mount and the empty artifact folder in each Project mount.
+The shared `project-wiki` skill defines document ownership and separates original deliverables from task execution artifacts.
 See [packet conversations](../workflows/packet-conversations.md) for the complete sequence and access checks.
 
 ## Rules for changing agent input

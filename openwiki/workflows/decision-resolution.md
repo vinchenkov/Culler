@@ -33,7 +33,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-11-03T04:34:51.748Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Decision Pending and requirements revisions

@@ -10,8 +10,6 @@ sources:
     resource: repo://dashboard/src/security-gate.test.ts
   - id: openwiki-source-9bacaebabf4730d3f0a79cc9
     resource: repo://dashboard/src/server.ts
-  - id: openwiki-source-91a533664b7e9f0fa7a313b0
-    resource: repo://install_test.sh
   - id: openwiki-source-096a781fb160ef979fa31121
     resource: repo://INSTALL.md
   - id: openwiki-source-03ffc32a0ca502ab67c54b25
@@ -38,26 +36,34 @@ sources:
     resource: repo://mc/deployment/runtimeauth_setup_login.go
   - id: openwiki-source-44ff1dc1a6b4e5974f9836a4
     resource: repo://mc/deployment/supervision.go
+  - id: openwiki-source-1539e79687d52c9972a1201f
+    resource: repo://mc/distribution/update_policy.json
   - id: openwiki-source-12f32e50a07508468db6789a
     resource: repo://redeploy.sh
   - id: openwiki-source-2aee5c75a683753fe072cd2d
     resource: repo://release/image_load.py
   - id: openwiki-source-2e0b70f7c6b582e5eaae24c8
     resource: repo://release/installer.sh
+  - id: openwiki-source-ae3f4330fd1215664310fac0
+    resource: repo://release/PROVIDER-COMPATIBILITY.md
   - id: openwiki-source-6926a7f59d9d7d096748e09e
     resource: repo://release/publish.py
   - id: openwiki-source-985fc8702c7fef3be1d90e4d
     resource: repo://release/security/README.md
+  - id: openwiki-source-09c5383289d9635a85a372a3
+    resource: repo://release/UPDATES.md
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
   - id: openwiki-source-074a0c31b85dc048be2b3972
     resource: repo://runner/shared/project-cache.ts
   - id: openwiki-source-be37791327f4a5dbaa8f4f9f
     resource: repo://scripts/install-source.sh
-generated: { by: "culler-scribe", at: "2026-11-05T10:01:23.917Z" }
+  - id: openwiki-source-94e7bca26bc3525581ff6cdf
+    resource: repo://VERSION
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Installation, deployment, and release
@@ -77,15 +83,17 @@ curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh |
 
 The launcher selects the latest complete release.
 Public installation requires no GitHub account or GitHub token.
-After installation, `culler update` opens the installer for the latest complete release.
+After installation, `culler update` resumes an incomplete update or opens the installer for the latest complete release.
 The command `culler update --check` checks release availability without a deployment change.
 The [installation guide](../../INSTALL.md) describes setup and updates.
 
 | Command | Purpose |
 | --- | --- |
 | `sh install.sh` | Install or update from the latest complete GitHub release with a saved launcher. |
-| `culler update` | Open the installer for the latest complete GitHub release. |
+| `culler update` | Resume an incomplete update or open the installer for the latest complete release. |
 | `culler update --check` | Check release availability without a deployment change. |
+| `culler update --restore` | Restore an incomplete update before commit. |
+| `culler uninstall [--keep-data \| --dry-run]` | Remove all detected installations or inspect the removal plan. |
 | `./install.sh --dev --mc-home <scratch>` | Development install from this checkout into a scratch home. Never `~/.culler`. |
 | `./redeploy.sh` | Move the live production deployment to this checkout and keep its database. |
 | `./redeploy.sh --reset-database` | Move the deployment and replace its database with an empty database, after a typed confirmation. |
@@ -95,7 +103,15 @@ The [installation guide](../../INSTALL.md) describes setup and updates.
 
 ### install.sh: the release launcher
 
-`install.sh` is a permanent launcher. It never builds from source in production. It first handles `--help`. With `--dev`, it `exec`s `scripts/install-source.sh`, which requires a checkout. Otherwise it requires `Darwin:arm64` and then does the following:
+`install.sh` is a permanent release launcher.
+It first handles `--help`.
+With `--dev`, it executes `scripts/install-source.sh`, which requires a checkout.
+Otherwise it requires `Darwin:arm64`.
+
+An incomplete public update takes precedence over release discovery.
+The launcher verifies the retained candidate package and resumes that exact update.
+After checkpoint completion, recovery requires no new download.
+For a new update, it performs these release checks:
 
 1. It uses an optional GitHub credential from `CULLER_GITHUB_TOKEN_FILE`, the default token file, or `gh auth token`. The default file is `~/.config/culler/github-token`. A token file must be a regular file with mode `600` and belong to the operator. The launcher keeps the token outside command arguments. Public downloads work without a credential. An invalid configured credential can stop installation.
 2. It fetches `releases/latest` and rejects drafts and prereleases.
@@ -105,7 +121,10 @@ The [installation guide](../../INSTALL.md) describes setup and updates.
 
 `release/installer.sh` downloads `culler-darwin-arm64.tar.gz` and verifies its checksum and size. Before extraction it rejects any path outside `bin/{mc,culler,install.sh,agentsview}`, `host/`, and `runner/`, and any link or special file. It also checks that `bin/culler` matches `bin/mc`. `--check-updates` runs `mc __release status-terminal` and exits. Otherwise the installer ensures the Apple developer tools and Git. It downloads the Bun archive named by the release record, checks its size and SHA-256 value, and installs Bun under `MC_HOME/bun/<version>/bin/bun`. It then runs `mc __setup` with `--release-source` and `--host-release-source` pointing into the unpacked package.
 
-The resident and dashboard run the host Bun of the published release. A source install uses Bun from the source toolchain. The published installer does not require mise. An update removes an old host Bun after activation completes.
+The resident and dashboard run the host Bun of the published release.
+A source install uses Bun from the source toolchain.
+The published installer does not require mise.
+An update removes an old host Bun after commit.
 
 Setup installs `culler` beside the runtime executable, normally in `~/.local/bin`.
 The `--bin-dir` option selects another absolute directory.
@@ -131,6 +150,7 @@ The [lifecycle command](culler-lifecycle.md) controls service state after setup.
 5. Build the production images, install the binary, prepare the home and tunables, activate supervision, and run the health checks.
 
 Source redeploys also pass the selected executable directory to setup so it can install `culler`.
+They refuse an incomplete public update and cannot run concurrently with public lifecycle operations.
 
 The constraint behind this order: `runner/image/build-prod.sh` exits 3 while any `com.culler.*` unit is loaded, with no override. Rebuilding the image under a live helper would re-stamp the release identity and make every tick fail closed. `redeploy_test.sh` proves this sequence with fake tools.
 A failed service list or an unconfirmed service stop also ends the attempt before the image build.
@@ -171,26 +191,45 @@ Onboarding copies `config.example.toml` into `MC_HOME/config.toml`, and only tha
 
 `.github/workflows/release.yml` runs on pull requests and pushes to `main`. Its default permission is `contents: read`.
 
-- `fast-suite-macos` runs every component `check.sh` on `macos-15`. It fails a non-`mc` component whose log shows zero successful tests. It then runs `./release/check.sh`, `release/build.sh`, and `release/validate_package.py` and uploads the release inputs with their digest.
+- `fast-suite-macos` runs every component `check.sh` and `./release/check.sh` on `macos-15`. It fails a non-`mc` component whose log shows zero successful tests.
+- `application-package` runs alongside the fast and browser suites. It builds and validates the package, then uploads the exact release inputs with their digest.
 - `deployment-linux` runs the portable `./deployment/` tests and the Linux filesystem-guard tests on `ubuntu-24.04-arm`.
 - `dashboard-browser` runs the complete browser suite on Linux arm64 for pull requests and pushes to `main`. It uses the Project image Playwright lock file and matching Chromium.
 - `security-acceptance` checks the real Trivy scanner with controlled advisory fixtures. No job waits for it.
 - `release-images` builds both images with read-only permissions. It checks product behavior, inspects layers, and saves each checked archive.
 - The image checks verify file contents and write a fresh install and update size report. See [image delivery and update cleanup](image-delivery.md).
 - `image-vulnerabilities` reports Trivy vulnerability results for the saved archives. No job waits for it.
-- `release-checks` requires the fast suite, deployment, browser, and image jobs to succeed.
+- `release-checks` requires the fast suite, package, deployment, browser, and image jobs to succeed.
+- `release-version` selects publication through the release policy.
 - `product-image` runs only on a push to `main`. It checks and loads the saved archives before registry upload, then records both immutable digests.
 - `release-downloads` runs only on a push to `main`. It uses `release/publish.py` under serialized publication control.
 
 The publication jobs require `dashboard-browser` from the same workflow run.
 Both `product-image` and `release-downloads` list it in `needs`.
-The read-only `release-images` job depends on the fast suite and portable deployment checks.
+The read-only `release-images` job depends on `application-package`.
 The browser job runs independently.
 The browser job holds read-only repository permission and receives no provider credentials.
 It retains the suite log, JUnit report, and screenshots in `culler-dashboard-browser-<attempt>` for seven days.
 See [browser checks](../tests/checks-and-test-lanes.md#required-browser-checks) for local execution and failure rules.
 
-`release/build.sh` requires a clean tree at `CULLER_COMMIT`. It verifies the pinned AgentsView archive, cross-compiles `mc` for darwin and linux arm64 with the commit stamped in, and assembles the package and image inputs outside the checkout. `publish.py` creates a draft `culler-<commit>` release and uploads `install.sh`, `installer.sh`, the package, and `release.json` with all five checks. It publishes only if the commit is on `main` and strictly ahead of the available release. So an older workflow never replaces a newer release, and a published release is immutable. `release/check.sh` runs the Python unit tests for these tools locally, without credentials. It fails when it selects zero tests.
+`release/build.sh` requires a clean tree at `CULLER_COMMIT`.
+It verifies the pinned AgentsView archive and builds `mc` for Darwin and Linux arm64 with the commit identity.
+It assembles the package and image inputs outside the checkout.
+`publish.py` uploads the launcher, installer, application package, optional OpenCode archive, and `release.json` with all five checks.
+It checks that the commit belongs to `main` and preserves published releases as immutable records.
+`release/check.sh` runs the release tool tests without credentials and fails when it selects zero tests.
+
+The current `VERSION` is `0.2.1`.
+`mc/distribution/update_policy.json` currently sets `test_releases` to `true`.
+This policy permits each new commit to publish through the normal install path with the tag `test-<full-commit>`.
+It bypasses the version and migration-path gates; it supplies no data conversion or database reset.
+The maintainer sets the field to `false` before public release.
+The ordinary policy uses `v<version>` tags, requires a version above the latest public version, and checks the supported update path.
+Each version requires a section in `CHANGELOG.md`.
+
+The image job restores the latest compatible image cache; only a push to `main` saves it.
+Go build caches use a separate key for each commit, job, and platform.
+The cleanup job retains two Go build caches per job and platform on `main` and preserves image and dependency caches.
 
 Both publication jobs also require `release-checks`.
 The vulnerability scans report their results in job summaries and artifacts, and a scan result never prevents a release.
@@ -224,9 +263,22 @@ Static API keys use the same host boundary.
 The release defines the supported provider authorities.
 Configuration validation rejects custom provider destinations and unsupported credential kinds.
 The host renews account access while the container retains its Culler token.
+Other catalog providers use the optional OpenCode harness and its separate runtime volume.
 A new Codex setup profile uses the native default model during its connection test.
 After success, setup saves the selected model for later runs.
 See [Agent connections and access renewal](agent-connections.md) for profiles, grant storage, and failure behavior.
+
+Public updates use the compatibility values in the release record to check the installed formats and dependency producers.
+The initial implementation supports unchanged spine, configuration, and credential formats.
+A declared accepted format alone cannot convert data.
+`release/UPDATES.md` defines the support policy, checkpoint, restore procedure, and required packaged acceptance.
+`release/PROVIDER-COMPATIBILITY.md` separates local compatibility checks from external provider behavior.
+The candidate checks saved OpenCode providers, models, and explicit efforts against its catalog without a provider request.
+A disabled profile keeps invalid choices and shows its problem.
+An enabled profile receives a warning before confirmation and can remain unavailable after the confirmed update.
+Other valid profiles remain available, and the affected profile consumes no task attempt.
+Culler preserves explicit choices; local checks cannot prove current provider access or identical behavior for provider defaults.
+See [Culler lifecycle](culler-lifecycle.md#public-updates-and-recovery) for the update sequence and retained verification limits.
 
 Keep-data uninstall preserves Project caches and derived images.
 Full wipe removes deployment cache volumes and derived image tags.

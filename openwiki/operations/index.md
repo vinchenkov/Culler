@@ -5,3 +5,4 @@
 - [Image delivery and update cleanup](image-delivery.md) - The page explains image contents, runtime volume updates, and cleanup after a published update.
 - [Installation, deployment, and release](install-and-deployment.md) - The deployment front doors (install.sh, redeploy scripts, dev-reset.sh, uninstall.sh), the Go deployment and onboarding packages behind them, and the GitHub release pipeline that produces installable releases.
 - [Release security scans](release-security.md) - Secret and vulnerability scans report results for later assessment and never prevent a push or a release.
+- [Worker instruction audit](worker-instruction-audit.md)

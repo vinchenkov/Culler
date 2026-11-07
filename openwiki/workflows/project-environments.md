@@ -38,10 +38,14 @@ sources:
     resource: repo://mc/verbs/skills/setup/mc-setup/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-872ae27b171d1fd2858b2ce1
+    resource: repo://mc/verbs/update_reconcile.go
   - id: openwiki-source-a2a135f3f8016d9eeb4be1d9
     resource: repo://mc/verbs/workspacesetup_test.go
   - id: openwiki-source-fe137a380d8afc80657647f3
     resource: repo://mc/verbs/workspacesetup.go
+  - id: openwiki-source-09c5383289d9635a85a372a3
+    resource: repo://release/UPDATES.md
   - id: openwiki-source-e028a0037f071b894557c29d
     resource: repo://resident/src/effects.ts
   - id: openwiki-source-f3babed308d9c6a9d29d3eeb
@@ -50,10 +54,10 @@ sources:
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-074a0c31b85dc048be2b3972
     resource: repo://runner/shared/project-cache.ts
-generated: { by: "culler-scribe", at: "2026-11-05T09:00:19.897Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T09:00:19.897Z
+    at: 2026-11-07T02:06:55.599Z
 ---
 
 # Project setup and environment lifecycle
@@ -249,7 +253,10 @@ A prior success therefore cannot hide image removal.
 
 `confirmRecordedCompatibility` populates the resident cache after those image checks.
 Its key includes the base digest, selected image digest, release build identity, and runtime volume.
-This avoids another image audit and compatibility container after a resident restart.
+Without an OpenCode volume, this avoids another image audit and compatibility container after a resident restart.
+When that optional volume exists, the resident performs the compatibility check and includes OpenCode in the cache key.
+The check mounts the optional volume read-only and executes its program version command in the selected image.
+This verifies that the image can execute the optional harness alongside the ordinary Culler runtime.
 A missing, failed, or mismatched record uses the full compatibility path and records its result through `mc`.
 A failed check leaves the cache available for a later retry.
 The resident continues with other Project selections after it records a failure.
@@ -328,6 +335,11 @@ An interrupted source association holds new work until receipt recovery resolves
 Published bases retain their immutable registry references for recovery.
 A missing derived image requires its retained approved build inputs.
 Recovery preserves the selected base and any later draft.
+Before a public update replaces software, the candidate checks every selected Project image, including images of archived Projects.
+The update preserves selected images instead of replacing them with the new default image.
+It checks the optional OpenCode archive when that runtime is installed.
+An interrupted setup operation records a failure after the updater confirms that its writers stopped.
+The operator can retry that operation from the Environment page.
 See [Git delivery](git-delivery.md) for source and receipt ownership.
 
 ## Project deletion

@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b40d29cb954793b65fd19469283176f416b2b3da518df8404103916f440456d3",
+  "pageVersion": "sha256:92e01cb51fd59d5a2fc64b7dd3d3a51d21c8514746a7df38eb4032f844562a86",
   "claims": [
     {
       "id": "claim_7ba26c16d0434b749aa6b15f31009048",
       "statement": "writeVerbError maps a UsageError to exit 2 with code usage, other errors to exit 1 with the DomainError code or domain-rejection, prints the message to stderr, and writes an error envelope to stdout.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/main.go#L400-L430",
+          "resource": "repo://mc/cmd/mc/main.go#L403-L433",
           "version": "repo-lines-v1:sha256:fbb6f37e96040b64b04855036b3a760f158af5e124c78c6ae3baba9f4e26735c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNjdlOTIxNDU3MTU2ZGEwZDcxYjhmYTI2ZDkxODRjYmI0OTJkYzYwYmExMmFmMGE2MmU5NWIxYzgxYTM1ZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3MDI4N2Y2YmIyZDY3YThhZGM2ZmE3MmUzNDY1MTU3YTQ0MjBjMzE5OWE0MDk1YjIzMzg1YmM2NGY4ZDJkZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhM2FkYTgwODFkNzljMzM4Mjc4NTk3OTJmY2JiM2EwMmRlZGE5Njc3NDI0YWE3MmQ4YTgwMWIxYjIxN2I3YWEifQ"
         },
         {
-          "resource": "repo://mc/cmd/mc/main.go#L472-L479",
+          "resource": "repo://mc/cmd/mc/main.go#L475-L482",
           "version": "repo-lines-v1:sha256:4734726fe209b84e1e80c17e92d5b6969650e86af2493358b37b59d8fca8237f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTFlNDU0MTg5YTM0ZGQwNDgzZDM0YjE2YWM3YmM4MmJlMWUzYzBiMGQ4MjczZDc4ODI2ZGU2YzlhMjBhMWY5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODcwMjg3ZjZiYjJkNjdhOGFkYzZmYTcyZTM0NjUxNTdhNDQyMGMzMTk5YTQwOTViMjMzODViYzY0ZjhkMmRkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE2M2RiNzMwMzI1OTU0MWY2ZGFhNmU0NDc2YWU0YWI0OGViZjk5MjJmZGVmYzYxN2FhZGIzZjlhZmU0ZmVlNiJ9"
         }
       ]
@@ -31,7 +31,7 @@
       "statement": "Delegation runs docker exec -i <helper> mc with the original arguments and reports a wrapper-only failure as exit 2 with self-delegation failed.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/main.go#L432-L470",
+          "resource": "repo://mc/cmd/mc/main.go#L435-L473",
           "version": "repo-lines-v1:sha256:3785eef8ca773551485250bff67f874657bec6737dbf6760571fcdd830dbb91b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNWJkNTRjYjdjMzIyZTgwMGExODllM2ZiZmJmMGY4NDNjN2ZiYzM1NmM3ZjJkMmViN2NjNDRmMTRmNWZmZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiNTM0ZTA5MDczOWU0Y2ZjNDk3ZTFlNjE2MjQ4MzY4OTIxMDNiOTVhNGYyOTIyNDZkYjI1MzM2ZDY5ZTE3ZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzMzljZWMwYzQwMGIzODUzODI4OTY1NjVlOTQzNjM1OWEwY2I3YmM5YmU2MjQ1MmU1YzgwYmFkMzA5ZTNkZDgifQ"
         }
       ]
@@ -65,8 +65,8 @@
       "statement": "The helper container runs /bin/sleep infinity as uid 10002 with no network, all capabilities dropped, fixed CPU, memory, and pid limits, and only the spine volume mounted at /mc/spine.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/helper_manager.go#L215-L237",
-          "version": "repo-lines-v1:sha256:a5e1cc381d19fb780f72299439cb544f68c81a4e52209ee3b406d883d7f790df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMDQ4ODBmZjFkNzFmZDhkNTY4YWE1Mjc2ZDUzZWRmMGNmNmRkMjc1ZmZjYmM2NTNmYjRlZDQxODJhMzlmZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZjFjZmFmOGY4OThjNGQzNzY0NTI5OTNjYTQ3MzY2MTE5NjI4NzA2ZjNhZWFkM2ExYWIzYmRkYjU5OGE5M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1ZWE2OTExNjdkNTBlYjI0NTIxNWM4MzdlZGVjYjAyMzAzYzk0YzgzZTUzMWFhMmNiZDNhNzYxYzU2MTdlZTMifQ"
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L215-L238",
+          "version": "repo-lines-v1:sha256:32420719f8b49de50dff85446d3b3018ae618c503b7141b1393f1bf519b5ba61:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMDQ4ODBmZjFkNzFmZDhkNTY4YWE1Mjc2ZDUzZWRmMGNmNmRkMjc1ZmZjYmM2NTNmYjRlZDQxODJhMzlmZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZjFjZmFmOGY4OThjNGQzNzY0NTI5OTNjYTQ3MzY2MTE5NjI4NzA2ZjNhZWFkM2ExYWIzYmRkYjU5OGE5M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1ZWE2OTExNjdkNTBlYjI0NTIxNWM4MzdlZGVjYjAyMzAzYzk0YzgzZTUzMWFhMmNiZDNhNzYxYzU2MTdlZTMifQ"
         }
       ]
     },
@@ -75,7 +75,7 @@
       "statement": "ensure refuses to remove a container that holds the helper name without the mc-managed helper labels.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/helper_manager.go#L288-L294",
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L289-L295",
           "version": "repo-lines-v1:sha256:eeaccc65f1cb1cde8d0ad6607b979209e5515a50d0d8e2b2d8fe9db006d41d9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y4OWRkZWU3ODZkMDZhYWNlMTkyOTgxNTY0NDcxMzBlNDU1NzFiZWQ3Nzc0YmM4N2NlNDVhNjAwODU1ZDExYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmY4NmY5OGNkYTk1YjMwY2UwMDQ5YjNiM2IyN2I4OWFiZDUwOWZmZDFlYzllOWE0NWM3ODdjNzJmMGQwMWQxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGYwNzIwMTE4NjExMzYzN2UyZTEyOTgzZGY3ODZmN2M1NTYxYjhjMjM4Nzk2YmNiYmIzYTU2MGM5NzMzZjNiYSJ9"
         }
       ]
@@ -159,6 +159,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-05T09:00:19.897Z"
+    "at": "2026-11-07T01:30:07.289Z"
   }
 }
