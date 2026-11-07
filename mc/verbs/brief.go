@@ -286,7 +286,46 @@ func buildRunBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, i
 	if sp.Role == dispatch.RoleWorker {
 		trimWorkerBrief(&b)
 	}
+	if sp.Role == dispatch.RoleVerifier {
+		trimVerifierBrief(&b)
+	}
 	return b, nil
+}
+
+// trimVerifierBrief leaves procedures in the directive and role skills.
+func trimVerifierBrief(b *runBrief) {
+	parts := b.Parts[:0]
+	for _, part := range b.Parts {
+		switch part.Heading {
+		case "Agent credentials", "Failure controls", "Correction allowances":
+			continue
+		case partCustomization:
+			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+		case partRun:
+			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
+		case partTask:
+			part.Explanation = "Use the Identifier as `<task>` in command forms."
+			facts := part.Facts[:0]
+			for _, fact := range part.Facts {
+				if fact.Label != "Unsuccessful Verifier corrections" {
+					facts = append(facts, fact)
+				}
+			}
+			part.Facts = facts
+		case "Project environment":
+			part.Explanation = "Use these identifiers to assess dependency compatibility."
+		case partGitState:
+			part.Explanation = "The Base commit is where the first Worker run started. The Submitted commit identifies the source under review."
+		case partCorrection:
+			part.Explanation = "These files contain the previous objection and evidence."
+		case partLastReport:
+			part.Explanation = "Read this report as the submitter's claims."
+		case "Operator allowance explanation":
+			part.Explanation = "Use the operator's explanation as context for the unresolved condition."
+		}
+		parts = append(parts, part)
+	}
+	b.Parts = parts
 }
 
 // trimWorkerBrief keeps Worker procedures in the command skill.
