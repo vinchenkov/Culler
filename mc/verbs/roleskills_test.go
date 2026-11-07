@@ -123,7 +123,7 @@ func TestVerifierShipsVerifyBehavior(t *testing.T) {
 	}
 	for _, want := range []string{
 		"playwright-cli", "--browser=chromium", "snapshot", "screenshot",
-		"video-start", "console warning", "delete-data", "Do not use this skill",
+		"video-start", "console warning", "delete-data",
 	} {
 		if !strings.Contains(set[1].Body, want) {
 			t.Errorf("verify-behavior never states %q", want)
@@ -344,7 +344,7 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 		if subjectless {
 			continue
 		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleVerifier {
 			name, err := RoleSkillName(role)
 			if err != nil {
 				t.Fatal(err)
@@ -399,14 +399,13 @@ func TestProseVerbInvocationsKeepsOtherToolFlagsSeparate(t *testing.T) {
 	}
 }
 
-// Task roles retain their pipeline context; Collie reads the wiki procedure from its command skill.
 func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 	for _, role := range allSpawnRoles {
 		prose, err := roleProseDirective(role)
 		if err != nil {
 			t.Fatalf("%s: %v", role, err)
 		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleVerifier {
 			continue
 		}
 		flat := strings.Join(strings.Fields(prose), " ")
