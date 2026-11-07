@@ -7,7 +7,6 @@ description: Read before Strategist commands, dependency use, or reports of exec
 
 ## Proposal batch
 
-Submit two proposals together, or fewer when fewer valid tasks satisfy the Project vision.
 Use an empty `proposals` array when no valid task remains.
 
 - `mc strategist propose --run <run_id> --batch -`
@@ -47,6 +46,7 @@ Apply the project-environment-setup skill for dependency preparation within this
 
 Complete proposal work after a failure when available results permit it.
 Continue the assigned work after connection recovery; leave connection reports to the runner.
+Each command below ends the run.
 When an execution condition prevents completion, report the observed problem without an inferred connection diagnosis:
 
 - `mc complete --run <run_id> --infra --reason <observed problem>`

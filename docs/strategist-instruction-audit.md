@@ -18,8 +18,8 @@ The before text comes from the base commit. The after text comes from the files 
 
 | File | Before | After |
 | --- | ---: | ---: |
-| `mc/verbs/directives/strategist.md` | 1603 | 420 |
-| `mc/verbs/skills/strategist/mc-strategist/SKILL.md` | 1148 | 435 |
+| `mc/verbs/directives/strategist.md` | 1603 | 442 |
+| `mc/verbs/skills/strategist/mc-strategist/SKILL.md` | 1148 | 427 |
 
 The command skill is the only Strategist-specific skill. This task adds or removes no skill.
 
@@ -29,12 +29,12 @@ The command skill is the only Strategist-specific skill. This task adds or remov
 | --- | --- | --- |
 | Directive | Title | Identifies the assigned role. |
 | Directive | Culler contract | Limits proposals to this Project, preserves accepted work and evidence, and defines authority, safety, and terminal requirements. |
-| Directive | Proposal requirements | Requires one-commit work, scoped checks, available evidence, passing changed tests, and duplicate checks. |
+| Directive | Proposal requirements | Requires the contract batch size, one-commit work, scoped checks, available evidence, passing changed tests, and duplicate checks. |
 | Directive | Project role customization | Distinguishes operator defaults from contract requirements and directs conflicts to their procedure. |
 | Directive | Research | Selects useful work, controls research and delegation, and requires the inline reason outside the payload. |
 | Directive | Completion | Selects the procedures for execution problems and required operator decisions. |
 | Command skill | Frontmatter and title | Identifies the installed skill and its command, dependency, and exceptional-completion triggers. |
-| Command skill | Proposal batch | Defines batch size, the empty result, the request schema, transaction behavior, and retry after a rejection. |
+| Command skill | Proposal batch | Defines the empty result, the request schema, transaction behavior, and retry after a rejection. |
 | Command skill | Reads | Supplies permitted reads and the scope lookup when a task title is insufficient. |
 | Command skill | Research dependencies | Requires compatibility checks before optional dependency use and preserves the shared preparation procedure. |
 | Command skill | Execution problems and operator decisions | Distinguishes recoverable work, execution failure, connection reports, and a required operator decision. |
@@ -44,13 +44,15 @@ The directive keeps rules needed to assess proposals in every run.
 Conditional dependency, failure, decision, and conflict procedures stay in the command skill.
 The generated pointer resolves to `~/.agents/skills/mc-strategist/SKILL.md` inside the agent container.
 It requires a read before each command, including the terminal.
-The directive also names each condition that requires a procedure before command use.
+The directive also names the dependency, execution-problem, operator-decision, and customization-conflict conditions.
+The generated command pointer reaches **Reads** before a lookup command; that section states when a title needs a scope lookup.
 
 ## Authority and delivery
 
 The proposal command, command allowlist, request decoder, and terminal handlers remain unchanged.
 The Arbiter retains proposal selection. The operator retains proposal resolutions, role customization, and required decisions.
-The skill preserves two proposals, fewer valid proposals, and an empty batch as separate permitted results.
+The directive keeps the two-proposal rule and its exception for fewer valid tasks within the Culler contract.
+The skill defines the empty batch when no valid task remains.
 The directive preserves scope, duplicate checks, container checks, and the prohibition on whole-suite acceptance criteria.
 Examples no longer name Culler's own check command or a particular hosted service.
 
@@ -70,7 +72,7 @@ The task artifact retains both captures, the capture test, and their comparison 
 Each entry quotes the original text from the base commit and assigns one required category.
 The inventory includes deleted wording, moved instructions, and rewritten passages.
 For a rewritten passage, `unneeded` refers to the removed formulation; its note identifies behavior that remains.
-A `duplicate` entry names the single retained file and section.
+A `duplicate` entry names the retained file and section for each rule.
 A `moved behind a pointer` entry names its destination and trigger.
 Unchanged lines need no entry. Removed headings have no independent behavior.
 
@@ -135,7 +137,7 @@ Check retained dependencies against the current declarations and the selected im
 
 ### Passage 7: original lines 24–24
 
-Category: `duplicate`. Retained at `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Proposal batch** for batch size and `mc/verbs/directives/strategist.md`, **Culler contract** for evidence and Arbiter selection.
+Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Proposal requirements** for batch size and **Culler contract** for evidence and Arbiter selection.
 
 ```text
 Propose two tasks within the Project vision. Preserve proposal limits and leave selection to the Arbiter.
@@ -152,7 +154,18 @@ The contract also retains these requirements:
 
 ### Passage 9: original lines 29–35
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler contract** and `mc/verbs/directives/strategist.md`, **Proposal requirements**. These consolidate the repeated safety, evidence, deliverable, authority, and terminal rules.
+Category: `duplicate`. Each rule remains in `mc/verbs/directives/strategist.md` at these sections:
+
+| Original rule | Retained section |
+| --- | --- |
+| Preserve the acceptance criteria. | Project role customization: required criteria remain part of the contract. |
+| Preserve accepted work. | Culler contract: preserve accepted work. |
+| Report evidence and results truthfully. | Culler contract: report evidence truthfully. |
+| Produce the required deliverables. | Project role customization: required deliverables remain part of the contract. |
+| Use `mc` for Culler state changes. | Culler contract: use permitted `mc` commands for Culler state changes. |
+| Use only permitted commands with your own run identity. | Culler contract: use permitted commands with your own run identity. |
+| Preserve repository, artifact, and display safety constraints. | Culler contract: preserve these safety constraints. |
+| Submit exactly one permitted terminal action. | Culler contract: end the run with exactly one permitted terminal action. |
 
 ```text
 - Preserve the acceptance criteria and accepted work.
@@ -313,7 +326,7 @@ An empty part is absent.
 
 ### Passage 27: original lines 77–77
 
-Category: `moved behind a pointer`. Destination: `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Reads**. Trigger: a historical title needs a scope lookup; read the skill before a command.
+Category: `moved behind a pointer`. Destination: `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Reads**. Pointer condition: before each `mc` call, from **Your command surface** in `mc/verbs/directives.go`. The skill identifies the scope-lookup case.
 
 ```text
 Older tasks remain available through the permitted read commands.
@@ -348,7 +361,7 @@ Historical entries exclude descriptions.
 
 ### Passage 31: original lines 87–87
 
-Category: `moved behind a pointer`. Destination: `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Reads**. Trigger: an active or historical title leaves the scope unclear; read before the lookup command.
+Category: `moved behind a pointer`. Destination: `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Reads**. Pointer condition: before each `mc` call, from **Your command surface** in `mc/verbs/directives.go`. The skill identifies the scope-lookup case.
 
 ```text
 Use `mc task get <id>` when a historical title leaves the scope unclear.
@@ -457,7 +470,7 @@ Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Propos
 
 ### Passage 43: original lines 119–119
 
-Category: `duplicate`. Retained at `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Proposal batch**.
+Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Proposal requirements**, within the Culler contract.
 
 ```text
 - Propose two tasks in one batch. Submit fewer only when fewer valid tasks satisfy the Project vision.
@@ -465,7 +478,9 @@ Category: `duplicate`. Retained at `mc/verbs/skills/strategist/mc-strategist/SKI
 
 ### Passage 44: original lines 120–121
 
-Category: `unneeded`. The expanded formulation becomes two direct research rules in `mc/verbs/directives/strategist.md`, **Research**. Internet research remains available to read-only subagents.
+Category: `unneeded`. The expanded formulation becomes direct research rules in `mc/verbs/directives/strategist.md`, **Research**.
+That section expressly permits internet research by the Strategist and its read-only subagents.
+The repository restriction excludes other Projects; subagents retain internet access and make no `mc` calls.
 
 ```text
 - Select the candidates with the best reward for the cost. Discard the other candidates before you file.
@@ -533,7 +548,7 @@ Category: `unneeded`. The expanded workflow instructions become the concise dele
 
 ### Passage 51: original lines 144–144
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Research**: read-only, depth-1, Project-only subagents make no `mc` calls.
+Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Research**: read-only, depth-1 subagents make no `mc` calls. Their repository reads stay within this Project.
 
 ```text
 Subagents have these limits:
@@ -541,7 +556,7 @@ Subagents have these limits:
 
 ### Passage 52: original lines 146–148
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Research**: read-only, depth-1, Project-only subagents make no `mc` calls.
+Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Research**: read-only, depth-1 subagents make no `mc` calls. Their repository reads stay within this Project.
 
 ```text
 - Do not let a subagent write artifacts.
@@ -737,7 +752,8 @@ Category: `unneeded`. The expanded priority prose becomes the `priority` field c
 
 ### Passage 13: original lines 38–39
 
-Category: `duplicate`. The single batch-size rule remains at `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Proposal batch**.
+Category: `duplicate`. The batch-size rule remains at `mc/verbs/directives/strategist.md`, **Proposal requirements**, within the Culler contract.
+The two-proposal limit also excludes larger batches.
 
 ```text
 Propose two tasks in one batch. Submit fewer only when fewer valid tasks satisfy the Project vision.
@@ -896,7 +912,7 @@ The **Active tasks** part of the run brief holds each task of this Project that 
 
 ### Passage 31: original lines 90–90
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler contract** and the permitted command surface. The command forms omit a task subject.
+Category: `unneeded`. This heading adds no authority limit beyond the retained rules that the following entries identify.
 
 ```text
 ## Out of scope
@@ -904,7 +920,7 @@ Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler
 
 ### Passage 32: original lines 92–92
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler contract** and the permitted command surface. The command forms omit a task subject.
+Category: `unneeded`. This introduction assigns operations to other actors; the Strategist needs only its own authority limits.
 
 ```text
 These operations belong to the operator and to Culler:
@@ -912,7 +928,9 @@ These operations belong to the operator and to Culler:
 
 ### Passage 33: original lines 94–96
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler contract** and the permitted command surface. The command forms omit a task subject.
+Category: `duplicate`. `mc/verbs/directives/strategist.md`, **Culler contract**, prohibits the Strategist from starting runs or deciding review packets.
+That section also limits the Strategist to permitted commands.
+`mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Proposal batch** and **Reads**, contain proposal submission and read commands; neither permits task creation.
 
 ```text
 - create a task;
@@ -922,7 +940,8 @@ Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler
 
 ### Passage 34: original lines 98–98
 
-Category: `duplicate`. Retained at `mc/verbs/directives/strategist.md`, **Culler contract** and the permitted command surface. The command forms omit a task subject.
+Category: `duplicate`. `mc/verbs/directives/strategist.md`, **Culler contract**, retains Arbiter selection and the assignment to this Project.
+`mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Proposal batch** and **Execution problems and operator decisions**, retain terminal forms without a task subject.
 
 ```text
 Only the Arbiter promotes a proposal. Your run belongs to the Project, with no task subject.
@@ -1138,7 +1157,8 @@ This part is absent from the final Strategist brief.
 
 ### `mc/verbs/brief.go`: Vision
 
-Category: `duplicate`. The Project goal remains at `mc/verbs/directives/strategist.md`, **Culler contract** and the batch size at `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, **Proposal batch**.
+Category: `duplicate`. The Project goal remains at `mc/verbs/directives/strategist.md`, **Culler contract**, and the batch size remains in **Proposal requirements**.
+Both rules retain contract authority.
 
 Original text:
 
@@ -1186,6 +1206,7 @@ The changed text tests keep the inline reason, Project scope, dependency checks,
 They stop requiring copies in both the directive and skill.
 The Arbiter's existing assertions remain intact.
 A new delivery test checks the Strategist's evidence, conditional pointers, authority, and one-copy rules.
+It requires the batch-size rule in the contract and retains subagent internet access, Project repository limits, and the command ban.
 A payload test checks that every retained brief part preserves its facts, rows, and exact text.
 Existing tests retain history limits, ordering, Project isolation, Vision delivery, and command conformance.
 

@@ -159,11 +159,8 @@ func TestProseLessTerminalsRecordInlineExceptionBeforeTheCall(t *testing.T) {
 			t.Fatalf("%s skill: %v", role, err)
 		}
 		for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
-			if surface == "skill" {
-				continue // Both roles record this rule once, in their directives.
-			}
 			flat := strings.Join(strings.Fields(prose), " ")
-			if !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
+			if surface == "directive" && !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
 				t.Errorf("%s %s leaves the inline exception unrecordable", role, surface)
 			}
 			for _, impossible := range []string{
@@ -369,7 +366,7 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 			}
 		}
 	}
-	for _, want := range []string{"in this run's Project", "Each subagent reads only this Project"} {
+	for _, want := range []string{"in this run's Project", "Each subagent reads repositories only for this Project"} {
 		if !strings.Contains(flat(propose), want) {
 			t.Errorf("propose directive omits %q", want)
 		}
@@ -622,14 +619,14 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 					t.Errorf("The %s directive omits %q.", role, required)
 				}
 			}
-			if role == dispatch.RoleStrategist || role == dispatch.RoleArbiter {
+			if role == dispatch.RoleArbiter {
 				if !strings.Contains(directive, "omits automatic dependency preparation") {
 					t.Errorf("The %s directive omits its preparation exemption.", role)
 				}
 			} else if !strings.Contains(directive, "The runner prepares workspace dependencies before the agent starts") {
 				t.Errorf("The %s directive omits dependency preparation.", role)
 			}
-			if role == dispatch.RoleStrategist || role == dispatch.RoleArbiter {
+			if role == dispatch.RoleArbiter {
 				if !strings.Contains(directive, "fresh committed projection") {
 					t.Errorf("The %s directive omits its committed projection.", role)
 				}

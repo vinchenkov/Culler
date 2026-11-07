@@ -69,7 +69,9 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 		"New or changed tests must pass on the submitted commit.",
 		"Do not require whole-suite success as an acceptance criterion.",
 		"Exclude equivalent work in the repository, **Active tasks**, **Rejected work**, and **Cancelled work**",
-		"Submit two proposals together, or fewer when fewer valid tasks satisfy the Project vision.",
+		"Submit two proposals together, or fewer only when fewer valid tasks satisfy the Project vision.",
+		"You and your subagents can use internet research when it helps advance the Project goal.",
+		"Each subagent reads repositories only for this Project and makes no `mc` calls.",
 		"Use an empty `proposals` array when no valid task remains.",
 		"Use the task read when an active or historical title leaves the scope unclear.",
 		"Use each reason as context for the operator's preference.",
@@ -87,6 +89,7 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 	}
 	contract := roleContract(dispatch.RoleStrategist)
 	requireAgentText(t, "Strategist contract", contract, []string{
+		"Submit two proposals together, or fewer only when fewer valid tasks satisfy the Project vision.",
 		"Each description states the task's scope and checkable success criteria.",
 		"Use only permitted `mc` commands with your own run identity",
 		"Do not rank proposals, implement them, start runs, or decide review packets.",

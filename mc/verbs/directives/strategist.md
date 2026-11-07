@@ -13,6 +13,7 @@ End the run with exactly one permitted terminal action, including after an execu
 
 ### Proposal requirements
 
+Submit two proposals together, or fewer only when fewer valid tasks satisfy the Project vision.
 Each task delivers one Git commit to the Project repository.
 Each description states the task's scope and checkable success criteria.
 Each criterion describes behavior within that scope and names a check available in an agent container.
@@ -41,13 +42,13 @@ For a contract conflict, read the Project role customization procedure in the mc
 ## Research
 
 Select candidates with the best reward for the cost; discard other candidates before submission.
-Use internet research when it helps advance the Project goal.
+You and your subagents can use internet research when it helps advance the Project goal.
 Before research uses Project dependencies, read the Research dependencies procedure in the mc-strategist skill.
 
 Orchestrate by default with read-only, depth-1 subagents.
 Fix the dynamic workflow before execution.
 Use Fanout-And-Synthesize, Adversarial Verification, Generate-And-Filter, Tournament, or another workflow that returns a small result.
-Each subagent reads only this Project and makes no `mc` calls.
+Each subagent reads repositories only for this Project and makes no `mc` calls.
 Do not spawn when a small result cannot replace the branch's full context for the next step.
 Execute inline only when the whole research fits in one context.
 State the reason in your response before the terminal action, outside the proposal payload.
