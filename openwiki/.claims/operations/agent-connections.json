@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8e6269ad57748554739c0d1d8933e78ccff35c900814557efcbd7c119510c8c9",
+  "pageVersion": "sha256:1ed5d85601d69e4ca67d4a66e242a8174c511955e6ba1876df89109dfd27e0b9",
   "claims": [
     {
       "id": "claim_aee9aadca2bf4c71862803d812043b81",
@@ -192,15 +192,11 @@
     },
     {
       "id": "claim_8956013879c942aca5105859b90adefd",
-      "statement": "OpenCode connections use the release catalog and download the optional harness before the model test. A failed download preserves the connection and key.",
+      "statement": "A failed published OpenCode download preserves the connection and key for retry.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L415-L434",
-          "version": "repo-lines-v1:sha256:f46492b95984ea2e572fce465d64edb83295d69b25d543c417347729394ccf20:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZTVhZmQ4OTE0YjVkYzJiMDBhMjY3NTc1MTI5ZWNhMmU4NmM4NGEyMzA5ODQ5ZmQyNzQ2NjFmNGQyNTM2YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiMmVjM2IwZjkwNjhjYWU2ZjIxMGUyMjhkNjc2NmNlYzRmZjZjNzEyOGI2NWYyZjBhNWM3N2E2NDk2YWI1M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1YTExYTQwYmRjOGJlYTc1NzQ1ZThlNWFjZjM0YjMzYjUwMTUyYzlhMzM5OWYxZTBlNmFmMTk4YmYwMmU0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
-        },
-        {
-          "resource": "repo://mc/deployment/agentprofile_auth.go#L206-L225",
-          "version": "repo-lines-v1:sha256:302efb4bd3f4c774d85c3b99e14e8d936d903f43bdfdb6d3e6ed124927d9aa5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYjg1ZjQwNDI0MmIwZTUxNDc5ZGEwZjExMmEwNzNkODUyNWRjZGVhMmIyNmQxOGVkYTc3YTI1ODIyNDI5YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3M2NkMTZjNmQ5ZDI2MGRlZWQ4MTAzNWIzYmNhYmQ4NzNkM2NhY2EwMzdiMWUyYzNhYjkzNWIwZTgzOTZiY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmMmY3OGY5MGZmNzcxMWU4MWRmODRjNjM2YjhjMTk4ODZlZTU5NmVjZDk2MTExOWY3NTkwZjBiYTUzOGZmODEifQ"
+          "resource": "repo://INSTALL.md#L433-L445",
+          "version": "repo-lines-v1:sha256:3701545024664156a188ec0ef273c0619cce4e7bbd57e588476ca181966f3641:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2MzdmMzhkMzlmOGVmOGFkOWNiYzI3ZTExMjc3OGVkN2U5OTg3NTQxZjlhMDYxODNhODk4NDFkNTJmOTNmOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzM2Y3ZjI0NzNlNTJiNThmZDBiNTRjZjVlNzU1ZTJkMWI2MGU1YjY5NWJkMmE1MTI0OGUyZWNjZTIzMGNkMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhY2RjMTIyNzE0ODZjYjIzMzBkMTE1YWVmOWE5MGI2MjNlZmFhZDljNWZiOTFiYjI1YmJlZTZkMmIxMzA4NDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiYzFjMzg1YzhjMGFiYWU0MGIyZWE3N2E5NDFmNDE3ZDJjNzM2NDg3MTY2NTNlYmNjMDU5ZGJkMjU5MGVhY2MifQ"
         }
       ]
     },
@@ -231,10 +227,48 @@
           "version": "repo-lines-v1:sha256:dd7c79faf20d218d5f92ef3a15fc90c939cddd16719ebc9246ccffe8bc5dc662:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0NjRlOGQ3ZmFlN2VmOWVhZjZjNTgxY2FhYmViZTQzMmUxOTc2ZmFlMDZmMzhhMTI3MmQzYzViYmIyYTdjMTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiMmM1NmJiYjVmYWQ2Y2RkOTA4NjU1ZDk0NjE5ZDQ5OGY1NGNjZmMyZTJiODYxMWQzYzNmOWFiZjcxNzVjMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_bdb3dfae39e2432185991362740a575a",
+      "statement": "The OpenCode model test waits for a successful package operation status.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agentprofile_auth.go#L206-L225",
+          "version": "repo-lines-v1:sha256:302efb4bd3f4c774d85c3b99e14e8d936d903f43bdfdb6d3e6ed124927d9aa5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYjg1ZjQwNDI0MmIwZTUxNDc5ZGEwZjExMmEwNzNkODUyNWRjZGVhMmIyNmQxOGVkYTc3YTI1ODIyNDI5YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3M2NkMTZjNmQ5ZDI2MGRlZWQ4MTAzNWIzYmNhYmQ4NzNkM2NhY2EwMzdiMWUyYzNhYjkzNWIwZTgzOTZiY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmMmY3OGY5MGZmNzcxMWU4MWRmODRjNjM2YjhjMTk4ODZlZTU5NmVjZDk2MTExOWY3NTkwZjBiYTUzOGZmODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7867aa31e40e436198374a0506aa5450",
+      "statement": "Source deployments prepare OpenCode before service activation, so the first connection uses the verified package without another download.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L397-L411",
+          "version": "repo-lines-v1:sha256:eecc1f805da4d8ebf7fc7eb94e1e1e645c6df3cc4b79c788f6de5ebe594cba5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3Mjg2Y2IwZmY5M2RhODJmMDRlYzYxY2E1MDRjOGFhMDQ5NTdjM2JjYTc5YzFjZTI4YTFiYWQ3NDMzZjhhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzY0N2QwNjEwNWE2MDJhYzg2ZmNlMmRjMDI4ZWE4NTYzYjAxOGUzNjhlOGQ1NmNmZDM5Zjc3ZDg1MjMyNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDk1MGMxYjc5NDQ1MDY2YjQyY2EyNTMxMjRhMGRjZDQzZWQ1ZTEwMDQ2MWE2ZDE2MWYwYzYxZjgxYjFlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzY2ZTg4NWM5YmI4ZWUxMWMwMGUzZTJkMDk0NWQ2MTc4OWVhZjlkZjEwMmI5MjlkYWMyZGNjODE3ZDI1MTIifQ"
+        },
+        {
+          "resource": "repo://INSTALL.md#L447-L451",
+          "version": "repo-lines-v1:sha256:64c920e40afbfe228be4916eef3d2e3b090975cda300536443fe426681659a90:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQ2OTdhMDA2Y2ZhZmU0MDg5ZWMzNzIwYjk1M2ZmZmM0ZGRhMjZhZTFkMTRjNGZiNzhlOTRmZmYxZmFiM2YzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJmNDNmM2Q3NTE1YTUyOTZhYjIyZjg0OGZhNzExNzZmZDQ2Nzk1ZDhmNmNmMDQzZTVkYjdjNTIzZjEyYWM2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDhhM2NiNTRiOGUyNDU5ZjE5NGZkNmQ5NjkwYTVkZTA3MzQ2OWUzODljZmVlZmM1YTUwYmJhNzc2YTdhM2Y2MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source_docker_test.go#L105-L117",
+          "version": "repo-lines-v1:sha256:674471c36d3512d8ee10e4a42f7751d90d857215d6335167fdbf149e844344c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiZDA2MWM1ZDk2ZmQ0MzIxNDE5MjA5MzgyNGYxN2I0MmExZjdmNzgwYWI0M2RmMWFiOTUzNTVmZWUzMDNjMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyNThmZmEwZTBmOGU5NmMwYzk2MDg1YjJjN2FlNjgwNzY5M2RmMWZiNmY0MjkxM2FlZGQ2MjlmNmVhOTc1MDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWJjNzNiYjAzMzE4NmNjNjFlNjBiZDZjMmUwY2Y5MzNmY2ZjNjI1Y2Q1ZmZjMDZiY2FjYTBlMDk1OTVmMWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMTJhNTBiOTJlNjYxMjFiZjYzOTlkODRlNzRhYTE2OWY1MTAxNDU5YmM2ZDVhNjZkOWRjZWQ4OTM3YmE2NmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_585cda32bdfd45eb8ecbb17dfc39be18",
+      "statement": "Successful source preparation or verified reuse records readiness and clears an obsolete failure code.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L160-L206",
+          "version": "repo-lines-v1:sha256:7e5cc524adce6e7a5da1392117cbfa6f52346615f44b82582894e25215539dff:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMTc0MmU4MjZkYzE0NmJlNTZjNjA0N2JhYTY4ZmMwYjQ3ODM0ZjMwYzJjN2Q3NmQzZmU1ZTg3YTAzMDdhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzllNDM0YmI4MTQ4N2IxYWM2YzgyOWE1ZGQ2OGQyODkwN2FkODg5OWIwMmRlNmJkYjI5MGU1YTRmNGYzZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZDkzMWFiYTNlYzExNTU5ODZjMTYwNDMyZDg1YzBjNDViZmE4ZGJhZTQwMjRjMWEzZDVjZWZhOWY2NWE0MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNWM2MTQ5ODQ3MTE3ZDQ2MTBhMzQzMTQ1N2MxOGE1NDE2Y2JmNGUwMWQ5ZTgwMzQ2YWNhZTAzNTQ1NjRkM2QifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-08T02:41:27.984Z"
   }
 }

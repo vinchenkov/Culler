@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:24c8c0bba0cd721813a3eaeeb94bfbce0e1c467892c9bb1dfea11c87cc26cf3b",
+  "pageVersion": "sha256:0f831853f71f6759cc06108341ee1da4c65a8090a5b5aa3422a7faaf2c82918c",
   "claims": [
     {
       "id": "claim_72140ad5595540da9dadcbf90a41c767",
@@ -303,10 +303,34 @@
           "version": "repo-lines-v1:sha256:19aba9beafcec49b6791f50371b6fd2f15f703dc7853375dc91c3348f6ab79b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2M2IwZGMxNDczNWFiYTgwOWQwNjdlN2FjNjhiMjdmNGQ5ZGE5OTZjY2Y3OWQ3NGU0YzczZDk3ZmUxYzA4NzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYzNjMTliOTIzMjIzYzczZWE5NWZkNmFlYjBjNWJlODQyMzFiMzk0MGQxNjkzOGE3Mzc3ZjgyMmUyNTM1MjMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_a06adaeb344d48419a0fe29d620c5058",
+      "statement": "The resident mounts the separate OpenCode volume read-only for runs that select the OpenCode harness.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L78-L87",
+          "version": "repo-lines-v1:sha256:075dc32ddca225791a04de9004e52ef42db37a9c4cbcc9a801bf9ca926d144ff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwMTE0OTY0ZmI1ODRkOWEyMTk4YWYxMjJmMzU5NWFkYjUxZDg4MTRlNTYyMzcxZjdlODgxYWI5YjM3MWJjMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmZWVmNWM5OThiNjE5MTU4ZGMzZjhhMjcwZTQyY2MyM2VhYTJmYjk2MGU4MTdlZDJkMTZjN2I5N2M1MTk3MGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7513e520d1364102b166710aaa4267b2",
+      "statement": "Source deployments prepare OpenCode before service activation, while published installations defer the package download until the first OpenCode connection.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L397-L411",
+          "version": "repo-lines-v1:sha256:eecc1f805da4d8ebf7fc7eb94e1e1e645c6df3cc4b79c788f6de5ebe594cba5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3Mjg2Y2IwZmY5M2RhODJmMDRlYzYxY2E1MDRjOGFhMDQ5NTdjM2JjYTc5YzFjZTI4YTFiYWQ3NDMzZjhhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzY0N2QwNjEwNWE2MDJhYzg2ZmNlMmRjMDI4ZWE4NTYzYjAxOGUzNjhlOGQ1NmNmZDM5Zjc3ZDg1MjMyNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDk1MGMxYjc5NDQ1MDY2YjQyY2EyNTMxMjRhMGRjZDQzZWQ1ZTEwMDQ2MWE2ZDE2MWYwYzYxZjgxYjFlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzY2ZTg4NWM5YmI4ZWUxMWMwMGUzZTJkMDk0NWQ2MTc4OWVhZjlkZjEwMmI5MjlkYWMyZGNjODE3ZDI1MTIifQ"
+        },
+        {
+          "resource": "repo://INSTALL.md#L439-L451",
+          "version": "repo-lines-v1:sha256:9f30c7509ada5bdec173ddce46fab13e42455114c79d327badc6c013a6100b13:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNzdiNmEzMDc4NTcwYzM0NDVkY2I5ZmM0YjcxYWZjN2UwZmMxZTgwYTZhZDkzODFkNmU0NTNmNTdkOTA3ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyZjQzZjNkNzUxNWE1Mjk2YWIyMmY4NDhmYTcxMTc2ZmQ0Njc5NWQ4ZjZjZjA0M2U1ZGI3YzUyM2YxMmFjNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4YWFjMTk0YmVkZTY4ZjE5NjQxNDQyNTJmZTNhYWVhY2Q0MjQwYTkzMDA4Nzg5ZWU4MTIwNzRhYzNiZTA5NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T02:06:55.599Z"
+    "at": "2026-11-08T02:41:27.984Z"
   }
 }

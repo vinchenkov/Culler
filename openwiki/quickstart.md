@@ -80,10 +80,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Culler quickstart
@@ -142,6 +142,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Install, redeploy, or release | [Installation and deployment](operations/install-and-deployment.md) |
 | Retry or restore an interrupted published update | [Update recovery](operations/culler-lifecycle.md) |
 | Check image contents, update size, or image cleanup | [Image delivery and update cleanup](operations/image-delivery.md) |
+| Understand OpenCode preparation and reuse in source deployments | [Source OpenCode packages](operations/image-delivery.md#source-package-preparation-and-reuse) |
 | Check or control local services | [Culler lifecycle command](operations/culler-lifecycle.md) |
 | Assess release scans, secret scanning, or nightly reports | [Release security scans](operations/release-security.md) |
 | Understand reuse of image compatibility results | [Recorded runtime checks](workflows/project-environments.md#reuse-of-recorded-runtime-checks) |
@@ -347,15 +348,23 @@ It leaves a reply from a live agent unverified.
 
 Culler supports account sign-in and static API keys for Codex and Claude Code.
 **Use another provider's API key** selects an OpenCode connection from the release catalog.
-The first such connection starts a separate download of OpenCode and its web search plugin.
+In a published installation, the first such connection starts a separate download of OpenCode and its web search plugin.
 The catalog defines available models, effort levels, provider destinations, and web search support.
-An installation without an OpenCode connection downloads no OpenCode program.
+
+A published installation without an OpenCode connection downloads no OpenCode program.
+Source deployments prepare and verify OpenCode before service activation, even without an OpenCode connection.
+They use package tools inside the selected source image and require no host npm installation.
+Equal package inputs and verified installed contents permit reuse across unrelated Culler commits and checkout paths.
+The first source connection uses the prepared package without another download.
+See [source package preparation and reuse](operations/image-delivery.md#source-package-preparation-and-reuse) for the specification, failure behavior, and package checks.
+
 The host retains provider credentials and supplies temporary Culler tokens to agent containers.
 Profiles select a connection, model, and optional effort; several profiles can share a connection.
 The model list offers its supported effort levels when it supplies them.
 The model test checks a selected effort before the profile is saved.
 The role assignment dialog offers an Edit action for each enabled profile.
 The release defines permitted provider destinations.
+
 See [Agent connections and access renewal](operations/agent-connections.md) for configuration, host storage, runner behavior, and verification boundaries.
 
 ## Recover a published update

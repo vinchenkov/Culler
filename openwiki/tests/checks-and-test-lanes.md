@@ -42,6 +42,8 @@ sources:
     resource: repo://mc/cmd/mc/arbiter_criteria_test.go
   - id: openwiki-source-d9949d9a9d2f424493fa411e
     resource: repo://mc/cmd/mc/culler_prod_test.go
+  - id: openwiki-source-ba92167dda59467828397749
+    resource: repo://mc/cmd/mc/setup_opencode_source_prod_test.go
   - id: openwiki-source-9f816a6d1f5994d193ba7ab4
     resource: repo://mc/config/agentprofiles_test.go
   - id: openwiki-source-e52c730e2e47b3a8099643b1
@@ -50,6 +52,12 @@ sources:
     resource: repo://mc/deployment/agentprofile_testop_test.go
   - id: openwiki-source-31704b283966353f2dbd4bbd
     resource: repo://mc/deployment/cli_install_test.go
+  - id: openwiki-source-414aa10e02df8456691e0f9b
+    resource: repo://mc/deployment/opencode_source_docker_test.go
+  - id: openwiki-source-2d611a4b791928013c2f5ff3
+    resource: repo://mc/deployment/opencode_source_program_test.go
+  - id: openwiki-source-94a13a8eafcc90f4670b41f5
+    resource: repo://mc/deployment/opencode_source_test.go
   - id: openwiki-source-cf4736c38e48c2b892615899
     resource: repo://mc/deployment/opencode_test.go
   - id: openwiki-source-f2370cd7c903f813dbc4ad1c
@@ -118,10 +126,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -519,6 +527,51 @@ See [Agent connections and access renewal](../operations/agent-connections.md) f
 `runner/agent-runner/opencode.test.ts` checks model variants, local plugins, role skills, OpenWiki readiness, session identity, continuation, completion, and token removal.
 `mc/deployment/opencode_test.go` checks catalog-only model lists, download retry, unsafe archives, interrupted extraction, native version checks, and model-test evidence.
 These checks use controlled fixtures and do not establish live provider availability.
+
+### Source OpenCode package checks
+
+The source package checks separate controlled deployment tests, filesystem verification, and real Docker preparation.
+
+| Source | Behavior under test |
+| --- | --- |
+| `mc/deployment/opencode_source_test.go` | Preparation without a connection; reuse across commits, image identities, checkout paths, and timestamps; input changes; repair; ownership; active agents; and concurrent requests. |
+| `mc/deployment/opencode_source_program_test.go` | Actual archive and directory digests, file contents, modes, symbolic links, required markers, and native version response checks through a fixture executable. |
+| `mc/cmd/mc/setup_opencode_source_prod_test.go` | Source failure stages and causes survive terminal formatting. Preview fixtures cover progress, failure, details, and retry. |
+| `mc/deployment/opencode_source_docker_test.go` | Real package preparation from committed declarations, native version verification, offline reuse, and detection of a changed plugin. |
+
+The deployment fixture checks each package input separately, including declarations, the lock file, control files, archive rules, and tool identity.
+It checks absent, damaged, legacy, and partial volumes, plus an obsolete failure status after successful verification.
+It rejects uncommitted package inputs before preparation.
+Concurrent requests must produce one package build and installation.
+
+Published transition cases preserve deferred download when the volume is absent.
+They require the retained published archive even when the source package has the same Culler commit.
+They exclude source preparation during published recovery and clear obsolete source readiness after volume removal.
+They also check a volume that becomes available between the first inspection and the second inspection under the worker lock.
+
+The ordinary Go suite runs the controlled deployment, filesystem, and terminal formatter tests.
+The filesystem test requires Python 3 and uses a shell fixture for the native program.
+It does not replace the real package test.
+
+The Docker test has the `docker_boundary` tag and resides in `mc/deployment/`.
+It requires Docker, a compatible Linux arm64 source image, and network access for the first package preparation.
+`CULLER_OPENCODE_TEST_IMAGE` selects the image; its default is `mc-prod`.
+The test excludes host npm, uses a temporary committed repository and deployment home, and removes its scratch volume.
+After the first installation, it rejects another archive build or a container run with network access during reuse.
+It then moves the checkout and checks that the first connection requests no new preparation.
+These checks require no provider credentials or provider requests.
+
+Run the focused Docker test from `mc/`:
+
+```sh
+./test.sh -tags=docker_boundary -count=1 -timeout 20m ./deployment/ -run '^TestOpenCodeSourceDockerPreparationAndOfflineReuse$'
+```
+
+The separate `./boundarydocker/` package selection does not include this deployment test.
+These descriptions state source assertions. This wiki update did not execute these application suites or the Docker test.
+See [source package preparation and reuse](../operations/image-delivery.md#source-package-preparation-and-reuse) for the implementation and specification.
+
+### Published update recovery checks
 
 `mc/cmd/mc/setup_update_transaction_prod_test.go` checks retained candidate recovery, configuration changes, maintenance, durable commit, refused post-commit restore, and cleanup retry.
 `mc/deployment/update_checkpoint_docker_test.go` checks real scratch volume recovery after an interrupted optional-runtime copy.

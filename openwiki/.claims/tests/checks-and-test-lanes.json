@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:90d67273311511af4a3feadec40c2c580014663c6a1d2e2e3220d4d3a3f0875f",
+  "pageVersion": "sha256:739c99120be7ce7db2caf002864cbdd6f5ed312095ee8c2ede7e46d4de751374",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -775,10 +775,80 @@
           "version": "repo-lines-v1:sha256:b71dc26bc87a7b70e2376a66e2121ebbaaaa0b03007018427ccb2bce896b84db:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlOTk4ZWVmMDBiMGU5YmJlMWFkNWY2ZTBhNzMwZjI2Y2MyNzY0YWMyNGExYzM1NzhjNTg2NjhlMTFlYTY4OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxOGQzZDBlMjQ3YTYwNWJiZmEzYmVkZGFlMTIyYmQwYzk0NWI4MDI4ZGQ1Mzg4Yzk1OTllNjI4MzhhODUyYmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3ZjMzNjI2ODQzY2I4OWU1YWI1ZjRmNWNlNGY2NzliNTk1OTM3M2I4NjhjYTRmYzE3ZWFmMTNmNTBmMWViNjMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_b569e19c6a194a09b1893d0c3395915d",
+      "statement": "Controlled source package tests cover reuse across commits, image identities, checkout paths, and timestamps, plus repair after input changes or volume damage.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source_test.go#L178-L281",
+          "version": "repo-lines-v1:sha256:72c29c9484580b86ee3fb55852f78829269d659bc772667c935a2a289ed59351:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMGFhMmNlZjI3ZWEyMjM4NGU0YjI1MTgxN2NkMzE2MmU5YjY1ZjJjNmRmNDQ0ZTI1OWI3YTBjOTVlM2EzMGI0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4NGJiMzcxMGJlOWFhNzRmZThiZmVhNWI0MTc1YTc0NDI1MDAxOTIwMzkxZGZiMzM3YWJkNjM2NWNkMmQ0OGMwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiMWQ0OWE1M2QzY2ZkMjVhOWEzMTIxNTEyYmJlZmY5YTc4YmU4MDA5NzM2ZWZlYTM3ZWMyNTJjOTczMGU1OTU4In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef654eb54ffc44c09ed752e0ad7fdd07",
+      "statement": "Controlled source tests check failure stages, preserved volumes, retry status, foreign volume refusal, active agents, uncommitted inputs, and concurrent preparation.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source_test.go#L283-L357",
+          "version": "repo-lines-v1:sha256:ebf2173ac6fae287100b827193438a3ee743156f5a4f6aef4f8a26a9fa628528:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiODRmMzFkMDZhZmNlNDRlZjg1MjAzOGMwZjg1OTYyM2M4ZGI3NGQyM2UyMWJlOTU0MzhiY2Q0OWJhZmIzNzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3NWNhZTViYTJiNDE3NTEzMDgzNWI0MGY4NzYxZTM3NTdiODhhMDFlNjA2MDA0N2JlMTA3YjJhN2M5MDBlZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b38e591da8004dd19d710d44446627c1",
+      "statement": "Published transition tests require the published archive, preserve deferred downloads, and clear obsolete source readiness when the volume is absent.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source_test.go#L376-L501",
+          "version": "repo-lines-v1:sha256:8a084629f445695a35c1f46f1ca5e96553c78336421aa17fc282c5323f909fcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyYjg2MGQ4MGMzZTVjZWY3M2YwMWRlZDE4ZmJmNjZlYTBlN2Y0OTVkNThmZTExMTczOWE2ZTZjOTYxNmQ5MjZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1Y2Y5NGQxN2Y2NDcxYTNhYWNlM2UwYmY2ZDY4ZGYzNzQ5YzFiMmIxMzY5NjQ1ZTg0OTEzNDlmMDE4YzNlNjJhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_9a5be94516414b4283dc4594962e9fc9",
+      "statement": "The Python verification test uses actual files and a fixture executable to check content, modes, links, markers, and native version responses.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source_program_test.go#L10-L70",
+          "version": "repo-lines-v1:sha256:8dcad6106881d3720612faee1d99cec96e4617365e93c164bb64adc96dc1415a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4OWVmMGRhZjMyYmVmZTU4OTUwMjQ5MDc0MTAwYzA0NzlhZTc2NzBjNDE5OTE4NDczMzliMGQwZDg4ZGIyMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de54deb7ac014a1d85d55306bea1c438",
+      "statement": "The terminal source failure tests preserve the stage and cause and supply preview fixtures for progress, failure, details, and retry.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_opencode_source_prod_test.go#L12-L61",
+          "version": "repo-lines-v1:sha256:5c46f6d1fdf645e8f6206b7405f31963f318ac3d81bc161ed3a9ceecce7d8e6d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMzk5ZTMyM2IyYjc2NWU5ODk4YmEwNTM1MDU0NjdlZTEzMTE2YTM0Nzg3ODE5NWExMWM4ZGE4OTc4OTViOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5ZWRkNzJiYTZiNDAwODNjZTk1MjY5ZmE1NmZjZjNhYzFiZDk4MjIxYWE2NjIxYTY4M2Y3ZDU2MzJiYjIxZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b458a1e42e6479483c5abac876af494",
+      "statement": "The deployment Docker test prepares real OpenCode packages without host npm and verifies offline reuse, checkout removal, and detection of plugin corruption.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source_docker_test.go#L17-L127",
+          "version": "repo-lines-v1:sha256:eb76d80801c8d50bdab2aed532716ea47cfe110735e738fac68955fa6b04ebcb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTExLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyNDJkZDU3MTliYzEzNzFhNGI2NTQzYmU5YmJlYmU3MDIyYzU3MWQxYWI0MjgwYTE1YTU1ZjYzODlhZmY5NTRkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3OWVkZDcyYmE2YjQwMDgzY2U5NTI2OWZhNTZmY2YzYWMxYmQ5ODIyMWFhNjYyMWE2ODNmN2Q1NjMyYmIyMWQ1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_92876c7610414288b51de6ddd87b4dc1",
+      "statement": "The source package Docker test uses the docker_boundary tag in the deployment package and defaults CULLER_OPENCODE_TEST_IMAGE to mc-prod.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source_docker_test.go#L1-L23",
+          "version": "repo-lines-v1:sha256:d83c53463e83e0a14a316ba9e9a11ea42f0c338c41a5ed7de35d9add1dc61c1e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMTg2MzQ1NGU1ZTFlNWE3MGNmNzVlOGQ5YTk5MzA0OTQ0ZmNkMTU1NzQ0MzE4N2EwNjNlNDliYTQxZGNiNTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwZGRlMjhhZjY0YjkwZTIzMmZmNWYzNzQyYWQyZmI5ZjhjMzc3MjU5ZjYwMGFhNWRhNGE4NzYwYWYwODQxZjQifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-08T02:41:27.984Z"
   }
 }

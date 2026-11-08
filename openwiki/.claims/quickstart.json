@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9c849285996233c69d193227aa6148ad7ebddaaad1a9bef017aa7096804b8b17",
+  "pageVersion": "sha256:60f31e343ba8c187f2f8d5cd7cfa0d1e20366d23acaa8169a2b06a656c2addf0",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -560,11 +560,11 @@
     },
     {
       "id": "claim_370e2ea2b14447d398c325bfb5e5c839",
-      "statement": "The first OpenCode connection starts a separate harness download; the release catalog defines supported providers, models, efforts, and web search.",
+      "statement": "A published installation downloads OpenCode and its web search plugin when the first OpenCode connection requires them.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L415-L431",
-          "version": "repo-lines-v1:sha256:c32af07e6f2fa9729378dadd547927488a93e9896011fa3e99131672f0f0ebb5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZTVhZmQ4OTE0YjVkYzJiMDBhMjY3NTc1MTI5ZWNhMmU4NmM4NGEyMzA5ODQ5ZmQyNzQ2NjFmNGQyNTM2YzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczOWRjNWZkYTM0NDgxNDg0OWFhYWZiZTYzZTNhYjBkYTlmODRjZWFiNmZlMWVlNGI4YzE5NzNiNDI5ZTJiN2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1YTExYTQwYmRjOGJlYTc1NzQ1ZThlNWFjZjM0YjMzYjUwMTUyYzlhMzM5OWYxZTBlNmFmMTk4YmYwMmU0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxNWY1Y2QyMmZkZDY4MGY3ODMxMzc4MTQ0OTYyM2ZjNjVmNGFiYjA0ZmIyODhmZDExNzc1YjU5YzE5ZjU5NWUifQ"
+          "resource": "repo://INSTALL.md#L439-L449",
+          "version": "repo-lines-v1:sha256:844ba9d3c2b4f44f6786f6142bdefa68a109eb46a7beed1b7daf37937f2f7f63:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNzdiNmEzMDc4NTcwYzM0NDVkY2I5ZmM0YjcxYWZjN2UwZmMxZTgwYTZhZDkzODFkNmU0NTNmNTdkOTA3ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0OGRmODIyOTk2MmRhYWFmODI5OTMwMDc0ODQzZDI3YmNkMmE3ZWJiMGQyZjI4YzkzMzZmYTA1MGY5OTc1MDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4YWFjMTk0YmVkZTY4ZjE5NjQxNDQyNTJmZTNhYWVhY2Q0MjQwYTkzMDA4Nzg5ZWU4MTIwNzRhYzNiZTA5NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlYWM2MjYyMTJiMWY2ZGRkNDk3MWZjZTE5ZjVjMTJiYThlMTIwMTkwM2M4NDYzOTM5MTVkYWZkZTRhZmE1YjUifQ"
         }
       ]
     },
@@ -577,10 +577,30 @@
           "version": "repo-lines-v1:sha256:3539bd4e66f90bde9b5adbd769f465740c5a922bb472dd43fe9802ff1dd978d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDdiZDM3OGRjYzYwNTNlZDQ5OTQwYjAwMDFlZTRiYWQ1YjNkODNmNGM5NzgyZmNmNTIwMTc3YzEyMGY2NWI3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ExOTlhZjIwNmVlMzJhYzhjNjBkNGUxYmUyYTI2MjM3N2I5MGU0N2IzMzg0OGM4OWViYzQ0NDkzYjBjMzA3YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTU5YmZhMGU5ZDljMjRkZGI2ZDA5ZDZlYzNjOTBhZGY3NjMyYjRlNTk2OTY2NjdlNWIwZThlNDg1MzVkOTMxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjQ5NjYzZDU0ZDkwMjgzYTYwN2I5OWNmNjVlODRkYTE2NTM0MTRlOGMyZjBhMGYxYjY2ZjZhYWFhNDAyMzc5MCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_2d36e5b4b8c0441eb06fa2c782288269",
+      "statement": "Source deployments prepare OpenCode before activation and reuse verified packages when their inputs remain equal across unrelated commits or checkout paths.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L397-L411",
+          "version": "repo-lines-v1:sha256:eecc1f805da4d8ebf7fc7eb94e1e1e645c6df3cc4b79c788f6de5ebe594cba5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3Mjg2Y2IwZmY5M2RhODJmMDRlYzYxY2E1MDRjOGFhMDQ5NTdjM2JjYTc5YzFjZTI4YTFiYWQ3NDMzZjhhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzY0N2QwNjEwNWE2MDJhYzg2ZmNlMmRjMDI4ZWE4NTYzYjAxOGUzNjhlOGQ1NmNmZDM5Zjc3ZDg1MjMyNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDk1MGMxYjc5NDQ1MDY2YjQyY2EyNTMxMjRhMGRjZDQzZWQ1ZTEwMDQ2MWE2ZDE2MWYwYzYxZjgxYjFlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzY2ZTg4NWM5YmI4ZWUxMWMwMGUzZTJkMDk0NWQ2MTc4OWVhZjlkZjEwMmI5MjlkYWMyZGNjODE3ZDI1MTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e2068e35c5b44fd99db34da2d4d80512",
+      "statement": "The first source OpenCode connection uses the verified package without another download.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L450-L451",
+          "version": "repo-lines-v1:sha256:6eac626212b1f6ddd4971fce19f5c12ba8e1201903c846393915dafde4afa5b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwNTcxNTBiNzYwN2MxZWFmODNjZGFjMzAyODFjYzRhNzdkYjNkYzcyNDM5ZGViM2MwZWVjN2RlNmEzZjg1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJmNDNmM2Q3NTE1YTUyOTZhYjIyZjg0OGZhNzExNzZmZDQ2Nzk1ZDhmNmNmMDQzZTVkYjdjNTIzZjEyYWM2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDdmOGRkYTU3YjE3ZDIzMzI0MjgwNjIzZDRlYTc0OTRmNDZmOWZlNGRiZDA3NTJkZmE1NGJlNDMzZGVhNGRiNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-08T02:41:27.984Z"
   }
 }

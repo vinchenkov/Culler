@@ -1,13 +1,17 @@
 ---
 type: operations
 title: Image delivery and update cleanup
-description: The page explains image contents, runtime volume updates, and cleanup after a published update.
+description: The page explains image contents, runtime volume updates, source OpenCode package reuse, and cleanup after a published update.
 tags: [release, images, runtime, deployment]
 sources:
   - id: openwiki-source-b3bb40a3cb242690b078558d
     resource: repo://mc/cmd/mc/image_removal_prod.go
   - id: openwiki-source-49772750db335e70b60de417
     resource: repo://mc/deployment/image_removal.go
+  - id: openwiki-source-c3574bc58db62fef903f9230
+    resource: repo://mc/deployment/opencode_source.go
+  - id: openwiki-source-337b7a6a3a1693697c3f6ffd
+    resource: repo://mc/deployment/opencode_source.py
   - id: openwiki-source-0be9f5eae2f9bcb36e0a31d1
     resource: repo://mc/deployment/opencode.go
   - id: openwiki-source-f1bc6f316274cdca239588ea
@@ -20,10 +24,12 @@ sources:
     resource: repo://release/UPDATES.md
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+  - id: openwiki-source-fb9561d88a21eed75b76c0a6
+    resource: repo://specs/source-opencode-installation.md
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Image delivery and update cleanup
@@ -54,7 +60,7 @@ The update operation record lists removed images and kept images with their reas
 A cleanup failure records a retry and leaves the committed release available.
 A source install does not remove images.
 
-## Optional OpenCode runtime
+## Separate OpenCode runtime
 
 The release also publishes `culler-opencode-linux-arm64.tar.gz` for installations that use OpenCode connections.
 `mc/deployment/opencode.go` verifies its checksum, archive paths, required files, platform, and program version.
@@ -62,9 +68,79 @@ It installs the archive into a deployment-specific Docker volume at `/opt/culler
 It refuses replacement while a container uses that volume.
 The runner mounts the volume read-only for OpenCode runs.
 
+Published installations defer this package until an OpenCode connection requires it.
+Source deployments with real harnesses prepare the package before service activation, including deployments without an OpenCode connection.
+The package remains separate from the product image and the ordinary runtime volume.
+
+### Source package preparation and reuse
+
+[OpenCode for source installations](../../specs/source-opencode-installation.md) defines the package, reuse, readiness, repair, and published installation requirements.
+Its scope includes `scripts/install-source.sh` and `redeploy.sh` with real harnesses.
+The development tier with a fake harness retains its separate behavior.
+
+`mc/cmd/mc/onboard_home_prod.go` records the source and calls `UpdateOpenCodeVolume` before activation.
+`mc/deployment/opencode_source.go` owns source preparation and serializes it through the OpenCode operation worker lock.
+It rejects a checkout whose commit or OpenCode files differ from the selected release.
+It exports committed files from `runner/opencode/` and `release/opencode/` into a temporary snapshot.
+The preparation container receives that snapshot read-only, without the repository or host credentials.
+
+The selected source image supplies the package tools for Linux arm64.
+The host requires no npm installation.
+Preparation resolves the image to its immutable identity and uses user `10002:10002`, dropped capabilities, and `no-new-privileges`.
+The container receives a fixed environment and disposable npm configuration and cache paths.
+`release/opencode/build.sh` uses `npm ci` with the lock file, copies the control files, and validates the folder and archive.
+The Go installer then validates the archive before it replaces the volume.
+
+`MC_HOME/state/opencode-source-package.json` separates the package identity from the Culler release commit.
+The package identity includes these inputs:
+
+| Input | Reason |
+| --- | --- |
+| Committed file contents and modes under `runner/opencode/` and `release/opencode/` | Covers declarations, locked dependencies, control files, and archive rules. |
+| Node.js and npm versions and content digests | Detects package tool changes even when the image name stays equal. |
+| The embedded preparation program, install script, and fixed environment | Detects changes to preparation and installation rules. |
+| Linux arm64 and the declared OpenCode version | Binds the package to its platform and native version. |
+
+The record also stores the archive checksum and installed content digest.
+The release commit, checkout path, file timestamps, and image identity alone do not invalidate equal package inputs.
+A different image still must pass the tool identity and package compatibility checks.
+
+Reuse requires a volume with the deployment's labels, a matching input identity, and complete checksum records.
+`mc/deployment/opencode_source.py` compares the installed paths, file contents, modes, and symbolic link targets with the recorded content digest.
+It checks the archive and release markers separately.
+It executes the native program only after the content check and requires the declared version.
+These checks run without network access against a read-only volume.
+
+Successful reuse preserves package files and requires no download or archive preparation.
+When the Culler commit differs, the installer updates the release marker after it checks for active volume users.
+It then saves the record for the selected source deployment.
+An absent, damaged, incomplete, or unrecorded package receives preparation and installation again.
+
+### Readiness and repair
+
+The existing `opencode-download` operation reports source progress and readiness to terminal setup and the dashboard.
+Successful preparation or verified reuse records `succeeded` and clears the error code.
+The first connection uses that status without another preparation, including after the checkout moves.
+See [agent connections](agent-connections.md#opencode-connections) for the model test boundary.
+
+A failure records its stage and cause, and prevents activation of the proposed source deployment.
+The stage distinguishes download, preparation, validation, and installation failures.
+Download and archive validation occur before volume replacement, so those failures preserve the previous volume.
+Replacement refuses a foreign volume or active volume users.
+An incomplete installation remains unready; a retry verifies the actual files and repairs the package when necessary.
+
+### Published updates and retained source records
+
 A public update replaces an existing OpenCode volume before service activation.
 The checkpoint preserves its previous contents for recovery before commit.
 The previous product image reconstructs the ordinary runtime volume during restore.
 See [Culler lifecycle](culler-lifecycle.md#public-updates-and-recovery) for the update sequence and checkpoint limits.
 
-The image content tests and runtime install tests check these boundaries. See [checks and test lanes](../tests/checks-and-test-lanes.md) for the release gate.
+An active published update or matching published image takes precedence over a retained source record.
+A source package with the same Culler commit still requires the published archive checksum before reuse on the published path.
+An absent OpenCode volume preserves the deferred download and clears obsolete source readiness after the worker lock and a second volume check.
+
+The image content tests and runtime install tests check their respective boundaries.
+The source package tests cover input changes, content damage, concurrent requests, readiness repair, and published transitions.
+An opt-in Docker test prepares a real package, then checks reuse without network access.
+See [OpenCode checks](../tests/checks-and-test-lanes.md#opencode-and-update-recovery-checks) for test paths and execution limits.

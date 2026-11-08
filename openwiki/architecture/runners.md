@@ -6,6 +6,8 @@ tags: [runner, docker, adapters, harness, image]
 sources:
   - id: openwiki-source-2f0a77787a810afb1a87cbbb
     resource: repo://Dockerfile.culler-project
+  - id: openwiki-source-096a781fb160ef979fa31121
+    resource: repo://INSTALL.md
   - id: openwiki-source-6a84afb40e064a711b4d99bd
     resource: repo://mc/deployment/runner_release.go
   - id: openwiki-source-e028a0037f071b894557c29d
@@ -38,10 +40,10 @@ sources:
     resource: repo://runner/image/toolchain-smoke.sh
   - id: openwiki-source-a1d3951819531015b34e3c43
     resource: repo://runner/shared/setup-error.ts
-generated: { by: "culler-scribe", at: "2026-11-07T02:06:55.599Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T02:06:55.599Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Runner containers and harness adapters
@@ -120,9 +122,13 @@ The adapters emit `session-start`, `model-response`, `turn-text`, `turn-complete
 ### OpenCode runtime and traces
 
 `runner/agent-runner/adapters/opencode.ts` uses the selected release catalog model and its supported effort variants.
-The resident mounts the optional OpenCode installation at `/opt/culler-opencode` through `openCodeArguments`.
+The resident mounts the separate OpenCode volume read-only at `/opt/culler-opencode` through `openCodeArguments` in `resident/src/environment-lane.ts`.
 The installation supplies the executable, provider packages, control plugin, and shell wrapper.
-See [agent connections](../operations/agent-connections.md) for installation and catalog ownership.
+Source deployments prepare and verify this package before service activation, even without an OpenCode connection.
+Published installations download the package when the first OpenCode connection requires it.
+`mc/deployment/opencode_source.go` owns source preparation and verified reuse in the selected Linux arm64 image.
+See [image delivery](../operations/image-delivery.md#source-package-preparation-and-reuse) for package identity and repair.
+See [agent connections](../operations/agent-connections.md) for catalog ownership and connection readiness.
 
 The adapter supplies the proxy address and temporary token through its generated configuration.
 It disables project configuration, automatic updates, model discovery, sharing, and snapshots.

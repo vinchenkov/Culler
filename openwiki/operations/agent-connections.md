@@ -22,6 +22,10 @@ sources:
     resource: repo://mc/deployment/agentprofiles.go
   - id: openwiki-source-dc8d3c70a68adffcb07de33a
     resource: repo://mc/deployment/api_key_validation.go
+  - id: openwiki-source-414aa10e02df8456691e0f9b
+    resource: repo://mc/deployment/opencode_source_docker_test.go
+  - id: openwiki-source-c3574bc58db62fef903f9230
+    resource: repo://mc/deployment/opencode_source.go
   - id: openwiki-source-c55cdefe405ad9fe4d481e84
     resource: repo://mc/deployment/provider_credential.go
   - id: openwiki-source-da04f25cb9fa15d5a8447612
@@ -42,10 +46,10 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Agent connections and access renewal
@@ -120,18 +124,27 @@ The release catalog supplies the model list without a live provider request.
 The model test verifies the saved key and selected model.
 An existing release integration keeps its harness when its address matches a catalog entry.
 
-The first OpenCode connection starts a separate download of the pinned program and web search plugin.
+In a published installation, the first OpenCode connection starts a separate download of the pinned program and web search plugin.
 The model and effort lists remain available during the download.
 The model test waits for a successful download.
 A failed download preserves the connection and key and offers **Retry**.
 Each effort selects a catalog model variant; **Default** uses the provider default.
 The dashboard states whether the connection supports web search.
 
+Source deployments prepare and verify OpenCode before service activation, even without an OpenCode connection.
+The first connection uses that verified package without another download, including after the source checkout moves.
+The source image supplies npm and the other package tools; the host requires no npm installation.
+Preparation records readiness through the same operation status that the dashboard and terminal setup read.
+A preparation failure prevents activation and records its stage and cause.
+Successful preparation or verified reuse clears an obsolete failure status.
+
 `mc/opencodecatalog/` owns the release catalog and profile validation.
 `mc/deployment/opencode.go` owns the download, archive checks, and deployment-specific volume.
-The installation downloads OpenCode only when a connection requires it.
-Updates replace an existing volume with the archive of the selected release.
+`mc/deployment/opencode_source.go` owns source preparation, package identity, verification, and reuse.
+A published installation downloads OpenCode only when a connection requires it.
+Published updates replace an existing volume with the archive of the selected release.
 Both uninstall modes remove the volume.
+See [source package preparation and reuse](image-delivery.md#source-package-preparation-and-reuse) for package checks and repair.
 
 The Connections disclosure offers Disconnect for each saved connection.
 The confirmation stops active requests and removes the saved credential.

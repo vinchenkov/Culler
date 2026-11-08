@@ -16,8 +16,14 @@ sources:
     resource: repo://install.sh
   - id: openwiki-source-f4ac2493f15eb122b68f1029
     resource: repo://mc/cmd/mc/host_bun_prod.go
+  - id: openwiki-source-d43a8f01d76df743f94a7d70
+    resource: repo://mc/cmd/mc/onboard_home_prod.go
   - id: openwiki-source-c6b3c0255eecd5c285f3893e
     resource: repo://mc/cmd/mc/setup_install_prod.go
+  - id: openwiki-source-ba92167dda59467828397749
+    resource: repo://mc/cmd/mc/setup_opencode_source_prod_test.go
+  - id: openwiki-source-37456df394e5501dc5f5c7ad
+    resource: repo://mc/cmd/mc/setup_terminal_prod.go
   - id: openwiki-source-d713bb120e2f3e26458d1540
     resource: repo://mc/cmd/mc/uninstall_modes_prod_test.go
   - id: openwiki-source-4e67d5d53e1cf48154d0675b
@@ -30,6 +36,8 @@ sources:
     resource: repo://mc/deployment/host_release_closure_test.go
   - id: openwiki-source-d2a2a705448c3432ad6c1337
     resource: repo://mc/deployment/host_release.go
+  - id: openwiki-source-c3574bc58db62fef903f9230
+    resource: repo://mc/deployment/opencode_source.go
   - id: openwiki-source-f2370cd7c903f813dbc4ad1c
     resource: repo://mc/deployment/runtimeauth_host_sources_test.go
   - id: openwiki-source-da04f25cb9fa15d5a8447612
@@ -60,10 +68,10 @@ sources:
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Installation, deployment, and release
@@ -95,6 +103,7 @@ The [installation guide](../../INSTALL.md) describes setup and updates.
 | `culler update --restore` | Restore an incomplete update before commit. |
 | `culler uninstall [--keep-data \| --dry-run]` | Remove all detected installations or inspect the removal plan. |
 | `./install.sh --dev --mc-home <scratch>` | Development install from this checkout into a scratch home. Never `~/.culler`. |
+| `sh scripts/install-source.sh` | Build and install a production deployment from the source checkout. |
 | `./redeploy.sh` | Move the live production deployment to this checkout and keep its database. |
 | `./redeploy.sh --reset-database` | Move the deployment and replace its database with an empty database, after a typed confirmation. |
 | `./redeploy-dashboard.sh` | Move only the live dashboard files to `HEAD`. |
@@ -137,7 +146,35 @@ The [lifecycle command](culler-lifecycle.md) controls service state after setup.
 
 ### Development install
 
-`scripts/install-source.sh --dev` builds `mc` with `-tags test_fake_routing` into `MC_HOME/bin` (direct spine, no helper). It then hands off to `mc __onboard` with the first Project, routing, tunables, and dashboard choices as flags. A production run of this script from a checkout instead builds a scratch `mc` and opens the same `__setup` wizard, A non-interactive production run builds the production image with `runner/image/build-prod.sh` and runs the `mc __onboard` sections in sequence.
+`scripts/install-source.sh --dev` builds `mc` with `-tags test_fake_routing` into `MC_HOME/bin` and uses the spine directly.
+It supplies the first Project, routing, tunables, and dashboard choices to the internal setup command.
+This fake-harness tier retains its separate behavior.
+
+### Source production deployment
+
+`sh scripts/install-source.sh` builds Culler from the checkout and opens the terminal setup wizard.
+It uses the Go and Bun versions from `.mise.toml` through mise.
+The non-interactive path builds the production image and executes the internal setup sections in sequence.
+`./redeploy.sh` uses the same home preparation for an existing production deployment.
+
+Both source paths prepare OpenCode before service activation, even without an OpenCode connection.
+The selected Linux arm64 image supplies npm and the other package tools.
+The host requires no npm installation.
+The package occupies its own Docker volume, separate from the ordinary Culler runtime.
+
+`mc/cmd/mc/onboard_home_prod.go` installs the runtime, records the source, and calls `UpdateOpenCodeVolume`.
+`mc/deployment/opencode_source.go` verifies installed contents before reuse and prepares a replacement when required inputs differ.
+An unrelated Culler commit, checkout path, or timestamp change preserves reuse when package inputs remain equal.
+Successful preparation or verified reuse records readiness for the dashboard and terminal setup.
+The first OpenCode connection uses that package without another download.
+
+A failure stops home preparation before activation and records the failed stage and cause.
+`mc/cmd/mc/setup_terminal_prod.go` preserves that source error through its safe diagnostic formatter.
+The source installer can resume an incomplete installation after repair.
+The published installer retains its first-connection download and its separate update recovery procedure.
+
+[OpenCode for source installations](../../specs/source-opencode-installation.md) defines these source and published boundaries.
+See [source package preparation and reuse](image-delivery.md#source-package-preparation-and-reuse) for package identity, verification, and repair.
 
 ### redeploy.sh and redeploy-dashboard.sh
 
@@ -263,7 +300,8 @@ Static API keys use the same host boundary.
 The release defines the supported provider authorities.
 Configuration validation rejects custom provider destinations and unsupported credential kinds.
 The host renews account access while the container retains its Culler token.
-Other catalog providers use the optional OpenCode harness and its separate runtime volume.
+Other catalog providers use the OpenCode harness and its separate runtime volume.
+Published installations download this package on demand; source deployments prepare it before activation.
 A new Codex setup profile uses the native default model during its connection test.
 After success, setup saves the selected model for later runs.
 See [Agent connections and access renewal](agent-connections.md) for profiles, grant storage, and failure behavior.

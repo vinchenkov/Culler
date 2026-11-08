@@ -23,11 +23,11 @@
       "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
     },
     "/openwiki/architecture/runners.md": {
-      "pageVersion": "sha256:24c8c0bba0cd721813a3eaeeb94bfbce0e1c467892c9bb1dfea11c87cc26cf3b",
+      "pageVersion": "sha256:0f831853f71f6759cc06108341ee1da4c65a8090a5b5aa3422a7faaf2c82918c",
       "completedBy": "culler-scribe",
-      "completedRunId": "b12b39e6-b1c8-47a5-9edc-9b3dc4ea1ae2",
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
+      "completedRunId": "1d51e1c4-ce05-4810-a2ac-42290c734820",
+      "gitHead": "f33991422b60413e3308e83ab7309493ebfb9153",
+      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
     },
     "/openwiki/architecture/spine-and-substrate.md": {
       "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
@@ -86,11 +86,11 @@
       "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
     },
     "/openwiki/operations/agent-connections.md": {
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400",
-      "pageVersion": "sha256:8e6269ad57748554739c0d1d8933e78ccff35c900814557efcbd7c119510c8c9",
+      "pageVersion": "sha256:1ed5d85601d69e4ca67d4a66e242a8174c511955e6ba1876df89109dfd27e0b9",
       "completedBy": "culler-scribe",
-      "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
+      "completedRunId": "1d51e1c4-ce05-4810-a2ac-42290c734820",
+      "gitHead": "f33991422b60413e3308e83ab7309493ebfb9153",
+      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
     },
     "/openwiki/operations/culler-lifecycle.md": {
       "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
@@ -100,18 +100,18 @@
       "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
     },
     "/openwiki/operations/image-delivery.md": {
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400",
-      "pageVersion": "sha256:fdc2b42dbfc37ede9bb6297aafca76a51154205587c8c913c4da37332e6da805",
+      "pageVersion": "sha256:dbe7b1b7fb5553eafd2f259a7195cd4c7da15feac2b8e7648543ec7f26e7948b",
       "completedBy": "culler-scribe",
-      "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
+      "completedRunId": "1d51e1c4-ce05-4810-a2ac-42290c734820",
+      "gitHead": "f33991422b60413e3308e83ab7309493ebfb9153",
+      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
     },
     "/openwiki/operations/install-and-deployment.md": {
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400",
-      "pageVersion": "sha256:93e9d6ece38f73599eb4ff182a023db42346c9093a3692bfca77558bc90f1a38",
+      "pageVersion": "sha256:aeeae213dd580ecd4e6f0b98445dd29bec3aa6f4d7e87cab0efdef53626df461",
       "completedBy": "culler-scribe",
-      "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
+      "completedRunId": "1d51e1c4-ce05-4810-a2ac-42290c734820",
+      "gitHead": "f33991422b60413e3308e83ab7309493ebfb9153",
+      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
     },
     "/openwiki/operations/release-security.md": {
       "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
@@ -121,18 +121,18 @@
       "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
     },
     "/openwiki/quickstart.md": {
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400",
-      "pageVersion": "sha256:9c849285996233c69d193227aa6148ad7ebddaaad1a9bef017aa7096804b8b17",
+      "pageVersion": "sha256:60f31e343ba8c187f2f8d5cd7cfa0d1e20366d23acaa8169a2b06a656c2addf0",
       "completedBy": "culler-scribe",
-      "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
+      "completedRunId": "1d51e1c4-ce05-4810-a2ac-42290c734820",
+      "gitHead": "f33991422b60413e3308e83ab7309493ebfb9153",
+      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
     },
     "/openwiki/tests/checks-and-test-lanes.md": {
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400",
-      "pageVersion": "sha256:90d67273311511af4a3feadec40c2c580014663c6a1d2e2e3220d4d3a3f0875f",
+      "pageVersion": "sha256:739c99120be7ce7db2caf002864cbdd6f5ed312095ee8c2ede7e46d4de751374",
       "completedBy": "culler-scribe",
-      "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
+      "completedRunId": "1d51e1c4-ce05-4810-a2ac-42290c734820",
+      "gitHead": "f33991422b60413e3308e83ab7309493ebfb9153",
+      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
     },
     "/openwiki/tests/performance-and-evaluations.md": {
       "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
@@ -170,11 +170,11 @@
       "completedRunId": "4dd16af6-fe2e-4614-b32d-44ba17c08b8b"
     },
     "/openwiki/workflows/project-environments.md": {
+      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
+      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400",
       "pageVersion": "sha256:7a5f2f2f2bf84195e944f0b1a4af073b9d8d482b489ac07e88cd45d3a77cbe83",
       "completedBy": "culler-scribe",
-      "completedRunId": "b12b39e6-b1c8-47a5-9edc-9b3dc4ea1ae2",
-      "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
+      "completedRunId": "b12b39e6-b1c8-47a5-9edc-9b3dc4ea1ae2"
     },
     "/openwiki/workflows/task-pipeline.md": {
       "gitHead": "fe018575c202b3a57bebd7273671fe15ce3a423a",
