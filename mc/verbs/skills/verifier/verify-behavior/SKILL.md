@@ -1,12 +1,9 @@
 ---
 name: verify-behavior
-description: Use Playwright Command Line Interface browser tools when the Verifier needs browser interaction or visual evidence for a user interface change.
+description: Read when a criterion or broad check needs browser interaction or visual confirmation.
 ---
 
 # Verify behavior
-
-Use this skill when a Worker's change needs browser interaction or visual
-confirmation. Do not use this skill for other changes.
 
 ## Browser tool
 
@@ -15,9 +12,7 @@ Chrome for Testing browser. Start each browser session with this command:
 
     playwright-cli -s=verify-<run_id> --browser=chromium open <target-url>
 
-`<run_id>` is the `Run identifier` fact of the **Run** part of your run brief.
-The `--browser=chromium` flag selects the installed browser. The default
-browser is unavailable.
+The `--browser=chromium` flag selects the installed browser.
 
 Run each later command in the same session:
 
@@ -45,9 +40,7 @@ first page action:
 - `video-chapter <title>` marks a relevant step.
 - `video-stop` stops the video.
 
-Save each screenshot and video in this task's durable verification directory:
-
-    /mc/artifacts/<plane>/<task-id>/verification/
+Save screenshots and videos beside the evidence file defined in mc-verifier.
 
 Cite each file in the evidence report.
 
@@ -56,5 +49,3 @@ Cite each file in the evidence report.
 End every session with this command:
 
     playwright-cli -s=verify-<run_id> delete-data
-
-Do not let session data enter another role run.
