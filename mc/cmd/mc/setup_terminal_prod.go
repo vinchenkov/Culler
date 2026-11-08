@@ -619,6 +619,9 @@ func setupSectionResult(section string, code int, stdout, stderr []byte) error {
 var setupUnknownConfigKey = regexp.MustCompile(`config.toml carries unknown key "([A-Za-z0-9_.-]+)"`)
 
 func setupSectionCause(message string) string {
+	if start := strings.Index(message, "The OpenCode "); start >= 0 && strings.Contains(message[start:], " from source failed: ") {
+		return setupSafeDiagnostic(message[start:])
+	}
 	if match := setupUnknownConfigKey.FindStringSubmatch(message); len(match) == 2 {
 		return fmt.Sprintf("The config.toml file contains an unknown key: %s. Ask your coding harness to correct this key, then retry.", match[1])
 	}

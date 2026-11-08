@@ -394,6 +394,22 @@ The source installer uses the Go and Bun versions from `.mise.toml` through mise
 It builds the agent image locally and downloads the pinned AgentsView executable.
 The published installer downloads verified release files and images instead.
 
+The source installer prepares OpenCode before service activation, even without an OpenCode connection.
+The source image supplies the npm package manager and the other package tools.
+The host requires no npm installation.
+OpenCode uses its separate Docker volume.
+
+The installer verifies the installed files before package reuse.
+Reuse requires equal inputs:
+
+- The package declarations and locked dependencies must match.
+- Culler's OpenCode plugin and shell launcher must match.
+- The archive preparation rules and package tools must match.
+
+An unrelated Culler commit or checkout path change preserves reuse.
+A package change requires preparation again.
+A preparation failure stops deployment and reports its cause.
+
 Run the source installer again to resume an incomplete source installation.
 Plain `./install.sh` selects the published release, even inside a source checkout.
 
@@ -420,7 +436,7 @@ Culler sends keys only to providers in its release catalog.
 The provider rows show the address and website before the concealed key prompt.
 A release integration keeps its existing harness when its address matches a catalog entry.
 
-The first OpenCode connection starts a separate download of the pinned harness and web search plugin.
+In a published installation, the first OpenCode connection starts a separate download of the pinned harness and web search plugin.
 The model and effort lists remain available during the download.
 The agent test waits for the download.
 A failed download keeps the connection and its key and offers **Retry**.
@@ -428,7 +444,8 @@ The model list shows the context limit and prices for each million input and out
 **Default** uses the provider default; each other effort selects a model variant.
 The page states whether agents can search the web.
 
-An installation without an OpenCode connection downloads no OpenCode program.
-An update replaces an existing OpenCode volume with the archive of that release.
+A published installation without an OpenCode connection downloads no OpenCode program.
+A published update replaces an existing OpenCode volume with the archive of that release.
 Both uninstall modes remove the OpenCode volume.
-A local source deployment obtains the pinned packages from its unchanged source commit when the first connection requires them.
+A source deployment prepares OpenCode before service activation.
+Its first OpenCode connection uses the verified package without another download.
