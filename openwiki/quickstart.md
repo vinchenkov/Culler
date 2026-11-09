@@ -56,6 +56,8 @@ sources:
     resource: repo://mc/substrate/substrate.go
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
     resource: repo://mc/verbs/directives/setup.md
+  - id: openwiki-source-72313a4f79741897a46d7a11
+    resource: repo://mc/verbs/directives/strategist.md
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
     resource: repo://mc/verbs/packet.go
   - id: openwiki-source-19fe7d061285a802d1068aca
@@ -92,10 +94,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T20:41:27.356Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T19:06:13.611Z
+    at: 2026-11-09T20:41:27.356Z
 ---
 
 # Culler quickstart
@@ -136,6 +138,8 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Add or change an `mc` verb | [The mc CLI and verb scope](architecture/mc-cli-and-verb-scope.md) |
 | Understand why a Project is idle or what runs next | [Dispatch and the tick loop](workflows/dispatch-and-tick-loop.md) |
 | Change what an agent role receives | [Agent input](concepts/agent-input.md) |
+| Find Strategist rules and conditional procedures | [Strategist input](concepts/agent-input.md#strategist-instructions-and-procedures) |
+| Follow proposal research and batch submission | [Strategist workflow](workflows/task-pipeline.md#strategist-research-and-submission) |
 | Follow a commit from Worker to merge | [Git delivery](workflows/git-delivery.md) |
 | Resolve an operator decision report | [Decision Pending and requirements revisions](workflows/decision-resolution.md) |
 | Debug retries, stalls, or Decision Pending | [Failure controls](concepts/failure-controls.md) |
@@ -246,6 +250,11 @@ Production ships only the explicit release manifests.
 
 The task model uses only tasks with destination `main`.
 The Strategist submits at most two proposals per batch.
+Its directive requires two proposals unless fewer valid tasks satisfy the accepted Vision.
+Each proposal uses repository evidence, excludes equivalent work, and states scope and container-checkable criteria.
+Only the Arbiter selects proposals for development.
+The [Strategist input guide](concepts/agent-input.md#strategist-instructions-and-procedures) identifies the directive, brief, and command procedures.
+The [role instruction checks](tests/checks-and-test-lanes.md#role-instruction-checks) explain their test coverage.
 An operator approval gives its task Project priority. An open correction receives preference without that Project priority.
 See the [task pipeline](workflows/task-pipeline.md) and [dispatch](workflows/dispatch-and-tick-loop.md) for the exact controls.
 

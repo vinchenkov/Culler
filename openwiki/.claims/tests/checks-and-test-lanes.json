@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:26a9315ef47156b1f08f4d4183afa743a1c3340cfcffa94b8bcb314f23b6296f",
+  "pageVersion": "sha256:77b15a2a457694dd8f164b4e331c2c9c5842d9015db65329262737b967b00fde",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -943,10 +943,40 @@
           "version": "repo-lines-v1:sha256:f017ac8415494db207196494091a6ba9ac1e8daee582d9edd8f7100a3950e624:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_f3124d4df11444ccbeff96773b4b7f68",
+      "statement": "The Strategist input test checks preserved Project evidence, operator instructions, proposal resolutions, delivered skills, procedure pointers, and selected rules once.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/strategist_input_test.go#L11-L94",
+          "version": "repo-lines-v1:sha256:f1d062f87028fb1147c57d9a6b9443b6b91988bf587723193e8cf1d5642c8a9b:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNDAwMDA4NTJlZDJhNDNhYmVmZmZmZDQ0OTM5ZmI0ZmU4Nzc3MzM0YjgyNTBmNDBmZGNhYmQ1ZTgxMDNhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNGQ4MDgxZDFiZWZlNDljM2M0Y2FjMjYwNTA4OTkyOTlhMzc4NDJjMzJhODMzMzk0ZDM5YTM1MWU2NDk3MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjJkODUzYjk5OGRlNGQ4NmUyZmNjM2I2ODBjNWUyYTQzMDM2YTlmMjI5MWJkZTBjMjIzZjczMTgwYzYyYjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f67366fdd2a84fcfb9baad8e23fd1a7c",
+      "statement": "The Strategist assignment-data test checks that brief simplification preserves retained facts, text, rows, and text tags.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/strategist_input_test.go#L96-L118",
+          "version": "repo-lines-v1:sha256:938d3c4b376d381df5ee3419c6575c46b9b5d580565bdf5305bb0187e887e019:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxYjFjYWZiNmI1ZGFkZTg4OGU5MTYyYTlhNGFlNWI2NTE3Y2Q5ZjRiMGZkMGI1MGVhNWE2MDU4YjE3ODQ3ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4a6ad21fc35430ca0b3149179f33f01",
+      "statement": "TestArbiterAgentTextDefinesCompactHistory checks the detailed history explanation in the Arbiter directive and command skill.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives_test.go#L313-L350",
+          "version": "repo-lines-v1:sha256:ce4a4f14e1259416d00f99506acd1d1c2c749223676d924f54f56754fbebf0b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0Mzk0ZmRkZGU0NmFiNjVkMjFiOGMzOTM0NWVlMDliZWFjNmVhNWYyNzZlNWNkYzVkZjI0MDE0ZjJkYmNmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiZjc3NzBlOTYxYWQ4NzU3OWQ2NTVhNjk5OGJjY2ZhNGNlNWUwMzcxNDVlOGM4OGRmMzgxMDA4N2VmZTVjY2EifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T19:06:13.611Z"
+    "at": "2026-11-09T20:41:27.356Z"
   }
 }
