@@ -112,6 +112,8 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 		"The task list omits descriptions.",
 		"Use the task read for scope absent from **Proposed pool** and **Active tasks**.",
 		"Custom instructions replace defaults in this directive, the run brief, and role skills.",
+		"Submit this terminal to end the run with a customization conflict:",
+		"If these rules prevent a verdict, use the operator decision procedure below.",
 		"Report direct observations without an inferred connection diagnosis.",
 		"before your first `mc` call and before the terminal",
 	} {
@@ -129,8 +131,17 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 	}
 	requireAgentText(t, "Arbiter contract", roleContract(dispatch.RoleArbiter), []string{
 		"Preserve proposal requirements and accepted work.",
+		"The promotion limit and the criteria rules in Proposal review belong to this contract.",
 		"Use only permitted `mc` commands with your own run identity",
 		"Do not defer, merge, or rewrite proposals, change active tasks, or start another role.",
+	}, nil)
+	_, customizationProcedure, found := strings.Cut(skill, "## Project role customization\n")
+	if !found {
+		t.Fatal("Arbiter skill omits the customization conflict procedure")
+	}
+	customizationProcedure, _, _ = strings.Cut(customizationProcedure, "\n## ")
+	requireAgentText(t, "Arbiter customization conflict terminal", customizationProcedure, []string{
+		"Submit this terminal to end the run with a customization conflict:\n\n- `mc run customization-conflict --request <json>`",
 	}, nil)
 }
 

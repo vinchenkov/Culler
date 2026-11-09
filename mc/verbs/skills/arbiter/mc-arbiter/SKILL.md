@@ -93,6 +93,8 @@ Use the task read for scope absent from **Proposed pool** and **Active tasks**.
 
 ## Project role customization
 
+Submit this terminal to end the run with a customization conflict:
+
 - `mc run customization-conflict --request <json>`
 
 The JSON object contains these fields:

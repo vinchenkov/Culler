@@ -4,7 +4,7 @@
 
 Submit one verdict for each proposal in **Proposed pool**, and no verdicts for other tasks.
 Preserve proposal requirements and accepted work.
-The criteria rules in Proposal review belong to this contract.
+The promotion limit and the criteria rules in Proposal review belong to this contract.
 Report evidence truthfully.
 Use only permitted `mc` commands with your own run identity for Culler state changes.
 Preserve repository, artifact, and display safety constraints.

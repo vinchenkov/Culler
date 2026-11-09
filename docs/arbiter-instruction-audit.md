@@ -29,9 +29,9 @@ The base text comes from `git show <base>:<path>`; the final text comes from the
 
 | File | Before | After |
 | --- | ---: | ---: |
-| `mc/verbs/directives/arbiter.md` | 2029 | 541 |
-| `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md` | 1576 | 601 |
-| Total | 3605 | 1142 |
+| `mc/verbs/directives/arbiter.md` | 2029 | 545 |
+| `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md` | 1576 | 612 |
+| Total | 3605 | 1157 |
 
 ## Why each section remains
 
@@ -40,7 +40,7 @@ The skill frontmatter supplies its discovery name and procedure summary.
 
 | File and section | Concrete purpose |
 | --- | --- |
-| Directive: Culler contract | Bounds the verdict set, preserves requirements and evidence, restricts commands and changes, and requires a terminal action. |
+| Directive: Culler contract | Bounds the verdict set and makes the promotion limit and criteria rules contract requirements. Preserves evidence, restricts authority, and requires a terminal. |
 | Directive: Project role customization | Distinguishes operator defaults from contract requirements and points conflicts to their procedure. |
 | Directive: Proposal review | Defines rank, promotion limits, criteria validity, available capabilities, and overlap judgments. |
 | Directive: Cases | States the conditions that require history, all-reject, dependency, or failure procedures. |
@@ -53,7 +53,7 @@ The skill frontmatter supplies its discovery name and procedure summary.
 | Skill: A decision that only the operator can make | Gives both report forms and the affected-subset rule; proposals wait for the operator's resolution. |
 | Skill: An execution problem | Gives both failure commands and requires direct observations while preserving work after connection recovery. |
 | Skill: Reads | Lists the permitted read commands and identifies when a task description needs a separate read. |
-| Skill: Project role customization | Gives the conflict terminal and each required request field. |
+| Skill: Project role customization | Requires the conflict terminal, states that it ends the run, and gives each required request field. |
 
 The verdict schema permits only promotion or rejection.
 The directive limits the verdict set to the supplied pool.
@@ -91,7 +91,8 @@ The following ledger records each changed explanation or pointer with its origin
 ### `mc/verbs/brief.go` — Project role customization
 
 Category: `duplicate`.
-Retained authority and conflict pointer: `mc/verbs/directives/arbiter.md`, Project role customization.
+Retained authority: `mc/verbs/directives/arbiter.md`, Project role customization.
+Retained completion rule: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, Project role customization.
 
 Original text:
 
@@ -1557,8 +1558,8 @@ Follow the role directive's distinction between the contract and defaults.
 ### Passage 109: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, lines 181–181
 
 Category: `duplicate`.
-Retained home or destination: mc/verbs/directives/arbiter.md — Project role customization.
-The pointer supplies the conflict condition.
+Retained home or destination: mc/verbs/skills/arbiter/mc-arbiter/SKILL.md — Project role customization.
+The directive's conflict pointer selects this procedure; the skill requires the terminal that ends the run.
 
 ```text
 If a custom instruction conflicts with the contract during work, submit this terminal:
@@ -1579,14 +1580,50 @@ The JavaScript Object Notation (JSON) object contains these fields:
 - The `requirement` field: the Culler contract requirement that the text contradicts.
 ```
 
-### Passage 111: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, lines 193–197
+### Passage 111: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, lines 193–193
 
 Category: `unneeded`.
-Internal record selection, pause state, role blocks, and allowance accounting require no additional Arbiter action.
+Internal record selection requires no Arbiter action.
 
 ```text
 The command records the Project, role, and subject from your run.
-It ends the run with a customization conflict and preserves the subject's stage and accepted work.
+```
+
+### Passage 112: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, line 194, first clause
+
+Category: `duplicate`.
+Retained home or destination: mc/verbs/skills/arbiter/mc-arbiter/SKILL.md — Project role customization.
+The terminal instruction states that the command ends the run with a customization conflict.
+
+```text
+It ends the run with a customization conflict
+```
+
+### Passage 113: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, line 194, subject clause
+
+Category: `unneeded`.
+The Arbiter has no task subject whose stage it must preserve.
+
+```text
+and preserves the subject's stage
+```
+
+### Passage 114: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, line 194, accepted-work clause
+
+Category: `duplicate`.
+Retained home or destination: mc/verbs/directives/arbiter.md — Culler contract.
+The contract requires the Arbiter to preserve accepted work.
+
+```text
+and accepted work.
+```
+
+### Passage 115: `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`, lines 195–197
+
+Category: `unneeded`.
+Internal role blocks, pause state, and allowance accounting require no Arbiter action.
+
+```text
 A run without a subject blocks that role within its Project.
 The Project retains its pause state.
 The command preserves all failure and correction allowances.
@@ -1609,6 +1646,7 @@ The untagged filesystem guard command runs separately because the failed full su
 | Check | Result |
 | --- | --- |
 | `./mc/check.sh` | Exit 1; only the unchanged operator-home failure above. |
+| New and changed input tests through `mc/test.sh -count=1 ./verbs/ -run ...` | Exit 0; the conflict terminal and promotion contract assertions pass. |
 | Untagged filesystem guard group through `mc/test.sh -count=1 -tags=` | Exit 0; two tests remain unverified on the overlay filesystem. |
 | `mise exec -- bun test skills.test.ts` in `runner/agent-runner` | Exit 0; 16 tests pass. |
 | Other-role output comparison against the base generators | Exit 0 for both runs; five pipeline roles have identical brief and skill hashes. |
@@ -1619,10 +1657,10 @@ The output comparison normalizes only environment identifier values from its tem
 It compares complete rendered briefs and delivered skill bodies for Strategist, Scribe, Worker, Verifier, and Packager.
 The comparison harness and both logs remain in the task artifacts.
 
-Two early gate attempts stopped on release source directories with mode `0777`.
-The affected release source directories now exclude group and other write access.
-The deployment regression then passes without a test or product-code change.
-An intermediate full run exposed two assertions for deleted Arbiter text; both now check the retained instructions.
+The release source directories exclude group and other write access, as the deployment guard requires.
+The new assertions fail against commit `780357aa10f35224f4aea10283d250d74b9f976d` for both missing rules.
+It passes with the promotion limit in the contract and the conflict terminal in the skill.
+The test also checks that the all-reject procedure retains its operator decision fallback.
 
 The task changes no dashboard behavior or deployment behavior.
 The browser, Docker, and nightly lanes do not run for this instruction change.
@@ -1643,8 +1681,8 @@ UNVERIFIED mc/cmd/mc TestCullerLogsSelectsHomeAndRetainsTail: The public log com
 UNVERIFIED mc/cmd/mc TestCullerReleaseDeadlineCannotReportSuccess: The public release check requires the Mac host.
 UNVERIFIED mc/cmd/mc TestCullerUninstallModesAndPreview: The public uninstall command requires the Mac host.
 UNVERIFIED mc/cmd/mc TestUninstallRejectsInstallationPublishedBeforeLocks: The startup inventory requires macOS.
-UNVERIFIED mc/substrate TestOpenRefusesASpineOutsideTheLockDomain: This test requires a test directory on a block-device filesystem: refusing to open the spine under /tmp/TestOpenRefusesASpineOutsideTheLockDomain2802271543/001: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
-UNVERIFIED mc/substrate TestOpenReadOnlyRefusesASpineOutsideTheLockDomain: This test requires a test directory on a block-device filesystem: refusing to open the spine under /tmp/TestOpenReadOnlyRefusesASpineOutsideTheLockDomain517263106/001: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+UNVERIFIED mc/substrate TestOpenRefusesASpineOutsideTheLockDomain: This test requires a test directory on a block-device filesystem: refusing to open the spine under /tmp/TestOpenRefusesASpineOutsideTheLockDomain1190843320/001: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+UNVERIFIED mc/substrate TestOpenReadOnlyRefusesASpineOutsideTheLockDomain: This test requires a test directory on a block-device filesystem: refusing to open the spine under /tmp/TestOpenReadOnlyRefusesASpineOutsideTheLockDomain2991588891/001: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
 UNVERIFIED mc/boundary TestValidateHomeAcceptsTheRealOperatorHome: the actual operator home is unavailable; /home/agent is a container mount root. The test fails on the assigned base and final tree.
 ```
 
