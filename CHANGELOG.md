@@ -13,6 +13,8 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - The application package builds alongside the component checks, so the image build can start sooner.
 - The workflow retains the Go build cache for each commit and preserves the separate image cache.
 - The test release policy permits repeated versions and schema changes through the normal install path.
+- An update accepts a Project that uses the default Project image.
+- The release image checks run the Project image check of an update against the default Project image.
 
 ### Known limits
 

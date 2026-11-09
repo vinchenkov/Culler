@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"crypto/sha256"
+	_ "embed"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -19,6 +20,11 @@ import (
 	"mc/deployment"
 	"mc/opencodecatalog"
 )
+
+// The Project image smoke runs the same file against the default Project image.
+//
+//go:embed candidate-runtime-check.sh
+var candidateRuntimeCheck string
 
 type updateCandidateAssessment struct {
 	digest  string
@@ -205,12 +211,10 @@ func (p *publishedSetup) checkCandidateProjectImages(ctx context.Context) error 
 			continue
 		}
 		args := []string{"run", "--rm", "--name", container, "--label", "mc-managed=true", "--label", "mc-deployment=" + liveNames.Suffix, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--read-only", "--security-opt", "no-new-privileges=true", "--pids-limit", "128", "--memory", "512m", "--cpus", "1", "--entrypoint", "/bin/sh", "--tmpfs", "/tmp:rw,nosuid,nodev,mode=1777", "--mount", "type=volume,src=" + volume + ",dst=" + deployment.RuntimeRoot + ",readonly,volume-nocopy"}
-		script := "set -eu; for path in /mc /workspace; do test -d \"$path\"; test ! -L \"$path\"; done; test ! -e /mc/run.json; test ! -e /mc/spine; /opt/culler-runtime/bin/check; test \"$(cat /opt/culler-runtime/release-id)\" = \"$1\""
 		if checkedOptional != "" {
 			args = append(args, "--mount", "type=volume,src="+optionalVolume+",dst="+deployment.OpenCodeRoot+",readonly,volume-nocopy")
-			script += "; XDG_DATA_HOME=/tmp/data XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache XDG_STATE_HOME=/tmp/state /opt/culler-opencode/node_modules/@opencode/cli-linux-arm64/bin/opencode --version"
 		}
-		args = append(args, selection.Image, "-ec", script, "check", p.record.Commit)
+		args = append(args, selection.Image, "-ec", candidateRuntimeScript(checkedOptional != ""), "check", p.record.Commit)
 		checkContext, cancel := context.WithTimeout(ctx, 2*time.Minute)
 		_, checkErr := p.docker(checkContext, args...)
 		cancel()
@@ -220,6 +224,13 @@ func (p *publishedSetup) checkCandidateProjectImages(ctx context.Context) error 
 		checked[selection.Image] = true
 	}
 	return nil
+}
+
+func candidateRuntimeScript(openCode bool) string {
+	if !openCode {
+		return candidateRuntimeCheck
+	}
+	return candidateRuntimeCheck + "XDG_DATA_HOME=/tmp/data XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache XDG_STATE_HOME=/tmp/state /opt/culler-opencode/node_modules/@opencode/cli-linux-arm64/bin/opencode --version\n"
 }
 
 func (p *publishedSetup) clearCandidateCheckVolume(ctx context.Context, volume, component, owner string) error {

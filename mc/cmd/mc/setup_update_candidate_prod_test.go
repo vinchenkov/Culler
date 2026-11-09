@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -252,6 +253,18 @@ func TestCandidateChecksArchivedImagesWithIsolatedRuntime(t *testing.T) {
 				t.Fatalf("temporary runtime remained: %s", joined)
 			}
 		})
+	}
+}
+
+func TestCandidateRuntimeScriptIsValidShell(t *testing.T) {
+	for _, openCode := range []bool{false, true} {
+		script := candidateRuntimeScript(openCode)
+		if output, err := exec.Command("/bin/sh", "-n", "-c", script).CombinedOutput(); err != nil {
+			t.Fatalf("OpenCode %v: %v: %s\n%s", openCode, err, output, script)
+		}
+		if strings.Contains(script, "/opt/culler-opencode/") != openCode {
+			t.Fatalf("OpenCode %v: %s", openCode, script)
+		}
 	}
 }
 
