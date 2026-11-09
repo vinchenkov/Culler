@@ -42,6 +42,10 @@ sources:
     resource: repo://dashboard/src/ui/theme.js
   - id: openwiki-source-096a781fb160ef979fa31121
     resource: repo://INSTALL.md
+  - id: openwiki-source-8887a56335011659b61b947b
+    resource: repo://mc/cmd/mc/candidate-runtime-check.sh
+  - id: openwiki-source-30e353995389d69cb272185f
+    resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
   - id: openwiki-source-4b4fe89674376e41801774a5
@@ -72,6 +76,10 @@ sources:
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-fca867d7fea1f4f6917fe44b
     resource: repo://resident/src/provider-credentials.ts
+  - id: openwiki-source-cace99190acf5608e60583a3
+    resource: repo://runner/image/Dockerfile
+  - id: openwiki-source-1430dd49737c0f35b616bb76
+    resource: repo://runner/image/runtime-check.sh
   - id: openwiki-source-afc1b9cc18bf71238f6d8781
     resource: repo://work/dashboard-theme-sets/implementation-inventory.md
   - id: openwiki-source-56ebfdef4e75b22f9a00bc23
@@ -84,10 +92,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-09T19:06:13.611Z
 ---
 
 # Culler quickstart
@@ -146,6 +154,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Install, redeploy, or release | [Installation and deployment](operations/install-and-deployment.md) |
 | Retry or restore an interrupted published update | [Update recovery](operations/culler-lifecycle.md) |
 | Check image contents, update size, or image cleanup | [Image delivery and update cleanup](operations/image-delivery.md) |
+| Understand the Project image check before a published update | [Candidate runtime compatibility](operations/image-delivery.md#candidate-runtime-compatibility) |
 | Understand OpenCode preparation and reuse in source deployments | [Source OpenCode packages](operations/image-delivery.md#source-package-preparation-and-reuse) |
 | Check or control local services | [Culler lifecycle command](operations/culler-lifecycle.md) |
 | Assess release scans, secret scanning, or nightly reports | [Release security scans](operations/release-security.md) |
@@ -379,8 +388,12 @@ See [Agent connections and access renewal](operations/agent-connections.md) for 
 
 After an interruption, `culler update` retries the exact retained candidate.
 Before the update commits, `culler update --restore` restores the previous software and checkpoint.
+Restore starts the previous release's helper before services so resident verification can read the spine.
+A helper failure keeps work stopped; correct the reported cause, then retry `culler update --restore`.
 An incomplete update keeps ordinary work stopped.
 The updater verifies the candidate before it records the commit and permits work.
+Its isolated Project image check accepts the default image's protected spine directory when the runtime checks pass.
+See [candidate runtime compatibility](operations/image-delivery.md#candidate-runtime-compatibility) for the check and its release smoke.
 See [the lifecycle guide](operations/culler-lifecycle.md) for commands and [installation and deployment](operations/install-and-deployment.md) for the update boundaries.
 
 

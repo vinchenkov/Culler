@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:aeeae213dd580ecd4e6f0b98445dd29bec3aa6f4d7e87cab0efdef53626df461",
+  "pageVersion": "sha256:a647b92cbce9b5423969373d71ba439fa6d16da09fc6d4280abb671f74ba3fb3",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -551,10 +551,52 @@
           "version": "repo-lines-v1:sha256:dc9b91cbd3c2091c88924e4393df3b851fa39fd3919f09942eb49413e850ceb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDZlMTFmYTYyYTk1NGQyYzRlY2NmZTcxNWFlOGVkNzM2MjlkMTMwYjdkNWRmNGZhMDE5MjdiODI4YzQyZjBhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGViYTNlM2E2NWYxYWQ5NDhmODYwNWI5NDU5ODgyODU3Yzc1YzdmZjBiNTdhMWI5Zjc1NzE2ODMyYThiNDQyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjM2YzRmNGYzMTgwMmZlNDUzNmQyNzljMDdlODUwMzc5N2U5ODMyYjdhNDE3NjJkMTNjNWE1ZDlkMmE2NGZlYyJ9"
         }
       ]
+    },
+    {
+      "id": "claim_8d0d7bd3a4e248bcaf1932b3138e9759",
+      "statement": "Published updates run an isolated candidate runtime check on each distinct selected Project image before replacement.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L124-L225",
+          "version": "repo-lines-v1:sha256:87890f769ee66def3411b12f9017ddd3e1ed19ecb8dbda520fdd36b7cce529ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZGExZDc5MTQ4MDllMzQ5OWQ0NTczZThiZmU1ODI2YWUwODJlYTJlMmExNGRiN2NjMTQxNzI1NzdjNmE3MzVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2MThhNjEzNDUyZTBlMTBhNjVmMTJkMjM1MTcyNzZjN2U3NjdmMDE1YTk1MjkzYWU2NzEzMzRjNmRiOTkyMDVmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_88130e04fe11490390ef92016fd0baf3",
+      "statement": "The default Project image's protected spine directory satisfies the candidate check when it remains unreadable by the check user.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/candidate-runtime-check.sh#L1-L8",
+          "version": "repo-lines-v1:sha256:07acee8d148a8ecdb522b657100187378b8375aead6b251a65826f8dc06ce649:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M3M2U4YzBmODdlNGFlZTU3NWE2MGNjZTc4YjJhMGE2ODBhZjFiYTk4NWZhYWM2ZjVlOWU3MGVhMmZhNDgyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmRiYmJkMWFlMTQ2NmU5Y2MwN2Y2YmFiNDgxZTQwMTdlNjg3YmM4ODk3OTEzNWI1NzExN2RmMDIyMTI2NzdlMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://runner/image/Dockerfile#L118-L127",
+          "version": "repo-lines-v1:sha256:80a0b4f5cf1da89afa3b8883034da5227a93a74900756d307c36844388ab3f6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YTNmOWE4OGMyYjNjNWE5YTY0NjRjMjIyNDE0MDA4MDBhOGZiZWY1ZDAyZDRmYTk3ZmRhM2VkODU2NjEwODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MDZmMDBlYWM2OGU5ZDJlYjgxY2EyNDVjMTM4MzgxYWI5NjkwODY5NDY2MDg0NWE1YTgyZjA1YWEyMzRmN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NGRjYTBhZGE0YWIxNGI1Y2E0NjRhMDhkM2RiZDFmNDM5ZmM2YTBjMmY1ZjAxYjRiZWY3MDE1OGRjM2Y2YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMzA5OTZhMGEwZmIyODdiMmI0ZjU4NzA0MTU2ZDJkODIwNjRjNDQzYTYzYTVlYzA2YThiZjc4ZDZlOGE5NmEifQ"
+        },
+        {
+          "resource": "repo://runner/image/runtime-check.sh#L1-L8",
+          "version": "repo-lines-v1:sha256:8f6c64b21d8d766dd0fc9efa7d574e95e56ded6df0b6e37f9a3b13c662f65a07:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlMjhlMzVlMDgwMDQxMDY0MTQ5M2JmNzRjMDM2NjdiZDRjNjIyNWYxNTlmMzQ4NmE0ZDNjYWQwODA0OTlkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWJlZmI0OGJjZTAxMWMxYmZiY2JkYjE5ODY0YzJmMDQzMDhlZWJkMjljOGQ5ZTUyNzY5OGQ0Y2NjMmY0MjQ1MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2342d2b06644e5aa0867e89f8880713",
+      "statement": "Published restoration starts the previous helper before services and verifies services before it releases maintenance.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_published_prod.go#L117-L127",
+          "version": "repo-lines-v1:sha256:fdac503bb8b3793d5ce1f1d84e33c40e4da5069153d9d983675db0e606ecdb54:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmY2NiZTg2OTAxZTM1OThhNDdlYjUyODg3ZjAwNWFmM2Q1NThjNTJjZTRlZmNjYzMyMTM3ZTJiZjljOWY5NzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxYTI1MDczNDVmN2Q1OTM1YmRiMTQyMzAwZWI3MzdhOGQ0MzUyZTljZTU5ZDc4OTZjOTc4NDBiYjJlMTA5OGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3NTA2OTA5ZjMwOGMxMTlhNzM0OTI0OGY4N2E5ZTYzZDZlN2YyMGVkMWZlNmQ0MDA4NDE5NTUxNDc4MTVmY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhODY2YjkzNGE4NWYwZGIyY2JjMDZlOTJmNTlmYzU0ZjI4MjMzZjNlNGQ1Y2FlNTQwOWZmNGE2MjM5ODc3MmIifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_transaction_prod.go#L276-L308",
+          "version": "repo-lines-v1:sha256:00718187e998f7f84f80c33460f1c12e14d64118d20e8308a6667378bbf6f262:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YjI5NDFiNzk0YzMzMGNmMDgwN2Y1Y2NlYzI5MjZkNzRmOTA3NzE5NWE4MWMyZjFhN2E5MjM4ZDNkMmRlMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwY2I1NjNlZWU1ZWU2MjlhMDU5OGYyOTZkZDA0Y2FlYWYwNzA2N2RmNGVmMmI3NjlmMTBhNWNkZmVkOTE0ZjMifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-08T02:41:27.984Z"
+    "at": "2026-11-09T19:06:13.611Z"
   }
 }

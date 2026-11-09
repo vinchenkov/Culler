@@ -44,6 +44,12 @@ sources:
     resource: repo://mc/cmd/mc/culler_prod_test.go
   - id: openwiki-source-ba92167dda59467828397749
     resource: repo://mc/cmd/mc/setup_opencode_source_prod_test.go
+  - id: openwiki-source-7db06a144aa42e48eb68568a
+    resource: repo://mc/cmd/mc/setup_update_candidate_prod_test.go
+  - id: openwiki-source-579b9c04dbd98eaf836c5c4c
+    resource: repo://mc/cmd/mc/setup_update_candidate_prod.go
+  - id: openwiki-source-769bbb5f564fdccd1e6ebbb1
+    resource: repo://mc/cmd/mc/setup_update_stop_prod_test.go
   - id: openwiki-source-9f816a6d1f5994d193ba7ab4
     resource: repo://mc/config/agentprofiles_test.go
   - id: openwiki-source-e52c730e2e47b3a8099643b1
@@ -130,14 +136,16 @@ sources:
     resource: repo://runner/agent-runner/opencode.test.ts
   - id: openwiki-source-5bafebdedf9045e1ae8594df
     resource: repo://runner/image/browser-smoke.test.sh
+  - id: openwiki-source-729fed85a7f093179cea3802
+    resource: repo://runner/image/project-smoke.sh
   - id: openwiki-source-4f081c9b33aa27c81df3d636
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-09T19:06:13.611Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -627,10 +635,31 @@ See [source package preparation and reuse](../operations/image-delivery.md#sourc
 ### Published update recovery checks
 
 `mc/cmd/mc/setup_update_transaction_prod_test.go` checks retained candidate recovery, configuration changes, maintenance, durable commit, refused post-commit restore, and cleanup retry.
+
+The candidate and restore tests separate command construction from actual container behavior:
+
+| Source | Behavior under test |
+| --- | --- |
+| `mc/cmd/mc/setup_update_candidate_prod_test.go` | The candidate shell program parses with and without the optional OpenCode command. Controlled Docker responses check selected and base images, archived Projects, one check per distinct image, isolation, cleanup, and runtime failure. |
+| `mc/cmd/mc/setup_update_stop_prod_test.go` | Restore starts the previous image's helper before services. A helper failure prevents service restoration and identifies the helper in the error. |
+| `runner/image/project-smoke.sh` | The real default Project image runs the updater's shared shell program with the candidate runtime and the update check's container restrictions. |
+
+`TestCandidateRuntimeScriptIsValidShell` uses `/bin/sh -n`; it checks shell syntax and optional command selection without executing the runtime.
+`TestCandidateChecksArchivedImagesWithIsolatedRuntime` uses a Docker substitute and verifies that the runtime check receives no live spine mount.
+`TestPublishedRestoreStartsThePreviousHelperBeforeServices` uses helper and service substitutes to check order and failure propagation.
+These unit assertions belong to the ordinary Go suite.
+
+The `release-images` job runs `project-smoke.sh` against the actual default Project and product images.
+The smoke reads `mc/cmd/mc/candidate-runtime-check.sh`, which the Go updater embeds.
+It checks the release identity and runtime access rules, including the protected spine directory in the default Project image.
+The smoke requires Docker and compatible images; it remains separate from the Docker-free fast suite.
+See [candidate runtime compatibility](../operations/image-delivery.md#candidate-runtime-compatibility) for the implementation.
+
 `mc/deployment/update_checkpoint_docker_test.go` checks real scratch volume recovery after an interrupted optional-runtime copy.
 It compares the restored configuration, spine identity, and optional runtime bytes.
 The [retained update verification report](../../release/UPDATE-VERIFICATION.md) records prior results and leaves complete packaged recovery through macOS launchd unverified.
 The release acceptance procedure in `release/UPDATES.md` retains that separate requirement.
+This wiki update reviews these source assertions and does not report a fresh Go, Docker, or macOS acceptance run.
 
 ## OpenWiki recovery checks
 

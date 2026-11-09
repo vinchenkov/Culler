@@ -10,16 +10,22 @@ sources:
     resource: repo://mc/cmd/mc/culler_prod.go
   - id: openwiki-source-c0c8c1965a051d7700920804
     resource: repo://mc/cmd/mc/culler_services_prod.go
+  - id: openwiki-source-579b9c04dbd98eaf836c5c4c
+    resource: repo://mc/cmd/mc/setup_update_candidate_prod.go
+  - id: openwiki-source-769bbb5f564fdccd1e6ebbb1
+    resource: repo://mc/cmd/mc/setup_update_stop_prod_test.go
+  - id: openwiki-source-30e353995389d69cb272185f
+    resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
   - id: openwiki-source-a69635b1c1f62a5cb37186fd
     resource: repo://mc/deployment/lifecycle.go
   - id: openwiki-source-26d5c493ee5be4c7eb7219f5
     resource: repo://release/UPDATE-VERIFICATION.md
   - id: openwiki-source-09c5383289d9635a85a372a3
     resource: repo://release/UPDATES.md
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-09T19:06:13.611Z
 ---
 
 # Culler lifecycle command
@@ -84,6 +90,9 @@ This stop procedure differs from the three-minute wait for an ordinary resident 
 
 The update record blocks ordinary work throughout replacement and verification.
 The updater checks the candidate, saved configuration, and every selected Project image.
+The Project image check runs the candidate runtime with temporary volumes and no live database mount.
+It accepts the default image's protected spine directory when the runtime checks pass.
+See [candidate runtime compatibility](image-delivery.md#candidate-runtime-compatibility) for the checks and their isolation.
 It verifies a checkpoint before replacement and checks component identities and local readiness before commit.
 It synchronizes files and records the commit before it releases maintenance.
 An incomplete update keeps work stopped.
@@ -91,6 +100,14 @@ An incomplete update keeps work stopped.
 `culler update --restore` restores the checkpoint before commit.
 Recovery verifies the retained package and requires no download after checkpoint completion.
 A failed restore preserves the checkpoint for another attempt.
+
+`mc/cmd/mc/setup_update_transaction_prod.go` starts the previous release's helper before it restores the prior service state.
+The update stop removes the helper, and resident verification needs that helper to read the spine.
+Restore first applies the available checkpoint and prior stop choices, then starts the helper with the previous image.
+A helper failure keeps work stopped and prevents service restoration.
+The diagnostic names the cause and directs the operator to retry `culler update --restore` after repair.
+Successful service verification precedes the restored state and release of maintenance.
+
 After commit, cleanup can retry without restoring old data over the current deployment.
 Cleanup preserves selected Project images and images that containers use.
 An ordinary downgrade remains unsupported.
@@ -124,3 +141,5 @@ The command returns `0` for success, `1` for an operation failure, `2` for inval
 The service command reports current service checks after a failure.
 `mc/cmd/mc/culler_prod_test.go` covers command outcomes and failure behavior.
 `mc/deployment/lifecycle_test.go` covers the stop record and service definition checks.
+`mc/cmd/mc/setup_update_stop_prod_test.go` checks the previous helper identity, helper-before-services order, and refusal after helper failure.
+These source assertions remain separate from complete packaged restoration through macOS launchd.

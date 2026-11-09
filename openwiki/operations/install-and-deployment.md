@@ -14,6 +14,8 @@ sources:
     resource: repo://INSTALL.md
   - id: openwiki-source-03ffc32a0ca502ab67c54b25
     resource: repo://install.sh
+  - id: openwiki-source-8887a56335011659b61b947b
+    resource: repo://mc/cmd/mc/candidate-runtime-check.sh
   - id: openwiki-source-f4ac2493f15eb122b68f1029
     resource: repo://mc/cmd/mc/host_bun_prod.go
   - id: openwiki-source-d43a8f01d76df743f94a7d70
@@ -22,8 +24,14 @@ sources:
     resource: repo://mc/cmd/mc/setup_install_prod.go
   - id: openwiki-source-ba92167dda59467828397749
     resource: repo://mc/cmd/mc/setup_opencode_source_prod_test.go
+  - id: openwiki-source-1f9fad5e3ff6a05580945e60
+    resource: repo://mc/cmd/mc/setup_published_prod.go
   - id: openwiki-source-37456df394e5501dc5f5c7ad
     resource: repo://mc/cmd/mc/setup_terminal_prod.go
+  - id: openwiki-source-579b9c04dbd98eaf836c5c4c
+    resource: repo://mc/cmd/mc/setup_update_candidate_prod.go
+  - id: openwiki-source-30e353995389d69cb272185f
+    resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
   - id: openwiki-source-d713bb120e2f3e26458d1540
     resource: repo://mc/cmd/mc/uninstall_modes_prod_test.go
   - id: openwiki-source-4e67d5d53e1cf48154d0675b
@@ -62,16 +70,20 @@ sources:
     resource: repo://release/UPDATES.md
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
+  - id: openwiki-source-cace99190acf5608e60583a3
+    resource: repo://runner/image/Dockerfile
+  - id: openwiki-source-1430dd49737c0f35b616bb76
+    resource: repo://runner/image/runtime-check.sh
   - id: openwiki-source-074a0c31b85dc048be2b3972
     resource: repo://runner/shared/project-cache.ts
   - id: openwiki-source-be37791327f4a5dbaa8f4f9f
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-08T02:41:27.984Z
+    at: 2026-11-09T19:06:13.611Z
 ---
 
 # Installation, deployment, and release
@@ -235,6 +247,7 @@ Onboarding copies `config.example.toml` into `MC_HOME/config.toml`, and only tha
 - `security-acceptance` checks the real Trivy scanner with controlled advisory fixtures. No job waits for it.
 - `release-images` builds both images with read-only permissions. It checks product behavior, inspects layers, and saves each checked archive.
 - The image checks verify file contents and write a fresh install and update size report. See [image delivery and update cleanup](image-delivery.md).
+- `runner/image/project-smoke.sh` also runs the updater's shared runtime check against the default Project image under the same container restrictions.
 - `image-vulnerabilities` reports Trivy vulnerability results for the saved archives. No job waits for it.
 - `release-checks` requires the fast suite, package, deployment, browser, and image jobs to succeed.
 - `release-version` selects publication through the release policy.
@@ -283,9 +296,16 @@ See [Release security scans](release-security.md) for coverage, reports, secret 
 `runtime.Dockerfile` supplies the private Culler runtime.
 The installer updates its deployment-specific volume after its users stop.
 Each Project retains its selected image and configuration revision across that update.
-Candidate Project images receive a compatibility check before they can access the spine.
-The check examines a stopped container archive without executing candidate programs.
+Project image admission checks a stopped container archive before the image can access the spine.
+That archive check executes no candidate programs.
 See [Project environments](../workflows/project-environments.md).
+
+A published update separately runs the candidate runtime on each distinct selected Project image, including images of archived Projects.
+`mc/cmd/mc/setup_update_candidate_prod.go` uses temporary runtime volumes and containers without a live spine mount.
+The embedded `candidate-runtime-check.sh` checks the required directories, absent run identity, runtime behavior, and release identity.
+The default image's protected `/mc/spine` directory is permitted; the runtime check requires it to remain unreadable by the agent user.
+A failed check stops the update before replacement and identifies the affected Project.
+See [candidate runtime compatibility](image-delivery.md#candidate-runtime-compatibility) for restrictions and the shared release smoke.
 
 Codex and Claude Code connections use sign-in that Culler starts in separate home and credential folders.
 `mc/deployment/runtimeauth_setup_login.go` launches the detected agent program in that isolated environment.
@@ -317,6 +337,11 @@ An enabled profile receives a warning before confirmation and can remain unavail
 Other valid profiles remain available, and the affected profile consumes no task attempt.
 Culler preserves explicit choices; local checks cannot prove current provider access or identical behavior for provider defaults.
 See [Culler lifecycle](culler-lifecycle.md#public-updates-and-recovery) for the update sequence and retained verification limits.
+
+Restore applies the available checkpoint and prior stop choices before it starts the previous release's helper container.
+The helper supplies spine access for resident verification.
+`mc/cmd/mc/setup_update_transaction_prod.go` restores services only after the helper starts, then verifies those services before it releases maintenance.
+A helper failure keeps work stopped and preserves the restore path through `culler update --restore` after repair.
 
 Keep-data uninstall preserves Project caches and derived images.
 Full wipe removes deployment cache volumes and derived image tags.

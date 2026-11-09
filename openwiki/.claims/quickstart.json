@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:2652c54f4afa208158d65cf86f6a0a856779446501e91a5c90de720c0aa9ad19",
+  "pageVersion": "sha256:0d909545a8937a7034f8149b37957b0924f1192735b0d0790c07f0628f7556ce",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -621,10 +621,38 @@
           "version": "repo-lines-v1:sha256:9a3b6cd20270af99a079cddf6a2e0979baac2e61bd9d9f2fe472763524be125e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzlmYjRhYmYxNjRkOGMyODFkYmM3NTdhNDM0MWY1M2M1OTVjOTljNjZjMWFkOTMxMjgyNjA4MzVjZWZlMDgzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFkZTk2MTAyYmFkODRjNDhiOWNjOGQ3OWRmOWFiNDE1NzE0YzMzODQwZjYwYmI2ZjZkNzkzZTU5MWVjNDQwYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2NmZWUwOWJhMTI4YjZlYmM2MTEyYzQ5NmZjYWE5ZjUzYzExMTFlMmE0OWNjMWQ4NmUyMjVhZjEzNzgxMDFhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk3NGRiN2I4ZmQ2ZDc2MTk3NGRmNzYzZmJiMzYwZDVjZmIzMjllNTg0N2JlOTg4NjA3ZTliZjQ2YjZkYjYwNCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_7b8a81e2a8294988b699c9b558b84166",
+      "statement": "Restore starts the previous release's helper before services and retains stopped work after a helper failure.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_transaction_prod.go#L276-L308",
+          "version": "repo-lines-v1:sha256:00718187e998f7f84f80c33460f1c12e14d64118d20e8308a6667378bbf6f262:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YjI5NDFiNzk0YzMzMGNmMDgwN2Y1Y2NlYzI5MjZkNzRmOTA3NzE5NWE4MWMyZjFhN2E5MjM4ZDNkMmRlMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwY2I1NjNlZWU1ZWU2MjlhMDU5OGYyOTZkZDA0Y2FlYWYwNzA2N2RmNGVmMmI3NjlmMTBhNWNkZmVkOTE0ZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_66eb8993db36497c8db3e14fd5731f2e",
+      "statement": "The candidate runtime check accepts the default Project image's protected spine directory while retaining the runtime access checks.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/candidate-runtime-check.sh#L1-L8",
+          "version": "repo-lines-v1:sha256:07acee8d148a8ecdb522b657100187378b8375aead6b251a65826f8dc06ce649:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M3M2U4YzBmODdlNGFlZTU3NWE2MGNjZTc4YjJhMGE2ODBhZjFiYTk4NWZhYWM2ZjVlOWU3MGVhMmZhNDgyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmRiYmJkMWFlMTQ2NmU5Y2MwN2Y2YmFiNDgxZTQwMTdlNjg3YmM4ODk3OTEzNWI1NzExN2RmMDIyMTI2NzdlMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://runner/image/Dockerfile#L118-L127",
+          "version": "repo-lines-v1:sha256:80a0b4f5cf1da89afa3b8883034da5227a93a74900756d307c36844388ab3f6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YTNmOWE4OGMyYjNjNWE5YTY0NjRjMjIyNDE0MDA4MDBhOGZiZWY1ZDAyZDRmYTk3ZmRhM2VkODU2NjEwODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MDZmMDBlYWM2OGU5ZDJlYjgxY2EyNDVjMTM4MzgxYWI5NjkwODY5NDY2MDg0NWE1YTgyZjA1YWEyMzRmN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NGRjYTBhZGE0YWIxNGI1Y2E0NjRhMDhkM2RiZDFmNDM5ZmM2YTBjMmY1ZjAxYjRiZWY3MDE1OGRjM2Y2YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMzA5OTZhMGEwZmIyODdiMmI0ZjU4NzA0MTU2ZDJkODIwNjRjNDQzYTYzYTVlYzA2YThiZjc4ZDZlOGE5NmEifQ"
+        },
+        {
+          "resource": "repo://runner/image/runtime-check.sh#L1-L8",
+          "version": "repo-lines-v1:sha256:8f6c64b21d8d766dd0fc9efa7d574e95e56ded6df0b6e37f9a3b13c662f65a07:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlMjhlMzVlMDgwMDQxMDY0MTQ5M2JmNzRjMDM2NjdiZDRjNjIyNWYxNTlmMzQ4NmE0ZDNjYWQwODA0OTlkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWJlZmI0OGJjZTAxMWMxYmZiY2JkYjE5ODY0YzJmMDQzMDhlZWJkMjljOGQ5ZTUyNzY5OGQ0Y2NjMmY0MjQ1MCJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T18:05:27.232Z"
+    "at": "2026-11-09T19:06:13.611Z"
   }
 }

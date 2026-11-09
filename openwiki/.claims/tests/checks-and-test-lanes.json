@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:79b997ecbb93d9883632197e02fdf28e2de038f631a625084915bfaa895365c0",
+  "pageVersion": "sha256:26a9315ef47156b1f08f4d4183afa743a1c3340cfcffa94b8bcb314f23b6296f",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -905,10 +905,48 @@
           "version": "repo-lines-v1:sha256:e557609463ad55852745f95dc6e34686968fc0a4a7800201b07e795d1d7c7044:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MmQ3MTExMDNkNTBhNDM3ODMwYzZmYmNkMDRmYjRiYWI0OWEwZjgyZjZkMjZkMWM3OTFjNmU4NDg4ZGQwOTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYTFhZTZjZGNmMmJjM2ZmNjM2MTk3ZDg1MTA2ODVlZDVmY2EwMzE5ODlhNTkzNGQ1MThiYWMxOWZmMTUxYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNDlhY2I2NzQxYmNkZDgyZmJhZmRlNmI5MjJiNzgzY2E0MWZmMDE2ZGU4NGMxZDVmODk0M2I0YzU3NDIyY2UifQ"
         }
       ]
+    },
+    {
+      "id": "claim_1bbfc686d01744419889364b64e86ec3",
+      "statement": "Candidate runtime unit tests check shell syntax, optional command selection, and isolated image checks through controlled Docker responses.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod_test.go#L207-L269",
+          "version": "repo-lines-v1:sha256:07235d817e0507fea718ccbf3847e8aa5e2447cac3a09fa901917a828e2f2908:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1NjE1ZWRmN2QyYWRmMDU4ZjRlNmU4MGMwODg2NjE1MjJhM2JjYTY3NmEzMmQ4YTc5YzkwMGYyZmEzMmYwZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxNzBlZjdiMWZlMjU3ODJiYzkyNGM2OWRiYzIxZDYyZDRkY2QzYTEwYTg1NWZjNDhiZDlkY2JlN2FhNGQ3M2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1821401e6ccb48db820be4611d82e20e",
+      "statement": "The restore order test requires the previous image's helper before services and prevents service restoration when the helper fails.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_stop_prod_test.go#L90-L139",
+          "version": "repo-lines-v1:sha256:03535ab834f4b52aa5bd17dd247265343d450bd3501057abf0427249a0203412:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4NzlmN2MzMWRiOGI4MWJhOTNkZmY3NmNjNWUxNzcxZWQxODNhM2M4MDhlNTc2YmY0OTdiYzJkMDkxMzFkZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_427050f1cf95436b9ab6ea64090d18c5",
+      "statement": "The release image smoke executes the updater's shared runtime shell program on the default Project image under the update check's restrictions.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L429-L437",
+          "version": "repo-lines-v1:sha256:7080713b808e8fbffee2d220039ea76a86c082d577ea427d383b255ae407ac66:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkzOTJiZTIyYjE4MmQ1MWQ1ODRkMmJjZWRjZjZlZGMxOThiZTcyYWVkNGZjMDg3YTY4MWUzMThlZTlkNzU2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2E5N2IwNWQzMDUzZDQ5NjU2ODBkMmViNzYwZGY0MWY3MjIzYTUxMWViYjA1MGE0NTI4NDFiNzIzNDBlODI4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDAxZDMwNWFlZmI2ZDcwYWIzNGM4ZjU3N2QzNzVlYmM1N2VkMjZhODhmOTQzZDdkZDhmZTVjZjhhNDJmNzBiZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWZjYTI2ZDlhODU5MzMwZmQyZjE2NWMyM2M0ZWJhYTcwZjRiNGZiMzA1ZWMyYjcyMDQ5MGE1ZGZlMDgyMTg1NCJ9"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L24-L27",
+          "version": "repo-lines-v1:sha256:fae409d6f3751f47c937905022b9155a3e4c47ee7e5b4b8e8eed19e1892f037e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmVkOWFkMjFlMjI1OWJkZjA0ZWZjNWU4N2JlMWYyOTU5ZDc0MWJjZDMwZDAwYzc1OGEyN2UzZmQ2MjZkN2YzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhlM2QyMzkwOWJiZmM3MjBjZmE1ZTZmZmU4Yjk2OGZlMmNlYTZmN2JkYmJiNjBjNTUyMDc4NDNmYjdiYjRhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWI0NjY0MjRmZTNmNjU1ZTA0NTIyYWNlYzEzMTNlMDVlMWMyMDJiZjBhODlmNTNmMDNlMjQwYzk4MDIwN2E4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTRlMjM2ZmM2MzYyN2JhOWU5ZTkzNTU4MzA2ZDg2YTJkMGNmYTI3ZTMwOWY3MDI4NWQzZTNhNzZlZjRlZDc1ZCJ9"
+        },
+        {
+          "resource": "repo://runner/image/project-smoke.sh#L52-L59",
+          "version": "repo-lines-v1:sha256:f017ac8415494db207196494091a6ba9ac1e8daee582d9edd8f7100a3950e624:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T18:05:27.232Z"
+    "at": "2026-11-09T19:06:13.611Z"
   }
 }

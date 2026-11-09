@@ -4,8 +4,14 @@ title: Image delivery and update cleanup
 description: The page explains image contents, runtime volume updates, source OpenCode package reuse, and cleanup after a published update.
 tags: [release, images, runtime, deployment]
 sources:
+  - id: openwiki-source-4d1d392666be6dfdd7a91a2e
+    resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-8887a56335011659b61b947b
+    resource: repo://mc/cmd/mc/candidate-runtime-check.sh
   - id: openwiki-source-b3bb40a3cb242690b078558d
     resource: repo://mc/cmd/mc/image_removal_prod.go
+  - id: openwiki-source-579b9c04dbd98eaf836c5c4c
+    resource: repo://mc/cmd/mc/setup_update_candidate_prod.go
   - id: openwiki-source-49772750db335e70b60de417
     resource: repo://mc/deployment/image_removal.go
   - id: openwiki-source-c3574bc58db62fef903f9230
@@ -22,14 +28,20 @@ sources:
     resource: repo://release/size_report.py
   - id: openwiki-source-09c5383289d9635a85a372a3
     resource: repo://release/UPDATES.md
+  - id: openwiki-source-cace99190acf5608e60583a3
+    resource: repo://runner/image/Dockerfile
+  - id: openwiki-source-729fed85a7f093179cea3802
+    resource: repo://runner/image/project-smoke.sh
+  - id: openwiki-source-1430dd49737c0f35b616bb76
+    resource: repo://runner/image/runtime-check.sh
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
   - id: openwiki-source-fb9561d88a21eed75b76c0a6
     resource: repo://specs/source-opencode-installation.md
-generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-08T02:41:27.984Z
+    at: 2026-11-09T19:06:13.611Z
 ---
 
 # Image delivery and update cleanup
@@ -49,6 +61,40 @@ Culler publishes a default Project image and a product image. The Project image 
 `mc/deployment/InstallRuntimeVolume` checks the release marker and refuses a replacement while agent containers use the runtime volume. The installer runs the embedded `runtime_install.js` in a container of the product image. The script compares the image manifest with the volume manifest. It keeps matching files, writes changed files through temporary paths, and removes obsolete entries. It clears the release marker before the walk and writes it after the files and manifest. An interrupted install has no release marker, so a later install repairs the volume.
 
 The script writes changed files as new files before rename. This keeps other paths safe when volume files share hard links. It applies owners before modes, then verifies them. It syncs changed files and directories before it writes the release marker.
+
+## Candidate runtime compatibility
+
+Before a published update replaces software, it checks the candidate runtime on each distinct selected Project image, including archived Projects.
+`mc/cmd/mc/setup_update_candidate_prod.go` requires each selected image and base image to exist locally.
+It copies the candidate runtime into a temporary volume and checks the selected images against that copy.
+The check containers receive no live spine, Project files, or host credentials.
+The installed runtime volume remains separate.
+
+Each check runs as `10002:10002` with these restrictions:
+
+- Network access is disabled, and all capabilities are dropped.
+- The root filesystem and runtime mount are read-only; `/tmp` uses disposable memory storage.
+- `no-new-privileges` blocks privilege gains, and process, memory, and CPU limits bound resource use.
+- Each image check has a two-minute timeout.
+
+`mc/cmd/mc/candidate-runtime-check.sh` is the shared shell program embedded in the updater.
+It requires real directories at `/mc` and `/workspace`, an absent `/mc/run.json`, a successful runtime check, and the expected release identity.
+The default Project image supplies `/mc/spine` with owner `10001:10001` and mode `0700`.
+That protected directory is compatible with the update check.
+`runner/image/runtime-check.sh` requires the directory to remain unreadable by the check user.
+The check therefore preserves the access boundary while permitting the default Project image.
+
+When an installed OpenCode volume requires an update, the check uses a separate temporary copy of the candidate package.
+The shell program then checks its native program version with disposable data and configuration paths.
+A failed image check stops the update before replacement and identifies the Project whose selected image requires repair.
+Temporary containers and volumes receive cleanup after the checks.
+Ownership checks protect resources from another deployment.
+
+`runner/image/project-smoke.sh` runs the same shared shell program against the default Project image with the candidate runtime mounted read-only.
+It supplies the runtime image's release identity and applies the update check's container restrictions.
+The `release-images` job in `.github/workflows/release.yml` runs this smoke before it saves the checked images.
+This shared program keeps the release check aligned with the updater's default-image compatibility check.
+See [update recovery checks](../tests/checks-and-test-lanes.md#opencode-and-update-recovery-checks) for the unit assertions and execution limits.
 
 ## Cleanup after a published update
 
