@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0d909545a8937a7034f8149b37957b0924f1192735b0d0790c07f0628f7556ce",
+  "pageVersion": "sha256:f5924ecaf101b9f04e9f61e6b148884879ba11010b35da6325637a1b2733a3e0",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -649,10 +649,20 @@
           "version": "repo-lines-v1:sha256:8f6c64b21d8d766dd0fc9efa7d574e95e56ded6df0b6e37f9a3b13c662f65a07:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlMjhlMzVlMDgwMDQxMDY0MTQ5M2JmNzRjMDM2NjdiZDRjNjIyNWYxNTlmMzQ4NmE0ZDNjYWQwODA0OTlkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWJlZmI0OGJjZTAxMWMxYmZiY2JkYjE5ODY0YzJmMDQzMDhlZWJkMjljOGQ5ZTUyNzY5OGQ0Y2NjMmY0MjQ1MCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_28fcfcc8ad034aa8a1ec64e35629d454",
+      "statement": "The Strategist directive requires two proposals unless fewer valid tasks satisfy the Vision, excludes equivalent work, and leaves selection to the Arbiter.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/strategist.md#L5-L32",
+          "version": "repo-lines-v1:sha256:baa4942f3afcba08db5ee5c2f01bf64165e33f683f7ce4cf04da3b517607c3ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhYzI1NjJmNmZlYzVhMWQ5NjExM2VhODI3MTQ0NGQwMGYzMmFmYzBjMzUwZmVmMjc5MTM4ZDhhODliNmQ5ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxMmFiOGMxM2QzZTk2YjhlMjY3NDhjOGY5OWVjZjllNDYzNWMxZmRhMDIzZDU0MzhjMTJhNWE0ZmM5ODZkYjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZjNmNzllMjAwZjNjYjljMmY1MjA1OGFlYTQzMjJjOTQzNDQxNTY4Y2U4ZTRmMDFhYmQ1MmYxODJkMzQ2YTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YjA4ODQ4NjgzNDVkYmM4NzEzNjJmNWQyNGZlMDIyNTcyNzdkMGM4MzkxNzViZWI3OTgyYWVmZGZiYjAwODMifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T19:06:13.611Z"
+    "at": "2026-11-09T20:41:27.356Z"
   }
 }

@@ -54,10 +54,14 @@ sources:
     resource: repo://mc/verbs/skills/scribe/openwiki/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-2244ea442a4c07aeb880c8c8
+    resource: repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-fbe8f84251137d3cfb7fb6f4
     resource: repo://mc/verbs/skillstore.go
+  - id: openwiki-source-4565b2c94892e8cea0c22610
+    resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-fe13f5a431cbfaf8f480dd65
     resource: repo://mc/verbs/verifier_input_test.go
   - id: openwiki-source-7092e09d830ef9ed23536948
@@ -68,10 +72,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T20:41:27.356Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-09T20:41:27.356Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -85,7 +89,7 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 `mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Collie](collie.md) tier uses the same directive and skill mechanism but has no run brief.
 
 The agent profile sets the model and effort for each run.
-The Strategist, Arbiter, Verifier, Packager, and setup directives state this fact.
+The Arbiter, Verifier, Packager, and setup directives state this fact.
 The Verifier directive states the profile rule once and leaves harness details to the runtime.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
@@ -109,7 +113,7 @@ Each directive states the Culler contract, the customization rules, and the role
 
 `directiveForRole` appends one generated section, built by `skillPointer`, to the prose:
 
-- **Your command surface** names the `mc-<role>` skill and its path, `~/.agents/skills/mc-<role>/SKILL.md`. It tells the agent to load the skill before the first `mc` call and again before the terminal. It also states that `mc` has no help surface: bare `mc` names zero verbs, and `mc --help` is an unknown verb.
+- **Your command surface** names the `mc-<role>` skill and its path, `~/.agents/skills/mc-<role>/SKILL.md`. The Strategist reads this skill before each `mc` call. Other pipeline roles read it before the first call and before the terminal. The pointer also states that `mc` has no help command.
 - **Your other skills** lists each additional and shared skill with its path and frontmatter description.
 
 The pointer carries only names and descriptions, never skill bodies. It is the trigger that makes the agent load a skill. It is also the fallback when a harness fails to list skills, because each skill is a readable file at a fixed path.
@@ -118,6 +122,29 @@ The Worker and Verifier pointers also supply a failure terminal for an absent or
 The agent reports the failed read through its assigned task and run identity.
 This fallback preserves an explicit terminal when the normal command instructions are unavailable.
 `mc/verbs/directives.go` defines the pointer and fallback.
+
+## Strategist instructions and procedures
+
+`mc/verbs/directives/strategist.md` defines proposal authority, criteria, customization, and research for each Strategist run.
+Repository evidence and the accepted Vision guide proposals.
+The directive requires duplicate checks against repository work, active tasks, rejected work, and cancelled work.
+Only the Arbiter selects proposals for development.
+
+The command skill, `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, contains command forms and conditional procedures:
+
+| Condition | Procedure in `mc-strategist` |
+| --- | --- |
+| A proposal batch is ready. | Proposal batch defines the payload, an empty result, and rejected-batch correction. |
+| An active or historical title leaves scope unclear. | Reads identifies the permitted task read. |
+| Research needs Project dependencies. | Research dependencies requires compatibility checks before use and applies the shared environment skill within role authority. |
+| An execution problem prevents completion, or an operator decision is required. | Execution problems and operator decisions selects the terminal and its evidence. |
+| Custom instructions conflict with the contract. | Project role customization defines the conflict report. |
+
+The directive points to these conditional procedures.
+The generated command pointer names the installed file at `~/.agents/skills/mc-strategist/SKILL.md`.
+`RoleSkillSet` in `mc/verbs/roleskills.go` delivers that file and the shared skills.
+These pointers keep procedures available when their conditions apply.
+See [Strategist research and submission](../workflows/task-pipeline.md#strategist-research-and-submission) for the complete proposal workflow.
 
 ## Proposal criteria in the role directives
 
@@ -170,6 +197,13 @@ Task runs receive their assigned criteria, Git facts, relevant verdicts, and cor
 Proposal runs receive the Project pool and recorded operator answers.
 Only the Strategist and the Arbiter receive the Vision part.
 Each part uses facts, tagged prose, or a JSON block.
+
+`trimStrategistBrief` in `mc/verbs/brief.go` selects concise explanations for Strategist assignment data.
+Its brief omits the Agent credentials and Failure controls parts.
+It retains the accepted Vision, Project path, environment identifiers, task history, custom instructions, and proposal decisions.
+The Cancelled work explanation requires use of each reason as context for the operator's preference.
+The Proposal decisions explanation requires application of each relevant operator resolution.
+The directive and command skill supply the procedures that use these facts.
 
 The Project role customization part names the exact revision and standard directive digest.
 Custom instructions replace defaults within the Culler contract.
@@ -271,7 +305,7 @@ See [the task pipeline](../workflows/task-pipeline.md) for the role rules that u
 
 The shared environment skill explains the temporary Culler token and host proxy.
 The host retains and renews provider credentials.
-The Worker and Verifier directives require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
+The Strategist, Worker, and Verifier directives require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
 
 `credentialPart()` in `mc/verbs/brief.go` supplies the Agent credentials explanation for briefs that retain that part.
 The setup brief and shared environment skill describe the same boundary.
@@ -415,6 +449,9 @@ Tests enforce most of these rules mechanically:
 `mc/verbs/verifier_input_test.go` checks the Verifier contract exposed to Collie and the rendered Verifier input.
 It checks required assessment duties, concise facts, skill discovery, and retained case payloads.
 `mc/verbs/platform_input_test.go` checks unavailable-check procedures, the failed-read fallback, and evidence duties across the required roles.
+`mc/verbs/strategist_input_test.go` checks preserved assignment data, delivered procedure pointers, and single occurrences of selected Strategist rules.
+Its duplicate checks cover the rendered brief and command skill; shared skill contents remain outside that check.
+It also checks proposal requirements in the extracted customization contract.
 These tests check supplied instructions. They do not prove agent behavior or establish fresh test results in this wiki update.
 
 The [Worker instruction audit](../operations/worker-instruction-audit.md) is an original report for task 56 at its recorded base commit.

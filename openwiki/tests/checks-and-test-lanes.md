@@ -88,6 +88,8 @@ sources:
     resource: repo://mc/test.sh
   - id: openwiki-source-3a72fe65b15fd6f2f9988f26
     resource: repo://mc/verbs/colliepacket_test.go
+  - id: openwiki-source-bdcdf989ab8381c989787604
+    resource: repo://mc/verbs/directives_test.go
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
@@ -104,6 +106,8 @@ sources:
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-9cde79f59cdb3b1ba6b34d30
     resource: repo://mc/verbs/skills/verifier/verify-behavior/SKILL.md
+  - id: openwiki-source-4565b2c94892e8cea0c22610
+    resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-fe13f5a431cbfaf8f480dd65
     resource: repo://mc/verbs/verifier_input_test.go
   - id: openwiki-source-a2a135f3f8016d9eeb4be1d9
@@ -142,10 +146,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T20:41:27.356Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T19:06:13.611Z
+    at: 2026-11-09T20:41:27.356Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -278,11 +282,26 @@ These tests check the instructions and procedures delivered to agents:
 
 | Source | Evidence checked |
 | --- | --- |
+| `mc/verbs/strategist_input_test.go` | Strategist assignment data, proposal authority, procedure pointers, delivered skills, and single occurrences of selected role rules. |
 | `mc/verbs/verifier_input_test.go` | Assessment belongs to the customization contract; briefs preserve assignment and case data while procedures remain discoverable through skills. |
 | `mc/verbs/platform_input_test.go` | Worker and Verifier outcomes preserve required tests, independent work, failed-read terminals, and unverified evidence. |
 | `mc/verbs/directives_test.go` | Role duties include broad checks, comparison by failure cause, unavailable-check outcomes, and contract conflict procedures. |
 | `mc/verbs/brief_test.go` | Role briefs retain their required parts and concise explanations. |
 | `mc/verbs/roleskills_test.go` | Skill pointers, command authority, explicit terminals, and browser commands remain available. |
+
+`TestStrategistInputDeliversRulesOnceAndResolvesProcedures` renders a brief with proposals, task history, custom instructions, a proposal resolution, and the accepted Vision.
+It checks the repository path, preserved instructions and resolution, and installed paths for every delivered skill.
+It checks the dependency, execution, operator decision, and customization procedures through their pointers.
+Selected rules must occur once across the rendered brief and `mc-strategist` skill.
+Shared skill contents remain outside this duplicate check.
+The test also checks proposal requirements in the extracted customization contract and excludes unrelated system explanations.
+
+`TestStrategistBriefPreservesAssignmentData` checks that brief simplification preserves each retained part's facts, text, rows, and text tag.
+`mc/verbs/brief_history_test.go` separately checks history limits, order, Project isolation, and cancellation excerpts.
+`TestArbiterAgentTextDefinesCompactHistory` checks the detailed history explanation in the Arbiter input.
+The Strategist tests check the supplied duplicate-check rules and task-read procedure.
+These tests establish instruction content; they do not prove proposal quality or task selection by an agent.
+See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-procedures) and [proposal submission](../workflows/task-pipeline.md#strategist-research-and-submission).
 
 The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
 It selects the installed browser with `--browser=chromium` and defines evidence media and session cleanup.
