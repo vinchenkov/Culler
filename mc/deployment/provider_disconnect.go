@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"time"
 )
 
 type AgentConnectionDisconnectRequest struct {
@@ -26,6 +27,25 @@ type AgentConnectionDisconnectResult struct {
 
 func AgentConnectionDisconnect(ctx context.Context, home string, request AgentConnectionDisconnectRequest) (AgentConnectionDisconnectResult, error) {
 	return disconnectAgentConnection(ctx, home, request, revokeConnectionProviderAccess)
+}
+
+// AgentConnectionRemoveCredential disconnects the saved credential of a connection when one exists.
+func AgentConnectionRemoveCredential(home, id string) error {
+	return removeAgentConnectionCredential(home, id, revokeConnectionProviderAccess)
+}
+
+func removeAgentConnectionCredential(home, id string, revoke func(context.Context, string, string, string) error) error {
+	authorization, err := ReadConnectionAuthorizationIdentity(home, id)
+	if errors.Is(err, os.ErrNotExist) {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	_, err = disconnectAgentConnection(ctx, home, AgentConnectionDisconnectRequest{ConnectionID: id, AuthorizationID: authorization, Confirm: true}, revoke)
+	return err
 }
 
 func disconnectAgentConnection(ctx context.Context, home string, request AgentConnectionDisconnectRequest, revoke func(context.Context, string, string, string) error) (AgentConnectionDisconnectResult, error) {

@@ -55,6 +55,8 @@ type setupDependencies struct {
 	section         func(string, verbs.OnboardArgs) error
 	connect         func(*setupWizard, setupConnection) error
 	saveKey         func(string, deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error)
+	removeKey       func(string, string) error
+	recordTest      func(string, string, bool) error
 	openCodeStatus  func(string) *deployment.AgentProfileOperation
 	openCodeStart   func(string, bool) (deployment.AgentProfileOperation, error)
 	open            func(string) error
@@ -253,8 +255,10 @@ func productionSetupDependencies(args verbs.OnboardArgs) setupDependencies {
 		runtimeReady: func(home string, bindings []string) error {
 			return deployment.ValidateRuntimeGrantStore(home, bindings, os.Environ())
 		},
-		identity: deployment.AgentConnectionAuthorizationIdentity,
-		saveKey:  deployment.AgentConnectionSave,
+		identity:   deployment.AgentConnectionAuthorizationIdentity,
+		saveKey:    deployment.AgentConnectionSave,
+		removeKey:  deployment.AgentConnectionRemoveCredential,
+		recordTest: setupRecordVerification,
 	}
 }
 

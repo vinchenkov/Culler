@@ -272,3 +272,27 @@ func TestConnectionDisconnectValidatesForegroundRegistryBeforeDeletion(t *testin
 		})
 	}
 }
+
+func TestConnectionCredentialRemovalDeletesTheSavedCredentialOnce(t *testing.T) {
+	home, current, _ := disconnectFixture(t)
+	revocations := 0
+	revoke := func(_ context.Context, _, connection, authorization string) error {
+		revocations++
+		if connection != "claude" || authorization != current.AuthorizationID {
+			t.Fatal("The removal revoked another authorization")
+		}
+		return nil
+	}
+	if err := removeAgentConnectionCredential(home, "claude", revoke); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ReadHostSecret(home, "provider", current.CredentialRef); err == nil {
+		t.Fatal("The removed credential remains in the protected store")
+	}
+	if _, err := ReadConnectionAuthorizationIdentity(home, "claude"); !errors.Is(err, os.ErrNotExist) {
+		t.Fatal("The removed connection retains an authorization identity")
+	}
+	if err := removeAgentConnectionCredential(home, "claude", revoke); err != nil || revocations != 1 {
+		t.Fatal("A repeated removal did not complete without another revocation")
+	}
+}

@@ -207,14 +207,15 @@ test("enabled profiles with failures appear first and retain an action for the c
   const { page } = smoke;
   const data = catalog();
   connections[1] = {...connections[1],state:"stopped",condition:"The endpoint is unavailable.",action:"Review connection"};
-  connections.push({id:"connection:team:model_access:daily",group:"connections",name:"Team account",connection_id:"team",profile_id:"daily",state:"stopped",condition:"The model test failed.",action:"Review connection"});
+  connections.push({id:"connection:team:model_access:daily",group:"connections",name:"Team account",connection_id:"team",profile_id:"daily",roles:data.profiles[1].roles,state:"stopped",condition:"The model test failed.",action:"Review connection"});
   await page.evaluate(()=>window.dispatchEvent(new Event("focus")));
-  await page.getByTestId("system-notices").getByRole("button", {name:"Review issues"}).click();
-  const issue = page.getByRole("dialog", {name:"System issues",exact:true})
-    .locator('[data-condition-id="connection:team:model_access:daily"]');
+  // The failed connection of the unused Spare profile is not an issue, so the notice shows the one remaining issue.
+  const notice = page.getByTestId("system-notices");
+  const issue = notice.locator('[data-condition-id="connection:team:model_access:daily"]');
+  await issue.waitFor();
   expect(await issue.getByRole("button", {name:"Review connection",exact:true}).isVisible()).toBe(true);
+  expect(await notice.innerText()).not.toContain("Second account");
   if (process.env.MC_UX_EVIDENCE) await page.screenshot({path:`${process.env.MC_UX_EVIDENCE}/unused-failure.png`});
-  await page.keyboard.press("Escape");
   await page.route(profileRoute, (route) => route.fulfill({ json: data }));
   await page.getByTestId("tab-configs").click();
   await page.getByTestId("config-nav-agents").click();

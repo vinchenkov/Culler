@@ -342,5 +342,5 @@ func (w *setupWizard) prepareAccessChoice(choice *onboarding.AccessChoice) error
 		return err
 	}
 	choice.CreatedBinding = choice.Name
-	return w.save()
+	return w.createdConnection(choice.Name)
 }
