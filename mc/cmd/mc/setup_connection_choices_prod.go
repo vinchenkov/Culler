@@ -84,6 +84,29 @@ func (w *setupWizard) ask(prompt onboarding.Prompt) (string, error) {
 	}
 }
 
+// search falls back to a query and a list of matches when the setup interface cannot search.
+func (w *setupWizard) search(search onboarding.Search) (string, error) {
+	if terminal, ok := w.ui.(interface {
+		Search(onboarding.Search) (string, error)
+	}); ok {
+		return terminal.Search(search)
+	}
+	for {
+		query, err := w.ask(onboarding.Prompt{Label: search.Label + " search", Hints: append(slices.Clone(search.Hints), search.QueryHints...)})
+		if err != nil {
+			return "", err
+		}
+		choices := search.Find(query)
+		if len(choices) == 0 {
+			w.problem(search.Empty.Title, search.Empty.Lines)
+			continue
+		}
+		if value, err := w.ui.Choose(search.Choose, choices, 0); !errors.Is(err, onboarding.ErrBack) {
+			return value, err
+		}
+	}
+}
+
 // setupCorrection names a rejected answer and its problems.
 func setupCorrection(title, answer string, problems ...string) *onboarding.Correction {
 	lines := slices.Clone(problems)
