@@ -179,8 +179,13 @@ export function createDeploymentCheck({ request, changed, hidden = () => false, 
 }
 
 /** Connections that require attention stay open. Connected and unused connections share one closed disclosure. */
+/** A connection that no role uses is not an issue. Nothing depends on it. */
+function connectionInUse(condition) {
+  return !condition.id?.startsWith("connection:") || condition.roles?.length > 0;
+}
+
 export function connectionGroups(connections, conditions) {
-  const active = new Set(conditions.map(item => item.id));
+  const active = new Set(conditions.filter(connectionInUse).map(item => item.id));
   const used = connections.filter(item => item.roles?.length || active.has(item.id));
   return {
     attention: used.filter(item => item.state !== "ready"),
@@ -307,8 +312,8 @@ export function systemIssues(conditions = []) {
       if (task.owns_block === true) owned.add(JSON.stringify([condition.project_id, task.task_id, condition.proposal_decision_id]));
     }
   }
-  return conditions.filter(condition => !condition.task_id || condition.blocked_kind !== "proposal" || condition.stalled || condition.allowance_condition ||
-    !owned.has(JSON.stringify([condition.project_id, condition.task_id, condition.block_decision_id])));
+  return conditions.filter(condition => connectionInUse(condition) && (!condition.task_id || condition.blocked_kind !== "proposal" || condition.stalled || condition.allowance_condition ||
+    !owned.has(JSON.stringify([condition.project_id, condition.task_id, condition.block_decision_id]))));
 }
 
 export function affectedProposalNodes(condition, action) {

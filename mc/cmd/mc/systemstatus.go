@@ -96,6 +96,10 @@ func systemRequirements() (verbs.SystemStatusRequest, error) {
 	if err != nil {
 		return verbs.SystemStatusRequest{}, err
 	}
+	return systemRequirementsAt(home)
+}
+
+func systemRequirementsAt(home string) (verbs.SystemStatusRequest, error) {
 	catalog, err := deployment.AgentProfileSystemCatalog(home)
 	if err != nil {
 		return verbs.SystemStatusRequest{}, err
@@ -534,6 +538,50 @@ func prepareModelVerification(connectionID, authorizationID string) (func() erro
 		}, nil
 	}
 	return nil, verbs.Domainf("The connection is absent from the configuration.")
+}
+
+// recordSetupVerification records a passing setup test of one agent profile, as recordModelVerification records a dashboard test.
+// A sign-in is an authorization, so it also verifies the token refresh of its connection.
+func recordSetupVerification(home, binding string, authorization bool, call func(string, any) (any, error)) error {
+	cfg, err := config.Load(filepath.Join(home, "config.toml"))
+	if err != nil {
+		return err
+	}
+	spec, ok := cfg.Runtimes.Bindings[binding]
+	if !ok {
+		return fmt.Errorf("The tested agent profile is absent from the configuration.")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	release, err := deployment.AcquireConnectionOwner(ctx, home, spec.Credential)
+	if err != nil {
+		return err
+	}
+	defer release()
+	required, err := systemRequirementsAt(home)
+	if err != nil {
+		return err
+	}
+	for _, connection := range required.Connections {
+		if connection.ID != spec.Credential || connection.Kind == "none" || connection.AuthorizationID == "unavailable" {
+			continue
+		}
+		scopes := []verbs.ConnectionCheck{}
+		if authorization || connection.Operation != "token_refresh" {
+			scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: connection.AuthorizationID, Operation: connection.Operation})
+		}
+		if revision, ok := connection.Profiles[binding]; ok {
+			scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: connection.AuthorizationID, Operation: "model_access", ProfileID: binding, ProfileRevision: revision})
+		}
+		check, observed := domain.DiagnosticID(), time.Now().UTC().Format(time.RFC3339Nano)
+		for _, scope := range scopes {
+			scope.CheckID = check
+			if _, err := call("verified", verbs.ConnectionObservation{ConnectionCheck: scope, EventID: domain.DiagnosticID(), Outcome: "ready", ObservedAt: observed}); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func recordModelVerification(home, operation string) error {

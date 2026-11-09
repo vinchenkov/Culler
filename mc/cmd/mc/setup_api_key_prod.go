@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	operatorconfig "mc/config"
@@ -99,6 +100,14 @@ func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 			save = deployment.AgentConnectionSave
 		}
 		request := deployment.AgentConnectionRequest{SubmissionID: "setup-key-" + rand.Text(), Revision: catalog.Revision, ID: choice.Binding, Name: source.Name, TemplateID: choice.Template, APIKey: key, AuthorizationID: source.AuthorizationID}
+		if err := w.removeUntestedConnections(choice.Binding); err != nil {
+			return err
+		}
+		if request.AuthorizationID == "" && !slices.ContainsFunc(catalog.Profiles, func(profile deployment.AgentProfileView) bool { return profile.ConnectionID == choice.Binding }) {
+			if err := w.createdConnection(choice.Binding); err != nil {
+				return err
+			}
+		}
 		saveKey := func() error {
 			_, err := save(w.home, request)
 			return err

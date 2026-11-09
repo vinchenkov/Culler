@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, expect, test } from "bun:test";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { bootSmoke, gotoReady, mc, teardown, type Smoke, MC_BIN } from "./harness";
+import { bootSmoke, gotoReady, mc, teardown, type Smoke, MC_BIN, ROUTING } from "./harness";
 
 let smoke: Smoke;
 let connection: string;
@@ -29,6 +29,13 @@ beforeAll(async()=>{
   const catalog=await mc(["agent-profile","list"]);
   const connections=(catalog.connections as Array<{id:string;kind:string}>).filter(value=>value.kind.endsWith("oauth"));
   connection=connections[0].id;other=connections[1].id;
+  expect([connection,other]).toEqual(["chatgpt","claude"]);
+  // A connection failure is an issue only when a role uses the connection.
+  const configPath=join(smoke.home,"config.toml");
+  writeFileSync(configPath,readFileSync(configPath,"utf8").replace(/(\[runtimes\.bindings\.chatgpt\][^\[]*?\bmodel\s*=\s*)"[^"]*"/,'$1"fixture-model"'));
+  const routing=join(smoke.scratch,"routing.health.md");
+  writeFileSync(routing,ROUTING.replace("| verifier | fake | fake |","| verifier | codex | chatgpt |").replace("| packager | fake | fake |","| packager | claude-sdk | claude |"),{mode:0o600});
+  await mc(["onboard","routing","--runtime-bindings","fake,claude,chatgpt","--routing-file",routing]);
   await failure(connection);await failure(other);available();
   await gotoReady(smoke);
 });
