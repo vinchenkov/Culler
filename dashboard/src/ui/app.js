@@ -3,7 +3,7 @@ import { taskRuns } from "./board.js";
 import { createRoleCustomization, customizationRole } from "./customization.js";
 import { createEvaluationControl } from "./evaluation.js";
 import { createRequests, isReadRequest } from "./requests.js";
-import { systemIssues, affectedProposalNodes, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, systemActionButton, systemConditionNodes, systemNoticeNode, actionControl, repairText, conditionSummary, conditionImpact, conditionFacts, conditionExplanation, conditionRetry, diagnosticResults, refreshSummary, releaseView } from "./systemhealth.js";
+import { systemIssues, affectedProposalNodes, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, systemActionButton, systemConditionNodes, systemNoticeNode, actionControl, repairText, conditionSummary, conditionImpact, conditionFacts, profileName, conditionExplanation, conditionRetry, diagnosticResults, refreshSummary, releaseView } from "./systemhealth.js";
 // The dashboard shell reads command results and renders the visible page.
 // Each project page uses the selected Project.
 
@@ -3039,7 +3039,7 @@ function renderDiagnosticState() {
     el("span", { class: "system-state", role: "status", text: title }),
     detail.group === "connections" && el("dl", { class: "system-context" },
       ...[
-        ["Agent profile", detail.profile_id],
+        ["Agent profile", detail.profile_id && profileName(detail)],
         ["Model", detail.model],
         ["Roles that use this profile", detail.roles?.join(", ")],
       ].filter(([, value]) => value).map(([label, value]) => [el("dt", { text: label }), el("dd", { text: value })])),

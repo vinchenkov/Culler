@@ -26,10 +26,10 @@ sources:
     resource: repo://resident/src/nudge-socket.ts
   - id: openwiki-source-79628d0b1a3667fb37eebff9
     resource: repo://resident/src/tick-loop.ts
-generated: { by: "culler-scribe", at: "2026-10-23T20:36:57.262Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-03T00:11:39.952Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Dispatch and the resident tick loop
@@ -65,7 +65,7 @@ It returns one `Action`: `KindIdle` with an `IdleReason`, `KindReap` (a stop of 
 The decision order inside `Decide`:
 
 1. **Lease held.** If a run holds the lease, `reapable` checks, in order: a recorded final outcome, a cancelled subject (`interrupted`), a changed VM boot id, the first-heartbeat watchdog (spawn grace), the lease timeout (timeout plus grace after the last heartbeat), the hard deadline, and a host-confirmed missing container. A match returns a reap. Otherwise the result is `lease-held`.
-2. **Project gates.** A paused or archived Project returns `project-inactive`. An environment condition holds new work. Three Project infrastructure failures return `project-infrastructure-exhausted`. A future Project retry time returns `project-infrastructure-retry-wait`. A task with a future retry time is marked execution-held.
+2. **Project gates.** A paused or archived Project returns `project-inactive`. Update recovery returns `repository-operation`. An environment condition holds new work. Three Project infrastructure failures return `project-infrastructure-exhausted`. A future Project retry time returns `project-infrastructure-retry-wait`. A task with a future retry time is marked execution-held.
 3. **Vision and attention.** No valid `VISION.md` returns `vision-required`. Three or more attention tasks return `attention-required`.
 4. **Repository holds.** An active or due repository operation that holds agent runs returns `repository-operation`.
 5. **Selection** in `decideAgentRun`: an approved priority task first, then open corrections, then the review queue cap, then the next dispatchable task. A pending proposal decision returns `proposal-decision-pending`. If nothing is dispatchable, `Decide` spawns `strategist(propose)` with the 20 most recently rejected titles.
@@ -119,7 +119,11 @@ In production, the same seam crosses a process boundary. `mc/verbs/dispatchpriva
 
 A **spawn** validates the run id and Project id, writes the launch envelope to `MC_HOME/runs/<run_id>.json` (mounted read-only at `/mc/run.json`), writes a host-only mount-plan sibling, runs `mc __mount-recheck`, runs `docker create`, rechecks again, and runs `docker start`. The container is named `mc-<project>-<run_id>`. Drift after create removes the unstarted container and launch files. A preparation, create, or start failure is reported through `mc run infra-failure --source resident`, which charges the Project infrastructure allowance because no agent process started (see [failure controls](../concepts/failure-controls.md)).
 
-A **reap** stops `mc-setup-<run_id>` and the pipeline container. If a container may still run, it stops there. Otherwise it calls `mc run stopped`, and only after `mc` accepts that does it delete the envelope, plan, wiki snapshot, seeding, and scratch files. Run logs are kept on purpose for diagnosis.
+A **reap** stops `mc-setup-<run_id>` and the pipeline container.
+If a container can still run, it stops there.
+Otherwise it calls `mc run stopped`.
+Only after `mc` accepts that result does it delete provider access, envelope, plan, seeding, and scratch files.
+Run logs remain available for diagnosis.
 
 ## Project pause and resume
 

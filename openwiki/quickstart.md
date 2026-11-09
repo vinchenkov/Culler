@@ -42,14 +42,16 @@ sources:
     resource: repo://dashboard/src/ui/theme.js
   - id: openwiki-source-096a781fb160ef979fa31121
     resource: repo://INSTALL.md
+  - id: openwiki-source-8887a56335011659b61b947b
+    resource: repo://mc/cmd/mc/candidate-runtime-check.sh
+  - id: openwiki-source-30e353995389d69cb272185f
+    resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
   - id: openwiki-source-4b4fe89674376e41801774a5
     resource: repo://mc/deployment/agentprofile_auth.go
   - id: openwiki-source-a4b6d508300704786e4ce1a2
     resource: repo://mc/dispatch/delivery.go
-  - id: openwiki-source-3007affdd6a005d3387629bc
-    resource: repo://mc/mclog/mclog.go
   - id: openwiki-source-45770f873ba593d4d685f66f
     resource: repo://mc/substrate/substrate.go
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
@@ -60,6 +62,10 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-bb09a9b9edeb77b9bd13e9d0
     resource: repo://mc/verbs/skills/setup/mc-setup/SKILL.md
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
   - id: openwiki-source-cd6248e71941a23b0297cb03
     resource: repo://resident/src/credential-projector.ts
   - id: openwiki-source-c18554fde4cd0e38831a6f1d
@@ -70,6 +76,10 @@ sources:
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-fca867d7fea1f4f6917fe44b
     resource: repo://resident/src/provider-credentials.ts
+  - id: openwiki-source-cace99190acf5608e60583a3
+    resource: repo://runner/image/Dockerfile
+  - id: openwiki-source-1430dd49737c0f35b616bb76
+    resource: repo://runner/image/runtime-check.sh
   - id: openwiki-source-afc1b9cc18bf71238f6d8781
     resource: repo://work/dashboard-theme-sets/implementation-inventory.md
   - id: openwiki-source-56ebfdef4e75b22f9a00bc23
@@ -82,10 +92,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-05T09:00:19.897Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-09T19:06:13.611Z
 ---
 
 # Culler quickstart
@@ -142,7 +152,10 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Work on the wiki export or trace viewer | [OpenWiki and AgentsView](integrations/openwiki-and-viewers.md) |
 | Configure agent sign-in or inspect access renewal | [Agent connections](operations/agent-connections.md) |
 | Install, redeploy, or release | [Installation and deployment](operations/install-and-deployment.md) |
+| Retry or restore an interrupted published update | [Update recovery](operations/culler-lifecycle.md) |
 | Check image contents, update size, or image cleanup | [Image delivery and update cleanup](operations/image-delivery.md) |
+| Understand the Project image check before a published update | [Candidate runtime compatibility](operations/image-delivery.md#candidate-runtime-compatibility) |
+| Understand OpenCode preparation and reuse in source deployments | [Source OpenCode packages](operations/image-delivery.md#source-package-preparation-and-reuse) |
 | Check or control local services | [Culler lifecycle command](operations/culler-lifecycle.md) |
 | Assess release scans, secret scanning, or nightly reports | [Release security scans](operations/release-security.md) |
 | Understand reuse of image compatibility results | [Recorded runtime checks](workflows/project-environments.md#reuse-of-recorded-runtime-checks) |
@@ -153,7 +166,9 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Interpret setup milestones, retries, or retained history | [Setup progress](workflows/project-environments.md#setup-progress-and-history) |
 | Interpret performance or agent experiment results | [Performance and evaluations](tests/performance-and-evaluations.md) |
 | Understand task verdicts and unchanged test failures | [Task verification and base comparisons](tests/checks-and-test-lanes.md#task-verification-and-base-comparisons) |
+| Understand unavailable task checks and their outcomes | [Unavailable checks](tests/checks-and-test-lanes.md#unavailable-checks) |
 | Understand invalid proposal rejection | [Invalid criteria and all-reject batches](workflows/task-pipeline.md#invalid-criteria-and-all-reject-batches) |
+| Read the original Worker instruction audit | [Audit context](workflows/task-pipeline.md#worker-instruction-audit) |
 | Run the right checks before a commit | [Checks and test lanes](tests/checks-and-test-lanes.md) |
 
 The Pipeline page places the Project wiki section beside the current task run banner, above the task path.
@@ -238,6 +253,9 @@ For this repository, `Dockerfile.culler-project` supplies `/private/tmp` and the
 The ordinary component checks run in the Project container.
 The Verifier checks task criteria, new or changed tests, and broad Project checks for task regressions.
 Unchanged failures and unavailable host checks outside the criteria permit task progress when the other requirements hold.
+The unavailable-host-check exception excludes new or changed tests, which must pass.
+An unavailable criterion check or new or changed test follows the role procedure for its cause.
+Repairable prerequisites require repair or an image proposal; capabilities absent from every agent container require an operator decision.
 The evidence and Review Packet preserve those limits without an additional approval requirement.
 Separate release and host acceptance checks retain their requirements.
 Platform and host dependencies can leave individual checks unverified; the [test guide](tests/checks-and-test-lanes.md) explains that evidence.
@@ -346,13 +364,37 @@ It leaves a reply from a live agent unverified.
 ## Agent sign-in
 
 Culler supports account sign-in and static API keys for Codex and Claude Code.
+**Use another provider's API key** selects an OpenCode connection from the release catalog.
+In a published installation, the first such connection starts a separate download of OpenCode and its web search plugin.
+The catalog defines available models, effort levels, provider destinations, and web search support.
+
+A published installation without an OpenCode connection downloads no OpenCode program.
+Source deployments prepare and verify OpenCode before service activation, even without an OpenCode connection.
+They use package tools inside the selected source image and require no host npm installation.
+Equal package inputs and verified installed contents permit reuse across unrelated Culler commits and checkout paths.
+The first source connection uses the prepared package without another download.
+See [source package preparation and reuse](operations/image-delivery.md#source-package-preparation-and-reuse) for the specification, failure behavior, and package checks.
+
 The host retains provider credentials and supplies temporary Culler tokens to agent containers.
 Profiles select a connection, model, and optional effort; several profiles can share a connection.
 The model list offers its supported effort levels when it supplies them.
 The model test checks a selected effort before the profile is saved.
 The role assignment dialog offers an Edit action for each enabled profile.
 The release defines permitted provider destinations.
+
 See [Agent connections and access renewal](operations/agent-connections.md) for configuration, host storage, runner behavior, and verification boundaries.
+
+## Recover a published update
+
+After an interruption, `culler update` retries the exact retained candidate.
+Before the update commits, `culler update --restore` restores the previous software and checkpoint.
+Restore starts the previous release's helper before services so resident verification can read the spine.
+A helper failure keeps work stopped; correct the reported cause, then retry `culler update --restore`.
+An incomplete update keeps ordinary work stopped.
+The updater verifies the candidate before it records the commit and permits work.
+Its isolated Project image check accepts the default image's protected spine directory when the runtime checks pass.
+See [candidate runtime compatibility](operations/image-delivery.md#candidate-runtime-compatibility) for the check and its release smoke.
+See [the lifecycle guide](operations/culler-lifecycle.md) for commands and [installation and deployment](operations/install-and-deployment.md) for the update boundaries.
 
 
 ## Resolve a shared proposal decision

@@ -186,6 +186,7 @@ func TestModelFailureAllowsOneRefreshAndPreservesAnotherProfile(t *testing.T) {
 		t.Fatal(err)
 	}
 	request := SystemStatusRequest{Connections: []ConnectionRequirement{{ID: "test", AuthorizationID: "replacement", Operation: "token_refresh", Profiles: map[string]string{"profile": "revision", "other": "revision"}, Roles: []string{"worker", "collie"}, ProfileRoles: map[string][]string{"profile": {"worker"}, "other": {"collie"}}}}}
+	request.Connections[0].ProfileNames = map[string]string{"profile": "Review", "other": "General"}
 	request.Connections[0].ProfileModels = map[string]string{"profile": "review-model", "other": "general-model"}
 	result, err := SystemStatus(db, nil, request)
 	if err != nil {
@@ -195,7 +196,7 @@ func TestModelFailureAllowsOneRefreshAndPreservesAnotherProfile(t *testing.T) {
 	if len(conditions) != 1 || len(conditions[0].Roles) != 1 || conditions[0].Roles[0] != "worker" || conditions[0].FailureCount != 1 || conditions[0].FirstFailureAt == "" {
 		t.Fatalf("Incorrect profile scope: %+v", conditions)
 	}
-	if conditions[0].Model != "review-model" {
+	if conditions[0].Model != "review-model" || conditions[0].ProfileName != "Review" {
 		t.Fatalf("Incorrect model: %+v", conditions[0])
 	}
 	for _, connection := range result.(SystemStatusResult).Connections {

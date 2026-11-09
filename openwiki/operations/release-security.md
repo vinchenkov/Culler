@@ -32,10 +32,10 @@ sources:
     resource: repo://runner/image/project-manifest.sh
   - id: openwiki-source-d334a6b92b5bd753eb43c852
     resource: repo://runner/image/runtime-manifest.sh
-generated: { by: "culler-scribe", at: "2026-11-05T09:00:19.897Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Release security scans
@@ -78,11 +78,12 @@ It downloads the same image archive artifact as the upload job.
 
 | Job | Input and result |
 | --- | --- |
-| `fast-suite-macos` | Checks components, runs `./release/check.sh`, builds the application, and preserves the release inputs. |
+| `fast-suite-macos` | Checks components and runs `./release/check.sh`. |
+| `application-package` | Builds and validates the application alongside the checks and preserves the exact release inputs. |
 | `deployment-linux` | Runs the portable deployment tests and the Linux filesystem guard tests. |
 | `dashboard-browser` | Runs the complete dashboard browser suite. |
-| `release-images` | Builds and checks both images with read-only permissions. It saves each archive once. |
-| `release-checks` | Requires the four jobs above to succeed. |
+| `release-images` | Starts after the package job and checks both images with read-only permissions. It saves each archive once. |
+| `release-checks` | Requires the five jobs above to succeed. |
 | `product-image` | Checks and loads the saved image archives, then uploads them to the registry. |
 | `release-downloads` | Uploads the release files, verifies each download, and publishes the release. |
 

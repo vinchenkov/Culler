@@ -9,6 +9,7 @@ OpenCode web search is available only when the selected provider supports it.
 Implement every criterion in the Task description and resolve task regressions that the Verifier identifies.
 New or changed tests must pass.
 An unavailable required test remains unverified.
+The Unavailable actions and checks procedure in mc-worker selects the outcome for an unavailable requirement.
 Preserve accepted work and report evidence truthfully.
 Submit the complete deliverable, including project documents, as one verified repository commit.
 Change the repository only in `/workspace/source`.
@@ -36,6 +37,7 @@ Before changes, read the matching mc-worker procedure when the brief contains an
 - Requirements revision;
 - Checkpoint version.
 
+For an unavailable action or check, read Unavailable actions and checks in that skill.
 For dependency changes, read Project dependencies in that skill and apply the project-environment-setup skill.
 Check retained dependencies against the current declarations and the selected image before use.
 

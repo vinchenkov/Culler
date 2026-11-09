@@ -260,10 +260,14 @@ export function repairText(condition) {
   })[condition.action] ?? condition.action;
 }
 
+export function profileName(condition) {
+  return condition.profile_name || condition.model || "Agent profile";
+}
+
 /** The heading of one condition: its name and its state, without a repeat. */
 export function conditionTitle(condition) {
   const summary = conditionSummary(condition);
-  const name = condition.profile_id ? `${condition.name} / ${condition.profile_id}` : condition.name;
+  const name = condition.profile_id ? `${condition.name} / ${profileName(condition)}` : condition.name;
   return summary === name ? name : `${name} · ${summary}`;
 }
 
@@ -325,14 +329,14 @@ export function systemConditionNode(condition, action, details, discuss = null) 
         el("strong", { text: condition.name }),
         (unused || conditionSummary(condition) !== condition.name) &&
           el("span", { class: "system-state", text: unused ? "Not in use" : conditionSummary(condition) })),
-      condition.profile_id && el("span", { class: "system-profile", text: `Agent profile: ${condition.profile_id}` }),
+      condition.profile_id && el("span", { class: "system-profile", text: `Agent profile: ${profileName(condition)}` }),
       el("p", { text: conditionImpact(condition) }),
       affectedProposalNodes(condition, action),
       !ready && repairText(condition) && el("p", { class: "system-repair-text", text: repairText(condition) })),
     el("div", { class: "system-actions" },
       !ready && !unused && actionControl(condition) && systemActionButton(condition, action),
       !ready && !unused && discuss?.(condition),
-      el("button", { class: "btn ghost", type: "button", text: "View details", "aria-label": `View details for ${condition.name}${condition.profile_id ? " / " + condition.profile_id : ""}`, onclick: () => details(condition) })));
+      el("button", { class: "btn ghost", type: "button", text: "View details", "aria-label": `View details for ${condition.name}${condition.profile_id ? " / " + profileName(condition) : ""}`, onclick: () => details(condition) })));
 }
 
 export function systemConditionNodes(conditions, action, details, discuss = null) {
@@ -345,7 +349,7 @@ export function systemNoticeNode(view, action, review, discuss = null) {
   const recoveries = view.unavailable ? [] : view.recovered ?? [];
   if (!recoveries.length) return notice;
   return el("div", {}, ...recoveries.map(condition => el("div", { class: "system-notice-row", role: "status", "data-recovery-id": condition.diagnostic_id },
-    el("div", { class: "system-notice-copy" }, el("strong", { text: `${condition.name} / ${condition.profile_id}` }), el("p", { text: recoveryText(condition) })))), notice);
+    el("div", { class: "system-notice-copy" }, el("strong", { text: `${condition.name} / ${profileName(condition)}` }), el("p", { text: recoveryText(condition) })))), notice);
 }
 
 function systemFailureNoticeNode(view, action, review, discuss) {
@@ -403,6 +407,7 @@ export function conditionRetry(condition) {
 
 export function conditionFacts(condition, projects = []) {
   const rows = [
+    ["Profile identifier", condition.profile_id],
     [condition.latest_failure_at ? "Failure recorded" : "Last verified", stampLabel(condition.latest_failure_at || condition.verified_at)],
     ["Recovery confirmed", condition.recovery && stampLabel(condition.verified_at)],
     ...((condition.attempts ?? []).flatMap(attempt => [

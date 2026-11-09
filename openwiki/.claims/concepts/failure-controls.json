@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d9aa8609721ecf85277c585fdb249cc500fbf79a58e8796b308023a942d6bd8c",
+  "pageVersion": "sha256:d3de9572178a9fc8a2b45a6907d081fbe00d4a87325782898d51e27827fac4de",
   "claims": [
     {
       "id": "claim_637facb17ef542c7a1ee9d97d98a7b4a",
       "statement": "The dashboard labels the blocked field Decision Pending and the stalled field Retries Exhausted.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L918-L919",
+          "resource": "repo://dashboard/src/ui/app.js#L922-L923",
           "version": "repo-lines-v1:sha256:b756bac80b0970e5f4b3c95995c94a7901740cbf9805e2989e8f5274c6926950:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJiZTIwMzU0OTIzZDUyMDJiMzg0YTM3NmFlYTNlY2YzYjdkMGE5ODY5ZmIzMWNjNGYxMzU1YjFiMDJmZTU2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I3ZjBiMjBiOGQyZmUzYTQ1OWRlZjU0YjQxM2FmOGQ0NjA0M2U0NzNlYWM2ODU3YmQxMTc3YzM0ZjVjN2E5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDFlZDczYTRkNjljYzQwZGIzZDBkNTcxOGUxNjE4MTljNGRjZWYzM2ExZDNmMzBlMjQ3ODYxNzhiZTE0OGEwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWUzYmE0MjA1NzM0OTM4N2FiMjljZjkyNWNjODY2MTcyMjNjYTAxY2UyYWM2Mjk0NDc0Nzk2ZDk4ZWZiOGVjYyJ9"
         }
       ]
@@ -81,8 +81,8 @@
       "statement": "Dispatch idles a Project at three infrastructure failures and while its infrastructure retry time is in the future, and marks a task with a future retry time as execution-held.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L361-L372",
-          "version": "repo-lines-v1:sha256:c77eee8450119a319cf239087b7fa619d59c39e3e50442cc75c202d995a4e8d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzdjZmI3YTI3MWFlOTdiNTViN2U5YTYwM2Q3NTllNTNiYjVhYmFkNGY2NTBlOGY5ZGQxZThjZTQxZjk2NDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5ZjIzMzZkZDU0YmRjOTAxMmVjYjMzY2ExYWU2NGE5ZDkxZWFlZWYzMjQ3OGUyOWExZTFlYWZmMGQ3YTliOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NzFmZmU2NWQ5ZjVkYmE5OTEzNTk5MjJmMjJkMzYzNDE0MGFjOGI3ODIxZTU4ZGU5MDAzNGIwZGM0ODBjMzYifQ"
+          "resource": "repo://mc/dispatch/dispatch.go#L365-L376",
+          "version": "repo-lines-v1:sha256:c77eee8450119a319cf239087b7fa619d59c39e3e50442cc75c202d995a4e8d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzdjZmI3YTI3MWFlOTdiNTViN2U5YTYwM2Q3NTllNTNiYjVhYmFkNGY2NTBlOGY5ZGQxZThjZTQxZjk2NDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4MDk4MGViMWMyNzNlZTY5YjM0MmUzOGJmY2FjYmVhNGQ2ZDA1MmFlN2JjNThmZmQxYWMxNWM1N2IyM2RmNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NzFmZmU2NWQ5ZjVkYmE5OTEzNTk5MjJmMjJkMzYzNDE0MGFjOGI3ODIxZTU4ZGU5MDAzNGIwZGM0ODBjMzYifQ"
         }
       ]
     },
@@ -91,7 +91,7 @@
       "statement": "Reaps for interrupted, reported-outcome, and vm-restart charge no allowance.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L289-L292",
+          "resource": "repo://mc/dispatch/dispatch.go#L290-L293",
           "version": "repo-lines-v1:sha256:ac7053e5b1dad796aa2db866772792c148be1cddcbd9e52ef6dda783697604d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ViMzk1ZmE4YjNhNGJjMGExZGM1NWM3MTczNDMzN2ExZTBlMTZiODBhZWQ4OGU4MGI4NGZlZmVjNDIyZGE0ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzUzOGQ3ODY1ODI5YTNjZjMzYzM1NDdjMTdlM2EzMWQ5ZWI4NzJlNDAwYWZjZWYxMGFkN2YwYjQ0MWJlMjJlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE5OTFiNjFjM2U5ZTQ2ZTQxY2ZhYTlmNTIxZDFlODBjY2FkYmQwYzg2MjU5MWMwN2Y3YTIwMzBkNDhlOTFmOSJ9"
         }
       ]
@@ -140,11 +140,11 @@
     },
     {
       "id": "claim_f4b41ee6f6d24b85b87c4d347d31264a",
-      "statement": "mc run model-response clears only the network retry condition of the reporting run through RecoverNetworkAttempt.",
+      "statement": "A model response attempts provider recovery before eligible network recovery under the run's current connection and profile.",
       "evidence": [
         {
-          "resource": "repo://mc/domain/diagnostics.go#L190-L210",
-          "version": "repo-lines-v1:sha256:221cb2aab945d732737262eea46f2cd4ef8e3c6cd9419b365b3ae45b69d80803:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMTMwM2NhYjU0NGY2NjMyY2NkNzg2ZjA2ODY4ZWFmMDk2M2Y0OThhOWY4N2Y4NjJmZGIwNjZmOTkwMTA4NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyNjFlYzU2OWM4NjllYWI0ODg5MjA0MDg4MjE4MjEyMDlhYzk5NGNmNmM1YTk3MDYxYjU5N2EzMDA3MTUyMmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5YTJhMzk3MWIxMWEzN2Y4MTZhZTkyZTljYTUzMjMyY2JiYTk3YWZmMjk4N2JiYTQzOGNiY2E1ZDNjNjgwYzQifQ"
+          "resource": "repo://mc/domain/diagnostics.go#L190-L238",
+          "version": "repo-lines-v1:sha256:93e4f953696617433c282194af92ed5e41ed8846c8cfd3dae5b9796994758879:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMTMwM2NhYjU0NGY2NjMyY2NkNzg2ZjA2ODY4ZWFmMDk2M2Y0OThhOWY4N2Y4NjJmZGIwNjZmOTkwMTA4NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4OGViZTZmYzhkMTUzYzgwNzUzMzcwMGZiMTAwNTI2ODhkYWFiOTE1YjJkNmNjZDFiZTBjODAzMTZmMDExMjEifQ"
         },
         {
           "resource": "repo://mc/verbs/runner.go#L133-L151",
@@ -199,10 +199,24 @@
           "version": "repo-lines-v1:sha256:98c9c81fe36d97e0c418631bae8d3bc388383103d464b13973b0166d8e103c59:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNzQwYmRkNjAzODQ2MmE3M2NlYWZiNzIyN2E4NzljM2Y1YjQzNTIyNTQ4M2Q4N2RhMGRlMWY1Y2MzMzQzMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5NDc1ZWRhNjA1M2Y1MDc5NjBmMGJhODE5ZTIxNzY0YzA4NGZjNTlhNjk2MjM2MDUxMDNlMDBhMTNmNmQxMjIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_46885921d03147b1b2ada89f14fd49ad",
+      "statement": "Unavailable host checks outside the criteria alone require no operator decision or task run failure; new or changed tests remain required.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L78-L106",
+          "version": "repo-lines-v1:sha256:489b9de13d5121cfcb11f22707ebffc85592a296c56dafa38def2bcf93e76a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZDc5Yjc0NzdiN2NkM2Y5OThmOTgzNmNlZTJkNGIzZmNkYzhjZjY1NWYzZTkxYTFlYmYyOWFmMGIxYmQ5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L115-L135",
+          "version": "repo-lines-v1:sha256:d437f6a04185b040122e6905eddb1d4a8c362c175b884e1d22715e3e2505fa57:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZGZmMmVlYjIzODRkNWJjZGNmNWU0YzNiMDJmNjdlNzg3YTkxNTM0NWQzOGExYzEzMDlmNGY0MWRiNzExOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNjg0NzVlNWZjMmM5YzMyNWYyMjM4Y2UxZjY2YWI5NGEyMjQwZWZjYjlmMjI2NDU1N2M5ZGRlNzRhZGFmYWYifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-03T00:11:39.952Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

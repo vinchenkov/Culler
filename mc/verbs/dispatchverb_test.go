@@ -984,7 +984,7 @@ func TestDispatchSpawnBriefCarriesClaimedState(t *testing.T) {
 				map[string]string{"Project": "ws-test", "Role": "scribe", "Customization revision": "0"}},
 			{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", map[string]string{"Run identifier": run}},
 			{partProject, "The assigned repository is at `/workspace/source`.", map[string]string{"Identifier": "ws-test"}},
-			{partGitState, "The repository starts at the accepted `Start commit`. Use these commits for the coverage rules in the openwiki skill.",
+			{partGitState, "The repository starts at the accepted `Start commit`. The previous update identifies the earlier source version when available.",
 				map[string]string{"Start commit": wrCommitB, "Start commit of the last successful wiki update": wrCommitA}},
 			{partMergedTasks, "These tasks merged after the last successful wiki update, oldest first. " +
 				"`Omitted tasks` counts older rows excluded from this part.", map[string]string{}},

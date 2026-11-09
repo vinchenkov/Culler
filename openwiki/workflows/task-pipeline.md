@@ -34,8 +34,6 @@ sources:
     resource: repo://mc/verbs/directives/strategist.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
     resource: repo://mc/verbs/directives/verifier.md
-  - id: openwiki-source-116843f6a2d38ecfc11c910e
-    resource: repo://mc/verbs/directives/worker.md
   - id: openwiki-source-6a1e391719e8dc303420ffc3
     resource: repo://mc/verbs/dispatchverb_test.go
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
@@ -44,10 +42,16 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-01T12:39:55.183Z" }
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
+  - id: openwiki-source-1ea8a5db4f70db6483d19a8a
+    resource: repo://openwiki/operations/worker-instruction-audit.md
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # The task pipeline roles
@@ -210,15 +214,20 @@ See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md).
 
 The Worker must satisfy the criteria, pass new or changed tests, and resolve task regressions that the Verifier identifies.
 The Verifier obtains independent results on the submitted commit.
-It runs criterion checks, new or changed tests, and the normal broad checks that the container supports.
+It runs criterion checks, new or changed tests, and normal broad checks, including required build and analysis checks.
+The Verifier Assessment duties and unavailable-check outcomes belong to the Culler contract.
+Project customization preserves those duties while it can replace methods and optional checks.
 For submitted failures present on the base, it compares the failure under comparable conditions with that commit.
 The same check and cause establish an unchanged failure; matching nonzero exit statuses alone do not.
 
 A criterion failure, failed new or changed test, or task regression requires CORRECT.
 A task regression can affect behavior outside the acceptance criteria.
 Unchanged failures and unavailable host checks outside the criteria permit PASS when the other requirements hold.
+The unavailable-host-check exception excludes new or changed tests, which must pass.
 An unresolved executable failure prevents PASS.
 The Verifier assesses new skips and lost coverage, and runs later independent checks after an earlier failure.
+Successful submitted checks require no base failure for regression detection.
+A criterion about an earlier state still requires evidence of that state.
 See [task verification](../tests/checks-and-test-lanes.md#task-verification-and-base-comparisons) for the comparison procedure and evidence rules.
 
 ## Packet content and Project instructions
@@ -268,9 +277,13 @@ The Verifier judges the full change from the original base against the current d
 The Packager receives the revised description and the current verdict.
 Neither role receives the revision reason.
 
-The Verifier directive requires a correction when the Worker can repair the cause of an unavailable criterion check.
-It requires an operator decision report when that criterion check needs capabilities unavailable to agent containers.
-An unclear cause for an unavailable criterion check requires a correction. The unavailable check remains unverified.
+The Worker and Verifier skills select outcomes for unavailable criterion checks and new or changed tests by cause.
+The Worker repairs permitted source, test, Workspace dependency, and setup script defects.
+It proposes Image dependencies and submits a checkpoint when those dependencies can supply the prerequisite.
+The Verifier returns CORRECT for either repairable cause.
+Both roles report an operator decision when no agent container has the required capability.
+The Worker investigates an unclear cause; the Verifier returns CORRECT for that uncertainty.
+Unavailable checks remain unverified, and both roles continue independent work within their authority.
 See [decision resolution](decision-resolution.md) for the condition types, operation, and focused tests.
 
 ## Artifacts under `/mc/artifacts`
@@ -285,6 +298,19 @@ After the check, `snapshotRunArtifact` in `mc/verbs/artifactsnapshot.go` copies 
 - `mc/verbs/requirements_brief_test.go` covers requirements in run briefs.
 - `mc/verbs/artifactpath_test.go` and `artifactsnapshot_test.go` cover host path resolution and snapshotting.
 - `mc/verbs/dispatchcorrection_test.go` and `dispatchlifecycle_test.go` drive the full status lifecycle through dispatch.
+
+## Worker instruction audit
+
+The original [Worker instruction audit](../operations/worker-instruction-audit.md) records the instruction review for task 56.
+It explains which rules the Worker directive and command skill retain, and why each rule belongs there.
+Conditional procedures reside in the command skill, while brief explanations identify the supplied data.
+The audit records shorter instructions with unchanged runtime authority, command forms, terminal handlers, and approval behavior.
+Its counts and validation results describe that task and its merge repair.
+The recorded checks include an unchanged operator-home failure and unavailable host checks.
+They do not establish verification of the current accepted commit.
+
+The current `mc/verbs/directives/worker.md` and `mc/verbs/skills/worker/mc-worker/SKILL.md` define the present Worker instructions.
+See [agent input](../concepts/agent-input.md) for their delivery and the shared skills.
 
 ## Environment and merge repairs
 
@@ -316,7 +342,7 @@ Shared dependencies preserve files; they do not establish a Verifier pass.
 Repository requirements and actual execution evidence still determine task completion.
 See [Project environments](project-environments.md#runtime-and-per-run-dependencies) and [agent input](../concepts/agent-input.md#dependency-context).
 
-The role directives also describe the provider credential boundary.
+The shared environment skill describes the provider credential boundary.
 Each run receives a temporary Culler token for the host proxy.
 The host retains and renews provider credentials.
 Agents preserve the supplied access configuration and exclude token values from output.

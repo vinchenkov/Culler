@@ -100,6 +100,7 @@ test("a separate page update preserves the earlier page source baseline", async 
   ] });
   const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
   await put(root, "openwiki/storage.md", "---\ntitle: Storage\ntype: Guide\n---\n\nThe storage keeps one report.\n");
+  await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
   await call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id, claims: [
     { statement: "The storage keeps one report.", evidence: [{ resource: "repo://storage.txt#L1" }] },
   ] });
@@ -182,13 +183,14 @@ test("document changes and source changes block completion", async () => {
   expect(await Bun.file(provider.receiptPath).exists()).toBe(false);
 }, 30000);
 
-test("an incompatible wiki stays intact and broken document links fail", async () => {
+test("a wiki without metadata enters review and broken document links fail", async () => {
   const { root, create } = await fixture();
   await put(root, "openwiki/existing.md", "A user document without OpenWiki metadata.\n");
   const provider = await create();
   await expect(call(provider, "openwiki_begin", { root, mode: "init" })).rejects.toThrow("existing wiki");
-  await expect(call(provider, "openwiki_begin", { root, mode: "update" })).rejects.toThrow("compatible");
-  expect(await readFile(join(root, "openwiki/existing.md"), "utf8")).toBe("A user document without OpenWiki metadata.\n");
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.claimIssues.map((issue) => issue.page)).toContain("/openwiki/existing.md");
+  expect(await readFile(join(root, "openwiki/existing.md"), "utf8")).toContain("A user document without OpenWiki metadata.");
   expect(await readFile(join(root, "AGENTS.md"), "utf8")).toBe("The user controls these instructions.\n");
   await rm(join(root, "openwiki/existing.md"));
   await put(root, "openwiki/reports/research.md", report.replace("../../source.txt", "missing.md"));
@@ -287,7 +289,8 @@ for (const source of ["openwiki/reports/research.md", "docs/research/research.md
     const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
     const link = source.startsWith("openwiki/") ? source.slice(9) : `../${source}`;
     await put(root, "openwiki/quickstart.md", `---\ntitle: Project\ntype: Guide\n---\n\nThe experiment covers one server.\n\n[Complete report](${link})\n`);
-    await call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id, claims: [
+    await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
+  await call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id, claims: [
       { statement: "The experiment covers one server.", evidence: [{ resource: `repo://${source}` }] },
     ] });
     await call(provider, "openwiki_finish", { runId: begin.runId });
@@ -312,6 +315,7 @@ test("generated pages cannot establish evidence through a cycle", async () => {
   const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
   await put(root, "openwiki/quickstart.md", "---\ntitle: Project\ntype: Guide\n---\nThe server returns a document.\n");
   await put(root, "openwiki/other.md", "---\ntitle: Other\ntype: Guide\n---\n[The source](quickstart.md).\n");
+  await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
   await expect(call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id, claims: [
     { statement: "The server returns a document.", evidence: [{ resource: "repo://openwiki/other.md" }] },
   ] })).rejects.toThrow("original evidence");
@@ -327,4 +331,266 @@ test("original reports require committed content and durable evidence links", as
   await put(root, "openwiki/reports/research.md", report + "\n[Evidence](../../.mc-artifacts/1/capture.md)\n");
   await commit(root);
   await expect(call(provider, "openwiki_begin", { root, mode: "init" })).rejects.toThrow("durable repository evidence");
+}, 30000);
+
+async function recoveryFixture() {
+  const { root } = await fixture();
+  await put(root, "storage.txt", "The storage keeps one report.\n");
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "init" });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [
+    ...plan, { path: "/openwiki/storage.md", title: "Storage", purpose: "Explain storage." },
+  ] });
+  await completeRecoveryJobs(provider, root, begin.runId);
+  await commit(root);
+  return { root, provider };
+}
+
+async function completeRecoveryJobs(provider, root, runId) {
+  const completed = [];
+  while (true) {
+    const next = await call(provider, "openwiki_next_page", { runId });
+    if (next.status === "complete") break;
+    const job = next.job;
+    const storage = job.path === "/openwiki/storage.md";
+    const statement = storage ? "The storage keeps one report." : "The server returns a project document.";
+    const current = await Bun.file(join(root, job.path.slice(1))).text().catch(() => "");
+    if (!current) await put(root, job.path.slice(1), `---\ntitle: ${job.title}\ntype: Guide\n---\n\n${statement}\n`);
+    const inspection = await call(provider, "openwiki_inspect_page_claims", { runId, jobId: job.id });
+    await call(provider, "openwiki_submit_page", { runId, jobId: job.id,
+      confirmedClaimIds: inspection.claims.map((claim) => claim.id),
+      claims: inspection.claims.length ? [] : [{ statement, evidence: [{ resource: `repo://${storage ? "storage" : "source"}.txt` }] }],
+    });
+    completed.push(job.path);
+  }
+  const result = await call(provider, "openwiki_finish", { runId });
+  expect(result.status).toBe("complete");
+  return completed;
+}
+
+for (const change of ["page", "claim", "missing claims", "malformed claims"]) {
+  test(`an external ${change} change requires only its page review`, async () => {
+    const { root } = await recoveryFixture();
+    const file = "openwiki/.claims/storage.json";
+    if (change === "page") {
+      const path = "openwiki/storage.md";
+      await put(root, path, await readFile(join(root, path), "utf8") + "\nThe operator added this paragraph.\n");
+    } else if (change === "claim") {
+      const claims = JSON.parse(await readFile(join(root, file), "utf8"));
+      claims.claims[0].statement = "The storage retains one report.";
+      await put(root, file, JSON.stringify(claims));
+    } else if (change === "missing claims") await rm(join(root, file));
+    else await put(root, file, "{invalid");
+    await commit(root);
+    const provider = await createIntegration({ root, upstream });
+    const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+    expect([...new Set(begin.claimIssues.map((issue) => issue.page))]).toEqual(["/openwiki/storage.md"]);
+    await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+    expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+    if (change === "page") expect(await readFile(join(root, "openwiki/storage.md"), "utf8")).toContain("The operator added this paragraph.");
+    const record = JSON.parse(await readFile(join(root, "openwiki/.verification.json"), "utf8"));
+    expect(Object.keys(record.pages)).toHaveLength(2);
+  }, 30000);
+}
+
+test("an absent commit uses the source inventory and detects added, edited, and deleted files", async () => {
+  const { root } = await recoveryFixture();
+  const manifestPath = "openwiki/.page-manifest.json";
+  const manifest = JSON.parse(await readFile(join(root, manifestPath), "utf8"));
+  for (const entry of Object.values(manifest.pages) as any[]) entry.gitHead = "e".repeat(40);
+  await put(root, manifestPath, JSON.stringify(manifest));
+  await put(root, "storage.txt", "The storage keeps two reports.\n");
+  await put(root, "new.txt", "The project includes another service.\n");
+  await rm(join(root, "AGENTS.md"));
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.pageUpdateWindows).toHaveLength(1);
+  expect(begin.pageUpdateWindows.every((window) => window.basis === "source_inventory" && !window.fullReview && window.historyIssue)).toBe(true);
+  expect(begin.changedPaths.sort()).toEqual(["AGENTS.md", "new.txt", "storage.txt"]);
+  expect([...new Set(begin.claimIssues.map((issue) => issue.page))]).toEqual(["/openwiki/storage.md"]);
+}, 30000);
+
+test("unknown history requires only pages without a source inventory", async () => {
+  const { root } = await recoveryFixture();
+  const manifestPath = "openwiki/.page-manifest.json";
+  const manifest = JSON.parse(await readFile(join(root, manifestPath), "utf8"));
+  manifest.pages["/openwiki/storage.md"].gitHead = "e".repeat(40);
+  await put(root, manifestPath, JSON.stringify(manifest));
+  const path = "openwiki/.verification.json";
+  const record = JSON.parse(await readFile(join(root, path), "utf8"));
+  record.pages["/openwiki/storage.md"].sourceFingerprint = `sha256:${"f".repeat(64)}`;
+  await put(root, path, JSON.stringify(record));
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  expect(begin.pageUpdateWindows.filter((window) => window.fullReview).flatMap((window) => window.pages)).toEqual(["/openwiki/storage.md"]);
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+}, 30000);
+
+test("a page edit after inspection prevents submission until another inspection", async () => {
+  const { root } = await recoveryFixture();
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: plan });
+  const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
+  await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
+  await put(root, "openwiki/quickstart.md", await readFile(join(root, "openwiki/quickstart.md"), "utf8") + "\nAn external edit.\n");
+  await expect(call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id })).rejects.toThrow("changed after inspection");
+  expect(await Bun.file(provider.receiptPath).exists()).toBe(false);
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual([page]);
+}, 30000);
+
+test("a verified page edit blocks finish and resumes as required review", async () => {
+  const { root } = await recoveryFixture();
+  let provider = await createIntegration({ root, upstream });
+  let begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  await put(root, "openwiki/storage.md", await readFile(join(root, "openwiki/storage.md"), "utf8") + "\nAn external edit.\n");
+  await expect(call(provider, "openwiki_finish", { runId: begin.runId })).rejects.toThrow("verified page");
+  expect(await Bun.file(provider.receiptPath).exists()).toBe(false);
+  provider = await createIntegration({ root, upstream });
+  begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.resumed).toBe(true);
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+}, 30000);
+
+test("a forced update still requires review after a page edit", async () => {
+  const { root } = await recoveryFixture();
+  await put(root, "openwiki/storage.md", await readFile(join(root, "openwiki/storage.md"), "utf8") + "\nAn external edit.\n");
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
+  expect(job.path).toBe("/openwiki/storage.md");
+  await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
+  await expect(call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id })).rejects.toThrow();
+  await expect(call(provider, "openwiki_finish", { runId: begin.runId })).rejects.toThrow("pending");
+  expect(await Bun.file(provider.receiptPath).exists()).toBe(false);
+}, 30000);
+
+test("an interrupted update retains a completed page and repairs another page", async () => {
+  const { root } = await recoveryFixture();
+  let provider = await createIntegration({ root, upstream });
+  let begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [...plan,
+    { path: "/openwiki/storage.md", title: "Storage", purpose: "Explain storage." },
+  ] });
+  const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
+  expect(job.path).toBe("/openwiki/storage.md");
+  await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
+  await call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id });
+  provider = await createIntegration({ root, upstream });
+  begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.completedPages).toBe(1);
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual([page]);
+}, 30000);
+
+test("a Claim edit during a run requires a fresh session before inspection", async () => {
+  const { root } = await recoveryFixture();
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: plan });
+  const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
+  const path = "openwiki/.claims/quickstart.json";
+  const claims = JSON.parse(await readFile(join(root, path), "utf8"));
+  claims.verification.at = "2026-01-01T00:00:00Z";
+  await put(root, path, JSON.stringify(claims));
+  await expect(call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id })).rejects.toThrow("Claim record changed during the run");
+  expect(await Bun.file(provider.receiptPath).exists()).toBe(false);
+}, 30000);
+
+test("an edit during evidence resolution cannot receive a verification record", async () => {
+  const { RepositoryEvidenceResolver } = await import("./node_modules/openwiki/dist/claims/evidence/repository/resolver.js");
+  const { root } = await recoveryFixture();
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update", force: true });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: plan });
+  const { job } = await call(provider, "openwiki_next_page", { runId: begin.runId });
+  await call(provider, "openwiki_inspect_page_claims", { runId: begin.runId, jobId: job.id });
+  const before = await readFile(join(root, "openwiki/.verification.json"), "utf8");
+  const resolve = RepositoryEvidenceResolver.prototype.resolve;
+  RepositoryEvidenceResolver.prototype.resolve = async function (...args) {
+    const result = await resolve.apply(this, args);
+    await put(root, "openwiki/quickstart.md", await readFile(join(root, "openwiki/quickstart.md"), "utf8") + "\nA concurrent edit.\n");
+    return result;
+  };
+  try {
+    await expect(call(provider, "openwiki_submit_page", { runId: begin.runId, jobId: job.id })).rejects.toThrow("changed during submission");
+  } finally { RepositoryEvidenceResolver.prototype.resolve = resolve; }
+  expect(await readFile(join(root, "openwiki/.verification.json"), "utf8")).toBe(before);
+  expect(await Bun.file(provider.receiptPath).exists()).toBe(false);
+}, 30000);
+
+test("legacy wiki edits and an absent baseline enter review without data loss", async () => {
+  const { root } = await recoveryFixture();
+  await rm(join(root, "openwiki/.verification.json"));
+  const manifest = JSON.parse(await readFile(join(root, "openwiki/.page-manifest.json"), "utf8"));
+  for (const entry of Object.values(manifest.pages) as any[]) entry.gitHead = "e".repeat(40);
+  await put(root, "openwiki/.page-manifest.json", JSON.stringify(manifest));
+  await put(root, "openwiki/storage.md", await readFile(join(root, "openwiki/storage.md"), "utf8") + "\nThe operator added this paragraph.\n");
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.status).toBe("active");
+  expect(begin.pageUpdateWindows.every((window) => window.fullReview)).toBe(true);
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md", page]);
+  expect(await readFile(join(root, "openwiki/storage.md"), "utf8")).toContain("The operator added this paragraph.");
+}, 30000);
+
+test("a malformed page manifest cannot conceal an edited Claim record", async () => {
+  const { root } = await recoveryFixture();
+  await put(root, "openwiki/.page-manifest.json", "{invalid");
+  const path = "openwiki/.claims/storage.json";
+  const claims = JSON.parse(await readFile(join(root, path), "utf8"));
+  claims.claims[0].statement = "The storage retains one report.";
+  await put(root, path, JSON.stringify(claims));
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+}, 30000);
+
+test("an external page deletion requires an explicit plan decision", async () => {
+  const { root } = await recoveryFixture();
+  await rm(join(root, "openwiki/storage.md"));
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.claimIssues.map((issue) => issue.page)).toContain("/openwiki/storage.md");
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: plan, deletePages: ["/openwiki/storage.md"] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual([page]);
+  expect(await Bun.file(join(root, "openwiki/.claims/storage.json")).exists()).toBe(false);
+  const record = JSON.parse(await readFile(join(root, "openwiki/.verification.json"), "utf8"));
+  expect(Object.keys(record.pages)).toEqual([page]);
+}, 30000);
+
+test("a malformed verification entry requires only its page review", async () => {
+  const { root } = await recoveryFixture();
+  const path = "openwiki/.verification.json";
+  const record = JSON.parse(await readFile(join(root, path), "utf8"));
+  record.pages["/openwiki/storage.md"].claimsVersion = "invalid";
+  await put(root, path, JSON.stringify(record));
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect([...new Set(begin.claimIssues.map((issue) => issue.page))]).toEqual(["/openwiki/storage.md"]);
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+}, 30000);
+
+test("a deleted page can return through required review", async () => {
+  const { root } = await recoveryFixture();
+  await rm(join(root, "openwiki/storage.md"));
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+  expect(await readFile(join(root, "openwiki/storage.md"), "utf8")).toContain("The storage keeps one report.");
 }, 30000);

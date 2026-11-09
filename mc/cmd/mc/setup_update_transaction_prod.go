@@ -264,6 +264,15 @@ func (p *publishedSetup) recoverUpdate(raw []string, a verbs.OnboardArgs, in io.
 	return p.runAutomatic(args, a, in, out, diagnostic), true
 }
 
+func startReleaseHelper(home, image string) error {
+	names, err := deployment.RuntimeNames(home)
+	if err != nil {
+		return err
+	}
+	_, err = (&helperManager{docker: execDockerRunner{}, imageRef: image, names: names, zone: hostZone()}).ensure()
+	return err
+}
+
 func (p *publishedSetup) restoreUpdate(ctx context.Context) error {
 	if p.update == nil || p.update.Previous == nil || p.update.Committed() {
 		return errors.New("This update has no previous release available for restoration.")
@@ -281,6 +290,10 @@ func (p *publishedSetup) restoreUpdate(ctx context.Context) error {
 	}
 	if err := deployment.WriteServiceStops(p.home, p.update.PriorStops); err != nil {
 		return err
+	}
+	// The update stop removed the helper container, and the resident verification reads the spine through it.
+	if err := p.helper(p.home, p.update.Previous.Image); err != nil {
+		return fmt.Errorf("The restore could not start the helper container, so work remains stopped. Correct the cause, then run culler update --restore. Cause: %w", err)
 	}
 	if err := p.restore(p.home, p.update.PriorServices); err != nil {
 		return err

@@ -5,7 +5,7 @@ let smoke: Smoke;
 let complete = true;
 const failure = {
   id: "connection:team:model_access:review", group: "connections", name: "Team", connection_id: "team",
-  profile_id: "review", state: "retry_wait", retry_phase: "delay", roles: ["verifier", "collie"], action: "",
+  profile_id: "review", profile_name: "Review", state: "retry_wait", retry_phase: "delay", roles: ["verifier", "collie"], action: "",
   diagnostic_id: 1, network_error: "reset", latest_failure_at: "2026-10-02T18:58:12Z", next_retry_at: "2099-10-02T18:58:42Z",
 };
 let current: any = { ...failure };
@@ -31,13 +31,13 @@ async function refresh() {
 test("the notice and System health separate the previous failure, retry, and recovery", async () => {
   const { page } = smoke;
   const notice = page.getByTestId("system-notices");
-  await notice.getByText("Team / review · Connection interrupted", { exact: true }).waitFor();
+  await notice.getByText("Team / Review · Connection interrupted", { exact: true }).waitFor();
   current = { ...failure, retry_phase: "pending", next_retry_at: "2026-10-02T18:58:42Z" };
   await refresh();
-  await notice.getByText("Team / review · Retry pending", { exact: true }).waitFor();
+  await notice.getByText("Team / Review · Retry pending", { exact: true }).waitFor();
   current = { ...current, retry_phase: "active", attempts: [attempt] };
   await refresh();
-  await notice.getByText("Team / review · Verifier retry in progress", { exact: true }).waitFor();
+  await notice.getByText("Team / Review · Verifier retry in progress", { exact: true }).waitFor();
   expect(await notice.innerText()).not.toContain("cannot start");
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 950 });

@@ -10,36 +10,36 @@ sources:
     resource: repo://dashboard/src/ui/packetchat.js
   - id: openwiki-source-e876d4f934fe1b8e2de3721c
     resource: repo://mc/substrate/schema.sql
+  - id: openwiki-source-a44ab4c2d26db975bde190a0
+    resource: repo://mc/verbs/collie.go
+  - id: openwiki-source-3a72fe65b15fd6f2f9988f26
+    resource: repo://mc/verbs/colliepacket_test.go
+  - id: openwiki-source-81e49db5f10e4699bcadf8d3
+    resource: repo://mc/verbs/collierestart_test.go
+  - id: openwiki-source-c264187d95e49cb66eb75ae4
+    resource: repo://mc/verbs/collieselect.go
   - id: openwiki-source-301f4dcdb036a6a700293c7a
     resource: repo://mc/verbs/decisionresolution_test.go
-  - id: openwiki-source-9efb4b1ddc2ed1c022be33e7
+  - id: openwiki-source-6c249547ec5cf1c015cbdcb1
     resource: repo://mc/verbs/directives/collie.md
-  - id: openwiki-source-c2dfdb5eaae48c46003c3dd4
-    resource: repo://mc/verbs/collie.go
-  - id: openwiki-source-5ff861069017b6a0714fcdda
-    resource: repo://mc/verbs/colliepacket_test.go
-  - id: openwiki-source-eed667c35ca68dcc2f3009a3
-    resource: repo://mc/verbs/collierestart_test.go
-  - id: openwiki-source-c59ce1c5eeed384a0cd94e90
-    resource: repo://mc/verbs/collieselect.go
   - id: openwiki-source-4cf2679db61bdfa9a802d9d2
     resource: repo://mc/verbs/pause_test.go
-  - id: openwiki-source-68190b2710cd43b378a3c4b1
+  - id: openwiki-source-332034bad01f6c1d71fb1474
     resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-1655883a2300ff18955c5910
+    resource: repo://resident/src/collie-runtime.ts
   - id: openwiki-source-c18554fde4cd0e38831a6f1d
     resource: repo://resident/src/discord.ts
   - id: openwiki-source-e028a0037f071b894557c29d
     resource: repo://resident/src/effects.ts
-  - id: openwiki-source-cc407c2584427eee9ef62f7d
-    resource: repo://resident/src/collie-runtime.ts
   - id: openwiki-source-5995794e2e03c52c36e3be4e
     resource: repo://resident/src/vision-save.ts
-  - id: openwiki-source-46e96222197b6f4505759147
+  - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-05T04:07:09.592Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Collie, the conversational tier
@@ -89,7 +89,7 @@ The spine side records `mc collie launch-bind`, `mc collie runner-started`, and 
 
 `runner/collie-runner/main.ts` runs inside the Collie container. Unlike the pipeline runner, it never heartbeats and holds no lease. At boot it installs the envelope's skills with the shared `installEnvelopeSkills` and reports `mc collie runner-started` once. A fenced report means a newer launch superseded this one, and the runner exits. It then loops:
 
-1. `mc collie claim <session>` atomically takes the oldest pending inbound turn. A claim is durable, so a fresh runner gets back the exact turn that a dead runner held. Claiming does not advance `last_activity_at`.
+1. `mc collie claim <session>` atomically takes the oldest pending inbound turn. The spine retains the original turn and its reply attempts. Claiming does not advance `last_activity_at`.
 2. It runs one harness turn through the pipeline runner's adapter selection.
 3. While the turn runs, `mc collie draft --to <id>` writes the assistant text so far as a provisional reply, at most once per second. `CollieDraft` accepts only a claimed, unreplied inbound turn of the runner's own session. A refused draft write stops drafts for that turn.
 4. `mc collie reply --to <id>` appends the reply, completes the claim, advances activity time, and fans one outbox row to every active binding. Replaying the identical reply is idempotent; a different reply to the same turn is refused.
@@ -97,6 +97,19 @@ The spine side records `mc collie launch-bind`, `mc collie runner-started`, and 
 When no turn is pending, the runner polls every second. The resident normally stops the container at the idle timeout. If that stop never arrives, the runner exits on its own after the timeout plus `IDLE_EXIT_MARGIN_S` (120 seconds).
 
 Inbound traffic comes only through `mc collie send`, which is host-scope only. The Collie model never owns inbound transport. `CollieSend` commits the inbound row, the first-traffic binding, the activity timestamp, and echo rows to the other bindings together.
+
+## Interrupted replies and explicit retry
+
+A container exit with an owed reply preserves the conversation and native trace context.
+The spine marks the interrupted attempt as failed and retains any partial draft.
+A replacement process can resume the native session, but it does not automatically repeat that ambiguous reply.
+The operator's Retry action creates one new attempt for the original message.
+A repeated retry request reuses that attempt, and the old process cannot complete it.
+`mc/verbs/collierestart_test.go` verifies these boundaries.
+
+A network timeout can advance the connection revision before the active process ends.
+System status keeps the attempt identified by the current diagnostic visible through that transition.
+See [connection diagnostics](../operations/agent-connections.md#connection-diagnostics) for status and recovery evidence.
 
 ## Model changes
 

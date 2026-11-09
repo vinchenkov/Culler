@@ -24,6 +24,8 @@ dist/
 spikes/**/bin/
 spikes/01-setuid-gate/probe/mcprobe
 
+/local-only/
+
 # OS noise
 .DS_Store
 /.codex/

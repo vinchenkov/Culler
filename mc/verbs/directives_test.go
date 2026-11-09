@@ -138,16 +138,13 @@ func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 			t.Errorf("%s (codex) directive uses the claude-sdk trigger term", role)
 		}
 	}
-	if !strings.Contains(flat(dispatch.RoleVerifier), "N/A") {
-		t.Error("the Verifier directive omits the rule for an optional check outside the required scope")
+	if !strings.Contains(roleSkillBody(t, dispatch.RoleVerifier, "mc-verifier"), "N/A") {
+		t.Error("the mc-verifier skill omits the rule for an optional check outside the required scope")
 	}
 }
 
-// Worker success and Strategist have no prose-bearing terminal:
-// sealed completion rejects every extra flag, and the proposal decoder rejects
-// every extra JSON field or trailing byte. Their inline-execution exception is
-// therefore stated in the durable native run before the terminal, never
-// smuggled into work product or appended to a call the CLI will refuse.
+// The inline-execution reason belongs in the response before the terminal.
+// Separate instructions can require a completion report for test evidence.
 func TestProseLessTerminalsRecordInlineExceptionBeforeTheCall(t *testing.T) {
 	for _, role := range []dispatch.Role{dispatch.RoleWorker, dispatch.RoleStrategist} {
 		directive, err := directiveForRole(role)
@@ -163,11 +160,17 @@ func TestProseLessTerminalsRecordInlineExceptionBeforeTheCall(t *testing.T) {
 			if surface == "directive" && !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
 				t.Errorf("%s %s leaves the inline exception unrecordable", role, surface)
 			}
-			for _, impossible := range []string{
-				"in the terminal report", "in the completion report", "proposal's own prose",
-			} {
-				if strings.Contains(flat, impossible) {
-					t.Errorf("%s %s sends the inline note through unavailable channel %q", role, surface, impossible)
+			for _, paragraph := range strings.Split(prose, "\n\n") {
+				paragraph = strings.ToLower(strings.Join(strings.Fields(paragraph), " "))
+				if !strings.Contains(paragraph, "inline") && !strings.Contains(paragraph, "orchestrat") && !strings.Contains(paragraph, "state the reason") {
+					continue
+				}
+				for _, impossible := range []string{
+					"in the terminal report", "in the completion report", "proposal's own prose",
+				} {
+					if strings.Contains(paragraph, impossible) {
+						t.Errorf("%s %s sends the inline note through unavailable channel %q", role, surface, impossible)
+					}
 				}
 			}
 		}
@@ -404,49 +407,21 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 	}
 }
 
-// The skill install is deferrable by design: the agent runner treats
-// installRunSkill failure as non-fatal ("degraded, not broken — the frozen
-// directive still names the skill"). So a destination stated ONLY in the skill
-// can be absent at the moment the role needs it, leaving a mandatory flag with
-// no stated place to write and a terminal that refuses whatever it guesses.
-// The directive is the carrier that always arrives; it must name both.
-func TestVerifierDirectiveNamesBothDurableDestinationsItself(t *testing.T) {
+func TestVerifierSkillOwnsArtifactsAndLongChecks(t *testing.T) {
+	skill := roleSkillBody(t, dispatch.RoleVerifier, "mc-verifier")
+	requireAgentText(t, "mc-verifier", skill, []string{
+		"/mc/artifacts/<plane>/<task>/verification/",
+		"/mc/artifacts/<plane>/<task>/corrections/",
+		"echo $? > /tmp/gate.exit", "recorded exit status",
+		"at most 16 MiB", "at most 1 MiB",
+	}, nil)
 	directive, err := directiveForRole(dispatch.RoleVerifier)
 	if err != nil {
-		t.Fatalf("verifier directive: %v", err)
+		t.Fatal(err)
 	}
-	flat := strings.Join(strings.Fields(directive), " ")
-	for _, want := range []string{
-		"/mc/artifacts/<plane>/<task-id>/verification/",
-		"/mc/artifacts/<plane>/<task-id>/corrections/",
-	} {
-		if !strings.Contains(flat, want) {
-			t.Errorf("verifier directive never names %s, so a run whose skill install failed has no stated destination", want)
-		}
-	}
-}
-
-// The six-times-observed harness defect (tracking:
-// verifier-gate-truncated-by-execution-wrapper): a long, verbose foreground
-// gate can finish while its result never reaches the model, and the run then
-// burns an infra terminal per attempt until the task blocks. The adapters pin
-// the output ceilings, but the delivery path itself is third-party code, so
-// the directive must carry the reliable posture: background the long gate and
-// judge on the polled exit status.
-func TestVerifierDirectiveBackgroundsLongGates(t *testing.T) {
-	directive, err := directiveForRole(dispatch.RoleVerifier)
-	if err != nil {
-		t.Fatalf("verifier directive: %v", err)
-	}
-	flat := strings.Join(strings.Fields(directive), " ")
-	for _, want := range []string{
-		"echo $? > gate.exit",
-		"recorded exit status",
-	} {
-		if !strings.Contains(flat, want) {
-			t.Errorf("verifier directive never says %q, so long gates run foreground and lose their terminal status again", want)
-		}
-	}
+	requireAgentText(t, "verifier pointer", directive, []string{
+		"A check can exceed thirty seconds or produces verbose output: Long checks.",
+	}, []string{"/mc/artifacts/<plane>", "echo $?"})
 }
 
 // Collie explains approvals and merges to the operator. Its agent input must
@@ -587,6 +562,13 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 		directive, err := directiveForRole(role)
 		if err != nil {
 			t.Fatal(err)
+		}
+		if role == dispatch.RoleVerifier {
+			requireAgentText(t, "verifier dependency procedure", directive, []string{
+				"Check retained dependencies against the submitted declarations and selected image before use.",
+				"Use the project-environment-setup skill when dependency prerequisites prevent a check.",
+			}, nil)
+			continue
 		}
 		if role == dispatch.RoleWorker {
 			requireAgentText(t, "worker directive", directive, []string{
@@ -833,40 +815,26 @@ func requireAgentText(t *testing.T, source, text string, want, stale []string) {
 	}
 }
 
-// A required gate that cannot run has two outcomes. A cause that a Worker run
-// can change needs a correction. A capability that no agent container has
-// needs an operator decision report. The Verifier selects a correction when it
-// cannot select between the two cases.
 func TestVerifierAgentInputStatesTheOutcomeOfAGateThatCannotRun(t *testing.T) {
 	directive, err := directiveForRole(dispatch.RoleVerifier)
 	if err != nil {
 		t.Fatal(err)
 	}
-	requireAgentText(t, "verifier directive", strings.Join(strings.Fields(directive), " "), []string{
-		"Judge the change from the base commit to the submitted commit against each criterion of the description.",
-		"Submit CORRECT when the submitted commit fails a criterion.",
-		"Submit CORRECT when a cause that a Worker run can change stops a gate that a criterion binds.",
-		"A Worker run can change these causes: - the source; - the tests; - the Workspace dependencies; - the setup script.",
-		"Submit an operator decision report when a gate that a criterion binds needs a capability that no agent container has.",
-		"No agent container has these capabilities: - host access; - a Docker daemon; - macOS system interfaces; - additional container privileges.",
-		"When a gate required by a criterion cannot run and its cause remains unclear, submit CORRECT.",
-		"An unavailable host test outside the criteria remains unverified in those records.",
-		"An execution problem that prevents the required assessment uses the task run failure procedure.",
-	}, []string{
-		"An unavailable required check remains unverified.",
-		"report the required correction through your normal terminal",
-	})
-	requireAgentText(t, "mc-verifier skill", roleSkillBody(t, dispatch.RoleVerifier, "mc-verifier"), []string{
-		"The section \"The outcome\" of your directive selects the terminal for that gate.",
-		"- A gate that a criterion binds needs a capability that no agent container has.",
-		"The operator resolves the decision with a requirements revision, or the operator cancels the task.",
-		"The `--resolution` argument states the change that satisfies the criteria or resolves the task regressions.",
-		"git -C /workspace/source diff <Base commit> <Submitted commit>",
-		"Judge the changes of this task against its criteria and assess broad checks for task regressions.",
-	}, []string{
-		"Leave missing checks unverified and report the correction through the normal verdict.",
-		"identifies the required operator decision",
-	})
+	requireAgentText(t, "verifier directive", directive, []string{
+		"every acceptance criterion", "each new or changed test",
+		"Run the Project's normal broad checks", "including outside the criteria",
+		"A required check cannot run: Unavailable checks.",
+	}, []string{"host provider proxy", "Credential renewal", "For Culler,"})
+	requireAgentText(t, "mc-verifier", roleSkillBody(t, dispatch.RoleVerifier, "mc-verifier"), []string{
+		"Use CORRECT for source, tests, Workspace dependencies, or setup script defects that a Worker can change.",
+		"Use an operator decision report for a capability that no agent container has.",
+		"Use CORRECT when the cause remains unclear.",
+		"Unavailable host tests outside the criteria permit PASS when the other requirements hold.",
+		"A selected test group that executes zero tests fails.",
+		"The same check and failure cause on both commits establish an unchanged failure.",
+		"An unresolved executable failure prevents PASS.",
+		"Run later independent checks separately",
+	}, nil)
 }
 
 // The Worker continues from the last commit of the task. The description holds
@@ -916,6 +884,8 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 			requireAgentText(t, "worker customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in the mc-worker skill."}, nil)
 		} else if role == dispatch.RoleStrategist {
 			requireAgentText(t, "strategist customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in the mc-strategist skill."}, nil)
+		} else if role == dispatch.RoleVerifier {
+			requireAgentText(t, "verifier customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in mc-verifier."}, nil)
 		} else if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
 			t.Errorf("the %s directive omits the customization conflict", role)
 		}

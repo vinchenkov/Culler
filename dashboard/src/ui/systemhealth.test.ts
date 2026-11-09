@@ -406,3 +406,11 @@ test("a profile retry offers a model test before and after its retry time", () =
   expect(actionControl({ ...condition, profile_id: "" })).toBe(false);
   expect(actionControl({ ...condition, state: "ready" })).toBe(false);
 });
+
+
+test("connection titles use the profile name instead of its identifier", () => {
+  const condition = { group: "connections", name: "Subscription account", profile_id: "profile-internal", profile_name: "big-opus", state: "retry_wait", retry_phase: "pending" };
+  expect(conditionTitle(condition)).toBe("Subscription account / big-opus · Retry pending");
+  expect(conditionTitle({ ...condition, profile_name: undefined, model: "review-model" })).toBe("Subscription account / review-model · Retry pending");
+  expect(conditionTitle({ ...condition, profile_name: undefined })).toBe("Subscription account / Agent profile · Retry pending");
+});

@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T10:01:23.917Z
+    at: 2026-11-07T01:30:07.289Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -15,7 +15,7 @@ sources:
     resource: repo://dashboard/smoke/board-writes.smoke.test.ts
   - id: openwiki-source-1756d5381ff309245b052d21
     resource: repo://dashboard/smoke/conventions.smoke.test.ts
-  - id: openwiki-source-6a6c8da25abead4ea0d2c802
+  - id: openwiki-source-63f3e8ddda5125ed93fa2caa
     resource: repo://dashboard/smoke/diagnostic-collie.smoke.test.ts
   - id: openwiki-source-e9e1272cb64a0826b6090ebb
     resource: repo://dashboard/smoke/files-changed.smoke.test.ts
@@ -119,10 +119,10 @@ sources:
     resource: repo://mc/deployment/host_release.go
   - id: openwiki-source-623998b6f95a9f34af7f3ee5
     resource: repo://mc/repository/read.go
+  - id: openwiki-source-a44ab4c2d26db975bde190a0
+    resource: repo://mc/verbs/collie.go
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
-  - id: openwiki-source-c2dfdb5eaae48c46003c3dd4
-    resource: repo://mc/verbs/collie.go
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
     resource: repo://mc/verbs/packet.go
   - id: openwiki-source-0024d9d1b366186698efea24
@@ -135,7 +135,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-05T10:01:23.917Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 ---
 
 # The operator dashboard
@@ -154,7 +154,7 @@ In production the dashboard runs as a launchd unit. Its config lives at `MC_HOME
 
 1. Startup fails closed when the auth token is empty. This applies to every bind, loopback included. The reason: an agent container can reach the host's loopback interface, so loopback alone is not a boundary.
 2. Each request's `Host` header must name the bind host or a loopback spelling (`127.0.0.1`, `::1`, `localhost`). Anything else gets 403. This blocks DNS rebinding.
-3. A present `Origin` header must pass the same host check. This blocks cross-site requests.
+3. A present `Origin` header must pass the same hostname check. This check compares hostnames, rather than complete browser origins.
 4. Every `/api/` path requires `Authorization: Bearer <token>` before any `mc` spawn; a miss returns 401.
 
 Static assets stay public so the shell page can load and then present the token. The browser receives the token in the URL fragment (`#token=...`), as the smoke harness's `gotoReady` shows. The static table `STATIC_FILES` maps `/` to `ui/index.html`, `/style.css`, the typefaces and license notices in `FONT_FILES` (`ui/fonts/`), each name in `UI_MODULES`, and the Pierre files that `pierreFiles` reads from `ui/pierre/provenance.json`. The shell page carries the policy `frame-src 'self'`. Any other path returns 404, never a listing.
@@ -166,6 +166,15 @@ One extra route is not an `mc` verb: `POST /api/projects/choose-folder` runs `os
 `handleApi` in `dashboard/src/api.ts` maps each route to one `mc` invocation. For example, `GET /api/tasks` runs `mc task list`, `GET /api/projects` runs `mc project list`, and `POST /api/config` runs `mc config save` with the body on stdin. The module has no cache and no interpretation. Grouping and filtering happen in the browser. `verbResponse` turns the result into HTTP: exit 0 returns the JSON with 200; exit 1 or a `usage` error returns 400; `record-conflict` and `operation-conflict` return 409; other failures return 500. When `mc` prints no error envelope, `verbResponse` synthesizes one from stderr.
 
 `dashboard/src/mc.ts` is the single spawn seam. `makeMcRunner` runs `Bun.spawn([mcBin, ...argv])` with a fresh copy of the process environment and optional stdin. It parses stdout as one JSON object or returns `json: null`. Passing the environment through untouched lets the production binary delegate into the helper container and lets the `test_fake_routing` build honor `MC_SPINE`. Structured input and secrets travel on stdin, not in arguments; `mc.test.ts` verifies this.
+
+### Release identity and update recovery
+
+The server checks each authenticated mutation against the deployed release identity through `x-culler-release`.
+A different identity returns HTTP 409 and asks the operator to reload the page.
+An incomplete update returns HTTP 503 and directs the operator to `install.sh` for recovery.
+Read requests remain available. The AgentsView access grant has its own request checks.
+`updateBlocksMutations` validates the transaction and maintenance files before it permits changes.
+`dashboard/src/server.test.ts` checks stale pages and update recovery restrictions.
 
 ### Pause controls
 
@@ -788,6 +797,16 @@ After a connection check, the card refreshes its status and reports when the con
 See [Discord setup and delivery](../integrations/discord.md) for persistence, replacement, disconnect, and verification limits.
 
 ## Agent connections
+
+Connection notices and detail headings show the profile name, with the model and then “Agent profile” as fallbacks.
+The facts list retains the profile identifier for diagnostics.
+`systemhealth.js` applies the same name selection to recovery notices and accessible control labels.
+`mc/verbs/systemstatus.go` supplies the configured name with the connection condition.
+
+A request failure can advance the connection revision while its run or Collie reply attempt remains active.
+System status retains that active attempt when the current diagnostic identifies it.
+This lets the detail view distinguish recovery from a process that still runs.
+`mc/verbs/networkhold_test.go` checks both task runs and Collie reply attempts after a network timeout.
 
 `agentprofiles.js` offers sign-in through the supported integrations in the host catalog.
 A new connection request contains its name, catalog revision, submission identity, and integration template.

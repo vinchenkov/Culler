@@ -28,7 +28,7 @@ RUN cd /opt/culler-runtime/browser \
 
 # OpenWiki without source maps and TypeScript type files.
 COPY --chmod=0644 runner/openwiki/package.json runner/openwiki/package-lock.json /opt/culler-runtime/openwiki/
-COPY --chmod=0644 runner/openwiki/patch-upstream.mjs runner/openwiki/project-documents.mjs /opt/culler-runtime/openwiki/
+COPY --chmod=0644 runner/openwiki/patch-upstream.mjs runner/openwiki/recovery-patches.mjs runner/openwiki/project-documents.mjs runner/openwiki/recovery.mjs /opt/culler-runtime/openwiki/
 RUN cd /opt/culler-runtime/openwiki \
  && /opt/culler-runtime/node/bin/node /opt/culler-runtime/node/lib/node_modules/npm/bin/npm-cli.js ci --omit=dev --ignore-scripts \
  && /opt/culler-runtime/node/bin/node patch-upstream.mjs node_modules/openwiki \

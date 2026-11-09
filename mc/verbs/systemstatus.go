@@ -23,6 +23,7 @@ type ConnectionRequirement struct {
 	Profiles        map[string]string   `json:"profiles,omitempty"`
 	ProfileRoles    map[string][]string `json:"profile_roles,omitempty"`
 	ProfileModels   map[string]string   `json:"profile_models,omitempty"`
+	ProfileNames    map[string]string   `json:"profile_names,omitempty"`
 }
 
 type SystemStatusRequest struct {
@@ -63,6 +64,7 @@ type SystemCondition struct {
 	State              string   `json:"state"`
 	ConnectionID       string   `json:"connection_id,omitempty"`
 	ProfileID          string   `json:"profile_id,omitempty"`
+	ProfileName        string   `json:"profile_name,omitempty"`
 	Model              string   `json:"model,omitempty"`
 	ProjectID          string   `json:"project_id,omitempty"`
 	SessionID          string   `json:"session_id,omitempty"`
@@ -172,6 +174,7 @@ func SystemStatus(db *sql.DB, id *RunIdentity, a SystemStatusRequest) (any, erro
 			c := SystemCondition{ID: key, Group: "connections", ConnectionID: scope.ID, ProfileID: scope.ProfileID, Name: scope.Name, Roles: scope.Roles, State: "unknown", Condition: "Connection access awaits verification.", Action: "Review connection"}
 			if scope.ProfileID != "" {
 				c.Model = scope.ProfileModels[scope.ProfileID]
+				c.ProfileName = scope.ProfileNames[scope.ProfileID]
 			}
 			for _, role := range scope.Roles {
 				if role != "collie" {
@@ -539,20 +542,21 @@ func connectionAttemptStatus(ctx context.Context, q Q, scope ConnectionRequireme
 			return err
 		}
 	}
+	// A request failure can change the connection revision while its attempt remains active.
 	// The lease holds the heartbeat of a run. A wiki update run holds no lease,
 	// and its active wiki update holds its heartbeat.
 	rows, err := q.QueryContext(ctx, `SELECT r.id,'','',r.role,COALESCE(r.project,''),COALESCE(p.title,''),COALESCE(r.subject,0),COALESCE(r.agent_started_at,r.created_at),
  CASE WHEN r.ended_at IS NOT NULL THEN r.outcome WHEN l.run_id IS NULL AND w.run_id IS NULL THEN 'stopping' WHEN COALESCE(l.last_heartbeat_at,w.last_heartbeat_at) IS NULL THEN 'starting' WHEN julianday(?) - julianday(COALESCE(l.last_heartbeat_at,w.last_heartbeat_at)) > (SELECT heartbeat_interval_s*3.0/86400 FROM settings LIMIT 1) THEN 'stale' ELSE 'active' END
  FROM runs r LEFT JOIN projects p ON p.id=r.project LEFT JOIN leases l ON l.run_id=r.id LEFT JOIN wiki_updates w ON w.run_id=r.id AND w.ended_at IS NULL
  WHERE r.connection_id=? AND r.authorization_id=? AND r.profile_id=? AND r.profile_revision=?
- AND ((r.ended_at IS NULL AND r.connection_revision=(SELECT SUM(revision) FROM connection_health WHERE connection_id=r.connection_id AND (profile_id='' OR profile_id=r.profile_id))) OR r.id=?)
+ AND ((r.ended_at IS NULL AND (r.connection_revision=(SELECT SUM(revision) FROM connection_health WHERE connection_id=r.connection_id AND (profile_id='' OR profile_id=r.profile_id)) OR r.id=(SELECT run_id FROM diagnostic_events WHERE id=?))) OR r.id=?)
  UNION ALL
  SELECT '',a.attempt_id,a.session_id,'collie','','',0,a.created_at,
  CASE WHEN a.state<>'active' THEN a.state WHEN s.status<>'active' OR a.launch_id<>COALESCE(s.current_launch_id,'') THEN 'stopping' ELSE 'active' END
  FROM collie_reply_attempts a JOIN collie_sessions s ON s.id=a.session_id
  WHERE a.connection_id=? AND a.authorization_id=? AND a.profile_id=? AND a.profile_revision=?
- AND ((a.state='active' AND a.connection_revision=(SELECT SUM(revision) FROM connection_health WHERE connection_id=a.connection_id AND (profile_id='' OR profile_id=a.profile_id))) OR a.attempt_id=?)
- ORDER BY 8,1,2`, now.Format(time.RFC3339Nano), scope.ID, scope.AuthorizationID, scope.ProfileID, scope.ProfileRevision, recoveredRun, scope.ID, scope.AuthorizationID, scope.ProfileID, scope.ProfileRevision, recoveredAttempt)
+ AND ((a.state='active' AND (a.connection_revision=(SELECT SUM(revision) FROM connection_health WHERE connection_id=a.connection_id AND (profile_id='' OR profile_id=a.profile_id)) OR a.attempt_id=(SELECT reply_attempt_id FROM diagnostic_events WHERE id=?))) OR a.attempt_id=?)
+ ORDER BY 8,1,2`, now.Format(time.RFC3339Nano), scope.ID, scope.AuthorizationID, scope.ProfileID, scope.ProfileRevision, c.DiagnosticID, recoveredRun, scope.ID, scope.AuthorizationID, scope.ProfileID, scope.ProfileRevision, c.DiagnosticID, recoveredAttempt)
 	if err != nil {
 		return err
 	}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a8cd27d456156ca98cb323ddac07b7ad18e07969c36855c7d3ba2c87c3085c58",
+  "pageVersion": "sha256:13337591bcc72220a7b44aedf367f3fa2ad18cab73cd58b93f2138b8b120c45f",
   "claims": [
     {
       "id": "claim_e15e571807ef4a4093ee4cf416a06313",
@@ -27,7 +27,7 @@
       "statement": "The spawn effect binds <run root>/repo at /workspace/source, read-only for the Scribe with only openwiki/ and .git writable.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1442-L1449",
+          "resource": "repo://resident/src/effects.ts#L1479-L1486",
           "version": "repo-lines-v1:sha256:a91026a1a384f22f9f8fb2bc048caf3ec54b94d08f8b34b296c9bff34efbb0b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDVkMzQ3MDk1MTExNWVkMDcyMTQzNTZlMWQwYjFkZDJkNTc4ZGUxOTUxMWEyOTJiOTc0YzhhYTQ5MjM2NDdlOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDRlMjJkMWU5ZDJiYjlhYjFkOGJhMTUyYTM2YjZmNDRmNjcxMGZkMTU2YjllMzZlMDYxNWM3MWI0NDMzN2JjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2I3NjI2MWU5Njc2ODNiM2NjNjlkMTc2NmIzNzkzYTY4Y2M3ZWE2YTk2YzAzNTY0ZGI5MjkzYzUxZTYwZWE3OCJ9"
         }
       ]
@@ -41,8 +41,8 @@
           "version": "repo-lines-v1:sha256:d80c626eeaa8c0797bfc5c20eb8e9df1607f610b7541dfa152a0924dac41a3fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYTlkNTk3NzgwY2VkZWUyMTc3NTBmYmM1YzY2MTRkMjJmNzYxNzZkZTk5YTY0NzA1NTg0MjI2NWY3NDc1OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NjAyNzBmYzZmOGMzNTA1NGQ5Zjk4NTNkNTE3N2I3Zjc0ODgyMzJjMjdlYWMwYWVhM2I3YWM3MzFlYTY0YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkMDU4ZGU2YWVjNzg5NmNmM2YwYWQ5ZTg5NmQyNTFkZGM4ODZjNmI5N2Q4OGY0YmRhMzg3M2JjOTI3N2Q3NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzZDA4NGE5ZTA2NGMxZTQ0NzA3OThkZmEzOGYwNGYwNzA0MTAzNmQ5N2VjYTRlZmRhZmI4ZDY5NzlmZTIwYTMifQ"
         },
         {
-          "resource": "repo://mc/verbs/deliverycomplete.go#L51-L87",
-          "version": "repo-lines-v1:sha256:ef91f1bfde99a3c4d34845426eb0af16869dbc74c2c7e45660d88be4e72767ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiODc0YjdjODcyYmI0NWM5ZDNiNDU0OTZlMjg4MTEwOWZlYWY1MWExYWFlN2JmMjk3Y2JjNTkwYmZiZjdlYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZGY4YjQyN2E3NjVmZmM3YmRhNjcwNjRiOWU5MDFkMDZiYjlmZGM5ZGZlYzU3NDc4NzY2N2RjZmVjNzg4MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3OGJlYWRhNTI2NjdhZDg4ZDVlMTk0MTc5YjYyOTY2YTgwNTAxOTdkMmQ5NzcwZGEwZTljYzU5YjFlNTkyZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3ZTU2Mzg5ZTBkOGYwZTVlNDEzNDA5NjQ0NTJkYTE1ZGNkZjRmZmUwZmY5ZWUwMWU0NGMyMWI5YmIyOTc5OWUifQ"
+          "resource": "repo://mc/verbs/deliverycomplete.go#L55-L91",
+          "version": "repo-lines-v1:sha256:857944001da8d307250098400d357dd0f40b114dc464d105bb1fcbb0c8923c63:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZjhkYzI4NmJhMjk3YjQyMDQ2YWY2ZGRlZDM3OTllN2VjMTRkZmYyN2RmZDA1ZjZlNjVhODg0ODA4Zjk4NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZGY4YjQyN2E3NjVmZmM3YmRhNjcwNjRiOWU5MDFkMDZiYjlmZGM5ZGZlYzU3NDc4NzY2N2RjZmVjNzg4MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjY4MzMyYWZjNmJlN2Q2ZjNlMGYwN2I4MmE2NGI0NDM0NDc1ZWRjNGMyMmE0NDc5MzZkZTA1MWFlMDlkM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3ZTU2Mzg5ZTBkOGYwZTVlNDEzNDA5NjQ0NTJkYTE1ZGNkZjRmZmUwZmY5ZWUwMWU0NGMyMWI5YmIyOTc5OWUifQ"
         }
       ]
     },
@@ -51,7 +51,7 @@
       "statement": "Capture retains the submitted commit under refs/mc/tasks/<task>/versions/<run>, or under checkpoints/<run> for a checkpoint submission.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/repositoryexecutor.go#L258-L277",
+          "resource": "repo://mc/verbs/repositoryexecutor.go#L262-L281",
           "version": "repo-lines-v1:sha256:b243e2817894166ec1aa0e913110a54defcd6facf01a5bc320713047fafaa37c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNGIzN2IyN2NjNmI2YzdhMzY4YmNhM2Q2MWVkZjAzNGRjYmVmNGNkYjc0OTQ4YzdhMDJjYjg4YjZmNWZkZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5YTRlMTI0Zjg3ZjRlZmFhMjA0NTE5ZjA5YmQzNmVkYWY1NTFiOWNjMWU3ZDRjZGIxOGQyY2Q2Mzc1NDRlNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlY2JjMWUxNjgwMGNjMzliMGVjMzNmNGE4NmRjY2FkMjE4ZjY1Nzg4YThjMzRkMTI0OTNkYTA4ZDc4OWI4MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNTBmMGMxMDYxMmJmYjlhNzRlYjNiYTNiMjc0ZjNjMzkzODU4N2JmYmEwNTUzYmIxZTkxMzEzZDMyM2JhODgifQ"
         }
       ]
@@ -109,8 +109,8 @@
       "statement": "Merge containers run with no network, user 10002, all capabilities dropped, one CPU, 1024m memory, and a 128-process limit; prepare mounts only the run folder while apply mounts the operator workspace.",
       "evidence": [
         {
-          "resource": "repo://resident/src/repository.ts#L427-L455",
-          "version": "repo-lines-v1:sha256:8c068e8f456923a9b4e8a3b0e23d45e0a9191cab83e766011abf0f008e65a280:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5N2U0YzQ5YWZjZjUwZjNkOWRmOGNhMzMzMWM3M2JhNzcwOTY2OWIyYzA1M2NjYzZkNGVjMjIxYmEzM2ZhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwOTNlMTI5MDZhNjFmZDVjMDg5ZmVlOGZjYWZkOTUyZTU3YTU5MDlhMjQ5ZGQxMjUwOTQ5OGQyNzFhNzFjOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0YjQ2OGI4YjUyMTcxNmQyYzEwMmM2YWEyM2M5OTIzNWRjNzdkN2RlNjUwOWM4MTQ5OTlmY2U1YzEyZTZhNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzNGU0MWM2NDM0M2EyMzMxNDA1ZGNlMzdhZDg0YzhlYTRmNGU5YWQwNTcwOGFlZWZjYzdmMWIxY2UzYjA0M2MifQ"
+          "resource": "repo://resident/src/repository.ts#L427-L462",
+          "version": "repo-lines-v1:sha256:4564e7d66c73099499bcd0dfcfaa1c732a513a4926b316696bf4fc5285f1d012:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5N2U0YzQ5YWZjZjUwZjNkOWRmOGNhMzMzMWM3M2JhNzcwOTY2OWIyYzA1M2NjYzZkNGVjMjIxYmEzM2ZhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYzRkYjA5MTUwYTgyZDhiYWMyZmY5NmViYmJlM2QxZDllOWExMTk4MTA3ZmYzMTgxMGJkMjc2ZmU0NzFiZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0YjQ2OGI4YjUyMTcxNmQyYzEwMmM2YWEyM2M5OTIzNWRjNzdkN2RlNjUwOWM4MTQ5OTlmY2U1YzEyZTZhNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5ODBjMjViODBlMDJjMGNkOGJjNTMwMjliNmYzZDdhNDg3YzBkMDc1NmU3N2MzMzFjYWQ4NTIyZWM5MTI2ZjUifQ"
         }
       ]
     },
@@ -151,6 +151,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-10-21T23:30:26.761Z"
+    "at": "2026-11-07T01:30:07.289Z"
   }
 }

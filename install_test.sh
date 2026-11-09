@@ -190,6 +190,38 @@ if contains "$TMP/reuse.out" 'Download and verify Bun'; then fail 'second instal
 # Test releases use the normal installer and one exact commit tag.
 cp "$TMP/fixtures/release.json" "$TMP/public-release.json"
 cp "$TMP/fixtures/github-release.json" "$TMP/public-github-release.json"
+# Older plutil versions report an absent key on standard output.
+mkdir "$TMP/plutil-stdout"
+cat >"$TMP/plutil-stdout/plutil" <<'CMD'
+#!/bin/sh
+if [ "$1" = -extract ] && [ "$2" = test_release ]; then
+  if value=$("$CULLER_FIXTURE_PLUTIL" "$@"); then
+    printf '%s\n' "$value"
+  else
+    printf 'Could not extract value, error: No value at that key path\n'
+    exit 1
+  fi
+else
+  exec "$CULLER_FIXTURE_PLUTIL" "$@"
+fi
+CMD
+chmod 755 "$TMP/plutil-stdout/plutil"
+CULLER_FIXTURE_PLUTIL=$(command -v plutil) PATH="$TMP/plutil-stdout:$PATH" \
+  sh "$TMP/outside/install.sh" --check-updates >"$TMP/optional-release.out" 2>&1 || {
+    cat "$TMP/optional-release.out" >&2
+    fail 'public release rejected an absent test_release field'
+  }
+python3 - "$TMP/fixtures/release.json" <<'PYTEST'
+import json, sys
+from pathlib import Path
+path = Path(sys.argv[1]); record = json.loads(path.read_text())
+record['test_release'] = False
+path.write_text(json.dumps(record))
+PYTEST
+sh "$TMP/outside/install.sh" --check-updates >"$TMP/public-release.out" 2>&1 || {
+  cat "$TMP/public-release.out" >&2
+  fail 'public release rejected test_release=false'
+}
 python3 - "$TMP/fixtures" <<'PYTEST'
 import json, sys
 from pathlib import Path

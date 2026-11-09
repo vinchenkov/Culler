@@ -30,12 +30,16 @@ sources:
     resource: repo://mc/verbs/infrastructurefailure.go
   - id: openwiki-source-6590b775234fedddab69a28c
     resource: repo://mc/verbs/runner.go
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
-generated: { by: "culler-scribe", at: "2026-10-21T23:26:36.318Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-03T00:11:39.952Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Failure controls and retry allowances
@@ -116,7 +120,8 @@ The attention threshold is a count of distinct unarchived tasks with `blocked` o
 
 ## Heartbeats and run deadlines
 
-Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki runs use `DecideWiki` and separate liveness records. The agent runner sends `mc heartbeat` at session start and every `heartbeat_interval_s` (default 60). The `settings` table defaults are: spawn grace 60 seconds, lease timeout 60 minutes plus 15 minutes grace, and hard deadline 240 minutes of awake time. A run that never heartbeats past the spawn grace, falls silent past timeout plus grace, or passes its hard deadline is reaped and charged. These limits use VM uptime, so host sleep uses none of them.
+Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki runs use `DecideWiki` and separate liveness records. The agent runner sends `mc heartbeat` at session start and every `heartbeat_interval_s` (default 60). The `settings` table defaults are: spawn grace 60 seconds, lease timeout 60 minutes plus 15 minutes grace, and hard deadline 240 minutes of awake time. An ordinary task run that exceeds its applicable liveness limit ends through the reap path and its allowance classification.
+The Scribe receives at least 60 seconds for its first heartbeat. Its hard deadline still applies, and wiki failure charges no allowance. These limits use VM uptime, so host sleep uses none of them.
 
 `resident/src/pipeline-liveness.ts` supplies the container-gone evidence. `collectPipelineLiveness` reads `mc lease list`, measures each run's launch age from its launch record, and inspects its container. Only Docker's exact not-found counts as absent; an ambiguous inspect yields no observation. `confirmRunContainersAbsent` also gates repository cleanup.
 
@@ -124,7 +129,13 @@ Task run liveness is enforced by lease reconciliation in `dispatch.Decide`. Wiki
 
 Connection conditions own neither pipeline allowance. The runners classify a request that got no service response with `runner/shared/network-error.ts` (`connect`, `reset`, `timeout`, `tls`, `other`) and pass it as `--network-error` on `mc run infra-failure`. Such a failure is a system condition. The connection then waits through its retry schedule.
 
-When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` (`mc/verbs/runner.go`) calls `domain.RecoverNetworkAttempt`, which clears only the network condition that admitted that run, and only if the connection, authorization, and profile are still current. A role terminal also clears it (`ClearNetworkRetry`). Collie uses the same reporter through `mc collie model-response`.
+When the harness emits a `model-response` event, `modelResponseReporter` (`runner/shared/model-response.ts`) calls `mc run model-response <run_id>` once per attempt. `RunModelResponse` in `mc/verbs/runner.go` calls `domain.RecoverNetworkAttempt`.
+That function first checks provider recovery, then clears an eligible network condition under the current connection, authorization, and profile. A role terminal also clears it (`ClearNetworkRetry`). Collie uses the same reporter through `mc collie model-response`.
+
+A network timeout can change the connection revision before the process ends.
+System status retains the active run or Collie reply attempt that the current diagnostic identifies.
+`mc/verbs/networkhold_test.go` checks this visibility for both execution types.
+An interrupted Collie reply preserves its partial draft and requires explicit retry; see [Collie](collie.md#interrupted-replies-and-explicit-retry).
 
 [Agent connections and access renewal](../operations/agent-connections.md) describes account renewal, rejected keys, and quota failures.
 
@@ -171,9 +182,18 @@ It preserves independent customization, confinement, checkout, and operator cond
 `clearAllowance` clears Decision Pending only when `allowance` owns that condition.
 This rule prevents an allowance grant from removing a separate operator decision.
 
-A Verifier reports an operator decision when a required check needs capabilities unavailable to agent containers.
-A cause that a Worker can change requires a correction.
-An unavailable required check remains unverified in either case.
+The Worker and Verifier skills select outcomes for unavailable criterion checks and new or changed tests by cause.
+An absent capability that no agent container has requires an operator decision report.
+The report identifies the capability, affected requirement, and evidence.
+A cause that the Worker can change requires repair; the Verifier returns CORRECT for that cause.
+An Image dependency follows the Worker proposal and checkpoint procedure.
+An unclear cause requires Worker investigation or a Verifier correction.
+
+An unavailable host check outside the criteria requires no operator decision or task run failure by itself.
+This exception excludes new or changed tests, which must pass.
+Every unavailable check remains unverified, and independent work and checks continue.
+An execution condition that prevents completion uses the role's task run failure procedure.
+These rules keep a missing capability distinct from an execution failure that consumes a retry allowance.
 See [decision resolution](../workflows/decision-resolution.md) for the complete condition table.
 
 `mc/verbs/decisionresolution_test.go` checks report resolution, preserved independent conditions, allowance reset, and refusal of reason-only report resolution.

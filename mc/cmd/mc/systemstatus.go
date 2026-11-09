@@ -125,6 +125,7 @@ func systemRequirements() (verbs.SystemStatusRequest, error) {
 		profiles := map[string]string{}
 		profileRoles := map[string][]string{}
 		profileModels := map[string]string{}
+		profileNames := map[string]string{}
 		bindings := routing.ConfiguredBindings(cfg.Runtimes)
 		for _, profile := range catalog.Profiles {
 			if profile.ConnectionID == connection.ID {
@@ -132,9 +133,10 @@ func systemRequirements() (verbs.SystemStatusRequest, error) {
 				profiles[profile.ID] = routing.ProfileRevision(bindings[profile.ID])
 				profileRoles[profile.ID] = profile.Roles
 				profileModels[profile.ID] = profile.Model
+				profileNames[profile.ID] = profile.Name
 			}
 		}
-		request.Connections = append(request.Connections, verbs.ConnectionRequirement{ID: connection.ID, Name: connection.Name, Kind: connection.Kind, AuthorizationID: auth, Operation: operation, Profiles: profiles, ProfileRoles: profileRoles, ProfileModels: profileModels, Roles: roles})
+		request.Connections = append(request.Connections, verbs.ConnectionRequirement{ID: connection.ID, Name: connection.Name, Kind: connection.Kind, AuthorizationID: auth, Operation: operation, Profiles: profiles, ProfileRoles: profileRoles, ProfileModels: profileModels, ProfileNames: profileNames, Roles: roles})
 	}
 	return request, nil
 }

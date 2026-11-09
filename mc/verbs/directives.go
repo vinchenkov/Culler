@@ -71,7 +71,7 @@ func skillPointer(skills []RoleSkill) string {
 		"`mc` ships no help surface: bare `mc` names zero verbs and `mc --help` is an unknown " +
 		"verb. That skill is the complete surface your role may call. A verb absent from it " +
 		"does not exist for you, and a search for one wastes the run."
-	if command.Name == "mc-worker" || command.Name == "mc-scribe" {
+	if command.Name == "mc-worker" || command.Name == "mc-scribe" || command.Name == "mc-verifier" {
 		help := "The skill lists the permitted commands; `mc` has no help command."
 		if command.Name == "mc-scribe" {
 			help = "The skill lists the permitted commands.\n`mc` has no help command."
@@ -79,6 +79,10 @@ func skillPointer(skills []RoleSkill) string {
 		text = "## Your command surface\n\n" +
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
 			help
+		if command.Name == "mc-worker" || command.Name == "mc-verifier" {
+			text += "\nIf this skill is absent or unreadable, report the failed read with this terminal:\n\n" +
+				"`mc complete <task> --run <run_id> --infra --reason <observed condition>`."
+		}
 	}
 	if command.Name == "mc-strategist" {
 		text = "## Your command surface\n\n" +

@@ -31,7 +31,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-10-29T16:53:36.977Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T09:00:19.897Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # The mc CLI, verb scope, and boundaries

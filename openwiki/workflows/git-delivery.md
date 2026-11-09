@@ -28,10 +28,10 @@ sources:
     resource: repo://resident/src/repository.ts
   - id: openwiki-source-876efa27a35b34c8f8651db4
     resource: repo://runner/image/mc-land
-generated: { by: "culler-scribe", at: "2026-10-21T23:30:26.761Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-10-21T23:30:26.761Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Git delivery and repository operations
@@ -44,7 +44,11 @@ Every Culler task delivers one Git commit. The delivery path has three owners. `
 
 `mc/dispatch/repository.go` names the operations: `capture`, `cleanup`, `observe`, `prepare`, `apply`, and `reconcile`. `observe`, `prepare`, `apply`, and `reconcile` are merge steps. The native executor also accepts internal sub-operations that the resident sends: `allocate`, `ready`, `prepare-repository`, and `retain-candidate`.
 
-A repository operation claims no Project lease (`GIT-DELIVERY.md`; also the header comment of `resident/src/repository-lane.ts`). The tick loop only spawns agent runs. The repository lane runs operations beside it, so a long merge never blocks dispatch and an agent run holding the lease never blocks a merge. `TestDeliveryStartWhileAgentRunHoldsLease` in `mc/verbs/deliverystart_test.go` covers this.
+A repository operation claims no Project lease (`GIT-DELIVERY.md`; also the header of `resident/src/repository-lane.ts`).
+The repository lane executes operations outside the tick loop.
+A long operation therefore does not occupy that loop.
+The dispatch rules can still hold a new agent run while a repository operation protects its required source or destination.
+`TestDeliveryStartWhileAgentRunHoldsLease` in `mc/verbs/deliverystart_test.go` checks repository work during an agent lease.
 
 ## Per-run isolated repositories
 

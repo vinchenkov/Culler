@@ -1,24 +1,24 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:30e5308c4f3f0aaec75c0fa3790269c2063f28800236ab419ae3ef4638cbc6d4",
+  "pageVersion": "sha256:3a27e18e1457b19983006a2dd364e494f3139768de95659ca667d72bbd05f33b",
   "claims": [
     {
       "id": "claim_4665dd1d847544b8aca52a0ff841277e",
       "statement": "dispatch.Decide evaluates one Project and returns a stop (reap) of an agent run, a spawn, or an idle reason, with no I/O and no mutation of its inputs.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L340-L346",
+          "resource": "repo://mc/dispatch/dispatch.go#L341-L347",
           "version": "repo-lines-v1:sha256:53dea787e69ffd4ca77188c01dff7eef0f198c3d27a9011ab93ae6866e353491:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY3OGVlODE3Y2EyNmU1NDQwN2ZhMDQ0MjdkZGRiNDFjZjM4MDE2N2I2NmU0ODIyYjYxYzk5MjhiYmNhMzQ4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzM0ZTQyZDE0ODMzMWQ5NTVjODRhNzQ0MzhlNWQyNzdiNmM1Y2JiYjlhY2M1NTNmZDUxNDU0ZmM5ZDg2ZjVkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDFlOTQ5OWQ0NzM4ZWVlZmE1MDZkYjllYWNiZmFkOTJjZGVmMTE2ZGMyOTMxYWJhMDlhNjRjZWUyYzU0MzkzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDlmZTU0YzUwNTNhNDJjN2EyMThjOWJlMWI5MTA1MDNkM2MyNTA5MmNkMjEwM2I5Y2M5N2FjYjBmNmRmMjRiNCJ9"
         }
       ]
     },
     {
       "id": "claim_bd5f1818d4ea468e92fc97da5966a569",
-      "statement": "Decide reconciles a held lease first (reap or lease-held), then returns project-inactive for an inactive Project, project-infrastructure-exhausted at three Project infrastructure failures, vision-required without a valid vision, and attention-required at three attention tasks.",
+      "statement": "Decide reconciles a held lease first, then applies Project state, update recovery, environment, infrastructure, vision, and attention gates.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L346-L379",
-          "version": "repo-lines-v1:sha256:61f15b8d9be13c8a0f96f121e8da09408a2fd6ddc6fe8924c4e7a9ddeccd0ce9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNGU0MmQxNDgzMzFkOTU1Yzg0YTc0NDM4ZTVkMjc3YjZjNWNiYmI5YWNjNTUzZmQ1MTQ1NGZjOWQ4NmY1ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2MWE1YjE2NmQyZThmMGVlZGJjMmE4NjZiNjdjYTIwMmI4OTBlNjkxZWRjY2I4NzVlZWQ4MDYyZmZjZDVkMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ODRmYTY0NmU3YTEyNDY5YzkxZTM3MjM2OTUyNzI2NGFiNzFkNmVjZjBlMTg0Zjk4Zjg3NDY2ZGQ1ZDM0MDUifQ"
+          "resource": "repo://mc/dispatch/dispatch.go#L347-L386",
+          "version": "repo-lines-v1:sha256:1055c94a2043f64ae8c06a11cdeb1177c67231d6f4eca4ea66c29ca62e70967c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzNGU0MmQxNDgzMzFkOTU1Yzg0YTc0NDM4ZTVkMjc3YjZjNWNiYmI5YWNjNTUzZmQ1MTQ1NGZjOWQ4NmY1ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MzE0MWQ0MWZkMmViNGI1ZWI4OTNlM2VkZmMzNjFmZjZmZGNiNDEzMmE0NmUzZDQzZjkwMmI3MWQ4ZjY1NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2MWE1YjE2NmQyZThmMGVlZGJjMmE4NjZiNjdjYTIwMmI4OTBlNjkxZWRjY2I4NzVlZWQ4MDYyZmZjZDVkMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZWQwMDAxYzUyOWJlN2NhMzczMzI3ZjUzZjYxY2Y0NTkxYWQxM2Y0NWYzZjE2MDNiZmUwM2E1MTZhMTM1ZTgifQ"
         }
       ]
     },
@@ -27,7 +27,7 @@
       "statement": "TickOrder returns every Project id in sorted order, including inactive Projects, because a reap can apply there.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L443-L452",
+          "resource": "repo://mc/dispatch/dispatch.go#L447-L456",
           "version": "repo-lines-v1:sha256:888847658b3a22e0e7d751c2e249a5d2d035ec9f7fff5f87b5cf0012cf286035:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNTI4ZDk3ZmEwZjdjYTUxYTk0NmI5ZTllYTMyMWY3NTdmYmFjMDY1NzM5ZWE0Nzg3NGVlZjkyZjBjNTBhMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxNmI2YmUyY2ZjNzcxMGMzMThkMjU1YTJlMmUyMjk4NGEyZjc4NDkwNzljY2NhZTFhZDcyMTFmZmI1Yzc5MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzM2YwNWU1ZGU3M2UyZWI4OWUxNGFmZWZlY2U4YzUwMTQ2MDIyZGMyNGU0YzYwOTc1MmU3ZjM3N2U0NjA2ZDcifQ"
         }
       ]
@@ -37,7 +37,7 @@
       "statement": "Ordinary dispatch candidates are ordered expedite lane first, then furthest stage, then priority, then age, then id.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L618-L633",
+          "resource": "repo://mc/dispatch/dispatch.go#L622-L637",
           "version": "repo-lines-v1:sha256:5f78caffb2bc1cc12f33b53960932110ac8ac9289a66d425269d9ad05e3b627f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZWZlZWRmZDM0MGEzMGNjMzU3YjVkNTZiYmMxNmU0NGJlYmUwODc4Yzk2OGYzMmEwMGE5YmI5NWRkNWI0Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3ZjZkNjM0NjEyNTA1MGYyNDMxMjEyMWNiYjNhMjZlOWJiODA0NDg1NDhkMTFlNWViYjkzZjRiZDA2NjhmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmYWFjMzY2NDRiMWJmNmYwN2ZhOTI1MjMyMGJiNjY2NzcxNGNmY2U4MDViMzlkMjU5MTZlYjJkZGI5YTY2NzcifQ"
         }
       ]
@@ -61,8 +61,8 @@
       "statement": "Dispatch runs Collie first, then Project pipeline rounds, then wiki rounds; a pipeline round error preserves committed effects.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchverb.go#L77-L95",
-          "version": "repo-lines-v1:sha256:067105df6c47e1eb5a97dad88c9f9b77fa0130c3aeff6708ab00049c0d0a9128:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNjNhYTQzODU1Y2IwYTVlZWQ2ZTcwYzFhNmMyOTU5ZDM3YzY3YTRmMjVkNTYwZTExY2RlOWE5Y2JiMjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMGYzZDRiZTI3ZDQwMDhlOTJkYjA3YTUxYWYwMDk1OTA4NGE4MDQ1MThkMDg4ODQ3ZGJlMjJkYTYwZjlhODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2NmIwMzA2ZjIwNjViYjFjNTcxMTFkYTg5ZjFkNDc5Yzc4ZmY4NTU2YTQ4NDQyYjE2NzlmZmEwN2JlNDljMzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmNGEzNWQ0Nzc2ZWZhNzY2MWU2MmU2ODA2ZGZlYmU4ODNlMjIyZmU2NTZmNDNiNDA2NGZmOGZkOTA3NTM1YzAifQ"
+          "resource": "repo://mc/verbs/dispatchverb.go#L77-L96",
+          "version": "repo-lines-v1:sha256:23bab1837f3aab082a966453cf0e32a8423dcbbbe2315019ece8daf69fa40ef3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwNjNhYTQzODU1Y2IwYTVlZWQ2ZTcwYzFhNmMyOTU5ZDM3YzY3YTRmMjVkNTYwZTExY2RlOWE5Y2JiMjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2NmIwMzA2ZjIwNjViYjFjNTcxMTFkYTg5ZjFkNDc5Yzc4ZmY4NTU2YTQ4NDQyYjE2NzlmZmEwN2JlNDljMzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiMDFjZWJjNDYyNWNjNjVkZjhhZTI4N2VmYWExZDE3YTM0OWI1MGJlMmQ0ZDY4ZmNkMTJlNDFmMWQ3MjA0ZmUifQ"
         }
       ]
     },
@@ -71,8 +71,8 @@
       "statement": "The canonical seam structs are a frozen wire contract, wall-clock time is excluded from the projection, and a shape change bumps the action version and dispatch key domain.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchseam.go#L6-L20",
-          "version": "repo-lines-v1:sha256:1196944671ed5529482c38ea0d09685fac3fd7803c395fe2dc12ec2b98a6448f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiM2Y4NzA5NTc4MDc1YjcxZDRkZWI2MGFlYTJmZjBhNzZjZDZiNjI0N2RmOTZmN2JmYzE4YTA2Mzc3ZDE1NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjMTUzZDczNmY3M2EwZjk2NGY1ZWIwYjZmYjYwZDE3ZWFkNTNmZjY0ZjQ0NDRiOTE5MmFiMzMwNzYyNWNjOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljYTg3MGUyMjc3YzAzY2VhMjdjMWYzMWQyYjE0YWRhZmVkNTY2MzVjYjg0YWIwODg3NDAzYzY0YzRhMjc5OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzk0ZDZlYzk0NjYxYzY2NjU2OWZiZjMyYzExN2JkMWVlMDY1NTE0YmY1MjdiZjRjNzlmZTljNjdiNjhkZjYifQ"
+          "resource": "repo://mc/verbs/dispatchseam.go#L6-L21",
+          "version": "repo-lines-v1:sha256:d2c27dd634d8afc2b4198bede18a364825bb574f63425b080c471fb6bed2e021:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiM2Y4NzA5NTc4MDc1YjcxZDRkZWI2MGFlYTJmZjBhNzZjZDZiNjI0N2RmOTZmN2JmYzE4YTA2Mzc3ZDE1NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljYTg3MGUyMjc3YzAzY2VhMjdjMWYzMWQyYjE0YWRhZmVkNTY2MzVjYjg0YWIwODg3NDAzYzY0YzRhMjc5OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwMjViMDM3MGE3ODc1YWM2OWQ1YjljZDI5ODM5NmRjOGQ2NTQ2ZWEzNjhlNTU3ZGIwNmUzNzU1ZWFiM2I1YTUifQ"
         }
       ]
     },
@@ -81,8 +81,8 @@
       "statement": "Commit rebuilds the canonical projection and returns an inert stale refusal when its preparation token differs, and a candidate_mismatch refusal when the re-decision selects a different candidate.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchseam.go#L904-L929",
-          "version": "repo-lines-v1:sha256:7c74d57f2c0d5bf319383b493e116fb18ed21d87a2ca6320379bb967c699eb20:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxOGFkMjRjY2Y0NGJjZDFlYTg0OThmY2VmYTk1YWI1NDYyNGE0NjRmMWRjMTgwY2RlOTY5ZmJhYmVmNDZhYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZDc2ZTA4MmIxMDI1MWQyZmJlNWVkOTgwYzk5YzUzNzhhYTNkODJiNmQ5YzYzMTU0MDliNjE1YzlkZTc0NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1NDBmMDBmYTFlOGUwYzQ2NDcwMWMxNjkwNWY1MTBlYTU0MjgzZTZjYTkzYmJkNzM4MDA5OGZiNWY4ZTAyZGUifQ"
+          "resource": "repo://mc/verbs/dispatchseam.go#L898-L936",
+          "version": "repo-lines-v1:sha256:c19d9c6588463a61210bdf1cfa08fd54cf269087a7927a1c88d34abb42faec6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzAzODc5YTdiODFmNDQ3OTNmZmRlNTkwOGEzNDVmNjE0NzYxMWI0OTgwNDYwNWM5M2NlMTUwNDc3YjhhMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNDNjZmRhNzY3ZDE1YzI5NWYwOGVjZmE3NTdiZTFkNDdhOTcxNmExNjM4NjA2MjJmMDBmOGFjZGI1ZWY3YjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzBhMmYxMGRlNWJmMGU2YTk4ZjgxNzI5YTNjNGYzOGFkYTc5Y2VmMzQ3Zjc0ZmQwM2Y5YzFjYzdmZjE1NmQifQ"
         }
       ]
     },
@@ -101,8 +101,8 @@
       "statement": "The nudge socket accepts only a Collie session id, vision-save, project-start, or packet-decide, each at most 64 bytes.",
       "evidence": [
         {
-          "resource": "repo://resident/src/nudge-socket.ts#L11-L26",
-          "version": "repo-lines-v1:sha256:c10d7c8e5d09151d459d22dffc4a66720803d0952f3f5eba971a6317119986f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YzRlOWRmYTcyMjczMTcyMDg2M2MzZWY2YWVlMmQ2OTQyZTM3MTE5Y2E4NDk5OTk3YTg1ZDhkY2IzMWMyNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZGM2Yzg5YjRlMmM1NDEyNzIwMWY2ZWJlNGUxMzQ2YTBlMTk2NmUxNDczNWJkNzNhYTQ3MzA1ODQyNGRkZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiYTFhMzQ3ZGQ1ZGQ1OTM3NDdhZTdkZTMzZWNlMzMyYjZhZGQ0OTI4MmQ4OTdmMzBkMzA2ODIzOTZkMmM5Y2QifQ"
+          "resource": "repo://resident/src/nudge-socket.ts#L11-L27",
+          "version": "repo-lines-v1:sha256:2a17d9e88ed0cf14eee1c9bebb4384c2a08358a892da11b31a0b900c9cf2f046:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YzRlOWRmYTcyMjczMTcyMDg2M2MzZWY2YWVlMmQ2OTQyZTM3MTE5Y2E4NDk5OTk3YTg1ZDhkY2IzMWMyNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZGM2Yzg5YjRlMmM1NDEyNzIwMWY2ZWJlNGUxMzQ2YTBlMTk2NmUxNDczNWJkNzNhYTQ3MzA1ODQyNGRkZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzNzYwYWRlY2UyYThkYzI2M2M5ZWJjMzkyOWZkNDBhNWE3YWY0ZWM4ODMxOWYyNzNlZjU5MWNjNDcxNGVkNWMifQ"
         }
       ]
     },
@@ -111,8 +111,8 @@
       "statement": "A reap stops the setup and pipeline containers, calls mc run stopped, and only then discards the launch envelope and plan files.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1655-L1709",
-          "version": "repo-lines-v1:sha256:2b44f76180d3bf423185e643631cbd673360270a3b4b2b6bdfd067e0294c7c3a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NDY1NDQ1OTUwM2VlYzZmYjBiZjJjNTEwZTg4Mzc5MmYzNDgzYTY0Y2Y4YjE5YWMxYzc5MWZmNjM0Mzg2MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyYzE3YjE1ZGZmYzE4ZDNlZjEyMWVmNWE5MDFhZWFjMDUwZTA1MTY1NDgxMmY4YzcwMzcwMGViZjBhNzM3OTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxZTczNmFkOGE4ZDUxZGFlZjA4OTQwZDZlMWJhNmFjMjUxNDM1ZjQ3MThiM2U2YmMzZjJiNzhmNWQxZGEyYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYjc2OTZhNzViYjI4MTkxZDFmNDJmZGQ2NDVkMzI3MzkwZjYwMjEzNzBjNGIyZGIzZDgzODNjYzM3YTkzMDMifQ"
+          "resource": "repo://resident/src/effects.ts#L1653-L1698",
+          "version": "repo-lines-v1:sha256:c8ac047f142187c7fd66b73b64fce65b195bc6ccfd321ca7762a8af64074982e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NjE0YTUwYjZmNWI3ZTVmMDVlMjVkMWM3YzVjZjQwNjQwNTBiZmRlMWZjNTVjNTc1OTE4MGZmOWExZWQ4ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwMmZlZTcwZDg4N2Y4ZDI0YzcyMjI3MjkwNzhjNWU0MWQzZjZhNDFkZjY3OGM4NDYyNzAwZjJhNDJhMmIyMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjOWIzYTYwNjdkOTI2OWQ4OGYyNDZhMDkwN2QzYzZjODYyYmI1ZTBhMTcxOGYxZjU5NDdlMzMwYTRjMjZjNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2YTZjYjNhODgwYTJkNjMzY2NjYmFmNTYyNjE2ZDE4NGE4ODAwOTY4Njk1NGNjNjczZmNiNDNiYjgzNmU1OTIifQ"
         }
       ]
     },
@@ -145,14 +145,14 @@
           "version": "repo-lines-v1:sha256:73df343899543d6792f4d5286e85bfcf6b6cd57d45479e43202c46eae5e2b9c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjMzYTQ4ZDhkMGE4NmI1ZDFkYmI4ODk5ZTIyNTRmY2ExNWRlMmE5NGY1OWE1YzA1YTRjN2FjYzA3MmFlYmE2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UyYzRlMjY3NzI5NmRhZjFmYzJkMTE0YzE5ZjkyZTA4M2U4NWY0MGM3Y2Y1NTA3MDg2MWUwNDJiZDA3ODdmNSJ9"
         },
         {
-          "resource": "repo://resident/src/main.ts#L785-L795",
-          "version": "repo-lines-v1:sha256:a8123f2c24af3da7b63acd1cf114e63427b0f28ef01956f03d6297a6607f6e9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZjVmOThiYmVlNmU4ZTk1MmI1ZjBlMWU4ZDZkMmY1MzVlMTY1OTlmMjdlYmJiMzEzNTNjNGZiZmM0NTU4OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYzhiMjM1NWIzMGY1YTkwNDZiNTIwYjFjZjFkYjFlM2VlOTU5Y2FhYTlkNjk2NWMxNTEwYTI5NmRjOWVkZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ODViOGU5MGFkMzUwNDU5OTMyOTg1MDRlNWNkNzBhN2E2MmYxYjBkZDExZjNkMTU3ZWU1MThkYWM0ODA1NTAifQ"
+          "resource": "repo://resident/src/main.ts#L842-L852",
+          "version": "repo-lines-v1:sha256:a8123f2c24af3da7b63acd1cf114e63427b0f28ef01956f03d6297a6607f6e9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZjVmOThiYmVlNmU4ZTk1MmI1ZjBlMWU4ZDZkMmY1MzVlMTY1OTlmMjdlYmJiMzEzNTNjNGZiZmM0NTU4OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZjA2ZDBjNjJkZDU0MDZmMjU2MGY5ZTAzZGVlZWFhYzEyNzdiZTBhZDZlMDYxYWNjMDYwMGJhNzFjNTcwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ODViOGU5MGFkMzUwNDU5OTMyOTg1MDRlNWNkNzBhN2E2MmYxYjBkZDExZjNkMTU3ZWU1MThkYWM0ODA1NTAifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-03T00:11:39.952Z"
+    "at": "2026-11-07T01:30:07.289Z"
   }
 }

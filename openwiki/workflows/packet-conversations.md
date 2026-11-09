@@ -12,16 +12,18 @@ sources:
     resource: repo://dashboard/src/ui/conversation.js
   - id: openwiki-source-56b812868de34201e0046a3c
     resource: repo://dashboard/src/ui/packetchat.js
-  - id: openwiki-source-b5018534042f60dde3347c5a
+  - id: openwiki-source-587a5c662cbe23556b5136d7
     resource: repo://mc/e2e/collie_packet_artifacts_test.go
   - id: openwiki-source-e876d4f934fe1b8e2de3721c
     resource: repo://mc/substrate/schema.sql
-  - id: openwiki-source-9efb4b1ddc2ed1c022be33e7
-    resource: repo://mc/verbs/directives/collie.md
-  - id: openwiki-source-c2dfdb5eaae48c46003c3dd4
+  - id: openwiki-source-a44ab4c2d26db975bde190a0
     resource: repo://mc/verbs/collie.go
-  - id: openwiki-source-5ff861069017b6a0714fcdda
+  - id: openwiki-source-3a72fe65b15fd6f2f9988f26
     resource: repo://mc/verbs/colliepacket_test.go
+  - id: openwiki-source-81e49db5f10e4699bcadf8d3
+    resource: repo://mc/verbs/collierestart_test.go
+  - id: openwiki-source-6c249547ec5cf1c015cbdcb1
+    resource: repo://mc/verbs/directives/collie.md
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
     resource: repo://mc/verbs/packet.go
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
@@ -30,18 +32,18 @@ sources:
     resource: repo://mc/verbs/packetcontext.go
   - id: openwiki-source-b2183a36b08ae9d3254fe2ae
     resource: repo://mc/verbs/projectdelete.go
-  - id: openwiki-source-68190b2710cd43b378a3c4b1
+  - id: openwiki-source-332034bad01f6c1d71fb1474
     resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
   - id: openwiki-source-e7572dd15953464a4a2391cf
     resource: repo://mc/verbs/taskartifacts.go
   - id: openwiki-source-e028a0037f071b894557c29d
     resource: repo://resident/src/effects.ts
-  - id: openwiki-source-46e96222197b6f4505759147
+  - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-10-29T16:53:36.977Z" }
+generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-07T01:30:07.289Z
 ---
 
 # Packet conversations from Review to Collie
@@ -177,6 +179,12 @@ The runner sends provisional drafts and the final reply through the ordinary Col
 The Review page and Collie page read the same conversation history.
 The visible quick chat polls more frequently while a reply is owed.
 A failed send restores the draft text. A newer packet of the same task retains that text and the failure message.
+
+A failed reply shows **Retry reply** in the shared conversation renderer.
+An interrupted reply keeps its operator message, provisional draft, and native session reference.
+A session resume alone does not retry that reply.
+An explicit retry authorizes another attempt for the same message.
+See [Collie](../concepts/collie.md) for reply state and retry admission.
 
 The Collie directive treats the report and artifact files as evidence.
 Only an operator message authorizes a state change.

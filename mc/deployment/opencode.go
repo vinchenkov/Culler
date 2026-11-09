@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -125,9 +124,14 @@ func runOpenCodeDownloadWith(home string, download func(context.Context, func(st
 		record.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
 		record.Status = "succeeded"
 		record.Message = "OpenCode is ready."
+		record.ErrorCode = ""
 		if err != nil {
 			record.Status = "failed"
 			record.ErrorCode = "opencode_download"
+			var failure *openCodeSourceError
+			if errors.As(err, &failure) {
+				record.ErrorCode = "opencode_" + failure.Stage
+			}
 			record.Message = err.Error()
 		}
 		return nil
@@ -136,6 +140,10 @@ func runOpenCodeDownloadWith(home string, download func(context.Context, func(st
 }
 
 func downloadOpenCode(ctx context.Context, home, image string, progress func(string)) error {
+	return downloadOpenCodeWithDocker(ctx, home, image, progress, runRuntimeDocker)
+}
+
+func downloadOpenCodeWithDocker(ctx context.Context, home, image string, progress func(string), run RuntimeDocker) error {
 	if update, err := LoadUpdateJournal(home); err != nil {
 		return err
 	} else if update != nil && update.BlocksWork() && update.Phase != "restore" {
@@ -144,13 +152,13 @@ func downloadOpenCode(ctx context.Context, home, image string, progress func(str
 		}
 		archive := filepath.Join(UpdateDirectory(home, update.ID), update.Candidate.OpenCode.Name)
 		progress("Check the retained OpenCode archive.")
-		return InstallOpenCodeArchive(ctx, home, image, archive, update.Candidate.OpenCode.SHA256, update.Candidate.Commit, nil)
+		return InstallOpenCodeArchive(ctx, home, image, archive, update.Candidate.OpenCode.SHA256, update.Candidate.Commit, run)
 	}
 
-	if source, err := readRuntimeSource(home); err == nil {
-		return buildOpenCodeSource(ctx, home, image, source, progress)
-	} else if !errors.Is(err, os.ErrNotExist) {
+	if source, err := openCodeSourceForImage(home, image); err != nil {
 		return err
+	} else if source != nil {
+		return buildOpenCodeSource(ctx, home, image, *source, progress, run)
 	}
 	record, err := distribution.Load(filepath.Join(home, distribution.InstalledRecord))
 	if pending, pendingErr := distribution.Load(filepath.Join(home, "state", "pending-release.json")); pendingErr == nil {
@@ -176,7 +184,7 @@ func downloadOpenCode(ctx context.Context, home, image string, progress func(str
 		return fmt.Errorf("The OpenCode download failed: %w", err)
 	}
 	progress("Unpack the OpenCode archive.")
-	return InstallOpenCodeArchive(ctx, home, image, archive, record.OpenCode.SHA256, record.Commit, nil)
+	return InstallOpenCodeArchive(ctx, home, image, archive, record.OpenCode.SHA256, record.Commit, run)
 }
 
 type runtimeSourceRecord struct {
@@ -201,7 +209,7 @@ func RuntimeSourceDirectory(home string) (string, error) {
 	return source.Source, err
 }
 
-// ConfigureRuntimeSource retains the source of a local deployment without its optional programs.
+// ConfigureRuntimeSource retains the source of a local deployment.
 func ConfigureRuntimeSource(home, runner, release string) error {
 	file := filepath.Join(home, "state", "runtime-source.json")
 	root := filepath.Dir(runner)
@@ -233,55 +241,42 @@ func ConfigureRuntimeSource(home, runner, release string) error {
 	return os.Rename(temporary.Name(), file)
 }
 
-func buildOpenCodeSource(ctx context.Context, home, image string, source runtimeSourceRecord, progress func(string)) error {
-	head, err := exec.CommandContext(ctx, "git", "-C", source.Source, "rev-parse", "HEAD").Output()
-	if err != nil || strings.TrimSpace(string(head)) != source.Release {
-		return fmt.Errorf("The source checkout differs from the deployed release. Run the deployment again.")
-	}
-	changed, err := exec.CommandContext(ctx, "git", "-C", source.Source, "status", "--porcelain", "--", "runner/opencode", "release/opencode").Output()
-	if err != nil || len(changed) != 0 {
-		return fmt.Errorf("The OpenCode release files differ from the deployed commit.")
-	}
-	root, err := os.MkdirTemp("", "culler-opencode-source-")
-	if err != nil {
-		return err
-	}
-	defer os.RemoveAll(root)
-	archive := filepath.Join(root, "culler-opencode-linux-arm64.tar.gz")
-	progress("Download the OpenCode packages of the deployed source release.")
-	cmd := exec.CommandContext(ctx, "/bin/sh", filepath.Join(source.Source, "release", "opencode", "build.sh"), archive)
-	if _, err := cmd.Output(); err != nil {
-		return fmt.Errorf("The OpenCode package download failed. Check the network connection, then retry.")
-	}
-	body, err := os.ReadFile(archive)
-	if err != nil {
-		return err
-	}
-	digest := sha256.Sum256(body)
-	progress("Unpack the OpenCode archive.")
-	return InstallOpenCodeArchive(ctx, home, image, archive, hex.EncodeToString(digest[:]), source.Release, nil)
+// UpdateOpenCodeVolume prepares source packages or updates an installed published package before service activation.
+func UpdateOpenCodeVolume(ctx context.Context, home, image, release string) error {
+	return updateOpenCodeVolume(ctx, home, image, release, runRuntimeDocker)
 }
 
-// UpdateOpenCodeVolume replaces an existing optional volume before service activation.
-func UpdateOpenCodeVolume(ctx context.Context, home, image, release string) error {
+func updateOpenCodeVolume(ctx context.Context, home, image, release string, run RuntimeDocker) error {
 	ctx, cancel := context.WithTimeout(ctx, 20*time.Minute)
 	defer cancel()
+	if source, err := openCodeSourceForImage(home, image); err != nil {
+		return err
+	} else if source != nil {
+		if source.Release != release {
+			return fmt.Errorf("The OpenCode source record differs from the selected release.")
+		}
+		return prepareOpenCodeSource(ctx, home, image, *source, run)
+	}
 	volume, err := OpenCodeVolume(home)
 	if err != nil {
 		return err
 	}
-	output, err := runRuntimeDocker(ctx, "", "volume", "inspect", volume)
+	output, err := run(ctx, "", "volume", "inspect", volume)
 	if err != nil {
 		if strings.Contains(strings.ToLower(string(output)), "no such volume") {
-			return nil
+			absent, err := clearAbsentSourceOpenCodeStatus(ctx, home, volume, run)
+			if err != nil || absent {
+				return err
+			}
+		} else {
+			return fmt.Errorf("The host could not inspect the OpenCode volume.")
 		}
-		return fmt.Errorf("The host could not inspect the OpenCode volume.")
 	}
-	current, err := runRuntimeDocker(ctx, "", "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy", image, "cat", OpenCodeRoot+"/release-id")
-	if err == nil && strings.TrimSpace(string(current)) == release {
+	current, err := run(ctx, "", "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy", image, "cat", OpenCodeRoot+"/release-id")
+	if err == nil && strings.TrimSpace(string(current)) == release && !sourceOpenCodeNeedsPublishedArchive(ctx, home, image, volume, release, run) {
 		return nil
 	}
-	if err := downloadOpenCode(ctx, home, image, func(string) {}); err != nil {
+	if err := downloadOpenCodeWithDocker(ctx, home, image, func(string) {}, run); err != nil {
 		return err
 	}
 	if _, err := os.Stat(filepath.Join(home, "agent-profile-operations", openCodeOperation+".json")); err == nil {

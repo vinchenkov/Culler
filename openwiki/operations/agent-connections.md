@@ -4,26 +4,38 @@ title: Agent connections and access renewal
 description: How account sign-in and API keys supply agent profiles through the host provider proxy.
 tags: [configuration, credentials, agents, security]
 sources:
+  - id: openwiki-source-8f16f07389eccb57a739027f
+    resource: repo://dashboard/src/ui/systemhealth.js
+  - id: openwiki-source-096a781fb160ef979fa31121
+    resource: repo://INSTALL.md
   - id: openwiki-source-cd6f7a4ea29f9d0931880195
     resource: repo://mc/boundary/envpolicy.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
   - id: openwiki-source-4b4fe89674376e41801774a5
     resource: repo://mc/deployment/agentprofile_auth.go
-  - id: openwiki-source-d6310547e8291694642fdf55
-    resource: repo://mc/deployment/agentprofile_grant.go
   - id: openwiki-source-52fc8d31cb52929022117055
     resource: repo://mc/deployment/agentprofile_models.go
   - id: openwiki-source-43964424fef4e0fd3d42eefc
     resource: repo://mc/deployment/agentprofile_testop.go
   - id: openwiki-source-23f70b586a2d1069b5d784e4
     resource: repo://mc/deployment/agentprofiles.go
+  - id: openwiki-source-dc8d3c70a68adffcb07de33a
+    resource: repo://mc/deployment/api_key_validation.go
+  - id: openwiki-source-414aa10e02df8456691e0f9b
+    resource: repo://mc/deployment/opencode_source_docker_test.go
+  - id: openwiki-source-c3574bc58db62fef903f9230
+    resource: repo://mc/deployment/opencode_source.go
+  - id: openwiki-source-c55cdefe405ad9fe4d481e84
+    resource: repo://mc/deployment/provider_credential.go
   - id: openwiki-source-da04f25cb9fa15d5a8447612
     resource: repo://mc/deployment/runtimeauth_setup_login.go
   - id: openwiki-source-1a0baff337229874d8b3640a
     resource: repo://mc/verbs/connectionhealth.go
   - id: openwiki-source-aa950240d47a765b29e8be03
     resource: repo://mc/verbs/providerlifetime.go
+  - id: openwiki-source-229935765a2017befaf3bc59
+    resource: repo://mc/verbs/systemstatus.go
   - id: openwiki-source-3fc938040bede67eab99b0e0
     resource: repo://resident/src/agent-profile-runtime.ts
   - id: openwiki-source-473a9f9ce4c4f72240c3f031
@@ -34,20 +46,21 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-05T04:07:09.592Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T04:07:09.592Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Agent connections and access renewal
 
-Culler supports four connection methods:
+Culler supports these connection methods:
 
 - ChatGPT account sign-in through Codex.
 - Claude account sign-in through Claude Code.
 - An OpenAI application programming interface (API) key.
 - An Anthropic API key.
+- An API key for another provider in the release catalog, through OpenCode.
 
 A connection identifies one account or API key.
 An agent profile selects a connection, a harness family, a model, and an optional effort level.
@@ -68,10 +81,13 @@ The supported connection kinds are:
 - `claude-oauth`.
 - `codex-api-key`.
 - `claude-api-key`.
+- `opencode-api-key`.
 
 The harness family must match the connection kind.
 The configuration contains no provider credential values.
 Custom provider destinations fail validation.
+An OpenCode connection selects one release catalog entry instead of an address.
+The catalog defines the provider, model, effort variants, prices, context limits, and web search capability.
 
 The dashboard offers Connect, Configure, and Test and save.
 Native sign-in uses the existing provider authorization process.
@@ -83,7 +99,7 @@ The API key form contains one concealed key field.
 A successful save clears that field.
 The key stays outside browser storage, command arguments, and diagnostic records.
 The host refuses a replacement that names an obsolete authorization revision.
-The host checks a replacement key against the provider's model catalog before it saves that key.
+The Codex and Claude API integrations check a replacement key against the provider's model catalog before save.
 This check makes no model call.
 A rejected or incomplete check preserves the previous key, authorization revision, and configuration.
 A successful check verifies catalog access; the model test still verifies the selected model.
@@ -98,6 +114,37 @@ When that data is absent, the dashboard offers the harness levels and the model 
 The host checks a selected effort against the model list before it runs the model test.
 The model test reports an effort error when that level is unavailable.
 An empty effort uses the harness default.
+
+### OpenCode connections
+
+**Use another provider's API key** opens the catalog search.
+The search accepts a provider name, identifier, or full model address.
+Each provider row shows its address and website before the concealed key prompt.
+The release catalog supplies the model list without a live provider request.
+The model test verifies the saved key and selected model.
+An existing release integration keeps its harness when its address matches a catalog entry.
+
+In a published installation, the first OpenCode connection starts a separate download of the pinned program and web search plugin.
+The model and effort lists remain available during the download.
+The model test waits for a successful download.
+A failed download preserves the connection and key and offers **Retry**.
+Each effort selects a catalog model variant; **Default** uses the provider default.
+The dashboard states whether the connection supports web search.
+
+Source deployments prepare and verify OpenCode before service activation, even without an OpenCode connection.
+The first connection uses that verified package without another download, including after the source checkout moves.
+The source image supplies npm and the other package tools; the host requires no npm installation.
+Preparation records readiness through the same operation status that the dashboard and terminal setup read.
+A preparation failure prevents activation and records its stage and cause.
+Successful preparation or verified reuse clears an obsolete failure status.
+
+`mc/opencodecatalog/` owns the release catalog and profile validation.
+`mc/deployment/opencode.go` owns the download, archive checks, and deployment-specific volume.
+`mc/deployment/opencode_source.go` owns source preparation, package identity, verification, and reuse.
+A published installation downloads OpenCode only when a connection requires it.
+Published updates replace an existing volume with the archive of the selected release.
+Both uninstall modes remove the volume.
+See [source package preparation and reuse](image-delivery.md#source-package-preparation-and-reuse) for package checks and repair.
 
 The Connections disclosure offers Disconnect for each saved connection.
 The confirmation stops active requests and removes the saved credential.
@@ -146,7 +193,7 @@ Each container receives a temporary Culler token and the public proxy certificat
 The token permits only its assigned connection, model, operations, and lifetime.
 The host proxy attaches the provider credential to a permitted request.
 Both connections use HTTPS.
-Provider credentials remain on the host for both harness families.
+Provider credentials remain on the host for all three harness families.
 
 `mc/verbs/providerlifetime.go` derives a setup or validation token lifetime from the active environment operation.
 The operation can be queued or running, so the resident can grant access before the first heartbeat.
@@ -181,6 +228,11 @@ Model tests preserve their selected model and tool evidence.
 A successful HTTP response alone does not establish a successful model test.
 A later request cannot repair an obsolete authorization or an unrelated profile.
 See [Failure controls](../concepts/failure-controls.md) for task retry behavior.
+
+System conditions display the configured profile name, with the model as a fallback.
+The diagnostic facts retain the raw profile identifier.
+A timeout can change the connection revision while its attempt remains active.
+The diagnostic keeps that active attempt visible through its run or attempt identity until it ends.
 
 ## Verification
 

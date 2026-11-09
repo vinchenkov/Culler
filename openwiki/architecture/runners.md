@@ -6,6 +6,8 @@ tags: [runner, docker, adapters, harness, image]
 sources:
   - id: openwiki-source-2f0a77787a810afb1a87cbbb
     resource: repo://Dockerfile.culler-project
+  - id: openwiki-source-096a781fb160ef979fa31121
+    resource: repo://INSTALL.md
   - id: openwiki-source-6a84afb40e064a711b4d99bd
     resource: repo://mc/deployment/runner_release.go
   - id: openwiki-source-e028a0037f071b894557c29d
@@ -18,16 +20,18 @@ sources:
     resource: repo://runner/agent-runner/adapters/claude.ts
   - id: openwiki-source-1a9cc0a52db0fc38615324bc
     resource: repo://runner/agent-runner/adapters/codex.ts
+  - id: openwiki-source-1e8e75808ab8bc689f8e57e8
+    resource: repo://runner/agent-runner/adapters/opencode.ts
   - id: openwiki-source-ecd0ea64f1d6275775d38f43
     resource: repo://runner/agent-runner/main.ts
   - id: openwiki-source-a8fe83c6ef27b7992b328a1d
     resource: repo://runner/agent-runner/runner-process.test.ts
   - id: openwiki-source-20c7a26c8321ed0c7a2cf49b
     resource: repo://runner/agent-runner/skills.ts
+  - id: openwiki-source-d1b22419782a460caf6dbe3c
+    resource: repo://runner/collie-runner/main.ts
   - id: openwiki-source-81d4bb4f0203db5a26c2bc57
     resource: repo://runner/fake-harness/README.md
-  - id: openwiki-source-46e96222197b6f4505759147
-    resource: repo://runner/collie-runner/main.ts
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
@@ -36,10 +40,10 @@ sources:
     resource: repo://runner/image/toolchain-smoke.sh
   - id: openwiki-source-a1d3951819531015b34e3c43
     resource: repo://runner/shared/setup-error.ts
-generated: { by: "culler-scribe", at: "2026-11-05T09:00:19.897Z" }
+generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-05T09:00:19.897Z
+    at: 2026-11-08T02:41:27.984Z
 ---
 
 # Runner containers and harness adapters
@@ -91,7 +95,7 @@ These scripts run against a built image and need Docker, so they sit outside the
 
 `main` reads `/mc/run.json` (the launch envelope, `RunEnvelope`) and calls `executeRun`. The steps run in this order:
 
-1. **Adapter selection.** `adapterInvocation` picks exactly one adapter. The route key `fake/fake`, or a key listed in `MC_AGENT_RUNNER_ROUTES`, runs the fake harness with `harness_config.behavior`. Any other route needs a complete `runtime` capability whose `harness` and `id` match the envelope. The runner then chooses by **harness family**: `codex` runs `adapters/codex.ts`, and `claude-sdk` runs `adapters/claude.ts`. Any other family throws "this image ships no … adapter". The runner holds no provider names. The model and channel come from configuration through the envelope. The runner rejects a custom base URL or a channel that mismatches the harness. Scribe runs get `--openwiki` and the input commit.
+1. **Adapter selection.** `adapterInvocation` picks exactly one adapter. The route key `fake/fake`, or a key listed in `MC_AGENT_RUNNER_ROUTES`, runs the fake harness with `harness_config.behavior`. Any other route needs a complete `runtime` capability whose `harness` and `id` match the envelope. The runner then chooses by **harness family**: `codex` runs `adapters/codex.ts`, `claude-sdk` runs `adapters/claude.ts`, and `opencode` runs `adapters/opencode.ts`. Any other family throws "this image ships no … adapter". The runner holds no provider names. The model and channel come from configuration through the envelope. The runner rejects a custom base URL or a channel that mismatches the harness. Scribe runs get `--openwiki` and the input commit.
 
 The runtime capability includes the profile's optional effort.
 The runner passes a selected effort to the adapter as `--effort`.
@@ -111,18 +115,41 @@ A failing `mc` call is logged as `runner.mc_failed` and never kills the run. Mis
 
 `adapters/claude.ts` drives the Claude Agent SDK `query`. Its `NativeSessionStore` (`adapters/session-store.ts`) writes the native transcript into the session directory. `adapters/codex.ts` spawns the vendored Codex binary. It removes provider credential variables from the environment. Its native configuration uses the host proxy and a temporary Culler token.
 
-Both adapters emit `session-start`, `model-response`, `turn-text`, `turn-complete`, and `infrastructure-failure` events. Both log through `runLogSink` in `runner/shared/log-sink.ts`. It writes `runner.ndjson` in the directory that `MC_RUN_LOG_DIR` names, with `/mc/logs` as the default, or to stderr when that directory is absent. `adapters/openwiki.ts` configures the OpenWiki MCP server for Scribe runs and waits up to `OPENWIKI_STARTUP_MS` (30 s) for it to start. The host proxy caps provider requests during a model test.
+The adapters emit `session-start`, `model-response`, `turn-text`, `turn-complete`, and `infrastructure-failure` events. The Codex and Claude adapters log through `runLogSink` in `runner/shared/log-sink.ts`. It writes `runner.ndjson` in the directory that `MC_RUN_LOG_DIR` names, with `/mc/logs` as the default, or to stderr when that directory is absent. `adapters/openwiki.ts` configures the OpenWiki MCP server for Scribe runs and waits up to `OPENWIKI_STARTUP_MS` (30 s) for it to start. The host proxy caps provider requests during a model test.
 
 `diagnostics.ts` builds `AdapterFailure` records. It redacts the values of environment variables whose names contain `TOKEN`, `SECRET`, `PASSWORD`, `CREDENTIAL`, `API_KEY`, or `AUTH`. It also redacts bearer tokens and truncates long text. It extracts HTTP status, provider error code, and a network error class. `runner/shared/network-error.ts` maps error codes to `connect`, `reset`, `timeout`, `tls`, or `other`. The runner passes these as `--http-status`, `--provider-error-code`, and `--network-error`.
 
+### OpenCode runtime and traces
+
+`runner/agent-runner/adapters/opencode.ts` uses the selected release catalog model and its supported effort variants.
+The resident mounts the separate OpenCode volume read-only at `/opt/culler-opencode` through `openCodeArguments` in `resident/src/environment-lane.ts`.
+The installation supplies the executable, provider packages, control plugin, and shell wrapper.
+Source deployments prepare and verify this package before service activation, even without an OpenCode connection.
+Published installations download the package when the first OpenCode connection requires it.
+`mc/deployment/opencode_source.go` owns source preparation and verified reuse in the selected Linux arm64 image.
+See [image delivery](../operations/image-delivery.md#source-package-preparation-and-reuse) for package identity and repair.
+See [agent connections](../operations/agent-connections.md) for catalog ownership and connection readiness.
+
+The adapter supplies the proxy address and temporary token through its generated configuration.
+It disables project configuration, automatic updates, model discovery, sharing, and snapshots.
+Its policy permits the selected provider and controls web search through the assigned capability.
+The native process uses separate data, configuration, cache, and state paths within the run's session directory.
+
+A prompt hook exposes the native session identity before the first provider response.
+The adapter registers that identity and writes a normalized trace for AgentsView.
+After the native process stops, it redacts temporary tokens from session text and the native SQLite databases.
+These databases belong to OpenCode; Culler state remains in the spine behind `mc`.
+The adapter requires a successful process, a session identity, reply text, and a completed step before it reports success.
+`runner/agent-runner/opencode.test.ts` checks configuration isolation, trace registration, redaction, and terminal results.
+
 ### Provider access
 
-Both adapters use the host HTTPS provider proxy.
+All three adapters use the host HTTPS provider proxy.
 Each launch receives a temporary Culler token and the public proxy certificate.
 The token permits the assigned connection and model.
 The host supplies and renews provider credentials outside the container.
 The proxy accepts only the connection, model, operations, and lifetime that the host assigns to the run.
-Both adapters remove ambient provider credentials and provider destination overrides.
+The adapters remove ambient provider credentials and provider destination overrides.
 The host records the origin of each request failure.
 See [Agent connections and access renewal](../operations/agent-connections.md) for the host storage and failure behavior.
 
