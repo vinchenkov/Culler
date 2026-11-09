@@ -283,6 +283,9 @@ func buildRunBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, i
 		"Each failure allowance permits three counted failures. An operator decision report consumes zero failure units.",
 	}})
 	addVisionPart(&b, in.Vision)
+	if sp.Role == dispatch.RoleArbiter {
+		trimArbiterBrief(&b)
+	}
 	if sp.Role == dispatch.RoleWorker {
 		trimWorkerBrief(&b)
 	}
@@ -293,6 +296,35 @@ func buildRunBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, i
 		trimVerifierBrief(&b)
 	}
 	return b, nil
+}
+
+// trimArbiterBrief leaves review rules and conditional procedures in the role input.
+func trimArbiterBrief(b *runBrief) {
+	parts := b.Parts[:0]
+	for _, part := range b.Parts {
+		switch part.Heading {
+		case "Agent credentials", "Failure controls":
+			continue
+		case partCustomization:
+			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+		case partRun:
+			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
+		case "Project environment":
+			part.Explanation = "These identifiers name the selected Project environment."
+		case partPool:
+			part.Explanation = "These are the proposals for this assignment. `priority` records proposer urgency: -1 is expedited; 0 through 3 mean P0 through P3."
+		case partActiveTasks:
+			part.Explanation = "These are this Project's active tasks, including blocked tasks and approved tasks that await a merge."
+		case partRejected:
+			part.Explanation = "These are recent rejected tasks."
+		case partCancelled:
+			part.Explanation = "These are recent cancelled tasks, with reason excerpts when available."
+		case partVision:
+			part.Explanation = "This is the accepted `VISION.md` content."
+		}
+		parts = append(parts, part)
+	}
+	b.Parts = parts
 }
 
 func trimStrategistBrief(b *runBrief) {

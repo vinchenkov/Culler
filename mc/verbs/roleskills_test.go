@@ -344,7 +344,7 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 		if subjectless {
 			continue
 		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleVerifier {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleVerifier || role == dispatch.RoleArbiter {
 			name, err := RoleSkillName(role)
 			if err != nil {
 				t.Fatal(err)
@@ -405,7 +405,7 @@ func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
 		if err != nil {
 			t.Fatalf("%s: %v", role, err)
 		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleStrategist || role == dispatch.RoleVerifier {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleStrategist || role == dispatch.RoleVerifier || role == dispatch.RoleArbiter {
 			continue
 		}
 		flat := strings.Join(strings.Fields(prose), " ")

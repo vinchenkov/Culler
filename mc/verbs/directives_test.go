@@ -287,68 +287,6 @@ func TestScribeTextNamesOnlyThePartsAndFactsOfItsRunBrief(t *testing.T) {
 	}
 }
 
-// The Arbiter finds a duplicate in the description of an active task. The
-// `mc task list` output holds no description, so the text must send the
-// Arbiter to the part that holds it.
-func TestArbiterTextBindsTheDuplicateRuleToTheActiveTasksPart(t *testing.T) {
-	directive, err := directiveForRole(dispatch.RoleArbiter)
-	if err != nil {
-		t.Fatalf("arbiter directive: %v", err)
-	}
-	skill, err := RoleSkillFor(dispatch.RoleArbiter)
-	if err != nil {
-		t.Fatalf("arbiter skill: %v", err)
-	}
-	for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
-		if !strings.Contains(prose, "**"+partActiveTasks+"**") {
-			t.Errorf("arbiter %s never names the %q part", surface, partActiveTasks)
-		}
-	}
-	if !strings.Contains(strings.Join(strings.Fields(skill.Body), " "),
-		"`mc task list` returns no `description`") {
-		t.Error("arbiter skill does not warn that mc task list omits the description")
-	}
-}
-
-func TestArbiterAgentTextDefinesCompactHistory(t *testing.T) {
-	for _, role := range []dispatch.Role{dispatch.RoleArbiter} {
-		directive, err := directiveForRole(role)
-		if err != nil {
-			t.Fatal(err)
-		}
-		skill, err := RoleSkillFor(role)
-		if err != nil {
-			t.Fatal(err)
-		}
-		for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
-			for _, required := range []string{
-				"**Rejected work**", "**Cancelled work**", "20", "10 cancelled tasks first",
-				"Rejected tasks fill the unused places", "newest decisions first",
-				"larger task numbers first for equal decision times", "Older tasks remain available",
-				"The task number", "The recorded title", "The decision",
-				"160 Unicode characters", "Historical entries exclude descriptions",
-				"`mc task get <id>` when a historical title leaves the scope unclear",
-				"equivalent work", "cancellation reason as context for the operator's preference",
-			} {
-				if !strings.Contains(prose, required) {
-					t.Errorf("%s %s omits the history requirement %q", role, surface, required)
-				}
-			}
-			if role == dispatch.RoleArbiter {
-				for _, required := range []string{
-					"retain full descriptions for comparison of scope and success criteria",
-					"Historical tasks do not qualify as existing work for `duplicate_of`",
-					"operator decision procedure when the all-reject rules prevent a permitted verdict",
-				} {
-					if !strings.Contains(prose, required) {
-						t.Errorf("The Arbiter %s omits %q", surface, required)
-					}
-				}
-			}
-		}
-	}
-}
-
 // Every pipeline role runs against exactly one Project: the proposer seeds
 // the run's Project and no "seeding scope", and the Arbiter's promotion duty
 // and board are of this Project.
@@ -377,21 +315,6 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 	for _, want := range []string{"Omit it to use the **Project** Identifier, or supply that exact identifier", "A rejected batch writes nothing"} {
 		if !strings.Contains(flat(proposeSkill.Body), want) {
 			t.Errorf("propose skill omits %q", want)
-		}
-	}
-
-	arbiter, err := directiveForRole(dispatch.RoleArbiter)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, want := range []string{
-		"the whole task proposal pool of this Project",
-		"An empty ready queue requires one promotion unless every rejection declares one permitted exception",
-		"the board of this Project outside your pool",
-		"Work in another Project is not on this board and cannot be cited",
-	} {
-		if !strings.Contains(flat(arbiter), want) {
-			t.Errorf("arbiter directive omits %q", want)
 		}
 	}
 
@@ -577,7 +500,16 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 			}, nil)
 			continue
 		}
-		if role == dispatch.RoleStrategist {
+		if role == dispatch.RoleArbiter {
+			requireAgentText(t, "arbiter dependency pointer", directive, []string{
+				"Review requires Project dependencies: Research dependencies.",
+			}, nil)
+			requireAgentText(t, "arbiter dependency procedure", roleSkillBody(t, role, "mc-arbiter"), []string{
+				"This run omits automatic dependency preparation.",
+				"Check retained dependencies against the current declarations and the selected image before use.",
+				"Apply the project-environment-setup skill within this role's command authority.",
+			}, nil)
+		} else if role == dispatch.RoleStrategist {
 			requireAgentText(t, "strategist dependency pointer", directive, []string{
 				"Before research uses Project dependencies, read the Research dependencies procedure in the mc-strategist skill.",
 			}, nil)
@@ -601,18 +533,10 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 					t.Errorf("The %s directive omits %q.", role, required)
 				}
 			}
-			if role == dispatch.RoleArbiter {
-				if !strings.Contains(directive, "omits automatic dependency preparation") {
-					t.Errorf("The %s directive omits its preparation exemption.", role)
-				}
-			} else if !strings.Contains(directive, "The runner prepares workspace dependencies before the agent starts") {
+			if !strings.Contains(directive, "The runner prepares workspace dependencies before the agent starts") {
 				t.Errorf("The %s directive omits dependency preparation.", role)
 			}
-			if role == dispatch.RoleArbiter {
-				if !strings.Contains(directive, "fresh committed projection") {
-					t.Errorf("The %s directive omits its committed projection.", role)
-				}
-			} else if !strings.Contains(directive, "fresh source workspace") {
+			if !strings.Contains(directive, "fresh source workspace") {
 				t.Errorf("The %s directive omits its fresh source workspace.", role)
 			}
 		}
@@ -886,6 +810,8 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 			requireAgentText(t, "strategist customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in the mc-strategist skill."}, nil)
 		} else if role == dispatch.RoleVerifier {
 			requireAgentText(t, "verifier customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in mc-verifier."}, nil)
+		} else if role == dispatch.RoleArbiter {
+			requireAgentText(t, "arbiter customization pointer", directive, []string{"For a contract conflict, read Project role customization in the mc-arbiter skill."}, nil)
 		} else if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
 			t.Errorf("the %s directive omits the customization conflict", role)
 		}
