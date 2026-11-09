@@ -5,8 +5,10 @@ package main
 import (
 	"fmt"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
+	"unicode"
 
 	operatorconfig "mc/config"
 	"mc/deployment"
@@ -14,52 +16,78 @@ import (
 	"mc/opencodecatalog"
 )
 
+// setupProviderSearch matches the provider search of the dashboard.
+var setupProviderSearch = onboarding.Search{
+	Label:      "Provider",
+	Hints:      []string{"Search by name, identifier, or address.", "Culler sends keys only to providers in its catalog."},
+	QueryHints: []string{"Leave the search empty for the current release integrations."},
+	Initial:    "Current release integrations.",
+	Find:       setupProviderChoices,
+	Empty:      onboarding.Correction{Title: "No provider found", Lines: []string{"Enter another name, identifier, or address."}},
+	Choose:     "Choose the provider",
+}
+
+// setupProviderChoices lists name matches before identifier matches and address matches.
 func setupProviderChoices(query string) []onboarding.Choice {
 	query = strings.ToLower(strings.TrimSpace(query))
-	choices := []onboarding.Choice{}
+	type match struct {
+		rank   int
+		choice onboarding.Choice
+	}
+	matches := []match{}
 	for _, provider := range deployment.AgentProviderCatalog() {
-		if query == "" && provider.Harness == "opencode" {
+		rank := setupProviderRank(provider, query)
+		if rank < 0 || query == "" && provider.Harness == "opencode" {
 			continue
 		}
-		if query != "" && !strings.Contains(strings.ToLower(provider.Name+" "+provider.CatalogEntry+" "+provider.Address), query) {
-			continue
-		}
-		choices = append(choices, onboarding.Choice{ID: provider.ID, Label: provider.Name, Detail: provider.Address + "\n" + provider.Website, AlwaysDetail: true})
+		matches = append(matches, match{rank, onboarding.Choice{ID: provider.ID, Label: provider.Name, Detail: provider.Address + "\n" + provider.Website, AlwaysDetail: true}})
+	}
+	slices.SortStableFunc(matches, func(a, b match) int { return a.rank - b.rank })
+	choices := []onboarding.Choice{}
+	for _, match := range matches {
+		choices = append(choices, match.choice)
 	}
 	return choices
 }
 
+// setupProviderRank returns -1 for a provider that does not match the query.
+// Each catalog identifier starts with "opencode:", so the search ignores that prefix.
+func setupProviderRank(provider deployment.AgentConnectionView, query string) int {
+	name := strings.ToLower(provider.Name)
+	words := strings.FieldsFunc(name, func(r rune) bool { return !unicode.IsLetter(r) && !unicode.IsNumber(r) })
+	switch {
+	case strings.HasPrefix(name, query):
+		return 0
+	case slices.ContainsFunc(words, func(word string) bool { return strings.HasPrefix(word, query) }):
+		return 1
+	case strings.Contains(name, query):
+		return 2
+	case strings.Contains(strings.ToLower(provider.CatalogEntry), query) || strings.Contains(strings.ToLower(strings.TrimPrefix(provider.ID, "opencode:")), query):
+		return 3
+	case strings.Contains(strings.ToLower(provider.Address), query):
+		return 4
+	}
+	return -1
+}
+
 func (w *setupWizard) openCodeProvider(choice *onboarding.AccessChoice) error {
-	for {
-		query, err := w.ask(onboarding.Prompt{Label: "Provider", Hints: []string{
-			"Search by name, identifier, or address.", "Culler sends keys only to providers in its catalog.",
-			"Leave the search empty for the current release integrations.",
-		}})
-		if err != nil {
-			return err
-		}
-		choices := setupProviderChoices(query)
-		if len(choices) == 0 {
-			w.ui.Panel("No provider found", []string{"Enter another name, identifier, or address."})
+	selected, err := w.search(setupProviderSearch)
+	if err != nil {
+		return err
+	}
+	for _, provider := range deployment.AgentProviderCatalog() {
+		if provider.ID != selected {
 			continue
 		}
-		selected, err := w.ui.Choose("Choose the provider", choices, 0)
-		if err != nil {
-			return err
+		choice.Template, choice.Harness = selected, provider.Harness
+		choice.Binding = selected
+		if provider.Harness == "opencode" {
+			choice.Binding = "opencode-" + provider.CatalogEntry
 		}
-		for _, provider := range deployment.AgentProviderCatalog() {
-			if provider.ID != selected {
-				continue
-			}
-			choice.Template, choice.Harness = selected, provider.Harness
-			choice.Binding = selected
-			if provider.Harness == "opencode" {
-				choice.Binding = "opencode-" + provider.CatalogEntry
-			}
-			choice.Step, choice.Model, choice.Effort = "key", "", ""
-			return nil
-		}
+		choice.Step, choice.Model, choice.Effort = "key", "", ""
+		return nil
 	}
+	return fmt.Errorf("The release catalog lacks this provider. Select another provider.")
 }
 
 func (w *setupWizard) openCodeModel(choice *onboarding.AccessChoice) error {
