@@ -86,3 +86,54 @@ func TestPublishedRestoreStopsWithoutOpeningTheDamagedDatabase(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestPublishedRestoreStartsThePreviousHelperBeforeServices(t *testing.T) {
+	old := publishedUpdateStopControl
+	t.Cleanup(func() { publishedUpdateStopControl = old })
+	var steps []string
+	publishedUpdateStopControl = func(string, func(context.Context, ...string) ([]byte, error)) deployment.UpdateStopControl {
+		return deployment.UpdateStopControl{Now: time.Now, Processes: func(context.Context) ([]deployment.UpdateProcess, error) { return nil, nil },
+			Services: func(context.Context, bool) error { return nil },
+			Wait:     func(_ context.Context, d time.Duration) error { time.Sleep(d); return nil },
+			Docker:   func(context.Context, ...string) ([]byte, error) { return nil, nil }}
+	}
+	for _, helperFails := range []bool{false, true} {
+		t.Run(map[bool]string{false: "helper starts", true: "helper fails"}[helperFails], func(t *testing.T) {
+			steps = nil
+			p := updateTransactionFixture(t, "prepare")
+			previous := *p.update.Previous
+			previous.Image = "ghcr.io/test/culler@sha256:" + strings.Repeat("b", 64)
+			p.update.Previous, p.installed = &previous, previous
+			p.docker = func(_ context.Context, args ...string) ([]byte, error) {
+				if args[len(args)-1] == "__update-reconcile" {
+					steps = append(steps, "stop")
+				}
+				return []byte(`{"runs":0,"executions":0,"sessions":0,"environments":0}`), nil
+			}
+			p.helper = func(home, image string) error {
+				steps = append(steps, "helper "+image)
+				if helperFails {
+					return errors.New("image absent")
+				}
+				return nil
+			}
+			p.restore = func(string, map[string]bool) error {
+				steps = append(steps, "services")
+				return errors.New("services stopped for the test")
+			}
+			err := p.restoreUpdate(context.Background())
+			want := "stop|helper " + previous.Image + "|services"
+			if helperFails {
+				want = "stop|helper " + previous.Image
+				if err == nil || !strings.Contains(err.Error(), "helper container") {
+					t.Fatalf("helper failure: %v", err)
+				}
+			} else if err == nil || !strings.Contains(err.Error(), "services stopped for the test") {
+				t.Fatalf("restore: %v", err)
+			}
+			if got := strings.Join(steps, "|"); got != want {
+				t.Fatalf("steps %q, want %q", got, want)
+			}
+		})
+	}
+}
