@@ -160,7 +160,7 @@ func TestRunBriefSubjectHoldsNoBoardState(t *testing.T) {
 	dvInsertTask(t, db, dvTask(1, dispatch.ScopeTask, dispatch.StatusSeeded, 2))
 	wantFacts := map[dispatch.Role][]string{
 		dispatch.RoleWorker:   {"Identifier", "Title"},
-		dispatch.RoleVerifier: {"Identifier", "Title", "Unsuccessful Verifier corrections"},
+		dispatch.RoleVerifier: {"Identifier", "Title"},
 		dispatch.RolePackager: {"Identifier", "Title", "Requirements version"},
 	}
 	for role, want := range wantFacts {

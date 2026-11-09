@@ -62,7 +62,8 @@ This alternative records the same decision, applies only to your task, and takes
 
 ### A task run failure
 
-Use one of these terminals for an execution condition that prevents completion:
+For an unavailable requirement, first apply Unavailable actions and checks.
+Use one of these terminals for another execution condition that prevents completion:
 
 - `mc run infra-failure <run_id> --condition <observed condition>`
 - `mc complete <task> --run <run_id> --infra --reason <observed condition>`
@@ -76,7 +77,7 @@ A **Correction from the Verifier** part supplies absolute Correction file and Ev
 Read both files with ordinary file reads; no mc verb returns their contents.
 The correction file supplies the complete objection for this run.
 Resolve its unmet criteria and task regressions, including regressions outside the acceptance criteria.
-Unchanged failures and unavailable host tests outside the criteria alone require no correction.
+Unchanged failures outside the criteria alone require no correction.
 If either file is missing or unreadable, use the task run failure terminal and identify the failed read.
 
 ## Case: merge repair
@@ -110,6 +111,26 @@ Use this terminal to retain incomplete work for another Worker run:
 
 The Task terminal repository checks also apply to checkpoints.
 A Checkpoint version fact means that your repository starts at that saved commit; continue the work there.
+
+## Unavailable actions and checks
+
+Use the project-environment-setup skill to assess each unavailable prerequisite.
+Preserve required behavior and test assertions.
+Continue independent work and checks that the container supports.
+Record actual command results and every skipped or unavailable check, including each `UNVERIFIED` entry, in the completion report.
+Keep unavailable checks unverified; dependency installation alone proves no dependent behavior.
+
+Select the action for each unavailable requirement:
+
+- Fix source, tests, Workspace dependencies, or setup script defects within the task's authority.
+- For a prerequisite that Image dependencies can supply, follow Project dependencies and submit a checkpoint.
+- For a criterion or new or changed test, use the operator decision terminal when every agent container lacks its capability.
+- Investigate an unclear cause before choosing a terminal; report an execution failure when it prevents further work.
+
+State the required capability, the affected requirement, and the evidence in an operator decision report.
+An unavailable host check outside the criteria requires no operator decision or task run failure by itself.
+This exception excludes new or changed tests, which must pass.
+Separate release and host acceptance requirements retain their authority.
 
 ## Project dependencies
 
