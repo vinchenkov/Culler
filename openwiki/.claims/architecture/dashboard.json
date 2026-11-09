@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a02f47c43f8514ee2231fb76b8afcfc1944d48d238bb35a0c8a11d0f0f2a8814",
+  "pageVersion": "sha256:5b58736e26f9b8848c4efebbe190f7410fa5600a004e8306a3a125a958403928",
   "claims": [
     {
       "id": "claim_92773894f36348b5bc17a0e35b0538f1",
@@ -925,12 +925,12 @@
       "statement": "Project and agent profile renders preserve focus, selection direction, and body scroll position.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:d7b89ffb0fc2b6fc23c8a4c93775168e916f719bc2c595fc530a54eae5a358c3"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L872-L902",
+          "version": "repo-lines-v1:sha256:74c36736a750ed1f6bb3391108f244787ad3e53b82a6b70020bdb68420bb3f20:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NmY5ZjhjOTczYTcwYmJhNDMwNDc2YjA4ODc2M2RkNzM2ZmJlMmFhY2I1ZTZlYjM1OWRlYWQyYmE4M2UxMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmYTE3YzRiMjkwYzczYmVmODZhZjllNzk0ODVhNDM2MGQ3MDU5ZGJjMDI2N2M1MTU2ZDBlZjVmMjdhYWU5M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI0YTVlNDEwNzUyY2UyYzQ2NDg4ODE3NTU2YzM2MmE1NTQxMjVlZGNjODk3MDRhOWVjZjUxOTI0N2ZhYmUyYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4ZjIxZGMzYzhjZjlhYzE5NGVmM2MwNzkyY2JhZTRkOWE0MWJjMDdiOTBkYmI0ODc2NzU3N2Q1ZWM3MmYxMzIifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/projects.js",
-          "version": "repo-file-v1:sha256:fa27a457d7f263f03fabc165b0266ceebf11537256e7a0bb98b0b4a1917af129"
+          "resource": "repo://dashboard/src/ui/projects.js#L119-L145",
+          "version": "repo-lines-v1:sha256:36b0b8e21ee44678397833470d95093fcbf3233d79376f934fb3994b81da5216:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NmY5ZjhjOTczYTcwYmJhNDMwNDc2YjA4ODc2M2RkNzM2ZmJlMmFhY2I1ZTZlYjM1OWRlYWQyYmE4M2UxMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MWQ0MjI2NTNjOTgwZWNmZGFlMzk0MmE4ZGJiYjI0NGRjZmJiNWUxODY0YTk1YjhjNzliY2M5OWYzMGY3M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlZTRiYmU3YWVlYTdjMDZhMjFhZTg2OTM5M2UwMDJkNzM2MjZlNGEzNGYyMGFiYmZjMzliZmNiYmFjOTNkNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyMmVkYzlmZjBiZTFhNDU2YjlkNTc1NWFiNmJlNGY5ZDJmY2U1NjEyM2Q4OGZkY2FjNzlmYjRhNTE3NjczZjEifQ"
         }
       ]
     },
@@ -1113,7 +1113,7 @@
       "statement": "The agent connection panel offers sign-in through the supported host integration templates.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L725-L780",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L738-L793",
           "version": "repo-lines-v1:sha256:cf668824ec80e52c0dd26814ae58dd32579253e0639200c7d0551446ad16b7f9:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjMTk0N2EzMTI5Yjc1ZTIwZjZjNDAwMDU1NGFiNzU4YmVlYzA3MDBkMWIxZGExMDc0MzI2MmFmMzFlMTY5ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2YzFjNGIwMGY2MjJjZDNmMzg4NmI2YjFmMTJmZDhjZjY5NTUxMTFiMzQwZjY4YjY4YWQ3NGM5YjJkMTJkNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmMDdiZjNlODg2MGRhNDgzNTExNWI1MTYwMjI5NDEzNjk2NDM1YTQwNTJjNTY1YmFhMjIwZTlhM2E0OWM3ZWYifQ"
         }
       ]
@@ -1123,8 +1123,8 @@
       "statement": "The browser excludes shared proposal task blocks from the issue count only with matching ownership and without a stall or allowance condition.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L301-L313",
-          "version": "repo-lines-v1:sha256:09321516f888a5b330c6e29dd33922217b366ffa7759c8dec095f836038f467f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4OTc1ODJiNDc4MTc0NGE4MzhlNzlhZWFlNDc5MzVlMjg2ZjY3NzI3ZDQ3NTRjM2VlOTRkNDk3MmJjMzI1ZmEifQ"
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L306-L317",
+          "version": "repo-lines-v1:sha256:9d2e3cebd72fd176575014731c27bcc67ce85dca01ea6ebe17c8f9671a61c8a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzI5YjJmMjBhMTViM2IyNzg5NzI0NTA4OTJmZDBlZmI5YjZmNDZkZDFiZjcwN2U0NDdjNTUzMWMwYzYyMzUifQ"
         }
       ]
     },
@@ -1151,7 +1151,7 @@
           "version": "repo-lines-v1:sha256:8ff8861d5b1c7f228cf438a5cf44afa768fadaef2d865ae0c39fd5f4c340156e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRiYWQ4ZDYxMjY1MjQxZDRmNTMzODEwYzBkYjZlYmYyOTRkZjMzOGQ3YWU4NDQxMmY1MTk4MjEzMjFmMjNjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5MGViNmNjZGIwZmVmY2MzYzlhODgzYzg3OWM5ODY2YmUzMzkzMWNhYWFiZjM2NjJkN2FjNGM0MTNlYzhiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTc2NDg2NGEzYWQ0ZDgyYjYwNjA1M2NmODYwMGIxNzhjNTg1ZDE3OTc5ZGZjMTRhOGU1ODY4Nzg5Njc5NTlmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ5NWQwNmQxMmY5ZjhlZWUzYzBjMDZhYmY0MDdjMTllZGZjYjc4M2E4MTZkYWQ3NGM0ZTFlNDdiMmNhZjQ2MSJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L315-L322",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L320-L327",
           "version": "repo-lines-v1:sha256:d9314c955c743e1fb41a2d33f2ca2de09c9ccc56c22764e962675ff7ce1ca0c9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDcxYTA1MzQ4M2ExOWI3MmMzOTYzZmM5YWIwZDA5MGVjNzFkZDJjNTg5YmJiYjcyYjdlYzBlZTFjYjFkMGFlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWRiMGY1YzA5N2NhNzU5ZmQ4MDA1OTA4MzRiNjNmMWM1NjNhMWYyZTk1NGNkZmZhMmZkYzA2NmNmNTkxYjZlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAzMWJkYmRhZWY2ZDViYzQ4ZGZiMzU4NmUzOTYzNWE5ZWY4YjI3ZWJkMGE4ODhjY2ExMDEzZjg5MmNmMWJjMyJ9"
         }
       ]
@@ -1495,19 +1495,19 @@
       "statement": "The profile editor offers model effort levels, clears draft effort when the model or connection changes, and displays effort in profile and assignment views.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L153-L159",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L166-L172",
           "version": "repo-lines-v1:sha256:efffed443b817b88ba7eece2d68f600185925fb58cfeeff2d6e36309fe73ffd3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJhMmNiMjVhMTIyYjQ0MjIxYTYyMzRlYzY2MGE3YjVmYjdmOWJkZTdiM2I5ZTJiM2M1NTlhMGQ5NmZhYzczOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWIwM2Y4NzNhZTBjZjEwNzE1NTdmMGY3ZjZiZTExMzljMWYwNjE4MTNjYzUzODdlZDBhOGJjMmVmNWExZWNkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDE2MGU5MWZkMDhjMzA1MjQ3YjIxOWE4MDhmYjE0Y2IxY2Y3YmU1MTQ2ODRjNzJiYzEwYTIyMDI0ODJiMWU5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWRiYjE4MmUyNTM5ZjEyMjc5OGJkNTg0NTcxMzZkZjdiYTcwYjJkM2FjMzkwZDZmMDM3NDgyOGUyOGE1ODFjMyJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L478-L544",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L491-L557",
           "version": "repo-lines-v1:sha256:cafebb06cf03d0d0e74e07758150dec989ebd1e3a14fe3abd1cd0e158e9a00ce:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5YTFhOGY4ZmRjYzY0ZjlmOTFjMjYzMjgzOGJhM2UxZGFjMjQ2ZTEwNDMxNzJlYzQ3ZWNmN2ZiNDcwZWUxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjNTk0OTQzNmU1OTFlYmE1MjI0ZGY5MzAxNWJmM2IzM2JhYzNkMjdhMDJmMDAzYTU5NzNmMTY4ODBjNjdhMzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjYzA2MDAwNzRiN2ZkNGY0YzJlZjZjYTM3ZGI2M2ZkYmI1YWY3N2M0NGRhZTM2NTY3NDU3M2FlNmI4OWFlMDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyMTc0MzZhOGNmMzA0Yjg2ODQxMDFjMDVhYWRhZGQ0OTRmNDdmMDNlMTM2NzY1YzUxMTM3MTU1NmRmMDRhOTQifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L627-L640",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L640-L653",
           "version": "repo-lines-v1:sha256:13466e29793e99f93c61df4e4f6c0db9e648180e5491bc9d6c2c8def2456019b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2E4OTJiN2NiY2YwOTAwNzk2MDk2YmVkNmMwNmE0MDg2MTI4MTdiNjA1MzdiMjRkZTBkNjM1YjAzYzc4NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmZkYTljODNlMzQzZDRhNTg4NjcyNzFiNDU2NDY4MmRiYTJjYTVjOGVhMmE1NzNhYTVmYTQyYmQ0YjIyZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2Njk4ZjFjODBjZmNlOTRmNTczNjUxMDBhMTdiNzI1MDZjNjUxNzcxMDhhOGM4ZGU4MWQyM2JjZjc0YTdiODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzODFiNGM5NmY3NTc1NDMxMDA3Zjc0MDUzNzA3OTQxZjBiMjQ0ZDlkZTA0NzI0MjYzMGE0OGFmNTZiZGFjYzcifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L70-L75",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L83-L88",
           "version": "repo-lines-v1:sha256:d903c21e4bfc3daf7a18bd0510dd9a5c5d3e8de152356d3d536c969198b11872:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzAzYjYwYzExZTczY2U0NWM4YTNkYmRjZjY2YTJmMjUwZDIzZGM5N2U1OTk5MDBiY2Q1OTJhYTEyMmU4ZDQ3MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzMwYWRjMTE4ODIwNzMwMmJlZmNmNzNiY2VkYmRjY2YzMzU4OWYxYmJiY2VmYzJkMDMyMzYxMDNiYTZiYzg1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDg1NmQwODkwMzRmYTM0MmMzNjM4YmMwZjcyN2JjNzlhOWEwYTNhMzQ0YjRjZjhlODM0ZTQyMmE5ODJmYWJhNyJ9"
         }
       ]
@@ -1517,11 +1517,11 @@
       "statement": "The profile editor labels model effort support and requires an available effort before a model test.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L181-L190",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L194-L203",
           "version": "repo-lines-v1:sha256:fa1f4180cc21c262b977fe19b96f579144c452931462ab7e7109a78c8de7c53a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwNGVhZDhiNjc5ZGZlMWMyNGY4NzQzMDAzMjNlNzhlODBhOTQ3ZDc3OTY3OThlZTU4YTNhZThmMjdlOGI2ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4Nzc4MWE0MDdmYjQ0YTEwODExMDQwOTI1NDk5ZmIyNGRlODI4MDAyZDVmMTJlMWNiZGVhMmY0MDA4ZGFmNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2OGY4NzA5MjU2NTM0OWZhZWIyNmQxYzU2ODdjYmVkMmMxNzBiZmM2ZDU4YjFlMjlkZWQ1ZjY3OWY0MGVmNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhZTNkMWJiYTY5YWVmNmY1MTU2NzE0YzNiMjQyMGMyMmFhNDM3MTA5ODM0OWVjODYzZmEyYTA0MDQ5NTVhNWMifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L627-L640",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L640-L653",
           "version": "repo-lines-v1:sha256:13466e29793e99f93c61df4e4f6c0db9e648180e5491bc9d6c2c8def2456019b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2E4OTJiN2NiY2YwOTAwNzk2MDk2YmVkNmMwNmE0MDg2MTI4MTdiNjA1MzdiMjRkZTBkNjM1YjAzYzc4NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmZkYTljODNlMzQzZDRhNTg4NjcyNzFiNDU2NDY4MmRiYTJjYTVjOGVhMmE1NzNhYTVmYTQyYmQ0YjIyZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2Njk4ZjFjODBjZmNlOTRmNTczNjUxMDBhMTdiNzI1MDZjNjUxNzcxMDhhOGM4ZGU4MWQyM2JjZjc0YTdiODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzODFiNGM5NmY3NTc1NDMxMDA3Zjc0MDUzNzA3OTQxZjBiMjQ0ZDlkZTA0NzI0MjYzMGE0OGFmNTZiZGFjYzcifQ"
         }
       ]
@@ -1531,7 +1531,7 @@
       "statement": "The role assignment dialog offers an Edit action for each enabled profile.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L510-L552",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L523-L565",
           "version": "repo-lines-v1:sha256:2917b29a1ab1a047552f09c9df792a786c26d902fa3aeb770ecdb59d8446b962:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNWJjMDI0YzQ4YzVhNjZlMjQ4NTUyZjE2M2Y2ZTE4OWIxZWQzNDc0MGMwOTA3MWEzYjA1Nzg1MjQ1YmY1M2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NDdiZTUwZDhlYjUzM2ZmMTlmNzU3MWJjOGUwNjk4ZWZiMzEyOTE2ZTY2MWZmNGYyZDViZTlmYWNjM2QyNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkY2U0ZThhMzI4MGNhMWIzNTg1NGY3YTg5MjQzNjEwNjJkNTQwNGJjYjIzM2E2ODY3NTNhMmM4Y2M2NjY2ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWRhZThhMGU4NjFiODU3ZDc0ZDNiMGQ0MGE2ZDVmYjEyMGFkNDNlZDIwN2JjNTg2OGEwZTEyZDY5ZGU0NjAifQ"
         }
       ]
@@ -1561,11 +1561,11 @@
       "statement": "Connection conditions show the profile name and retain the profile identifier in diagnostic facts.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L263-L272",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L268-L277",
           "version": "repo-lines-v1:sha256:5778880e119e347265427f552241e47628c4b5764d4b915e07b80e26c411d4d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkZjBhOTdlNTc0NDU2YTY5YzhhMDc5MzFjZDhhZWM5YjZjZThhZDA2MGM5MzZmMTZkYWVkYjIwMzhlOTI1NmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2YzdmNjg4YzE1MGI0MGJhODhjZjk4YWEyZDZhYzU1OGMyOTg2NjAwYmMwY2FlZDQ1OWY1MmExNTIxNWE5OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczOTM3MzExZGY2YTA3NDRiNjc4YTNiNWU4MDRiNmU2NWY5NzljZDU3NTEwOTcxMzQ0MzYwZjVjZTBhNTI3NDMifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L407-L411",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L412-L416",
           "version": "repo-lines-v1:sha256:c83af1ab3f36696054baa2df2416c63f71d2081f60eb7341a3fa0dbb5e16e81a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJiYWE1ZmM2N2ZiN2VmZWQ1ZThiMGExNzk5MzQ3YzFjZDk5ZWM0Y2E1ZDBjNzQ0M2NkOTBhYmJiNGU4ZmRhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGRiN2FmNzY3ZjM0ODkxYjI0MWUzZGU1NGNkZjA5NDUzM2VlMzUwNTljODUzMGYxOWQyMjI2NmNmNGE4NTE3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTgyZGI5NTY5NWIzYzk3MDRjOTQ3MzYxYzI1ZjY1MmRjYjE0ODFhNzM0MTE1OWVlMmRkNmYyMDBjOThhY2M4NCJ9"
         }
       ]
@@ -1593,10 +1593,48 @@
           "version": "repo-lines-v1:sha256:0b9d99db62595365bc12c7bc01648f20ba13cdc2b483ffea0c56e49913d44cbf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0ODZhZjVmNGZjODAxNjEzNzQ3YTM5MDU0NGJhYTMyYzA2ODI3NzUyMjMwOTlmYWJlMDUxYzllM2JiYWZhZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4YmQxNTE1MWM5ZTQ4ODE2ZTI2MDlmNzcyYzQyNDFkNzFmMDBkNGEwYjE2YTk0MzJjNDVhOWI0MWUyZTExY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmNGYyZGJlNTliN2MwYWI1OWRlMmFiZTIyMjY0MTM3ZmI4YWRlMTA5Mzg5MDE4OTM2NjExOWVmN2VlOTY3NDIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_4fbb3516508542d4be2244a92647c4e1",
+      "statement": "System health excludes unused connection conditions from issues and groups unused connections separately from connections that require attention.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L181-L195",
+          "version": "repo-lines-v1:sha256:d61e7e51e393ea68d0980117465f0c4155f25b885bf042bccac6d9de8e706b1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYWMyODhjNDI5YjA0NjU3OTBiNWEyNmVjNDY5ODk3MGFkMTcxNzZiODE1MmM2NGJkYzlmNWMyYmMwNTRlOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZTFkOWFjZThkM2RmM2ZkYTI3NmRiMWE5NTRhOWFjYzBlYjM3MTk5ZGM3Y2QzYjAwZjRjNmE3MzNmMmU5NzgifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L306-L317",
+          "version": "repo-lines-v1:sha256:9d2e3cebd72fd176575014731c27bcc67ce85dca01ea6ebe17c8f9671a61c8a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzI5YjJmMjBhMTViM2IyNzg5NzI0NTA4OTJmZDBlZmI5YjZmNDZkZDFiZjcwN2U0NDdjNTUzMWMwYzYyMzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e58bf2cf554e4e118dae39fb1e93e3c1",
+      "statement": "Provider search ranks name matches before identifier and address matches and excludes the common opencode prefix from identifier matches.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L63-L82",
+          "version": "repo-lines-v1:sha256:2defa149f079c2a346206dd52219f6cd14caa44a20d408fae1b4eda41e508e99:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3M2E2MDBkMjMzZjJmNWNkMGJlMzJlMzMyOTI1ZGRhZTUzZjY2MDk2Nzc3N2Y4NTUxYjYzODhlMDVjNWY4ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2MTIwM2UyMzU5Mzg2ZDhmNDlhZjZlOTk2MGRhYjI2ZmYyODAwYTAwNDgyMjZkMGZiMTkyZDRiZjg4YmRlZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxYmMxZWU2ZWQ0YzgxOTliNDQ2MjZjN2YwYmVmMTJjMDVhMzM2NWZlOTFlYjBjNDEwNjFjN2VlMTIyNzZmNDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_23bb15644bb54c8eb77f686b4b97e780",
+      "statement": "A successful setup test records connection and profile verification for system status.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/systemstatus.go#L543-L585",
+          "version": "repo-lines-v1:sha256:2dec6f1f35ce1710078a55c0817829de2f1163863b6e0bac18fda3c3095473d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmNmODEyMjg5MDA3Zjk5NTI2MjNkMGI4Nzk1ZjliZjU3MDM5NTZiMWI3NjE1NzVjMzE0YjhmOTIzZDMxZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMTQ5MmU5MTFlMGFmMjljZGYyM2VjNWM2Mzk3Mjg5MThiNTFmODFmYzIxZjAwM2Q1NTgwNjU0NDEwYjgxNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNzcwYTg2MGNmOGFkMjVhMzdjNTM0NzdiYmJkYTNlYzFmYjlhZjE3YTc4YTUxYTcxZWQ3MjNkM2YyZTZhODIifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/systemstatus_setup_test.go#L74-L95",
+          "version": "repo-lines-v1:sha256:64252e9b02d95efbe5796aad4577851c76220a201f7a65abcd4e7b178e8121ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTczNTg4ZDcxMTUzZDE4MTFkOGI1ZWZlMDEyZjVmZDI3Yzc1ZGUwY2FjMDZmZGIwNDBlNzE5ZDgxYmUyN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjOGQ4ODk1YTA5NmY1NTQ0NGRhYjg3ODllNzE4NGY0Zjg1NmE1YTg1N2YwNjgwYWJmMDY1ZDNmZTRiOTMxYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-09T23:41:46.402Z"
   }
 }

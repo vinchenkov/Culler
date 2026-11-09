@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1ed5d85601d69e4ca67d4a66e242a8174c511955e6ba1876df89109dfd27e0b9",
+  "pageVersion": "sha256:97187a78aa4ae230208fa2380e0d142a7c3da10860222dfc7001964df34e2d97",
   "claims": [
     {
       "id": "claim_aee9aadca2bf4c71862803d812043b81",
@@ -195,8 +195,8 @@
       "statement": "A failed published OpenCode download preserves the connection and key for retry.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L433-L445",
-          "version": "repo-lines-v1:sha256:3701545024664156a188ec0ef273c0619cce4e7bbd57e588476ca181966f3641:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2MzdmMzhkMzlmOGVmOGFkOWNiYzI3ZTExMjc3OGVkN2U5OTg3NTQxZjlhMDYxODNhODk4NDFkNTJmOTNmOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzM2Y3ZjI0NzNlNTJiNThmZDBiNTRjZjVlNzU1ZTJkMWI2MGU1YjY5NWJkMmE1MTI0OGUyZWNjZTIzMGNkMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhY2RjMTIyNzE0ODZjYjIzMzBkMTE1YWVmOWE5MGI2MjNlZmFhZDljNWZiOTFiYjI1YmJlZTZkMmIxMzA4NDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiYzFjMzg1YzhjMGFiYWU0MGIyZWE3N2E5NDFmNDE3ZDJjNzM2NDg3MTY2NTNlYmNjMDU5ZGJkMjU5MGVhY2MifQ"
+          "resource": "repo://INSTALL.md#L441-L444",
+          "version": "repo-lines-v1:sha256:8bc64f3627909286f4daba35e6ae4758879a0ed3e668e2b05fc5b41af5f7c2ec:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQ3N2I2YTMwNzg1NzBjMzQ0NWRjYjlmYzRiNzFhZmM3ZTBmYzFlODBhNmFkOTM4MWQ2ZTQ1M2Y1N2Q5MDdkMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQ3NDVlODViMTJlZTViYjVhZmIxZGUxMDg5YWE1YTI5MTM1NTY4ZGFhODkxNTkyMWE2ZDQyNjU2YjUxYjcyNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmU2OTVlMGViZTQ2MzMyNmVkMDZlOWI4YzRhNGYzMzViNTQ4NjFkZDgwMjk1MzY4ZmQ2NzU2MmJmNTVjYWFiZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGVkMGYzNWM0NDE4MmE4N2U2MjlmZmRjNjhkNTg2MzE4ZmFjMjQ1YTI3MWY4N2FlNzNmMmMyNzRiNWU1NzY0YiJ9"
         }
       ]
     },
@@ -219,7 +219,7 @@
       "statement": "System conditions show the configured profile name with a model fallback, and preserve active attempts referenced by a timeout diagnostic across revision changes.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L263-L267",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L268-L272",
           "version": "repo-lines-v1:sha256:2b77ede314f0da09e0096a3d1fb9ed407e55877b6c37d043fd0a47b584d487f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2RmMGE5N2U1NzQ0NTZhNjljOGEwNzkzMWNkOGFlYzliNmNlOGFkMDYwYzkzNmYxNmRhZWRiMjAzOGU5MjU2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWEzYWQ2OTA3ZGI2ODIzOTYwMGUwZTNjMzY3ODhjNjMxOWQ2NmUxNGY3YTFjMzEwNzRhZTY4YTc2ZDYxMjVkNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjZjN2Y2ODhjMTUwYjQwYmE4OGNmOThhYTJkNmFjNTU4YzI5ODY2MDBiYzBjYWVkNDU5ZjUyYTE1MjE1YTk5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWMxMTQ1ZDg0MWQ0ZDViODhlYTYyYjM0MGViZjNiYjQ0ZjVkMWM0NmI0NWJiZWFmOTZhODA5MTY0NzEyYjNjMSJ9"
         },
         {
@@ -247,7 +247,7 @@
           "version": "repo-lines-v1:sha256:eecc1f805da4d8ebf7fc7eb94e1e1e645c6df3cc4b79c788f6de5ebe594cba5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3Mjg2Y2IwZmY5M2RhODJmMDRlYzYxY2E1MDRjOGFhMDQ5NTdjM2JjYTc5YzFjZTI4YTFiYWQ3NDMzZjhhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzY0N2QwNjEwNWE2MDJhYzg2ZmNlMmRjMDI4ZWE4NTYzYjAxOGUzNjhlOGQ1NmNmZDM5Zjc3ZDg1MjMyNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDk1MGMxYjc5NDQ1MDY2YjQyY2EyNTMxMjRhMGRjZDQzZWQ1ZTEwMDQ2MWE2ZDE2MWYwYzYxZjgxYjFlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzY2ZTg4NWM5YmI4ZWUxMWMwMGUzZTJkMDk0NWQ2MTc4OWVhZjlkZjEwMmI5MjlkYWMyZGNjODE3ZDI1MTIifQ"
         },
         {
-          "resource": "repo://INSTALL.md#L447-L451",
+          "resource": "repo://INSTALL.md#L449-L453",
           "version": "repo-lines-v1:sha256:64c920e40afbfe228be4916eef3d2e3b090975cda300536443fe426681659a90:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQ2OTdhMDA2Y2ZhZmU0MDg5ZWMzNzIwYjk1M2ZmZmM0ZGRhMjZhZTFkMTRjNGZiNzhlOTRmZmYxZmFiM2YzMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJmNDNmM2Q3NTE1YTUyOTZhYjIyZjg0OGZhNzExNzZmZDQ2Nzk1ZDhmNmNmMDQzZTVkYjdjNTIzZjEyYWM2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDhhM2NiNTRiOGUyNDU5ZjE5NGZkNmQ5NjkwYTVkZTA3MzQ2OWUzODljZmVlZmM1YTUwYmJhNzc2YTdhM2Y2MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         },
         {
@@ -265,10 +265,92 @@
           "version": "repo-lines-v1:sha256:7e5cc524adce6e7a5da1392117cbfa6f52346615f44b82582894e25215539dff:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMTc0MmU4MjZkYzE0NmJlNTZjNjA0N2JhYTY4ZmMwYjQ3ODM0ZjMwYzJjN2Q3NmQzZmU1ZTg3YTAzMDdhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzllNDM0YmI4MTQ4N2IxYWM2YzgyOWE1ZGQ2OGQyODkwN2FkODg5OWIwMmRlNmJkYjI5MGU1YTRmNGYzZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZDkzMWFiYTNlYzExNTU5ODZjMTYwNDMyZDg1YzBjNDViZmE4ZGJhZTQwMjRjMWEzZDVjZWZhOWY2NWE0MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNWM2MTQ5ODQ3MTE3ZDQ2MTBhMzQzMTQ1N2MxOGE1NDE2Y2JmNGUwMWQ5ZTgwMzQ2YWNhZTAzNTQ1NjRkM2QifQ"
         }
       ]
+    },
+    {
+      "id": "claim_c42adf7c98864947b4b5f2d88b85757e",
+      "statement": "Setup removes unused connections it created that never passed a test, while preserving the selected connection and connections used by profiles or roles.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L204-L272",
+          "version": "repo-lines-v1:sha256:ad4203217b372d57b90b3c75ce65b86fa5bdb3fe13efaddbcd7756f4a78f2fcf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNTA4ZTM5ZTVkOTNjYjBlYjUzMzEyN2YzMDBhYWYxNWU3YzVhYTUwNjgzMTc0ZDE5YTY2ZTlhODkwNGVmYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlYmQwNGEzOWQ5OGQwY2FlMjhhYjkxMjBhMTQ1MGI3Nzk1ZTkyOGM5MTFhMGM1MzllYjVkYzk3OTQ0ZDRlZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWFjYzRjYzBjZmU1NmZhYTM1NTY3ODRjODhlMGM2YTc0OWNhYTk1YzU5MWNkNGVlZjlmOWQ0OWYxMjRlMTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4fbb75ad9210491a830f4e1dea5fb693",
+      "statement": "A failed credential removal remains eligible for another cleanup attempt.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L219-L252",
+          "version": "repo-lines-v1:sha256:9f1b434ff8a8d8380ca0e1d84111d6536b500f2575a5251428e972909f5dd319:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyN2E0NjE4NDcyMmVkNmE1YWMzYjdmNzIyMzhhMWIyOWFkOWFmYWZkOGJlZTg2YjA0NDY3N2I4MDRhN2U4YjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZGRjMDJhMDVhOGQwNDAzZWNjMDUzMTM2MzhmYjFlYjE2YWQ0ZjRlZTNlMGU5MWE2YjhiNjcxZWI0N2UwZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyMGFmNjVjNTg3NmU0N2RlNWY1NzQ4YTYzYTQ5OTQwZTI1NjFmZDg2NzE3Njg1M2JlZWQ1YzRhMDQ0YTZiOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5MGVjNzI2Y2Y3NWRjZDVhNDBjOGMwNzUzYzg3OTg4YzBlOWJkOTIxOWY2NDg4YmUxM2E0NzEyY2EzYzhjMzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d990e5976aa4531893e6b3e477d1691",
+      "statement": "A successful setup test protects its connection before the result record, so a record failure preserves that connection.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L523-L554",
+          "version": "repo-lines-v1:sha256:a5ebd956325e39d641d57797dce81c6f358afa64375f2382cb388765a23d65ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwY2ZlNjgxNjliZTM1NjBlN2ZiM2VkYzlhMDlhNWZhZGJmOThjYmM1NjZjMmY2MTAxZTYzY2I1ZjY3MzA5ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkMzQ1N2YzNDg4Y2Q2YTM3NjEwMTM4NWEwMzc3OTY5OTVkZjY5MzVlOWNjOTZlNzYxZGYwNjI1MGYwNmEzZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjN2ZhZmY3NWI1Yzg0Mjc2NTNkMmU2Yzk5MjBjMDNjMTFiYzlkODhhYzMzYjJmYTE5MWU5MDRmZDdmMDlkMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzOWJjYTkxZjljMzQ5ZWIwMjY1NzdlMGEzNTMwZGE5NzBmNGY1N2QwMGYwZWFkMjZlMDI0YzdhZDZlNGQwYjYifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_untested_connections_prod_test.go#L186-L219",
+          "version": "repo-lines-v1:sha256:29ec661740c41cf4fd5709c034b997605ee28a2a61b3d0272ee9b5efaf549339:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwNzljYmZjNjE5NjU3YmU3ZmY2ZTZmY2JhOWQyYjA1YjMyNTg3MTA2N2I0MzMyN2E4NTMyY2I2NzE0MWRhNzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_935abf8de8ea413db2a5159c029c6aa8",
+      "statement": "Setup records verification for the current authorization and model profile revision; sign-in also verifies token refresh.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/systemstatus.go#L543-L585",
+          "version": "repo-lines-v1:sha256:2dec6f1f35ce1710078a55c0817829de2f1163863b6e0bac18fda3c3095473d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmNmODEyMjg5MDA3Zjk5NTI2MjNkMGI4Nzk1ZjliZjU3MDM5NTZiMWI3NjE1NzVjMzE0YjhmOTIzZDMxZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMTQ5MmU5MTFlMGFmMjljZGYyM2VjNWM2Mzk3Mjg5MThiNTFmODFmYzIxZjAwM2Q1NTgwNjU0NDEwYjgxNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNzcwYTg2MGNmOGFkMjVhMzdjNTM0NzdiYmJkYTNlYzFmYjlhZjE3YTc4YTUxYTcxZWQ3MjNkM2YyZTZhODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d28ad80883c848cf8e2665982a1b2fa8",
+      "statement": "Terminal provider search updates matches after each key, shows four matches per page, and shows details for the selected provider.",
+      "evidence": [
+        {
+          "resource": "repo://mc/onboarding/terminal_search.go#L138-L176",
+          "version": "repo-lines-v1:sha256:a146622ef28729082b4f6de0a6654de2ddbb595a70df1ce514c976bba7cd815e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2MjJmM2E3ZWNjZTYyYzZjMzJmOTNkOWRiNjQzODE3MTU2YzBiNDNjMWZiODUwZjY2NWVjMzNkMDEyNzIyNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/onboarding/terminal_search.go#L27-L115",
+          "version": "repo-lines-v1:sha256:63894472a4d9c43d2b2cd58541a2891c75b7ba636dcd7274e0d63d5499c9b77e:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MGZhOTVhYTNlOGE5ZWYyN2UwOGQxYmMxMWNmNmU5MjE4ZjFmZjE2NTY4YTFhY2E4ZWNjYTk2OTFmMDFmZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyOTYwYWMwNTgyOTRmYjUzOTk3ZDUwMmE0Zjg3YTBlNTZmNTk0NDBiMThkMDAxNTdkNDkwOTMzOWY3OGIyZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4NmM4MjA2YWU1MDZhNTliODI3ZGU1YmU0ZjIzNjcyZjc0MzAwOGQzZTgwY2JiMDQ4ZGNlYjQwNWI1ZWRkOWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_77134b03043946d0a4a7f1e041096f8a",
+      "statement": "Terminal and dashboard provider searches rank name matches before identifier and address matches and exclude the common opencode prefix.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L63-L82",
+          "version": "repo-lines-v1:sha256:2defa149f079c2a346206dd52219f6cd14caa44a20d408fae1b4eda41e508e99:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3M2E2MDBkMjMzZjJmNWNkMGJlMzJlMzMyOTI1ZGRhZTUzZjY2MDk2Nzc3N2Y4NTUxYjYzODhlMDVjNWY4ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2MTIwM2UyMzU5Mzg2ZDhmNDlhZjZlOTk2MGRhYjI2ZmYyODAwYTAwNDgyMjZkMGZiMTkyZDRiZjg4YmRlZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUxYmMxZWU2ZWQ0YzgxOTliNDQ2MjZjN2YwYmVmMTJjMDVhMzM2NWZlOTFlYjBjNDEwNjFjN2VlMTIyNzZmNDQifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_opencode_prod.go#L30-L72",
+          "version": "repo-lines-v1:sha256:3e2d63222f68bcba5efb7dba5469639fce3d5406709ab222beeb29605a05148d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0ODU1NzEwMjY0OWIyMmVkMTA0NzFmM2EwMDFhNTg4NjEyYTIxMWM3NmQ5NTdiZjc4NTk3NjgzNTA2ZTlhNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4OTQ4ODhlMTg1YzQxOGI5Mzg2N2U4ZGE0ZTk3OWU2NjczYTRmYjVkYjUwZGZjZGI4MDQyYTRiOGRlOWEzMmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllZTZiOTFmZWYwYWQzOTBlMDE1Y2Y3MzFmZjM3YWNjNWIxNTRmOWVjMzlkMDRmYjJhOGQ2YzBhNjA4YzEzODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b6bcb3b546b40a09b7875327855a8db",
+      "statement": "A terminal without screen controls asks for a search query and then presents matching choices.",
+      "evidence": [
+        {
+          "resource": "repo://mc/onboarding/terminal_search.go#L119-L136",
+          "version": "repo-lines-v1:sha256:4024e49ee8258c1230a6df9e1c7be7d88ba09691b3c7b886491990e494a52477:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYWE0ZTA1NWFjYWVlMjQxN2NiNDZmYjJjNTA3NjFlYjRjZWY1ZWMwYjM0Y2E3YTZhMjZiYTNkZDc1M2IwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4NmM4MjA2YWU1MDZhNTliODI3ZGU1YmU0ZjIzNjcyZjc0MzAwOGQzZTgwY2JiMDQ4ZGNlYjQwNWI1ZWRkOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ZmM1NmUzOWRlNjQ0ZWM0NDdhZDM2NWYxMTI1YTM5NTBmMTA1MTM3NzZkMDU5NWM3OGFkMzEzNDc3ZGIyMjkifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-08T02:41:27.984Z"
+    "at": "2026-11-09T23:41:46.402Z"
   }
 }

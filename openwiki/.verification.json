@@ -2,9 +2,9 @@
   "format": 1,
   "pages": {
     "/openwiki/architecture/dashboard.md": {
-      "pageVersion": "sha256:a02f47c43f8514ee2231fb76b8afcfc1944d48d238bb35a0c8a11d0f0f2a8814",
-      "claimsVersion": "sha256:b8eda14c0c3f8127c65c2e9f32fa996dfccacff0c6ea11b25e88d1c3423402ae",
-      "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
+      "pageVersion": "sha256:5b58736e26f9b8848c4efebbe190f7410fa5600a004e8306a3a125a958403928",
+      "claimsVersion": "sha256:b370196351cfcd729f72e24fa9764fc7d7d0e088293dd3d222967be404968030",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/architecture/mc-cli-and-verb-scope.md": {
       "pageVersion": "sha256:92e01cb51fd59d5a2fc64b7dd3d3a51d21c8514746a7df38eb4032f844562a86",
@@ -32,9 +32,9 @@
       "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
     },
     "/openwiki/concepts/agent-input.md": {
-      "pageVersion": "sha256:04483b9a19a3126a4989e12e937c080aaece5f94ca03bd39f85b590f22f0e1fe",
-      "claimsVersion": "sha256:8676b5e3a56277b9a03b063903c00e923b101e900eb4f649daf8befa08214dcd",
-      "sourceFingerprint": "sha256:c5a39666e6d4195af01fff238dd890e32af573bb1b6318fdc279486372276fd9"
+      "pageVersion": "sha256:cf766702a158e3593b13e1fb7a3bd1deb0660a39a7fa4b5afcbd30e2f2295b16",
+      "claimsVersion": "sha256:b39d6f9d2f65a53f1a89018af1abf96d44a21d7242af22e8fc9bf5d0b6f827b8",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/concepts/collie.md": {
       "pageVersion": "sha256:b5fc551c976982f09a82ca42a28ff2ef65082ceda91ab07550e90fd05be128ff",
@@ -62,9 +62,9 @@
       "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
     },
     "/openwiki/operations/agent-connections.md": {
-      "pageVersion": "sha256:1ed5d85601d69e4ca67d4a66e242a8174c511955e6ba1876df89109dfd27e0b9",
-      "claimsVersion": "sha256:9f89640176c57974e7792a1a9c327e16bc92976d39d5cdf167e4a073a2b0215e",
-      "sourceFingerprint": "sha256:d186eb44ad4d9269d8fc82af79e93680ca26cd3f54c45e9ad84c2c22aa790ee0"
+      "pageVersion": "sha256:97187a78aa4ae230208fa2380e0d142a7c3da10860222dfc7001964df34e2d97",
+      "claimsVersion": "sha256:15306963b6b645ba40d154d3f4b76a44cbd8d2ebc19c44fad732fbc77492df08",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/operations/culler-lifecycle.md": {
       "pageVersion": "sha256:9e2152cfae54aed05e16897e6773b216397a6191b488fe19638e21650e166a59",
@@ -77,9 +77,9 @@
       "sourceFingerprint": "sha256:614adb3df26b6598e8261adffc66238a0a4820346e1d0f1b590742574e416fba"
     },
     "/openwiki/operations/install-and-deployment.md": {
-      "pageVersion": "sha256:a647b92cbce9b5423969373d71ba439fa6d16da09fc6d4280abb671f74ba3fb3",
-      "claimsVersion": "sha256:73de52929ebb7aa0424ecad8a3b745953ddcf8d6164d163ad668ee5e1bd52539",
-      "sourceFingerprint": "sha256:614adb3df26b6598e8261adffc66238a0a4820346e1d0f1b590742574e416fba"
+      "pageVersion": "sha256:36b9de17a1c659d49ab498430d6f3b5cad2dc5fa7b18d4f66c606e7aa158f34f",
+      "claimsVersion": "sha256:20e63949d85b4f0dd986d448f069e801e3d0cc2cfab742dfd022000ade6ebdc2",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/operations/release-security.md": {
       "pageVersion": "sha256:908d4587b2704f4ae9508a0f2444d27bea8ed6ecfa2c58cf306b9101d4558f06",
@@ -87,9 +87,9 @@
       "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
     },
     "/openwiki/tests/checks-and-test-lanes.md": {
-      "pageVersion": "sha256:77b15a2a457694dd8f164b4e331c2c9c5842d9015db65329262737b967b00fde",
-      "claimsVersion": "sha256:738ac521e91aafae273049ee42b590b739215f672dd50e11312728bd4d16647a",
-      "sourceFingerprint": "sha256:c5a39666e6d4195af01fff238dd890e32af573bb1b6318fdc279486372276fd9"
+      "pageVersion": "sha256:9c5c915908e4cd8d483bf113b0d753f12fb71c96d325cbbe76e819af3ff77218",
+      "claimsVersion": "sha256:f92ebceb577ff763dbb0f4a9a1a82e590cc3e0cbafcc260918ded83fae64ef10",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/tests/performance-and-evaluations.md": {
       "pageVersion": "sha256:e1f476d3e88b8bfff615de9343015625ac282b874b10c6593437fdafedc04ad7",
@@ -97,9 +97,9 @@
       "sourceFingerprint": "sha256:f55726b890ea58d25e2376ced750b3fe75369769c39d0a847c567efdd66b2400"
     },
     "/openwiki/workflows/decision-resolution.md": {
-      "pageVersion": "sha256:3cf15043859cbdead072d61729e9e3d7bfce60f64d0944889aaf2847604fac81",
-      "claimsVersion": "sha256:c20500b88075b4743bdcb4056e6fc2cd5de37c2b1418b554ff50b29c6d1afd85",
-      "sourceFingerprint": "sha256:1fbb7c2584d68f5abcdb77ba44df2267d9414746be9aee64f50ff215ed15a90d"
+      "pageVersion": "sha256:dfcef6bb6129e354f98b677a22e03b43a07207f9c7d582b7b1cf75f90b5121e9",
+      "claimsVersion": "sha256:bf1a270b2a70e8fce79ff4bf2e1fd8670bcc439bf47a275785b8d8ac5ff3f172",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/workflows/dispatch-and-tick-loop.md": {
       "pageVersion": "sha256:3a27e18e1457b19983006a2dd364e494f3139768de95659ca667d72bbd05f33b",
@@ -122,14 +122,14 @@
       "sourceFingerprint": "sha256:1fbb7c2584d68f5abcdb77ba44df2267d9414746be9aee64f50ff215ed15a90d"
     },
     "/openwiki/workflows/task-pipeline.md": {
-      "pageVersion": "sha256:586be33047175f95bb91970f157ccd0177a6870b35c4fb3012280bb6113608d8",
-      "claimsVersion": "sha256:78eb78436046f9edcf59b4584cf9b57d03160a275e8145a4f7a9f27294179e45",
-      "sourceFingerprint": "sha256:c5a39666e6d4195af01fff238dd890e32af573bb1b6318fdc279486372276fd9"
+      "pageVersion": "sha256:b9c27ab1a3b84adf93c7d8a93280aa3b45376baa5ba14aa02b5efd6f2a8a1724",
+      "claimsVersion": "sha256:7b0ab50595b60913c60cfc69731220ae50dccad7284cbb1555cf7f9456f0d744",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     },
     "/openwiki/quickstart.md": {
-      "pageVersion": "sha256:f5924ecaf101b9f04e9f61e6b148884879ba11010b35da6325637a1b2733a3e0",
-      "claimsVersion": "sha256:fefccc1b639b4066eea4de5c93df8bc677525a3a90c8c54921872921f13e6e43",
-      "sourceFingerprint": "sha256:c5a39666e6d4195af01fff238dd890e32af573bb1b6318fdc279486372276fd9"
+      "pageVersion": "sha256:5f091810db3b7cb99d30c88935a6133b9c6125c2808fbf7c533b96d2f1ab0a05",
+      "claimsVersion": "sha256:990f36eec77674680935096befe820959613d6e9c4d4d9e8af0e5b72c70509b7",
+      "sourceFingerprint": "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12"
     }
   },
   "sources": {
@@ -8435,7 +8435,7 @@
       "work/security-posture-2026-10-19/culler-security-posture.html": "sha256:8c663c2d4481005aa7f9a652a58dc4f00441528668620a18516921aaefae3795",
       "work/security-posture-2026-10-19/culler-security-research.html": "sha256:c41c35fd87dd1249f761f7f65694c7ee118f3c11e9435465dab6cc5a4ff5cea2"
     },
-    "sha256:c5a39666e6d4195af01fff238dd890e32af573bb1b6318fdc279486372276fd9": {
+    "sha256:745ad073486a0e39aec41d5d1ad752fbae175f7178a261613bd1b24626dc2f12": {
       ".claude/settings.local.json": "sha256:2574463153f9cc3f9ba500a9f8102edc329b0f9f26df26d71b631e562b987a6c",
       ".culler/Dockerfile": "sha256:7105f610b52d4cae0d269325ef94176a0deb9fbb11a32b7f1506b3f66c64321d",
       ".gitattributes": "sha256:4fe7b61d5d273e9b16a28389e292e3911fc6622ef230d157a975bf61b6cdfefa",
@@ -8450,10 +8450,10 @@
       ".tracking/task-dialog/evidence/REPORT.md": "sha256:0cd67a798653751c68f0d7597c12fb2cf12f05236e80a02bfb6c54502c80300f",
       ".tracking/task-dialog/evidence/dialog.verify.ts": "sha256:e032c8baed3fad8a2ac0388005732e15350926c8ee207144e8bacf96ed012f95",
       "AGENTS.md": "sha256:a55547e55fcc1d8ba00b251472aae3d9d8298d6945bdc3b71f1c4aa30a69f2ee",
-      "CHANGELOG.md": "sha256:1afb8854955af87cb824c2f8e20b14cdb9ab7959ca50e6fa937b969cb706cd4a",
+      "CHANGELOG.md": "sha256:df189a1a2260ac4df67445c2f6ab25400084a6d912098feb04671c1ec887d84f",
       "Dockerfile.culler-project": "sha256:ec393ee0adeb748e41f2b1d7d1974a9f126aac4f1ba4446d3be6f3ef24ef615f",
       "GIT-DELIVERY.md": "sha256:6cdd62554826a625e0e5f459bf06ade58212bdfc2616b339875722f2f299ae35",
-      "INSTALL.md": "sha256:b8bdd13fbd97af5fe8021b99092009290fea3eb163b692d4daae3f9572a8bc4d",
+      "INSTALL.md": "sha256:1b3c56fd7fe8c7d186df67ce654c6eabab0af8e02d1149f4cacd47a3570f1fc7",
       "SECURITY.md": "sha256:bea78c163c57620020d8e90ab6d77d4981935050f5ef3d6aea79649f044d3c02",
       "VERSION": "sha256:58191f427257c88b17c2dc326bfa2a4c0212e338b4ac86b2e39eb455fec9bab2",
       "VISION.md": "sha256:ed61a23b7d06242cefe19930e5aa934b249b533be5ca2ec4e7f1c3254fc16696",
@@ -8507,7 +8507,7 @@
       "dashboard/smoke/latency.smoke.test.ts": "sha256:1562f2f859f19a32bbd03fbef96126d458c9bfc3a18cab548edf12a16865c75e",
       "dashboard/smoke/layout-stability.smoke.test.ts": "sha256:fb4def3896f4927a5971d874b5b7a567c786a4c7947504c48804e6d151ede438",
       "dashboard/smoke/model-configuration-setup.smoke.test.ts": "sha256:9466aefa48898d79af09a5d020d72162664982db98ce93a75b28cc93bc602346",
-      "dashboard/smoke/model-configuration.smoke.test.ts": "sha256:b2ec36f06f145394d2a4fb13232b3c5a14bd8165665d8f128822e4dacd3fae2e",
+      "dashboard/smoke/model-configuration.smoke.test.ts": "sha256:3915608712d48ed697f2eff348a8761e37846cc3e088a7442ef8ad9cc3947071",
       "dashboard/smoke/notice-fold.smoke.test.ts": "sha256:6ed7b9ea0d11d587af73871d1868e5adf1363fed1f1ff7cbee39f2e1473fb189",
       "dashboard/smoke/packet-chat.smoke.test.ts": "sha256:7369ab8f12ddbee705f9d4fbab47aeb937b20fa774f7ca4cca0f01ffe125ba2f",
       "dashboard/smoke/packet-reader.smoke.test.ts": "sha256:8aaa600092a2446f5853f4b8ad336d8dcef81b0d9c9ef48ba30e3a3e911bb950",
@@ -8527,7 +8527,7 @@
       "dashboard/smoke/setup-file-viewer.smoke.test.ts": "sha256:a8c6844d6ac9f4cfce6bab3cc4f374408d277f72221833f3cf49a6459567a359",
       "dashboard/smoke/setup-journal-races.smoke.test.ts": "sha256:6d26c2ba18b276a1e0457d0d10fcee45648a5ff861dfadf7593a20f65023a067",
       "dashboard/smoke/setup-journal.smoke.test.ts": "sha256:49f327bb549954aeae8946a57710a2073717dbe1dffe26571b87388a55dc49d0",
-      "dashboard/smoke/system-health.smoke.test.ts": "sha256:628fb8613d966b8ae4e519490f24ea2117bf7b5a5a0871d7daed837e12e520f2",
+      "dashboard/smoke/system-health.smoke.test.ts": "sha256:6e5454ecfba408cde3792d509773a5700f8b58ac3bd1541b90f0647400535912",
       "dashboard/smoke/theme.smoke.test.ts": "sha256:4995d9f7ffd0442c5c74854c10b45ec1dc51645de6f914ca92efd98532ed2027",
       "dashboard/smoke/viewers.smoke.test.ts": "sha256:ccf2d2aabb7e16d25df531e041a267f8505a04b901d0e88bf507cc388efba60e",
       "dashboard/smoke/vision-model.smoke.test.ts": "sha256:672af2ce173d9010f376cec0eb04ba6a937db14631413d29b2332b119d4188e3",
@@ -8570,8 +8570,8 @@
       "dashboard/src/test-helpers.ts": "sha256:d854b0a1213e6593bf5903cf7be67449958d975bb5002c370dab514790b4521c",
       "dashboard/src/ui/activity.js": "sha256:bb4655a06041c3cbdd50ea6b16ba115d8bfa99e76c902ae9fda3f9ea820f60d8",
       "dashboard/src/ui/activity.test.ts": "sha256:9ecc6879f2f2f3528234e5d91f647581cd4953cbff8b9ccbb2eb6004a0fae4a1",
-      "dashboard/src/ui/agentprofiles.js": "sha256:0c789040de3e01e87f8bb06a5cecfbbb036f2edd326c8d9ce5d3260d566dd8d4",
-      "dashboard/src/ui/agentprofiles.test.ts": "sha256:ea746b39760bdbd2a95dab767d1b5cfe9d3eb70d3d5a87bed4285829cee798d9",
+      "dashboard/src/ui/agentprofiles.js": "sha256:db4086332b722608dc72a750094f0411cc04f9d667311daf9b58df68eca92de4",
+      "dashboard/src/ui/agentprofiles.test.ts": "sha256:bc9159bebaf6ab81326cc41ae5b391254fdfba13a379243bb5d167e3adf1f7c1",
       "dashboard/src/ui/app.js": "sha256:f826c2031ee5229a521038944063fee731c5a33539dcd47d700fca40acf52143",
       "dashboard/src/ui/board.js": "sha256:7887753a13858478d0f61ffe2cadce38e5063ad744d5fbb47b22c189dbb673e8",
       "dashboard/src/ui/board.test.ts": "sha256:bcf26526a1f5c233e8868b6bbf6b23984ded7f998f246b7f9182d2988ba789d7",
@@ -8696,8 +8696,8 @@
       "dashboard/src/ui/setup-journal.test.ts": "sha256:fa15ecab5073ade77e7f78f22310a29e6f8dfa0a98a176aab28295927bc4b804",
       "dashboard/src/ui/stages.js": "sha256:2b9d814493bcc51e5c7e3fbfc3d4dac10c368630352ec24248c58a387192840f",
       "dashboard/src/ui/style.css": "sha256:73935a898554c66409d8a17539d7405f088f4e05e8ba70f46aab5039d351d18f",
-      "dashboard/src/ui/systemhealth.js": "sha256:d07189ec98ef3bea987d164f3ca863efb8f51229a977e36a4ca9a0bbbd4aaed0",
-      "dashboard/src/ui/systemhealth.test.ts": "sha256:c9e7a51f80bbaa1b004aaafbc15ace94bc6bc0a82f6ddec49098653925c3a350",
+      "dashboard/src/ui/systemhealth.js": "sha256:9c5f29dba8de50b3775e3b76d7b565d82c3c1aad8faa2ae9d4a540a0a81bb56a",
+      "dashboard/src/ui/systemhealth.test.ts": "sha256:67b09df0fea948cfebb0732fc91bf9d9683b99f937151d867dc05822e35dbcf7",
       "dashboard/src/ui/taskdialog.js": "sha256:51a0fa78ced9046a7ddc850acf95347881574f5c437918162487272433847fdf",
       "dashboard/src/ui/taskdialog.test.ts": "sha256:59ebca8afffc794db204501b593476612989b5a6ee8858e95cc06fe1337897ae",
       "dashboard/src/ui/theme.js": "sha256:1b6516a1a38252c8058a251ecf05a237ec03959c7726ee302238e5e9a1ce3277",
@@ -9309,17 +9309,17 @@
       "mc/cmd/mc/runtime_scope_testfake.go": "sha256:ce5c49448a393b28063f4ffd6c2921a0fa96b7c0678b9629d6d0758ca9174d4e",
       "mc/cmd/mc/setup_agent_choices_prod_test.go": "sha256:8ddc8d6c985ece9eb7029a0359f4f695105f7ef2397dd03646e89876d499c7aa",
       "mc/cmd/mc/setup_agent_progress_prod_test.go": "sha256:23cb3c79cefe3b27d3a09c5c7cf7e6d4572b2b141492aefcff0456363ff3bd70",
-      "mc/cmd/mc/setup_agents_prod.go": "sha256:1e4c88baf628e57c41ee9534e782cd58e7723459e30eccb1cd00eccdef49f5ed",
+      "mc/cmd/mc/setup_agents_prod.go": "sha256:3d0d8694055c1bee9e4a5e6da6db382de2443c2fca59ef2aab6f82a1d8c9c0c6",
       "mc/cmd/mc/setup_agentsview_prod.go": "sha256:860172d796fd91faa23987b941f400aa1a7975e487d38eb54e5886156c8ad4df",
       "mc/cmd/mc/setup_agentsview_prod_test.go": "sha256:73dfd755918bf3338863e5024e8c08d9224f3c24145d0e4b30ec015cb7bfae94",
-      "mc/cmd/mc/setup_api_key_prod.go": "sha256:60e0d0ffc6fc22a2eed3c3d36aba29fbef12eb129613267c2d8a7ad9ee44670e",
+      "mc/cmd/mc/setup_api_key_prod.go": "sha256:0ba990cbcc4413975c04c521ce8f90ac393cba67f2c4c395dde6abff18899bd8",
       "mc/cmd/mc/setup_api_key_prod_test.go": "sha256:4b1c7130642f844fd23d5a394bdbabad0898eb2d3066dc1268ed6647af80ade0",
-      "mc/cmd/mc/setup_api_key_screen_prod_test.go": "sha256:0bacb11b083f6b1b53e95bf46081d9ca06c137efbb2e9ceda9fa0a2b0cdc1fec",
+      "mc/cmd/mc/setup_api_key_screen_prod_test.go": "sha256:36c7d828aa348003c54f6ee94eea554f420ec4bd43e9888e80a04f74bb2946b6",
       "mc/cmd/mc/setup_checks_prod.go": "sha256:57613f8270d43078ab3945c259832552c79d9982207d8416f9b5148b8b002a51",
       "mc/cmd/mc/setup_checks_prod_test.go": "sha256:4337449b0c51d52c239c077d344d2ec00a668add09274c10a6258b3e6431471d",
       "mc/cmd/mc/setup_choices_prod.go": "sha256:69680765be7382ce4fe9526be13be00d02e0c040f4c976d82437d4d320434c52",
       "mc/cmd/mc/setup_choices_prod_test.go": "sha256:7a771c783babd905ef24fdc4e588c9e870c2403a525a89768e20ea50b0488372",
-      "mc/cmd/mc/setup_connection_choices_prod.go": "sha256:98a90f5bdc34573eb6d8ae6d66568d7d96b0e3d62c11571ce9908acb664511c8",
+      "mc/cmd/mc/setup_connection_choices_prod.go": "sha256:7efc805500e4a9a212b8505c866ed7b275d3af80a05f2e485cb1651b3c8e29d5",
       "mc/cmd/mc/setup_connection_choices_prod_test.go": "sha256:e8eb79f6947a91a046210ff58acaf702faa6d766c1ba382c793338f6a80fa3d3",
       "mc/cmd/mc/setup_dashboard_resume_prod_test.go": "sha256:5c5039a07a088be8c57272cdcf66f94976da55b79a2630914bd31459eb1f6648",
       "mc/cmd/mc/setup_diagnostics_prod.go": "sha256:972b3eeb866f867f174a188ed225eeb5b89c095eb13a5afab0755df5f78b98d5",
@@ -9332,8 +9332,8 @@
       "mc/cmd/mc/setup_login_preview_prod_test.go": "sha256:33a11815e216ec0858450d759a91271df8a8e991e338c3a3535df03af1409b1d",
       "mc/cmd/mc/setup_model_prod_test.go": "sha256:fdbf82f3b720b4622c452c404c000cf2de5c31b86831b70902eb0fe383748e1d",
       "mc/cmd/mc/setup_onboarding_review_prod_test.go": "sha256:d65afc372f7a879e3c860c8adfd3cb5983468062d9be91dbcb96814682f9b68e",
-      "mc/cmd/mc/setup_opencode_prod.go": "sha256:2c876b5ecb1be66d3a4b02d2d5c44183245bc3b712725e14584277502526016c",
-      "mc/cmd/mc/setup_opencode_screen_prod_test.go": "sha256:c2c2b0f752ba62b65f94a228341b557a43688870e8590da2132221953788626a",
+      "mc/cmd/mc/setup_opencode_prod.go": "sha256:be222620e43329db7ef3c9854576fada0e1e978bd6aa0c26274fbcb549ad4b7a",
+      "mc/cmd/mc/setup_opencode_screen_prod_test.go": "sha256:e2dbfbc9cf4d5cbf4641c9f674a8e09cf0168a9bc62becf62458585bec089009",
       "mc/cmd/mc/setup_opencode_source_prod_test.go": "sha256:96547627e80f818d12d512d14209cf03a61108a716a1633d029ce56c98dba4d7",
       "mc/cmd/mc/setup_preview_initial_prod_test.go": "sha256:d5b6872651e5cc6440b4ee836bab008049fba08d368ab0bb49fc3b34c8e7b2ad",
       "mc/cmd/mc/setup_preview_prod_test.go": "sha256:c0aa95286fb8c05599f778c7f211d25422fe385bdca6f0fc24c3138f82a51f84",
@@ -9348,11 +9348,13 @@
       "mc/cmd/mc/setup_release_prod.go": "sha256:c17213d3601f8d82d9bb17e6f70c3266419be988dfd9bcf2dde44fd4dd52e8a7",
       "mc/cmd/mc/setup_signin_screen_prod_test.go": "sha256:086be24abb487725b5923bc0fd957f74879b124c792176968cedc5fb59afa78e",
       "mc/cmd/mc/setup_source_prod.go": "sha256:b8fd32b19114dd6e72699c78fb829d494ca8983696454a8b2417cd5ef9bc5e75",
-      "mc/cmd/mc/setup_terminal_prod.go": "sha256:05632ad0ec961241a380069b2c33a76fe20c397c6aaec7a0a18d2caab219090a",
+      "mc/cmd/mc/setup_terminal_prod.go": "sha256:eec90c7ae874cf97071d78a66ffe2c23fd9efd3899f4b779ec66f5ba741959c1",
       "mc/cmd/mc/setup_terminal_prod_test.go": "sha256:c6b0d55a81e0b81c36875744e10e7168a01786172447f9fab851c2f0aa028dc5",
       "mc/cmd/mc/setup_terminal_pty_darwin_test.go": "sha256:d33b0601d59309bb92cfeb700252b9a5fe7c653b0403d47d8cfbe5ff450c3e6b",
       "mc/cmd/mc/setup_terminal_pty_linux_test.go": "sha256:e7716174b1e6a43af401c518e52ab205bc7722f274ce4624bb20e77ea04755a3",
       "mc/cmd/mc/setup_terminal_testfake.go": "sha256:ca8a2a1297f7a8ad5e53dca2704a06edca7f77a668850447c782aceebe9b6744",
+      "mc/cmd/mc/setup_untested_connections_prod_test.go": "sha256:a4752e895c6e58d2b7487b8aec393a046e119877e391007b929a51884de6a296",
+      "mc/cmd/mc/setup_untested_connections_screen_prod_test.go": "sha256:072ca7534f26f55e260f73b09f256ff6ebd90002450ad6e18da626968acff2eb",
       "mc/cmd/mc/setup_update_candidate_prod.go": "sha256:58cd5fdc4447178b88001c5b6c4c48ed944f41a552f9299ab6413ade99565812",
       "mc/cmd/mc/setup_update_candidate_prod_test.go": "sha256:bc05df083cf04983e9bcddeac42e21a7366f62d2655fc7bfa8f07dd65128a64c",
       "mc/cmd/mc/setup_update_prod_test.go": "sha256:84447a6b614d164d3235120e52c234fade38790b1e6a52778533fc3a77d128ff",
@@ -9365,7 +9367,8 @@
       "mc/cmd/mc/spine_transfer_prod.go": "sha256:82c73a390fbc22e048ba5c7b71d4fd4dfb984dc6b27364fab64345546464bb25",
       "mc/cmd/mc/spine_transfer_prod_test.go": "sha256:1a504d74926064edfeb1c01274f554a85927ae9328d9e7ecf44512ccda4e93eb",
       "mc/cmd/mc/spine_transfer_testfake.go": "sha256:e7926b1d4772215ae61f813261918a3765f01cda791f5d5678f3cfc9f8c011e9",
-      "mc/cmd/mc/systemstatus.go": "sha256:0ace2ff25b482e1b69b660e0868c642ad18293e0addc9052b76e1ecf3d52dee8",
+      "mc/cmd/mc/systemstatus.go": "sha256:94a55b1572cee91d7881992a87cae44a270be37b675da2ffd1c4cf9e0615b1dd",
+      "mc/cmd/mc/systemstatus_setup_test.go": "sha256:645c458d232772c97d03a4baf7fc42d923948e8cf11f07b81f15b8b8b52a4336",
       "mc/cmd/mc/systemstatus_test.go": "sha256:f102ca046f9a1a96399a49fd26c36af2a2566481067f2bfd06b21a45eb38c287",
       "mc/cmd/mc/task_artifacts.go": "sha256:519b34d43ae35052cc90c6b850f15ff3a9a4bf77bd1a14ec2bf2181067e637e3",
       "mc/cmd/mc/task_artifacts_test.go": "sha256:2a066fd94ab3de9488a7331cdee105d91f0537429085ad12a8b9a9cca54e9d2f",
@@ -9474,8 +9477,8 @@
       "mc/deployment/provider_artifacts_test.go": "sha256:8ff118979b7085a691f9782569d1adf9de96000c1b16ed994849abb02cf6bfa2",
       "mc/deployment/provider_credential.go": "sha256:b75f1202d684d9ddacf8598e991071a0ef44d27b481593092825c4a5d72dc4b2",
       "mc/deployment/provider_credential_test.go": "sha256:38894b6c5a2f236102762232774fe267c617d8bb45244a0566819af984b411b0",
-      "mc/deployment/provider_disconnect.go": "sha256:9265952ed410e353cbc0bbf35153f34560281d06d0c87aed3676555674b7220a",
-      "mc/deployment/provider_disconnect_test.go": "sha256:8f48e448cee26ef8198c6de90f4d3e6aeb7c4c7ba9d60db8c93f022066c80685",
+      "mc/deployment/provider_disconnect.go": "sha256:960728e55ed4a54897abd2e480701aaed810c5fdcbe50705bfdf514d7d52b79e",
+      "mc/deployment/provider_disconnect_test.go": "sha256:25bb9c77a1f4fe303c7f6c966b3186c01450b5a083bb388edf264dec7681f104",
       "mc/deployment/provider_foreground.go": "sha256:193af98f128a777bf8e83e9e9ad7399f4a8ff7a758385249372fb21ee8476d7b",
       "mc/deployment/provider_foreground_installed_test.go": "sha256:b609ab19cd24c421359b60cba73d3faa98faf3845c92b92e936432e943db3e70",
       "mc/deployment/provider_foreground_test.go": "sha256:473c1f351d2651989bb5614603cfff4d72dac60f5e49f3be6baf7bf2160eb771",
@@ -9628,7 +9631,7 @@
       "mc/onboarding/image_progress_test.go": "sha256:c184313dcd052dc297d68b54eb479cd8c6a6277b3eadc2e9e1559478ac9ea012",
       "mc/onboarding/prepare.go": "sha256:fb0e0472d638745f0f5fd8d2b8cd67007ee8fd94db9286d40b15a3622a1f783e",
       "mc/onboarding/prepare_test.go": "sha256:bc8d5ae88213709e6e115d31a393e43ffdb4d47051dd4710af0c7896a246e538",
-      "mc/onboarding/session.go": "sha256:c17da49a2ab62b921e7f86dd2ad01735e18f65119c6b39cb0f2247d64e8cba2e",
+      "mc/onboarding/session.go": "sha256:981775ca10fbd43e9d8d9a1558523f4ab82b616247b7650781ef7e8b786e4b42",
       "mc/onboarding/session_acl_darwin_test.go": "sha256:7e640f7df0e08a543ce4ab365ab8782c7798ec670046da57405f281e28f1d510",
       "mc/onboarding/session_other.go": "sha256:0a622527880acafc7a35f6b418aecdb6e0888b44818d51025d8d3121fa43ebb2",
       "mc/onboarding/session_test.go": "sha256:3e023e643afd32dda0b3e5500680fe56498876a573f08c2758590ee45836a14c",
@@ -9647,6 +9650,8 @@
       "mc/onboarding/terminal_pty_linux_test.go": "sha256:eb6bc49d10c86c0702b78b685ac618d582f0c4885740b788d325e5711d54e8a3",
       "mc/onboarding/terminal_pty_test.go": "sha256:1517df943b1514e984618f05ecb260cba99b60ece50150e5aaf549e906722d4a",
       "mc/onboarding/terminal_screen_test.go": "sha256:17e644402fc1fd13487f12b1c630a52f43d6db92118ae387996b43ae2fdbede7",
+      "mc/onboarding/terminal_search.go": "sha256:19e3dc0887fbfb3076a0a925d2bd2dd59da4066bb2c733639a2d939fc67d0ff0",
+      "mc/onboarding/terminal_search_test.go": "sha256:eb0585febeae808e0c3d6507e430951eecac15d07816cfc754d0616d99ba982d",
       "mc/onboarding/terminal_test.go": "sha256:843b04cde6acfafc503e23559df8e51ea4f05991ce352c1c8e3f78ce6b031bc0",
       "mc/onboarding/terminal_unix.go": "sha256:6a2a539754fea43d144b7882078c19ad60aea2c9c63fdf78eb3d8a3b5b1bef2c",
       "mc/onboarding/testdata/preview_culler.py": "sha256:8dee01ac5eb086bed83b7715be3cd2ad4fcc086dc59cc4e8394f6003eda2d1cf",
@@ -9809,10 +9814,10 @@
       "mc/verbs/directives/packager.md": "sha256:2565fb58f32a292f29a23365a8b9c90b0bf918e7dadbeb2cc315cfb7a2c494c1",
       "mc/verbs/directives/scribe.md": "sha256:0f1c222f804cc4b57b1ac05d7c882191fd6bea5bd2bd9eff07308dd69138ad3e",
       "mc/verbs/directives/setup.md": "sha256:b429fc3b5c780463db19790517292f631e867aefd8131aa46c8dda27d5420f20",
-      "mc/verbs/directives/strategist.md": "sha256:1cc38382dc909282770426da6ecced5274da62a24c199ef24769cbd88e0694ca",
+      "mc/verbs/directives/strategist.md": "sha256:a806d7c46aacb8c6e196b097df48ebb29f4cdd58752aebfbd6b41b8147ab3752",
       "mc/verbs/directives/verifier.md": "sha256:9dc324a48c4989869b168a91ff7025faec022dc6193f94ae2dfceed005f8bdb9",
       "mc/verbs/directives/worker.md": "sha256:aafe50f41cd29b662d1b4d6a2fa6a46797f0b4de21da246c511ae8579f79ebdb",
-      "mc/verbs/directives_test.go": "sha256:93ce4eb81662882857c2448df8bbfec2ef5d90805bba9e51a3e19374f1e02c63",
+      "mc/verbs/directives_test.go": "sha256:b293098e26ae4ff61a64285495a0ae7f2bbcbdc7a675d61969e869549f2a02c4",
       "mc/verbs/discord.go": "sha256:eb04cb48f174b27a62fb5a1230ff7a753f28a575e2bebd3fb13b87428b73230b",
       "mc/verbs/discord_test.go": "sha256:73483d0ae447198c4086dc3f5176d1e22dbaab1dd7b9ac8582a27fb484f1a42e",
       "mc/verbs/dispatchcorrection_test.go": "sha256:f2d539a515ddf1f1bda4f5a6cb48fb7145ef11d0c6f6bea1b7ee5bf4386adfb8",
@@ -9968,7 +9973,7 @@
       "mc/verbs/sourcegit.go": "sha256:cd162598ab9fb5039c0e6e69bdd2418d5b6aca0c4b01c8189d88f822c84cb236",
       "mc/verbs/spine_transfer.go": "sha256:8a6da1ff876ca11580e7b4990c94887fe5f14916ac7fb99b37537f66f30b3962",
       "mc/verbs/spine_transfer_test.go": "sha256:e233516031cea865ce3fbb149f885562dd391026ee76c14ffbedcb96a27a1b1b",
-      "mc/verbs/strategist_input_test.go": "sha256:399c67406117c0c32d67a6609cf23f75ee560810ceef7b85a726e2aef874b126",
+      "mc/verbs/strategist_input_test.go": "sha256:95d23b5bb84f9308b68425cf48766b52c9ed8c11f352a07089b370ad0245c51d",
       "mc/verbs/syncdir.go": "sha256:50d13470ad1b4ef35d353610452b7d0c14d3593c40db21093699229dd2c7c97a",
       "mc/verbs/systemstatus.go": "sha256:d5e51e00aa74242f940e6fed695bbae4f572af60a1a67055b491a6074d8f28da",
       "mc/verbs/systemstatus_test.go": "sha256:b72feacf78f4ca5dbb19c37133894617b654e1aa2a222c927454b86a323fb683",

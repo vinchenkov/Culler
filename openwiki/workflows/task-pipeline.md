@@ -52,10 +52,10 @@ sources:
     resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-09T20:41:27.356Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T20:41:27.356Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # The task pipeline roles
@@ -144,19 +144,36 @@ The Strategist uses repository evidence, the accepted Vision, and relevant opera
 It selects candidates with the best reward for the cost.
 Only the Arbiter selects proposals for development; the Strategist cannot rank proposals, implement them, start runs, or decide review packets.
 
-The directive defaults to read-only subagents that cannot create further subagents.
-Each subagent reads repositories only for this Project and makes no `mc` calls.
-The Strategist fixes the workflow before execution and uses branches that can return a small result.
-It performs research inline only when the whole research fits in one context.
-It states that reason in its response before the terminal, outside the proposal payload.
+The Strategist starts with an important result that the Project cannot yet deliver well.
+It traces the user's route through the repository and identifies the step that prevents success or causes substantial effort.
+The research considers new capabilities as well as defects.
+Before another implementation, the Strategist checks whether the step remains necessary and whether an existing capability solves the problem.
+
+The directive requires evidence for the problem and the proposed benefit.
+For repeated work, the proposal identifies who repeats it and where it occurs.
+For a shared fix, it identifies the workflows that benefit.
+For a prerequisite, it identifies the later capability and the work still required.
+The Strategist considers the result, feasible benefit, and full cost when it selects candidates.
+
+Research investigates assumptions that can make a task unnecessary or ineffective.
+It stops when the benefit and a feasible task are clear, unless another fact can change the selection.
+The Strategist and its subagents can use internet research when it helps the Project goal.
 
 The `Research dependencies` procedure in `mc-strategist` applies before research uses Project dependencies.
 It requires compatibility checks against current declarations and the selected image because the run omits automatic dependency preparation.
 The shared environment skill applies within the Strategist's authority.
 See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-procedures) for procedure locations and delivery.
 
-The directive requires two proposals together, or fewer when fewer valid tasks satisfy the Vision.
-Each description states scope and checkable success criteria; each task delivers one Git commit.
+The directive requires two task proposals together.
+One task can span several components and delivers one Git commit.
+Each description states these points:
+
+- The present problem or absent capability, with repository evidence.
+- The useful result or repeated cost that the task removes.
+- The reason the result matters to the Project now.
+- The substantial effort or risk through verification and maintenance.
+- The scope and success criteria that agents can check in their container.
+
 The command skill permits an empty `proposals` array when no valid task remains.
 The Strategist reads that skill before each `mc` call.
 

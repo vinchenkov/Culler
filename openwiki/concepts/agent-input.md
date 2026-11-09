@@ -72,10 +72,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-09T20:41:27.356Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T20:41:27.356Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -130,6 +130,14 @@ Repository evidence and the accepted Vision guide proposals.
 The directive requires duplicate checks against repository work, active tasks, rejected work, and cancelled work.
 Only the Arbiter selects proposals for development.
 
+The directive starts task selection with a useful result that the Project cannot yet deliver well.
+The Strategist traces the user's route through the repository and identifies the step that prevents success or causes substantial effort.
+It considers new capabilities and defects, checks existing capabilities, and investigates assumptions that can invalidate the proposed benefit.
+Each proposal explains the present problem, expected result, current value, and substantial effort or risk.
+One task can span several components and must have scoped checks that agents can execute in their container.
+The directive requires two proposals together and leaves the final rank to the Arbiter.
+The command skill permits an empty batch when no valid task remains.
+
 The command skill, `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, contains command forms and conditional procedures:
 
 | Condition | Procedure in `mc-strategist` |
@@ -140,7 +148,8 @@ The command skill, `mc/verbs/skills/strategist/mc-strategist/SKILL.md`, contains
 | An execution problem prevents completion, or an operator decision is required. | Execution problems and operator decisions selects the terminal and its evidence. |
 | Custom instructions conflict with the contract. | Project role customization defines the conflict report. |
 
-The directive points to these conditional procedures.
+The directive points to the execution, operator decision, and customization procedures.
+The command skill supplies the research dependency procedure.
 The generated command pointer names the installed file at `~/.agents/skills/mc-strategist/SKILL.md`.
 `RoleSkillSet` in `mc/verbs/roleskills.go` delivers that file and the shared skills.
 These pointers keep procedures available when their conditions apply.
@@ -452,6 +461,9 @@ It checks required assessment duties, concise facts, skill discovery, and retain
 `mc/verbs/strategist_input_test.go` checks preserved assignment data, delivered procedure pointers, and single occurrences of selected Strategist rules.
 Its duplicate checks cover the rendered brief and command skill; shared skill contents remain outside that check.
 It also checks proposal requirements in the extracted customization contract.
+`TestStrategistBriefDeliversTaskSelectionGuidance` checks the delivered guidance for useful results, evidence, existing capabilities, effort, risk, and container checks.
+The orchestration tests in `directives_test.go` apply their fixed workflow requirements to the Worker, Arbiter, Verifier, and Packager.
+The Strategist directive permits subagents and internet research without that fixed workflow procedure.
 These tests check supplied instructions. They do not prove agent behavior or establish fresh test results in this wiki update.
 
 The [Worker instruction audit](../operations/worker-instruction-audit.md) is an original report for task 56 at its recorded base commit.

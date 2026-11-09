@@ -44,8 +44,14 @@ sources:
     resource: repo://INSTALL.md
   - id: openwiki-source-8887a56335011659b61b947b
     resource: repo://mc/cmd/mc/candidate-runtime-check.sh
+  - id: openwiki-source-b7fbb75b893eadf967f11537
+    resource: repo://mc/cmd/mc/setup_agents_prod.go
+  - id: openwiki-source-ae83eaa3edce8d9e15735e02
+    resource: repo://mc/cmd/mc/setup_untested_connections_prod_test.go
   - id: openwiki-source-30e353995389d69cb272185f
     resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
+  - id: openwiki-source-07cdfe29b43b302d6030a5c9
+    resource: repo://mc/cmd/mc/systemstatus_setup_test.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
   - id: openwiki-source-4b4fe89674376e41801774a5
@@ -94,10 +100,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-09T20:41:27.356Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T20:41:27.356Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # Culler quickstart
@@ -250,8 +256,10 @@ Production ships only the explicit release manifests.
 
 The task model uses only tasks with destination `main`.
 The Strategist submits at most two proposals per batch.
-Its directive requires two proposals unless fewer valid tasks satisfy the accepted Vision.
+Its directive requires two proposals together; the command skill permits an empty batch when no valid task remains.
 Each proposal uses repository evidence, excludes equivalent work, and states scope and container-checkable criteria.
+The Strategist starts with a useful result, checks existing capabilities, and considers the full cost and risk.
+Each proposal explains why its result matters to the Project now.
 Only the Arbiter selects proposals for development.
 The [Strategist input guide](concepts/agent-input.md#strategist-instructions-and-procedures) identifies the directive, brief, and command procedures.
 The [role instruction checks](tests/checks-and-test-lanes.md#role-instruction-checks) explain their test coverage.
@@ -374,6 +382,8 @@ It leaves a reply from a live agent unverified.
 
 Culler supports account sign-in and static API keys for Codex and Claude Code.
 **Use another provider's API key** selects an OpenCode connection from the release catalog.
+The terminal and dashboard provider searches list name matches before identifier and address matches.
+Terminal setup updates the list after each key when screen controls are available.
 In a published installation, the first such connection starts a separate download of OpenCode and its web search plugin.
 The catalog defines available models, effort levels, provider destinations, and web search support.
 
@@ -390,6 +400,11 @@ The model list offers its supported effort levels when it supplies them.
 The model test checks a selected effort before the profile is saved.
 The role assignment dialog offers an Edit action for each enabled profile.
 The release defines permitted provider destinations.
+
+Setup keeps a failed connection for retry and removes unused, untested setup connections when another connection replaces them.
+A successful setup test records verification for the dashboard.
+If setup cannot record the result, it keeps the connection and asks for another test.
+System health excludes connections that no role uses from its issues and retains them in the unused connections disclosure.
 
 See [Agent connections and access renewal](operations/agent-connections.md) for configuration, host storage, runner behavior, and verification boundaries.
 
