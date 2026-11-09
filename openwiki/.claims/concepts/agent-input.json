@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:6f2e9386f5165b381c9779d457eec43af4e9f4683865855b14d40f9bc2f02610",
+  "pageVersion": "sha256:9ec22cbfc2b031be03961c839a1356a021d8bf0c252a760c052ef089618c5277",
   "claims": [
     {
       "id": "claim_0e880ef8eb5e4b06b827221b7df78b3a",
@@ -27,8 +27,8 @@
       "statement": "The skill pointer tells the agent to load the mc-<role> skill at ~/.agents/skills/ before its first mc call and states that mc ships no help surface.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives.go#L58-L97",
-          "version": "repo-lines-v1:sha256:7c1bf3bf61707430e68e6105c35998bfcc96160fef0d22ac3e3090e881e84475:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZDYzOWFkNzBjMTJkYWE5NDViMmYyODg3NTE2YmJjODhkNmViZGMxOGQwMDk2NWIyMGI4YWM2NWY1NTI4OWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5NmZjZWFkMDYwMTYwYmY4ZTJhY2Y5YTBlYzg5ZDgwNTA5ZGJkNmNkZTdhYTA2OGQwZmQ0ZWZkMWUwOWNmMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkY2Y3MmQ4MTJiNWFlYzEzOTdjM2Q0YjhiNmRiZmYzNWVlMmVjMzhkNWY4NDZlMWRhZWU3OTBhNDJmZmNiNjEifQ"
+          "resource": "repo://mc/verbs/directives.go#L65-L100",
+          "version": "repo-lines-v1:sha256:01d43b82cbfaba5d465a06a6d033ed0a4c1d53ca65343d23a597d98af8cb0598:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0ODI1ODc1Y2MwYzViMmU0YWMxNDU4ZTZiZDg0ZjkyOGFlYjA2MWIzMDIyOWRmODFlMGMyZDc4ZDFiNWE0NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyOWY2ZjY4ODQ1NTVhYzhlZWQ3YmVkMDA1MzQwYTAxNTYyMGE3YjRkYmJiNWQxZmQwYzVjNjZlYjg2ZDlhOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxMTg5MDVlZGI5Zjk5YTJmNDNmMjk3NTcxM2ZkYzdhNDYxMzNhMzNiOGNhOWQ5NWUzOTZkMzk0NzY3MGI0ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjMzMyNjUwMWZlYTAyMmVlOTg1YzM3ODYzMGY1MGIwMDRiYTcxZWM1OGJiZWM3YTdmODNkMzliYzEyNmRhMmQifQ"
         }
       ]
     },
@@ -37,8 +37,8 @@
       "statement": "An unknown role has no fallback directive; roleProseDirective returns an error.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives.go#L99-L123",
-          "version": "repo-lines-v1:sha256:5b3ced8683985a80d9aeb9c805026b43184de28cd57f02b4e1c7ea1d0d6909f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MDZjNWZmMWFjNDY1MjI0YzRlMDcyOTY2MWRkMjk2NmI4MWQyMjUxYTdkNDEyMzFjYTQ3Yjc3M2YyMDhjODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyZWJlODNmOTUzZDY1NGIyN2NjNzcxOGExNDUxYjUzZDJhZTk2YjY3YzVkN2JhMmVmZDA0ODI1NTA4MTAxZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://mc/verbs/directives.go#L103-L116",
+          "version": "repo-lines-v1:sha256:e1cca779c31d98c17e47be2ef4005bbbe06db3d0d73c8048247094982992742a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MDZjNWZmMWFjNDY1MjI0YzRlMDcyOTY2MWRkMjk2NmI4MWQyMjUxYTdkNDEyMzFjYTQ3Yjc3M2YyMDhjODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYWU0OWM0MzQxNjZjMjQ1ZTAwOWMwZDBlODA1ZTZkMTUxODgyYzMxMjM4NzdjZjkwOTQ3MGY5ODRhMzFiMmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyZWJlODNmOTUzZDY1NGIyN2NjNzcxOGExNDUxYjUzZDJhZTk2YjY3YzVkN2JhMmVmZDA0ODI1NTA4MTAxZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxYWM5MDk0ZTZkZGE1YzQxMTEyZGQ2M2NkNjBhOTMzZmNlM2Q3YTRjYjU1NmNkZmVlNzRlNGMwYzdhMWFmMDcifQ"
         }
       ]
     },
@@ -57,8 +57,8 @@
       "statement": "The Scribe brief identifies its Project, accepted start commit, and prior successful start commit when available.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L355-L408",
-          "version": "repo-lines-v1:sha256:38f3935dee0537cc88c13ed4e009ecf72a1ffff2cdbb6343a35e25084a203da1:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZGFjMjExM2QyZmVlYmJlZmU1MmU4NTE5NDM5NzNiNjk5NmZhZWYxZjZjZDQ5MDVjNDA0ODE5NjYyNjYzYTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMmM2ZDdjYjc1ZDgyYzE1NjEwM2Y4NTY5MDQ5YmMxYjE2N2Y2YTM2MGIxZWM3MzUxN2YwODI3YzJmYWNmNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyZDQ2ZGQzZDJkOWZmYzhkZjVkYzgyODg4NDFkOWRhODFiYzE5MzU4NGUwYjYxNGNlNzQwNWY4YTZiMTc1NmEifQ"
+          "resource": "repo://mc/verbs/brief.go#L396-L434",
+          "version": "repo-lines-v1:sha256:64c46623e8d30cc0a2ffed041191f6bf3fc273766e71a51aedfb856fe6586036:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNTNhZTQwNDA0MDNhMzZmNGQwYTE3NTIyMDQzYjE3MThkMTQ1NDU2NTRkZDE2MWE0OTM2NjVjYTBlZDIxNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ODUxYTMzYTk0ZWZmZWVhMDM5Yzk3NDExZjVmMjc5ODI0NjA5ZGZhZDAyYzYzMmU1MDhlNjBkNjdhMzNjODIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0ZWYzN2QzNzY3MjJlZGZmOWMyNGFkOGJlZDY0NTk1Y2RlNWY4NzBmODVhNTkxNGRmZGIzMThhNzk3NDVhNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0Nzg4NWQxZGRiMmViYjA5MmYwYThjNjBkM2VlYzUzNWU2MmIzYzIzZjlmMjA4OTJkMDkyMTNmM2RiMmU2YzUifQ"
         }
       ]
     },
@@ -67,8 +67,8 @@
       "statement": "renderRunBrief writes a header with the schema version, the role directive inside role_directive tags, then each part as a heading, an explanation, and facts, tagged text, or a JSON block.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L915-L941",
-          "version": "repo-lines-v1:sha256:c59ff4bf61a49ee9f7caef828750d7af2c8333a6d2850b57374f0ca6d58c8263:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzNmI1M2JjZjJiMjNmMDFiNWQ2Yzc4N2U4NjEyYThhMWQ3OGY4NTFiYjEyMTEwMjU3NTJkYTM2ZDkzMzdjYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjQxYzAyMzk4ODcxMThmOWU3N2U3NTFhNTgyYjA2MGNmMjc3ZDM0OTlhOWVmZGQ1NWYwNDAyZmQ5ZWIxN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiODhlNTc5YTM5YWIxMjZhNmQzNzQ3YmI2OWM3ZDE4YWJmYWFmZGIyNjNmYzk5YTIyZDBlNTExN2Y3OWUyNGMifQ"
+          "resource": "repo://mc/verbs/brief.go#L956-L979",
+          "version": "repo-lines-v1:sha256:84a9b15422f1df15a95412a22fbf8d1524fcb1990482008f205114bdb23f2876:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzZWIzOWVmY2RlYWFkY2QxZTdhMjE1M2ZkOGVlN2ZjZTA0OTRhOTE0ODkyOWU3ODcyMzJhODVlMTdiNmZkMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhNTMxY2U1ODc1Yjg1N2I3N2U4OWU3Nzc5NTQ1ZTgwYzRkNjg4ODBmZDdmYjg0ZDc3ZjQ2M2IxZDhjMTc2OTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxOWYxZTNlY2I2Yjc4MzViODdlZjY1ZjU4ZTVhNDU4NTNjYmFjZmE2ZTVmZDQ0ZTI4YTg1N2VjYjM2Zjg1OTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiMDczNjkzNTRiN2ZkNjRjNGI3OWNjNDJmMGE4Y2Q0YmQwNDRkZTAzYWI2ODE0YTZjMGVmMDUzYWE4YmE1NzAifQ"
         }
       ]
     },
@@ -77,8 +77,8 @@
       "statement": "Only the Strategist and the Arbiter receive the Vision part.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L891-L903",
-          "version": "repo-lines-v1:sha256:c396fee8a615b81a976dfe9fa0f33b5b47eb2e94f09adef254d680c22e438022:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4M2I3OTM4MWI4YWIwMzEyM2U0YjdlY2UzODhiZjJiMGE1NDk1OGY2ZjRjZThmOTlkMjM5YTcwYzM5YmQzOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NzAwNWY0ZGQwZmM1MjU4MGJiZjQ4OGE0N2RhMjRhZTliODg2MGE5M2JhNjE5ODg2ZWNjNmMxNGUzZTY1YzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjOTc3N2JkY2QwYjgzNTE1MmJlZGY0MzhkNTM3YzY5MThkYjQ2NDFjNGJkNTY0MmFiOTQ4YjNhNmU3ZmIwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzZTI3OWMwYjIzZWJjYzBhMGMyNDNlMDkyMzNkMmJmOGRlMTQxNTcyMzA3ODc2ZmU1ODlhNDUzZDFmNDIzNTQifQ"
+          "resource": "repo://mc/verbs/brief.go#L930-L944",
+          "version": "repo-lines-v1:sha256:0229bfa51c9feb50aa424e9a7d01c539a76a195fbc446c1daed76db6cafbe482:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4M2I3OTM4MWI4YWIwMzEyM2U0YjdlY2UzODhiZjJiMGE1NDk1OGY2ZjRjZThmOTlkMjM5YTcwYzM5YmQzOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjOTc3N2JkY2QwYjgzNTE1MmJlZGY0MzhkNTM3YzY5MThkYjQ2NDFjNGJkNTY0MmFiOTQ4YjNhNmU3ZmIwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhNWQ5NGIyZWY1MjAyNjllM2M4MGIxMGM1ZjUzOWE4M2NiMmViZTJkYzY0YWRmZTM3MmRmNzU1NDNmMDZlNmIifQ"
         }
       ]
     },
@@ -205,8 +205,8 @@
       "statement": "The run brief title identifies the role as Strategist.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L906-L922",
-          "version": "repo-lines-v1:sha256:e0168fe189da9db9dfdaeda05d5b3e861d3502c45b2a94a653497a6f9e6f4e11:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlZWJjMWVmNzNhNjE0NGRiMmMyOTFmMWFiZThkNzkxZTY3NDZjZmQzYmFhNDc5N2EzNWY5MGU0ZDIxODNiOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4MTZhMzkyOTFhNjc1YmMxMjRlODY2NjU0ZDg3OGM2NWUxNWM5MTY2OTVmZTBlNmJhY2E5NDlhODBhYWNmNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZTQ4MjhjNDEzYjUxMGVjNjc2ZThhZTRmNjEzYjJlNGUwOTg2MWQxYjQyYjM2NmMwN2RiMjQ4Yzg5ZGZmZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkMDRlYzRkYWFlMzAxZThiNWUwMWZiZjE0MzUyYjg4YjBiNTVjNTI5YmYwOWVkMWY3MmU0M2UwZDYxOTk2ZjEifQ"
+          "resource": "repo://mc/verbs/brief.go#L946-L958",
+          "version": "repo-lines-v1:sha256:fc9aaa5623da97c9b087575c59f9e5488e73df2485d182aec88cf26aa890d313:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNGQ1NDA5YTBkMzAyNDAzZDE1NTdkZTNmMGNhNTAyNDM0YWEzZTU2NWIwZWM1NTBmY2M4ZWIxYTg2MjUyOTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2OTExNjA1MGUyM2QwMjQ2ZWE4NDdjMjI5ZmI3NTczNDA4YzYzZDVjYTViYjNiNGVjZTdiNmNkNDk2OWZkOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZTI3OWMwYjIzZWJjYzBhMGMyNDNlMDkyMzNkMmJmOGRlMTQxNTcyMzA3ODc2ZmU1ODlhNDUzZDFmNDIzNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NGYyYzZmYWQ3OGE3MWJhZGY0MTI2N2JiOWFiMDc5MTI5OGU3N2I1MTA3YjAyODhkOTYwYjgwNTc5ODUxZmEifQ"
         }
       ]
     },
@@ -245,8 +245,8 @@
       "statement": "Each Worker run on revised requirements receives the revision reason as context; Verifier and Packager briefs omit that reason.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L524-L544",
-          "version": "repo-lines-v1:sha256:2eff6164a7e1ff7e4134e77814c7858fbd43f9cf07c030be0d5521ae874b0fb1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2MDdiYTg2NzBkMmEyNGNhYzE4YmEwMTE5NWRjNmM0MThlMTkxOGI1Yjk4ZTMwZWRiNTM5MjYxMjFlYWI5N2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyOGQ2MjllYTgwNDI3M2EzNjM5MWExMjcyMjlmODIyM2QyMmYzMDg4Y2JlODhmYTdiZWM1ZDMzYTM2NzIzYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwMTZlNTI1ZjI1OTg0MTIwMWQ5NTFiNTk0NjI5ZDYwNGE3MWFiOGYyODU3MWQzMzUxMjFkNDdjZmRjMmYyYmYifQ"
+          "resource": "repo://mc/verbs/brief.go#L548-L585",
+          "version": "repo-lines-v1:sha256:bd250fa44cd9ee771fd01f00da1057b89c3104a705939a29104bc8cfe85d3442:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlNGU3OGQyZWI2ODNlODRmYTlkMTEzZDI2ZTM5MTNiMjI1NjgyYTQwZTRiNDE4MTc1OGNlMjQ3ZTUzZmJlODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5ZmQ2NDJhMzc2NDQ4ODBkYjBkZWRiNGEyNDRlM2I4M2RjZGUzYjY3ZDQ2MzFkZWMwY2YxMDYyNWY4ZTI5ZTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMTJlNzI2NDdlNGUzMTkzYmM0YTM0ZDFmZTQ3YmM2OGNmMmE5OWRiZjk1NDczYjAwMjY0NDNhYTk1NzQwZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2ZmMxODY2YjQ2ZjE3MjgyZjRiODFmYzc3MjliOTYwMDZlZmE2OThlOWI4ZDkyMGEwNmUxZGU0ZmU0NjBmODAifQ"
         },
         {
           "resource": "repo://mc/verbs/brief_resolution_test.go#L133-L182",
@@ -256,11 +256,11 @@
     },
     {
       "id": "claim_3e7121a3b00b4f149ea20cbd6377b095",
-      "statement": "The Verifier requires an operator decision when a criterion check needs a capability unavailable to agent containers.",
+      "statement": "The Verifier requires an operator decision when a criterion check or new or changed test needs a capability that no agent container has.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/verifier.md",
-          "version": "repo-file-v1:sha256:87913f89aa4e47d622109343e95d749b023c746fee956b459ec3aa4863e451d4"
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L78-L106",
+          "version": "repo-lines-v1:sha256:489b9de13d5121cfcb11f22707ebffc85592a296c56dafa38def2bcf93e76a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZDc5Yjc0NzdiN2NkM2Y5OThmOTgzNmNlZTJkNGIzZmNkYzhjZjY1NWYzZTkxYTFlYmYyOWFmMGIxYmQ5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
         }
       ]
     },
@@ -289,8 +289,8 @@
       "statement": "Proposal briefs select up to 10 cancelled tasks, then rejected tasks within a total limit of 20, ordered by decision time and identifier.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L831-L882",
-          "version": "repo-lines-v1:sha256:a9d37dc082b3b6cb86ada19ab7242029a786cab9b8b304ad0aee716789bec1ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmE2NDdlODM0OTJhYjBkOGNjMTZlN2ZmOTQyOWZkNDU3OTU0ZDM4YTE1NmMyMzRhOTExZjE3NTYwYzgxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4ZWIzYmM1ZWY3MTVkMmM4NTQxZTRkYzJiYzQyMmQ2MTNkZGM2NmNkNmU4ZDU2ZWJmZjllMWQ3MGI0ZmU5ZjQifQ"
+          "resource": "repo://mc/verbs/brief.go#L870-L920",
+          "version": "repo-lines-v1:sha256:1c7d02ffc91f4e32570562761c7f614e1b9774d2bd831708c0b53df1e325335c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmE2NDdlODM0OTJhYjBkOGNjMTZlN2ZmOTQyOWZkNDU3OTU0ZDM4YTE1NmMyMzRhOTExZjE3NTYwYzgxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhMjY2OTE5YzNkMTIzOWZiZGQ1ZGJhNjA4OGE5MTQyNzQ0YjY3NmRhYTg0OWNkOGMyZDY2NzhjOTk4NWY2MTYifQ"
         }
       ]
     },
@@ -299,8 +299,8 @@
       "statement": "Historical entries omit descriptions and include a normalized cancellation reason excerpt of at most 160 Unicode characters when available.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L856-L890",
-          "version": "repo-lines-v1:sha256:685d607aa98d943c0a7bea1c999925a3c6793b3b92de2e2faf9206d665bfc37c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyOThjM2JiNWYxZWRlZGJhODQzOTFjYjA5YzExOTQyOTM5ZTcyNjFlMmVjNDY5ZjNkMzQ4NGZkNmNkN2ZjNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiNjQxMTZhMTIwZDkxM2Y3MDgzODg1MDdlNmNjZmQ1MDEwNWFmY2JiZTQ5YmE5MGVkNThmMzIxYTE5OTllN2EifQ"
+          "resource": "repo://mc/verbs/brief.go#L896-L928",
+          "version": "repo-lines-v1:sha256:1677265fb5d3b69ee287adeab2dddd6dba6ed96c7a6ad37691721004199305c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YzY5ZGEwMzEwZTVhZDg3ZTIyMTA0MjEzYzgwMGQ3Y2Q2MjQxNGU0ODI4ODY3NmVjOWE4YjhmMGI4ZjAzMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU5NThiMTFkZTY5MTkyZDUyODlhOTZlODgxODk3Njg4ZjZhZGQ0Yjg4MDUyYTRiZjk0MmI3NWEyMzI3OWYxYzgifQ"
         }
       ]
     },
@@ -333,8 +333,16 @@
       "statement": "The Packager brief, directive, and command skill identify the dashboard as the page style owner; the directive and skill require preservation of that style.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go",
-          "version": "repo-file-v1:sha256:91b4841d7d13ee74d0e68a1565c4ed984f65bdcd5b9a78629d24c7816f658a66"
+          "resource": "repo://mc/verbs/brief.go#L503-L508",
+          "version": "repo-lines-v1:sha256:d478c5c5b44fbddaa6bfc144c39db24bb113fbeb47abde44f75a292d8b475bf0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjY0ODM2MzJlMjNiNDMzODY0YTBjMDFmNDk2NWYxODY1N2U3ODIzMTI0Y2Y2NDkwMTJkZDRlZWQ4N2IzZTg2ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTUyZjk1N2U1ZGZmMWE5YTVkNmExYTUyMmIwYWFjZjhlYTExMWE1OTM3NWU3ZGM0NjFiZTA4MmY2NDViNjZkNyJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/directives/packager.md#L260-L268",
+          "version": "repo-lines-v1:sha256:2866e27d9dbb6461ed15e78378789545555e6717dcc5c8a8894189c6241c6617:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzZiYWM1ZWMxZWY2OGExMDQ5MTJjNGQxMDhjYmU4MzkyOWQwMjU0ODY4ZDczMGY0M2JhZjhhNTZhNDgzNTM0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTAxM2U1MDcxNjM4MzliODk4ZDk0YzBlNTM3ODk1YjI0MjljMjk4YjQ2ODM0ZDRiZmQzYjYyY2E0YmZlY2IwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM4NmNiMGEyM2I5OWU4N2MwZDQ2MWM4MzUwN2QwMTE1ODVhZWNhODExOTdhMzUwMWE2MjI5YzZjZGNjZDJjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjg5MWViODU3M2FhOTUzZTEzODZmMzM2MjZhMWQ3MDZjMGJiYTA5OWZmNzk5YTFjNjgzYTg2MjZiYzhjYWRmNyJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/packager/mc-packager/SKILL.md#L24-L26",
+          "version": "repo-lines-v1:sha256:03df8f6757fb71f67920d3e77fb1dd67de4b56125540f54dd4d147896bf7e6de:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU2NDI2NGFiOWY5MzQ1OTUyNTYzYWNmYTE0M2Y2M2VjMDM3ZTVmYzBlMTJmNGViMDZiMTc3NGZiMDM5YjU1NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTEyYWNjYTU1MWUyMjc0YTg0Mjc2YjIyMjcxNGEzZmJiMTcyNTNmMzY0ZDA1MWE1Mzg1ODBjZTRmYTUxNDk2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGU3Y2I5ZGE3NzkzOGU4ZDEzMjUxZjk5NTliYWI4YjE5ZGZjNjZiN2NkMGUxNWJhZjJlNGZkNGFhMmJmMjcyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Q1NzkwMzJhZmUwYTEzYjY3YTI5NDlmNzdlNzJlZTc4ZTM5OTM1ZjJlODcxYmY0MGI1MDIyY2NlYWE5N2E1MyJ9"
         }
       ]
     },
@@ -350,11 +358,11 @@
     },
     {
       "id": "claim_db7dfb1dbdc648f3ae3f17117be2c213",
-      "statement": "The Worker directive requires preservation of supplied credential configuration and exclusion of credential values from output.",
+      "statement": "The Worker directive requires preservation of the supplied connection configuration and exclusion of Culler tokens from output.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/worker.md",
-          "version": "repo-file-v1:sha256:20b3a26f48b760ca3e1267dfc954c6d7327b86d067b21c7a40ec0e98753f7ba6"
+          "resource": "repo://mc/verbs/directives/worker.md#L17-L18",
+          "version": "repo-lines-v1:sha256:63ca2e7afd5556d0f0c3253b8563b10b8ccdeb766382435e977fc7eaf5bcb297:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQwZTgzYjdjNDM1N2FiNzRjOGFhMjcxMDBjMDhiMjkxYWVlZmJmYTgzNTA2ODk2ZmUwMGNkNmY3NmZjZGNlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM0ODgzYzkwODUyMGUwMGExMWYyMDQxMDlkYTU2NjljYWU4MmI0NzcyZmQwMTc1MGE2MWM1NTNhYmVmNTkzOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTdiN2VhMWZmZWFjYWY3ODIzMGU2NTAyYWU4YTdmNjQyNmNkNDAxNTM5M2M3NGVhYTFhYTFkNWMyYTRlYjhhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTM4YjE2MzUzNWYxZjIzZWJlNDZmYTUxZTBlOWNiMTg3ZjQxYzgwNjk0YmVhYWM5MTBlY2NkMWE3MWYyYWYxMSJ9"
         }
       ]
     },
@@ -373,8 +381,8 @@
       "statement": "The Worker input requires successful new or changed tests and correction of task regressions.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/worker.md",
-          "version": "repo-file-v1:sha256:20b3a26f48b760ca3e1267dfc954c6d7327b86d067b21c7a40ec0e98753f7ba6"
+          "resource": "repo://mc/verbs/directives/worker.md#L9-L12",
+          "version": "repo-lines-v1:sha256:bd510c0d4064286cc3a905b872fcd424f34521ccd06def4feec3d9f274bbe20e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2MxYWRiZDdlMTgyMDA5MDZkZGE2YjBlNjlkMzQ2MTk5N2Y5MjYyNTE3ZWNmODlhNzkzYjVkZjZlZGE3ZjM0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzRlNmZhMDRlNTA1OWI4ODkzMjM2YzMwMmEyOGYwZGE2YTVlN2MzNWZiYWFjNThhMzIzMjQ2YWQ3N2IzMTU4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDVmM2Y3OWUyMDBmM2NiOWMyZjUyMDU4YWVhNDMyMmM5NDM0NDE1NjhjZThlNGYwMWFiZDUyZjE4MmQzNDZhNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzc1ZGM4NzRhNWJkMGZkMGE2YzlkY2UxMGQ5YTc0ZDIwMTNiOTkwNGQwZmE4MTZiMDM2MmQwMzM2YTUxMjA1ZSJ9"
         }
       ]
     },
@@ -383,8 +391,12 @@
       "statement": "The Verifier input requires broad checks and base comparisons for submitted failures.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/verifier.md",
-          "version": "repo-file-v1:sha256:87913f89aa4e47d622109343e95d749b023c746fee956b459ec3aa4863e451d4"
+          "resource": "repo://mc/verbs/directives/verifier.md#L18-L33",
+          "version": "repo-lines-v1:sha256:1a15b876ca8e8416b7dbe7c46eff7fd40e4a2e99475cfc5ade44f3454af27d27:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ODQ2N2FkYzQ1MDI3ZjJmZTI4ZmIxN2ExODU3ODc0ODdlMTBiMjJiNjE0MDliNTZiNmM5ZTU0ZDc4OTBlN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YzFkODYwOTEzOWI5YWUxZWNjNGM0NjdmZmIyZWE0MmMwM2VkYjcxYmYzMDIxMzVkYzI2N2FkMDE2NWMwNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1ZGRiZjdmZGVlNmIxMDNhZjhlZmM0ODY3NTMxZDFhZjkzMDM3MTQzZDNlNzExNTlkZDJlZGFhNWNlYzFmOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YjA4ODQ4NjgzNDVkYmM4NzEzNjJmNWQyNGZlMDIyNTcyNzdkMGM4MzkxNzViZWI3OTgyYWVmZGZiYjAwODMifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
     },
@@ -433,8 +445,8 @@
           "version": "repo-lines-v1:sha256:9a72f6102944a3b77b69ca49252acf3eda9d9efbba89eee325c6eea7d0fdc397:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjZlNjFhYTg4NzI0ZjlmNjJmNzIzNTY5MDE2M2MzZGMwM2Q1Nzk3ZjZjMGY5NGJlNmNkNmIwYzIzNzVjMjFmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTE3MGEzZWRiNzBlZThmNzMwODZiYzhmODkyMDg5NWRhYzIyZjVlZWNlOTNlMTY4NTUzNmM5NjM4YjI3NDNhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjFiZWFlMGFkN2U0OWZmODEyYjYxODg2NjU4YjllOGFhMjM5ZGUwMjkwNTkzMjUwNDZkYzU3NjYyNzg3OWE3YiJ9"
         },
         {
-          "resource": "repo://mc/verbs/directives/verifier.md#L1-L5",
-          "version": "repo-lines-v1:sha256:35292db0ae2e4e25c6abed4afb71d9373f65bb589624693272ef5e6ff93101d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDM4NDMzYTQ4OGYwYjQ3NmRmMzI0M2I1N2E3YTdkN2U0ZTUxMjk1ZGYyOTU5MzVlNjE4ZWZhZTU2Njg0OWYxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTE3MGEzZWRiNzBlZThmNzMwODZiYzhmODkyMDg5NWRhYzIyZjVlZWNlOTNlMTY4NTUzNmM5NjM4YjI3NDNhNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjFiZWFlMGFkN2U0OWZmODEyYjYxODg2NjU4YjllOGFhMjM5ZGUwMjkwNTkzMjUwNDZkYzU3NjYyNzg3OWE3YiJ9"
+          "resource": "repo://mc/verbs/directives/verifier.md#L1-L3",
+          "version": "repo-lines-v1:sha256:740c367d138a0e5cb98ba7409ac3579cbd9e3379eeb14a9117ad24856448b9bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDM4NDMzYTQ4OGYwYjQ3NmRmMzI0M2I1N2E3YTdkN2U0ZTUxMjk1ZGYyOTU5MzVlNjE4ZWZhZTU2Njg0OWYxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTgxMjE0NWRiNGUxNzE1N2QyYzYyYWFiYjRhNDkyMzExOGJmNGEyNTM1Y2YzYWI2YzAyNmJhNTE0YjlhZjJkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDVmM2Y3OWUyMDBmM2NiOWMyZjUyMDU4YWVhNDMyMmM5NDM0NDE1NjhjZThlNGYwMWFiZDUyZjE4MmQzNDZhNyJ9"
         }
       ]
     },
@@ -465,10 +477,58 @@
           "version": "repo-file-v1:sha256:30ca15cb371b7e0378a35bbbdec2f6ec8528ec0124d7f4c9ed749672ce0e375e"
         }
       ]
+    },
+    {
+      "id": "claim_852cc3b33dff4c6e93be49e61c78069c",
+      "statement": "The Worker and Verifier command pointers supply a failure terminal when the command skill is absent or unreadable.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives.go#L74-L85",
+          "version": "repo-lines-v1:sha256:9f85f767e32723f7ab1f3c76ca0f72a6ebbecbf3c6346609847b00d827509eea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzNzVjZTljN2JmMTViZGNkZGZkNjBmZTMxNTQ3YzhhNDhhMDJlOWNmOWFlY2M2ZWEzYzczNDUzOGU2YWExNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5ZTVhMTlkMTk5ZTJjOTI3NTRiNGFjNjhlMjUzYzFjNjA5OTZiMmFjMDQ0MWI4Yjg1Y2Y1NGVkZDk4ZWM5NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4YjU4MTQ3YjhmZWUzNDNmNjk1YzQwNjk3ZjkzMTY4MzlkMTViNWZkY2VhOGFmMTQwOGEyOGIyZjA3OTk3ZWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2100d2f4e5584d4a99b2e05e0c375226",
+      "statement": "The Verifier contract includes Assessment duties and the unavailable-check outcomes, which Project customization must preserve.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/verifier.md#L5-L41",
+          "version": "repo-lines-v1:sha256:81035aac94e3c0c8dab29543accdf98c19219d721b223971ca5b770be8dca9be:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxYzY3YjNkNjhiMGM2ZGZiYjAzMTQxNGI3Y2FlZTE1MWEzMjQ1NTUwMDRmNTc5ZmUzNjExZmQ5MzlhMjU5NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3NzI0MWZlZTA3Y2NiOTEwNmU0Y2QwODdjNjFkYmI1Yzk0Mzc3M2ViOTgzNGJmNTFlNjk2NjI1MzllNDBiNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2ZDNkNTk1ZDc1NTNlZDgyZTMzOWVlNmNkMTFmZGEzYTdlMDY0NzllYWFkMThhMzA1ODYyNTM0MzIxZDhmMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhODBlMzc0ODk0ODNhNjA5ODIwZTViMWI1M2ZiMjFlYzA3NGIwMjcxZTMzNDU5ZjhkMWM4YzBjOWM5M2RiMDUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/verifier_input_test.go#L10-L40",
+          "version": "repo-lines-v1:sha256:6066ed163aaa0f0b26aad9d57a5c7594d31754a4cbaaa829e31324241740a55e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3YTE0YTU5YzQzMGUxN2Y5YjVjZjcyMTg5YTIzNjJhM2U4ZWUyZjQxMWY0NTQ2YzU1MzllOGVmNDI1YzBkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d9b69a569ea44a8847a1201cf536196",
+      "statement": "Worker and Verifier briefs omit credentials, failure controls, correction allowances, and the correction count while retaining assignment and case data.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/brief.go#L295-L369",
+          "version": "repo-lines-v1:sha256:b7a08c0ef460c9b4a98e9e146c032970677533aa9498056990fa7ae3f61c47c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NTIyNmNjODYwMWM0ZmUxZjFhMWE5MDZhYzczM2YwZGRmZjg1YjI5NjA0YWYzMzQwNzEwZWJmNWFkZjAwN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxMDk5YTgyYzExMjliMjhhZGJjY2MzMDJkNjEwOTJkYzQ4NmM1ZDNjNTVjNmI2OGViY2JiMzE5NmRmNzZlNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MWJjYjI2MjIzY2EwMTE1YjQ1OTcyNGVkMTBkZWY2ZGZkYjA1ZWNlN2RhNjFkN2YwZTljOWFkMzgzYTljNDIifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/verifier_input_test.go#L43-L116",
+          "version": "repo-lines-v1:sha256:7fcac27115c87e51a48d731c827e75efcd1010ebc9d05b787f7f1a63d73b5b7a:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4ZmM1NmUzOWRlNjQ0ZWM0NDdhZDM2NWYxMTI1YTM5NTBmMTA1MTM3NzZkMDU5NWM3OGFkMzEzNDc3ZGIyMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f738b3406aa242f7b767adc52dc42339",
+      "statement": "The platform input tests check unavailable-check procedures, the failed-read fallback, independent checks, and retention of unverified evidence.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/platform_input_test.go#L10-L108",
+          "version": "repo-lines-v1:sha256:54568b40dda927408277b7bc6d06854dba99bcd77582edf7459695ed3e0d1f1c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNGYzN2UyZWQ3YTc5N2IwMzBlNDBkZWE3MGFiNjgyNTdjNjhjNWQ5Yzg5Y2IzOTU3NmYzMDEwZTFiZWUxNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

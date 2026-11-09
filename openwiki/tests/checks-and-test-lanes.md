@@ -88,12 +88,18 @@ sources:
     resource: repo://mc/verbs/directives/verifier.md
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
     resource: repo://mc/verbs/packetcontext_test.go
+  - id: openwiki-source-ff3195b0a5a37a2736e48a3b
+    resource: repo://mc/verbs/platform_input_test.go
   - id: openwiki-source-95d6e106a75ae807cab7e009
     resource: repo://mc/verbs/provider_renewal_test.go
   - id: openwiki-source-cdcae076ed897cdf74637751
     resource: repo://mc/verbs/providerlifetime_test.go
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-9cde79f59cdb3b1ba6b34d30
+    resource: repo://mc/verbs/skills/verifier/verify-behavior/SKILL.md
+  - id: openwiki-source-fe13f5a431cbfaf8f480dd65
+    resource: repo://mc/verbs/verifier_input_test.go
   - id: openwiki-source-a2a135f3f8016d9eeb4be1d9
     resource: repo://mc/verbs/workspacesetup_test.go
   - id: openwiki-source-d52f6b19a62da2af5f6d937e
@@ -122,14 +128,16 @@ sources:
     resource: repo://runner/agent-runner/adapters/adapters.test.ts
   - id: openwiki-source-049143960b4daa8f1c93b13c
     resource: repo://runner/agent-runner/opencode.test.ts
+  - id: openwiki-source-5bafebdedf9045e1ae8594df
+    resource: repo://runner/image/browser-smoke.test.sh
   - id: openwiki-source-4f081c9b33aa27c81df3d636
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-08T02:41:27.984Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -198,6 +206,9 @@ Repository instructions define broad checks and the conditions for additional la
 The Verifier preserves required build and analysis checks.
 Successful submitted checks require no base execution for regression detection.
 New or changed tests require successful submitted results without a required failure on the base.
+A criterion about an earlier state still requires evidence of that state.
+One execution can supply both criterion evidence and broad evidence.
+A source file read alone cannot verify behavior whose consumer runs outside the container.
 
 For each failed check present on the base, the Verifier compares the smallest group that reproduces the failure.
 Each commit uses its own declared dependencies and configuration under comparable conditions.
@@ -219,6 +230,7 @@ An unchanged failure explains only the reproduced failure, not the tests that it
 A zero exit status means the command succeeds; its skipped tests remain unverified.
 A nonzero exit status remains unsuccessful even when the task receives PASS.
 Unchanged failures and unavailable host tests outside the criteria permit PASS when the other requirements hold.
+The unavailable-host-test exception excludes new or changed tests, which must pass.
 A criterion that promises repair of an old defect still requires that repair.
 A criterion without its required evidence remains unmet.
 Separate release and host acceptance requirements retain their authority.
@@ -227,6 +239,47 @@ The evidence file and Review Packet preserve every `UNVERIFIED` entry, compariso
 These observations alone create no mandatory manual check, separate repair task, or additional approval requirement.
 The source rules are `mc/verbs/directives/verifier.md` and `mc/verbs/skills/verifier/mc-verifier/SKILL.md`.
 See [the task pipeline](../workflows/task-pipeline.md) for verdict effects and packet duties.
+
+### Unavailable checks
+
+The `mc-verifier` skill selects outcomes for an unavailable criterion check or new or changed test by cause.
+
+| Cause | Verifier outcome |
+| --- | --- |
+| Source, tests, Workspace dependencies, or setup script defects that the Worker can change. | CORRECT identifies the prerequisite and required source or declaration changes. |
+| An Image dependency can supply the prerequisite. | CORRECT lets the Worker propose the image change. |
+| No agent container has the required capability. | An operator decision report identifies the required decision and why it prevents completion. |
+| The cause remains unclear. | CORRECT. |
+
+Host access, a Docker daemon, macOS interfaces, and additional container privileges are examples of absent capabilities.
+An unavailable check that supplies the only criterion evidence leaves that criterion unmet.
+Unavailable host tests outside the criteria permit PASS when the other requirements hold, except for new or changed tests.
+Separate release and host acceptance requirements retain their authority.
+See [decision resolution](../workflows/decision-resolution.md#role-input-and-unavailable-checks) for the Worker procedure and report resolution.
+
+The Verifier preserves the submitted dependency versions and checks their compatibility with the selected image.
+It recreates Workspace dependencies from submitted declarations.
+The Verifier keeps the submitted repository clean, restores paths that checks change, and writes logs and scratch files elsewhere.
+Checks that can exceed thirty seconds or produce verbose output run in the background with a recorded exit status.
+A check without terminal status remains unverified.
+The evidence identifies optional checks outside the required scope as not applicable (N/A), with a reason.
+
+### Role instruction checks
+
+These tests check the instructions and procedures delivered to agents:
+
+| Source | Evidence checked |
+| --- | --- |
+| `mc/verbs/verifier_input_test.go` | Assessment belongs to the customization contract; briefs preserve assignment and case data while procedures remain discoverable through skills. |
+| `mc/verbs/platform_input_test.go` | Worker and Verifier outcomes preserve required tests, independent work, failed-read terminals, and unverified evidence. |
+| `mc/verbs/directives_test.go` | Role duties include broad checks, comparison by failure cause, unavailable-check outcomes, and contract conflict procedures. |
+| `mc/verbs/brief_test.go` | Role briefs retain their required parts and concise explanations. |
+| `mc/verbs/roleskills_test.go` | Skill pointers, command authority, explicit terminals, and browser commands remain available. |
+
+The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
+It selects the installed browser with `--browser=chromium` and defines evidence media and session cleanup.
+`runner/image/browser-smoke.test.sh` checks that browser selection in the Verifier skill and Packager directive.
+These are source-defined assertions. This wiki update does not report fresh execution or prove that an agent follows the instructions.
 
 ### Invalid criteria checks
 

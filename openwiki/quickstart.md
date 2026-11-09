@@ -58,6 +58,10 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-bb09a9b9edeb77b9bd13e9d0
     resource: repo://mc/verbs/skills/setup/mc-setup/SKILL.md
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
   - id: openwiki-source-cd6248e71941a23b0297cb03
     resource: repo://resident/src/credential-projector.ts
   - id: openwiki-source-c18554fde4cd0e38831a6f1d
@@ -80,10 +84,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-08T02:41:27.984Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Culler quickstart
@@ -153,6 +157,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Interpret setup milestones, retries, or retained history | [Setup progress](workflows/project-environments.md#setup-progress-and-history) |
 | Interpret performance or agent experiment results | [Performance and evaluations](tests/performance-and-evaluations.md) |
 | Understand task verdicts and unchanged test failures | [Task verification and base comparisons](tests/checks-and-test-lanes.md#task-verification-and-base-comparisons) |
+| Understand unavailable task checks and their outcomes | [Unavailable checks](tests/checks-and-test-lanes.md#unavailable-checks) |
 | Understand invalid proposal rejection | [Invalid criteria and all-reject batches](workflows/task-pipeline.md#invalid-criteria-and-all-reject-batches) |
 | Read the original Worker instruction audit | [Audit context](workflows/task-pipeline.md#worker-instruction-audit) |
 | Run the right checks before a commit | [Checks and test lanes](tests/checks-and-test-lanes.md) |
@@ -239,6 +244,9 @@ For this repository, `Dockerfile.culler-project` supplies `/private/tmp` and the
 The ordinary component checks run in the Project container.
 The Verifier checks task criteria, new or changed tests, and broad Project checks for task regressions.
 Unchanged failures and unavailable host checks outside the criteria permit task progress when the other requirements hold.
+The unavailable-host-check exception excludes new or changed tests, which must pass.
+An unavailable criterion check or new or changed test follows the role procedure for its cause.
+Repairable prerequisites require repair or an image proposal; capabilities absent from every agent container require an operator decision.
 The evidence and Review Packet preserve those limits without an additional approval requirement.
 Separate release and host acceptance checks retain their requirements.
 Platform and host dependencies can leave individual checks unverified; the [test guide](tests/checks-and-test-lanes.md) explains that evidence.

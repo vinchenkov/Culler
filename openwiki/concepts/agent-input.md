@@ -36,12 +36,16 @@ sources:
     resource: repo://mc/verbs/dispatchprivate.go
   - id: openwiki-source-04786a87679eea8954d2f952
     resource: repo://mc/verbs/environment_execution.go
+  - id: openwiki-source-ff3195b0a5a37a2736e48a3b
+    resource: repo://mc/verbs/platform_input_test.go
   - id: openwiki-source-81ff81fd9648ddfb1d004cea
     resource: repo://mc/verbs/roleskills.go
   - id: openwiki-source-58286c7d3d2cfcf24add95f4
     resource: repo://mc/verbs/setup_agent_input_test.go
   - id: openwiki-source-332034bad01f6c1d71fb1474
     resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-9992dda8c04b35911bec9f64
+    resource: repo://mc/verbs/skills/packager/mc-packager/SKILL.md
   - id: openwiki-source-f7b77b556b18b6d3270e2193
     resource: repo://mc/verbs/skills/scribe/openwiki-documents/SKILL.md
   - id: openwiki-source-f50fb8f0947937402f7ebff6
@@ -50,8 +54,12 @@ sources:
     resource: repo://mc/verbs/skills/scribe/openwiki/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-fbe8f84251137d3cfb7fb6f4
     resource: repo://mc/verbs/skillstore.go
+  - id: openwiki-source-fe13f5a431cbfaf8f480dd65
+    resource: repo://mc/verbs/verifier_input_test.go
   - id: openwiki-source-7092e09d830ef9ed23536948
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-8538c0fae787322c5331cccf
@@ -60,10 +68,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -78,7 +86,7 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 
 The agent profile sets the model and effort for each run.
 The Strategist, Arbiter, Verifier, Packager, and setup directives state this fact.
-They name Codex, the Claude SDK, and OpenCode as supported harnesses.
+The Verifier directive states the profile rule once and leaves harness details to the runtime.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
 
@@ -105,6 +113,11 @@ Each directive states the Culler contract, the customization rules, and the role
 - **Your other skills** lists each additional and shared skill with its path and frontmatter description.
 
 The pointer carries only names and descriptions, never skill bodies. It is the trigger that makes the agent load a skill. It is also the fallback when a harness fails to list skills, because each skill is a readable file at a fixed path.
+
+The Worker and Verifier pointers also supply a failure terminal for an absent or unreadable command skill.
+The agent reports the failed read through its assigned task and run identity.
+This fallback preserves an explicit terminal when the normal command instructions are unavailable.
+`mc/verbs/directives.go` defines the pointer and fallback.
 
 ## Proposal criteria in the role directives
 
@@ -175,13 +188,39 @@ Project import permits unavailable capabilities. Required task checks remain req
 
 A subject never carries board state. Dispatch selects only an open, unblocked subject, so that state holds no information.
 
+`trimWorkerBrief` and `trimVerifierBrief` keep procedures in the directive and skills.
+Their briefs omit Agent credentials, Failure controls, Correction allowances, and the unsuccessful correction count.
+They retain the assignment, identifiers, Git facts, and applicable case payloads.
+The Verifier Git explanation distinguishes the original task base from the submitted source.
+Its Last report explanation identifies that report as the submitter's claims.
+Its environment identifiers support dependency compatibility checks.
+
 ## Regression duties in the role input
 
 The Worker directive and command skill require successful new or changed tests and correction of task regressions.
-The Worker brief repeats those duties beside the assigned criteria.
-The Verifier directive and skill require independent criterion checks and normal broad Project checks on the submitted commit.
-The Verifier compares submitted failures with the base commit under comparable conditions.
-The brief states these duties beside the task subject.
+The Worker directive points to Unavailable actions and checks in `mc-worker` when a requirement cannot run.
+The Verifier directive makes Assessment and unavailable-check outcomes part of the Culler contract.
+Project customization can replace methods and optional checks while preserving these required duties.
+
+The Verifier obtains independent results for every criterion and each new or changed test on the submitted commit.
+It runs normal broad Project checks, including required build and analysis checks.
+One execution can supply criterion evidence and broad evidence.
+A successful submitted check needs no base execution for regression detection.
+A criterion about an earlier state still requires evidence of that state.
+A file read alone cannot verify behavior whose consumer runs outside the container.
+
+The `mc-verifier` skill owns the procedures for these cases:
+
+- Broad check failures and comparable base checks.
+- Unavailable checks and their outcomes.
+- Long checks with a recorded terminal status.
+- Destination merges that contain accepted work.
+- Operator decisions and execution failures.
+
+The Verifier keeps the submitted repository clean and leaves HEAD at the submitted commit.
+It places logs and scratch files outside that repository.
+The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
+It defines browser sessions, evidence media, and cleanup.
 
 The Packager brief, directive, and skill require preservation of unchanged failures, base comparisons, and unverified coverage.
 Each `UNVERIFIED` entry remains in the Review Packet.
@@ -230,11 +269,11 @@ See [the task pipeline](../workflows/task-pipeline.md) for the role rules that u
 
 ## Credential instructions
 
-The role directives state that Culler supplies a temporary Culler token and proxy trust.
+The shared environment skill explains the temporary Culler token and host proxy.
 The host retains and renews provider credentials.
-Agents preserve the supplied access configuration and exclude token values from output.
+The Worker and Verifier directives require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
 
-`credentialPart()` in `mc/verbs/brief.go` supplies the Agent credentials explanation.
+`credentialPart()` in `mc/verbs/brief.go` supplies the Agent credentials explanation for briefs that retain that part.
 The setup brief and shared environment skill describe the same boundary.
 The Culler token permits only requests through the host proxy.
 
@@ -321,7 +360,7 @@ Dependencies elsewhere in the Project home survive both installation and contain
 
 ## Dependency context
 
-The setup and pipeline directives explain the persistent home and separate credentials, sessions, and role instructions.
+The shared environment skill explains the persistent home and separate credentials, sessions, and role instructions.
 The Worker, Verifier, Packager, and Scribe receive fresh source workspaces at their assigned commits.
 The Strategist and Arbiter read fresh committed projections.
 The shared environment skill requires compatibility checks against current declarations and the selected image.
@@ -373,6 +412,15 @@ Tests enforce most of these rules mechanically:
 - `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. No two roles share a skill. The Collie skill lists exactly its allowlist. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
 - `mc/verbs/skillstore_test.go`, `resident/src/skill-store.test.ts`, and `runner/agent-runner/skills.test.ts` cover store layout, operator skill validation, shipped-name protection, wipe-before-install, and traversal-shaped names.
 
+`mc/verbs/verifier_input_test.go` checks the Verifier contract exposed to Collie and the rendered Verifier input.
+It checks required assessment duties, concise facts, skill discovery, and retained case payloads.
+`mc/verbs/platform_input_test.go` checks unavailable-check procedures, the failed-read fallback, and evidence duties across the required roles.
+These tests check supplied instructions. They do not prove agent behavior or establish fresh test results in this wiki update.
+
+The [Worker instruction audit](../operations/worker-instruction-audit.md) is an original report for task 56 at its recorded base commit.
+It records passage decisions, text counts, retained duties, and the separation between role rules and procedures.
+Its body and provenance remain intact. Current source files establish the present instructions.
+
 ## Requirements after decision resolution
 
 The Task description holds the acceptance criteria.
@@ -387,10 +435,13 @@ The Verifier and Packager receive the revised description without the requiremen
 Briefs exclude Verifier corrections and verdicts from earlier requirements versions.
 An open merge repair retains its Merge candidate context across a requirements revision.
 
-The Verifier directive distinguishes a failed criterion from a required check that needs unavailable container capabilities.
+The Verifier command skill selects unavailable-check outcomes for criterion checks and new or changed tests.
 Source, tests, Workspace dependencies, and setup script problems require a correction when the Worker can change their cause.
-A criterion check that needs host access, a Docker daemon, macOS interfaces, or additional privileges requires an operator decision report.
-Uncertainty between those cases requires a correction.
+An Image dependency also requires a correction so the Worker can propose the change.
+An absent capability that no agent container has requires an operator decision report.
+Examples include host access, a Docker daemon, macOS interfaces, and additional privileges.
+An unclear cause requires a correction.
+The exception for unavailable host tests outside the criteria excludes new or changed tests, which must pass.
 These instructions preserve the operator's authority to change criteria.
 
 `mc/verbs/brief_resolution_test.go` checks reason isolation, later Worker context, original base commits, and packet request obligations.

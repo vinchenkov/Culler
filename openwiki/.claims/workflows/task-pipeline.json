@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:954d736c654e0c688d3b511156c1577e8769eceb99f01355bf8a57bc4a93295f",
+  "pageVersion": "sha256:2f0ebee6fc3552bf7bca4ef476af050f341608f023e9b7467d0b124e3401b5df",
   "claims": [
     {
       "id": "claim_468e53bf5b144c04aa76315c3640fe7a",
@@ -183,8 +183,8 @@
       "statement": "Strategist and Arbiter briefs include up to 10 cancelled tasks and rejected tasks within a total limit of 20.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/brief.go#L831-L854",
-          "version": "repo-lines-v1:sha256:26353a7b5627b20f43e219fcda868c25b0cb9eb61b0f5cae09800a69f1fd05c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmE2NDdlODM0OTJhYjBkOGNjMTZlN2ZmOTQyOWZkNDU3OTU0ZDM4YTE1NmMyMzRhOTExZjE3NTYwYzgxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZTMyZTM4NjBiNzRlYTUwZTliM2Q2MjMyOTA5NGYwNThiY2Q3YjdlYWFiZjM3OWQ3ODc4ODExYmZjY2JmMTkifQ"
+          "resource": "repo://mc/verbs/brief.go#L870-L894",
+          "version": "repo-lines-v1:sha256:fa5d90795ef62b0a336f7ba8a2a77448fb40ad112a2d347eacdcffa730b11d37:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmE2NDdlODM0OTJhYjBkOGNjMTZlN2ZmOTQyOWZkNDU3OTU0ZDM4YTE1NmMyMzRhOTExZjE3NTYwYzgxNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0NDAxYTMxOTk3ZjBjNGQ3NDJjNjFlZjNiODUzYzAxZmQyYTk4MDIyYzhiNjlmOTJlMzcxYTZkN2VhMDU2ZjUifQ"
         }
       ]
     },
@@ -295,8 +295,8 @@
       "statement": "The Verifier submits CORRECT when a task causes a regression outside acceptance criteria or a new or changed test fails.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/verifier.md#L129-L139",
-          "version": "repo-lines-v1:sha256:2e6823dcca8805ff597159d113924f700e44ee88dfa6338fc61e06bdcbb91b4d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwZWU5NDU1Mjk4NWZiNjY3N2NhM2MzY2U0N2NkY2YxNDE0YjhkODJkNDc1M2E0ZmQyNWRkMDQyOWRkZDgxY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3N2Y1YTgxY2Y5Mzc1M2RkZTExYmIwNjEyMDc5NzllNzkyZGQ4ODg4ZjJmYmRiMjdiZGRlMDRiMTIxNjBmM2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3YWU2YWE4YWNhOWU5MDI1MmQ1YTgwMzliYzQ3NTBlNzExN2M4NjAxYzY1M2M0YTJiNTZlODAzMjQ5MTM2NTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwZmI4ZGJlNTI5MjRmYTU5ZDE4OWZiMjI0NDQ0ODg0ZmMzMjljM2QzMTlkM2JlYjhmOWJjMmUzNDBiZDMxNjIifQ"
+          "resource": "repo://mc/verbs/directives/verifier.md#L18-L33",
+          "version": "repo-lines-v1:sha256:1a15b876ca8e8416b7dbe7c46eff7fd40e4a2e99475cfc5ade44f3454af27d27:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ODQ2N2FkYzQ1MDI3ZjJmZTI4ZmIxN2ExODU3ODc0ODdlMTBiMjJiNjE0MDliNTZiNmM5ZTU0ZDc4OTBlN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YzFkODYwOTEzOWI5YWUxZWNjNGM0NjdmZmIyZWE0MmMwM2VkYjcxYmYzMDIxMzVkYzI2N2FkMDE2NWMwNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1ZGRiZjdmZGVlNmIxMDNhZjhlZmM0ODY3NTMxZDFhZjkzMDM3MTQzZDNlNzExNTlkZDJlZGFhNWNlYzFmOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YjA4ODQ4NjgzNDVkYmM4NzEzNjJmNWQyNGZlMDIyNTcyNzdkMGM4MzkxNzViZWI3OTgyYWVmZGZiYjAwODMifQ"
         }
       ]
     },
@@ -329,10 +329,24 @@
           "version": "repo-lines-v1:sha256:c7f2919bef58ca62a5e5285e0199017dc07f2377da594df0216377e69a72caba:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNDFjZGZjMWY5NmI3MTRmNGVjZWYwYzY2OWFjNzJjNzM1OTI1MWMxNmIxMzliZDdlMTI1MGJiYTdhZjE0YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhODY1MGJkMjMxOWEyNzVkZmYxOWEyNDk2ODUxOGNhNGYxN2VjMWU1ZDdmYTkyMTkxOTYyODhiMzQzMjM1ZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_96606e4dfedc411eb5af8f1bc4214558",
+      "statement": "Worker and Verifier procedures select outcomes for unavailable criterion checks and new or changed tests by cause, while preserving independent work and unverified evidence.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L76-L106",
+          "version": "repo-lines-v1:sha256:8b737f7a203ac6fcd7ff9ad22fb565d8d19a1491f49265dc235c164f1c397780:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkYTAzYzI1ZjFmMTBmZGYxMTkyMjE5Y2M2ZDQyMzNkYjU1OTM2NTE5NWJmMTQ0ZWQ5ZmUyZjBjNGRjNTc3ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L115-L133",
+          "version": "repo-lines-v1:sha256:8aff6bc87cabea4e26969f9a99d82302bfdca1322deb879561823b91f790362b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

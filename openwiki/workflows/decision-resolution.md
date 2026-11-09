@@ -26,14 +26,16 @@ sources:
     resource: repo://mc/verbs/decisionresolution_test.go
   - id: openwiki-source-47e2ca52aab2f12bfb519d6d
     resource: repo://mc/verbs/deliverycomplete.go
-  - id: openwiki-source-db55b76d7f0573ce8b068ebf
-    resource: repo://mc/verbs/directives/verifier.md
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-03T04:34:51.748Z" }
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Decision Pending and requirements revisions
@@ -139,14 +141,29 @@ The Verifier and Packager receive the revised description without that reason.
 Briefs omit Verifier corrections and verdicts from earlier requirements versions.
 A packet return instead supplies a Revision request that the Worker must meet.
 
-The Verifier directive requires CORRECT for a failed criterion or a criterion check blocked by a cause the Worker can change.
-Those causes include source, tests, Workspace dependencies, and the setup script.
-A criterion check that requires host access, a Docker daemon, macOS interfaces, or additional container privileges requires an operator decision report.
-An unclear cause for an unavailable criterion check requires CORRECT.
-An unavailable required check remains unverified until the operator changes the criteria or the required evidence exists.
-Unchanged failures and unavailable host tests outside the criteria alone require no operator decision or additional approval.
-The evidence file and Review Packet retain those observations.
-Task regressions and failed new or changed tests require CORRECT.
+The Worker and Verifier command skills select outcomes for unavailable criterion checks and new or changed tests by cause.
+The Verifier Assessment contract requires these outcomes.
+
+| Cause | Worker action | Verifier outcome |
+| --- | --- | --- |
+| Source, tests, Workspace dependencies, or setup script defects. | Repair the cause within task authority. | CORRECT when the Worker can change the cause. |
+| A prerequisite that Image dependencies can supply. | Propose the image change and submit a checkpoint. | CORRECT so the Worker can propose the change. |
+| A capability that no agent container has. | Report an operator decision with the capability, affected requirement, and evidence. | Report the required decision and why it prevents completion. |
+| An unclear cause. | Investigate; report an execution failure if it prevents further work. | CORRECT. |
+
+Absent capabilities include host access, a Docker daemon, macOS interfaces, and additional container privileges.
+The shared environment skill states that image additions cannot supply host access, macOS interfaces, or additional privileges.
+A Docker client alone provides no Docker daemon.
+Dependency installation alone proves no dependent behavior.
+An unavailable check stays unverified until the required evidence exists.
+A requirements revision changes the task requirements and preserves the recorded evidence gap.
+
+Unchanged failures outside the criteria alone require no operator decision or additional approval.
+Unavailable host tests outside the criteria also permit progress when the other requirements hold.
+That exception excludes new or changed tests, which must pass.
+The Worker continues independent work and checks; the Verifier executes later independent checks after an earlier failure.
+The evidence file and Review Packet retain every unavailable check and each `UNVERIFIED` entry.
+An executed criterion failure, failed new or changed test, or task regression requires CORRECT.
 See [agent input](../concepts/agent-input.md) and [the test guide](../tests/checks-and-test-lanes.md).
 
 ## Evidence and tests
@@ -157,6 +174,7 @@ The source and tests establish the behavior on this page.
 | --- | --- |
 | `mc/verbs/decisionresolution_test.go` | Report resolution, unchanged-description refusal, delayed application, retained commits, independent conditions, Collie parity, and merge repair preservation. |
 | `mc/verbs/brief_resolution_test.go` | Worker reason context, later runs, original base commits, and reason omission for Verifier and Packager. |
+| `mc/verbs/platform_input_test.go` | Unavailable-check outcomes, independent work, platform limits, and retention of unverified evidence across roles. |
 | `mc/verbs/deliveryonecommit_test.go` | Refusal of submissions and checkpoints equal to the task base. |
 | `mc/substrate/substrate_test.go` | Required condition types and immutable base commits. |
 | `dashboard/src/ui/boardwrites.test.ts` | Form selection, save rules, payloads, and stale condition handling. |

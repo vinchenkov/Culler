@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a82f268cd3e3725579d14321936fd50da4446b328d4844d9df4ab6bf72c4b62a",
+  "pageVersion": "sha256:3cf15043859cbdead072d61729e9e3d7bfce60f64d0944889aaf2847604fac81",
   "claims": [
     {
       "id": "claim_ad4f33e8a02c4cbd8f42ca9a4af54d0c",
@@ -98,11 +98,15 @@
     },
     {
       "id": "claim_0a1607e9e4b84b5d8b075dca3d5caf11",
-      "statement": "Unavailable criterion checks require an operator decision for unavailable container capabilities; unavailable host checks outside criteria alone require no such decision.",
+      "statement": "A criterion check or new or changed test needs an operator decision when no agent container has its required capability.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/verifier.md#L124-L171",
-          "version": "repo-lines-v1:sha256:6f3d4fd1107ac3567a4e71b65688ed7d90f599457921a7be9ca65657081e395d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5YWEzNmY2NzAzNzI4ZTA1ZDAyMGY0YTZhOThjMDUyNTQ1Mzc3N2IwOGFjMWJmODI2NjVhODBkN2IxZjQzMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlNDNkMDdjMzdlYWRmMmExOTBhODk2OTZiYWI4MzUwN2VhNzhlZWU2YjllOTkyNjcyZjJiNmRiZGUyMWQ3ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZhYWNkNTllOTI1YjVjNDQ1NzI5Y2YyZWQwOTNmYWE4NTE5NDRkOGEyM2EwYWEwOTc5MGY4NDljMmUzY2I5M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2ZjVlYjUxOGFhN2JhZTUxYWQxMDVhNTg5YTBhNDYzMTc4ZjY3MmMzMjFjOTJiOTI1OTQwZThmY2U2OTk3YTgifQ"
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L106",
+          "version": "repo-lines-v1:sha256:cd732813c6094d22c66e4c1187fff51e5e2278d2d206e102b4ac609572bff9ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L115-L133",
+          "version": "repo-lines-v1:sha256:8aff6bc87cabea4e26969f9a99d82302bfdca1322deb879561823b91f790362b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
         }
       ]
     },
@@ -143,10 +147,24 @@
           "version": "repo-lines-v1:sha256:0fd0e008421afb1423bb7d461ad8d51eb7c5d6533e724d6d0cb96bdbcd26b879:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmY5YmEzYzc5YmIzY2JhYzUzMTg1ZTUwZGZiMTZmMTY2ODAwZWFiMmYzODU1OTQyNjNlOTBkNWI1ZTljYjU1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EzZTQ2Zjk0Mjc2YjZmNmY0ZWQxZjAyYWY3OGJlZjZhMmVlMWM0MzlkZDU1ODRiOTczOTQ4MzEzMjE0ZDJiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzIwZmM5ZTY3ZGIwN2VkMjM5YmIzYWQyMzEyZWFhYjlhNzBlMWY2ZmJhMDEyODhiMGJhNmU2MWQ3ZjhlZTc4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjc2MzMwYjM4ZTBhNjljMmQzM2ZhZDFkYjkyNzY2MzFjNDQ1YWRiNTM0ZTgwZmRlY2ZjMjgzN2Y4MDViYmQ0MCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_5e1d829dae7d4ff5a658bd242b384838",
+      "statement": "The Worker repairs permitted dependency defects or proposes Image dependencies with a checkpoint; the Verifier returns CORRECT for these repairable causes.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L97",
+          "version": "repo-lines-v1:sha256:b95b7571d7a901c86819a6099c50962ffbcce5f3de857acacd571203060ed2ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNTVkMzRmNTUxNmNmN2EzN2VjMjQ5NzE5N2ExNzA3ODc0MTRlYzJlNmEzM2U0MjJiYTNjMDNjNGU4OGQyNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyMjkwMjRhYmMyMjVlNmRmYjU5NGM2NTEyYmY1Yjk5OTM4NzI5YTM4N2JhZmI3ZjE2YWQyYWM1OTEyNTFiZjgifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L123-L133",
+          "version": "repo-lines-v1:sha256:e3107ceaa34fa237ab734b69acd66f63a1cd3d2eaf16d0f22935be4ff6ed9168:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5ZmI0YWJmMTY0ZDhjMjgxZGJjNzU3YTQzNDFmNTNjNTk1Yzk5YzY2YzFhZDkzMTI4MjYwODM1Y2VmZTA4M2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjZmVlMDliYTEyOGI2ZWJjNjExMmM0OTZmY2FhOWY1M2MxMTExZTJhNDljYzFkODZlMjI1YWYxMzc4MTAxYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

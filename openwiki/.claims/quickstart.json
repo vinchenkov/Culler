@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:60f31e343ba8c187f2f8d5cd7cfa0d1e20366d23acaa8169a2b06a656c2addf0",
+  "pageVersion": "sha256:2652c54f4afa208158d65cf86f6a0a856779446501e91a5c90de720c0aa9ad19",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -597,10 +597,34 @@
           "version": "repo-lines-v1:sha256:6eac626212b1f6ddd4971fce19f5c12ba8e1201903c846393915dafde4afa5b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwNTcxNTBiNzYwN2MxZWFmODNjZGFjMzAyODFjYzRhNzdkYjNkYzcyNDM5ZGViM2MwZWVjN2RlNmEzZjg1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJmNDNmM2Q3NTE1YTUyOTZhYjIyZjg0OGZhNzExNzZmZDQ2Nzk1ZDhmNmNmMDQzZTVkYjdjNTIzZjEyYWM2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDdmOGRkYTU3YjE3ZDIzMzI0MjgwNjIzZDRlYTc0OTRmNDZmOWZlNGRiZDA3NTJkZmE1NGJlNDMzZGVhNGRiNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_defb0b619cbb47858d12b465c19db6e8",
+      "statement": "The exception for unavailable host checks outside criteria excludes new or changed tests, which must pass.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L103-L106",
+          "version": "repo-lines-v1:sha256:b2affadd16ad7f0ed1c1c2b7d851b270412e3115436c443cb3feb2f6c0cadb11:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE2NTUwNWJiMzIzZTc5NGVjYzljZWM3MjdmZjQ3Mjk3OWM2YThjODA4MDQ0YWQzZmUwZTZhYTZiMzZmZDdlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGZlYmQwNmEwNGQ3Zjk2MzAyYTc1ZjVhYmYzYmZhZWJhNDE5M2M1NmUyODAwODBhNTY3NzU5MmYyNGM2ZTVjNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzMzZDY2NzUzODlkOTAxYTM2MDI1OGM2ZGJjMDhiZjBlMzAzYjhmNTE4NTZlMWEyYTQyNGM3OWFkOWU1ZjI5YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDg0N2IzMTQ2N2IyODcyYzcyNDkxMTY3ZTI0NmVmNzJmMDRiZGNiNGI1NjY4YTE1ZTdlOTEzODI2MTJmODliNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7d626165414e4d8192cfd29bab83a206",
+      "statement": "Unavailable criterion checks and new or changed tests use repair, an image proposal, or an operator decision according to the missing prerequisite.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L97",
+          "version": "repo-lines-v1:sha256:b95b7571d7a901c86819a6099c50962ffbcce5f3de857acacd571203060ed2ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNTVkMzRmNTUxNmNmN2EzN2VjMjQ5NzE5N2ExNzA3ODc0MTRlYzJlNmEzM2U0MjJiYTNjMDNjNGU4OGQyNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyMjkwMjRhYmMyMjVlNmRmYjU5NGM2NTEyYmY1Yjk5OTM4NzI5YTM4N2JhZmI3ZjE2YWQyYWM1OTEyNTFiZjgifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L123-L130",
+          "version": "repo-lines-v1:sha256:9a3b6cd20270af99a079cddf6a2e0979baac2e61bd9d9f2fe472763524be125e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzlmYjRhYmYxNjRkOGMyODFkYmM3NTdhNDM0MWY1M2M1OTVjOTljNjZjMWFkOTMxMjgyNjA4MzVjZWZlMDgzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFkZTk2MTAyYmFkODRjNDhiOWNjOGQ3OWRmOWFiNDE1NzE0YzMzODQwZjYwYmI2ZjZkNzkzZTU5MWVjNDQwYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2NmZWUwOWJhMTI4YjZlYmM2MTEyYzQ5NmZjYWE5ZjUzYzExMTFlMmE0OWNjMWQ4NmUyMjVhZjEzNzgxMDFhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk3NGRiN2I4ZmQ2ZDc2MTk3NGRmNzYzZmJiMzYwZDVjZmIzMjllNTg0N2JlOTg4NjA3ZTliZjQ2YjZkYjYwNCJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-08T02:41:27.984Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

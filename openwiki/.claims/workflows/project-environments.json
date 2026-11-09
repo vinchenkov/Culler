@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:7a5f2f2f2bf84195e944f0b1a4af073b9d8d482b489ac07e88cd45d3a77cbe83",
+  "pageVersion": "sha256:65e4db347f2c1dd3225c3ea793de625816a785a989d3b2fbd0e8cc572d3f6392",
   "claims": [
     {
       "id": "claim_466ab5d7597d42d0aa65e312b0b60f6a",
@@ -405,10 +405,38 @@
           "version": "repo-lines-v1:sha256:7e06edab2fc241f75d4dd4d7d5a09854883d37e501d91a83aeed51802cc82e2a:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMxZmNjNTFjYTEyNjM4NDY1MWNiYzFmZmZhMzlhNGViOTkxOWEzMzU2OTMwMWY4NzlmM2NiYTE4OGI1ZDNkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGJmNDM5ZGY0Y2MyMzRhMTc0MzI5NTkzOGIyMzUyODc1NzUwY2Q5MmEyZDk0NmEyYTFlYThkZTAyNjc5YTg2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Y5Mjk1MTU0Mjk5OTVjZDdmZjFkZjQ1MjEwYTIwM2YxMzBmMDdjNzgxYzk3NGEwYTJiNjYwMWU5OGY5M2Q1NiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_f609fa33652a492186865d43c3f9e493",
+      "statement": "The Worker uses a proposal and checkpoint for a prerequisite that Image dependencies can supply; the Verifier returns CORRECT for that cause.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L106",
+          "version": "repo-lines-v1:sha256:cd732813c6094d22c66e4c1187fff51e5e2278d2d206e102b4ac609572bff9ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L115-L145",
+          "version": "repo-lines-v1:sha256:1596475831d56bbe739ce1bcfd0754afab65ee5a79159f6251d320baf7a6fb30:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNGNiNjNlZmY2OWZjNjVjNDJmYzdkMzFmNGU3NTA4MzQzNDU1NmVkNTU4Mjk0MzFjMWQ3ZWU3YzFjZDZiMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxOTYzMzNkN2I1ZjA4ZDE1MjVhNWQ4ZTUzMDM2ZmIzOGQwNmUzOGI2YzVkYzlmOTY0ODE3OGExMmE1N2MxNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_91da23bcacad410bbc968ffe8b9842b0",
+      "statement": "Unavailable checks remain unverified, and the exception for host checks outside criteria excludes new or changed tests.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/platform_input_test.go#L38-L82",
+          "version": "repo-lines-v1:sha256:fdc4bfc582347ddec414e81f58218e95466566cf56145cd893621af66d6130f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMWQ1ZTJmZWRiYzExNDQ5MTcxNmM5ZTU5ODBlOGM0ZGZmMTEzM2ZmMzMyZjY4NjhhN2RiOWIwMDliNGNmNzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlOTcxYWZjZTFlNzllNmQyY2VhNjZiZjhmMzNhNjAxMDVlYzU3ZWFiNGQyOWZlN2ViNjFlMWQzZTExMzg2NjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1NzlmODM2NTUyMWRjNTU1ODFhMmM2MTU5NWY3MzM3YTEyNWM5YzM2MDUxZjNlOTc5MzNjMWE1YTY5MmViMmQifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L117-L133",
+          "version": "repo-lines-v1:sha256:cb7cfe9cd4c928d992fa85bfc5b325d2bbda093ad80ba17d2ea795f61b613adf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYmM5MmIxZjUwZDkzYTFiYTJmNmIzN2ZjNzgxYmY3Y2RmZWEzZjA3NjNiNjlmYzNkMWEzZjQ0OWExMThiMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0ODVhYTE3MjM5ODUyZWZkYjgzZDYyZjQ4M2NmOGFmNmI3YmU1MzYxMjE0ODViZTFiMDYyYTMxMjRjMWQ0OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T02:06:55.599Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:739c99120be7ce7db2caf002864cbdd6f5ed312095ee8c2ede7e46d4de751374",
+  "pageVersion": "sha256:79b997ecbb93d9883632197e02fdf28e2de038f631a625084915bfaa895365c0",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -449,8 +449,8 @@
       "statement": "The Verifier compares submitted failures with the base under comparable conditions and treats matching check and cause as an unchanged failure.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L117",
-          "version": "repo-lines-v1:sha256:a31fc466be9e755abb143834fa1079b8155b8d191eab7a545842254893dcbec7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5MThjNTMwNDNmNzJjOWEwNmUzMzYxNWQ0NmMwOGFhYTVhMmMyMDY4NzNhNTlhNDI2YzRkYjg5YTQ5ODllYTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZjU3YmIzMDAwOTlkYThkMjRhNDlhODM5NTViMWMxMDg3Yzg2MDUyNjM0MDY4MmE3YWQ0Y2I3OThkMTYxZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMDJmOWY3YWY4OTdjYjg4M2Q4MzY5MjMyMDU3NmY5ZTI1MmQ0YjYxMDU1OTUzZWQ0NWJmYmI5NjJiMDk3NTkifQ"
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
     },
@@ -459,8 +459,8 @@
       "statement": "An unchanged failure outside the criteria permits task PASS when criteria, new or changed tests, and regression assessment satisfy the contract.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/verifier.md#L155-L214",
-          "version": "repo-lines-v1:sha256:9132e98e70158de89555551b374e287a656e3627e31d80134a4c419cf4707351:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5NmZjYzBhMjljNTQ5M2YwNjI0N2FhNmZjY2Y2Mjk5OTQzOTNhNWU2YmJkZjU0NzcwMTk1NzUxYjI1ODlkZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5NmQ1MWVkNGE1ZmFmOTZiNDIwODViOTJlM2NmOTQzYjY4MzIzYmQ2ZjlhYzM3MDE2MDNhYjU3NzYzOWNjNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5MTliYTNkMWQ3MTYzYjFjMGJjOWM2ODk2NTBmY2NjZTZkMmRjMmI5MGNiNjgyYWRkOTBlYmVmZTI3MjljOGQifQ"
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
     },
@@ -469,8 +469,8 @@
       "statement": "The Verifier must execute later independent checks after an early failure when the container supports them.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/verifier.md#L197-L202",
-          "version": "repo-lines-v1:sha256:51653e594889a8f7e0fa751d48b512da213ab2c33860dfa5485c22fff54b9ba7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTdiNGZmNmY3YzBjMGI4MWQzMDgxNjhlMTMzODc5MzM1NDBmMTMwNTcxYTEyNGQ1OTFlNWUyY2M4MTFkYzQ1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDkxOGM1MzA0M2Y3MmM5YTA2ZTMzNjE1ZDQ2YzA4YWFhNWEyYzIwNjg3M2E1OWE0MjZjNGRiODlhNDk4OWVhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTUwZGQyMzlhMTNkMzY0OTM0ZjhhNmEwZjliZTQwMmQ1OTk1MmQ1NTBlNzk3ZTBiZjRjYzNjNzQ1Njk5MDNiYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODljNGVlODQ3MDhhODZhZDA3NjhmZWU5MDBjMTQ2ZmZiODNjYjc0NTM0NzgwNjg2N2IwYzFjMGE0MTljYTZmMSJ9"
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
     },
@@ -845,10 +845,70 @@
           "version": "repo-lines-v1:sha256:d83c53463e83e0a14a316ba9e9a11ea42f0c338c41a5ed7de35d9add1dc61c1e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzMTg2MzQ1NGU1ZTFlNWE3MGNmNzVlOGQ5YTk5MzA0OTQ0ZmNkMTU1NzQ0MzE4N2EwNjNlNDliYTQxZGNiNTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwZGRlMjhhZjY0YjkwZTIzMmZmNWYzNzQyYWQyZmI5ZjhjMzc3MjU5ZjYwMGFhNWRhNGE4NzYwYWYwODQxZjQifQ"
         }
       ]
+    },
+    {
+      "id": "claim_5b7ab17f7c3a4cb78b427b21b249c363",
+      "statement": "The unavailable-host-test exception excludes new or changed tests, and unavailable criterion checks or changed tests use outcomes selected by cause.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L78-L106",
+          "version": "repo-lines-v1:sha256:489b9de13d5121cfcb11f22707ebffc85592a296c56dafa38def2bcf93e76a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZDc5Yjc0NzdiN2NkM2Y5OThmOTgzNmNlZTJkNGIzZmNkYzhjZjY1NWYzZTkxYTFlYmYyOWFmMGIxYmQ5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_651e2646f008468c9afcffd1f8b9f091",
+      "statement": "The Verifier contract requires independent assessment and broad checks; an earlier-state criterion still needs evidence of that state.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/verifier.md#L16-L33",
+          "version": "repo-lines-v1:sha256:261a54e3438aad5befc3a2ed598cbb8a7391b60f3be2e7a201b74de2c55f5279:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZTMwYTdiZDlkZTIxMmM0Y2Y5ODJiNGMwNjBmN2Q5YzFkOWY0ODQ0NzgzNDYzYWU5YzI5Yzk0ODYzODcwMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YzFkODYwOTEzOWI5YWUxZWNjNGM0NjdmZmIyZWE0MmMwM2VkYjcxYmYzMDIxMzVkYzI2N2FkMDE2NWMwNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmN2UyMjE0YjMzZGE5MDE1OWM3ODNiYWJhY2FhMWM3N2ZiZWM3NDQ3ZDc4ZWRmMjYwYjdhNGY3NzI3ZTY3MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YjA4ODQ4NjgzNDVkYmM4NzEzNjJmNWQyNGZlMDIyNTcyNzdkMGM4MzkxNzViZWI3OTgyYWVmZGZiYjAwODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5fa5ab46c124f69920bed2e4c42615e",
+      "statement": "Verifier input tests check the customization contract, delivered procedures, and preservation of case payloads.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/verifier_input_test.go#L10-L116",
+          "version": "repo-lines-v1:sha256:68e8d9cd1144bcc4baf7a0db4a0a97d89e6ce07e25698ea0f36de5a490d0adb5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxN2ExNGE1OWM0MzBlMTdmOWI1Y2Y3MjE4OWEyMzYyYTNlOGVlMmY0MTFmNDU0NmM1NTM5ZThlZjQyNWMwZDQyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlMGVmZDU2Y2JhMTI4ZWE3YmUyNmU0Y2I2MGU4MDZmOWNjNmY3NGFiNDJkMDczNjE3NDViOGU3NmFkMWYxNzQ1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_45c00cb5881446d08ebb4dc12922668a",
+      "statement": "Platform input tests check unavailable-check outcomes, independent work, failed-read terminals, and preservation of unverified evidence.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/platform_input_test.go#L10-L108",
+          "version": "repo-lines-v1:sha256:54568b40dda927408277b7bc6d06854dba99bcd77582edf7459695ed3e0d1f1c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNGYzN2UyZWQ3YTc5N2IwMzBlNDBkZWE3MGFiNjgyNTdjNjhjNWQ5Yzg5Y2IzOTU3NmYzMDEwZTFiZWUxNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ce24c1d2e88a4b4199439b9d14b217f5",
+      "statement": "The browser smoke contract checks explicit Chromium selection in the Verifier browser skill and Packager directive.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/browser-smoke.test.sh#L66-L73",
+          "version": "repo-lines-v1:sha256:42c020476a2f11b1365a88f24c9d62a130dd2c7d45caf08d1724a9d46f8a1b34:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNlZWY0OWQxNTIzNjFkNWI0Mjc5MDJjZDViNzBjMWVmODU5MWEyYzY5ZmUzNTNiYzEwMDdmZmE3MzMzMGRmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmNkNWRlNTIwNWIyMDdkNzgzMzlkNGNkNmI3MDQxMGQwYzdiMzM3ZDVkOGEyZWY3OTFhZDMwNTJkMDhjN2MzYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWMxOTlhNThkZGQ2NGViNmQxOGQ3NGI4OTRmNmQzYmFjNGFkYTQ1NzIyZWQ4MjFkMzVjMmU3Y2U0MzQ3NjQxMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjM2ZmQzNzNhZjVkYTkwNWI2Y2FkZDJlNzQxNzQzN2ExY2QzODczY2Q3ZmNlZDA5NDAwOWI2NDRiNWVlYTM2NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_81e860781e1349b0a914a218ccb8683d",
+      "statement": "The Verifier browser skill applies to criterion or broad checks that need browser interaction or visual confirmation.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/verify-behavior/SKILL.md#L1-L47",
+          "version": "repo-lines-v1:sha256:e557609463ad55852745f95dc6e34686968fc0a4a7800201b07e795d1d7c7044:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MmQ3MTExMDNkNTBhNDM3ODMwYzZmYmNkMDRmYjRiYWI0OWEwZjgyZjZkMjZkMWM3OTFjNmU4NDg4ZGQwOTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYTFhZTZjZGNmMmJjM2ZmNjM2MTk3ZDg1MTA2ODVlZDVmY2EwMzE5ODlhNTkzNGQ1MThiYWMxOWZmMTUxYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhNDlhY2I2NzQxYmNkZDgyZmJhZmRlNmI5MjJiNzgzY2E0MWZmMDE2ZGU4NGMxZDVmODk0M2I0YzU3NDIyY2UifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-08T02:41:27.984Z"
+    "at": "2026-11-09T18:05:27.232Z"
   }
 }

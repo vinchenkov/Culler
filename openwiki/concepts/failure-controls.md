@@ -30,12 +30,16 @@ sources:
     resource: repo://mc/verbs/infrastructurefailure.go
   - id: openwiki-source-6590b775234fedddab69a28c
     resource: repo://mc/verbs/runner.go
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Failure controls and retry allowances
@@ -178,9 +182,18 @@ It preserves independent customization, confinement, checkout, and operator cond
 `clearAllowance` clears Decision Pending only when `allowance` owns that condition.
 This rule prevents an allowance grant from removing a separate operator decision.
 
-A Verifier reports an operator decision when a required check needs capabilities unavailable to agent containers.
-A cause that a Worker can change requires a correction.
-An unavailable required check remains unverified in either case.
+The Worker and Verifier skills select outcomes for unavailable criterion checks and new or changed tests by cause.
+An absent capability that no agent container has requires an operator decision report.
+The report identifies the capability, affected requirement, and evidence.
+A cause that the Worker can change requires repair; the Verifier returns CORRECT for that cause.
+An Image dependency follows the Worker proposal and checkpoint procedure.
+An unclear cause requires Worker investigation or a Verifier correction.
+
+An unavailable host check outside the criteria requires no operator decision or task run failure by itself.
+This exception excludes new or changed tests, which must pass.
+Every unavailable check remains unverified, and independent work and checks continue.
+An execution condition that prevents completion uses the role's task run failure procedure.
+These rules keep a missing capability distinct from an execution failure that consumes a retry allowance.
 See [decision resolution](../workflows/decision-resolution.md) for the complete condition table.
 
 `mc/verbs/decisionresolution_test.go` checks report resolution, preserved independent conditions, allowance reset, and refusal of reason-only report resolution.

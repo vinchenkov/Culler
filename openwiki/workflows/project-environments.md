@@ -28,6 +28,8 @@ sources:
     resource: repo://mc/verbs/environment_test.go
   - id: openwiki-source-3730a4a7a3030a2fc724699d
     resource: repo://mc/verbs/environment.go
+  - id: openwiki-source-ff3195b0a5a37a2736e48a3b
+    resource: repo://mc/verbs/platform_input_test.go
   - id: openwiki-source-e2e66f6b849d1ef0be9a0b40
     resource: repo://mc/verbs/project_image_digests.go
   - id: openwiki-source-cdcae076ed897cdf74637751
@@ -38,6 +40,10 @@ sources:
     resource: repo://mc/verbs/skills/setup/mc-setup/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-0097b0a41bffd53dce10abf3
+    resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
+  - id: openwiki-source-f1f8658bc93aa1e51c399e87
+    resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
   - id: openwiki-source-872ae27b171d1fd2858b2ce1
     resource: repo://mc/verbs/update_reconcile.go
   - id: openwiki-source-a2a135f3f8016d9eeb4be1d9
@@ -54,10 +60,10 @@ sources:
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-074a0c31b85dc048be2b3972
     resource: repo://runner/shared/project-cache.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T02:06:55.599Z
+    at: 2026-11-09T18:05:27.232Z
 ---
 
 # Project setup and environment lifecycle
@@ -156,6 +162,29 @@ After denial, it reports the actual capabilities of the current image.
 Both continuations require `complete`; further image improvements use the Environment page after import.
 Import completion does not prove that required development commands work.
 The [agent input page](../concepts/agent-input.md#setup-operation-input) identifies the brief and skills that carry these requirements.
+
+## Unavailable checks during task work
+
+The Worker and Verifier use the shared environment skill when a missing prerequisite prevents a required check.
+The role command skills select the task outcome.
+Preparation evidence preserves every skipped or unavailable check, including each `UNVERIFIED` entry.
+Dependency installation alone proves no dependent behavior.
+
+The Worker repairs source, tests, Workspace dependencies, or setup script defects within its task authority.
+For a prerequisite that Image dependencies can supply, it follows the environment proposal procedure and submits a checkpoint.
+The Worker commits the proposed Dockerfile and build files before that proposal.
+The Verifier returns CORRECT for these causes so the Worker can supply the repair or image proposal.
+The Verifier preserves the submitted dependency versions and recreates Workspace dependencies from those declarations.
+
+A criterion check or new or changed test requires an operator decision when no agent container has its required capability.
+An unavailable host check outside the criteria alone requires no decision or task run failure.
+This exception excludes new or changed tests, which must pass.
+Independent work and supported checks continue, and unavailable checks remain unverified.
+Separate release and host acceptance requirements retain their authority.
+
+`mc/verbs/platform_input_test.go` checks these procedures in delivered role input and shared skills.
+See [decision resolution](decision-resolution.md#role-input-and-unavailable-checks) for unclear causes and operator reports.
+The [test guide](../tests/checks-and-test-lanes.md#unavailable-checks) explains the required evidence and verdicts.
 
 ## Access during setup
 
