@@ -15,6 +15,7 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - The test release policy permits repeated versions and schema changes through the normal install path.
 - An update accepts a Project that uses the default Project image.
 - The release image checks run the Project image check of an update against the default Project image.
+- A restore starts the helper container of the previous release before it starts the services.
 
 ### Known limits
 
