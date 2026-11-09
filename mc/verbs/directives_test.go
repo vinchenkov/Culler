@@ -26,12 +26,8 @@ func TestFrozenRoleDirectivesCoverEverySpawnRole(t *testing.T) {
 		if err != nil {
 			t.Fatalf("%s: %v", role, err)
 		}
-		for _, required := range []string{
-			"Orchestrate by default", "read-only", "depth-1", "exactly one",
-		} {
-			if !strings.Contains(directive, required) {
-				t.Errorf("%s directive missing %q", role, required)
-			}
+		if !strings.Contains(directive, "exactly one") {
+			t.Errorf("The %s directive omits the single terminal requirement.", role)
 		}
 		if prior, duplicate := seen[directive]; duplicate {
 			t.Errorf("%s and %s share an undifferentiated directive", prior, role)
@@ -71,12 +67,7 @@ func TestPackagerDirectiveCarriesExplanationAndBrowserTools(t *testing.T) {
 	}
 }
 
-// TestDirectivesEncodeTheSelfOrchestrationContract pins the frozen content:
-// every directive names the same four-pattern menu and carries the escape
-// valve verbatim; the harness-family phrasing follows the default policy
-// (producing roles on claude-sdk use the exact trigger term "dynamic
-// workflow"; judging roles on codex select a named pattern in bounded
-// rounds).
+// The Strategist directive permits subagents without a fixed orchestration procedure.
 func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 	patterns := []string{
 		"Fanout-And-Synthesize",
@@ -84,12 +75,8 @@ func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 		"Generate-And-Filter",
 		"Tournament",
 	}
-	// The escape valve: the directive tells the role when not to spawn. Each
-	// directive states the condition in its own words, so only the
-	// instruction itself is pinned.
 	escapeValve := "do not spawn"
 	claudeSDK := []dispatch.Role{
-		dispatch.RoleStrategist,
 		dispatch.RoleWorker,
 		dispatch.RolePackager,
 	}
@@ -107,6 +94,11 @@ func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 	}
 	for _, role := range append(append([]dispatch.Role{}, claudeSDK...), codex...) {
 		directive := flat(role)
+		for _, required := range []string{"Orchestrate by default", "read-only", "depth-1"} {
+			if !strings.Contains(directive, required) {
+				t.Errorf("The %s directive omits %q.", role, required)
+			}
+		}
 		for _, p := range patterns {
 			if !strings.Contains(directive, p) {
 				t.Errorf("%s directive does not name the %s pattern", role, p)
@@ -145,32 +137,30 @@ func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 
 // The inline-execution reason belongs in the response before the terminal.
 // Separate instructions can require a completion report for test evidence.
-func TestProseLessTerminalsRecordInlineExceptionBeforeTheCall(t *testing.T) {
-	for _, role := range []dispatch.Role{dispatch.RoleWorker, dispatch.RoleStrategist} {
-		directive, err := directiveForRole(role)
-		if err != nil {
-			t.Fatalf("%s directive: %v", role, err)
+func TestWorkerRecordsInlineExceptionBeforeTheTerminal(t *testing.T) {
+	directive, err := directiveForRole(dispatch.RoleWorker)
+	if err != nil {
+		t.Fatal(err)
+	}
+	skill, err := RoleSkillFor(dispatch.RoleWorker)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
+		flat := strings.Join(strings.Fields(prose), " ")
+		if surface == "directive" && !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
+			t.Errorf("The Worker %s omits where to state the inline exception.", surface)
 		}
-		skill, err := RoleSkillFor(role)
-		if err != nil {
-			t.Fatalf("%s skill: %v", role, err)
-		}
-		for surface, prose := range map[string]string{"directive": directive, "skill": skill.Body} {
-			flat := strings.Join(strings.Fields(prose), " ")
-			if surface == "directive" && !strings.Contains(strings.ToLower(flat), "state the reason in your response before the terminal") {
-				t.Errorf("%s %s leaves the inline exception unrecordable", role, surface)
+		for _, paragraph := range strings.Split(prose, "\n\n") {
+			paragraph = strings.ToLower(strings.Join(strings.Fields(paragraph), " "))
+			if !strings.Contains(paragraph, "inline") && !strings.Contains(paragraph, "orchestrat") && !strings.Contains(paragraph, "state the reason") {
+				continue
 			}
-			for _, paragraph := range strings.Split(prose, "\n\n") {
-				paragraph = strings.ToLower(strings.Join(strings.Fields(paragraph), " "))
-				if !strings.Contains(paragraph, "inline") && !strings.Contains(paragraph, "orchestrat") && !strings.Contains(paragraph, "state the reason") {
-					continue
-				}
-				for _, impossible := range []string{
-					"in the terminal report", "in the completion report", "proposal's own prose",
-				} {
-					if strings.Contains(paragraph, impossible) {
-						t.Errorf("%s %s sends the inline note through unavailable channel %q", role, surface, impossible)
-					}
+			for _, impossible := range []string{
+				"in the terminal report", "in the completion report", "proposal's own prose",
+			} {
+				if strings.Contains(paragraph, impossible) {
+					t.Errorf("The Worker %s requires an unavailable report: %q.", surface, impossible)
 				}
 			}
 		}
@@ -369,7 +359,7 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 			}
 		}
 	}
-	for _, want := range []string{"in this run's Project", "Each subagent reads repositories only for this Project"} {
+	for _, want := range []string{"from this project's repository evidence", "Each task delivers one Git commit to the Project repository."} {
 		if !strings.Contains(flat(propose), want) {
 			t.Errorf("propose directive omits %q", want)
 		}
@@ -578,9 +568,6 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 			continue
 		}
 		if role == dispatch.RoleStrategist {
-			requireAgentText(t, "strategist dependency pointer", directive, []string{
-				"Before research uses Project dependencies, read the Research dependencies procedure in the mc-strategist skill.",
-			}, nil)
 			requireAgentText(t, "strategist dependency procedure", roleSkillBody(t, role, "mc-strategist"), []string{
 				"This run omits automatic dependency preparation.",
 				"Check retained dependencies against the current declarations and the selected image before use.",
