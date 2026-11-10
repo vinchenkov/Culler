@@ -41,7 +41,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # Decision Pending and requirements revisions

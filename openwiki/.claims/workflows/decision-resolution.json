@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1275360744b330ff62c2c51595e8e2eee9048e98e98f381c1047c35c1280de02",
+  "pageVersion": "sha256:d4e5c58a52a3bfb6baae6aedb191dd8374af24fe0716de1d03c3e62ee605468e",
   "claims": [
     {
       "id": "claim_ad4f33e8a02c4cbd8f42ca9a4af54d0c",
@@ -178,15 +178,15 @@
     },
     {
       "id": "claim_282c8a803e4a4b898df3ae4b7084c915",
-      "statement": "The Arbiter operator decision procedure requires the question and its effect on a verdict; the default report covers the pool and --affected selects a subset.",
+      "statement": "The Arbiter decision report states why a verdict needs an operator decision. It covers the assigned pool unless --affected selects a subset.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/arbiter.md#L47-L54",
-          "version": "repo-lines-v1:sha256:85216f5d4ea7b78678ceb38694fcff15b318ada17207e8e79ca11bf6160901a6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDA3MWUxNDA0OGJkZTJjMTc0NmJkZTFmNDRkZjJhNmExODYwNWUzMjQ1OTE1ODhhMzhiMTg3ZjdlMmU1ZTIwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYzc4M2Y1YWJlNGIyN2Q2OWY1N2NkODIzZjNmYTI0MjE1MjEzZTczYThmM2E0ZmEyMDdmYzc4NmRhMzQ4MiJ9"
+          "resource": "repo://mc/verbs/directives/arbiter.md#L47-L53",
+          "version": "repo-lines-v1:sha256:5e411d36ecc9c9a78e769ee2c788f94f134c0b5b1d06253fcaf55206efcfe48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBlZmE3Njg5NjcyNTJjYTNhYzlkN2YwYWIzYWRmZDcwNWVmYzE3YzRlNGQ3NmJlY2FlMzM0YjE0ZDljOWYwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZiMDg4NDg2ODM0NWRiYzg3MTM2MmY1ZDI0ZmUwMjI1NzI3N2QwYzgzOTE3NWJlYjc5ODJhZWZkZmJiMDA4MyJ9"
         },
         {
           "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L53-L65",
-          "version": "repo-lines-v1:sha256:a3bf49cb14eb551cd13ba32c8a24e4f30a59f881c222d01d143e8e0f5e3e4876:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNTk0NzVlZTU5NTVhMGFhZWQyMGJiYTI5YmQyZDFiZmRkNzcxZGQyNjFlMGMyODRiNTNkYTYxZGVlOGFmZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNjQyODY5ZGVjNzViNDMxNmE0MThlMWE3ODNmYmFjYWRkYzQ2YjUyOWMxNDAxOWE5ODRlOWY1OTg1ZjViNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1N2Y3ZGYwMzQxYzk5ZjU1MzVkZjNhZDI4NGNlMzg4NzNjOTIzNmQzZDNiODMxNDcyMzNkNzdjMTA2OWFkNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzZTE2MWFlOTI3NDdiZmFhMWE0YjZjOTAxNGQzYjg1MjIzM2E1MjUwNmYyMDQ4MWMwZDM4OWM5NjJmMzM5MTgifQ"
+          "version": "repo-lines-v1:sha256:a3bf49cb14eb551cd13ba32c8a24e4f30a59f881c222d01d143e8e0f5e3e4876:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNTk0NzVlZTU5NTVhMGFhZWQyMGJiYTI5YmQyZDFiZmRkNzcxZGQyNjFlMGMyODRiNTNkYTYxZGVlOGFmZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNjQyODY5ZGVjNzViNDMxNmE0MThlMWE3ODNmYmFjYWRkYzQ2YjUyOWMxNDAxOWE5ODRlOWY1OTg1ZjViNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMzExOWUyYjFjYjFiNmUzNGFmOTVjMGQ4M2ZlOWZhZGYxMmY4YWNlNDk3MmYwODYzZjVjZmQ4NzQyNDk2ZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzZTE2MWFlOTI3NDdiZmFhMWE0YjZjOTAxNGQzYjg1MjIzM2E1MjUwNmYyMDQ4MWMwZDM4OWM5NjJmMzM5MTgifQ"
         }
       ]
     },
@@ -227,6 +227,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T01:41:54.063Z"
+    "at": "2026-11-10T02:41:58.373Z"
   }
 }

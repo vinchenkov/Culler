@@ -76,10 +76,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:51:03.964Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -182,9 +182,7 @@ The command skill also defines the verdict payload and permitted reads.
 Those reads cover tasks, activity, and Projects.
 The task list omits descriptions; an individual task read supplies absent scope.
 
-Two directive references lack the matching Arbiter procedure location.
-The Cases list names **Research dependencies**, but `mc-arbiter` contains no section with that name.
-The customization paragraph points to `mc-strategist`; the Arbiter conflict procedure resides in `mc-arbiter`.
+The customization paragraph points to the Project role customization procedure in `mc-arbiter`.
 The shared `project-environment-setup` skill supplies dependency requirements within the role command authority.
 `RoleSkillSet` delivers `mc-arbiter` with the shared skills.
 The generated pointer in `mc/verbs/directives.go` requires a read before the first command and before the terminal.
@@ -253,7 +251,7 @@ The directive and command skill supply the procedures that use these facts.
 `trimArbiterBrief` omits the Agent credentials and Failure controls parts from the Arbiter brief.
 It retains the pool, active descriptions, task history, environment identifiers, repository path, custom instructions, proposal resolutions, and accepted Vision.
 Its concise explanations identify the supplied data; the directive and skill define review procedures.
-The Proposed pool explanation defines `priority` as proposer urgency.
+The Proposed pool explanation defines `priority` as the task priority that the operator sets.
 The value -1 means expedited work; 0 through 3 mean P0 through P3.
 The Proposal decisions explanation requires application of each relevant operator resolution.
 

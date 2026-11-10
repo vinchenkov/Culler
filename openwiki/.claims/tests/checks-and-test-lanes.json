@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a03510a1f9b091a345894a26d9854fa0d917f38b7c45abf7fc94947f63b96977",
+  "pageVersion": "sha256:9ce711407f3dd45d3955fb8a0175eae0ae148ee7c885f2624768d0eed7eb95bc",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -1133,10 +1133,54 @@
           "version": "repo-lines-v1:sha256:6339069dc988c1093544d0885e08ff74dc7c55937c8152cc49a13e8052d72afc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzYzY4YTljMTA1YjNiMGY0ODZlOGNkY2JhZGEzYjhkODM1NDY0ZDg0ZGMwZDJlNmQ2ZjE0Njg0NmU5YWM2NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YzBkZjg2NmM5NmJlZjQ2ZjJiNWEwNTU2OTFhMzhlMmZiZGE3MzdlMjA3OTYyZDkwZDFmNzY5MDdjYmU4MDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZDE4ODMwYWUyMTg3NmFhMGFjZmZjYjgxOTg3YjE3YzQ3YjE1ZGZlM2M3ODEzMTMwZTBjNDA4MzRmNDVhYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0NjNlMjdhNDdkZWUxZjMxOWVkOWU1NGNiZTMwZDM3ZTMxOGUxOGUyNjRiMjg3MjZhZGZmZjBiZjAxMWIyZGIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_ecff81befe904336845eff40492f9f12",
+      "statement": "The dispatch priority tests cover task priority, repairs after approval, prior Worker runs, and packet eligibility at review capacity.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch_phase2_test.go#L98-L110",
+          "version": "repo-lines-v1:sha256:b0db66df1987719a6910ba52cf1d974120817c5bd399fb8f120df862e8fb7ae9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NGRjN2Q3ZWVkYzhlYTEwZTljYWNlYWQzM2MwOTc4NTIyODIwMDE1ZmE0NDI2MDJhYWU5MWI2MTk1ZWY4MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMmJmNDgwMjU1M2ZmYmU2ZTNjZDlhOTgxYTdkY2Y0MjM2ODE1NzZlNTNlNzY1MDBjMTgxN2U4MmZlZDMzMGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkZTc1N2VjOTc5YmFkNGYzOGU0MWEzMGFjNWE3Y2ViNTdlNGEzZmYxZTE1Y2E0ZWEzZDA2OTE0YzI3ZTU3MTUifQ"
+        },
+        {
+          "resource": "repo://mc/dispatch/priority_test.go#L156-L193",
+          "version": "repo-lines-v1:sha256:a9adb9dbe260969356b46936f67539f1d65a7e4df0ef7f2045042890eab70ac5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0NDEzZTZjYTEyYTE5YTc1NjYxMjgwMjFlYzUzNmYxN2M4NjlkOGE0N2IyNGE0ODQ4MzRjOTY4MTFhNTk4NjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjYTliNWE5N2IzOWUwNDMzZGY4ZjkyZmQ4MzA5NzI5NzczNDE1YTNmN2IwOTAxZmY2NzhhM2I4MGZiZTM0NTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7894886f52dc4b4f9fb9abfddd63759a",
+      "statement": "The delivery record test checks retained order facts across approval, repeated merge conflicts, successful repair, and operator revision.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/dispatchorder_test.go#L11-L63",
+          "version": "repo-lines-v1:sha256:f1a42e41975224722aad27b19cc8fd40c0db98701c29cbd22ce15ef1b783436e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NjZkODkyOWQxZGZmNjg4NTM2MTU5NWFjMDhjNzEzNDUxMWVhODRjYjEzZWJiNjczMmMwNzkzMjVjNDU0NzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMWRiMWQzZmU0ZjViOTgwZmU3OGY1NDZjMjc5YzUwZmQwNzk4ZGNiMzYyMzM2NDk1MTMwYmUzMGFjMDBkNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e8b0b5c8283b434cb0e20990e8fc5b2e",
+      "statement": "The Strategist command test rejects a proposal priority and then accepts proposals at priority 2.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/cli_test.go#L2435-L2469",
+          "version": "repo-lines-v1:sha256:7206df0464e0a9a5eacc0eaf5cd5d31c9b66fe96ab3dcdd0ea4485c2a1ed8442:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZTA2NzZlNTEzM2I3ZjUyMGU2MjMwOTY2ODdmMTFhNThkYWE0MzMwNGFjNmI1NjZhNjRmNWZhMzIwMjc4YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMTk4YjJmOTQ0OGY1YzI3YjI3ZGM4ZTY0MDNjMTJmYzFiYjlmZjY5YjM4NjlhZGM0NWMxMDE5OTRjOTA0NDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1953ec52caad4f0a8124edc834576c44",
+      "statement": "The dispatch workflow test starts a higher-priority task before a merge repair.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/dispatchcorrection_test.go#L238-L250",
+          "version": "repo-lines-v1:sha256:10522dae3437a573b80786123d50963eb4335d5d32b795e37ce0445267fe121c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NmE4NjcwNGVmMTQ5NzUzOGQ0ZWFmMjViYTdkMzJiMTdjOGU0ZTIxYjQ5OWUxYmEyMmNjNmQwNDc4OGVjYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1NzRhNjUzODk2NDc2NjAxNjgwNmNkMGM5OGU3NDZiOWE5NzM0NjA3Y2FjZGRjMmJmNzc1ZGVjNzNmNDc3ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3MTAwM2QxNzI4ZmQ3MzljNDdmODViMzVmZjY3YTJhMDUyNDNlYzJmNzA5NjY4ZWU3ODkwNTA4ODgwNmUwNmYifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T01:41:54.063Z"
+    "at": "2026-11-10T02:41:58.373Z"
   }
 }

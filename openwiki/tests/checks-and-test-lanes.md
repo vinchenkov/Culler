@@ -44,6 +44,8 @@ sources:
     resource: repo://mc/check.sh
   - id: openwiki-source-54e7de3880f31c0fd5089921
     resource: repo://mc/cmd/mc/arbiter_criteria_test.go
+  - id: openwiki-source-a7ca3be58a8971f19014beb8
+    resource: repo://mc/cmd/mc/cli_test.go
   - id: openwiki-source-d9949d9a9d2f424493fa411e
     resource: repo://mc/cmd/mc/culler_prod_test.go
   - id: openwiki-source-e43cd30f2cb134a8cbad79f9
@@ -86,6 +88,10 @@ sources:
     resource: repo://mc/deployment/runtimeauth_verifier_test.go
   - id: openwiki-source-f7942d03e00cb4bf890dfd6f
     resource: repo://mc/deployment/update_checkpoint_docker_test.go
+  - id: openwiki-source-8cdaa71a8672d00c472d655b
+    resource: repo://mc/dispatch/dispatch_phase2_test.go
+  - id: openwiki-source-9f9aa8c7d686dddb13c6a5b9
+    resource: repo://mc/dispatch/priority_test.go
   - id: openwiki-source-4df7c93afbb316f003a94e95
     resource: repo://mc/distribution/record.go
   - id: openwiki-source-587a5c662cbe23556b5136d7
@@ -112,6 +118,10 @@ sources:
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
     resource: repo://mc/verbs/directives/verifier.md
+  - id: openwiki-source-117392b618e5fbf773f5eb79
+    resource: repo://mc/verbs/dispatchcorrection_test.go
+  - id: openwiki-source-58989c94d2eb04ff452f5b9d
+    resource: repo://mc/verbs/dispatchorder_test.go
   - id: openwiki-source-6a1e391719e8dc303420ffc3
     resource: repo://mc/verbs/dispatchverb_test.go
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
@@ -166,10 +176,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -344,7 +354,7 @@ The Arbiter input test checks the required exception for each rejection in an al
 It also rejects fixed orchestration text and a Research dependencies section in the combined brief and command skill.
 The dependency test in `directives_test.go` excludes the Arbiter from its role-specific dependency assertions.
 Its customization test checks the contract boundary and procedure pointer text, but does not check the named skill.
-See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) for the source references that lack matching procedure locations.
+See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) for the current procedure locations.
 These checks establish delivered instruction content and payload preservation; they do not prove an agent's review quality.
 
 The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
@@ -361,6 +371,26 @@ A blocked proposal after the pool snapshot tests transaction rollback.
 A separate test permits an ordinary all-reject batch when other work remains ready.
 `mc/cmd/mc/cli_test.go` retains checks for duplicate reference validation.
 These statements describe test assertions, not test execution during this wiki update.
+
+## Task priority checks
+
+The dispatch tests check the next eligible run within one Project.
+They distinguish task priority from the precedence of an operator approval.
+
+| Source | Behavior checked |
+| --- | --- |
+| `mc/dispatch/priority_test.go` | Higher task priority precedes later stages and merge repairs. Equal priorities favor repairs after approval, then tasks that received a Worker run. |
+| `mc/dispatch/dispatch_phase2_test.go` | Priority precedes stage among tasks with live packets at review capacity. |
+| `mc/dispatch/dispatch_test.go` | The order retains stage, age, and task number as later comparisons. |
+| `mc/verbs/dispatchorder_test.go` | Delivery records distinguish initial work, repairs before and after approval, repeated conflicts, completed repairs, and operator revisions. |
+| `mc/verbs/dispatchcorrection_test.go` | A higher priority starts before a merge repair through the actual dispatch and repository workflow. |
+| `mc/cmd/mc/cli_test.go` | A Strategist proposal with `priority` fails. A valid batch then creates proposals at priority 2 and releases the lease. |
+
+`TestNextAgentRunOrder` checks that a live packet remains necessary at review capacity, even for an expedited task.
+`TestApprovalReservesTheProject` checks approved merge precedence over an expedited task.
+`TestACorrectionPreservesTheActiveRunAndPause` checks the active lease and explicit pause.
+These are source-defined checks. This wiki update reports no fresh execution of these tests.
+See [dispatch priority rules](../workflows/dispatch-and-tick-loop.md#priority-rules) for the complete order and its retained facts.
 
 ## Opt-in lanes
 

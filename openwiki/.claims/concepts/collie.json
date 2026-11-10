@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b5fc551c976982f09a82ca42a28ff2ef65082ceda91ab07550e90fd05be128ff",
+  "pageVersion": "sha256:af4264442c0fe4b17c6f5a85f550352ef9879acaba52885e8edb43d173a3e460",
   "claims": [
     {
       "id": "claim_d0901f87144148f29fca692817e602f8",
@@ -185,7 +185,7 @@
       "statement": "The Collie command skill keeps system diagnostic history host-only and requires disclosure of evidence outside permitted reads.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L378-L388",
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L380-L390",
           "version": "repo-lines-v1:sha256:666b01bb2f7cc1dc73be1f6193b3f37da684c00079d35ec5eccc580c5866c6d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1YTlmNzBlYTg4ZTA3OWY1MzIwMDExZWZiMDFjMDcyOTY3OTQ2ZjgwNjVlNTNhYjZkNGE4MDRlMWFlYTU5ZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYjYxNjU1NmU3M2Y0ZTVlMTgxNDZmNDY0NWEyNzJhMTY5ZTU4MjBiYWMzMTU4NjM2YTM3MzJiYmVkNGEzMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNmNmMGIzYTZlNDRiYzRmZTE1NmYzMDk2NzIxZDc3MWY0MmUyNjdkZWJiYTNmMjZlNTA2YjI5NWRjMWUzMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMjM3OWMzODllYzM1NDkwNGJiNTY2ODQyNTliOGVlMjMwNmY0ZGJkMTIzN2QwYzhlNjBkNWIxMjU5MzIyYTUifQ"
         }
       ]
@@ -213,7 +213,7 @@
           "version": "repo-lines-v1:sha256:5e620b673e4f179553499d2a9dc9fd9488a01683487ef2b1be1d2c96ea8a41bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMTkyOWY2MDZlNjU1ZDljZGNiZjdmNWZlNzYyOTIzZmJkNjQxZDA3NzJjMjUyOTdkODNlODA3NjYzM2Y4ZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlOTcxYWZjZTFlNzllNmQyY2VhNjZiZjhmMzNhNjAxMDVlYzU3ZWFiNGQyOWZlN2ViNjFlMWQzZTExMzg2NjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3YzEyOTYwYTAxZTc1MTMxNDU1NDhlZmJiMTM5MWFhYmFkMjhiOGYyODgwMzk4OGU2YTdlMjZiYjJmNTkwMDEifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L536-L578",
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L538-L580",
           "version": "repo-lines-v1:sha256:9e3c2b842044bb1603eada5f149bc4aa6d313ee60547ad63b92e7ffae2c4236a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMWQyYWFjMjJiOTQ5M2M0N2UwNzU5OWU4ZmYwY2MyZjkzMDlmNTRmYjMzYjNjNmJhYmU1YjUyYWU5NGMzNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NDljN2ZkYjc3YTNmNjY3NjliZmQxMDIyOTcyMzQ2NmFhNTk1Y2Q3NzMwMGFiYWNkMGRkN2ZjMmJhOTEzYmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2ODA3ZGI2Y2RhZGFlYjFjMzBmMTBjZTQwMzQ1YjQyNzIxMjRlN2UyMGIzMmQzNTIzYWYxMGIwYmFhMTcxMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmZDA0Yjc4NThjODk4N2I4Yjc0N2E1MGMyNzRkOGJmYTUzYzEyZmUzNmFlMzY0MWY2YWQ3OTZmNjNkYTM3NDgifQ"
         }
       ]
@@ -325,10 +325,30 @@
           "version": "repo-lines-v1:sha256:e7b94e95ca4734294809373096bc8526ddfad0fb6c86b9e514bbe35e8a2831a6:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYjRlNzc1M2RmNDUwZjg5NDgxZDFkNzM1YTQ1YWRhNWU0YzFlZmE1MzMzN2NhNTQ0MzRlMmI5OTdmMmNkYjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMWRiMWQzZmU0ZjViOTgwZmU3OGY1NDZjMjc5YzUwZmQwNzk4ZGNiMzYyMzM2NDk1MTMwYmUzMGFjMDBkNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_500549abd7844df089a9ea51b02a1267",
+      "statement": "The Collie command skill gives task priority 2 by default and preserves active runs, approved merges, review capacity, and required branch updates.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L141-L147",
+          "version": "repo-lines-v1:sha256:bc563e4d88dbd577d1948e6586d03e5ef4e6ff41407ef19f1f96dec1d06e4984:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzUwMTBlY2RlYmIwNGY4NWFlYmFiZTdiMjA4NWRiMmZlMzkwMWY2Mjg1YTQ1NzM5N2M5OWQ4NzdmY2I3NGI1OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjYzMGY3OGZiNDIzODkwOWRiNGM0N2JhY2JiZTI3MWJiNmRkNzc0ZmZhNTM4MzZlNTMxNDI3OTBmNzliNzM2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWQyNTcxNTRjMDI4ZDVhMGUzYWQzMjI0OTdkODk5MmVlMmVjNTY5NmNmZWFlMWE1OGY0MTUxNTM2YWFmNGYyOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDBkODFjNWJiMDIxZjMxNjNmMTAzNjY0YzVjZTY5YzRhMTQwZmM0ZDczMjczYTdhNzQ1ZGVkNmM2MzNkMjcyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6bdf713e6b9147f68f1a15e75568c753",
+      "statement": "Eligible tasks share one priority order at review capacity and below it.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L550-L622",
+          "version": "repo-lines-v1:sha256:2ee0145c124542df8f3d92dcba71f33224ff1456cbc55972e8f2e9aead1a94ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlYjA4Mzk0OGU3N2YyZTZiZTBhY2FiYjAyN2Q5YjYyYmYxYjFhODllMmViMjY2YWNlYmY4N2FiOGM0YWQ0ZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlZWFiMDZkZDVlZTdiZTk0MTA0YTJjYzEwYzRjMDMyZDAzZWM3ZjI3NDBlY2MyMGQxY2FmNmZjMDczMTNkMzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkYjFkNmFjMGIzNDVlYTY2NmM1MTJiOWY2YTMxYjQ0OWE4MjJjN2Y2YTQwZWUxZTE0NWQxNGNkZjYxN2QwNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzNzI4N2NjOWEyYzljMzhjNmNlMjk3NGJmODNjMDNkNjhmOTgxYjU4ZTZjMDYyYTc1YmQwOGEyY2U3YzVmMzEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-10T02:41:58.373Z"
   }
 }

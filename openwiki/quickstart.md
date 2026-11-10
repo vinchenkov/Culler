@@ -46,6 +46,8 @@ sources:
     resource: repo://INSTALL.md
   - id: openwiki-source-8887a56335011659b61b947b
     resource: repo://mc/cmd/mc/candidate-runtime-check.sh
+  - id: openwiki-source-a7ca3be58a8971f19014beb8
+    resource: repo://mc/cmd/mc/cli_test.go
   - id: openwiki-source-b7fbb75b893eadf967f11537
     resource: repo://mc/cmd/mc/setup_agents_prod.go
   - id: openwiki-source-ae83eaa3edce8d9e15735e02
@@ -60,6 +62,10 @@ sources:
     resource: repo://mc/deployment/agentprofile_auth.go
   - id: openwiki-source-a4b6d508300704786e4ce1a2
     resource: repo://mc/dispatch/delivery.go
+  - id: openwiki-source-b578a24182c530b5d8630c21
+    resource: repo://mc/dispatch/dispatch.go
+  - id: openwiki-source-4470a63a5128bc251c50ad5e
+    resource: repo://mc/dispatch/README.md
   - id: openwiki-source-45770f873ba593d4d685f66f
     resource: repo://mc/substrate/substrate.go
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
@@ -102,10 +108,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # Culler quickstart
@@ -265,9 +271,13 @@ Each proposal uses repository evidence, excludes equivalent work, and states sco
 The Strategist starts with a useful result, checks existing capabilities, and considers the full cost and risk.
 Each proposal explains why its result matters to the Project now.
 Only the Arbiter selects proposals for development.
+Proposals enter at priority 2. The operator controls task priority, and the Strategist proposal schema rejects priority values.
 The [Strategist input guide](concepts/agent-input.md#strategist-instructions-and-procedures) identifies the directive, brief, and command procedures.
 The [role instruction checks](tests/checks-and-test-lanes.md#role-instruction-checks) explain their test coverage.
-An operator approval gives its task Project priority. An open correction receives preference without that Project priority.
+An operator approval gives its task Project priority.
+Otherwise, eligible tasks follow task priority, then repairs after approval, prior Worker runs, stage, age, and task number.
+At review capacity, only tasks with a live packet can proceed through that order.
+A priority change preserves an active agent run.
 See the [task pipeline](workflows/task-pipeline.md) and [dispatch](workflows/dispatch-and-tick-loop.md) for the exact controls.
 
 For this repository, `Dockerfile.culler-project` supplies `/private/tmp` and the `/usr/bin/git` path required by repository checks.

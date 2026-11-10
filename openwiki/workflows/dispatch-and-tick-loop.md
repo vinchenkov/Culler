@@ -10,6 +10,10 @@ sources:
     resource: repo://mc/dispatch/dispatch.go
   - id: openwiki-source-4470a63a5128bc251c50ad5e
     resource: repo://mc/dispatch/README.md
+  - id: openwiki-source-74d6ad23a2a8895d737d9013
+    resource: repo://mc/verbs/delivery.go
+  - id: openwiki-source-58989c94d2eb04ff452f5b9d
+    resource: repo://mc/verbs/dispatchorder_test.go
   - id: openwiki-source-c78a55ff7e0637dd368cb5fd
     resource: repo://mc/verbs/dispatchseam.go
   - id: openwiki-source-d5b0d35c57d0012e3c02877e
@@ -26,10 +30,10 @@ sources:
     resource: repo://resident/src/nudge-socket.ts
   - id: openwiki-source-79628d0b1a3667fb37eebff9
     resource: repo://resident/src/tick-loop.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # Dispatch and the resident tick loop
@@ -68,18 +72,52 @@ The decision order inside `Decide`:
 2. **Project gates.** A paused or archived Project returns `project-inactive`. Update recovery returns `repository-operation`. An environment condition holds new work. Three Project infrastructure failures return `project-infrastructure-exhausted`. A future Project retry time returns `project-infrastructure-retry-wait`. A task with a future retry time is marked execution-held.
 3. **Vision and attention.** No valid `VISION.md` returns `vision-required`. Three or more attention tasks return `attention-required`.
 4. **Repository holds.** An active or due repository operation that holds agent runs returns `repository-operation`.
-5. **Selection** in `decideAgentRun`: an approved priority task first, then open corrections, then the review queue cap, then the next dispatchable task. A pending proposal decision returns `proposal-decision-pending`. If nothing is dispatchable, `Decide` spawns `strategist(propose)` with the 20 most recently rejected titles.
+5. **Selection** in `decideAgentRun`: an approved task takes precedence, then review capacity limits the eligible tasks. Task priority orders the eligible tasks. A pending proposal decision returns `proposal-decision-pending` when no task can proceed. Otherwise, an available Strategist receives the next run when no task can proceed.
 
 The lease timeout and deadlines compare VM uptime, not wall time. Host sleep therefore uses none of a run's time budget. The container-gone check uses only host-measured launch age, and absent evidence never reaps. A wrong reap destroys live work; a missed reap costs one tick.
 
 ### Priority rules
 
-- `priorityTask` in `mc/dispatch/delivery.go` picks the approved task with the lowest task id. While such a task exists, `priorityAction` restricts selection to that task.
-- `lessNextDispatch` orders ordinary candidates: the expedite lane (priority -1) first, then the furthest pipeline stage, then priority (P0 before P3), then age, then id.
-- At the review cap, `inFlightRevision` still advances tasks that already hold a live packet.
-- `spawnFor` maps status to role: Proposed to `arbiter` (with the whole proposed pool), Seeded to `worker`, Worked to `verifier`, Verified to `packager`.
+`priorityTask` in `mc/dispatch/delivery.go` selects the approved task with the smallest task number.
+While that task remains approved, `priorityAction` restricts agent selection to it.
+Its approved merge retains precedence over expedited work.
+A merge repair clears the task approval, so the task returns to the ordinary selection rules.
 
-The tests in `mc/dispatch/priority_test.go` cover approval priority and correction order.
+Without an approved task, `lessNextDispatch` compares eligible tasks in this order:
+
+1. The task priority: expedited (-1), then P0 through P3.
+2. An open merge repair after approval, before other tasks of that priority.
+3. A task that received a Worker run, before a task without one.
+4. The furthest pipeline stage.
+5. The older task, then the smaller task number.
+
+A Seeded P1 task therefore precedes a Verified P2 task.
+An open correction follows the same comparisons. Higher task priority precedes a correction or merge repair.
+The active lease remains in effect after a priority change, so an active agent run continues.
+
+At review capacity, `inFlightRevision` considers only tasks with a packet that is neither archived nor superseded.
+It applies the same comparison order to those tasks.
+An expedited task without a live packet waits even when it received a Worker run.
+This rule preserves the review slots that revisions already occupy.
+Blocked, stalled, archived, or execution-held tasks remain ineligible.
+
+`spawnFor` maps Proposed to Arbiter, Seeded to Worker, Worked to Verifier, and Verified to Packager.
+An Arbiter assignment contains the whole proposed pool.
+The tests in `mc/dispatch/priority_test.go` cover approval precedence, task order, active leases, and review capacity.
+`mc/dispatch/dispatch_phase2_test.go` checks priority before stage at review capacity.
+
+### Retained task facts
+
+`loadDeliveryRecords` in `mc/verbs/delivery.go` derives two facts from the spine for dispatch:
+
+- `WorkStarted` is true when the task has its first Worker base commit.
+- `RepairAfterApproval` is true when a correction remains open and the current review packet has a recorded approval.
+
+A merge repair clears the task approval but keeps that packet.
+The retained decision therefore identifies a repair after approval through repeated conflicts.
+A completed repair clears this preference. An operator packet revision alone does not create it.
+`mc/verbs/dispatchorder_test.go` checks these facts across actual delivery transitions.
+See [Git delivery](git-delivery.md) for retained commits, packets, and merge recovery.
 
 ### Per-Project leases
 
@@ -95,7 +133,13 @@ Each round has three steps (`mc/verbs/dispatchseam.go`):
 - **Attest** (`dispatchAttest`) runs with no spine lock held. It re-reads the deployment mirror, loads runtime authority from config, parses `routing.md`, resolves the role route, and attests the mount plan. Host-file faults become classified refusals, not errors. `dispatchRecheckAttestation` repeats the attestation right before commit; any drift becomes a stale refusal.
 - **Commit** (`dispatchCommit`) takes a fresh flock and transaction. It re-selects with its own clock, rebuilds the canonical projection, and requires the token to match byte for byte. A changed token is `stale`; a different reselected candidate is `candidate_mismatch`. Both are inert. Only then does `applySpawn` claim the lease and build the spawn effect. `deriveDispatchKey` binds the token and the canonical action into an idempotency key, and the receipt makes a retried request replay rather than claim twice.
 
-The canonical structs at the top of `dispatchseam.go` are a frozen wire contract: closed structs in declared field order, sorted collections, explicit zero values, no maps or floats. Wall-clock time is deliberately excluded from the projection. Any shape change bumps the action version and the dispatch-key domain (currently `MC-DISPATCH-ACTION-V10`). Golden vectors in `mc/verbs/dispatchseam_test.go` (`TestDispatchSeamCanonicalPrepareGoldenVector`, `TestDispatchSeamDispatchKeyDerivation`) pin the shapes.
+The canonical structs at the top of `dispatchseam.go` define the wire contract.
+They use closed structs, declared field order, sorted collections, and explicit zero values where required.
+The projection excludes maps, floats, and wall-clock time.
+`canonicalDelivery` includes `version_id`, `work_started`, and `repair_after_approval`; the two Boolean fields omit false values.
+The preparation token therefore includes the retained facts that affect task order.
+The dispatch-key domain is `MC-DISPATCH-ACTION-V10`.
+Golden vectors in `mc/verbs/dispatchseam_test.go` check canonical preparation and key derivation.
 
 In production, the same seam crosses a process boundary. `mc/verbs/dispatchprivate.go` defines closed frames (`PrivateDispatchPlanRequest`, `PrivateDispatchPrepareRequest`, `PrivateDispatchCommitRequest`) that the host broker in `mc/cmd/mc/private_dispatch.go` exchanges with the helper through `__dispatch-plan`, `__dispatch-prepare`, and `__dispatch-commit`. The prepare frame carries the host's `PipelineLiveness` observation. The resident collects it with `collectPipelineLiveness` (`resident/src/pipeline-liveness.ts`), wired in through `execMcVia` in `resident/src/resident-control.ts`.
 
@@ -156,8 +200,7 @@ The wiki round repeats container stop requests until the host confirms the stop.
 Wiki failures use no task or Project allowance.
 See [wiki updates and viewers](../integrations/openwiki-and-viewers.md) for due conditions and completion checks.
 
-An open correction receives the next eligible run when no approved priority task holds the Project.
-That correction does not restrict the Project's merge lane as an approval does.
+An open correction follows the task priority rules and leaves other tasks' merge steps eligible.
 Required receipt recovery preserves the destination during a pause.
 An unfinished wiki merge authorization holds task merge steps until recovery resolves it; it does not hold new agent runs.
 

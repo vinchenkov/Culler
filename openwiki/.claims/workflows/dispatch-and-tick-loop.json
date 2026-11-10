@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3a27e18e1457b19983006a2dd364e494f3139768de95659ca667d72bbd05f33b",
+  "pageVersion": "sha256:8b4deddbe00c5d1437c08637b136e421334d2b415ddcd3693b5bdb61908d82a9",
   "claims": [
     {
       "id": "claim_4665dd1d847544b8aca52a0ff841277e",
@@ -27,18 +27,18 @@
       "statement": "TickOrder returns every Project id in sorted order, including inactive Projects, because a reap can apply there.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L447-L456",
+          "resource": "repo://mc/dispatch/dispatch.go#L441-L450",
           "version": "repo-lines-v1:sha256:888847658b3a22e0e7d751c2e249a5d2d035ec9f7fff5f87b5cf0012cf286035:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNTI4ZDk3ZmEwZjdjYTUxYTk0NmI5ZTllYTMyMWY3NTdmYmFjMDY1NzM5ZWE0Nzg3NGVlZjkyZjBjNTBhMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxNmI2YmUyY2ZjNzcxMGMzMThkMjU1YTJlMmUyMjk4NGEyZjc4NDkwNzljY2NhZTFhZDcyMTFmZmI1Yzc5MjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzM2YwNWU1ZGU3M2UyZWI4OWUxNGFmZWZlY2U4YzUwMTQ2MDIyZGMyNGU0YzYwOTc1MmU3ZjM3N2U0NjA2ZDcifQ"
         }
       ]
     },
     {
       "id": "claim_3340724dd3bf4277aa0aee898246eb9e",
-      "statement": "Ordinary dispatch candidates are ordered expedite lane first, then furthest stage, then priority, then age, then id.",
+      "statement": "Eligible tasks follow task priority, repair after approval, prior Worker run, furthest stage, age, and task number, in that order.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L622-L637",
-          "version": "repo-lines-v1:sha256:5f78caffb2bc1cc12f33b53960932110ac8ac9289a66d425269d9ad05e3b627f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZWZlZWRmZDM0MGEzMGNjMzU3YjVkNTZiYmMxNmU0NGJlYmUwODc4Yzk2OGYzMmEwMGE5YmI5NWRkNWI0Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3ZjZkNjM0NjEyNTA1MGYyNDMxMjEyMWNiYjNhMjZlOWJiODA0NDg1NDhkMTFlNWViYjkzZjRiZDA2NjhmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmYWFjMzY2NDRiMWJmNmYwN2ZhOTI1MjMyMGJiNjY2NzcxNGNmY2U4MDViMzlkMjU5MTZlYjJkZGI5YTY2NzcifQ"
+          "resource": "repo://mc/dispatch/dispatch.go#L602-L623",
+          "version": "repo-lines-v1:sha256:dec5bde95c09efdf6c9ea9892b00226bfdb7efc2bdaba7e5298777432eb803c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhYTFiMTVmNjY2MGUyMDY3NjdjNDkyNDE1MzNhZmZlMGExNmJhMjMzMzc3MjI3ZjlmMjNlMGU5ZDk2N2Q3MjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3ZjZkNjM0NjEyNTA1MGYyNDMxMjEyMWNiYjNhMjZlOWJiODA0NDg1NDhkMTFlNWViYjkzZjRiZDA2NjhmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmYWFjMzY2NDRiMWJmNmYwN2ZhOTI1MjMyMGJiNjY2NzcxNGNmY2U4MDViMzlkMjU5MTZlYjJkZGI5YTY2NzcifQ"
         }
       ]
     },
@@ -47,12 +47,12 @@
       "statement": "Project priority belongs to the approved task with the smallest task number; an open correction alone holds no Project priority.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/delivery.go#L23-L38",
-          "version": "repo-lines-v1:sha256:09c8b9135982ee55f96f85a154c30592a607fca8b639e037e9ca9b26a2eb97e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MDk3OTJhMTVjOGVkZmU4MGJhNmY3MjQ2NjBkMWFjZTBiOTJjOWIzZTJiOTA1YWZkOWIzMWU4YjE1YmI0YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMzQyNmQ4ZDRiNTU1M2E0MDAzMDY1Y2Q5YmU2MDBmZDA2MDc0Y2UzMWM0MzE5NjYwZWE4Y2E2MGZjYTg3ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzNzBhMDNkNTgwMTE0MDdiYmQ1N2E2ZjQ4MjBiYjRiYTQxMThiMThjYWRlMWVjZGVjYWVlZDkwMzQxMWM4MGEifQ"
+          "resource": "repo://mc/dispatch/README.md#L482-L495",
+          "version": "repo-lines-v1:sha256:3566491058d84d095d58206f35e1d54153d711aef29bc72913e446d5d8e22662:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkZjQ1ZTA1NTU5MWI4ZTdiMjkxN2JkNmJhNDJjMmFiZmJjMzM3MGY2NWFmNDM5NzRhOTg5MjZmN2E4ODJmZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhY2M0NjUzYzNhZjNiNjI3NzUxYmUwZGQzMDlkOGNkOWEyNGU1MTMwZDc2ZjUyNjFhY2NmZDE3MGMzZTRjYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYjRhMDY1NmVlMGY1MzNjOWJlMTk5OTAwMzBhNDFhNjk2OWNlOGMxODg2ZmVjOTc2NDhiZjcwNjUyNjI1NmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyNzdhMzk4MzdhNDY1MzcxMDg0NDBmYzhlOWQ0OTQxNTJjNzVmOGVmMWZjZjc0N2E1ZTNhN2U2MTZiOGEzZmUifQ"
         },
         {
-          "resource": "repo://mc/dispatch/delivery.go#L64-L79",
-          "version": "repo-lines-v1:sha256:000a0b191d9ed616a7f6c9b949378f21704c8cffa4d5cb702959a9cbec543653:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NGRiMDFmMjljZDY0OGFhMGI0ZDJhOWJmMzJhZTUxNjhjMDcyZjVmZmJhMWNmODViOTdiOWJkNWVjYmI1ZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkOThkODYyNTg2ZDZlOTEyM2Q0YjUwNmYwNDZjN2U5YTU5NGU4YjM2OTk1Yzc1N2U0Nzg5MjZhYzQ4ZGI3YTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1OTc5MDhkOGU1OTgyYzdlOTJlMzA4N2QxMzY1Y2I2YWExOGI4Y2YwMjE5ZGFkNzQ5ZTJiY2VkZTc1MWM0MTIifQ"
+          "resource": "repo://mc/dispatch/delivery.go#L28-L66",
+          "version": "repo-lines-v1:sha256:d0e396081503b69a650be3bc9d2a3a06f89ebe5286a8d62e3ec76985a8203f2f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MDk3OTJhMTVjOGVkZmU4MGJhNmY3MjQ2NjBkMWFjZTBiOTJjOWIzZTJiOTA1YWZkOWIzMWU4YjE1YmI0YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3ZDU5MmNjMjkwN2M0NWQ0MWU1MzA1YmE4Njk2MjFlZWM3YmNiYWRjYmQ4OThiZWNmOGZiODc5ZWY1OTJkYzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhMzQyNmQ4ZDRiNTU1M2E0MDAzMDY1Y2Q5YmU2MDBmZDA2MDc0Y2UzMWM0MzE5NjYwZWE4Y2E2MGZjYTg3ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MjY0NDhlM2EzNTY0OWZiOWZkZTc5MGM3NTdhNGMxMjk1ZjM3N2FhMzVhMzIzODk2NzE1ZjgzNzVhYWU3OGEifQ"
         }
       ]
     },
@@ -68,11 +68,15 @@
     },
     {
       "id": "claim_d2e608ce69f34af8934d005b08f0e70b",
-      "statement": "The canonical seam structs are a frozen wire contract, wall-clock time is excluded from the projection, and a shape change bumps the action version and dispatch key domain.",
+      "statement": "The canonical dispatch projection includes work_started and repair_after_approval, with false values omitted.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchseam.go#L6-L21",
-          "version": "repo-lines-v1:sha256:d2c27dd634d8afc2b4198bede18a364825bb574f63425b080c471fb6bed2e021:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiM2Y4NzA5NTc4MDc1YjcxZDRkZWI2MGFlYTJmZjBhNzZjZDZiNjI0N2RmOTZmN2JmYzE4YTA2Mzc3ZDE1NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljYTg3MGUyMjc3YzAzY2VhMjdjMWYzMWQyYjE0YWRhZmVkNTY2MzVjYjg0YWIwODg3NDAzYzY0YzRhMjc5OTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwMjViMDM3MGE3ODc1YWM2OWQ1YjljZDI5ODM5NmRjOGQ2NTQ2ZWEzNjhlNTU3ZGIwNmUzNzU1ZWFiM2I1YTUifQ"
+          "resource": "repo://mc/verbs/dispatchseam.go#L301-L314",
+          "version": "repo-lines-v1:sha256:f2e1304cad55f8b340b0c52c500f63cc5b2d979ad4e0da14cedd377ff5df073f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZTkzZjE5ODIyYzBiNDlmNWI1ZDc4YzhhOGQzZjE5ZDFmZGJmOTBmYWFmZGQ4MTJhZWU3MmVlNWQ0YjhhNjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMGEyMGJlYjQyNDBlNjk2ZTVjZWM5MWM5ZWVhMTcyNDE5ZmMwMTYxZDdkM2NlZGIxZDJlM2RiZjBmMDhjYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE0YmQ3MmJmMWRhZmUyZTFiZmJjOThhNmQ5ZTVlMTVkYWU0MjkyNzRmM2FjZGQ1NDc0YjYyYzM0ZGE2ZjJjZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3NDgzYTM2ODFlYzFmNjBhNTMwNDYxMjU4MGNjOGE4YjFhMTI0MWU3N2JiMDYxOTZjNzI4ZjgwY2NhYzY2YWEifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/dispatchseam.go#L79-L83",
+          "version": "repo-lines-v1:sha256:89df8271b98b36eb56f3bc9eb54bfbf968458ee1817d3234deb5cfdc2d4eb174:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTljYTkxODMwZjU2MjI2OWE4YjhhZWUxZDVhOGM2MTkzODA5M2E1ZTg0NTY4Nzk0NDM3NjhiZDQ5OTYwY2RkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjk5MTdjZGEzYTI5NTcwZmE5NTUxNWJmM2JiOTEyNDZiZjcyNTVhNGRhMDg5NGI1ODg5NmY1NTRkMzk3YjczOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjFhMGJhZTc5NmVjMDgxYzBlOWMzOTVhYTdmNjZlYTFjMzdhYTQxYjQxZTRhYzk3MmVkOGMyMDE4MmFjNzI1YSJ9"
         }
       ]
     },
@@ -81,7 +85,7 @@
       "statement": "Commit rebuilds the canonical projection and returns an inert stale refusal when its preparation token differs, and a candidate_mismatch refusal when the re-decision selects a different candidate.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchseam.go#L898-L936",
+          "resource": "repo://mc/verbs/dispatchseam.go#L899-L937",
           "version": "repo-lines-v1:sha256:c19d9c6588463a61210bdf1cfa08fd54cf269087a7927a1c88d34abb42faec6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4YzAzODc5YTdiODFmNDQ3OTNmZmRlNTkwOGEzNDVmNjE0NzYxMWI0OTgwNDYwNWM5M2NlMTUwNDc3YjhhMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNDNjZmRhNzY3ZDE1YzI5NWYwOGVjZmE3NTdiZTFkNDdhOTcxNmExNjM4NjA2MjJmMDBmOGFjZGI1ZWY3YjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMzBhMmYxMGRlNWJmMGU2YTk4ZjgxNzI5YTNjNGYzOGFkYTc5Y2VmMzQ3Zjc0ZmQwM2Y5YzFjYzdmZjE1NmQifQ"
         }
       ]
@@ -149,10 +153,38 @@
           "version": "repo-lines-v1:sha256:a8123f2c24af3da7b63acd1cf114e63427b0f28ef01956f03d6297a6607f6e9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZjVmOThiYmVlNmU4ZTk1MmI1ZjBlMWU4ZDZkMmY1MzVlMTY1OTlmMjdlYmJiMzEzNTNjNGZiZmM0NTU4OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZjA2ZDBjNjJkZDU0MDZmMjU2MGY5ZTAzZGVlZWFhYzEyNzdiZTBhZDZlMDYxYWNjMDYwMGJhNzFjNTcwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ODViOGU5MGFkMzUwNDU5OTMyOTg1MDRlNWNkNzBhN2E2MmYxYjBkZDExZjNkMTU3ZWU1MThkYWM0ODA1NTAifQ"
         }
       ]
+    },
+    {
+      "id": "claim_3798ebf329bf4264aeb6eae0d170bd48",
+      "statement": "At review capacity, dispatch applies the same task order only to eligible tasks with a live packet.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L395-L410",
+          "version": "repo-lines-v1:sha256:f188d0671e18512c9ffe9cb38f95668b4d9a00491c870ed85820c7d90b047c16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzZThlODU4NmMwZTVjNzY3YjNhOGIxNWJmMDA1MWM4MzcxMTU0NjdjOTU5NGFiMTc1MzI0ZWM4MWJhMTI2M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0YWVkMzU4MjgxM2IyZGQ4NGU4ODE4Njk0NGVhZDY5ZjQzMmJmODY4OTg5ZjZjYWNmYjdjZWQxNDNjZTIwYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhN2MwZGFhOGI1ODY0MGUxMDkwODNjMmU0NDRkOWZiMmQ3M2NlNWUyODNiMzVkMjdjYWFlYWFiZjU2OGIzMWQifQ"
+        },
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L550-L576",
+          "version": "repo-lines-v1:sha256:088aabcafafd9d134335b1ff891cd75b4cffc40dae27dd71e8680a2137fc8207:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlYjA4Mzk0OGU3N2YyZTZiZTBhY2FiYjAyN2Q5YjYyYmYxYjFhODllMmViMjY2YWNlYmY4N2FiOGM0YWQ0ZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZTc2YzVkODcwNzlmZGM5NDNmMzliZGYzMDRkZmQ1OWJlZmNmYzM1YzhjODcxOGZiMGU3YjkxNjZjZTliYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkYjFkNmFjMGIzNDVlYTY2NmM1MTJiOWY2YTMxYjQ0OWE4MjJjN2Y2YTQwZWUxZTE0NWQxNGNkZjYxN2QwNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhMmJmNDgwMjU1M2ZmYmU2ZTNjZDlhOTgxYTdkY2Y0MjM2ODE1NzZlNTNlNzY1MDBjMTgxN2U4MmZlZDMzMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0f1d1d75398d4677aad84116c0a015e9",
+      "statement": "Delivery records derive prior Worker work from base_commit and repair after approval from an open correction with a retained review approval.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/delivery.go#L74-L105",
+          "version": "repo-lines-v1:sha256:8e9cfaf0168be9957870a0bbf35fd90ee2aaf1c978089ebb9f940da5564bfa34:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNmU2OTIxYTExNTM5MWU1YTJkZDdhZTg2MjZiMWViMDAzNWNjMzY5YmM4ZmI3MDYyZTVkNGM0YjQ5YTA5ODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMjBhZGFjMDkyZWE2NmZkOTFmYzhhZjUwZjk0MGMxMjI3YWFhMGVjZWZkOGE3OWNmNTA4MmVkZTgyMGYyNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxNmIxNzNmY2I0OTFmNjY3NDY5OTc2ODA1NzNmN2QxMjM3NmM5ODZmNWQ5NTg4NGJiYjFhZTQxYWY2YTdlNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlZmY4OGFiMTk5NTIxYThiYjlmNDg5OTNkOGIzNDQ2MTVkMDIxZDA1YmQwYzExZWI0YmExMmE3OTg1MTJhNjgifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/dispatchorder_test.go#L30-L62",
+          "version": "repo-lines-v1:sha256:6a436ad12f44797b9fba46d18455bf374dca016526141bad00ed926f95fddf41:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZjY1NGZkYzYyY2I1YzY1MGM0ZDJmN2I5NzY0MzJkZmY5Mzc5ZjczMzFjZTBkOWQ3ZWNkMzJjZjJlMzBjZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllNTdlZWI2MjgwZmM5ODUxZjJmNjQ1MThlMDExNzI4ZTEyYjgxZmVhMDE1Yzg5NzYxYTIwNjhmOTFhMzQyOGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZjJmZjVmZWVjNjBmNTg3YzhmYWU0ZTg3ZjgwOWE2NjFjZmZlZDZiNDdhYWU1ZjZkNmEyNjUzYWE4OTUyZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-10T02:41:58.373Z"
   }
 }

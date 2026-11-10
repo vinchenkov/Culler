@@ -4,6 +4,8 @@ title: The task pipeline roles
 description: How task roles produce a verified source version and review packet, with wiki updates outside the task pipeline.
 tags: [pipeline, roles, task-status, verdicts, review-packet]
 sources:
+  - id: openwiki-source-a7ca3be58a8971f19014beb8
+    resource: repo://mc/cmd/mc/cli_test.go
   - id: openwiki-source-b578a24182c530b5d8630c21
     resource: repo://mc/dispatch/dispatch.go
   - id: openwiki-source-636e77a0ecbade42aa7a7799
@@ -12,6 +14,8 @@ sources:
     resource: repo://mc/domain/delivery.go
   - id: openwiki-source-833cfcb1ce94b8d49fc966fd
     resource: repo://mc/domain/requirements.go
+  - id: openwiki-source-03fd17633dd4db241e157faa
+    resource: repo://mc/domain/task.go
   - id: openwiki-source-e876d4f934fe1b8e2de3721c
     resource: repo://mc/substrate/schema.sql
   - id: openwiki-source-b4da7cec419704ae15f02306
@@ -54,10 +58,10 @@ sources:
     resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # The task pipeline roles
@@ -112,8 +116,17 @@ Forward stage progress resets the task's run failure allowance: `tasks_forward_p
 
 `packaged` rows rank 0 in the generated `stage_rank` column and leave pipeline dispatch.
 They wait in the operator's review queue.
-`lessNextDispatch` selects expedited tasks (`priority = -1`) first.
-It then orders tasks by stage rank, priority, age, and identifier.
+An approved task holds Project priority before ordinary agent selection.
+Without an approved task, `lessNextDispatch` compares eligible tasks in this order:
+
+1. Task priority, from expedited (-1) through P0 to P3.
+2. An open merge repair after approval.
+3. A task that received a Worker run.
+4. The furthest stage, then task age and task number.
+
+At review capacity, the same order applies only to tasks with a live packet.
+An active agent run continues after a priority change.
+See [dispatch priority rules](dispatch-and-tick-loop.md#priority-rules) for eligibility and the retained delivery facts.
 
 `decideAgentRun` starts the Strategist when no task can proceed, no proposal decision awaits an answer, and the role is available.
 The Strategist and Arbiter briefs include compact rejected and cancelled task history from their Project.
@@ -184,7 +197,8 @@ The Strategist reads that skill before each `mc` call.
 
 `mc strategist propose --run <run_id> --batch -` receives one JavaScript Object Notation (JSON) object on standard input.
 Its only field is `proposals`; extra fields and trailing text cause rejection.
-Each proposal supplies a title and can supply a description, Project identifier, task scope, and priority.
+Each proposal supplies a title and can supply a description, Project identifier, and task scope.
+The schema rejects a `priority` field. Proposals enter at the default priority 2; the operator controls task priority.
 The command schema permits an absent description, but the directive requires descriptions with scope and criteria.
 `StrategistPropose` in `mc/verbs/roles.go` checks role, run identity, the subjectless lease, and the limit of two tasks.
 It confines each proposal to the run's Project.
@@ -228,7 +242,6 @@ A refused batch applies no changes; the agent corrects the refusal before anothe
 The permitted reads cover tasks, activity, and Projects.
 The task list omits descriptions, so an individual task read supplies scope absent from the brief.
 The shared environment skill requires dependency compatibility checks within the role command authority.
-The directive also names a Research dependencies procedure that the Arbiter command skill lacks.
 The Arbiter judges the pool when available results permit a verdict after an execution problem.
 Otherwise, the command skill supplies an execution failure terminal or the procedure for a required operator decision.
 See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) for procedure locations and [decision resolution](decision-resolution.md#shared-proposal-decisions) for operator questions.

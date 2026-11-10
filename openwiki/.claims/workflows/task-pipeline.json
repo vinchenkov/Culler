@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:123b67540158e96d7b12c413b912b3ca097d532ca720cf35e50eca2806af055d",
+  "pageVersion": "sha256:3a06830e3685a7c182c5de7442aa44696c26c83c82759599c22300d3d01b5db1",
   "claims": [
     {
       "id": "claim_468e53bf5b144c04aa76315c3640fe7a",
@@ -37,7 +37,7 @@
       "statement": "Task dispatch maps Worked to Verifier and Verified directly to Packager.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L641-L659",
+          "resource": "repo://mc/dispatch/dispatch.go#L627-L645",
           "version": "repo-lines-v1:sha256:8440983c84d579026e957bf92ac3349f5fdbe0869adf1e0e4495da05543a9f41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NTM1OGQ3MzhjN2UyZTc4ZDVjMDA3NjU3Yjk5YmMzMTE2Zjc5ZTUyMzZjZGIyMjE5NjA0NDg1YzEzN2FmMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3OWY2OTViMGRhNWMwZGEyNGM2MzkwZGZhYmQ0NWE2YjkyNWFmOWRjMDgxYjU0MzQ4ODJjYjE3ZTY2ZTc0ZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmYWFjMzY2NDRiMWJmNmYwN2ZhOTI1MjMyMGJiNjY2NzcxNGNmY2U4MDViMzlkMjU5MTZlYjJkZGI5YTY2NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhMmJmNDgwMjU1M2ZmYmU2ZTNjZDlhOTgxYTdkY2Y0MjM2ODE1NzZlNTNlNzY1MDBjMTgxN2U4MmZlZDMzMGUifQ"
         }
       ]
@@ -47,7 +47,7 @@
       "statement": "Dispatch starts the Strategist when no task can proceed, no proposal decision awaits an answer, and the role is available.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/dispatch.go#L418-L436",
+          "resource": "repo://mc/dispatch/dispatch.go#L412-L430",
           "version": "repo-lines-v1:sha256:6b5980b1d7dfb6ec6d1dcc83e4073f4816ecfa9248a4bbca77533f299f167a4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NDBmODNlYTgzMDVhNGJkZWUyODIxNTkxZjg0ZTI1M2YzY2U5NjQ1MTZkYzY4MTMxNjQ2ZWJjZmExMmIzM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNDQxMWJhZjMwYjM0ZjExMzViMzRhZDNkNGUwYTZjZjg4NmNkNzAzNTdkNzE4N2YzOWI2NDIzODM3MTk3ODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0NDNlOTJhNzc1YjVhMWU5N2JiYjM5ZWQxMzYzOGM3MmRhZjA0ZmI1YjIxNDk4YTg4OWY4ZTg0NzFhN2E3MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwMjIyM2ZkODFmNDkxMDNiMzc0MjQ1YjU0Zjc2ZWUxMWQyOTk5YTg3MzI3ODk4N2RkNzM0YWIwMGI2MjBjY2QifQ"
         }
       ]
@@ -57,7 +57,7 @@
       "statement": "A Verifier pass requires --sha, a correction forbids --sha, and --correction is legal only with outcome correct; every verdict requires --evidence.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/roles.go#L357-L374",
+          "resource": "repo://mc/verbs/roles.go#L355-L372",
           "version": "repo-lines-v1:sha256:ff91b57a2983813a59be19ef319f298467762e569e2d511165fc41b3d9a7dacf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkZTM0YmRjNTQ0ZDcxODk0YTcyYWU2NzJjNThjZTg3NjU0OTM1YjEyOGQxOTM0ZjFkZjFkYWMwYjQ2MmFlMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0ZDA4OGQ1YWM0YzQ3MWRjNWRkNTMxYjA3NjAxNzliZTY2YmY4Njg2MDEwYjAxMzEzNGZmNGQzYjYzYjI4Y2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyYTg4YmMyMTcyNzA5ZDdhMjZhZDY1MjQ5YWY2MzY5NDlmMTY1Mzk0ZTIwMTk5MzE5ZTNmOWYxOTUzMjNlZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkMTYwN2NjNmVkNDc1NzM5NmU4ZDIyOWVlMmVlNGQ3NTBmZTIyMzAxZDM1ZTE3NDY2YzE2NTU2ZGRkNzU5YjkifQ"
         }
       ]
@@ -81,7 +81,7 @@
       "statement": "The Worker status moves to worked when the captured submission is recorded, not in the mc complete terminal itself.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/delivery.go#L1109-L1121",
+          "resource": "repo://mc/verbs/delivery.go#L1110-L1122",
           "version": "repo-lines-v1:sha256:f268baa3f1386439f09851e6fc4d2d9875b736b44193aa441d0119a7d34dc249:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlZDYxZWMxOGIzYzYyNTJlZTVjMDJkNGY1YTNmMTRiYzVmMzJhOWQ3MjFhOGUyOGUxYjI0YmI3Yzc1NGZjYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5ODU3OWQ3MTdhNzg5Njk3MzBkMWVmZTBmZTMxMzAyMTZhZTQ4ZWQ4ZTVlM2Y3YjYxNGRlYjc5NjI0YWIyMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4YTQwOGU3NDE1Mjg0MDJiYjk1NTgyZDJhNzM1Y2ExY2U2YjU3NDFiNTNkZDFjY2ZmYzk2MDc2NTg4OGY3NDcifQ"
         }
       ]
@@ -193,8 +193,8 @@
       "statement": "The Strategist directive forbids equivalent historical work; the Arbiter directive points to the command skill for history comparison.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/arbiter.md#L47-L54",
-          "version": "repo-lines-v1:sha256:85216f5d4ea7b78678ceb38694fcff15b318ada17207e8e79ca11bf6160901a6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDA3MWUxNDA0OGJkZTJjMTc0NmJkZTFmNDRkZjJhNmExODYwNWUzMjQ1OTE1ODhhMzhiMTg3ZjdlMmU1ZTIwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYzc4M2Y1YWJlNGIyN2Q2OWY1N2NkODIzZjNmYTI0MjE1MjEzZTczYThmM2E0ZmEyMDdmYzc4NmRhMzQ4MiJ9"
+          "resource": "repo://mc/verbs/directives/arbiter.md#L47-L53",
+          "version": "repo-lines-v1:sha256:5e411d36ecc9c9a78e769ee2c788f94f134c0b5b1d06253fcaf55206efcfe48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBlZmE3Njg5NjcyNTJjYTNhYzlkN2YwYWIzYWRmZDcwNWVmYzE3YzRlNGQ3NmJlY2FlMzM0YjE0ZDljOWYwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZiMDg4NDg2ODM0NWRiYzg3MTM2MmY1ZDI0ZmUwMjI1NzI3N2QwYzgzOTE3NWJlYjc5ODJhZWZkZmJiMDA4MyJ9"
         },
         {
           "resource": "repo://mc/verbs/directives/strategist.md#L37-L44",
@@ -202,7 +202,7 @@
         },
         {
           "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L46-L51",
-          "version": "repo-lines-v1:sha256:2b132ff1ec4a296bbe8d118e0d4069fa029526cd9507bb18a138b05b3c9e456b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmMwNTcwYWQ0OTJlZGQwNGIyNzE3N2E5MjJlNmU0MzljMDNiY2QwNTc1ZjA1YjE0NWI0NTc2ZDIwM2ZkZjFjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE1YmM0NzhmNmJhNjQyMDI2ZjY0MzllZjU1MWFhY2I0ZWVkMDYzMWUzNjRiOWZjMWQ5Njg1ZjEwMjZkY2VjMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzU5OTY0MDBiYmNkZTMwNTUxMTc2MjQ0N2U4MmZhMWRhNjU3YjEyYjM2NTMzZDRiM2U5NzU2NDgxNDFkZmY1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY2MzQwMTJlYmU5ZjQ2ZTkzZGMwNjVjYzgyZjc5YzdhMTBmZDdhYzQ1MGJlZDY1Njk0ZTBhMDBiZDJiY2U3OSJ9"
+          "version": "repo-lines-v1:sha256:2b132ff1ec4a296bbe8d118e0d4069fa029526cd9507bb18a138b05b3c9e456b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmMwNTcwYWQ0OTJlZGQwNGIyNzE3N2E5MjJlNmU0MzljMDNiY2QwNTc1ZjA1YjE0NWI0NTc2ZDIwM2ZkZjFjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE1YmM0NzhmNmJhNjQyMDI2ZjY0MzllZjU1MWFhY2I0ZWVkMDYzMWUzNjRiOWZjMWQ5Njg1ZjEwMjZkY2VjMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWUzMjZhYmU1ZTkwNmI3MzFmNTU5NmUxNmQyZTBmZjEzMmY2ZjlmMTg1OTliMzE3MjJkYmU1ZWFjOGZkZjE3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmU2YTk5MTgzODk1MjU3OGQ1NjA3MjQ0MDhlNDg3NTE3YzkwMjNlMTdiNjNlMTExYWFkODU5OWQ2MzZlYWVjOCJ9"
         }
       ]
     },
@@ -375,8 +375,8 @@
       "statement": "StrategistPropose checks role, run identity, a subjectless lease, Project scope, and the two-task limit before it commits proposals and ends the run.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/roles.go#L267-L330",
-          "version": "repo-lines-v1:sha256:245601f2618eed5cfba1a4e47e62f4da7c60ada245527fe9e0cb367c7a1b095a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjYmJhNzA4MWE3MTE3ZGI2ZmUzZDQ3MmM2NGJmOTUxYmU4ZTU3NDU0N2QxNjhlMmI2YjNkYWZjMTYyMDM4YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0MzEyZGY4MDlmMTY2ZDFjNzViYjBkOTg1Njk1NzQyMTRjZDJiM2JiZGQ1MTIyOTAyZGUzM2YyYzZmZmZkMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmZGNjZjI3ZmI1Yzc4ZTdiOGI3YmI3OWJkODg4MzBiNWI3ODg3NzFhOTQwNjdlNGIxNjA4MDE5NGRmZTI3MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMTc3MzQ3NDNmN2I5MzBkNzg5MzQ2ZjdjM2VjMmMwOGYxY2E4ZmFlOTQ2NDViYjVjMzAxNjk3ZjA1ZjUwYWQifQ"
+          "resource": "repo://mc/verbs/roles.go#L266-L328",
+          "version": "repo-lines-v1:sha256:fe12433cd13e64985dae2acf71af6b87ed041153bc3f641947d9c2e0776f429a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjYmJhNzA4MWE3MTE3ZGI2ZmUzZDQ3MmM2NGJmOTUxYmU4ZTU3NDU0N2QxNjhlMmI2YjNkYWZjMTYyMDM4YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0MzEyZGY4MDlmMTY2ZDFjNzViYjBkOTg1Njk1NzQyMTRjZDJiM2JiZGQ1MTIyOTAyZGUzM2YyYzZmZmZkMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmZGNjZjI3ZmI1Yzc4ZTdiOGI3YmI3OWJkODg4MzBiNWI3ODg3NzFhOTQwNjdlNGIxNjA4MDE5NGRmZTI3MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmMTc3MzQ3NDNmN2I5MzBkNzg5MzQ2ZjdjM2VjMmMwOGYxY2E4ZmFlOTQ2NDViYjVjMzAxNjk3ZjA1ZjUwYWQifQ"
         }
       ]
     },
@@ -385,12 +385,12 @@
       "statement": "The Strategist command skill permits an empty proposal batch and defines terminals for execution problems, required operator decisions, and customization conflicts.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md#L45-L70",
+          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md#L44-L69",
           "version": "repo-lines-v1:sha256:d0c5b05973d433f866339cc422f968eb07c0cbd05f081b0fc7f0fec1924b93ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYzI1ZTVlODg3ZmVlOTY0NDEyY2YyMDY0OTQ1YWY5MmVlM2M5MWM2YmU3MWMxOWFiYjI4YjM5YTE2ZWE0ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1OTlmMzJhY2Q0NGQyMzBlNTYyMzkzZmVjMzE0N2FiZGYxZWU2NTZiMTVkNWFkZGMzOGU4NTQ3ZGEyNWI5ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNzNkYzFkYmE5YzE2YTI2Mzk2YmFlOGI2Mjk5NjVjMzU5ZTc1NjBhYWU1MWU4NjE5ZThmNTNiMjE4NTZiNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md#L8-L26",
-          "version": "repo-lines-v1:sha256:135a01c5beb82abfc4507f68c6774eb5aea330e877eadd8c8a6f0250650983cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMzQ4ODMwZjg0YWUwYzhiOThlYTQ4OTRmOTJjNDQzNmU4MDk2OWY1ZDBmMDI5N2I5YmY0OTNhYWRhODkzZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhZGVhNjVhOGM2ZTExZTE3MWEwZjYwMzAxNjUzZTliNjM0NDM2ZGUzOTNlNWU1YzgzMjVlYmU2N2RiMzUwNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNGYwYzM2YTNlYTU2MjJjODgxZWM4YzE4MWFjNTI0YTQwNGFkMjUxZDJlYjY2N2YwMzU3MDBiMjhiZDE5MGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNmNmMGIzYTZlNDRiYzRmZTE1NmYzMDk2NzIxZDc3MWY0MmUyNjdkZWJiYTNmMjZlNTA2YjI5NWRjMWUzMTkifQ"
+          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md#L8-L25",
+          "version": "repo-lines-v1:sha256:926e14c33ed53463a47e722194dc11829897b4ab03315b1f5873467a8593bcd0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMzQ4ODMwZjg0YWUwYzhiOThlYTQ4OTRmOTJjNDQzNmU4MDk2OWY1ZDBmMDI5N2I5YmY0OTNhYWRhODkzZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhZGVhNjVhOGM2ZTExZTE3MWEwZjYwMzAxNjUzZTliNjM0NDM2ZGUzOTNlNWU1YzgzMjVlYmU2N2RiMzUwNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNGYwYzM2YTNlYTU2MjJjODgxZWM4YzE4MWFjNTI0YTQwNGFkMjUxZDJlYjY2N2YwMzU3MDBiMjhiZDE5MGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNmNmMGIzYTZlNDRiYzRmZTE1NmYzMDk2NzIxZDc3MWY0MmUyNjdkZWJiYTNmMjZlNTA2YjI5NWRjMWUzMTkifQ"
         }
       ]
     },
@@ -481,10 +481,46 @@
           "version": "repo-lines-v1:sha256:81fb70b376176c67d607208ef027805b43127c83d0e403c7e9c0fa9b7da9b2a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzMzcwMjY4NmY0ZmFhMWNhMDAwOWFjYzk4NDgxNDFhYmY4MjVhMWU3NTIzOWI4OWFkMDM5MTgwZmI2YTdjZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1MzQ4ZWI1MzAzMzQ0NzhlZDE4NmQ0NWMxZWM1MzBmN2Y1ZjU1ZThlZDc0ZDZmMGNhZWNhMDRlMGI2NmY1NTEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_cf432ee80fbb41a99d336bc454113114",
+      "statement": "The Strategist proposal schema rejects priority values and creates proposals with the default priority 2.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/cli_test.go#L2444-L2469",
+          "version": "repo-lines-v1:sha256:6e607efff41ee11e7cf3415fba3bccc145e1023cf121cb301b255dff1b0735cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiODBhZWUyMWQxZGI3YTQ3MWJmNWY4MDA1NDA2OThhYjVmYzA3ZGY3OTUxODg5YzY4ZTk3MTZiYzNmOTA5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZGMyZjQ5MWY0YWNlMzE2MWNkNmMzYjkxYmRhZDU2MzY3YjcwN2VhZDk0ZWZmYjNkMGU0Y2ZjMGJkOWYxN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMTk4YjJmOTQ0OGY1YzI3YjI3ZGM4ZTY0MDNjMTJmYzFiYjlmZjY5YjM4NjlhZGM0NWMxMDE5OTRjOTA0NDUifQ"
+        },
+        {
+          "resource": "repo://mc/domain/task.go#L288-L295",
+          "version": "repo-lines-v1:sha256:f2e0a7a715d2594951d785461ff63241cf2f3e54b00c2235b54a79753a508e0b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWIzZDc1MzM1NDRkNjU2MmQ1ZWNiYjJmZTZiNzYxNjc5MjNmNDlhODAxOTEyNzAxN2ZjNTU4N2Y0YjFjZjdlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUyNTI3MjllNDZhMzQzYzQwYzE3NDRiNzZjZGVmYzAxN2MyYzM2ZTdhMzRjZWZjYTc2YjFhYThhOTAwZjBiMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTQzZDQ5MWEwMjMyYjliMThhYjA3ZmQ3YmM0YmQ2YjE0NTEyODFmYmEwOGVmYWY0Yjg5ZTNjMGE3NmIyN2UzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGNkOTNiYTFlOGE1ZWY4NWFmOTBjZmI1NGE1OTU1ODQyNjllMjdhZDBmZWQ5M2ZlNDBmOGE2N2I2MDJlZjk4YiJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/roles.go#L252-L275",
+          "version": "repo-lines-v1:sha256:380ac4a9976087c5097773962326026892a14149cea55f3097a486073abd98fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwNGNjNzBlMWUyMGQ2Nzk5YTllMjZjNTQ1Mjc5NjJjZjAzYjIzYTlhZmMyZWEzMzExZDkwYWEyMmFjYjAwOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzNmMyY2I4NDA0ODhjYzlmZjA2MmZhOGFhZThhOWYxOTM0ZjlhM2UzN2IzMjA1ZTU5YjE3ZTRkNGVkZTY3MWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZWM5MzNhYmEwYWE2NWQ5Y2I4ODM5NWRhMWMyMGNjYjk2NzJmMmUxNmU2ZDRkNWM1N2Q3YzA4MTIzNTk3MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0YzcxN2RhYzBhMDYzZDFiNjUyZDkxZDk2ZTE4NzkxOGZmOTZlNGJmYzk1NzI2Yjk4N2FlNzYwNjIxMTBiZDAifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/roles.go#L308-L314",
+          "version": "repo-lines-v1:sha256:a1167833421ed55ed1b84443db38cb77df64a68efef6a8b45a2188999d6fadfd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTNlZDNlNmZiMWM0NGI0YjdlOTZhYWM0NmM0ZjM0MDg0OTdmMjgxNjU1YTUzY2IxY2JkYjcxMWQ0MDVlYWU1NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIyZThkM2Q3NjFmMzFlZDdhYjZhMjRiNGUwYzM4MmZkYWY3NjBjNGEwODJiMmIyNTdhMTgwMWFmMjM3OWEyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTI2Y2ZiMDMwZmQzMTVhZDA1Mzc3ZGMzZTRjNzJhNTRkYjYxMjRkYTNiMWE5Nzg4NWJlYWQ2YTg0NjNiYmQ0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTExMzRlZTZiY2Y5YzRiYzY4Zjg5NzkyYTJhYmMxM2I2NjJhZWJlNGQ0MWQwMmY1OTZlNzI5ZmFhZjE0NDY4NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f352af8ed08d4403ab66612749bb1d05",
+      "statement": "Without an approved task, eligible tasks follow priority, repair after approval, prior Worker run, stage, age, and task number.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L395-L415",
+          "version": "repo-lines-v1:sha256:1c125c402e8f7a51af18794860228b4e6639a02753dbe45e965365b7e85af9b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzZThlODU4NmMwZTVjNzY3YjNhOGIxNWJmMDA1MWM4MzcxMTU0NjdjOTU5NGFiMTc1MzI0ZWM4MWJhMTI2M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NTY5YzUzOTdjZmU1ZGE1NGY0MWZjZjBhYzQ3ODQ5NjIxY2NlNWIyYzkwYzRmMjU5ZTRjNGMwM2ZiZjcyMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0YWVkMzU4MjgxM2IyZGQ4NGU4ODE4Njk0NGVhZDY5ZjQzMmJmODY4OTg5ZjZjYWNmYjdjZWQxNDNjZTIwYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4MjYzMzMwNTc3ZTc4ZWMwN2VmMTMxMTg1YmU3OTM3Yjc5NjVjMTE5NTNkZTQ4NDM1NDZiYjE4OTNmODdkN2UifQ"
+        },
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L602-L623",
+          "version": "repo-lines-v1:sha256:dec5bde95c09efdf6c9ea9892b00226bfdb7efc2bdaba7e5298777432eb803c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhYTFiMTVmNjY2MGUyMDY3NjdjNDkyNDE1MzNhZmZlMGExNmJhMjMzMzc3MjI3ZjlmMjNlMGU5ZDk2N2Q3MjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3ZjZkNjM0NjEyNTA1MGYyNDMxMjEyMWNiYjNhMjZlOWJiODA0NDg1NDhkMTFlNWViYjkzZjRiZDA2NjhmNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmYWFjMzY2NDRiMWJmNmYwN2ZhOTI1MjMyMGJiNjY2NzcxNGNmY2U4MDViMzlkMjU5MTZlYjJkZGI5YTY2NzcifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T01:41:54.063Z"
+    "at": "2026-11-10T02:41:58.373Z"
   }
 }

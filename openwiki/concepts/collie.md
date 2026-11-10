@@ -8,6 +8,8 @@ sources:
     resource: repo://dashboard/src/ui/conversation.js
   - id: openwiki-source-56b812868de34201e0046a3c
     resource: repo://dashboard/src/ui/packetchat.js
+  - id: openwiki-source-b578a24182c530b5d8630c21
+    resource: repo://mc/dispatch/dispatch.go
   - id: openwiki-source-e876d4f934fe1b8e2de3721c
     resource: repo://mc/substrate/schema.sql
   - id: openwiki-source-a44ab4c2d26db975bde190a0
@@ -36,10 +38,10 @@ sources:
     resource: repo://resident/src/vision-save.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-10T02:41:58.373Z
 ---
 
 # Collie, the conversational tier
@@ -201,6 +203,20 @@ The [runner](../architecture/runners.md) also includes the confirmation requirem
 
 The authority rules come from `mc/verbs/directives/collie.md` and `mc/verbs/skills/collie/mc-collie/SKILL.md`.
 They define required agent behavior; the presence of the prompt alone does not prove compliance in every conversation.
+
+## Task priority
+
+Collie records explicit operator task requests at Seeded through its permitted task commands.
+The command skill states that priority 2 is the default and priority -1 is the highest.
+A higher task priority receives the next eligible agent run before a lower task priority.
+An active run continues after a priority change.
+Approved merge work, required branch updates, and review capacity retain precedence.
+
+Within one task priority, an open merge repair after approval starts first.
+A task that received a Worker run precedes a task without one.
+The furthest stage, task age, and task number resolve the remaining ties.
+At review capacity, only tasks with a live packet can proceed through this order.
+See [dispatch priority rules](../workflows/dispatch-and-tick-loop.md#priority-rules) for the source selection and tests.
 
 ## Task decision resolution
 
