@@ -22,6 +22,8 @@ func NewSetupRuntimeAuthLogin(ctx context.Context, notify func(string, string)) 
 		args, configuration := []string{"login"}, "CODEX_HOME"
 		switch binary {
 		case "codex":
+			// Browser authorization needs no input. A detached /dev/tty can abort the Node.js launcher.
+			stdin = nil
 		case "claude":
 			args, configuration = []string{"auth", "login", "--claudeai"}, "CLAUDE_CONFIG_DIR"
 		default:
