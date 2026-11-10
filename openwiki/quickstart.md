@@ -32,6 +32,8 @@ sources:
     resource: repo://dashboard/src/ui/packetchat.js
   - id: openwiki-source-b69f10da7d235560b52d92b2
     resource: repo://dashboard/src/ui/pipeline.js
+  - id: openwiki-source-b10e7836992abc73d7e0459e
+    resource: repo://dashboard/src/ui/scene.js
   - id: openwiki-source-460c27048f01dfd9cb2c51ee
     resource: repo://dashboard/src/ui/setup-journal.js
   - id: openwiki-source-97e7306380c1609d77e9989e
@@ -110,10 +112,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-10T19:18:31.051Z
 ---
 
 # Culler quickstart
@@ -170,6 +172,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Inspect task runs and evidence from Review | [Task details from Review](architecture/dashboard.md#task-details-from-review) |
 | Inspect a Verifier correction | [Task correction details](architecture/dashboard.md#verifier-correction-details) |
 | Change the operator UI | [The dashboard](architecture/dashboard.md) |
+| Understand the logo button and background picture motion | [Dashboard background picture and motion](workflows/dashboard-background.md) |
 | Apply shared colors and dialog controls | [Culler blue conventions](architecture/dashboard.md#shared-culler-blue-conventions) |
 | Add a log event or change log output | [Logging and log parity](concepts/logging.md) |
 | Understand trace access and the host-only viewer token | [Viewer authentication](integrations/openwiki-and-viewers.md#browser-authentication) |
@@ -361,6 +364,11 @@ The light theme pairs porcelain paper with white surfaces and navy text.
 The dark theme pairs navy paper with dark blue surfaces and pale text.
 The page shows the background picture's tile lines until the operator selects the logo button.
 The browser keeps that selection across reloads and dashboard tabs.
+A click moves each picture part separately; another click during motion reverses it.
+Page loads, theme changes, window size changes, and selections from other tabs apply the state without motion.
+The system's reduced motion preference also gives an immediate state change.
+See [Dashboard background picture and motion](workflows/dashboard-background.md) for the sequence and controller.
+
 The theme comparison viewer keeps its own preference and preview controls; it supplies no production theme selector.
 See [shared dashboard conventions](architecture/dashboard.md#shared-culler-blue-conventions) for dialog controls, trace pages, and browser checks.
 The implementation inventory records earlier check results. Those results are separate from this wiki update's source review.

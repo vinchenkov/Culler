@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b3b98e9c4e6dbb3247857c6e4471b56f0c6f2fe35e8b4cc6bf610c0df00741aa",
+  "pageVersion": "sha256:c90b1e9b994421a63900454e727e55353708b1b9400def1dc69bde1422ce4d29",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -506,25 +506,29 @@
     },
     {
       "id": "claim_e619bc5f28f8442794804a1cd4edb2a6",
-      "statement": "The dashboard theme unit tests check the picture selection, button state, storage updates, and theme-specific grid tokens.",
+      "statement": "The dashboard theme unit tests check picture selection, button state, motion calls, tab updates, and theme-specific grid tokens.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/theme.test.ts#L149-L201",
-          "version": "repo-lines-v1:sha256:80287dbdcb3c663bdaea8f68e15f37c8c66bf53df4e943e2a771f6e317183a80:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNDM4Zjc4YThjMTUxZWY3Mzg1MzkwMjM1ZjY5NDc1MDlhODY2YzQ3NTdmNzQwN2U1NDYxNmIzZjIxNWVhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjZjdkOGE1ZTFlMTQwMjFjNGEwMmI3MmYzYjE0NGQwNjEwMmNlNDk0NGQyYTVkMjVlMjQ3MGE0MTcwNmVjODgifQ"
+          "resource": "repo://dashboard/src/ui/theme.test.ts#L149-L246",
+          "version": "repo-lines-v1:sha256:a760d38937d7398315a3463d09bbb005d67167f3033c20621a1b4404f416a071:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNDM4Zjc4YThjMTUxZWY3Mzg1MzkwMjM1ZjY5NDc1MDlhODY2YzQ3NTdmNzQwN2U1NDYxNmIzZjIxNWVhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3YTU5NDFjYmExMmU5MjAyMzBmM2FiMmVmZmY4N2I4NWMyNTQyODZjZjdhNDVjYjgyYTZkNTk2ZGJkNjI3OWEifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/theme.test.ts#L284-L288",
-          "version": "repo-lines-v1:sha256:735104b21f2bc3c9121fbeea025701087feed1be9f025d3615c7ac191162de8f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRiMjMyNWZjNmU3ZTBmNzk1YjVlZGQ4NTIwNjY3YjJjZjYzNDk3YWNmM2YzMDU0YTRjN2VlZGU2OTI0MTZlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWUxMmI2MTE4OTQzZTMwYzAwNjgzM2U3ODE2MzBhNTNiMzJmNDE3ZWY1Zjk3OTVjM2YxMmYzMzA4MDI0YzVkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgxN2ZiYjczYzkyYjM2ZDVlNDg5NmZmNTFjMWI1OGVlYzMzMGJiZTk2MWJhMDVmYzYyMDVmODY3ZWExYmNmNiJ9"
+          "resource": "repo://dashboard/src/ui/theme.test.ts#L328-L333",
+          "version": "repo-lines-v1:sha256:3b855c33b37bd2b9ad38eb6332bb9362a1b5c0422ca060644770c24d59bb407a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRiMjMyNWZjNmU3ZTBmNzk1YjVlZGQ4NTIwNjY3YjJjZjYzNDk3YWNmM2YzMDU0YTRjN2VlZGU2OTI0MTZlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2EzZTQ2Zjk0Mjc2YjZmNmY0ZWQxZjAyYWY3OGJlZjZhMmVlMWM0MzlkZDU1ODRiOTczOTQ4MzEzMjE0ZDJiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWUxMmI2MTE4OTQzZTMwYzAwNjgzM2U3ODE2MzBhNTNiMzJmNDE3ZWY1Zjk3OTVjM2YxMmYzMzA4MDI0YzVkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiJ9"
         }
       ]
     },
     {
       "id": "claim_484fe553561f469397aaa9cce568dbf6",
-      "statement": "The theme smoke checks the light default under either system theme, image delivery, picture selection and reload, the veil, and the chick animation.",
+      "statement": "The theme smoke checks the light default, image delivery, picture selection and reload, the veil, and the chick animation.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L118-L180",
-          "version": "repo-lines-v1:sha256:345a130e6353ab40713957785d13fe4b743f13939c2581c362c8fb7ca1e418c8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MTRmN2ExZWE0MjA3OTM4NDg4YzNiZWQxNTMzMjVmN2E4MmYwMjFjYThkMGY2ZjQ2NmIzMzU2YjY3NTEwOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2E0Y2ZlODdkMjc3ZjYwZWRjNTgyOTVmMmMyNjQ1OTg2MGZmNmRlZjkxYTcxOWRlNzY0NWZhYTc2NDNlYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlNGYzNzdhZDM4NTgwNTAwZTg5YzZhYWU2MTZmYzYxMzk3ZDE5MDdjZDJlMGI1MGZhZTRiYTQxZTEyMDA0ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4ZDcxN2UwNWE4MTc1OTYyODQ2MjI2YTE4ZTU0NWIzZTczMzZkNjQyN2E4YWZjODk0M2E5ZGY2OTI2NmYzODIifQ"
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L118-L136",
+          "version": "repo-lines-v1:sha256:d2ee9f3f4aad717b04588dd4a98bbc2ecb96bc14beb0282b2e8d7204869bbe99:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MTRmN2ExZWE0MjA3OTM4NDg4YzNiZWQxNTMzMjVmN2E4MmYwMjFjYThkMGY2ZjQ2NmIzMzU2YjY3NTEwOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlNGYzNzdhZDM4NTgwNTAwZTg5YzZhYWU2MTZmYzYxMzk3ZDE5MDdjZDJlMGI1MGZhZTRiYTQxZTEyMDA0ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlZDI2ZWVmODJkODY2ODQyMmQ2YzNmNDQyOWY3MzU3Y2I3YTBhMzE5MTRlY2U1OWUyYWE2ZWViYmEwYTFjZWYifQ"
+        },
+        {
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L162-L194",
+          "version": "repo-lines-v1:sha256:0f15d1de01ce91c41f3e9c8cf51f0f03081e3fae546449ab792da7e21cf67cb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYTllOTIzODhmY2IyMjg4ZDY2YjcyOTZmOWM5MDJmZmFjMzNhY2JiMzBjZGEwNzJkYmIzYTk4NTRmMjViYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjZiMWY2M2Y3MzZjMTk4OTk4ZmMxZmM2ODFkN2U1MDg3YTE5Y2UwZDhmMDhiYWVjMWE3NzNhYmZiMzlhMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhNTFhZjdiMzVkN2IyYTQ3NjljZjFjNmQ5YmQ1YTgyYTAwYjQ0NzdiMmNkYWRjNTNjYjIxYmRlM2Q5YTlmY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZDQ3NGU1YzczMjk4YTg4ZDNmZjQ1NmUzMGI2MDRkMzBlMjRjMWE0Mjg2MzMwZGViNmQ0ZDYwMTg2NzljODIifQ"
         }
       ]
     },
@@ -1201,10 +1205,40 @@
           "version": "repo-lines-v1:sha256:cb4d44422a170f8e684c93451e2357a0910dc08aae37a3833adfb80417f01e6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MzcxNGJlOTlkYTk5OWNjYjM3OWIwZDhkZDA2NjlhYTA5ODkzM2RkZDRlNzA2ZTA3Y2E0ZjBjNWFjNzljYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMmI1NGFkNzRlYTgxZDhkYjk3MTIzMGNiYWUxYTVkNTVmZDE4NDY0ODczYjU3MzZlYzc0M2I0NTdlOTQ2NTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4ZmYzYjk1ZTA0Y2VjNWM0YTZmYjFjM2U1YzlhZjQ4M2JiYmJhOTQzYTk1NTM2NTExMDUzNjJhYTgwMDU5MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNmI0ZGNjNGMwNmUzNzZhMWQ2ZTVjMDNkYzNlZGI2OWQ1NmZlMGQ1YmMzY2U4ODE3MTJlZmY0MzI1MWRlMzQifQ"
         }
       ]
+    },
+    {
+      "id": "claim_bfdb128a533e4ca69a8fde277ab4cb33",
+      "statement": "The scene unit tests check reversal, cancellation before image preparation completes, removal of temporary parts, and fallback to the selected static state.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.test.ts#L397-L526",
+          "version": "repo-lines-v1:sha256:4961977e2acb46540702145c773a03d9dd7cad0845af048f29099918ad823e27:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhYzQwY2NkOTVlYmM2YjhkMTVjMTRhYTJmODQzNzlkZmE1NzM2YTQ4NWE2MjU4ZTgwYTMyM2FiNTkxZjZiM2ZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzYTNlNDZmOTQyNzZiNmY2ZjRlZDFmMDJhZjc4YmVmNmEyZWUxYzQzOWRkNTU4NGI5NzM5NDgzMTMyMTRkMmI3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmZjBkMzExMmUyYWVhNWZlNTlhMTMzM2Q4M2M0OWI0YWRiMjA4Mzk0MTQxZWM1ZmY2NDEyZDI1ODExZmM3NDFhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxM2M5NTMzZjcyYzk0NzhmNDQxYTc0NTlmZTBlOTQxZWE2NzBmMTg5Zjg5NDVkZjRjOGZlNTg3YzFlZWMzOWU5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f945952f3e5f4adea521509498ab0b19",
+      "statement": "The browser motion test checks separate part positions, the shell and chick sequence, reversal, final alignment, and reduced motion.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L197-L310",
+          "version": "repo-lines-v1:sha256:10a0e68f203dd1c986af7bc146664aed945e62c8f9e321d01df080f7adfead1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlMThhNGU2ZjhlNjNjYTNhOWEzMWRkYTZiMjU1ZTRhNDAwMGIxZGQ2NzhmYWYyNzc2MTFiMDBmZGQ5NGNmMTUyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0NzhhMGVjNzk0MDZjNGM4Y2UyNWEzMTdkY2U5MjllMTFjMzU1MmM2MDhjMzdkMzhkMDFhNzRmZDAzZWZhNDgzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxMjVlZmI4Yzc2OTMxNjVjYThjNjM3MDY1MDM1MWViYjJhMGNiYmU3ZDU3ODUzOWIyNGVhMzJjMmQwMGM5ZDk0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5MDRiMzZkMjhlNWVmYmU5ZmU0NzE1MGE0MWUyYjdiNDlmOTY3OTA2NGFiNDA5NTE3ZmQwNWJjOGM3NTg0ODlmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6adb3263ba9c4add8da0832094cb361a",
+      "statement": "The Codex setup login regression test checks that terminal input remains unread while setup receives the authorization address.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login_test.go#L145-L161",
+          "version": "repo-lines-v1:sha256:5c5cb47c2ae65a8206918a133df73d4da31cf8ed9f7bdc823888f069b7f5ea3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMzE0YWM0NWVkOGM4OGI3ODhjMDNjZTFiNDMwZmIxNTk5NGUyNGUzNjNkZDAzNGU1YjM4ZDY1MGVhYWEzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGRlYjY3NmI1YmQ3ZTI3MWRmYmEwNmE3ZDk3MTg4N2MwYzI2ODk2NmUzMjc4ZDBmYzAyNzhkM2FkNGJhMTIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T18:18:18.729Z"
+    "at": "2026-11-10T19:18:31.051Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bf5ea7e8e27fbea46b51947bef8633a5df5fdf4d87a7bbd48b7949f9871ae275",
+  "pageVersion": "sha256:339fe958f8708d21d09b0402bb9ce2baf130b4cc2852533630238cadaded66b7",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -87,7 +87,7 @@
       "statement": "ValidateHostRelease rejects unexpected, missing, symlinked, or non-operator-owned entries and requires 0700 directories and 0600 files.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release.go#L234-L283",
+          "resource": "repo://mc/deployment/host_release.go#L237-L286",
           "version": "repo-lines-v1:sha256:a0facc3882f1c82a5bc62200f4eadc9192b42bf0c422d8c07ffab2f2c49bbf08:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOTQ1ZmNkMDRhZDI1NWM1Y2RjMjE3NTdhYzllNjU5OGY2ZTFhOGFlOTU1ZTA2YjQ4NDYwYzk0OGQ4ZWQ0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YTE4NTI4MDg2M2NmYjcxOTExYjZhZmFkYWY5YWUzMzI4ZmQyMmJjY2RmOGQ3Y2Y3YWFhMWExYjM5YWNmYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTJhY2Q5MmIzNTRiMWNhMGI5Y2RiNTI4N2YxNDRkMTBmZDk4ZTUzZTUwMTEwNjFhYzgxMTZmMTYzZTY4YTEifQ"
         }
       ]
@@ -129,12 +129,12 @@
       "statement": "The host release ships the dashboard fonts and license notices that the dashboard server serves.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/server.ts#L48-L61",
-          "version": "repo-lines-v1:sha256:2b44f0a6c8c1df2164a0d35101f86d668bff2c6805c6e2e43902a59ac8d37a9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMWQ3YmI0N2QxN2I2ZWIwMWY3Yzc4MzQyMjVjMDgzMDM5YjI3YjVlZmU3NGM2YjRmM2RjNGZlMDViNzZmZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMTkyODNmY2M0YTk3ZjNhNDg2YTNjZmVhMjQ0NWZkZmYzOTllMDUxZGZiYzU2NjEzNGRiNzM4YWFhMWJiOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzZDk1OWU2NGNiMDU0NjdjYmJkYTJlODBmNTA5OTdiZmYzNjgxZTk1N2MzZWFkMmZhODczOTQ0OWEwNzc2N2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxYjg4NGM3MDM2NjA1MTE2ZTgyNGJhZDcwZTFlNmZmYzkwYWU0NTViNmYyMGZiY2ZkYTFhNGYzNjM1MmI1NTAifQ"
+          "resource": "repo://dashboard/src/server.ts#L48-L54",
+          "version": "repo-lines-v1:sha256:6242e85b0d16c146b10b1a78de6822cbdc022e8f6c630e4ff8971a349597fcfa:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGYxZDdiYjQ3ZDE3YjZlYjAxZjdjNzgzNDIyNWMwODMwMzliMjdiNWVmZTc0YzZiNGYzZGM0ZmUwNWI3NmZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWExZDFhNjMzOTAyMjljNzk4MzQ3ZTgzYTA0MDU0NDFjOTQwMDAzNTI4NGFkMTY4YzFiZjZjZGYxZDcwYTM3MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNkOTU5ZTY0Y2IwNTQ2N2NiYmRhMmU4MGY1MDk5N2JmZjM2ODFlOTU3YzNlYWQyZmE4NzM5NDQ5YTA3NzY3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGVkY2RhNjk5YzRjYjhiYjRlZGYzY2I0OWU2NzkxNjYyM2Y2NTA4Y2ZhOTA5MWU1ZTUwZGExNWIyM2FlOGZkYiJ9"
         },
         {
-          "resource": "repo://mc/deployment/host_release.go#L74-L84",
-          "version": "repo-lines-v1:sha256:a8fdad70661ed063f4b37229430b36da362dd124dfa278c6fcd86f073eef7d96:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliZjNhOWRjMDFkZTFlNGRlNzY2N2IyYjk4N2RhNTJhNzhiYmI1MDkwYTIzYTQ5MTFkNTM4OGIxN2M1ZGI0ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwODFhM2UxYjQzMGU4NWQxNzNhYzkxODdkNDRmOWY1MGVmZjA1YzcyMTM0NDk0YWQ2ODJjZTJjZDBhMzFkYTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyOTFiMTcyMjZjYjdmMWZjYzA3ODFhMjljYTJhODE4NDI1ZjNmN2VlNGQyYWU1ZTIwZmU0ODNlMmI4MWM2YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzNzJiNDBhN2MzMzNkNDgwZDRlZGEyZTgzMGVkNjU2MDFhM2Y3MzdhMjY1YjA5MTVmOTc3MzMwN2RhNmMyZDAifQ"
+          "resource": "repo://mc/deployment/host_release.go#L84-L87",
+          "version": "repo-lines-v1:sha256:3a409ace927d9295b034da788d51adf8dd4afca740308fc92d4f201b840c9091:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE0MjIwYjExZDRhNGI2NjI2YjRiOTA1MDI5YTY5YzhiMzBmZGMxMjI2NzJjZjlkMGRlMDE5ZmYyMTI1M2RlNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjA4MWEzZTFiNDMwZTg1ZDE3M2FjOTE4N2Q0NGY5ZjUwZWZmMDVjNzIxMzQ0OTRhZDY4MmNlMmNkMGEzMWRhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTRhNTgxZmQ2ODYwZmZiMzJlMDZlMmRkMjMzOTVkYzIxN2IwYzE4OGZkNDUzOTQxMWMwMjZmNjJhNTU4ODczZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM3MmI0MGE3YzMzM2Q0ODBkNGVkYTJlODMwZWQ2NTYwMWEzZjczN2EyNjViMDkxNWY5NzczMzA3ZGE2YzJkMCJ9"
         }
       ]
     },
@@ -181,8 +181,8 @@
       "statement": "Subscription sign-in requires an isolated home and credential directory.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L18-L45",
-          "version": "repo-lines-v1:sha256:052711a93237909e0e48ff468ae3d612edf3133d6ae536f0d0e5e52345bbcdf6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMjc0NjQwODM3NDVkMGYxOTc4MjM4MTJhYjFmMDNmMzZmNzcxY2ZhMGQ4ODA0NGU3ZGQ3ZTlkMGQxYWRmMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzMzZiNTMzMjlkOGYxMzNkZWU4NTEwYmQ0YmYyZDdmMDdmZjI0ZTNhNmJlMjg5YjkxOTAyYWNjY2Q0OThlODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4NDE0YmY1NzE1MWM0NGYyMGY2ZDU0MzYxYTA2NTc4N2NhOTUyOWVlOGQ1NjM0MGYxNzdlYzZmZDg2ZTgyYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjlkZjE4ZDVhOTk4NzlmNDJlNmFiNDY4MjYwNmJlYmM0OTExN2U0MjRiOWUzMzZiYjkyN2MyNjVjNDZmMzYifQ"
+          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L18-L40",
+          "version": "repo-lines-v1:sha256:5b849a12f6a8ba5d6ba14f8008c190744f2f5a16d5328f1bde2c5de63fc8c46b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMjc0NjQwODM3NDVkMGYxOTc4MjM4MTJhYjFmMDNmMzZmNzcxY2ZhMGQ4ODA0NGU3ZGQ3ZTlkMGQxYWRmMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNGM1ZjEyNWVlMWVkN2Q2MjhkNDVhMzI4NGYwNWVhODgzNzYwZGM5MjY2ZTYxZjc4YjYzOGIzOTBjNTllNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4NDE0YmY1NzE1MWM0NGYyMGY2ZDU0MzYxYTA2NTc4N2NhOTUyOWVlOGQ1NjM0MGYxNzdlYzZmZDg2ZTgyYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0NDdjNTk5ODA3MDY3YWZjMTZhN2I4NjhlYjdlZmEwZGIxYTczNmE2YzA4OTJjMmYxY2JkNWIyMmE2YWUyZmMifQ"
         }
       ]
     },
@@ -333,7 +333,7 @@
       "statement": "The host release manifest ships the Discord dashboard module and resident configuration service.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release.go#L157-L164",
+          "resource": "repo://mc/deployment/host_release.go#L160-L167",
           "version": "repo-lines-v1:sha256:43b0ec5284bca286562067989cc1a671fd67be4ab674501ed74717b30101a907:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWM2M2Y5MDE0NGNhMWQyYjdlNTQxMjM3OTNhYTA2YjRkOTk3YTk5M2ExYjU4NmJiZjA3MDc4ODcwMmY5OGFkYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzhjMWQ2YjczMWU3NTEzMGU4NWE5N2RlZTBiYzNjYWQyMWFlNjliODIwN2FkZmJiODUyNWM3YWQxZGViYzlhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTdmYjZkNTI4NzA1NTlmOWQwZGJlN2MwZDU0ZDc0NWY4M2E3OGI5YzYzMWFiZmZiZTYxMzc2YTJlYTdmOTM3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDNmMjk1MjMyMGM1NGQ4N2RkZGFiNDBiODZkYzU3ODUyNmI1Mzc2NDg5NGQxMTMxOGE0NjI2NTQ3YTAzZmQwMSJ9"
         },
         {
@@ -649,10 +649,42 @@
           "version": "repo-lines-v1:sha256:0de7cb4c0f65ba12dd35d2c85d50393a5dc489e25daba7a2961c088b65a77694:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NjVmYzA3M2U0ZjZhYzNjMjZiZWVhZTUyZWI3YzMyZmIwODc5NzJkYzFlYzRlODJlMzQ1MzNmMGU5MmJjNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMGVlNzAzZGI0NmQxYzEwZjQyZjE5ODJiZTRkNzgyZTE5OGUyMWY3Y2NkOTNhY2EwZjRmNWM0OWFiNmRlOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNjNkMGM5N2QzZWNkMTgyMTYyMWY3MWJlMjBkMzQzOTdhY2FmYTdhMmJkM2ZhMWIyYjE5NTI2NmJjYTM2ZDQifQ"
         }
       ]
+    },
+    {
+      "id": "claim_573414a7e5104447afd3d1bf13c85fd1",
+      "statement": "The host release ships scene.js and both WebP picture part assets used by the dashboard background motion.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/server.ts#L24-L29",
+          "version": "repo-lines-v1:sha256:ec911120d673e1a240e0c5a99f3cc2596d0bfc4a8dbff7dee1f277aefc194f84:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTc1NTlkMjllMWUyMzc3ZTUzNTkwMzJkMTA2ZmM0ZWUzZTA5NDI3MjBmNDFkYWM4NjVhNzYyNzFjN2U4MTIwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAyZDJjMGQ2ZGM1ZTc0ZDkyZmExNGI5MWRiZWEyNjQwOTBiZWIzNWZkYjkxODhkOWIzNDExODFkY2U5ZjRjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGEyODBiNzk4Y2M3NzkxYjY0ZWIxNzM0NjJmYTMwNzNiZTFlOGJkNWQ3NDA3YWNjZWY0Mzc4MDlmMjVhNThmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmVjOTY4NTU1NWFhMzgzN2EyOTgzMzA4OGFkYmY0MmU0YWQ0MWY0ZmVjZTBhYzJiNGYyZDM3MmRjMTFiMjVkOCJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/server.ts#L56-L68",
+          "version": "repo-lines-v1:sha256:0b4f4328040589ef57b2d2649ff7009ce5490e7ba6b7ee57157d5928ffdad675:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyODY3NzQ3NDEwMzI1MmZiNTg2M2Y2OTY1MzY5NWE5MTEzODM2ZjZhZTIxMjdjOWIwNDBiOWMwZmYwOTEwMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlMzMzYTcxOGRlZjU3NzRjZTU1MDY1MDc1MDZiZmEzN2E4MmVlOTM2Mzk5NDM4ZWE2ZGM5MjI5YmUzOWJhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMjk3YjIwZDg5MWNkM2I4NDI1YTkwN2I4MjUyMzIwM2ZhMjMzNGMyNDE0NTQzYWM4MmFlYTIyNjdkNmY4MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MDAyMTY4ZjY5ZDFmNzhiYzkxNDNkMmE0YTgxMGMwMzlkMDdkOTU1ZGMyY2JkZWRkNjNlMjQzZjM3MTcxYWUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/host_release.go#L74-L81",
+          "version": "repo-lines-v1:sha256:ad8a02cbe648dcc63aba4065cc63d9d1685e9dca86ed3c377d13e2e637cd66e8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJmM2E5ZGMwMWRlMWU0ZGU3NjY3YjJiOTg3ZGE1MmE3OGJiYjUwOTBhMjNhNDkxMWQ1Mzg4YjE3YzVkYjRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFlNWYzYWFkNGRjZDJmN2YxYTcwNGMxZTVkNTgyM2U4MjU5MmYzYjNkMjExNmVmMDcwNTQ5MTZkYjE3YjcyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODI5MWIxNzIyNmNiN2YxZmNjMDc4MWEyOWNhMmE4MTg0MjVmM2Y3ZWU0ZDJhZTVlMjBmZTQ4M2UyYjgxYzZiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzA0NzMzOThkOTI0NmQ3NWQ3Yzc5ZDNmNzMzMDMyMzUxZTg0ODgxYTI4NDFhNTIzNjM5MTY4ODM3YTMzNjA0MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c04832027d32430e9bf2ae2dbf2dbcfe",
+      "statement": "The Codex setup login leaves terminal input unread and still delivers the authorization address.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L20-L50",
+          "version": "repo-lines-v1:sha256:e6cb5c3b7b0086870c567acdb4012e0b4d4d8e510821fc1a7507b0e7a760d55e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MTQwZTc4ZjAzM2Y0NDYxZDg2ZWI3MGYzMThkM2M1ZTc4MWQ4MTA2ODk1NDhmZDQ3M2YyYjJmMGJiNzAwZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlOGFiNjhhYTgwM2QwMDlhNGU0NzYyOTZmZWMyZmEzZTcxNDU0YTk4NzFhMWE2MjY0ODgzNDNhYWJhNDEyMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login_test.go#L145-L161",
+          "version": "repo-lines-v1:sha256:5c5cb47c2ae65a8206918a133df73d4da31cf8ed9f7bdc823888f069b7f5ea3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMzE0YWM0NWVkOGM4OGI3ODhjMDNjZTFiNDMwZmIxNTk5NGUyNGUzNjNkZDAzNGU1YjM4ZDY1MGVhYWEzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGRlYjY3NmI1YmQ3ZTI3MWRmYmEwNmE3ZDk3MTg4N2MwYzI2ODk2NmUzMjc4ZDBmYzAyNzhkM2FkNGJhMTIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T01:41:54.063Z"
+    "at": "2026-11-10T19:18:31.051Z"
   }
 }

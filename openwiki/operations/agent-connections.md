@@ -40,6 +40,8 @@ sources:
     resource: repo://mc/deployment/opencode_source.go
   - id: openwiki-source-c55cdefe405ad9fe4d481e84
     resource: repo://mc/deployment/provider_credential.go
+  - id: openwiki-source-d0b091e57853771f453ce84a
+    resource: repo://mc/deployment/runtimeauth_setup_login_test.go
   - id: openwiki-source-da04f25cb9fa15d5a8447612
     resource: repo://mc/deployment/runtimeauth_setup_login.go
   - id: openwiki-source-3dcbed55f4a2df7c7a474bd0
@@ -60,10 +62,10 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T19:18:31.051Z
 ---
 
 # Agent connections and access renewal
@@ -152,6 +154,15 @@ Native sign-in uses the existing provider authorization process.
 Each native sign-in uses private host directories outside deployment mounts.
 These directories remain separate from the operator's normal native login.
 The host removes each temporary credential source after import.
+
+Terminal setup uses `NewSetupRuntimeAuthLogin` in `mc/deployment/runtimeauth_setup_login.go` for browser authorization.
+The login requires separate absolute home and credential paths and has a ten-minute timeout.
+
+For Codex, the launcher passes no standard input to the child process.
+The browser authorization therefore leaves the operator's terminal input unread.
+This also avoids the Node.js launcher failure that a detached `/dev/tty` can cause.
+The output filter still passes the authorization address to setup while it conceals routine output and credential values.
+Claude Code retains the supplied input for its own login command.
 
 The API key form contains one concealed key field.
 A successful save clears that field.
@@ -313,6 +324,9 @@ It accepts synthetic provider credentials and requires a private directory outsi
 `mc/onboarding/terminal_search_test.go` checks edits, selection, match pages, empty results, and terminals without screen controls.
 `setup_agent_choices_prod_test.go` checks provider choices and the access-method order.
 `setup_connection_choices_prod_test.go` checks additional account names and access transitions.
+`mc/deployment/runtimeauth_setup_login_test.go` checks the isolated directories, timeout, and filtered authorization output.
+`TestSetupRuntimeAuthLoginLeavesCodexTerminalInputUnread` supplies terminal input and checks that the login leaves it unread.
+The same test checks that setup still receives the authorization address.
 `dashboard/src/ui/agentprofiles.test.ts` checks provider order, the OpenCode search, connection reuse, and numeric name suffixes.
 `dashboard/smoke/api-key-connection.smoke.test.ts` checks automatic names, visible selection, and concealed key handling.
 `mc/cmd/mc/setup_opencode_screen_prod_test.go` checks search order and terminal output at 80 and 40 columns, with and without color.

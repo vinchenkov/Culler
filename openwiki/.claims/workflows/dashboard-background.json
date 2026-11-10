@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3b7a761e2751031a582e73da24941568717e80334268c6ed89b62ef8518b081b",
+  "claims": [
+    {
+      "id": "claim_b9f2499407364723ae88b8778ea04139",
+      "statement": "The page reads the stored picture selection before the stylesheet loads and defaults to hidden unless the stored value is shown.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/index.html#L9-L27",
+          "version": "repo-lines-v1:sha256:f634118802118ae48a470529f7488234786fe734817f662105be3d340d1f57d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjOWNjZThmNjEzMzkwZDI3NzhmZGVkNWY5YTVlYzE1NTVhYmI0OTAzNzdhNjEwYzE3MTMxZDQzZmU3ZjRiYmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMTJmMzBjZTE1NzQwZjk1MGY5OTFmYWY2NmY2OTEyY2JlNTZkNGM5NzA0YTZkNTE2YzBlZDc1MzUxNTk3MTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NjJkMTI2YWE3ODZmZTBmOTYyNzg5ZDdlMjYwZTk4OTZkOThhNTJiOGNkNmM2YmExMzYwMDMyOWExNWI3YzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxNjJmYzAwN2RkYjc4YmQ3Yzc2YTlmMDk3ODIyOTg2Y2ZhZDc5OGNlYWEwYjc0YTY5ODRmNzk1ZmYwMDE3NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76eafeb971904947838eb81bf05981f5",
+      "statement": "The logo control updates the selected picture state and browser storage before it requests motion.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L306-L307",
+          "version": "repo-lines-v1:sha256:0588b8f4557c35b908d37d2a1e1f77a790b938aeb77d449ef9cddeb7c6ba8dec:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA5MzUzYzg4MTQ5ZTZiZTVmZWJkZTQ2YzMyMGE4NWY5MDQ3M2IzYWI2MmVlOWNlYWYzMjFjOTZlZTlhOTJjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJhNTE2NmIzNWNmMzlmY2JhZTI4Njc0YTBiNWQwOGMwZWEwNzg1ZTM0YmZmMWJlMGQ2M2FkZjY1MDI0MGExZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTM0YWI2ZGQyNGVjNjgwZDZjZGRjNzI0MDNlNzE1YTI3MDFmNTk0ODI5Mzc2Y2E1M2M2ZTAzOGRkN2Q5MDlkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGEwMDdmN2UwNWYzMzAzZTgwMzMxZGQwMjI5NDdiZWE2NGQ1Mzk1MGRmMWRkMWZjMTBlNDBmNmJmZjQ2MGRmNiJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/theme.js#L73-L114",
+          "version": "repo-lines-v1:sha256:2a1df6b5a783625bc02eea6c26c8bf4646d5900019bb747a7c1dda499f0566ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0NTBiNzkxZjYxYTI1YzJhNTQwYTZlN2FiYjBlN2I5ZTg1YmJiOTBkYTIxNjJmOTU4ZGYzMjJjMTk4N2U5ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6067312e2c62445cb0166fce10f1752c",
+      "statement": "The scene defines 18 picture parts with sheet cuts, paint order, scale, and rotation points.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L15-L45",
+          "version": "repo-lines-v1:sha256:cd4296b7155cc83fd147caebc7939da962899af6b249dbc1345e4799452781a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmZjA0ODZlM2NiYzQ1YjMzYzc1M2U3N2U3ODJiYTJmZDEwMzhjY2E4ZTM1OGEzY2U4MTE3MWRiZWM3M2VjM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwMmQyYzBkNmRjNWU3NGQ5MmZhMTRiOTFkYmVhMjY0MDkwYmViMzVmZGI5MTg4ZDliMzQxMTgxZGNlOWY0Y2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwODVlYjllNzA2YzMzZDBjYzBkZWJmZTJhYjBiMDI2MzMyODc5ZmVlZmZjY2Y5MWZkNmY3ZWJjYjg3ZjVjMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwYzVmMzQ5MTQxMDM2MzJhNzA1MmRjNGZmNTM4ZjhkOTcxYWExMjNlNjc3MTJmMjdiOWJmNmQ0ZjU5NTM5ZDEifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.test.ts#L54-L115",
+          "version": "repo-lines-v1:sha256:349c1db2408e47a26b579625112a5468dcbd72605ce8a192512be8c963127a33:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4NDNhNTFkZmM4MzcwYmUzZDM4ZjJmMmFhYmZkZmU3NzY2ZTZmMTI3NzE0YmQxODk5Yzg2ODE4ZThiYTEyMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyOWY5YjJjMGNkYzg2ODEyNGUyZGE3MDA3NWY4YjI3MWQ3MjM0ZTlhMWY3NjA4NWY4ZTViYmYzM2M0OGZmYzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZDgzODkxNTgwMTJkOTg1YzlmYjFjNGE0YzQ3MzFmZWMwMmUzYzQxZWY4OWExYTRkODQ4MmQ3NjFiYWM5ZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f4a1d32e44784e8784d54d27a8e4f32a",
+      "statement": "The scene generates keyframes from poses in picture units and starts a browser animation for each part.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L327-L353",
+          "version": "repo-lines-v1:sha256:d7d47d3b4d3350d62ed9ab6b42d521f985c35c711c21370cff4c5c7cdfec0b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MmYwNjk1ZDdhYzQ2MmI2M2VkYmNkY2RjNzA4YWY0N2QwNmFlMDcyZDVkMzIzODk0ZDY1YjI3ZGU0OTE1Y2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2ZTBkNzNlMTE5NTkyMzk4M2NlMzVmMDU5ZDhkZjNjM2FjYWI2NmZiMDlkYzVlODM4ZTYwOTRiOGM5NjE5MGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4NjM4ODRhNjU5OWNiYzQxMjE3NzM2YjhmZjk4ODY5MzdmODNkMjYyZjNlYjU2NmRhMmE1YzRhYTc0ZDhlOTgifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L428-L457",
+          "version": "repo-lines-v1:sha256:7f0527b296d4bb75a028c53b38cc02342089025d32a6cd20dee35f3c89b6963d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZTRjYTYzNjIxNTIxZDMzZGJlNjYyZjQzYWE4OWU5YTZhMzQ2ZGJiODFmZTE1YzNiNGNhMzRlYmUyMzZhYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5NGUxMjk4NzY1ODUyODE1NDM1N2MyYjVmMGU4YzJjOWQ3ZDk4Mjk5YTgxMTk1MmUwNzkzODhlNzgzMzY4ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNmI0MGRlYzM1ZjI4ZWU0ZDJlNGJhZDY0Njk3YTY2OWM1NTRlY2VmZDk2ZjhmZDU3MjIwNGJlNmM1ZTE3YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmZDIzZjAzODgzNzdlM2IwOWIzZjZiMmFlOTVhMTQ4MjMwNmEwYWMyNWI4NmU4ZjYzMTI1NDU2ZTE3MDA5YWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd202a5d8bd245baafb653a85532883a",
+      "statement": "The show sequence opens the shell and moves the chick to its final position before the full picture replaces the parts.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L169-L250",
+          "version": "repo-lines-v1:sha256:3b522ac9d7bbff87aa297f257b95a338aec25334fcd0e567116f8649bcd9e243:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMzljMjZkMWEwNGJkYzRkMmI3NzAwZjNhNjJiM2IyNDVhODdjYTg3NTFhNjUwZWU3ZjAzOGIyMGI2NzE3MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxZDI0Njk1N2JmNGZjOTNjMzFkZDlmOTI3ZjY2ZmVhMDQxOWM2OWUyY2Y1YmIxYmNhZmNkYzA2MmM5MzMzNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0Mzc3NGYwNjg3ODg5MDgxMjQ0ZDI2NTQ4OWNiOGYwNDAzMWNiYWNhN2U3NDFhYjdjOGE0YzU0NmI2YmI2OTMifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L413-L425",
+          "version": "repo-lines-v1:sha256:320df40016a5952868c429e59c6a7387b702032b9d1109fa906f9fb57129cbe8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlODA4YmI5MzdlNDU4ZTA4Y2M4YmM5ZGUxMzQ0MDk4YWQzMWE0MTI5Mjc4MzBjZDcxZDMyN2NkZWNiNzdlZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NzBlNWY2YTRmY2FmNmI1YTUwMDExZjcxYTE2YjIxMjJmMzk5OTYyMmM5OWU0MTJmZmZmMzdiZDc0OWYxYzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViMjU0MDI5M2NmODdmYTAwZTBjMDI2MmM4YTM2OWIwYTMyNGM4M2M4NTdkMjdkZWQ3MjNmNTViNTJjYjAwYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxZDQxYTBjYTMyMGJmMmI0MDIzMGE4ZDA5MjQ5YjE4YmViOTM1YzJlNWJhYWQyZjJkY2FmMDU2ZmVjNzQzZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ca0c6bd863fc47a6a1ccc1bd46d26e69",
+      "statement": "The hide sequence returns the chick to the shell, closes it, and moves the picture parts away.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L253-L318",
+          "version": "repo-lines-v1:sha256:32ea8c6ff194797f8a713c6d4941bc37ec7ef8f808e95ded9aa19c30a38b35ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3Mjc1NjcwNDI5MzNlMmMyYjM5MGYzNzQyMDkzOGE4ZWYwODAyMmEzMTY4OThhMDFkYzE2MjY2ZjQzNWFmNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMzhlZTljYzczYzlmMWYyYzhmOGM1NmQwMGJkMDBkZTViMDczNjlmMTJlMDgwYWJiZDc5YzhjNDM3NTZjMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI5NjQ4Yjg3ZWFmZjAyNTkyOTdjYTEzMDhhYTJjMTE0OTI0MWJiZWJiYmUxNTE1YTZjYjhhZGI4NjMxYjYwOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e63ab69dc114ed0be819adc6c71c2b5",
+      "statement": "A click during part motion reverses the current animations at rate -1.5, and another click restores rate 1.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L369-L370",
+          "version": "repo-lines-v1:sha256:d0773592a313165078f30e998fe314b382cdcdd6d103b3552b523216ae6863ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmJkZjM4OWM5Y2I5ZTg2MDZhY2EwMTA1M2E0MGNiOTM5ODAwOTk0MTE1YTU5NDg3NTg3M2UzZDcyYmRiNzUzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjM1M2IzM2RlMGRiNTg0ODY0M2FiYWQyY2Q2NDcwYWY1YjI2YWEyYjhkNjgwNGI0ZDUzODhmMGNkYTJiODkxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIwNDBlMDk1YTk0ZTJhZGE3NGU0MjFmMzcxODc1MWE5MWE4MTBiZmQ2NmY0OGY0ZTkzOWM3Yjc0ODBlYjY3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzA4NmQ2ODBjYjQ5ZTdiZmNiM2FiMzdjZTNlN2I5NjgzZDVkNjM3ZjZkMTdiMzZiN2M2MjU5MWI3NzI2M2JlMiJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L460-L478",
+          "version": "repo-lines-v1:sha256:97fc0b1d728b54f5febdf41b58e31b5e1899a93e858ad8c2c8a45b5e411c2cb3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNzQzN2I0ZTU1NTgzYmJjNmZjMjY1YzAzZjJiZTdmZDhiOGZjNzRiZmQ4NDQwOTdkNWU5MGU4NWZkM2E2ZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmYWM0ZTQzNjMwYWJmNjhjM2E0YTc1NzNmZDRjNDMwMDhiYTc5OGRkNzZjMzc1OWVlZWY1M2U2Y2ZmOGQyZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgzYzI1ZGRmYTU0ZTBjMDc3YTgyZTYzNDg1YzliYjAzY2Y5ZjkwZDU4NzJmMDY5YzQyZDIwNzIwNDJmMmQyMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MGY3ZGVlMTQ4YmI4Y2MwNzM1MzJmOTAwYjFlZjI2ZjdlNjAyZjBhMDI5ZDA1OTQzZTZkNjNmYzVmNzZlMDMifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.test.ts#L456-L477",
+          "version": "repo-lines-v1:sha256:b88f8a8d9f74a90314b363c6869ef955e80449fe709f65507e44c72df1df348a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3NWVlNDZiMTEwMmQxZmE0ZjBkNDUyMGE4NWY5MTc5Mjk5YWQxMDYwZjM0YzNhYmRjZWY0MDBjYWU1ZjY2MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MzQxYmM1ZTZjMzRiOTRhZWRmMTFlMTRjZTQwNzE4MTE2NTBhM2I0YzExZmVjYzg1NzBjNmJiZjMzOWNhMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlMzgyZDYxNzM2ZTZhYThhMDE0NDdhMDgxZjAyMDc0OGFhYWIyM2FjNmMxMjQ2NWFlNWI5Y2ExMTdjMzY1YzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1YmRmMDVkZWY1YTIzNjcxZmMyOTM5ZGExYzY3NDc3MzBjMTFmMmVlZDE3MjE0NmFiMzFiNDliZDY0NGQzNjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd218fd0143440b596e6de2f675eef3f",
+      "statement": "The controller cancels pending image preparation or active animations without changing the selected root state.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L399-L411",
+          "version": "repo-lines-v1:sha256:9b1e9039b3ecba4aacebd8bb6adb1c40d9126d86e69e62473bc64a175e7177a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlZTQwOWZkZDNlM2YxMWMyYjc5MzNmYmRjOTc5NDFlOTI3MzI3NmE4MTk2YjRhZGQ0ODhhMjI5MGIwZmZiYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2Mzc2NTAxOGQzNjY5M2ViYmMyZmRlNTY5Y2RhOWY0MzEyNWYwMjAyMTRhMWE3ZGU3YjM4MDg2MTgyOGM2MGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZDQ1OWEyYWZmOGVhM2I5ZDkyNzYyOTI1Zjk3ZWE3YTc5NWM4NGUwYjQxYzRhMmJmOTU4N2NlZjE4MmFmMzIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L428-L478",
+          "version": "repo-lines-v1:sha256:cf65e127f3bc6a0c02debfdd406f1cce3a7389edc02fa975bc763751dde6ffe3:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZTRjYTYzNjIxNTIxZDMzZGJlNjYyZjQzYWE4OWU5YTZhMzQ2ZGJiODFmZTE1YzNiNGNhMzRlYmUyMzZhYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmYWM0ZTQzNjMwYWJmNjhjM2E0YTc1NzNmZDRjNDMwMDhiYTc5OGRkNzZjMzc1OWVlZWY1M2U2Y2ZmOGQyZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhNmI0MGRlYzM1ZjI4ZWU0ZDJlNGJhZDY0Njk3YTY2OWM1NTRlY2VmZDk2ZjhmZDU3MjIwNGJlNmM1ZTE3YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MGY3ZGVlMTQ4YmI4Y2MwNzM1MzJmOTAwYjFlZjI2ZjdlNjAyZjBhMDI5ZDA1OTQzZTZkNjNmYzVmNzZlMDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_18b06b97c5244cf1a24626e63030886c",
+      "statement": "Theme changes, picture selections from another tab, and window size changes settle the scene immediately.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L481-L484",
+          "version": "repo-lines-v1:sha256:a84b103301a4333000018b2dfefe8fc59d48c6e1b760bc027010ae90818f43a4:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGE5NTQ1ZWJhNTBhMzU0MTdkNzNiN2Y0ODgwZjU2YWE3NTNlNDEwMzU2ZDAwNzE0Y2VhMjczOThjNGY2NzMyMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjVmNDdlZWQ0NDFhMDliZTNlNjQ5NGFkMTk3Njg1OWNjZjBkMTQ3ZDgxYzhlYzc5OGM1ZWNlMjFmMWMxYjZiMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjU1MDJiZDQ1ZDg4NGRiODAyZDQ5ZGZiNTExMTkyMmEzZTJjODUwYjU1ODZmN2Q5NThmMmM4ZTE5YTkyMTA1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTkwMWI2ODA0NTFiYmE4ZDZiYjRlM2E2MzI4NjZhN2NhNzFkMDgxNDg5OWE3YjA3MGRhMDFmYmRlNWU0MmRkYSJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/theme.js#L98-L105",
+          "version": "repo-lines-v1:sha256:28de7c5136e8711f8f7d7053432c47c8d2c9e36536b3d19e2b42c440b86d38b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWVjZDVjZmJjOWQzNzQyMDM2Y2Q2MGJhZmIxMzAyOGEwYWY4NDRiMzg0ZGYyZTIwYmRiM2JkNjUyNjFiOGJjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzBjNTczNTdmMWY3OTI3NWYyYTYzMjllNWE2OGVmNGFlNmExMDdjNTcwMzk5ZjM5MDAwMDE3YjIxN2ZmYjdkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg0ZjYxYjcyZjQyYTgyZGNjMDhmNzRkOTJlNmE5ZjNlZTQ2YWMxMzdkMGY2OWZjNjRlY2UxYWNmNDkwMTQyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWUyOThjNWEzZTBmYTcxNWZhMWZlMDkzM2Q1ZjBhZTVlYTYxNDIzYmY2OGM0ZTMyZTU5MTJjMzM1ZWVmODYwZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_da0794a541da4791811d32660d83930d",
+      "statement": "Reduced motion, a hidden document, absent scene elements, or absent animation support cause play to preserve the selected static state.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L376-L411",
+          "version": "repo-lines-v1:sha256:5f306b7908bf85bd354100a25987347b550eb4c409e14eb21e3f3540f31b5be7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNjhjNzBjMmZlZDBhNTFjNTA2Y2M0ZGVjODlhMDBmMWEzZWU2MTc2NDUwMzQzNmI3MWE1MjA0ZmQxZjI3MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhY2RkNzZlYTUzNGU5ODI0MWVjODEwMGQ3NjZlOTIyNDBiYjdiMzc3Yzg5MWRiZWFkMGU0NDU2MThjYjg5ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZDQ1OWEyYWZmOGVhM2I5ZDkyNzYyOTI1Zjk3ZWE3YTc5NWM4NGUwYjQxYzRhMmJmOTU4N2NlZjE4MmFmMzIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L460-L461",
+          "version": "repo-lines-v1:sha256:f0c217ddf5e6d7236814915d9b06563bae96d76424ea40ede88637f271c8f3f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ3NDM3YjRlNTU1ODNiYmM2ZmMyNjVjMDNmMmJlN2ZkOGI4ZmM3NGJmZDg0NDA5N2Q1ZTkwZTg1ZmQzYTZkZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDJlM2VhOGVjN2Y0NWQzMDdkZTlmZGU4YjkyYmU2MTY5ZjkwZDFmZTViZDIzMWFkNGJiMzkxYmVjZmZlYTEyMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODNjMjVkZGZhNTRlMGMwNzdhODJlNjM0ODVjOWJiMDNjZjlmOTBkNTg3MmYwNjljNDJkMjA3MjA0MmYyZDIzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTAyYWZkMGIyNjQ5MGNhNjc3ZjAxOGQwOTljZDFmZjg1ZmY3ODY3ZTg5YTI3MDUzYTgwZmFmNDAwMWE1ODc1NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ed8ccf5bf7148eb894fb2d9867b7896",
+      "statement": "Image decode promises are cached by address, and failed promises leave the cache so later attempts can retry.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/scene.js#L487-L498",
+          "version": "repo-lines-v1:sha256:8e5d3fe76fed7a1fedd50b262117cb7aea5a4d970316f8fa1b71c745224372d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1OGZhMDQ2ODVkMzRmZjllNjQ3MmZjNDI1MjI2ZGQzNjUwNmY3ZDc2ZGUzYjgzZTI5ZDJhZDAzYjdhZDExM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlZTNhZmUyMzM3MjY5NWQzNmJhYWU0NjIwM2E5MTc4NDhlZmZlNjhjMTY5NDYzN2U4MGViOWFmMGZjMjc5ZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9ea477848434c5d82a73d72497fc16b",
+      "statement": "The grid and picture share scene geometry beneath the theme veil, with different artwork placement at widths of 720 pixels or less.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/style.css#L387-L446",
+          "version": "repo-lines-v1:sha256:adf835fed33db26152c4dc2b0590540e74934420a15de9ca6ea266176ec765f8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMDUyOGZkZTNlNjE4NjEwZDZjNjllZDZmZDNmNDgzZGZjZGYzMWY0M2M2NTIxZDcyZDkzODgyMGJlZWI5ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlYmI4NTJkZTBjYzNkZWRhZjBhODM4N2NkNDBmNTY3NzhmNGU4MDM4YmUyMWU2MTBhOTBhNmU0OWM3MzU3NDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiMmFmNDM2OTIxZmNhM2RlMjY1OWM2NGE1ZDk3MGEwMjcyZDAxYmY0NTFmMDg5NzBkOTg0YWU2YmVhMDE2MmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5c1a140c3714da48964b6df6ec4f240",
+      "statement": "The server serves scene.js and both picture part images, and the host release manifest ships those files.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/server.ts#L24-L29",
+          "version": "repo-lines-v1:sha256:ec911120d673e1a240e0c5a99f3cc2596d0bfc4a8dbff7dee1f277aefc194f84:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTc1NTlkMjllMWUyMzc3ZTUzNTkwMzJkMTA2ZmM0ZWUzZTA5NDI3MjBmNDFkYWM4NjVhNzYyNzFjN2U4MTIwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAyZDJjMGQ2ZGM1ZTc0ZDkyZmExNGI5MWRiZWEyNjQwOTBiZWIzNWZkYjkxODhkOWIzNDExODFkY2U5ZjRjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGEyODBiNzk4Y2M3NzkxYjY0ZWIxNzM0NjJmYTMwNzNiZTFlOGJkNWQ3NDA3YWNjZWY0Mzc4MDlmMjVhNThmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmVjOTY4NTU1NWFhMzgzN2EyOTgzMzA4OGFkYmY0MmU0YWQ0MWY0ZmVjZTBhYzJiNGYyZDM3MmRjMTFiMjVkOCJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/server.ts#L56-L68",
+          "version": "repo-lines-v1:sha256:0b4f4328040589ef57b2d2649ff7009ce5490e7ba6b7ee57157d5928ffdad675:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyODY3NzQ3NDEwMzI1MmZiNTg2M2Y2OTY1MzY5NWE5MTEzODM2ZjZhZTIxMjdjOWIwNDBiOWMwZmYwOTEwMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlMzMzYTcxOGRlZjU3NzRjZTU1MDY1MDc1MDZiZmEzN2E4MmVlOTM2Mzk5NDM4ZWE2ZGM5MjI5YmUzOWJhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMjk3YjIwZDg5MWNkM2I4NDI1YTkwN2I4MjUyMzIwM2ZhMjMzNGMyNDE0NTQzYWM4MmFlYTIyNjdkNmY4MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MDAyMTY4ZjY5ZDFmNzhiYzkxNDNkMmE0YTgxMGMwMzlkMDdkOTU1ZGMyY2JkZWRkNjNlMjQzZjM3MTcxYWUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/host_release.go#L74-L81",
+          "version": "repo-lines-v1:sha256:ad8a02cbe648dcc63aba4065cc63d9d1685e9dca86ed3c377d13e2e637cd66e8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJmM2E5ZGMwMWRlMWU0ZGU3NjY3YjJiOTg3ZGE1MmE3OGJiYjUwOTBhMjNhNDkxMWQ1Mzg4YjE3YzVkYjRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFlNWYzYWFkNGRjZDJmN2YxYTcwNGMxZTVkNTgyM2U4MjU5MmYzYjNkMjExNmVmMDcwNTQ5MTZkYjE3YjcyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODI5MWIxNzIyNmNiN2YxZmNjMDc4MWEyOWNhMmE4MTg0MjVmM2Y3ZWU0ZDJhZTVlMjBmZTQ4M2UyYjgxYzZiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzA0NzMzOThkOTI0NmQ3NWQ3Yzc5ZDNmNzMzMDMyMzUxZTg0ODgxYTI4NDFhNTIzNjM5MTY4ODM3YTMzNjA0MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_26af79080e9f41beb4f8191d0bec5855",
+      "statement": "The browser smoke checks the shell and chick sequence, active motion reversal, final alignment, and reduced motion.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L197-L310",
+          "version": "repo-lines-v1:sha256:10a0e68f203dd1c986af7bc146664aed945e62c8f9e321d01df080f7adfead1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlMThhNGU2ZjhlNjNjYTNhOWEzMWRkYTZiMjU1ZTRhNDAwMGIxZGQ2NzhmYWYyNzc2MTFiMDBmZGQ5NGNmMTUyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0NzhhMGVjNzk0MDZjNGM4Y2UyNWEzMTdkY2U5MjllMTFjMzU1MmM2MDhjMzdkMzhkMDFhNzRmZDAzZWZhNDgzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxMjVlZmI4Yzc2OTMxNjVjYThjNjM3MDY1MDM1MWViYjJhMGNiYmU3ZDU3ODUzOWIyNGVhMzJjMmQwMGM5ZDk0IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5MDRiMzZkMjhlNWVmYmU5ZmU0NzE1MGE0MWUyYjdiNDlmOTY3OTA2NGFiNDA5NTE3ZmQwNWJjOGM3NTg0ODlmIn0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-11-10T19:18:31.051Z"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:89cb893e197711ff5f3573b6ab481717e8fd0728a23a7b0cc71f12e34239d842",
+  "pageVersion": "sha256:04ee50bdd1dba368d14dcbdc0806cbc52146a9f59a2add2f3f38b7475d2227c5",
   "claims": [
     {
       "id": "claim_aee9aadca2bf4c71862803d812043b81",
@@ -34,11 +34,11 @@
     },
     {
       "id": "claim_aebaaf3a14624128b8a0c331f427dec8",
-      "statement": "Setup sign-in requires separate home and credential directories and uses a ten-minute timeout.",
+      "statement": "Setup sign-in requires separate absolute home and credential paths and uses a ten-minute timeout.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L16-L43",
-          "version": "repo-lines-v1:sha256:e692a96106d5ab68e359a8e7decfaa97697c2d181a3ad63e45c5f0e082db68f8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjYmFiMWQ2ZjY0YTZmMDc3M2NhNDI5ZmZmYzlkNTE4MzE4NDc1YzQwYjkwNmQ1MTc5MGY5MjdiNjdiZmYwZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmZWUzOTBiYmQ1NGMzMjJmZjU4ODJmZjEyZTUxZDlkNWQyNzk2ZDFmOTFkYTgxMjc0MDI3NzFkZDZkM2ViZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMjNjMmYwNDZkY2NmNDg2ZTQ1MmQ5Y2MyMTM3YTA3Njc2NjVhMGRlZGRhMTA3YjYzMGJmM2UxNmE2NGQ5M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNzM1MGU3MWQ5NzM4ZWVlNmNiZjk3ZWVlYWVmYTBjZDgzNTc4ZDQzZmJiODM0MGYwMTkxMjVhZjRmNDhhMDMifQ"
+          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L16-L42",
+          "version": "repo-lines-v1:sha256:290c312c602d77117f0bbf12aa1b19e6dabec43b07b7c629b5a998b36d61af10:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjYmFiMWQ2ZjY0YTZmMDc3M2NhNDI5ZmZmYzlkNTE4MzE4NDc1YzQwYjkwNmQ1MTc5MGY5MjdiNjdiZmYwZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NTI0MGRkYjJmOWMyMjRlMjk4ZTkxMWRiMzQyNDAzYmYwNzEwOGM4ZDg2YTRkODg3ZDVlYmU1OWJlMGJjZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMjNjMmYwNDZkY2NmNDg2ZTQ1MmQ5Y2MyMTM3YTA3Njc2NjVhMGRlZGRhMTA3YjYzMGJmM2UxNmE2NGQ5M2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5MzEwOGY4ZGJhNzMwMDUxODI3YzA4ZWU0NWVjYmMzZDZkZjhmZTMyMmY1M2ZjZGU1MGIyMDc2Y2UwZmFlOTgifQ"
         }
       ]
     },
@@ -399,10 +399,30 @@
           "version": "repo-lines-v1:sha256:0de7cb4c0f65ba12dd35d2c85d50393a5dc489e25daba7a2961c088b65a77694:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NjVmYzA3M2U0ZjZhYzNjMjZiZWVhZTUyZWI3YzMyZmIwODc5NzJkYzFlYzRlODJlMzQ1MzNmMGU5MmJjNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMGVlNzAzZGI0NmQxYzEwZjQyZjE5ODJiZTRkNzgyZTE5OGUyMWY3Y2NkOTNhY2EwZjRmNWM0OWFiNmRlOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNjNkMGM5N2QzZWNkMTgyMTYyMWY3MWJlMjBkMzQzOTdhY2FmYTdhMmJkM2ZhMWIyYjE5NTI2NmJjYTM2ZDQifQ"
         }
       ]
+    },
+    {
+      "id": "claim_70b0b31018974892971532198f234ded",
+      "statement": "The setup login launcher passes no standard input to Codex and retains the supplied input for Claude Code.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login.go#L20-L50",
+          "version": "repo-lines-v1:sha256:e6cb5c3b7b0086870c567acdb4012e0b4d4d8e510821fc1a7507b0e7a760d55e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MTQwZTc4ZjAzM2Y0NDYxZDg2ZWI3MGYzMThkM2M1ZTc4MWQ4MTA2ODk1NDhmZDQ3M2YyYjJmMGJiNzAwZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlOGFiNjhhYTgwM2QwMDlhNGU0NzYyOTZmZWMyZmEzZTcxNDU0YTk4NzFhMWE2MjY0ODgzNDNhYWJhNDEyMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f452aa376b5947dba4c5692aac48bdce",
+      "statement": "The Codex setup login test verifies unread terminal input and delivery of the authorization address.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtimeauth_setup_login_test.go#L145-L161",
+          "version": "repo-lines-v1:sha256:5c5cb47c2ae65a8206918a133df73d4da31cf8ed9f7bdc823888f069b7f5ea3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMzE0YWM0NWVkOGM4OGI3ODhjMDNjZTFiNDMwZmIxNTk5NGUyNGUzNjNkZDAzNGU1YjM4ZDY1MGVhYWEzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGRlYjY3NmI1YmQ3ZTI3MWRmYmEwNmE3ZDk3MTg4N2MwYzI2ODk2NmUzMjc4ZDBmYzAyNzhkM2FkNGJhMTIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T01:41:54.063Z"
+    "at": "2026-11-10T19:18:31.051Z"
   }
 }

@@ -56,6 +56,8 @@ sources:
     resource: repo://mc/deployment/opencode_source.go
   - id: openwiki-source-f2370cd7c903f813dbc4ad1c
     resource: repo://mc/deployment/runtimeauth_host_sources_test.go
+  - id: openwiki-source-d0b091e57853771f453ce84a
+    resource: repo://mc/deployment/runtimeauth_setup_login_test.go
   - id: openwiki-source-da04f25cb9fa15d5a8447612
     resource: repo://mc/deployment/runtimeauth_setup_login.go
   - id: openwiki-source-44ff1dc1a6b4e5974f9836a4
@@ -90,10 +92,10 @@ sources:
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T19:18:31.051Z
 ---
 
 # Installation, deployment, and release
@@ -234,6 +236,9 @@ The deploy step keeps the deployed database. When that database has a different 
 - **Release manifests.** `hostReleaseFiles` in `host_release.go` and `runnerReleaseFiles` in `runner_release.go` list the exact shipped files. `InstallHostRelease` and `InstallRunnerRelease` copy them into `MC_HOME/release` through a staging directory. `ValidateHostRelease` walks the installed tree. It rejects any unexpected or missing file, any symlink, any file not owned by the operator, and any mode other than 0700 for directories or 0600 for files. A new resident, dashboard, or runner file that is not in the manifest fails at activation. The closure tests (`host_release_closure_test.go`, `runner_release_closure_test.go`) read files outside the module, so `mc/check.sh` runs `./deployment/` with `-count=1`. See [the dashboard](../architecture/dashboard.md) for the three-edit rule.
 
 The host release lists the dashboard fonts and their license notices. The dashboard server maps their URLs to the shipped files. `TestHostReleaseManifestShipsNothingUnreachable` checks that every served dashboard file appears in the host release. It also checks that each shipped file exists and has a caller or server route.
+The same manifest ships `scene.js`, `scene-parts.webp`, and `scene-parts-dark.webp` for the [background picture motion](../workflows/dashboard-background.md).
+The server lists `scene.js` in `UI_MODULES` and serves both image assets as `image/webp`.
+`app.js` connects that module to the logo button through the theme controls.
 - **Names.** `RuntimeNames` derives the spine volume `mc-spine-<12 hex>` and helper `mc-helper-<12 hex>` from a SHA-256 of the canonical `MC_HOME`. Several deployments can therefore share one Docker daemon.
 - **Supervision.** `PrepareSupervision` (`supervision.go`) publishes the native configs and three LaunchAgent plists under `MC_HOME/supervision`. It never writes `~/Library/LaunchAgents` and never bootstraps a job. `ActivateSupervision` (`supervision_activate.go`) is the operator-present half. It installs the plists, bootstraps the jobs, requires a fresh release-bound resident tick receipt, and rolls back a partial first activation. `ReconfigureSupervision` replaces loaded units. `requireLaunchdTCCSafeHome` refuses homes in TCC-protected user folders, because Full Disk Access does not transfer to a LaunchAgent. Never load launchd during development.
 - **AgentsView.** `agentsview.json` pins version, archive, and executable digests. Only a change to that file changes the shipped AgentsView. `viewer_secrets.go` manages the AgentsView token and wiki key.
@@ -328,6 +333,10 @@ The confirmation names that account and explains that the existing account remai
 Codex and Claude Code connections use sign-in that Culler starts in separate home and credential folders.
 `mc/deployment/runtimeauth_setup_login.go` launches the detected agent program in that isolated environment.
 The operator's agent login remains separate from Culler's login.
+For Codex browser authorization, the child process receives no standard input, so it leaves the operator's terminal input unread.
+The output filter still delivers the authorization address to setup.
+`TestSetupRuntimeAuthLoginLeavesCodexTerminalInputUnread` in `runtimeauth_setup_login_test.go` checks both properties.
+
 Setup tests the selected connection before service activation.
 It records successful connection and model tests in the spine so the dashboard can show their verification state.
 If the result record fails, setup keeps the connection and asks for another test.

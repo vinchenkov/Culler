@@ -1,5 +1,6 @@
 # Files
 
+- [Dashboard background picture and motion](dashboard-background.md) - The logo button controls a stored picture selection, separate animated parts, and a static final state.
 - [Decision Pending and requirements revisions](decision-resolution.md) - How operator decisions become task requirements while Culler preserves accepted work and the original task base.
 - [Dispatch and the resident tick loop](dispatch-and-tick-loop.md) - How the resident's tick runs `mc dispatch`, how the pure `dispatch.Decide` picks one action per Project, how the prepare/attest/commit seam commits it, and how the resident applies the resulting effect JSON.
 - [Git delivery and repository operations](git-delivery.md) - How Culler gives each code run an isolated repository, captures exactly one commit per task, builds a merge candidate, and applies it to the operator checkout.

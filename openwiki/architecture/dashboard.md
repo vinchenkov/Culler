@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-10T19:18:31.051Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -91,6 +91,8 @@ sources:
     resource: repo://dashboard/src/ui/review.js
   - id: openwiki-source-e51b5dc1a5c6bbfd524e7ccd
     resource: repo://dashboard/src/ui/review.test.ts
+  - id: openwiki-source-b10e7836992abc73d7e0459e
+    resource: repo://dashboard/src/ui/scene.js
   - id: openwiki-source-460c27048f01dfd9cb2c51ee
     resource: repo://dashboard/src/ui/setup-journal.js
   - id: openwiki-source-18796b2f3f0781d432f2c984
@@ -139,7 +141,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
 ---
 
 # The operator dashboard
@@ -224,18 +226,39 @@ Changes to the system theme leave this choice unchanged.
 The button's tooltip names the next theme; `aria-pressed` indicates the dark theme.
 `theme.test.ts` checks stored selections, the light default, the initial page theme, and the button state.
 
-`index.html` places a logo button beside the Culler name. `app.js` connects it to `mountScene` in `theme.js`.
-The button has the accessible name “Background picture”. Its pressed state reports whether the picture shows.
+### Background picture
+
+`index.html` places a logo button beside the Culler name.
+`app.js` connects `mountScene` in `theme.js` to `mountSceneMotion` in `scene.js`.
+The button has the accessible name “Background picture”. Its pressed state reports the selected picture state.
 The browser stores this choice under `mc.scene` and applies changes from other dashboard tabs.
 The initial page script reads both selections before the first paint. Without a picture selection, the page shows only tile lines.
 `style.css` uses a theme-specific grid for those lines and preserves their position when the full picture appears.
 The shipped `landscape.png` and `landscape-dark.png` show a dark egg, a nest, and an orange chick.
-The full picture sits five viewport-width units left of center above the page background. A theme-specific veil keeps text readable.
+The `.scene-art` element holds the grid, the picture, and the temporary parts that move.
+On wide windows, the picture fits the window and sits five viewport-width units left of center at the bottom.
+At widths of 720 pixels or less, the picture covers the window and shows the large egg under a denser veil.
+
+A logo click moves each picture part separately.
+The large egg, nest, and three eggs arrive in sequence.
+A whole egg rolls into place, cracks, and opens before the chick jumps to its place.
+To hide the picture, the chick returns to the shell and each part leaves separately.
+A click during that motion reverses it from the current position.
+After the parts arrive, the full picture replaces them under the same theme veil.
+Page loads, theme changes, window size changes, and selections from other tabs apply the selected state without motion.
+The system's reduced motion preference also gives an immediate state change.
+
+`scene.js` uses the light and dark `scene-parts.webp` assets for separate picture parts.
+`dashboard/src/server.ts` serves the module and both assets.
+`mc/deployment/host_release.go` includes them in the host release.
+See [Dashboard background picture and motion](../workflows/dashboard-background.md) for the animation lifecycle, image failures, and reversal behavior.
+
 The empty Board uses the `project-welcome-logo` template in `index.html`.
 Its inline image uses the theme's ink and the same orange chick as the header logo.
 The dark theme gives its eye a separate light fill and its pupil the theme ink color.
-The logo chick moves once each 10 seconds. A pointer over the logo holds the chick in its moved position.
-`theme.test.ts` and `smoke/theme.smoke.test.ts` define checks for the picture state and browser behavior.
+The logo chick moves once each 10 seconds.
+A pointer over the logo and active picture motion hold the chick in its moved position.
+`theme.test.ts`, `scene.test.ts`, and `smoke/theme.smoke.test.ts` define checks for the picture state, motion, and browser behavior.
 These are source-defined checks; this wiki update does not execute them or verify the header in a browser.
 
 ### Shared Culler blue conventions

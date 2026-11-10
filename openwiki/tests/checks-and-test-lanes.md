@@ -34,6 +34,8 @@ sources:
     resource: repo://dashboard/src/smoke-gate.test.ts
   - id: openwiki-source-e51b5dc1a5c6bbfd524e7ccd
     resource: repo://dashboard/src/ui/review.test.ts
+  - id: openwiki-source-c02688fe098052a93aa61796
+    resource: repo://dashboard/src/ui/scene.test.ts
   - id: openwiki-source-a53a0703fceb74e7d8de47c1
     resource: repo://dashboard/src/ui/systemhealth.test.ts
   - id: openwiki-source-9ea19154aa59c39cc41bced6
@@ -86,6 +88,8 @@ sources:
     resource: repo://mc/deployment/opencode_test.go
   - id: openwiki-source-f2370cd7c903f813dbc4ad1c
     resource: repo://mc/deployment/runtimeauth_host_sources_test.go
+  - id: openwiki-source-d0b091e57853771f453ce84a
+    resource: repo://mc/deployment/runtimeauth_setup_login_test.go
   - id: openwiki-source-e1cbcf72fcc0e3291147da09
     resource: repo://mc/deployment/runtimeauth_verifier_test.go
   - id: openwiki-source-f7942d03e00cb4bf890dfd6f
@@ -178,10 +182,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-10T19:18:31.051Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -444,16 +448,36 @@ It uses existing images and scratch volumes without host service activation.
 The dashboard smoke harness requires `MC_SMOKE_BIN`, which `smoke.sh` sets. Never run smoke files directly. Use `bootSmoke()`/`teardown()`, one Chromium per Bun process, and keep `data-testid` hooks stable. Smokes prove dashboard behavior only.
 The harness checks the scratch home's `discord.socket` path before it creates the home. It rejects paths above 103 bytes with a request for a shorter `MC_SMOKE_ROOT`. The CI browser job uses `$RUNNER_TEMP/smoke` for that root.
 
+### Background picture checks
+
 `dashboard/src/ui/theme.test.ts` checks the background picture selection, button state, tab updates, and theme-specific grid tokens.
-`dashboard/smoke/theme.smoke.test.ts` checks the light default with either system theme and verifies that both background images are served.
-It also checks the logo button in Chromium.
+It checks that only a click starts motion, while a theme change or another tab's selection ends it.
+It also checks image preparation when the logo receives pointer entry or keyboard focus.
 `theme.test.ts` checks the light default with absent, invalid, or blocked browser storage.
 `dashboard/src/agentsview-pages.test.ts` checks the light default and stored dark selection for trace access pages.
+
+`dashboard/src/ui/scene.test.ts` checks the separate picture parts and their motion:
+
+- The image cuts fit the light and dark sheets and preserve the required paint order.
+- The parts reach their positions, move separately, and leave the window at the end of a hide.
+- The shell stays closed until the chick appears and closes again before the egg leaves.
+- The shadows follow the parts, and the whole egg rolls without a slip.
+- A second click reverses active motion and cancels motion that awaits its images.
+- Completion removes the temporary parts and gives the page to the static picture or tile lines.
+- Reduced motion, a hidden page, absent elements, failed images, and zero picture width preserve the selected static state.
+
+`dashboard/smoke/theme.smoke.test.ts` checks the light default with either system theme.
+It checks successful delivery and content types for both landscape images and both picture part images.
+It also checks the logo button in Chromium.
+The smoke checks the picture after a click and reload, the veil, the button state, and the chick animation period.
+The motion test samples separate part positions, the shell crack, the chick's jump, and the return to the shell.
+It checks reversal, final picture alignment, removal of temporary parts, and immediate state changes with reduced motion.
+
 `selectTheme` in the smoke harness selects a theme through the dashboard button.
 `MC_SMOKE_COLOR_SCHEME=dark` supplies an explicit stored dark selection when the browser context starts.
-It checks the picture after a click and reload, the veil, the button state, and the chick animation period.
-The smoke captures the shown and hidden states through the shared evidence path.
-These statements describe test assertions, not a browser run in this wiki update.
+The smoke captures the shown, hidden, and intermediate motion states through `evidencePath()` under `theme/`.
+See [Dashboard background picture and motion](../workflows/dashboard-background.md) for the controller and its failure behavior.
+These statements describe test assertions. This wiki update does not execute the unit or browser tests.
 
 ## CI: .github/workflows/release.yml
 
@@ -672,6 +696,11 @@ Its cleanup restores the desktop viewport before it resets the divider.
 These waits preserve the existing layout assertions and prevent a transition from being mistaken for a completed state.
 
 ## Sign-in connection checks
+
+`mc/deployment/runtimeauth_setup_login_test.go` checks isolated login directories, the context deadline, and concealed command output.
+`TestSetupRuntimeAuthLoginLeavesCodexTerminalInputUnread` gives the login an input reader and a child command that attempts to read it.
+The test requires the reader to remain untouched and the authorization address to reach setup.
+This test uses a local command fixture; it makes no provider request.
 
 `mc/verbs/providerlifetime_test.go` checks access before the first setup heartbeat, the fixed deadline, and revocation after an operation ends.
 It also checks the active operation, Project status, operation kind, and launch identity limits.
