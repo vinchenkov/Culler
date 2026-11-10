@@ -40,10 +40,10 @@ sources:
     resource: repo://resident/src/effects.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Packet conversations from Review to Collie
@@ -149,9 +149,17 @@ The stored operator message remains separate from this context.
 `BuildPacketContext` in `mc/verbs/packetcontext.go` supplies these facts:
 
 - The Project, task, packet, and version identities.
-- The thesis, criteria, and report text.
+- The opening text, criteria, and report text.
 - The input commit, Worker commit, and available merge candidate identifiers.
 - Readable report, Verifier evidence, inventory, and patch paths.
+
+The task origin selects the opening heading.
+An autonomous task uses Strategic rationale and contains the Packager's statement of the delivered change, followed by the Strategist's rationale.
+An operator task uses Thesis and contains the Packager's submitted text.
+`packetOpeningText` in `mc/verbs/packet.go` composes this text when the Packager submits its result.
+`review_versions.thesis` retains the packet opening, and `PacketList` returns it with the task origin.
+The quick chat's empty text names the same content for the operator.
+The rationale remains proposal evidence from before the work; it adds no requirement to the description.
 
 The context excludes review state, merge state, and blocks because those facts can change during the conversation.
 The Collie directive requires current packet reads before answers about those states or a packet decision.
@@ -165,7 +173,7 @@ The quick chat falls back to the conversation task title when the row title is a
 
 The context builder reads the report through the artifact root and checks its recorded SHA-256 digest.
 It rejects a symbolic link at the final path element and checks that the opened file matches the inspected file.
-An absent, expired, or changed report produces an explicit unavailable statement while preserving the thesis and criteria.
+An absent, expired, or changed report produces an explicit unavailable statement while preserving the opening text and criteria.
 
 The builder replaces each data address with a media type and byte count.
 It limits the resulting report text to 128 KiB and preserves a valid UTF-8 boundary.
@@ -203,6 +211,7 @@ Project deletion includes its packet conversations in the cleanup scope.
 `mc/verbs/colliepacket_test.go` checks session lifecycle and identity restrictions.
 `packetcontext_test.go` checks context contents, report limits, media replacement, and unavailable reports.
 `taskartifacts_test.go` checks canonical folder resolution and absent folders.
+`mc/verbs/strategic_rationale_test.go` checks stored opening text and Collie context for each task origin.
 The resident and runner tests check the launch envelope and context delivery.
 The browser smoke checks the shared conversation through packet changes, reloads, and both layouts.
 The Docker test checks artifact reads, refused writes, and isolation from another task.

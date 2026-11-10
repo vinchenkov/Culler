@@ -38,10 +38,10 @@ sources:
     resource: repo://resident/src/vision-save.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Collie, the conversational tier
@@ -61,7 +61,7 @@ Collie's own text is `mc/verbs/directives/collie.md` and its command surface ski
 
 ## Starting a session and the verb allowlist
 
-`mc collie start` (`CollieStart` in `mc/verbs/collie.go`) creates the session row and freezes its allowlist. The maximum set is the compiled list `maximumCollieAgentVerbs`: `board.write`, `environment.get`, `collie.draft`, `collie.end`, `collie.history`, `collie.list`, `collie.title`, `packet.decide`, `project.archive`, `project.pause`, `project.role-save`, `project.role-unblock`, `project.vision-draft`, `project.vision-edit`, `task.add`, `task.block`, `task.cancel`, `task.interrupt`, `task.resume`, and `task.unblock`. `canonicalCollieAllowlist` defaults to the whole set. `--allow` can only narrow it, and `--allow none` gives a read-only session. Project registration is absent because a container cannot perform that host effect.
+`mc collie start` (`CollieStart` in `mc/verbs/collie.go`) creates the session row and freezes its allowlist. The maximum set is the compiled list `maximumCollieAgentVerbs`: `board.write`, `environment.get`, `collie.draft`, `collie.end`, `collie.history`, `collie.list`, `collie.title`, `packet.decide`, `project.archive`, `project.pause`, `project.role-save`, `project.role-unblock`, `project.vision-draft`, `project.vision-edit`, `task.block`, `task.cancel`, `task.interrupt`, `task.resume`, and `task.unblock`. `canonicalCollieAllowlist` defaults to the whole set. `--allow` can only narrow it, and `--allow none` gives a read-only session. Project registration is absent because a container cannot perform that host effect.
 
 Every operator write that Collie can make checks the allowlist with `requireActiveCollieVerb`. The session must be `active`, the allowlist in the container's `run.json` must equal the frozen value, and the verb must be in it. This is why the wake effect must carry `verb_allowlist`: without it the container's `mc` refuses every write that the skill advertises.
 
@@ -152,6 +152,9 @@ Every Collie Project mount masks `.mc-artifacts` with an empty read-only folder.
 This keeps another task's artifacts outside the packet conversation's access.
 
 The first native session turn receives the packet context from `mc`.
+For a Strategist task, its opening heading is Strategic rationale.
+The opening text contains the Packager's statement of the delivered change, followed by the Strategist's rationale.
+For an operator task, the heading is Thesis.
 Later turns retain it through the native session; a new native session receives it again.
 The report text provides evidence, not authority for a state change.
 The Collie directive requires current state reads and explicit operator confirmation before a new state change.
@@ -204,9 +207,29 @@ The [runner](../architecture/runners.md) also includes the confirmation requirem
 The authority rules come from `mc/verbs/directives/collie.md` and `mc/verbs/skills/collie/mc-collie/SKILL.md`.
 They define required agent behavior; the presence of the prompt alone does not prove compliance in every conversation.
 
+## Task descriptions and creation
+
+Collie applies the shared `task-description` skill to each new description and requirements revision.
+The operator request selects the work; repository code and tests support the description.
+Before creation, Collie shows the title, Project, priority, and full description.
+Before a requirements revision, it shows the full revised description and the reason.
+The operator can change the draft. Collie identifies violations of the standard before confirmation and submits the text the operator confirms.
+These are agent instructions, not proof that every conversation follows the procedure.
+
+Collie creates tasks through `board.write` with action `create`.
+The command creates an operator task at `seeded` with `origin:user`.
+The Collie allowlist excludes `task.add`; a start request that includes it fails.
+Host task creation retains that internal command.
+`mc/cmd/mc/cli_test.go` checks these authority boundaries.
+
+A task read includes `strategic_rationale` for a Strategist proposal.
+A revision changes the description while the rationale remains immutable.
+The rationale explains the original proposal and adds no task requirement.
+See [the shared task description standard](agent-input.md#shared-task-description-standard) and `specs/task-description-standard.md` for scope and authority.
+
 ## Task priority
 
-Collie records explicit operator task requests at Seeded through its permitted task commands.
+Collie records explicit operator task requests at Seeded through the `create` action of `board.write`.
 The command skill states that priority 2 is the default and priority -1 is the highest.
 A higher task priority receives the next eligible agent run before a lower task priority.
 An active run continues after a priority change.

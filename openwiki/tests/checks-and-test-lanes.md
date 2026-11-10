@@ -18,6 +18,8 @@ sources:
     resource: repo://dashboard/smoke/discord.smoke.test.ts
   - id: openwiki-source-6ff7ec04aac5c9f6567d2d84
     resource: repo://dashboard/smoke/harness.ts
+  - id: openwiki-source-3543262fff6631f316da46e4
+    resource: repo://dashboard/smoke/latency.smoke.test.ts
   - id: openwiki-source-4ea15ae4c53141155926c420
     resource: repo://dashboard/smoke/model-configuration.smoke.test.ts
   - id: openwiki-source-85db7682a784da205fd6cd4c
@@ -176,10 +178,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -324,11 +326,11 @@ These tests check the instructions and procedures delivered to agents:
 It checks the repository path, preserved instructions and resolution, and installed paths for every delivered skill.
 It checks the command skill's conditional procedures and the directive's execution, operator decision, and customization pointers.
 Selected rules must occur once across the rendered brief and `mc-strategist` skill.
-Shared skill contents remain outside this duplicate check.
+The task description audit checks every rule once across the rendered brief and all delivered skills.
 The test also checks proposal requirements in the extracted customization contract and excludes unrelated system explanations.
 
 `TestStrategistBriefDeliversTaskSelectionGuidance` checks the directive inside the rendered brief.
-Its assertions cover useful results, existing capabilities, repository evidence, full cost, container checks, and the Arbiter's final rank.
+Its assertions cover useful results, existing capabilities, repository evidence, full cost, rationale review, and the Arbiter's final rank.
 It also checks that custom instructions remain within the Culler contract.
 `TestDirectivesEncodeTheSelfOrchestrationContract` checks fixed orchestration procedures for the Worker, Verifier, and Packager.
 `TestWorkerRecordsInlineExceptionBeforeTheTerminal` checks where the Worker states its reason for inline work.
@@ -343,7 +345,8 @@ See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-pr
 The Arbiter input test renders a brief with proposal descriptions, active descriptions, task history, custom instructions, a proposal resolution, and the accepted Vision.
 It checks the run identity, repository path, and installed path of every delivered skill.
 It checks pointers and sections for historical work, all-reject batches, failed results, and customization conflicts.
-Selected rules must occur once across the rendered brief and `mc-arbiter` skill; shared skill contents remain outside this duplicate check.
+Selected role rules occur once across the rendered brief and `mc-arbiter` skill.
+The task description audit includes all delivered skills.
 The contract assertions cover the promotion limit, criteria rules, preservation of accepted work, and restricted authority.
 The customization assertion requires an explicit conflict terminal in the skill.
 
@@ -371,6 +374,34 @@ A blocked proposal after the pool snapshot tests transaction rollback.
 A separate test permits an ordinary all-reject batch when other work remains ready.
 `mc/cmd/mc/cli_test.go` retains checks for duplicate reference validation.
 These statements describe test assertions, not test execution during this wiki update.
+
+## Task description and Strategic rationale checks
+
+`TestTaskDescriptionSkillIsTheOneStandard` in `mc/verbs/roleskills_test.go` checks delivery to the Strategist, Arbiter, and Collie.
+It checks directive references and refuses commands inside the content standard.
+It also checks that other role instructions do not repeat the standard's rules.
+`requireTaskDescriptionRulesOnce` checks each rule across a complete Strategist or Arbiter input.
+
+`mc/verbs/strategic_rationale_test.go` checks these boundaries:
+
+- Missing, blank, oversized, or invalid rationale input causes proposal rejection without partial writes.
+- The Arbiter and Packager receive the rationale; Worker and Verifier briefs omit it.
+- Task reads omit the rationale for the Worker and Verifier while permitted decision readers receive it.
+- Packet text and Collie context use the correct opening for each task origin.
+- The role input describes rationale authorship, evidence preservation, and the first packet section.
+
+`mc/substrate/task_model_test.go` checks immutable rationale storage and the operator origin constraint.
+`mc/cmd/mc/cli_test.go` checks refusal of a Collie allowlist with `task.add` and retains host task creation at Seeded.
+`dashboard/smoke/strategic-rationale.smoke.test.ts` checks task details, report sections, and absent-report fallback text for both task origins.
+The browser checks use `./dashboard/smoke.sh` and retain screenshots through the shared evidence path.
+The smoke uses fixture reports; it does not prove that a live Packager follows its directive.
+
+The direct-page check in `dashboard/smoke/latency.smoke.test.ts` visits a blank page before it starts each request counter.
+It removes prior request routes and waits for their completion.
+This prevents requests from the prior page from entering the next page's initial-read count.
+The assertions check one read per path, Configs-only doctor reads, and narrow layout containment.
+
+These descriptions identify source assertions. This wiki update does not execute the product checks.
 
 ## Task priority checks
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e1f476d3e88b8bfff615de9343015625ac282b874b10c6593437fdafedc04ad7",
+  "pageVersion": "sha256:496b93da2e1b1e50a361c1d522fad2538e1faf8bb7503dd1f30cdcdfbdf5b5b6",
   "claims": [
     {
       "id": "claim_7e701e9fbdc84e238f485a2bc67b0108",
@@ -41,10 +41,30 @@
           "version": "repo-lines-v1:sha256:b962bda1eb862568d122f9b2d7769debbf97961243b76485fa5d1244f6852939:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NDM3MWZlOGY0NjU0OWVjZjE1ZTA1ODQ3MmQ0ZjRkY2ViYjdkNzdhMDFmNmI1NWQ0OTVhMGJmMjE3NmFkNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0NDNjZWJhMzNjN2NkMmZmNWIzMWEzNjJkMDhmMzBlNjIyYjcxYzk3ZDM5YzJiY2Y2YWE1ZjM5YzQ1MTZhNzEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_121efeb8eab849de8a8ab6f32b0d3939",
+      "statement": "Evaluation cases select Strategic rationale or Summary as their first packet section from their brief parts.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/assessment.py#L77-L97",
+          "version": "repo-lines-v1:sha256:9270e925ab01c7a34513dc696939f44ae67b649c7b9453530f7be414fb0b6351:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MWZiYjJhOGE1ODI4NDA4ZjVkN2RiZjA4NTFkNmM0NWQ1Y2JmMzRkODY5M2Q1YTJjMDQwZGY2ZmEzMWRiZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlNzI2OGQ5OTg2ZjdjMDg5ZDhjMzhkYzM4NTJjYjY4NTg3ZmM2ZWVkYTk2OWM1N2JhODIxODM1NWEzZTIzOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyMzFkYTc0ZWY2ZmVlNjQzNzJkYzU0MmViZTZlNTdmNTU1YjcyNTc2NWY5MzViOTU4MGZhOTVlZmRkMmE1ZTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd9fe6902a2942b2b39e6a92520ae9da",
+      "statement": "The packet checker rejects a packet that contains both first sections.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/assessment.py#L212-L222",
+          "version": "repo-lines-v1:sha256:f372dc8218b0a49291d4dcb66177dd1e8e755484a0df94e8033b8132b5307afd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGUxYTFhMTg3NjVmNmY0ZjY4ZjQ2N2RkNzVjM2FiNjUyZDU5ZWMyYTM4NzJiOTdjYmQ3ZTBjN2E4MDQ5OWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MjNmODRiYzEwYzc0YWI5MDM3MDZmZjIxYjRhMTE3MmVjMjNlYWJkZDUyN2VkNTY4MmZiZDI0OWYyNTUxYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMTVmMDExNDlkYTU2Y2NjMDEyM2E4MjM2ODU0YWI0ZGVjNTExMzY4ZWJjMGZkM2MyNTNmMTRlZDI1OTM1NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MjA2MWUzYTAxNzdmYmY2NGJlMTc3MDIwNDU2MTExMjMzZmM2YmUyNzZiZGUyYmQ3ZjRlNDk3Y2I5MjczMzYifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-10T18:18:18.729Z"
   }
 }

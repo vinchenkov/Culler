@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:92e01cb51fd59d5a2fc64b7dd3d3a51d21c8514746a7df38eb4032f844562a86",
+  "pageVersion": "sha256:520de39094993d82f3fdfce5286cbac979a2cc6ba5128dde727a0a59b27d3a50",
   "claims": [
     {
       "id": "claim_7ba26c16d0434b749aa6b15f31009048",
@@ -155,10 +155,30 @@
           "version": "repo-file-v1:sha256:5a6b6d05f825de6a504c73b8250b253019c51308124a62ed7fc1d38f04383fe1"
         }
       ]
+    },
+    {
+      "id": "claim_c6983a451a5f454f912a55370531b1a2",
+      "statement": "Worker and Verifier task reads omit strategic_rationale.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/task.go#L43-L58",
+          "version": "repo-lines-v1:sha256:d75ad0cbe880fbb12d4e67fd50740807e9fb89bd350ee1ee0ed089892c200e0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMjEzZjA3NWRjOWY4MmQyYzk4OGE4OTA2YWIzZjcwNjFkNjYwMGJkYWM4ODA1ODBjN2EwNjQwYWM0NzAzODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxMjE0NmQ0YTJiNjExZjdjYjE0ZWZjY2MyNjA3MGY3MDU5ZWRhNmZkOTYyZTMxYzMyZmJjMTBhNmRlM2U3MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyMzk5YTNjNTk2Y2EzZTZkYjM5ODc4MjdmM2Y2MmQ2MWViYzg5N2I4NmIxNGVhMzk4ZDE4NmVlNzNmZjEzM2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd982d60811846ff92f7aa793c0a2282",
+      "statement": "The Collie command allowlist excludes task.add.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/collie.go#L15-L44",
+          "version": "repo-lines-v1:sha256:58191aa090f1802fb29dda4bfafaddc66c82e089f091b16f6c2f4490a3a74209:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNmU5MDMzZTJlYzMyNThjNWVlMWI3YjhkNGJmODA1ZTViMTA1ZWIwYjAzNzdmMmY2MjE1ZDA5M2YyMzUzZTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2YzA0M2M3YzY4YWEyM2E3M2I0NDY5NzQ0MTY2MDI5NTQ3MWZiYzgyMjU4NDM0ODVmYzEyNTM1YTdlZGE3M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1OGQxNDliNDA5YzQ0ZTcxNGYzOTJkZTJmYmU3ZTUyY2VmMTRkYWYxMjlkMWZlOWViMzNkZjVjNWVjYjgxMGUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-10T18:18:18.729Z"
   }
 }

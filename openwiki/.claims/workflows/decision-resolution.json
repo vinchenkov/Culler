@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d4e5c58a52a3bfb6baae6aedb191dd8374af24fe0716de1d03c3e62ee605468e",
+  "pageVersion": "sha256:9bbe6d246dd9836cccdd859802d1bdc312237ed6b81cdeec80f902a7da8fd218",
   "claims": [
     {
       "id": "claim_ad4f33e8a02c4cbd8f42ca9a4af54d0c",
@@ -64,11 +64,11 @@
     },
     {
       "id": "claim_9fb95974e3264c3081261d1672d481e8",
-      "statement": "The run brief identifies its format as mc.spawn-brief.v23.",
+      "statement": "The run brief identifies its format as mc.spawn-brief.v24.",
       "evidence": [
         {
           "resource": "repo://mc/verbs/brief.go#L17-L22",
-          "version": "repo-lines-v1:sha256:909fa1a64867a50ed69a69d0cbdc3a362f19d235737086400b2fbda79dab3033:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzM0ODlmNWY1Y2I1Y2QwMmQ5ZWYzMDllZjQ5OGNmYWY4MTc2ZWU0ZGZmYzcyNTZkMjMwZWJhYjdmY2FkM2M5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBhYWQ1ZTY0ODMyYWJlM2E3MmU0YjZmZDAzYjQyOTYxOTZiMDZmODMzMDQ0MzllNzE2YTY1NWI3ODEwNDkxMSJ9"
+          "version": "repo-lines-v1:sha256:67d419d0ec16c6d62a80d6322fb50f243148affc2bfc5075d2bac04dda423bcf:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzM0ODlmNWY1Y2I1Y2QwMmQ5ZWYzMDllZjQ5OGNmYWY4MTc2ZWU0ZGZmYzcyNTZkMjMwZWJhYjdmY2FkM2M5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBhYWQ1ZTY0ODMyYWJlM2E3MmU0YjZmZDAzYjQyOTYxOTZiMDZmODMzMDQ0MzllNzE2YTY1NWI3ODEwNDkxMSJ9"
         }
       ]
     },
@@ -77,7 +77,7 @@
       "statement": "A shared proposal decision counts once in dashboard issues while the Board still counts its blocked tasks individually.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/board.js#L428-L451",
+          "resource": "repo://dashboard/src/ui/board.js#L429-L452",
           "version": "repo-lines-v1:sha256:8ad4aa61d0e4aa1775a34385c980a3bd25797f1f70ea7b667af905f465ed7581:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzYzJmYmE3NGNhZjBmNjkzOWRmYzFiOTE4ZmU5ZWNkMjU1ZGJmYTY0NDI4OWZkOGRmZGE1OWZkZDc1YWZmN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NmI5YTljMmMwOTIxOGM2MGYyM2MzMjU2YWFlM2EyMTNlOWM4YzM0YmJjZTEwZDMxZDk5NTc5M2NiNTMyYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhMGU4MWMyNDE3OWUyODNkZmZhMDdmMWU2ZTVlNDY3ZDQ4OWY0ZTMzOGE0NmUyMWRkOGUxNDU2ODdmOGJjNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4NGU5ZjBiZDRiMGI2NTZmNTJiYjBmNmUyNDRlMmFkNjkyZDI2YTU5MzQ1NGY3OWFjOWYwYmNiMjk4ODU2N2MifQ"
         },
         {
@@ -91,7 +91,7 @@
       "statement": "The proposal resolution dialog shows the complete question and sends the Project, decision, and reason through the proposal resolution endpoint.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2941-L2956",
+          "resource": "repo://dashboard/src/ui/app.js#L2945-L2960",
           "version": "repo-lines-v1:sha256:f8f811c9e5d88b2db5796f71b18badda0cac8b1dfbbe17017d0fd511ceb6262c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MDg1ZDMyODBlNjQxMzEyMmQwZTkyMzM4OTNjZjY3ZmU1MTM1ZjVjMDE5N2FkM2M1NDAxYmVmZDRkZjA5MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxN2FmMTEwMWM5N2I3YzJmNTI1NDA3ODJlNjM0Y2M0NDQwZjBlOTcwMzQxZTUyZjk3NTIzMTFkNzhiN2Q3ZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4NjliMzgwNWUwNzM2ZTUzYTcyZmRjOTczOTg4Y2Y0ODEwYWY4ZmJkNTAzZmNlZjk2ZTY0MzE4MzZjYzdhZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhYWIwNzI1MmMyYWFkOGQ2NjY4NDZlNmZkYzEwNWIzMmIzM2VhOTI3ZmE1OTZlYTViOWEzMDliMTExMTY2MjYifQ"
         }
       ]
@@ -181,7 +181,7 @@
       "statement": "The Arbiter decision report states why a verdict needs an operator decision. It covers the assigned pool unless --affected selects a subset.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/arbiter.md#L47-L53",
+          "resource": "repo://mc/verbs/directives/arbiter.md#L38-L44",
           "version": "repo-lines-v1:sha256:5e411d36ecc9c9a78e769ee2c788f94f134c0b5b1d06253fcaf55206efcfe48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBlZmE3Njg5NjcyNTJjYTNhYzlkN2YwYWIzYWRmZDcwNWVmYzE3YzRlNGQ3NmJlY2FlMzM0YjE0ZDljOWYwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZiMDg4NDg2ODM0NWRiYzg3MTM2MmY1ZDI0ZmUwMjI1NzI3N2QwYzgzOTE3NWJlYjc5ODJhZWZkZmJiMDA4MyJ9"
         },
         {
@@ -199,7 +199,7 @@
           "version": "repo-lines-v1:sha256:612b84432e38f79cca8bbb32cd1552626902702ecd287553986e8ba7c6699b01:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhMjU5ODZlYTgzOGJiM2Q1ZDhlYjgyNmM2OTBhNWI2ODY3M2UyNjhlNWE5MzA1MzY5YzhhYTY1MzIxMjJjMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YjdkNjFlNTAxNDQ2NzJkYjVjZGI2M2YzMGRhMzEyMGQ2OGQzYjA0ZjU1YTc4OTRmYzNlNThmMzhhYTU4NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3NWM4YmQ3MWNhOTI0M2UwZGNhMjNlMjVhZjNhNWQzNTk4YTBjZDVkOWQ3OGNmY2I4ODMzMTYwNzdhYTcwOWIifQ"
         },
         {
-          "resource": "repo://mc/verbs/brief.go#L270-L275",
+          "resource": "repo://mc/verbs/brief.go#L275-L280",
           "version": "repo-lines-v1:sha256:79782a1255f1a2b78f1fed77bf951656eb98f06780601519d97225ca817f48d7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2FiMmU0NWRjYmIzYzQwYzUwZjJmNTc4ZTdlZTc3MWNiMzljMDdhY2RiYzE2ZDE2MTJmYmI2MDg2ZDZjYjMwZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ4Yzc1NWRlNGI0MzRjMTRhZjNkYTI3YWU5NmIxYmM4NmRjNjE1ZTlkYmIxZDRjNmY5OTJiMTkyOWU0Y2Y3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzIzMjQxNWNhY2EzZjMzZWRjNzk5ZDJkYzg1MDU0YjBhODAzN2NmYjJiMmJlZjU1Mzk1ODhjZTgzODU5NGRhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjVlMmIzYTMyZGJmZmM2Y2Q0YzE0MWIwNWZlNTJkNmIzYTM5NGUwMmU1YmFmM2ZjYTY1NDI2NTFhYzBkYjAyMSJ9"
         }
       ]
@@ -223,10 +223,24 @@
           "version": "repo-lines-v1:sha256:92e006882fb8d758ffd23dbbfcc5dd358a70a6c8e37cd0946915e8964d69c9c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZjIzZjhmMzg0NWQ1ZjYwZGFiYmUyNmEyNzhkZGEyNDNkZmNmNmI0MTczMWY3MjgwNDEzYmRiNDBkNmRkMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMGFkYWIwMWUyNzUyYzQ3ZTMxMmViNGMyYjRmMmNmMTllZjZmZWZiNzIzODA4ZWNlYmQ3NGQ4ZWRjYTgwNzQifQ"
         }
       ]
+    },
+    {
+      "id": "claim_919165e30da043359a6fcf37cba722fc",
+      "statement": "A requirements revision changes the description while the original Strategic rationale remains intact.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/task_model_test.go#L45-L57",
+          "version": "repo-lines-v1:sha256:21a383659ef4d808567f5049f31ea5174419c023c4c19951d4014d0534d2ce49:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxZGQyZGI3MTRkNmY5OTlhNDRjNGFmODE1NTNkNzNjOTY5MGZkYmQwNDFlYjQwOGQ2NDdjOWE4YjM4ODUzNmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3NDJjMGNmMWQ4MzVhOWViNjliNzljNTAyMjYyOGY2OGQwNzEyOGVmNjc2YjgwMWViM2M2ZjA1MzVlN2MyNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjNiYzMxMjkzMjBlZDY4NzJiZGY0YjczM2JmMzYxNDVmYTY1OTIxYTJjMDFkOGNlYjk0OGYyOGVlZTI3N2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiYjE2Y2I4OWU0YzRiYTEwOGVmZTUwNmViNDlmZWE2NDM4MWZkNTNhZDlmYzcxNDgwODIwZGMxOWQwNjhiMDgifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L158-L160",
+          "version": "repo-lines-v1:sha256:e5771865b7b80139c3bc20c93374658f82264554f85f1a2765ca4d6865aada09:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIyMDdlMmQzMDZjZjNmZDVlYzQ3NzFiYTI2ZTJlZGZlOGM3NWE5ZTY3MGI2NTRkMzA3Y2NjNGIwMjBkNDRiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ4NzAxNjIyNWM3MmFmMjNjM2I0MTZiMWFkYzNhMmU5MGNiMmFiMTBjNzcyZDhmMWJkNWQ2ZGU5MGY2MTMwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjUyYjlhMjU0ZjQ0OGY0MTRmNTBlZjBmNzViZjZiNmVjN2Y2YTY3OGNiMmEzNGQyYmVhZDJkODBkYzE5M2NiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ2ZjQ3ZjU5MGJmZTQ1ZjY5YWY4YWJlNjM3NTUxNGEyMjg1MGM0OTE1MDA4NTZjYmRkNzRlNjg4M2QyM2UwNyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T02:41:58.373Z"
+    "at": "2026-11-10T18:18:18.729Z"
   }
 }

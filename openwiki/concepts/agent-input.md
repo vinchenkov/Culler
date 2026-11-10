@@ -58,6 +58,8 @@ sources:
     resource: repo://mc/verbs/skills/scribe/openwiki/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-a6635e9c51b05f45725be1ce
+    resource: repo://mc/verbs/skills/shared/task-description/SKILL.md
   - id: openwiki-source-2244ea442a4c07aeb880c8c8
     resource: repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
@@ -76,10 +78,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -137,7 +139,10 @@ Only the Arbiter selects proposals for development.
 The directive starts task selection with a useful result that the Project cannot yet deliver well.
 The Strategist traces the user's route through the repository and identifies the step that prevents success or causes substantial effort.
 It considers new capabilities and defects, checks existing capabilities, and investigates assumptions that can invalidate the proposed benefit.
-Each proposal explains the present problem, expected result, current value, and substantial effort or risk.
+Each Strategic rationale explains the present problem, expected result, current value, and substantial effort or risk.
+The Strategist writes each rationale to its own temporary file and reviews it before submission.
+The submitted `strategic_rationale` field contains that file's text unchanged.
+The description holds every task requirement; the rationale supplies decision evidence.
 One task can span several components and must have scoped checks that agents can execute in their container.
 The directive requires two proposals together and leaves the final rank to the Arbiter.
 The command skill permits an empty batch when no valid task remains.
@@ -189,26 +194,27 @@ The generated pointer in `mc/verbs/directives.go` requires a read before the fir
 Its installed path is `~/.agents/skills/mc-arbiter/SKILL.md`.
 See [Arbiter review and submission](../workflows/task-pipeline.md#arbiter-review-and-submission) for the workflow and failure boundaries.
 
-## Proposal criteria in the role directives
+## Shared task description standard
 
-The Strategist directive requires each success criterion to name a check that the Worker and Verifier can run in an agent container.
-The Arbiter directive requires proposals to meet that same checkability condition.
-Criteria describe behavior within the task scope. Whole-suite success requirements are invalid criteria.
-The roles must check test capabilities; an available suite command does not prove that its tests can run.
-The Arbiter rejects invalid criteria with `rejection_category: invalid_criteria` and a reason.
-The [task pipeline](../workflows/task-pipeline.md) explains the batch guard and retained rejection records.
-Both directives exclude these capabilities from the available checks:
+`mc/verbs/skills/shared/task-description/SKILL.md` holds the standard for task descriptions and acceptance criteria.
+The Strategist applies it to proposals. The Arbiter judges proposal descriptions against it.
+Collie applies it to new tasks and requirements revisions.
+The Strategist and Arbiter contracts include the skill's rules, so Project customization cannot replace those rules.
 
-- Host access.
-- A Docker daemon.
-- macOS system interfaces.
-- Additional container privileges.
-- A run on a hosted continuous integration (CI) service, such as GitHub Actions.
+The description states the scope and every requirement for one repository commit.
+Each acceptance criterion describes task behavior and names a check that an agent container can run.
+The writer checks the tests' actual prerequisites.
+The standard excludes host access, a Docker daemon, macOS interfaces, additional privileges, and hosted continuous integration runs from required checks.
+Whole-suite success is not an acceptance criterion. The Verifier owns broad regression checks.
+New or changed tests must pass; an unchanged Project failure alone keeps a task valid.
 
-These requirements guide proposal authorship and selection before the Worker receives a task.
-They are role instructions in `mc/verbs/directives/strategist.md` and `mc/verbs/directives/arbiter.md`.
-They do not establish that a particular check passed.
-The [task pipeline](../workflows/task-pipeline.md) explains the roles that apply these requirements.
+The Arbiter rejects a proposal that violates the standard.
+For an acceptance criteria violation, it uses `invalid_criteria` and identifies the criterion and the violated rule.
+The [task pipeline](../workflows/task-pipeline.md) explains the all-reject guard.
+
+`specs/task-description-standard.md` records the shared standard's scope, authority, and required role behavior.
+Its Current gap section describes an earlier system; the current implementation uses the shared skill.
+Its original document remains at that authoritative path.
 
 ## The run brief
 
@@ -217,7 +223,7 @@ The dispatch transaction freezes the brief with its run assignment. Task pipelin
 `renderRunBrief` writes a fixed shape:
 
 ~~~text
-Culler immutable run brief (mc.spawn-brief.v23)
+Culler immutable run brief (mc.spawn-brief.v24)
 
 # <Role title> run <run_id>
 
@@ -251,6 +257,8 @@ The directive and command skill supply the procedures that use these facts.
 `trimArbiterBrief` omits the Agent credentials and Failure controls parts from the Arbiter brief.
 It retains the pool, active descriptions, task history, environment identifiers, repository path, custom instructions, proposal resolutions, and accepted Vision.
 Its concise explanations identify the supplied data; the directive and skill define review procedures.
+The Proposed pool rows include each proposal's `strategic_rationale` for evidence review.
+The Arbiter checks its cited facts and gives assumptions less weight than observations.
 The Proposed pool explanation defines `priority` as the task priority that the operator sets.
 The value -1 means expedited work; 0 through 3 mean P0 through P3.
 The Proposal decisions explanation requires application of each relevant operator resolution.
@@ -278,6 +286,21 @@ They retain the assignment, identifiers, Git facts, and applicable case payloads
 The Verifier Git explanation distinguishes the original task base from the submitted source.
 Its Last report explanation identifies that report as the submitter's claims.
 Its environment identifiers support dependency compatibility checks.
+
+## Rationale delivery and packet input
+
+Only a Strategist proposal holds a Strategic rationale.
+The Arbiter receives it in the Proposed pool; the Packager receives a separate Strategic rationale part for an autonomous task.
+Worker and Verifier briefs omit it. Their task reads also omit the field.
+This keeps task requirements in the description while the rationale remains proposal evidence.
+`mc/verbs/strategic_rationale_test.go` checks delivery and omission across the roles.
+
+The Packager starts the first section with its statement of the delivered change.
+For a Strategist task, the section is Strategic rationale, followed by the complete rationale with the Strategist as author.
+The Packager converts its Markdown to HTML and preserves its claims and evidence.
+It identifies the rationale as observations and assumptions from before the work.
+An operator task instead starts with Summary.
+Project instructions preserve the first Strategic rationale section while they can replace the remaining default structure.
 
 ## Regression duties in the role input
 
@@ -320,7 +343,7 @@ The Packager input assigns the page style to the dashboard across three sources:
 - The `mc-packager` skill repeats these constraints and requires preservation of the page style when the Packager copies a previous packet.
 
 The directive permits optional inline styles for diagrams and other visual content.
-Its packet section structure is a default that Project instructions can replace.
+Project instructions can replace default sections while preserving the first Strategic rationale section for a Strategist task.
 The packet must retain decision evidence, material behavior, risks, and verification results.
 See [packet content](../workflows/task-pipeline.md#packet-content-and-project-instructions) and [report page style](../architecture/dashboard.md#report-page-style).
 
@@ -392,7 +415,7 @@ These assertions check supplied instructions. They do not prove that an agent fo
 - Each role directory holds `mc-<role>`, the command surface. It is a bullet list of exact `mc` commands with flags.
 - The Scribe receives `openwiki`, `openwiki-documents`, and `openwiki-recovery`.
 - The Verifier receives `verify-behavior` for browser evidence.
-- `shared/writing`, `shared/project-wiki`, and `shared/project-environment-setup` close every pipeline set and the Collie set.
+- `shared/` supplies writing, Project wiki, environment, and task description skills to pipeline agents, setup agents, and Collie.
 - `collie/mc-collie` is the Collie tier's command surface.
 
 `RoleSkillSet` returns the command surface first, then the role's additional skills in name order, then the shared skills in name order. `skillByPath` enforces two rules at load. The directory name must match `^[a-z0-9][a-z0-9-]*$`, because the runner joins it under a root it wipes. The frontmatter `name` must equal the directory name. `SkillFrontmatterField` reads flat `key: value` lines and is deliberately not a YAML parser.
@@ -465,7 +488,8 @@ A mismatch prevents the harness turn.
 A later turn with the native session reference retains context through that session.
 A new native session receives the context again.
 
-`mc/verbs/packetcontext.go` supplies the identity, thesis, criteria, report text, commit identifiers, and readable artifact paths.
+`mc/verbs/packetcontext.go` supplies the identity, opening text, criteria, report text, commit identifiers, and readable artifact paths.
+The opening heading is Strategic rationale for an autonomous task and Thesis for an operator task.
 The context excludes current review decisions, merge state, and blocks.
 The Collie directive requires a current packet read before statements about those states or a packet decision.
 Report text and artifact files supply evidence. Only an operator message authorizes a state change.
@@ -493,18 +517,19 @@ Tests enforce most of these rules mechanically:
 - `mc/verbs/directives_test.go`: every spawn role has a directive, and unknown roles have none (`TestFrozenRoleDirectivesCoverEverySpawnRole`, `TestUnknownSpawnRoleHasNoFallbackDirective`). `TestAgentTextNamesOnlyThePartsThatTheRunBriefRenders` fails if a directive or skill names a `**Part** part` heading that the brief does not render. Other tests pin role-specific contract text, such as one Project per role and no approval wait.
 - `mc/verbs/brief_test.go`: each role's brief holds its directive. Only the selecting and planning roles get the vision. `TestRunBriefExplainsEachPart` requires unique headings and a one- or two-sentence explanation ending in a period. Subjects carry no board state.
 - `mc/verbs/brief_render_test.go`: `parseRenderedBrief` reads rendered text back into header, directive, and parts. The brief tests assert on that parse.
-- `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. No two roles share a skill. The Collie skill lists exactly its allowlist. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
+- `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. Role-specific skills remain separate; shared skills reach every role. The Collie skill lists exactly its allowlist. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
 - `mc/verbs/skillstore_test.go`, `resident/src/skill-store.test.ts`, and `runner/agent-runner/skills.test.ts` cover store layout, operator skill validation, shipped-name protection, wipe-before-install, and traversal-shaped names.
 
 `mc/verbs/verifier_input_test.go` checks the Verifier contract exposed to Collie and the rendered Verifier input.
 It checks required assessment duties, concise facts, skill discovery, and retained case payloads.
 `mc/verbs/platform_input_test.go` checks unavailable-check procedures, the failed-read fallback, and evidence duties across the required roles.
 `mc/verbs/strategist_input_test.go` checks preserved assignment data, delivered procedure pointers, and single occurrences of selected Strategist rules.
-Its duplicate checks cover the rendered brief and command skill; shared skill contents remain outside that check.
+A separate helper checks each task description rule once across the rendered brief and every delivered skill.
 It also checks proposal requirements in the extracted customization contract.
-`TestStrategistBriefDeliversTaskSelectionGuidance` checks the delivered guidance for useful results, evidence, existing capabilities, effort, risk, and container checks.
+`TestStrategistBriefDeliversTaskSelectionGuidance` checks the delivered guidance for useful results, evidence, existing capabilities, effort, risk, and the rationale review before submission.
 `mc/verbs/arbiter_input_test.go` checks preserved assignments, operator instructions, proposal resolutions, skill delivery, and conditional procedure pointers.
-Selected Arbiter rules must occur once across the rendered brief and command skill; shared skill contents remain outside that check.
+Selected Arbiter rules occur once across the rendered brief and command skill.
+The task description audit also includes every delivered skill.
 Its payload test checks that concise explanations preserve each retained part's facts, text, rows, and text tag.
 `TestArbiterBriefDeliversProposalReviewGuidance` checks value relative to cost, small and large task outcomes, and consideration of new capabilities.
 The orchestration tests in `directives_test.go` apply their fixed workflow requirements to the Worker, Verifier, and Packager.

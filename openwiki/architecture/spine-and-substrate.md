@@ -8,6 +8,8 @@ sources:
     resource: repo://mc/cmd/mc/resident_control.go
   - id: openwiki-source-d32bd868b0bab75d28de9e3c
     resource: repo://mc/domain/domain.go
+  - id: openwiki-source-03fd17633dd4db241e157faa
+    resource: repo://mc/domain/task.go
   - id: openwiki-source-02c69d44f2d2e01b14bf865a
     resource: repo://mc/substrate/lockdomain.go
   - id: openwiki-source-682f6a75e8fc9bd66f8e0dfc
@@ -24,10 +26,10 @@ sources:
     resource: repo://mc/verbs/outbox.go
   - id: openwiki-source-c7f396a36b94cc764d4a5cdb
     resource: repo://resident/src/resident-control.ts
-generated: { by: "culler-scribe", at: "2026-11-03T21:04:30.847Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # The spine: SQLite substrate and schema
@@ -67,6 +69,22 @@ Every task has scope `task` and destination `main`.
 
 
 `mc/verbs` runs every mutation through `inTx`, which takes one connection and issues `BEGIN IMMEDIATE`. `classify` maps errors. Typed `DomainError` and `UsageError` pass through. A raw SQLite driver error becomes a `DomainError` with code `spine-fault`, so a storage failure such as a locking protocol error is not mistaken for a rule refusal. Exit-code mapping is covered in [The mc CLI, verb scope, and boundaries](mc-cli-and-verb-scope.md).
+
+## Strategic rationale storage
+
+`tasks.strategic_rationale` holds the Strategist's proposal evidence separately from `description`.
+A non-null rationale requires `origin='autonomous'` and nonblank text.
+The task immutability trigger prevents replacement, removal, or a later addition.
+A requirements revision can change the description while the original rationale remains intact.
+This preserves the evidence that justified the proposal without adding task requirements.
+
+`BirthProposal` in `mc/domain/task.go` requires a rationale for each new Strategist proposal.
+The domain accepts valid UTF-8 text of at most 8,192 bytes, after normalization of carriage-return/newline pairs.
+It permits newline and tab controls and refuses other control characters.
+Operator work holds a null rationale. The schema permits null for an autonomous record, while the creation path requires a value.
+`mc/substrate/task_model_test.go` checks immutability and origin constraints.
+`mc/domain/task_test.go` checks creation validation.
+See [the task pipeline](../workflows/task-pipeline.md) for proposal and packet use.
 
 ## Opening the spine
 

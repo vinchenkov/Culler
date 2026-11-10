@@ -8,6 +8,8 @@ sources:
     resource: repo://Dockerfile.culler-project
   - id: openwiki-source-096a781fb160ef979fa31121
     resource: repo://INSTALL.md
+  - id: openwiki-source-8887a56335011659b61b947b
+    resource: repo://mc/cmd/mc/candidate-runtime-check.sh
   - id: openwiki-source-6a84afb40e064a711b4d99bd
     resource: repo://mc/deployment/runner_release.go
   - id: openwiki-source-e028a0037f071b894557c29d
@@ -34,16 +36,18 @@ sources:
     resource: repo://runner/fake-harness/README.md
   - id: openwiki-source-4f766d7b168fe76a82f503a8
     resource: repo://runner/image/build-prod.sh
+  - id: openwiki-source-729fed85a7f093179cea3802
+    resource: repo://runner/image/project-smoke.sh
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
   - id: openwiki-source-95ee54782931a1ab50a49d93
     resource: repo://runner/image/toolchain-smoke.sh
   - id: openwiki-source-a1d3951819531015b34e3c43
     resource: repo://runner/shared/setup-error.ts
-generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-08T02:41:27.984Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Runner containers and harness adapters
@@ -88,6 +92,14 @@ These scripts run against a built image and need Docker, so they sit outside the
 - `browser-smoke.sh` runs Playwright as uid 10002 with no network and requires a snapshot and a screenshot.
 - `product-smoke.sh` checks the service image and capability restrictions. The release workflow in `.github/workflows/release.yml` runs it.
 - `toolchain-smoke.sh` copies `mc/` and `.mise.toml` from the checkout into a container of the image. It builds `mc` there as uid 10002 through `mise exec --` with `GOTOOLCHAIN=local` and `GOFLAGS=-mod=readonly`. The build downloads the Go modules over the network. The script requires the image Go version to equal the `mc/go.mod` toolchain version, and it checks that `go.mod` and `go.sum` stay unchanged.
+
+`project-smoke.sh` also executes the compatibility check that a published update uses before it accepts a Project image.
+It mounts the candidate runtime volume read-only and runs as user 10002 with no network or additional privileges.
+The container has a read-only root, a writable temporary directory, and explicit resource limits.
+`mc/cmd/mc/candidate-runtime-check.sh` requires real `/mc` and `/workspace` directories and an absent `/mc/run.json`.
+It executes the runtime check and requires the expected release identifier.
+This checks the image and runtime combination before a later agent launch.
+See [candidate compatibility](../operations/image-delivery.md#candidate-runtime-compatibility) for update behavior.
 
 `runner/image/check.sh` runs only Docker-free script tests (`*.test.sh`), `release/check.sh`, `runner/openwiki/check.sh`, and `mc-land.test.ts`.
 

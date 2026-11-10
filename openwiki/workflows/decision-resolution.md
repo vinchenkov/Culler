@@ -18,6 +18,8 @@ sources:
     resource: repo://dashboard/src/ui/systemhealth.js
   - id: openwiki-source-833cfcb1ce94b8d49fc966fd
     resource: repo://mc/domain/requirements.go
+  - id: openwiki-source-dcc4b26bf8c3604faddafb6a
+    resource: repo://mc/substrate/task_model_test.go
   - id: openwiki-source-b4da7cec419704ae15f02306
     resource: repo://mc/verbs/arbiter_input_test.go
   - id: openwiki-source-31daf0508c2344b34e93eec3
@@ -34,14 +36,16 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
+  - id: openwiki-source-332034bad01f6c1d71fb1474
+    resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Decision Pending and requirements revisions
@@ -134,6 +138,11 @@ The submission must preserve the assigned input as an ancestor and differ from t
 A Worker can therefore submit its unchanged start commit when retained work satisfies the revised description.
 A checkpoint equal to the base also fails.
 
+A Strategist task retains its original Strategic rationale through a requirements revision.
+The revision changes the description only; the rationale remains evidence of the original proposal.
+Collie applies the shared `task-description` standard to the revised description and shows the complete draft and reason before operator confirmation.
+`mc/verbs/skills/collie/mc-collie/SKILL.md` defines this separation.
+
 The Verifier judges the full change from the original base to the submitted commit against the revised description.
 The requirements revision does not itself establish a pass.
 A fresh verdict and review packet establish the result for the effective requirements.
@@ -141,7 +150,7 @@ See [Git delivery](git-delivery.md) and [task pipeline](task-pipeline.md).
 
 ## Role input and unavailable checks
 
-The run brief uses `mc.spawn-brief.v23`.
+The run brief uses `mc.spawn-brief.v24`.
 Each Worker run on the revised requirements receives a Requirements revision part with the reason as context.
 The Verifier and Packager receive the revised description without that reason.
 Briefs omit Verifier corrections and verdicts from earlier requirements versions.
@@ -226,7 +235,9 @@ These are source assertions, not fresh browser test results from this wiki updat
 
 The Arbiter can reject invalid criteria without a shared operator decision when each rejection satisfies the batch exception rules.
 `invalid_criteria` covers whole-suite success requirements, behavior outside the task scope, and checks that need unavailable capabilities.
-The rejection reason identifies the criterion and its violated rule.
+The rejection reason identifies the criterion and its violated rule from the shared `task-description` skill.
+The Strategist and Arbiter contracts include that standard.
+See [the shared task description standard](../concepts/agent-input.md#shared-task-description-standard) for its authoritative source.
 `mc/verbs/roles.go` validates the declared category; the Arbiter judges whether the criteria qualify.
 The command archives accepted rejections and retains their reasons.
 The command skill requires a duplicate reference or `invalid_criteria` category for every rejection in an all-reject batch.

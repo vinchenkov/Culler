@@ -78,6 +78,8 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-bb09a9b9edeb77b9bd13e9d0
     resource: repo://mc/verbs/skills/setup/mc-setup/SKILL.md
+  - id: openwiki-source-a6635e9c51b05f45725be1ce
+    resource: repo://mc/verbs/skills/shared/task-description/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
@@ -108,10 +110,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Culler quickstart
@@ -155,6 +157,8 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Find Strategist rules and conditional procedures | [Strategist input](concepts/agent-input.md#strategist-instructions-and-procedures) |
 | Find Arbiter rules and conditional procedures | [Arbiter input](concepts/agent-input.md#arbiter-instructions-and-procedures) |
 | Follow proposal research and batch submission | [Strategist workflow](workflows/task-pipeline.md#strategist-research-and-submission) |
+| Understand task descriptions and acceptance criteria | [Shared task description standard](concepts/agent-input.md#shared-task-description-standard) |
+| Understand proposal evidence and packet openings | [Strategic rationale in packets](workflows/task-pipeline.md#the-packet-opening) |
 | Follow proposal review and verdict submission | [Arbiter workflow](workflows/task-pipeline.md#arbiter-review-and-submission) |
 | Follow a commit from Worker to merge | [Git delivery](workflows/git-delivery.md) |
 | Resolve an operator decision report | [Decision Pending and requirements revisions](workflows/decision-resolution.md) |
@@ -269,7 +273,16 @@ The Strategist submits at most two proposals per batch.
 Its directive requires two proposals together; the command skill permits an empty batch when no valid task remains.
 Each proposal uses repository evidence, excludes equivalent work, and states scope and container-checkable criteria.
 The Strategist starts with a useful result, checks existing capabilities, and considers the full cost and risk.
-Each proposal explains why its result matters to the Project now.
+Each proposal holds a Strategic rationale that explains its value, priority, evidence, and assumptions.
+The rationale stays separate from the description and adds no requirements.
+The Worker and Verifier receive the description without it.
+The Arbiter checks the rationale; the Packager presents it after its statement of the delivered change.
+The first packet section is Strategic rationale for a Strategist task and Summary for an operator task.
+
+The shared `task-description` skill defines task descriptions and acceptance criteria.
+The Strategist, Arbiter, and Collie apply it.
+Collie shows the complete draft for operator confirmation and creates tasks through the Board create action.
+See [Collie task descriptions](concepts/collie.md#task-descriptions-and-creation) and the [shared standard](concepts/agent-input.md#shared-task-description-standard).
 Only the Arbiter selects proposals for development.
 Proposals enter at priority 2. The operator controls task priority, and the Strategist proposal schema rejects priority values.
 The [Strategist input guide](concepts/agent-input.md#strategist-instructions-and-procedures) identifies the directive, brief, and command procedures.

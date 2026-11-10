@@ -30,6 +30,8 @@ sources:
     resource: repo://mc/verbs/decisionresolution_test.go
   - id: openwiki-source-74d6ad23a2a8895d737d9013
     resource: repo://mc/verbs/delivery.go
+  - id: openwiki-source-47e2ca52aab2f12bfb519d6d
+    resource: repo://mc/verbs/deliverycomplete.go
   - id: openwiki-source-3bc5b077708f9534abc3b95d
     resource: repo://mc/verbs/directives/arbiter.md
   - id: openwiki-source-959768f661d526f65eea9d8d
@@ -48,6 +50,8 @@ sources:
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-a6635e9c51b05f45725be1ce
+    resource: repo://mc/verbs/skills/shared/task-description/SKILL.md
   - id: openwiki-source-2244ea442a4c07aeb880c8c8
     resource: repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
@@ -58,10 +62,10 @@ sources:
     resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # The task pipeline roles
@@ -183,23 +187,32 @@ The shared environment skill applies within the Strategist's authority.
 See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-procedures) for procedure locations and delivery.
 
 The directive requires two task proposals together.
-One task can span several components and delivers one Git commit.
-Each description states these points:
+The shared `task-description` skill defines each description: its scope, all requirements, and acceptance criteria for one repository commit.
+One task can span several components.
 
-- The present problem or absent capability, with repository evidence.
-- The useful result or repeated cost that the task removes.
-- The reason the result matters to the Project now.
-- The substantial effort or risk through verification and maintenance.
-- The scope and success criteria that agents can check in their container.
+Each proposal also holds a Strategic rationale, separate from its description.
+The Strategist writes each rationale to its own file under `/tmp` before it submits the batch.
+The rationale states these points:
+
+- The proposed change and evidence for the present problem or opportunity.
+- The contribution to the Vision and the reason for priority now.
+- The expected benefit relative to implementation, verification, and maintenance cost.
+- The distinction between observations and assumptions.
+
+The Strategist reads that file from the Arbiter's and operator's perspective.
+It discards a candidate when the rationale does not justify the work.
+The submitted `strategic_rationale` contains the file's text unchanged and adds no task requirement.
 
 The command skill permits an empty `proposals` array when no valid task remains.
 The Strategist reads that skill before each `mc` call.
 
 `mc strategist propose --run <run_id> --batch -` receives one JavaScript Object Notation (JSON) object on standard input.
 Its only field is `proposals`; extra fields and trailing text cause rejection.
-Each proposal supplies a title and can supply a description, Project identifier, and task scope.
+Each proposal supplies a title and Strategic rationale, and can supply a description, Project identifier, and task scope.
 The schema rejects a `priority` field. Proposals enter at the default priority 2; the operator controls task priority.
-The command schema permits an absent description, but the directive requires descriptions with scope and criteria.
+The command schema permits an absent description, but the shared standard requires a complete task description.
+The domain requires nonblank rationale text in valid UTF-8, with a maximum of 8,192 bytes.
+It accepts only newline and tab control characters and normalizes carriage-return/newline pairs.
 `StrategistPropose` in `mc/verbs/roles.go` checks role, run identity, the subjectless lease, and the limit of two tasks.
 It confines each proposal to the run's Project.
 One transaction creates all proposals, ends the run, and releases its lease.
@@ -219,7 +232,9 @@ Its directive requires rank by contribution to the Vision relative to cost.
 It judges a small task by its result and a large task by its feasible benefit and full cost.
 It considers new capabilities as well as defects.
 It requires exactly one promotion unless the all-reject procedure permits rejection of every proposal.
-The Culler contract includes the promotion limit and criteria rules, so Project customization preserves both.
+The Culler contract includes the promotion limit and the task-description standard, so Project customization preserves both.
+The Arbiter receives the rationale in each Proposed pool row and checks its cited repository evidence.
+It gives assumptions less weight than observations when it assesses value, priority, and contribution to the Vision.
 
 Overlap means changes to the same files or behavior.
 The Arbiter compares full descriptions across the pool, active tasks, and merged work.
@@ -248,7 +263,7 @@ See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedur
 
 ## Checks required for a proposal
 
-The Strategist must name a check for each success criterion.
+The shared `task-description` skill requires a check for each acceptance criterion.
 The Worker and Verifier must be able to run that check in an agent container.
 The Arbiter must require this property when it evaluates each proposal.
 Each criterion describes behavior within the task scope.
@@ -258,7 +273,7 @@ New or changed tests must pass on the submitted commit.
 Broad regression checks belong to the Verifier duties for every task.
 An unchanged Project failure alone permits a proposal that satisfies these rules.
 
-The role directives exclude checks that need these capabilities:
+The shared standard excludes checks that need these capabilities:
 
 - Host access.
 - A Docker daemon.
@@ -266,9 +281,11 @@ The role directives exclude checks that need these capabilities:
 - Additional container privileges.
 - A run on a hosted continuous integration (CI) service, such as GitHub Actions.
 
-These are proposal requirements from `mc/verbs/directives/strategist.md` and `mc/verbs/directives/arbiter.md`.
+These requirements come from `mc/verbs/skills/shared/task-description/SKILL.md`.
+The Strategist and Arbiter directives include that standard in their contracts.
+Collie applies it to new descriptions and requirements revisions.
 They constrain the criteria before task execution; actual check results remain part of the Worker and Verifier evidence.
-See [agent input](../concepts/agent-input.md#proposal-criteria-in-the-role-directives) for how the directives carry these requirements.
+See [agent input](../concepts/agent-input.md#shared-task-description-standard) for skill delivery and the authoritative `specs/task-description-standard.md` document.
 
 ## Invalid criteria and all-reject batches
 
@@ -326,7 +343,10 @@ It updates only `openwiki/` and submits an OpenWiki completion receipt.
 Culler merges the wiki commit without a task packet or operator review.
 See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md).
 
-**Packager.** The Packager terminal requires HEAD to equal the submitted version, a passing verdict on the exact submitted source version. It then advances the task to `packaged` and stores `report_path`, `report_sha256`, and the one-paragraph `thesis` (at most 4096 bytes, no control characters other than newline).
+**Packager.** The Packager terminal requires HEAD to equal the submitted version, a passing verdict on the exact submitted source version. It then advances the task to `packaged` and stores `report_path`, `report_sha256`, and the packet opening text in `thesis`.
+The submitted `--thesis` text has a maximum of 4,096 bytes.
+For an autonomous task, `packetOpeningText` appends the stored Strategic rationale after that submitted text.
+For an operator task, it stores the submitted text alone.
 
 **Operator decision.** `PacketDecide` in `mc/verbs/packet.go` accepts exactly one of `--approve`, `--revise`, or `--cancel`, plus the reviewed packet and version identifiers. Approve forbids a reason; revise and cancel require one. Approval goes through `domain.ApproveReview` and gives the task merge priority. Revise records a `review_decisions` row and calls `RequestPacketRevision`, which returns the task to `seeded`. Cancel archives the task. A revise or cancel that names an obsolete packet is refused. The schema permits `decision = 'approved'` only on a `packaged` row, and `tasks_approval_revision_fence` refuses approval while a requirements revision is pending.
 
@@ -354,7 +374,7 @@ See [task verification](../tests/checks-and-test-lanes.md#task-verification-and-
 
 The Packager directive defines these default sections, in order:
 
-1. Summary, with the same text as the submitted thesis.
+1. Strategic rationale for a Strategist task, or Summary for an operator task.
 2. Changes since the previous packet, when the brief includes a Previous packet part.
 3. Background.
 4. Intuition.
@@ -365,7 +385,8 @@ The Packager directive defines these default sections, in order:
 9. Glossary.
 
 Under the default structure, a section is absent only when the task has no records for it.
-Project instructions can replace the section structure and omit the glossary.
+Project instructions can replace the default section structure and omit the glossary.
+A Strategist task keeps Strategic rationale first, with that heading.
 The packet must retain all decision evidence, material behavior, risks, and verification results.
 It includes unchanged failures, their base comparisons, skipped checks, unavailable checks, and each `UNVERIFIED` entry.
 The packet separates actual command results from the task verdict.
@@ -378,6 +399,21 @@ The dashboard supplies the off-white page background and base typography.
 The Packager keeps page containers transparent and can add inline styles for diagrams or other visual content.
 The `mc-packager` skill requires preservation of this page style when a previous packet supplies the starting content.
 See [agent input](../concepts/agent-input.md#packager-page-style-guidance) for these instructions and [the report frame](../architecture/dashboard.md#report-page-style) for their display.
+
+### The packet opening
+
+For a Strategist task, the first section is Strategic rationale.
+It starts with the Packager's statement of the delivered change, followed by the complete rationale with the Strategist as author.
+The Packager converts the rationale from Markdown to HTML and preserves its claims and evidence.
+Those statements describe observations and assumptions before the work, not verified results of the change.
+An operator task starts with Summary and uses the submitted `--thesis` text.
+Only one of these sections appears in a packet.
+
+The Worker and Verifier receive the description without the rationale, both in their briefs and task reads.
+The Arbiter and Packager receive rationale evidence for their respective review duties.
+Requirements revisions preserve the original rationale while the description changes.
+`mc/verbs/strategic_rationale_test.go` checks these data boundaries and packet context.
+See [packet conversations](packet-conversations.md) and [rationale storage](../architecture/spine-and-substrate.md#strategic-rationale-storage).
 
 ## Requirements versions
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9ce711407f3dd45d3955fb8a0175eae0ae148ee7c885f2624768d0eed7eb95bc",
+  "pageVersion": "sha256:b3b98e9c4e6dbb3247857c6e4471b56f0c6f2fe35e8b4cc6bf610c0df00741aa",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -375,11 +375,11 @@
       "statement": "The review unit tests check the styled empty body and stable report serialization with link rules.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/review.test.ts#L385-L388",
+          "resource": "repo://dashboard/src/ui/review.test.ts#L404-L407",
           "version": "repo-lines-v1:sha256:3d30c530973177670827c429d73b72a13ace65fe44bdeeb4dc058a38cf83ae7d:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDUzNTRmMjMwYTk3NjMxZjRhZTAyMGEyMzg5NGU0MzZjOTExMDkzODhmOWM0ZWRiZjUxNTg5YWE5ZDg2NDEwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzI4N2FmZGMyN2I4YzIxZjhiNzBhMGZhOGJlYzhkMmZjYjMzNDE3Yjg0OGNkMzI0YmE2NDhjMDBhYTBlZGU2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgyY2Q5NTgzNjY4NjNiMjIzMTFjODBjY2IyZDQ1MGEwZWFkNDRmMWFkM2ViMTQ0MTE2NDIwOTFmMzJkZjcxYSJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/review.test.ts#L628-L641",
+          "resource": "repo://dashboard/src/ui/review.test.ts#L647-L660",
           "version": "repo-lines-v1:sha256:f4e17957378810c69e01bd659f585c796335cc439918d45947c999d44970e000:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NmI0ZGMzNDFhYjY2NmVjMDA0MWZhMmYxYzkwZjhlMDYyOWQxOGM4MmMwZDRiNzllMGMxMTM0OTEwZDAxYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjOWMxMGI4MjdkZWRlZWY5YTYzZmE4YjQxZDVhMWZkMThiZTRhZWY5NmQ4OTM1YjFkNGJkNGZjNDJiMTVjODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkZTExMDAzYmI2ZjRiNjBjMTg0MGEwZjU5MmZhZTVhYTVlYmE2NGFiNjcwOGRkNTNiMmE5Yjk2MWM4ZWRmOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZkY2ZiZjUxZjA1NmE5NmVmMjI0NDk1NjRlMDdkZWZiNzRiOGM3OGU0NTI5NzA1OTBjYjI0ZmMzZDJhZjE0MjkifQ"
         }
       ]
@@ -479,7 +479,7 @@
       "statement": "The Packager preserves every UNVERIFIED entry and base comparisons without an additional approval requirement.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/packager.md#L288-L292",
+          "resource": "repo://mc/verbs/directives/packager.md#L318-L322",
           "version": "repo-lines-v1:sha256:f52340414d89556e97cc25d8b47e59e66b721019cf9fc4f33febe6721f145f85:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJlNTdkY2Y1ODkxNDE5MzJjZDczNWQ4OWUwMWQ0ZDIwZjM2ZGFiNDkzM2E2NDAzNmRmZjA5YjJhYWMyM2VlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjczZDg5NDZhYjFhNjJkYmRjMzdhMGUxZGM5ZjAxNjQ0ZmQ5N2M3MWVmMjU1YmVkNzU5N2M0OTJjMWU3M2I5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzkxOGExYmY2MTk5OWZkNjc4Y2FiNWQwYjdlYWEzMmRkOTA3MjlmYzZjNzRkYWRiNzMxNDVhYmRmN2Q1NDA5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDIwZmMzNGVhMWUyZDhmYzExZWU3NDliZjdlYzdiZDY0ZTFhYzkyNmUwMWZhMmNkZjk5MDUwMzBiOTEyMmNhZiJ9"
         }
       ]
@@ -946,7 +946,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/strategist_input_test.go#L11-L91",
-          "version": "repo-lines-v1:sha256:f31075027363027a899fd60008b95386c861274b42e943f6285ad9511cba0b93:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNDAwMDA4NTJlZDJhNDNhYmVmZmZmZDQ0OTM5ZmI0ZmU4Nzc3MzM0YjgyNTBmNDBmZGNhYmQ1ZTgxMDNhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNGQ4MDgxZDFiZWZlNDljM2M0Y2FjMjYwNTA4OTkyOTlhMzc4NDJjMzJhODMzMzk0ZDM5YTM1MWU2NDk3MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjJkODUzYjk5OGRlNGQ4NmUyZmNjM2I2ODBjNWUyYTQzMDM2YTlmMjI5MWJkZTBjMjIzZjczMTgwYzYyYjMifQ"
+          "version": "repo-lines-v1:sha256:66bbe78ae24880b60d2895566ff7cf38ea227b6f57485453b50ddb6e7aa811eb:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNDAwMDA4NTJlZDJhNDNhYmVmZmZmZDQ0OTM5ZmI0ZmU4Nzc3MzM0YjgyNTBmNDBmZGNhYmQ1ZTgxMDNhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNGQ4MDgxZDFiZWZlNDljM2M0Y2FjMjYwNTA4OTkyOTlhMzc4NDJjMzJhODMzMzk0ZDM5YTM1MWU2NDk3MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjJkODUzYjk5OGRlNGQ4NmUyZmNjM2I2ODBjNWUyYTQzMDM2YTlmMjI5MWJkZTBjMjIzZjczMTgwYzYyYjMifQ"
         }
       ]
     },
@@ -955,7 +955,7 @@
       "statement": "The Strategist assignment-data test checks that brief simplification preserves retained facts, text, rows, and text tags.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/strategist_input_test.go#L121-L143",
+          "resource": "repo://mc/verbs/strategist_input_test.go#L124-L146",
           "version": "repo-lines-v1:sha256:938d3c4b376d381df5ee3419c6575c46b9b5d580565bdf5305bb0187e887e019:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxYjFjYWZiNmI1ZGFkZTg4OGU5MTYyYTlhNGFlNWI2NTE3Y2Q5ZjRiMGZkMGI1MGVhNWE2MDU4YjE3ODQ3ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -979,8 +979,8 @@
       "statement": "The Strategist brief test checks task selection guidance and customization boundaries in the rendered directive.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/strategist_input_test.go#L96-L122",
-          "version": "repo-lines-v1:sha256:d2c264289d47773e87ed21bad00f8964b5a1cbabd420d9f88a542c1b255f5c13:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
+          "resource": "repo://mc/verbs/strategist_input_test.go#L96-L125",
+          "version": "repo-lines-v1:sha256:68cd0642b2ef677a33498032846c6def8ae3483e783f8340bcc7422a4b5ab682:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
         }
       ]
     },
@@ -1048,7 +1048,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/arbiter_input_test.go#L10-L154",
-          "version": "repo-lines-v1:sha256:8ad9f98cf25618f1616eac8ef4b2c8d399f2821e5ad04bc2f938b8b144c9fb81:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2MTYyNTU0OGZiZWEwZjNlODNiZDlhOTc1OGQwODBkZDQzODdkNzdlN2FkZjBhY2M2YjQ5OTdmZDhiMjg1YzQzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlOWZlNDFmNjA5Y2QzMWE3MmY4MGY0ZDRmNDJiNjdiYzkwYmNiN2Y4NGI0ZmQ1NmY4MDI5MGQwOTFiZjU4M2JkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyYzkzMzA1NGJjMWEwZWY1M2ZhYzljNThmZDcwOTk5NzBlOTg4NzM1N2NlYTU1MGY4NzFlNzJkMTJlNWQxM2EzIn0"
+          "version": "repo-lines-v1:sha256:0bc52f13ae2a8a34202ca490328e3919b0b3034b20764b8b36ccb4caacf92f55:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2MTYyNTU0OGZiZWEwZjNlODNiZDlhOTc1OGQwODBkZDQzODdkNzdlN2FkZjBhY2M2YjQ5OTdmZDhiMjg1YzQzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlOWZlNDFmNjA5Y2QzMWE3MmY4MGY0ZDRmNDJiNjdiYzkwYmNiN2Y4NGI0ZmQ1NmY4MDI5MGQwOTFiZjU4M2JkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyYzkzMzA1NGJjMWEwZWY1M2ZhYzljNThmZDcwOTk5NzBlOTg4NzM1N2NlYTU1MGY4NzFlNzJkMTJlNWQxM2EzIn0"
         }
       ]
     },
@@ -1058,7 +1058,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/arbiter_input_test.go#L141-L154",
-          "version": "repo-lines-v1:sha256:4c348f30f0e04dc4676ade585fc7ca7c36f94d4fc451fdbacdde0afe3992dea1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNDhkOTRhYjQ5OTViMmY4ZWM5Nzk4NmZhNmY5ZjdlODFjYTdhYTMzNTE4YjZhYTJmMzNmNDJmNTQzMDk3NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzlmODllZjgwY2M1MzY4ZGZkZWMyYzAxZTQwYjEzZGUzNGMwMDQ2ZDk5ZWRmZDBkMmU4Mjk3N2UwYjA4NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjOTMzMDU0YmMxYTBlZjUzZmFjOWM1OGZkNzA5OTk3MGU5ODg3MzU3Y2VhNTUwZjg3MWU3MmQxMmU1ZDEzYTMifQ"
+          "version": "repo-lines-v1:sha256:d9729241a90101143a870ffe30f0f33fab424d2645749d4c128ee533ec13ddd4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNDhkOTRhYjQ5OTViMmY4ZWM5Nzk4NmZhNmY5ZjdlODFjYTdhYTMzNTE4YjZhYTJmMzNmNDJmNTQzMDk3NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzlmODllZjgwY2M1MzY4ZGZkZWMyYzAxZTQwYjEzZGUzNGMwMDQ2ZDk5ZWRmZDBkMmU4Mjk3N2UwYjA4NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjOTMzMDU0YmMxYTBlZjUzZmFjOWM1OGZkNzA5OTk3MGU5ODg3MzU3Y2VhNTUwZjg3MWU3MmQxMmU1ZDEzYTMifQ"
         },
         {
           "resource": "repo://mc/verbs/arbiter_input_test.go#L174-L193",
@@ -1071,7 +1071,7 @@
       "statement": "The dispatch brief test checks Arbiter proposal descriptions, historical entries, and the instruction to rank proposals against the Vision.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchverb_test.go#L684-L705",
+          "resource": "repo://mc/verbs/dispatchverb_test.go#L696-L717",
           "version": "repo-lines-v1:sha256:b61885335b4911ac5a48516ae5dc7363f3d8cc5cdcfacd98d07ca86dd3a86916:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3YTE5ZjdmOGM5YzE5YjczMmRiMDQ2NWFkZWQ1MjE5NzUwNWZhMDJiMWFlMmEzOGNlNTYyNTU5ZjYzZjA3ODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmNjY0ZGZkNDc0MTExZmM2NjQ5NjY5NWU5OWY0YzQwYjdlMGZlNDA3MmQxZTczNjYyYWQwNDQyMmJiYThkYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczYWY3YjJmY2E1MDg4ZTYwYmMzYTU3MTg3ZWE3ZjNkNGIxNWE1NTAzNTNlNzZhM2U2MzM5MzQzODY1OTEwNzAifQ"
         }
       ]
@@ -1081,11 +1081,11 @@
       "statement": "The dependency test excludes Arbiter role-specific assertions; the customization test checks the Arbiter contract boundary and procedure pointer text.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives_test.go#L490-L510",
+          "resource": "repo://mc/verbs/directives_test.go#L491-L511",
           "version": "repo-lines-v1:sha256:b36d5e80a55b6af5281328bc2e381c070ebe3e3b2ecd80231ce5c8af5c4f6c86:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3YmI2ODEwOTdjZjczYTY4NGQ5Y2U5OThiZDIyNTVlZWVmODEwOGYyMjJhMTYyNmEzY2NjMzFkMTQ3MjcyNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjg4M2Q4MTUyYzY1Yjc3OTM3YTNhNmUwMmZjMmU0YzU0MWM4NDk5Mzc1ZDYxMzNjZDkwZTY2ZmRkNTg2M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3Njg1NDc0YzhkNjc3ODUyZWM2MTU3ZDBiY2U5MzNhMzVmM2M0ZTgxNTM5ZTE4OThiN2E2ODk5ZWUyYTcyMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyN2VkZmE4ZDcyN2UwNzlkNTg1NTRkOTZhZDBlZTRjMTBiNTYwNmZlNmRiMTk4ZWUxMjllZmYxNTU2ODdjMmYifQ"
         },
         {
-          "resource": "repo://mc/verbs/directives_test.go#L791-L796",
+          "resource": "repo://mc/verbs/directives_test.go#L792-L797",
           "version": "repo-lines-v1:sha256:a983feddad1a8bec440d927545b3dd0d7c9f88e19bb5793f219fd60e34619f8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg5Njg3YTgxZjdhYTBmZGIyMzBhZjk3MzYxM2RjN2EwZGI0ZTk1YzExMjBlZmVhNDZjMzU0MmZkODNiMTkxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzdiYjY4MTA5N2NmNzNhNjg0ZDljZTk5OGJkMjI1NWVlZWY4MTA4ZjIyMmExNjI2YTNjY2MzMWQxNDcyNzI3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY1MzAwZTkyZGIwYmQzNWYyZmZlZWJjZTc2MDczYzk0NmUzMmE1NGY0OGY2MjJmNTkyMjg2YjkzNTBiOTA1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQyY2M5N2E5MDBkMDk4OTEyOTg1NWE5OWJiZDJmYmNhNTY2MDI1YzE1OGQ1YmYzNmVmZWFjMTk1ZDQ0OTRjYiJ9"
         }
       ]
@@ -1163,8 +1163,8 @@
       "statement": "The Strategist command test rejects a proposal priority and then accepts proposals at priority 2.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/cli_test.go#L2435-L2469",
-          "version": "repo-lines-v1:sha256:7206df0464e0a9a5eacc0eaf5cd5d31c9b66fe96ab3dcdd0ea4485c2a1ed8442:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZTA2NzZlNTEzM2I3ZjUyMGU2MjMwOTY2ODdmMTFhNThkYWE0MzMwNGFjNmI1NjZhNjRmNWZhMzIwMjc4YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMTk4YjJmOTQ0OGY1YzI3YjI3ZGM4ZTY0MDNjMTJmYzFiYjlmZjY5YjM4NjlhZGM0NWMxMDE5OTRjOTA0NDUifQ"
+          "resource": "repo://mc/cmd/mc/cli_test.go#L2444-L2470",
+          "version": "repo-lines-v1:sha256:239c9844c8e831caf33c6cf2b6d80b90d248822c26ec54765c82f9b747fcbfcf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiODBhZWUyMWQxZGI3YTQ3MWJmNWY4MDA1NDA2OThhYjVmYzA3ZGY3OTUxODg5YzY4ZTk3MTZiYzNmOTA5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZGMyZjQ5MWY0YWNlMzE2MWNkNmMzYjkxYmRhZDU2MzY3YjcwN2VhZDk0ZWZmYjNkMGU0Y2ZjMGJkOWYxN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5YTZmNDczYzk4MTQ1NTlkOGNjYjdhOTg2NjAzMjYyMjI1YjZlNmE0M2YwY2M3NTE4N2QzYWVhOTYxNDkyNzkifQ"
         }
       ]
     },
@@ -1177,10 +1177,34 @@
           "version": "repo-lines-v1:sha256:10522dae3437a573b80786123d50963eb4335d5d32b795e37ce0445267fe121c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NmE4NjcwNGVmMTQ5NzUzOGQ0ZWFmMjViYTdkMzJiMTdjOGU0ZTIxYjQ5OWUxYmEyMmNjNmQwNDc4OGVjYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1NzRhNjUzODk2NDc2NjAxNjgwNmNkMGM5OGU3NDZiOWE5NzM0NjA3Y2FjZGRjMmJmNzc1ZGVjNzNmNDc3ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3MTAwM2QxNzI4ZmQ3MzljNDdmODViMzVmZjY3YTJhMDUyNDNlYzJmNzA5NjY4ZWU3ODkwNTA4ODgwNmUwNmYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_5c05dc90a6ca422180e36ece8c7b239d",
+      "statement": "The task description audit checks each rule once across the rendered brief and all delivered skills.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L88-L90",
+          "version": "repo-lines-v1:sha256:0c1bb2fdb8679ddda7002e6b3e942573063f1b6e3228c1925c5ca7e5e58571a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDFlM2EyM2RkZmY5MGY5ZTQwMmNlNDVmMGEwODg1ZTE0N2ZlNzNkYTQ3OGI4Y2VmNDM1NjJlNGM0NzIxYzI5YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjgxNmRhMzNkMDdlZmU3Yjk5MjNhM2E1Mjc5MDU0YjMyOTU5NjNiYjVmNThjZTM0ZTE1ZDhhNDdkZjVjMDg1ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzA4YTgxNTM4NDY1ODIwMGRlM2ViYmE1YzU0ZDljOWU5MmEyMGJhYzY2NDQzYzRmMzI3NzdiNmMxYzVlNDU1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTY2NzVhMjA1OWM4Y2U0MjlkNWMwYmQzN2Q2ZDQxZTA4NzVkMjVhNTkwZWMzZDE2MjRhMTU2N2IwNmIzOTE5YyJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/strategist_input_test.go#L147-L179",
+          "version": "repo-lines-v1:sha256:38962ac36877d77516ec12c6c7d08d2dddb90178e84dcad44a365c8c3ceaa925:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4ZmM1NmUzOWRlNjQ0ZWM0NDdhZDM2NWYxMTI1YTM5NTBmMTA1MTM3NzZkMDU5NWM3OGFkMzEzNDc3ZGIyMjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_aa60ac34e9d64a4ba16c738e6fc3cffe",
+      "statement": "The direct-page latency smoke visits about:blank before it installs the next page's request counter.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/latency.smoke.test.ts#L98-L126",
+          "version": "repo-lines-v1:sha256:cb4d44422a170f8e684c93451e2357a0910dc08aae37a3833adfb80417f01e6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MzcxNGJlOTlkYTk5OWNjYjM3OWIwZDhkZDA2NjlhYTA5ODkzM2RkZDRlNzA2ZTA3Y2E0ZjBjNWFjNzljYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMmI1NGFkNzRlYTgxZDhkYjk3MTIzMGNiYWUxYTVkNTVmZDE4NDY0ODczYjU3MzZlYzc0M2I0NTdlOTQ2NTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4ZmYzYjk1ZTA0Y2VjNWM0YTZmYjFjM2U1YzlhZjQ4M2JiYmJhOTQzYTk1NTM2NTExMDUzNjJhYTgwMDU5MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNmI0ZGNjNGMwNmUzNzZhMWQ2ZTVjMDNkYzNlZGI2OWQ1NmZlMGQ1YmMzY2U4ODE3MTJlZmY0MzI1MWRlMzQifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T02:41:58.373Z"
+    "at": "2026-11-10T18:18:18.729Z"
   }
 }

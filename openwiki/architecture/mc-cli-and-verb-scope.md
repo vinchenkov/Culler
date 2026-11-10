@@ -20,18 +20,22 @@ sources:
     resource: repo://mc/routing/registry_active_fake.go
   - id: openwiki-source-02743ab9dfa15349cb2629c2
     resource: repo://mc/routing/registry_active.go
+  - id: openwiki-source-a44ab4c2d26db975bde190a0
+    resource: repo://mc/verbs/collie.go
   - id: openwiki-source-1cf141b5d1589e627f8f9d6d
     resource: repo://mc/verbs/runjson_test.go
+  - id: openwiki-source-3e36da904db22c61871990fa
+    resource: repo://mc/verbs/task.go
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
   - id: openwiki-source-1af81418c71ef16693e3dabe
     resource: repo://runner/image/mc_dispatch.go
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
-generated: { by: "culler-scribe", at: "2026-10-29T16:53:36.977Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # The mc CLI, verb scope, and boundaries
@@ -86,6 +90,21 @@ Scope checks build on that value:
 - `RequireOperatorVerb` admits the host, admits a Collie session only for verbs frozen into its `verb_allowlist`, and denies every pipeline run.
 
 Scope is checked before the spine is opened. `TestScopeRefusalPrecedesSpineOpen` points a pipeline identity at a fresh spine path and checks that refused verbs leave no database file behind.
+
+## Task reads and Collie authority
+
+`mc/verbs/task.go` selects task fields for the caller through `TaskRead`.
+Worker and Verifier reads omit `strategic_rationale`, including reads by roles with a case suffix.
+Their descriptions hold the task requirements. Other permitted callers can read the rationale as proposal evidence.
+`mc/cmd/mc/main.go` passes the run identity into this read.
+
+Collie creates operator tasks through the `create` action of `board.write`.
+`maximumCollieAgentVerbs` in `mc/verbs/collie.go` excludes `task.add`.
+A Collie start request that includes that verb fails before a session starts.
+Host `task add` remains an internal interface and creates work at `seeded`.
+The operator uses the dashboard or Collie.
+`mc/cmd/mc/cli_test.go` checks the refused Collie allowlist and host task creation.
+See [Collie task descriptions](../concepts/collie.md) for operator confirmation and description rules.
 
 ## The setuid wrapper
 

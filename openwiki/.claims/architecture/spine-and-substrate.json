@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e4981b81907d8bbd033faffa55103d141f6c135368859ebb31217decfde17667",
+  "pageVersion": "sha256:d449bb184f086f2501c2cd210b340b0e676100d24fd292a983b51b5d28e08977",
   "claims": [
     {
       "id": "claim_70c4bb3813634779b2c8216ae9996cf7",
@@ -95,7 +95,7 @@
       "statement": "The task transition trigger rejects status changes outside its listed edges.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L291-L308",
+          "resource": "repo://mc/substrate/schema.sql#L297-L314",
           "version": "repo-lines-v1:sha256:a4808cdb49302e8cc920165a1b78098fc8f6198cb76fa0a3a7cc281a95bf0a7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNGZiZTc4YjVlMTliNThjNDJkZjhlODBlOGJkN2JkMWI0MjYxOTUxNDAwZWE0YTVlM2FjOTcxMWMwNzI1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYTBhOTU2N2JjYzlmYWZhOTI3ODA4NGYwM2IyZDAwNDVjOTkxMTkwZWQ2OTkwMTFiYmU2ZTdhY2RkMzgyNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NjM5ZjU1NmI2ZmQyZmY0OGQ3YzBlNjc5NWFhODVmOGQxNDcxODkyNjAzNThjYmRmZWRjMDdmNTlkMDE5N2IifQ"
         }
       ]
@@ -115,8 +115,8 @@
       "statement": "Every task has scope task and destination main.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/task_model_test.go#L9-L34",
-          "version": "repo-lines-v1:sha256:606484fa2429d131149052785cc5035553c3929557c92c40ab24c84752edec0f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNmZjZDUzMzJjMzg2ZmFlYjg2ZmU3NTEyNmNjNGFjYmVjZjJjNzI0ZDkxMjNlMjhiYTAzYmU2NDkwNDYzMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExODhlZGU3OTJmMDk5ODUwZTg1MjJlMTA1MDBhM2Y1ZjAyY2E2MmU0NDY5MTAxZTRiY2JjYWYyOGRlY2U3MzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1ZjU4ZWRmZDVkZjAyMDg4ZTdlMjI3YjZhOTA3OTBlYTMzNGJiYmYyYjRjYjRlMGMyNzUxMzQ2YWJjMTk0ODIifQ"
+          "resource": "repo://mc/substrate/task_model_test.go#L9-L24",
+          "version": "repo-lines-v1:sha256:b2447038ca34e20c6821a59b05bc5835e9241419c1c7be5ac1fabfe35c05bc35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNmZjZDUzMzJjMzg2ZmFlYjg2ZmU3NTEyNmNjNGFjYmVjZjJjNzI0ZDkxMjNlMjhiYTAzYmU2NDkwNDYzMGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjOTRlN2I5NDRkYWIxMzdkYjY2MWQxZTRiYTVkODQ3YzBiOTIwY2M1YTZlZDY4ZGFjYWI3ZWFmZDY0ODc5OTQifQ"
         }
       ]
     },
@@ -125,11 +125,11 @@
       "statement": "The schema requires a condition type for blocked tasks and prevents changes to a non-null task base_commit.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L244-L253",
+          "resource": "repo://mc/substrate/schema.sql#L250-L259",
           "version": "repo-lines-v1:sha256:d765f56e7eb21a94f84b29b940bbdfdcb59438ddcf7d0083a428c12e25518f1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxYjk0MDhkOWYwMWIzNDcwYjRiMTkwZGJjNGE3OTRlNWZiYTgxODE1N2I2NjkyNGY3NWE5ZTJkNzI5MTQwNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4ZTU2NzRiODY2NmQwNjdkYjdmM2U2MWQ2ZDQzYzdkNDA3ZjNkZGYyY2QwYThlY2ZhMmRjYjRmOThkNWI4NzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNjRlYThlNDhmZTUwN2MyYTdjZjg2NTM2NTM2ZTNjY2IxNWRhMzJhNTIwNWJiYzBlZWU2ZTA5MWYyYzA1MDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkODZlMjA4OWQwYmZjNjBhZDViNTNiMzkzNTIyZmJlNzE3ZGE3NjAzZjEwZGMwNjNhMDQwYWYxNmRjYjJkNGQifQ"
         },
         {
-          "resource": "repo://mc/substrate/schema.sql#L373-L389",
+          "resource": "repo://mc/substrate/schema.sql#L380-L396",
           "version": "repo-lines-v1:sha256:30b987f95133a435b0117cc00ec275654001ca73966dc98e8a92c70177bffc4d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ODZkMGYxMjMwYmZlOWRmMjA5NGI2ZGVkMTk1ZTM5MWY5YmJlYzAwNmUxN2QzNjViZjU1NGI2Mjk3ZjRjMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwY2E4NTc1ZjNlOWI1N2I0ODNhMDgyZmU1YmYxN2E0M2Y3NzQ5OTBhYjUxZmJmNjJjZTRkYWRjOTJmZDVkM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiM2Q1MmQ2ODA0MjMwNzA1ZWU3NzY4YjAzYzQ0NDgxYjU2MDcyYzEwZmI0ZDAxYzUxMmVlMzBhNzE0NDk0ZWEifQ"
         }
       ]
@@ -163,14 +163,38 @@
       "statement": "The spine stores a unique Discord thread identifier for each associated Collie session and prevents changes to its association.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L943-L959",
+          "resource": "repo://mc/substrate/schema.sql#L950-L966",
           "version": "repo-lines-v1:sha256:85fa1b3e690d38720b24a307d00db81e916d4ce2a5304589d033c5a2d1aaabe8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiMjQ5Yzc2YzRkODg2MjQyY2ZhNjU3MGQxMDJkMWNkMzY4ZGYzZjcyZGEzNWY2ZmJkNTViNmQzNGQ1ZjE2OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNDc1YjExZGNjZjc2ZDE1Y2UwYzRiYmY5OGI0NmRkMGZiNjlmNjcyNTFiNDFiOTZiZDMxNjMzOGQwMDQxNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1M2Q5Y2NkN2MwZGVjMGJjYzc4MWMyMzAwMGZmODhjMmJiYThlMmJiYmNkOTAwNmViOGY3NGZiMWE1NWY4M2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8e5c374a1d57487eb8a060bebf0395de",
+      "statement": "The task immutability trigger prevents changes to strategic_rationale after creation.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L359-L372",
+          "version": "repo-lines-v1:sha256:28296c6245a63716732506c44afa368488ba8f32a4de64b9fb0d9d0210c0e028:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyYzFjMmIxNWI4ZTY3MzZkZGIxODA1NGY3ZTgyOGE5NjE2ZDMxNjM0YTM3NzVkODg4MjYwODFlZmQxMzc3MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3OTMwYTMxMDMxMWIzNDMyM2IyZjM5NmExMjliZmY2YmMwNzMxZWY1ZGVmMGExMDFhNWI1ZTBjODRhMTM0NDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1OGI2MTQ2NTdmNGMxNDk2OWRlODMxYjgyMWY1NzIwYzBmZjdkZDVhYzg2NDM3YzYzM2YwZWE4MWEzMjFhYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3Y2Q2YTAxNTMwN2Y5OWFiYTdiZmMyYzczMTdmYmJmNjY1ZDYyMzg5MDA5YjFkMDNmMGIzZjc4ZWUxNmFlOTEifQ"
+        },
+        {
+          "resource": "repo://mc/substrate/task_model_test.go#L28-L58",
+          "version": "repo-lines-v1:sha256:a5c1acbcdf0e6784eeef34b187d68ea4fff13a7e2088c9c1dc3cb3ce766ccfe2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5Y2Q5ZTc0M2I5NGY3ZDg3MmQ4ZGVkMDNiNWZkMmE2OGM2YzVhNDU0OTQ0MTQxZWFiYTIzODA2YjA2OTNiY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjOTRlN2I5NDRkYWIxMzdkYjY2MWQxZTRiYTVkODQ3YzBiOTIwY2M1YTZlZDY4ZGFjYWI3ZWFmZDY0ODc5OTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2OTFhMzlhYWVmYTY2ZWYzMmQ2ZThhNTczMzQ3OWM3MDdlM2Q0ZDJlYWYzNGUzZmUyYzIyZjIxNGU5MWY5MDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_47f36f40660e4c32a25a7617f8130d59",
+      "statement": "The domain requires a nonblank Strategic rationale for new autonomous proposals and limits it to 8,192 bytes.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/task.go#L252-L276",
+          "version": "repo-lines-v1:sha256:6bbe2b74d60264e8459a40f9ca70c72b1b1fda19e36e8e1ac70cf661e1477e10:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhOWU3MWU3YTc3ZWViMTQ5YWVmZTJhNDc4Y2Q4NWYzNzNiZjZiNGRkY2Y3ZjdmYTQwYTliYjc2NmE0YTBmOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiZWFmODY2NjdmOGRmMTdiNDg2MDk4ZjQzNjk1YjQyNzcxM2E4YzBjNDhlN2ZiNzQxYzE2ZGQzOWI5MGJmNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5MWI2ZTAzYjE0NTQzMjYzNWVlYWI5OTBhMTg0MGFlZjYzNmRiYjUyNTcyYTYyMzIyYzBkZGQ0Yzc5OTU0ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlYTk1NDg4NzYwOWU5NzgwMDMxMTFmOWFkYzZlNDUxN2NjN2ZmZjhjZDQ3MDVkY2M0MzRjNTFmNDE5NGQwMTMifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-10T18:18:18.729Z"
   }
 }

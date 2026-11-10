@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:95794496a0b484359255c451010a240c2ff7d56862cdd019a426be07d9d17d5c",
+  "pageVersion": "sha256:66f404695d6858f066784e05be50845f547dca99e3eebf9151a6aaca3b123464",
   "claims": [
     {
       "id": "claim_92773894f36348b5bc17a0e35b0538f1",
@@ -179,7 +179,7 @@
       "statement": "The Board shows blocked, active run, task, and stalled counts in order, then an expedited count when positive.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/board.js#L424-L458",
+          "resource": "repo://dashboard/src/ui/board.js#L425-L459",
           "version": "repo-lines-v1:sha256:1fad4fb99ed2c851f478ce423cf6f18ba93acb96b7d1e1d0ce764a9765cd97c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYzM2YzgwMGI4MjY0OTFhMmQ2YWU3Nzc4ODFkYjIxMjU4Njg2MGZjOGY5YjcyNDkxYWZjYjhhNmM1NjRmMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlMDk3MWQ3NDlhYzY1ZDc3N2YxOTc2YWJhMTBiNWU2ZjJhZmYwODYwZWZhMDRlZmZjODYxMmNlMGEwNjBlY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5MWEwYzNmMzUyZGUwNmY4YTI5YWNjZGYxYjYwM2RiYmJkOTg2NTAzMTM5ZDU3MTRkZjY3NWQ2ZmIzMWM5M2IifQ"
         }
       ]
@@ -189,11 +189,11 @@
       "statement": "The Board stats use Blocked tasks and Stalled; Review uses Awaiting decision.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1883-L1889",
+          "resource": "repo://dashboard/src/ui/app.js#L1884-L1890",
           "version": "repo-lines-v1:sha256:4f856c3e35d5ddf4d22d1067786cb3d9dbc78e871947231c667836a4f3d091f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBiNWViNzU4ZGExNGYzNTZkZWFjM2UwN2Q4ODNiOGM2ZjE5ZDdlNTM5MWYxODVhMjFhYmFiZjY5MmFkYWUyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjhjZWNmNWY1NjRmZGJkYjhlZTM4YzhkYzM2OWY3YmVhOWI4OWUwYzU1NTg4NjVlN2IxYmUwNjVhN2ViYTJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTY3OTBhNzRmYjIzMTk4OGIzZmYyMzExMmMyOTM4ZTVmZDU1MDNmNjk2NmQ1NWRiY2NjNzQyYWQzZGM3YjBmZCJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/board.js#L446-L457",
+          "resource": "repo://dashboard/src/ui/board.js#L447-L458",
           "version": "repo-lines-v1:sha256:6916caffb4a89d5afec34c7b42957d23e56b99a210e889ba8862da0501b3b3fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1MmU0OWU1OWY3Yjc5YTE4ZTZmY2M2ZWMyMTQyZjY4ZjEzMTdiMjgyNDVhM2ZlOWE4NjkzMDgwMGQ2NjE4NDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4NGNiNTI0MmY4YTllYzFjZTM3ZjdiMWZmYmVkYzBkMWU4ZjM4ZDA4MTk3MjUxNzkxYWMwNThmYjk5ZTU2ODgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNiMjgzMzQ2ZGQ4ZWNkZWUwYzZiNzk1ZjllZWY1Y2Q2ZTI0NTI0YjgwMmM2ZjZmMzY3ZjY2NGZjMzI1MTlkYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmOTJiYjgxMGYzZGU5OTllZDY3OWU1NTNlZTk3Y2M2M2VhZTkyZmRlNmE2N2I5YTFiZTNkZjViZjBkYzM0OTcifQ"
         }
       ]
@@ -203,11 +203,11 @@
       "statement": "Board stats retain lead, zero, and blocked alert treatments; Review slots alert when capacity is exceeded.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1885-L1887",
+          "resource": "repo://dashboard/src/ui/app.js#L1886-L1888",
           "version": "repo-lines-v1:sha256:f2b6d22fb55c2753165e84b24b685425add3404b16bbf48ce14ea15fa52dc619:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmI5YTIyOGI1ODY3M2MyNWZlZjhiYTNjMWY3OTAzYmUxNWVmMWE4Zjk4ZWFiZDlmZDJhNjVhNzI2YzgzMThiMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU2YjkyZmVhN2RlYTY2Y2NkNTZlNjYyNDRmMTZmMWIzNTE2MTQ4MTI5MDEzYWMwNGIyMTgxMWQ1MTNkM2E0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjk5ZTg0OWE5MTJlMWRlZjIyMTQ5Mjg2ZjUwZTM1Y2NjOGE1NjI5YzAxZmNiZTQ3ZDkxOTkyZTg0ZWI2Mzk4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTgxMDJmYjgxMWY3ZjA2MjFlNzg2MTA0MmJhMjQ2MGVjZGRkZjc5ODhmYjhmMmI5ZjY4YjFkYjJhZDBiMzIwMiJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/board.js#L447-L458",
+          "resource": "repo://dashboard/src/ui/board.js#L448-L459",
           "version": "repo-lines-v1:sha256:a83b2e86cb1edbcc73131665e7bd5826f40455c53771668e1ae9217117f8f2c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiMzUzNDQ3OWUzMGYzOGE1MjQxOWUzMzQwYzczYjFmZjQ3ZjMwMGQwMTEwODE0YThmZGZiMjIzNzhjMDAzMDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkODU2MWRkOTQwZGY4MzAzOTFlMThiMzRhYzFiMmVlZTk2MzE1OWU0NzE5OWZmNjVjZDllNjFiNTA5N2NmNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5MWEwYzNmMzUyZGUwNmY4YTI5YWNjZGYxYjYwM2RiYmJkOTg2NTAzMTM5ZDU3MTRkZjY3NWQ2ZmIzMWM5M2IifQ"
         }
       ]
@@ -217,12 +217,12 @@
       "statement": "The Review packet viewer shows a status, spinner, and placeholder lines while the report request is pending, and it hides the thesis during that state.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2308-L2345",
-          "version": "repo-lines-v1:sha256:983f281e0e98901afe816d2fd50d929d12b685f252503a57da75afd6e007a7ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0NjQyMjkxZTljNWM2ZmIyZjFlYjg2NjIwZjI2Yjk1ZWQxNmI0NGJkOWJhNjEzN2M3MThiYThjNTNmY2QxNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiZGYyZmM1MjI4MjFkMjcwNzM4ZDc5ZDE2NjUwYThkNjUzZWRhNjQwMGVhY2MxYzcxZGQwODRlZGY1ODcyZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwZjJjY2VhODM3Y2EwMTI3OWQ4N2Y3NTYxMjRiZTUzMTUwYTgyNzhiZjc0YTUzY2NlNmNiMzk1ZWY2OTFmZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhYmY5NjA2YTMwYzJiOTFiYmIyNjI5NDdhMWNiZmNmZWU4OThiOTY4NDUxYmQ5NjAxZDhhOTQyZDAzMjM3ZTAifQ"
+          "resource": "repo://dashboard/src/ui/app.js#L2316-L2350",
+          "version": "repo-lines-v1:sha256:b09edd4d127555bc89992754b01e2257b6572a0f97e79b8fe84d9db391c3477e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzOTBjMzYwMjUzMGY2NDJlOTA3OWU1MDYzZjIyZTcyNmU5MjI4MGU5YWNjNjViMDA0MjExZjQ0ZTUyYTlmZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1NDQ2NTYzZDBmMzVlNDU0NjEyZjJkZjcyYjExYzY1ZTA2MTM3Yzc1NGM2ZDNiMjc1MTdjNDI2N2NlOTRiMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyN2U2Mzk3ODVhN2Q1ZjE0MzYwNmFlMzVjYTM5NTVhMGYyNWE5MDE3NjY0ZTkyZDg5Mzc1MDJmZTRlYTcwZjkifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/review.js#L167-L175",
-          "version": "repo-lines-v1:sha256:367912f038d5ba125796088f25f3d4e89c0e8d33396c90884276aefcb5016cbe:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDNmM2QxMzk5NDk0N2M1OWUwYmRiNjk2ZWUxMmFjYmE0YmYwNWI1YjUzZTlkMGUzNmRmZmM2NTkzMjE0NjM0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWM0NTc2ZDM1OWYwNDMyNGIwMzViMzFmODYyOWE3MTEyODFiNTBmNzVkMDYzMjFmZjMxZTAwYzJjNjkxNjQzZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmJkZmQ2ZjY0ODg5MmY4ODQwMmZjOGM0NjFkNzJkODM4OGI3YzQxNTIzODNlYjgzNzI4NDYzYTAxMTkxN2RkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTI4NjU4NGE0OGY4MTg2NTAxOWQ0OTUxYzg2ZGUzMDI4M2NjYWE4Zjg4YTNiMWE5ZTU4ODQ5ODBlOTFiMjUxMyJ9"
+          "resource": "repo://dashboard/src/ui/review.js#L176-L193",
+          "version": "repo-lines-v1:sha256:b05712feb2ececa10e74f65bd938dabf6dd3272fe7eba9d3a500cf128fde6d0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MTNiOGJhZjM1YTVjMjhiNzU0ZjZiMzY4YzRiMmNmZGU3OWI0ZTgyZDdhMjczMDk5OTA0Y2ZhNmQ3NTE0ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMzc2NjdhYTE3YmU4Yzg4YWEwODE2NGRlYTNhMDc2YjZlNDc3OTIwNzdlYmY5MmVlOWZmZGZiOGIxNTMwZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjYmQzYTk2MzI2MjM4MjE1MGRhMjE3YzVjZmM5MDMyZGQ0OTRiYjhjOTQwNzAyYjY1OGJiMzQwZDg2YWQwYTIifQ"
         }
       ]
     },
@@ -235,11 +235,11 @@
           "version": "repo-lines-v1:sha256:e7d2b4066505633af2d97e478124e6e50b82aada8142122d8d78fb3e2fed54d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1MDFkZDAxMmQ1OTY4NWVmNTVjMmVjYWY0NDk2MmU3ZmM3MmY4YjgzNWUxODQ4NTQ4NzcyN2RjOTYzYzEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0Mzk3NDM2NzAwZThkZDkwMjM5YTZjOWEwZmFiZmUyNGU3ZGE1MzczZmU5ZGU5MDg4ZTUwNWY0NDY2ODAxNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2MjliMGI4MmNiNDljY2JkNjU4MzZmNWVlMmI0NTI5NDA4ZmQwMGM1NzE5NmE4ZDU3YjQxZGI2MjNkNmE2ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MGNlMDNjMWNjZjk2NzM4ZDU2NzMzMDliMjQ0YTdmZjdkNjlhYmVmMTZkYmY2MWRhYzcyNWExMDkzYWY2YjcifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2242-L2251",
+          "resource": "repo://dashboard/src/ui/app.js#L2243-L2252",
           "version": "repo-lines-v1:sha256:62598b774525cd8c012d6fb1617ee359c519d8d45f9f38d8366be0b53b4fe711:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTk1ZjRlZTVmZjYzZDUwOTUwNDE5ZGMzNDQxNDUxMzg1MWRjOTczNmZkMTdhNGY3YmZhOTMwYjI2MWI2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ZmYxOTMxOGEwZjRlYTVkMDE5ZWZjZTRjOWFjZWMyNDY4MDhjNzc1YTNkMTZlYTFkMjllODQ5YjQwZGE5MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkZDg0ZmQ4ODBjNjk2NDhmODNmMGVmNDM2YTRiMWVkNTQ4OTQxY2E0NjgzNWZhYTU1MGQ3OTBlNjMyMzIwYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0NGZkZGM2NDZiYTNhOTJiNzE0MjhiZDY5MWEwYTNmYzM3ODYwMWMyODMxNThiYjc4YjE5NjIxMzFmMDVlNjIifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2475-L2498",
+          "resource": "repo://dashboard/src/ui/app.js#L2479-L2502",
           "version": "repo-lines-v1:sha256:e6a9dea76a53f937600d01b762dde4de17da3a67e00f0c1ceedef321483d8db0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZjQ3YWMxZGJkNzczODJhYmJhYjNhNjcwNDU2NzU5OGY0NGM2YTlkY2U1ZWVjMTIxMzY4YmVjMWI4MGMwNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3YTk4ZWRhNDRlMDA2ZTE3NTQzMWM3NzU3YmNjNTY0NjAzZDliMjUyNTBmZjIzZTY4NTBhMzdhZDM4NTNiMGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzZmY1MmNlNWNkNTdmYWIzZTZjMDVhNTZmNWRjNzVhOWFhY2EzOTAwMWU4YjI0ZjI1MGM3MjdkZTY0YmE4OGYifQ"
         }
       ]
@@ -341,7 +341,7 @@
       "statement": "Pipeline and Configs role details open in centered native modal dialogs.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3280-L3340",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3344",
           "version": "repo-lines-v1:sha256:fc5a7bda6bcab4197e27e93501d22f32b04994a8eb27f23eba7781422d5474e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNDcxZmY1ODdkMTkzYTYwZTY1MzVmMWM0Zjg3ZjkwZTBmODEzYjYwMTM2YWI4Yzg4ZDQ1NGFhMmE3ODExN2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyMzU1YTU4ZTcxOTVkNzAwYTExOGU5YTI3MzJkMWI4MGY5M2E2YTYxMWMwZTUwMGY1MmE4MjgzYjMzYWExYzAifQ"
         },
         {
@@ -389,7 +389,7 @@
       "statement": "Before the first wiki state read, the Scribe section shows its schedule description.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3243-L3250",
+          "resource": "repo://dashboard/src/ui/app.js#L3247-L3254",
           "version": "repo-lines-v1:sha256:7c308075b68e0ec52672711cbb613a9107006c9d7c222fb35a94edc626abd3df:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQzYTJkYTY1ZDkxNzY3MGEyZDM4MmJmNGEyZTgyZDczODQzMWVhYjA4NTU0NjBiYmM3N2Y1MjY5YWUwZWY5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI1ODBlOTY0ZjgzYTQ3M2Y0M2Q0NDM4NDYyOTQ5ZDY4YjU2MDBmZGE3ODdmMTYzNzQ1ZDAwZGU4OWNiZjM2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzdjOTg2N2VkNWI1NTExNWUwZDk0NTRhMTczMDEyZmQzMWZkM2Q4MDgzOTFlZDZiMmU5YzZiZjVkYjYyZGEyYSJ9"
         },
         {
@@ -413,7 +413,7 @@
       "statement": "Role dialogs attach to the document body and preserve focus across polls; child modals defer content replacement.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3280-L3323",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3327",
           "version": "repo-lines-v1:sha256:87c60f42416563d17a417da3e953dfb97953f6ee637bd893413328edb6012c39:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4OWQ4OGVmYzc4M2VmMGMxNDM0ZjE1ODk0M2E1ZGIwYzY5NGI4MjY5MGZhOTIxNGE0YTlkZjA4Y2MxZmJkYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzYTc2MThjMzNkZDQ5MDgzMGZkYjk5MDdjODdlN2YxZTVkNDk1NGEwYmYyOTZlNDkxZDBjODVmZDU5YzBiYjkifQ"
         }
       ]
@@ -424,7 +424,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:0cec88413cb4b3154e115ae36cf2d9caab732c7c83064b748ecb0dc55e24841e"
+          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
         }
       ]
     },
@@ -433,7 +433,7 @@
       "statement": "The wide quick chat defaults to 400 pixels; its selected width hides the 200-pixel queue when the reader would have less than 640 pixels.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/packetchat.js#L15-L85",
+          "resource": "repo://dashboard/src/ui/packetchat.js#L20-L90",
           "version": "repo-lines-v1:sha256:15d81f8a590deb0bd0f2376623ab78a887d9b1c21fec99b3c0dd3c05bca22300:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwOGMzNzlhZThlNDE0NzU5OWU3MGQzODI2ODQ4MWM0NGFkYmViNjlhYzAwYjU3ZmNmODA0NjhkN2NjMjFlNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiYjY4ZDFjOGRkYmMzN2U1MDY3NjBlNDAxZjZkM2M0ODU3YjAxNzIyYzYzMzk1ZmE3NzYyY2IzYjBmYTc4MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzZjk3Mjk5YzJjN2VmZTY0ZTk3YWY2MzVmODI1MjA4YWFjOTA1ODViZDQ5MjE5Mjk0MThiNTZhYmQ2YWE4ZTcifQ"
         }
       ]
@@ -444,7 +444,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:0cec88413cb4b3154e115ae36cf2d9caab732c7c83064b748ecb0dc55e24841e"
+          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
         }
       ]
     },
@@ -454,11 +454,11 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:0cec88413cb4b3154e115ae36cf2d9caab732c7c83064b748ecb0dc55e24841e"
+          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
         },
         {
           "resource": "repo://mc/verbs/collie.go",
-          "version": "repo-file-v1:sha256:0b4c1220cca0b0622e4b683ebd1647e780260b5eac39336b32781221fdffa793"
+          "version": "repo-file-v1:sha256:04c63b6b5fea21366b96f0ceb144aa17f4089a1eda0194005be0f4d7e40b5893"
         }
       ]
     },
@@ -477,11 +477,11 @@
       "statement": "The task dialog shows the unsuccessful Verifier correction count and reserves the correction report for the correction limit alert.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/taskdialog.js#L224-L230",
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L234-L240",
           "version": "repo-lines-v1:sha256:d495e5badd7ac12b9c64ed9c07cefb7e64332bf0e3aa1be99713402278595fc1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY0MjM2OTBiMzRjYTU1NTllNGFjYjAzZmYwMGQ0NDVlYWQ0Njc2ZGMwY2YyODY5ZjBlNjIzZjc0YTY3NjRlMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGZlOTRiZDEzOTA1YjA2ZGU4OWQxNmQxNzc5ZGVhMzFmOWEzOGI2MDQ4M2ExMjU0ZTE4YmI2ZDVhZmRjYWEzMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzk2ZGI4Yzc2MWVlZmVkNDc0NzQ5YmVhMTIzMDcwZTFlZjdkNWRiZjcxZGM2MTkzNzFmMTZhODU0MzgzNGUwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGEzNzE1NzI4YzExYjQwNTAxYzllMjRlYWRiNGVjNDE2Zjc5YzYzYTEwN2U0OWZhZDE1NGIzYmRjMDg5Nzc5NiJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/taskdialog.js#L270-L278",
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L281-L289",
           "version": "repo-lines-v1:sha256:eb5c9aa21e718f76bb7a8ba3b5ce25099be30231203c669041b583b0bd8b4b2a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDY4ZWYzZDM5OWY4ZWQ5Njc0ZjRmYmY2NzZhNmRkMTRiMzNmNzMwZGIwMTkzNmM1ZmRjNTljYzU0ODMwMDE1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTlmNzdiMmNmNzhiODIwMGRhNjU3YTYwZmVjM2FkZjJlZTFjOGY5ZGNjNzM4NDcyNDk2NGNhN2NiNmUwZGU5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODk5ZDNjYzM4YjY3YjVhY2Q5MjExN2E1MTIxYTI2ZjY5NDY0NTU4YjUyNjMwM2EzYmY4ZGRmOGI0OTkxM2UzMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGVmODAzZTAyNTU3OThhYzU3MGU1ZGI4ZmUwNTU4Mjk3NjMxOWQ0NDZkNjNlOGQ1YmIyYjc2NTg3OWE4NTI5YyJ9"
         }
       ]
@@ -561,7 +561,7 @@
       "statement": "The global reduced-motion preference rule disables role egg animation.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/style.css#L4776-L4779",
+          "resource": "repo://dashboard/src/ui/style.css#L4785-L4788",
           "version": "repo-lines-v1:sha256:622f6dce280ad0407e43b3721b5310964c2d0474b2e24f722881480d58e8fd19:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNhNjk3NDE3MjlhZGU2ODVmODY3YmFkZjk5ZTY5NzI3ZmQ2NjA5YzhkY2UxOTdlMjA2OTEwNzEzNjU0YzY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDlmOTMwODNjMTk3MTIxYjk4MjcwMGJhOGFmYWJkMTcyMmNmMWQzZTc0MDQ1MDllODBlZmEyNzI0N2Y2MmYwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDcxNjY3Mzg2NTE2OWM0OTYxNWY1MmNkZjZjMDMxNDg0OGNkMjdkZjU3NWUxY2YyM2I0NGE3NTM0ODMyOTM1MCJ9"
         }
       ]
@@ -621,11 +621,11 @@
       "statement": "The Pipeline Activity section follows the task path directly, while operator decisions and diagnostics use the persistent notice area.",
       "evidence": [
         {
-          "resource": "repo://dashboard/PAGES.md#L1590-L1591",
+          "resource": "repo://dashboard/PAGES.md#L1599-L1600",
           "version": "repo-lines-v1:sha256:c1511ea05913cc6fcef1c957dd291b4eb92643bf4079569e387f7431acd404bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y0YTYzNDU4NzgyOGM3ZmIxMzM1YzIwZTk1N2I2MmU3MmY2MDhkMjRmMmY1YTc3OGUzMDM2YmQ4MTgxMTUzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg0YTczNDgzMDY5ZmNkNWQ3OWMwZWIzZmQ4ODVhNDY3NDU4NzBhMjA1NGFmNzM5NGQ4YWQ3N2ZkM2NjNmZmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTYyYTlkZTI4YWZkOWMwZGJhZDZhNWM0MzU5MDliZTE2NWIzYzBjOTY2OTIxM2VmMTA1YjU0MmI1NTI2OTdiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmI2ODM4OTQwNWFmNWIwZmU1NzZiNTY5M2FiZDEzM2FhOTY3ZmZjOTUzYjg5ZDMwOGZmN2EyYWY2MDdiODVhMyJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3335-L3361",
+          "resource": "repo://dashboard/src/ui/app.js#L3339-L3365",
           "version": "repo-lines-v1:sha256:b5c814f8cbfa2d24b151a642abcf60ac12f8a0ede0a63eec833907172411cf70:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYmJhYmJkODc5OGE3M2Q0Mzc3OTNjZTdjMDc1YjZiNDI1NmY0ZmVhYzczYTRiYTEzNzlhYTU0NjAzZTI3MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZDNiNWE1NTRjZDhmYThhODQzOGQ5MzZjYjU4NzdkYTVmZmM3ZGVlOGE1YWZlNGQ4ZmZlZmVlYWIzMGMyMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5YzgwNTZkODI1MzI5NjM1ZTZmMzNhMTUwYTI1ODE0MTg3NjkwZjI0YWI4ZDI4N2ZkYTQ1M2UzNzliYmRhMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwZDQ4MDI3YjUzNmVmZDY3YzdiNDEzMWY3ZDgxMmZhNGEwOWRiNjZhYzEwZmQ5ZTdmMjk0Y2RkMDUzMmU2YWQifQ"
         },
         {
@@ -664,7 +664,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:0cec88413cb4b3154e115ae36cf2d9caab732c7c83064b748ecb0dc55e24841e"
+          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
         }
       ]
     },
@@ -701,7 +701,7 @@
       "statement": "The Setup history action selects the Project and opens its journal on the Board, focuses its heading, and requests a refresh.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3197-L3212",
+          "resource": "repo://dashboard/src/ui/app.js#L3201-L3216",
           "version": "repo-lines-v1:sha256:bd291fb5525dc2910939dbe1018dad20ef499ca49ca7c7245b3c3eabe82777aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhOTM0YTU0YTQwMjdiNTkxZGM0Y2FhZmM1MzNmOTAzY2VjYzUwNTg2YjNkYTlmNWQxN2RjZGI0MTY1NjZhNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYjliMzRmMDNjNWFmZTk5MzZjMDkxOWZiNGNjYWY3ZDZmMDkxNWNmMTdjYmEyNDk4Y2ZkOWIwN2IzMGY2NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNmZhNmU2NTk1NGJjZjVjMTNlNTQzNzUyODUxNGZlN2QwNWU5NjExNzQ2MWE0OWFjODg0NGY4NzIxZTdlZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3MTJiZmQ4Y2Y2OGU4MmEwMzI1YzQ4YzZlZGVkN2M5ZTg5NjFlOTdkMDBiMjVlOTg4NWE3ZDBkZWIyZTM0M2IifQ"
         }
       ]
@@ -711,8 +711,8 @@
       "statement": "PacketList includes the task title in live and decided packet rows while retaining the thesis.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/packet.go#L98-L145",
-          "version": "repo-lines-v1:sha256:a475f1c7a059f87423ed6f0d2a8f325f310b64d1216f363271ee65449eb30a10:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhYjFlMTVmZDJlZGQ2MGU3MDY5ZWE3YjE0YWZkMmM4N2U5ZTljZDg2YzNhNzJmMmExMDYxNWI1ZmY4YTgwMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlYjViN2UxNTE3YjY2MjYzMGU0Y2RlMDU3MTQ2YTQ2MDU0OTU3OGU4YTcxMjg4Zjk0NzQxNTg2Yjg3MjJlYjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1NWM4NjJlZDBjYWQ2MjJlNmMwYjJkYTY0ZTcxZTY2NThlZWZkZjY4OGE3MzAzNmZmZTNhOWNhMWI4OWI1NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2YjJlY2NkY2U4NGFlOTI0NWZmMmIyYTNkOGYyYjdjM2Q5MGRkOGY3NDAwMTNiYTczYzBkNGI5ZDZiYzgzODEifQ"
+          "resource": "repo://mc/verbs/packet.go#L127-L182",
+          "version": "repo-lines-v1:sha256:7f91d288f016e38874d0583aae47ff31d7f7cb85d1bdf334b164e4c62635c0cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjMzczMjk0MDE2ZGQ0ZGM0OTI5MTU0ZWE3ODBmMDRhZjEzZTk4ODkzOTU4YjkxMTM4NWI1MjI3YzU0ZTA1OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwODUxYzM2YTE5MzJjZjVlZjQyZjUxNDk4NDM2ODk2NGVjYzA3NmFjMjhhOWQ5NDRiOTRmMjZlOTlmZGIwZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZDBkZjIwYmU0YmQ3MGNhOTQxMjRjZjVlNzM0YzU0YzdkODhiM2M0MWFhODJjOTYyYWI5MGFhMDc2Yjc5MDQifQ"
         },
         {
           "resource": "repo://mc/verbs/packetlist_test.go#L40-L61",
@@ -725,7 +725,7 @@
       "statement": "Review cards show the task title below metadata, limit it to three lines, and place merge or return details below it.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1821-L1858",
+          "resource": "repo://dashboard/src/ui/app.js#L1822-L1859",
           "version": "repo-lines-v1:sha256:8a9a5ed7c560765253256b6f4af6a2b3c4503cb10cc32a9fdd49205ed7d3aff1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxNmFiODk2YmE2ODVhNTFhOTllYmUxOWQwNTQwZjEyYTE1NmM1YTBlMDliNzUwODEwMDBlNmE2ZThhNWM1OTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4MzU2YzcxNTFmOGNhNzY2ODg0NDM1MDY3MGQyMmE2NzVhOTAzYmM1NGI0YzgzOTU5YzAzYjYxNTg0MzYxZTYifQ"
         },
         {
@@ -739,11 +739,11 @@
       "statement": "The packet row title supplies the reader and quick chat headings without a separate task read; chat can fall back to its conversation task title.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2460-L2464",
+          "resource": "repo://dashboard/src/ui/app.js#L2464-L2468",
           "version": "repo-lines-v1:sha256:5bd572da827d63e46505739a7c581991607be11424588e65329149a190a2a2d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmZmJmMWFjMWYwMDk2ZDk0YzM3NDRmM2YyYWQyYzFhMWZhMzY2MDkxMzg3OWZhMTcxNWJhZWIwOTM3MDJjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ3YzkxYzQ1Yjc1MTg0NDM2MThmOGU5N2NiMTAzOWIyNzk5OWFjZmUzNmIwN2NjMmM2ZWZhMTFlMjJkZGRhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDE3ZjliYzgzZGU3Nzc3OGI5MjI3N2JiZGY0NDE3ODNmMTI3NjRlNmQ5MWM4MzE4ZDdhNWM4YzZlNjYyYjgzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQxNTI0OGM3ZjViMTE1MGI2YThiMDJmOGYzNjE5NDljMDRlYWY0MjQ2OGFmZGJkYjcyMmE1OWU0MjQyZjA0MSJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/packetchat.js#L190-L195",
+          "resource": "repo://dashboard/src/ui/packetchat.js#L195-L200",
           "version": "repo-lines-v1:sha256:57a07e3b42f75f0f579c3a8b605b2048f5a6774c7f26937c04c7708f2fbe174c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkyZjEyMjRhMmM1ZjM2YjE4OTMzOTdkMmNhMzZjOTc1YzBiYjgzMzA0NmQ5NmFlY2JmYjcwM2ZmNGNjNjNhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTgyZDQ5Y2I1MTQzN2Y1NDc1ZDM3NWYwZWM1NjM5ZTJmMDBiYzU5YjdkNDBhOTE3ZjRmYzhjYmM5MzczMmZmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM4MjQwY2ExYzk1ODI5MTI1YjIxYjljYmZmMGFiZDkxNTIzYWY0MWU5ZjM4OGY5ZmZjMGZkNzFjZGQwOTg5ZiJ9"
         }
       ]
@@ -765,7 +765,7 @@
           "version": "repo-file-v1:sha256:8c4ccae5b121b94649038eb196841a318dce2954f3b76c8dc42b8b83c310346e"
         },
         {
-          "resource": "repo://dashboard/src/ui/review.test.ts#L95-L114",
+          "resource": "repo://dashboard/src/ui/review.test.ts#L114-L133",
           "version": "repo-lines-v1:sha256:79bcedc59052e95c49bbd52928a657502a677f784d6c1451673ff80ccfc751c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZmNiNmEwZTYzZTBkNGY3MDljNmNmZTMxNDgwNTQ1OTUwODI3ODQ3YWVhNzI2OTI3YWYyNWM4ZWYzMzAzMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzM2NkYzMxNjU4YzI4ZWFmYWZlNGU3M2M4M2U5ZTUwMTIzNTdkODUyZGZiMDBhYTIxMjAxYTFmNzk5ZGRkYjMifQ"
         }
       ]
@@ -799,7 +799,7 @@
       "statement": "A periodic page read clears errors only when the page scope and error counter remain unchanged.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L4340-L4365",
+          "resource": "repo://dashboard/src/ui/app.js#L4344-L4369",
           "version": "repo-lines-v1:sha256:3588954fef608070bd3c0ad8e52f243ef936e2e5273fba3a675ea3a18f5ee1ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyODFhNDQxZTBjZDhmNjA3OGZhMzgwMzdiOWJlN2UxMGQwZDY0YmFkODNlMDVhNjliOGUyNWFmMDgzMTQwZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4MTRkYTA4ZDcyZWJiMDI4NGJkMWRiZTMyYjczMzQ2MDEzY2U4ZjUxZTI3MzczN2RiZDc3MGVjODcwYmFjMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YzdjMGFjMDJlZWIxY2MyNmFjNmNiNWMwMjFlZDExYTk0MGI2NjgwNTY4Y2M5YjBlNjU2N2VjN2MwY2NhMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5MWFiNzAyZTllZWM3ODEwMmU2Njg2YTcwOTdhYzY0YWI2MDhhMWE5MWNmNjA2MTkxZjMwZmNjNGIwMTVlY2MifQ"
         }
       ]
@@ -881,7 +881,7 @@
           "version": "repo-lines-v1:sha256:4e2fdf487ee68d20dce6e70d17cce4dca5e8f79cd70d16ea8f253cf3353baef8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NTRlZmY3YWZiMWJmMTIxNjMzMmI2YTY5NGMwZDcxNzAxNzZhZTQ1OTk1ZWE4YTFmZTdmMDQ5ODA5MTM5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWY0MWQ3NzBhZWExM2EyNDM5MTY3NTYyMjcyMDExNDIyMmE5MmM1MDU0ODAzNjI2MDljZWU0MWUyMjM5ODJlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDNhNzhhOTljMWM3NjhiMWFhNGY0NTlmMzA2YjgyYWIzNmUzZjYwMDA1NGI4N2Y3ZWFhZjczNjUwZmFhNmZkOCJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/style.css#L5072-L5146",
+          "resource": "repo://dashboard/src/ui/style.css#L5081-L5155",
           "version": "repo-lines-v1:sha256:c88969eee49b9a842e588460c149135221761796648a292c09ed6e7b4ba2bacc:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MzFlYTg5MjFkZWMxMzRiZWZmNzQ0MmQ2MjVlNmYwNjg4MjgxYjYyNzM2MTcwM2Q3ZWU1N2FiNTUzM2JjNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZGEwNjFiNGVhZmEyOGVkNDdlMTllNDc5NzhmZmY4NDExNTJkNDIzY2M2OTFiZmIwZGMxMzlmMWZmNWRjYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZTBhMjQwNDdiMmIyMGVhZWQ1Y2ExNDk1NzQyZGNlMDZmNTRlNzk1ZjljNzI0Y2MxMTljMzRhZGE1ODYxMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNGM1NzA0NzU1MDQ2NzkxZmU4NWZlMjQ1NjgzOTgzNTQwNzlkNzg5ZDg2NDEzYzM3OWNlZjZhMjBjNzA0NTUifQ"
         }
       ]
@@ -983,7 +983,7 @@
       "statement": "At 721 through 1024 pixels the header status group sits above the viewer links in the right grid column; narrower layouts retain the group in the wrapped header.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/style.css#L4701-L4716",
+          "resource": "repo://dashboard/src/ui/style.css#L4710-L4725",
           "version": "repo-lines-v1:sha256:5a571fe6f9cfa1f4b3ef2aa35787a6768cf4ca28175145e1c8a1551d383457ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmOWQxNDdiNjYxN2E1ZjUzMGViMDY5NWUxMmZkZDM0ZDczMzk3ZTMzOWUwYjA5ZTJlMTI1NDFlZWIyMzcyZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MTFhZWQ2MTEyMjliOWQxN2VhNDFmMGFiMjY4NWU3M2Y3MTgyZDNkZWUyYTY0MmVjNjBkN2E0MjQzMzJmMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YjE1YTk0NmE5OTU2YmQ0ZmUyYjMyMWE0ODE0MmZkYjcxZTI1OTc5YjhiMjU5YTZjYTM0NGVmMzk3NDRhMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzN2MzMzcxYzM0YzVhMTlhN2QwYTUzYzY0YWU3YjIyYWFmYTEzZDZlMmVlZDQ3ZjQ1ZWFiYjY2Y2Q0MzNkNDUifQ"
         },
         {
@@ -1021,7 +1021,7 @@
       "statement": "Role dialogs close through Close, Escape, or an outside click and return focus to the selected role.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3280-L3304",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3308",
           "version": "repo-lines-v1:sha256:34b3f1e80c802e1e9b0bdcd65e23b16e5b7d155929a99043f1c37c878d101ec2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MWNlZTJiY2QwNjU3YTExMDMxYjliOGVkZDhhZjkxZjc4NDExMzM2NDllYTlhOWJkOTM2ODM3YjM1YTg2ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1Y2NlYjYyODNjYWI1ZDQxNmRkYTM3ZDczOTg4MWI3ZWM4YTRmZjJlYmM0YjcwZDYxYzNmZjc2MzBhOWQ5NWIifQ"
         },
         {
@@ -1059,22 +1059,18 @@
       "statement": "The report document uses inline priority root and body styles for a light #fdfdfe sheet, navy text, and base typography.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/review.js#L254-L303",
+          "resource": "repo://dashboard/src/ui/review.js#L264-L313",
           "version": "repo-lines-v1:sha256:aa360cfb077e99e660410da5542de6eb7f751617fb436225c1957d9a514a2cdf:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMzc0YTkzYzJmODFiOWRlNWU1MTIxNDE0OGU3MGU0M2UzMTZlNjBiZDdmNDM1YTU5MDM1NDNjNDRhZWViMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiMWI5NWU1YjgyN2E2NDNkNmRmZWVmZjdiMTMxMjgyYzA5ZWI4ODBhOWYyZTA1ZjM2MTk5YTE3NGM1MTJkYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhODkwMzRlMGZmYmQ5YjYzODhjOTI5MTZjZjIyYzUzN2Q1YTAxYWUwYzM0MDM0ZjVjNDQxNzNjM2U4ODU2YWEifQ"
         }
       ]
     },
     {
       "id": "claim_d9fa716336ae4da4a289b4e790961f2f",
-      "statement": "The Review frame preserves report content and section order while Project instructions can change the default packet sections.",
+      "statement": "Project instructions can replace default packet sections; a Strategist task retains Strategic rationale as its first section.",
       "evidence": [
         {
-          "resource": "repo://dashboard/PAGES.md#L1180-L1187",
-          "version": "repo-lines-v1:sha256:e0a54f0f22e7e1f1a4eaaf16b1fdb3e2163623051acaaf909b4f3d9beb88a44c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODM4MTQ0NmY3ODIxMmIyZDM1NWE2OTdlOTI2YzZkZGM4ZmYzNTU2MTc0NmE3ZjIwZWZlYmZjOWMzNGMxNTkzOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGI5NTU4ZDkxM2Y1YzI1YTZjZTA4ZTI1MDNiZWQyMDhmZTNhYzM1ZjVlOGVkMGQ1YmQyMjE5MWMyOGNiZDY2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2ZiNjcwY2FmYTUxZWI5MDMyOTg1OTUyZmVjMWVhMWI1NDI2Y2FhOTUzZmEzMjBlYmY2OGQwZWQ3ZTc3OGQwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDYyZjgzZGYyYjMyZDE0YTMxMzgwYzg1ZTBiYTJjM2NkMWVjNzhhOWE3OWQyMDkyYTg5ZTE1OTNhY2VhMjI0ZiJ9"
-        },
-        {
-          "resource": "repo://mc/verbs/directives/packager.md#L270-L297",
-          "version": "repo-lines-v1:sha256:7d48f50e99492303a95c59f604a7913df54e00d92204a632c94a2a8f472926ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkNWI4ZmQwOWNjZWZjZTIyYWViNGZjYTdmZTRmNTFiYjdiYjg1ZDcxNmI1MGNiMzU0Yjk1YTFjYWYyZjkzYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2MTliZmY5NDE4YmQzNGY1YzcxMjM1YWJlYmQ4MWY5Nzk5MzA4YWQwYTc5OGZjM2EyOGUyYTdhZTRlMDc0ODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2NTQyYmZiNDVlNDMzM2EyNjQ5NTUyYTBiZTgwYmJkNTkwZGQ2ODFkZTllZjc3N2MzZDA0MjBmMjVmODI1MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MWUzYzUzMmJhMzAzM2Q5YmIxMDYyMDUwOWQwMjcyNDAzODNiM2M0ZWMxN2M0MWYwZThlMTgyYjdiYTU5M2MifQ"
+          "resource": "repo://mc/verbs/directives/packager.md#L297-L316",
+          "version": "repo-lines-v1:sha256:a978ba00131d01b31be80f7c6543549224344aee4441d887a11cfe1fd121a936:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxZDlkNjRkZmMwMjU1NmQ0ZmIxNGE2YWExZWJlNzdlZDFhYzE3ZmJiOTE1ZTFkMDVkZmQ2Nzg4NGQ1NjkxNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNmJiOTRmN2JjODMzYTg3MGQ3NGMxNTNhMDBjMWYwMWViMDZmNWE2Nzg2NTY1ZWJmZWE5MmI5ZTliZTRlZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1MmYyNjA4MDVmMzM2NDQ4M2I4YTFlMmIxNTNhZTY2ZmE0Mjc4Nzc4NTg0YTQ3M2E5ZDU5NTk4OTE1YmNiNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxNmVjZjQyY2VmNWQ5MGY3NDZlMzA4MjllODE5YjZjYjcwZjYwMGVmYjNmOGQ1ZGY5NTdkNzIyOTY4NDhjMTcifQ"
         }
       ]
     },
@@ -1083,7 +1079,7 @@
       "statement": "The divider stores the preferred Collie width in browser storage and limits its visible width to preserve a 400-pixel reader.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/packetchat.js#L46-L124",
+          "resource": "repo://dashboard/src/ui/packetchat.js#L51-L129",
           "version": "repo-lines-v1:sha256:4fa446c155f0c24472461bf14fc67449cc019fa88e12476c98482e5e42011cac:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxNjlmYjFlYzUzMGU1MjE0YThmNDFkZmZhZTkzOGRkYTcyZTE3Yjc0N2FhOTVlMDRkZWZkOWFmOTY1OGJkZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3MTI2NWRmMjNmMWFhNjA3MDIxOGVmY2NjODY5MzNmZTU4NDc4MTc4OGYzNWVkMTMwOTVhOWFhY2QyN2VkYjkifQ"
         }
       ]
@@ -1151,7 +1147,7 @@
           "version": "repo-lines-v1:sha256:4b7970f4e3b24c25561071b32996768547b64f4df88acb31c702c0a150ab9385:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBkYTdhYzljYmE1YmMxY2RjZGUwZDlhZDVlZmNlZDQ1Y2IxNTg5YWZhNGViNTdhMzhkOWUxZjljNjJjOGEzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQ5ODM1NDk5ZTViYTkxZjg3MjY3Yzk1MmI3OGVhZWRkNmM0NjZmOTViNjg4MWIwN2I0NmNjYWVjMGNkZjE0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDI0NTk4ZDI2MWU2Y2YxODBiMjFlNDEzZDAzYTg5NTc5ZTA5ZGVlZjI2YTk4Y2QzNjkzNWQ0YWRhOWI3NWZmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjdiNWM1MGU0MDhlMTM4NjY0MTg3NzVkNWFmM2U5NzE5ZmU4YTU0Y2ZjYTA5ZmNhZTc1N2JhOGFmOTlhMTQ1ZiJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3048-L3050",
+          "resource": "repo://dashboard/src/ui/app.js#L3052-L3054",
           "version": "repo-lines-v1:sha256:8ff8861d5b1c7f228cf438a5cf44afa768fadaef2d865ae0c39fd5f4c340156e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRiYWQ4ZDYxMjY1MjQxZDRmNTMzODEwYzBkYjZlYmYyOTRkZjMzOGQ3YWU4NDQxMmY1MTk4MjEzMjFmMjNjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5MGViNmNjZGIwZmVmY2MzYzlhODgzYzg3OWM5ODY2YmUzMzkzMWNhYWFiZjM2NjJkN2FjNGM0MTNlYzhiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTc2NDg2NGEzYWQ0ZDgyYjYwNjA1M2NmODYwMGIxNzhjNTg1ZDE3OTc5ZGZjMTRhOGU1ODY4Nzg5Njc5NTlmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ5NWQwNmQxMmY5ZjhlZWUzYzBjMDZhYmY0MDdjMTllZGZjYjc4M2E4MTZkYWQ3NGM0ZTFlNDdiMmNhZjQ2MSJ9"
         },
         {
@@ -1165,7 +1161,7 @@
       "statement": "The Review Task control reads the selected task before opening the shared task dialog.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2676-L2688",
+          "resource": "repo://dashboard/src/ui/app.js#L2680-L2692",
           "version": "repo-lines-v1:sha256:f50b35bd64f0f7b1f5b00af33a185e19ab959b6565cab8310d28cc2fe7f687a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhYTEyMmVkYmQ1OTYwNzU5YWYyYjQ0NmFiNjI2NGJiMzYwYzZlMDExODU3ZGYzMDBlNzcwOGVkYTJjOTVlZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1MmFmNDg0ZGFkMTkzNDAzZWUzOTg3MTVhZjUwYmJhMDA3OTk1YjdmMGUyZTdlZmRmOWUwYjQzMThjYzFhMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwODk1MTlkMDZmMGJmZTdjMDIzMDIwMzdmNDhkY2NlZWY0ZTE3MTM2OGFiNzE0YmNmMTQ1MjQ5NTFkYzZiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0MzYwOTdmYWEyMjFkZWJlOTg3NmY4ZDU0Y2VkMGViNjZkZGFiNjY3YTYwOTQ4NGQyNTRmNWQ2Y2E5ODUzNmUifQ"
         }
       ]
@@ -1185,7 +1181,7 @@
       "statement": "The reader bar omits queue age and the awaiting-decision tag while retaining decision time and the blocked task tag.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2465-L2469",
+          "resource": "repo://dashboard/src/ui/app.js#L2469-L2473",
           "version": "repo-lines-v1:sha256:5d7eb90bc9fd01304827b6c2e34f90c34c131b6ff791aa1fac84062a866a1062:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTA1NjE0OWYyNDg5ZWE2ZjdhMWE2Mjk0ZmE4M2Q5MDc3MDZiMWViM2RjZjJiZWJkYjc4MzM0N2I4ZTFiNjE2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlZjAxYmMwOGRiYzNiNjNlNGU3NWVhM2QyNmE1Yjk0MTg5MTg3N2UyN2FkODkxMzI5Yzg0MTFkN2Q4ZGM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjc3NWMzNDFkMmZiYTE2NDdkOWM0YjVkNDhiMTkwZTA1YjA4ZDM2ZTkwOWE3ZjYzZTM2ODkxMGNiODIwYjkzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDE0ODBiZDZhZGM2NmE5ZmJiNmY2MDZlOWE5ZGJiMmYxZWEzNzIzZTI4NGIxZGE3MzQ3ZTFhMTNiYzAzOTJkOCJ9"
         }
       ]
@@ -1195,12 +1191,12 @@
       "statement": "The task dialog shows run failure and correction allowances in its facts box with explanatory tooltips.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/taskdialog.js#L131-L152",
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L141-L162",
           "version": "repo-lines-v1:sha256:0fe15de5940dbfcdcd3acb2473801b4d459178e5d6c9acdecd3d07f50808cca6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwODk5NDEyNDU5ODVmYmFiMmJhOWQ5N2I1MjJhYzBlYmM1MmNjZDY5ZTI4NGZlNDNiZGYwMWRmOTgyNDA3MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMzM1ZGM1ZTQ2MTZiYjkyODcxNDRkOGVlNjM3NjQ4ZjM5Y2RmNDM1ZTVhM2YxNmEwNjk1ODFhNTg0NWU5ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwNGUwOTkyOTdmYzY1ZDQyM2E2N2FhOGYyYzkwMzdlMGI0MGY1NDNmMTYxZTFkMWM0MmI3NGMyYjk2ZGNjZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjODc5YjQwMmZlMWM2YzRkMDI3MDY5YjY0YmVjZDIxZGI1YWU5NzMxNTg5YjJmYWZiZWZiM2FiNDIyYzVlOTcifQ"
         },
         {
           "resource": "repo://dashboard/src/ui/taskdialog.test.ts",
-          "version": "repo-file-v1:sha256:401b53bf5c280ac8a8303abc4934350b348ca4eb17cb7879e2d64ecc0d7cbe19"
+          "version": "repo-file-v1:sha256:8b9943d74f9e5159636129a2ab847a786236c9eeacf4111707d31331fef78faf"
         }
       ]
     },
@@ -1209,7 +1205,7 @@
       "statement": "The task dialog places an origin mark below the first run, in the older runs list when one exists.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/taskdialog.js#L105-L115",
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L115-L125",
           "version": "repo-lines-v1:sha256:96f3f17c165f4c3929dff9177bea98d177f699bfdaa26d6f3b56759b969507d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYTNkYjc5ZGEzMDFkNDFjZDQxODQ5MDhlYTNjOGNjYjE2MGFkZjhmN2RlOTg1ZmIwNzg3Y2JhNDA3MzU5ZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMmM0MTRiNTRjZjg2ZGZiNGY5MGRmZTdkN2JkYmZhNjY2YjdkZGRkMzJmMTI4NmYyMzBhNWI1MzI0MTgxOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMWJjNWVjOWY0ODk2YTZhODhiMjFlMTJkYjFlZTUwYWY2YzMxMjE3YjA5YzljMmUyMzU5MTEyNWVmNTEzY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMifQ"
         },
         {
@@ -1377,7 +1373,7 @@
       "statement": "A role dialog holds the latest content while a child modal is open and displays it when the child closes.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3280-L3320",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3324",
           "version": "repo-lines-v1:sha256:9046c1bfc6bc4b4a923577c7b2d2e9ab2bd7d32744a08d0a29e1dd3a51e2c799:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhYWUyMTQ0YjBiMDQ0YmIxMGI3NjU0MzViNzcyNzIxOTcxNjBiNThjMzg5NmVhOTA4MjhjYTAzMDFhYjUyMDQifQ"
         }
       ]
@@ -1655,10 +1651,24 @@
           "version": "repo-lines-v1:sha256:2c782c137c149f3a1802aee6aba42b754931c127126521d77160faf0709c2866:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNTY3NTc2NjViZWY5YWZhODZhZjEwNmExNWRiNDI4MzQyODU2ZTVkODNhODk1Y2UwNDlhMjI3MDhlZmQ5NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNjg1YmFjZDEzMTgyNjM2YjA4MTBhNTI3MDg2ZGVjNDcwZmQ3ODZjZDMyYjgwZDJlMmNkODMwYjhkMzU4NWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MTY5NTVmNDJlOTZlNzUyMDM1YTY5YTcwNDJhYTZiN2JmNWZhN2E5M2ZlZjJkYWQ0YjIxYTk0Mjc0ZDM0YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjMzU1NDBjNjAxMjYzNGIwNTk4ZmEyOTNjYjliMGM3ZmY2M2Y5NjI5YTE4NTIyYTJkNDAxNmQwM2Q2NjkxYTcifQ"
         }
       ]
+    },
+    {
+      "id": "claim_cfaff94d4878414f90452e2efee1c5eb",
+      "statement": "Task details show a Strategist task's rationale before its description.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L258-L259",
+          "version": "repo-lines-v1:sha256:fba2a0a224921f7357c5212ed2084520eede1a0068408dbfb7c89fcac27a1d8d:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWU4MjE1MWRmZTA3YWM2ZWM5NjY0OGU1YTI3OTFkOTBmYzY1NmY1MjQ3NTYzNmY4YjAyY2RjNTQyZjI1MmUxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc5YjE2OThmODE2NzVkMWNjZTk2NGFlNjg4M2E5N2JmNzM0YzkxZWU0OTU5Y2M4YTk2MjgzYjA3MTdkNTNlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDUzZmQ5NTViNmU2MmE4MmU4M2U5MDM3YmQ4ODg1YjFkMzQ5ZmVlYTk1OTE4MDE2NGExMzlmZWM2MjcxZWY3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDIwODY4YTU2MGIwYTcwNDg0YjY0OWU1Yzk3M2ZmYjAxOTJiMjFmNjM1YWNmMDU2YzU2OTliOGMxMGMzODdlNyJ9"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/taskdialog.js#L61-L70",
+          "version": "repo-lines-v1:sha256:d4eefc1398eabfd908e79269904bdd5f5a91e2a41febed569dd88be763ed7c83:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNDM5ZmMzN2JlYTBkMjQ4M2U3ZmExZTQ5NTlkNjQyZDNiOGVlM2JlMDU4MzVkZTFhMWQ0ZTYzNTU2ZWRhYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkOTQ4MjNiYzk0MDFkMDBkMjI4NjNhNDA4M2E1Y2ZmMjNkZTI1ZmY0NDgzMTBkZTNmYTJmM2E5ZDllMWE1OGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MjUxZThkNTg1MzUzNDAzM2FiYzVlZDYwOTdiMTBjZjVkNzhmNmU3MGQ1NGQxOTJkYTZmNTM2ZjE3YzVlMzYifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T01:41:54.063Z"
+    "at": "2026-11-10T18:18:18.729Z"
   }
 }

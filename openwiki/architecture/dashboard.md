@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T01:41:54.063Z
+    at: 2026-11-10T18:18:18.729Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -139,7 +139,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 ---
 
 # The operator dashboard
@@ -231,6 +231,9 @@ The initial page script reads both selections before the first paint. Without a 
 `style.css` uses a theme-specific grid for those lines and preserves their position when the full picture appears.
 The shipped `landscape.png` and `landscape-dark.png` show a dark egg, a nest, and an orange chick.
 The full picture sits five viewport-width units left of center above the page background. A theme-specific veil keeps text readable.
+The empty Board uses the `project-welcome-logo` template in `index.html`.
+Its inline image uses the theme's ink and the same orange chick as the header logo.
+The dark theme gives its eye a separate light fill and its pupil the theme ink color.
 The logo chick moves once each 10 seconds. A pointer over the logo holds the chick in its moved position.
 `theme.test.ts` and `smoke/theme.smoke.test.ts` define checks for the picture state and browser behavior.
 These are source-defined checks; this wiki update does not execute them or verify the header in a browser.
@@ -342,7 +345,12 @@ The dashboard API passes that row to the browser.
 `packetView` supplies its title to the card and reader heading.
 The quick chat uses the same row title, with the conversation task title as a fallback.
 These headings require no separate task read.
-The packet row retains its thesis for report fallback states.
+The packet row retains its `origin` and `thesis` for report fallback states.
+The `thesis` field stores the opening text.
+For a Strategist task, that text contains the Packager's statement of the delivered change, followed by the Strategic rationale.
+The fallback heading is Strategic rationale, and the browser renders this text as Markdown.
+For an operator task, the heading is Thesis, and the browser renders plain text.
+The report request state hides this text until the request completes.
 
 `mc/verbs/packetlist_test.go` checks titles for live and decided tasks.
 `review.test.ts` checks title propagation and absent title values.
@@ -364,6 +372,10 @@ A failed read appears inside the reader. A different packet selection prevents t
 The control stays disabled while the page sends a packet decision.
 
 `taskdialog.js` supplies the description, conditions, facts, and run history for both Board and Review.
+A Strategist task shows its Strategic rationale before the Description.
+The rationale provides proposal evidence; the Description supplies the task requirements.
+An absent rationale displays an explicit absence message. An operator task has only the Description.
+`board.js` carries the rationale into the shared task model.
 Review opens the dialog without a prior Board read and refreshes its task data with the Review page.
 The dialog omits its packet link on Review because the packet already appears below it.
 Its run rows show the result, role, age, diagnostics, and available main trace.
@@ -398,6 +410,10 @@ The conventions smoke checks the retained structural headers.
 `theme.test.ts` checks panel header separation against the shared surface color.
 These statements describe source assertions. This wiki update does not execute those tests.
 
+`dashboard/smoke/strategic-rationale.smoke.test.ts` checks the rationale in task details, report sections, and fallback text.
+`mc/verbs/strategic_rationale_test.go` checks the opening text in packet conversations.
+It also checks that an operator task retains its own packet form.
+
 ### Report page style
 
 `packetDocument` in `dashboard/src/ui/review.js` supplies inline priority styles on the document root and body.
@@ -407,7 +423,8 @@ The base stylesheet wraps long text and limits image, video, and SVG widths.
 
 Report styles can arrange diagrams and other visual content within the page.
 The frame preserves report content and section order; the Packager directive defines the default sections.
-Project instructions can replace that section structure.
+Project instructions can replace the default structure.
+A Strategist task retains Strategic rationale as its first section.
 See [the task pipeline](../workflows/task-pipeline.md#packet-content-and-project-instructions) for the content requirements.
 
 `reportDocument` applies the link rules to the composed document until its serialization is stable.
@@ -420,6 +437,8 @@ See [the report style checks](../tests/checks-and-test-lanes.md#report-page-styl
 The Review reader offers a Collie conversation for its selected packet in both Live queue and Ledger views.
 `packetchat.js` owns the transcript, composer, draft text, and refresh requests.
 The spine owns the conversation identity and message history.
+The empty chat describes the packet content by origin: Strategic rationale for a Strategist task, and thesis for an operator task.
+`BuildPacketContext` supplies the same opening text and heading to Collie.
 `app.js` connects the chat to packet selection and reader layout.
 
 The wide layout starts the decision bar with the “Ask Collie” control in the selected theme’s primary action colors.

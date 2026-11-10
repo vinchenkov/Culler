@@ -6,16 +6,18 @@ tags: [tests, performance, evaluations]
 sources:
   - id: openwiki-source-897d1ce76174ffad4e936b32
     resource: repo://evals/cases/verification/corpus-amendments.json
+  - id: openwiki-source-9653c835faef73816261afa0
+    resource: repo://evals/culler_evals/assessment.py
   - id: openwiki-source-2be379c33f071a0be3a55552
     resource: repo://evals/culler_evals/runtime.py
   - id: openwiki-source-bdb34dc5adc4a25690eda4c2
     resource: repo://mc/evalcase/README.md
   - id: openwiki-source-26c5d70e54df94e2f1b4579b
     resource: repo://performance/compare.py
-generated: { by: "culler-scribe", at: "2026-10-19T19:56:40.385Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-10T18:18:18.729Z
 ---
 
 # Performance experiments and agent evaluations
@@ -73,6 +75,28 @@ The Go contract parity check uses the copied module's `test.sh`, including its L
 
 `evals/cases/verification/corpus-amendments.json` binds current case manifests to the retained assignment proof and source review.
 It records task scope and report-role adjustments. It supplies no new application test evidence.
+
+## Packet sections in evaluations
+
+`evals/culler_evals/assessment.py` defines packet contract revision 3.
+The case's brief parts select the first section.
+A Strategic rationale part selects Strategic rationale; its absence selects Summary.
+Only the selected first section enters the Judge's section order.
+The checker refuses a packet that contains both first sections.
+
+The default required sections are the selected first section and Risk and rollback.
+A case can supply its own required section list.
+`evaluator.py` and calibration in `cli.py` use the same selection procedure.
+`runtime.py` supplies the matching section order to the Judge.
+This keeps assessment consistent with the task origin represented in the case input.
+
+The semantic contract requires the first section and submitted text to describe the same change and practical effect.
+For Strategic rationale, it also requires preservation of the Strategist's claims and evidence.
+`evals/tests/test_assessment.py` checks section selection, required sections, and refusal of two first sections.
+The evaluator and runtime tests check propagation into assessment and the Judge prompt.
+`evals/README.md` and `evals/SPEC.md` state the evaluation requirements.
+These checks define framework behavior; they do not establish a live packet's quality.
+See [packet content](../workflows/task-pipeline.md#packet-content-and-project-instructions) for production requirements.
 
 ## Product case capture
 
