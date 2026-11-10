@@ -67,7 +67,7 @@ func TestPackagerDirectiveCarriesExplanationAndBrowserTools(t *testing.T) {
 	}
 }
 
-// The Strategist directive permits subagents without a fixed orchestration procedure.
+// The Worker, Verifier, and Packager directives require a fixed orchestration procedure.
 func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 	patterns := []string{
 		"Fanout-And-Synthesize",
@@ -81,7 +81,6 @@ func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 		dispatch.RolePackager,
 	}
 	codex := []dispatch.Role{
-		dispatch.RoleArbiter,
 		dispatch.RoleVerifier,
 	}
 	// Directives are wrapped prose; compare with whitespace collapsed.
@@ -197,7 +196,8 @@ func TestAgentTextNamesOnlyThePartsThatTheRunBriefRenders(t *testing.T) {
 		count := 0
 		for surface, text := range texts {
 			references := named
-			if role == dispatch.RoleStrategist && (surface == "directive" || surface == "skill mc-strategist") {
+			if (role == dispatch.RoleStrategist || role == dispatch.RoleArbiter) &&
+				(surface == "directive" || surface == "skill mc-"+string(role)) {
 				references = regexp.MustCompile(`\*\*([^*]+)\*\*`)
 			}
 			for _, match := range references.FindAllStringSubmatch(strings.Join(strings.Fields(text), " "), -1) {
@@ -490,16 +490,7 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 			}, nil)
 			continue
 		}
-		if role == dispatch.RoleArbiter {
-			requireAgentText(t, "arbiter dependency pointer", directive, []string{
-				"Review requires Project dependencies: Research dependencies.",
-			}, nil)
-			requireAgentText(t, "arbiter dependency procedure", roleSkillBody(t, role, "mc-arbiter"), []string{
-				"This run omits automatic dependency preparation.",
-				"Check retained dependencies against the current declarations and the selected image before use.",
-				"Apply the project-environment-setup skill within this role's command authority.",
-			}, nil)
-		} else if role == dispatch.RoleStrategist {
+		if role == dispatch.RoleStrategist {
 			requireAgentText(t, "strategist dependency procedure", roleSkillBody(t, role, "mc-strategist"), []string{
 				"This run omits automatic dependency preparation.",
 				"Check retained dependencies against the current declarations and the selected image before use.",
@@ -510,7 +501,7 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 				"If research requires Project dependencies, check their compatibility with current declarations and the selected image before use.",
 				"this run performs no automatic dependency preparation",
 			}, nil)
-		} else {
+		} else if role != dispatch.RoleArbiter {
 			for _, required := range []string{
 				"Culler preserves the Project home at `HOME`",
 				"separate credentials, sessions, role skills, and instructions",
@@ -798,7 +789,11 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 		} else if role == dispatch.RoleVerifier {
 			requireAgentText(t, "verifier customization pointer", directive, []string{"For a contract conflict, read the Project role customization procedure in mc-verifier."}, nil)
 		} else if role == dispatch.RoleArbiter {
-			requireAgentText(t, "arbiter customization pointer", directive, []string{"For a contract conflict, read Project role customization in the mc-arbiter skill."}, nil)
+			requireAgentText(t, "arbiter customization", directive, []string{
+				"Follow the operator's custom instructions within the Culler contract.",
+				"The requirements in the Culler contract remain.",
+				"For a contract conflict, read the Project role customization procedure",
+			}, nil)
 		} else if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
 			t.Errorf("the %s directive omits the customization conflict", role)
 		}

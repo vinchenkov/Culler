@@ -78,7 +78,7 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 	}
 	skill := set[0].Body
 	for _, section := range []string{
-		"The all-reject batch", "Historical work", "Research dependencies",
+		"The all-reject batch", "Historical work",
 		"A run that cannot give a result", "Project role customization",
 	} {
 		if !strings.Contains(brief.Directive, section) || !strings.Contains(skill, "## "+section+"\n") {
@@ -96,14 +96,22 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 		"Reject required checks that need unavailable capabilities.",
 		"An unchanged Project test failure alone does not invalidate a proposal.",
 		"Reject a proposal whose result is not one Git commit to the Project repository.",
-		"Compare proposals with each other, **Active tasks**, and merged work in the repository copy.",
+		"Task overlap means proposed changes to the same files or behavior.",
+		"Compare proposals with each other and **Active tasks**.",
+		"Reject a proposal that overlaps active or merged work, even when the proposal is better.",
 		"An extension of merged work is not a duplicate.",
 		"When two valid pool proposals overlap, promote the superset and reject the subset.",
-		"Work in another Project cannot justify a duplicate rejection.",
-		"A ready task has status `proposed`, `seeded`, `worked`, or `verified`.",
-		"It is neither blocked nor stalled.",
-		"Without a ready task, each rejection requires one of these exceptions:",
-		"Each `duplicate_of` reference must name an active or merged task of this Project outside your pool.",
+		"The Arbiter must choose one proposal to proceed.",
+		"It can reject both only if each proposal has at least one of these defects:",
+		"It duplicates active and recent (see Historical work) tasks in the same Project.",
+		"It requires checks that Culler’s rules do not allow.",
+		"Explain the defect in each proposal.",
+		"For a duplicate, identify the existing task.",
+		"Each rejection in an all-reject batch requires one of these exceptions:",
+		"A valid `duplicate_of` reference.",
+		"A `rejection_category` value of `invalid_criteria` and a reason.",
+		"The batch can combine exceptions across proposals.",
+		"Each `duplicate_of` reference must name an active or historical task of this Project.",
 		"The fields `duplicate_of` and `rejection_category` are mutually exclusive.",
 		"Treat equivalent work as a reason for rejection under the batch rules.",
 		"Use each cancellation reason as context for the operator's preference.",
@@ -111,9 +119,9 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 		"Read this Project's committed files at the read-only repository copy.",
 		"The task list omits descriptions.",
 		"Use the task read for scope absent from **Proposed pool** and **Active tasks**.",
-		"Custom instructions replace defaults in this directive, the run brief, and role skills.",
+		"Follow the operator's custom instructions within the Culler contract.",
+		"The requirements in the Culler contract remain.",
 		"Submit this terminal to end the run with a customization conflict:",
-		"If these rules prevent a verdict, use the operator decision procedure below.",
 		"Report direct observations without an inferred connection diagnosis.",
 		"before your first `mc` call and before the terminal",
 	} {
@@ -124,6 +132,7 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 	for _, removed := range []string{
 		"host provider proxy", "credential update", "The Worker builds each task", "three counted failures",
 		"./mc/check.sh", "10 cancelled tasks first", "160 Unicode characters", "agent profile",
+		"Orchestrate by default", "A ready task permits a batch that rejects every proposal.", "## Research dependencies\n",
 	} {
 		if strings.Contains(input, removed) {
 			t.Errorf("Arbiter still receives %q", removed)
@@ -142,6 +151,23 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 	customizationProcedure, _, _ = strings.Cut(customizationProcedure, "\n## ")
 	requireAgentText(t, "Arbiter customization conflict terminal", customizationProcedure, []string{
 		"Submit this terminal to end the run with a customization conflict:\n\n- `mc run customization-conflict --request <json>`",
+	}, nil)
+}
+
+func TestArbiterBriefDeliversProposalReviewGuidance(t *testing.T) {
+	brief := briefFor(t, dvSpine(t), dispatch.RoleArbiter, nil, briefInputs{})
+	text, err := renderRunBrief(brief)
+	if err != nil {
+		t.Fatal(err)
+	}
+	directive := parseRenderedBrief(t, text).Directive
+	requireAgentText(t, "Arbiter proposal review", directive, []string{
+		"You promote the highest-leverage proposal from the Strategist to advance the user's Vision.",
+		"Rank proposals by how far they advance the **Vision** ( VISION.md ) goal for their cost.",
+		"Judge a small task by the result it produces.",
+		"Judge a large task by its feasible benefit and full cost.",
+		"Consider new capabilities as well as defects.",
+		"A product can work correctly and still lack the capability that makes it useful.",
 	}, nil)
 }
 

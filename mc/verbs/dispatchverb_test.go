@@ -693,7 +693,7 @@ func TestDispatchSpawnBriefCarriesClaimedState(t *testing.T) {
 		dvExec(t, db, `INSERT INTO activity(actor,kind,subject,detail) VALUES('operator','task.cancelled','2','Low value.')`)
 		_, got := dvDispatch(t, db, dispatch.Records{Tasks: []dispatch.Task{task}}, dispatch.Lease{}, dvConfig())
 		brief := fmt.Sprint(got["brief"])
-		for _, want := range []string{"contrast this proposal", "criterion: exact output", "## " + partPool, "Orchestrate by default with read-only, depth-1 subagents"} {
+		for _, want := range []string{"contrast this proposal", "criterion: exact output", "## " + partPool, "Rank proposals by how far they advance the **Vision**"} {
 			if !strings.Contains(brief, want) {
 				t.Fatalf("Arbiter brief missing %q: %s", want, brief)
 			}
