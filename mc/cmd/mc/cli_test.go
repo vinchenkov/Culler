@@ -945,11 +945,11 @@ func TestCollieProjectPauseArchive(t *testing.T) {
 		t.Fatalf("after Collie archive status = %q", got)
 	}
 
-	narrow := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:narrow", "--allow", "task.add")
+	narrow := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "cli:narrow", "--allow", "task.block")
 	if narrow.code != 0 {
 		t.Fatalf("narrow collie start failed: %s", narrow.stderr)
 	}
-	narrowEnv := collieJSONEnv(t, spine, narrow.json["session_id"].(string), []string{"task.add"})
+	narrowEnv := collieJSONEnv(t, spine, narrow.json["session_id"].(string), []string{"task.block"})
 	denied := runMC(t, narrowEnv, "", "project", "pause", "ws-test")
 	if denied.code != 1 || !strings.Contains(denied.stderr, "not allowed") {
 		t.Fatalf("narrow Collie pause = code %d stderr %q", denied.code, denied.stderr)
@@ -2851,9 +2851,12 @@ func TestCollieStartBindList(t *testing.T) {
 		session := start(t, spine, "dashboard:operator").json["session_id"].(string)
 		env := collieJSONEnv(t, spine, session, defaultCollieAllowlist)
 
-		added := runMC(t, env, "", "task", "add", "Collie relays operator intent", "--project", "ws-test")
+		create := func(operation, title string) string {
+			return fmt.Sprintf(`{"operation_id":%q,"action":"create","scope":"task","project":"ws-test","title":%q}`, operation, title)
+		}
+		added := runMC(t, env, create("collie-relay", "Collie relays operator intent"), "board", "write")
 		if added.code != 0 {
-			t.Fatalf("allowlisted Collie task add failed: %s", added.stderr)
+			t.Fatalf("allowlisted Collie task creation failed: %s", added.stderr)
 		}
 		taskID := int64(added.json["task_id"].(float64))
 		blocked := runMC(t, env, "", "task", "block", fmt.Sprint(taskID), "--reason", "operator needs to decide")
@@ -2863,8 +2866,8 @@ func TestCollieStartBindList(t *testing.T) {
 
 		db := openDB(t, spine)
 		beforeTasks := queryInt(t, db, `SELECT COUNT(*) FROM tasks`)
-		forged := runMC(t, collieJSONEnv(t, spine, session, []string{"task.add"}), "",
-			"task", "add", "forged envelope", "--project", "ws-test")
+		forged := runMC(t, collieJSONEnv(t, spine, session, []string{"board.write"}),
+			create("collie-forged", "forged envelope"), "board", "write")
 		if forged.code != 1 || !strings.Contains(forged.stderr, "does not match") {
 			t.Fatalf("forged allowlist = code %d stderr %q", forged.code, forged.stderr)
 		}
@@ -2875,7 +2878,7 @@ func TestCollieStartBindList(t *testing.T) {
 		if _, err := db.Exec(`UPDATE collie_sessions SET status = 'ended' WHERE id = ?`, session); err != nil {
 			t.Fatal(err)
 		}
-		stale := runMC(t, env, "", "task", "add", "zombie write", "--project", "ws-test")
+		stale := runMC(t, env, create("collie-stale", "zombie write"), "board", "write")
 		if stale.code != 1 || !strings.Contains(stale.stderr, "not active") {
 			t.Fatalf("ended Collie write = code %d stderr %q", stale.code, stale.stderr)
 		}
@@ -2883,10 +2886,10 @@ func TestCollieStartBindList(t *testing.T) {
 			t.Fatal("ended Collie inserted a task")
 		}
 
-		narrow := start(t, spine, "cli:narrow", "--allow", "task.add").json["session_id"].(string)
-		narrowEnv := collieJSONEnv(t, spine, narrow, []string{"task.add"})
-		if got := runMC(t, narrowEnv, "", "task", "add", "narrow allowed", "--project", "ws-test"); got.code != 0 {
-			t.Fatalf("narrow canonical Collie task add failed: %s", got.stderr)
+		narrow := start(t, spine, "cli:narrow", "--allow", "board.write").json["session_id"].(string)
+		narrowEnv := collieJSONEnv(t, spine, narrow, []string{"board.write"})
+		if got := runMC(t, narrowEnv, create("collie-narrow", "narrow allowed"), "board", "write"); got.code != 0 {
+			t.Fatalf("narrow canonical Collie task creation failed: %s", got.stderr)
 		}
 		if got := runMC(t, narrowEnv, "", "task", "unblock", fmt.Sprint(taskID), "--reason", "The operator resolved the block."); got.code != 1 || !strings.Contains(got.stderr, "not allowed") {
 			t.Fatalf("narrow forbidden verb = code %d stderr %q", got.code, got.stderr)
@@ -2936,7 +2939,7 @@ func TestCollieStartBindList(t *testing.T) {
 	t.Run("scope_is_host_for_start_bind_and_own_session_for_collie_list", func(t *testing.T) {
 		spine := initSpine(t)
 		a := start(t, spine, "dashboard:a").json["session_id"].(string)
-		b := start(t, spine, "cli:b", "--allow", "task.add").json["session_id"].(string)
+		b := start(t, spine, "cli:b", "--allow", "task.block").json["session_id"].(string)
 		db := openDB(t, spine)
 		beforeSessions := queryInt(t, db, `SELECT COUNT(*) FROM collie_sessions`)
 		beforeBindings := queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings`)
@@ -2977,7 +2980,7 @@ func TestCollieStartBindList(t *testing.T) {
 		if len(rows) != 1 || rows[0].(map[string]any)["id"] != a {
 			t.Fatalf("Collie list escaped own session: %v", own.json)
 		}
-		denied := runMC(t, collieJSONEnv(t, spine, b, []string{"task.add"}), "", "collie", "list")
+		denied := runMC(t, collieJSONEnv(t, spine, b, []string{"task.block"}), "", "collie", "list")
 		if denied.code != 1 || !strings.Contains(denied.stderr, "not allowed") {
 			t.Fatalf("narrow Collie list = code %d stderr %q", denied.code, denied.stderr)
 		}
@@ -3005,6 +3008,7 @@ func TestCollieStartBindList(t *testing.T) {
 			{name: "unknown_surface", args: []string{"--from", "email:x"}, msg: "discord|dashboard|cli"},
 			{name: "empty_channel", args: []string{"--from", "dashboard:"}, msg: "channel_ref"},
 			{name: "unknown_allow", args: []string{"--from", "dashboard:x", "--allow", "dispatch"}, msg: "not a Collie-agent verb"},
+			{name: "task_add_allow", args: []string{"--from", "dashboard:x", "--allow", "task.add"}, msg: "not a Collie-agent verb"},
 		} {
 			t.Run(tc.name, func(t *testing.T) {
 				spine := initSpine(t)

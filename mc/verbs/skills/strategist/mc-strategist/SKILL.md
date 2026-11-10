@@ -17,7 +17,7 @@ Its only field is `proposals`, an array of objects with these fields:
 | Field | Constraint |
 | --- | --- |
 | `title` | Required; one line of valid UTF-8, without control characters, and at most 4096 bytes. |
-| `description` | Optional in the command schema; contains the scope and the success criteria. |
+| `description` | Optional in the command schema; contains the scope and the acceptance criteria. |
 | `strategic_rationale` | Required; the text of the proposal's rationale file. Valid UTF-8 with text, at most 8192 bytes, and no control characters other than a newline or a tab. |
 | `project` | Omit it to use the **Project** Identifier, or supply that exact identifier. |
 | `scope` | Omit it or use `task`. |

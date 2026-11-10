@@ -27,6 +27,8 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - The Arbiter receives the Strategic rationale of each proposal and checks its evidence. The Worker and the Verifier receive the description without it.
 - The task dialog of a task that the Strategist proposed shows the Strategic rationale as its first content section, above the description.
 - The Review Packet of a task that the Strategist proposed starts with the Strategic rationale section. The packet of a task that the operator defined starts with the Summary section.
+- The Strategist, the Arbiter, and Collie apply one shared standard for a task description: the scope and the acceptance criteria that an agent container can check.
+- Collie shows the full task description before the operator confirms a new task or a requirements revision, and it identifies each rule of the standard that the draft violates.
 
 ### Known limits
 

@@ -33,7 +33,6 @@ var maximumCollieAgentVerbs = []string{
 	"project.role-unblock",
 	"project.vision-draft",
 	"project.vision-edit",
-	"task.add",
 	"task.block",
 	"task.cancel",
 	"task.interrupt",

@@ -144,7 +144,7 @@ func TestStrategicRationaleReachesTheArbiterAndThePackagerOnly(t *testing.T) {
 		for _, rule := range []string{
 			"Use the rationale when you assess those three properties.",
 			"Treat its statements as claims: check the cited evidence in the repository copy, and give an assumption less weight than an observation.",
-			"The rationale adds no requirement; the description holds the scope and the criteria.",
+			"The rationale adds no requirement; the description holds the scope and the acceptance criteria.",
 		} {
 			if !strings.Contains(brief.Directive, rule) {
 				t.Errorf("The Arbiter directive omits: %s", rule)
@@ -336,7 +336,7 @@ func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 	}{
 		{"Strategist directive", directive(dispatch.RoleStrategist), []string{
 			"Each proposal also holds a Strategic rationale, separate from its description.",
-			"The description holds every requirement of the task.",
+			"The Worker and the Verifier receive the description without the rationale.",
 			"Write the Strategic rationale of each candidate to its own file under `/tmp` before you file the batch.",
 			"- State the proposed change in one or two sentences.",
 			"- Cite the evidence for the problem or the opportunity: what fails or is absent now.",
@@ -349,7 +349,7 @@ func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 		}},
 		{"Strategist skill", skill(dispatch.RoleStrategist), []string{
 			"| `strategic_rationale` | Required; the text of the proposal's rationale file.",
-			"| `description` | Optional in the command schema; contains the scope and the success criteria. |",
+			"| `description` | Optional in the command schema; contains the scope and the acceptance criteria. |",
 		}},
 		{"Packager directive", directive(dispatch.RolePackager), []string{
 			"The first section is the only section that gives the opening overview and the\njustification of the work.",

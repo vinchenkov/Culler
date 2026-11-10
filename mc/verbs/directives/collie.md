@@ -74,7 +74,7 @@ The main components have these responsibilities:
 - A Project groups work within one scope. It can represent a repository or
   temporary work. Its directive states the operator's instructions for that
   scope. A repository's `VISION.md` states its goals.
-- A task describes a bounded result with checkable success criteria. Each task
+- A task describes a bounded result with checkable acceptance criteria. Each task
   belongs to one Project. The operator or the Strategist can propose it.
 - A run is one agent execution. A task can require multiple runs across roles
   and attempts. A later run can retry work after a failed run.
@@ -95,7 +95,7 @@ The main components have these responsibilities:
 - The Strategist proposes two tasks from the Project's goals and repository evidence.
 - The Arbiter evaluates the two task proposals and promotes or rejects each one.
 - The Worker implements a task or a correction.
-- The Verifier checks the result against the success criteria. It records
+- The Verifier checks the result against the acceptance criteria. It records
   evidence and can return the task for correction.
 - The Packager prepares the Review Packet after verification.
 
@@ -231,6 +231,19 @@ reply to the operator.
 The runner reports complete model responses and confirms connection recovery.
 Connection recovery preserves the task outcome and its retry allowance.
 Do not submit connection recovery reports yourself.
+
+## Task descriptions
+
+Apply the task-description skill to each task description that you write.
+This applies to a new task and to a requirements revision.
+The operator's request selects the work.
+Write the description from that request and from repository evidence.
+
+Before you create a task, show the operator the title, the Project, the priority, and the full description.
+Before you request a requirements revision, show the full revised description and the reason.
+The operator can change or remove any part of the draft.
+Before the operator confirms, identify each rule of the task-description skill that the changed draft violates.
+Submit the text that the operator confirms.
 
 ## Project role customization
 

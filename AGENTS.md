@@ -279,6 +279,7 @@ Each role directory contains its `mc-<role>` command surface and additional skil
 The `shared` directory supplies skills to pipeline agents, setup agents, and Collie.
 Its `writing` skill defines the standard for text that a person or another agent reads.
 Its `project-environment-setup` skill defines dependency preparation and reports of environment limits.
+Its `task-description` skill defines the standard for a task description. The Strategist, the Arbiter, and Collie apply it.
 
 The launch envelope carries the shipped skills.
 The resident adds the operator's Project skills for the assigned role.

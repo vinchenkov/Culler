@@ -297,10 +297,11 @@ func TestDirectivesAndSkillsBindEachRoleToOneProject(t *testing.T) {
 			}
 		}
 	}
-	for _, want := range []string{"from this project's repository evidence", "Each task delivers one Git commit to the Project repository."} {
-		if !strings.Contains(flat(propose), want) {
-			t.Errorf("propose directive omits %q", want)
-		}
+	if !strings.Contains(flat(propose), "from this project's repository evidence") {
+		t.Error("propose directive omits the Project's repository evidence")
+	}
+	if !strings.Contains(roleSkillBody(t, dispatch.RoleStrategist, "task-description"), "The task delivers one Git commit to the Project repository.") {
+		t.Error("the task-description skill omits the one-commit rule")
 	}
 	for _, want := range []string{"Omit it to use the **Project** Identifier, or supply that exact identifier", "A rejected batch writes nothing"} {
 		if !strings.Contains(flat(proposeSkill.Body), want) {
