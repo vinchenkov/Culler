@@ -8,7 +8,7 @@ import statistics
 import uuid
 from pathlib import Path, PurePosixPath
 
-from .assessment import AssessmentError, check_packet, require_inspection, trial_score
+from .assessment import AssessmentError, check_packet, require_inspection, required_sections, trial_score
 from .calibration import bind_assessment_context
 from .cases import CaseError, content_hash, prepare_case
 from .protocol import DIMENSIONS, digest
@@ -142,7 +142,7 @@ class Evaluator:
 
     @staticmethod
     def _packet_contract(packet, case: dict, terminal: dict) -> dict:
-        contract = check_packet(Path(packet), required_sections=case.get("required_sections")) if packet else {
+        contract = check_packet(Path(packet), required_sections=required_sections(case)) if packet else {
             "passed": False, "failures": ["The required packet is absent."]}
         submitted = terminal.get("outputs")
         if submitted is not None and (not isinstance(submitted, str) or PurePosixPath(submitted).name != "packet.html"):

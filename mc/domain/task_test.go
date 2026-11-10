@@ -671,7 +671,8 @@ func TestBirthProposal(t *testing.T) {
 	mustTx(t, db, func(ctx context.Context, q domain.Q) error {
 		var err error
 		id, err = domain.BirthProposal(ctx, q, domain.ProposalArgs{
-			Title: "an idea", Description: "criteria", Origin: "autonomous", Project: "ws",
+			Title: "an idea", Description: "criteria", StrategicRationale: "Observed: the export omits the date.\r\nAssumed: each client reads it.",
+			Origin: "autonomous", Project: "ws",
 		})
 		return err
 	})
@@ -680,6 +681,12 @@ func TestBirthProposal(t *testing.T) {
 	}
 	if got := taskStr(t, db, id, "origin"); got != "autonomous" {
 		t.Fatalf("origin = %q", got)
+	}
+	if got := taskStr(t, db, id, "strategic_rationale"); got != "Observed: the export omits the date.\nAssumed: each client reads it." {
+		t.Fatalf("strategic_rationale = %q", got)
+	}
+	if got := taskStr(t, db, id, "description"); got != "criteria" {
+		t.Fatalf("description = %q", got)
 	}
 	// The schema trigger gives the task its delivery record.
 	if got := deliveryStr(t, db, id, "destination_branch"); got != "main" {
@@ -696,4 +703,35 @@ func TestBirthProposal(t *testing.T) {
 		})
 		return err
 	})
+}
+
+func TestBirthProposalStrategicRationale(t *testing.T) {
+	db := openSpine(t)
+	birth := func(origin, rationale string) func(context.Context, domain.Q) error {
+		return func(ctx context.Context, q domain.Q) error {
+			_, err := domain.BirthProposal(ctx, q, domain.ProposalArgs{
+				Title: "an idea", Description: "criteria", StrategicRationale: rationale, Origin: origin, Project: "ws",
+			})
+			return err
+		}
+	}
+	for _, rationale := range []string{"", "  ", "\n\t\r\n"} {
+		wantCode(t, db, domain.CodeReasonRequired, birth("autonomous", rationale))
+	}
+	for _, rationale := range []string{
+		strings.Repeat("x", domain.MaxStrategicRationaleBytes+1),
+		"The rationale holds an escape \x1b[31m sequence.",
+		"The rationale holds invalid text \xff.",
+	} {
+		wantCode(t, db, domain.CodeInvalidRequest, birth("autonomous", rationale))
+	}
+	wantCode(t, db, domain.CodeInvalidRequest, birth("user", "The operator needs no rationale."))
+	if got := oneInt(t, db, `SELECT COUNT(*) FROM tasks`); got != 0 {
+		t.Fatalf("refused proposals created %d tasks", got)
+	}
+	mustTx(t, db, birth("autonomous", strings.Repeat("x", domain.MaxStrategicRationaleBytes)))
+	mustTx(t, db, birth("user", ""))
+	if got := oneInt(t, db, `SELECT COUNT(*) FROM tasks WHERE (origin='autonomous') = (strategic_rationale IS NOT NULL)`); got != 2 {
+		t.Fatalf("%d tasks hold the rationale of their origin, want 2", got)
+	}
 }

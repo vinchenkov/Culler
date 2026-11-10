@@ -23,6 +23,10 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - Terminal setup and the dashboard name each new connection, and they request no connection name or account name.
 - The provider search lists the providers that OpenCode runs, and an empty search lists each of them.
 - The dashboard marks the selected provider in the search results and shows it above the API key field.
+- Each Strategist proposal holds a Strategic rationale, a task field separate from the description. Culler refuses a Strategist proposal without one.
+- The Arbiter receives the Strategic rationale of each proposal and checks its evidence. The Worker and the Verifier receive the description without it.
+- The task dialog of a task that the Strategist proposed shows the Strategic rationale as its first content section, above the description.
+- The Review Packet of a task that the Strategist proposed starts with the Strategic rationale section. The packet of a task that the operator defined starts with the Summary section.
 
 ### Known limits
 
@@ -30,12 +34,12 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 
 ### Database compatibility
 
-- The database schema is the same as version 0.2.0.
-- The current update code cannot convert a 0.1.0 database.
+- The Strategic rationale field changes the database schema.
+- The current update code cannot convert a database of version 0.2.0 or version 0.1.0.
 
 ### Update effects
 
-- This test release permits new installations. The updater rejects the incompatible database from 0.1.0.
+- This test release permits new installations. The updater rejects the incompatible database of an earlier version.
 
 ## 0.2.0
 

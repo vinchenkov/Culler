@@ -256,6 +256,11 @@ def test_judge_prompt_transfers_current_semantics_and_fixed_operator_context(tmp
     assert payload["rubric"]["operator_context"] == context
     assert "Project code, documents, wiki, and interface text before the reviewed change" in payload["semantic_contracts"]["glossary"]
     assert payload["reviewed_range"] == {"base_commit": "fixed-base", "reviewed_commit": "fixed-reviewed"}
+    assert payload["section_order"] == list(SECTIONS[1:])
+    proposed = case | {"brief_parts": [{"heading": "Strategic rationale", "text": "Observed: the export fails."}]}
+    runtime.assess_packet(proposed, tmp_path / "packet.html", tmp_path,
+                          {"harness": "claude", "model": "fixture"}, {"operator_context": context})
+    assert json.loads(requests[1][0]["prompt"][len(JUDGE_INSTRUCTIONS):])["section_order"] == [SECTIONS[0], *SECTIONS[2:]]
     assert next(mount for mount in mounts if mount["target"] == "/evidence/source")["read_only"] is True
     for phrase in ("pipeline roles", "lacks context", "omits Culler", "Paths under /mc/artifacts/",
                    "without a Verification history section or artifact citations", "where it first appears", "in the Technical section"):

@@ -17,7 +17,9 @@ Submit exactly one terminal. This terminal requires both `--outputs` and `--thes
 
 - `mc complete <task> --run <run_id> --status packaged --outputs <path> --thesis <prose>`
 
-`--thesis` carries the summary of the packet as prose. It is not a path. The operator reads the summary on the review queue card before the operator opens any file. `mc` refuses a summary that is blank, that is longer than the limit in your directive, or that holds a control character.
+`--thesis` carries the opening text that you wrote, as prose. It is not a path. The First section and Terminal action sections of your directive state its content for each task. `mc` refuses a text that is blank, that is longer than the limit in your directive, or that holds a control character.
+
+For a task that the Strategist proposed, `mc` stores your text and then the Strategic rationale of the task as the opening text of the packet. Do not repeat the rationale in `--thesis`.
 
 Render the packet inside one plane, in the folder of this task. A plane is one durable directory that Culler mounts under `/mc/artifacts/`. Its content stays after the run ends. The path is `/mc/artifacts/<plane>/<task>/packet/packet.html`. Pass that absolute path to `--outputs`. The file name is `packet.html`. The Packet format section of your directive governs the shape of the file.
 
@@ -124,7 +126,7 @@ Then edit the copy:
 - Correct each statement that the difference makes false.
 - Write the **Criterion evidence** section from the current `Evidence file`.
 - Keep an evidence item only when the difference leaves its subject unchanged.
-- Add the **Changes since the previous packet** section directly after the **Summary** section. If the copy holds a section with that name, replace that section.
+- Add the **Changes since the previous packet** section directly after the first section. If the copy holds a section with that name, replace that section.
 
 The **Changes since the previous packet** section states these items in prose:
 
@@ -134,7 +136,7 @@ The **Changes since the previous packet** section states these items in prose:
 
 When the difference is empty, the section states that the reviewed change is the same.
 
-The new summary replaces the summary of the previous packet. Write the current claim.
+Your new opening text replaces your opening text of the previous packet. Write the current claim. The rationale of the Strategist stays unchanged.
 
 ## A run that cannot give a result
 

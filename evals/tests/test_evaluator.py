@@ -5,12 +5,14 @@ from pathlib import Path
 import pytest
 
 import culler_evals.evaluator as module
-from culler_evals.assessment import SECTIONS, SEMANTIC_CHECKS
+from culler_evals.assessment import SEMANTIC_CHECKS, case_sections
 from culler_evals.cases import CaseError
 from culler_evals.evaluator import EvaluationError, Evaluator, Proposer
 from culler_evals.protocol import DIMENSIONS
 from culler_evals.records import RecordStore
 
+
+SECTIONS = case_sections({})
 
 def judgment():
     return {"dimensions": {name: {"score": 3, "reason": "The visible claim matches the reference.", "evidence": ["reference:behavior"]} for name in DIMENSIONS},

@@ -128,8 +128,18 @@ export function packetView(p, nowMs, zone) {
     expired: retention.status === "expired",
     expiredAt: dateTimeLabel(retention.expired_at, zone),
     thesis: typeof row.thesis === "string" && row.thesis !== "" ? row.thesis : "(no thesis rendered)",
+    // The opening text of a task that the Strategist proposed holds the Packager's statement
+    // and then the Strategic rationale.
+    strategist: row.origin === "autonomous",
+    openingLabel: openingLabel(row),
     hasRender: typeof row.render_path === "string" && row.render_path !== "",
   };
+}
+
+/** The heading of the opening text of a packet. The origin of the task
+ * selects it. */
+export function openingLabel(row) {
+  return row?.origin === "autonomous" ? "Strategic rationale" : "Thesis";
 }
 
 /** The rows one view shows. An unknown view is the Live queue, never an
@@ -166,8 +176,8 @@ export function shortCommit(commit) {
 
 /** What the report area shows for one packet. `read` is the state of the
  * report read: "loading", "report", or "failed". The report area shows the
- * thesis only when it shows no report, and it shows the criteria only for an
- * expired report. */
+ * opening text only when it shows no report, and it shows the criteria only
+ * for an expired report. */
 export function reportArea(view, read) {
   const kind = view?.expired ? "expired"
     : !view?.hasRender ? "missing"

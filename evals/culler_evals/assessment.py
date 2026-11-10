@@ -10,11 +10,13 @@ from pathlib import Path
 from .protocol import DIMENSIONS, dimension_maximum
 
 
+STRATEGIC_RATIONALE = "Strategic rationale"
 SECTIONS = (
-    "Summary", "Changes since the previous packet", "Background", "Intuition", "Technical",
+    STRATEGIC_RATIONALE, "Summary", "Changes since the previous packet", "Background", "Intuition", "Technical",
     "Criterion evidence", "Evidence media", "Risk and rollback", "Glossary",
 )
-PACKET_CONTRACT_REVISION = 2
+FIRST_SECTIONS = (STRATEGIC_RATIONALE, "Summary")
+PACKET_CONTRACT_REVISION = 3
 REQUIRED_SECTIONS = ("Summary", "Risk and rollback")
 JUDGE_INSTRUCTIONS = (
     "You are the Judge. Inspect the packet through the packet browser tools. Inspect every required section. "
@@ -39,8 +41,15 @@ SEMANTIC_CHECKS = (
 )
 SEMANTIC_CONTRACTS = {
     "evidence_authority": "Claims preserve authoritative facts, material conditions, and evidence limits. Source and report conflicts remain explicit.",
-    "summary_matches_thesis": "The Summary and submitted thesis describe the same change and practical effect.",
-    "section_applicability": "The packet uses only the nine permitted top-level sections, in the required order. Each omitted section is inapplicable.",
+    "summary_matches_thesis": (
+        "The first section and the submitted thesis describe the same change and practical effect. "
+        "A Strategic rationale section also presents the rationale of the Strategist with its claims and evidence unchanged."
+    ),
+    "section_applicability": (
+        "The packet uses only the permitted top-level sections, in the required order. "
+        "Its first section is Strategic rationale for a task that the Strategist proposed and Summary for a task that the operator defined. "
+        "Each omitted section is inapplicable."
+    ),
     "glossary": (
         "Core terms receive no definitions or glossary entries. Established terms need no prose definition; optional glossary entries can refresh the reader. "
         "The packet can define a central new term in prose. Every new term without a prose definition receives a glossary entry. "
@@ -63,6 +72,28 @@ SEMANTIC_CONTRACTS = {
 
 class AssessmentError(ValueError):
     """The Judge result is incomplete or malformed."""
+
+
+def first_section(case: dict) -> str:
+    """Name the first packet section of a case.
+
+    The run brief holds a Strategic rationale part only for a task that the Strategist proposed.
+    """
+    parts = case.get("brief_parts") or case.get("role_inputs", {}).get("brief_parts") or []
+    proposed = any(isinstance(part, dict) and part.get("heading") == STRATEGIC_RATIONALE for part in parts)
+    return STRATEGIC_RATIONALE if proposed else "Summary"
+
+
+def case_sections(case: dict) -> tuple[str, ...]:
+    first = first_section(case)
+    return tuple(section for section in SECTIONS if section not in FIRST_SECTIONS or section == first)
+
+
+def required_sections(case: dict) -> tuple[str, ...]:
+    if case.get("required_sections"):
+        return tuple(case["required_sections"])
+    first = first_section(case)
+    return tuple(first if section in FIRST_SECTIONS else section for section in REQUIRED_SECTIONS)
 
 
 def judge_output_schema(rubric: dict | None = None) -> dict:
@@ -182,6 +213,8 @@ def check_packet(path: Path, *, required_sections=None) -> dict:
     expected = sorted(ordered, key=SECTIONS.index)
     if ordered != expected or len(set(ordered)) != len(ordered):
         failures.append("The packet section order is invalid.")
+    if all(section in ordered for section in FIRST_SECTIONS):
+        failures.append("The packet holds two first sections.")
     required = set(required_sections or REQUIRED_SECTIONS)
     for section in required - set(ordered):
         failures.append(f"The required section is absent: {section}.")

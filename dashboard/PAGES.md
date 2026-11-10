@@ -896,6 +896,10 @@ Each task card opens a task dialog with these facts:
 - The Verifier evidence of the latest packet
 - The link to the review packet
 
+The task dialog of a task that the Strategist proposed shows the section "Strategic rationale" as its first content section, above the description.
+The section shows the rationale of the Strategist through the dashboard Markdown renderer.
+The task dialog of a task that the operator defined shows no "Strategic rationale" section.
+
 Each run row shows the result, the role, the age, and the trace link of a run with a main trace.
 
 The task dialog shows the file name of the Verifier evidence.
@@ -1406,6 +1410,7 @@ The model control is unavailable while a message goes to Collie, while Collie pr
 
 A packet without messages in its current conversation shows an empty state.
 The empty state names the parts of the packet content that Collie receives.
+For a task that the Strategist proposed, the empty state names the Strategic rationale in place of the thesis.
 After a Revise decision, the empty state of the new packet links to the current conversation of the earlier packet.
 The earlier packet is the packet of the same task directly before the new packet.
 The link shows only when that conversation holds a message. The link selects that conversation on the Collie page.
@@ -1475,6 +1480,10 @@ Markdown reports use the dashboard Markdown renderer.
 The page translates the container paths in these reports to host paths.
 
 The report area shows the thesis only when the report area shows no report and the page is not reading the report.
+The thesis is the opening text that Culler stores for the packet.
+For a task that the Strategist proposed, the thesis has the heading "Strategic rationale" and uses the dashboard Markdown renderer.
+That thesis holds the Packager's statement of the delivered change and then the Strategic rationale of the task.
+For a task that the operator defined, the thesis has the heading "Thesis".
 While the report loads, the report area shows a spinner, the status "Loading packet…", and placeholder lines in the shape of a report.
 The report area shows no thesis or other packet text until the read ends.
 The report area marks itself busy for assistive technology during the read.

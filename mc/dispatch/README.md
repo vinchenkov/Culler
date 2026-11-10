@@ -594,6 +594,23 @@ The unresolved decision stops proposal creation and proposal review.
 Decision resolution clears only the blocks that belong to that decision.
 The next proposal run receives the recorded operator answer.
 
+Each Strategist proposal holds a Strategic rationale, a task field separate from the description.
+`mc strategist propose` refuses a proposal without a nonempty rationale.
+The rationale states the evidence for the task, its value for the Project vision, and its priority.
+The description remains the complete source of scope and success criteria.
+The rationale stays unchanged after creation, and a task that the operator defined holds none.
+
+The Arbiter receives the rationale of each assigned proposal and checks its evidence.
+The Packager receives the rationale of its task and presents it in the first section of the Review Packet.
+The Worker and the Verifier receive the description without the rationale.
+The task read of a Worker run or a Verifier run omits the rationale.
+
+`mc` stores the opening text of each packet.
+For a task that the Strategist proposed, the opening text holds the Packager's statement of the delivered change and then the Strategic rationale.
+The first section of that packet has the heading "Strategic rationale".
+For a task that the operator defined, the opening text is the Packager's summary, and the first section has the heading "Summary".
+The review queue and each packet conversation receive the stored opening text.
+
 Operator promotion, cancellation, deletion, and edits remain unavailable for Proposed tasks.
 The restriction applies before and during Arbiter review.
 The Arbiter retains its proposal promotion and rejection authority.

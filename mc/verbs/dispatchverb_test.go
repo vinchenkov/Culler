@@ -162,13 +162,25 @@ func dvExec(t *testing.T, db *sql.DB, query string, args ...any) {
 
 func dvInsertTask(t *testing.T, db *sql.DB, task dispatch.Task) {
 	t.Helper()
+	dvInsertTaskWithOrigin(t, db, task, "user", nil)
+}
+
+// dvInsertStrategistTask records a task that the Strategist proposed with its
+// Strategic rationale.
+func dvInsertStrategistTask(t *testing.T, db *sql.DB, task dispatch.Task, rationale string) {
+	t.Helper()
+	dvInsertTaskWithOrigin(t, db, task, "autonomous", rationale)
+}
+
+func dvInsertTaskWithOrigin(t *testing.T, db *sql.DB, task dispatch.Task, origin string, rationale any) {
+	t.Helper()
 	dvExec(t, db, `
 		INSERT INTO tasks
 			(id, title, scope, priority, created_at, status,
-			 dispatch_retries, origin, project)
-		VALUES (?, ?, ?, ?, ?, 'proposed', ?, 'user', ?)`,
+			 dispatch_retries, origin, strategic_rationale, project)
+		VALUES (?, ?, ?, ?, ?, 'proposed', ?, ?, ?, ?)`,
 		task.ID, task.Title, string(task.Scope), task.Priority,
-		task.CreatedAt.Format(spineTime), task.DispatchRetries, task.Project)
+		task.CreatedAt.Format(spineTime), task.DispatchRetries, origin, rationale, task.Project)
 	var path []dispatch.Status
 	switch task.Status {
 	case dispatch.StatusProposed:

@@ -19,6 +19,11 @@ Submit two task proposals together.
 Each task delivers one Git commit to the Project repository.
 
 Each description states the task's scope and checkable success criteria.
+The description holds every requirement of the task.
+
+Each proposal also holds a Strategic rationale, separate from its description.
+The Arbiter and the operator use the rationale to judge the proposal.
+The Worker and the Verifier receive the description without the rationale.
 
 Each criterion describes behavior within that scope and names a check that can be run within the container.
 
@@ -78,7 +83,7 @@ For example, a complete install can make the whole product usable. A faster help
 
 ### Check the facts before you file
 
-Inspect the relevant code and tests. Cite the evidence for the problem and the proposed benefit.
+Inspect the relevant code and tests. Record the evidence for the problem and the proposed benefit.
 
 Check the active tasks and the supplied history for equivalent work. Read a task's description when its title leaves the scope unclear.
 
@@ -86,17 +91,34 @@ Investigate the assumption that can make your proposed task unnecessary or ineff
 
 Stop research when you can explain the benefit and define a feasible task. Continue only for a fact that can change your selection.
 
+### Write the Strategic rationale
+
+Write the Strategic rationale of each candidate to its own file under `/tmp` before you file the batch.
+Keep the rationale brief. In each rationale:
+
+- State the proposed change in one or two sentences.
+- Cite the evidence for the problem or the opportunity: what fails or is absent now.
+- Explain how the task advances the Vision.
+- Explain why the expected benefit justifies the effort. Include substantial verification and maintenance cost.
+- Explain why the task deserves priority now.
+- Separate what you observed from what you assume.
+
+Then read the file as the Arbiter and the operator will read it.
+When the written rationale does not justify the task, discard that candidate and research again.
+File a candidate only when its rationale justifies it.
+
+The rationale adds no requirement to the task.
+
 ### Propose a complete result
 
 One task can include changes across several components.
 
 In each description:
 
-- State what fails or is absent now, with repository evidence.
-- State what becomes possible or what repeated cost disappears.
-- Explain why that result matters to the Project now.
-- Identify substantial effort or risk through verification and maintenance.
+- State the scope: what the task changes and what stays unchanged.
 - Give scoped acceptance criteria that agents can check in their container.
+
+In each `strategic_rationale` field, supply the text of the candidate's rationale file without changes.
 
 Select your best candidates before you file. File two proposals under the current proposal rules. Leave their final rank to the Arbiter.
 

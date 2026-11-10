@@ -240,10 +240,40 @@ func Cancel(ctx context.Context, q Q, taskID int64, reason string, actor string)
 type ProposalArgs struct {
 	Title       string
 	Description string
-	Scope       string // "" defaults to task
-	Priority    *int   // nil defaults to the schema's P2
-	Origin      string // user | autonomous
-	Project     string
+	// StrategicRationale is required for a Strategist proposal and absent
+	// from operator work.
+	StrategicRationale string
+	Scope              string // "" defaults to task
+	Priority           *int   // nil defaults to the schema's P2
+	Origin             string // user | autonomous
+	Project            string
+}
+
+// MaxStrategicRationaleBytes keeps the rationale brief.
+const MaxStrategicRationaleBytes = 8 * 1024
+
+// strategicRationale returns the stored rationale of a new task. The task
+// origin decides whether the rationale is required or refused.
+func strategicRationale(origin, rationale string) (any, error) {
+	if origin != "autonomous" {
+		if rationale != "" {
+			return nil, Errf(CodeInvalidRequest, "Only a Strategist proposal holds a Strategic rationale.")
+		}
+		return nil, nil
+	}
+	rationale = strings.ReplaceAll(rationale, "\r\n", "\n")
+	if strings.TrimSpace(rationale) == "" {
+		return nil, Errf(CodeReasonRequired, "A Strategist proposal requires a nonempty Strategic rationale.")
+	}
+	if len(rationale) > MaxStrategicRationaleBytes || !utf8.ValidString(rationale) {
+		return nil, Errf(CodeInvalidRequest, "The Strategic rationale must be valid UTF-8 of at most %d bytes.", MaxStrategicRationaleBytes)
+	}
+	for _, r := range rationale {
+		if (r < 0x20 && r != '\n' && r != '\t') || r == 0x7f {
+			return nil, Errf(CodeInvalidRequest, "The Strategic rationale must hold no control characters other than a newline or a tab.")
+		}
+	}
+	return rationale, nil
 }
 
 // requireActiveProject refuses filing new work into a paused or archived
@@ -289,10 +319,14 @@ func BirthProposal(ctx context.Context, q Q, a ProposalArgs) (int64, error) {
 	if a.Priority != nil {
 		pri = *a.Priority
 	}
+	rationale, err := strategicRationale(a.Origin, a.StrategicRationale)
+	if err != nil {
+		return 0, err
+	}
 	res, err := q.ExecContext(ctx, `
-		INSERT INTO tasks (title, description, scope, priority, origin, project)
-		VALUES (?, ?, ?, ?, ?, ?)`,
-		a.Title, nullIfEmpty(a.Description), scope, pri, a.Origin, a.Project)
+		INSERT INTO tasks (title, description, strategic_rationale, scope, priority, origin, project)
+		VALUES (?, ?, ?, ?, ?, ?, ?)`,
+		a.Title, nullIfEmpty(a.Description), rationale, scope, pri, a.Origin, a.Project)
 	if err != nil {
 		return 0, err
 	}

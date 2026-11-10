@@ -82,6 +82,7 @@ Continue the assigned work after connection recovery; leave connection reports t
 
 The task list omits descriptions.
 Use the task read for scope absent from **Proposed pool** and **Active tasks**.
+The task read returns the `strategic_rationale` of a task that the Strategist proposed.
 
 ## Project role customization
 

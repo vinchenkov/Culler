@@ -23,9 +23,43 @@ func TestTaskScopeAndDestination(t *testing.T) {
 	}
 }
 
+// A Strategist proposal holds its Strategic rationale from creation. Operator
+// work holds none.
+func TestStrategicRationaleBelongsToAStrategistProposal(t *testing.T) {
+	db := openSpine(t)
+	for _, rationale := range []string{"", "   ", " \n\t\r "} {
+		wantAbort(t, db, `INSERT INTO tasks(title,project,strategic_rationale) VALUES('Blank rationale','ws',?)`, rationale)
+	}
+	wantAbort(t, db, `INSERT INTO tasks(title,project,origin,strategic_rationale) VALUES('Operator work','ws','user','The operator needs no rationale.')`)
+	result := mustExec(t, db, `INSERT INTO tasks(title,project,description,strategic_rationale) VALUES('Proposal','ws','The criteria.','Observed: the export omits the date.')`)
+	task, err := result.LastInsertId()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := taskStr(t, db, task, "strategic_rationale"); got != "Observed: the export omits the date." {
+		t.Fatalf("The stored rationale is %q.", got)
+	}
+	if got := taskStr(t, db, task, "description"); got != "The criteria." {
+		t.Fatalf("The rationale changed the description: %q.", got)
+	}
+	for _, change := range []string{
+		`UPDATE tasks SET strategic_rationale='Another rationale.' WHERE id=?`,
+		`UPDATE tasks SET strategic_rationale=NULL WHERE id=?`,
+	} {
+		wantAbort(t, db, change, task)
+	}
+	mustExec(t, db, `UPDATE tasks SET description='The revised criteria.' WHERE id=?`, task)
+	operator := mustExec(t, db, `INSERT INTO tasks(title,project,origin) VALUES('Operator work','ws','user')`)
+	id, err := operator.LastInsertId()
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantAbort(t, db, `UPDATE tasks SET strategic_rationale='A later rationale.' WHERE id=?`, id)
+}
+
 func TestTaskModelColumns(t *testing.T) {
 	db := openSpine(t)
-	want := strings.Fields(`id title description record_version requirements_version scope priority created_at status
+	want := strings.Fields(`id title description strategic_rationale record_version requirements_version scope priority created_at status
 		stage_entered_at correction_count verifier_correction_open allowance_condition allowance_reason
 		allowance_version correction_operator_reason returned_kind blocked blocked_reason blocked_kind dispatch_retries run_retry_at
 		decision decided_at archived origin project completion_sha revision_notes destination_branch base_commit input_commit

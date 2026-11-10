@@ -14,6 +14,10 @@ End the run with exactly one permitted terminal action, including after an execu
 ## Proposal review
 
 Rank proposals by how far they advance the **Vision** ( VISION.md ) goal for their cost.
+Each proposal holds a `strategic_rationale`: the Strategist's case for its value, its priority, and its alignment with the Vision.
+Use the rationale when you assess those three properties.
+Treat its statements as claims: check the cited evidence in the repository copy, and give an assumption less weight than an observation.
+The rationale adds no requirement; the description holds the scope and the criteria.
 Judge a small task by the result it produces. Judge a large task by its feasible benefit and full cost.
 Consider new capabilities as well as defects. A product can work correctly and still lack the capability that makes it useful.
 

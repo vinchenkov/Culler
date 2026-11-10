@@ -40,11 +40,27 @@ func TaskAdd(db *sql.DB, id *RunIdentity, title, project, description string, pr
 	return map[string]any{"task_id": taskID}, nil
 }
 
+// TaskRead is `mc task get` for its caller. A Worker and a Verifier build and
+// judge the description alone, so their read holds no Strategic rationale.
+func TaskRead(db *sql.DB, id *RunIdentity, task int64) (any, error) {
+	out, err := TaskGet(db, task)
+	if err != nil {
+		return nil, err
+	}
+	if id != nil && id.Tier == "pipeline" {
+		switch baseRole(id.Role) {
+		case "worker", "verifier":
+			delete(out.(map[string]any), "strategic_rationale")
+		}
+	}
+	return out, nil
+}
+
 // TaskGet returns one task row as JSON — the e2e's assertion channel into
 // the spine.
 func TaskGet(db *sql.DB, id int64) (any, error) {
 	rows, err := db.Query(`
-		SELECT id, title, description, scope, priority, record_version, requirements_version,
+		SELECT id, title, description, strategic_rationale, scope, priority, record_version, requirements_version,
 		       created_at, status, stage_rank, stage_entered_at,
 		       correction_count, blocked, blocked_reason, blocked_kind, dispatch_retries,run_retry_at,
                stalled, infrastructure_failure_count, `+latestInfrastructureFailureSQL+`, `+connectionWaitSQL+`, `+projectInfrastructureSQL+`,

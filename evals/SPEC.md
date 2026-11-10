@@ -574,7 +574,7 @@ The original directive and every candidate must retain this section order:
 
 | Position | Section | Required content |
 | --- | --- | --- |
-| 1 | Summary | The packet states what changes and why it matters. Its text matches the submitted summary. |
+| 1 | Strategic rationale or Summary | A task that the Strategist proposed uses Strategic rationale: a brief statement of the delivered change, then the rationale of the Strategist with its evidence. A task that the operator defined uses Summary: the packet states what changes and why it matters, and its text matches the submitted summary. |
 | 2 | Changes since the previous packet | The packet states the difference from the previous packet. The section applies only when the run brief has a Previous packet part. |
 | 3 | Background | The packet explains the affected Project part before the change, at the depth the operator needs. |
 | 4 | Intuition | A concrete example explains the central idea with proportionate detail. |

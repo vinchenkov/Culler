@@ -2320,7 +2320,8 @@ const reportSkeleton = () => el("div", { class: "report-loading", testid: "packe
     ...["full", "most", "full", "half"].map(width => el("span", { class: `skeleton-line ${width}` }))));
 
 /** The report area without a report: the read, the absent report, the failed
- * read, or the expired report. Each state except the read shows the thesis. */
+ * read, or the expired report. Each state except the read shows the opening
+ * text of the packet under its heading. */
 function paintReportState(row, view, read) {
   const area = reportArea(view, read);
   const host = $("packet-render");
@@ -2339,7 +2340,9 @@ function paintReportState(row, view, read) {
   host.setAttribute("aria-busy", String(area.kind === "loading"));
   host.replaceChildren(...[
     lead,
-    area.thesis && reportSection("Thesis", el("p", { text: view.thesis })),
+    area.thesis && reportSection(view.openingLabel, view.strategist
+      ? el("div", { class: "md", testid: "packet-opening" }, markdownNodes(parseMarkdown(view.thesis)))
+      : el("p", { testid: "packet-opening", text: view.thesis })),
     area.records && reportSection("Criteria", criteriaNode(row)),
   ].filter(Boolean));
   host.scrollTop = 0;

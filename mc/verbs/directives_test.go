@@ -172,7 +172,7 @@ func TestWorkerRecordsInlineExceptionBeforeTheTerminal(t *testing.T) {
 func TestAgentTextNamesOnlyThePartsThatTheRunBriefRenders(t *testing.T) {
 	headings := map[string]bool{}
 	for _, heading := range []string{
-		partCustomization, partRun, partTask, partRevision, partRequirementsRevision, partMergeCandidate, partCorrection, partLastReport,
+		partCustomization, partRun, partTask, partStrategicRationale, partRevision, partRequirementsRevision, partMergeCandidate, partCorrection, partLastReport,
 		partLatestVerdict, partGitState, partPreviousPacket, partMergedTasks,
 		partPool, partActiveTasks, partRejected, partCancelled,
 		partProposalDecisions, partProject, partVision,

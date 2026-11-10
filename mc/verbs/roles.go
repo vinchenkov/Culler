@@ -248,13 +248,16 @@ func sameIDSet(a, b []int64) bool {
 // StrategistProposals is mc strategist propose's stdin payload.
 // An empty array is legal: the fake Strategist's liveness terminal. A
 // proposal's `project` is optional and, when present, must name the run's
-// Project: the run inserts into the pool of that Project only.
+// Project: the run inserts into the pool of that Project only. The
+// description holds the scope and the criteria. The Strategic rationale holds
+// the decision evidence for the Arbiter and the operator.
 type StrategistProposals struct {
 	Proposals []struct {
-		Project     string `json:"project"`
-		Scope       string `json:"scope"`
-		Title       string `json:"title"`
-		Description string `json:"description"`
+		Project            string `json:"project"`
+		Scope              string `json:"scope"`
+		Title              string `json:"title"`
+		Description        string `json:"description"`
+		StrategicRationale string `json:"strategic_rationale"`
 	} `json:"proposals"`
 }
 
@@ -284,6 +287,9 @@ func StrategistPropose(db *sql.DB, id *RunIdentity, run string, batch io.Reader)
 		if p.Scope != "" && p.Scope != "task" {
 			return nil, Domainf("proposal %d: scope must be task", i)
 		}
+		if strings.TrimSpace(p.StrategicRationale) == "" {
+			return nil, Domainf("proposal %d: strategic_rationale is required", i)
+		}
 	}
 
 	ids := []int64{}
@@ -306,11 +312,12 @@ func StrategistPropose(db *sql.DB, id *RunIdentity, run string, batch io.Reader)
 			// origin='autonomous': the schema's agent-provenance value. The
 			// substrate CHECK pins the vocabulary to user|autonomous.
 			tid, err := domain.BirthProposal(ctx, q, domain.ProposalArgs{
-				Title:       p.Title,
-				Description: p.Description,
-				Scope:       p.Scope,
-				Origin:      "autonomous",
-				Project:     project,
+				Title:              p.Title,
+				Description:        p.Description,
+				StrategicRationale: p.StrategicRationale,
+				Scope:              p.Scope,
+				Origin:             "autonomous",
+				Project:            project,
 			})
 			if err != nil {
 				return err
