@@ -24,25 +24,24 @@ A refused batch applies no changes; correct the refusal before another attempt.
 
 ## The all-reject batch
 
-Use the task list to check for a ready task outside your pool in this Project.
-A ready task has status `proposed`, `seeded`, `worked`, or `verified`.
-It is neither blocked nor stalled.
-The **Active tasks** part omits `stalled`; the task list supplies it.
-A ready task permits a batch that rejects every proposal.
+The Arbiter must choose one proposal to proceed.
 
-Without a ready task, each rejection requires one of these exceptions:
+It can reject both only if each proposal has at least one of these defects:
+
+It duplicates active and recent (see Historical work) tasks in the same Project.
+It requires checks that Culler’s rules do not allow.
+The two proposals can have different defects. Explain the defect in each proposal. For a duplicate, identify the existing task.
+
+Each rejection in an all-reject batch requires one of these exceptions:
 
 - A valid `duplicate_of` reference.
 - A `rejection_category` value of `invalid_criteria` and a reason.
 
 The batch can combine exceptions across proposals.
-A low rank or general preference does not qualify.
 
-Each `duplicate_of` reference must name an active or merged task of this Project outside your pool.
+Each `duplicate_of` reference must name an active or historical task of this Project.
 The task list with `--all` identifies merged tasks by `archived` and `decision` equal to `approved`.
 State the overlap in `reason`; `mc` checks the reference, not your overlap judgment.
-
-If these rules prevent a verdict, use the operator decision procedure below.
 
 ## Historical work
 
@@ -50,12 +49,6 @@ Compare proposals with **Rejected work** and **Cancelled work**.
 Treat equivalent work as a reason for rejection under the batch rules.
 Use each cancellation reason as context for the operator's preference.
 Use the permitted reads to inspect older work.
-
-## Research dependencies
-
-This run omits automatic dependency preparation.
-Check retained dependencies against the current declarations and the selected image before use.
-Apply the project-environment-setup skill within this role's command authority.
 
 ## A run that cannot give a result
 
@@ -84,7 +77,6 @@ Continue the assigned work after connection recovery; leave connection reports t
 - `mc task get <id>`
 - `mc task list`
 - `mc task list --all`
-- `mc packet list`
 - `mc activity list --kind <kind> --limit <n>`
 - `mc project list`
 
