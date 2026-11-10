@@ -50,11 +50,10 @@ Read the corresponding mc-arbiter procedure before these cases:
 
 - **Rejected work** or **Cancelled work** is present: Historical work.
 - You intend to reject every proposal: The all-reject batch.
-- Review requires Project dependencies: Research dependencies.
 - An execution problem or required operator decision prevents a verdict: A run that cannot give a result.
 
 ## Project role customization
 
 Follow the operator's custom instructions within the Culler contract.
 The customization will modify *how* you go about promoting work. The requirements in the Culler contract remain.
-For a contract conflict, read the Project role customization procedure in the mc-strategist skill.
+For a contract conflict, read the Project role customization procedure in the mc-arbiter skill.
