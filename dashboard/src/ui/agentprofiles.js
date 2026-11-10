@@ -5,11 +5,8 @@ import { conditionExplanation, conditionImpact } from "./systemhealth.js";
 const OPERATION_KEY = "mc-agent-profile-operation";
 const TERMINAL = new Set(["succeeded", "failed", "cancelled"]);
 const STEPS = ["Connect", "Configure", "Test and save"];
-const CONNECTION_TYPES = {
-  existing: "Use an existing connection",
-  subscription: "Connect a subscription account",
-  api_key: "Connect with an API key",
-};
+// Each of these harness families has a provider with a subscription integration and an API key integration.
+const RELEASE_HARNESSES = ["codex", "claude-sdk"];
 const CONNECTION_KINDS = ["codex-oauth", "claude-oauth", "codex-api-key", "claude-api-key", "opencode-api-key"];
 const apiKeyConnection = (source) => ["codex-api-key", "claude-api-key", "opencode-api-key"].includes(source?.kind);
 const accessLabel = (value) => ({ connected: "Credential saved", disconnected: "Disconnected", unavailable: "Host credential store unavailable" }[value] || value);
@@ -73,11 +70,35 @@ function providerRank(provider, search) {
 }
 
 // The matches list name matches before identifier matches and address matches.
+// The list holds the providers that OpenCode runs. The first screen offers the other providers.
 export function providerChoices(providers, query = "") {
   const search = query.trim().toLowerCase();
-  if (!search) return (providers || []).filter(provider => provider.harness !== "opencode");
-  return (providers || []).map(provider => ({ provider, rank: providerRank(provider, search) }))
+  return (providers || []).filter(provider => provider.harness === "opencode").map(provider => ({ provider, rank: providerRank(provider, search) }))
     .filter(match => match.rank >= 0).sort((a, b) => a.rank - b.rank).map(match => match.provider);
+}
+
+// A release provider offers a sign-in and an API key.
+export function releaseProviders(catalog) {
+  return RELEASE_HARNESSES.map((harness) => {
+    const api_key = (catalog?.providers || []).find(row => row.harness === harness);
+    const subscription = (catalog?.integrations || []).find(row => row.harness === harness && !apiKeyConnection(row));
+    return api_key && { harness, name: api_key.name, api_key, subscription };
+  }).filter(Boolean);
+}
+
+const sameName = (row, name) => (row.name || row.id).toLowerCase() === name.trim().toLowerCase();
+
+// The name states the provider and the access method.
+// A connection with that name and no credential receives the new credential, unless an agent profile uses it.
+export function plannedConnection(catalog, template, name) {
+  const connections = catalog?.connections || [];
+  const idle = connections.find(row => sameName(row, name) && row.kind === template.kind
+    && (row.catalog_entry || "") === (template.harness === "opencode" ? template.catalog_entry : "")
+    && row.access_status === "disconnected" && !(catalog.profiles || []).some(profile => profile.enabled && profile.connection_id === row.id));
+  if (idle) return { id: idle.id, name: idle.name || idle.id };
+  let unused = name;
+  for (let suffix = 2; connections.some(row => sameName(row, unused)); suffix++) unused = `${name} ${suffix}`;
+  return { id: null, name: unused };
 }
 
 export function effortChoices(model, current = "") {
@@ -167,10 +188,6 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   const update = (key, value) => {
     draft[key] = value;
     if (key === "model" || key === "connection_id") draft.effort = "";
-    if (key === "connection_name") {
-      draft.connection_submission_id = uuid();
-      draft.connection_revision = null;
-    }
     invalidate();
   };
   const operationActive = () => operation && !TERMINAL.has(operation.status);
@@ -191,7 +208,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   const actionsNode = (back, ...next) => el("div", { class: "profile-step-actions" }, back,
     next.some(Boolean) && el("div", { class: "profile-next-actions" }, next));
   const primary = (node) => { node.classList.add("profile-primary"); return node; };
-  const duplicate = (rows, name, id) => rows.some((row) => row.id !== id && (row.name || row.id).toLowerCase() === name.trim().toLowerCase());
+  const duplicate = (rows, name, id) => rows.some((row) => row.id !== id && sameName(row, name));
   const validateProfile = () => {
     if (!draft.name.trim() || !draft.model || !draft.connection_id) throw new Error("Enter an agent profile name, a model, and a connection.");
     const model = modelLists.get(draft.connection_id)?.models?.find(model => model.id === draft.model);
@@ -258,7 +275,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       name: profile?.name || "", model: profile?.model || "", effort: profile?.effort || "",
       connection_id: profile?.connection_id || "", id: profile?.id,
       submission_id: uuid(), connection_submission_id: uuid(), mode: profile ? "existing" : "",
-      connection_name: "", integration: "", api_key: "", step: 1, test_id: null, auth_failed: needsAuthorization(profile, systemState?.()),
+      connection_name: "", integration: "", harness: "", provider: "", provider_query: "", api_key: "", step: 1, test_id: null, auth_failed: needsAuthorization(profile, systemState?.()),
       heading: profile?.id ? "Edit agent profile" : "Create agent profile",
       chosen: false, previous: null, suggestions: {},
     };
@@ -574,19 +591,15 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     return name;
   }
   function choicesNode(back) {
-    const choose = (mode) => {
-      draft.mode = mode;
-      draft.chosen = true;
-      draft.heading = CONNECTION_TYPES[mode];
-      if (mode === "subscription") suggest("connection_name", suggestedName(catalog.connections, "Subscription account"));
-      if (mode === "api_key") suggest("connection_name", suggestedName(catalog.connections, "API connection"));
+    const choose = (mode, heading, harness = "") => {
+      Object.assign(draft, { mode, heading, harness, chosen: true });
       render();
     };
     return [
       el("div", { class: "profile-actions" },
-        button(CONNECTION_TYPES.existing, () => choose("existing"), "profile-use-existing"),
-        button(CONNECTION_TYPES.subscription, () => choose("subscription"), "profile-use-subscription"),
-        button(CONNECTION_TYPES.api_key, () => choose("api_key"), "profile-use-api-key")),
+        releaseProviders(catalog).map(provider => button(`Use ${provider.name}`, () => choose("release", `Use ${provider.name}`, provider.harness), `profile-use-${provider.harness}`)),
+        button("Use another provider", () => choose("catalog", "Use another provider"), "profile-use-provider"),
+        button("Use an existing connection", () => choose("existing", "Use an existing connection"), "profile-use-existing")),
       actionsNode(back),
     ];
   }
@@ -702,12 +715,12 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     if (apiKeyConnection(source)) return el("section", { class: "profile-repair", testid: "profile-repair", "aria-labelledby": "profile-repair-title" },
       el("h3", { id: "profile-repair-title", text: `${name} · API key required` }),
       note("Enter a replacement API key. Culler keeps the previous key until the replacement is saved."),
-      field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false }),
+      keyField(),
       primary(button("Save key", () => perform(async () => {
         if (!draft.api_key) throw new Error("Enter the API key.");
         const integration = source.harness === "opencode"
           ? (catalog.providers || []).find(item => item.catalog_entry === source.catalog_entry && item.harness === "opencode")
-          : catalog.integrations.find((item) => item.kind === source.kind);
+          : (catalog.integrations || []).find((item) => item.kind === source.kind);
         if (!integration) throw new Error("The connection type is unavailable.");
         const serial = generation;
         const result = await post("connection-save", { submission_id: uuid(), revision: catalog.revision, id: source.id,
@@ -735,56 +748,95 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       note(`Select Authorize to start the authorization for the connection ${name}.`),
       action);
   }
+  // The form names each new connection. A rejected save releases the name and the revision for the next attempt.
+  async function connect(template, name, apiKey) {
+    const serial = generation;
+    if (apiKey && !draft.api_key) throw new Error("Enter the API key.");
+    if (draft.integration !== template.id) {
+      const planned = plannedConnection(catalog, template, name);
+      Object.assign(draft, { integration: template.id, connection_name: planned.name, connection_edit_id: planned.id, connection_submission_id: uuid(), connection_revision: null });
+    }
+    draft.connection_revision ||= catalog.revision;
+    const payload = { submission_id: draft.connection_submission_id, revision: draft.connection_revision, name: draft.connection_name, ...(draft.connection_edit_id ? { id: draft.connection_edit_id } : {}), template_id: template.id };
+    if (apiKey) {
+      payload.api_key = draft.api_key;
+      payload.authorization_id = catalog.connections.find(row => row.id === draft.connection_edit_id)?.authorization_id || "";
+    }
+    let result;
+    try { result = await post("connection-save", payload); }
+    catch (err) {
+      if (serial === generation && err.status >= 400 && err.status < 500) draft.integration = "";
+      throw err;
+    }
+    if (serial !== generation) return;
+    catalog = result;
+    draft.api_key = "";
+    draft.connection_id = result.connection_id;
+    draft.connection_edit_id = result.connection_id;
+    draft.connection_submission_id = uuid();
+    draft.connection_revision = null;
+    suggest("name", suggestedName(catalog.profiles, draft.connection_name, draft.id));
+    notice = "The connection is saved. Other agent profiles can also use this connection.";
+    if (!apiKey && connection()?.access_status !== "connected") await startOperation("authorization", draft.connection_id);
+    else draft.step = 2;
+  }
+  const keyField = () => field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false });
+  function providerNode(provider, checked) {
+    return el("label", { class: `profile-choice profile-provider${checked ? " selected" : ""}`, testid: "profile-provider-result" },
+      el("input", {
+        type: "radio", name: "profile-provider", value: provider.id, checked, testid: `profile-provider-${provider.id}`, disabled: busy,
+        onchange: () => { draft.provider = provider.id; render(); },
+      }),
+      el("span", { class: "profile-choice-text" },
+        el("b", { text: provider.name }),
+        el("span", { text: provider.address || "" }),
+        provider.website && el("a", { href: provider.website, target: "_blank", rel: "noopener noreferrer", text: provider.website })),
+      checked && el("span", { class: "profile-provider-mark", text: "Selected" }));
+  }
   function connectNode(back) {
-    const connect = async () => {
-      const serial = generation;
-      if (draft.mode === "api_key" && !draft.api_key && connection()?.access_status === "connected") { draft.step = 2; return; }
-      if (!draft.connection_name.trim()) throw new Error("Enter a connection name.");
-      if (!draft.integration) throw new Error("Select the provider.");
-      if (draft.mode === "api_key" && !draft.api_key) throw new Error("Enter the API key.");
-      if (!draft.connection_revision && duplicate(catalog.connections, draft.connection_name, draft.connection_edit_id)) throw new Error("This connection name already exists. Enter another name.");
-      draft.connection_revision ||= catalog.revision;
-      const payload = { submission_id: draft.connection_submission_id, revision: draft.connection_revision, name: draft.connection_name.trim(), ...(draft.connection_edit_id ? { id: draft.connection_edit_id } : {}) };
-      payload.template_id = draft.integration;
-      if (draft.mode === "api_key") { payload.api_key = draft.api_key; payload.authorization_id = connection()?.authorization_id || ""; }
-      const result = await post("connection-save", payload);
-      if (serial !== generation) return;
-      catalog = result;
-      draft.api_key = "";
-      draft.connection_id = result.connection_id;
-      draft.connection_edit_id = result.connection_id;
-      draft.connection_submission_id = uuid();
-      draft.connection_revision = null;
-      suggest("name", suggestedName(catalog.profiles, draft.connection_name, draft.id));
-      notice = "The connection is saved. Other agent profiles can also use this connection.";
-      if (draft.mode === "subscription" && connection()?.access_status !== "connected") await startOperation("authorization", draft.connection_id);
-      else draft.step = 2;
-    };
-    const nameNode = [field("Connection name", "connection_name"),
-      duplicate(catalog.connections, draft.connection_name, draft.connection_edit_id) && el("p", { class: "profile-error", role: "alert", text: "This connection name already exists. Enter another name." })];
-    if (draft.mode === "api_key") return el("div", {}, nameNode,
-      el("label", { class: "profile-field" }, el("span", { text: "Provider" }),
-        el("input", { class: "field", type: "search", testid: "profile-key-provider", "aria-label": "Provider", value: draft.provider_query || "", disabled: busy || Boolean(draft.connection_id),
-          placeholder: "Search by provider or address", oninput: event => { draft.provider_query = event.target.value; render(); } })),
-      note("Culler sends keys only to the providers in its catalog."),
-      el("div", { testid: "profile-provider-results" },
-        providerChoices(catalog.providers || catalog.integrations.filter(apiKeyConnection), draft.provider_query).map(provider =>
-          el("article", { class: "profile-card", testid: "profile-provider-result" },
-            button(provider.name, () => { update("integration", provider.id); suggest("connection_name", provider.name); render(); }, `profile-provider-${provider.id}`, Boolean(draft.connection_id)),
-            el("p", { text: provider.address || "" }),
-            provider.website && el("a", { href: provider.website, target: "_blank", rel: "noopener noreferrer", text: provider.website }),
-            draft.integration === provider.id && el("p", { text: "Selected", role: "status" })))),
-      draft.integration && note(`Selected provider: ${(catalog.providers || catalog.integrations).find(row => row.id === draft.integration)?.name || draft.integration}`),
-      connection()?.access_status === "connected" && !draft.auth_failed
-        ? note("The API key is saved. Continue to select the model.")
-        : field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false }),
-      actionsNode(back, primary(button("Continue", () => perform(connect), "profile-key-connect"))));
-    return el("div", {}, nameNode,
-      catalog.integrations.filter((integration) => ["codex-oauth", "claude-oauth"].includes(integration.kind)).map((integration) => el("article", { class: "profile-card" },
-        el("h4", { text: integration.name }),
-        integration.authorization_message && note(integration.authorization_message),
-        primary(button("Sign in", () => { draft.integration = integration.id; perform(() => connect()); }, `profile-sign-in-${integration.id}`, integration.authorization_available === false)),
-      )),
+    const saved = connection();
+    if (saved?.access_status === "connected" && !draft.auth_failed) return el("div", {},
+      el("section", { class: "profile-card", testid: "profile-connection-saved" },
+        el("h4", { text: saved.name || saved.id }),
+        note("The credential is saved. Continue to select the model.")),
+      actionsNode(back, primary(button("Continue", () => { draft.step = 2; render(); }, "profile-connect-next"))));
+    if (draft.mode === "catalog") {
+      const providers = providerChoices(catalog.providers, draft.provider_query);
+      const selected = (catalog.providers || []).find(row => row.id === draft.provider);
+      return el("div", {},
+        el("label", { class: "profile-field" }, el("span", { text: "Provider" }),
+          el("input", { class: "field", type: "search", testid: "profile-key-provider", "aria-label": "Provider search", value: draft.provider_query, disabled: busy,
+            placeholder: "Search by name, identifier, or address", oninput: event => { draft.provider_query = event.target.value; render(); } })),
+        note("Culler sends keys only to the providers in its catalog."),
+        el("div", { class: "profile-choices profile-provider-results", role: "radiogroup", "aria-label": "Provider", testid: "profile-provider-results" },
+          !providers.length && note("No provider matches the search. Enter another name, identifier, or address."),
+          providers.map(provider => providerNode(provider, provider.id === draft.provider))),
+        el("p", { class: `profile-selected-provider${selected ? " selected" : ""}`, testid: "profile-selected-provider", role: "status" },
+          el("span", { text: "Selected provider" }),
+          el("b", { text: selected ? selected.name : "None. Select a provider from the list." }),
+          selected?.address && el("span", { text: selected.address })),
+        keyField(),
+        actionsNode(back, primary(button("Continue", () => perform(() => {
+          if (!selected) throw new Error("Select the provider.");
+          return connect(selected, `${selected.name} API key`, true);
+        }), "profile-key-connect"))));
+    }
+    const provider = releaseProviders(catalog).find(row => row.harness === draft.harness);
+    if (!provider) return el("div", {}, note("This provider is unavailable. Select Back to select another provider."), actionsNode(back));
+    const signIn = provider.subscription && button("Sign in", () => perform(() => connect(provider.subscription, `${provider.name} subscription`, false)),
+      `profile-sign-in-${provider.subscription.id}`, provider.subscription.authorization_available === false);
+    const saveKey = button("Save key", () => perform(() => connect(provider.api_key, `${provider.name} API key`, true)), "profile-key-connect");
+    primary(draft.api_key || !signIn ? saveKey : signIn);
+    return el("div", {},
+      signIn && el("section", { class: "profile-card", testid: "profile-access-subscription" },
+        el("h4", { text: "Sign in with your subscription" }),
+        provider.subscription.authorization_message && note(provider.subscription.authorization_message),
+        signIn),
+      el("section", { class: "profile-card", testid: "profile-access-api-key" },
+        el("h4", { text: "Use an API key" }),
+        note("API charges apply."),
+        keyField(),
+        saveKey),
       actionsNode(back));
   }
 
@@ -842,7 +894,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       Object.assign(draft, {
         mode: "", chosen: false, heading: "Create agent profile", step: 1, suggestions: {},
         connection_id: "", connection_edit_id: null, connection_submission_id: uuid(), connection_revision: null,
-        connection_name: "", integration: "", api_key: "",
+        connection_name: "", integration: "", harness: "", provider: "", provider_query: "", api_key: "",
       });
       invalidate();
     } else leave();
@@ -859,7 +911,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   function headNode() {
     return el("div", { class: "profile-flow-head" },
       el("h3", { class: "profile-flow-title", testid: "profile-flow-title", text: draft.heading }),
-      !draft.mode && note("Select the connection that the agent profile uses."),
+      !draft.mode && note("Select the provider or the connection that the agent profile uses."),
       draft.mode && draft.mode !== "existing" && stepsNode());
   }
   function createNode() {
@@ -874,6 +926,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     const selection = focused?.selectionStart == null ? null
       : [focused.selectionStart, focused.selectionEnd, focused.selectionDirection];
     const scrollTop = dialog.querySelector(".ui-dialog-body")?.scrollTop || 0;
+    const resultsTop = dialog.querySelector(".profile-provider-results")?.scrollTop || 0;
     const assignment = view === "assign";
     dialog.classList.toggle("profile-assign", assignment);
     const header = dialogHeader({
@@ -900,6 +953,8 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       if (selection && next?.setSelectionRange) next.setSelectionRange(...selection);
     }
     body.scrollTop = scrollTop;
+    const results = body.querySelector(".profile-provider-results");
+    if (results) results.scrollTop = resultsTop;
   }
   return {
     async open(selectedRole = null, create = false, entry = null) {

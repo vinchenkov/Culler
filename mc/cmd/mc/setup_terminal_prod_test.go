@@ -137,10 +137,8 @@ func TestTerminalSetupFailedReplacementRetainsCurrentAccess(t *testing.T) {
 type setupAccountTestUI struct{ *setupTestUI }
 
 func (u *setupAccountTestUI) Input(prompt, _ string, _ bool) (string, error) {
-	if prompt != "Name this account" {
-		u.t.Fatalf("unexpected account input %s", prompt)
-	}
-	return "second-account", nil
+	u.t.Fatalf("unexpected account input %s", prompt)
+	return "", nil
 }
 
 func TestTerminalSetupNewAccountPreservesCurrentConnection(t *testing.T) {
@@ -157,7 +155,7 @@ func TestTerminalSetupNewAccountPreservesCurrentConnection(t *testing.T) {
 		if err != nil {
 			return err
 		}
-		if c.Binding != "second-account" || current.Runtimes.Bindings[c.Binding].Credential == original.Credential {
+		if c.Binding != "codex-2" || current.Runtimes.Bindings[c.Binding].Credential == original.Credential {
 			t.Fatal("the new account reused the current connection")
 		}
 		if current.Runtimes.Bindings[first] != original {
@@ -168,8 +166,11 @@ func TestTerminalSetupNewAccountPreservesCurrentConnection(t *testing.T) {
 	if err := w.subscriptionAccess("codex"); err != nil {
 		t.Fatal(err)
 	}
-	if !slices.Contains(w.session.RuntimeBindings, "second-account") {
+	if !slices.Contains(w.session.RuntimeBindings, "codex-2") {
 		t.Fatal("the new account did not retain its selection")
+	}
+	if detail := ui.choices[0][0].Detail; detail != "Sign in to Codex in your browser. Culler saves this account as codex-2 and keeps the existing account. Culler then tests the connection." {
+		t.Fatalf("the sign-in of the new account names no program: %q", detail)
 	}
 }
 

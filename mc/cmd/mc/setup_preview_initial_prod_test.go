@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	for _, name := range []string{"welcome", "prepare", "docker-absent", "agent-selected", "agent-review", "agent-start", "agent-resume", "agent-absent", "agent-failure", "login-failure", "override-failure", "account-corrections", "codex-success", "claude-success", "sign-in-retry"} {
+	for _, name := range []string{"welcome", "prepare", "docker-absent", "agent-selected", "agent-review", "agent-start", "agent-resume", "agent-absent", "agent-failure", "login-failure", "override-failure", "account-added", "codex-success", "claude-success", "sign-in-retry"} {
 		setupPreviewCases[name] = func(t *testing.T) setupPreviewCase { return setupPreviewInitial(t, name) }
 	}
 }
@@ -105,7 +105,8 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 		}
 		setupFakeSignIn(w, func(setupConnection) error { return nil })
 		result.steps = []setupPreviewStep{
-			{Wait: "q exit", Send: selectKey, Name: "Select sign-in"},
+			{Wait: "q exit", Send: selectKey, Name: "Select the provider"},
+			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
 			{Wait: "q exit", Send: "\r", Name: "Confirm sign-in and model test"},
 			{Wait: "q exit", Send: "q", Name: "Review the verified agent"},
 		}
@@ -143,8 +144,9 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 			return setupRuntimeFailure(&deployment.TokenRefreshError{Status: 401, Code: "refresh_token_reused"}, "")
 		})
 		result.steps = []setupPreviewStep{
-			{Wait: "q exit", Send: "\r", Name: "Sign in to Codex"},
-			{Wait: "q exit", Send: "\r", Name: "Sign in and connect"},
+			{Wait: "q exit", Send: "\r", Name: "Select the provider"},
+			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
+			{Wait: "Sign in and connect?", Send: "\r", Name: "Sign in and connect"},
 			{Wait: "q exit", Send: "q", Name: "Connection failure"},
 		}
 		result.run = func() {
@@ -162,22 +164,20 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 		}
 		result.steps = []setupPreviewStep{
 			{Wait: "q exit", Send: choose, Name: "Connect an agent"},
-			{Wait: "q exit", Send: "\r", Name: "Sign in and connect"},
+			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
+			{Wait: "Sign in and connect?", Send: "\r", Name: "Sign in and connect"},
 			{Wait: "q exit", Send: "q", Name: "Sign-in failure"},
 		}
 		result.run = func() {
 			stage(3, "welcome", "prepare")
 			check(w.agents())
 		}
-	case "account-corrections":
+	case "account-added":
 		w.deps.identity = func(string, string) (string, error) { return strings.Repeat("a", 64), nil }
 		result.steps = []setupPreviewStep{
 			{Wait: "q exit", Send: "\r", Name: "Connect an agent"},
-			{Wait: "Name this account", Send: "\x15\r", Name: "Account name"},
-			{Wait: "Enter an account name", Send: "\x15Second Account\r", Name: "Empty account name"},
-			{Wait: "Check the account name", Send: "\x15chatgpt\r", Name: "Account name with incorrect characters"},
-			{Wait: "Choose another account name", Send: "\x15codex-2\r", Name: "Account name in use"},
-			{Wait: "q exit", Send: "q", Name: "Account confirmation"},
+			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
+			{Wait: "Sign in and connect?", Send: "q", Name: "Added account and confirmation"},
 		}
 		result.run = func() {
 			stage(3, "welcome", "prepare")

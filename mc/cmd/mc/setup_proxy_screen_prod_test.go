@@ -102,6 +102,8 @@ func TestTerminalSetupProviderProxyFailureScreens(t *testing.T) {
 				}
 				capture("Connection choices", "q exit")
 				session.send("\r")
+				capture("Access method choices", "Choose the access method")
+				session.send("\r")
 				capture("Sign-in confirmation", "Sign in and connect?")
 				session.send("\r")
 				capture("Connection progress", "Connecting Codex (")

@@ -28,6 +28,9 @@ type setupConnection struct {
 	Binding string
 	Mode    string
 	Prepare func() error
+	// Harness names the program of an account that Prepare creates, and Account names that account.
+	Harness string
+	Account string
 	// Reported is true when the line above the failure already names the agent and the result.
 	Reported bool
 }
@@ -144,11 +147,9 @@ func (w *setupWizard) agentChoices(returnStage int) (retErr error) {
 			}
 		}
 		choices = append(choices,
-			setupChoice("login:codex", "Sign in to Codex", ""),
-			setupChoice("login:claude-sdk", "Sign in to Claude Code", ""),
-			setupChoice("api-key:codex", "Use "+operatorconfig.Default().Runtimes.Credentials["codex-api-key"].Name, "API charges apply."),
-			setupChoice("api-key:claude-sdk", "Use "+operatorconfig.Default().Runtimes.Credentials["claude-api-key"].Name, "API charges apply."),
-			setupChoice("api-key:opencode", "Use another provider's API key", "OpenCode runs the agent. API charges apply."),
+			setupChoice("provider:codex", "Use "+setupProviderName("codex"), "Sign in to Codex or use an API key."),
+			setupChoice("provider:claude-sdk", "Use "+setupProviderName("claude-sdk"), "Sign in to Claude Code or use an API key."),
+			setupChoice("provider:opencode", "Use another provider", "Use an API key. OpenCode runs the agent. API charges apply."),
 		)
 		choice, err := w.ui.Choose("Choose how to connect", choices, 0)
 		if err != nil {
@@ -164,12 +165,47 @@ func (w *setupWizard) agentChoices(returnStage int) (retErr error) {
 			if err == nil && w.connectionHealthy(binding) {
 				return w.selectAgent(binding)
 			}
-		case strings.HasPrefix(choice, "login:"):
-			err = w.subscriptionAccess(strings.TrimPrefix(choice, "login:"))
-		case strings.HasPrefix(choice, "api-key:"):
-			err = w.apiKeyAccess(strings.TrimPrefix(choice, "api-key:"))
+		case choice == "provider:opencode":
+			err = w.apiKeyAccess("opencode")
+		case strings.HasPrefix(choice, "provider:"):
+			err = w.providerAccess(strings.TrimPrefix(choice, "provider:"))
 		}
 		if err != nil && !errors.Is(err, onboarding.ErrBack) {
+			return err
+		}
+	}
+}
+
+// setupProviderName returns the catalog name of the provider that a harness family connects to.
+func setupProviderName(harness string) string {
+	for _, provider := range deployment.AgentProviderCatalog() {
+		if provider.Harness == harness {
+			return provider.Name
+		}
+	}
+	return setupProgramName(harness)
+}
+
+func setupProgramName(harness string) string {
+	return map[string]string{"codex": "Codex", "claude-sdk": "Claude Code"}[harness]
+}
+
+// providerAccess offers the sign-in before the API key. Back from either access method returns to this choice.
+func (w *setupWizard) providerAccess(harness string) error {
+	for {
+		choice, err := w.ui.Choose("Choose the access method", []onboarding.Choice{
+			setupChoice("login", "Sign in to "+setupProgramName(harness), "Use your subscription."),
+			setupChoice("api-key", "Use an API key", "API charges apply."),
+		}, 0)
+		if err != nil {
+			return err
+		}
+		if choice == "login" {
+			err = w.subscriptionAccess(harness)
+		} else {
+			err = w.apiKeyAccess(harness)
+		}
+		if !errors.Is(err, onboarding.ErrBack) {
 			return err
 		}
 	}
@@ -328,14 +364,19 @@ func (w *setupWizard) connectFlagSelections() error {
 }
 
 func (w *setupWizard) checkConnection(connection setupConnection) error {
-	program := "the agent"
-	if cfg, err := w.catalog(); err == nil {
-		if name := map[string]string{"codex": "Codex", "claude-sdk": "Claude Code"}[cfg.Runtimes.Bindings[connection.Binding].Harness]; name != "" {
-			program = name
-		}
+	program := setupProgramName(connection.Harness)
+	if cfg, err := w.catalog(); err == nil && program == "" {
+		program = setupProgramName(cfg.Runtimes.Bindings[connection.Binding].Harness)
+	}
+	if program == "" {
+		program = "the agent"
 	}
 	prompt := "Sign in and connect?"
-	choice := setupChoice("check", "Sign in", "Sign in to "+program+" in your browser. Culler then tests the connection.")
+	added := ""
+	if connection.Account != "" {
+		added = " Culler saves this account as " + connection.Account + " and keeps the existing account."
+	}
+	choice := setupChoice("check", "Sign in", "Sign in to "+program+" in your browser."+added+" Culler then tests the connection.")
 	if connection.Mode == "api_key" || connection.Mode == "saved" {
 		prompt = "Test this connection?"
 		choice = setupChoice("check", "Test model", "The test uses the selected model and can incur provider charges.")

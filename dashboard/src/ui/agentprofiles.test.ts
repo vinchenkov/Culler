@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, needsAuthorization, operationSummary, profilePayload, profileStatus, providerChoices } from "./agentprofiles.js";
+import { effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, needsAuthorization, operationSummary, plannedConnection, profilePayload, profileStatus, providerChoices, releaseProviders } from "./agentprofiles.js";
 
 const ROLES = ["strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie"];
 
@@ -210,11 +210,46 @@ test("the provider search lists name matches before identifier and address match
     { id: "opencode:opencode-go", name: "OpenCode Go", harness: "opencode", catalog_entry: "opencode-go", address: "https://opencode.ai/inference/go/openai/v1" },
   ];
   const names = (query: string) => providerChoices(providers, query).map(provider => provider.name);
-  expect(names("")).toEqual(["Anthropic", "OpenAI"]);
+  expect(names("")).toEqual(["Blue Claw", "Kimi For Coding (kimi.ai)", "Moonshot AI", "OpenCode Go"]);
   expect(names("kim")).toEqual(["Kimi For Coding (kimi.ai)"]);
-  expect(names("claude")).toEqual(["Anthropic"]);
+  expect(names("claude")).toEqual([]);
   expect(names("opencode")).toEqual(["OpenCode Go"]);
-  expect(names("openai")).toEqual(["OpenAI", "Blue Claw", "OpenCode Go"]);
-  expect(names("ai")).toEqual(["Kimi For Coding (kimi.ai)", "Moonshot AI", "OpenAI", "Blue Claw", "OpenCode Go"]);
+  expect(names("openai")).toEqual(["Blue Claw", "OpenCode Go"]);
+  expect(names("ai")).toEqual(["Kimi For Coding (kimi.ai)", "Moonshot AI", "Blue Claw", "OpenCode Go"]);
   expect(names("API.KIMI.AI")).toEqual(["Kimi For Coding (kimi.ai)"]);
+});
+
+test("the release providers list the first harness family first, each with its sign-in and its API key", () => {
+  const catalog = {
+    providers: [
+      { id: "claude-api-key", name: "Second provider", harness: "claude-sdk", kind: "claude-api-key" },
+      { id: "opencode:fixture", name: "Fixture", harness: "opencode", kind: "opencode-api-key" },
+      { id: "codex-api-key", name: "First provider", harness: "codex", kind: "codex-api-key" },
+    ],
+    integrations: [
+      { id: "claude", harness: "claude-sdk", kind: "claude-oauth" }, { id: "claude-api-key", harness: "claude-sdk", kind: "claude-api-key" },
+      { id: "chatgpt", harness: "codex", kind: "codex-oauth" }, { id: "codex-api-key", harness: "codex", kind: "codex-api-key" },
+    ],
+  };
+  expect(releaseProviders(catalog).map(provider => [provider.name, provider.subscription.id, provider.api_key.id]))
+    .toEqual([["First provider", "chatgpt", "codex-api-key"], ["Second provider", "claude", "claude-api-key"]]);
+  expect(releaseProviders({ providers: [], integrations: [] })).toEqual([]);
+});
+
+test("a new connection receives a name from its provider and its access method", () => {
+  const template = { id: "codex-api-key", kind: "codex-api-key", harness: "codex", catalog_entry: "fixture" };
+  const idle = { id: "codex-api-key", name: "Fixture API key", kind: "codex-api-key", access_status: "disconnected" };
+  expect(plannedConnection({ connections: [], profiles: [] }, template, "Fixture API key")).toEqual({ id: null, name: "Fixture API key" });
+  // A connection with the name and no credential receives the credential.
+  expect(plannedConnection({ connections: [idle], profiles: [{ connection_id: idle.id, enabled: false }] }, template, "Fixture API key")).toEqual({ id: "codex-api-key", name: "Fixture API key" });
+  // A used name gives the next free name.
+  for (const catalog of [
+    { connections: [{ ...idle, access_status: "connected" }], profiles: [] },
+    { connections: [idle], profiles: [{ connection_id: idle.id, enabled: true }] },
+    { connections: [{ ...idle, kind: "claude-api-key" }], profiles: [] },
+  ]) expect(plannedConnection(catalog, template, "Fixture API key")).toEqual({ id: null, name: "Fixture API key 2" });
+  const open = { id: "opencode:fixture", kind: "opencode-api-key", harness: "opencode", catalog_entry: "fixture" };
+  const other = { id: "connection-1", name: "Fixture API key", kind: "opencode-api-key", catalog_entry: "other", access_status: "disconnected" };
+  expect(plannedConnection({ connections: [other], profiles: [] }, open, "Fixture API key")).toEqual({ id: null, name: "Fixture API key 2" });
+  expect(plannedConnection({ connections: [{ ...other, catalog_entry: "fixture" }], profiles: [] }, open, "fixture api key")).toEqual({ id: "connection-1", name: "Fixture API key" });
 });

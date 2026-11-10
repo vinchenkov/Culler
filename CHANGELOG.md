@@ -19,6 +19,10 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - The terminal setup provider search updates its list of matching providers after each key, as the dashboard search does.
 - The provider search in terminal setup and the dashboard lists name matches before identifier and address matches.
 - The provider search ignores the `opencode:` prefix of catalog identifiers, so a search for "opencode" matches only OpenCode providers.
+- Terminal setup and the dashboard first offer each provider with a sign-in, then **Use another provider**. A provider with a sign-in offers the sign-in before the API key.
+- Terminal setup and the dashboard name each new connection, and they request no connection name or account name.
+- The provider search lists the providers that OpenCode runs, and an empty search lists each of them.
+- The dashboard marks the selected provider in the search results and shows it above the API key field.
 
 ### Known limits
 

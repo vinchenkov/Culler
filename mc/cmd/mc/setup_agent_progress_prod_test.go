@@ -69,7 +69,7 @@ func TestTerminalSetupAgentProgressPrecedesReview(t *testing.T) {
 			name = "failure"
 		}
 		t.Run(name, func(t *testing.T) {
-			w, ui := setupAgentFixture(t, "login:codex", "check", ":exit")
+			w, ui := setupAgentFixture(t, "provider:codex", "login", "check", ":exit")
 			w.session.ReleaseID = releaseBuildID
 			w.session.Stage = 2
 			w.session.Completed = []string{"welcome", "prepare"}
@@ -127,8 +127,9 @@ func init() {
 			return setupPreviewCase{
 				wizard: w,
 				steps: []setupPreviewStep{
-					{Wait: "q exit", Send: "\r", Name: "Sign in to Codex"},
-					{Wait: "q exit", Send: "\r", Name: "Sign in and connect"},
+					{Wait: "q exit", Send: "\r", Name: "Select the provider"},
+					{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
+					{Wait: "Sign in and connect?", Send: "\r", Name: "Sign in and connect"},
 					{Wait: "q exit", Send: "q", Name: "Connection result"},
 				},
 				run: func() {

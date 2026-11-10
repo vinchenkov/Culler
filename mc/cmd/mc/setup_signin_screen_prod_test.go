@@ -177,7 +177,7 @@ func TestTerminalSetupSignInConfirmationFitsTheScreen(t *testing.T) {
 					session := &setupScreenSession{t: t, master: master, screen: newSetupScreen(columns, 24)}
 					screen := session.wait("q exit")
 					menu := strings.Join(screen, "\n")
-					if !strings.Contains(menu, "Sign in to Codex") || !strings.Contains(menu, "Sign in to Claude Code") || strings.Contains(menu, "provider token") {
+					if !strings.Contains(menu, "Use "+setupProviderName("codex")) || !strings.Contains(menu, "Use "+setupProviderName("claude-sdk")) || !strings.Contains(menu, "Use another provider") || strings.Contains(menu, "provider token") {
 						t.Fatalf("The menu contains unsupported choices:\n%s", menu)
 					}
 					if harness == "claude-sdk" {
@@ -185,6 +185,12 @@ func TestTerminalSetupSignInConfirmationFitsTheScreen(t *testing.T) {
 					} else {
 						session.send("\r")
 					}
+					access := session.wait("Choose the access method")
+					if first := slices.IndexFunc(access, func(line string) bool { return strings.Contains(line, "Sign in to") }); first < 0 ||
+						!slices.ContainsFunc(access[first:], func(line string) bool { return strings.Contains(line, "Use an API key") }) {
+						t.Fatalf("The access methods lack the sign-in before the API key: %q", access)
+					}
+					session.send("\r")
 					screen = session.wait("Sign in and connect?")
 					text := strings.Join(screen, "\n")
 					for _, line := range []string{"Culler", "✓  ✓  ●  ·  ·  ·", "3 of 6  Connect an agent", "Sign in and connect?", "↑↓ move  enter select  b back  q exit"} {

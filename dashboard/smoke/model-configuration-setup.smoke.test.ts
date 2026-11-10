@@ -70,10 +70,16 @@ test("the create form offers only usable connections, both subscription integrat
   await page.getByTestId("profile-use-existing").click();
   expect(await page.getByTestId("profile-connection_id").locator("option").allInnerTexts()).toEqual(["Select a connection", "chatgpt · Credential saved"]);
   await page.getByTestId("profile-back").click();
-  await page.getByTestId("profile-use-subscription").click();
-  expect(await page.locator('[data-testid^="profile-sign-in-"]').evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).dataset.testid)))
-    .toEqual(["profile-sign-in-chatgpt", "profile-sign-in-claude"]);
-  await page.getByTestId("profile-back").click();
+  expect(await page.locator('[data-testid^="profile-use-"]').evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).dataset.testid)))
+    .toEqual(["profile-use-codex", "profile-use-claude-sdk", "profile-use-provider", "profile-use-existing"]);
+  for (const [harness, integration] of [["codex", "chatgpt"], ["claude-sdk", "claude"]]) {
+    await page.getByTestId(`profile-use-${harness}`).click();
+    expect(await page.locator('[data-testid^="profile-sign-in-"]').evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).dataset.testid)))
+      .toEqual([`profile-sign-in-${integration}`]);
+    expect(await page.getByTestId("profile-api_key").getAttribute("type")).toBe("password");
+    expect(await page.getByTestId("profile-connection_name").count()).toBe(0);
+    await page.getByTestId("profile-back").click();
+  }
   for (const id of ["profile-use-endpoint", "profile-endpoint", "profile-token", "profile-no-token", "profile-base_url"]) {
     expect(await page.getByTestId(id).count()).toBe(0);
   }

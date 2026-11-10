@@ -81,7 +81,9 @@ func TestTerminalSetupRejectedAPIKeyReplacementScreens(t *testing.T) {
 					return lines
 				}
 				capture("Connection choices", "q exit")
-				session.send("\x1b[B\x1b[B\r")
+				session.send("\r")
+				capture("Access method choices", "Choose the access method")
+				session.send("\x1b[B\r")
 				capture("Saved key choices", "Choose the API key")
 				session.send("\x1b[B\r")
 				capture("Masked replacement key", "Your input stays concealed.")
@@ -96,7 +98,9 @@ func TestTerminalSetupRejectedAPIKeyReplacementScreens(t *testing.T) {
 				capture("Retry permits another key", "Your input stays concealed.")
 				session.send(":back\r")
 				capture("Return to connection choices", "Choose how to connect")
-				session.send("\x1b[B\x1b[B\r")
+				session.send("\r")
+				capture("Access method choices after the return", "Choose the access method")
+				session.send("\x1b[B\r")
 				capture("Keep the previous key", "Choose the API key")
 				session.send("\r")
 				capture("Choose the model", "Model")
@@ -197,7 +201,9 @@ func TestTerminalSetupAPIKeyScreens(t *testing.T) {
 						fmt.Fprintf(&evidence, "%s\n%s\n\n", title, strings.Join(lines, "\n"))
 					}
 					capture("Connection choices", "q exit")
-					session.send("\x1b[B\x1b[B\r")
+					session.send("\r")
+					capture("Access method choices", "Choose the access method")
+					session.send("\x1b[B\r")
 					// The concealed-input hint appears after the terminal disables echo.
 					capture("Masked API key prompt", "Your input stays concealed.")
 					session.send("synthetic-key-for-screen\r")

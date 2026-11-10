@@ -96,10 +96,10 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 					fmt.Fprintf(&evidence, "%s\n%s\n\n", title, strings.Join(lines, "\n"))
 				}
 				capture("Connection choices", "q exit")
-				session.send(strings.Repeat("\x1b[B", 4))
-				capture("OpenCode connection choice", "OpenCode runs the agent.")
+				session.send(strings.Repeat("\x1b[B", 2))
+				capture("OpenCode connection choice", "API charges apply.")
 				session.send("\r")
-				capture("Provider search and release integrations", "OpenAI")
+				capture("Provider search and each provider", "Type to search the")
 				// The input line ends each frame, so the screen holds the list of the complete query.
 				search := func(title, keys, query string, texts ...string) {
 					session.send(keys)
@@ -202,13 +202,13 @@ func TestSetupProviderSearchMatchesTheDashboardSearch(t *testing.T) {
 		}
 		return result
 	}
-	if got := labels(""); !slices.Equal(got, []string{"Anthropic", "OpenAI"}) {
+	if got := labels(""); len(got) != len(deployment.AgentProviderCatalog())-2 || !slices.Contains(got, "Moonshot AI") || slices.Contains(got, setupProviderName("codex")) {
 		t.Fatalf("The empty search lists %q.", got)
 	}
 	if got := labels("kim"); !slices.Equal(got, []string{"Kimi For Coding (kimi.com)", "Kimi For Coding (kimi.ai)"}) {
 		t.Fatalf("The search for kim lists %q.", got)
 	}
-	if got := labels("claude"); !slices.Contains(got, "Anthropic") {
+	if got := labels("moonshotai"); !slices.Contains(got, "Moonshot AI") {
 		t.Fatalf("The identifier search lists %q.", got)
 	}
 	if got := labels("opencode"); !slices.Contains(got, "OpenCode Go") || slices.Contains(got, "Moonshot AI") {
@@ -217,7 +217,7 @@ func TestSetupProviderSearchMatchesTheDashboardSearch(t *testing.T) {
 	if got := labels("API.MOONSHOT.AI"); !slices.Equal(got, []string{"Moonshot AI"}) {
 		t.Fatalf("The address search lists %q.", got)
 	}
-	if got := labels("openai"); len(got) < 2 || got[0] != "OpenAI" {
+	if got := labels("openai"); len(got) < 2 || slices.Contains(got, setupProviderName("codex")) {
 		t.Fatalf("The search for openai lists %q.", got)
 	}
 	if got := labels("open"); len(got) < 4 || !slices.ContainsFunc(got[:4], func(label string) bool { return strings.HasPrefix(label, "Open") }) ||
@@ -231,8 +231,8 @@ func TestSetupProviderSearchFitsTheScreen(t *testing.T) {
 	t.Setenv("TERM", "xterm-256color")
 	t.Setenv("NO_COLOR", "1")
 	count := len(setupProviderChoices("/"))
-	if count != len(deployment.AgentProviderCatalog()) {
-		t.Fatalf("The search for / lists %d of %d providers.", count, len(deployment.AgentProviderCatalog()))
+	if count != len(setupProviderChoices("")) {
+		t.Fatalf("The search for / lists %d of %d providers.", count, len(setupProviderChoices("")))
 	}
 	for _, columns := range []int{80, 40} {
 		t.Run(fmt.Sprint(columns), func(t *testing.T) {
@@ -243,14 +243,14 @@ func TestSetupProviderSearchFitsTheScreen(t *testing.T) {
 			terminal := onboarding.NewTerminal(slave, slave)
 			done := make(chan error, 1)
 			go func() {
-				_, err := terminal.Search(setupProviderSearch)
+				_, err := terminal.Search(setupProviderSearch())
 				done <- err
 			}()
 			var output strings.Builder
 			buffer := make([]byte, 65536)
 			deadline := time.Now().Add(30 * time.Second)
 			for typed, finished := false, false; ; {
-				if !typed && strings.Contains(output.String(), "Current release integrations.") {
+				if !typed && strings.Contains(output.String(), "Type to search the") {
 					if _, err := master.Write([]byte("/" + strings.Repeat("\x1b[B", count) + "\x03")); err != nil {
 						t.Fatal(err)
 					}

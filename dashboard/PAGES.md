@@ -1968,7 +1968,7 @@ An application programming interface (API) key connection with a rejected key of
 A host credential failure names the Keychain recovery action.
 A host proxy failure names the host recovery action.
 A quota failure names the provider allowance action.
-The panel shows a provider name only when the operator entered that name.
+The panel shows a provider name only from the release catalog or from a connection name.
 
 The panel header and **Close** remain visible when the operator scrolls.
 Each panel view shows **Close** and a maximum of one other navigation control.
@@ -1985,9 +1985,16 @@ A supported connection requires a saved credential and no current connection fai
 When no connection has usable access, the form directs the operator to **Back** and the connection choices.
 The Edit form keeps the current connection of its agent profile in the list.
 
-**Connect a subscription account** offers both subscription integrations on every deployment.
-The configuration template supplies these integrations.
-**Connect with an API key** offers OpenAI and Anthropic API keys.
+The first screen of the creation form offers one choice for each provider with a subscription integration, then **Use another provider**, then **Use an existing connection**.
+The release catalog supplies the provider names, and the configuration template supplies the subscription integrations on every deployment.
+A provider with a subscription integration offers its sign-in first and its API key second.
+**Use another provider** offers the provider search of the release catalog and one API key field.
+The search lists the providers that OpenCode runs, and an empty search lists each of them.
+The selected provider has a selection mark, a checked selector, and a summary above the key field.
+The summary remains when a new search hides the selected provider.
+The form names each new connection after its provider and its access method, and it requests no connection name.
+A connection with that name and no credential receives the new credential, unless an enabled agent profile uses it.
+Another connection with that name gives the new connection the next free number.
 The API key form contains one concealed key field.
 A successful save clears that field.
 The browser keeps the key out of browser storage and diagnostic records.
@@ -2006,7 +2013,7 @@ Each step shows **Back** and its next action in one row below the form.
 The form preserves nonsecret values during corrections.
 
 The account form offers Codex sign-in with an OpenAI account and Claude Code sign-in with an Anthropic account.
-The form suggests only the connection name and the agent profile name.
+The form suggests only the agent profile name.
 Each suggestion follows its source until the operator enters another value.
 A change of the connection type clears each suggestion.
 

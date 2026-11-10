@@ -17,17 +17,20 @@ import (
 )
 
 // setupProviderSearch matches the provider search of the dashboard.
-var setupProviderSearch = onboarding.Search{
-	Label:      "Provider",
-	Hints:      []string{"Search by name, identifier, or address.", "Culler sends keys only to providers in its catalog."},
-	QueryHints: []string{"Leave the search empty for the current release integrations."},
-	Initial:    "Current release integrations.",
-	Find:       setupProviderChoices,
-	Empty:      onboarding.Correction{Title: "No provider found", Lines: []string{"Enter another name, identifier, or address."}},
-	Choose:     "Choose the provider",
+func setupProviderSearch() onboarding.Search {
+	return onboarding.Search{
+		Label:      "Provider",
+		Hints:      []string{"Search by name, identifier, or address.", "Culler sends keys only to providers in its catalog."},
+		QueryHints: []string{"Leave the search empty to list each provider."},
+		Initial:    fmt.Sprintf("Type to search the %d providers.", len(setupProviderChoices(""))),
+		Find:       setupProviderChoices,
+		Empty:      onboarding.Correction{Title: "No provider found", Lines: []string{"Enter another name, identifier, or address."}},
+		Choose:     "Choose the provider",
+	}
 }
 
 // setupProviderChoices lists name matches before identifier matches and address matches.
+// The list holds the providers that OpenCode runs. The first menu offers the other providers.
 func setupProviderChoices(query string) []onboarding.Choice {
 	query = strings.ToLower(strings.TrimSpace(query))
 	type match struct {
@@ -37,7 +40,7 @@ func setupProviderChoices(query string) []onboarding.Choice {
 	matches := []match{}
 	for _, provider := range deployment.AgentProviderCatalog() {
 		rank := setupProviderRank(provider, query)
-		if rank < 0 || query == "" && provider.Harness == "opencode" {
+		if rank < 0 || provider.Harness != "opencode" {
 			continue
 		}
 		matches = append(matches, match{rank, onboarding.Choice{ID: provider.ID, Label: provider.Name, Detail: provider.Address + "\n" + provider.Website, AlwaysDetail: true}})
@@ -71,7 +74,7 @@ func setupProviderRank(provider deployment.AgentConnectionView, query string) in
 }
 
 func (w *setupWizard) openCodeProvider(choice *onboarding.AccessChoice) error {
-	selected, err := w.search(setupProviderSearch)
+	selected, err := w.search(setupProviderSearch())
 	if err != nil {
 		return err
 	}

@@ -66,7 +66,9 @@ func TestTerminalSetupUntestedConnectionScreens(t *testing.T) {
 						fmt.Fprintf(&evidence, "%s\n%s\n\n", title, strings.Join(lines, "\n"))
 					}
 					capture("Connection choices", "q exit")
-					session.send("\x1b[B\x1b[B\r")
+					session.send("\r")
+					capture("Access method choices", "Choose the access method")
+					session.send("\x1b[B\r")
 					capture("Masked API key prompt", "Your input stays concealed.")
 					session.send("synthetic-first-key\r")
 					capture("Model prompt", "Model")
@@ -79,7 +81,9 @@ func TestTerminalSetupUntestedConnectionScreens(t *testing.T) {
 						capture("Retry the test", "Test this connection?")
 						session.send("\r")
 					} else {
-						session.send("\x1b[B\x1b[B\x1b[B\x1b[B\r")
+						session.send("\x1b[B\x1b[B\r")
+						capture("Access method choices for another key", "Choose the access method")
+						session.send("\x1b[B\r")
 						capture("Masked API key prompt for another key", "Your input stays concealed.")
 						session.send("synthetic-second-key\r")
 						capture("Model prompt for another key", "Model")

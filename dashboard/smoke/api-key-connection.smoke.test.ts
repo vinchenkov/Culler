@@ -14,8 +14,12 @@ test("one masked key creates a connection and survives a failed model test witho
   const { page } = smoke;
   const secret = "synthetic-api-key-canary";
   const data = { revision: "revision-1", connections: [] as any[], profiles: [] as any[], integrations: [
-    { id: "codex-api-key", kind: "codex-api-key", name: "OpenAI API key", authorization_available: true },
-    { id: "claude-api-key", kind: "claude-api-key", name: "Anthropic API key", authorization_available: true },
+    { id: "codex-api-key", kind: "codex-api-key", harness: "codex", name: "First key", authorization_available: true },
+    { id: "claude-api-key", kind: "claude-api-key", harness: "claude-sdk", name: "Second key", authorization_available: true },
+    { id: "claude", kind: "claude-oauth", harness: "claude-sdk", name: "Second sign-in", authorization_available: true },
+  ], providers: [
+    { id: "codex-api-key", kind: "codex-api-key", harness: "codex", name: "First provider" },
+    { id: "claude-api-key", kind: "claude-api-key", harness: "claude-sdk", name: "Second provider" },
   ] };
   let keySaves = 0;
   let tests = 0;
@@ -25,6 +29,7 @@ test("one masked key creates a connection and survives a failed model test witho
     const request = route.request().postDataJSON();
     expect(request.api_key).toBe(secret);
     expect(request.template_id).toBe("claude-api-key");
+    expect(request.name).toBe("Second provider API key");
     keySaves++;
     data.connections = [{ id: "key-connection", name: request.name, kind: "claude-api-key", access_status: "connected", authorization_id: "authorization-1", models: [] }];
     await route.fulfill({ json: { ...data, connection_id: "key-connection" } });
@@ -43,8 +48,13 @@ test("one masked key creates a connection and survives a failed model test witho
   await page.getByTestId("tab-pipeline").click();
   await page.getByRole("button", { name: "Model configuration", exact: true }).click();
   await page.getByTestId("profile-create").click();
-  await page.getByTestId("profile-use-api-key").click();
-  await page.getByTestId("profile-provider-claude-api-key").click();
+  expect(await page.locator('[data-testid^="profile-use-"]').evaluateAll(nodes => nodes.map(node => node.textContent)))
+    .toEqual(["Use First provider", "Use Second provider", "Use another provider", "Use an existing connection"]);
+  await page.getByTestId("profile-use-claude-sdk").click();
+  expect(await page.locator('[data-testid^="profile-access-"]').evaluateAll(nodes => nodes.map(node => (node as HTMLElement).dataset.testid)))
+    .toEqual(["profile-access-subscription", "profile-access-api-key"]);
+  expect(await page.getByTestId("profile-connection_name").count()).toBe(0);
+  await page.screenshot({ path: evidencePath("provider-access-methods.png") });
   const input = page.getByTestId("profile-api_key");
   expect(await input.getAttribute("type")).toBe("password");
   await input.fill(secret);
@@ -88,6 +98,7 @@ test("OpenCode search, catalog models, download retry, and model test retain the
   await page.route("**/api/agent-profiles/connection-save", async route => {
     const request = route.request().postDataJSON();
     expect(request.template_id).toBe("opencode:fixture");
+    expect(request.name).toBe("Fixture provider API key");
     data.connections = [{ ...providers[1], id: "fixture-connection", access_status: "connected", authorization_id: "fixture-authorization", models: [] }];
     await route.fulfill({ json: { ...data, connection_id: "fixture-connection" } });
   });
@@ -110,14 +121,22 @@ test("OpenCode search, catalog models, download retry, and model test retain the
   await page.getByTestId("tab-pipeline").click();
   await page.getByRole("button", { name: "Model configuration", exact: true }).click();
   await page.getByTestId("profile-create").click();
-  await page.getByTestId("profile-use-api-key").click();
-  expect(await page.getByTestId("profile-provider-result").count()).toBe(1);
+  await page.getByTestId("profile-use-provider").click();
+  expect(await page.getByTestId("profile-provider-result").count()).toBe(2);
+  expect(await page.getByTestId("profile-selected-provider").innerText()).toContain("None");
   const search = page.getByTestId("profile-key-provider");
   await search.fill("no-provider-987"); expect(await page.getByTestId("profile-provider-result").count()).toBe(0);
   await search.fill("fixture"); expect(await page.getByTestId("profile-provider-result").count()).toBe(2);
   expect(await page.getByTestId("profile-provider-results").innerText()).toContain("https://regional.fixture.invalid/v1");
   await search.fill("https://api.fixture.invalid/v1"); expect(await page.getByTestId("profile-provider-result").count()).toBe(1);
   await page.getByTestId("profile-provider-opencode:fixture").click();
+  expect(await page.getByTestId("profile-provider-opencode:fixture").isChecked()).toBe(true);
+  expect(await page.locator(".profile-provider.selected").innerText()).toContain("Selected");
+  await search.fill("region");
+  expect(await page.locator(".profile-provider.selected").count()).toBe(0);
+  expect(await page.getByTestId("profile-selected-provider").innerText()).toContain("Fixture provider\nhttps://api.fixture.invalid/v1");
+  await search.fill("fixture");
+  await page.screenshot({ path: evidencePath("provider-selected.png") });
   await page.getByTestId("profile-api_key").fill("synthetic-open-key");
   await page.getByTestId("profile-key-connect").click();
   const model = page.getByTestId("profile-model");
