@@ -14,6 +14,8 @@ sources:
     resource: repo://mc/domain/requirements.go
   - id: openwiki-source-e876d4f934fe1b8e2de3721c
     resource: repo://mc/substrate/schema.sql
+  - id: openwiki-source-b4da7cec419704ae15f02306
+    resource: repo://mc/verbs/arbiter_input_test.go
   - id: openwiki-source-255135c85fe9ddb288212bbf
     resource: repo://mc/verbs/artifactsnapshot.go
   - id: openwiki-source-7f547d2c5de5589b3c27e6a4
@@ -24,8 +26,6 @@ sources:
     resource: repo://mc/verbs/decisionresolution_test.go
   - id: openwiki-source-74d6ad23a2a8895d737d9013
     resource: repo://mc/verbs/delivery.go
-  - id: openwiki-source-bdcdf989ab8381c989787604
-    resource: repo://mc/verbs/directives_test.go
   - id: openwiki-source-3bc5b077708f9534abc3b95d
     resource: repo://mc/verbs/directives/arbiter.md
   - id: openwiki-source-959768f661d526f65eea9d8d
@@ -40,6 +40,8 @@ sources:
     resource: repo://mc/verbs/packet.go
   - id: openwiki-source-19fe7d061285a802d1068aca
     resource: repo://mc/verbs/roles.go
+  - id: openwiki-source-717b9c51f4b41e8d918f5c19
+    resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
   - id: openwiki-source-2244ea442a4c07aeb880c8c8
@@ -52,10 +54,10 @@ sources:
     resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T00:42:04.358Z
 ---
 
 # The task pipeline roles
@@ -134,7 +136,8 @@ They can retrieve historical task details through their permitted read commands 
 Historical tasks do not qualify as existing work for `duplicate_of`.
 The Arbiter uses its operator decision procedure when the all-reject rules prevent a permitted verdict.
 These are role instructions; historical context does not prove that an agent follows them.
-`mc/verbs/directives_test.go` checks the detailed history instructions for the Arbiter.
+The Arbiter directive points to **Historical work** in `mc-arbiter` when either historical part is present.
+`mc/verbs/arbiter_input_test.go` checks that procedure's delivery and the rules for history comparison and cancellation reasons.
 `mc/verbs/strategist_input_test.go` checks the Strategist duplicate rules, task read, and use of cancellation reasons across its delivered input.
 `mc/verbs/dispatchverb_test.go` checks historical entries in dispatched briefs and isolation between Projects.
 
@@ -193,6 +196,40 @@ A customization conflict uses the separate conflict terminal.
 The directive requires exactly one permitted terminal action, including after an execution failure.
 See [failure controls](../concepts/failure-controls.md) for the state effects of these reports.
 
+## Arbiter review and submission
+
+The Arbiter reviews the assigned pool against the accepted Vision, repository evidence, and relevant operator resolutions.
+Its directive requires rank by contribution to the Vision relative to cost.
+It requires exactly one promotion unless the all-reject procedure permits rejection of every proposal.
+The Culler contract includes the promotion limit and criteria rules, so Project customization preserves both.
+
+Overlap means changes to the same files or behavior.
+The Arbiter compares full descriptions across the pool, active tasks, and merged work.
+It rejects a proposal that overlaps active or merged work, even when the proposal is better.
+An extension of merged work is not a duplicate.
+When two valid pool proposals overlap, the directive requires promotion of the superset and rejection of the subset.
+Work in another Project cannot justify a duplicate rejection.
+These checks protect accepted work and prevent competing proposals from reaching development together.
+
+The repository copy remains read-only.
+The Arbiter preserves proposal requirements and cannot rewrite proposals, change active tasks, or start another role.
+Its directive permits bounded review with read-only subagents; final rank and selection remain with the Arbiter.
+The agent can work inline when the pool fits in one context, with its reason stated before the terminal.
+
+The `Terminal action` section of `mc-arbiter` defines one JSON object on standard input to the verdict command.
+Its only field, `verdicts`, contains the task identifier and decision for each proposal, plus a concrete reason for each rejection.
+Optional rejection fields declare a duplicate reference or invalid criteria; the two fields are mutually exclusive.
+`ArbiterDecide` in `mc/verbs/roles.go` checks the role, run, payload, and exact snapshotted pool before it applies the transaction.
+Unknown fields or text after the JSON object cause refusal.
+A refused batch applies no changes; the agent corrects the refusal before another attempt.
+
+The directive points to the dependency procedure when review requires Project dependencies.
+That procedure checks retained dependencies against current declarations and the selected image before use.
+The Arbiter judges the pool when available results permit a verdict after an execution problem.
+Otherwise, the command skill supplies an execution failure terminal or the procedure for a required operator decision.
+See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) for procedure locations and [decision resolution](decision-resolution.md#shared-proposal-decisions) for operator questions.
+The [audit context](../concepts/agent-input.md#arbiter-instruction-audit) explains the original report at `docs/arbiter-instruction-audit.md`.
+
 ## Checks required for a proposal
 
 The Strategist must name a check for each success criterion.
@@ -228,6 +265,8 @@ The Arbiter identifies the invalid criterion and violated rule; the command vali
 The command checks the complete snapshotted pool and applies the batch in one transaction.
 For an ordinary all-reject batch, it counts other ready tasks in the same Project.
 Ready tasks are unarchived, unblocked, unstalled rows with positive stage rank outside the pool.
+The command skill identifies ready statuses as `proposed`, `seeded`, `worked`, or `verified`.
+The agent checks the task list because the Active tasks brief omits `stalled`.
 With no such task, `requireAllRejectException` requires an exception on every rejection.
 A batch can combine invalid-criteria rejections and duplicate rejections.
 A duplicate reference must name work outside the pool in the same Project.

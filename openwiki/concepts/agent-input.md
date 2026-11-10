@@ -6,8 +6,12 @@ tags: [agent-input, directives, run-brief, skills, prompts]
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
+  - id: openwiki-source-1f80f6c93352c43552f54e73
+    resource: repo://docs/arbiter-instruction-audit.md
   - id: openwiki-source-b578a24182c530b5d8630c21
     resource: repo://mc/dispatch/dispatch.go
+  - id: openwiki-source-b4da7cec419704ae15f02306
+    resource: repo://mc/verbs/arbiter_input_test.go
   - id: openwiki-source-b93e6f09bf1a3c497f977289
     resource: repo://mc/verbs/brief_history_test.go
   - id: openwiki-source-36bed318ff0007713cf91e1b
@@ -42,6 +46,8 @@ sources:
     resource: repo://mc/verbs/roleskills.go
   - id: openwiki-source-58286c7d3d2cfcf24add95f4
     resource: repo://mc/verbs/setup_agent_input_test.go
+  - id: openwiki-source-717b9c51f4b41e8d918f5c19
+    resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
   - id: openwiki-source-332034bad01f6c1d71fb1474
     resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
   - id: openwiki-source-9992dda8c04b35911bec9f64
@@ -72,10 +78,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T00:42:04.358Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -89,7 +95,7 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 `mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Collie](collie.md) tier uses the same directive and skill mechanism but has no run brief.
 
 The agent profile sets the model and effort for each run.
-The Arbiter, Verifier, Packager, and setup directives state this fact.
+The Verifier, Packager, and setup directives state this fact.
 The Verifier directive states the profile rule once and leaves harness details to the runtime.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
@@ -155,6 +161,30 @@ The generated command pointer names the installed file at `~/.agents/skills/mc-s
 These pointers keep procedures available when their conditions apply.
 See [Strategist research and submission](../workflows/task-pipeline.md#strategist-research-and-submission) for the complete proposal workflow.
 
+## Arbiter instructions and procedures
+
+`mc/verbs/directives/arbiter.md` defines the review rules for each Arbiter run.
+The Arbiter ranks proposals by their contribution to the accepted Vision relative to their cost.
+It checks overlap through descriptions and repository evidence, and preserves proposal requirements and accepted work.
+The contract limits verdicts to the assigned pool and includes the promotion limit and criteria rules.
+These boundaries keep customization from changing the assignment or weakening required criteria.
+
+The directive points to conditional procedures in `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md`:
+
+| Condition | Procedure |
+| --- | --- |
+| Rejected or cancelled work is present. | Historical work requires scope comparison and use of cancellation reasons as operator context. |
+| The Arbiter intends to reject every proposal. | The all-reject batch defines ready tasks, duplicate references, and invalid-criteria exceptions. |
+| Review requires Project dependencies. | Research dependencies requires compatibility checks before use. |
+| An execution problem or required operator decision prevents a verdict. | A run that cannot give a result selects the applicable terminal. |
+| Custom instructions conflict with the contract. | Project role customization supplies the conflict terminal and its fields. |
+
+The command skill also defines the verdict payload and permitted reads.
+`RoleSkillSet` delivers `mc-arbiter` with the shared skills.
+The generated pointer in `mc/verbs/directives.go` requires a read before the first command and before the terminal.
+Its installed path is `~/.agents/skills/mc-arbiter/SKILL.md`.
+See [Arbiter review and submission](../workflows/task-pipeline.md#arbiter-review-and-submission) for the workflow and failure boundaries.
+
 ## Proposal criteria in the role directives
 
 The Strategist directive requires each success criterion to name a check that the Worker and Verifier can run in an agent container.
@@ -213,6 +243,13 @@ It retains the accepted Vision, Project path, environment identifiers, task hist
 The Cancelled work explanation requires use of each reason as context for the operator's preference.
 The Proposal decisions explanation requires application of each relevant operator resolution.
 The directive and command skill supply the procedures that use these facts.
+
+`trimArbiterBrief` omits the Agent credentials and Failure controls parts from the Arbiter brief.
+It retains the pool, active descriptions, task history, environment identifiers, repository path, custom instructions, proposal resolutions, and accepted Vision.
+Its concise explanations identify the supplied data; the directive and skill define review procedures.
+The Proposed pool explanation defines `priority` as proposer urgency.
+The value -1 means expedited work; 0 through 3 mean P0 through P3.
+The Proposal decisions explanation requires application of each relevant operator resolution.
 
 The Project role customization part names the exact revision and standard directive digest.
 Custom instructions replace defaults within the Culler contract.
@@ -314,7 +351,7 @@ See [the task pipeline](../workflows/task-pipeline.md) for the role rules that u
 
 The shared environment skill explains the temporary Culler token and host proxy.
 The host retains and renews provider credentials.
-The Strategist, Worker, and Verifier directives require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
+The Strategist, Arbiter, Worker, and Verifier directives require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
 
 `credentialPart()` in `mc/verbs/brief.go` supplies the Agent credentials explanation for briefs that retain that part.
 The setup brief and shared environment skill describe the same boundary.
@@ -462,12 +499,38 @@ It checks required assessment duties, concise facts, skill discovery, and retain
 Its duplicate checks cover the rendered brief and command skill; shared skill contents remain outside that check.
 It also checks proposal requirements in the extracted customization contract.
 `TestStrategistBriefDeliversTaskSelectionGuidance` checks the delivered guidance for useful results, evidence, existing capabilities, effort, risk, and container checks.
+`mc/verbs/arbiter_input_test.go` checks preserved assignments, operator instructions, proposal resolutions, skill delivery, and conditional procedure pointers.
+Selected Arbiter rules must occur once across the rendered brief and command skill; shared skill contents remain outside that check.
+Its payload test checks that concise explanations preserve each retained part's facts, text, rows, and text tag.
 The orchestration tests in `directives_test.go` apply their fixed workflow requirements to the Worker, Arbiter, Verifier, and Packager.
 The Strategist directive permits subagents and internet research without that fixed workflow procedure.
 These tests check supplied instructions. They do not prove agent behavior or establish fresh test results in this wiki update.
 
 The [Worker instruction audit](../operations/worker-instruction-audit.md) is an original report for task 56 at its recorded base commit.
 It records passage decisions, text counts, retained duties, and the separation between role rules and procedures.
+
+## Arbiter instruction audit
+
+The original [Arbiter instruction audit](../../docs/arbiter-instruction-audit.md) records the review of Arbiter instructions at its stated base commit.
+It covers the directive, the sole role-specific skill, brief explanations, and generated pointers.
+Shared skill contents and other roles remain outside its scope.
+The report assigns each removed or moved passage a category and identifies the retained authority or conditional procedure.
+Its section table explains why each retained section affects Arbiter work.
+
+The report counts whitespace-separated tokens with Python `len(text.split())` on each complete file, including frontmatter and command examples.
+
+| File | Base count | Result count |
+| --- | ---: | ---: |
+| `mc/verbs/directives/arbiter.md` | 2029 | 545 |
+| `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md` | 1576 | 612 |
+
+The audit concludes that command forms, runtime authority, proposal records, and operator decisions remain unchanged.
+It records instruction structure and passage decisions; it does not prove agent compliance.
+Current source and tests establish the delivered instructions.
+The report records successful new and changed tests, including the complete `mc/verbs` package.
+It also records a full-gate failure in `TestValidateHomeAcceptsTheRealOperatorHome` that the assigned base reproduces.
+Its validation section preserves unavailable host checks and macOS checks.
+Those recorded results belong to the original audit; this wiki update supplies no new application test results.
 Its body and provenance remain intact. Current source files establish the present instructions.
 
 ## Requirements after decision resolution

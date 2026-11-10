@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9c5c915908e4cd8d483bf113b0d753f12fb71c96d325cbbe76e819af3ff77218",
+  "pageVersion": "sha256:d39960ca060cfcd39451f00dcf2624436143d39a6b42105b953224665cb46171",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -966,11 +966,11 @@
     },
     {
       "id": "claim_a4a6ad21fc35430ca0b3149179f33f01",
-      "statement": "TestArbiterAgentTextDefinesCompactHistory checks the detailed history explanation in the Arbiter directive and command skill.",
+      "statement": "The Arbiter input test checks historical task data and rules for equivalent work, cancellation reasons, and permitted task reads.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives_test.go#L303-L340",
-          "version": "repo-lines-v1:sha256:ce4a4f14e1259416d00f99506acd1d1c2c749223676d924f54f56754fbebf0b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0Mzk0ZmRkZGU0NmFiNjVkMjFiOGMzOTM0NWVlMDliZWFjNmVhNWYyNzZlNWNkYzVkZjI0MDE0ZjJkYmNmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiZjc3NzBlOTYxYWQ4NzU3OWQ2NTVhNjk5OGJjY2ZhNGNlNWUwMzcxNDVlOGM4OGRmMzgxMDA4N2VmZTVjY2EifQ"
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L57-L110",
+          "version": "repo-lines-v1:sha256:9c887e892019baa43c33498897f9f8efb2079aa3f2fd16ed24543ca3be9c0aa5:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0YzljODRmNjRiZWZkZTQxNzNmMjE0ZGRhOTdmNGZlYTYzZGYwNDYzYzI1NjdhMGZjYzE2YTA1ZTc3ODY0ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MTc2NzUwMDg1NGFlMGZjYWMwMWNlOGU2M2ZiZWM1ZjkzZmUzNjgxZGViZmYxNGM5YzNlYzhmYzRkY2M3NjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MjExMTM2NzJkZGYwZWVjODVjMjc0MDJiYTFhNWViYzg4ZmY4MDI0YmQ2N2RjYzc2NWE1YzQyMjhhMDA5MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2NDRhOWY3NDg2NWIyMzRiMWVmNGM0NGUyZGE0NzRkNmM5OTQ0MmY1N2VhZjdkMTc5ZWI4OGMxMGRhNzE2NDgifQ"
         }
       ]
     },
@@ -1041,10 +1041,54 @@
           "version": "repo-lines-v1:sha256:4f7471045c8b740d2786274e57a17a291ee35c9071a55877e91abbadc32021d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZTIzMWE2OTBjZDE5OTZiOGIyM2RiNDdjNWVhN2E4YzVkZjFkZDE2ZGFmMzY2ODUwODhhNjFkNjI2MWRiZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlYmNjYjY3M2UwMjQwM2EwOGMwMjVjNjI4OGQ2NDVlNGY4M2M4MTgyZWJkMGNlNTM0M2E2MDE4NmNhZDRiNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkODA2ZWQ2NTFhZmUxMTAxYTVlZDY1OWQzODk3M2E0YTY0NjY1MzllNTIxODA3MjMyYzIxYjRmZDg1NjMwNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYmY4NmM5MzFmMGZjYjA3YmJhNDNmNTdkZDM1MWFhOTY2ZGQzZDRmMGQ5MGNiNGM0ZmFkNWU3NDg2Mjk0NDUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_25865991c7f5442eb1f67ceca5733ec1",
+      "statement": "The Arbiter input test checks assignment descriptions, custom instructions, operator resolutions, skill paths, procedure pointers, and single occurrences of selected rules.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L10-L126",
+          "version": "repo-lines-v1:sha256:84e1580c5a7ce19595b09c61cfd5cd819f1dd8c99a6fc4e0f334b7d08aca617a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmMDI2OTI2NjkyNDZhODUxODg1NDFmNGQyZDU5OWQxOGRkYzkxOWY2M2VkYzQ2NzYxZTA2ODkyMmY5MWI2ODkxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlOWZlNDFmNjA5Y2QzMWE3MmY4MGY0ZDRmNDJiNjdiYzkwYmNiN2Y4NGI0ZmQ1NmY4MDI5MGQwOTFiZjU4M2JkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiNTU0N2M4NDM3ZmU2NjJmNDBjYTkwNTM0MjVlOWY1NGUzYzc1NzhmMjFlYThjN2Q5NTYwNmIzNWQzMGVjYzk1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_39f792c98d8b4d0eb14e718ceb700b10",
+      "statement": "The Arbiter input tests check the promotion limit and criteria contract, the explicit conflict terminal, and preservation of each retained brief payload.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L127-L167",
+          "version": "repo-lines-v1:sha256:c3471b591d4796687e8a8bc3f3c78c027d0c47bb6f13012018e5e2427f7d9677:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwYTlmYWUxZTcyMzczYzIzNGU1Y2VjMjFiOGQ3MWMzZWMyZjlhNGJlMWRhYTk3YTg3NWY1NzQ5ZjFkNjhhNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMTRlNzEwZDcxNmI4OWIxNWM5MDcyNzQ3NWQyMjVkZjBmNDM2YWJjZjA0NTJlOWEyN2U0MzU1ZWM5ZjNlMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59fbfad71f8a485f8c4e0af648a6090e",
+      "statement": "The dispatch brief test checks full Arbiter proposal descriptions, historical entries, and the instruction for read-only subagents.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/dispatchverb_test.go#L684-L711",
+          "version": "repo-lines-v1:sha256:2f03ac506f9e32ee948803443d4e1fb509fa05ea50e3bb5954a8ff8de7568c03:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3YTE5ZjdmOGM5YzE5YjczMmRiMDQ2NWFkZWQ1MjE5NzUwNWZhMDJiMWFlMmEzOGNlNTYyNTU5ZjYzZjA3ODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTliNWU5MDE5YzhkYjg3ODNlYzljM2ZlYmIwYTJjOTg2MmY2MWEwNWMzMDhmZTg5NWU0YTliZWQwM2VkYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhZjRjNTYyMTQyZjMyMjNjMjljM2NmNDk1Njg5Y2IwMGNlMDUwMzIyNjk3ODg2ODY2MjA2NWU5YWNiNDZjMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef4f307abf3a452bb83208ca989c9aef",
+      "statement": "Dependency and customization tests check the Arbiter's conditional pointers and command skill procedures.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives_test.go#L493-L504",
+          "version": "repo-lines-v1:sha256:c193a00b23de344b98d72672213d7e2ecedff4172d009ab419f07874dfe9291a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiN2U0OWI4MWVmN2UzNDU0MGI4MWNjNDE5ODMxZDk2OGM2OTA2NjYzODBkYjE0MzM0N2Q1MGEzMzg2MGY0Y2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0Y2Y3ZTdiNTAxNThjNmFhZmI0NzdkNzFjOTVhNzllZjQ4MDhlZmZkZDIxNDcwZjRkNmFlZDM4MmRhMDQ5ZmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmZjk2NTQ3NTYxZDZhMjcxYTZlOGU4YTFjN2RjZjZjZThhYzBiMGRhZDAwZTJmZGQyMmY3ODU1ODViM2U5OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiMTgzOTY0ZTFjMWM0OWRmZjUzOTc5Njg2MmUyMWM4MTAxMmFhYWRlNzZmMGE5NDE2MTM2ODc0YTllZTc1M2QifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/directives_test.go#L797-L804",
+          "version": "repo-lines-v1:sha256:b2620edc77a766095b92c50f1f5a5c52645d57c4dda8b677a9486c82f77d90b3:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmEwM2U1ZGYwMmJhYjVhN2Q1NDIyODM2NGZhY2QzYzVmODA0NzlkM2EzMDc1MDk0YmRmMzA5YjZiMDdhZDVlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRlZmM0OTQxOGQyNmRjZjEyOWIyMmE2YWEyMTEwOGNlZWMzNzY3N2EzMmQwOGU5ZDVmZWUzNWRkYTY2YmI5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y4M2YyNGZkMTk5MzdlOTliNzEzMDQ2ZjM2MDk0ZTc2YzcyNmE3MGE3YmNhN2IxYjE0YTEzNGIwMWM3NjdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGYyNmIyZjYwNzUyMmZmOThlNGFhMTgxMDE3MjkwYzQ1ZjFhOTAyMTc4MzRkMDU1MjM3ZjgyNDYxODg2ZTM5MyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T23:41:46.402Z"
+    "at": "2026-11-10T00:42:04.358Z"
   }
 }

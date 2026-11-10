@@ -98,6 +98,8 @@ sources:
     resource: repo://mc/property/dispatch_case_test.go
   - id: openwiki-source-01b61ecca94c01db2c10f8d3
     resource: repo://mc/test.sh
+  - id: openwiki-source-b4da7cec419704ae15f02306
+    resource: repo://mc/verbs/arbiter_input_test.go
   - id: openwiki-source-3a72fe65b15fd6f2f9988f26
     resource: repo://mc/verbs/colliepacket_test.go
   - id: openwiki-source-bdcdf989ab8381c989787604
@@ -106,6 +108,8 @@ sources:
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
     resource: repo://mc/verbs/directives/verifier.md
+  - id: openwiki-source-6a1e391719e8dc303420ffc3
+    resource: repo://mc/verbs/dispatchverb_test.go
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
     resource: repo://mc/verbs/packetcontext_test.go
   - id: openwiki-source-ff3195b0a5a37a2736e48a3b
@@ -158,10 +162,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T00:42:04.358Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -295,6 +299,7 @@ These tests check the instructions and procedures delivered to agents:
 | Source | Evidence checked |
 | --- | --- |
 | `mc/verbs/strategist_input_test.go` | Strategist assignment data, proposal authority, procedure pointers, delivered skills, and single occurrences of selected role rules. |
+| `mc/verbs/arbiter_input_test.go` | Arbiter assignment data, review constraints, conditional procedures, delivered skills, and preservation of each brief payload. |
 | `mc/verbs/verifier_input_test.go` | Assessment belongs to the customization contract; briefs preserve assignment and case data while procedures remain discoverable through skills. |
 | `mc/verbs/platform_input_test.go` | Worker and Verifier outcomes preserve required tests, independent work, failed-read terminals, and unverified evidence. |
 | `mc/verbs/directives_test.go` | Role duties include broad checks, comparison by failure cause, unavailable-check outcomes, and contract conflict procedures. |
@@ -316,10 +321,23 @@ It also checks that custom instructions remain within the Culler contract.
 
 `TestStrategistBriefPreservesAssignmentData` checks that brief simplification preserves each retained part's facts, text, rows, and text tag.
 `mc/verbs/brief_history_test.go` separately checks history limits, order, Project isolation, and cancellation excerpts.
-`TestArbiterAgentTextDefinesCompactHistory` checks the detailed history explanation in the Arbiter input.
+`TestArbiterInputPreservesAssignmentAndDeliversRulesOnce` checks the Arbiter's use of historical work and cancellation reasons.
 The Strategist tests check the supplied duplicate-check rules and task-read procedure.
 These tests establish instruction content; they do not prove proposal quality or task selection by an agent.
 See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-procedures) and [proposal submission](../workflows/task-pipeline.md#strategist-research-and-submission).
+
+The Arbiter input test renders a brief with proposal descriptions, active descriptions, task history, custom instructions, a proposal resolution, and the accepted Vision.
+It checks the run identity, repository path, and installed path of every delivered skill.
+It requires a directive pointer and a skill section for each conditional procedure.
+Selected rules must occur once across the rendered brief and `mc-arbiter` skill; shared skill contents remain outside this duplicate check.
+The contract assertions cover the promotion limit, criteria rules, preservation of accepted work, and restricted authority.
+The customization assertion requires an explicit conflict terminal in the skill.
+
+`TestArbiterBriefPreservesPartPayloads` checks that the brief transformation preserves facts, text, rows, and text tags for each retained part.
+`TestDispatchSpawnBriefCarriesClaimedState` checks proposal descriptions, historical entries, and the Arbiter orchestration instruction in the dispatch output.
+Dependency and customization tests in `directives_test.go` check the current conditional pointers and their procedures.
+See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) and the [audit context](../concepts/agent-input.md#arbiter-instruction-audit).
+These checks establish delivered instruction content and payload preservation; they do not prove an agent's review quality.
 
 The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
 It selects the installed browser with `--browser=chromium` and defines evidence media and session cleanup.

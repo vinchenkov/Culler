@@ -18,6 +18,8 @@ sources:
     resource: repo://dashboard/src/ui/systemhealth.js
   - id: openwiki-source-833cfcb1ce94b8d49fc966fd
     resource: repo://mc/domain/requirements.go
+  - id: openwiki-source-b4da7cec419704ae15f02306
+    resource: repo://mc/verbs/arbiter_input_test.go
   - id: openwiki-source-31daf0508c2344b34e93eec3
     resource: repo://mc/verbs/board.go
   - id: openwiki-source-7f547d2c5de5589b3c27e6a4
@@ -26,16 +28,18 @@ sources:
     resource: repo://mc/verbs/decisionresolution_test.go
   - id: openwiki-source-47e2ca52aab2f12bfb519d6d
     resource: repo://mc/verbs/deliverycomplete.go
+  - id: openwiki-source-3bc5b077708f9534abc3b95d
+    resource: repo://mc/verbs/directives/arbiter.md
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T00:42:04.358Z
 ---
 
 # Decision Pending and requirements revisions
@@ -185,6 +189,13 @@ This page reports source inspection. It does not report fresh execution of these
 
 ## Shared proposal decisions
 
+The Arbiter uses the operator decision procedure when a required decision prevents a permitted verdict.
+Its directive names this condition, and `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md` supplies the terminal forms.
+The report states the required decision and why it prevents a verdict.
+The default form covers every assigned proposal; `--affected` selects a subset of the assignment.
+The report preserves proposals while proposal work waits for the operator's resolution.
+The next proposal brief requires application of each relevant resolution.
+
 A shared proposal decision appears once in the dashboard issue count.
 The Board's **Blocked tasks** count still includes each affected blocked task.
 The browser also excludes connection conditions when no role uses the connection.
@@ -216,4 +227,6 @@ The Arbiter can reject invalid criteria without a shared operator decision when 
 The rejection reason identifies the criterion and its violated rule.
 `mc/verbs/roles.go` validates the declared category; the Arbiter judges whether the criteria qualify.
 The command archives accepted rejections and retains their reasons.
+The command skill defines ready tasks and exceptions in **The all-reject batch**.
+When those rules prevent a verdict, that procedure points to the operator decision procedure.
 See [the task pipeline](task-pipeline.md) for empty-queue exceptions and batch validation.

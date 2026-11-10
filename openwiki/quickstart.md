@@ -100,10 +100,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T00:42:04.358Z
 ---
 
 # Culler quickstart
@@ -145,7 +145,9 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Understand why a Project is idle or what runs next | [Dispatch and the tick loop](workflows/dispatch-and-tick-loop.md) |
 | Change what an agent role receives | [Agent input](concepts/agent-input.md) |
 | Find Strategist rules and conditional procedures | [Strategist input](concepts/agent-input.md#strategist-instructions-and-procedures) |
+| Find Arbiter rules and conditional procedures | [Arbiter input](concepts/agent-input.md#arbiter-instructions-and-procedures) |
 | Follow proposal research and batch submission | [Strategist workflow](workflows/task-pipeline.md#strategist-research-and-submission) |
+| Follow proposal review and verdict submission | [Arbiter workflow](workflows/task-pipeline.md#arbiter-review-and-submission) |
 | Follow a commit from Worker to merge | [Git delivery](workflows/git-delivery.md) |
 | Resolve an operator decision report | [Decision Pending and requirements revisions](workflows/decision-resolution.md) |
 | Debug retries, stalls, or Decision Pending | [Failure controls](concepts/failure-controls.md) |
@@ -179,6 +181,7 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Understand unavailable task checks and their outcomes | [Unavailable checks](tests/checks-and-test-lanes.md#unavailable-checks) |
 | Understand invalid proposal rejection | [Invalid criteria and all-reject batches](workflows/task-pipeline.md#invalid-criteria-and-all-reject-batches) |
 | Read the original Worker instruction audit | [Audit context](workflows/task-pipeline.md#worker-instruction-audit) |
+| Read the original Arbiter instruction audit | [Arbiter audit context](concepts/agent-input.md#arbiter-instruction-audit) |
 | Run the right checks before a commit | [Checks and test lanes](tests/checks-and-test-lanes.md) |
 
 The Pipeline page places the Project wiki section beside the current task run banner, above the task path.
