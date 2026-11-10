@@ -32,10 +32,10 @@ sources:
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # Decision Pending and requirements revisions
@@ -187,6 +187,9 @@ This page reports source inspection. It does not report fresh execution of these
 
 A shared proposal decision appears once in the dashboard issue count.
 The Board's **Blocked tasks** count still includes each affected blocked task.
+The browser also excludes connection conditions when no role uses the connection.
+Those connections remain available in the unused connections disclosure.
+`systemIssues` in `dashboard/src/ui/systemhealth.js` applies both rules without a change to the retained system records.
 Open **View details** from the notice, or select the issue in **Review issues**.
 The issue details link to the affected proposals and show the complete question.
 A proposal task dialog offers **View shared proposal decision** when system status contains that decision.

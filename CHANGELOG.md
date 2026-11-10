@@ -16,6 +16,9 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - An update accepts a Project that uses the default Project image.
 - The release image checks run the Project image check of an update against the default Project image.
 - A restore starts the helper container of the previous release before it starts the services.
+- The terminal setup provider search updates its list of matching providers after each key, as the dashboard search does.
+- The provider search in terminal setup and the dashboard lists name matches before identifier and address matches.
+- The provider search ignores the `opencode:` prefix of catalog identifiers, so a search for "opencode" matches only OpenCode providers.
 
 ### Known limits
 

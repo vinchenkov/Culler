@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-09T23:41:46.402Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -113,6 +113,10 @@ sources:
     resource: repo://dashboard/src/wiki-server.ts
   - id: openwiki-source-1c02462faa6dc8230a32f788
     resource: repo://mc/cmd/mc/repository_file.go
+  - id: openwiki-source-07cdfe29b43b302d6030a5c9
+    resource: repo://mc/cmd/mc/systemstatus_setup_test.go
+  - id: openwiki-source-d98ef2f07998b9fbb2240456
+    resource: repo://mc/cmd/mc/systemstatus.go
   - id: openwiki-source-78f1d76d5a5b9577a60c9016
     resource: repo://mc/deployment/host_release_closure_test.go
   - id: openwiki-source-d2a2a705448c3432ad6c1337
@@ -135,7 +139,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 ---
 
 # The operator dashboard
@@ -798,6 +802,11 @@ See [Discord setup and delivery](../integrations/discord.md) for persistence, re
 
 ## Agent connections
 
+System health excludes a connection condition from its issues when no role uses that connection.
+The unused connection remains available in the closed disclosure with connected entries.
+`connectionGroups` and `systemIssues` in `dashboard/src/ui/systemhealth.js` apply this rule.
+The rule affects browser presentation; the system status still supplies the connection records.
+
 Connection notices and detail headings show the profile name, with the model and then “Agent profile” as fallbacks.
 The facts list retains the profile identifier for diagnostics.
 `systemhealth.js` applies the same name selection to recovery notices and accessible control labels.
@@ -809,6 +818,10 @@ This lets the detail view distinguish recovery from a process that still runs.
 `mc/verbs/networkhold_test.go` checks both task runs and Collie reply attempts after a network timeout.
 
 `agentprofiles.js` offers sign-in through the supported integrations in the host catalog.
+Its provider search updates the matches with the query.
+Name matches precede identifier matches, which precede address matches.
+The search excludes the common `opencode:` prefix from identifier matching.
+An empty query shows the current release integrations.
 A new connection request contains its name, catalog revision, submission identity, and integration template.
 The host saves the connection before the panel starts authorization.
 The model review requires a model test result before Save becomes available.
@@ -827,6 +840,10 @@ The assignment applies to all Projects, and the next run uses the selected profi
 `dashboard/src/api.ts` forwards profile reads and operations to the host commands.
 Operation requests travel as JSON on standard input.
 The browser retains the existing focus, text selection, and body position when the dialog renders again.
+Terminal setup records successful connection and model tests through `mc/cmd/mc/systemstatus.go`.
+The dashboard uses those records for verification status after setup.
+`mc/cmd/mc/systemstatus_setup_test.go` checks that the tested connection and profile appear ready.
+The browser tests in `systemhealth.test.ts` check unused connection groups and issue counts.
 See [Agent connections and access renewal](../operations/agent-connections.md) for configuration validation, credential storage, and runner behavior.
 
 

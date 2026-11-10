@@ -174,7 +174,7 @@ func TestTerminalSetupAPIKeyScreens(t *testing.T) {
 					w.deps.connect = func(_ *setupWizard, connection setupConnection) error {
 						attempts++
 						if retry && attempts == 1 {
-							return &setupFailure{cause: "The provider is temporarily unavailable. The saved connection remains available."}
+							return setupRuntimeFailure(errors.New("fixture: the provider closed the connection"), setupModelTestFailure)
 						}
 						if retry && connection.Mode != "saved" {
 							t.Error("The retry did not use the saved session")

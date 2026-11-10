@@ -30,6 +30,8 @@ sources:
     resource: repo://dashboard/src/smoke-gate.test.ts
   - id: openwiki-source-e51b5dc1a5c6bbfd524e7ccd
     resource: repo://dashboard/src/ui/review.test.ts
+  - id: openwiki-source-a53a0703fceb74e7d8de47c1
+    resource: repo://dashboard/src/ui/systemhealth.test.ts
   - id: openwiki-source-9ea19154aa59c39cc41bced6
     resource: repo://dashboard/src/ui/theme.test.ts
   - id: openwiki-source-6d6fcc0012d90237873626ea
@@ -42,14 +44,22 @@ sources:
     resource: repo://mc/cmd/mc/arbiter_criteria_test.go
   - id: openwiki-source-d9949d9a9d2f424493fa411e
     resource: repo://mc/cmd/mc/culler_prod_test.go
+  - id: openwiki-source-84c1006ce1b2be1373838f69
+    resource: repo://mc/cmd/mc/setup_opencode_screen_prod_test.go
   - id: openwiki-source-ba92167dda59467828397749
     resource: repo://mc/cmd/mc/setup_opencode_source_prod_test.go
+  - id: openwiki-source-ae83eaa3edce8d9e15735e02
+    resource: repo://mc/cmd/mc/setup_untested_connections_prod_test.go
+  - id: openwiki-source-69a26a0f5b89ca934021a7bf
+    resource: repo://mc/cmd/mc/setup_untested_connections_screen_prod_test.go
   - id: openwiki-source-7db06a144aa42e48eb68568a
     resource: repo://mc/cmd/mc/setup_update_candidate_prod_test.go
   - id: openwiki-source-579b9c04dbd98eaf836c5c4c
     resource: repo://mc/cmd/mc/setup_update_candidate_prod.go
   - id: openwiki-source-769bbb5f564fdccd1e6ebbb1
     resource: repo://mc/cmd/mc/setup_update_stop_prod_test.go
+  - id: openwiki-source-07cdfe29b43b302d6030a5c9
+    resource: repo://mc/cmd/mc/systemstatus_setup_test.go
   - id: openwiki-source-9f816a6d1f5994d193ba7ab4
     resource: repo://mc/config/agentprofiles_test.go
   - id: openwiki-source-e52c730e2e47b3a8099643b1
@@ -82,12 +92,16 @@ sources:
     resource: repo://mc/e2e/e2e_test.go
   - id: openwiki-source-bdb34dc5adc4a25690eda4c2
     resource: repo://mc/evalcase/README.md
+  - id: openwiki-source-21ce972eae0f79cc3c8b6d7d
+    resource: repo://mc/onboarding/terminal_search_test.go
   - id: openwiki-source-c2af084a67a7e25f724fdf19
     resource: repo://mc/property/dispatch_case_test.go
   - id: openwiki-source-01b61ecca94c01db2c10f8d3
     resource: repo://mc/test.sh
   - id: openwiki-source-3a72fe65b15fd6f2f9988f26
     resource: repo://mc/verbs/colliepacket_test.go
+  - id: openwiki-source-bdcdf989ab8381c989787604
+    resource: repo://mc/verbs/directives_test.go
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-db55b76d7f0573ce8b068ebf
@@ -104,6 +118,8 @@ sources:
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-9cde79f59cdb3b1ba6b34d30
     resource: repo://mc/verbs/skills/verifier/verify-behavior/SKILL.md
+  - id: openwiki-source-4565b2c94892e8cea0c22610
+    resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-fe13f5a431cbfaf8f480dd65
     resource: repo://mc/verbs/verifier_input_test.go
   - id: openwiki-source-a2a135f3f8016d9eeb4be1d9
@@ -142,10 +158,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T19:06:13.611Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -278,11 +294,32 @@ These tests check the instructions and procedures delivered to agents:
 
 | Source | Evidence checked |
 | --- | --- |
+| `mc/verbs/strategist_input_test.go` | Strategist assignment data, proposal authority, procedure pointers, delivered skills, and single occurrences of selected role rules. |
 | `mc/verbs/verifier_input_test.go` | Assessment belongs to the customization contract; briefs preserve assignment and case data while procedures remain discoverable through skills. |
 | `mc/verbs/platform_input_test.go` | Worker and Verifier outcomes preserve required tests, independent work, failed-read terminals, and unverified evidence. |
 | `mc/verbs/directives_test.go` | Role duties include broad checks, comparison by failure cause, unavailable-check outcomes, and contract conflict procedures. |
 | `mc/verbs/brief_test.go` | Role briefs retain their required parts and concise explanations. |
 | `mc/verbs/roleskills_test.go` | Skill pointers, command authority, explicit terminals, and browser commands remain available. |
+
+`TestStrategistInputDeliversRulesOnceAndResolvesProcedures` renders a brief with proposals, task history, custom instructions, a proposal resolution, and the accepted Vision.
+It checks the repository path, preserved instructions and resolution, and installed paths for every delivered skill.
+It checks the command skill's conditional procedures and the directive's execution, operator decision, and customization pointers.
+Selected rules must occur once across the rendered brief and `mc-strategist` skill.
+Shared skill contents remain outside this duplicate check.
+The test also checks proposal requirements in the extracted customization contract and excludes unrelated system explanations.
+
+`TestStrategistBriefDeliversTaskSelectionGuidance` checks the directive inside the rendered brief.
+Its assertions cover useful results, existing capabilities, repository evidence, full cost, container checks, and the Arbiter's final rank.
+It also checks that custom instructions remain within the Culler contract.
+`TestDirectivesEncodeTheSelfOrchestrationContract` checks fixed orchestration procedures for the Worker, Arbiter, Verifier, and Packager.
+`TestWorkerRecordsInlineExceptionBeforeTheTerminal` checks where the Worker states its reason for inline work.
+
+`TestStrategistBriefPreservesAssignmentData` checks that brief simplification preserves each retained part's facts, text, rows, and text tag.
+`mc/verbs/brief_history_test.go` separately checks history limits, order, Project isolation, and cancellation excerpts.
+`TestArbiterAgentTextDefinesCompactHistory` checks the detailed history explanation in the Arbiter input.
+The Strategist tests check the supplied duplicate-check rules and task-read procedure.
+These tests establish instruction content; they do not prove proposal quality or task selection by an agent.
+See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-procedures) and [proposal submission](../workflows/task-pipeline.md#strategist-research-and-submission).
 
 The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
 It selects the installed browser with `--browser=chromium` and defines evidence media and session cleanup.
@@ -582,6 +619,40 @@ Deliberate leak controls prove that the credential detectors reject contaminated
 
 These are source-defined assertions, not fresh execution results from this wiki update.
 See [Agent connections and access renewal](../operations/agent-connections.md) for the behavior and related test paths.
+
+### Terminal provider search and setup connection checks
+
+`mc/onboarding/terminal_search_test.go` checks the terminal search through synthetic key input.
+It covers these behaviors:
+
+- Each query edit refreshes the matches, including deletion, clear, and cursor edits.
+- Arrow keys select matches, and Enter refuses an empty result.
+- The list shows four choices per page and details for the selected choice.
+- Back, exit, closed input, and terminals without screen controls preserve their expected actions.
+
+`mc/cmd/mc/setup_opencode_screen_prod_test.go` checks the catalog search and terminal output.
+The search assertions compare name, identifier, and address matches and exclude matches caused only by the common `opencode:` prefix.
+The screen tests use 80 and 40 columns, with and without color.
+A separate screen-fit test traverses every provider within a 24-row terminal.
+`dashboard/src/ui/agentprofiles.test.ts` checks the corresponding provider order with a controlled catalog.
+
+`mc/cmd/mc/setup_untested_connections_prod_test.go` checks setup connection retention and cleanup:
+
+- A failed connection remains available for retry across a setup reload.
+- Another key replaces an unused connection whose test failed.
+- A role assignment protects its connection from cleanup.
+- A failed credential removal remains available for another attempt.
+- A successful test protects its connection even when setup cannot record the result.
+
+`mc/deployment/provider_disconnect_test.go` checks credential deletion and repeat removal without another revocation.
+`mc/cmd/mc/systemstatus_setup_test.go` uses a scratch spine to check connection and profile verification after a successful setup test.
+`mc/cmd/mc/setup_untested_connections_screen_prod_test.go` checks failure and retry screens at both widths, with and without color.
+
+`dashboard/src/ui/systemhealth.test.ts` checks that unused connection conditions stay outside issues and inside the unused group.
+It also checks that a provider service failure remains an issue.
+The model configuration smoke checks that an unused failed connection stays outside the notice while an assigned failure retains its repair action.
+The System health smoke assigns roles to its failed connections before it checks their issue controls.
+These statements describe test source; this wiki update does not execute these tests.
 
 ## OpenCode and update recovery checks
 

@@ -42,16 +42,20 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
+  - id: openwiki-source-2244ea442a4c07aeb880c8c8
+    resource: repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
+  - id: openwiki-source-4565b2c94892e8cea0c22610
+    resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # The task pipeline roles
@@ -121,7 +125,7 @@ Each group orders decisions from newest to oldest and uses larger task identifie
 Entries contain identifiers, titles, and decisions, plus available cancellation reason excerpts.
 See [agent input](../concepts/agent-input.md#historical-tasks-in-proposal-briefs) for excerpt limits and source selection.
 
-The Strategist directive forbids proposals that repeat active, rejected, or cancelled work.
+The Strategist directive forbids proposals that repeat repository work, active tasks, rejected work, or cancelled work.
 A different title for equivalent work still counts as repeated work.
 The Arbiter compares proposals with both historical parts and treats equivalent work as a rejection reason under its batch rules.
 Both roles use cancellation reasons as context for the operator's preference.
@@ -130,8 +134,64 @@ They can retrieve historical task details through their permitted read commands 
 Historical tasks do not qualify as existing work for `duplicate_of`.
 The Arbiter uses its operator decision procedure when the all-reject rules prevent a permitted verdict.
 These are role instructions; historical context does not prove that an agent follows them.
-`mc/verbs/directives_test.go` checks consistent requirements in both directives and command skills.
+`mc/verbs/directives_test.go` checks the detailed history instructions for the Arbiter.
+`mc/verbs/strategist_input_test.go` checks the Strategist duplicate rules, task read, and use of cancellation reasons across its delivered input.
 `mc/verbs/dispatchverb_test.go` checks historical entries in dispatched briefs and isolation between Projects.
+
+## Strategist research and submission
+
+The Strategist uses repository evidence, the accepted Vision, and relevant operator resolutions to propose work within its Project.
+It selects candidates with the best reward for the cost.
+Only the Arbiter selects proposals for development; the Strategist cannot rank proposals, implement them, start runs, or decide review packets.
+
+The Strategist starts with an important result that the Project cannot yet deliver well.
+It traces the user's route through the repository and identifies the step that prevents success or causes substantial effort.
+The research considers new capabilities as well as defects.
+Before another implementation, the Strategist checks whether the step remains necessary and whether an existing capability solves the problem.
+
+The directive requires evidence for the problem and the proposed benefit.
+For repeated work, the proposal identifies who repeats it and where it occurs.
+For a shared fix, it identifies the workflows that benefit.
+For a prerequisite, it identifies the later capability and the work still required.
+The Strategist considers the result, feasible benefit, and full cost when it selects candidates.
+
+Research investigates assumptions that can make a task unnecessary or ineffective.
+It stops when the benefit and a feasible task are clear, unless another fact can change the selection.
+The Strategist and its subagents can use internet research when it helps the Project goal.
+
+The `Research dependencies` procedure in `mc-strategist` applies before research uses Project dependencies.
+It requires compatibility checks against current declarations and the selected image because the run omits automatic dependency preparation.
+The shared environment skill applies within the Strategist's authority.
+See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-procedures) for procedure locations and delivery.
+
+The directive requires two task proposals together.
+One task can span several components and delivers one Git commit.
+Each description states these points:
+
+- The present problem or absent capability, with repository evidence.
+- The useful result or repeated cost that the task removes.
+- The reason the result matters to the Project now.
+- The substantial effort or risk through verification and maintenance.
+- The scope and success criteria that agents can check in their container.
+
+The command skill permits an empty `proposals` array when no valid task remains.
+The Strategist reads that skill before each `mc` call.
+
+`mc strategist propose --run <run_id> --batch -` receives one JavaScript Object Notation (JSON) object on standard input.
+Its only field is `proposals`; extra fields and trailing text cause rejection.
+Each proposal supplies a title and can supply a description, Project identifier, task scope, and priority.
+The command schema permits an absent description, but the directive requires descriptions with scope and criteria.
+`StrategistPropose` in `mc/verbs/roles.go` checks role, run identity, the subjectless lease, and the limit of two tasks.
+It confines each proposal to the run's Project.
+One transaction creates all proposals, ends the run, and releases its lease.
+A rejected batch writes nothing; the Strategist can correct the rejection and retry.
+
+The Strategist completes proposal work after a failure when available results permit it.
+When an execution condition prevents completion, its command skill supplies the infrastructure failure terminal.
+When completion requires an operator decision, it supplies the question and the reason that completion depends on the answer.
+A customization conflict uses the separate conflict terminal.
+The directive requires exactly one permitted terminal action, including after an execution failure.
+See [failure controls](../concepts/failure-controls.md) for the state effects of these reports.
 
 ## Checks required for a proposal
 

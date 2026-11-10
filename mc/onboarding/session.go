@@ -14,6 +14,7 @@ import (
 )
 
 // Session holds setup choices. Credential values and vision content stay outside this record.
+// RuntimeCreated lists the connections that setup created and that have not passed a test.
 type Session struct {
 	StageName             string            `json:"stage_name,omitempty"`
 	Stage                 int               `json:"stage"`
@@ -32,6 +33,7 @@ type Session struct {
 	ProjectStep           string            `json:"project_step,omitempty"`
 	RuntimeBindings       []string          `json:"runtime_bindings,omitempty"`
 	RuntimeIncomplete     []string          `json:"runtime_incomplete,omitempty"`
+	RuntimeCreated        []string          `json:"runtime_created,omitempty"`
 	RuntimeVerified       map[string]bool   `json:"runtime_verified,omitempty"`
 	RuntimeIdentities     map[string]string `json:"runtime_identities,omitempty"`
 	Access                *AccessChoice     `json:"access,omitempty"`
@@ -64,7 +66,7 @@ func (s Session) validate() error {
 			return err
 		}
 	}
-	identifiers := append(append(append([]string{}, s.Completed...), s.RuntimeBindings...), s.RuntimeIncomplete...)
+	identifiers := slices.Concat(s.Completed, s.RuntimeBindings, s.RuntimeIncomplete, s.RuntimeCreated)
 	for _, value := range identifiers {
 		if !validIdentifier(value) {
 			return fmt.Errorf("a saved setup identifier is invalid")

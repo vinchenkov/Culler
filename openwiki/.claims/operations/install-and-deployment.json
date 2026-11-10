@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a647b92cbce9b5423969373d71ba439fa6d16da09fc6d4280abb671f74ba3fb3",
+  "pageVersion": "sha256:36b9de17a1c659d49ab498430d6f3b5cad2dc5fa7b18d4f66c606e7aa158f34f",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -543,11 +543,11 @@
           "version": "repo-lines-v1:sha256:d32420bb23cb840312e0f8d2427f701a3164a58174687f49f1e24af6cdea0b80:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzOGE2N2ZiNzc2ZTU5MzAyYzE1NDUxMzA0ZWI0MGUzMjRhMjE1NWMzZjhlZDE1ZGMyZWUzNTRlNjhlOGZmNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://mc/cmd/mc/setup_terminal_prod.go#L598-L603",
+          "resource": "repo://mc/cmd/mc/setup_terminal_prod.go#L602-L607",
           "version": "repo-lines-v1:sha256:eb282c77786cacd2c87d0f86004b9c3e45afd09be887d7a2c63e79689cadf523:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmU2YTk4NzcwNDU1NjE1MzMyMjZhNDkzNDkyNDJmNGNjY2RhZDgwZjllNjI2ZWRjYWI4NDk1NmNiODVjOWE0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRlZmM0OTQxOGQyNmRjZjEyOWIyMmE2YWEyMTEwOGNlZWMzNzY3N2EzMmQwOGU5ZDVmZWUzNWRkYTY2YmI5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM1NTIwODJhMDU4MDRiM2FlMjU5N2RkODYyMjViYTE1NjU4YTJhNWM3YzdiNTQ2MWJjYzQ3NjQ0ZmQxZDhiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGVmYjhkZThmMWQwMGIyNDdmMDkzY2YwYjA1MzU2ZTMxMGI5MDNlOTk4MjIwODk1Njg0M2VlYzI0ZjRhMTg2OCJ9"
         },
         {
-          "resource": "repo://mc/cmd/mc/setup_terminal_prod.go#L621-L624",
+          "resource": "repo://mc/cmd/mc/setup_terminal_prod.go#L625-L628",
           "version": "repo-lines-v1:sha256:dc9b91cbd3c2091c88924e4393df3b851fa39fd3919f09942eb49413e850ceb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDZlMTFmYTYyYTk1NGQyYzRlY2NmZTcxNWFlOGVkNzM2MjlkMTMwYjdkNWRmNGZhMDE5MjdiODI4YzQyZjBhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGViYTNlM2E2NWYxYWQ5NDhmODYwNWI5NDU5ODgyODU3Yzc1YzdmZjBiNTdhMWI5Zjc1NzE2ODMyYThiNDQyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjM2YzRmNGYzMTgwMmZlNDUzNmQyNzljMDdlODUwMzc5N2U5ODMyYjdhNDE3NjJkMTNjNWE1ZDlkMmE2NGZlYyJ9"
         }
       ]
@@ -593,10 +593,48 @@
           "version": "repo-lines-v1:sha256:00718187e998f7f84f80c33460f1c12e14d64118d20e8308a6667378bbf6f262:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YjI5NDFiNzk0YzMzMGNmMDgwN2Y1Y2NlYzI5MjZkNzRmOTA3NzE5NWE4MWMyZjFhN2E5MjM4ZDNkMmRlMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwY2I1NjNlZWU1ZWU2MjlhMDU5OGYyOTZkZDA0Y2FlYWYwNzA2N2RmNGVmMmI3NjlmMTBhNWNkZmVkOTE0ZjMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_ed3133b777b8405091113ecdaa8f9e2e",
+      "statement": "Terminal setup records successful tests in the spine and preserves the connection if it cannot record the result.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L523-L554",
+          "version": "repo-lines-v1:sha256:a5ebd956325e39d641d57797dce81c6f358afa64375f2382cb388765a23d65ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwY2ZlNjgxNjliZTM1NjBlN2ZiM2VkYzlhMDlhNWZhZGJmOThjYmM1NjZjMmY2MTAxZTYzY2I1ZjY3MzA5ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkMzQ1N2YzNDg4Y2Q2YTM3NjEwMTM4NWEwMzc3OTY5OTVkZjY5MzVlOWNjOTZlNzYxZGYwNjI1MGYwNmEzZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjN2ZhZmY3NWI1Yzg0Mjc2NTNkMmU2Yzk5MjBjMDNjMTFiYzlkODhhYzMzYjJmYTE5MWU5MDRmZDdmMDlkMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzOWJjYTkxZjljMzQ5ZWIwMjY1NzdlMGEzNTMwZGE5NzBmNGY1N2QwMGYwZWFkMjZlMDI0YzdhZDZlNGQwYjYifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/systemstatus.go#L543-L585",
+          "version": "repo-lines-v1:sha256:2dec6f1f35ce1710078a55c0817829de2f1163863b6e0bac18fda3c3095473d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmNmODEyMjg5MDA3Zjk5NTI2MjNkMGI4Nzk1ZjliZjU3MDM5NTZiMWI3NjE1NzVjMzE0YjhmOTIzZDMxZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMTQ5MmU5MTFlMGFmMjljZGYyM2VjNWM2Mzk3Mjg5MThiNTFmODFmYzIxZjAwM2Q1NTgwNjU0NDEwYjgxNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNzcwYTg2MGNmOGFkMjVhMzdjNTM0NzdiYmJkYTNlYzFmYjlhZjE3YTc4YTUxYTcxZWQ3MjNkM2YyZTZhODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_79a7c693e19c40bc93b5bb187dc75de4",
+      "statement": "Setup retains untested connections for retry and removes unused setup connections when another connection replaces them.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L178-L272",
+          "version": "repo-lines-v1:sha256:649e6edbd0fa2893212b0c45f0838630e2da69fb1593f0f51bfa3c53052d188c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YjE3MTE0Y2QxNmNmMGE4OGZjYTU5YzgwMmMwOTQ0MDJiYjVmOGEyZjg5ZTIzNzk3ZThjYjQyOGQ4NjkyYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWFjYzRjYzBjZmU1NmZhYTM1NTY3ODRjODhlMGM2YTc0OWNhYTk1YzU5MWNkNGVlZjlmOWQ0OWYxMjRlMTMifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_untested_connections_prod_test.go#L40-L129",
+          "version": "repo-lines-v1:sha256:4d65fc5d0a0f44a9d20ff53c96668c3e47039b26377ad0a2ad5735783b1573df:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYmJjMjNmOTMxMjAwNjkyMDk4M2UyOTYwNGUwNWNmZTgxMTBjMDA5YTJhNTE3YzQ0NmFkYTc5Y2I5NzQzZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3YmJlYjYxZGRmN2RiODIxY2VhMThjYTA4OWQxZjYxNjZiNGEzY2U4NDk5MmEyNmYzM2Y1OWEzMjk5ZTljMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzZDllMGFhYTk1OTlkNzMxMDIwZDMzYzk2ODI0ZjYwNTIxYzIxNWE4ZDJjMzI3ZDM5YTFhMGVkOThjMDU5ZGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_90566d0c8ae04848a27c1c7fcfd13ae4",
+      "statement": "Terminal provider search updates after each key with screen controls and uses a query followed by choices otherwise.",
+      "evidence": [
+        {
+          "resource": "repo://mc/onboarding/terminal_search.go#L30-L136",
+          "version": "repo-lines-v1:sha256:97fe4a6eb3bc5be59343c529b90d789983b3736b315b0f555fbea14c153d3f73:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzYjAzYmU0YzMwMDA2MDdiNTYyZjVjMGI5ZGU3YTZiOGFmYjAyODM1YmI2ZGIwODIzYzM4ZWMxNDU3NDk3OTlmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4ZGFhNGUwNTVhY2FlZTI0MTdjYjQ2ZmIyYzUwNzYxZWI0Y2VmNWVjMGIzNGNhN2E2YTI2YmEzZGQ3NTNiMDFlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5ZDMwOTBkNTIyNjEzNzBkYWY0NjVjNDkzNjlkNDUyZWY1ZTc2OTA0NDhlMGE0ZWNjZWU1ODVjMGExZjhkMTYzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzOGZjNTZlMzlkZTY0NGVjNDQ3YWQzNjVmMTEyNWEzOTUwZjEwNTEzNzc2ZDA1OTVjNzhhZDMxMzQ3N2RiMjI5In0"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T19:06:13.611Z"
+    "at": "2026-11-09T23:41:46.402Z"
   }
 }

@@ -176,6 +176,9 @@ func (w *setupWizard) agentChoices(returnStage int) (retErr error) {
 }
 
 func (w *setupWizard) selectAgent(binding string) error {
+	if err := w.removeUntestedConnections(binding); err != nil {
+		return err
+	}
 	w.session.RuntimeBindings = []string{binding}
 	w.session.RuntimeIncomplete = nil
 	w.agentChoiceRequired = false
@@ -187,6 +190,85 @@ func (w *setupWizard) selectAgent(binding string) error {
 	}
 	w.ui.Panel("Your agent", []string{w.agentName(binding), "You can add more agents in the dashboard after setup."})
 	return nil
+}
+
+// createdConnection lists a connection that setup creates. Setup lists an API key connection before its save,
+// so an interrupted save remains removable.
+func (w *setupWizard) createdConnection(id string) error {
+	if !slices.Contains(w.session.RuntimeCreated, id) {
+		w.session.RuntimeCreated = append(w.session.RuntimeCreated, id)
+	}
+	return w.save()
+}
+
+// removeUntestedConnections removes each connection that setup created and that never passed a test,
+// except the connection of the keep binding. A connection that a role or an enabled agent profile uses remains.
+// A failed removal leaves the connection in the list, and a later call retries it.
+func (w *setupWizard) removeUntestedConnections(keep string) error {
+	remove := w.deps.removeKey
+	if remove == nil {
+		remove = deployment.AgentConnectionRemoveCredential
+	}
+	cfg, err := w.catalog()
+	if err != nil {
+		return err
+	}
+	if spec, ok := cfg.Runtimes.Bindings[keep]; ok {
+		keep = spec.Credential
+	}
+	for _, id := range slices.Clone(w.session.RuntimeCreated) {
+		if id == keep {
+			continue
+		}
+		if used, err := w.connectionUsed(id); err != nil || used {
+			if err == nil {
+				w.session.RuntimeCreated = slices.DeleteFunc(w.session.RuntimeCreated, func(other string) bool { return other == id })
+			}
+			continue
+		}
+		if remove(w.home, id) != nil {
+			continue
+		}
+		_, err := operatorconfig.UpdateAtomic(filepath.Join(w.home, "config.toml"), func(cfg *operatorconfig.Config) error {
+			for binding, spec := range cfg.Runtimes.Bindings {
+				if spec.Credential == id {
+					delete(cfg.Runtimes.Bindings, binding)
+				}
+			}
+			if _, reference := operatorconfig.Default().Runtimes.Credentials[id]; !reference {
+				delete(cfg.Runtimes.Credentials, id)
+			}
+			return cfg.Validate()
+		})
+		if err != nil {
+			continue
+		}
+		for _, list := range []*[]string{&w.session.RuntimeCreated, &w.session.RuntimeIncomplete, &w.session.RuntimeBindings} {
+			*list = slices.DeleteFunc(*list, func(other string) bool { return other == id })
+		}
+		delete(w.session.RuntimeVerified, id)
+		delete(w.session.RuntimeIdentities, id)
+	}
+	return w.save()
+}
+
+func (w *setupWizard) connectionUsed(id string) (bool, error) {
+	cfg, err := w.catalog()
+	if err != nil {
+		return false, err
+	}
+	for _, binding := range cfg.Runtimes.EnabledBindings {
+		if cfg.Runtimes.Bindings[binding].Credential == id {
+			return true, nil
+		}
+	}
+	catalog, err := deployment.AgentProfileSystemCatalog(w.home)
+	if err != nil {
+		return false, err
+	}
+	return slices.ContainsFunc(catalog.Profiles, func(profile deployment.AgentProfileView) bool {
+		return profile.ConnectionID == id && len(profile.Roles) > 0
+	}), nil
 }
 
 func (w *setupWizard) agentName(binding string) string {
@@ -265,6 +347,9 @@ func (w *setupWizard) checkConnection(connection setupConnection) error {
 			return err
 		}
 	}
+	if err := w.removeUntestedConnections(connection.Binding); err != nil {
+		return err
+	}
 	if connection.Prepare != nil {
 		if err := connection.Prepare(); err != nil {
 			return err
@@ -335,6 +420,7 @@ func (w *setupWizard) finishConnection(connection setupConnection, wasHealthy bo
 		return err
 	}
 	w.session.RuntimeVerified[connection.Binding] = true
+	w.session.RuntimeCreated = slices.DeleteFunc(w.session.RuntimeCreated, func(id string) bool { return id == cfg.Runtimes.Bindings[connection.Binding].Credential })
 	w.session.RuntimeIncomplete = slices.DeleteFunc(w.session.RuntimeIncomplete, func(id string) bool { return id == connection.Binding })
 	w.session.RuntimeIdentities[connection.Binding] = setupAccessIdentity(cfg, connection.Binding, identity)
 	if !slices.Contains(w.session.RuntimeBindings, connection.Binding) {
@@ -377,9 +463,9 @@ func setupConnect(w *setupWizard, connection setupConnection) (retErr error) {
 			if message := deployment.OpenCodeRefusalMessage(source.CatalogEntry, err); message != "" {
 				return &setupFailure{cause: message}
 			}
-			return setupRuntimeFailure(err, "The model test failed. The saved connection remains available.")
+			return setupRuntimeFailure(err, setupModelTestFailure)
 		}
-		return nil
+		return w.testPassed(connection.Binding, false)
 	}
 	sources := deployment.RuntimeAuthSources{Bindings: []string{connection.Binding}, Environment: os.Environ()}
 	var acquisition *deployment.RuntimeAuthAcquisition
@@ -431,7 +517,41 @@ func setupConnect(w *setupWizard, connection setupConnection) (retErr error) {
 	if err != nil {
 		return setupRuntimeFailure(err, "The cause is unknown.")
 	}
+	return w.testPassed(connection.Binding, true)
+}
+
+// testPassed keeps the connection of a passing test, even when setup cannot record the result,
+// and records the result in the spine. Without the recordTest dependency, setup records nothing.
+func (w *setupWizard) testPassed(binding string, authorization bool) error {
+	if cfg, err := w.catalog(); err == nil {
+		credential := cfg.Runtimes.Bindings[binding].Credential
+		w.session.RuntimeCreated = slices.DeleteFunc(w.session.RuntimeCreated, func(id string) bool { return id == credential })
+	}
+	if w.deps.recordTest == nil {
+		return nil
+	}
+	return w.deps.recordTest(w.home, binding, authorization)
+}
+
+const setupModelTestFailure = "The model test failed. Retry the test, or choose another way to connect."
+
+// setupRecordVerification records a passing setup test so that the dashboard shows the connection as verified.
+func setupRecordVerification(home, binding string, authorization bool) error {
+	err := error(nil)
+	if shouldDelegateToHelper() {
+		_, err = ensureRuntimeHelper()
+	}
+	if err == nil {
+		err = recordSetupVerification(home, binding, authorization, systemSpineCall)
+	}
+	if err != nil {
+		return setupRecordFailure(err)
+	}
 	return nil
+}
+
+func setupRecordFailure(err error) error {
+	return &setupFailure{cause: "The connection works, but setup cannot record the result. Retry the test.", details: []string{"Diagnostic: " + setupSafeDiagnostic(err.Error())}}
 }
 
 func setupRuntimeFailure(err error, fallback string) error {

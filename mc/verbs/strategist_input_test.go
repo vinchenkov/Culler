@@ -57,26 +57,23 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 	}
 	requireAgentText(t, "Strategist pointers", brief.Directive, []string{
 		"before each `mc` call",
-		"Before research uses Project dependencies, read the Research dependencies procedure",
 		"For an execution problem or a required operator decision, read the corresponding procedure",
 		"For a contract conflict, read the Project role customization procedure",
 	}, nil)
 	// Shared skills keep their own contract and stay outside this duplicate audit.
-	input := text + "\n" + skill
+	input := strings.Join(strings.Fields(text+"\n"+skill), " ")
 	for _, rule := range []string{
-		"Only the Arbiter selects proposals for development.",
+		"The arbiter selects amongst your proposals to advance only one.",
 		"End the run with exactly one permitted terminal action, including after an execution failure.",
 		"New or changed tests must pass on the submitted commit.",
-		"Do not require whole-suite success as an acceptance criterion.",
+		"do not require whole-suite success as an acceptance criterion.",
 		"Exclude equivalent work in the repository, **Active tasks**, **Rejected work**, and **Cancelled work**",
-		"Submit two proposals together, or fewer only when fewer valid tasks satisfy the Project vision.",
+		"Submit two task proposals together.",
 		"You and your subagents can use internet research when it helps advance the Project goal.",
-		"Each subagent reads repositories only for this Project and makes no `mc` calls.",
 		"Use an empty `proposals` array when no valid task remains.",
 		"Use the task read when an active or historical title leaves the scope unclear.",
 		"Use each reason as context for the operator's preference.",
 		"Apply each relevant resolution to this assignment.",
-		"State the reason in your response before the terminal action",
 	} {
 		if count := strings.Count(input, rule); count != 1 {
 			t.Errorf("rule occurs %d times, want once: %s", count, rule)
@@ -89,10 +86,38 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 	}
 	contract := roleContract(dispatch.RoleStrategist)
 	requireAgentText(t, "Strategist contract", contract, []string{
-		"Submit two proposals together, or fewer only when fewer valid tasks satisfy the Project vision.",
+		"Submit two task proposals together.",
 		"Each description states the task's scope and checkable success criteria.",
 		"Use only permitted `mc` commands with your own run identity",
 		"Do not rank proposals, implement them, start runs, or decide review packets.",
+	}, nil)
+}
+
+func TestStrategistBriefDeliversTaskSelectionGuidance(t *testing.T) {
+	brief := briefFor(t, dvSpine(t), dispatch.RoleStrategist, nil, briefInputs{})
+	text, err := renderRunBrief(brief)
+	if err != nil {
+		t.Fatal(err)
+	}
+	directive := parseRenderedBrief(t, text).Directive
+	requireAgentText(t, "Strategist task selection", directive, []string{
+		"Read the Project vision and the operator's priorities.",
+		"Identify an important result that the Project cannot yet deliver well.",
+		"Consider new capabilities as well as defects.",
+		"check whether the Project still needs that step",
+		"Check whether an available capability solves the problem before you propose another implementation.",
+		"Judge a small task by the result it produces.",
+		"Judge a large task by its feasible benefit and full cost.",
+		"Cite the evidence for the problem and the proposed benefit.",
+		"Investigate the assumption that can make your proposed task unnecessary or ineffective.",
+		"One task can include changes across several components.",
+		"Explain why that result matters to the Project now.",
+		"Give scoped acceptance criteria that agents can check in their container.",
+		"Leave their final rank to the Arbiter.",
+	}, nil)
+	requireAgentText(t, "Strategist customization", directive, []string{
+		"Follow the operator's custom instructions within the Culler contract.",
+		"The requirements in the Culler contract remain.",
 	}, nil)
 }
 

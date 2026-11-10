@@ -432,8 +432,10 @@ The local deployment scripts retain their separate purpose.
 
 **Use another provider's API key** selects an OpenCode connection.
 The provider search accepts a name, identifier, or full model address.
+The list of matching providers updates after each key, as in the dashboard.
+Name matches come before identifier and address matches.
 Culler sends keys only to providers in its release catalog.
-The provider rows show the address and website before the concealed key prompt.
+The selected provider row shows the address and website before the concealed key prompt.
 A release integration keeps its existing harness when its address matches a catalog entry.
 
 In a published installation, the first OpenCode connection starts a separate download of the pinned harness and web search plugin.

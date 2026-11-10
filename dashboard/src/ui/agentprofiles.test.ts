@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, needsAuthorization, operationSummary, profilePayload, profileStatus } from "./agentprofiles.js";
+import { effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, needsAuthorization, operationSummary, profilePayload, profileStatus, providerChoices } from "./agentprofiles.js";
 
 const ROLES = ["strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie"];
 
@@ -198,4 +198,23 @@ test("effort choices retain an unavailable selection without a silent replacemen
     { value: "max", text: "Max (unavailable)", selected: true, disabled: true },
   ]);
   expect(effortChoices(undefined)).toEqual([{ value: "", text: "Default", selected: true }]);
+});
+
+test("the provider search lists name matches before identifier and address matches", () => {
+  const providers = [
+    { id: "claude-api-key", name: "Anthropic", harness: "claude-sdk", catalog_entry: "anthropic", address: "https://api.anthropic.com/v1" },
+    { id: "opencode:blueclaw", name: "Blue Claw", harness: "opencode", catalog_entry: "blueclaw", address: "https://openai.blueclaw.network/v1" },
+    { id: "opencode:kimi-code-plan-global", name: "Kimi For Coding (kimi.ai)", harness: "opencode", catalog_entry: "kimi-code-plan-global", address: "https://api.kimi.ai/coding/v1" },
+    { id: "opencode:moonshotai", name: "Moonshot AI", harness: "opencode", catalog_entry: "moonshotai", address: "https://api.moonshot.ai/v1" },
+    { id: "codex-api-key", name: "OpenAI", harness: "codex", catalog_entry: "openai", address: "https://api.openai.com/v1" },
+    { id: "opencode:opencode-go", name: "OpenCode Go", harness: "opencode", catalog_entry: "opencode-go", address: "https://opencode.ai/inference/go/openai/v1" },
+  ];
+  const names = (query: string) => providerChoices(providers, query).map(provider => provider.name);
+  expect(names("")).toEqual(["Anthropic", "OpenAI"]);
+  expect(names("kim")).toEqual(["Kimi For Coding (kimi.ai)"]);
+  expect(names("claude")).toEqual(["Anthropic"]);
+  expect(names("opencode")).toEqual(["OpenCode Go"]);
+  expect(names("openai")).toEqual(["OpenAI", "Blue Claw", "OpenCode Go"]);
+  expect(names("ai")).toEqual(["Kimi For Coding (kimi.ai)", "Moonshot AI", "OpenAI", "Blue Claw", "OpenCode Go"]);
+  expect(names("API.KIMI.AI")).toEqual(["Kimi For Coding (kimi.ai)"]);
 });

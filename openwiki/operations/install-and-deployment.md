@@ -20,6 +20,8 @@ sources:
     resource: repo://mc/cmd/mc/host_bun_prod.go
   - id: openwiki-source-d43a8f01d76df743f94a7d70
     resource: repo://mc/cmd/mc/onboard_home_prod.go
+  - id: openwiki-source-b7fbb75b893eadf967f11537
+    resource: repo://mc/cmd/mc/setup_agents_prod.go
   - id: openwiki-source-c6b3c0255eecd5c285f3893e
     resource: repo://mc/cmd/mc/setup_install_prod.go
   - id: openwiki-source-ba92167dda59467828397749
@@ -28,10 +30,14 @@ sources:
     resource: repo://mc/cmd/mc/setup_published_prod.go
   - id: openwiki-source-37456df394e5501dc5f5c7ad
     resource: repo://mc/cmd/mc/setup_terminal_prod.go
+  - id: openwiki-source-ae83eaa3edce8d9e15735e02
+    resource: repo://mc/cmd/mc/setup_untested_connections_prod_test.go
   - id: openwiki-source-579b9c04dbd98eaf836c5c4c
     resource: repo://mc/cmd/mc/setup_update_candidate_prod.go
   - id: openwiki-source-30e353995389d69cb272185f
     resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
+  - id: openwiki-source-d98ef2f07998b9fbb2240456
+    resource: repo://mc/cmd/mc/systemstatus.go
   - id: openwiki-source-d713bb120e2f3e26458d1540
     resource: repo://mc/cmd/mc/uninstall_modes_prod_test.go
   - id: openwiki-source-4e67d5d53e1cf48154d0675b
@@ -54,6 +60,8 @@ sources:
     resource: repo://mc/deployment/supervision.go
   - id: openwiki-source-1539e79687d52c9972a1201f
     resource: repo://mc/distribution/update_policy.json
+  - id: openwiki-source-3dcbed55f4a2df7c7a474bd0
+    resource: repo://mc/onboarding/terminal_search.go
   - id: openwiki-source-12f32e50a07508468db6789a
     resource: repo://redeploy.sh
   - id: openwiki-source-2aee5c75a683753fe072cd2d
@@ -80,10 +88,10 @@ sources:
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T19:06:13.611Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # Installation, deployment, and release
@@ -311,6 +319,8 @@ Codex and Claude Code connections use sign-in that Culler starts in separate hom
 `mc/deployment/runtimeauth_setup_login.go` launches the detected agent program in that isolated environment.
 The operator's agent login remains separate from Culler's login.
 Setup tests the selected connection before service activation.
+It records successful connection and model tests in the spine so the dashboard can show their verification state.
+If the result record fails, setup keeps the connection and asks for another test.
 The host retains provider credentials in macOS Keychain.
 Each agent receives a temporary Culler token and a public proxy certificate.
 Static API keys use the same host boundary.
@@ -322,6 +332,18 @@ Configuration validation rejects custom provider destinations and unsupported cr
 The host renews account access while the container retains its Culler token.
 Other catalog providers use the OpenCode harness and its separate runtime volume.
 Published installations download this package on demand; source deployments prepare it before activation.
+The provider search updates after each key on terminals with screen controls.
+It lists name matches before identifier and address matches and shows details for the selected provider.
+A terminal without screen controls uses a query prompt followed by a choice list.
+`mc/onboarding/terminal_search.go` provides this interaction, and `mc/cmd/mc/setup_opencode_prod.go` supplies the provider matches.
+
+Setup keeps a failed connection for retry.
+When another connection replaces it, setup removes unused connections it created that never passed a test.
+The selected connection and connections used by enabled profiles or roles remain available.
+`mc/onboarding/session.go` retains the cleanup list across restarts.
+`mc/cmd/mc/setup_agents_prod.go` retries failed removals during later cleanup attempts.
+The connection and terminal tests cover cleanup, retry, result record failures, and search output at narrow widths.
+
 A new Codex setup profile uses the native default model during its connection test.
 After success, setup saves the selected model for later runs.
 See [Agent connections and access renewal](agent-connections.md) for profiles, grant storage, and failure behavior.

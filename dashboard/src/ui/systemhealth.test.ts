@@ -15,6 +15,14 @@ test("one shared decision represents its task blocks and preserves the full ques
   expect(systemIssues()).toEqual([]);
 });
 
+test("a connection that no role uses is not an issue", () => {
+  const unused = { id: "connection:spare:connection_access:", group: "connections", state: "stopped", roles: [], diagnostic_id: 3 };
+  const unusedProfile = { id: "connection:main:model_access:spare", group: "connections", state: "stopped", roles: [], profile_id: "spare" };
+  const used = { id: "connection:main:connection_access:", group: "connections", state: "unknown", roles: ["collie"] };
+  const service = { id: "provider-service:proxy:", group: "connections", state: "stopped" };
+  expect(systemIssues([unused, unusedProfile, used, service])).toEqual([used, service]);
+});
+
 test("shared decisions preserve separate task failures and explicit ownership", () => {
   const decision = { id: "proposal-decision:4", project_id: "project", proposal_decision_id: 4,
     affected_tasks: [{ task_id: 7, owns_block: true }] };
@@ -310,17 +318,17 @@ test("A failed or incomplete deployment check retains the earlier evidence", asy
 
 test("Connections that require attention stay open and the others share one count", () => {
   const connections = [
-    { id: "a", state: "ready", roles: ["worker"] },
-    { id: "b", state: "stopped", roles: ["collie"] },
-    { id: "c", state: "unknown", roles: [] },
-    { id: "d", state: "retry_wait", roles: [] },
-    { id: "e", state: "unknown", roles: ["scribe"] },
+    { id: "connection:a:connection_access:", state: "ready", roles: ["worker"] },
+    { id: "connection:b:connection_access:", state: "stopped", roles: ["collie"] },
+    { id: "connection:c:connection_access:", state: "unknown", roles: [] },
+    { id: "connection:d:connection_access:", state: "stopped", roles: [], diagnostic_id: 4 },
+    { id: "connection:e:connection_access:", state: "unknown", roles: ["scribe"] },
   ];
-  const groups = connectionGroups(connections, [{ id: "b" }, { id: "d" }]);
-  expect(groups.attention.map(item => item.id)).toEqual(["b", "d", "e"]);
-  expect(groups.connected.map(item => item.id)).toEqual(["a"]);
-  expect(groups.unused.map(item => item.id)).toEqual(["c"]);
-  expect(connectionDisclosureLabel(groups)).toBe("1 connected, 1 unused");
+  const groups = connectionGroups(connections, [connections[1], connections[3]]);
+  expect(groups.attention.map(item => item.id)).toEqual([connections[1].id, connections[4].id]);
+  expect(groups.connected.map(item => item.id)).toEqual([connections[0].id]);
+  expect(groups.unused.map(item => item.id)).toEqual([connections[2].id, connections[3].id]);
+  expect(connectionDisclosureLabel(groups)).toBe("1 connected, 2 unused");
   expect(connectionDisclosureLabel({ connected: [], unused: [{}, {}] })).toBe("2 unused");
 });
 

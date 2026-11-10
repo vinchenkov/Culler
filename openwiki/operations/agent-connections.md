@@ -4,12 +4,22 @@ title: Agent connections and access renewal
 description: How account sign-in and API keys supply agent profiles through the host provider proxy.
 tags: [configuration, credentials, agents, security]
 sources:
+  - id: openwiki-source-2ead01a8e29c111bfb46b6f1
+    resource: repo://dashboard/src/ui/agentprofiles.js
   - id: openwiki-source-8f16f07389eccb57a739027f
     resource: repo://dashboard/src/ui/systemhealth.js
   - id: openwiki-source-096a781fb160ef979fa31121
     resource: repo://INSTALL.md
   - id: openwiki-source-cd6f7a4ea29f9d0931880195
     resource: repo://mc/boundary/envpolicy.go
+  - id: openwiki-source-b7fbb75b893eadf967f11537
+    resource: repo://mc/cmd/mc/setup_agents_prod.go
+  - id: openwiki-source-023af04189f7504ce88d56f5
+    resource: repo://mc/cmd/mc/setup_opencode_prod.go
+  - id: openwiki-source-ae83eaa3edce8d9e15735e02
+    resource: repo://mc/cmd/mc/setup_untested_connections_prod_test.go
+  - id: openwiki-source-d98ef2f07998b9fbb2240456
+    resource: repo://mc/cmd/mc/systemstatus.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
   - id: openwiki-source-4b4fe89674376e41801774a5
@@ -30,6 +40,8 @@ sources:
     resource: repo://mc/deployment/provider_credential.go
   - id: openwiki-source-da04f25cb9fa15d5a8447612
     resource: repo://mc/deployment/runtimeauth_setup_login.go
+  - id: openwiki-source-3dcbed55f4a2df7c7a474bd0
+    resource: repo://mc/onboarding/terminal_search.go
   - id: openwiki-source-1a0baff337229874d8b3640a
     resource: repo://mc/verbs/connectionhealth.go
   - id: openwiki-source-aa950240d47a765b29e8be03
@@ -46,10 +58,10 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-08T02:41:27.984Z" }
+generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-08T02:41:27.984Z
+    at: 2026-11-09T23:41:46.402Z
 ---
 
 # Agent connections and access renewal
@@ -70,6 +82,30 @@ Role assignments select profiles across Projects.
 The operator manages profiles through Model configuration in the dashboard.
 The installation wizard establishes and tests initial access.
 See [Installation, deployment, and release](install-and-deployment.md) for the installation entry points.
+
+## Setup connection lifecycle
+
+Setup records each connection it creates until that connection passes a test.
+`RuntimeCreated` in `mc/onboarding/session.go` preserves this list across setup restarts.
+Setup records a new API key connection before it saves the key, so an interrupted save remains eligible for cleanup.
+
+A failed model test keeps the current connection available for retry.
+When setup saves, tests, or selects another connection, it removes unused, untested connections from that list.
+The selected connection stays available.
+A connection also stays available when an enabled profile or a role uses it.
+
+`mc/cmd/mc/setup_agents_prod.go` coordinates this cleanup.
+`mc/deployment/provider_disconnect.go` removes the credential through the existing disconnect operation.
+Successful cleanup removes the associated profile entries and setup records.
+Default connection definitions remain in the configuration; other unused connection definitions are removed.
+A failed removal remains on the list for a later attempt.
+
+A successful setup test protects its connection from this cleanup before setup records the result in the spine.
+`recordSetupVerification` in `mc/cmd/mc/systemstatus.go` records the current connection authorization and profile revision.
+An account sign-in also verifies token refresh; a model test alone does not verify token refresh.
+The dashboard reads these records and shows the tested connection and profile as verified.
+If the record fails, setup reports that the connection works and asks for another test.
+The connection remains available despite that record failure.
 
 ## Configuration and connection creation
 
@@ -119,7 +155,14 @@ An empty effort uses the harness default.
 
 **Use another provider's API key** opens the catalog search.
 The search accepts a provider name, identifier, or full model address.
-Each provider row shows its address and website before the concealed key prompt.
+The terminal and dashboard list name matches before identifier matches and address matches.
+Both searches exclude the common `opencode:` prefix from identifier matches.
+An empty query shows the current release integrations.
+The terminal updates its matches after each key when screen controls are available.
+It shows four matches at a time and the selected provider's address and website before the concealed key prompt.
+Arrow keys move the selection; Enter selects the provider.
+A terminal without screen controls asks for a query and then shows the matches.
+`mc/onboarding/terminal_search.go` owns the terminal interaction; `mc/cmd/mc/setup_opencode_prod.go` supplies the catalog search.
 The release catalog supplies the model list without a live provider request.
 The model test verifies the saved key and selected model.
 An existing release integration keeps its harness when its address matches a catalog entry.
@@ -231,6 +274,8 @@ See [Failure controls](../concepts/failure-controls.md) for task retry behavior.
 
 System conditions display the configured profile name, with the model as a fallback.
 The diagnostic facts retain the raw profile identifier.
+The dashboard excludes a connection from its issues when no role uses it.
+That connection remains in the unused connections disclosure.
 A timeout can change the connection revision while its attempt remains active.
 The diagnostic keeps that active attempt visible through its run or attempt identity until it ends.
 
@@ -241,3 +286,10 @@ The isolated macOS test checks actual Keychain access with synthetic data.
 Real provider tests reside under `tests/live-model/` and use the cheapest compatible models.
 The test fixture backend exists only in `test_fake_routing` builds.
 It accepts synthetic provider credentials and requires a private directory outside deployment mounts.
+
+`mc/onboarding/terminal_search_test.go` checks edits, selection, match pages, empty results, and terminals without screen controls.
+`mc/cmd/mc/setup_opencode_screen_prod_test.go` checks search order and terminal output at 80 and 40 columns, with and without color.
+`mc/cmd/mc/setup_untested_connections_prod_test.go` checks retry, replacement, unused connection cleanup, and preservation after a result record failure.
+`mc/cmd/mc/systemstatus_setup_test.go` checks the connection and profile states after setup records a successful test.
+`dashboard/src/ui/systemhealth.test.ts` checks issue exclusion and disclosure groups for unused connections.
+These descriptions identify assertions in the source; this wiki update does not execute the tests.

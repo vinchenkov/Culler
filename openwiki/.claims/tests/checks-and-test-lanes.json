@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:26a9315ef47156b1f08f4d4183afa743a1c3340cfcffa94b8bcb314f23b6296f",
+  "pageVersion": "sha256:9c5c915908e4cd8d483bf113b0d753f12fb71c96d325cbbe76e819af3ff77218",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -633,8 +633,8 @@
       "statement": "The dashboard model configuration smoke checks effort selection and profile display.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts",
-          "version": "repo-file-v1:sha256:7cc43797596d1aaf3708cb034c3f11a017602b888276741de791301f0b0f4ebe"
+          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts#L358-L419",
+          "version": "repo-lines-v1:sha256:5fcca3463d94acf7ecfdd35e5ad45d3e03a7f13d6c002c720577b2ba37bf24ad:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNGMzYmNiMTA2NTgyMGI1ZmZjYzczNWIyMWRhZTZkMTk4YWJkYThiYTdlOWU5ODI5ZDJmMWM5NGI5NzJhNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2E0Y2ZlODdkMjc3ZjYwZWRjNTgyOTVmMmMyNjQ1OTg2MGZmNmRlZjkxYTcxOWRlNzY0NWZhYTc2NDNlYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyOGYwODdhYWYxNTQyZDUyNWJiNjU1NmFlZjQyZDc5ZmY3MTkwYmM0NWE2ZDAxZDg1ZDQwM2I4MjVmZDUyOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -643,8 +643,8 @@
       "statement": "The dashboard model configuration smoke checks profile Edit actions in the role assignment dialog.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts",
-          "version": "repo-file-v1:sha256:7cc43797596d1aaf3708cb034c3f11a017602b888276741de791301f0b0f4ebe"
+          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts#L90-L169",
+          "version": "repo-lines-v1:sha256:4f6bf7e32e51534306515e5c011f67ee054056c032b10e097afec39ad501d51a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljODAxN2MwOTU3YjY1YjJkMDA4Yzg3NjAyNmUyNDA4ODc1NjYyNzRkODJiOWUyZjU4NTc4NWQyMzdmMzk2MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2E0Y2ZlODdkMjc3ZjYwZWRjNTgyOTVmMmMyNjQ1OTg2MGZmNmRlZjkxYTcxOWRlNzY0NWZhYTc2NDNlYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZmZhMzkxZmE1NTNkZWEzNTRiYWUyZTAyNTgyNjU3ZDM4OWM2NmM2MDVjY2Y0MWUxNGYzODFlMjdmZjU0ZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwYTZmMjU0ZWMzMjYzYTRiMzA3NjQ5NzkyYTM2NjFkYWJiZjY4NmRmN2VlNGZkNWE5ZTEwNWI5M2Q1ZDJjMjQifQ"
         }
       ]
     },
@@ -943,10 +943,108 @@
           "version": "repo-lines-v1:sha256:f017ac8415494db207196494091a6ba9ac1e8daee582d9edd8f7100a3950e624:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_f3124d4df11444ccbeff96773b4b7f68",
+      "statement": "The Strategist input test checks preserved Project evidence, operator instructions, proposal resolutions, delivered skills, procedure pointers, and selected rules once.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/strategist_input_test.go#L11-L91",
+          "version": "repo-lines-v1:sha256:f31075027363027a899fd60008b95386c861274b42e943f6285ad9511cba0b93:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNDAwMDA4NTJlZDJhNDNhYmVmZmZmZDQ0OTM5ZmI0ZmU4Nzc3MzM0YjgyNTBmNDBmZGNhYmQ1ZTgxMDNhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNGQ4MDgxZDFiZWZlNDljM2M0Y2FjMjYwNTA4OTkyOTlhMzc4NDJjMzJhODMzMzk0ZDM5YTM1MWU2NDk3MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjJkODUzYjk5OGRlNGQ4NmUyZmNjM2I2ODBjNWUyYTQzMDM2YTlmMjI5MWJkZTBjMjIzZjczMTgwYzYyYjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f67366fdd2a84fcfb9baad8e23fd1a7c",
+      "statement": "The Strategist assignment-data test checks that brief simplification preserves retained facts, text, rows, and text tags.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/strategist_input_test.go#L121-L143",
+          "version": "repo-lines-v1:sha256:938d3c4b376d381df5ee3419c6575c46b9b5d580565bdf5305bb0187e887e019:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxYjFjYWZiNmI1ZGFkZTg4OGU5MTYyYTlhNGFlNWI2NTE3Y2Q5ZjRiMGZkMGI1MGVhNWE2MDU4YjE3ODQ3ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a4a6ad21fc35430ca0b3149179f33f01",
+      "statement": "TestArbiterAgentTextDefinesCompactHistory checks the detailed history explanation in the Arbiter directive and command skill.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives_test.go#L303-L340",
+          "version": "repo-lines-v1:sha256:ce4a4f14e1259416d00f99506acd1d1c2c749223676d924f54f56754fbebf0b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0Mzk0ZmRkZGU0NmFiNjVkMjFiOGMzOTM0NWVlMDliZWFjNmVhNWYyNzZlNWNkYzVkZjI0MDE0ZjJkYmNmNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiZjc3NzBlOTYxYWQ4NzU3OWQ2NTVhNjk5OGJjY2ZhNGNlNWUwMzcxNDVlOGM4OGRmMzgxMDA4N2VmZTVjY2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ddc7716f6c26478f9a3020ef9375e6ec",
+      "statement": "The Strategist brief test checks task selection guidance and customization boundaries in the rendered directive.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/strategist_input_test.go#L96-L122",
+          "version": "repo-lines-v1:sha256:d2c264289d47773e87ed21bad00f8964b5a1cbabd420d9f88a542c1b255f5c13:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35476320d6c94384a06c794dbf865c4b",
+      "statement": "Terminal search tests cover query edits, selection, empty results, match pages, and input without screen controls.",
+      "evidence": [
+        {
+          "resource": "repo://mc/onboarding/terminal_search_test.go#L38-L181",
+          "version": "repo-lines-v1:sha256:3e8385b1ed742f1008358f954e413a14dcf03174168abb6ccf951e17a2eb58cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlNDk4ODBhODNhZjA1NTE4ZjVjMTJjNTE4MTY1N2I4NTc2ZjgwZWZmOTI5MWViYzYwM2RiZTdiODVmODFmMDE3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwYmM2MWNiNzhmZWY0NDZiZDdiMDczMDNhNzRiZmQyMjZjMDJhM2RkM2EyZjE2OWI1ZGVlOTUxN2IwY2UzYmExIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a16b2776e36431397988ba30c4b3524",
+      "statement": "Setup tests cover cleanup of unused untested connections, retry retention, and preservation when a successful test cannot be recorded.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_untested_connections_prod_test.go#L40-L219",
+          "version": "repo-lines-v1:sha256:fec71f4e357054acf0f63c12a3867da9ce5bcd87bedabf0afd37b973ac3d689c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1MmJiYzIzZjkzMTIwMDY5MjA5ODNlMjk2MDRlMDVjZmU4MTEwYzAwOWEyYTUxN2M0NDZhZGE3OWNiOTc0M2UxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJhN2JiZWI2MWRkZjdkYjgyMWNlYTE4Y2EwODlkMWY2MTY2YjRhM2NlODQ5OTJhMjZmMzNmNTlhMzI5OWU5YzAwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3b77aa81ef7444a9dc6fce45811bf01",
+      "statement": "A scratch-spine test checks that a recorded setup test verifies both connection access and model access.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/systemstatus_setup_test.go#L16-L95",
+          "version": "repo-lines-v1:sha256:c1bde5f17ad98cef218a1ded25e4dc3858fbafc260fad63eec0954e660368cb0:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4Nzg5NzVkYzI0NDdhYzY1M2QyMjY4OGU2ZDRiYTdiNWY4NWM2NmY5Yjg2OGMwZTNiODg0NDAyNmRhMzEyOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkNmIwOTE5NGEyYmM5ZDc1YTNmMzRjYWM2N2EzMjE0MjQzZjljYzcxYWZjMGFkZjViZjdjZTk4ZGUxM2M5ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_22254be767d342f0a76133bc578d8c87",
+      "statement": "Browser tests exclude unused connection failures from issues while preserving assigned connection and provider service failures.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts#L206-L221",
+          "version": "repo-lines-v1:sha256:a63abcb845356c06a70252d43c326510e7da7f1949c9b7b10924aa7084820381:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwMGM0ZjBhOTc4YWY1Mjc1N2FlZDViOWZkNGQwZmJmZTFmNDFmNWRmMDg3OTQ0NWZmODEzNTI3MWY5ZWJhNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiNmVlNzZkNzMzMjYxMjk1ZTc5ZmIxMmNiNDRmZjFlZGY1NmI5ZTYzMDQwNDQzZTVmNmVkNDgwZWZhMGE5NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlNzI0NWNhNWJlODRiNTY3MTM3MzA4MzE1YjE2N2EwMTYyN2ExOTc1NzYxMzhmM2MzZjAyZWJhMWM3MDQyMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzZTY5MGIwYWY5ZDFlNzUyODJmNjk0ODE2OTZkNmI4ZjU1Y2Y3MDA4MmQyMWMyY2EyNjg3ODVmOTlhZDExZjIifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/systemhealth.test.ts#L18-L24",
+          "version": "repo-lines-v1:sha256:43087874cc4f9a615be4b4dc22363aa9ee30617e8784623d9fd5608cecad2d4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGExNWE2ZjY0YmEwNzNmYTI4NDMzZWY0ZTE3NWQ2ZTIyYWM2M2YzMmU3MzlkZWZhZDU3ODE4NjBkODBiMjBkMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWQ2NDkxYmE1NGFlMjU3ZmI2MWJiOGMxOWFkMDJiNDQyMmI1ZWI4OGI0ZTU5YmQ5ZjIyMDNjNzA2ZGM1MjNlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk5YmJjZmI3YzJmOWJiMWQwNDBlZjIzMGUyYzQ0NWNjZjBjZWJhMDI0MDZiYTAxODMyNWNiZGUxMDI1Mzc4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e6464ea534f44aeab89c4d26683ff9f",
+      "statement": "Setup screen tests exercise provider search and connection failures at 80 and 40 columns with and without color.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_opencode_screen_prod_test.go#L25-L40",
+          "version": "repo-lines-v1:sha256:58242ad7f727ae8ef1e6a28fd862ef2a8fc68af859b72fd90bd54449648ea734:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OTQ2YjAwZDA4OTQxYTNhMTZjNjk5OGNkZDUzNmViYTNjYjMyZWY5MjkzMTg0ZGRkMTg2YjMwZGMzNDdkOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0YWMzY2I0NWNhNDNhNTdlMzU3YTFmMzcxMGQ3OGU2YzUxNzA1YzJjZWE1YTFiZWEwNTk2ZDIzYTVhYWUxYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNDY2NDI0ZmUzZjY1NWUwNDUyMmFjZWMxMzEzZTA1ZTFjMjAyYmYwYTg5ZjUzZjAzZTI0MGM5ODAyMDdhODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiYTNhZTk5YTMwYjgzZjMwMDdlZThjNWY0MjUyODhjNGEwOGM3MGY5ZjUxMWI3NDQwYWM1NDU5YWJmYzkxOGMifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_untested_connections_screen_prod_test.go#L21-L40",
+          "version": "repo-lines-v1:sha256:4f7471045c8b740d2786274e57a17a291ee35c9071a55877e91abbadc32021d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZTIzMWE2OTBjZDE5OTZiOGIyM2RiNDdjNWVhN2E4YzVkZjFkZDE2ZGFmMzY2ODUwODhhNjFkNjI2MWRiZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlYmNjYjY3M2UwMjQwM2EwOGMwMjVjNjI4OGQ2NDVlNGY4M2M4MTgyZWJkMGNlNTM0M2E2MDE4NmNhZDRiNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkODA2ZWQ2NTFhZmUxMTAxYTVlZDY1OWQzODk3M2E0YTY0NjY1MzllNTIxODA3MjMyYzIxYjRmZDg1NjMwNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYmY4NmM5MzFmMGZjYjA3YmJhNDNmNTdkZDM1MWFhOTY2ZGQzZDRmMGQ5MGNiNGM0ZmFkNWU3NDg2Mjk0NDUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T19:06:13.611Z"
+    "at": "2026-11-09T23:41:46.402Z"
   }
 }

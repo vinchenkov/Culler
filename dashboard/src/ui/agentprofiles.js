@@ -60,11 +60,24 @@ export function modelChoices(models, current) {
 
 export const effortLabel = (effort) => ({ "": "Default", none: "None", minimal: "Minimal", low: "Low", medium: "Medium", high: "High", xhigh: "Extra high", max: "Max", ultra: "Ultra", thinking: "Thinking" }[effort || ""] || effort);
 
+// The rank is -1 for a provider that does not match the search.
+// Each catalog identifier starts with "opencode:", so the search ignores that prefix.
+function providerRank(provider, search) {
+  const name = String(provider.name || "").toLowerCase();
+  if (name.startsWith(search)) return 0;
+  if (name.split(/[^\p{L}\p{N}]+/u).some(word => word && word.startsWith(search))) return 1;
+  if (name.includes(search)) return 2;
+  if ([provider.catalog_entry, String(provider.id || "").replace(/^opencode:/, "")].some(value => String(value || "").toLowerCase().includes(search))) return 3;
+  if (String(provider.address || "").toLowerCase().includes(search)) return 4;
+  return -1;
+}
+
+// The matches list name matches before identifier matches and address matches.
 export function providerChoices(providers, query = "") {
   const search = query.trim().toLowerCase();
-  return (providers || []).filter(provider => search
-    ? [provider.name, provider.catalog_entry, provider.id, provider.address].some(value => String(value || "").toLowerCase().includes(search))
-    : provider.harness !== "opencode");
+  if (!search) return (providers || []).filter(provider => provider.harness !== "opencode");
+  return (providers || []).map(provider => ({ provider, rank: providerRank(provider, search) }))
+    .filter(match => match.rank >= 0).sort((a, b) => a.rank - b.rank).map(match => match.provider);
 }
 
 export function effortChoices(model, current = "") {

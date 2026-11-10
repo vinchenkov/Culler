@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
+	"slices"
+	"strconv"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -96,13 +99,27 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 				session.send(strings.Repeat("\x1b[B", 4))
 				capture("OpenCode connection choice", "OpenCode runs the agent.")
 				session.send("\r")
-				capture("Provider search", "Provider")
-				session.send("not-a-provider-match-92836\r")
-				capture("No provider result", "No provider found")
-				session.send("moonshot\r")
-				capture("Provider result and full address", "Choose the provider")
+				capture("Provider search and release integrations", "OpenAI")
+				// The input line ends each frame, so the screen holds the list of the complete query.
+				search := func(title, keys, query string, texts ...string) {
+					session.send(keys)
+					capture(title, "> "+query)
+					screen := strings.Join(session.screen.lines(), "\n")
+					for _, text := range append(texts, "\nProvider\n") {
+						if !strings.Contains(screen, text) {
+							t.Fatalf("The provider search for %q lacks %q: %q", query, text, session.screen.lines())
+						}
+					}
+				}
+				search("Matches after each key", "kim", "kim", "› Kimi For Coding (kimi.com)", "  Kimi For Coding (kimi.ai)")
+				search("Longest provider detail", "\x15opencode", "opencode", "› OpenCode", "  OpenCode Go")
+				search("No provider result", "\x15not-a-provider-match-92836", "not-a-provider-match-92836", "! No provider found", "\nctrl+b back  ctrl+c exit\n")
+				search("Provider result and full address", "\r\x15moonshot", "moonshot", "› Moonshot AI\n", "  Moonshot AI (China)")
 				session.send("\r")
-				capture("Concealed key prompt", "Your input stays concealed.")
+				capture("Selected provider and concealed key prompt", "Your input stays concealed.")
+				if !strings.Contains(strings.Join(session.screen.lines(), "\n"), "› Provider: Moonshot AI\n") {
+					t.Fatalf("The screen lacks the selected provider: %q", session.screen.lines())
+				}
 				session.send("synthetic-opencode-screen-key\r")
 				capture("Model list and prices", "Choose the model")
 				provider, _ := opencodecatalog.Find("moonshotai")
@@ -174,5 +191,108 @@ func TestOpenCodeDownloadTimeoutCause(t *testing.T) {
 	var failure *setupFailure
 	if !errors.As(err, &failure) || failure.cause != "The OpenCode download exceeded its time limit. Retry the download." {
 		t.Fatalf("The timeout cause changed: %v", err)
+	}
+}
+
+func TestSetupProviderSearchMatchesTheDashboardSearch(t *testing.T) {
+	labels := func(query string) []string {
+		var result []string
+		for _, choice := range setupProviderChoices(query) {
+			result = append(result, choice.Label)
+		}
+		return result
+	}
+	if got := labels(""); !slices.Equal(got, []string{"Anthropic", "OpenAI"}) {
+		t.Fatalf("The empty search lists %q.", got)
+	}
+	if got := labels("kim"); !slices.Equal(got, []string{"Kimi For Coding (kimi.com)", "Kimi For Coding (kimi.ai)"}) {
+		t.Fatalf("The search for kim lists %q.", got)
+	}
+	if got := labels("claude"); !slices.Contains(got, "Anthropic") {
+		t.Fatalf("The identifier search lists %q.", got)
+	}
+	if got := labels("opencode"); !slices.Contains(got, "OpenCode Go") || slices.Contains(got, "Moonshot AI") {
+		t.Fatalf("The search for opencode lists %q.", got)
+	}
+	if got := labels("API.MOONSHOT.AI"); !slices.Equal(got, []string{"Moonshot AI"}) {
+		t.Fatalf("The address search lists %q.", got)
+	}
+	if got := labels("openai"); len(got) < 2 || got[0] != "OpenAI" {
+		t.Fatalf("The search for openai lists %q.", got)
+	}
+	if got := labels("open"); len(got) < 4 || !slices.ContainsFunc(got[:4], func(label string) bool { return strings.HasPrefix(label, "Open") }) ||
+		slices.ContainsFunc(got[:4], func(label string) bool { return !strings.HasPrefix(label, "Open") }) {
+		t.Fatalf("The first page for open lists %q.", got)
+	}
+}
+
+// The redraw moves the cursor up to the first row of the previous frame, so each frame must fit 24 rows.
+func TestSetupProviderSearchFitsTheScreen(t *testing.T) {
+	t.Setenv("TERM", "xterm-256color")
+	t.Setenv("NO_COLOR", "1")
+	count := len(setupProviderChoices("/"))
+	if count != len(deployment.AgentProviderCatalog()) {
+		t.Fatalf("The search for / lists %d of %d providers.", count, len(deployment.AgentProviderCatalog()))
+	}
+	for _, columns := range []int{80, 40} {
+		t.Run(fmt.Sprint(columns), func(t *testing.T) {
+			master, slave := setupTerminalPair(t)
+			if err := unix.IoctlSetWinsize(int(slave.Fd()), unix.TIOCSWINSZ, &unix.Winsize{Col: uint16(columns), Row: 24}); err != nil {
+				t.Fatal(err)
+			}
+			terminal := onboarding.NewTerminal(slave, slave)
+			done := make(chan error, 1)
+			go func() {
+				_, err := terminal.Search(setupProviderSearch)
+				done <- err
+			}()
+			var output strings.Builder
+			buffer := make([]byte, 65536)
+			deadline := time.Now().Add(30 * time.Second)
+			for typed, finished := false, false; ; {
+				if !typed && strings.Contains(output.String(), "Current release integrations.") {
+					if _, err := master.Write([]byte("/" + strings.Repeat("\x1b[B", count) + "\x03")); err != nil {
+						t.Fatal(err)
+					}
+					typed = true
+				}
+				fds := []unix.PollFd{{Fd: int32(master.Fd()), Events: unix.POLLIN}}
+				ready, err := unix.Poll(fds, 100)
+				if err != nil && !errors.Is(err, unix.EINTR) {
+					t.Fatal(err)
+				}
+				if ready > 0 {
+					size, err := master.Read(buffer)
+					if err != nil {
+						t.Fatal(err)
+					}
+					output.Write(buffer[:size])
+					continue
+				}
+				if finished {
+					break
+				}
+				select {
+				case err := <-done:
+					if !errors.Is(err, onboarding.ErrExit) {
+						t.Fatal(err)
+					}
+					finished = true
+				default:
+				}
+				if time.Now().After(deadline) {
+					t.Fatal("The search did not finish.")
+				}
+			}
+			moves := regexp.MustCompile(`\x1b\[([0-9]+)A`).FindAllStringSubmatch(output.String(), -1)
+			if len(moves) < count {
+				t.Fatalf("The search redrew %d of %d frames.", len(moves), count)
+			}
+			for _, move := range moves {
+				if rows, _ := strconv.Atoi(move[1]); rows > 23 {
+					t.Fatalf("A provider search frame needs %d rows above the input line.", rows)
+				}
+			}
+		})
 	}
 }
