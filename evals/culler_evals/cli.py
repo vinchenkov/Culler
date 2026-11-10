@@ -30,7 +30,7 @@ from .records import RecordStore
 from .storage import DEFAULT_EXPERIMENTS, DEFAULT_CACHE, durable_directory, preserve_source, restore_records
 from .runtime import Runtime, control_cancelled
 from .browser import PacketBrowser
-from .assessment import check_packet, require_inspection
+from .assessment import check_packet, require_inspection, required_sections
 from .viewer import export_view, index_mlflow
 from .view_server import LiveViewer
 
@@ -287,7 +287,7 @@ def _assess_calibration(args, store):
                                                                 evaluator.settings("judge"), protocol["rubric"] | {
                                                                     "operator_context": protocol["operator_context"]})
                     require_inspection(judgment, check_packet(Path(request["packet_path"]),
-                                                             required_sections=request["case"].get("required_sections")))
+                                                             required_sections=required_sections(request["case"])))
                     judgment["assessment"] = {"id": operation, "case_id": request["case"]["id"],
                                               "packet": request["packet"], "reference_hash": content_hash(request["case"]["references"]),
                                               "rubric_hash": digest(protocol["rubric"]), "source_trial_id": request["source_trial_id"]}

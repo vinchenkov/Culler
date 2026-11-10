@@ -99,7 +99,12 @@ describe("runHistoryNode", () => {
 
 describe("task dialog reports", () => {
   const global = globalThis as { document?: unknown };
-  beforeAll(() => { global.document = { createElement: (tag: string) => new FakeElement(tag.toUpperCase()) }; });
+  beforeAll(() => {
+    global.document = {
+      createElement: (tag: string) => new FakeElement(tag.toUpperCase()),
+      createTextNode: (data: string) => ({ nodeType: 3, data }),
+    };
+  });
   afterAll(() => { delete global.document; });
 
   const readReport = async () => ({ body: "", type: "text/plain" });
@@ -178,6 +183,37 @@ describe("task dialog reports", () => {
     history.dataset.testid = "board-history";
     const [main] = taskDialogBody(detail(), { history }) as unknown as FakeElement[];
     expect(main!.childNodes.at(-1)).toBe(history);
+  });
+
+  /** The content sections of the main column, in order: each label with its text. */
+  const sections = (d: Record<string, unknown>) => {
+    const [main] = taskDialogBody(d, { controls: new FakeElement("FORM") }) as unknown as FakeElement[];
+    return main!.childNodes
+      .filter((node): node is FakeElement => node instanceof FakeElement && node.nodeName === "SECTION")
+      .map((node) => ({ label: node.all().find((child) => child.className === "sec-label")!.textContent, text: node.text, testid: node.dataset.testid }));
+  };
+
+  test("a task that the Strategist proposed shows Strategic rationale as the first content section, above Description", () => {
+    const row = { id: 3, status: "seeded", origin: "autonomous", description: "The export holds the date.",
+      strategic_rationale: "Observed: the export omits the date. Assumed: each client reads the date." };
+    const shown = sections(taskDetail(row));
+    expect(shown.map((section) => section.label)).toEqual(["Strategic rationale", "Description"]);
+    expect(shown[0]!.testid).toBe("task-dialog-rationale");
+    expect(shown[0]!.text).toContain("Observed: the export omits the date. Assumed: each client reads the date.");
+    expect(shown[0]!.text).not.toContain("The export holds the date.");
+    expect(shown[1]!.text).toContain("The export holds the date.");
+    expect(shown[1]!.text).not.toContain("Observed: the export omits the date.");
+  });
+
+  test("a task that the operator defined shows no Strategic rationale section", () => {
+    const shown = sections(taskDetail({ id: 3, status: "seeded", origin: "user", description: "The export holds the date." }));
+    expect(shown.map((section) => section.label)).toEqual(["Description"]);
+    expect(body(taskDetail({ id: 3, status: "seeded", origin: "user" })).byTestid("task-dialog-rationale")).toBeUndefined();
+  });
+
+  test("a task that the Strategist proposed without a recorded rationale states the absence", () => {
+    const shown = sections(taskDetail({ id: 3, status: "seeded", origin: "autonomous", description: "The export holds the date." }));
+    expect(shown[0]).toMatchObject({ label: "Strategic rationale", text: "Strategic rationaleNo Strategic rationale recorded." });
   });
 });
 

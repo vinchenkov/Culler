@@ -7,7 +7,12 @@ import { el, reconcileChildren } from "./dom.js";
 import { createComposer, createModelPicker } from "./conversation.js";
 import { collieModelView, pollTight, provisionalRow, transcriptRows } from "./colliefmt.js";
 
-const EMPTY_TEXT = "Ask Collie about this packet. Collie receives its thesis, its criteria, and its report text.";
+/** The text of an empty conversation. It names the opening text of the
+ * packet by the heading that the origin of its task selects. */
+export function emptyText(packet) {
+  const opening = packet?.origin === "autonomous" ? "Strategic rationale" : "thesis";
+  return `Ask Collie about this packet. Collie receives its ${opening}, its criteria, and its report text.`;
+}
 // mc gives the same text when it refuses a conversation of an archived Project.
 const ARCHIVED_TEXT = "The Project of this packet is archived. Conversations about its packets are unavailable.";
 
@@ -182,7 +187,7 @@ export function createPacketChat({ api, renderMessage, openConversation, project
   function emptyState() {
     if (archived()) return el("div", { class: "conversation-empty packet-chat-empty", testid: "packet-chat-empty" }, el("p", { text: ARCHIVED_TEXT }));
     return el("div", { class: "conversation-empty packet-chat-empty", testid: "packet-chat-empty" },
-      el("p", { text: EMPTY_TEXT }),
+      el("p", { text: emptyText(packet) }),
       earlier && el("a", { class: "packet-chat-earlier", testid: "packet-chat-earlier", href: "#collie",
         text: "Continue the conversation about the earlier packet",
         onclick: event => { event.preventDefault(); openConversation(earlier.id); } }));

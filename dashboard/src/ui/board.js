@@ -393,6 +393,7 @@ export function taskDetail(row, { tasks, leases, nowMs, settings, packets = [], 
     stale: view === null ? false : view.stale,
     stageTone: stageTone(row.status),
     description: text(row.description),
+    strategicRationale: text(row.strategic_rationale),
     requirementsPending: Boolean(row.pending_revision),
     reason: row.blocked === 1 || row.blocked === true ? (text(row.blocked_reason) ?? "(no reason recorded)") : null,
     run:

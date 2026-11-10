@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	spawnBriefSchema = "mc.spawn-brief.v23"
+	spawnBriefSchema = "mc.spawn-brief.v24"
 	spawnBriefHeader = "Culler immutable run brief"
 )
 
@@ -42,6 +42,7 @@ const (
 	partProposalDecisions    = "Proposal decisions"
 	partProject              = "Project"
 	partVision               = "Vision"
+	partStrategicRationale   = "Strategic rationale"
 )
 
 // runBrief is the content of one run brief, selected for the role of the run.
@@ -106,6 +107,8 @@ type briefTaskRecord struct {
 	ID                  int64
 	Title               string
 	Description         string
+	StrategicRationale  string
+	Origin              string
 	Scope               string
 	Priority            int
 	Status              string
@@ -125,16 +128,18 @@ type briefTaskRecord struct {
 // against the board. A subject never carries board state: dispatch selects only
 // an open, unblocked subject, so that state holds no information there.
 type briefBoardRow struct {
-	ID            int64  `json:"id"`
-	Title         string `json:"title"`
-	Description   string `json:"description"`
-	Scope         string `json:"scope"`
-	Priority      int    `json:"priority"`
-	Status        string `json:"status"`
-	Blocked       bool   `json:"blocked,omitempty"`
-	BlockedReason string `json:"blocked_reason,omitempty"`
-	Decision      string `json:"decision,omitempty"`
-	Archived      bool   `json:"archived,omitempty"`
+	ID          int64  `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	// StrategicRationale is set only for a proposal of the Arbiter's pool.
+	StrategicRationale string `json:"strategic_rationale,omitempty"`
+	Scope              string `json:"scope"`
+	Priority           int    `json:"priority"`
+	Status             string `json:"status"`
+	Blocked            bool   `json:"blocked,omitempty"`
+	BlockedReason      string `json:"blocked_reason,omitempty"`
+	Decision           string `json:"decision,omitempty"`
+	Archived           bool   `json:"archived,omitempty"`
 }
 
 // briefActiveTitle is the Strategist's view of an active task. It holds a
@@ -312,7 +317,7 @@ func trimArbiterBrief(b *runBrief) {
 		case "Project environment":
 			part.Explanation = "These identifiers name the selected Project environment."
 		case partPool:
-			part.Explanation = "These are the proposals for this assignment. `priority` is the task priority that the operator sets: -1 is expedited; 0 through 3 mean P0 through P3."
+			part.Explanation = "These are the proposals for this assignment; each `strategic_rationale` holds the Strategist's claims and evidence for you to check. `priority` is the task priority that the operator sets: -1 is expedited; 0 through 3 mean P0 through P3."
 		case partActiveTasks:
 			part.Explanation = "These are this Project's active tasks, including blocked tasks and approved tasks that await a merge."
 		case partRejected:
@@ -582,6 +587,15 @@ func addSubjectParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn, 
 		subject.TextTag, subject.Text = "description", task.Description
 	}
 	b.Parts = append(b.Parts, subject)
+	// The rationale is decision evidence. The Worker and the Verifier receive
+	// the description alone.
+	if role == dispatch.RolePackager && task.Origin == "autonomous" && task.StrategicRationale != "" {
+		b.Parts = append(b.Parts, briefPart{
+			Heading:     partStrategicRationale,
+			Explanation: "The Strategist wrote this rationale when it proposed the task. Present it in the first packet section, after your statement of the delivered change.",
+			TextTag:     "strategic_rationale", Text: task.StrategicRationale,
+		})
+	}
 	if role == dispatch.RoleWorker {
 		part, err := requirementsRevisionPart(ctx, q, task)
 		if err != nil {
@@ -859,11 +873,13 @@ func addArbiterParts(ctx context.Context, q Q, b *runBrief, sp *dispatch.Spawn) 
 		if err != nil {
 			return err
 		}
-		pool = append(pool, boardRow(task))
+		row := boardRow(task)
+		row.StrategicRationale = task.StrategicRationale
+		pool = append(pool, row)
 	}
 	b.Parts = append(b.Parts, briefPart{
 		Heading:     partPool,
-		Explanation: "This fixed proposal set is your complete assignment, with no task subject. Cover each proposal and reject invalid criteria with the permitted rejection category.",
+		Explanation: "This fixed proposal set is your complete assignment, with no task subject. Each `strategic_rationale` holds the Strategist's claims and evidence for you to check.",
 		Rows:        pool,
 	})
 	// Every promoted, unmerged task of this Project, blocked rows included: a
@@ -1066,12 +1082,12 @@ func loadBriefTask(ctx context.Context, q Q, id int64) (briefTaskRecord, error) 
 	var task briefTaskRecord
 	var blocked, archived int
 	err := q.QueryRowContext(ctx, `
-		SELECT id, title, COALESCE(description, ''), scope,
+		SELECT id, title, COALESCE(description, ''), COALESCE(strategic_rationale, ''), origin, scope,
 		       priority, status, correction_count,COALESCE(returned_kind,''),COALESCE(correction_operator_reason,''), blocked,
 		       COALESCE(blocked_reason, ''),
 		       COALESCE(revision_notes, ''), COALESCE(decision, ''), archived, record_version, requirements_version
 		FROM tasks WHERE id = ?`, id).Scan(
-		&task.ID, &task.Title, &task.Description, &task.Scope,
+		&task.ID, &task.Title, &task.Description, &task.StrategicRationale, &task.Origin, &task.Scope,
 		&task.Priority, &task.Status, &task.CorrectionCount, &task.ReturnedKind, &task.OperatorReason, &blocked,
 		&task.BlockedReason, &task.RevisionNotes,
 		&task.Decision, &archived, &task.RecordVersion, &task.RequirementsVersion)

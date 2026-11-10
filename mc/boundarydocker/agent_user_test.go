@@ -473,7 +473,7 @@ func agentPayload(t *testing.T) string {
 	var body bytes.Buffer
 	encoder := json.NewEncoder(&body)
 	encoder.SetEscapeHTML(false)
-	if err := encoder.Encode(map[string]any{"proposals": []map[string]any{{"title": agentTitle, "description": agentDetail}}}); err != nil {
+	if err := encoder.Encode(map[string]any{"proposals": []map[string]any{{"title": agentTitle, "description": agentDetail, "strategic_rationale": "Observed: the fixture lacks this result."}}}); err != nil {
 		t.Fatal(err)
 	}
 	return strings.TrimSuffix(body.String(), "\n")

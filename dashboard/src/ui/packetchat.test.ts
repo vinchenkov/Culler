@@ -4,7 +4,18 @@
 
 import { describe, expect, test } from "bun:test";
 
-import { chatTitle, currentConversation, earlierConversation, queueHidden } from "./packetchat.js";
+import { chatTitle, currentConversation, earlierConversation, emptyText, queueHidden } from "./packetchat.js";
+
+describe("emptyText", () => {
+  test("names the opening text that Collie receives for each task origin", () => {
+    expect(emptyText({ origin: "autonomous" }))
+      .toBe("Ask Collie about this packet. Collie receives its Strategic rationale, its criteria, and its report text.");
+    expect(emptyText({ origin: "user" }))
+      .toBe("Ask Collie about this packet. Collie receives its thesis, its criteria, and its report text.");
+    expect(emptyText(null))
+      .toBe("Ask Collie about this packet. Collie receives its thesis, its criteria, and its report text.");
+  });
+});
 
 const packet = (packet_id: number, current: boolean, task_id = 7) =>
   ({ packet_id, version_id: packet_id * 10, task_id, task_title: "Raise the limit", project_id: "alpha", current });

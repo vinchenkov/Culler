@@ -87,6 +87,36 @@ func PacketDecide(db *sql.DB, id *RunIdentity, task int64, decision, reason stri
 	return result, nil
 }
 
+// The heading of the opening text of a packet. The origin of the task selects it.
+const (
+	openingStrategicRationale = "Strategic rationale"
+	openingThesis             = "Thesis"
+)
+
+// packetOpeningHeading names the opening text of a packet for its task origin.
+func packetOpeningHeading(origin string) string {
+	if origin == "autonomous" {
+		return openingStrategicRationale
+	}
+	return openingThesis
+}
+
+// packetOpeningText is the opening text that Culler stores for a packet. The
+// packet of a task that the Strategist proposed opens with the Packager's statement of the
+// delivered change and then the Strategic rationale of the task. Each other
+// packet opens with the Packager's text alone.
+func packetOpeningText(ctx context.Context, q Q, task int64, statement string) (string, error) {
+	var origin string
+	var rationale sql.NullString
+	if err := q.QueryRowContext(ctx, `SELECT origin,strategic_rationale FROM tasks WHERE id=?`, task).Scan(&origin, &rationale); err != nil {
+		return "", err
+	}
+	if origin != "autonomous" || !rationale.Valid {
+		return statement, nil
+	}
+	return strings.TrimSpace(statement) + "\n\n" + strings.TrimSpace(rationale.String), nil
+}
+
 // PacketSelection limits `mc packet list` to the live queue, to the latest
 // packet of one task, or to both. The zero value selects the latest packet of
 // each task.
@@ -100,10 +130,12 @@ type PacketSelection struct {
 // Each row carries the change data of the current merge candidate of the packet version.
 // Without that change data, the row carries the change data of the merge candidate that the packet records.
 // Each row names the packet of the same task that came directly before the latest packet.
+// The thesis of a row is the stored opening text of the packet. For a task that the Strategist proposed, that text
+// holds the Packager's statement and then the Strategic rationale.
 func PacketList(db *sql.DB, selection PacketSelection) (any, error) {
 	query := `
 		WITH packet AS (
-		SELECT t.id AS task_id, t.project, t.title, rv.render_path, rv.thesis,
+		SELECT t.id AS task_id, t.project, t.title, t.origin, rv.render_path, rv.thesis,
 		       t.archived, 1-t.review_slot_held AS superseded, rv.requirements_version, rv.created_at,
 		       rv.id AS packet_id, rv.version_id, v.input_commit, v.result_commit AS submitted_commit,
 		       (SELECT MAX(e.id) FROM review_versions e WHERE e.task_id=t.id AND e.id<rv.id) AS previous_packet_id,
@@ -130,7 +162,7 @@ func PacketList(db *sql.DB, selection PacketSelection) (any, error) {
 		LEFT JOIN merge_candidates c ON c.id=t.candidate_id
 		LEFT JOIN merge_candidates rc ON rc.id=rv.candidate_id
 		LEFT JOIN review_decisions d ON d.packet_id=rv.id)
-		SELECT task_id, project, title, render_path, thesis, archived, superseded, requirements_version, created_at,
+		SELECT task_id, project, title, origin, render_path, thesis, archived, superseded, requirements_version, created_at,
 		       packet_id, version_id, previous_packet_id, input_commit, submitted_commit,
 		       destination_branch, destination_commit, candidate_commit, candidate_changes,
 		       report_sha256, criteria, verifier_evidence, ready,

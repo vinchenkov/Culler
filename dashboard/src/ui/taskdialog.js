@@ -58,6 +58,16 @@ const callout = (tone, label, ...body) =>
 
 const empty = (text) => el("div", { class: "sec-empty", text });
 
+/** The Strategic rationale of a task that the Strategist proposed: the first
+ * content section of the dialog. A task that the operator defined has none. */
+function rationaleSection(d) {
+  if (d.origin !== "autonomous") return null;
+  const node = section("prose", "Strategic rationale", null,
+    d.strategicRationale ? prose(d.strategicRationale) : empty("No Strategic rationale recorded."));
+  node.dataset.testid = "task-dialog-rationale";
+  return node;
+}
+
 const prose = (text) => el("div", { class: "md prose" }, markdownNodes(parseMarkdown(text)));
 
 function liveNode(run) {
@@ -245,6 +255,7 @@ export function taskDialogBody(d, { loading = false, error = null, runs = [], co
           onclick: onPacket,
         }),
       controls,
+      rationaleSection(d),
       section("prose", d.requirementsPending ? `Effective ${proseLabel.toLowerCase()}` : proseLabel, null, d.description ? prose(d.description) : empty("No description recorded.")),
       d.decision &&
         callout(

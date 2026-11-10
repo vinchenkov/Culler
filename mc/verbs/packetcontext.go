@@ -65,11 +65,11 @@ func ColliePacketContext(db *sql.DB, id *RunIdentity, sessionID string) (any, er
 // the records that Collie reads on demand. The artifact paths resolve under
 // artifactsRoot.
 func BuildPacketContext(ctx context.Context, q Q, artifactsRoot string, packetID int64) (string, error) {
-	var project, projectTitle, taskTitle, thesis, criteria, renderPath, reportDigest, inputCommit, resultCommit string
+	var project, projectTitle, taskTitle, origin, thesis, criteria, renderPath, reportDigest, inputCommit, resultCommit string
 	var task, version int64
 	var branch, destination, candidate, inventory, patch, evidence sql.NullString
 	err := q.QueryRowContext(ctx, `
-		SELECT t.project, pr.title, p.task_id, t.title, p.version_id,
+		SELECT t.project, pr.title, p.task_id, t.title, t.origin, p.version_id,
 		       p.thesis, p.criteria, p.render_path, p.report_sha256,
 		       v.input_commit, v.result_commit,
 		       c.destination_branch, c.destination_commit, c.candidate_commit,
@@ -81,7 +81,7 @@ func BuildPacketContext(ctx context.Context, q Q, artifactsRoot string, packetID
 		JOIN projects pr ON pr.id = t.project
 		JOIN task_versions v ON v.id = p.version_id
 		LEFT JOIN merge_candidates c ON c.id = p.candidate_id
-		WHERE p.id = ?`, packetID).Scan(&project, &projectTitle, &task, &taskTitle, &version,
+		WHERE p.id = ?`, packetID).Scan(&project, &projectTitle, &task, &taskTitle, &origin, &version,
 		&thesis, &criteria, &renderPath, &reportDigest, &inputCommit, &resultCommit,
 		&branch, &destination, &candidate, &inventory, &patch, &evidence)
 	if err == sql.ErrNoRows {
@@ -104,7 +104,7 @@ func BuildPacketContext(ctx context.Context, q Q, artifactsRoot string, packetID
 	fmt.Fprintf(&b, "- Packet identifier: %d\n", packetID)
 	fmt.Fprintf(&b, "- Version identifier: %d\n\n", version)
 	b.WriteString("## Packet content\n\n")
-	fmt.Fprintf(&b, "### Thesis\n\n%s\n\n", strings.TrimRight(thesis, "\r\n"))
+	fmt.Fprintf(&b, "### %s\n\n%s\n\n", packetOpeningHeading(origin), strings.TrimRight(thesis, "\r\n"))
 	fmt.Fprintf(&b, "### Criteria\n\n%s\n\n", strings.TrimRight(criteria, "\r\n"))
 	b.WriteString("### Report\n\n")
 	b.WriteString(report)

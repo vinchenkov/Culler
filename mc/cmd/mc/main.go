@@ -1476,7 +1476,11 @@ func cmdTask(args []string) (any, error) {
 		if err != nil {
 			return nil, verbs.Usagef("mc task get: bad id %q", args[1])
 		}
-		return withSpineRead(func(db *sql.DB) (any, error) { return verbs.TaskGet(db, id) })
+		idn, err := verbs.LoadIdentity()
+		if err != nil {
+			return nil, err
+		}
+		return withSpineRead(func(db *sql.DB) (any, error) { return verbs.TaskRead(db, idn, id) })
 	case "list":
 		fs := newFlags("mc task list")
 		all := fs.Bool("all", false, "include archived rows (default: live work only)")

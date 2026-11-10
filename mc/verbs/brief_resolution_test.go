@@ -112,7 +112,7 @@ func TestWorkerBriefAfterAResolutionHoldsTheReasonAsContext(t *testing.T) {
 	}
 	text := fmt.Sprint(effect["brief"])
 	brief := parseRenderedBrief(t, text)
-	if !strings.Contains(brief.Header, "mc.spawn-brief.v23") {
+	if !strings.Contains(brief.Header, "mc.spawn-brief.v24") {
 		t.Fatalf("the brief names the schema %q", brief.Header)
 	}
 	if task := brief.part(partTask); task == nil || task.Text != resolvedRequirements {

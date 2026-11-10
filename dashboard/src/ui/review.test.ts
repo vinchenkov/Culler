@@ -12,6 +12,7 @@ import {
   linkRole,
   livePackets,
   packetDocument,
+  openingLabel,
   packetView,
   packetsFor,
   queueStats,
@@ -89,6 +90,24 @@ describe("ledgerPackets", () => {
     expect(ledgerEmptyText("approved")).toBe("No approved packets yet.");
     expect(ledgerEmptyText("cancelled")).toBe("No cancelled packets yet.");
     expect(ledgerEmptyText("all")).toBe("No decided packets yet.");
+  });
+});
+
+describe("the opening text of a packet", () => {
+  test("a task that the Strategist proposed names its opening text Strategic rationale", () => {
+    const v = packetView(packet({ origin: "autonomous", thesis: "The export holds the date.\n\nObserved: the export omits the date." }), NOW);
+    expect(openingLabel({ origin: "autonomous" })).toBe("Strategic rationale");
+    expect(v.openingLabel).toBe("Strategic rationale");
+    expect(v.strategist).toBe(true);
+    expect(v.thesis).toBe("The export holds the date.\n\nObserved: the export omits the date.");
+  });
+
+  test("a task that the operator defined keeps the Thesis heading", () => {
+    const v = packetView(packet({ origin: "user" }), NOW);
+    expect(v.openingLabel).toBe("Thesis");
+    expect(v.strategist).toBe(false);
+    expect(openingLabel({})).toBe("Thesis");
+    expect(openingLabel(null)).toBe("Thesis");
   });
 });
 

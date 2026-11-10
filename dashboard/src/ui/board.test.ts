@@ -545,6 +545,12 @@ describe("taskDetail", () => {
     });
   });
 
+  test("reads the Strategic rationale of a task that the Strategist proposed, and none of a task that the operator defined", () => {
+    const strategist = taskDetail(row({ origin: "autonomous", strategic_rationale: "Observed: the export omits the date." }), { nowMs: NOW });
+    expect(strategist).toMatchObject({ origin: "autonomous", strategicRationale: "Observed: the export omits the date." });
+    expect(taskDetail(row({ origin: "user" }), { nowMs: NOW }).strategicRationale).toBeNull();
+  });
+
   test("a wait under a minute, or with no stamp, is no stage age", () => {
     expect(taskDetail(row({ stage_entered_at: "2026-08-17 11:59:40" }), { nowMs: NOW }).stageAge).toBeNull();
     expect(taskDetail(row({ stage_entered_at: null, created_at: null }), { nowMs: NOW }).stageAge).toBeNull();

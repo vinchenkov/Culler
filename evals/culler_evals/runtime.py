@@ -549,7 +549,7 @@ class Runtime:
 
     def assess_packet(self, case: dict, packet, trial_root: Path, settings: dict, rubric: dict) -> dict:
         self._check_control_stop()
-        from .assessment import SECTIONS, SEMANTIC_CHECKS, SEMANTIC_CONTRACTS, JUDGE_INSTRUCTIONS, judge_output_schema
+        from .assessment import SEMANTIC_CHECKS, SEMANTIC_CONTRACTS, JUDGE_INSTRUCTIONS, case_sections, judge_output_schema
         from .protocol import assessment_contract, digest
         contract_hash = digest(assessment_contract())
         root = Path(trial_root) / ("judge-" + uuid.uuid4().hex)
@@ -566,7 +566,7 @@ class Runtime:
         prompt = (JUDGE_INSTRUCTIONS
                   + json.dumps({"case_id": case.get("case_id", case.get("id")), "references": case["references"], "rubric": rubric,
                                 "required_semantic_checks": SEMANTIC_CHECKS, "semantic_contracts": SEMANTIC_CONTRACTS,
-                                "section_order": SECTIONS, "submitted_summary": case.get("packet_summary"),
+                                "section_order": case_sections(case), "submitted_summary": case.get("packet_summary"),
                                 "evidence_paths": {"source": "/evidence/source", "upstream_artifacts": "/evidence/artifacts", "references": "/evidence/references",
                                                    "reviewed_diff": "/evidence/git/reviewed.diff"},
                                 "reviewed_range": {"base_commit": case["base_commit"], "reviewed_commit": case["reviewed_commit"]}}, indent=2))

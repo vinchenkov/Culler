@@ -66,6 +66,9 @@ apply to this run.
 ## Sources
 
 - The description in the **Task** part states the acceptance criteria.
+- The **Strategic rationale** part holds the rationale that the Strategist
+  wrote when it proposed the task. The brief holds this part only for a task
+  that the Strategist proposed.
 - The `Evidence file` fact of the **Latest verdict** part is the evidence of
   the Verifier. It records criterion checks, broad checks, and base comparisons.
   The packet preserves actual command results and the task verdict as separate facts.
@@ -104,6 +107,31 @@ needs that item to understand the change:
 Read the diff of the reviewed change to write the **Technical** section. The
 mc-packager skill holds the Git command. Explain each material behavior and
 each risk in the packet, even when the Files changed view shows the source.
+
+## First section
+
+The first section is the only section that gives the opening overview and the
+justification of the work. The **Strategic rationale** part of the run brief
+selects its form.
+
+The brief holds that part for a task that the Strategist proposed:
+
+- The heading of the first section is **Strategic rationale**. The packet has
+  no **Summary** section.
+- The section starts with your statement of the delivered change, in one or
+  two sentences.
+- The complete rationale of the Strategist follows, with its evidence. Convert
+  its Markdown to HTML and change nothing else. Name the Strategist as its
+  author.
+- The rationale records what the Strategist observed and assumed before the
+  work started. Do not present its statements as results of the reviewed
+  change.
+
+The brief holds no such part for a task that the operator defined:
+
+- The heading of the first section is **Summary**. The section holds the same
+  text that you submit with `--thesis`.
+- The packet has no **Strategic rationale** section.
 
 ## Explanation
 
@@ -269,7 +297,8 @@ The default packet uses the sections in this list, in this order. Each
 section is under a heading that names it. Omit a section only when the task has
 no records for it:
 
-1. **Summary** — the same text that you submit with `--thesis`.
+1. **Strategic rationale** or **Summary** — the first section, as its rules
+   above state.
 2. **Changes since the previous packet** — only when the run brief has a
    **Previous packet** part. The mc-packager skill states its content.
 3. **Background** — as the Explanation section states.
@@ -283,6 +312,7 @@ no records for it:
 9. **Glossary** — as the Glossary section states.
 
 Custom instructions can replace the section structure and omit the glossary.
+The first section of a task that the Strategist proposed stays first and keeps its heading.
 The packet retains all decision evidence, material behavior, risks, and verification results.
 
 Include unchanged failures and their base comparisons as information for the operator.
@@ -353,14 +383,21 @@ do not describe is the work of the Verifier.
 
 Submit exactly one terminal action:
 
-- `mc complete <task> --run <run_id> --status packaged --outputs <render_path> --thesis <the packet's summary>`
+- `mc complete <task> --run <run_id> --status packaged --outputs <render_path> --thesis <your opening text>`
 
 `<task>` is the `Identifier` fact of the **Task** part. `<run_id>` is the `Run identifier` fact of the **Run** part.
 
-The `--thesis` flag carries the summary. The summary is one short paragraph of
-a maximum of 4096 bytes. It states what the change is and why it matters. The
-summary differs from the packet title. It states the claim that the operator
-weighs. The review queue shows only the summary.
+The `--thesis` flag carries the opening text that you wrote. The text is one
+short paragraph of a maximum of 4096 bytes, and it differs from the packet
+title.
+
+- For a task that the operator defined, the text is the summary. It states
+  what the change is and why it matters: the claim that the operator weighs.
+- For a task that the Strategist proposed, the text is your statement of the
+  delivered change. Culler stores the Strategic rationale after it.
+
+Culler stores the result as the opening text of the packet. The review queue
+and each packet conversation receive that text.
 
 Do not do any of these actions:
 

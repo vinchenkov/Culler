@@ -116,7 +116,11 @@ func completeDelivery(db *sql.DB, id *RunIdentity, a CompleteArgs) (any, error) 
 				return err
 			}
 			digest := fmt.Sprintf("%x", sha256.Sum256(body))
-			if _, err := q.ExecContext(ctx, `UPDATE tasks SET report_path=?,report_sha256=?,thesis=? WHERE id=?`, a.Outputs, digest, a.Thesis, a.Task); err != nil {
+			opening, err := packetOpeningText(ctx, q, a.Task, a.Thesis)
+			if err != nil {
+				return err
+			}
+			if _, err := q.ExecContext(ctx, `UPDATE tasks SET report_path=?,report_sha256=?,thesis=? WHERE id=?`, a.Outputs, digest, opening, a.Task); err != nil {
 				return err
 			}
 		default:

@@ -165,6 +165,12 @@ CREATE TABLE tasks (
     id               INTEGER PRIMARY KEY AUTOINCREMENT,
     title            TEXT    NOT NULL,
     description      TEXT,
+    -- strategic_rationale is the Strategist's evidence for the Arbiter and
+    -- the operator. Operator work holds none.
+    strategic_rationale TEXT
+                     CHECK (strategic_rationale IS NULL
+                            OR (origin = 'autonomous'
+                                AND trim(strategic_rationale, char(9, 10, 13, 32)) <> '')),
     record_version   INTEGER NOT NULL DEFAULT 1 CHECK (record_version >= 1),
     requirements_version INTEGER NOT NULL DEFAULT 1 CHECK (requirements_version >= 1),
     scope            TEXT    NOT NULL DEFAULT 'task'
@@ -355,6 +361,7 @@ BEFORE UPDATE ON tasks
 WHEN NEW.id <> OLD.id
   OR NEW.scope <> OLD.scope
   OR NEW.origin <> OLD.origin
+  OR NEW.strategic_rationale IS NOT OLD.strategic_rationale
   OR NEW.project <> OLD.project
   OR NEW.created_at <> OLD.created_at
 BEGIN

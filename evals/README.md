@@ -148,7 +148,7 @@ The packet uses established Project or domain terms.
 
 The packet uses these sections in order, with omissions only when the source directive permits them:
 
-1. Summary
+1. Strategic rationale or Summary
 2. Background
 3. Intuition
 4. Technical
@@ -156,6 +156,9 @@ The packet uses these sections in order, with omissions only when the source dir
 6. Evidence media
 7. Risk and rollback
 8. Glossary
+
+The first section is Strategic rationale for a task that the Strategist proposed and Summary for a task that the operator defined.
+The Strategic rationale part of the run brief identifies a task that the Strategist proposed.
 
 Criterion evidence describes the latest Verifier gates and their results in prose.
 The evaluator retains evidence identities and paths in separate records.

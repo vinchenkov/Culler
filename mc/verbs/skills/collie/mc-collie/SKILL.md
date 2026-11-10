@@ -165,6 +165,8 @@ The request supports these actions:
 - The `cancel` action requires a reason for cancellation.
 
 Read the task before an edit with `mc task get <id>`.
+The read returns the `strategic_rationale` of a task that the Strategist proposed: the Strategist's evidence for the Arbiter and the operator.
+The rationale stays as the Strategist wrote it. A revision changes the description only.
 Submit its `record_version` as `expected_version`, together with its identifier as `task_id`.
 An edit conflict requires a fresh read and reconciliation with the operator's requested changes.
 Keep the operator's text while you inspect the current record.
@@ -255,7 +257,10 @@ A packet conversation belongs to one packet.
 Its packet context has three parts:
 
 - The packet identity names the Project, the task, the packet identifier, and the version identifier.
-- The packet content holds the thesis, the criteria, and the report text.
+- The packet content holds the opening text, the criteria, and the report text.
+  The opening text of a task that the Strategist proposed has the heading **Strategic rationale**.
+  It holds the Packager's statement of the delivered change and then the Strategist's rationale.
+  The opening text of each other task has the heading **Thesis**.
 - The packet identifiers name the commits, the destination branch, and the artifact files of the packet.
 
 The packet context describes the packet at the start of the conversation.

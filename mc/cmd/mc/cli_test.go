@@ -2444,14 +2444,14 @@ func TestStrategistProposeInserts(t *testing.T) {
 	// An omitted `project` defaults to the run's Project; a present one
 	// must equal it.
 	// Only the operator sets a task priority: a proposal with a priority is refused.
-	res := runMC(t, env, `{"proposals":[{"title":"agent idea one","priority":-1}]}`,
+	res := runMC(t, env, `{"proposals":[{"title":"agent idea one","priority":-1,"strategic_rationale":"Observed: the fixture lacks this result."}]}`,
 		"strategist", "propose", "--run", run, "--batch", "-")
 	if res.code != 1 {
 		t.Fatalf("exit = %d stderr=%q, want a refusal of the proposal priority", res.code, res.stderr)
 	}
 	res = runMC(t, env, `{"proposals":[
-		{"title":"agent idea one","description":"criteria"},
-		{"project":"ws-test","title":"agent idea two"}]}`,
+		{"title":"agent idea one","description":"criteria","strategic_rationale":"Observed: the fixture lacks this result."},
+		{"project":"ws-test","title":"agent idea two","strategic_rationale":"Observed: the fixture lacks this result."}]}`,
 		"strategist", "propose", "--run", run, "--batch", "-")
 	if res.code != 0 {
 		t.Fatalf("strategist propose failed: %s", res.stderr)
@@ -2498,7 +2498,9 @@ func TestStrategistProposalLimitsAndArbiterPool(t *testing.T) {
 		name, batch, message string
 	}{
 		{"third_task", `{"proposals":[{"title":"One"},{"title":"Two"},{"title":"Three"}]}`, "at most two tasks"},
-		{"unsupported_scope", `{"proposals":[{"title":"One"},{"title":"Two","scope":"group"}]}`, "scope must be task"},
+		{"unsupported_scope", `{"proposals":[{"title":"One","strategic_rationale":"Observed: the fixture lacks this result."},{"title":"Two","scope":"group","strategic_rationale":"Observed: the fixture lacks this result."}]}`, "scope must be task"},
+		{"absent_rationale", `{"proposals":[{"title":"One","strategic_rationale":"Observed: the fixture lacks this result."},{"title":"Two"}]}`, "proposal 1: strategic_rationale is required"},
+		{"blank_rationale", `{"proposals":[{"title":"One","strategic_rationale":" \n "},{"title":"Two","strategic_rationale":"Observed: the fixture lacks this result."}]}`, "proposal 0: strategic_rationale is required"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			result := runMC(t, env, test.batch, "strategist", "propose", "--run", run, "--batch", "-")
@@ -2513,7 +2515,7 @@ func TestStrategistProposalLimitsAndArbiterPool(t *testing.T) {
 			}
 		})
 	}
-	created := runMC(t, env, `{"proposals":[{"title":"One","scope":"task"},{"title":"Two"}]}`,
+	created := runMC(t, env, `{"proposals":[{"title":"One","scope":"task","strategic_rationale":"Observed: the fixture lacks this result."},{"title":"Two","strategic_rationale":"Observed: the fixture lacks this result."}]}`,
 		"strategist", "propose", "--run", run, "--batch", "-")
 	if created.code != 0 {
 		t.Fatalf("two proposals: %s", created.stderr)
@@ -2553,8 +2555,8 @@ func TestStrategistProposeRefusesAnotherProject(t *testing.T) {
 	db := openDB(t, spine)
 	addProject(t, spine, "ws-other", "Other")
 	res := runMC(t, env, `{"proposals":[
-		{"title":"kept in this pool"},
-		{"project":"ws-other","title":"filed elsewhere"}]}`,
+		{"title":"kept in this pool","strategic_rationale":"Observed: the fixture lacks this result."},
+		{"project":"ws-other","title":"filed elsewhere","strategic_rationale":"Observed: the fixture lacks this result."}]}`,
 		"strategist", "propose", "--run", run, "--batch", "-")
 	if res.code != 1 || !strings.Contains(res.stderr, "inserts into its pool only") {
 		t.Fatalf("exit = %d stderr %q, want 1 naming the run's Project", res.code, res.stderr)
@@ -4574,8 +4576,8 @@ func TestPhase2TerminalTransactionsRollback(t *testing.T) {
 		run := eff["run_id"].(string)
 		env := runJSONEnv(t, spine, run, "pipeline", "strategist(propose)")
 		batch := `{"proposals":[
-			{"project":"ws-test","title":"must roll back"},
-			{"project":"ws-other","title":"another Project"}]}`
+			{"project":"ws-test","title":"must roll back","strategic_rationale":"Observed: the fixture lacks this result."},
+			{"project":"ws-other","title":"another Project","strategic_rationale":"Observed: the fixture lacks this result."}]}`
 		res := runMC(t, env, batch, "strategist", "propose", "--run", run, "--batch", "-")
 		if res.code != 1 {
 			t.Fatalf("exit = %d stderr=%q, want domain rollback", res.code, res.stderr)

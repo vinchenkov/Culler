@@ -4,7 +4,8 @@ from pathlib import Path
 import re
 
 from culler_evals.assessment import (AssessmentError, JUDGE_INSTRUCTIONS, SEMANTIC_CHECKS, SEMANTIC_CONTRACTS, check_packet, trial_score,
-                                    validate_judgment, require_inspection, SECTIONS, REQUIRED_SECTIONS)
+                                    validate_judgment, require_inspection, SECTIONS, REQUIRED_SECTIONS, FIRST_SECTIONS,
+                                    case_sections, first_section, required_sections)
 from culler_evals.protocol import DIMENSIONS
 
 
@@ -123,9 +124,64 @@ def test_self_contained_packet_with_internal_links(tmp_path):
 def test_packet_sections_match_the_current_product_directive():
     source = Path(__file__).resolve().parents[2]
     directive = (source / "mc/verbs/directives/packager.md").read_text()
-    sections = re.findall(r"^\d+\. \*\*([^*]+)\*\*", directive, re.M)
+    items = re.findall(r"^\d+\. (.+?) —", directive, re.M)
+    sections = [name for item in items for name in re.findall(r"\*\*([^*]+)\*\*", item)]
     assert tuple(sections) == SECTIONS
+    assert items[0] == "**Strategic rationale** or **Summary**"
+    assert FIRST_SECTIONS == ("Strategic rationale", "Summary")
     assert REQUIRED_SECTIONS == ("Summary", "Risk and rollback")
+
+
+STRATEGIST_CASE = {"role_inputs": {"brief_parts": [
+    {"heading": "Task"}, {"heading": "Strategic rationale", "text": "Observed: the export fails."}]}}
+OPERATOR_CASE = {"role_inputs": {"brief_parts": [{"heading": "Task"}]}}
+
+
+def packet_with(tmp_path, *headings):
+    packet = tmp_path / "packet.html"
+    packet.write_text('<a href="#first">Contents</a>' + "".join(
+        f'<h2 id="{"first" if index == 0 else "s%d" % index}">{heading}</h2><p>Text.</p>'
+        for index, heading in enumerate(headings)))
+    return packet
+
+
+def test_the_task_origin_selects_the_first_section_and_the_section_order():
+    assert first_section(STRATEGIST_CASE) == "Strategic rationale"
+    assert first_section(OPERATOR_CASE) == "Summary"
+    assert first_section(STRATEGIST_CASE["role_inputs"]) == "Strategic rationale"
+    assert required_sections(STRATEGIST_CASE) == ("Strategic rationale", "Risk and rollback")
+    assert required_sections(OPERATOR_CASE) == REQUIRED_SECTIONS
+    assert required_sections(OPERATOR_CASE | {"required_sections": ["Risk and rollback"]}) == ("Risk and rollback",)
+    assert case_sections(STRATEGIST_CASE) == ("Strategic rationale",) + SECTIONS[2:]
+    assert case_sections(OPERATOR_CASE) == SECTIONS[1:]
+
+
+def test_strategist_task_packet_starts_with_strategic_rationale(tmp_path):
+    required = required_sections(STRATEGIST_CASE)
+    passed = check_packet(packet_with(tmp_path, "Strategic rationale", "Background", "Risk and rollback"),
+                          required_sections=required)
+    assert passed["passed"]
+    assert passed["sections"][0] == "Strategic rationale"
+    summary = check_packet(packet_with(tmp_path, "Summary", "Risk and rollback"), required_sections=required)
+    assert "The required section is absent: Strategic rationale." in summary["failures"]
+    both = check_packet(packet_with(tmp_path, "Strategic rationale", "Summary", "Risk and rollback"),
+                        required_sections=required)
+    assert "The packet holds two first sections." in both["failures"]
+    late = check_packet(packet_with(tmp_path, "Background", "Strategic rationale", "Risk and rollback"),
+                        required_sections=required)
+    assert "The packet section order is invalid." in late["failures"]
+
+
+def test_operator_task_packet_starts_with_summary(tmp_path):
+    required = required_sections(OPERATOR_CASE)
+    passed = check_packet(packet_with(tmp_path, "Summary", "Background", "Risk and rollback"), required_sections=required)
+    assert passed["passed"]
+    assert passed["sections"][0] == "Summary"
+    rationale = check_packet(packet_with(tmp_path, "Strategic rationale", "Risk and rollback"), required_sections=required)
+    assert "The required section is absent: Summary." in rationale["failures"]
+    both = check_packet(packet_with(tmp_path, "Strategic rationale", "Summary", "Risk and rollback"),
+                        required_sections=required)
+    assert "The packet holds two first sections." in both["failures"]
 
 
 def test_judge_contracts_match_the_current_reader_and_term_authority():
