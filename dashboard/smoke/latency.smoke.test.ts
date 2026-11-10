@@ -101,6 +101,8 @@ test("Every direct page shares initial reads and supports a narrow viewport", as
   await page.setViewportSize({ width: 390, height: 844 });
   try {
     for (const tab of ["board", "collie", "review", "pipeline", "configs", "logs"]) {
+      // End the previous page before the next page counts its initial requests.
+      await page.goto("about:blank");
       const counts = new Map<string, number>();
       const registry = page.waitForResponse(response => response.url().endsWith("/api/pause"));
       await page.route("**/api/**", async route => {
@@ -115,7 +117,7 @@ test("Every direct page shares initial reads and supports a narrow viewport", as
         await page.goto(`${server.url}?latency=${crypto.randomUUID()}#${tab}`);
         await registry;
         await page.waitForFunction(() => document.body.dataset.ready && !document.querySelector('.panel:not([hidden]) [aria-busy="true"]'));
-        expect([...counts].filter(([, count]) => count !== 1)).toEqual([]);
+        expect({ tab, duplicates: [...counts].filter(([, count]) => count !== 1) }).toEqual({ tab, duplicates: [] });
         expect(counts.has("/api/doctor")).toBe(tab === "configs");
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
         await page.getByTestId(`tab-${tab}`).focus();
