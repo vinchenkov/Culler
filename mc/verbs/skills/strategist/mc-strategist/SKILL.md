@@ -20,7 +20,6 @@ Its only field is `proposals`, an array of objects with these fields:
 | `description` | Optional in the command schema; contains the proposal prose. |
 | `project` | Omit it to use the **Project** Identifier, or supply that exact identifier. |
 | `scope` | Omit it or use `task`. |
-| `priority` | Integer from -1 to 3; -1 is expedited, 0–3 mean P0–P3, and omission means 2. |
 
 A successful batch creates all proposals and ends the run in one transaction.
 A rejected batch writes nothing; fix the rejection before another attempt.

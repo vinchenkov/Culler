@@ -49,7 +49,7 @@ func tk(id int64, st Status, mods ...tmod) Task {
 		Project:         "ws",
 		// The delivery record is in the steady state for every stage: the
 		// the fields that its case changes.
-		Delivery: Delivery{CandidateID: id, CandidateMerged: true},
+		Delivery: Delivery{CandidateID: id, CandidateMerged: true, WorkStarted: st != StatusProposed && st != StatusSeeded},
 	}
 	for _, m := range mods {
 		m(&t)
@@ -411,7 +411,7 @@ func TestStep2a_BlockedInFlightRowInvisible(t *testing.T) {
 	wantQueueFull(t, a)
 }
 
-func TestStep2a_Ordering_FurthestFirstThenPriorityThenAgeThenID(t *testing.T) {
+func TestStep2a_Ordering_PriorityThenStageThenAgeThenID(t *testing.T) {
 	mk := func(tasks ...Task) Records {
 		all := append([]Task{}, tasks...)
 		var pkts []Packet
@@ -426,8 +426,12 @@ func TestStep2a_Ordering_FurthestFirstThenPriorityThenAgeThenID(t *testing.T) {
 		return recs(all, pkts)
 	}
 
-	// furthest-first: worked (rank 3) beats seeded (rank 2), even at worse priority.
+	// priority first: seeded P0 beats worked P3.
 	a := decide(t, mk(tk(1, StatusSeeded, prio(0)), tk(2, StatusWorked, prio(3))), freeLock())
+	wantSpawn(t, a, RoleWorker, pi64(1))
+
+	// same priority → furthest-first: worked (rank 3) beats seeded (rank 2).
+	a = decide(t, mk(tk(1, StatusSeeded), tk(2, StatusWorked)), freeLock())
 	wantSpawn(t, a, RoleVerifier, pi64(2))
 
 	// same rank → priority.
@@ -568,7 +572,7 @@ func TestStep3_FurthestFirst(t *testing.T) {
 	wantSpawn(t, a, RolePackager, pi64(4))
 }
 
-func TestStep3_ExpediteLanePartitionsAheadOfStageOrder(t *testing.T) {
+func TestStep3_PriorityPrecedesStage(t *testing.T) {
 	// A P-1 proposal pulls the Arbiter ahead of a verified P0 row.
 	rec := recs([]Task{
 		tk(1, StatusVerified, prio(0)),
@@ -576,9 +580,13 @@ func TestStep3_ExpediteLanePartitionsAheadOfStageOrder(t *testing.T) {
 	}, nil)
 	a := decide(t, rec, freeLock())
 	wantSpawn(t, a, RoleArbiter, nil)
+
+	// A seeded P1 row starts before a verified P2 row.
+	a = decide(t, recs([]Task{tk(1, StatusVerified, prio(2)), tk(2, StatusSeeded, prio(1))}, nil), freeLock())
+	wantSpawn(t, a, RoleWorker, pi64(2))
 }
 
-func TestStep3_WithinExpeditePartition_FurthestFirstStillApplies(t *testing.T) {
+func TestStep3_WithinOnePriority_FurthestFirstStillApplies(t *testing.T) {
 	rec := recs([]Task{
 		tk(1, StatusProposed, prio(-1)),
 		tk(2, StatusWorked, prio(-1)),

@@ -73,7 +73,8 @@ var deliveryTaskSQL = `(SELECT json_object(
 
 func loadDeliveryRecords(ctx context.Context, q Q, rec *dispatch.Records) error {
 	rows, err := q.QueryContext(ctx, `SELECT t.id,COALESCE(t.submitted_version,0),COALESCE(c.id,0),
-		COALESCE(c.status='merged',0),t.merge_after,t.correction_open,
+		COALESCE(c.status='merged',0),t.merge_after,t.base_commit IS NOT NULL,
+		t.correction_open=1 AND EXISTS(SELECT 1 FROM review_decisions a WHERE a.packet_id=t.current_review_id AND a.decision='approved'),
 		COALESCE((SELECT s.run_id FROM version_submissions s JOIN runs r ON r.id=s.run_id WHERE s.task_id=t.id AND s.captured_version IS NULL ORDER BY r.created_seq,s.run_id LIMIT 1),''),
 		COALESCE((SELECT m.run_id FROM merge_operations m JOIN runs r ON r.id=m.run_id WHERE m.task_id=t.id AND m.finished=0 AND r.ended_at IS NOT NULL ORDER BY (m.operation='apply') DESC,r.created_seq,m.run_id LIMIT 1),''),
 		COALESCE((SELECT m.operation FROM merge_operations m JOIN runs r ON r.id=m.run_id WHERE m.task_id=t.id AND m.finished=0 AND r.ended_at IS NOT NULL ORDER BY (m.operation='apply') DESC,r.created_seq,m.run_id LIMIT 1),''),
@@ -89,7 +90,7 @@ func loadDeliveryRecords(ctx context.Context, q Q, rec *dispatch.Records) error 
 		var id int64
 		var wait sql.NullString
 		var d dispatch.Delivery
-		if err := rows.Scan(&id, &d.VersionID, &d.CandidateID, &d.CandidateMerged, &wait, &d.CorrectionOpen, &d.CaptureRun, &d.RecoveryRun, &d.RecoveryOperation, &d.RecoveryStopPending, &d.ApplyPending, &d.ReviewPending); err != nil {
+		if err := rows.Scan(&id, &d.VersionID, &d.CandidateID, &d.CandidateMerged, &wait, &d.WorkStarted, &d.RepairAfterApproval, &d.CaptureRun, &d.RecoveryRun, &d.RecoveryOperation, &d.RecoveryStopPending, &d.ApplyPending, &d.ReviewPending); err != nil {
 			return err
 		}
 		if wait.Valid {

@@ -78,6 +78,15 @@ func (f *dispatchLifecycle) expeditedTask() int64 {
 	return value.(map[string]any)["task_id"].(int64)
 }
 
+func (f *dispatchLifecycle) independentTask() int64 {
+	f.t.Helper()
+	value, err := TaskAdd(f.db, nil, "Complete independent work", "ws-test", "The independent contribution passes its checks.", nil)
+	if err != nil {
+		f.t.Fatal(err)
+	}
+	return value.(map[string]any)["task_id"].(int64)
+}
+
 func (f *dispatchLifecycle) requireHold() {
 	f.t.Helper()
 	effect := f.nextWork()
@@ -140,7 +149,7 @@ func TestDispatchCorrectionBeforeAndAfterApproval(t *testing.T) {
 					t.Fatalf("the initial candidate failed: %+v", first)
 				}
 				oldPacket, oldVersion = f.approve(task)
-				independent = f.expeditedTask()
+				independent = f.independentTask()
 				destination = moveMain()
 				if result := f.apply(task); result.Status != "destination-changed" {
 					t.Fatalf("application missed the changed destination: %+v", result)
@@ -149,7 +158,7 @@ func TestDispatchCorrectionBeforeAndAfterApproval(t *testing.T) {
 				time.Sleep(time.Second)
 				first = f.candidate(task, nil)
 			} else {
-				independent = f.expeditedTask()
+				independent = f.independentTask()
 			}
 			if first.Status != "conflict" || first.SubmittedCommit != original || first.DestinationCommit != destination || len(first.ConflictPaths) == 0 {
 				t.Fatalf("preparation lost the conflict inputs: %+v", first)
@@ -209,7 +218,7 @@ func TestDispatchBlockedMergeRepairReleasesTheProject(t *testing.T) {
 	if failed.Status != "conflict" {
 		t.Fatalf("the candidate missed its conflict: %+v", failed)
 	}
-	independent := f.expeditedTask()
+	independent := f.independentTask()
 	run := f.requireWorker(task)
 	if _, err := Complete(f.db, run.id, CompleteArgs{
 		Task: task, Run: run.run, NeedsOperator: true,
@@ -224,6 +233,20 @@ func TestDispatchBlockedMergeRepairReleasesTheProject(t *testing.T) {
 		t.Fatal("the operator decision did not block the merge repair")
 	}
 	f.requireWorker(independent)
+}
+
+// A task with a higher priority starts before a merge repair.
+func TestDispatchHigherPriorityPrecedesAMergeRepair(t *testing.T) {
+	f := newDispatchLifecycle(t)
+	task := f.add("Repair the conflict")
+	failed := f.candidate(task, func(run lifecycleRun) {
+		f.submit(run, f.commit(run.root, "answer.txt", "The answer uses the first format.\n"))
+		f.commitMain("answer.txt", "The answer uses the second format.\n")
+	})
+	if failed.Status != "conflict" {
+		t.Fatalf("the candidate missed its conflict: %+v", failed)
+	}
+	f.requireWorker(f.expeditedTask())
 }
 
 func TestDispatchCorrectionCancelsApprovalBeforeAnotherApplication(t *testing.T) {
@@ -298,8 +321,8 @@ func TestDispatchMergeRepairsHaveNoLimit(t *testing.T) {
 	if candidate := f.candidate(task, conflicting); candidate.Status != "conflict" {
 		t.Fatalf("the first candidate missed its conflict: %+v", candidate)
 	}
-	// Each merge repair starts before the expedited task, without an operator authorization.
-	independent := f.expeditedTask()
+	// Each merge repair starts before the task without a Worker run, without an operator authorization.
+	independent := f.independentTask()
 	for attempt := 1; attempt <= 3; attempt++ {
 		if candidate := f.candidate(task, conflicting); candidate.Status != "conflict" {
 			t.Fatalf("merge repair %d missed its conflict: %+v", attempt, candidate)

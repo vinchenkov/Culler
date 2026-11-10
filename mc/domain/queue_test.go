@@ -94,7 +94,7 @@ func loadProjection(t *testing.T, db *sql.DB) dispatch.Records {
 		SELECT t.id, t.title, t.scope, t.priority, t.created_at, t.status,
 		       t.blocked, t.dispatch_retries, t.decision, t.decided_at, t.archived,
 		       t.project, w.status,
-		       d.correction_open, COALESCE(d.candidate_id, 0),
+		       d.base_commit IS NOT NULL, COALESCE(d.candidate_id, 0),
 		       COALESCE(c.status = 'merged', 0)
 		FROM tasks t JOIN projects w ON w.id = t.project
 		JOIN tasks d ON d.id = t.id
@@ -114,7 +114,7 @@ func loadProjection(t *testing.T, db *sql.DB) dispatch.Records {
 		if err := rows.Scan(&tk.ID, &tk.Title, &scope, &tk.Priority,
 			&createdAt, &status, &blocked, &tk.DispatchRetries, &decision,
 			&decidedAt, &archived, &tk.Project, &tk.ProjectStatus,
-			&tk.Delivery.CorrectionOpen, &tk.Delivery.CandidateID,
+			&tk.Delivery.WorkStarted, &tk.Delivery.CandidateID,
 			&tk.Delivery.CandidateMerged); err != nil {
 			t.Fatal(err)
 		}

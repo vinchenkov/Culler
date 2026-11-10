@@ -255,7 +255,6 @@ type StrategistProposals struct {
 		Scope       string `json:"scope"`
 		Title       string `json:"title"`
 		Description string `json:"description"`
-		Priority    *int   `json:"priority"`
 	} `json:"proposals"`
 }
 
@@ -310,7 +309,6 @@ func StrategistPropose(db *sql.DB, id *RunIdentity, run string, batch io.Reader)
 				Title:       p.Title,
 				Description: p.Description,
 				Scope:       p.Scope,
-				Priority:    p.Priority,
 				Origin:      "autonomous",
 				Project:     project,
 			})

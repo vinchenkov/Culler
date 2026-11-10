@@ -95,18 +95,17 @@ func TestStep2a_ArchivedPacketLinkInvisible_LiveLinkWins(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
-// (2a) has no expedite partition: at cap, a P-1
-// low-rank in-flight row loses to a P2 higher-rank one — the expedite prefix
-// exists only in the with-room query (3), taken literally.
+// (2a) orders the in-flight rows as (3) does: at cap, a P-1 low-rank
+// in-flight row precedes a P2 higher-rank one.
 
-func TestStep2a_NoExpeditePartition_HigherRankBeatsExpedite(t *testing.T) {
+func TestStep2a_PriorityPrecedesStageAtCap(t *testing.T) {
 	rec := recs([]Task{
 		tk(1, StatusSeeded, prio(-1)), // expedited, rank 2, live packet
 		tk(2, StatusWorked, prio(2)),  // P2, rank 3, live packet
 		tk(3, StatusPackaged),
 	}, atCapPackets(1, 2, 3))
 	a := decide(t, rec, freeLock())
-	wantSpawn(t, a, RoleVerifier, pi64(2))
+	wantSpawn(t, a, RoleWorker, pi64(1))
 }
 
 // ---------------------------------------------------------------------------

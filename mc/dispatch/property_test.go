@@ -52,6 +52,7 @@ func genState(r *rand.Rand) (Records, Lease) {
 		}
 		if task.Status == StatusWorked || task.Status == StatusVerified || task.Status == StatusPackaged {
 			task.Delivery.VersionID = id
+			task.Delivery.WorkStarted = true
 		}
 		if task.Status == StatusPackaged {
 			if r.Intn(3) != 0 {
@@ -73,7 +74,8 @@ func genState(r *rand.Rand) (Records, Lease) {
 			}
 		}
 		if task.Status == StatusSeeded {
-			task.Delivery.CorrectionOpen = r.Intn(3) == 0
+			task.Delivery.WorkStarted = r.Intn(3) == 0
+			task.Delivery.RepairAfterApproval = task.Delivery.WorkStarted && r.Intn(3) == 0
 		}
 		tasks = append(tasks, task)
 	}
