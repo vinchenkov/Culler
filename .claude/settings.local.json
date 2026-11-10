@@ -23,5 +23,6 @@
       "Bash(mc:*)",
       "Bash(/Users/vinchenkov/.local/bin/mc onboard *)"
     ]
-  }
+  },
+  "outputStyle": "Concise"
 }
