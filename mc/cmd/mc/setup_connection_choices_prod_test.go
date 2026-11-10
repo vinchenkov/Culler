@@ -105,25 +105,22 @@ func TestTerminalSetupSubscriptionResumePreservesHealthyAccount(t *testing.T) {
 	w.session.RuntimeBindings = []string{first}
 	w.session.RuntimeVerified[first] = true
 	w.session.RuntimeIdentities[first] = setupAccessIdentity(cfg, first, strings.Repeat("a", 64))
-	ui.answers = []setupChoiceAnswer{
-		{prompt: "Name this account", value: "second-account"},
-		{prompt: "Sign in and connect?", err: onboarding.ErrExit},
-	}
+	ui.answers = []setupChoiceAnswer{{prompt: "Sign in and connect?", err: onboarding.ErrExit}}
 	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrExit) {
 		t.Fatalf("subscription exit = %v", err)
 	}
 	setupAccessReload(t, w)
-	if w.session.Access == nil || w.session.Access.Step != "check" || w.session.Access.Binding != "second-account" || w.session.Access.Mode != "login" {
+	if w.session.Access == nil || w.session.Access.Step != "check" || w.session.Access.Binding != "codex-2" || w.session.Access.Mode != "login" {
 		t.Fatal("the subscription lost its completed account choices")
 	}
-	setupAssertAccessDraftAbsent(t, w, "second-account")
+	setupAssertAccessDraftAbsent(t, w, "codex-2")
 	ui.answers = []setupChoiceAnswer{{prompt: "Sign in and connect?", value: "check"}}
 	w.deps.connect = func(w *setupWizard, connection setupConnection) error {
 		current, err := w.catalog()
 		if err != nil || current.Runtimes.Bindings[first] != original || current.Runtimes.Bindings[connection.Binding].Credential == original.Credential {
 			t.Fatal("the resumed account changed the healthy configuration")
 		}
-		if connection.Binding != "second-account" || connection.Mode != "login" {
+		if connection.Binding != "codex-2" || connection.Mode != "login" {
 			t.Fatal("the resumed account lost its credential choice")
 		}
 		return nil
@@ -131,7 +128,7 @@ func TestTerminalSetupSubscriptionResumePreservesHealthyAccount(t *testing.T) {
 	if err := w.resumeAccess(); err != nil {
 		t.Fatal(err)
 	}
-	if !w.connectionHealthy(first) || !w.connectionHealthy("second-account") {
+	if !w.connectionHealthy(first) || !w.connectionHealthy("codex-2") {
 		t.Fatal("the resumed account lost a healthy result")
 	}
 }
@@ -174,8 +171,7 @@ func TestTerminalSetupAccessBackFollowsEachPath(t *testing.T) {
 		want   string
 	}{
 		{"sign-in", onboarding.AccessChoice{Mode: "login", Step: "check"}, ""},
-		{"new sign-in", onboarding.AccessChoice{Mode: "login", Step: "check", NewAccount: true}, "account-name"},
-		{"new account name", onboarding.AccessChoice{Mode: "login", Step: "account-name", NewAccount: true}, ""},
+		{"new sign-in", onboarding.AccessChoice{Mode: "login", Step: "check", NewAccount: true}, ""},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			choice := tc.choice
@@ -223,32 +219,63 @@ func TestTerminalSetupSubscriptionUsesReferenceBinding(t *testing.T) {
 	}
 }
 
-func TestTerminalSetupAccountNameCorrectionsNameEachCause(t *testing.T) {
-	w, ui := setupAccessFixture(t,
-		setupChoiceAnswer{prompt: "Name this account", value: ""},
-		setupChoiceAnswer{prompt: "Name this account", value: "Second Account"},
-		setupChoiceAnswer{prompt: "Name this account", value: "chatgpt"},
-		setupChoiceAnswer{prompt: "Name this account", value: "codex-3"},
-		setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit},
-	)
+func TestTerminalSetupNamesAnAdditionalAccountWithoutAPrompt(t *testing.T) {
+	w, ui := setupAccessFixture(t, setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit})
 	w.deps.identity = func(string, string) (string, error) { return strings.Repeat("a", 64), nil }
 	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrExit) {
 		t.Fatalf("subscription exit = %v", err)
 	}
-	want := []string{
-		"Add an account\nChoose a name to identify this account in Culler.",
-		"! Enter an account name\nThe account name is empty.",
-		"! Check the account name\nYou entered: Second Account\nChange each uppercase letter to a lowercase letter.\nReplace each space with a hyphen.",
-		"! Choose another account name\nYou entered: chatgpt\nCuller already uses this name.",
+	if len(ui.answers) != 0 || len(ui.panels) != 0 || len(ui.prompts) != 0 {
+		t.Fatalf("panels = %q, prompts = %#v", ui.panels, ui.prompts)
 	}
-	if len(ui.answers) != 0 || !slices.Equal(ui.panels, want) {
-		t.Fatalf("panels = %q", ui.panels)
-	}
-	if len(ui.prompts) != 1 || !slices.Contains(ui.prompts[0].Hints, setupAccessNameRule) || ui.prompts[0].Progress != "" {
-		t.Fatalf("account prompts = %#v", ui.prompts)
-	}
-	if choice := w.session.Access; choice == nil || choice.Name != "codex-3" || choice.Step != "check" {
+	if choice := w.session.Access; choice == nil || choice.Name != "codex-2" || choice.Binding != "codex-2" || choice.Step != "check" {
 		t.Fatalf("saved account = %#v", choice)
+	}
+}
+
+func TestTerminalSetupGivesTheNameOfAnUntestedAccountToTheNewAccount(t *testing.T) {
+	w, ui := setupAccessFixture(t,
+		setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrBack},
+		setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit},
+	)
+	w.deps.identity = func(string, string) (string, error) { return strings.Repeat("a", 64), nil }
+	first, err := w.subscriptionChoice("codex")
+	if err != nil || first.Name != "codex-2" || first.CreatedBinding != "" {
+		t.Fatalf("first account = %#v, %v", first, err)
+	}
+	if err := w.prepareAccessChoice(first); err != nil {
+		t.Fatal(err)
+	}
+	w.session.RuntimeCreated = append(w.session.RuntimeCreated, "other-untested")
+	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrBack) {
+		t.Fatalf("Back = %v", err)
+	}
+	if !slices.Contains(w.session.RuntimeCreated, "other-untested") {
+		t.Fatal("the account choice removed another untested connection before the confirmation")
+	}
+	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrExit) {
+		t.Fatalf("exit = %v", err)
+	}
+	if choice := w.session.Access; len(ui.answers) != 0 || choice.Name != "codex-2" || choice.CreatedBinding != "codex-2" {
+		t.Fatalf("saved account = %#v", choice)
+	}
+}
+
+func TestTerminalSetupRenamesAnAccountWhoseNameIsTaken(t *testing.T) {
+	for _, step := range []string{"check", "account-name"} {
+		t.Run(step, func(t *testing.T) {
+			w, ui := setupAccessFixture(t,
+				setupChoiceAnswer{prompt: "Sign in and connect?", value: "check"},
+				setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit},
+			)
+			w.session.Access = &onboarding.AccessChoice{Mode: "login", Step: step, Harness: "codex", Template: "chatgpt", Binding: "chatgpt", Name: "claude", NewAccount: true}
+			if err := w.resumeAccess(); !errors.Is(err, onboarding.ErrExit) {
+				t.Fatalf("resume = %v", err)
+			}
+			if choice := w.session.Access; len(ui.answers) != 0 || choice.Name != "codex-2" || choice.Binding != "codex-2" || choice.Step != "check" {
+				t.Fatalf("saved account = %#v", choice)
+			}
+		})
 	}
 }
 

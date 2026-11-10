@@ -14,7 +14,7 @@ type Search struct {
 	Hints []string
 	// QueryHints show only on a terminal that cannot redraw the list after each key.
 	QueryHints []string
-	// Initial names the choices of an empty query above the list.
+	// Initial describes the choices of an empty query above the list.
 	Initial string
 	// Find returns the choices that match a query, the best match first.
 	Find func(string) []Choice

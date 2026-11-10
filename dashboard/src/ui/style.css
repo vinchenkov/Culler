@@ -4458,6 +4458,14 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
 }
 .agent-profiles .profile-actions > .btn:hover:not([disabled]) { border-color: var(--navy-ink); background: var(--surface-hi); }
 .profile-error { color: var(--brick-ink); font-weight: 600; }
+.profile-provider-results { max-height: 336px; margin: 12px 0; padding: 3px; overflow-y: auto; }
+.profile-provider { cursor: pointer; }
+.profile-provider.selected { box-shadow: inset 4px 0 var(--navy-ink); }
+.profile-provider .profile-choice-text b { font-family: var(--sans); font-size: 14.5px; }
+.profile-provider-mark { flex: none; align-self: flex-start; padding: 2px 9px; border-radius: 999px; background: var(--navy-ink); color: var(--surface); font-size: 12px; font-weight: 700; }
+.profile-selected-provider { display: grid; gap: 2px; margin: 0 0 16px; padding: 12px 14px; border: 1px dashed var(--line-2); border-radius: var(--r-md); font-size: 12.5px; color: var(--ink-2); overflow-wrap: anywhere; }
+.profile-selected-provider.selected { border: 1px solid var(--navy-ink); background: var(--select); }
+.profile-selected-provider b { color: var(--ink); font-size: 14.5px; }
 .profile-repair { border: 1px solid rgba(var(--orange-rgb), 0.4); border-radius: var(--r-md); box-shadow: inset 3px 0 var(--orange); padding: 16px; margin: 16px 0; background: var(--orange-surface); }
 .profile-repair h3 { margin: 0 0 6px; font-family: var(--display); font-size: 17px; font-weight: 700; }
 .profile-repair .note { margin: 0 0 12px; }

@@ -748,7 +748,8 @@ test("agent profiles walk back through each step, preserve form values after a f
   const catalog = {
     revision: "profile-flow", profiles: [],
     connections: [],
-    integrations: [{ id: "claude", name: "Claude Code", kind: "claude-oauth", authorization_available: true }],
+    providers: [{ id: "claude-api-key", name: "Smoke provider", kind: "claude-api-key", harness: "claude-sdk" }],
+    integrations: [{ id: "claude", name: "Claude Code", kind: "claude-oauth", harness: "claude-sdk", authorization_available: true }],
   };
   const profileRoute = "**/api/agent-profiles";
   const saveRoute = "**/api/agent-profiles/connection-save";
@@ -758,6 +759,7 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.route(saveRoute, async route => {
     const body = route.request().postDataJSON();
     expect(body.template_id).toBe("claude");
+    expect(body.name).toBe("Smoke provider subscription");
     for (const field of ["kind", "token", "base_url"]) expect(body).not.toHaveProperty(field);
     catalog.connections = [{ id: "smoke-account", name: body.name, kind: "claude-oauth", access_status: "connected", models: [] }];
     await route.fulfill({ json: { ...catalog, connection_id: "smoke-account" } });
@@ -771,18 +773,18 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.getByTestId("profile-create").click();
   expect(await panelNavigation()).toEqual(["Close", "Back"]);
   await page.getByTestId("agent-profiles-panel").screenshot({ path: evidencePath("agent-profile-connection-choice.png") });
-  await page.getByTestId("profile-use-subscription").click();
-  expect(await page.getByTestId("profile-connection_name").inputValue()).toMatch(/^Subscription account/);
+  await page.getByTestId("profile-use-claude-sdk").click();
+  expect(await page.getByTestId("profile-flow-title").innerText()).toBe("Use Smoke provider");
+  expect(await page.getByTestId("profile-connection_name").count()).toBe(0);
   expect(await page.getByTestId("profile-use-endpoint").count()).toBe(0);
   expect(await page.getByTestId("profile-token").count()).toBe(0);
   expect(await page.getByTestId("profile-base_url").count()).toBe(0);
-  await page.getByTestId("profile-connection_name").fill("Smoke account");
   await page.getByTestId("profile-sign-in-claude").click();
   await page.getByTestId("profile-model").waitFor({ state: "visible" });
   await page.getByTestId("profile-model").fill("manual/model:v1");
   await page.getByTestId("profile-name").fill("Smoke draft");
   await page.getByTestId("profile-configure-next").click();
-  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke account");
+  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke provider subscription");
   expect(await page.getByTestId("profile-save").isDisabled()).toBe(true);
   expect(await page.getByTestId("profile-test").evaluate((node) => node.classList.contains("profile-primary"))).toBe(true);
   let tests = 0;
@@ -821,9 +823,9 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.getByTestId("profile-model").waitFor();
   expect(await page.locator('.profile-steps [aria-current="step"]').textContent()).toContain("Configure");
   await page.getByTestId("profile-back").click();
-  expect(await page.getByTestId("profile-connection_name").inputValue()).toBe("Smoke account");
+  expect(await page.getByTestId("profile-connection-saved").textContent()).toContain("Smoke provider subscription");
   await page.getByTestId("profile-back").click();
-  await page.getByTestId("profile-use-subscription").waitFor();
+  await page.getByTestId("profile-use-claude-sdk").waitFor();
   await page.getByTestId("profile-back").click();
   await page.getByTestId("profile-create").waitFor();
   expect(await page.getByTestId("profile-card").filter({ hasText: "Smoke draft" }).count()).toBe(0);
@@ -834,9 +836,9 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.getByTestId("configs-profiles").click();
   await page.getByTestId("profile-create").click();
   await page.getByTestId("profile-use-existing").click();
-  const saved = await page.getByTestId("profile-connection_id").locator("option", { hasText: "Smoke account" }).getAttribute("value");
+  const saved = await page.getByTestId("profile-connection_id").locator("option", { hasText: "Smoke provider subscription" }).getAttribute("value");
   await page.getByTestId("profile-connection_id").selectOption(saved!);
-  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke account");
+  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke provider subscription");
   expect(await page.getByTestId("profile-save").isDisabled()).toBe(true);
   expect(await page.getByTestId("agent-profiles-panel").textContent()).not.toContain("null");
   expect(await page.locator("#agent-profiles-title").evaluate((node) => node.getBoundingClientRect().top)).toBeGreaterThanOrEqual(0);
@@ -965,8 +967,10 @@ test("profile creation from a role returns to the role selector after the save",
 
 for (const kind of ["codex-oauth", "claude-oauth"]) test(`${kind} authorization resumes the form and permits reuse and reconnect`, async () => {
   const { page } = smoke;
-  const integration = { id: "subscription", name: "Team subscription", kind, models: ["model-a"], authorization_available: true };
-  const catalog: any = { revision: "subscription-revision", profiles: [], connections: [], integrations: [integration] };
+  const harness = kind === "codex-oauth" ? "codex" : "claude-sdk";
+  const integration = { id: "subscription", name: "Team subscription", kind, harness, models: ["model-a"], authorization_available: true };
+  const provider = { id: "team-key", name: "Team", kind: kind.replace("oauth", "api-key"), harness };
+  const catalog: any = { revision: "subscription-revision", profiles: [], connections: [], integrations: [integration], providers: [provider] };
   let authorized = false;
   let authorizations = 0;
   await profileHealth();
@@ -978,6 +982,7 @@ for (const kind of ["codex-oauth", "claude-oauth"]) test(`${kind} authorization 
       await route.fulfill({ json: { connection_id: "team-account", models: [{ id: "model-a", name: "Model A" }, { id: "model-b", name: "Model B" }] } });
     } else if (path.endsWith("connection-save")) {
       const body = route.request().postDataJSON();
+      expect(body.name).toBe("Team subscription");
       catalog.connections = [{ ...integration, id: "team-account", name: body.name, access_status: "disconnected" }];
       await route.fulfill({ json: { ...catalog, connection_id: "team-account" } });
     } else if (path.endsWith("operation-start") || path.endsWith("operation-status")) {
@@ -993,8 +998,9 @@ for (const kind of ["codex-oauth", "claude-oauth"]) test(`${kind} authorization 
   try {
     await page.getByTestId("configs-profiles").click();
     await page.getByTestId("profile-create").click();
-    await page.getByTestId("profile-use-subscription").click();
-    await page.getByTestId("profile-connection_name").fill("Team account");
+    await page.getByTestId(`profile-use-${harness}`).click();
+    expect(await page.locator('[data-testid^="profile-access-"]').evaluateAll(nodes => nodes.map(node => (node as HTMLElement).dataset.testid)))
+      .toEqual(["profile-access-subscription", "profile-access-api-key"]);
     await page.getByTestId("profile-sign-in-subscription").click();
     await page.getByRole("link", { name: "Open authorization page" }).waitFor();
     expect(await page.getByTestId("profile-operation").textContent()).toContain("TEST-CODE");
@@ -1002,11 +1008,10 @@ for (const kind of ["codex-oauth", "claude-oauth"]) test(`${kind} authorization 
     expect(await page.getByTestId("profile-operation-status").count()).toBe(0);
     authorized = true;
     await page.getByTestId("profile-model").waitFor();
-    expect(await page.getByTestId("profile-name").inputValue()).toBe("Team account");
+    expect(await page.getByTestId("profile-name").inputValue()).toBe("Team subscription");
     expect(await page.getByTestId("profile-notice").textContent()).toBe("The connection is saved. Other agent profiles can also use this connection.");
     await page.getByTestId("profile-back").click();
-    await page.getByTestId("profile-sign-in-subscription").waitFor();
-    expect(await page.getByTestId("profile-connection_name").inputValue()).toBe("Team account");
+    expect(await page.getByTestId("profile-connection-saved").textContent()).toContain("Team subscription");
     await page.getByTestId("profile-back").click();
     await page.getByTestId("profile-back").click();
     await page.getByTestId("profile-create").click();

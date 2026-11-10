@@ -428,15 +428,21 @@ Development installation retains its separate command:
 That command requires a checkout.
 The local deployment scripts retain their separate purpose.
 
+### Agent connection
+
+Terminal setup first offers each provider with a sign-in, then **Use another provider**.
+A provider with a sign-in offers the sign-in before the API key.
+Setup names each connection and each additional account, and it requests no name.
+
 ### Other API providers
 
-**Use another provider's API key** selects an OpenCode connection.
+**Use another provider** selects an OpenCode connection.
 The provider search accepts a name, identifier, or full model address.
+The search lists the providers that OpenCode runs, and an empty search lists each of them.
 The list of matching providers updates after each key, as in the dashboard.
 Name matches come before identifier and address matches.
 Culler sends keys only to providers in its release catalog.
 The selected provider row shows the address and website before the concealed key prompt.
-A release integration keeps its existing harness when its address matches a catalog entry.
 
 In a published installation, the first OpenCode connection starts a separate download of the pinned harness and web search plugin.
 The model and effort lists remain available during the download.

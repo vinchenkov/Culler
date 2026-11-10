@@ -163,7 +163,7 @@ func TestTerminalSetupAccountMenuOffersOnlySignInAndHealthyConnections(t *testin
 			for _, choice := range prompt.choices {
 				ids = append(ids, choice.ID)
 			}
-			want := []string{"login:codex", "login:claude-sdk", "api-key:codex", "api-key:claude-sdk", "api-key:opencode"}
+			want := []string{"provider:codex", "provider:claude-sdk", "provider:opencode"}
 			if prompt.title != "Choose how to connect" || !slices.Equal(ids, want) || prompt.selected != 0 {
 				t.Fatalf("the account menu offers other choices or loses its primary action: %q", ids)
 			}
@@ -174,7 +174,7 @@ func TestTerminalSetupAccountMenuOffersOnlySignInAndHealthyConnections(t *testin
 func TestTerminalSetupSignInStoresTheNewLogin(t *testing.T) {
 	for _, harness := range []string{"codex", "claude-sdk"} {
 		t.Run(harness, func(t *testing.T) {
-			w, ui := setupAgentFixture(t, "login:"+harness, "check")
+			w, ui := setupAgentFixture(t, "provider:"+harness, "login", "check")
 			logins, marker := setupOperatorLogins(t, w)
 			for _, key := range []string{"ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "CLAUDE_CODE_OAUTH_TOKEN", "CODEX_ACCESS_TOKEN", "CODEX_API_KEY", "OPENAI_API_KEY"} {
 				t.Setenv(key, "")
@@ -292,7 +292,7 @@ func TestTerminalSetupBackFromProjectAllowsAgentReplacement(t *testing.T) {
 func TestTerminalSetupManualAgentContinuesAfterSuccessfulCheck(t *testing.T) {
 	for _, harness := range []string{"codex", "claude-sdk"} {
 		t.Run(harness, func(t *testing.T) {
-			w, ui := setupAgentFixture(t, "login:"+harness, "check", "login:"+harness, "check")
+			w, ui := setupAgentFixture(t, "provider:"+harness, "login", "check", "provider:"+harness, "login", "check")
 			requests := 0
 			setupFakeSignIn(w, func(setupConnection) error {
 				requests++
@@ -304,7 +304,7 @@ func TestTerminalSetupManualAgentContinuesAfterSuccessfulCheck(t *testing.T) {
 			if err := w.agents(); err != nil {
 				t.Fatal(err)
 			}
-			if requests != 2 || len(ui.answers) != 0 || len(ui.prompts) != 4 || len(w.session.RuntimeBindings) != 1 {
+			if requests != 2 || len(ui.answers) != 0 || len(ui.prompts) != 6 || len(w.session.RuntimeBindings) != 1 {
 				t.Fatalf("setup lost the retry or requested another agent: %d, %v", requests, ui.prompts)
 			}
 			if !w.connectionHealthy(w.session.RuntimeBindings[0]) {
@@ -405,7 +405,7 @@ func TestTerminalSetupRefreshFailureStatesTheCauseAndTheProviderReply(t *testing
 			"Provider reply: status 500, error code server_error."},
 	} {
 		t.Run(tc.reply, func(t *testing.T) {
-			w, ui := setupAgentFixture(t, "login:codex", "check", ":exit")
+			w, ui := setupAgentFixture(t, "provider:codex", "login", "check", ":exit")
 			setupFakeSignIn(w, func(setupConnection) error {
 				return setupRuntimeFailure(errors.Join(errors.New("fixture cleanup"), &deployment.TokenRefreshError{Status: tc.status, Code: tc.code}), "")
 			})
@@ -440,7 +440,7 @@ func TestTerminalSetupUnknownConnectionFailureSavesTheDiagnostic(t *testing.T) {
 			if !saved {
 				setupDiagnosticRoot = filepath.Join(setupDiagnosticRoot, "absent")
 			}
-			w, ui := setupAgentFixture(t, "login:codex", "check", ":exit")
+			w, ui := setupAgentFixture(t, "provider:codex", "login", "check", ":exit")
 			setupFakeSignIn(w, func(setupConnection) error {
 				return setupRuntimeFailure(errors.New(`fixture parse: unknown field "fixture-field"`), "The cause is unknown.")
 			})

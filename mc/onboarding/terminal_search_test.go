@@ -31,7 +31,7 @@ func searchFixtureFind(query string) []Choice {
 }
 
 func searchFixturePrompt() Search {
-	return Search{Label: "Provider", Hints: []string{"Search by name."}, QueryHints: []string{"Leave the search empty."}, Initial: "Current release integrations.", Find: searchFixtureFind,
+	return Search{Label: "Provider", Hints: []string{"Search by name."}, QueryHints: []string{"Leave the search empty."}, Initial: "Type to search the providers.", Find: searchFixtureFind,
 		Empty: Correction{Title: "No provider found", Lines: []string{"Enter another name."}}, Choose: "Choose the provider"}
 }
 
@@ -89,12 +89,12 @@ func TestSearchShowsMatchesAndTheSelectedDetail(t *testing.T) {
 	_, _ = terminal.Search(search)
 	frames = append(frames, out.String())
 	initial, typed := frames[1], strings.TrimPrefix(frames[2], frames[1])
-	for _, text := range []string{"Current release integrations.", "› Anthropic", "https://api.anthropic.com/v1"} {
+	for _, text := range []string{"Type to search the providers.", "› Anthropic", "https://api.anthropic.com/v1"} {
 		if !strings.Contains(initial, text) {
 			t.Fatalf("the empty query lacks %q: %q", text, initial)
 		}
 	}
-	if strings.Contains(initial, "Leave the search empty.") || strings.Contains(typed, "Current release integrations.") {
+	if strings.Contains(initial, "Leave the search empty.") || strings.Contains(typed, "Type to search the providers.") {
 		t.Fatalf("the search shows a query hint or the initial label with a query: %q", out.String())
 	}
 	for _, text := range []string{"Choices 1 to 4 of 5.", "› Kimi For Coding (kimi.com)", "https://api.kimi.com/coding/v1", "  Moonshot AI", "> m"} {
@@ -114,7 +114,7 @@ func TestSearchLabelsTheMatchesOfASpaceOnlyQuery(t *testing.T) {
 	search := searchFixturePrompt()
 	search.Find = func(string) []Choice { return searchFixture[:1] }
 	_, _ = terminal.Search(search)
-	if strings.Count(out.String(), "Current release integrations.") != 2 {
+	if strings.Count(out.String(), "Type to search the providers.") != 2 {
 		t.Fatalf("the space-only query lacks the initial label: %q", out.String())
 	}
 }

@@ -16,12 +16,8 @@ import (
 	"mc/onboarding"
 )
 
-const (
-	setupAccessNameRule = "Use lowercase letters, digits, periods, underscores, or hyphens."
-)
-
 var (
-	// errSetupAccessNameTaken reports a name that Culler took for another use after the name prompt.
+	// errSetupAccessNameTaken reports an account name that Culler took for another use after setup chose it.
 	errSetupAccessNameTaken = errors.New("the access name is in use")
 )
 
@@ -51,16 +47,28 @@ func (w *setupWizard) subscriptionChoice(harness string) (*onboarding.AccessChoi
 		return nil, err
 	}
 	if identity != "" {
-		choice.NewAccount, choice.Step = true, "account-name"
-		for number := 2; ; number++ {
+		choice.NewAccount = true
+		choice.Name = setupAccountName(cfg, harness)
+		// An untested account of this setup gives its name to the new account.
+		for number := 2; fmt.Sprintf("%s-%d", harness, number) != choice.Name; number++ {
 			name := fmt.Sprintf("%s-%d", harness, number)
-			if setupAccessNameAvailable(cfg, name, "") {
-				choice.Name = name
+			if used, err := w.connectionUsed(name); err == nil && !used && slices.Contains(w.session.RuntimeCreated, name) {
+				choice.Name, choice.CreatedBinding = name, name
 				break
 			}
 		}
+		choice.Binding = choice.Name
 	}
 	return choice, nil
+}
+
+// setupAccountName names an additional account after its harness.
+func setupAccountName(cfg operatorconfig.Config, harness string) string {
+	for number := 2; ; number++ {
+		if name := fmt.Sprintf("%s-%d", harness, number); setupAccessNameAvailable(cfg, name, "") {
+			return name
+		}
+	}
 }
 
 func (w *setupWizard) ask(prompt onboarding.Prompt) (string, error) {
@@ -120,8 +128,6 @@ func setupCorrection(title, answer string, problems ...string) *onboarding.Corre
 }
 
 func (w *setupWizard) resumeAccess() error {
-	accountIntroduced := false
-	var correction *onboarding.Correction
 	for w.session.Access != nil {
 		choice := w.session.Access
 		if err := w.save(); err != nil {
@@ -131,43 +137,37 @@ func (w *setupWizard) resumeAccess() error {
 		if choice.Mode == "api_key" && choice.Step != "check" {
 			err = w.apiKeyStep(choice)
 		} else {
-			switch choice.Step {
-			case "account-name":
-				if !accountIntroduced {
-					w.ui.Panel("Add an account", []string{"Choose a name to identify this account in Culler."})
-					accountIntroduced = true
-				}
-				var name string
-				name, err = w.askAccessName(choice, onboarding.Prompt{
-					Label: "Name this account", Hints: []string{setupAccessNameRule}, Value: choice.Name, Correction: correction,
-				})
-				if err == nil {
-					choice.Name, choice.Binding, choice.Step = name, name, "check"
-				}
-			case "check":
-				connection := setupConnection{Binding: choice.Binding, Mode: choice.Mode}
-				if choice.Mode == "login" {
-					connection.Prepare = func() error { return w.prepareAccessChoice(choice) }
-				}
-				err = w.checkConnection(connection)
-				if errors.Is(err, errSetupAccessNameTaken) {
-					correction = setupAccessNameCorrection(choice, choice.Name)
-					choice.Step = "account-name"
-					continue
-				}
-				if err == nil {
-					if w.connectionHealthy(choice.Binding) && !slices.Contains(w.session.RuntimeIncomplete, choice.Binding) {
-						w.session.RuntimeBindings = []string{choice.Binding}
-						w.session.RuntimeIncomplete = nil
-						w.agentChoiceRequired = false
-					}
-					w.session.Access = nil
-					return w.save()
-				}
+			// A saved setup record can hold the step of a name prompt. Setup names the account itself.
+			choice.Step = "check"
+			if choice.NewAccount {
+				choice.Binding = choice.Name
 			}
-		}
-		if choice.Step != "account-name" {
-			correction = nil
+			connection := setupConnection{Binding: choice.Binding, Mode: choice.Mode}
+			if choice.Mode == "login" {
+				connection.Harness = choice.Harness
+				if choice.NewAccount {
+					connection.Account = choice.Name
+				}
+				connection.Prepare = func() error { return w.prepareAccessChoice(choice) }
+			}
+			err = w.checkConnection(connection)
+			if errors.Is(err, errSetupAccessNameTaken) {
+				cfg, catalogErr := w.catalog()
+				if catalogErr != nil {
+					return catalogErr
+				}
+				choice.Name, choice.CreatedBinding = setupAccountName(cfg, choice.Harness), ""
+				continue
+			}
+			if err == nil {
+				if w.connectionHealthy(choice.Binding) && !slices.Contains(w.session.RuntimeIncomplete, choice.Binding) {
+					w.session.RuntimeBindings = []string{choice.Binding}
+					w.session.RuntimeIncomplete = nil
+					w.agentChoiceRequired = false
+				}
+				w.session.Access = nil
+				return w.save()
+			}
 		}
 		if errors.Is(err, onboarding.ErrBack) {
 			if !setupAccessBack(choice) {
@@ -215,12 +215,8 @@ func setupAccessBack(choice *onboarding.AccessChoice) bool {
 		}
 		return choice.Step != ""
 	}
-	if choice.Step == "check" && choice.NewAccount {
-		choice.Step = "account-name"
-	} else {
-		choice.Step = ""
-	}
-	return choice.Step != ""
+	choice.Step = ""
+	return false
 }
 
 var setupAccessName = regexp.MustCompile(`^[a-z0-9][a-z0-9._-]{0,63}$`)
@@ -232,56 +228,6 @@ func setupAccessNameAvailable(cfg operatorconfig.Config, name, created string) b
 	_, bindingExists := cfg.Runtimes.Bindings[name]
 	_, credentialExists := cfg.Runtimes.Credentials[name]
 	return name == created || (!bindingExists && !credentialExists)
-}
-
-// askAccessName returns a name that no other agent profile or connection uses.
-func (w *setupWizard) askAccessName(choice *onboarding.AccessChoice, prompt onboarding.Prompt) (string, error) {
-	var catalogErr error
-	prompt.Check = func(name string) *onboarding.Correction {
-		cfg, err := w.catalog()
-		if catalogErr = err; err != nil || setupAccessNameAvailable(cfg, name, choice.CreatedBinding) {
-			return nil
-		}
-		return setupAccessNameCorrection(choice, name)
-	}
-	name, err := w.ask(prompt)
-	if err == nil && catalogErr != nil {
-		return "", catalogErr
-	}
-	return name, err
-}
-
-func setupAccessNameCorrection(choice *onboarding.AccessChoice, name string) *onboarding.Correction {
-	subject, article := "account", "an"
-	switch {
-	case name == "":
-		return setupCorrection("Enter "+article+" "+subject+" name", "", "The "+subject+" name is empty.")
-	case !setupAccessName.MatchString(name):
-		return setupCorrection("Check the "+subject+" name", name, setupAccessNameProblems(name)...)
-	}
-	return setupCorrection("Choose another "+subject+" name", name, "Culler already uses this name.")
-}
-
-func setupAccessNameProblems(name string) []string {
-	problems := []string{}
-	if strings.ContainsFunc(name, func(r rune) bool { return r >= 'A' && r <= 'Z' }) {
-		problems = append(problems, "Change each uppercase letter to a lowercase letter.")
-	}
-	if strings.ContainsFunc(name, unicode.IsSpace) {
-		problems = append(problems, "Replace each space with a hyphen.")
-	}
-	if strings.ContainsFunc(name, func(r rune) bool {
-		return (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') && (r < '0' || r > '9') && !unicode.IsSpace(r) && !strings.ContainsRune("._-", r)
-	}) {
-		problems = append(problems, setupAccessNameRule)
-	}
-	if strings.ContainsAny(name[:1], "._-") {
-		problems = append(problems, "Start the name with a lowercase letter or a digit.")
-	}
-	if utf8.RuneCountInString(name) > 64 {
-		problems = append(problems, "Use a maximum of 64 characters.")
-	}
-	return problems
 }
 
 func setupModelProblems(model string) []string {
