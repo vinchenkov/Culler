@@ -1813,7 +1813,6 @@ Each Project row provides its pipeline pause control.
 ### Discord
 
 The initial card explains the connection and provides **Set up Discord**.
-Its example conversation remains separate from live Project data.
 One bot and channel serve the Culler installation.
 
 The setup flow contains three steps:

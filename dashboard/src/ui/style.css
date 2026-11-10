@@ -5401,14 +5401,7 @@ dialog.ui-dialog :is(.field, input, select, textarea):disabled {
 .discord-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 0; }
 .discord-facts dt { color: var(--ink-3); font-size: 12px; margin-bottom: 5px; }
 .discord-facts dd { margin: 0; overflow-wrap: anywhere; }
-.discord-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr); gap: 32px; align-items: center; }
 .discord-intro p { margin: 14px 0 22px; }
-.discord-example { padding: 22px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-md); }
-.discord-example small { display: block; color: var(--ink-3); margin-bottom: 24px; }
-.discord-example strong { font-size: 13px; }
-.discord-example p { font-size: 13px; margin: 6px 0 20px; }
-.discord-example p:last-child { margin-bottom: 0; }
-@media (max-width: 950px) { .discord-intro { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) {
   .discord-card { padding: 18px; }
   .discord-facts { grid-template-columns: minmax(0, 1fr); }

@@ -181,11 +181,8 @@ export function createDiscordPanel({ root, api, onAvailable }) {
     else if (stage === "channel") content = setupChannel();
     else if (stage === "account") content = setupAccount();
     else if (snapshot.enabled) content = connected();
-    else content = [el("div", { class: "discord-intro" }, el("div", {}, el("h4", { text: "Use Culler from Discord." }),
-      paragraph("Use one channel for Collie conversations and alerts when Culler needs your attention."), button("Set up Discord", start, true)),
-      el("div", { class: "discord-example", "aria-label": "Example Discord conversation" }, el("small", { text: "# culler · Example conversation" }),
-        el("strong", { text: "Alex" }), paragraph("What needs my attention?"), el("strong", { text: "Collie" }),
-        paragraph("The Website Project has one blocked task. Open Culler to review its question.")))];
+    else content = [el("div", { class: "discord-intro" }, el("h4", { text: "Use Culler from Discord." }),
+      paragraph("Use one channel for Collie conversations and alerts when Culler needs your attention."), button("Set up Discord", start, true))];
     const steps = ["bot", "channel", "account"];
     root.replaceChildren(...[
       steps.includes(stage) && el("ol", { class: "discord-steps", "aria-label": "Discord setup steps" }, ["Connect bot", "Choose channel", "Confirm account"].map((text, index) =>
