@@ -1335,6 +1335,7 @@ function paintBoardPage() {
   if (empty) {
     setChildren(host,
       el("div", { class: "project-welcome" },
+        $("project-welcome-logo").content.cloneNode(true),
         el("p", { class: "project-eyebrow", text: "Board" }),
         el("h2", { text: "Add your first Project" }),
         el("p", { text: "Import an existing Project or create a new Project from scratch." }),
