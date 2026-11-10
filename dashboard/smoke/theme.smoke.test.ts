@@ -33,7 +33,7 @@ const shown = () => smoke.page.evaluate(() => {
     stored: localStorage.getItem("mc.theme"),
     scheme: getComputedStyle(root).colorScheme,
     paper: getComputedStyle(document.body).backgroundColor,
-    picture: getComputedStyle(document.body, "::before").backgroundImage,
+    picture: getComputedStyle(document.querySelector(".scene-art")!).backgroundImage,
     scene: root.dataset.scene,
     landscape: getComputedStyle(root).getPropertyValue("--landscape"),
     pressed: button.getAttribute("aria-pressed"),
@@ -128,45 +128,60 @@ test("Without a selection, the dashboard uses the light theme on either system t
   expect(light.picture).toContain("data:image/svg+xml");
   expect(light.landscape).toContain("/landscape.png");
   expect(light.frame).toBe(light.mast);
-  for (const name of ["/landscape.png", "/landscape-dark.png"]) {
+  for (const [name, type] of [["/landscape.png", "image/png"], ["/landscape-dark.png", "image/png"],
+    ["/scene-parts.webp", "image/webp"], ["/scene-parts-dark.webp", "image/webp"]]) {
     const picture = await fetch(`${smoke.server.url}${name}`);
     expect(picture.status).toBe(200);
-    expect(picture.headers.get("content-type")).toBe("image/png");
+    expect(picture.headers.get("content-type")).toBe(type);
   }
 }, 30000);
+
+/** The picture state of the page: the picture, or only the tile lines. */
+const scene = () => smoke.page.evaluate(() => {
+  const control = document.getElementById("scene-button")!;
+  const picture = getComputedStyle(document.querySelector(".scene-picture")!);
+  const lines = getComputedStyle(document.querySelector(".scene-art")!).backgroundImage.includes("data:image/svg+xml");
+  return {
+    scene: document.documentElement.dataset.scene,
+    stored: localStorage.getItem("mc.scene"),
+    picture: picture.backgroundImage.includes("/landscape.png") && picture.opacity === "1" ? "picture"
+      : lines && (picture.backgroundImage === "none" || picture.opacity === "0") ? "lines" : "none",
+    veil: getComputedStyle(document.body, "::after").display,
+    pressed: control.getAttribute("aria-pressed"),
+    name: control.getAttribute("aria-label"),
+    title: control.title,
+    motion: document.documentElement.dataset.sceneMotion ?? null,
+    parts: [...document.querySelectorAll<HTMLElement>(".scene-cast .scene-part")].map((part) => part.dataset.part),
+  };
+});
+
+/** Waits until the motion of the picture ends. */
+const atRest = () => smoke.page.waitForFunction(() => !document.documentElement.dataset.sceneMotion
+  && !document.getElementById("scene")!.dataset.hold && !document.querySelector(".scene-cast"));
 
 test("The logo button shows and hides the background picture, and the browser keeps the selection", async () => {
   const { page } = smoke;
   const button = page.getByTestId("scene-button");
-  const state = () => page.evaluate(() => {
-    const control = document.getElementById("scene-button")!;
-    return {
-      scene: document.documentElement.dataset.scene,
-      stored: localStorage.getItem("mc.scene"),
-      picture: getComputedStyle(document.body, "::before").backgroundImage.includes("/landscape.png") ? "picture"
-        : getComputedStyle(document.body, "::before").backgroundImage.includes("data:image/svg+xml") ? "lines" : "none",
-      veil: getComputedStyle(document.body, "::after").display,
-      pressed: control.getAttribute("aria-pressed"),
-      name: control.getAttribute("aria-label"),
-      title: control.title,
-    };
-  });
-  expect(await state()).toMatchObject({ scene: "hidden", stored: null, picture: "lines", veil: "block", pressed: "false", name: "Background picture", title: "Show the background picture" });
+  expect(await scene()).toMatchObject({ scene: "hidden", stored: null, picture: "lines", veil: "block", pressed: "false", name: "Background picture", title: "Show the background picture" });
   const bounds = await button.boundingBox();
   expect(bounds!.width).toBeGreaterThanOrEqual(24);
   expect(bounds!.height).toBeGreaterThanOrEqual(24);
 
   await button.click();
-  expect(await state()).toMatchObject({ scene: "shown", stored: "shown", picture: "picture", veil: "block", pressed: "true", title: "Hide the background picture" });
+  expect(await scene()).toMatchObject({ scene: "shown", stored: "shown", veil: "block", pressed: "true", title: "Hide the background picture" });
+  await atRest();
+  expect(await scene()).toMatchObject({ scene: "shown", picture: "picture", motion: null, parts: [] });
   await page.screenshot({ path: evidencePath("theme/scene-shown.png"), animations: "disabled" });
 
-  // A reload keeps the selection.
+  // A reload keeps the selection and shows the picture without motion.
   await page.reload();
   await page.waitForSelector("body[data-ready]");
-  expect(await state()).toMatchObject({ scene: "shown", picture: "picture", pressed: "true" });
+  expect(await scene()).toMatchObject({ scene: "shown", picture: "picture", pressed: "true", motion: null, parts: [] });
 
   await button.click();
-  expect(await state()).toMatchObject({ scene: "hidden", stored: "hidden", picture: "lines", pressed: "false" });
+  expect(await scene()).toMatchObject({ scene: "hidden", stored: "hidden", pressed: "false" });
+  await atRest();
+  expect(await scene()).toMatchObject({ scene: "hidden", picture: "lines", motion: null, parts: [] });
   await page.screenshot({ path: evidencePath("theme/scene-hidden.png"), animations: "disabled" });
 
   // Away from a hover, the chick moves on a timer of 10 seconds.
@@ -178,6 +193,122 @@ test("The logo button shows and hides the background picture, and the browser ke
   expect(motion).toEqual({ name: "chick-peek", duration: "10s", count: "infinite" });
   await page.evaluate(() => localStorage.removeItem("mc.scene"));
 }, 30000);
+
+test("A click on the logo button moves each part of the background picture by itself", async () => {
+  const { page } = smoke;
+  const button = page.getByTestId("scene-button");
+  const names = ["shadow_egg", "shadow_nest", "shadow_shell", "shadow_chick", "egg", "egg_glow", "nest_back",
+    "egg_top", "egg_left", "egg_right", "egg_shade", "nest_front", "shell_back", "chick", "shell_front", "cap", "crack_a", "crack_b"];
+  /** The place of each part on the page, and the moment of the motion. */
+  const places = () => page.evaluate(() => ({
+    time: Number(document.querySelector<HTMLElement>(".scene-part")?.getAnimations()[0]?.currentTime ?? -1),
+    rate: document.querySelector<HTMLElement>(".scene-part")?.getAnimations()[0]?.playbackRate ?? 0,
+    sheet: getComputedStyle(document.querySelector(".scene-part")!).backgroundImage,
+    boxes: Object.fromEntries([...document.querySelectorAll<HTMLElement>(".scene-part")].map((part) => {
+      const box = part.getBoundingClientRect();
+      return [part.dataset.part!, { top: box.top, bottom: box.bottom, left: box.left, right: box.right, opacity: Number(getComputedStyle(part).opacity) }];
+    })),
+  }));
+  // The motion stops at a moment for a look, then goes on.
+  const moment = (time: number) => page.evaluate((at) => {
+    for (const animation of document.getElementById("scene")!.getAnimations({ subtree: true })) { animation.pause(); animation.currentTime = at; }
+  }, time);
+  const goOn = () => page.evaluate(() => { for (const animation of document.getElementById("scene")!.getAnimations({ subtree: true })) animation.play(); });
+  await page.reload();
+  await page.waitForSelector("body[data-ready]");
+  expect(await scene()).toMatchObject({ scene: "hidden", picture: "lines" });
+
+  // The show: the parts come one after the other, and the picture stays hidden until they are at rest.
+  await button.click();
+  await page.waitForFunction(() => document.documentElement.dataset.sceneMotion === "enter");
+  expect(await scene()).toMatchObject({ scene: "shown", motion: "enter", parts: names });
+  await moment(500);
+  const early = await places();
+  expect(early.sheet).toContain("/scene-parts.webp");
+  expect(early.boxes.egg!.bottom).toBeGreaterThan(0);
+  expect(early.boxes.nest_front!.bottom).toBeGreaterThan(0);
+  for (const name of ["egg_top", "egg_left", "egg_right"]) expect(early.boxes[name]!.bottom, name).toBeLessThan(0);
+  // The whole egg is to the left of the window.
+  expect(early.boxes.cap!.right).toBeLessThan(0);
+  expect(early.boxes.chick!.opacity).toBe(0);
+  await page.screenshot({ path: evidencePath("theme/scene-motion-egg.png") });
+  await moment(1700);
+  const middle = await places();
+  for (const name of ["egg_top", "egg_left", "egg_right"]) expect(middle.boxes[name]!.top, name).toBeGreaterThan(0);
+  // The whole egg is at its place: the cap closes the shell, the crack is open, and the chick does not show.
+  expect(middle.boxes.shell_front!.left).toBeGreaterThan(0);
+  for (const name of ["shell_front", "cap", "crack_a", "crack_b"]) expect(middle.boxes[name]!.opacity, name).toBe(1);
+  expect(middle.boxes.shell_back!.opacity).toBe(0);
+  expect(middle.boxes.chick!.opacity).toBe(0);
+  await page.screenshot({ path: evidencePath("theme/scene-motion-nest.png") });
+  await moment(1960);
+  const open = await places();
+  // The cap is off the shell, and the chick is in the shell.
+  expect(open.boxes.cap!.bottom).toBeLessThan(open.boxes.shell_front!.top);
+  for (const name of ["crack_a", "crack_b"]) expect(open.boxes[name]!.opacity, name).toBe(0);
+  for (const name of ["shell_back", "chick"]) expect(open.boxes[name]!.opacity, name).toBe(1);
+  expect(open.boxes.chick!.left).toBeLessThan(open.boxes.nest_front!.left + 80);
+  await page.screenshot({ path: evidencePath("theme/scene-motion-hatch.png") });
+  await moment(2420);
+  const late = await places();
+  expect(late.boxes.chick!.opacity).toBe(1);
+  expect(late.boxes.cap!.right).toBeLessThan(late.boxes.egg!.left);
+  // The chick is in its jump over the nest.
+  expect(late.boxes.chick!.bottom).toBeLessThan(late.boxes.nest_front!.top + 40);
+  expect((await scene()).picture).toBe("lines");
+  await page.screenshot({ path: evidencePath("theme/scene-motion-chick.png") });
+
+  // A second click during the motion plays the motion back.
+  await goOn();
+  await button.click();
+  expect(await scene()).toMatchObject({ scene: "hidden", stored: "hidden", motion: "exit", parts: names, pressed: "false" });
+  expect((await places()).rate).toBeLessThan(0);
+  await atRest();
+  expect(await scene()).toMatchObject({ scene: "hidden", picture: "lines", parts: [] });
+
+  // The full show ends on the picture, at the place of the parts.
+  await button.click();
+  await page.waitForFunction(() => document.documentElement.dataset.sceneMotion === "enter");
+  await moment(1e6);
+  const rest = await places();
+  const art = await page.locator(".scene-art").boundingBox();
+  const unit = art!.width / 1672;
+  expect(rest.boxes.chick!.left).toBeCloseTo(art!.x + 1240 * unit, 0);
+  expect(rest.boxes.chick!.top).toBeCloseTo(art!.y + 470 * unit, 0);
+  expect(rest.boxes.egg!.left).toBeCloseTo(art!.x + 311 * unit, 0);
+  await goOn();
+  await atRest();
+  expect(await scene()).toMatchObject({ scene: "shown", picture: "picture", parts: [] });
+
+  // The hide: each part leaves, and the page shows only the tile lines.
+  await button.click();
+  await page.waitForFunction(() => document.documentElement.dataset.sceneMotion === "exit");
+  expect(await scene()).toMatchObject({ scene: "hidden", motion: "exit", parts: names });
+  await moment(1000);
+  const leaving = await places();
+  // The cap closes the shell over the chick.
+  expect(leaving.boxes.chick!.opacity).toBe(0);
+  expect(leaving.boxes.shell_back!.opacity).toBe(0);
+  for (const name of ["cap", "crack_a", "crack_b"]) expect(leaving.boxes[name]!.opacity, name).toBe(1);
+  for (const name of ["egg_top", "egg_left", "egg_right"]) expect(leaving.boxes[name]!.bottom, name).toBeLessThan(0);
+  expect(leaving.boxes.egg!.bottom).toBeGreaterThan(0);
+  // The parts stand in for the picture.
+  expect(await page.locator(".scene-picture").evaluate((node) => getComputedStyle(node).opacity)).toBe("0");
+  await page.screenshot({ path: evidencePath("theme/scene-motion-hide.png") });
+  await goOn();
+  await atRest();
+  expect(await scene()).toMatchObject({ scene: "hidden", picture: "lines", parts: [] });
+
+  // With reduced motion, a click changes the picture at once.
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
+  await button.click();
+  expect(await scene()).toMatchObject({ scene: "shown", picture: "picture", motion: null, parts: [] });
+  await button.click();
+  expect(await scene()).toMatchObject({ scene: "hidden", picture: "lines", motion: null, parts: [] });
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "no-preference" });
+  await page.evaluate(() => localStorage.removeItem("mc.scene"));
+  expect(smoke.browserLog.filter((line) => line.startsWith("pageerror:"))).toEqual([]);
+}, 60000);
 
 test("The theme button selects a theme, and the browser keeps the selection", async () => {
   const { page } = smoke;

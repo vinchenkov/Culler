@@ -170,6 +170,14 @@ The button shows a moon in the light theme and a sun in the dark theme.
 Each theme uses its current background image.
 Until the operator selects the background image, the page shows only the tile lines of the image.
 The logo button shows and hides the egg, the nest, and the chick of the background image.
+A click on the logo button moves each part of the background image by itself.
+On a show, the large egg, the nest, and the three eggs come to their places one after the other.
+Then a whole egg rolls to the place of the shell. Its shell cracks, its top comes off, and the chick comes out of the shell and jumps to its place.
+On a hide, the chick jumps back into the shell, the top closes the shell, and each part leaves by itself.
+A click during the motion plays the motion back from that moment.
+The motion ends on the background image, and the background image stays under the theme veil.
+A page load, a theme change, a change of the window size, and a selection in another dashboard tab show the state without motion.
+With the reduced motion setting of the system, a click changes the state without motion.
 The tile lines keep the same position in both states.
 The logo button is a toggle with the accessible name "Background picture".
 Its pressed state is true while the background image shows.
@@ -177,7 +185,7 @@ Its tooltip names the action of a click.
 The browser keeps the selection, and each dashboard tab of the same browser applies it.
 The theme veil preserves readable page content above the image.
 The header keeps its navy band, its logo, and its light text in both themes.
-The chick of the logo moves once each 10 seconds and moves while the pointer is on the logo.
+The chick of the logo moves once each 10 seconds, moves while the pointer is on the logo, and moves during the motion of the background image.
 
 These contrast requirements apply to both themes:
 

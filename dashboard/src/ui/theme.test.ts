@@ -166,14 +166,21 @@ describe("the background picture", () => {
     const button = {
       title: "",
       setAttribute: (name: string, value: string) => void attributes.set(name, value),
-      addEventListener: (_: string, handler: () => void) => { handlers.click = handler; },
+      addEventListener: (name: string, handler: () => void) => { handlers[name] = handler; },
     };
+    const calls: string[] = [];
     mountScene({
       button, root,
       storage: { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => void values.set(key, value) },
       page: { addEventListener: (_: string, handler: (event: unknown) => void) => { handlers.storage = handler as (event?: unknown) => void; } },
+      motion: {
+        // The motion reads the state that the click set.
+        play: (scene: string) => void calls.push(`play ${scene} from ${root.dataset.scene}`),
+        settle: () => void calls.push("settle"),
+        warm: () => void calls.push("warm"),
+      },
     });
-    return { root, button, values, attributes, handlers };
+    return { root, button, values, attributes, handlers, calls };
   }
 
   test("a click shows the picture, and a second click hides it", () => {
@@ -188,6 +195,43 @@ describe("the background picture", () => {
     view.handlers.click!();
     expect(view.root.dataset.scene).toBe("hidden");
     expect(view.values.get(SCENE_KEY)).toBe("hidden");
+  });
+
+  test("a click plays the motion of the picture to the new state", () => {
+    const view = page();
+    expect(view.calls).toEqual([]);
+    view.handlers.click!();
+    view.handlers.click!();
+    expect(view.calls).toEqual(["play shown from shown", "play hidden from hidden"]);
+  });
+
+  test("the pointer or the keyboard on the logo button loads the parts of the picture", () => {
+    const view = page();
+    view.handlers.pointerenter!();
+    view.handlers.focus!();
+    expect(view.calls).toEqual(["warm", "warm"]);
+  });
+
+  test("a selection in another tab and a theme change end the motion", () => {
+    const view = page("shown");
+    view.values.set(SCENE_KEY, "hidden");
+    view.handlers.storage!({ key: THEME_KEY });
+    expect(view.calls).toEqual([]);
+    view.handlers.storage!({ key: SCENE_KEY });
+    expect(view.calls).toEqual(["settle"]);
+
+    const handlers: Record<string, () => void> = {};
+    mountTheme({
+      button: { title: "", setAttribute() {}, addEventListener: (_: string, handler: () => void) => { handlers.click = handler; } },
+      root: { dataset: {} as Record<string, string> },
+      storage: { getItem: () => null, setItem() {} },
+      meta: null,
+      page: { addEventListener() {} },
+      mast: () => "",
+    });
+    view.calls.length = 0;
+    handlers.click!();
+    expect(view.calls).toEqual(["settle"]);
   });
 
   test("a stored selection and a selection in another tab apply", () => {
