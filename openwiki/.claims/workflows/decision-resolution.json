@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:2de58fd9d107b9f31a56c4d1e963daa2fdc2762236af71277e9eca99e53913b9",
+  "pageVersion": "sha256:1275360744b330ff62c2c51595e8e2eee9048e98e98f381c1047c35c1280de02",
   "claims": [
     {
       "id": "claim_ad4f33e8a02c4cbd8f42ca9a4af54d0c",
@@ -112,15 +112,11 @@
     },
     {
       "id": "claim_6988651d614a41dcb3ef81ef4519781a",
-      "statement": "The Arbiter can reject invalid criteria without an operator decision when every rejection satisfies the all-reject exception rules.",
+      "statement": "The Arbiter skill requires a duplicate reference or invalid_criteria category and a reason for each rejection in an all-reject batch.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/arbiter.md#L28-L43",
-          "version": "repo-lines-v1:sha256:3af64871b6de198abda36004a757fabdb80951a49f707d665adcc483384232de:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzM2E1MWEzNTE0N2RjMzhkNGNkYjUzODc3NGJhNzM2MTFhOTRlMDUzY2EwNmVhNmE2NGMzMzBkMzU1MDIxOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhN2I4MTg0MGZhNTY4NzA0ZjY5NTk2NGMzOGU0OWUxNzBlZGYxYTFiZmRlNWJhOGFmYzdlNDdmODU4YTJkM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5NTZhNTliYmM1ZWMzZGViMWYxNDQyODBmYTI5MDMyODkwMjAyYTUxY2VkNTQ4ZjJhN2E1YzU5ZDhlMzg4YWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwN2NiNmJhOWRkODJmZGU2MGQ1MDI4NmE5OTg2ZTgxNzI5MTliN2IxMGI1OWVjOTMyMzUxM2EyODExOTI1ZjUifQ"
-        },
-        {
-          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L25-L45",
-          "version": "repo-lines-v1:sha256:a106a5bc5e06ff1fd8d55841f2c353ddc93d5539f851469e94361faf7450f367:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ZWZmYTU0OTc5NGVjYjg1ZTQ3ZTk4NWEzMWRmZDgxMzZlZGI0NThiZjRmOWE4MzQ3NzYzOTI2OGQyY2FmYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0OGQ5NDk3YzgyOTA1NDM0ZDlhOTI1M2EzMzkxOWIwZmUyMzQyNTFlMmZkMGVkYTFhODEyN2EzODQyMWJiYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YTU3Yzc1ZTgxMzVhNDdjZDc5OTY4OTNmMjYwNzkzZTg4ZDlkMjQ4YzZkMjMwODI0ZWNmYzc2Yjc3NzYxOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3NDVkNmNmY2NkYjdjZWExZmU3NTgyMTlkNmRmNmI2NTk5ODY2M2FmNzBlOWQ3MTk3MDY3NTExNjdmMzA3NDkifQ"
+          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L25-L44",
+          "version": "repo-lines-v1:sha256:d815fb85af3264048ffea43ec14d613ff735c73673addc68c79e3a6051f02883:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ZWZmYTU0OTc5NGVjYjg1ZTQ3ZTk4NWEzMWRmZDgxMzZlZGI0NThiZjRmOWE4MzQ3NzYzOTI2OGQyY2FmYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5ODNkNDMxYjZiZGRjNTgzMTU1MmNiODZkYTEzZDkxNmY0OTAxMTZjZTA1N2E1ZGNkMzYwODBmOWZlMDUyNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YTU3Yzc1ZTgxMzVhNDdjZDc5OTY4OTNmMjYwNzkzZTg4ZDlkMjQ4YzZkMjMwODI0ZWNmYzc2Yjc3NzYxOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3NDVkNmNmY2NkYjdjZWExZmU3NTgyMTlkNmRmNmI2NTk5ODY2M2FmNzBlOWQ3MTk3MDY3NTExNjdmMzA3NDkifQ"
         }
       ]
     },
@@ -185,11 +181,11 @@
       "statement": "The Arbiter operator decision procedure requires the question and its effect on a verdict; the default report covers the pool and --affected selects a subset.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/arbiter.md#L54-L61",
+          "resource": "repo://mc/verbs/directives/arbiter.md#L47-L54",
           "version": "repo-lines-v1:sha256:85216f5d4ea7b78678ceb38694fcff15b318ada17207e8e79ca11bf6160901a6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDA3MWUxNDA0OGJkZTJjMTc0NmJkZTFmNDRkZjJhNmExODYwNWUzMjQ1OTE1ODhhMzhiMTg3ZjdlMmU1ZTIwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYzc4M2Y1YWJlNGIyN2Q2OWY1N2NkODIzZjNmYTI0MjE1MjEzZTczYThmM2E0ZmEyMDdmYzc4NmRhMzQ4MiJ9"
         },
         {
-          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L60-L72",
+          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L53-L65",
           "version": "repo-lines-v1:sha256:a3bf49cb14eb551cd13ba32c8a24e4f30a59f881c222d01d143e8e0f5e3e4876:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNTk0NzVlZTU5NTVhMGFhZWQyMGJiYTI5YmQyZDFiZmRkNzcxZGQyNjFlMGMyODRiNTNkYTYxZGVlOGFmZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNjQyODY5ZGVjNzViNDMxNmE0MThlMWE3ODNmYmFjYWRkYzQ2YjUyOWMxNDAxOWE5ODRlOWY1OTg1ZjViNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1N2Y3ZGYwMzQxYzk5ZjU1MzVkZjNhZDI4NGNlMzg4NzNjOTIzNmQzZDNiODMxNDcyMzNkNzdjMTA2OWFkNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzZTE2MWFlOTI3NDdiZmFhMWE0YjZjOTAxNGQzYjg1MjIzM2E1MjUwNmYyMDQ4MWMwZDM4OWM5NjJmMzM5MTgifQ"
         }
       ]
@@ -207,10 +203,30 @@
           "version": "repo-lines-v1:sha256:79782a1255f1a2b78f1fed77bf951656eb98f06780601519d97225ca817f48d7:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2FiMmU0NWRjYmIzYzQwYzUwZjJmNTc4ZTdlZTc3MWNiMzljMDdhY2RiYzE2ZDE2MTJmYmI2MDg2ZDZjYjMwZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ4Yzc1NWRlNGI0MzRjMTRhZjNkYTI3YWU5NmIxYmM4NmRjNjE1ZTlkYmIxZDRjNmY5OTJiMTkyOWU0Y2Y3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzIzMjQxNWNhY2EzZjMzZWRjNzk5ZDJkYzg1MDU0YjBhODAzN2NmYjJiMmJlZjU1Mzk1ODhjZTgzODU5NGRhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjVlMmIzYTMyZGJmZmM2Y2Q0YzE0MWIwNWZlNTJkNmIzYTM5NGUwMmU1YmFmM2ZjYTY1NDI2NTFhYzBkYjAyMSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_6d323d8b09824293b1f1ae29deb7e1ec",
+      "statement": "The command checks all-reject exceptions when no other Project task remains ready and no pool proposal awaits a requirements revision.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/roles.go#L161-L191",
+          "version": "repo-lines-v1:sha256:81fb70b376176c67d607208ef027805b43127c83d0e403c7e9c0fa9b7da9b2a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzMzcwMjY4NmY0ZmFhMWNhMDAwOWFjYzk4NDgxNDFhYmY4MjVhMWU3NTIzOWI4OWFkMDM5MTgwZmI2YTdjZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1MzQ4ZWI1MzAzMzQ0NzhlZDE4NmQ0NWMxZWM1MzBmN2Y1ZjU1ZThlZDc0ZDZmMGNhZWNhMDRlMGI2NmY1NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3c303c5bc7c541419c8f2ba7a1649674",
+      "statement": "The duplicate exception accepts non-archived tasks beyond Proposed or archived approved tasks in the same Project, outside the assigned pool.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/roles.go#L45-L83",
+          "version": "repo-lines-v1:sha256:92e006882fb8d758ffd23dbbfcc5dd358a70a6c8e37cd0946915e8964d69c9c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZjIzZjhmMzg0NWQ1ZjYwZGFiYmUyNmEyNzhkZGEyNDNkZmNmNmI0MTczMWY3MjgwNDEzYmRiNDBkNmRkMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFjMGFkYWIwMWUyNzUyYzQ3ZTMxMmViNGMyYjRmMmNmMTllZjZmZWZiNzIzODA4ZWNlYmQ3NGQ4ZWRjYTgwNzQifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T00:42:04.358Z"
+    "at": "2026-11-10T01:41:54.063Z"
   }
 }

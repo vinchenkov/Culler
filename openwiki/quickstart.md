@@ -26,6 +26,8 @@ sources:
     resource: repo://dashboard/src/ui/diagnosticchat.js
   - id: openwiki-source-9dc12756d2cc067f897826b6
     resource: repo://dashboard/src/ui/discord.js
+  - id: openwiki-source-927b6a817962ef194108a04b
+    resource: repo://dashboard/src/ui/index.html
   - id: openwiki-source-56b812868de34201e0046a3c
     resource: repo://dashboard/src/ui/packetchat.js
   - id: openwiki-source-b69f10da7d235560b52d92b2
@@ -100,10 +102,10 @@ sources:
     resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
   - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
     resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T00:42:04.358Z
+    at: 2026-11-10T01:41:54.063Z
 ---
 
 # Culler quickstart
@@ -181,7 +183,6 @@ TypeScript processes never open the spine. They spawn `mc` and read one JSON obj
 | Understand unavailable task checks and their outcomes | [Unavailable checks](tests/checks-and-test-lanes.md#unavailable-checks) |
 | Understand invalid proposal rejection | [Invalid criteria and all-reject batches](workflows/task-pipeline.md#invalid-criteria-and-all-reject-batches) |
 | Read the original Worker instruction audit | [Audit context](workflows/task-pipeline.md#worker-instruction-audit) |
-| Read the original Arbiter instruction audit | [Arbiter audit context](concepts/agent-input.md#arbiter-instruction-audit) |
 | Run the right checks before a commit | [Checks and test lanes](tests/checks-and-test-lanes.md) |
 
 The Pipeline page places the Project wiki section beside the current task run banner, above the task path.
@@ -331,6 +332,8 @@ The comparison section proposes deployment checks with synthetic data and explic
 The document labels these controls as proposals and the diagrams as illustrative examples.
 The font and theme previews are design material. The dashboard source defines the product's actual appearance.
 The shipped dashboard uses Culler blue in light and dark themes.
+It uses the light theme until the operator selects another theme.
+The browser preserves the selection across reloads and dashboard tabs.
 The light theme pairs porcelain paper with white surfaces and navy text.
 The dark theme pairs navy paper with dark blue surfaces and pale text.
 The page shows the background picture's tile lines until the operator selects the logo button.
@@ -383,8 +386,13 @@ It leaves a reply from a live agent unverified.
 
 ## Agent sign-in
 
-Culler supports account sign-in and static API keys for Codex and Claude Code.
-**Use another provider's API key** selects an OpenCode connection from the release catalog.
+Culler supports account sign-in and static application programming interface (API) keys for Codex and Claude Code.
+Terminal setup and dashboard profile creation first offer providers with sign-in, then **Use another provider**.
+Each subscription provider offers sign-in before its API key method.
+Culler assigns connection names automatically; the dashboard still offers an editable agent profile name.
+**Use another provider** selects an OpenCode connection from the release catalog.
+An empty provider search lists all providers that OpenCode runs.
+The dashboard marks the selected provider and keeps its summary above the key field when another query hides that provider.
 The terminal and dashboard provider searches list name matches before identifier and address matches.
 Terminal setup updates the list after each key when screen controls are available.
 In a published installation, the first such connection starts a separate download of OpenCode and its web search plugin.

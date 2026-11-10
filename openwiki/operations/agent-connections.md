@@ -14,6 +14,8 @@ sources:
     resource: repo://mc/boundary/envpolicy.go
   - id: openwiki-source-b7fbb75b893eadf967f11537
     resource: repo://mc/cmd/mc/setup_agents_prod.go
+  - id: openwiki-source-a77127dcfe4e292e8c900b44
+    resource: repo://mc/cmd/mc/setup_connection_choices_prod.go
   - id: openwiki-source-023af04189f7504ce88d56f5
     resource: repo://mc/cmd/mc/setup_opencode_prod.go
   - id: openwiki-source-ae83eaa3edce8d9e15735e02
@@ -58,10 +60,10 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T01:41:54.063Z
 ---
 
 # Agent connections and access renewal
@@ -84,6 +86,17 @@ The installation wizard establishes and tests initial access.
 See [Installation, deployment, and release](install-and-deployment.md) for the installation entry points.
 
 ## Setup connection lifecycle
+
+Terminal setup offers each provider with a sign-in, followed by **Use another provider**.
+A provider with a sign-in offers that method before its API key method.
+Back from either method returns to the access-method choice.
+Provider names come from the release catalog in `mc/cmd/mc/setup_agents_prod.go`.
+
+Setup assigns connection and additional account names automatically.
+For an additional subscription account, `setup_connection_choices_prod.go` selects an available harness name with a numeric suffix.
+An unused, untested account from the same setup can supply its existing name.
+If another operation takes the name, setup selects the next available name and retries.
+The sign-in confirmation identifies the additional account and states that the existing account remains.
 
 Setup records each connection it creates until that connection passes a test.
 `RuntimeCreated` in `mc/onboarding/session.go` preserves this list across setup restarts.
@@ -125,7 +138,16 @@ Custom provider destinations fail validation.
 An OpenCode connection selects one release catalog entry instead of an address.
 The catalog defines the provider, model, effort variants, prices, context limits, and web search capability.
 
-The dashboard offers Connect, Configure, and Test and save.
+The dashboard first offers the providers for the Codex and Claude Code harnesses.
+**Use another provider** and **Use an existing connection** follow them.
+The creation flow contains Connect, Configure, and Test and save.
+Each provider with a subscription integration offers sign-in before its API key form.
+
+`plannedConnection` in `dashboard/src/ui/agentprofiles.js` derives a name from the provider and access method.
+It reuses a disconnected connection with that name, kind, and catalog entry when no enabled profile uses it.
+Otherwise, an occupied name gives the new connection the next free number.
+The operator edits the agent profile name during model configuration.
+
 Native sign-in uses the existing provider authorization process.
 Each native sign-in uses private host directories outside deployment mounts.
 These directories remain separate from the operator's normal native login.
@@ -153,11 +175,13 @@ An empty effort uses the harness default.
 
 ### OpenCode connections
 
-**Use another provider's API key** opens the catalog search.
+**Use another provider** opens the catalog search.
 The search accepts a provider name, identifier, or full model address.
 The terminal and dashboard list name matches before identifier matches and address matches.
 Both searches exclude the common `opencode:` prefix from identifier matches.
-An empty query shows the current release integrations.
+The search lists only providers that OpenCode runs.
+An empty query lists all those providers.
+The dashboard marks the selected row and keeps its summary above the API key field when another query hides that row.
 The terminal updates its matches after each key when screen controls are available.
 It shows four matches at a time and the selected provider's address and website before the concealed key prompt.
 Arrow keys move the selection; Enter selects the provider.
@@ -165,7 +189,6 @@ A terminal without screen controls asks for a query and then shows the matches.
 `mc/onboarding/terminal_search.go` owns the terminal interaction; `mc/cmd/mc/setup_opencode_prod.go` supplies the catalog search.
 The release catalog supplies the model list without a live provider request.
 The model test verifies the saved key and selected model.
-An existing release integration keeps its harness when its address matches a catalog entry.
 
 In a published installation, the first OpenCode connection starts a separate download of the pinned program and web search plugin.
 The model and effort lists remain available during the download.
@@ -288,6 +311,10 @@ The test fixture backend exists only in `test_fake_routing` builds.
 It accepts synthetic provider credentials and requires a private directory outside deployment mounts.
 
 `mc/onboarding/terminal_search_test.go` checks edits, selection, match pages, empty results, and terminals without screen controls.
+`setup_agent_choices_prod_test.go` checks provider choices and the access-method order.
+`setup_connection_choices_prod_test.go` checks additional account names and access transitions.
+`dashboard/src/ui/agentprofiles.test.ts` checks provider order, the OpenCode search, connection reuse, and numeric name suffixes.
+`dashboard/smoke/api-key-connection.smoke.test.ts` checks automatic names, visible selection, and concealed key handling.
 `mc/cmd/mc/setup_opencode_screen_prod_test.go` checks search order and terminal output at 80 and 40 columns, with and without color.
 `mc/cmd/mc/setup_untested_connections_prod_test.go` checks retry, replacement, unused connection cleanup, and preservation after a result record failure.
 `mc/cmd/mc/systemstatus_setup_test.go` checks the connection and profile states after setup records a successful test.

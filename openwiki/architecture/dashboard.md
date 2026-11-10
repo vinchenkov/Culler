@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T01:41:54.063Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -139,7 +139,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 ---
 
 # The operator dashboard
@@ -219,15 +219,17 @@ At widths from 721 through 1024 pixels, the group occupies the upper-right cell,
 At widths of 720 pixels or less, the header wraps and retains both controls in the same status group.
 
 `app.js` connects `theme-button` to `mountTheme` in `theme.js`.
-The browser stores the selection under `mc.theme` and otherwise follows the system preference.
+The browser stores the selection under `mc.theme` and uses the light theme when the selection is absent or invalid.
+Changes to the system theme leave this choice unchanged.
 The button's tooltip names the next theme; `aria-pressed` indicates the dark theme.
-`theme.test.ts` checks selection, system fallback, initial page theme, and button state.
+`theme.test.ts` checks stored selections, the light default, the initial page theme, and the button state.
 
 `index.html` places a logo button beside the Culler name. `app.js` connects it to `mountScene` in `theme.js`.
 The button has the accessible name “Background picture”. Its pressed state reports whether the picture shows.
 The browser stores this choice under `mc.scene` and applies changes from other dashboard tabs.
 The initial page script reads both selections before the first paint. Without a picture selection, the page shows only tile lines.
 `style.css` uses a theme-specific grid for those lines and preserves their position when the full picture appears.
+The shipped `landscape.png` and `landscape-dark.png` show a dark egg, a nest, and an orange chick.
 The full picture sits five viewport-width units left of center above the page background. A theme-specific veil keeps text readable.
 The logo chick moves once each 10 seconds. A pointer over the logo holds the chick in its moved position.
 `theme.test.ts` and `smoke/theme.smoke.test.ts` define checks for the picture state and browser behavior.
@@ -285,8 +287,8 @@ Culler controls around those regions use the shared conventions.
 It extracts the light and dark tokens, resolves references for a fixed role map, and embeds the resulting palettes.
 An absent token or a cyclic token reference raises an error.
 The access page uses a blue header, a body surface, and a themed Retry action.
-Its inline script reads the local `mc.theme` selection and otherwise follows the system theme.
-The dashboard origin shares the dashboard selection; the proxy origin uses its own selection or the system preference.
+Its inline script reads the local `mc.theme` selection and uses the light theme unless that selection is dark.
+The dashboard origin shares the dashboard selection; the proxy origin uses its own selection or the light default.
 The isolated page uses a system font fallback when Figtree is unavailable.
 
 The page preserves nonce-protected styles and scripts, escaped destination text, and the Content Security Policy.
@@ -817,11 +819,25 @@ System status retains that active attempt when the current diagnostic identifies
 This lets the detail view distinguish recovery from a process that still runs.
 `mc/verbs/networkhold_test.go` checks both task runs and Collie reply attempts after a network timeout.
 
-`agentprofiles.js` offers sign-in through the supported integrations in the host catalog.
-Its provider search updates the matches with the query.
+`agentprofiles.js` first offers the catalog providers for the Codex and Claude Code harnesses.
+**Use another provider** follows those choices, then **Use an existing connection**.
+Each provider with a subscription integration offers sign-in before its API key form.
+The catalog supplies provider names, and the host configuration supplies the integration templates.
+
+**Use another provider** opens a search limited to providers that OpenCode runs.
+An empty query lists all those providers.
 Name matches precede identifier matches, which precede address matches.
-The search excludes the common `opencode:` prefix from identifier matching.
-An empty query shows the current release integrations.
+The search excludes the common `opencode:` prefix from identifier matches.
+A checked radio button and a selection mark identify the selected provider.
+A summary above the concealed key field keeps that selection visible when another query hides its result row.
+The results list has its own scroll position, which survives a render.
+
+The form derives a connection name from the provider and access method.
+It can reuse a disconnected connection with that name, the same kind, and the same catalog entry.
+Reuse also requires that no enabled profile uses the connection.
+Otherwise, the form selects the next free numeric suffix for an occupied name.
+The operator can edit the suggested agent profile name during model configuration.
+
 A new connection request contains its name, catalog revision, submission identity, and integration template.
 The host saves the connection before the panel starts authorization.
 The model review requires a model test result before Save becomes available.

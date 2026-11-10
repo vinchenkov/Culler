@@ -6,8 +6,6 @@ tags: [agent-input, directives, run-brief, skills, prompts]
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
-  - id: openwiki-source-1f80f6c93352c43552f54e73
-    resource: repo://docs/arbiter-instruction-audit.md
   - id: openwiki-source-b578a24182c530b5d8630c21
     resource: repo://mc/dispatch/dispatch.go
   - id: openwiki-source-b4da7cec419704ae15f02306
@@ -78,10 +76,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T00:42:04.358Z
+    at: 2026-11-10T01:51:03.964Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -165,6 +163,8 @@ See [Strategist research and submission](../workflows/task-pipeline.md#strategis
 
 `mc/verbs/directives/arbiter.md` defines the review rules for each Arbiter run.
 The Arbiter ranks proposals by their contribution to the accepted Vision relative to their cost.
+It judges a small task by its result and a large task by its feasible benefit and full cost.
+It considers new capabilities as well as defects.
 It checks overlap through descriptions and repository evidence, and preserves proposal requirements and accepted work.
 The contract limits verdicts to the assigned pool and includes the promotion limit and criteria rules.
 These boundaries keep customization from changing the assignment or weakening required criteria.
@@ -174,12 +174,18 @@ The directive points to conditional procedures in `mc/verbs/skills/arbiter/mc-ar
 | Condition | Procedure |
 | --- | --- |
 | Rejected or cancelled work is present. | Historical work requires scope comparison and use of cancellation reasons as operator context. |
-| The Arbiter intends to reject every proposal. | The all-reject batch defines ready tasks, duplicate references, and invalid-criteria exceptions. |
-| Review requires Project dependencies. | Research dependencies requires compatibility checks before use. |
+| The Arbiter intends to reject every proposal. | The all-reject batch requires a duplicate reference or invalid-criteria category for each rejection. |
 | An execution problem or required operator decision prevents a verdict. | A run that cannot give a result selects the applicable terminal. |
 | Custom instructions conflict with the contract. | Project role customization supplies the conflict terminal and its fields. |
 
 The command skill also defines the verdict payload and permitted reads.
+Those reads cover tasks, activity, and Projects.
+The task list omits descriptions; an individual task read supplies absent scope.
+
+Two directive references lack the matching Arbiter procedure location.
+The Cases list names **Research dependencies**, but `mc-arbiter` contains no section with that name.
+The customization paragraph points to `mc-strategist`; the Arbiter conflict procedure resides in `mc-arbiter`.
+The shared `project-environment-setup` skill supplies dependency requirements within the role command authority.
 `RoleSkillSet` delivers `mc-arbiter` with the shared skills.
 The generated pointer in `mc/verbs/directives.go` requires a read before the first command and before the terminal.
 Its installed path is `~/.agents/skills/mc-arbiter/SKILL.md`.
@@ -351,7 +357,7 @@ See [the task pipeline](../workflows/task-pipeline.md) for the role rules that u
 
 The shared environment skill explains the temporary Culler token and host proxy.
 The host retains and renews provider credentials.
-The Strategist, Arbiter, Worker, and Verifier directives require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
+The Worker and Verifier directives also require preservation of the supplied connection configuration and exclusion of Culler tokens from output.
 
 `credentialPart()` in `mc/verbs/brief.go` supplies the Agent credentials explanation for briefs that retain that part.
 The setup brief and shared environment skill describe the same boundary.
@@ -502,36 +508,13 @@ It also checks proposal requirements in the extracted customization contract.
 `mc/verbs/arbiter_input_test.go` checks preserved assignments, operator instructions, proposal resolutions, skill delivery, and conditional procedure pointers.
 Selected Arbiter rules must occur once across the rendered brief and command skill; shared skill contents remain outside that check.
 Its payload test checks that concise explanations preserve each retained part's facts, text, rows, and text tag.
-The orchestration tests in `directives_test.go` apply their fixed workflow requirements to the Worker, Arbiter, Verifier, and Packager.
+`TestArbiterBriefDeliversProposalReviewGuidance` checks value relative to cost, small and large task outcomes, and consideration of new capabilities.
+The orchestration tests in `directives_test.go` apply their fixed workflow requirements to the Worker, Verifier, and Packager.
 The Strategist directive permits subagents and internet research without that fixed workflow procedure.
 These tests check supplied instructions. They do not prove agent behavior or establish fresh test results in this wiki update.
 
 The [Worker instruction audit](../operations/worker-instruction-audit.md) is an original report for task 56 at its recorded base commit.
 It records passage decisions, text counts, retained duties, and the separation between role rules and procedures.
-
-## Arbiter instruction audit
-
-The original [Arbiter instruction audit](../../docs/arbiter-instruction-audit.md) records the review of Arbiter instructions at its stated base commit.
-It covers the directive, the sole role-specific skill, brief explanations, and generated pointers.
-Shared skill contents and other roles remain outside its scope.
-The report assigns each removed or moved passage a category and identifies the retained authority or conditional procedure.
-Its section table explains why each retained section affects Arbiter work.
-
-The report counts whitespace-separated tokens with Python `len(text.split())` on each complete file, including frontmatter and command examples.
-
-| File | Base count | Result count |
-| --- | ---: | ---: |
-| `mc/verbs/directives/arbiter.md` | 2029 | 545 |
-| `mc/verbs/skills/arbiter/mc-arbiter/SKILL.md` | 1576 | 612 |
-
-The audit concludes that command forms, runtime authority, proposal records, and operator decisions remain unchanged.
-It records instruction structure and passage decisions; it does not prove agent compliance.
-Current source and tests establish the delivered instructions.
-The report records successful new and changed tests, including the complete `mc/verbs` package.
-It also records a full-gate failure in `TestValidateHomeAcceptsTheRealOperatorHome` that the assigned base reproduces.
-Its validation section preserves unavailable host checks and macOS checks.
-Those recorded results belong to the original audit; this wiki update supplies no new application test results.
-Its body and provenance remain intact. Current source files establish the present instructions.
 
 ## Requirements after decision resolution
 

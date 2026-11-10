@@ -10,6 +10,8 @@ sources:
     resource: repo://dashboard/smoke-gate.ts
   - id: openwiki-source-625e188f9a51f295b304424b
     resource: repo://dashboard/smoke.sh
+  - id: openwiki-source-d11ad730400b322fe1904062
+    resource: repo://dashboard/smoke/api-key-connection.smoke.test.ts
   - id: openwiki-source-6f67a284a812c80a8c3f44f9
     resource: repo://dashboard/smoke/discord-conversation.smoke.test.ts
   - id: openwiki-source-90e8fc313d2eb084ce9b2e61
@@ -44,6 +46,8 @@ sources:
     resource: repo://mc/cmd/mc/arbiter_criteria_test.go
   - id: openwiki-source-d9949d9a9d2f424493fa411e
     resource: repo://mc/cmd/mc/culler_prod_test.go
+  - id: openwiki-source-e43cd30f2cb134a8cbad79f9
+    resource: repo://mc/cmd/mc/setup_connection_choices_prod_test.go
   - id: openwiki-source-84c1006ce1b2be1373838f69
     resource: repo://mc/cmd/mc/setup_opencode_screen_prod_test.go
   - id: openwiki-source-ba92167dda59467828397749
@@ -162,10 +166,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T00:42:04.358Z
+    at: 2026-11-10T01:41:54.063Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -316,7 +320,7 @@ The test also checks proposal requirements in the extracted customization contra
 `TestStrategistBriefDeliversTaskSelectionGuidance` checks the directive inside the rendered brief.
 Its assertions cover useful results, existing capabilities, repository evidence, full cost, container checks, and the Arbiter's final rank.
 It also checks that custom instructions remain within the Culler contract.
-`TestDirectivesEncodeTheSelfOrchestrationContract` checks fixed orchestration procedures for the Worker, Arbiter, Verifier, and Packager.
+`TestDirectivesEncodeTheSelfOrchestrationContract` checks fixed orchestration procedures for the Worker, Verifier, and Packager.
 `TestWorkerRecordsInlineExceptionBeforeTheTerminal` checks where the Worker states its reason for inline work.
 
 `TestStrategistBriefPreservesAssignmentData` checks that brief simplification preserves each retained part's facts, text, rows, and text tag.
@@ -328,15 +332,19 @@ See [Strategist input](../concepts/agent-input.md#strategist-instructions-and-pr
 
 The Arbiter input test renders a brief with proposal descriptions, active descriptions, task history, custom instructions, a proposal resolution, and the accepted Vision.
 It checks the run identity, repository path, and installed path of every delivered skill.
-It requires a directive pointer and a skill section for each conditional procedure.
+It checks pointers and sections for historical work, all-reject batches, failed results, and customization conflicts.
 Selected rules must occur once across the rendered brief and `mc-arbiter` skill; shared skill contents remain outside this duplicate check.
 The contract assertions cover the promotion limit, criteria rules, preservation of accepted work, and restricted authority.
 The customization assertion requires an explicit conflict terminal in the skill.
 
 `TestArbiterBriefPreservesPartPayloads` checks that the brief transformation preserves facts, text, rows, and text tags for each retained part.
-`TestDispatchSpawnBriefCarriesClaimedState` checks proposal descriptions, historical entries, and the Arbiter orchestration instruction in the dispatch output.
-Dependency and customization tests in `directives_test.go` check the current conditional pointers and their procedures.
-See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) and the [audit context](../concepts/agent-input.md#arbiter-instruction-audit).
+`TestDispatchSpawnBriefCarriesClaimedState` checks proposal descriptions, historical entries, and the Vision-based ranking instruction in the dispatch output.
+`TestArbiterBriefDeliversProposalReviewGuidance` checks task results, feasible benefits, full cost, and consideration of new capabilities.
+The Arbiter input test checks the required exception for each rejection in an all-reject batch.
+It also rejects fixed orchestration text and a Research dependencies section in the combined brief and command skill.
+The dependency test in `directives_test.go` excludes the Arbiter from its role-specific dependency assertions.
+Its customization test checks the contract boundary and procedure pointer text, but does not check the named skill.
+See [Arbiter input](../concepts/agent-input.md#arbiter-instructions-and-procedures) for the source references that lack matching procedure locations.
 These checks establish delivered instruction content and payload preservation; they do not prove an agent's review quality.
 
 The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
@@ -376,7 +384,12 @@ The dashboard smoke harness requires `MC_SMOKE_BIN`, which `smoke.sh` sets. Neve
 The harness checks the scratch home's `discord.socket` path before it creates the home. It rejects paths above 103 bytes with a request for a shorter `MC_SMOKE_ROOT`. The CI browser job uses `$RUNNER_TEMP/smoke` for that root.
 
 `dashboard/src/ui/theme.test.ts` checks the background picture selection, button state, tab updates, and theme-specific grid tokens.
-`dashboard/smoke/theme.smoke.test.ts` checks the tile lines in both themes and the logo button in Chromium.
+`dashboard/smoke/theme.smoke.test.ts` checks the light default with either system theme and verifies that both background images are served.
+It also checks the logo button in Chromium.
+`theme.test.ts` checks the light default with absent, invalid, or blocked browser storage.
+`dashboard/src/agentsview-pages.test.ts` checks the light default and stored dark selection for trace access pages.
+`selectTheme` in the smoke harness selects a theme through the dashboard button.
+`MC_SMOKE_COLOR_SCHEME=dark` supplies an explicit stored dark selection when the browser context starts.
 It checks the picture after a click and reload, the veil, the button state, and the chick animation period.
 The smoke captures the shown and hidden states through the shared evidence path.
 These statements describe test assertions, not a browser run in this wiki update.
@@ -671,6 +684,19 @@ It also checks that a provider service failure remains an issue.
 The model configuration smoke checks that an unused failed connection stays outside the notice while an assigned failure retains its repair action.
 The System health smoke assigns roles to its failed connections before it checks their issue controls.
 These statements describe test source; this wiki update does not execute these tests.
+
+### Provider choices and automatic names
+
+`mc/cmd/mc/setup_agent_choices_prod_test.go` checks the provider menu and its access-method choices.
+`setup_connection_choices_prod_test.go` checks automatic additional account names, name reuse, name collisions, and Back transitions.
+The terminal screen tests cover the provider and access choices at 80 and 40 columns, with and without color.
+
+`dashboard/src/ui/agentprofiles.test.ts` checks provider order and searches restricted to OpenCode providers.
+It checks eligible disconnected connection reuse and numeric suffixes for occupied names.
+`dashboard/smoke/api-key-connection.smoke.test.ts` checks provider order, sign-in before API keys, and automatically assigned connection names.
+It checks a concealed key field and the selected provider summary after a query hides that provider.
+Its retry checks retain a saved credential after a failed model test.
+These descriptions identify source assertions; this wiki update does not execute those checks.
 
 ## OpenCode and update recovery checks
 

@@ -24,6 +24,8 @@ sources:
     resource: repo://mc/cmd/mc/setup_agents_prod.go
   - id: openwiki-source-c6b3c0255eecd5c285f3893e
     resource: repo://mc/cmd/mc/setup_install_prod.go
+  - id: openwiki-source-023af04189f7504ce88d56f5
+    resource: repo://mc/cmd/mc/setup_opencode_prod.go
   - id: openwiki-source-ba92167dda59467828397749
     resource: repo://mc/cmd/mc/setup_opencode_source_prod_test.go
   - id: openwiki-source-1f9fad5e3ff6a05580945e60
@@ -88,10 +90,10 @@ sources:
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-09T23:41:46.402Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T23:41:46.402Z
+    at: 2026-11-10T01:41:54.063Z
 ---
 
 # Installation, deployment, and release
@@ -315,6 +317,14 @@ The default image's protected `/mc/spine` directory is permitted; the runtime ch
 A failed check stops the update before replacement and identifies the affected Project.
 See [candidate runtime compatibility](image-delivery.md#candidate-runtime-compatibility) for restrictions and the shared release smoke.
 
+Terminal setup first offers providers with a sign-in, then **Use another provider**.
+Each subscription provider offers sign-in before its API key method.
+Setup assigns connection and additional account names automatically.
+An additional subscription account receives an available harness name with a numeric suffix.
+The confirmation names that account and explains that the existing account remains.
+`mc/cmd/mc/setup_agents_prod.go` owns the provider and access choices.
+`mc/cmd/mc/setup_connection_choices_prod.go` owns additional account names and access transitions.
+
 Codex and Claude Code connections use sign-in that Culler starts in separate home and credential folders.
 `mc/deployment/runtimeauth_setup_login.go` launches the detected agent program in that isolated environment.
 The operator's agent login remains separate from Culler's login.
@@ -332,6 +342,8 @@ Configuration validation rejects custom provider destinations and unsupported cr
 The host renews account access while the container retains its Culler token.
 Other catalog providers use the OpenCode harness and its separate runtime volume.
 Published installations download this package on demand; source deployments prepare it before activation.
+**Use another provider** searches the catalog providers that OpenCode runs.
+An empty search lists all those providers.
 The provider search updates after each key on terminals with screen controls.
 It lists name matches before identifier and address matches and shows details for the selected provider.
 A terminal without screen controls uses a query prompt followed by a choice list.

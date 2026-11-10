@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d39960ca060cfcd39451f00dcf2624436143d39a6b42105b953224665cb46171",
+  "pageVersion": "sha256:a03510a1f9b091a345894a26d9854fa0d917f38b7c45abf7fc94947f63b96977",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -509,26 +509,22 @@
       "statement": "The dashboard theme unit tests check the picture selection, button state, storage updates, and theme-specific grid tokens.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/theme.test.ts#L157-L209",
+          "resource": "repo://dashboard/src/ui/theme.test.ts#L149-L201",
           "version": "repo-lines-v1:sha256:80287dbdcb3c663bdaea8f68e15f37c8c66bf53df4e943e2a771f6e317183a80:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNDM4Zjc4YThjMTUxZWY3Mzg1MzkwMjM1ZjY5NDc1MDlhODY2YzQ3NTdmNzQwN2U1NDYxNmIzZjIxNWVhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NzlkMTE4ZDZlM2NiZjQ1MDUzOTc0OGRlZTdhNDMwN2FjYmU2NDQ2Y2JhMjk3ZjI3NjBmYTVkMGJiYTFiYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjZjdkOGE1ZTFlMTQwMjFjNGEwMmI3MmYzYjE0NGQwNjEwMmNlNDk0NGQyYTVkMjVlMjQ3MGE0MTcwNmVjODgifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/theme.test.ts#L292-L296",
+          "resource": "repo://dashboard/src/ui/theme.test.ts#L284-L288",
           "version": "repo-lines-v1:sha256:735104b21f2bc3c9121fbeea025701087feed1be9f025d3615c7ac191162de8f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRiMjMyNWZjNmU3ZTBmNzk1YjVlZGQ4NTIwNjY3YjJjZjYzNDk3YWNmM2YzMDU0YTRjN2VlZGU2OTI0MTZlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWUxMmI2MTE4OTQzZTMwYzAwNjgzM2U3ODE2MzBhNTNiMzJmNDE3ZWY1Zjk3OTVjM2YxMmYzMzA4MDI0YzVkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDgxN2ZiYjczYzkyYjM2ZDVlNDg5NmZmNTFjMWI1OGVlYzMzMGJiZTk2MWJhMDVmYzYyMDVmODY3ZWExYmNmNiJ9"
         }
       ]
     },
     {
       "id": "claim_484fe553561f469397aaa9cce568dbf6",
-      "statement": "The theme browser smoke checks the grid in both themes, the picture toggle and reload, the veil, and the chick animation period.",
+      "statement": "The theme smoke checks the light default under either system theme, image delivery, picture selection and reload, the veil, and the chick animation.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L118-L135",
-          "version": "repo-lines-v1:sha256:6463d4d3b4a3c16c06bfa2e6bf2c6e8998ee6bd844c5bfd0c1e6d437e8bbafee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxZDU0NTI3ZTUxZjk0NDlmYzY5MDA5NzZlZmU5MzY2NmZkNGVkNDg5ZTY5ODA4NDJiOWUzNmFjMzJlZjNhMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkZmUxNGZlMTQwNTAxZDE3YTAyOTA5YmE0ZDBkMmEzMmE2NzZjNjhmN2Y4NzZkZmM4YTliYjMwNTFlZDYyNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2YTdkYjllY2JiYjViODNjN2YzODU3OGY5MDRjOWZlYjEwZTE4NmRjYTU1N2Q1MDY5MGRmZjA0MzZlYzU4NDMifQ"
-        },
-        {
-          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L150-L191",
-          "version": "repo-lines-v1:sha256:1e8a31741d30c83b026d5532c83d8005539a91a56b5b006b4317a57b02d9be28:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmYTllOTIzODhmY2IyMjg4ZDY2YjcyOTZmOWM5MDJmZmFjMzNhY2JiMzBjZGEwNzJkYmIzYTk4NTRmMjViYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjZiMWY2M2Y3MzZjMTk4OTk4ZmMxZmM2ODFkN2U1MDg3YTE5Y2UwZDhmMDhiYWVjMWE3NzNhYmZiMzlhMzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMTVhY2ViOGE5OTUwMDA0YTU3ZjFlYjUxOGRlYzIxYTM1MDAzYjI4NDNmNjM5ZThmZjNmZTQ3NjMzOTI0MWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmNzA4OTU0NmU1ZWFjYmU4ODY1NjVhNjQ3YjA5NTJiNjAzNzRmYTY5OGEyMTBhMDBhNTlhYmQyMWU3Y2YwOTUifQ"
+          "resource": "repo://dashboard/smoke/theme.smoke.test.ts#L118-L180",
+          "version": "repo-lines-v1:sha256:345a130e6353ab40713957785d13fe4b743f13939c2581c362c8fb7ca1e418c8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1MTRmN2ExZWE0MjA3OTM4NDg4YzNiZWQxNTMzMjVmN2E4MmYwMjFjYThkMGY2ZjQ2NmIzMzU2YjY3NTEwOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2E0Y2ZlODdkMjc3ZjYwZWRjNTgyOTVmMmMyNjQ1OTg2MGZmNmRlZjkxYTcxOWRlNzY0NWZhYTc2NDNlYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlNGYzNzdhZDM4NTgwNTAwZTg5YzZhYWU2MTZmYzYxMzk3ZDE5MDdjZDJlMGI1MGZhZTRiYTQxZTEyMDA0ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4ZDcxN2UwNWE4MTc1OTYyODQ2MjI2YTE4ZTU0NWIzZTczMzZkNjQyN2E4YWZjODk0M2E5ZGY2OTI2NmYzODIifQ"
         }
       ]
     },
@@ -969,8 +965,12 @@
       "statement": "The Arbiter input test checks historical task data and rules for equivalent work, cancellation reasons, and permitted task reads.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/arbiter_input_test.go#L57-L110",
-          "version": "repo-lines-v1:sha256:9c887e892019baa43c33498897f9f8efb2079aa3f2fd16ed24543ca3be9c0aa5:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0YzljODRmNjRiZWZkZTQxNzNmMjE0ZGRhOTdmNGZlYTYzZGYwNDYzYzI1NjdhMGZjYzE2YTA1ZTc3ODY0ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MTc2NzUwMDg1NGFlMGZjYWMwMWNlOGU2M2ZiZWM1ZjkzZmUzNjgxZGViZmYxNGM5YzNlYzhmYzRkY2M3NjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MjExMTM2NzJkZGYwZWVjODVjMjc0MDJiYTFhNWViYzg4ZmY4MDI0YmQ2N2RjYzc2NWE1YzQyMjhhMDA5MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2NDRhOWY3NDg2NWIyMzRiMWVmNGM0NGUyZGE0NzRkNmM5OTQ0MmY1N2VhZjdkMTc5ZWI4OGMxMGRhNzE2NDgifQ"
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L57-L67",
+          "version": "repo-lines-v1:sha256:fbbd839e44be3c3eb2a16c5930febb2d02873b0898cc12abcc10ba53f3f92319:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0YzljODRmNjRiZWZkZTQxNzNmMjE0ZGRhOTdmNGZlYTYzZGYwNDYzYzI1NjdhMGZjYzE2YTA1ZTc3ODY0ZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4MjExMTM2NzJkZGYwZWVjODVjMjc0MDJiYTFhNWViYzg4ZmY4MDI0YmQ2N2RjYzc2NWE1YzQyMjhhMDA5MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzZmIzMTUxNmM5MTQxZjgyYjE4NDU5ZGM3Mzc4OTgwMGQ1MzhjMWFjZWRmYzk2ZTg0YzcxODdmYzRkZmMzODAifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L99-L121",
+          "version": "repo-lines-v1:sha256:4f34f3c00727380e53c90cb0b17811c46b4c2ab7827af7e446bcd9ad6e10d2c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkOGJhOTM4ZGJhMWQxNzk4ZDUxNGQ2MmM4MzEzOTgwMmY5Nzk3NWVlNjNkNTEyNDBhZjRlNGZmYmZhNzMwZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZTA4MjMxZmQ3ZWEyNjExNGExYzZhMzRhMDIwYTQ5Y2FhM2JlMDJkOGQ5MWI3NTQyODUzMGI2ZGQ3MTc5YmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyZWZjMTliMTdmZDdmOGI0MTcyNmVhMWM0ODY5NTM2ZjBlNmI0MzY5MDA0ODQzMjVkZGIyNjMxMzAyMTU5MWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyZjE3N2ZjOGFhZDg4Y2M3ZTA4ZDgzYmRiMDQwNGZlMGZjZDU3MDU4MTliNjQ0ZTg3NGRkN2M3NzYwM2UzMTYifQ"
         }
       ]
     },
@@ -990,7 +990,7 @@
       "evidence": [
         {
           "resource": "repo://mc/onboarding/terminal_search_test.go#L38-L181",
-          "version": "repo-lines-v1:sha256:3e8385b1ed742f1008358f954e413a14dcf03174168abb6ccf951e17a2eb58cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlNDk4ODBhODNhZjA1NTE4ZjVjMTJjNTE4MTY1N2I4NTc2ZjgwZWZmOTI5MWViYzYwM2RiZTdiODVmODFmMDE3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwYmM2MWNiNzhmZWY0NDZiZDdiMDczMDNhNzRiZmQyMjZjMDJhM2RkM2EyZjE2OWI1ZGVlOTUxN2IwY2UzYmExIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+          "version": "repo-lines-v1:sha256:7bf75966d0520aa37350cedfddb59adaeb31704da690b0947b0bc6c23ba91b5c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlNDk4ODBhODNhZjA1NTE4ZjVjMTJjNTE4MTY1N2I4NTc2ZjgwZWZmOTI5MWViYzYwM2RiZTdiODVmODFmMDE3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwYmM2MWNiNzhmZWY0NDZiZDdiMDczMDNhNzRiZmQyMjZjMDJhM2RkM2EyZjE2OWI1ZGVlOTUxN2IwY2UzYmExIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
         }
       ]
     },
@@ -1047,8 +1047,8 @@
       "statement": "The Arbiter input test checks assignment descriptions, custom instructions, operator resolutions, skill paths, procedure pointers, and single occurrences of selected rules.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/arbiter_input_test.go#L10-L126",
-          "version": "repo-lines-v1:sha256:84e1580c5a7ce19595b09c61cfd5cd819f1dd8c99a6fc4e0f334b7d08aca617a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmMDI2OTI2NjkyNDZhODUxODg1NDFmNGQyZDU5OWQxOGRkYzkxOWY2M2VkYzQ2NzYxZTA2ODkyMmY5MWI2ODkxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlOWZlNDFmNjA5Y2QzMWE3MmY4MGY0ZDRmNDJiNjdiYzkwYmNiN2Y4NGI0ZmQ1NmY4MDI5MGQwOTFiZjU4M2JkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiNTU0N2M4NDM3ZmU2NjJmNDBjYTkwNTM0MjVlOWY1NGUzYzc1NzhmMjFlYThjN2Q5NTYwNmIzNWQzMGVjYzk1In0"
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L10-L154",
+          "version": "repo-lines-v1:sha256:8ad9f98cf25618f1616eac8ef4b2c8d399f2821e5ad04bc2f938b8b144c9fb81:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2MTYyNTU0OGZiZWEwZjNlODNiZDlhOTc1OGQwODBkZDQzODdkNzdlN2FkZjBhY2M2YjQ5OTdmZDhiMjg1YzQzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlOWZlNDFmNjA5Y2QzMWE3MmY4MGY0ZDRmNDJiNjdiYzkwYmNiN2Y4NGI0ZmQ1NmY4MDI5MGQwOTFiZjU4M2JkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyYzkzMzA1NGJjMWEwZWY1M2ZhYzljNThmZDcwOTk5NzBlOTg4NzM1N2NlYTU1MGY4NzFlNzJkMTJlNWQxM2EzIn0"
         }
       ]
     },
@@ -1057,38 +1057,86 @@
       "statement": "The Arbiter input tests check the promotion limit and criteria contract, the explicit conflict terminal, and preservation of each retained brief payload.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/arbiter_input_test.go#L127-L167",
-          "version": "repo-lines-v1:sha256:c3471b591d4796687e8a8bc3f3c78c027d0c47bb6f13012018e5e2427f7d9677:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwYTlmYWUxZTcyMzczYzIzNGU1Y2VjMjFiOGQ3MWMzZWMyZjlhNGJlMWRhYTk3YTg3NWY1NzQ5ZjFkNjhhNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMTRlNzEwZDcxNmI4OWIxNWM5MDcyNzQ3NWQyMjVkZjBmNDM2YWJjZjA0NTJlOWEyN2U0MzU1ZWM5ZjNlMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L141-L154",
+          "version": "repo-lines-v1:sha256:4c348f30f0e04dc4676ade585fc7ca7c36f94d4fc451fdbacdde0afe3992dea1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNDhkOTRhYjQ5OTViMmY4ZWM5Nzk4NmZhNmY5ZjdlODFjYTdhYTMzNTE4YjZhYTJmMzNmNDJmNTQzMDk3NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzlmODllZjgwY2M1MzY4ZGZkZWMyYzAxZTQwYjEzZGUzNGMwMDQ2ZDk5ZWRmZDBkMmU4Mjk3N2UwYjA4NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjOTMzMDU0YmMxYTBlZjUzZmFjOWM1OGZkNzA5OTk3MGU5ODg3MzU3Y2VhNTUwZjg3MWU3MmQxMmU1ZDEzYTMifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L174-L193",
+          "version": "repo-lines-v1:sha256:ed50e08fed751d4f5738ee1c5ad1a8d7517ad0e1f4b6046c9b067b04df4a3992:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzNDQwY2IyZTJjNGM0ZmI4MjE0MTgzMTJlYzNhY2YxOWVlMDgwYWY2NTEwYzI5ZTkxMjEyMmU4MGU5YzJhMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
     {
       "id": "claim_59fbfad71f8a485f8c4e0af648a6090e",
-      "statement": "The dispatch brief test checks full Arbiter proposal descriptions, historical entries, and the instruction for read-only subagents.",
+      "statement": "The dispatch brief test checks Arbiter proposal descriptions, historical entries, and the instruction to rank proposals against the Vision.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchverb_test.go#L684-L711",
-          "version": "repo-lines-v1:sha256:2f03ac506f9e32ee948803443d4e1fb509fa05ea50e3bb5954a8ff8de7568c03:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3YTE5ZjdmOGM5YzE5YjczMmRiMDQ2NWFkZWQ1MjE5NzUwNWZhMDJiMWFlMmEzOGNlNTYyNTU5ZjYzZjA3ODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTliNWU5MDE5YzhkYjg3ODNlYzljM2ZlYmIwYTJjOTg2MmY2MWEwNWMzMDhmZTg5NWU0YTliZWQwM2VkYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhZjRjNTYyMTQyZjMyMjNjMjljM2NmNDk1Njg5Y2IwMGNlMDUwMzIyNjk3ODg2ODY2MjA2NWU5YWNiNDZjMGIifQ"
+          "resource": "repo://mc/verbs/dispatchverb_test.go#L684-L705",
+          "version": "repo-lines-v1:sha256:b61885335b4911ac5a48516ae5dc7363f3d8cc5cdcfacd98d07ca86dd3a86916:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3YTE5ZjdmOGM5YzE5YjczMmRiMDQ2NWFkZWQ1MjE5NzUwNWZhMDJiMWFlMmEzOGNlNTYyNTU5ZjYzZjA3ODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmNjY0ZGZkNDc0MTExZmM2NjQ5NjY5NWU5OWY0YzQwYjdlMGZlNDA3MmQxZTczNjYyYWQwNDQyMmJiYThkYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczYWY3YjJmY2E1MDg4ZTYwYmMzYTU3MTg3ZWE3ZjNkNGIxNWE1NTAzNTNlNzZhM2U2MzM5MzQzODY1OTEwNzAifQ"
         }
       ]
     },
     {
       "id": "claim_ef4f307abf3a452bb83208ca989c9aef",
-      "statement": "Dependency and customization tests check the Arbiter's conditional pointers and command skill procedures.",
+      "statement": "The dependency test excludes Arbiter role-specific assertions; the customization test checks the Arbiter contract boundary and procedure pointer text.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives_test.go#L493-L504",
-          "version": "repo-lines-v1:sha256:c193a00b23de344b98d72672213d7e2ecedff4172d009ab419f07874dfe9291a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiN2U0OWI4MWVmN2UzNDU0MGI4MWNjNDE5ODMxZDk2OGM2OTA2NjYzODBkYjE0MzM0N2Q1MGEzMzg2MGY0Y2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0Y2Y3ZTdiNTAxNThjNmFhZmI0NzdkNzFjOTVhNzllZjQ4MDhlZmZkZDIxNDcwZjRkNmFlZDM4MmRhMDQ5ZmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmZjk2NTQ3NTYxZDZhMjcxYTZlOGU4YTFjN2RjZjZjZThhYzBiMGRhZDAwZTJmZGQyMmY3ODU1ODViM2U5OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiMTgzOTY0ZTFjMWM0OWRmZjUzOTc5Njg2MmUyMWM4MTAxMmFhYWRlNzZmMGE5NDE2MTM2ODc0YTllZTc1M2QifQ"
+          "resource": "repo://mc/verbs/directives_test.go#L490-L510",
+          "version": "repo-lines-v1:sha256:b36d5e80a55b6af5281328bc2e381c070ebe3e3b2ecd80231ce5c8af5c4f6c86:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3YmI2ODEwOTdjZjczYTY4NGQ5Y2U5OThiZDIyNTVlZWVmODEwOGYyMjJhMTYyNmEzY2NjMzFkMTQ3MjcyNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjg4M2Q4MTUyYzY1Yjc3OTM3YTNhNmUwMmZjMmU0YzU0MWM4NDk5Mzc1ZDYxMzNjZDkwZTY2ZmRkNTg2M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3Njg1NDc0YzhkNjc3ODUyZWM2MTU3ZDBiY2U5MzNhMzVmM2M0ZTgxNTM5ZTE4OThiN2E2ODk5ZWUyYTcyMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyN2VkZmE4ZDcyN2UwNzlkNTg1NTRkOTZhZDBlZTRjMTBiNTYwNmZlNmRiMTk4ZWUxMjllZmYxNTU2ODdjMmYifQ"
         },
         {
-          "resource": "repo://mc/verbs/directives_test.go#L797-L804",
-          "version": "repo-lines-v1:sha256:b2620edc77a766095b92c50f1f5a5c52645d57c4dda8b677a9486c82f77d90b3:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmEwM2U1ZGYwMmJhYjVhN2Q1NDIyODM2NGZhY2QzYzVmODA0NzlkM2EzMDc1MDk0YmRmMzA5YjZiMDdhZDVlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRlZmM0OTQxOGQyNmRjZjEyOWIyMmE2YWEyMTEwOGNlZWMzNzY3N2EzMmQwOGU5ZDVmZWUzNWRkYTY2YmI5ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y4M2YyNGZkMTk5MzdlOTliNzEzMDQ2ZjM2MDk0ZTc2YzcyNmE3MGE3YmNhN2IxYjE0YTEzNGIwMWM3NjdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGYyNmIyZjYwNzUyMmZmOThlNGFhMTgxMDE3MjkwYzQ1ZjFhOTAyMTc4MzRkMDU1MjM3ZjgyNDYxODg2ZTM5MyJ9"
+          "resource": "repo://mc/verbs/directives_test.go#L791-L796",
+          "version": "repo-lines-v1:sha256:a983feddad1a8bec440d927545b3dd0d7c9f88e19bb5793f219fd60e34619f8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg5Njg3YTgxZjdhYTBmZGIyMzBhZjk3MzYxM2RjN2EwZGI0ZTk1YzExMjBlZmVhNDZjMzU0MmZkODNiMTkxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzdiYjY4MTA5N2NmNzNhNjg0ZDljZTk5OGJkMjI1NWVlZWY4MTA4ZjIyMmExNjI2YTNjY2MzMWQxNDcyNzI3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY1MzAwZTkyZGIwYmQzNWYyZmZlZWJjZTc2MDczYzk0NmUzMmE1NGY0OGY2MjJmNTkyMjg2YjkzNTBiOTA1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQyY2M5N2E5MDBkMDk4OTEyOTg1NWE5OWJiZDJmYmNhNTY2MDI1YzE1OGQ1YmYzNmVmZWFjMTk1ZDQ0OTRjYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b0f6953fd9c4be5a373da7f60db94ad",
+      "statement": "The smoke harness selects themes through the dashboard button and supplies a stored dark selection for MC_SMOKE_COLOR_SCHEME=dark.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/harness.ts#L315-L340",
+          "version": "repo-lines-v1:sha256:28a7abcc5ba3f8e62306d9a290a8e72dfce71faed23628cb6069824da3276ee0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MzEyNWQ1YWY0Mjg3YWFlYTM1ZDM4NDFmZmJkOTgyODE5NWFlZDc0ODBhYmQyNDhlNDYzNWRiNDJhMWMyODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMGM1OGE5MTcwNWFhODYzZTdmZDIzOTJkZGE0ZGNhYzM0YjQwODQ0ZjQ2NzgxZGNjOWI2M2VlYTM3ZmRjMmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3ZmExMzIzM2IwN2NhY2VhM2MyZTg1ZjFjNTk2N2ZhOGUxNDJlNjNmYTE5ZjRmM2MwMGMxMTJlY2IzOTI0OTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7077cde10ee646548855e2b05ca6dc7e",
+      "statement": "The Arbiter guidance test checks task results, feasible benefits, full cost, and consideration of new capabilities.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/arbiter_input_test.go#L157-L171",
+          "version": "repo-lines-v1:sha256:20d6515a0151a78d45b08a604758c62783c54e2e03ea1533746dea3dd0dc4a2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYzg2YjE2NzY0NzY4OWE1ZmE1YTdlZTlkZmUzYzFjNjFmNGMxYzUwZTAyYmU4MGVhODRhMDAxMGQ0NDY2ODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNjI1NTQ4ZmJlYTBmM2U4M2JkOWE5NzU4ZDA4MGRkNDM4N2Q3N2U3YWRmMGFjYzZiNDk5N2ZkOGIyODVjNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1MDBkZmQzMWMzNWEyYTFiNzM5NWQ1YWQ3OTNlZDYzZGQxMzg2NmVlMzE0NmY5NDdjOTI1NmVmNmFjMjJmOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e5c0ee7a87f4f36a060a59cdbc4ba00",
+      "statement": "The additional-account tests check automatic names, reuse of an untested name, and recovery from a name collision.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_connection_choices_prod_test.go#L222-L280",
+          "version": "repo-lines-v1:sha256:3c4c9a2e44610dbc44d7d70146e7dc6e161dd9c0bfce65b2ce869fc16bb10d5e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkMjhlZDllNDQzN2VmZDU0ZjZlNGFmOGUwZWU3ZDVlZTRhMjMyZWU0ZDljMTllNTEwYzZkYTkwNjgxYWVmMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNGJkMzNhYmIyMTU0YTNiOTNkMWMyNWQzNjg5NjBmYWU5OWRmMDY3NzU4NmE1ZGViNjE4OTAwZGNjZGZlN2MifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4bc31fbc7fdd4f6db96512e0db4c30af",
+      "statement": "The API key browser smoke checks provider order, automatic names, concealed keys, and selected-provider visibility after a different query.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/api-key-connection.smoke.test.ts#L121-L145",
+          "version": "repo-lines-v1:sha256:933ae92862c607fab7f8acb4f4441d9a82a948edce6323ddf098ab4f8d405170:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NzI4NDRhYmQ5MmU5MmFiNDViZDU4ZDFlZTU3Y2YzNGMzMThmNDEzNDI0ZGE3NTM5NzJhOWM0YTJjZTNjYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxOGRjZDY0OWI0OGYzMzAyNmZiMzBjOTcwOGUyNWExNjQ1NzQyMTJiYTIyY2QxOTE0NDFkNTM4NzkyMzNkODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkMWVjOTI3YTExNzI5ODllODE1MDU2ZTk3OTg1YjgzNGU0NDYxOGQwYjIyZDQ5ZDI5Yjg5YTBkMzZiYWQyMDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyYTA3NjU4MDI2MzNmZjBjMTkxNGQyMDE4ZWRhZGViNmEwNjIzMjFlYmRmNGMyMDkwYjA0NzY2NWMzY2E3ODUifQ"
+        },
+        {
+          "resource": "repo://dashboard/smoke/api-key-connection.smoke.test.ts#L14-L79",
+          "version": "repo-lines-v1:sha256:6339069dc988c1093544d0885e08ff74dc7c55937c8152cc49a13e8052d72afc:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzYzY4YTljMTA1YjNiMGY0ODZlOGNkY2JhZGEzYjhkODM1NDY0ZDg0ZGMwZDJlNmQ2ZjE0Njg0NmU5YWM2NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5YzBkZjg2NmM5NmJlZjQ2ZjJiNWEwNTU2OTFhMzhlMmZiZGE3MzdlMjA3OTYyZDkwZDFmNzY5MDdjYmU4MDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZDE4ODMwYWUyMTg3NmFhMGFjZmZjYjgxOTg3YjE3YzQ3YjE1ZGZlM2M3ODEzMTMwZTBjNDA4MzRmNDVhYzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0NjNlMjdhNDdkZWUxZjMxOWVkOWU1NGNiZTMwZDM3ZTMxOGUxOGUyNjRiMjg3MjZhZGZmZjBiZjAxMWIyZGIifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T00:42:04.358Z"
+    "at": "2026-11-10T01:41:54.063Z"
   }
 }

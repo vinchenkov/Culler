@@ -30,16 +30,18 @@ sources:
     resource: repo://mc/verbs/deliverycomplete.go
   - id: openwiki-source-3bc5b077708f9534abc3b95d
     resource: repo://mc/verbs/directives/arbiter.md
+  - id: openwiki-source-19fe7d061285a802d1068aca
+    resource: repo://mc/verbs/roles.go
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-10T00:42:04.358Z" }
+generated: { by: "culler-scribe", at: "2026-11-10T01:41:54.063Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T00:42:04.358Z
+    at: 2026-11-10T01:41:54.063Z
 ---
 
 # Decision Pending and requirements revisions
@@ -227,6 +229,13 @@ The Arbiter can reject invalid criteria without a shared operator decision when 
 The rejection reason identifies the criterion and its violated rule.
 `mc/verbs/roles.go` validates the declared category; the Arbiter judges whether the criteria qualify.
 The command archives accepted rejections and retains their reasons.
-The command skill defines ready tasks and exceptions in **The all-reject batch**.
-When those rules prevent a verdict, that procedure points to the operator decision procedure.
-See [the task pipeline](task-pipeline.md) for empty-queue exceptions and batch validation.
+The command skill requires a duplicate reference or `invalid_criteria` category for every rejection in an all-reject batch.
+Each reason identifies the defect; a duplicate reason identifies the existing task.
+The skill describes duplicate targets as active or historical tasks in the same Project.
+
+The command applies its exception check when no other task in that Project remains ready and no pool proposal awaits a requirements revision.
+Its duplicate check accepts non-archived tasks beyond Proposed or archived tasks with an approved decision, outside the assigned pool.
+Rejected or cancelled history alone cannot satisfy that command check.
+These command conditions differ from the broader wording of historical work in the skill.
+The separate operator decision procedure applies when an operator decision prevents a verdict.
+See [the task pipeline](task-pipeline.md#arbiter-review-and-submission) for the role instructions and batch validation.
