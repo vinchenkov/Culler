@@ -73,11 +73,13 @@ func skillPointer(skills []RoleSkill) string {
 		"does not exist for you, and a search for one wastes the run."
 	if command.Name == "mc-worker" || command.Name == "mc-scribe" || command.Name == "mc-verifier" {
 		help := "The skill lists the permitted commands; `mc` has no help command."
+		terminal := "the terminal"
 		if command.Name == "mc-scribe" {
 			help = "The skill lists the permitted commands.\n`mc` has no help command."
+			terminal = "the terminal action"
 		}
 		text = "## Your command surface\n\n" +
-			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
+			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before " + terminal + ".\n" +
 			help
 		if command.Name == "mc-worker" || command.Name == "mc-verifier" {
 			text += "\nIf this skill is absent or unreadable, report the failed read with this terminal:\n\n" +

@@ -7,11 +7,12 @@ description: Submit a wiki result, report a failure, or report a conflict with P
 
 ## Repository checks
 
-Keep the start commit as an ancestor of the result.
-Each wiki entry must be a regular file.
+Keep the `Start commit` of the **Git state** part as an ancestor of the wiki result.
+Each entry under `openwiki/` must be a regular file.
 Its path must contain no backslash or line break.
 Each changed wiki file must have no executable permissions.
-If a start entry violates the type or path restriction, preserve it and use the failure terminal below.
+When an entry of the `Start commit` violates the type rule or the path rule, preserve that entry.
+Then use the terminal action in the "Report a failure" section.
 
 ## Submit a result
 
@@ -22,11 +23,11 @@ Commit the complete wiki result before this call:
 Supply these values:
 
 - The `--commit` value is the full identifier of `HEAD` in the assigned repository.
-- The `--wiki-evidence` value is the receipt at `/tmp/openwiki-completion.json` from the supplied OpenWiki tools.
+- The `--wiki-evidence` value is `/tmp/openwiki-completion.json`, the receipt of the OpenWiki run.
 
+OpenWiki writes the receipt when `openwiki_finish` completes or `openwiki_begin` returns a `noop` result.
 The repository must contain no uncommitted files.
-The receipt must be a readable regular file.
-When OpenWiki changes no file, make no commit and submit the start commit.
+When OpenWiki changes no file, make no commit and submit the `Start commit`.
 Keep the wiki files unchanged after OpenWiki creates the receipt.
 
 A refusal before the result checks leaves the run active.
@@ -40,22 +41,22 @@ Leave the merge to Culler.
 ## Report a failure
 
 Continue the wiki update after connection recovery.
-When the wiki update cannot finish, report the cause through this terminal:
+When the wiki update cannot finish, report the cause through this terminal action:
 
 - `mc complete --run <run_id> --infra --reason <cause>`
 
 ## Report a customization conflict
 
-Use this terminal for a conflict with the Culler contract:
+Use this terminal action when a custom instruction of the operator contradicts the Culler contract:
 
 - `mc run customization-conflict --request <json>`
 
 The JavaScript Object Notation (JSON) object contains these fields:
 
-- The `run` field contains the run identifier.
-- The `revision` field contains the customization revision from the run brief.
+- The `run` field contains the `Run identifier` fact of the **Run** part.
+- The `revision` field contains the `Customization revision` fact of the **Project role customization** part.
 - The `passage` field contains the exact conflicting text from that revision.
 - The `requirement` field names the Culler contract requirement that the text contradicts.
 - The `reason` field explains why both instructions cannot hold.
 
-This terminal ends the wiki update as failed.
+This terminal action ends the wiki update as failed.
