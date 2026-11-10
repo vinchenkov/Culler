@@ -85,17 +85,17 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 			t.Errorf("conditional procedure has no pointer or destination: %s", section)
 		}
 	}
+	requireTaskDescriptionRulesOnce(t, "Arbiter", text, set)
 	// Shared skills retain their contract and stay outside this duplicate audit.
 	input := text + "\n" + skill
 	for _, rule := range []string{
 		"Submit one verdict for each proposal in **Proposed pool**, and no verdicts for other tasks.",
 		"Promote exactly one proposal and reject the rest",
 		"End the run with exactly one permitted terminal action, including after an execution failure.",
-		"New or changed tests must pass on the submitted commit.",
-		"Reject whole-suite success requirements",
-		"Reject required checks that need unavailable capabilities.",
-		"An unchanged Project test failure alone does not invalidate a proposal.",
-		"Reject a proposal whose result is not one Git commit to the Project repository.",
+		"Judge the description of each proposal against the task-description skill.",
+		"Reject a proposal that violates a rule of the skill.",
+		"Use `invalid_criteria` for a violation of a rule for acceptance criteria.",
+		"Identify the invalid criterion and the rule that it violates in the rejection reason.",
 		"Task overlap means proposed changes to the same files or behavior.",
 		"Compare proposals with each other and **Active tasks**.",
 		"Reject a proposal that overlaps active or merged work, even when the proposal is better.",
@@ -140,7 +140,7 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 	}
 	requireAgentText(t, "Arbiter contract", roleContract(dispatch.RoleArbiter), []string{
 		"Preserve proposal requirements and accepted work.",
-		"The promotion limit and the criteria rules in Proposal review belong to this contract.",
+		"The promotion limit and the rules of the task-description skill belong to this contract.",
 		"Use only permitted `mc` commands with your own run identity",
 		"Do not defer, merge, or rewrite proposals, change active tasks, or start another role.",
 	}, nil)

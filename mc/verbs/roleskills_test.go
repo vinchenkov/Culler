@@ -118,7 +118,7 @@ func TestVerifierShipsVerifyBehavior(t *testing.T) {
 	for _, skill := range set {
 		names = append(names, skill.Name)
 	}
-	if strings.Join(names, ",") != "mc-verifier,verify-behavior,project-environment-setup,project-wiki,writing" {
+	if strings.Join(names, ",") != "mc-verifier,verify-behavior,project-environment-setup,project-wiki,task-description,writing" {
 		t.Fatalf("verifier set = %v", names)
 	}
 	for _, want := range []string{
@@ -142,7 +142,7 @@ func TestPackagerShipsNoRoleSkill(t *testing.T) {
 	for _, skill := range set {
 		names = append(names, skill.Name)
 	}
-	if strings.Join(names, ",") != "mc-packager,project-environment-setup,project-wiki,writing" {
+	if strings.Join(names, ",") != "mc-packager,project-environment-setup,project-wiki,task-description,writing" {
 		t.Fatalf("packager set = %v", names)
 	}
 }
@@ -448,7 +448,7 @@ func TestScribeInputNamesNoTask(t *testing.T) {
 		names = append(names, skill.Name)
 		texts["skill "+skill.Name] = skill.Body
 	}
-	if strings.Join(names, ",") != "mc-scribe,openwiki,openwiki-documents,openwiki-recovery,project-environment-setup,project-wiki,writing" {
+	if strings.Join(names, ",") != "mc-scribe,openwiki,openwiki-documents,openwiki-recovery,project-environment-setup,project-wiki,task-description,writing" {
 		t.Fatalf("scribe set = %v", names)
 	}
 	for surface, text := range texts {
@@ -565,6 +565,73 @@ func TestScribeSkillPointersResolveInTheDeliveredSet(t *testing.T) {
 		for _, match := range pointer.FindAllStringSubmatch(body, -1) {
 			if _, ok := bodies[match[1]]; !ok {
 				t.Errorf("%s points to an absent delivered skill: %s", source, match[0])
+			}
+		}
+	}
+}
+
+// TestTaskDescriptionSkillIsTheOneStandard keeps one source for the standard of
+// a task description. The Strategist, the Arbiter, and Collie ship the skill
+// and their directives name it. No other directive or skill restates its rules.
+func TestTaskDescriptionSkillIsTheOneStandard(t *testing.T) {
+	sets := map[string]func() ([]RoleSkill, error){
+		"strategist": func() ([]RoleSkill, error) { return RoleSkillSet(dispatch.RoleStrategist) },
+		"arbiter":    func() ([]RoleSkill, error) { return RoleSkillSet(dispatch.RoleArbiter) },
+		"collie":     CollieSkillSet,
+	}
+	directives := map[string]string{
+		"strategist": strategistDirective, "arbiter": arbiterDirective, "collie": collieDirective,
+	}
+	var standard string
+	for tier, get := range sets {
+		set, err := get()
+		if err != nil {
+			t.Fatalf("%s: %v", tier, err)
+		}
+		found := false
+		for _, skill := range set {
+			if skill.Name == "task-description" {
+				found, standard = true, skill.Body
+			}
+		}
+		if !found {
+			t.Errorf("%s does not ship the task-description skill", tier)
+		}
+		if !strings.Contains(directives[tier], "task-description skill") {
+			t.Errorf("%s directive does not name the task-description skill", tier)
+		}
+	}
+	if standard == "" {
+		t.Fatal("no tier ships the task-description skill")
+	}
+	if invocations := proseVerbInvocations(standard); len(invocations) != 0 {
+		t.Errorf("the task-description skill names commands: %v", invocations)
+	}
+	others := map[string]string{
+		"strategist directive": strategistDirective, "arbiter directive": arbiterDirective,
+		"worker directive": workerDirective, "verifier directive": verifierDirective,
+		"scribe directive": scribeDirective, "packager directive": packagerDirective,
+		"collie directive": collieDirective,
+	}
+	err := fs.WalkDir(roleSkillFS, "skills", func(path string, entry fs.DirEntry, err error) error {
+		if err != nil || entry.IsDir() || path == "skills/shared/task-description/SKILL.md" {
+			return err
+		}
+		body, err := roleSkillFS.ReadFile(path)
+		others[path] = string(body)
+		return err
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, line := range strings.Split(standard, "\n") {
+		rule, ok := strings.CutPrefix(strings.TrimSpace(line), "- ")
+		if !ok {
+			continue
+		}
+		for name, text := range others {
+			if strings.Contains(strings.Join(strings.Fields(text), " "), rule) {
+				t.Errorf("%s restates the task-description rule %q", name, rule)
 			}
 		}
 	}

@@ -62,7 +62,6 @@ Vision edits also persist the draft in dedicated Culler storage.
 A write does not start an agent run. The resident selects agent runs at each dispatch tick.
 After your turn ends, Culler starts each due repository operation, such as a merge.
 
-- `mc task add <title> --project <id> [--description <prose>] [--priority <n>]`
 - `mc board write --request <json>`
 - `mc task block <id> --reason <prose>`
 - `mc task unblock <id> --reason <prose>`
@@ -138,14 +137,6 @@ A null `return_cause` means that the spine records no cause.
 `task unblock` requires a reason that explains how the operator resolved the block.
 The history preserves the block reason and the resolution reason.
 
-`task add` records explicit operator requests at `seeded` with `origin:user`.
-The command validates the request and assigns the execution context before it accepts the work.
-Priority 2 is the default, and priority -1 is the highest.
-A task with a higher priority receives the next agent run before each task with a lower priority.
-An active agent run, a task that waits for its approved merge, and the review capacity retain precedence.
-Required branch updates retain precedence.
-Agent proposals enter at `proposed` and require Arbiter acceptance.
-
 `mc board write --request <json>` accepts the same requests as the dashboard.
 Use this command for the operator's board requests.
 The request uses JavaScript Object Notation (JSON).
@@ -171,10 +162,20 @@ Submit its `record_version` as `expected_version`, together with its identifier 
 An edit conflict requires a fresh read and reconciliation with the operator's requested changes.
 Keep the operator's text while you inspect the current record.
 
+Create each task with the `create` action.
 For creation, `scope` accepts `task`.
-Use `description` for the task requirements.
+Use `description` for the task description that the operator confirmed.
 Use only the fields that the selected action requires.
 The command selects the destination branch and preserves the Project.
+
+The `create` action records an operator request at `seeded` with `origin:user`.
+The command validates the request and assigns the execution context before it accepts the work.
+The optional `priority` field accepts -1 through 3.
+Priority 2 is the default, and priority -1 is the highest.
+A task with a higher priority receives the next agent run before each task with a lower priority.
+An active agent run, a task that waits for its approved merge, and the review capacity retain precedence.
+Required branch updates retain precedence.
+Agent proposals enter at `proposed` and require Arbiter acceptance.
 
 A requirements revision replaces the description of the task.
 The description holds every requirement of the task.

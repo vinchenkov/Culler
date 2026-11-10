@@ -60,13 +60,13 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 		"For an execution problem or a required operator decision, read the corresponding procedure",
 		"For a contract conflict, read the Project role customization procedure",
 	}, nil)
+	requireTaskDescriptionRulesOnce(t, "Strategist", text, set)
 	// Shared skills keep their own contract and stay outside this duplicate audit.
 	input := strings.Join(strings.Fields(text+"\n"+skill), " ")
 	for _, rule := range []string{
 		"The arbiter selects amongst your proposals to advance only one.",
 		"End the run with exactly one permitted terminal action, including after an execution failure.",
-		"New or changed tests must pass on the submitted commit.",
-		"do not require whole-suite success as an acceptance criterion.",
+		"Apply the task-description skill to the description of each proposal.",
 		"Exclude equivalent work in the repository, **Active tasks**, **Rejected work**, and **Cancelled work**",
 		"Submit two task proposals together.",
 		"You and your subagents can use internet research when it helps advance the Project goal.",
@@ -87,7 +87,7 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 	contract := roleContract(dispatch.RoleStrategist)
 	requireAgentText(t, "Strategist contract", contract, []string{
 		"Submit two task proposals together.",
-		"Each description states the task's scope and checkable success criteria.",
+		"The rules of the task-description skill belong to this contract.",
 		"Use only permitted `mc` commands with your own run identity",
 		"Do not rank proposals, implement them, start runs, or decide review packets.",
 	}, nil)
@@ -110,14 +110,12 @@ func TestStrategistBriefDeliversTaskSelectionGuidance(t *testing.T) {
 		"Judge a large task by its feasible benefit and full cost.",
 		"Record the evidence for the problem and the proposed benefit.",
 		"Investigate the assumption that can make your proposed task unnecessary or ineffective.",
-		"One task can include changes across several components.",
 		"Write the Strategic rationale of each candidate to its own file under `/tmp` before you file the batch.",
 		"Cite the evidence for the problem or the opportunity: what fails or is absent now.",
 		"Explain why the task deserves priority now.",
 		"Separate what you observed from what you assume.",
 		"When the written rationale does not justify the task, discard that candidate and research again.",
 		"The rationale adds no requirement to the task.",
-		"Give scoped acceptance criteria that agents can check in their container.",
 		"Leave their final rank to the Arbiter.",
 	}, nil)
 	requireAgentText(t, "Strategist customization", directive, []string{
@@ -144,5 +142,38 @@ func TestStrategistBriefPreservesAssignmentData(t *testing.T) {
 		if !reflect.DeepEqual(got, original) {
 			t.Errorf("changed the payload of %s: %+v", heading, got)
 		}
+	}
+}
+
+// requireTaskDescriptionRulesOnce proves that the complete agent input states
+// each rule of the task-description skill once: the skill carries it, and no
+// directive, brief, or other skill restates it.
+func requireTaskDescriptionRulesOnce(t *testing.T, role, text string, set []RoleSkill) {
+	t.Helper()
+	var standard string
+	bodies := []string{text}
+	for _, skill := range set {
+		bodies = append(bodies, skill.Body)
+		if skill.Name == "task-description" {
+			standard = skill.Body
+		}
+	}
+	if standard == "" {
+		t.Fatalf("%s does not ship the task-description skill", role)
+	}
+	input := strings.Join(strings.Fields(strings.Join(bodies, "\n")), " ")
+	rules := 0
+	for _, line := range strings.Split(standard, "\n") {
+		rule, ok := strings.CutPrefix(strings.TrimSpace(line), "- ")
+		if !ok {
+			continue
+		}
+		rules++
+		if count := strings.Count(input, rule); count != 1 {
+			t.Errorf("%s input states a task-description rule %d times, want once: %s", role, count, rule)
+		}
+	}
+	if rules == 0 {
+		t.Fatal("the task-description skill states no rule")
 	}
 }

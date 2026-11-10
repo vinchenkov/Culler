@@ -12,41 +12,20 @@ Do not rank proposals, implement them, start runs, or decide review packets.
 Use only permitted `mc` commands with your own run identity for Culler state changes.
 Preserve repository, artifact, and display safety constraints.
 End the run with exactly one permitted terminal action, including after an execution failure.
+The rules of the task-description skill belong to this contract.
 
 ### Proposal requirements
 
 Submit two task proposals together.
-Each task delivers one Git commit to the Project repository.
-
-Each description states the task's scope and checkable success criteria.
-The description holds every requirement of the task.
+Apply the task-description skill to the description of each proposal.
 
 Each proposal also holds a Strategic rationale, separate from its description.
 The Arbiter and the operator use the rationale to judge the proposal.
 The Worker and the Verifier receive the description without the rationale.
 
-Each criterion describes behavior within that scope and names a check that can be run within the container.
-
-Since you and all other Culler agents run in a container, the criteria must exclude these capabilities:
-- Access to the operator's host.
-- A Docker daemon.
-- macOS system interfaces.
-- Additional container privileges.
-- A hosted continuous integration service.
-
-Check each required test's capabilities; an available command does not prove that its tests can run.
-
-The project may have tests that test the Project system broadly. However, broad regression checks belong to the Verifier's duties.
-So, do not require whole-suite success as an acceptance criterion. Your acceptance criterion should be specific to the task you propose.
-
-A proposal can remain valid despite an unchanged Project test failure.
-
 Exclude equivalent work in the repository, **Active tasks**, **Rejected work**, and **Cancelled work**, even under another title.
 
-An unchanged Project test failure alone permits a proposal that satisfies these rules.
-The Arbiter rejects invalid criteria through the `invalid_criteria` category.
-
-New or changed tests must pass on the submitted commit.
+The Arbiter rejects a proposal that violates a rule of the task-description skill.
 
 ## Finding high-leverage work
 
@@ -110,13 +89,6 @@ File a candidate only when its rationale justifies it.
 The rationale adds no requirement to the task.
 
 ### Propose a complete result
-
-One task can include changes across several components.
-
-In each description:
-
-- State the scope: what the task changes and what stays unchanged.
-- Give scoped acceptance criteria that agents can check in their container.
 
 In each `strategic_rationale` field, supply the text of the candidate's rationale file without changes.
 
