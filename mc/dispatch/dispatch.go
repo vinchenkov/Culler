@@ -397,12 +397,6 @@ func decideAgentRun(rec Records, cfg Config, clk Clock) Action {
 	if task, ok := priorityTask(rec); ok {
 		return priorityAction(rec, task)
 	}
-	// The packet of an open correction keeps its review slot, so the
-	// correction starts before the review capacity check.
-	if action, ok := correctionAction(rec); ok {
-		return action
-	}
-
 	// (1) Queue occupancy: the unarchived packets of THIS Project (the cap
 	// applies per Project; rec holds one Project's packets). A packet whose
 	// merge is pending still counts: the slot frees when the merge is
@@ -553,8 +547,7 @@ func reapAction(rec Records, lease Lease, reason ReapReason) Action {
 // Advance an active revision at the queue cap.
 // ---------------------------------------------------------------------------
 
-// inFlightRevision selects a task with a live packet.
-// The stage rank takes precedence over priority and age.
+// inFlightRevision selects a task with a live packet in the order of nextDispatch.
 func inFlightRevision(rec Records) (Task, bool) {
 	live := make(map[int64]bool, len(rec.Packets)) // task ids with an unarchived packet
 	for _, p := range rec.Packets {
@@ -579,28 +572,15 @@ func inFlightRevision(rec Records) (Task, bool) {
 	if len(cand) == 0 {
 		return Task{}, false
 	}
-	sort.Slice(cand, func(i, j int) bool { return lessInFlight(cand[i], cand[j]) })
+	sort.Slice(cand, func(i, j int) bool { return lessNextDispatch(cand[i], cand[j]) })
 	return cand[0], true
-}
-
-func lessInFlight(a, b Task) bool {
-	if ra, rb := a.Status.Rank(), b.Status.Rank(); ra != rb {
-		return ra > rb // furthest-first
-	}
-	if a.Priority != b.Priority {
-		return a.Priority < b.Priority
-	}
-	if !a.CreatedAt.Equal(b.CreatedAt) {
-		return a.CreatedAt.Before(b.CreatedAt)
-	}
-	return a.ID < b.ID
 }
 
 // ---------------------------------------------------------------------------
 // Step (3): the single next dispatch (queue has room).
 // ---------------------------------------------------------------------------
 
-// nextDispatch selects an eligible task by priority, stage, age, and identifier.
+// nextDispatch selects the eligible task that lessNextDispatch orders first.
 func nextDispatch(rec Records) (Task, bool) {
 	var cand []Task
 	for _, t := range rec.Tasks {
@@ -619,16 +599,22 @@ func nextDispatch(rec Records) (Task, bool) {
 	return cand[0], true
 }
 
+// lessNextDispatch orders the tasks for the next agent run. The priority
+// comes first. In one priority, a merge repair after an approval precedes a
+// task that started work, and that task precedes a task that did not. The
+// furthest stage, the age, and the identifier order the remaining tasks.
 func lessNextDispatch(a, b Task) bool {
-	ea, eb := a.Priority <= -1, b.Priority <= -1
-	if ea != eb {
-		return ea // expedite lane partitions ahead of everything
-	}
-	if ra, rb := a.Status.Rank(), b.Status.Rank(); ra != rb {
-		return ra > rb // furthest-first
-	}
 	if a.Priority != b.Priority {
 		return a.Priority < b.Priority
+	}
+	if ra, rb := a.Delivery.RepairAfterApproval, b.Delivery.RepairAfterApproval; ra != rb {
+		return ra
+	}
+	if sa, sb := a.Delivery.WorkStarted, b.Delivery.WorkStarted; sa != sb {
+		return sa
+	}
+	if ra, rb := a.Status.Rank(), b.Status.Rank(); ra != rb {
+		return ra > rb
 	}
 	if !a.CreatedAt.Equal(b.CreatedAt) {
 		return a.CreatedAt.Before(b.CreatedAt)

@@ -140,7 +140,9 @@ The history preserves the block reason and the resolution reason.
 
 `task add` records explicit operator requests at `seeded` with `origin:user`.
 The command validates the request and assigns the execution context before it accepts the work.
-Priority 2 is the default. Priority -1 expedites subsequent eligible execution.
+Priority 2 is the default, and priority -1 is the highest.
+A task with a higher priority receives the next agent run before each task with a lower priority.
+An active agent run, a task that waits for its approved merge, and the review capacity retain precedence.
 Required branch updates retain precedence.
 Agent proposals enter at `proposed` and require Arbiter acceptance.
 

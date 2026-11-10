@@ -312,7 +312,7 @@ func trimArbiterBrief(b *runBrief) {
 		case "Project environment":
 			part.Explanation = "These identifiers name the selected Project environment."
 		case partPool:
-			part.Explanation = "These are the proposals for this assignment. `priority` records proposer urgency: -1 is expedited; 0 through 3 mean P0 through P3."
+			part.Explanation = "These are the proposals for this assignment. `priority` is the task priority that the operator sets: -1 is expedited; 0 through 3 mean P0 through P3."
 		case partActiveTasks:
 			part.Explanation = "These are this Project's active tasks, including blocked tasks and approved tasks that await a merge."
 		case partRejected:

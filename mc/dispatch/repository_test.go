@@ -237,7 +237,7 @@ func TestSelectStartsOneMergeStepPerProject(t *testing.T) {
 func TestCandidatesMergeRules(t *testing.T) {
 	correction := func(id int64) Task {
 		task := tk(id, StatusSeeded)
-		task.Delivery.CorrectionOpen = true
+		task.Delivery.WorkStarted = true
 		return task
 	}
 	recovery := func(task Task, pending bool) Task {
@@ -263,7 +263,7 @@ func TestCandidatesMergeRules(t *testing.T) {
 				r.Retries = []Retry{{Target: "apply-run", Operation: OperationReconcile, TaskID: 3, Until: at(1)}}
 			}, want: []string{}},
 		{name: "3 an approval merges before a correction", tasks: []Task{approved(2), correction(6)}, want: []string{"apply:2"}},
-		{name: "4 a correction holds no merge step of another task", tasks: []Task{prepareDue(3), prepareDue(6, func(t *Task) { t.Delivery.CorrectionOpen = true })},
+		{name: "4 a correction holds no merge step of another task", tasks: []Task{prepareDue(3), prepareDue(6, func(t *Task) { t.Delivery.WorkStarted = true })},
 			want: []string{"prepare:3"}},
 		{name: "5 released correction frees the merge steps", tasks: []Task{prepareDue(3), tk(6, StatusPackaged)}, want: []string{"prepare:3"}},
 		{name: "6 approved tasks merge in task id order", tasks: []Task{parent, approvedTask(8), approvedTask(4)}, want: []string{"apply:4"}},
@@ -289,7 +289,7 @@ func TestCandidatesMergeRules(t *testing.T) {
 			want: []string{"prepare:5"}},
 		{name: "9 blocked correction holds no merge step", tasks: []Task{parent, prepareDue(11),
 			tk(10, StatusSeeded, blocked(), func(t *Task) {
-				t.Delivery.CorrectionOpen = true
+				t.Delivery.WorkStarted = true
 			})}, want: []string{"prepare:11"}},
 		{name: "10 changed destination waits for the quiet interval", tasks: []Task{approved(2)},
 			change: func(r *Records) { r.Tasks[0].Delivery.WaitUntil = pt(at(1)) }, want: []string{}},
@@ -578,9 +578,9 @@ func TestMergeStateOf(t *testing.T) {
 		{name: "after blocked task", tasks: []Task{approved(1), approved(2)}, change: func(r *Records) { r.Tasks[0].Blocked = true },
 			want: MergeState{Kind: MergeStateAfterTask, RelatedTask: 1, RelatedBlocked: true}},
 		{name: "a merge repair after an approval", tasks: []Task{approved(1), approved(2)}, change: func(r *Records) {
-			r.Tasks[0].Status, r.Tasks[0].Decision, r.Tasks[0].Delivery = StatusSeeded, DecisionNone, Delivery{CorrectionOpen: true}
+			r.Tasks[0].Status, r.Tasks[0].Decision, r.Tasks[0].Delivery = StatusSeeded, DecisionNone, Delivery{WorkStarted: true}
 		}, want: MergeState{Kind: MergeStateMerge}},
-		{name: "a blocked merge repair", tasks: []Task{approved(2), tk(8, StatusSeeded, blocked())}, change: func(r *Records) { r.Tasks[1].Delivery.CorrectionOpen = true },
+		{name: "a blocked merge repair", tasks: []Task{approved(2), tk(8, StatusSeeded, blocked())}, change: func(r *Records) { r.Tasks[1].Delivery.WorkStarted = true },
 			want: MergeState{Kind: MergeStateMerge}},
 		{name: "paused", tasks: []Task{approved(2)}, change: func(r *Records) { r.ProjectStatus = "paused" }, want: MergeState{Kind: MergeStatePaused}},
 		{name: "attention", tasks: []Task{approved(2)}, change: func(r *Records) { r.AttentionTaskIDs = []int64{11, 12, 13} }, want: MergeState{Kind: MergeStateAttention}},
@@ -1196,7 +1196,7 @@ func TestWikiReceiptRecoveryHoldsNoAgentRun(t *testing.T) {
 // priority, and the tick starts the agent run of the next task.
 func TestWikiReceiptRecoveryKeepsTheRetryTimeHold(t *testing.T) {
 	corrected := prepareDue(1)
-	corrected.Delivery.CorrectionOpen = true
+	corrected.Delivery.WorkStarted = true
 	rec := recs([]Task{corrected, tk(2, StatusSeeded)}, nil)
 	rec.WikiReceiptRecovery = true
 	rec.Retries = []Retry{{Target: "task/1", Operation: OperationPrepare, TaskID: 1, Until: base.Add(time.Minute)}}
@@ -1217,7 +1217,7 @@ func TestWikiReceiptRecoveryKeepsTheRetryTimeHold(t *testing.T) {
 func TestOpenCorrectionHoldsNoProjectPriority(t *testing.T) {
 	correction := func(id int64, mods ...tmod) Task {
 		task := prepareDue(id, mods...)
-		task.Delivery.CorrectionOpen = true
+		task.Delivery.WorkStarted = true
 		return task
 	}
 	approved := tk(5, StatusPackaged, decided(DecisionApproved, base))
@@ -1245,8 +1245,10 @@ func TestOpenCorrectionHoldsNoProjectPriority(t *testing.T) {
 		{"a correction and an approved task", []Task{correction(1), approved, next}, true, "priority-task-wait"},
 		{"a blocked correction", []Task{correction(1, blocked()), next}, false, "worker:9"},
 		{"a stalled correction", []Task{correction(1, func(t *Task) { t.Stalled = true }), next}, false, "worker:9"},
-		{"a correction that needs its Worker run", []Task{tk(1, StatusSeeded, func(t *Task) { t.Delivery = Delivery{CorrectionOpen: true} }),
-			tk(9, StatusVerified, prio(-1))}, false, "worker:1"},
+		{"a correction that needs its Worker run", []Task{tk(5, StatusSeeded, func(t *Task) { t.Delivery = Delivery{WorkStarted: true} }),
+			tk(2, StatusSeeded)}, false, "worker:5"},
+		{"a higher priority precedes a correction", []Task{tk(1, StatusSeeded, func(t *Task) { t.Delivery = Delivery{WorkStarted: true} }),
+			tk(9, StatusVerified, prio(-1))}, false, "packager:9"},
 	} {
 		t.Run(c.name, func(t *testing.T) {
 			rec := recs(c.tasks, nil)

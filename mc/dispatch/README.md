@@ -62,10 +62,20 @@ The decision follows this order:
 3. The Project requires an accepted environment, a valid vision, and fewer than three attention tasks.
 4. A due or active capture or merge candidate step holds new agent runs.
 5. An approved task holds the Project priority. Only the priority task and the tasks that it admits receive agent runs.
-6. Without a priority task, the agent run of an open correction starts first.
-7. Review capacity limits ordinary task execution.
-8. An eligible task proceeds, or the Strategist proposes more work.
-9. A task with an active repository operation, except cleanup, receives no agent run.
+6. At review capacity, only a task with a review packet receives an agent run.
+7. The first eligible task proceeds, or the Strategist proposes more work.
+8. A task with an active repository operation, except cleanup, receives no agent run.
+
+These rules order the eligible tasks of step 7:
+
+1. The task priority. Expedited precedes Priority 0, and Priority 0 precedes Priority 3.
+2. In one task priority, a task whose open merge repair followed an approval.
+3. A task that received a Worker run.
+4. The furthest stage.
+5. The older task, and then the smaller task number.
+
+The same rules order the tasks with a review packet at review capacity.
+An active agent run continues after a change of a task priority.
 
 The hold of a capture requires a task that is not stalled.
 The hold of a merge candidate step requires a packaged task that is not blocked or stalled.
@@ -479,9 +489,10 @@ A merge candidate of the task without a conflict closes the correction.
 An open correction holds no Project priority and no merge step of another task.
 The packet of a task with an open correction keeps its review slot.
 
-In a Project without a priority task, the agent run of an open correction starts first.
-Among open corrections, the smaller task number starts first.
-When no open correction can start an agent run, the ordinary rules select the next agent run.
+An open correction alone gives its task no earlier agent run.
+The task received a Worker run, so it starts before each task of the same task priority without a Worker run.
+A merge repair that followed an approval starts before each other task of the same task priority.
+A task with a higher task priority starts before each open correction.
 The other tasks of the Project continue while a correction is blocked or stalled.
 
 A Git refusal in the operator checkout blocks the task at once, before and after approval.

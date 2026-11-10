@@ -77,8 +77,9 @@ type canonicalTask struct {
 }
 
 type canonicalDelivery struct {
-	VersionID      int64 `json:"version_id"`
-	CorrectionOpen bool  `json:"correction_open,omitempty"`
+	VersionID           int64 `json:"version_id"`
+	WorkStarted         bool  `json:"work_started,omitempty"`
+	RepairAfterApproval bool  `json:"repair_after_approval,omitempty"`
 }
 
 type canonicalPacket struct {
@@ -300,7 +301,7 @@ func buildCanonicalPrepare(uuid, requestID string, rec dispatch.Records, lease d
 func buildCanonicalPrepareWithIdentity(identity dispatchProtocolIdentity, uuid, requestID string, rec dispatch.Records, lease dispatch.Lease, tun tunables, collies []collieCandidateState, mounts PrivateDispatchMountState, cand canonicalCandidate) canonicalPrepare {
 	tasks := make([]canonicalTask, 0, len(rec.Tasks))
 	for _, t := range rec.Tasks {
-		delivery := canonicalDelivery{VersionID: t.Delivery.VersionID, CorrectionOpen: t.Delivery.CorrectionOpen}
+		delivery := canonicalDelivery{VersionID: t.Delivery.VersionID, WorkStarted: t.Delivery.WorkStarted, RepairAfterApproval: t.Delivery.RepairAfterApproval}
 		tasks = append(tasks, canonicalTask{
 			Delivery:      delivery,
 			ExecutionHeld: t.ExecutionHeld, RequirementsVersion: t.RequirementsVersion,

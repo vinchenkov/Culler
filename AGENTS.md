@@ -180,7 +180,8 @@ This identity checks compatibility and requires no manual version number.
 The [dispatch guide](mc/dispatch/README.md) describes the current control model and each retained record.
 Each Project counts its own blocked or stalled tasks.
 Operator approval gives a task priority within its Project.
-Without a priority task, the agent runs of an open correction start first.
+Without an approved task, the task priority orders the next agent run.
+In one task priority, a merge repair after an approval starts first, and then a task that received a Worker run.
 Required receipt recovery preserves the destination during an explicit pause.
 The repository lane of the resident (`resident/src/repository-lane.ts`) sends a start request at each start event and runs each execution outside the tick loop. It renews all executions in one heartbeat every 20 seconds.
 

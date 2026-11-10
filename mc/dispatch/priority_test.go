@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestApprovalReservesTheProjectAndCorrectionStartsFirst(t *testing.T) {
+func TestApprovalReservesTheProject(t *testing.T) {
 	approved := tk(10, StatusPackaged, decided(DecisionApproved, at(-10)))
 	approved.Delivery.CandidateID = 1
 	approved.Delivery.CandidateMerged = true
@@ -18,6 +18,7 @@ func TestApprovalReservesTheProjectAndCorrectionStartsFirst(t *testing.T) {
 		kind      Kind
 		operation Operation
 		role      Role
+		subject   int64
 		idle      IdleReason
 	}{
 		{name: "approval", kind: KindIdle, idle: "priority-task-wait", operation: OperationApply},
@@ -28,10 +29,14 @@ func TestApprovalReservesTheProjectAndCorrectionStartsFirst(t *testing.T) {
 		{name: "destination delay", change: func(task *Task) {
 			task.Delivery.WaitUntil = pt(base.Add(time.Minute))
 		}, kind: KindIdle, idle: "priority-task-wait"},
-		{name: "correction", change: func(task *Task) {
+		{name: "a merge repair cedes to a higher priority", change: func(task *Task) {
 			task.Status, task.Decision = StatusSeeded, DecisionNone
-			task.Delivery = Delivery{CorrectionOpen: true}
-		}, kind: KindSpawn, role: RoleWorker},
+			task.Delivery = Delivery{WorkStarted: true, RepairAfterApproval: true}
+		}, kind: KindSpawn, role: RolePackager, subject: other.ID},
+		{name: "a merge repair precedes the same priority", change: func(task *Task) {
+			task.Status, task.Decision, task.Priority = StatusSeeded, DecisionNone, -1
+			task.Delivery = Delivery{WorkStarted: true, RepairAfterApproval: true}
+		}, kind: KindSpawn, role: RoleWorker, subject: approved.ID},
 		{name: "infrastructure recovery", change: func(task *Task) {
 			task.Stalled = true
 		}, kind: KindIdle, idle: IdleAttentionRequired},
@@ -53,14 +58,14 @@ func TestApprovalReservesTheProjectAndCorrectionStartsFirst(t *testing.T) {
 			if tc.operation != "" && (len(starts) != 1 || starts[0].TaskID != task.ID || starts[0].Operation != tc.operation) {
 				t.Fatalf("The Project selected unrelated repository work: %+v", starts)
 			}
-			if tc.kind == KindSpawn && (got.Spawn.Role != tc.role || got.Spawn.SubjectID == nil || *got.Spawn.SubjectID != task.ID) {
+			if tc.kind == KindSpawn && (got.Spawn.Role != tc.role || got.Spawn.SubjectID == nil || *got.Spawn.SubjectID != tc.subject) {
 				t.Fatalf("The Project selected unrelated agent work: %+v", got)
 			}
 		})
 	}
 }
 
-func TestCorrectionPriorityEndsAtSuccessfulChecksBeforeFirstApproval(t *testing.T) {
+func TestAPackagedCorrectionHoldsNoAgentRun(t *testing.T) {
 	corrected := tk(10, StatusPackaged)
 	corrected.Delivery = Delivery{CandidateID: 1, CandidateMerged: true}
 	other := tk(1, StatusSeeded)
@@ -75,9 +80,9 @@ func TestCorrectionPriorityEndsAtSuccessfulChecksBeforeFirstApproval(t *testing.
 	}
 }
 
-func TestCorrectionPriorityPreservesTheActiveRunAndPause(t *testing.T) {
+func TestACorrectionPreservesTheActiveRunAndPause(t *testing.T) {
 	correction := tk(10, StatusSeeded)
-	correction.Delivery.CorrectionOpen = true
+	correction.Delivery.WorkStarted = true
 	rec := recs([]Task{correction, tk(1, StatusSeeded)}, nil)
 	cfg := DefaultConfig()
 	lease := freshLock(pi64(1))
@@ -100,7 +105,7 @@ func TestCorrectionPriorityPreservesTheActiveRunAndPause(t *testing.T) {
 
 func TestApprovalMergesBeforeACorrection(t *testing.T) {
 	correction := tk(10, StatusSeeded)
-	correction.Delivery.CorrectionOpen = true
+	correction.Delivery.WorkStarted = true
 	approved := tk(1, StatusPackaged, decided(DecisionApproved, at(-1)))
 	approved.Delivery = Delivery{CandidateID: 1, CandidateMerged: true}
 	rec := recs([]Task{approved, correction}, nil)
@@ -148,26 +153,50 @@ func TestReceiptRecoveryIgnoresPauseAndAttention(t *testing.T) {
 	}
 }
 
-func TestOpenCorrectionsStartBeforeTheOrdinaryRules(t *testing.T) {
-	later := tk(5, StatusSeeded)
-	later.Delivery = Delivery{CorrectionOpen: true}
-	earlier := tk(3, StatusWorked)
-	earlier.Delivery = Delivery{CorrectionOpen: true}
-	expedited := tk(1, StatusVerified, prio(-1))
-	rec := recs([]Task{expedited, later, earlier}, []Packet{pk(5), pk(8), pk(9)})
-	// expedited task, and the review capacity check.
-	wantSpawn(t, decide(t, rec, freeLock()), RoleVerifier, pi64(3))
-	rec.Tasks[2].Blocked = true
-	wantSpawn(t, decide(t, rec, freeLock()), RoleWorker, pi64(5))
-	rec.Tasks[1].ExecutionHeld = true
-	wantQueueFull(t, decide(t, rec, freeLock()))
+// The order of the next agent run: the priority, a merge repair after an
+// approval, a task that started work, the furthest stage, and the age.
+func TestNextAgentRunOrder(t *testing.T) {
+	started := func(t *Task) { t.Delivery.WorkStarted = true }
+	repair := func(t *Task) { t.Delivery.WorkStarted, t.Delivery.RepairAfterApproval = true, true }
+	for _, tc := range []struct {
+		name    string
+		tasks   []Task
+		packets []Packet
+		role    Role
+		subject int64
+	}{
+		{name: "a higher priority precedes a Verifier correction",
+			tasks: []Task{tk(6, StatusSeeded, prio(2), started), tk(11, StatusSeeded, prio(-1))}, role: RoleWorker, subject: 11},
+		{name: "a higher priority precedes a later stage",
+			tasks: []Task{tk(1, StatusVerified, prio(2)), tk(2, StatusSeeded, prio(1))}, role: RoleWorker, subject: 2},
+		{name: "a higher priority precedes a merge repair after an approval",
+			tasks: []Task{tk(1, StatusSeeded, prio(2), repair), tk(2, StatusSeeded, prio(1))}, role: RoleWorker, subject: 2},
+		{name: "a merge repair after an approval precedes a later stage of the same priority",
+			tasks: []Task{tk(1, StatusVerified), tk(2, StatusSeeded, repair)}, role: RoleWorker, subject: 2},
+		{name: "a task that started work precedes an older task that did not",
+			tasks: []Task{tk(1, StatusSeeded), tk(2, StatusSeeded, started)}, role: RoleWorker, subject: 2},
+		{name: "an operator revision does not precede a later stage of the same priority",
+			tasks: []Task{tk(1, StatusSeeded, started), tk(2, StatusWorked)}, packets: []Packet{pk(1)}, role: RoleVerifier, subject: 2},
+		{name: "a blocked task that started work releases the next task",
+			tasks: []Task{tk(1, StatusSeeded, started, blocked()), tk(2, StatusSeeded)}, role: RoleWorker, subject: 2},
+		{name: "at review capacity, a task with a packet precedes a higher priority without one",
+			tasks:   []Task{tk(1, StatusSeeded, prio(-1)), tk(5, StatusSeeded, prio(2), started), tk(8, StatusPackaged), tk(9, StatusPackaged)},
+			packets: []Packet{pk(5), pk(8), pk(9)}, role: RoleWorker, subject: 5},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			wantSpawn(t, decide(t, recs(tc.tasks, tc.packets), freeLock()), tc.role, pi64(tc.subject))
+		})
+	}
+	full := recs([]Task{tk(1, StatusSeeded, prio(-1), started), tk(7, StatusPackaged), tk(8, StatusPackaged), tk(9, StatusPackaged)},
+		[]Packet{pk(7), pk(8), pk(9)})
+	wantQueueFull(t, decide(t, full, freeLock()))
 }
 
 // The acceptance scenarios of merge repairs and the Project priority. The
 // review capacity is 3, and each packet holds one review slot.
 func TestAConflictAfterAnApproval(t *testing.T) {
 	x := tk(1, StatusSeeded)
-	x.Delivery = Delivery{CorrectionOpen: true}
+	x.Delivery = Delivery{WorkStarted: true, RepairAfterApproval: true}
 	y := tk(2, StatusPackaged)
 	rec := recs([]Task{x, y}, []Packet{pk(1), pk(2)})
 	wantSpawn(t, decide(t, rec, freeLock()), RoleWorker, pi64(x.ID))
@@ -211,7 +240,7 @@ func TestAPacketThatAwaitsADecisionAfterAMergeRepair(t *testing.T) {
 
 func TestABlockedMergeRepair(t *testing.T) {
 	x := tk(1, StatusSeeded, blocked())
-	x.Delivery = Delivery{CorrectionOpen: true}
+	x.Delivery = Delivery{WorkStarted: true}
 	z := tk(3, StatusVerified)
 	rec := recs([]Task{x, z}, []Packet{pk(1)})
 	rec.AttentionTaskIDs = []int64{x.ID}

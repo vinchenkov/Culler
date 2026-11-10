@@ -2443,9 +2443,15 @@ func TestStrategistProposeInserts(t *testing.T) {
 
 	// An omitted `project` defaults to the run's Project; a present one
 	// must equal it.
-	res := runMC(t, env, `{"proposals":[
+	// Only the operator sets a task priority: a proposal with a priority is refused.
+	res := runMC(t, env, `{"proposals":[{"title":"agent idea one","priority":-1}]}`,
+		"strategist", "propose", "--run", run, "--batch", "-")
+	if res.code != 1 {
+		t.Fatalf("exit = %d stderr=%q, want a refusal of the proposal priority", res.code, res.stderr)
+	}
+	res = runMC(t, env, `{"proposals":[
 		{"title":"agent idea one","description":"criteria"},
-		{"project":"ws-test","title":"agent idea two","priority":1}]}`,
+		{"project":"ws-test","title":"agent idea two"}]}`,
 		"strategist", "propose", "--run", run, "--batch", "-")
 	if res.code != 0 {
 		t.Fatalf("strategist propose failed: %s", res.stderr)
@@ -2455,7 +2461,7 @@ func TestStrategistProposeInserts(t *testing.T) {
 		t.Fatalf("task_ids = %v", ids)
 	}
 	db := openDB(t, spine)
-	if n := queryInt(t, db, `SELECT COUNT(*) FROM tasks WHERE origin = 'autonomous' AND status = 'proposed' AND project = 'ws-test'`); n != 2 {
+	if n := queryInt(t, db, `SELECT COUNT(*) FROM tasks WHERE origin = 'autonomous' AND status = 'proposed' AND project = 'ws-test' AND priority = 2`); n != 2 {
 		t.Fatalf("autonomous proposals in ws-test = %d, want 2", n)
 	}
 	if got := queryStr(t, db, `SELECT run_id FROM leases WHERE project = 'ws-test'`); got != "<NULL>" {
@@ -4569,7 +4575,7 @@ func TestPhase2TerminalTransactionsRollback(t *testing.T) {
 		env := runJSONEnv(t, spine, run, "pipeline", "strategist(propose)")
 		batch := `{"proposals":[
 			{"project":"ws-test","title":"must roll back"},
-			{"project":"ws-test","title":"invalid priority","priority":99}]}`
+			{"project":"ws-other","title":"another Project"}]}`
 		res := runMC(t, env, batch, "strategist", "propose", "--run", run, "--batch", "-")
 		if res.code != 1 {
 			t.Fatalf("exit = %d stderr=%q, want domain rollback", res.code, res.stderr)

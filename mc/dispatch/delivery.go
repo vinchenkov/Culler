@@ -8,7 +8,12 @@ type Delivery struct {
 	CandidateMerged bool
 	CaptureRun      string
 	WaitUntil       *time.Time
-	CorrectionOpen  bool
+	// WorkStarted: the task received a Worker run.
+	WorkStarted bool
+	// RepairAfterApproval: the task has an open correction, and its current
+	// review packet has an approval. A merge repair clears the approval of the
+	// task and keeps that packet.
+	RepairAfterApproval bool
 	// RecoveryRun and RecoveryOperation name the unfinished merge operation
 	// whose execution ended. An unfinished apply precedes an unfinished prepare.
 	RecoveryRun       string
@@ -59,22 +64,6 @@ func priorityAction(rec Records, task Task) Action {
 		return action
 	}
 	return idle(IdleReason("priority-task-wait"))
-}
-
-// correctionAction selects the next agent run of an open correction. An open
-// correction holds no Project priority. When two open corrections can start
-// an agent run, the smaller task number starts first.
-func correctionAction(rec Records) (Action, bool) {
-	for _, task := range tasksByID(rec) {
-		if !task.Delivery.CorrectionOpen || task.Archived || task.Blocked || task.Stalled ||
-			task.Decision == DecisionCancelled || task.Decision == DecisionRejected {
-			continue
-		}
-		if action, ok := focusAction(rec, task); ok {
-			return action, true
-		}
-	}
-	return Action{}, false
 }
 
 // focusAction selects the next agent run of the task.
