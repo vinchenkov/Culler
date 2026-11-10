@@ -16,6 +16,24 @@ test("trace access pages retain nonce protection and safe destination text", asy
   expect(page).toContain('authorization: `Bearer ${token}`');
 });
 
+test("trace access pages use the light theme unless the operator selects the dark theme", async () => {
+  const page = await accessPage("/sessions/trace").text();
+  const script = page.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)![1]!;
+  for (const stored of [null, "sepia", "light", "dark"]) {
+    for (const blocked of [false, true]) {
+      const root = { dataset: {} as Record<string, string> };
+      let follow: (event: { key: string }) => void;
+      const storage = { getItem: () => { if (blocked) throw new Error("blocked"); return stored; } };
+      new Function("localStorage", "document", "window", script)(storage, { documentElement: root },
+        { addEventListener: (_: string, listener: typeof follow) => { follow = listener; } });
+      expect(root.dataset.theme).toBe(!blocked && stored === "dark" ? "dark" : "light");
+      root.dataset.theme = "other";
+      follow!({ key: "mc.theme" });
+      expect(root.dataset.theme).toBe(!blocked && stored === "dark" ? "dark" : "light");
+    }
+  }
+});
+
 test("each trace failure retains its message and safe retry action", async () => {
   for (const [failure, message] of Object.entries(ACCESS_MESSAGES)) {
     const response = accessPage("/sessions/trace", { failure: failure as keyof typeof ACCESS_MESSAGES, retry: '/agentsview/open?path="&' });

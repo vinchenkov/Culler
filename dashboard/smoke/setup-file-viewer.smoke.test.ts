@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, expect, test } from "bun:test";
-import { bootSmoke, evidencePath, gotoReady, seedProject, selectProject, teardown, type Smoke } from "./harness";
+import { selectTheme, bootSmoke, evidencePath, gotoReady, seedProject, selectProject, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
 const project = "proposal-files";
@@ -391,7 +391,7 @@ test("the approval view keeps its contrast and follows the theme", async () => {
   }
   const grounds: string[] = [], fills: string[] = [];
   for (const theme of ["light", "dark"] as const) {
-    await page.emulateMedia({ colorScheme: theme });
+    await selectTheme(smoke, theme);
     await page.waitForFunction(theme => document.documentElement.dataset.theme === theme, theme);
     await page.waitForFunction(() => document.getAnimations().every(animation =>
       animation.playState === "finished" || animation.effect?.getComputedTiming().iterations === Infinity));
@@ -450,7 +450,7 @@ test("the approval view is usable in a window 400 pixels wide and at 200 percent
     return document.documentElement.scrollWidth <= innerWidth + 1 && pre.scrollWidth <= pre.clientWidth;
   }, dockerSelector);
   for (const theme of ["light", "dark"] as const) {
-    await page.emulateMedia({ colorScheme: theme });
+    await selectTheme(smoke, theme);
     await page.setViewportSize({ width: 400, height: 900 });
     expect(await fits()).toBe(true);
     await page.getByTestId("setup-approve").scrollIntoViewIfNeeded();

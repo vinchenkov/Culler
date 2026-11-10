@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, beforeAll, expect, test } from "bun:test";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke } from "./harness";
+import { selectTheme, bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
 let sessionID: string;
@@ -207,7 +207,7 @@ test("Send resumes an ended conversation and the command bar fits both themes an
   await page.getByTestId("board-collie-transcript").getByText("Continue after the upload failure.", { exact: true }).waitFor();
   await reply((await claim()).id, "The conversation continues after the upload failure.");
   for (const scheme of ["light", "dark"] as const) {
-    await page.emulateMedia({ colorScheme: scheme });
+    await selectTheme(smoke, scheme);
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.getByTestId("board-collie-message").scrollIntoViewIfNeeded();

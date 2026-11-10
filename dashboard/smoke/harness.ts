@@ -313,10 +313,12 @@ export async function bootSmoke(options: { releaseID?: string; observedCommand?:
   );
 
   const browser = await launchOnce();
-  // MC_SMOKE_COLOR_SCHEME=dark runs each smoke in the dark theme: without a
-  // stored selection, the dashboard uses the theme of the system.
+  // MC_SMOKE_COLOR_SCHEME=dark supplies an explicit dark theme selection.
   const colorScheme = process.env["MC_SMOKE_COLOR_SCHEME"] === "dark" ? "dark" : "light";
-  const context = await browser.newContext({ colorScheme });
+  const context = await browser.newContext({ colorScheme,
+    storageState: { cookies: [], origins: [{ origin: new URL(server.url).origin,
+      localStorage: colorScheme === "dark" ? [{ name: "mc.theme", value: "dark" }] : [] }] },
+  });
   const page = await context.newPage();
   const browserLog: string[] = [];
   page.on("console", (msg) => browserLog.push(`console.${msg.type()}: ${msg.text()}`));
@@ -326,6 +328,14 @@ export async function bootSmoke(options: { releaseID?: string; observedCommand?:
   page.on("framenavigated", (frame) => browserLog.push(`framenavigated: ${frame.url()}`));
 
   return { scratch, stateScratch, home, server, wiki, wikiKey, agentsview, agentsviewToken, context, page, browserLog };
+}
+
+/** Selects the dashboard theme through its button, including inside a dialog. */
+export async function selectTheme(smoke: Smoke, theme: "light" | "dark") {
+  await smoke.page.evaluate(want => {
+    if (document.documentElement.dataset.theme !== want) document.getElementById("theme-button")!.click();
+  }, theme);
+  await smoke.page.waitForFunction(want => document.documentElement.dataset.theme === want, theme);
 }
 
 /** Loads the shell and waits until app.js has attached its listeners — a tab

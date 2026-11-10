@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, expect, test } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, teardown, type Smoke } from "./harness";
+import { selectTheme, bootSmoke, evidencePath, gotoReady, mc, seedProject, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
 let taskID: number;
@@ -102,11 +102,10 @@ const contrasts = async () => {
 /** The text that has less contrast in the dark theme than in the light
  * theme. A contrast ratio of 4.5:1 is sufficient in each theme. */
 async function lostContrast() {
-  const { page } = smoke;
-  await page.emulateMedia({ colorScheme: "light" });
+  await selectTheme(smoke, "light");
   await until("light");
   const light = new Map(await contrasts());
-  await page.emulateMedia({ colorScheme: "dark" });
+  await selectTheme(smoke, "dark");
   await until("dark");
   const lost: string[] = [];
   for (const [text, ratio] of await contrasts()) {
@@ -116,35 +115,24 @@ async function lostContrast() {
   return lost;
 }
 
-test("Without a selection, the dashboard uses the theme of the system", async () => {
+test("Without a selection, the dashboard uses the light theme on either system theme", async () => {
   const { page } = smoke;
+  for (const colorScheme of ["dark", "light"] as const) {
+    await page.emulateMedia({ colorScheme });
+    await page.reload();
+    await page.waitForSelector("body[data-ready]");
+    expect(await shown()).toMatchObject({ theme: "light", stored: null, scheme: "light", pressed: "false",
+      name: "Dark theme", title: "Use the dark theme", scene: "hidden" });
+  }
   const light = await shown();
-  expect(light).toMatchObject({ theme: "light", stored: null, scheme: "light", pressed: "false", name: "Dark theme", title: "Use the dark theme" });
-  // Without a selection, only the tile lines of the picture show.
-  expect(light.scene).toBe("hidden");
   expect(light.picture).toContain("data:image/svg+xml");
   expect(light.landscape).toContain("/landscape.png");
   expect(light.frame).toBe(light.mast);
-
-  await page.emulateMedia({ colorScheme: "dark" });
-  await until("dark");
-  const dark = await shown();
-  expect(dark).toMatchObject({ theme: "dark", stored: null, scheme: "dark", pressed: "true", name: "Dark theme", title: "Use the light theme" });
-  expect(dark.picture).toContain("data:image/svg+xml");
-  expect(dark.picture).not.toBe(light.picture);
-  expect(dark.landscape).toContain("/landscape-dark.png");
-  expect(dark.paper).not.toBe(light.paper);
-  expect(dark.frame).toBe(dark.mast);
-  expect(dark.mast).not.toBe(light.mast);
-
-  // Each background picture is a file of the dashboard.
   for (const name of ["/landscape.png", "/landscape-dark.png"]) {
     const picture = await fetch(`${smoke.server.url}${name}`);
     expect(picture.status).toBe(200);
     expect(picture.headers.get("content-type")).toBe("image/png");
   }
-  await page.emulateMedia({ colorScheme: "light" });
-  await until("light");
 }, 30000);
 
 test("The logo button shows and hides the background picture, and the browser keeps the selection", async () => {
@@ -241,7 +229,7 @@ test("Each main page keeps in the dark theme the text contrast of the light them
   await page.reload();
   await page.waitForSelector("body[data-ready]");
   for (const name of ["board", "collie", "review", "pipeline", "configs", "logs"]) {
-    await page.emulateMedia({ colorScheme: "light" });
+    await selectTheme(smoke, "light");
     await until("light");
     await page.getByTestId(`tab-${name}`).click();
     await page.getByTestId(`${name}-pane`).waitFor();
@@ -255,7 +243,7 @@ test("Each main page keeps in the dark theme the text contrast of the light them
     expect(await lostContrast(), `the ${name} page`).toEqual([]);
     await page.screenshot({ path: evidencePath(`theme/${name}-dark.png`), fullPage: true, animations: "disabled" });
   }
-  await page.emulateMedia({ colorScheme: "light" });
+  await selectTheme(smoke, "light");
   await until("light");
   await page.getByTestId("tab-board").click();
   await page.locator(`[data-testid="board-card"][data-task="${taskID}"]`).getByTestId("board-card-open").click();
@@ -264,6 +252,6 @@ test("Each main page keeps in the dark theme the text contrast of the light them
   await page.screenshot({ path: evidencePath("theme/task-dark.png"), animations: "disabled" });
   await page.keyboard.press("Escape");
   await page.getByTestId("task-dialog").waitFor({ state: "hidden" });
-  await page.emulateMedia({ colorScheme: "light" });
+  await selectTheme(smoke, "light");
   expect(smoke.browserLog.filter((line) => line.startsWith("pageerror:"))).toEqual([]);
 }, 120000);

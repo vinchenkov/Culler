@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, expect, test } from "bun:test";
 import type { Locator } from "playwright";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke } from "./harness";
+import { selectTheme, bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
 let taskID: number;
@@ -29,7 +29,7 @@ afterEach(async () => {
 });
 
 async function theme(value: "light" | "dark") {
-  await smoke.page.emulateMedia({ colorScheme: value });
+  await selectTheme(smoke, value);
   await smoke.page.waitForFunction(want => document.documentElement.dataset.theme === want, value);
 }
 
@@ -269,7 +269,8 @@ test("trace access and failure pages retain blue headers and readable actions in
   });
   try {
     for (const selected of themes) {
-      await page.emulateMedia({ colorScheme: selected });
+      await gotoReady(smoke);
+      await selectTheme(smoke, selected);
       await page.setViewportSize(sizes[0]!);
       gate = new Promise<void>(resolve => { release = resolve; });
       await page.goto(`${smoke.server.url}agentsview/open?path=%2Fsessions%2Ftrace`);

@@ -2,7 +2,7 @@ import { afterAll, beforeAll, expect, test } from "bun:test";
 import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
+import { selectTheme, bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
 import { seedDeliveryPacket, type ChangeFixtureFile } from "./delivery-fixture";
 
 let smoke: Smoke;
@@ -261,7 +261,7 @@ test("the Packet view opens by default and Files changed shows the changes of th
     const first = await ground();
     expect(first.diff).toBe(first.view);
     const other = first.theme === "dark" ? "light" : "dark";
-    await page.emulateMedia({ colorScheme: other });
+    await selectTheme(smoke, other);
     await page.waitForFunction((was) => getComputedStyle(document.querySelector('[data-testid="changes-diff"] diffs-container')!
       .shadowRoot!.querySelector("pre")!).backgroundColor !== was, first.diff);
     const second = await ground();
@@ -269,7 +269,7 @@ test("the Packet view opens by default and Files changed shows the changes of th
     expect(second.diff).toBe(second.view);
     expect((await diffRows()).colors).toBeGreaterThan(3);
     await page.screenshot({ path: evidencePath(`files-changed-${other}.png`) });
-    await page.emulateMedia({ colorScheme: first.theme as "light" | "dark" });
+    await selectTheme(smoke, first.theme as "light" | "dark");
     await page.waitForFunction((want) => document.documentElement.dataset.theme === want, first.theme);
   } finally { page.off("request", listen); }
 }, 30000);

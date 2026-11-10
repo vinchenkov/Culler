@@ -158,8 +158,8 @@ The theme button selects the other theme.
 The browser preserves the selection across page changes and reloads.
 
 A selection in one dashboard tab applies in each other dashboard tab of the same browser.
-Without a selection, the dashboard uses the theme of the operating system.
-Without a selection, a change of the operating system theme changes the dashboard at once.
+Without a selection, the dashboard uses the light theme.
+The dashboard uses the dark theme only after the operator selects it.
 The page shows the correct theme from its first paint.
 
 The theme button is a toggle with the accessible name "Dark theme".
@@ -248,7 +248,7 @@ Culler trace access pages use the same color roles and action appearance.
 Their nonce-protected styles preserve the Content Security Policy and access controls.
 A standalone trace page uses a system font fallback when its isolated origin cannot serve Figtree.
 The dashboard-origin page follows the selected theme.
-A separate-origin failure page follows its local selection or the system theme.
+A separate-origin failure page follows its local selection or uses the light theme.
 
 The Files changed view shows each diff in the colors of the selected theme.
 A report frame shows its report on a light sheet in both themes.

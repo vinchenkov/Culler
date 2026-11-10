@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, expect, test } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
+import { selectTheme, bootSmoke, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
 import { seedDeliveryPacket } from "./delivery-fixture";
 
 let smoke: Smoke;
@@ -60,7 +60,8 @@ test("fields and task panels retain contrast in both themes and at narrow widths
   const { page } = smoke;
   const measurements: Record<string, number> = {};
   for (const theme of ["light", "dark"] as const) {
-    await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await selectTheme(smoke, theme);
     await page.waitForFunction(theme => document.documentElement.dataset.theme === theme, theme);
     await page.getByTestId("tab-board").click();
     await page.getByTestId("project-add").evaluate((node: HTMLElement) => node.click());

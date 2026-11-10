@@ -9,15 +9,14 @@ const read = (name: string) => readFileSync(join(import.meta.dir, name), "utf8")
 
 describe("resolveTheme", () => {
   test("uses the stored selection", () => {
-    expect(resolveTheme("dark", false)).toBe("dark");
-    expect(resolveTheme("light", true)).toBe("light");
+    expect(resolveTheme("dark")).toBe("dark");
+    expect(resolveTheme("light")).toBe("light");
   });
 
-  test("uses the theme of the system without a valid selection", () => {
-    expect(resolveTheme(null, true)).toBe("dark");
-    expect(resolveTheme(null, false)).toBe("light");
-    expect(resolveTheme("sepia", true)).toBe("dark");
-    expect(resolveTheme("", false)).toBe("light");
+  test("uses the light theme without a valid selection", () => {
+    expect(resolveTheme(null)).toBe("light");
+    expect(resolveTheme("sepia")).toBe("light");
+    expect(resolveTheme("")).toBe("light");
   });
 });
 
@@ -45,13 +44,13 @@ describe("the page head", () => {
   test("sets the theme that resolveTheme selects", () => {
     for (const stored of ["light", "dark", "sepia", null]) {
       for (const systemDark of [true, false]) {
-        expect(run(stored, systemDark)).toBe(resolveTheme(stored, systemDark));
+        expect(run(stored, systemDark)).toBe(resolveTheme(stored));
       }
     }
   });
 
-  test("uses the theme of the system when the browser blocks storage", () => {
-    expect(run("light", true, true)).toBe("dark");
+  test("uses the light theme when the browser blocks storage", () => {
+    expect(run("light", true, true)).toBe("light");
   });
 
   test("shows the background picture only after a stored selection", () => {
@@ -92,8 +91,8 @@ describe("mountTheme", () => {
     return { root, button, media, meta, values, attributes, handlers, seen, stop };
   }
 
-  test("shows the theme of the system and the state of the button", () => {
-    const dark = page({ systemDark: true });
+  test("shows the selected theme and the state of the button", () => {
+    const dark = page({ stored: "dark", systemDark: true });
     expect(dark.root.dataset.theme).toBe("dark");
     expect(currentTheme(dark.root)).toBe("dark");
     expect(dark.attributes.get("aria-pressed")).toBe("true");
@@ -121,18 +120,12 @@ describe("mountTheme", () => {
     view.stop();
   });
 
-  test("a change of the system theme applies only without a selection", () => {
-    const free = page();
-    free.media.matches = true;
-    free.handlers.system!();
-    expect(free.root.dataset.theme).toBe("dark");
-    expect(free.values.has(THEME_KEY)).toBe(false);
-    free.stop();
-    const selected = page({ stored: "light" });
-    selected.media.matches = true;
-    selected.handlers.system!();
-    expect(selected.root.dataset.theme).toBe("light");
-    selected.stop();
+  test("uses the light theme on a dark system without a selection", () => {
+    const view = page({ systemDark: true });
+    expect(view.root.dataset.theme).toBe("light");
+    expect(view.handlers.system).toBeUndefined();
+    expect(view.values.has(THEME_KEY)).toBe(false);
+    view.stop();
   });
 
   test("a selection in another tab applies in this tab", () => {
@@ -147,7 +140,6 @@ describe("mountTheme", () => {
 
   test("a listener hears a change and no repeat of the same theme", () => {
     const view = page({ stored: "dark" });
-    view.handlers.system!();
     view.handlers.storage!({ key: THEME_KEY });
     expect(view.seen).toEqual(["dark"]);
     view.stop();

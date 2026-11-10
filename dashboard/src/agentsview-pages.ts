@@ -68,14 +68,12 @@ ${options.retry ? "" : `<script nonce="${nonce}">(${openAgentsView.toString()})(
 }
 
 function accessTheme() {
-  const media = matchMedia("(prefers-color-scheme: dark)");
   const follow = () => {
     let stored = "";
     try { stored = localStorage.getItem("mc.theme") || ""; } catch {}
-    document.documentElement.dataset.theme = stored === "light" || stored === "dark" ? stored : media.matches ? "dark" : "light";
+    document.documentElement.dataset.theme = stored === "dark" ? "dark" : "light";
   };
   follow();
-  media.addEventListener("change", follow);
   window.addEventListener("storage", event => { if (event.key === "mc.theme") follow(); });
 }
 

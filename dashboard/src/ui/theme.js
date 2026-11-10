@@ -1,6 +1,6 @@
 // theme.js — the light theme and the dark theme of the dashboard. The
 // operator selects a theme with the theme button, and the browser keeps the
-// selection. Without a selection, the dashboard uses the theme of the system.
+// selection. Without a selection, the dashboard uses the light theme.
 // The page head sets the theme before the first paint; this module keeps it
 // current after that. The logo button shows and hides the background picture
 // in the same way; the picture is hidden until the operator shows it.
@@ -8,10 +8,10 @@
 export const THEME_KEY = "mc.theme";
 const THEMES = ["light", "dark"];
 
-/** The theme to show: the stored selection, or the theme of the system. */
-export function resolveTheme(stored, systemDark) {
+/** The theme to show: the stored selection, or the light theme. */
+export function resolveTheme(stored) {
   if (THEMES.includes(stored)) return stored;
-  return systemDark ? "dark" : "light";
+  return "light";
 }
 
 /** The state of the theme button for a theme. The tooltip names the action. */
@@ -35,12 +35,11 @@ export function onThemeChange(listener) {
 
 const mastColor = (root) => getComputedStyle(root).getPropertyValue("--mast").trim();
 
-/** Connects the theme button, the system theme, and the stored selection. */
+/** Connects the theme button and the stored selection. */
 export function mountTheme({
   button,
   root = document.documentElement,
   storage = localStorage,
-  media = matchMedia("(prefers-color-scheme: dark)"),
   meta = document.querySelector('meta[name="theme-color"]'),
   page = window,
   mast = mastColor,
@@ -59,10 +58,8 @@ export function mountTheme({
     if (color) meta?.setAttribute("content", color);
     if (changed) for (const listener of listeners) listener(theme);
   };
-  const follow = () => show(resolveTheme(stored(), media.matches));
+  const follow = () => show(resolveTheme(stored()));
   follow();
-  // The system theme applies until the operator selects a theme.
-  media.addEventListener("change", follow);
   // A selection in another dashboard tab applies in this tab.
   page.addEventListener("storage", (event) => { if (event.key === THEME_KEY) follow(); });
   button.addEventListener("click", () => {
