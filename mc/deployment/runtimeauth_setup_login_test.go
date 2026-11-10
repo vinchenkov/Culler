@@ -142,6 +142,24 @@ func TestSetupRuntimeAuthLoginFailureConcealsCommandOutput(t *testing.T) {
 	}
 }
 
+func TestSetupRuntimeAuthLoginLeavesCodexTerminalInputUnread(t *testing.T) {
+	environment := setupRuntimeLoginFixture(t, "codex", `
+if read -r answer; then
+    exit 1
+fi
+printf '%s\n' 'https://example.test/authorize'
+`)
+	input := strings.NewReader("operator input\n")
+	address := ""
+	login := NewSetupRuntimeAuthLogin(context.Background(), func(value, _ string) { address = value })
+	if err := login("codex", nil, environment, input, io.Discard); err != nil {
+		t.Fatal(err)
+	}
+	if input.Len() != len("operator input\n") || address != "https://example.test/authorize" {
+		t.Fatal("The browser sign-in consumed terminal input or lost its authorization address.")
+	}
+}
+
 func TestSetupRuntimeAuthorizationFilterRejectsSecretAndUnsupportedURLs(t *testing.T) {
 	for _, address := range []string{
 		"http://example.test/authorize",
