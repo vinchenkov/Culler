@@ -47,6 +47,7 @@ import {
 import { changesLabel } from "./changes.js";
 import { createChangeView } from "./changeview.js";
 import { mountScene, mountTheme } from "./theme.js";
+import { mountSceneMotion } from "./scene.js";
 import { activityRows, kindOptions, mergeRows, newRowIDs, splitStreams, streamStats } from "./activity.js";
 import { degradedUnits, doctorView, healthView, outboxLagView, runsView } from "./pipeline.js";
 import { topologyView } from "./topology.js";
@@ -303,7 +304,7 @@ const requests = createRequests({
   },
 });
 mountTheme({ button: $("theme-button") });
-mountScene({ button: $("scene-button") });
+mountScene({ button: $("scene-button"), motion: mountSceneMotion({ stage: $("scene") }) });
 
 // The report frames take the dashboard typeface as an inline font.
 fetch("/fonts/figtree.woff2")

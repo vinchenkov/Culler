@@ -25,7 +25,7 @@ const UI_MODULES = [
   "app.js", "requests.js", "router.js", "markdown.js", "paths.js", "stages.js",
   "format.js", "errors.js", "board.js", "boardwrites.js", "colliefmt.js", "review.js", "evaluation.js", "activity.js",
   "pipeline.js", "systemhealth.js", "topology.js", "flowmap.js", "agentprofiles.js", "projects.js", "projectdelete.js", "customization.js", "vision.js", "conversation.js", "configs.js", "discord.js", "logs.js", "dom.js", "components.js", "taskdialog.js", "viewers.js",
-  "changes.js", "changeview.js", "theme.js", "commandbar.js", "packetchat.js", "diagnosticchat.js", "environment.js", "setup-journal.js", "fileview.js",
+  "changes.js", "changeview.js", "theme.js", "scene.js", "commandbar.js", "packetchat.js", "diagnosticchat.js", "environment.js", "setup-journal.js", "fileview.js",
 ];
 
 /** The local Pierre Diffs and Pierre Trees modules and their license notices,
@@ -57,6 +57,8 @@ const STATIC_FILES: Record<string, { path: string; type: string }> = {
   "/": { path: "ui/index.html", type: "text/html; charset=utf-8" },
   "/landscape.png": { path: "ui/landscape.png", type: "image/png" },
   "/landscape-dark.png": { path: "ui/landscape-dark.png", type: "image/png" },
+  "/scene-parts.webp": { path: "ui/scene-parts.webp", type: "image/webp" },
+  "/scene-parts-dark.webp": { path: "ui/scene-parts-dark.webp", type: "image/webp" },
   "/style.css": { path: "ui/style.css", type: "text/css; charset=utf-8" },
   ...FONT_FILES,
   ...Object.fromEntries(

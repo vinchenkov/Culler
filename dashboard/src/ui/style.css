@@ -62,6 +62,8 @@
    * The veil is denser in the top band, where the page title and the summary row stand.
    * The narrow veil serves a window of 720 px and under. */
   --landscape: url("/landscape.png");
+  /* The parts of the picture in one image: the motion of the picture moves each part. */
+  --scene-parts: url("/scene-parts.webp");
   /* The tile lines of the picture without the egg, the nest, and the chick. The lines match the picture. */
   --grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1672' height='941' viewBox='0 0 1672 941'%3E%3Cpath d='M135 0V941M355 0V941M591 0V941M834 0V941M1046.5 0V941M1326 0V941M1538 0V941M0 63H1672M0 292.5H1672M0 444H1672M0 599H1672M0 775H1672M0 901H1672' stroke='%23dfe0e1' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   --veil: linear-gradient(rgba(242, 243, 244, 0.75) 0, rgba(242, 243, 244, 0.75) 140px, rgba(242, 243, 244, 0.6) 280px, rgba(242, 243, 244, 0.66) 100%);
@@ -253,6 +255,7 @@
   --sheet: #fdfdfe;
 
   --landscape: url("/landscape-dark.png");
+  --scene-parts: url("/scene-parts-dark.webp");
   --grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1672' height='941' viewBox='0 0 1672 941'%3E%3Cpath d='M135 0V941M355 0V941M591 0V941M834 0V941M1046.5 0V941M1326 0V941M1538 0V941M0 63H1672M0 292.5H1672M0 444H1672M0 599H1672M0 775H1672M0 901H1672' stroke='%2316232f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   --veil: linear-gradient(rgba(16, 29, 42, 0.84) 0, rgba(16, 29, 42, 0.84) 140px, rgba(16, 29, 42, 0.72) 280px, rgba(16, 29, 42, 0.78) 100%);
   --veil-narrow: linear-gradient(rgba(16, 29, 42, 0.86), rgba(16, 29, 42, 0.82));
@@ -381,35 +384,65 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* The overlay keeps text readable over the background image. */
-body::before,
+/* The veil keeps text readable over the background picture. */
 body::after {
   content: "";
   position: fixed;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
+  background: var(--veil);
 }
 
 /* The picture fits the window, stands on its bottom edge, and sits 5vw left of the center. The paper
  * of the page continues above it and beside it, because the paper of the picture equals the paper of the page. */
-body::before {
+.scene {
+  position: fixed;
   inset: 0;
-  background: var(--landscape) calc(50% - 5vw) bottom / contain no-repeat;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
 }
-
-body::after {
-  inset: 0;
-  background: var(--veil);
+.scene-art {
+  --picture-width: min(100cqw, 100cqh * 1672 / 941);
+  position: absolute;
+  left: calc((100cqw - var(--picture-width)) / 2 - 5vw);
+  bottom: 0;
+  width: var(--picture-width);
+  height: calc(var(--picture-width) * 941 / 1672);
+  background: var(--grid) 0 0 / 100% 100% no-repeat;
 }
-
 /* Until the operator selects the picture with the logo button, only its tile lines show. */
-:root:not([data-scene="shown"]) body::before { background-image: var(--grid); }
+.scene-picture {
+  position: absolute;
+  inset: 0;
+  background: var(--landscape) 0 0 / 100% 100% no-repeat;
+  opacity: 0;
+}
+:root[data-scene="shown"] .scene-picture { opacity: 1; }
+:root:not([data-scene="shown"]) .scene-picture { background-image: none; }
+/* During the motion of the picture, its parts stand in for it. */
+.scene[data-hold] .scene-picture { background-image: var(--landscape); }
+.scene[data-hold="hidden"] .scene-picture { opacity: 0; }
+.scene[data-hold="shown"] .scene-picture { opacity: 1; }
+.scene-cast { position: absolute; inset: 0; }
+.scene-part {
+  position: absolute;
+  background-image: var(--scene-parts);
+  background-repeat: no-repeat;
+  will-change: transform, opacity;
+}
 
 /* A narrow window shows the large egg, the calm part of the picture, under a denser veil. */
 @media (max-width: 720px) {
   :root { --veil: var(--veil-narrow); }
   :root[data-theme="dark"] { --veil: var(--veil-narrow); }
-  body::before { background-position: 14% center; background-size: cover; }
+  .scene-art {
+    --picture-width: max(100cqw, 100cqh * 1672 / 941);
+    left: calc((100cqw - var(--picture-width)) * 0.14);
+    bottom: calc((100cqh - var(--picture-width) * 941 / 1672) / 2);
+  }
 }
 
 ::selection { background: rgba(var(--orange-rgb), 0.24); color: var(--ink); }
@@ -537,11 +570,14 @@ header.topbar::after { bottom: -8px; height: 3px; }
 .brand-mark .chick { fill: var(--chick); }
 .brand-mark .pupil { fill: var(--navy-deep); }
 .brand-mark .chick, .brand-mark .eye, .brand-mark .pupil { transform-origin: 70px 40px; transition: transform var(--t-slow) var(--ease); }
-/* The chick also moves once each 10 seconds. A hover holds the chick in the moved position. */
+/* The chick also moves once each 10 seconds. A hover and the motion of the picture hold the chick in the moved position. */
 .brand-mark .chick, .brand-mark .eye, .brand-mark .pupil { animation: chick-peek 10s var(--ease) infinite; }
 .brand:hover .brand-mark .chick,
 .brand:hover .brand-mark .eye,
-.brand:hover .brand-mark .pupil { animation: none; transform: rotate(-4deg) translateY(-1px); }
+.brand:hover .brand-mark .pupil,
+:root[data-scene-motion] .brand-mark .chick,
+:root[data-scene-motion] .brand-mark .eye,
+:root[data-scene-motion] .brand-mark .pupil { animation: none; transform: rotate(-4deg) translateY(-1px); }
 @keyframes chick-peek {
   0%, 91%, 100% { transform: none; }
   94%, 97% { transform: rotate(-4deg) translateY(-1px); }
