@@ -13,6 +13,8 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
 PINS = json.loads((ROOT / 'pins.json').read_text())
+# mc embeds the same plugin for the model facts of the live model list.
+FACTS = ROOT.parent.parent / 'mc' / 'opencodecatalog' / 'facts'
 KEY = 'culler-catalog-probe'
 
 
@@ -27,7 +29,22 @@ def environment(root):
 
 
 def run(binary, root, env, args):
-    return subprocess.run([binary, *args], cwd=root, env=env, capture_output=True, timeout=60)
+    return subprocess.run([binary, *args], cwd=root, env=env, stdin=subprocess.DEVNULL, capture_output=True, timeout=60)
+
+
+def model_facts(binary, record=None):
+    """Return the facts that the program derives from its own model record or from a model record file."""
+    with tempfile.TemporaryDirectory(prefix='culler-model-facts-') as directory:
+        root = Path(directory)
+        env = environment(root)
+        if record:
+            env['OPENCODE_MODELS_PATH'] = str(Path(record).resolve())
+        env['CULLER_MODEL_FACTS'] = str(root / 'facts.json')
+        env['OPENCODE_CONFIG_CONTENT'] = json.dumps({'plugins': [FACTS.as_uri()]})
+        result = run(binary, root, env, ['api', '--standalone', 'GET', '/api/model'])
+        if result.returncode:
+            raise RuntimeError(result.stderr.decode())
+        return json.loads((root / 'facts.json').read_text())
 
 
 def fixed_address(value):
@@ -101,13 +118,7 @@ def main():
         version = run(binary, root, env, ['--version']).stdout.decode().strip()
         if PINS['opencode'] not in version:
             raise RuntimeError('The OpenCode version differs from the release pin.')
-        env['CULLER_CATALOG_OUTPUT'] = str(root)
-        env['OPENCODE_CONFIG_CONTENT'] = json.dumps({'plugins': [ROOT.as_uri()]})
-        result = run(binary, root, env, ['api', '--standalone', 'GET', '/api/model'])
-        if result.returncode:
-            raise RuntimeError(result.stderr.decode())
-        snapshot = json.loads((root / 'snapshot.json').read_text())
-        providers = json.loads((root / 'providers.json').read_text())
+    providers = model_facts(binary)
     plugin = Path(args.plugin)
     if json.loads((plugin / 'package.json').read_text())['version'] != PINS['websearch']:
         raise RuntimeError('The web search plugin version differs from the release pin.')
@@ -118,32 +129,18 @@ def main():
     search_ids = set(re.findall(r'^  ["\']?([\w-]+)["\']?:', registry.group(1), re.M))
     entries = []
     packages = {}
-    for row in sorted(providers, key=lambda row: row['provider']['id']):
-        provider = row['provider']
-        raw = snapshot.get(provider['id'])
-        if not raw or len(raw.get('env', [])) != 1:
+    for provider in sorted(providers, key=lambda provider: provider['id']):
+        if len(provider['key_variables']) != 1:
             continue
-        models = [m for m in row['models'] if m.get('type', 'chat') == 'chat' and
-                  m.get('status') != 'deprecated' and m.get('capabilities', {}).get('tools')]
+        models = [m for m in provider['models'] if m['type'] == 'chat' and m['status'] != 'deprecated' and m['tools']]
         if not models:
             continue
-        entry = {'id': provider['id'], 'name': provider['name'], 'website': raw.get('doc', ''),
-                 'key_variable': raw['env'][0], 'web_search': provider['id'] in search_ids, 'models': []}
-        invalid = False
-        for model in models:
-            address = model.get('settings', {}).get('baseURL', provider.get('settings', {}).get('baseURL', ''))
-            package = model.get('package', provider['package'])
-            if not fixed_address(address) or not package.startswith('@opencode/ai/providers/'):
-                invalid = True
-                break
-            price = model.get('cost', [{}])[0]
-            item = {'id': model['id'], 'name': model['name'], 'context': model['limit']['context'],
-                    'input_price': price.get('input', 0), 'output_price': price.get('output', 0),
-                    'address': address, 'package': package, 'variants': [v['id'] for v in model.get('variants', [])]}
-            entry['models'].append(item)
-        if invalid:
+        if any(not fixed_address(m['address']) or not m['package'].startswith('@opencode/ai/providers/') for m in models):
             continue
-        entries.append(entry)
+        entries.append({'id': provider['id'], 'name': provider['name'], 'website': provider['website'],
+                        'key_variable': provider['key_variables'][0], 'web_search': provider['id'] in search_ids,
+                        'models': [{key: m[key] for key in ('id', 'name', 'context', 'input_price', 'output_price',
+                                                            'address', 'package', 'variants')} for m in models]})
     for entry in entries:
         for model in entry['models']:
             package = model['package']

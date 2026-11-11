@@ -1,6 +1,0 @@
-{
-  "name": "culler-catalog",
-  "version": "1.0.0",
-  "type": "module",
-  "exports": { "./server": "./extract.mjs" }
-}

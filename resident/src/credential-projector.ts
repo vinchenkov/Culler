@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import protocols from "./provider-protocols.json";
 import type { CredentialProjection, CredentialProjector, CredentialRefusal, ProviderLaunch, RuntimeCarrier } from "./types";
 import { startProviderProxy, type ProviderProxyHandle, type ProviderRoute, type ProviderRequestObservation } from "./provider-proxy";
@@ -10,6 +11,8 @@ export interface OpenCodeModel {
   key_placement: "bearer" | "x-api-key" | "x-goog-api-key";
   model_location: "body" | "path";
   variants: string[];
+  /** The model record that OpenCode reads for a live model. */
+  record?: string;
 }
 export interface OpenCodeProvider {
   id: string;
@@ -64,16 +67,26 @@ export function resolveRuntimeBindings(overrides: RuntimeBindingAuthorities | un
   return out;
 }
 
+const openCodeRefusals = ["The release catalog lacks this provider. Select another provider.", "The connection does not offer this model. Select another model."];
+
+// One route serves the models of a connection that share an origin, a key placement, and a model location.
+// A change of the model list preserves the routes of the other models and the access of their active runs.
+function openCodeRoute(credential: string, model: OpenCodeModel): { key: string; route: ProviderRoute } {
+  const route: ProviderRoute = { baseURL: new URL(model.address).origin,
+    openCode: { keyPlacement: model.key_placement, modelLocation: model.model_location },
+    operations: [{ id: "model", method: "POST", path: "/" }] };
+  return { key: `${credential}:${createHash("sha256").update(JSON.stringify(route)).digest("hex").slice(0, 32)}`, route };
+}
+
 function routes(catalog: Record<string, RuntimeBindingSpec>): Record<string, ProviderRoute> {
   const out: Record<string, ProviderRoute> = {};
   for (const row of Object.values(catalog)) {
     if (row.channel === "opencode" && !row.opencode) continue;
     if (row.opencode) {
-      row.opencode.models.forEach((model, index) => {
-        out[`${row.credential}:${index}`] = { baseURL: new URL(model.address).origin,
-          openCode: { keyPlacement: model.key_placement, modelLocation: model.model_location },
-          operations: [{ id: "model", method: "POST", path: "/" }] };
-      });
+      for (const model of row.opencode.models) {
+        const { key, route } = openCodeRoute(row.credential, model);
+        out[key] = route;
+      }
       continue;
     }
     const route: ProviderRoute = {
@@ -129,15 +142,14 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
   });
 
   function authorize(row: RuntimeBindingSpec, profile: string, launch: ProviderLaunch, maxRequests?: number, purpose?: "model_list", managed = false): CredentialProjection {
-    if (row.channel === "opencode" && !row.opencode) throw new Error("The release catalog lacks this provider. Select another provider.");
+    if (row.channel === "opencode" && !row.opencode) throw new Error(openCodeRefusals[0]);
     if (disconnected.has(row.credential)) throw new Error("The connection requires a new authorization after disconnection.");
     const key = `${launch.runId}/${launch.launchId}`;
     if (grants.has(key)) throw new Error("The container launch already has provider access.");
-    const modelIndex = row.opencode?.models.findIndex(model => model.id === launch.model);
-    const openCodeModel = modelIndex === undefined ? undefined : row.opencode!.models[modelIndex];
-    if (row.opencode && !openCodeModel) throw new Error("The release catalog lacks this model. Select another model.");
+    const openCodeModel = row.opencode?.models.find(model => model.id === launch.model);
+    if (row.opencode && !openCodeModel) throw new Error(openCodeRefusals[1]);
     const authorization = proxy.issue({
-      requireLiveness: managed, runId: launch.runId, launchId: launch.launchId, connection: row.credential, route: row.opencode ? `${row.credential}:${modelIndex}` : row.credential,
+      requireLiveness: managed, runId: launch.runId, launchId: launch.launchId, connection: row.credential, route: openCodeModel ? openCodeRoute(row.credential, openCodeModel).key : row.credential,
       models: purpose === "model_list" ? [] : [launch.model],
       operations: row.opencode ? ["model"] : purpose === "model_list" ? ["models"] : row.channel === "codex" ? ["model", "compact", "models"] : ["model", "count", "models"],
       expiresAt: launch.expiresAt, ...(purpose === "model_list" || !launch.profileRevision ? {} : { profileId: profile, profileRevision: launch.profileRevision }), attemptId: launch.attemptId,
@@ -157,7 +169,7 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
       if (!row || row.credential !== runtime.credential || row.harness !== runtime.harness || row.channel !== runtime.channel) return { refused: "The provider connection changed. Refresh the agent profile." };
       if (!launch || !launch.model) return { refused: "The provider request requires its run and model." };
       try { return authorize(row, runtime.id, launch, undefined, undefined, true); }
-      catch (error) { return { refused: error instanceof Error && error.message.startsWith("The release catalog") ? error.message : "The provider proxy cannot authorize this container launch." }; }
+      catch (error) { return { refused: error instanceof Error && openCodeRefusals.includes(error.message) ? error.message : "The provider proxy cannot authorize this container launch." }; }
     },
     has(runId, launchId) {
       const grant = grants.get(`${runId}/${launchId}`);

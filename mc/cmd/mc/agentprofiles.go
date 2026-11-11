@@ -12,7 +12,6 @@ import (
 
 	"mc/config"
 	"mc/deployment"
-	"mc/opencodecatalog"
 	"mc/routing"
 	"mc/verbs"
 )
@@ -169,6 +168,7 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 		if err != nil {
 			return nil, verbs.Domainf("The runtime configuration is unavailable.")
 		}
+		deployment.RefreshRetainedOpenCodeModels(home, cfg)
 		catalog := map[string]deployment.ResidentRuntimeBinding{}
 		for id, spec := range routing.ConfiguredBindings(cfg.Runtimes) {
 			catalog[id] = deployment.ResidentRuntimeBinding{Harness: spec.Harness, Credential: spec.Credential,
@@ -179,7 +179,7 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 		for id, row := range catalog {
 			source := cfg.Runtimes.Credentials[row.Credential]
 			if source.Kind == config.CredentialKindOpenCodeAPIKey {
-				if provider, ok := opencodecatalog.Find(source.CatalogEntry); ok {
+				if provider, ok := deployment.OpenCodeProvider(home, source.CatalogEntry); ok {
 					row.OpenCode = &provider
 				}
 				catalog[id] = row
@@ -191,7 +191,7 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 			connections[id] = deployment.ResidentRuntimeBinding{Harness: source.Harness(), Credential: id, Channel: source.Channel(), Kind: source.Kind, InferenceURL: source.InferenceURL, TokenURL: source.TokenURL, ClientID: source.ClientID}
 			if source.Kind == config.CredentialKindOpenCodeAPIKey {
 				row := connections[id]
-				if provider, ok := opencodecatalog.Find(source.CatalogEntry); ok {
+				if provider, ok := deployment.OpenCodeProvider(home, source.CatalogEntry); ok {
 					row.OpenCode = &provider
 				}
 				connections[id] = row

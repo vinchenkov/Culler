@@ -26,6 +26,8 @@ type Model struct {
 	KeyPlacement  string   `json:"key_placement"`
 	ModelLocation string   `json:"model_location"`
 	Variants      []string `json:"variants"`
+	// Record is the model record that OpenCode reads for a live model.
+	Record string `json:"record,omitempty"`
 }
 
 type Provider struct {
@@ -65,7 +67,7 @@ func Parse(data []byte) (Catalog, error) {
 		for _, model := range provider.Models {
 			address, err := url.Parse(model.Address)
 			if err != nil || address.Scheme != "https" || address.Hostname() == "" || address.User != nil || address.RawQuery != "" || address.Fragment != "" || strings.ContainsAny(model.Address, "{}$<>") ||
-				model.ID == "" || models[model.ID] || model.Name == "" || model.Context < 0 || model.InputPrice < 0 || model.OutputPrice < 0 ||
+				model.ID == "" || models[model.ID] || model.Name == "" || model.Context < 0 || model.InputPrice < 0 || model.OutputPrice < 0 || model.Record != "" ||
 				!strings.HasPrefix(model.Package, "@opencode/ai/providers/") ||
 				!slices.Contains([]string{"bearer", "x-api-key", "x-goog-api-key"}, model.KeyPlacement) ||
 				!slices.Contains([]string{"body", "path"}, model.ModelLocation) {
@@ -115,14 +117,11 @@ func (model Model) Efforts() []string {
 	return levels
 }
 
-func ValidateProfile(providerID, modelID, effort string) error {
-	provider, ok := Find(providerID)
-	if !ok {
-		return fmt.Errorf("The release catalog lacks this provider. Select another provider.")
-	}
+// ValidateModel checks a model and an effort level against the models of the provider.
+func (provider Provider) ValidateModel(modelID, effort string) error {
 	model, ok := provider.Model(modelID)
 	if !ok {
-		return fmt.Errorf("The release catalog lacks this model. Select another model.")
+		return fmt.Errorf("The connection does not offer this model. Select another model.")
 	}
 	if effort != "" && !slices.Contains(model.Efforts(), effort) {
 		return fmt.Errorf("This model does not offer the selected effort. Select another effort level.")

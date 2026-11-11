@@ -53,6 +53,7 @@ func TestCatalogRefusesInvalidAddressesAndModels(t *testing.T) {
 	for _, change := range []func(*Model){
 		func(m *Model) { m.Address = "http://provider.invalid/v1" }, func(m *Model) { m.Address = "https://{account}.invalid" },
 		func(m *Model) { m.KeyPlacement = "api-key" }, func(m *Model) { m.ModelLocation = "query" }, func(m *Model) { m.Package = "external-package" },
+		func(m *Model) { m.Record = "{}" },
 	} {
 		catalog, _ := Parse(body)
 		change(&catalog.Providers[0].Models[0])
@@ -73,12 +74,15 @@ func TestCatalogEffortsAndRefusedKeySiblings(t *testing.T) {
 		t.Fatal("The native variants differ.")
 	}
 	for _, effort := range []string{"", "low", "high", "max"} {
-		if err := ValidateProfile(provider.ID, model.ID, effort); err != nil {
+		if err := provider.ValidateModel(model.ID, effort); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if ValidateProfile(provider.ID, model.ID, "thinking") == nil || ValidateProfile(provider.ID, "absent", "") == nil || ValidateProfile("absent", model.ID, "") == nil {
-		t.Fatal("An invalid profile passed.")
+	if provider.ValidateModel(model.ID, "thinking") == nil {
+		t.Fatal("An invalid effort passed.")
+	}
+	if err := provider.ValidateModel("absent", ""); err == nil || err.Error() != "The connection does not offer this model. Select another model." {
+		t.Fatalf("The refusal of an absent model changed: %v", err)
 	}
 	for _, other := range Release().Providers {
 		if other.ID != provider.ID && other.KeyVariable == provider.KeyVariable && !strings.Contains(provider.RefusedKey(), other.Name) {

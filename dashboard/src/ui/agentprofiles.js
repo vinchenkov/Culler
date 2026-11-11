@@ -1,10 +1,18 @@
-import { dialogHeader, dialogBody, dialogFooter, dialogFrame, showDialog } from "./components.js";
-import { el, svg } from "./dom.js";
+import { dialogHeader, dialogBody, dialogFooter, showDialog } from "./components.js";
+import { el, reconcileChildren, svg } from "./dom.js";
 import { conditionExplanation, conditionImpact } from "./systemhealth.js";
 
 const OPERATION_KEY = "mc-agent-profile-operation";
 const TERMINAL = new Set(["succeeded", "failed", "cancelled"]);
 const STEPS = ["Connect", "Configure", "Test and save"];
+// The panel requests an active download status and a model list with an active refresh again after these milliseconds.
+const DOWNLOAD_INTERVAL = 1000;
+const MODEL_LIST_INTERVAL = 3000;
+const PRIMARY = { class: "profile-primary" };
+const MODEL_SOURCES = {
+  release_catalog: "The release catalog supplies these models.",
+  release_catalog_and_live: "The release catalog and the live model list of OpenCode supply these models.",
+};
 // Each of these harness families has a provider with a subscription integration and an API key integration.
 const RELEASE_HARNESSES = ["codex", "claude-sdk"];
 const CONNECTION_KINDS = ["codex-oauth", "claude-oauth", "codex-api-key", "claude-api-key", "opencode-api-key"];
@@ -53,6 +61,21 @@ export function modelChoices(models, current) {
   }));
   if (current && !choices.some((choice) => choice.selected)) choices.unshift({ value: current, text: `${current} (not offered)`, selected: true });
   return choices;
+}
+
+// The hint states the source of the model list of an OpenCode connection.
+export function modelSourceHint(source) {
+  return `${MODEL_SOURCES[source] || MODEL_SOURCES.release_catalog} Prices apply to each million input and output tokens.`;
+}
+
+// A pending or active download shows the progress indicator. A failed download and an absent download offer Retry.
+export function downloadView(status) {
+  const active = Boolean(status) && !TERMINAL.has(status.status);
+  const ready = status?.status === "succeeded";
+  return {
+    tone: active ? "active" : ready ? "ready" : status ? "failed" : "required",
+    active, retry: !active && !ready, stage: status?.message || "OpenCode requires a download.",
+  };
 }
 
 export const effortLabel = (effort) => ({ "": "Default", none: "None", minimal: "Minimal", low: "Low", medium: "Medium", high: "High", xhigh: "Extra high", max: "Max", ultra: "Ultra", thinking: "Thinking" }[effort || ""] || effort);
@@ -170,12 +193,15 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   let reads = new AbortController();
   let modelLists = new Map();
   let downloadTimer;
+  let modelListTimer;
   const expandedProfiles = new Set();
   const dialog = el("dialog", { class: "agent-profiles", testid: "agent-profiles-panel", "aria-labelledby": "agent-profiles-title" });
   document.body.append(dialog);
   const post = (action, body) => api(`/api/agent-profiles/${action}`, { method: "POST", body: JSON.stringify(body) });
-  const button = (label, action, id, disabled = false) => el("button", {
-    type: "button", class: "btn", text: label, testid: id, disabled: disabled || busy || operationActive(), onclick: action,
+  // A render retains each element and compares the properties from its creation, so each property goes in here.
+  const button = (label, action, id, disabled = false, props = {}) => el("button", {
+    type: "button", text: label, testid: id, disabled: disabled || busy || operationActive(), onclick: action,
+    ...props, class: `btn ${props.class || ""}`.trim(),
   });
   const note = (text) => el("p", { class: "note", text });
   const connection = () => catalog.connections.find((row) => row.id === draft?.connection_id);
@@ -207,7 +233,6 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   };
   const actionsNode = (back, ...next) => el("div", { class: "profile-step-actions" }, back,
     next.some(Boolean) && el("div", { class: "profile-next-actions" }, next));
-  const primary = (node) => { node.classList.add("profile-primary"); return node; };
   const duplicate = (rows, name, id) => rows.some((row) => row.id !== id && sameName(row, name));
   const validateProfile = () => {
     if (!draft.name.trim() || !draft.model || !draft.connection_id) throw new Error("Enter an agent profile name, a model, and a connection.");
@@ -215,17 +240,58 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     if (draft.effort && !model?.effort_levels?.includes(draft.effort)) throw new Error("Select an available effort level.");
     if (duplicate(catalog.profiles, draft.name, draft.id)) throw new Error("This agent profile name already exists. Enter another name.");
   };
+  async function requestModels(source) {
+    const result = await post("models", { connection_id: source.id });
+    if (!Array.isArray(result?.models) || !result.models.length) throw new Error("The provider model list is invalid. Retry later.");
+    return { models: result.models, web_search: result.web_search, source: result.source, refreshing: result.refreshing === true };
+  }
   async function loadModels(source) {
     const entry = { status: "loading" };
     modelLists.set(source.id, entry);
     try {
-      const result = await post("models", { connection_id: source.id });
-      if (!Array.isArray(result?.models) || !result.models.length) throw new Error("The provider model list is invalid. Retry later.");
-      Object.assign(entry, { status: "ready", models: result.models, web_search: result.web_search });
+      Object.assign(entry, await requestModels(source), { status: "ready" });
     } catch (err) {
       Object.assign(entry, { status: "failed", error: err.message || "The provider model list is unavailable. Retry later." });
     }
     if (modelLists.get(source.id) === entry && dialog.open && view === "create") render();
+  }
+  // A background request keeps the available model list on the display. A failed request leaves that list in place.
+  async function reloadModels(source) {
+    const entry = modelLists.get(source.id);
+    if (entry?.status !== "ready" || entry.requesting) return;
+    entry.requesting = true;
+    let next = null;
+    try { next = await requestModels(source); } catch {}
+    entry.requesting = false;
+    if (modelLists.get(source.id) !== entry) return;
+    if (next) {
+      entry.refreshing = next.refreshing;
+      const shown = (list) => JSON.stringify([list.models, list.web_search, list.source]);
+      entry.changed = shown(next) === shown(entry) ? null : next;
+    }
+    if (dialog.open && view === "create") render();
+  }
+  // A changed model list waits while the Model control or the Effort control has the focus.
+  // An open list belongs to the control with the focus, so that list stays open and keeps its choices.
+  const listFocused = () => ["profile-model", "profile-effort"].includes(document.activeElement?.dataset?.testid);
+  function showChangedModels(entry) {
+    if (!entry?.changed) return false;
+    const { models, web_search, source } = entry.changed;
+    Object.assign(entry, { models, web_search, source, changed: null });
+    return true;
+  }
+  function watchModels(source) {
+    if (modelListTimer) return;
+    const serial = generation;
+    modelListTimer = setTimeout(() => {
+      modelListTimer = null;
+      if (serial === generation && dialog.open) reloadModels(source);
+    }, MODEL_LIST_INTERVAL);
+  }
+  function stopWatches() {
+    clearTimeout(downloadTimer);
+    clearTimeout(modelListTimer);
+    downloadTimer = modelListTimer = null;
   }
   async function refresh() {
     const serial = generation;
@@ -249,8 +315,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     reads.abort();
     reads = new AbortController();
     clearTimeout(timer);
-    clearTimeout(downloadTimer);
-    downloadTimer = null;
+    stopWatches();
     clearInterval(clock);
     clock = null;
     if (operation && !TERMINAL.has(operation.status)) {
@@ -267,6 +332,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   function newDraft(profile = null, recover = false) {
     if (!recover) {
       generation++;
+      stopWatches();
       try { sessionStorage.removeItem(OPERATION_KEY); } catch {}
     }
     clearTimeout(timer);
@@ -407,9 +473,6 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     try { safeURL = ["https:", "http:"].includes(new URL(actionURL).protocol); } catch {}
     const timed = summary.tone === "active";
     const mark = el("span", { class: "profile-progress-mark", "aria-hidden": "true", text: { success: "✓", failure: "!" }[summary.tone] });
-    const started = Date.parse(operation.started_at);
-    // The spinner keeps its phase when a render replaces the node.
-    if (timed && Number.isFinite(started)) mark.style.animationDelay = `-${(Date.now() - started) % 900}ms`;
     if (timed && !clock) clock = setInterval(tick, 500);
     const link = safeURL && el("a", { href: actionURL, target: "_blank", rel: "noopener noreferrer", class: "btn profile-primary", text: "Open authorization page" });
     return el("section", { class: `profile-operation profile-progress-${summary.tone}`, testid: "profile-operation", role: "status" },
@@ -444,8 +507,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     const profiles = listedProfiles(catalog.profiles).map((profile) => ({ profile, status: currentProfileStatus(profile, systemState?.()) }));
     profiles.sort((a, b) => Number(b.status.attention) - Number(a.status.attention));
     const attention = profiles.filter((row) => row.status.attention).length;
-    const create = button("Create agent profile", () => { role = null; newDraft(); }, "profile-create");
-    create.classList.add("profile-create");
+    const create = button("Create agent profile", () => { role = null; newDraft(); }, "profile-create", false, { class: "profile-create" });
     return el("div", { class: "profile-list" },
       el("div", { class: "profile-toolbar" },
         el("div", { class: "profile-overview", role: "status" },
@@ -473,7 +535,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       note("Culler stops active requests for this connection and removes its saved credentials. Agent profiles and assignments remain saved."),
       note("Provider revocation is unconfirmed. Your separate native sessions remain available."),
       actionsNode(button("Keep connected", showList, "profile-disconnect-cancel"),
-        primary(button("Disconnect connection", () => perform(async () => {
+        button("Disconnect connection", () => perform(async () => {
           const result = await post("connection-disconnect", { connection_id: source.id, authorization_id: source.authorization_id, confirm: true });
           catalog = result;
           modelLists.delete(source.id);
@@ -481,7 +543,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
           view = "list";
           notice = result.message;
           onConnectionChanged?.();
-        }), "profile-disconnect-confirmed"))));
+        }), "profile-disconnect-confirmed", false, PRIMARY)));
   }
   function profileNode(profile, status) {
     const expanded = expandedProfiles.has(profile.id);
@@ -489,18 +551,13 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     const profileName = profile.name || profile.id;
     const connectionName = profile.connection_name || profile.connection_id;
     const separateConnection = connectionName?.toLowerCase() !== profileName.toLowerCase();
-    const edit = button("Edit", () => newDraft(profile), `profile-edit-${profile.id}`);
-    edit.setAttribute("aria-label", `Edit ${profile.name || profile.id}`);
+    const edit = button("Edit", () => newDraft(profile), `profile-edit-${profile.id}`, false, { "aria-label": `Edit ${profile.name || profile.id}` });
     const source = catalog.connections.find((row) => row.id === profile.connection_id);
     const action = apiKeyConnection(source) && status.reconnect ? "Replace API key" : !status.action || status.action === "Reconnect" ? "Authorize" : status.action;
     const reconnectButton = status.reconnect && button(action, () => {
       if (status.action === "Review connection") newDraft(profile);
       else openRepair(profile.connection_id, profile, true);
-    }, `profile-reconnect-${profile.id}`);
-    if (reconnectButton) {
-      reconnectButton.setAttribute("aria-label", `${action} ${profile.name || profile.id}`);
-      if (status.attention) reconnectButton.classList.add("rust");
-    }
+    }, `profile-reconnect-${profile.id}`, false, { "aria-label": `${action} ${profile.name || profile.id}`, class: status.attention ? "rust" : "" });
     return el("article", {
       class: `profile-card profile-model-card${status.attention ? " profile-needs-attention" : ""}`,
       testid: "profile-card", "aria-label": profile.name || profile.id,
@@ -556,8 +613,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     const profileName = profile.name || profile.id;
     const connectionName = profile.connection_name || profile.connection_id;
     const separateConnection = connectionName?.toLowerCase() !== profileName.toLowerCase();
-    const edit = button("Edit", () => newDraft(profile), `profile-edit-${profile.id}`);
-    edit.setAttribute("aria-label", `Edit ${profileName}`);
+    const edit = button("Edit", () => newDraft(profile), `profile-edit-${profile.id}`, false, { "aria-label": `Edit ${profileName}` });
     return el("div", { class: `profile-choice${checked ? " selected" : ""}` },
       el("label", { class: "profile-choice-select" },
         el("input", {
@@ -603,27 +659,44 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       actionsNode(back),
     ];
   }
+  // The first refresh of the live models follows a successful download.
+  // Each model list of an OpenCode connection then waits for that refresh.
+  function setDownload(next) {
+    const succeeded = next?.status === "succeeded" && catalog.opencode?.status !== "succeeded";
+    catalog.opencode = next;
+    if (!succeeded) return;
+    for (const [id, entry] of modelLists) {
+      if (entry.status === "ready" && catalog.connections.find(row => row.id === id)?.harness === "opencode") entry.refreshing = true;
+    }
+    const source = draft && connection();
+    if (source?.harness === "opencode") reloadModels(source);
+  }
+  function watchDownload() {
+    const status = catalog.opencode;
+    if (!status || TERMINAL.has(status.status) || downloadTimer) return;
+    const serial = generation;
+    downloadTimer = setTimeout(async () => {
+      downloadTimer = null;
+      try {
+        const next = await post("operation-status", { operation_id: status.operation_id });
+        if (generation !== serial || !dialog.open) return;
+        setDownload(next);
+      } catch (error) {
+        if (generation === serial) catalog.opencode = { ...status, status: "failed", message: error.message };
+      }
+      if (generation === serial && dialog.open) render();
+    }, DOWNLOAD_INTERVAL);
+  }
   function downloadNode(source) {
     if (source?.harness !== "opencode") return null;
-    const status = catalog.opencode;
-    if (status && !TERMINAL.has(status.status) && !downloadTimer) {
-      const serial = generation;
-      downloadTimer = setTimeout(async () => {
-        downloadTimer = null;
-        try {
-          const next = await post("operation-status", { operation_id: status.operation_id });
-          if (generation !== serial || !dialog.open) return;
-          catalog.opencode = next;
-        } catch (error) {
-          if (generation === serial) catalog.opencode = { ...status, status: "failed", message: error.message };
-        }
-        if (generation === serial && dialog.open) render();
-      }, 1000);
-    }
-    return el("section", { testid: "profile-opencode-download", role: "status" },
-      el("p", { text: status?.message || "OpenCode requires a download." }),
-      (!status || status.status === "failed") && button("Retry", () => perform(async () => {
-        catalog.opencode = await post("operation-start", { operation_id: uuid(), kind: "opencode_download" });
+    const shown = downloadView(catalog.opencode);
+    watchDownload();
+    return el("section", { class: `profile-download profile-download-${shown.tone}`, testid: "profile-opencode-download" },
+      el("p", { class: "profile-download-stage", role: "status", testid: "profile-opencode-stage", text: shown.stage }),
+      shown.active && el("div", { class: "profile-download-bar", role: "progressbar", "aria-label": "OpenCode download", testid: "profile-opencode-progress" }),
+      shown.active && note("The model test waits for the download."),
+      shown.retry && button("Retry", () => perform(async () => {
+        setDownload(await post("operation-start", { operation_id: uuid(), kind: "opencode_download" }));
       }), "profile-opencode-retry"));
   }
   function modelNode(source) {
@@ -636,22 +709,30 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       button("Retry model list", () => { loadModels(source); render(); }, "profile-model-retry"),
     ];
     const loading = list.status === "loading";
+    if (!listFocused()) showChangedModels(list);
+    if (list.refreshing) watchModels(source);
+    const live = source.harness === "opencode";
     const offered = loading || !draft.model || list.models.some((model) => model.id === draft.model);
     const placeholder = el("option", { value: "", disabled: true, selected: !draft.model, text: loading ? "Loading models…" : "Select a model" });
     const choices = loading ? (draft.model ? [{ value: draft.model, text: draft.model, selected: true }] : []) : modelChoices(list.models, draft.model);
+    // The key keeps the element of each model, so a new live model adds one element and changes no other element.
+    const options = choices.map((choice) => el("option", { ...choice, data: { key: choice.value } }));
     return [
       el("label", { class: "profile-field" }, el("span", { text: "Model" }),
         el("select", {
           class: "field", id: "profile-model", testid: "profile-model", name: "model", "aria-describedby": "profile-model-hint",
-          disabled: loading || busy || operationActive(), onchange: (event) => { update("model", event.target.value); render(); },
-        }, placeholder, choices.map((choice) => el("option", choice))),
-        el("span", { class: "profile-hint", id: "profile-model-hint", role: loading ? "status" : null,
-          text: loading ? "Loading models for this connection…" : source.harness === "opencode" ? "The release catalog lists these models. Prices apply to each million input and output tokens." : "The provider lists the models that this connection can use." })),
-      !offered && el("p", { class: "profile-error", role: "alert", text: `This connection does not offer the model ${draft.model}. Select a model from the list.` }),
+          disabled: loading || busy || operationActive(),
+          onchange: (event) => { update("model", event.target.value); showChangedModels(list); render(); },
+          onblur: () => { if (showChangedModels(list)) render(); },
+        }, placeholder, options),
+        el("span", { class: "profile-hint", id: "profile-model-hint", role: loading || live ? "status" : null,
+          text: loading ? "Loading models for this connection…" : live ? modelSourceHint(list.source) : "The provider lists the models that this connection can use." })),
+      !offered && el("p", { class: "profile-error", role: "alert", data: { key: "model-not-offered" }, text: `This connection does not offer the model ${draft.model}. Select a model from the list.` }),
     ];
   }
   function effortNode(source) {
-    const model = modelLists.get(source?.id)?.models?.find(model => model.id === draft.model);
+    const list = modelLists.get(source?.id);
+    const model = list?.models?.find(model => model.id === draft.model);
     const unavailable = draft.effort && model && !model.effort_levels?.includes(draft.effort);
     const hint = !model ? "Select a model from the model list to see its effort levels."
       : model.effort_support_known ? "The model lists these effort levels. Default uses the provider default."
@@ -659,8 +740,10 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     return el("label", { class: "profile-field" },
       el("span", { text: "Effort" }),
       el("select", { class: "field", testid: "profile-effort", name: "effort", "aria-describedby": "profile-effort-hint",
-        disabled: busy || operationActive(), onchange: event => { update("effort", event.target.value); render(); } },
-        effortChoices(model, draft.effort).map(choice => el("option", choice))),
+        disabled: busy || operationActive(),
+        onchange: event => { update("effort", event.target.value); showChangedModels(list); render(); },
+        onblur: () => { if (showChangedModels(list)) render(); } },
+        effortChoices(model, draft.effort).map(choice => el("option", { ...choice, data: { key: choice.value } }))),
       el("span", { class: "profile-hint", id: "profile-effort-hint", text: hint }),
       el("span", { class: "profile-hint", text: "Higher effort can use more time and tokens. New runs use the selected effort. Existing conversations keep their effort." }),
       unavailable && el("span", { class: "profile-error", role: "alert", text: "The selected effort is unavailable. Select another effort level." }));
@@ -684,9 +767,9 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       source?.harness === "opencode" && note(modelLists.get(source.id)?.web_search ? "The agents of this connection can search the web." : "The agents of this connection cannot search the web."),
       effortNode(source),
       field("Agent profile name", "name"),
-      duplicate(catalog.profiles, draft.name, draft.id) && el("p", { class: "profile-error", role: "alert", text: "This agent profile name already exists. Enter another name." }),
+      duplicate(catalog.profiles, draft.name, draft.id) && el("p", { class: "profile-error", role: "alert", data: { key: "name-duplicate" }, text: "This agent profile name already exists. Enter another name." }),
       draft.mode !== "existing" && actionsNode(back,
-        primary(button("Continue", () => { try { validateProfile(); draft.step = 3; error = ""; } catch (err) { error = err.message; } render(); }, "profile-configure-next"))),
+        button("Continue", () => { try { validateProfile(); draft.step = 3; error = ""; } catch (err) { error = err.message; } render(); }, "profile-configure-next", false, PRIMARY)),
     );
   }
   function reconnect() {
@@ -716,7 +799,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       el("h3", { id: "profile-repair-title", text: `${name} · API key required` }),
       note("Enter a replacement API key. Culler keeps the previous key until the replacement is saved."),
       keyField(),
-      primary(button("Save key", () => perform(async () => {
+      button("Save key", () => perform(async () => {
         if (!draft.api_key) throw new Error("Enter the API key.");
         const integration = source.harness === "opencode"
           ? (catalog.providers || []).find(item => item.catalog_entry === source.catalog_entry && item.harness === "opencode")
@@ -736,9 +819,8 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
         view = "create";
         draft.mode = "existing";
         onConnectionChanged?.();
-      }), "profile-save-key")));
-    const action = button("Authorize", reconnect, "profile-reconnect");
-    action.classList.add("rust");
+      }), "profile-save-key", false, PRIMARY));
+    const action = button("Authorize", reconnect, "profile-reconnect", false, { class: "rust" });
     const condition = view === "repair" && (systemState?.()?.snapshot?.connections ?? [])
       .find(item => item.connection_id === source.id && !item.profile_id && item.state !== "ready");
     return el("section", { class: "profile-repair", testid: "profile-repair", "aria-labelledby": "profile-repair-title" },
@@ -799,7 +881,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       el("section", { class: "profile-card", testid: "profile-connection-saved" },
         el("h4", { text: saved.name || saved.id }),
         note("The credential is saved. Continue to select the model.")),
-      actionsNode(back, primary(button("Continue", () => { draft.step = 2; render(); }, "profile-connect-next"))));
+      actionsNode(back, button("Continue", () => { draft.step = 2; render(); }, "profile-connect-next", false, PRIMARY)));
     if (draft.mode === "catalog") {
       const providers = providerChoices(catalog.providers, draft.provider_query);
       const selected = (catalog.providers || []).find(row => row.id === draft.provider);
@@ -816,17 +898,18 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
           el("b", { text: selected ? selected.name : "None. Select a provider from the list." }),
           selected?.address && el("span", { text: selected.address })),
         keyField(),
-        actionsNode(back, primary(button("Continue", () => perform(() => {
+        actionsNode(back, button("Continue", () => perform(() => {
           if (!selected) throw new Error("Select the provider.");
           return connect(selected, `${selected.name} API key`, true);
-        }), "profile-key-connect"))));
+        }), "profile-key-connect", false, PRIMARY)));
     }
     const provider = releaseProviders(catalog).find(row => row.harness === draft.harness);
     if (!provider) return el("div", {}, note("This provider is unavailable. Select Back to select another provider."), actionsNode(back));
+    // The key action is the main action after a key entry, and for a provider without a sign-in.
+    const keyFirst = Boolean(draft.api_key) || !provider.subscription;
     const signIn = provider.subscription && button("Sign in", () => perform(() => connect(provider.subscription, `${provider.name} subscription`, false)),
-      `profile-sign-in-${provider.subscription.id}`, provider.subscription.authorization_available === false);
-    const saveKey = button("Save key", () => perform(() => connect(provider.api_key, `${provider.name} API key`, true)), "profile-key-connect");
-    primary(draft.api_key || !signIn ? saveKey : signIn);
+      `profile-sign-in-${provider.subscription.id}`, provider.subscription.authorization_available === false, keyFirst ? {} : PRIMARY);
+    const saveKey = button("Save key", () => perform(() => connect(provider.api_key, `${provider.name} API key`, true)), "profile-key-connect", false, keyFirst ? PRIMARY : {});
     return el("div", {},
       signIn && el("section", { class: "profile-card", testid: "profile-access-subscription" },
         el("h4", { text: "Sign in with your subscription" }),
@@ -852,11 +935,12 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   function reviewNode(back) {
     const source = connection();
     const testing = operationActive() && operation.kind === "model_test";
-    const test = button("Test model", () => perform(() => startOperation("model_test", draft.connection_id)), "profile-test", !draft.connection_id || !draft.model || !draft.name.trim() || source?.harness === "opencode" && catalog.opencode?.status !== "succeeded");
-    const keep = button("Save", () => perform(save), "profile-save", !draft.test_id);
-    primary(draft.test_id ? keep : test);
+    const test = button("Test model", () => perform(() => startOperation("model_test", draft.connection_id)), "profile-test",
+      !draft.connection_id || !draft.model || !draft.name.trim() || source?.harness === "opencode" && catalog.opencode?.status !== "succeeded", draft.test_id ? {} : PRIMARY);
+    const keep = button("Save", () => perform(save), "profile-save", !draft.test_id, draft.test_id ? PRIMARY : {});
     return [
-      downloadNode(source),
+      // The form for an existing connection shows the download status with its model list.
+      draft.mode !== "existing" && downloadNode(source),
       el("section", { class: "profile-review", testid: "profile-review" },
         draft.mode === "existing" && el("h4", { text: "Test and save" }),
         el("dl", {},
@@ -874,6 +958,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   }
   function leave() {
     generation++;
+    stopWatches();
     try { sessionStorage.removeItem(OPERATION_KEY); } catch {}
     clearTimeout(timer);
     draft = null;
@@ -920,13 +1005,9 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     if (draft.mode === "existing") return [configureNode(previous), reviewNode(previous)];
     return [connectNode, configureNode, reviewNode][draft.step - 1](previous);
   }
+  // A render changes only the elements whose content changed. Each other element stays in the document,
+  // so a control keeps its focus, its text, its selection, its scroll position, and its open list.
   function render() {
-    const focused = document.activeElement;
-    const focusID = focused?.getAttribute("data-testid");
-    const selection = focused?.selectionStart == null ? null
-      : [focused.selectionStart, focused.selectionEnd, focused.selectionDirection];
-    const scrollTop = dialog.querySelector(".ui-dialog-body")?.scrollTop || 0;
-    const resultsTop = dialog.querySelector(".profile-provider-results")?.scrollTop || 0;
     const assignment = view === "assign";
     dialog.classList.toggle("profile-assign", assignment);
     const header = dialogHeader({
@@ -946,20 +1027,14 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       view === "repair" ? button("All agent profiles", showList, "profile-list") : null,
     );
     const actions = body.querySelector(".profile-step-actions");
-    dialogFrame(dialog, { header, body, footer: actions ? dialogFooter({}, actions) : null });
-    if (focusID) {
-      const next = dialog.querySelector(`[data-testid="${CSS.escape(focusID)}"]`);
-      next?.focus({ preventScroll: true });
-      if (selection && next?.setSelectionRange) next.setSelectionRange(...selection);
-    }
-    body.scrollTop = scrollTop;
-    const results = body.querySelector(".profile-provider-results");
-    if (results) results.scrollTop = resultsTop;
+    dialog.classList.add("ui-dialog");
+    reconcileChildren(dialog, [el("div", { class: "ui-dialog-shell" }, header, body, actions && dialogFooter({}, actions))], true);
   }
   return {
     async open(selectedRole = null, create = false, entry = null) {
       origin = entry || document.activeElement;
       generation++;
+      stopWatches();
       busy = false;
       choosing = null;
       operation = null;

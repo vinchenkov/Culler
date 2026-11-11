@@ -10,7 +10,6 @@ import (
 
 	operatorconfig "mc/config"
 	"mc/deployment"
-	"mc/opencodecatalog"
 	"mc/routing"
 )
 
@@ -51,7 +50,7 @@ func loadRuntimeAuthority(home string) (runtimeAuthority, error) {
 	for key, spec := range bindings {
 		if spec.Harness == "opencode" {
 			connection := cfg.Runtimes.Credentials[spec.Credential]
-			if opencodecatalog.ValidateProfile(connection.CatalogEntry, spec.Model, spec.Effort) != nil {
+			if deployment.ValidateOpenCodeProfile(home, connection.CatalogEntry, spec.Model, spec.Effort) != nil {
 				delete(bindings, key)
 				continue
 			}

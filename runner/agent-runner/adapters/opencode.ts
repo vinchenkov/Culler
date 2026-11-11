@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { mkdir, readFile, rm } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { OPENCODE_DATABASE } from "../../shared/opencode-trace";
 import { loadProviderAccess, writeProviderCA, type ProviderAccess } from "./provider-access";
@@ -44,7 +44,8 @@ export function openCodeConfiguration(access: ProviderAccess, model: string, eff
   };
 }
 
-export function openCodeEnvironment(base: Record<string, string | undefined>, config: unknown, directory: string, ca: string) {
+/** OpenCode reads the facts of a live model from the model record file. It makes no request for the live model list. */
+export function openCodeEnvironment(base: Record<string, string | undefined>, config: unknown, directory: string, ca: string, record?: string) {
   const env: Record<string, string> = {};
   for (const [name, value] of Object.entries(base)) {
     if (value === undefined || /^(OPENCODE_|CULLER_OPENCODE_|CULLER_PROXY_|XDG_|CODEX_|CLAUDE_|ANTHROPIC_|OPENAI_)/.test(name) ||
@@ -58,6 +59,7 @@ export function openCodeEnvironment(base: Record<string, string | undefined>, co
     OPENCODE_DISABLE_PROJECT_CONFIG: "1", OPENCODE_DISABLE_CLAUDE_CODE: "1", OPENCODE_DISABLE_MODELS_FETCH: "1",
     OPENCODE_DISABLE_FREE_MODELS: "1", OPENCODE_DISABLE_AUTOUPDATE: "1", OPENCODE_DISABLE_FILEWATCHER: "1",
     NODE_EXTRA_CA_CERTS: ca, SSL_CERT_FILE: ca,
+    ...(record ? { OPENCODE_MODELS_PATH: record } : {}),
   });
   return env;
 }
@@ -90,7 +92,10 @@ async function main(): Promise<number> {
   const config = openCodeConfiguration(access, model, arg("--effort"), join(process.env.HOME ?? "/home/agent", ".agents/skills"),
     process.env.MC_OPENCODE_ROOT ?? OPENCODE_ROOT,
     process.argv.includes("--openwiki") ? { workspace, commit: arg("--openwiki-input-commit") } : undefined);
-  const env = openCodeEnvironment(process.env, config, root, ca);
+  const record = join(root, "model-record.json");
+  await rm(record, { force: true });
+  if (access.opencode!.model.record !== undefined) await writeFile(record, access.opencode!.model.record, { mode: 0o400, flag: "wx" });
+  const env = openCodeEnvironment(process.env, config, root, ca, access.opencode!.model.record === undefined ? undefined : record);
   const sessionFile = join(root, "native-session");
   await rm(sessionFile, { force: true });
   await rm(`${sessionFile}.tmp`, { force: true });
@@ -176,6 +181,7 @@ async function main(): Promise<number> {
     if (proc.exitCode === null) { proc.kill("SIGTERM"); await proc.exited; }
     process.off("SIGTERM", stop); process.off("SIGINT", stop);
     await rm(caDirectory, { recursive: true, force: true });
+    await rm(record, { force: true });
   }
 }
 

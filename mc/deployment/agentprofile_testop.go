@@ -416,7 +416,15 @@ func updateAgentProfileOperation(home, id string, change func(*agentProfileOpera
 // The verified function reports whether the spine records ready access for the connection.
 func RunAgentProfileOperation(home, id, image string, verified func(connection string) (bool, error), prepareTest func(connection, authorization string) (func() error, error)) error {
 	if id == openCodeOperation {
-		return runOpenCodeDownload(home, image)
+		if err := runOpenCodeDownload(home, image); err != nil {
+			return err
+		}
+		// The first refresh of the live models follows the successful installation.
+		StartOpenCodeModelRefresh(home, true)
+		return nil
+	}
+	if id == openCodeModelsOperation {
+		return runOpenCodeModelRefresh(home, image)
 	}
 	return runAgentProfileOperation(home, id, agentProfileOperationDependencies{
 		Test: func(ctx context.Context, home string, catalog RuntimeCatalog, binding string) (LiveProviderObservation, error) {

@@ -68,36 +68,6 @@ func TestConfigureRuntimeSourcePackageNeedsNoStateDirectory(t *testing.T) {
 	}
 }
 
-func TestOpenCodeModelListUsesOnlyReleaseCatalog(t *testing.T) {
-	home := agentProfileTestHome(t)
-	_, err := operatorconfig.UpdateAtomic(filepath.Join(home, "config.toml"), func(cfg *operatorconfig.Config) error {
-		cfg.Runtimes.Credentials["catalog"] = operatorconfig.CredentialSource{Name: "Catalog", Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
-		return cfg.Validate()
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	previous := agentModelAccess
-	defer func() { agentModelAccess = previous }()
-	agentModelAccess = func(string, string) (modelCatalogAccess, error) {
-		t.Fatal("The catalog list requested provider access.")
-		return modelCatalogAccess{}, nil
-	}
-	models, err := AgentConnectionModels(home, AgentModelListRequest{ConnectionID: "catalog"})
-	if err != nil || !models.WebSearch || len(models.Models) == 0 {
-		t.Fatalf("The release model list failed: %v", err)
-	}
-	for _, m := range models.Models {
-		if m.ID == "kimi-k3" {
-			if strings.Join(m.EffortLevels, ",") != "low,high,max" || m.Context == 0 {
-				t.Fatal("The model lost its catalog details.")
-			}
-			return
-		}
-	}
-	t.Fatal("The release model is absent.")
-}
-
 func TestOpenCodeDownloadProgressAndRetry(t *testing.T) {
 	home := agentProfileTestHome(t)
 	launches := 0

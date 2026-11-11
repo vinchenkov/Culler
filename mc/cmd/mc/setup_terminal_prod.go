@@ -40,7 +40,7 @@ type setupTerminal interface {
 }
 
 type setupDependencies struct {
-	assessCandidate func() ([]string, error)
+	assessCandidate func() (repairs, waits []string, err error)
 	finishExisting  func() error
 	beforeChange    func(string, verbs.OnboardArgs, func(string)) error
 	saveSource      func(string, verbs.OnboardArgs) error

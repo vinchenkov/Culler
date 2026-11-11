@@ -1,6 +1,7 @@
 package verbs
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -106,5 +107,73 @@ func TestCandidateCatalogRefusalPreservesTaskAttempts(t *testing.T) {
 	}
 	if _, _, err := resolveRoleRouteWithAuthority(home, "arbiter"); err == nil || !strings.Contains(err.Error(), "repair in the dashboard") {
 		t.Fatalf("route repair: %v", err)
+	}
+}
+
+// retainLiveModelsFixture writes the live models that a refresh of this release retained.
+func retainLiveModelsFixture(t *testing.T, home string) string {
+	t.Helper()
+	models, err := os.ReadFile(filepath.Join("..", "opencodecatalog", "testdata", "live-models.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, err := json.Marshal(map[string]any{"version": 1, "catalog_digest": opencodecatalog.Digest(),
+		"opencode_version": opencodecatalog.Release().OpenCodeVersion, "refreshed_at": "2026-01-01T00:00:00Z", "providers": json.RawMessage(models)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	file := filepath.Join(home, "state", "opencode-live-models.json")
+	if err := os.MkdirAll(filepath.Dir(file), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(file, body, 0600); err != nil {
+		t.Fatal(err)
+	}
+	return file
+}
+
+func TestLaunchAuthorizationAcceptsLiveModelAndRefusesAbsentModel(t *testing.T) {
+	home := t.TempDir()
+	cfg := testBindingConfig()
+	cfg.Runtimes.Credentials["catalog"] = operatorconfig.CredentialSource{Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
+	cfg.Runtimes.Bindings["live"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: "kimi-fixture-new", Credential: "catalog", Effort: "high"}
+	cfg.Runtimes.Bindings["released"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: "kimi-k3", Credential: "catalog"}
+	// The live model list holds this model at another origin, so the model list lacks it.
+	cfg.Runtimes.Bindings["absent"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: "kimi-fixture-origin", Credential: "catalog"}
+	cfg.Runtimes.Bindings["effort"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: "kimi-fixture-new", Credential: "catalog", Effort: "thinking"}
+	cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, "live", "released", "absent", "effort")
+	body, err := operatorconfig.Marshal(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(home, "config.toml"), body, 0600); err != nil {
+		t.Fatal(err)
+	}
+	retained := retainLiveModelsFixture(t, home)
+	authority, err := loadRuntimeAuthority(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for id, launch := range map[string]bool{"live": true, "released": true, "absent": false, "effort": false, "claude": true} {
+		if _, ok := authority.bindings[id]; ok != launch {
+			t.Fatalf("launch authorization of %s = %v, want %v", id, ok, launch)
+		}
+		if _, ok := authority.configuredBindings[id]; !ok {
+			t.Fatalf("the saved profile %s disappeared", id)
+		}
+	}
+	// A launch needs no network: the retained live models are the only source of this model.
+	if err := os.Remove(retained); err != nil {
+		t.Fatal(err)
+	}
+	released, err := loadRuntimeAuthority(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := released.bindings["live"]; ok {
+		t.Fatal("launch authorization accepted a model that the model list lacks")
+	}
+	if _, ok := released.bindings["released"]; !ok || released.digest == authority.digest {
+		t.Fatal("the release catalog model lost its launch authorization, or the authority kept its identity")
 	}
 }

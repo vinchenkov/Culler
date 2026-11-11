@@ -10,10 +10,13 @@ export interface ProviderAccess {
   harness: "codex" | "claude-sdk" | "opencode";
   opencode?: {
     provider: string; keyVariable: string; webSearch: boolean;
-    model: { id: string; address: string; package: string; variants: string[]; key_placement: string; model_location: string };
+    /** A live model holds the model record that OpenCode reads for its facts. */
+    model: { id: string; address: string; package: string; variants: string[]; key_placement: string; model_location: string; record?: string };
   };
   authMode: "api-key" | "account";
 }
+
+const MAX_MODEL_RECORD_BYTES = 24 * 1024;
 
 export function parseProviderAccess(body: string, harness: ProviderAccess["harness"]): ProviderAccess {
   if (Buffer.byteLength(body) > 64 * 1024) throw new Error("The provider access file exceeds its limit.");
@@ -40,6 +43,7 @@ export function parseProviderAccess(body: string, harness: ProviderAccess["harne
         !/^[A-Z_][A-Z0-9_]*$/.test(selected.keyVariable) || typeof selected.webSearch !== "boolean" ||
         !model || typeof model.id !== "string" || !model.id || !model.package?.startsWith("@opencode/ai/providers/") ||
         !Array.isArray(model.variants) || model.variants.some(item => typeof item !== "string") ||
+        (model.record !== undefined && (typeof model.record !== "string" || !model.record || Buffer.byteLength(model.record) > MAX_MODEL_RECORD_BYTES)) ||
         !["bearer", "x-api-key", "x-goog-api-key"].includes(model.key_placement) || !["body", "path"].includes(model.model_location)) {
       throw new Error("The OpenCode access configuration is invalid.");
     }

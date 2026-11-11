@@ -1,0 +1,413 @@
+{
+ "baseline": [
+  {
+   "id": "moonshotai",
+   "key_variables": [
+    "MOONSHOT_API_KEY"
+   ],
+   "models": [
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "f4afa499fe506697fc7954af6c254175481c18c7bc3f5ec4ec9bf2052b6fc906",
+     "id": "kimi-k3.1-pro",
+     "input_price": 2,
+     "name": "Kimi K3.1 Pro",
+     "output": 1048576,
+     "output_price": 10,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k3.1-pro"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 262144,
+     "digest": "732b5d74e5c5749b604325b31b4e0368cf014be21b34c275fc3e7d8e89e3b58a",
+     "id": "kimi-k2.7-code",
+     "input_price": 0.95,
+     "name": "Kimi K2.7 Code",
+     "output": 262144,
+     "output_price": 4,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k2.7-code"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": []
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 262144,
+     "digest": "4ad1c6a2138084ca47e623055dcd7277bde20993fa064fdc0dda63aeb43368e2",
+     "id": "kimi-k2.6",
+     "input_price": 0.95,
+     "name": "Kimi K2.6",
+     "output": 262144,
+     "output_price": 4,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k2.6"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "none",
+      "thinking"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 262144,
+     "digest": "4f81d04af657973212f84efa86ce4a79ff92b6dd0e0e40f0e89506e55a6f61fc",
+     "id": "kimi-k2.7-code-highspeed",
+     "input_price": 1.9,
+     "name": "Kimi K2.7 Code HighSpeed",
+     "output": 262144,
+     "output_price": 8,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k2.7-code-highspeed"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": []
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "56f895cdfe9a8c3f57cbb8543dc2268450bd1d4381653b5acb67483140db1455",
+     "id": "kimi-k3",
+     "input_price": 3,
+     "name": "Kimi K3",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k3"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "317ea8b3d3aa820d146ff3115ff3ed24eaee0ff821de49c8f2960562a71cbffe",
+     "id": "kimi-k3.1-pro-highspeed",
+     "input_price": 4,
+     "name": "Kimi K3.1 Pro Highspeed",
+     "output": 1048576,
+     "output_price": 20,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k3.1-pro-highspeed"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    }
+   ],
+   "name": "Moonshot AI",
+   "website": "https://platform.moonshot.ai/docs/api/chat"
+  }
+ ],
+ "live": [
+  {
+   "id": "moonshotai",
+   "key_variables": [
+    "MOONSHOT_API_KEY"
+   ],
+   "models": [
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 2097152,
+     "digest": "7024a4eb318ca85f107366323ea196e79dab96160f6ebafa897a42ad7a0f5c10",
+     "id": "kimi-k3",
+     "input_price": 2.5,
+     "name": "Kimi K3",
+     "output": 131072,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k3"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 262144,
+     "digest": "4ad1c6a2138084ca47e623055dcd7277bde20993fa064fdc0dda63aeb43368e2",
+     "id": "kimi-k2.6",
+     "input_price": 0.95,
+     "name": "Kimi K2.6",
+     "output": 262144,
+     "output_price": 4,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k2.6"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "none",
+      "thinking"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "305eab3c10b072b5ad92c010b554ffd2cd3baf54580cd2aa93a79ee152e16c9f",
+     "id": "kimi-fixture-pair-fast",
+     "input_price": 3,
+     "name": "Kimi Fixture Pair Fast",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-pair-fast",
+      "kimi-fixture-pair"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "2a6b28253df44188e7e42541f4142b85cf4cd38bc999ddd3bda1ba141455b7a5",
+     "id": "kimi-fixture-pair",
+     "input_price": 3,
+     "name": "Kimi Fixture Pair",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-pair"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 524288,
+     "digest": "fc9870e4cd149520ea5fd8dc6133da4612b0c5d8c0313903ca11918032d4b042",
+     "id": "kimi-fixture-new",
+     "input_price": 1.25,
+     "name": "Kimi Fixture New",
+     "output": 65536,
+     "output_price": 6.5,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-new"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 524288,
+     "digest": "625addc4d4a9c727b37d8623bfbb9e42db082787c9d79191bddde48e0c74264c",
+     "id": "kimi-fixture-new-fast",
+     "input_price": 1.25,
+     "name": "Kimi Fixture New Fast",
+     "output": 65536,
+     "output_price": 6.5,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-new"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v2",
+     "context": 1048576,
+     "digest": "3a1c827a7e82d3899b5ade84bfc3e08396890c20729a67e4f84b50d3475d0cc5",
+     "id": "kimi-fixture-path",
+     "input_price": 3,
+     "name": "Kimi Fixture Path",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-path"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://live-model.invalid/v1",
+     "context": 1048576,
+     "digest": "3e93cd66844bf700a633f3f4e332dd521cc1c2776b7a06d1c75a0b91e5f1a8db",
+     "id": "kimi-fixture-origin",
+     "input_price": 3,
+     "name": "Kimi Fixture Origin",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-origin"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "87f7249584f99ebda5fe47c966ab63d8829758198d0182ed5531c0d4820d2b06",
+     "id": "kimi-fixture-no-tools",
+     "input_price": 3,
+     "name": "Kimi Fixture No Tools",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-no-tools"
+     ],
+     "status": "active",
+     "tools": false,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "http://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "140986bc990d5e13bcd97a0725f0dc948f3e8cf50997be2e0bed60bb5a444364",
+     "id": "kimi-fixture-insecure",
+     "input_price": 3,
+     "name": "Kimi Fixture Insecure",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-insecure"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1?version=2",
+     "context": 1048576,
+     "digest": "b73dbe510b53a9ec810c1b8940f1deb685714aecfb06be692f1240e5c9101e4d",
+     "id": "kimi-fixture-query",
+     "input_price": 3,
+     "name": "Kimi Fixture Query",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-query"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/{region}/v1",
+     "context": 1048576,
+     "digest": "7f0c5619eaa3c5b0186bec0acef37ed9855a1d5fdea71725c48196e45c2193d6",
+     "id": "kimi-fixture-placeholder",
+     "input_price": 3,
+     "name": "Kimi Fixture Placeholder",
+     "output": 1048576,
+     "output_price": 15,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-fixture-placeholder"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    }
+   ],
+   "name": "Moonshot AI",
+   "website": "https://platform.moonshot.ai/docs/api/chat"
+  }
+ ]
+}

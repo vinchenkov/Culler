@@ -3,6 +3,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -22,11 +23,39 @@ import (
 	"mc/opencodecatalog"
 )
 
+func init() {
+	// The saved model choice of an interrupted setup can name a model that the model list lacks.
+	setupPreviewCases["opencode-model-absent"] = func(t *testing.T) setupPreviewCase {
+		w, _ := setupTestWizard(t)
+		w.session.Stage, w.session.Completed, w.session.ReleaseID = 2, []string{"welcome", "prepare"}, releaseBuildID
+		w.session.Access = &onboarding.AccessChoice{Mode: "api_key", Step: "effort", Harness: "opencode", Template: "opencode:moonshotai", Binding: "opencode-moonshotai", Model: "kimi-absent"}
+		return setupPreviewCase{wizard: w, steps: []setupPreviewStep{
+			{Wait: "q exit", Send: "\r", Name: "Model that the connection does not offer"},
+			{Wait: "q exit", Send: "q", Name: "Effort choice after the selection of another model"},
+		}, run: func() {
+			if err := w.run(); !errors.Is(err, onboarding.ErrExit) {
+				t.Fatal(err)
+			}
+		}}
+	}
+}
+
 func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 	t.Setenv("TERM", "xterm-256color")
-	for _, columns := range []int{80, 40} {
-		for _, color := range []bool{true, false} {
-			t.Run(fmt.Sprintf("%d-color-%t", columns, color), func(t *testing.T) {
+	// The model choice states one of two sources. Each source has a screen at each width and in each color mode
+	// when the test writes the screens to a folder.
+	type screens struct {
+		columns     int
+		color, live bool
+	}
+	cases := []screens{{80, true, true}, {80, false, false}, {40, true, false}, {40, false, true}}
+	if os.Getenv("MC_SETUP_EVIDENCE_DIR") != "" {
+		cases = append(cases, screens{80, true, false}, screens{80, false, true}, screens{40, true, true}, screens{40, false, false})
+	}
+	for _, c := range cases {
+		{
+			columns, color, live := c.columns, c.color, c.live
+			t.Run(fmt.Sprintf("%d-color-%t-live-%t", columns, color, live), func(t *testing.T) {
 				if color {
 					if value, set := os.LookupEnv("NO_COLOR"); set {
 						_ = os.Unsetenv("NO_COLOR")
@@ -40,6 +69,11 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 					t.Fatal(err)
 				}
 				w, _ := setupTestWizard(t)
+				source := "The release catalog supplies these models."
+				if live {
+					retainSetupLiveModels(t, w.home, opencodecatalog.Digest())
+					source = "The release catalog and the live model list of OpenCode supply these models."
+				}
 				var download atomic.Int32
 				download.Store(1)
 				w.deps.saveKey = func(_ string, req deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error) {
@@ -122,7 +156,18 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 				}
 				session.send("synthetic-opencode-screen-key\r")
 				capture("Model list and prices", "Choose the model")
-				provider, _ := opencodecatalog.Find("moonshotai")
+				if text := strings.Join(strings.Fields(strings.Join(session.screen.lines(), " ")), " "); !strings.Contains(text, source+" Prices apply") {
+					t.Fatalf("The model choice lacks the source of the model list: %q", session.screen.lines())
+				}
+				provider, _ := deployment.OpenCodeProvider(w.home, "moonshotai")
+				if _, listed := provider.Model("kimi-fixture-new"); listed != live {
+					t.Fatal("The model choice lists other models than the model list.")
+				}
+				// A live model shows the same facts as a release catalog model.
+				if text := strings.Join(strings.Fields(strings.Join(session.screen.lines(), " ")), " "); live &&
+					!strings.Contains(text, "Kimi Fixture Pair Fast (kimi-fixture-pair-fast) Context: 1048576 tokens. Input: $3. Output: $15.") {
+					t.Fatalf("The live model shows other facts: %q", session.screen.lines())
+				}
 				index := 0
 				for i, model := range provider.Models {
 					if model.ID == "kimi-k3" {
@@ -174,6 +219,9 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 						t.Fatal(err)
 					}
 					name := fmt.Sprintf("opencode-%d-color-%t", columns, color)
+					if live {
+						name += "-live"
+					}
 					if err := os.WriteFile(filepath.Join(root, name+".txt"), []byte(evidence.String()), 0600); err != nil {
 						t.Fatal(err)
 					}
@@ -183,6 +231,38 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestTerminalSetupReturnsToTheModelChoiceForAModelThatTheModelListLacks(t *testing.T) {
+	w, ui := setupTestWizard(t, "kimi-fixture-new", "high")
+	retainSetupLiveModels(t, w.home, opencodecatalog.Digest())
+	if _, err := operatorconfig.UpdateAtomic(filepath.Join(w.home, "config.toml"), func(cfg *operatorconfig.Config) error {
+		cfg.Runtimes.Credentials["opencode-moonshotai"] = operatorconfig.CredentialSource{Name: "Moonshot AI", Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
+		return cfg.Validate()
+	}); err != nil {
+		t.Fatal(err)
+	}
+	choice := &onboarding.AccessChoice{Mode: "api_key", Step: "effort", Harness: "opencode", Template: "opencode:moonshotai", Binding: "opencode-moonshotai", Model: "kimi-absent"}
+	if err := w.apiKeyStep(choice); err != nil || choice.Step != "model" {
+		t.Fatalf("The model that the model list lacks gave the step %q: %v", choice.Step, err)
+	}
+	if got := ui.panels[len(ui.panels)-1]; got != "The saved model is unavailable\nThe connection does not offer the model kimi-absent.\nSelect another model." {
+		t.Fatalf("The refusal shows %q.", got)
+	}
+	// The model choice accepts a live model, and the effort choice lists its effort levels.
+	if err := w.apiKeyStep(choice); err != nil || choice.Step != "effort" || choice.Model != "kimi-fixture-new" {
+		t.Fatalf("The model choice gave %q at the step %q: %v", choice.Model, choice.Step, err)
+	}
+	if err := w.apiKeyStep(choice); err != nil || choice.Step != "download" {
+		t.Fatalf("The effort choice gave the step %q: %v", choice.Step, err)
+	}
+	cfg, err := w.catalog()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if profile := cfg.Runtimes.Bindings["opencode-moonshotai"]; profile.Model != "kimi-fixture-new" || profile.Effort != "high" {
+		t.Fatalf("Setup saved the profile %+v.", profile)
 	}
 }
 
@@ -294,5 +374,26 @@ func TestSetupProviderSearchFitsTheScreen(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// retainSetupLiveModels writes the live models that a refresh retained for a release catalog.
+func retainSetupLiveModels(t *testing.T, home, catalog string) {
+	t.Helper()
+	models, err := os.ReadFile(filepath.Join("..", "..", "opencodecatalog", "testdata", "live-models.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, err := json.Marshal(map[string]any{"version": 1, "catalog_digest": catalog, "opencode_version": opencodecatalog.Release().OpenCodeVersion,
+		"refreshed_at": "2026-01-01T00:00:00Z", "providers": json.RawMessage(models)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	file := filepath.Join(home, "state", "opencode-live-models.json")
+	if err := os.MkdirAll(filepath.Dir(file), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(file, body, 0600); err != nil {
+		t.Fatal(err)
 	}
 }

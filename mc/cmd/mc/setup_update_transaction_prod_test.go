@@ -184,13 +184,24 @@ func TestCullerRestoreOptionRequiresUpdate(t *testing.T) {
 }
 
 func init() {
-	for _, name := range []string{"public-update-confirm", "public-update-confirm-with-repair", "public-update-recovery", "public-update-recovery-with-repair", "public-update-restore"} {
+	// A suffix selects the saved choices of the assessment: the repairs, and the count of profiles that wait for the live model list.
+	assessments := map[string]struct {
+		repair bool
+		waits  int
+	}{"-with-repair": {true, 0}, "-with-wait": {false, 1}, "-with-waits": {false, 2}, "-with-three-waits": {false, 3}, "-with-repair-and-wait": {true, 1}}
+	names := []string{"public-update-confirm", "public-update-recovery", "public-update-restore"}
+	for suffix := range assessments {
+		names = append(names, "public-update-confirm"+suffix, "public-update-recovery"+suffix)
+	}
+	for _, name := range names {
 		setupPreviewCases[name] = func(t *testing.T) setupPreviewCase {
 			w, _ := setupTestWizard(t)
 			p := updateTransactionFixture(t, "replace")
 			p.record.Version = "1.1.0"
-			if strings.HasSuffix(name, "-with-repair") {
-				p.candidateAssessment = &updateCandidateAssessment{lines: []string{`Agent profile "active-profile": the model is absent from the candidate catalog. Work that uses this profile stays stopped until repair in the dashboard.`, `Agent profile "disabled-profile": the effort is absent from the candidate catalog. The disabled profile keeps its saved choices.`, `Connection "saved-connection" requires repair. The candidate catalog omits its provider. The saved connection remains intact.`}}
+			for suffix, saved := range assessments {
+				if strings.HasSuffix(name, suffix) {
+					p.candidateAssessment = previewAssessment(t, saved.repair, saved.waits)
+				}
 			}
 			preview := setupPreviewCase{wizard: w, steps: []setupPreviewStep{{Wait: "q exit", Send: "\r", Name: name}}}
 			preview.run = func() {

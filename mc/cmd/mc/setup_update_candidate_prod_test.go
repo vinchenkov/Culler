@@ -110,7 +110,7 @@ func TestCandidateAssessmentChecksProviderModelAndExplicitEffort(t *testing.T) {
 				profile.Model = "removed-model"
 			case "effort":
 				for _, effort := range []string{"none", "minimal", "low", "medium", "high", "xhigh", "max", "thinking"} {
-					if opencodecatalog.ValidateProfile(provider.ID, profile.Model, effort) != nil {
+					if provider.ValidateModel(profile.Model, effort) != nil {
 						profile.Effort = effort
 						break
 					}
@@ -281,4 +281,132 @@ func TestCandidateCheckPreservesForeignVolume(t *testing.T) {
 	if len(calls) != 1 || !strings.HasPrefix(calls[0], "volume inspect ") {
 		t.Fatalf("a foreign volume changed: %v", calls)
 	}
+}
+
+func TestCandidateAssessmentNamesProfilesThatWaitForTheLiveModelList(t *testing.T) {
+	configure := func(t *testing.T, enabled bool, model, effort string) string {
+		home := t.TempDir()
+		cfg := operatorconfig.Default()
+		cfg.Runtimes.Credentials["catalog"] = operatorconfig.CredentialSource{Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
+		cfg.Runtimes.Bindings["catalog"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: model, Credential: "catalog", Effort: effort}
+		if enabled {
+			cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, "catalog")
+		}
+		if _, err := operatorconfig.WriteAtomic(filepath.Join(home, "config.toml"), cfg); err != nil {
+			t.Fatal(err)
+		}
+		return home
+	}
+	assess := func(home string) (repairs, waits []string) {
+		assessment, err := assessUpdateConfiguration(home)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return assessment.Lines(), assessment.Waits()
+	}
+	// The candidate holds the release catalog and the pinned OpenCode that derived the live models.
+	home := configure(t, true, "kimi-fixture-new", "high")
+	retainSetupLiveModels(t, home, opencodecatalog.Digest())
+	if repairs, waits := assess(home); len(repairs)+len(waits) != 0 {
+		t.Fatalf("The assessment reports a valid live model: %q %q", repairs, waits)
+	}
+	// The candidate holds the live model, and that model lacks the saved effort. The profile requires repair.
+	home = configure(t, true, "kimi-fixture-new", "minimal")
+	retainSetupLiveModels(t, home, opencodecatalog.Digest())
+	if repairs, waits := assess(home); len(waits) != 0 || len(repairs) != 1 || !strings.Contains(repairs[0], "This model does not offer the selected effort. Select another effort level.") {
+		t.Fatalf("The assessment reports %q and %q.", repairs, waits)
+	}
+	// The candidate holds another release catalog, so it derives the live models again after the update.
+	home = configure(t, true, "kimi-fixture-new", "high")
+	retainSetupLiveModels(t, home, strings.Repeat("0", 64))
+	want := `Agent profile "catalog" uses a model from the live model list of OpenCode. The update starts a refresh of the live models. If the refresh fails or the list lacks the model, work that uses this profile stays stopped until repair in the dashboard.`
+	if repairs, waits := assess(home); len(repairs) != 0 || len(waits) != 1 || waits[0] != want {
+		t.Fatalf("The assessment reports %q and %q.", repairs, waits)
+	}
+	// One statement names each profile.
+	for count, want := range map[int]string{
+		2: `Agent profiles "kimi" and "kimi-fast" use models from the live model list of OpenCode. The update starts a refresh of the live models. For each of these profiles, if the refresh fails or the list lacks its model, work that uses that profile stays stopped until repair in the dashboard.`,
+		3: `Agent profiles "kimi", "kimi-fast", and "kimi-pair" use models from the live model list of OpenCode. The update starts a refresh of the live models. For each of these profiles, if the refresh fails or the list lacks its model, work that uses that profile stays stopped until repair in the dashboard.`,
+	} {
+		if assessment := previewAssessment(t, false, count); len(assessment.Lines()) != 0 || len(assessment.Waits()) != 1 || assessment.Waits()[0] != want {
+			t.Fatalf("The assessment reports %q and %q.", assessment.Lines(), assessment.Waits())
+		}
+	}
+	// A live model can replace a release catalog model and offer another effort. The refresh can return that effort.
+	release, _ := opencodecatalog.Find("moonshotai")
+	replaced := ""
+	for _, effort := range []string{"none", "minimal", "low", "medium", "high", "xhigh", "max", "thinking"} {
+		if _, listed := release.Model("kimi-k3"); listed && release.ValidateModel("kimi-k3", effort) != nil {
+			replaced = effort
+			break
+		}
+	}
+	if replaced == "" {
+		t.Fatal("The release catalog model of the fixture accepts every effort.")
+	}
+	home = configure(t, true, "kimi-k3", replaced)
+	retainSetupLiveModels(t, home, strings.Repeat("0", 64))
+	if repairs, waits := assess(home); len(repairs) != 0 || len(waits) != 1 || waits[0] != want {
+		t.Fatalf("The assessment reports %q and %q.", repairs, waits)
+	}
+	home = configure(t, false, "kimi-fixture-new", "high")
+	retainSetupLiveModels(t, home, strings.Repeat("0", 64))
+	if repairs, waits := assess(home); len(repairs)+len(waits) != 0 {
+		t.Fatalf("The assessment reports a disabled profile with a live model: %q %q", repairs, waits)
+	}
+	// No release retained this model.
+	home = configure(t, true, "kimi-fixture-new", "high")
+	if repairs, waits := assess(home); len(waits) != 0 || len(repairs) != 1 || !strings.Contains(repairs[0], "The connection does not offer this model. Select another model.") {
+		t.Fatalf("The assessment reports %q and %q.", repairs, waits)
+	}
+}
+
+// previewAssessment gives the assessment of a saved configuration, so each preview shows the text of the release.
+// The repairs are an enabled profile with an absent model, a disabled profile with an absent effort, and a connection with an absent provider.
+// Each wait is an enabled profile with a live model that another release catalog derived.
+func previewAssessment(t *testing.T, repair bool, waits int) *updateCandidateAssessment {
+	t.Helper()
+	home := t.TempDir()
+	cfg := operatorconfig.Default()
+	provider, ok := opencodecatalog.Find("moonshotai")
+	if !ok {
+		t.Fatal("The release catalog lacks the fixture provider.")
+	}
+	cfg.Runtimes.Credentials["catalog"] = operatorconfig.CredentialSource{Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: provider.ID}
+	if repair {
+		cfg.Runtimes.Bindings["primary"] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: "removed-model", Credential: "catalog"}
+		cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, "primary")
+		spare := operatorconfig.RuntimeBinding{Harness: "opencode", Model: provider.Models[0].ID, Credential: "catalog"}
+		for _, effort := range []string{"none", "minimal", "low", "medium", "high", "xhigh", "max", "thinking"} {
+			if provider.ValidateModel(spare.Model, effort) != nil {
+				spare.Effort = effort
+				break
+			}
+		}
+		if spare.Effort == "" {
+			t.Fatal("The fixture model accepts every effort.")
+		}
+		cfg.Runtimes.Bindings["spare"] = spare
+		cfg.Runtimes.Credentials["local"] = operatorconfig.CredentialSource{Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "removed-provider"}
+	}
+	models := []string{"kimi-fixture-new", "kimi-fixture-new-fast", "kimi-fixture-pair"}
+	for i, id := range []string{"kimi", "kimi-fast", "kimi-pair"}[:waits] {
+		cfg.Runtimes.Bindings[id] = operatorconfig.RuntimeBinding{Harness: "opencode", Model: models[i], Credential: "catalog"}
+		cfg.Runtimes.EnabledBindings = append(cfg.Runtimes.EnabledBindings, id)
+	}
+	body, err := operatorconfig.Marshal(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(home, "config.toml"), body, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if waits > 0 {
+		retainSetupLiveModels(t, home, strings.Repeat("0", 64))
+	}
+	assessment, err := assessUpdateConfiguration(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return assessment
 }

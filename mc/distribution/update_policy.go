@@ -179,11 +179,11 @@ type DependencyPin struct {
 
 func DependencyInventory(root string) ([]DependencyPin, error) {
 	paths := []string{
-		"VERSION", "mc/distribution/update_policy.json", ".mise.toml", "mc/go.mod", "mc/go.sum", "mc/deployment/hostbun.json", "mc/deployment/agentsview.json", "mc/opencodecatalog/catalog.json",
+		"VERSION", "mc/distribution/update_policy.json", ".mise.toml", "mc/go.mod", "mc/go.sum", "mc/deployment/hostbun.json", "mc/deployment/agentsview.json", "mc/opencodecatalog/catalog.json", "mc/opencodecatalog/facts/package.json", "mc/opencodecatalog/facts/server.mjs",
 		"dashboard/package.json", "dashboard/bun.lock", "dashboard/pierre/package.json", "dashboard/pierre/bun.lock", "resident/package.json",
 		"runner/collie-runner/package.json", "runner/agent-runner/package.json", "runner/agent-runner/bun.lock",
 		"runner/opencode/package.json", "runner/opencode/package-lock.json", "runner/opencode/control/package.json",
-		"release/opencode/pins.json", "release/opencode/package.json", "release/opencode/build.sh", "release/opencode/extract.mjs",
+		"release/opencode/pins.json", "release/opencode/build.sh",
 		"runner/openwiki/package.json", "runner/openwiki/package-lock.json", "runner/openwiki/patch-upstream.mjs", "runner/openwiki/project-documents.mjs",
 		"runner/image/project-tools/package.json", "runner/image/project-tools/package-lock.json",
 		"runner/image/runtime-tools/package.json", "runner/image/runtime-tools/package-lock.json",

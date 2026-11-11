@@ -1,5 +1,6 @@
-import { expect, test } from "bun:test";
-import { effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, needsAuthorization, operationSummary, plannedConnection, profilePayload, profileStatus, providerChoices, releaseProviders } from "./agentprofiles.js";
+import { afterEach, beforeEach, describe, expect, jest, test } from "bun:test";
+import { createAgentProfiles, downloadView, effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, modelSourceHint, needsAuthorization, operationSummary, plannedConnection, profilePayload, profileStatus, providerChoices, releaseProviders } from "./agentprofiles.js";
+import { installFakeDocument, type FakeDocument, type FakeNode } from "./fakedom";
 
 const ROLES = ["strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie"];
 
@@ -20,7 +21,7 @@ test("a listed profile with a ready connection reads Connected without an attent
 });
 
 test("a catalog problem stops a profile with a ready connection", () => {
-  const profile = { id: "profile", connection_id: "connection", access_status: "connected", problem: "The release catalog lacks this model. Select another model." };
+  const profile = { id: "profile", connection_id: "connection", access_status: "connected", problem: "The connection does not offer this model. Select another model." };
   expect(currentProfileStatus(profile, { snapshot: { connections: [{ connection_id: "connection", state: "ready" }] } })).toMatchObject({ label: "Model unavailable", action: "Edit profile", attention: true, reconnect: false });
 });
 
@@ -252,4 +253,192 @@ test("a new connection receives a name from its provider and its access method",
   const other = { id: "connection-1", name: "Fixture API key", kind: "opencode-api-key", catalog_entry: "other", access_status: "disconnected" };
   expect(plannedConnection({ connections: [other], profiles: [] }, open, "Fixture API key")).toEqual({ id: null, name: "Fixture API key 2" });
   expect(plannedConnection({ connections: [{ ...other, catalog_entry: "fixture" }], profiles: [] }, open, "fixture api key")).toEqual({ id: "connection-1", name: "Fixture API key" });
+});
+
+test("the model list hint states the source of the model list", () => {
+  expect(modelSourceHint("release_catalog")).toBe("The release catalog supplies these models. Prices apply to each million input and output tokens.");
+  expect(modelSourceHint("release_catalog_and_live")).toBe("The release catalog and the live model list of OpenCode supply these models. Prices apply to each million input and output tokens.");
+  expect(modelSourceHint(undefined)).toBe(modelSourceHint("release_catalog"));
+});
+
+test("only a pending or active download shows the progress indicator, and only a stopped download offers Retry", () => {
+  const view = (status?: string, message?: string) => downloadView(status ? { status, message } : undefined);
+  expect(view("pending", "OpenCode waits for the download.")).toEqual({ tone: "active", active: true, retry: false, stage: "OpenCode waits for the download." });
+  expect(view("running", "Unpack the OpenCode archive.")).toEqual({ tone: "active", active: true, retry: false, stage: "Unpack the OpenCode archive." });
+  expect(view("succeeded", "OpenCode is ready.")).toEqual({ tone: "ready", active: false, retry: false, stage: "OpenCode is ready." });
+  expect(view("failed", "The network is unavailable.")).toEqual({ tone: "failed", active: false, retry: true, stage: "The network is unavailable." });
+  expect(view()).toEqual({ tone: "required", active: false, retry: true, stage: "OpenCode requires a download." });
+});
+
+describe("the Configure step of an OpenCode connection", () => {
+  let page: FakeDocument;
+  let restore: () => void;
+  beforeEach(() => { ({ document: page, restore } = installFakeDocument()); jest.useFakeTimers(); });
+  afterEach(() => { jest.useRealTimers(); restore(); });
+
+  const MODELS = [
+    { id: "fixture-k3", name: "Fixture K3", context: 262144, input_price: 0.5, output_price: 1.8, effort_levels: ["low", "high"], effort_support_known: true },
+    { id: "fixture-k2", name: "Fixture K2", context: 131072, input_price: 0.2, output_price: 0.8, effort_levels: [], effort_support_known: true },
+  ];
+  const LIVE = { id: "fixture-k4", name: "Fixture K4", context: 524288, input_price: 1.25, output_price: 6.5, effort_levels: ["low", "high"], effort_support_known: true };
+  const CATALOG_HINT = "The release catalog supplies these models. Prices apply to each million input and output tokens.";
+  const LIVE_HINT = "The release catalog and the live model list of OpenCode supply these models. Prices apply to each million input and output tokens.";
+  // The responses resolve in microtasks, so some turns complete each request and its render.
+  const settle = async () => { for (let turn = 0; turn < 30; turn++) await Promise.resolve(); };
+  const after = async (milliseconds: number) => { jest.advanceTimersByTime(milliseconds); await settle(); };
+
+  /** Saves a key for the fixture provider and stops in the Configure step, with the model fixture-k3 and the focus in the Model control. */
+  async function configureStep() {
+    const provider = { id: "opencode:fixture", name: "Fixture provider", harness: "opencode", kind: "opencode-api-key", catalog_entry: "fixture", address: "https://api.fixture.invalid/v1" };
+    const host = {
+      download: { operation_id: "opencode-download", kind: "opencode_download", status: "running", message: "Download OpenCode and its web search plugin." },
+      models: { connection_id: "fixture-connection", web_search: true, models: MODELS, source: "release_catalog" } as Record<string, unknown>,
+      modelRequests: 0,
+      starts: 0,
+    };
+    const data = { revision: "revision-1", providers: [provider], integrations: [], connections: [] as unknown[], profiles: [] };
+    const api = async (path: string) => {
+      if (path === "/api/routing") return { routes: [] };
+      if (path === "/api/agent-profiles") return structuredClone({ ...data, opencode: host.download });
+      if (path.endsWith("/connection-save")) {
+        data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider API key", access_status: "connected", authorization_id: "authorization-1" }];
+        return structuredClone({ ...data, opencode: host.download, connection_id: "fixture-connection" });
+      }
+      if (path.endsWith("/models")) { host.modelRequests++; return structuredClone(host.models); }
+      if (path.endsWith("/operation-status")) return structuredClone(host.download);
+      if (path.endsWith("/operation-start")) {
+        host.starts++;
+        host.download = { ...host.download, status: "pending", message: "OpenCode waits for the download." };
+        return structuredClone(host.download);
+      }
+      throw new Error(`The test has no response for ${path}.`);
+    };
+    const panel = createAgentProfiles({ api, onAssigned() {}, systemState: () => undefined });
+    await panel.open();
+    const dialog = page.body.byTestid("agent-profiles-panel")!;
+    const node = (testid: string) => dialog.byTestid(testid);
+    const click = (testid: string) => node(testid)!.dispatch("click");
+    await click("profile-create");
+    await click("profile-use-provider");
+    node("profile-provider-opencode:fixture")!.checked = true;
+    await node("profile-provider-opencode:fixture")!.dispatch("change");
+    node("profile-api_key")!.value = "synthetic-key";
+    await node("profile-api_key")!.dispatch("input");
+    await click("profile-key-connect");
+    await settle();
+    const model = node("profile-model")!;
+    model.value = "fixture-k3";
+    await model.dispatch("change");
+    model.focus();
+    const hint = () => dialog.all().find((item) => item.getAttribute("id") === "profile-model-hint")!.textContent;
+    const choices = () => model.options.map((option) => option.value);
+    return { panel, dialog, host, node, click, model, hint, choices };
+  }
+
+  test("a download status change preserves the Model control element, its focus, and its selection", async () => {
+    const view = await configureStep();
+    const options = [...view.model.options];
+    expect(view.node("profile-opencode-progress")!.getAttribute("role")).toBe("progressbar");
+    expect(view.node("profile-opencode-stage")!.textContent).toBe("Download OpenCode and its web search plugin.");
+    expect(view.node("profile-opencode-stage")!.getAttribute("role")).toBe("status");
+    expect(view.node("profile-opencode-download")!.textContent).toContain("The model test waits for the download.");
+    expect(view.node("profile-effort")!.hasAttribute("disabled")).toBe(false);
+    expect(view.node("profile-name")!.hasAttribute("disabled")).toBe(false);
+
+    view.host.download = { ...view.host.download, message: "Unpack the OpenCode archive." };
+    page.changes = [];
+    await after(1000);
+    const stage = view.node("profile-opencode-stage")!;
+    expect(stage.textContent).toBe("Unpack the OpenCode archive.");
+    // The text of the stage is the one change of the document.
+    expect(page.changes.length).toBe(1);
+    expect(page.changes[0]).toBe(stage.childNodes[0]!);
+    expect(view.node("profile-model")).toBe(view.model);
+    expect(view.model.options.length).toBe(options.length);
+    view.model.options.forEach((option, index) => expect(option).toBe(options[index]!));
+    expect(page.activeElement).toBe(view.model);
+    expect(view.model.value).toBe("fixture-k3");
+    view.panel.close();
+  });
+
+  test("a successful download removes the progress indicator, and the next refresh adds its live models", async () => {
+    const view = await configureStep();
+    expect(view.hint()).toBe(CATALOG_HINT);
+    expect(view.host.modelRequests).toBe(1);
+    await after(3000);
+    expect(view.host.modelRequests).toBe(1);
+
+    view.host.download = { ...view.host.download, status: "succeeded", message: "OpenCode is ready." };
+    view.host.models = { ...view.host.models, refreshing: true };
+    await after(1000);
+    expect(view.node("profile-opencode-progress")).toBeNull();
+    expect(view.node("profile-opencode-retry")).toBeNull();
+    expect(view.node("profile-opencode-download")!.textContent).toBe("OpenCode is ready.");
+    expect(view.host.modelRequests).toBe(2);
+    expect(page.activeElement).toBe(view.model);
+
+    view.host.models = { connection_id: "fixture-connection", web_search: true, models: [LIVE, ...MODELS], source: "release_catalog_and_live" };
+    await after(3000);
+    expect(view.host.modelRequests).toBe(3);
+    // The Model control has the focus, so its list keeps its choices.
+    expect(view.choices()).toEqual(["", "fixture-k3", "fixture-k2"]);
+    expect(view.hint()).toBe(CATALOG_HINT);
+
+    view.model.blur();
+    await settle();
+    expect(view.node("profile-model")).toBe(view.model);
+    expect(view.choices()).toEqual(["", "fixture-k4", "fixture-k3", "fixture-k2"]);
+    expect(view.model.options[1]!.textContent).toBe("Fixture K4 (fixture-k4) · 524,288 tokens · $1.25 input / $6.5 output per million tokens");
+    expect(view.model.value).toBe("fixture-k3");
+    expect(view.hint()).toBe(LIVE_HINT);
+    await after(10000);
+    expect(view.host.modelRequests).toBe(3);
+    view.panel.close();
+  });
+
+  test("a model selection shows the live models that waited for the focus", async () => {
+    const view = await configureStep();
+    view.host.models = { connection_id: "fixture-connection", web_search: true, models: [LIVE, ...MODELS], source: "release_catalog_and_live" };
+    view.host.download = { ...view.host.download, status: "succeeded", message: "OpenCode is ready." };
+    await after(1000);
+    expect(view.choices()).toEqual(["", "fixture-k3", "fixture-k2"]);
+    view.model.value = "fixture-k2";
+    await view.model.dispatch("change");
+    expect(view.choices()).toEqual(["", "fixture-k4", "fixture-k3", "fixture-k2"]);
+    expect(view.model.value).toBe("fixture-k2");
+    expect(page.activeElement).toBe(view.model);
+    view.panel.close();
+  });
+
+  test("a failed model list request in the background keeps the available model list", async () => {
+    const view = await configureStep();
+    view.model.blur();
+    view.host.download = { ...view.host.download, status: "succeeded", message: "OpenCode is ready." };
+    view.host.models = { models: [] };
+    await after(1000);
+    expect(view.host.modelRequests).toBe(2);
+    expect(view.node("profile-model")).toBe(view.model);
+    expect(view.node("profile-model-list-error")).toBeNull();
+    expect(view.choices()).toEqual(["", "fixture-k3", "fixture-k2"]);
+    expect(view.model.value).toBe("fixture-k3");
+    view.panel.close();
+  });
+
+  test("a failed download shows the cause and Retry, and Retry starts the download again", async () => {
+    const view = await configureStep();
+    view.host.download = { ...view.host.download, status: "failed", message: "The OpenCode download failed. Retry the download." };
+    await after(1000);
+    expect(view.node("profile-opencode-progress")).toBeNull();
+    expect(view.node("profile-opencode-stage")!.textContent).toBe("The OpenCode download failed. Retry the download.");
+    expect(view.node("profile-opencode-download")!.textContent).not.toContain("The model test waits for the download.");
+    expect(view.node("profile-model")).toBe(view.model);
+    expect(view.model.value).toBe("fixture-k3");
+    await view.click("profile-opencode-retry");
+    expect(view.host.starts).toBe(1);
+    expect(view.node("profile-opencode-retry")).toBeNull();
+    expect(view.node("profile-opencode-progress")).not.toBeNull();
+    expect(view.node("profile-opencode-stage")!.textContent).toBe("OpenCode waits for the download.");
+    expect(view.node("profile-model")).toBe(view.model);
+    view.panel.close();
+  });
 });

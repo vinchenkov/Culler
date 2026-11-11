@@ -278,17 +278,14 @@ func (p *publishedSetup) cancelOperation() error {
 }
 
 func (p *publishedSetup) configure(deps *setupDependencies) {
-	deps.assessCandidate = func() ([]string, error) {
+	deps.assessCandidate = func() ([]string, []string, error) {
 		if err := p.retainCandidate(); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		if err := p.assessCandidate(p.operationContext()); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		if p.candidateAssessment == nil {
-			return nil, nil
-		}
-		return p.candidateAssessment.Lines(), nil
+		return p.candidateAssessment.Lines(), p.candidateAssessment.Waits(), nil
 	}
 	deps.finishExisting = func() error { return p.finishExisting() }
 	deps.image = func(ctx context.Context, _ string, _ string, report func(string)) error {

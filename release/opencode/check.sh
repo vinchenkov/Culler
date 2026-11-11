@@ -20,6 +20,7 @@ fi
 python3 "$root/release/opencode/generate.py" --binary "$scratch/node_modules/@opencode/$package/bin/opencode" \
   --plugin "$scratch/node_modules/opencode-websearch" --output "$scratch/catalog.json"
 cmp "$root/mc/opencodecatalog/catalog.json" "$scratch/catalog.json"
+python3 "$root/release/opencode/live_check.py" --binary "$scratch/node_modules/@opencode/$package/bin/opencode"
 mkdir -p "$scratch/control"
 cp -R "$root/runner/opencode/control/." "$scratch/control/"
 python3 "$root/release/opencode/plugin_check.py" "$scratch/node_modules/@opencode/$package/bin/opencode" "$scratch"

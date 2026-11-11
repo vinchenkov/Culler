@@ -29,6 +29,14 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - The Review Packet of a task that the Strategist proposed starts with the Strategic rationale section. The packet of a task that the operator defined starts with the Summary section.
 - The Strategist, the Arbiter, and Collie apply one shared standard for a task description: the scope and the acceptance criteria that an agent container can check.
 - Collie shows the full task description before the operator confirms a new task or a requirements revision, and it identifies each rule of the standard that the draft violates.
+- An OpenCode connection offers the release catalog models of its provider and the live models. Culler takes a live model from the live model list of the OpenCode project, and a live model replaces the release catalog model with the same identifier.
+- Culler accepts a live model only for a provider in its release catalog, and only at the network origin of a release catalog address of that provider. A provider key goes only to those origins.
+- Culler starts a refresh of the live models after the OpenCode installation, after a Culler update, and at a model choice when no refresh started during the previous hour. The request for the live model list holds no provider key and no data about the operator, a Project, or the deployment.
+- The model choice of terminal setup and the dashboard states the source of its model list.
+- Terminal setup returns to the model choice when a saved choice names a model that the connection does not offer.
+- When an update changes the release catalog or the OpenCode version, the update confirmation names each enabled agent profile whose model or effort level only a live model supplies. The update starts a refresh of the live models, and a failed refresh stops the work of such a profile until repair in the dashboard.
+- The Configure step of the Agent profiles panel shows the OpenCode download as a card with a progress indicator, the current stage, and the statement that the model test waits for the download.
+- A background update of the Agent profiles panel changes only the elements whose content changed. Each control keeps its focus, its entered text, its selection, its scroll position, and its open list.
 
 ### Known limits
 

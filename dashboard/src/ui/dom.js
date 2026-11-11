@@ -126,7 +126,7 @@ function nodeKey(node) {
     .map(name => node.getAttribute(name) ?? ""));
 }
 
-function patchNode(node, next) {
+function patchNode(node, next, controlled) {
   if (node.nodeType !== next.nodeType || node.nodeName !== next.nodeName || nodeKey(node) !== nodeKey(next)) return next;
   if (node.nodeType === 3) {
     if (node.data !== next.data) node.data = next.data;
@@ -143,17 +143,22 @@ function patchNode(node, next) {
   handlers.set(node, handlers.get(next));
   // A report keeps its loaded frame, its read position, and its own control.
   if (node.hasAttribute("data-report")) return node;
-  if (!/^(INPUT|TEXTAREA|SELECT)$/.test(node.nodeName)) reconcileChildren(node, [...next.childNodes]);
-  else if (node.nodeName === "SELECT") {
-    const value = node.value;
-    reconcileChildren(node, [...next.childNodes]);
-    if ([...node.options].some(option => option.value === value)) node.value = value;
-  }
+  if (node.nodeName === "SELECT") {
+    // The new content gives the value of a controlled select. Each other select keeps the value that the person selected.
+    // The read comes first, because each new option moves from the new select into the retained select.
+    const value = controlled ? next.value : node.value;
+    reconcileChildren(node, [...next.childNodes], controlled);
+    if (node.value !== value && [...node.options].some(option => option.value === value)) node.value = value;
+  } else if (node.nodeName === "INPUT") {
+    if (controlled && node.value !== next.value) node.value = next.value;
+    if (controlled && node.checked !== next.checked) node.checked = next.checked;
+  } else if (node.nodeName !== "TEXTAREA") reconcileChildren(node, [...next.childNodes], controlled);
   return node;
 }
 
 // Retain element identities so a refresh preserves focus and text selection.
-export function reconcileChildren(host, children) {
+// A controlled refresh also gives each retained input and select the value of the new content.
+export function reconcileChildren(host, children, controlled = false) {
   const unused = new Set(host.childNodes);
   const candidates = new Map();
   const identity = node => `${node.nodeType}:${node.nodeName}:${nodeKey(node)}`;
@@ -162,16 +167,20 @@ export function reconcileChildren(host, children) {
     if (!candidates.has(key)) candidates.set(key, { nodes: [], index: 0 });
     candidates.get(key).nodes.push(node);
   }
-  let cursor = host.firstChild;
-  for (const value of children) {
+  const kept = children.map(value => {
     const next = typeof value === "string" ? document.createTextNode(value) : value;
     const group = candidates.get(identity(next));
     const old = group?.nodes[group.index++];
-    const node = old ? patchNode(old, next) : next;
-    if (old) unused.delete(old);
-    if (node !== cursor) host.insertBefore(node, cursor);
-    if (old && old !== node) old.remove();
-    cursor = node.nextSibling;
-  }
+    const node = old ? patchNode(old, next, controlled) : next;
+    if (node === old) unused.delete(old);
+    return node;
+  });
+  // The removals come first. A retained node that keeps its order then stays in the document,
+  // and it keeps its focus, its scroll position, and its open list.
   for (const node of unused) node.remove();
+  let cursor = host.firstChild;
+  for (const node of kept) {
+    if (node === cursor) cursor = cursor.nextSibling;
+    else host.insertBefore(node, cursor);
+  }
 }

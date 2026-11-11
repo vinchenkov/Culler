@@ -254,7 +254,7 @@ func (p *publishedSetup) recoverUpdate(raw []string, a verbs.OnboardArgs, in io.
 		return writeVerbError(out, diagnostic, assessmentErr), true
 	}
 	if slices.Contains(raw, "--yes") {
-		for _, line := range p.candidateAssessment.Lines() {
+		for _, line := range append(p.candidateAssessment.Lines(), p.candidateAssessment.Waits()...) {
 			fmt.Fprintln(diagnostic, line)
 		}
 	}
@@ -549,6 +549,7 @@ func (p *publishedSetup) confirmUpdate(terminal setupTerminal) (string, error) {
 		terminal.Panel("Saved choices that require repair", p.candidateAssessment.Lines())
 		lines = append(lines, "Affected active profiles stay stopped until repair in the dashboard.")
 	}
+	lines = append(lines, p.candidateAssessment.Waits()...)
 	lines = append(lines, "Selected release: "+p.record.Version+" ("+shortPublishedID(p.record.Commit)+").")
 	terminal.Panel("Update Culler", lines)
 	return terminal.Choose("Choose an action", []onboarding.Choice{setupChoice("update", "Stop and update", "Apply the selected release."), setupChoice("cancel", "Cancel", "Keep the current deployment.")}, 0)
@@ -643,6 +644,7 @@ func (p *publishedSetup) confirmRecovery(terminal setupTerminal, restore bool) (
 		terminal.Panel("Saved choices that require repair", p.candidateAssessment.Lines())
 		lines = append(lines, "Affected active profiles stay stopped until repair in the dashboard.")
 	}
+	lines = append(lines, p.candidateAssessment.Waits()...)
 	terminal.Panel("Recover the interrupted update", lines)
 	choices := []onboarding.Choice{setupChoice("retry", "Retry the update", "Use the retained release."), setupChoice("exit", "Exit", "Keep Culler stopped.")}
 	if p.update.Previous != nil {

@@ -13,7 +13,6 @@ import (
 	operatorconfig "mc/config"
 	"mc/deployment"
 	"mc/onboarding"
-	"mc/opencodecatalog"
 )
 
 // setupProviderSearch matches the provider search of the dashboard.
@@ -94,7 +93,7 @@ func (w *setupWizard) openCodeProvider(choice *onboarding.AccessChoice) error {
 }
 
 func (w *setupWizard) openCodeModel(choice *onboarding.AccessChoice) error {
-	provider, ok := opencodecatalog.Find(strings.TrimPrefix(choice.Template, "opencode:"))
+	provider, source, ok := deployment.OpenCodeModelList(w.home, strings.TrimPrefix(choice.Template, "opencode:"))
 	if !ok {
 		return fmt.Errorf("The release catalog lacks this provider. Select another provider.")
 	}
@@ -102,7 +101,7 @@ func (w *setupWizard) openCodeModel(choice *onboarding.AccessChoice) error {
 	if provider.WebSearch {
 		search = "Agents on this connection can search the web."
 	}
-	w.ui.Panel("Configure the model", []string{search, "Prices apply to each million input and output tokens."})
+	w.ui.Panel("Configure the model", []string{search, setupModelSource(source), "Prices apply to each million input and output tokens."})
 	choices := []onboarding.Choice{}
 	selected := 0
 	for i, model := range provider.Models {
@@ -120,11 +119,25 @@ func (w *setupWizard) openCodeModel(choice *onboarding.AccessChoice) error {
 	return nil
 }
 
+// setupModelSource states the source of the model list.
+func setupModelSource(source string) string {
+	if source == deployment.OpenCodeModelSourceLive {
+		return "The release catalog and the live model list of OpenCode supply these models."
+	}
+	return "The release catalog supplies these models."
+}
+
 func (w *setupWizard) openCodeEffort(choice *onboarding.AccessChoice) error {
-	provider, ok := opencodecatalog.Find(strings.TrimPrefix(choice.Template, "opencode:"))
-	model, modelOK := provider.Model(choice.Model)
-	if !ok || !modelOK {
-		return fmt.Errorf("The release catalog lacks this model. Select another model.")
+	provider, ok := deployment.OpenCodeProvider(w.home, strings.TrimPrefix(choice.Template, "opencode:"))
+	if !ok {
+		return fmt.Errorf("The release catalog lacks this provider. Select another provider.")
+	}
+	model, ok := provider.Model(choice.Model)
+	if !ok {
+		// A refresh or a Culler update can remove the saved model from the model list.
+		w.problem("The saved model is unavailable", []string{fmt.Sprintf("The connection does not offer the model %s.", choice.Model), "Select another model."})
+		choice.Step = "model"
+		return nil
 	}
 	choices := []onboarding.Choice{setupChoice("default", "Default", "Use the provider default.")}
 	for _, effort := range model.Efforts() {
@@ -137,7 +150,7 @@ func (w *setupWizard) openCodeEffort(choice *onboarding.AccessChoice) error {
 	if effort == "default" {
 		effort = ""
 	}
-	if err := opencodecatalog.ValidateProfile(provider.ID, model.ID, effort); err != nil {
+	if err := provider.ValidateModel(model.ID, effort); err != nil {
 		return err
 	}
 	_, err = operatorconfig.UpdateAtomic(filepath.Join(w.home, "config.toml"), func(cfg *operatorconfig.Config) error {

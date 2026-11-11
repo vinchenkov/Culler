@@ -243,7 +243,12 @@ func ConfigureRuntimeSource(home, runner, release string) error {
 
 // UpdateOpenCodeVolume prepares source packages or updates an installed published package before service activation.
 func UpdateOpenCodeVolume(ctx context.Context, home, image, release string) error {
-	return updateOpenCodeVolume(ctx, home, image, release, runRuntimeDocker)
+	if err := updateOpenCodeVolume(ctx, home, image, release, runRuntimeDocker); err != nil {
+		return err
+	}
+	// The retained live models belong to the previous release catalog and the previous pinned OpenCode.
+	StartOpenCodeModelRefresh(home, true)
+	return nil
 }
 
 func updateOpenCodeVolume(ctx context.Context, home, image, release string, run RuntimeDocker) error {
@@ -276,7 +281,18 @@ func updateOpenCodeVolume(ctx context.Context, home, image, release string, run 
 	if err == nil && strings.TrimSpace(string(current)) == release && !sourceOpenCodeNeedsPublishedArchive(ctx, home, image, volume, release, run) {
 		return nil
 	}
-	if err := downloadOpenCodeWithDocker(ctx, home, image, func(string) {}, run); err != nil {
+	// A refresh of the live models reads the volume. The installation waits for that container.
+	root, err := agentProfileOperationsRoot(home)
+	if err != nil {
+		return err
+	}
+	worker, err := agentProfileOperationLockContext(ctx, root, openCodeOperation+".worker")
+	if err != nil {
+		return err
+	}
+	err = downloadOpenCodeWithDocker(ctx, home, image, func(string) {}, run)
+	agentProfileUnlock(worker)
+	if err != nil {
 		return err
 	}
 	if _, err := os.Stat(filepath.Join(home, "agent-profile-operations", openCodeOperation+".json")); err == nil {

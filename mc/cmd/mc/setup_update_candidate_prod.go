@@ -30,13 +30,36 @@ type updateCandidateAssessment struct {
 	digest  string
 	present bool
 	lines   []string
+	// The enabled profiles whose live model another release derived.
+	waits []string
 }
 
+// Lines returns the saved choices that require repair.
 func (a *updateCandidateAssessment) Lines() []string {
 	if a == nil {
 		return nil
 	}
 	return append([]string(nil), a.lines...)
+}
+
+// Waits returns the statement about the enabled profiles whose live model the update derives again.
+func (a *updateCandidateAssessment) Waits() []string {
+	if a == nil || len(a.waits) == 0 {
+		return nil
+	}
+	count := len(a.waits)
+	if count == 1 {
+		return []string{fmt.Sprintf("Agent profile %q uses a model from the live model list of OpenCode. The update starts a refresh of the live models. If the refresh fails or the list lacks the model, work that uses this profile stays stopped until repair in the dashboard.", a.waits[0])}
+	}
+	names := make([]string, count)
+	for i, id := range a.waits {
+		names[i] = fmt.Sprintf("%q", id)
+	}
+	list := names[0] + " and " + names[1]
+	if count > 2 {
+		list = strings.Join(names[:count-1], ", ") + ", and " + names[count-1]
+	}
+	return []string{"Agent profiles " + list + " use models from the live model list of OpenCode. The update starts a refresh of the live models. For each of these profiles, if the refresh fails or the list lacks its model, work that uses that profile stays stopped until repair in the dashboard."}
 }
 
 func (a *updateCandidateAssessment) configSHA256() string {
@@ -80,7 +103,14 @@ func assessUpdateConfiguration(home string) (*updateCandidateAssessment, error) 
 			continue
 		}
 		connection := cfg.Runtimes.Credentials[profile.Credential]
-		if err := opencodecatalog.ValidateProfile(connection.CatalogEntry, profile.Model, profile.Effort); err != nil {
+		if err := deployment.ValidateOpenCodeProfile(home, connection.CatalogEntry, profile.Model, profile.Effort); err != nil {
+			// The candidate derives the live models again after the update.
+			if deployment.OpenCodeProfileAwaitsRefresh(home, connection.CatalogEntry, profile.Model, profile.Effort) {
+				if enabled[id] {
+					a.waits = append(a.waits, id)
+				}
+				continue
+			}
 			state := "The disabled profile keeps its saved choices."
 			if enabled[id] {
 				state = "Work that uses this profile stays stopped until repair in the dashboard."

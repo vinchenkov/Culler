@@ -43,6 +43,49 @@ test("the shell environment removes every token and the native configuration", (
   expect(shell.PATH).toBe("/bin");
 });
 
+const record = JSON.stringify({ fixture: { id: "fixture", name: "Fixture", env: ["FIXTURE_API_KEY"], doc: "https://provider.invalid/docs",
+  models: { "fixture-model": { id: "fixture-model", name: "Fixture Model", limit: { context: 524288, output: 65536 } } } } });
+const liveAccess = (): ProviderAccess => { const live = structuredClone(access); live.opencode!.model.record = record; return live; };
+
+test("OpenCode reads the model record of a live model and makes no request for the live model list", () => {
+  const base = { OPENCODE_MODELS_PATH: "/project/models.json", OPENCODE_MODELS_URL: "https://outside.invalid", PATH: "/bin" };
+  const live = openCodeEnvironment(base, {}, "/mc/session/opencode", "/mc/ca", "/mc/session/opencode/model-record.json");
+  expect(live.OPENCODE_MODELS_PATH).toBe("/mc/session/opencode/model-record.json");
+  expect(live.OPENCODE_DISABLE_MODELS_FETCH).toBe("1");
+  expect(live.OPENCODE_MODELS_URL).toBeUndefined();
+  const release = openCodeEnvironment(base, {}, "/mc/session/opencode", "/mc/ca");
+  expect(release.OPENCODE_MODELS_PATH).toBeUndefined();
+  expect(release.OPENCODE_DISABLE_MODELS_FETCH).toBe("1");
+  expect(parseProviderAccess(JSON.stringify(liveAccess()), "opencode").opencode!.model.record).toBe(record);
+  for (const invalid of ["", 1, null, "x".repeat(24 * 1024 + 1)]) {
+    const changed = liveAccess() as any; changed.opencode.model.record = invalid;
+    expect(() => parseProviderAccess(JSON.stringify(changed), "opencode")).toThrow("The OpenCode access configuration is invalid.");
+  }
+});
+
+test("the adapter supplies the model record only during a run with a live model", async () => {
+  const root = await mkdtemp(join(tmpdir(), "culler-opencode-record-")); roots.push(root);
+  await mkdir(join(root, "session")); await mkdir(join(root, "workspace"));
+  const native = join(root, "native");
+  await writeFile(native, `#!${process.execPath}\nawait Bun.stdin.text();
+const file = process.env.OPENCODE_MODELS_PATH;
+await Bun.write(process.env.FIXTURE_OUTPUT, JSON.stringify({ file: file ?? null, record: file ? await Bun.file(file).text() : null, fetch: process.env.OPENCODE_DISABLE_MODELS_FETCH }));
+for (const event of [{type:'text',sessionID:'ses_record',part:{text:'Complete'}},{type:'step_finish',sessionID:'ses_record',part:{reason:'stop'}}]) console.log(JSON.stringify(event));\n`, { mode: 0o755 });
+  const file = join(root, "session/opencode/model-record.json");
+  // The second run with a live model replaces the file of an interrupted run.
+  for (const [selected, expected] of [[liveAccess(), record], [liveAccess(), record], [access, null]] as const) {
+    await writeFile(join(root, "access.json"), JSON.stringify(selected));
+    if (expected) { await mkdir(join(root, "session/opencode"), { recursive: true }); await writeFile(file, "interrupted"); }
+    const child = Bun.spawn([process.execPath, join(import.meta.dir, "adapters/opencode.ts"), "--model", "fixture-model", "--workspace", join(root, "workspace"), "--session-dir", join(root, "session")], {
+      env: { ...process.env, OPENCODE_MODELS_PATH: join(root, "outside.json"), MC_PROVIDER_ACCESS_FILE: join(root, "access.json"), MC_OPENCODE_BIN: native, FIXTURE_OUTPUT: join(root, "invocation.json") },
+      stdin: new TextEncoder().encode("Role directive and run brief"), stdout: "pipe", stderr: "pipe" });
+    const output = await new Response(child.stdout).text(); const error = await new Response(child.stderr).text();
+    expect(await child.exited, error + output).toBe(0);
+    expect(JSON.parse(await readFile(join(root, "invocation.json"), "utf8"))).toEqual({ file: expected ? file : null, record: expected, fetch: "1" });
+    expect(await Bun.file(file).exists()).toBe(false);
+  }
+});
+
 test("OpenWiki waits for its tools and rejects a failed or incomplete server", async () => {
   let polls = 0;
   const ctx = {

@@ -229,7 +229,7 @@ func agentProfileList(home string, includeEvidence bool) (AgentProfileCatalog, e
 		}
 		problem := ""
 		if b.Harness == "opencode" {
-			if err := opencodecatalog.ValidateProfile(connection.CatalogEntry, b.Model, b.Effort); err != nil {
+			if err := ValidateOpenCodeProfile(home, connection.CatalogEntry, b.Model, b.Effort); err != nil {
 				problem = err.Error()
 			}
 		}
@@ -289,7 +289,7 @@ func agentEnabled(cfg operatorconfig.Config, id string) bool {
 	return false
 }
 
-func resolveAgentProfile(cfg operatorconfig.Config, req AgentProfileRequest) (operatorconfig.RuntimeBinding, string, error) {
+func resolveAgentProfile(home string, cfg operatorconfig.Config, req AgentProfileRequest) (operatorconfig.RuntimeBinding, string, error) {
 	id, err := agentProfileID(req.ID, req.SubmissionID)
 	if err != nil {
 		return operatorconfig.RuntimeBinding{}, "", err
@@ -309,7 +309,7 @@ func resolveAgentProfile(cfg operatorconfig.Config, req AgentProfileRequest) (op
 		return b, "", fmt.Errorf("Check the model: %w", err)
 	}
 	if source.Kind == operatorconfig.CredentialKindOpenCodeAPIKey {
-		if err := opencodecatalog.ValidateProfile(source.CatalogEntry, b.Model, b.Effort); err != nil {
+		if err := ValidateOpenCodeProfile(home, source.CatalogEntry, b.Model, b.Effort); err != nil {
 			return b, "", err
 		}
 	}
@@ -321,7 +321,7 @@ func ResolveAgentProfile(home string, req AgentProfileRequest) (RuntimeCatalog, 
 	if err != nil {
 		return RuntimeCatalog{}, "", err
 	}
-	b, id, err := resolveAgentProfile(cfg, req)
+	b, id, err := resolveAgentProfile(home, cfg, req)
 	if err != nil {
 		return RuntimeCatalog{}, "", err
 	}
@@ -332,7 +332,7 @@ func ResolveAgentProfile(home string, req AgentProfileRequest) (RuntimeCatalog, 
 func saveAgentProfile(home string, req AgentProfileRequest) (AgentProfileCatalog, error) {
 	var profileID string
 	_, err := operatorconfig.UpdateAtomic(filepath.Join(home, "config.toml"), func(cfg *operatorconfig.Config) error {
-		b, id, err := resolveAgentProfile(*cfg, req)
+		b, id, err := resolveAgentProfile(home, *cfg, req)
 		if err != nil {
 			return err
 		}

@@ -4558,6 +4558,25 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
 .profile-progress-success .profile-progress-mark { background: var(--sprout); }
 .profile-progress-failure { border-color: rgba(var(--brick-rgb), 0.4); box-shadow: inset 3px 0 var(--brick), var(--e1); }
 .profile-progress-failure .profile-progress-mark { background: var(--brick); }
+/* The OpenCode download status: a card with a progress indicator during the download,
+ * a card with the cause after a failure, and one plain line after a success. */
+.profile-download { display: grid; gap: 8px; margin: 16px 0; }
+.profile-download p { margin: 0; }
+.profile-download-active, .profile-download-failed, .profile-download-required {
+  border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; background: var(--surface); box-shadow: var(--e1);
+}
+.profile-download-active { border-color: rgba(var(--navy-rgb), 0.3); background: var(--navy-wash); box-shadow: none; }
+.profile-download-active .profile-download-stage { font-weight: 700; }
+.profile-download-failed { border-color: rgba(var(--brick-rgb), 0.4); box-shadow: inset 3px 0 var(--brick), var(--e1); }
+.profile-download-failed .profile-download-stage { color: var(--brick-ink); font-weight: 600; }
+.agent-profiles .profile-download .btn { justify-self: start; margin: 0; }
+/* The stripes show activity and no completed fraction. Reduced motion keeps the stripes in place. */
+.profile-download-bar {
+  height: 8px; border-radius: 4px;
+  background: linear-gradient(-45deg, var(--navy-ink) 25%, transparent 25%, transparent 50%, var(--navy-ink) 50%, var(--navy-ink) 75%, transparent 75%) 0 0 / 16px 16px rgba(var(--navy-rgb), 0.28);
+  animation: profile-download-stripes 0.8s linear infinite;
+}
+@keyframes profile-download-stripes { to { background-position: 16px 0; } }
 @media (max-width: 600px) {
   .agent-profiles { width: 100vw; border-radius: 0; }
   .profile-header { gap: 12px; padding: 18px 16px 14px; }

@@ -226,7 +226,7 @@ func testAgentProfileModel(ctx context.Context, home, image string, catalog Runt
 
 	spec := catalog.Bindings[binding]
 	if spec.Effort != "" {
-		models, err := AgentConnectionModels(home, AgentModelListRequest{ConnectionID: spec.Credential})
+		models, err := agentConnectionModels(home, AgentModelListRequest{ConnectionID: spec.Credential}, false)
 		if err != nil {
 			return LiveProviderObservation{}, err
 		}

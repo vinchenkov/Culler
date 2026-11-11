@@ -139,10 +139,16 @@ func validateProviderContainerAccess(access ProviderContainerAccess) error {
 			return fmt.Errorf("The OpenCode access configuration is invalid.")
 		}
 		provider, ok := opencodecatalog.Find(access.OpenCode.Provider)
-		model, found := provider.Model(access.OpenCode.Model.ID)
+		model := access.OpenCode.Model
+		released, found := provider.Model(model.ID)
+		// A live model holds a model record. Its address and its package must meet the release catalog conditions.
+		accepted := found && reflect.DeepEqual(model, released)
+		if model.Record != "" {
+			accepted = opencodecatalog.ValidLiveModel(provider, model)
+		}
 		address, addressErr := url.Parse(model.Address)
-		if !ok || !found || addressErr != nil || access.OpenCode.KeyVariable != provider.KeyVariable || access.OpenCode.WebSearch != provider.WebSearch ||
-			!reflect.DeepEqual(access.OpenCode.Model, model) || strings.TrimRight(address.Path, "/") != strings.TrimRight(target.Path, "/") {
+		if !ok || !accepted || addressErr != nil || access.OpenCode.KeyVariable != provider.KeyVariable || access.OpenCode.WebSearch != provider.WebSearch ||
+			strings.TrimRight(address.Path, "/") != strings.TrimRight(target.Path, "/") {
 			return fmt.Errorf("The OpenCode access differs from the release catalog.")
 		}
 	} else if access.OpenCode != nil {

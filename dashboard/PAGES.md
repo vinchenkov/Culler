@@ -2033,18 +2033,60 @@ The form suggests only the agent profile name.
 Each suggestion follows its source until the operator enters another value.
 A change of the connection type clears each suggestion.
 
-A connected account or API key connection offers its models in a selector.
-The provider supplies this list for the connection.
+A connected account or API key connection offers its model list in the Model control.
+The provider supplies the model list of each connection other than an OpenCode connection.
 For a Codex subscription, the list contains the models that the Codex version of the runner image supports.
-The selector keeps a configured model that the list omits.
+The Model control keeps a configured model that the list omits.
 An alert states that the connection does not offer that model.
 A failed list shows its error, a model identifier field, and **Retry model list**.
 A Codex model test stops before the provider request when the list omits the model.
 
+The live model list is the record of models that the OpenCode project publishes.
+A live model is a model that the model list takes from the live model list.
+A refresh is one request for the live model list and the derivation of its live models.
+The model list of an OpenCode connection holds the release catalog models of its provider and each live model of that provider.
+A live model replaces the release catalog model with the same identifier.
+Each other live model comes before the release catalog models.
+A live model shows the same facts as a release catalog model: the name, the identifier, the context size, and the prices.
+The Configure step shows the available model list at once.
+A hint below the Model control states the source of the model list.
+The source is the release catalog alone, or the release catalog and the live model list of OpenCode.
+While a refresh of the live models waits or runs, the panel requests the model list again every 3 seconds.
+The panel also requests the model list again after a successful OpenCode download.
+When the refresh completes, the Model control adds the new live models and keeps the selected model.
+A changed model list waits while the Model control or the Effort control has the focus.
+The changed model list appears when the focus leaves that control or the operator selects a choice.
+A failed request in the background keeps the available model list.
+
+An OpenCode connection shows the status of the OpenCode download above the Model control.
+The Test and save step of a new connection shows the same status.
+During a pending or active download, the status is a card with these items:
+
+- the current stage of the download;
+- a progress indicator;
+- the statement that the model test waits for the download.
+
+The card has a border and a background that the notes of the step do not have.
+The progress indicator shows activity and no completed fraction.
+The progress indicator obeys the reduced motion setting of the browser.
+Assistive technology receives each stage change.
+The panel requests the download status each second during the download.
+The Model control, the Effort control, and the name field remain available during the download.
+**Test model** remains unavailable until the download succeeds.
+After a successful download, the status states that OpenCode is ready and shows no progress indicator.
+After a failed download, the status shows the cause and **Retry**.
+A failed download preserves the connection and its key.
+When no OpenCode download exists, the status states that OpenCode requires a download and offers **Retry**.
+
+A background update is a change of the download status, the model list, or an operation status.
+A background update changes only the elements whose content changed.
+During a background update, each control keeps its focus, its entered text, its selection, its scroll position, and its open list.
+An open list of the Model control stays open while the download status changes.
+
 The profile form places **Effort** beside **Model**.
 **Default** leaves the harness effort unset.
-The selector uses the effort levels that the model lists and the installed harness accepts.
-When the model lists no effort capabilities, the selector identifies its choices as harness levels.
+The Effort control uses the effort levels that the model lists and the installed harness accepts.
+When the model lists no effort capabilities, the Effort control identifies its choices as harness levels.
 A model test verifies that selection before the profile save.
 A change of the model or connection resets the effort to **Default**.
 The review shows the selected effort.

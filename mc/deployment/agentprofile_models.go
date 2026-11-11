@@ -14,7 +14,6 @@ import (
 	"time"
 
 	operatorconfig "mc/config"
-	"mc/opencodecatalog"
 )
 
 // CodexClientVersion is the Codex version in the runner image. The ChatGPT
@@ -45,6 +44,10 @@ type AgentModelList struct {
 	WebSearch    bool         `json:"web_search"`
 	ConnectionID string       `json:"connection_id"`
 	Models       []AgentModel `json:"models"`
+	// Source names the source of the model list of an OpenCode connection.
+	Source string `json:"source,omitempty"`
+	// Refreshing reports a refresh of the live models that waits or runs.
+	Refreshing bool `json:"refreshing,omitempty"`
 }
 
 // AgentModelListError reports a model list request that the provider did not complete.
@@ -96,8 +99,13 @@ func listsAgentModels(kind string) bool {
 	return agentConnectionKind(kind)
 }
 
-// AgentConnectionModels returns the models that the provider offers to a subscription connection.
+// AgentConnectionModels returns the model list of a connection.
+// A request for the model list of an OpenCode connection starts a refresh of the live models when one is due.
 func AgentConnectionModels(home string, req AgentModelListRequest) (AgentModelList, error) {
+	return agentConnectionModels(home, req, true)
+}
+
+func agentConnectionModels(home string, req AgentModelListRequest, refresh bool) (AgentModelList, error) {
 	cfg, err := operatorconfig.Load(filepath.Join(home, "config.toml"))
 	if err != nil {
 		return AgentModelList{}, err
@@ -107,11 +115,16 @@ func AgentConnectionModels(home string, req AgentModelListRequest) (AgentModelLi
 		return AgentModelList{}, fmt.Errorf("Select an available connection.")
 	}
 	if source.Kind == operatorconfig.CredentialKindOpenCodeAPIKey {
-		provider, ok := opencodecatalog.Find(source.CatalogEntry)
+		provider, ok := OpenCodeProvider(home, source.CatalogEntry)
+		list := OpenCodeModelSource(home)
+		if refresh {
+			provider, list, ok = OpenCodeModelList(home, source.CatalogEntry)
+		}
 		if !ok {
 			return AgentModelList{}, fmt.Errorf("The release catalog lacks this provider. Select another provider.")
 		}
-		out := AgentModelList{ConnectionID: req.ConnectionID, WebSearch: provider.WebSearch, Models: []AgentModel{}}
+		out := AgentModelList{ConnectionID: req.ConnectionID, WebSearch: provider.WebSearch, Models: []AgentModel{},
+			Source: list, Refreshing: openCodeModelRefreshActive(home)}
 		for _, model := range provider.Models {
 			out.Models = append(out.Models, AgentModel{ID: model.ID, Name: model.Name, Context: model.Context, InputPrice: model.InputPrice, OutputPrice: model.OutputPrice, EffortLevels: model.Efforts(), EffortSupportKnown: true})
 		}

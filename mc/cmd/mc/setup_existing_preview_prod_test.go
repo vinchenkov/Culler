@@ -17,7 +17,7 @@ import (
 )
 
 func init() {
-	for _, name := range []string{"existing-complete", "existing-partial", "existing-update", "existing-update-stopped", "existing-update-blocked", "existing-diagnostic", "incompatible-database", "existing-active-partial", "existing-requested", "existing-agent", "existing-install", "existing-exit", "saved-choices", "final-diagnostic", "image-diagnostic", "health-diagnostic", "existing-update-mixed", "existing-update-files", "final-check-failure", "existing-update-older", "existing-update-unknown", "existing-update-components", "existing-update-repair"} {
+	for _, name := range []string{"existing-complete", "existing-partial", "existing-update", "existing-update-stopped", "existing-update-blocked", "existing-diagnostic", "incompatible-database", "existing-active-partial", "existing-requested", "existing-agent", "existing-install", "existing-exit", "saved-choices", "final-diagnostic", "image-diagnostic", "health-diagnostic", "existing-update-mixed", "existing-update-files", "final-check-failure", "existing-update-older", "existing-update-unknown", "existing-update-components", "existing-update-repair", "existing-update-wait", "existing-update-waits", "existing-update-three-waits", "existing-update-repair-wait"} {
 		setupPreviewCases[name] = func(t *testing.T) setupPreviewCase { return setupPreviewExisting(t, name) }
 	}
 }
@@ -117,7 +117,7 @@ func setupPreviewExisting(t *testing.T, name string) setupPreviewCase {
 			w.serviceStates = map[string]bool{"resident": false, "dashboard": false}
 			w.exitNotice()
 		}
-	case "existing-update", "existing-update-stopped", "existing-update-blocked", "existing-update-mixed", "existing-update-files", "existing-update-older", "existing-update-unknown", "existing-update-components", "existing-update-repair":
+	case "existing-update", "existing-update-stopped", "existing-update-blocked", "existing-update-mixed", "existing-update-files", "existing-update-older", "existing-update-unknown", "existing-update-components", "existing-update-repair", "existing-update-wait", "existing-update-waits", "existing-update-three-waits", "existing-update-repair-wait":
 		state.Update = true
 		state.Release.Installed, state.Release.InstalledDisplay = "a3def3e5dca098246219bc631f35fcd290158471", "a3def3e5dca0"
 		for i := range state.Release.Components {
@@ -156,14 +156,12 @@ func setupPreviewExisting(t *testing.T, name string) setupPreviewCase {
 			state.Release.InstalledDisplay = ""
 			state.Release.Components[0].Status = "unknown"
 		}
-		if name == "existing-update-repair" {
-			w.deps.assessCandidate = func() ([]string, error) {
-				return []string{
-					"Agent profile \"primary\": The candidate catalog omits this model. Work that uses this profile stays stopped until repair in the dashboard.",
-					"Agent profile \"spare\": The candidate catalog omits this effort. The disabled profile keeps its saved choices.",
-					"Connection \"local\" requires repair. The candidate catalog omits its provider. The saved connection remains intact.",
-				}, nil
-			}
+		if saved, ok := map[string]struct {
+			repair bool
+			waits  int
+		}{"existing-update-repair": {true, 0}, "existing-update-wait": {false, 1}, "existing-update-waits": {false, 2}, "existing-update-three-waits": {false, 3}, "existing-update-repair-wait": {true, 1}}[name]; ok {
+			assessment := previewAssessment(t, saved.repair, saved.waits)
+			w.deps.assessCandidate = func() ([]string, []string, error) { return assessment.Lines(), assessment.Waits(), nil }
 		}
 		if name == "existing-update-components" {
 			state.Release.Components[3].Installed = "34b926d7ce43"

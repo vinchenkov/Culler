@@ -452,6 +452,33 @@ The model list shows the context limit and prices for each million input and out
 **Default** uses the provider default; each other effort selects a model variant.
 The page states whether agents can search the web.
 
+The model list of an OpenCode connection holds the release catalog models of its provider and the live models.
+A live model is a model that Culler takes from the live model list of the OpenCode project.
+A live model replaces the release catalog model with the same identifier.
+Culler accepts a live model only for a provider in its release catalog.
+The address of a live model must have the network origin of a release catalog address of that provider.
+The live model list adds no provider, and a provider key goes only to those origins.
+The model choice states the source of its list.
+
+A refresh is one request for the live model list and the derivation of its live models.
+Culler requests the live model list from `https://models.opencode.ai/experimental/v2.0/api.json` over HTTPS.
+The request holds the client name `culler` and the response format that Culler accepts.
+It holds no provider key and no data about the operator, a Project, or the deployment.
+The installed OpenCode derives the model facts in a container without network access, provider keys, or Project data.
+Culler starts a refresh after the OpenCode installation and after a Culler update that installs OpenCode.
+A model choice starts a refresh when no refresh started during the previous hour.
+The model choice shows the available models at once.
+Culler keeps the live models of the latest successful refresh.
+A failed refresh changes no model list, and the Culler log records its cause.
+An agent container makes no request for the live model list.
+
+A Culler update can change the release catalog or the OpenCode version.
+The model list then holds only release catalog models until the next successful refresh.
+The update starts that refresh.
+The update confirmation names each enabled agent profile whose model or effort level only a live model supplies.
+When the refresh fails or the live model list lacks the model, work that uses such a profile stays stopped until repair in the dashboard.
+Culler starts a failed refresh again after one hour while such a profile needs its live model.
+
 A published installation without an OpenCode connection downloads no OpenCode program.
 A published update replaces an existing OpenCode volume with the archive of that release.
 Both uninstall modes remove the OpenCode volume.

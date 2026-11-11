@@ -403,6 +403,7 @@ func (w *setupWizard) chooseExistingDeployment(state setupDeployment, requested 
 	lines := []string{"Welcome back. Continue from your last completed step."}
 	action := setupChoice("continue", "Continue setup", "Keep the completed steps.")
 	needsRepair := false
+	var waits []string
 	if state.Update {
 		title = "Update Culler"
 		action = setupChoice("update", "Stop and update", "Interrupt active runs and apply this release.")
@@ -413,12 +414,12 @@ func (w *setupWizard) chooseExistingDeployment(state setupDeployment, requested 
 	if state.Update {
 		lines = nil
 		if w.deps.assessCandidate != nil {
-			disclosures, err := w.deps.assessCandidate()
+			repairs, notes, err := w.deps.assessCandidate()
 			if err != nil {
 				return "", err
 			}
-			lines = append(lines, disclosures...)
-			needsRepair = len(disclosures) > 0
+			lines, waits = repairs, notes
+			needsRepair = len(repairs) > 0
 		}
 	} else if requested {
 		lines = []string{"Setup will apply your requested changes."}
@@ -435,7 +436,7 @@ func (w *setupWizard) chooseExistingDeployment(state setupDeployment, requested 
 			if needsRepair {
 				warning = append(warning, "Affected profiles need repair in the dashboard. Their work stays stopped.")
 			}
-			w.ui.Panel("Before the update", warning)
+			w.ui.Panel("Before the update", append(warning, waits...))
 		}
 		choice, err := w.ui.Choose("Choose an action", []onboarding.Choice{
 			action, setupChoice("finish", "Cancel", "Keep the current deployment."),
