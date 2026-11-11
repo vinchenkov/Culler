@@ -2,7 +2,7 @@ import { afterAll, beforeAll, expect, test } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Frame } from "playwright";
-import { bootSmoke, completePageRead, evidencePath, gotoReady, mc, seedProject, selectProject, teardown, type Smoke, openSpine } from "./harness";
+import { bootSmoke, completePageRead, evidencePath, gotoReady, mc, seedProject, selectProject, systemNoticeShown, teardown, type Smoke, openSpine } from "./harness";
 import { seedDeliveryPacket, type ChangeFixtureFile } from "./delivery-fixture";
 
 let smoke: Smoke;
@@ -879,7 +879,7 @@ test("with two notices, the Review page fits a laptop window and keeps the decis
       await report().getByText("The second report", { exact: true }).waitFor();
       await page.waitForFunction(() => !(document.querySelector('[data-testid="packet-approve"]') as HTMLButtonElement).disabled);
       // The fixture shows a system notice and a Project action above the panel.
-      expect(await page.locator(".system-notice-row").count()).toBeGreaterThan(0);
+      await systemNoticeShown(page);
       expect(await page.locator("main .project-action").count()).toBeGreaterThan(0);
       // The page itself does not scroll, and each part of the reader is in view.
       expect(await page.evaluate(() => document.scrollingElement!.scrollHeight)).toBe(size.height);

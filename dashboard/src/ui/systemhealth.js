@@ -96,6 +96,8 @@ export function acceptSystemStatus(previous, response, now) {
   return { snapshot: response, viewers: viewerFacts(response), receivedAt: now, lastCompleteAt: response.observed_at, recovered, recoveredUntil, unavailable: false, pending: false };
 }
 
+export const UNAVAILABLE_AFTER_FAILURES = 2;
+
 export function createSystemStatus({ request, changed, now = Date.now, schedule = setTimeout, cancel = clearTimeout,
   hidden = () => typeof document !== "undefined" && document.visibilityState === "hidden" }) {
   let state = { snapshot: null, viewers: null, receivedAt: 0, unavailable: false, pending: true };
@@ -103,8 +105,14 @@ export function createSystemStatus({ request, changed, now = Date.now, schedule 
   let timer = null;
   let serial = 0;
   let stopped = false;
+  let failures = 0;
   function publish() {
     if (!hidden()) changed({ ...state });
+  }
+  // One failed read during a short load peak keeps the previous view. The second consecutive failed read shows the status as unavailable.
+  function fail(next) {
+    failures++;
+    state = failures < UNAVAILABLE_AFTER_FAILURES ? { ...next, unavailable: state.unavailable, pending: state.pending } : next;
   }
   async function refresh() {
     if (stopped || active) return active;
@@ -117,9 +125,11 @@ export function createSystemStatus({ request, changed, now = Date.now, schedule 
       try {
         const response = await Promise.race([request(controller.signal), timeout]);
         if (generation !== serial || controller.signal.aborted || stopped) return;
-        state = acceptSystemStatus(state, response, now());
+        const next = acceptSystemStatus(state, response, now());
+        if (next.unavailable) fail(next);
+        else { failures = 0; state = next; }
       } catch {
-        if (generation === serial && !stopped) state = { ...state, unavailable: true, pending: false };
+        if (generation === serial && !stopped) fail({ ...state, unavailable: true, pending: false });
       } finally {
         cancel(deadline);
         if (generation === serial) { active = null; publish(); }

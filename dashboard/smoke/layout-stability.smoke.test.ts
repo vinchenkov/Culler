@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, expect, test } from "bun:test";
-import { bootSmoke, evidencePath, gotoReady, mc, seedProject, teardown, type Smoke } from "./harness";
+import { bootSmoke, evidencePath, gotoReady, mc, seedProject, systemNoticeShown, teardown, type Smoke } from "./harness";
 
 let smoke: Smoke;
 const pages = ["board", "collie", "review", "pipeline", "configs", "logs", "vision/layout", "environment/layout"];
@@ -194,6 +194,7 @@ test("A hidden document retains the Board command bar, draft, and scroll positio
   const { page, server } = smoke;
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto(`${server.url}?visibility#board`);
+  await systemNoticeShown(page);
   await settled();
   const input = page.getByTestId("board-collie-message");
   await input.fill("Keep this draft.\nKeep this second line.");

@@ -142,7 +142,7 @@ test("an unavailable status preserves the known failure",async()=>{
   let observed=0;
   await smoke.page.route("**/api/system/status",route=>{observed++;return route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({complete:false,conditions:[]})});});
   await smoke.page.evaluate(()=>window.dispatchEvent(new Event("focus")));
-  try { await smoke.page.waitForFunction(()=>document.querySelector("#system-notices")?.textContent?.includes("Status unavailable"),null,{timeout:7000}); } catch(error) { throw new Error(`Status responses: ${observed}; content: ${await smoke.page.locator("#system-notices").textContent()}; log: ${smoke.browserLog.join(" | ")}`); }
+  try { await smoke.page.waitForFunction(()=>document.querySelector("#system-notices")?.textContent?.includes("Status unavailable"),null,{timeout:12000}); } catch(error) { throw new Error(`Status responses: ${observed}; content: ${await smoke.page.locator("#system-notices").textContent()}; log: ${smoke.browserLog.join(" | ")}`); }
   await smoke.page.getByTestId("system-notices").getByRole("button", {name:"Review issues"}).click();
   expect(await smoke.page.getByRole("dialog", {name:"System issues", exact:true}).locator(`[data-condition-id="connection:${other}:token_refresh:"]`).count()).toBe(1);
   await smoke.page.keyboard.press("Escape");

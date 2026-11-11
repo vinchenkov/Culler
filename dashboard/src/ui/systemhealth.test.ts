@@ -130,10 +130,47 @@ test("A status refresh retains the last result until the request completes", asy
   resolve({ complete: true, conditions: [] });
   await controller.refresh();
   expect(updates.every(view => !view.unavailable)).toBe(true);
-  const failed = controller.refresh();
-  resolve({ complete: false, conditions: [] });
-  await failed;
-  expect(updates.at(-1).unavailable).toBe(true);
+  for (const expected of [false, true]) {
+    const failed = controller.refresh();
+    resolve({ complete: false, conditions: [] });
+    await failed;
+    expect(updates.at(-1).unavailable).toBe(expected);
+  }
+  controller.stop();
+});
+
+test("Only the second consecutive failed status read shows the status as unavailable", async () => {
+  let respond: (value: unknown) => void = () => {};
+  let fail: (error: Error) => void = () => {};
+  const updates: any[] = [];
+  const controller = createSystemStatus({
+    request: () => new Promise((done, reject) => { respond = done; fail = reject; }),
+    changed: value => updates.push(value), now: () => 1000, schedule: () => 1, cancel: () => {},
+  });
+  const read = async (outcome: () => void) => { const pending = controller.refresh(); outcome(); await pending; return updates.at(-1); };
+  expect(await read(() => respond({ complete: true, conditions: [{ id: "x" }] }))).toMatchObject({ unavailable: false, pending: false });
+  const first = await read(() => respond({ complete: false, conditions: [{ id: "y" }] }));
+  expect(first.unavailable).toBe(false);
+  expect(first.snapshot.conditions.map((item: any) => item.id)).toEqual(["x", "y"]);
+  expect((await read(() => fail(new Error("Status request expired.")))).unavailable).toBe(true);
+  expect((await read(() => respond({ complete: true, conditions: [] }))).unavailable).toBe(false);
+  expect((await read(() => fail(new Error("Status request expired.")))).unavailable).toBe(false);
+  controller.stop();
+});
+
+test("A first load that fails twice leaves the loading state as unavailable", async () => {
+  let fail: (error: Error) => void = () => {};
+  const updates: any[] = [];
+  const controller = createSystemStatus({
+    request: () => new Promise((_, reject) => { fail = reject; }),
+    changed: value => updates.push(value), schedule: () => 1, cancel: () => {},
+  });
+  for (const expected of [{ pending: true, unavailable: false }, { pending: false, unavailable: true }]) {
+    const pending = controller.refresh();
+    fail(new Error("System state is unavailable."));
+    await pending;
+    expect(updates.at(-1)).toMatchObject(expected);
+  }
   controller.stop();
 });
 

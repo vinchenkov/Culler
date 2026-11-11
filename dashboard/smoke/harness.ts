@@ -347,6 +347,12 @@ export async function gotoReady(smoke: Smoke) {
   await smoke.page.waitForSelector("body[data-ready]", { timeout: 15000 });
 }
 
+/** Waits for the system notice. The scratch deployment has no helper container, so each status read fails,
+ * and the second consecutive failed read shows the notice one poll interval after the page loads. */
+export async function systemNoticeShown(page: Page) {
+  await page.locator("#system-notices .system-notice-row").first().waitFor({ timeout: 12000 });
+}
+
 /** Waits for a complete page read that starts after this call. The page starts
  * a page read only after the previous page read ends, so the third read of the
  * region starts after the second page read ends. */

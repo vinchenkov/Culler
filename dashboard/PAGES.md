@@ -296,7 +296,10 @@ The notice preserves access to the page on narrow displays.
 A routine status refresh preserves keyboard focus.
 The status request uses the operational records that also control dispatch.
 A complete response replaces the current conditions.
-An incomplete response preserves known conditions and shows **Status unavailable**.
+An incomplete response preserves known conditions.
+A failed request or an incomplete response is a failed status read.
+The second consecutive failed status read shows **Status unavailable**.
+One failed status read keeps the previous status on the display.
 A status request sends no provider request.
 
 The System section of Configs starts with System health.
