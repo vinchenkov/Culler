@@ -71,7 +71,7 @@ interface FakeSession {
   display_name: string | null;
   /** The time of the last imported line. */
   ended_at?: string | null;
-  /** A child session, which the default session list leaves out. */
+  /** A child session, which the session list holds only for `include_children=true`. */
   child?: boolean;
 }
 
@@ -118,7 +118,7 @@ class FakeAgentsView {
   private list(params: URLSearchParams): Response {
     this.lists.push(params);
     const rows = params.get("include_one_shot") !== "true" || params.get("include_automated") !== "true" ? [] :
-      [...this.sessions.entries()].filter(([, session]) => !session.child).map(([id, session]) => ({
+      [...this.sessions.entries()].filter(([, session]) => !session.child || params.get("include_children") === "true").map(([id, session]) => ({
         id, ...(session.display_name === null ? {} : { display_name: session.display_name }), ended_at: session.ended_at ?? null,
       }));
     if (params.get("order_by") === "id:asc") rows.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
@@ -779,8 +779,8 @@ describe("AgentsView", () => {
       "GET /api/v1/sessions",
       `PATCH /api/v1/sessions/${CLAUDE_REF}/rename`,
     ]);
-    expect(server.lists.map((query) => [query.get("include_one_shot"), query.get("include_automated"), query.get("order_by")]))
-      .toEqual([["true", "true", null], ["true", "true", "id:asc"]]);
+    expect(server.lists.map((query) => [query.get("include_one_shot"), query.get("include_automated"), query.get("include_children"), query.get("order_by")]))
+      .toEqual([["true", "true", "true", null], ["true", "true", "true", "id:asc"]]);
     expect(server.mappings.map(({ path_prefix, project, enabled }) => ({ path_prefix, project, enabled }))).toEqual([
       { path_prefix: "/workspace", project: "Culler", enabled: true },
       { path_prefix: "/workspaces", project: "Culler", enabled: true },
@@ -810,7 +810,8 @@ describe("AgentsView", () => {
     const r = rig({ agentsView: server.client() });
     await copied(r);
     server.sessions.set(CLAUDE_REF, { display_name: null });
-    server.sessions.set(`codex:${CODEX_REF}`, { display_name: null, ended_at: CODEX_TIME });
+    // AgentsView records a non-interactive Codex session as a child session.
+    server.sessions.set(`codex:${CODEX_REF}`, { display_name: null, ended_at: CODEX_TIME, child: true });
     await r.lane.reconcilePass();
     server.restartWithoutArchive();
     server.requests = [];

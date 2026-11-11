@@ -204,7 +204,7 @@ export function createAgentsViewProxy(mc: McRunner, now = Date.now) {
         try { pathname = decodeURIComponent(url.pathname); } catch { return new Response("Invalid path", { status: 400 }); }
         if (/[\\%\x00-\x20]/.test(pathname) || pathname.includes("//") || pathname.split("/").some(part => part === "." || part === "..")) return new Response("Invalid path", { status: 400 });
         // Settings can disclose or replace the service credential.
-        if (/^\/api\/v1\/(?:config|raw-sync|remote-sync|sync\/remotes|push)(?:\/|$)/.test(pathname) || pathname.startsWith("/_agentsview/")) {
+        if (/^\/api\/v1\/(?:config|raw-sync|remote-sync|sync\/remotes|push|embeddings)(?:\/|$)/.test(pathname) || pathname.startsWith("/_agentsview/")) {
           return Response.json({ error: "Culler manages the AgentsView service configuration." }, { status: 403, headers: noStore });
         }
         if (pathname === "/api/v1/settings" && req.method !== "GET") return Response.json({ error: "Culler manages the AgentsView service configuration." }, { status: 403 });
@@ -219,7 +219,7 @@ export function createAgentsViewProxy(mc: McRunner, now = Date.now) {
             ...(req.method === "GET" || req.method === "HEAD" ? {} : { body: await req.arrayBuffer() }) });
           const type = response.headers.get("content-type") ?? "application/octet-stream";
           const outHeaders = new Headers({ ...noStore, "content-type": type, "x-content-type-options": "nosniff",
-            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" });
+            "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" });
           if (pathname === "/api/v1/settings") {
             const body = await readBody(response, "json");
             delete body.auth_token;
@@ -228,8 +228,7 @@ export function createAgentsViewProxy(mc: McRunner, now = Date.now) {
           }
           if (type.includes("text/html")) {
             const html = await readBody(response, "text");
-            return new Response(html.replace("<head>", '<head><script src="/__culler/bridge.js"></script>')
-              .replace(/<link\b[^>]*href="https:\/\/fonts\.[^>]*>/g, ""), { status: response.status, headers: outHeaders });
+            return new Response(html.replace("<head>", '<head><script src="/__culler/bridge.js"></script>'), { status: response.status, headers: outHeaders });
           }
           if (type.includes("text/event-stream")) {
             active.timeout(req, 0);

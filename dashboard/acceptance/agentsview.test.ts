@@ -126,6 +126,10 @@ test("the header opens the real authenticated list without clipboard access", as
       new URLSearchParams(path.split("?")[1]).get("automated_scope") === "all")).toBe(true);
     expect(await page.evaluate(() => [window.opener, document.referrer])).toEqual([null, ""]);
     expect(observedAuthPages).toEqual([]);
+    // The viewer embeds its fonts in its style sheet.
+    const fonts = await page.evaluate(async () => { await document.fonts.ready; return Array.from(document.fonts, font => font.status); });
+    expect(fonts).toContain("loaded");
+    expect(fonts).not.toContain("error");
     await page.screenshot({ path: evidencePath("agentsview-authenticated-list.png") });
   } finally { await page.close(); }
 }, 45000);
@@ -139,7 +143,10 @@ test("trace access survives reload, concurrent tabs, and new trace content", asy
     expect(new URL(second.url()).pathname).toBe(`/sessions/${SECOND_ID}`);
     await first.reload(); await traceVisible(first);
     await smoke.context.clearCookies();
-    await first.reload(); await traceVisible(first);
+    // A late request of the viewer can start the access flow before the reload does. Each navigation restores the trace.
+    const restored = first.waitForResponse(response => new URL(response.url()).pathname === `/api/v1/sessions/${ID}/messages` && response.ok());
+    await first.reload().catch(error => { if (!String(error).includes("net::ERR_ABORTED")) throw error; });
+    await restored; await traceVisible(first);
     await first.goto(new URL("/sessions?include_one_shot=true&include_automated=true", first.url()).href);
     await first.getByText("Culler authentication trace.", { exact: false }).first().waitFor();
     await first.goBack(); await traceVisible(first);

@@ -1,22 +1,23 @@
 {
-  "version": "0.44.0",
+  "version": "0.47.0",
   "platform": "darwin-arm64",
   "archive": {
-    "name": "agentsview_0.44.0_darwin_arm64.tar.gz",
-    "url": "https://github.com/kenn-io/agentsview/releases/download/v0.44.0/agentsview_0.44.0_darwin_arm64.tar.gz",
-    "size": 43745351,
-    "sha256": "b21fdf093e631237e39d33ab80fe50fbc799e0bac11ac8ede8e0dc988ae12303"
+    "name": "agentsview_0.47.0_darwin_arm64.tar.gz",
+    "url": "https://github.com/kenn-io/agentsview/releases/download/v0.47.0/agentsview_0.47.0_darwin_arm64.tar.gz",
+    "size": 70664159,
+    "sha256": "7fb2747410d8d2941912414e968ccca33b0a67166270d4fa17e8ff88ec207f8f"
   },
   "executable": {
     "name": "agentsview",
-    "size": 132435155,
-    "sha256": "ca8d100071460c833765f1a10551447c764ebb4bffb3907ee40997d77824cc67"
+    "size": 194261748,
+    "sha256": "b2f1776ebd3b90a886e28611993bef846547127e89914db6c40cabb9456d22e3"
   },
   "disabled_agents": [
     "openclaude",
     "cowork",
     "traex",
     "augure-code",
+    "open-interpreter",
     "copilot",
     "gemini",
     "mimocode",
@@ -27,6 +28,7 @@
     "cursor",
     "cursor-ide",
     "amp",
+    "junie",
     "zencoder",
     "iflow",
     "vscode-copilot",
@@ -34,13 +36,17 @@
     "trae",
     "visualstudio-copilot",
     "pi",
+    "fx",
     "tau",
     "prime-agent",
     "omp",
+    "omo",
+    "stepcode",
     "qwen",
     "commandcode",
     "deepseek-tui",
     "deepseek-harness",
+    "codex-cloud",
     "openclaw",
     "qclaw",
     "kimi",
@@ -78,6 +84,7 @@
     "poolside",
     "omnigent",
     "codebuff",
-    "crush"
+    "crush",
+    "muse"
   ]
 }

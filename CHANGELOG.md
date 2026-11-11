@@ -58,6 +58,10 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - With the Claude harness, the context window of a model can have 1,000,000 tokens, where it had 200,000 tokens. When the provider rejects a prompt as too long, the harness compacts the conversation and continues the run.
 - With Codex, a command of an agent keeps each variable of its container, also a variable with KEY, SECRET, or TOKEN in its name. The temporary Culler token is absent from the environment of a command.
 - A profile that uses a default of its harness follows the new default. For the effort Default, the Claude harness selects the level medium for some models that had the level high. Codex selects a newer default model.
+- Culler uses AgentsView 0.47.0.
+- AgentsView records a Codex run as a child session. The resident requests the child sessions with its session list, so the name and the import state of a Codex trace stay correct.
+- The trace viewer uses the fonts that AgentsView embeds in its page, and the page requests no font from another origin.
+- AgentsView offers Search by meaning, which downloads a model. Culler keeps AgentsView without network access, and the Culler proxy refuses the embeddings operations.
 
 ### Known limits
 

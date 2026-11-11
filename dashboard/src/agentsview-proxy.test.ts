@@ -119,9 +119,14 @@ describe("AgentsView access boundary", () => {
         expect(await settings.json()).toEqual({ require_auth: true });
       }
       expect((await fetch(session.url + "/api/v1/settings", { method: "PUT", headers: { cookie: session.cookie }, body: '{"require_auth":false}' })).status).toBe(403);
-      for (const path of ["/api/v1/config", "/api/v1/raw-sync/tokens", "/api/v1/remote-sync/targets", "/_agentsview/startup"]) {
+      for (const path of ["/api/v1/config", "/api/v1/raw-sync/tokens", "/api/v1/remote-sync/targets", "/_agentsview/startup", "/api/v1/embeddings/status"]) {
         expect((await fetch(session.url + path, { headers: { cookie: session.cookie } })).status).toBe(403);
       }
+      const sent = f.requests.length;
+      const setup = await fetch(session.url + "/api/v1/embeddings/setup", { method: "POST", headers: { cookie: session.cookie, "content-type": "application/json" }, body: '{"approved_bytes":0}' });
+      expect(setup.status).toBe(403);
+      expect(await setup.json()).toEqual({ error: "Culler manages the AgentsView service configuration." });
+      expect(f.requests.length).toBe(sent);
       const redirect = await fetch(session.url + "/api/v1/redirect", { headers: { cookie: session.cookie } });
       expect(redirect.status).toBe(503);
       expect(redirect.headers.get("location")).toBeNull();

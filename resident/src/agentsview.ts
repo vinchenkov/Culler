@@ -102,8 +102,8 @@ export interface AgentsViewClient {
   ping(signal: AbortSignal): Promise<number>;
   /** Makes the project rules put each Culler trace into the Culler project. */
   ensureProjectRules(signal: AbortSignal): Promise<void>;
-  /** One page of the AgentsView sessions, one-shot and automated sessions
-   * included. */
+  /** One page of the AgentsView sessions, with the one-shot, automated, and
+   * child sessions. */
   listSessions(query: SessionListQuery, signal: AbortSignal): Promise<AgentsViewPage>;
   /** One imported session, or null when AgentsView did not import it. */
   session(id: string, signal: AbortSignal): Promise<AgentsViewSession | null>;
@@ -205,7 +205,7 @@ export function agentsViewClient(bind: string, options: AgentsViewClientOptions)
       await (await success("POST", "/api/v1/settings/worktree-mappings/apply", signal, {})).body?.cancel();
     },
     async listSessions(query, signal) {
-      const params = new URLSearchParams({ include_one_shot: "true", include_automated: "true", limit: String(query.limit) });
+      const params = new URLSearchParams({ include_one_shot: "true", include_automated: "true", include_children: "true", limit: String(query.limit) });
       if (query.order === "id") params.set("order_by", "id:asc");
       if (query.cursor !== undefined) params.set("cursor", query.cursor);
       const label = "GET /api/v1/sessions";
