@@ -674,6 +674,12 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
           ...(Number.isFinite(new Date(retryTime).getTime()) ? { retry_after: new Date(retryTime).toISOString() } : {}),
         };
         if (!upstream.ok) {
+          // A harness sends a rejected request again after a renewal or in another form.
+          // The rejection stays outside the request limit, so that request can pass.
+          if (upstream.status === 400 || upstream.status === 401 || upstream.status === 422) {
+            held.requests--;
+            if (modelRequest) held.modelRequests--;
+          }
           let responseBody: Uint8Array;
           try { responseBody = await readBounded(upstream.body, maxErrorBytes, controller.signal); }
           catch (error) {

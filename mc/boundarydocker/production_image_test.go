@@ -110,7 +110,7 @@ func TestProductionImageCarriesPinnedRealAdapterRuntime(t *testing.T) {
 	if err != nil {
 		t.Fatalf("inspect production adapter runtime: %v\n%s", err, out)
 	}
-	if !strings.Contains(out, "0.156.1") || !strings.Contains(out, "0.3.280") {
+	if !strings.Contains(out, "0.167.2") || !strings.Contains(out, "0.3.322") {
 		t.Fatalf("production adapter runtime is not pinned:\n%s", out)
 	}
 }

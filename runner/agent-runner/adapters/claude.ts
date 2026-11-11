@@ -37,6 +37,9 @@ const ALL_CREDENTIAL_KEYS = [
 export const CLAUDE_BIN = process.env["MC_CLAUDE_BIN"] ||
   `${process.env.MC_PRIVATE_BUN ? "/opt/culler-runtime/app" : "/app"}/node_modules/@anthropic-ai/claude-agent-sdk-linux-arm64/claude`;
 
+/** The harness keeps a turn open while a background command runs. The adapter stops a wait that has no new event for this time. */
+export const BACKGROUND_WAIT_MS = 600_000;
+
 /** The harness receives only the temporary Culler token. */
 export function claudeAdapterEnv(
   channel: "claude",
@@ -59,15 +62,9 @@ export function claudeAdapterEnv(
   env.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
   env.DISABLE_AUTOUPDATER = "1";
   env.IS_SANDBOX = "1";
-  // The harness Bash tool truncates command output at BASH_MAX_OUTPUT_LENGTH
-  // characters — and under the 30000-character default, long verbose gates
-  // repeatedly lost their terminal exit status inside verifier projections
-  // 150000 is not a taste choice: SDK 0.3.280 clamps any larger value back to 150000 with a
-  // "Capped from" warning, so this IS the most generous ceiling the harness
-  // honors, and a bigger number would pin a value that never takes effect.
-  // MAX_OUTPUT_LENGTH is the un-prefixed name of the same ceiling. The
-  // 0.3.280 binary consumes only the BASH_-prefixed one,
-  // so it rides along inert today and catches a harness that reads it.
+  // The Bash tool of the harness keeps this many characters of a command's output.
+  // Under the 30000-character default, a long check lost its exit status.
+  // The harness caps a larger value at 150000. It reads only the name with the BASH_ prefix.
   env.BASH_MAX_OUTPUT_LENGTH = "150000";
   env.MAX_OUTPUT_LENGTH = "150000";
   env.ANTHROPIC_BASE_URL = access.url;
@@ -121,7 +118,8 @@ export function claudeOptions(
     // ships for its role and the operator's skills for that role and Project.
     skills: "all",
     strictMcpConfig: true,
-    mcpServers: openWiki ? { openwiki: openWikiServer(workspace, openWikiInputCommit) } : {},
+    // The harness defers the tools of a server until a tool search. The OpenWiki tools load with each request.
+    mcpServers: openWiki ? { openwiki: { ...openWikiServer(workspace, openWikiInputCommit), alwaysLoad: true } } : {},
     settings: { autoMemoryEnabled: false, autoDreamEnabled: false },
     systemPrompt: { type: "preset", preset: "claude_code" },
     tools: { type: "preset", preset: "claude_code" },
@@ -250,6 +248,7 @@ export async function executeClaudeQuery(
     signal?: AbortSignal;
     startupMs?: number;
     pollMs?: number;
+    backgroundWaitMs?: number;
     /** The endpoint proxy's observation of a request without an endpoint response. */
     networkError?: () => NetworkErrorClass | undefined;
   } = {},
@@ -294,7 +293,15 @@ export async function executeClaudeQuery(
     if (abort.signal.aborted) return 143;
     stream = (dependencies.query ?? query)({ prompt, options: streamOptions });
     const consume = async () => {
-      for await (const message of stream!) {
+      let waiting = false;
+      let wait: ReturnType<typeof setTimeout> | undefined;
+      try { for await (const message of stream!) {
+        // A result starts the wait for the background commands of the turn. The next model response ends it.
+        clearTimeout(wait);
+        if (message.type === "result") waiting = true;
+        else if ((message.type === "system" && message.subtype === "init") ||
+            ((message.type === "assistant" || message.type === "stream_event") && message.parent_tool_use_id == null)) waiting = false;
+        if (waiting) wait = setTimeout(() => stream!.close(), dependencies.backgroundWaitMs ?? BACKGROUND_WAIT_MS);
         emit(message);
         if (responseCompleted(message)) emit({ event: "model-response" });
         if (!sessionSeen && message.type === "system" && message.subtype === "init") {
@@ -323,7 +330,7 @@ export async function executeClaudeQuery(
         if (text !== undefined) emit({ event: "turn-text", text });
         const normalized = claudeReplyFromMessage(message);
         if (normalized !== undefined) reply = normalized;
-      }
+      } } finally { clearTimeout(wait); }
     };
     const poll = startup?.poll(() => stream!.mcpServerStatus(), dependencies.pollMs).catch((error) => {
       startup.fail("the status request failed", error instanceof Error ? error.message : String(error));

@@ -240,6 +240,47 @@ test("Claude reports no failure after a retried request succeeds", async () => {
   expect(events.some((event) => event.event === "infrastructure-failure")).toBe(false);
 });
 
+test("Claude continues the turn after a background command ends, and the reply is the last result", async () => {
+  const events: any[] = [];
+  let closed = false, closedDuringResponse = true;
+  const code = await executeClaudeQuery("Reply", {} as any, false, {
+    backgroundWaitMs: 40, emit: (event) => events.push(event),
+    query: (() => Object.assign((async function* () {
+      yield { type: "system", subtype: "init", session_id: "session-1", mcp_servers: [] };
+      yield { type: "result", subtype: "success", is_error: false, result: "The check runs in the background." };
+      yield { type: "system", subtype: "task_notification", task_id: "task-1", status: "completed" };
+      yield { type: "system", subtype: "init", session_id: "session-1", mcp_servers: [] };
+      // A model response can take longer than the wait.
+      await Bun.sleep(120);
+      closedDuringResponse = closed;
+      yield { type: "result", subtype: "success", is_error: false, result: "The check passed." };
+    })(), { close: () => { closed = true; } })) as any,
+  });
+  expect(code).toBe(0);
+  expect(closedDuringResponse).toBe(false);
+  expect(events.filter((event) => event.type === "result")).toHaveLength(2);
+  expect(events.at(-1)).toEqual({ event: "turn-complete", status: "success", output: "The check passed." });
+});
+
+test("Claude stops a background command that outlasts the wait and completes the turn with the reply", async () => {
+  const events: any[] = [];
+  const code = await executeClaudeQuery("Reply", {} as any, false, {
+    backgroundWaitMs: 40, emit: (event) => events.push(event),
+    query: (() => {
+      let stop!: () => void;
+      const stopped = new Promise<void>((resolve) => { stop = resolve; });
+      return Object.assign((async function* () {
+        yield { type: "system", subtype: "init", session_id: "session-1", mcp_servers: [] };
+        yield { type: "result", subtype: "success", is_error: false, result: "The check runs in the background." };
+        yield { type: "system", subtype: "background_tasks_changed" };
+        await stopped;
+      })(), { close: stop });
+    }) as any,
+  });
+  expect(code).toBe(0);
+  expect(events.at(-1)).toEqual({ event: "turn-complete", status: "success", output: "The check runs in the background." });
+});
+
 test("Claude keeps the provider text of a refused request", async () => {
   const events: any[] = [];
   const refusal = "API Error: 400 Claude Code 2.1.217 does not support this model; version 2.1.280 or newer is required.";

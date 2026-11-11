@@ -7,6 +7,7 @@ import { startForegroundProviderAccess } from "../../resident/src/provider-foreg
 import { acquireConnectionOwner } from "../../resident/src/connection-owner";
 import { parseProviderAccess } from "../../runner/agent-runner/adapters/provider-access";
 import { cheapestLiveModel, liveModelCost, liveModelControls } from "./models";
+import { harnessVersions } from "../provider-proxy/native-harness";
 import { collectLiveUsage, snapshotNativeUsage, type LiveUsageEvidence } from "./usage";
 
 const args = process.argv.slice(2);
@@ -144,7 +145,7 @@ try {
     }
   }
   const catalog = await product(["agent-profile", "runtime-catalog"]);
-  const pins = JSON.parse(await readFile(join(source, "runner/agent-runner/package.json"), "utf8")).dependencies;
+  const pins = await harnessVersions();
   const checked = await command(["docker", "run", "--rm", "--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
     "--entrypoint", "/opt/culler-runtime/bin/bun", image, "-e",
     `console.log(JSON.stringify(Object.fromEntries(${JSON.stringify(Object.keys(pins))}.map(name => [name, require('/app/node_modules/' + name + '/package.json').version]))))`]);

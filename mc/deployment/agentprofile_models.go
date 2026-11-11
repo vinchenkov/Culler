@@ -18,7 +18,7 @@ import (
 
 // CodexClientVersion is the Codex version in the runner image. The ChatGPT
 // model list offers only the models that this version supports.
-const CodexClientVersion = "0.156.1"
+const CodexClientVersion = "0.167.2"
 
 const (
 	maxAgentModelListBytes = 8 << 20

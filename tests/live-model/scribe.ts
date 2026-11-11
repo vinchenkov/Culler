@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { initializeLiveSpine } from "./environment";
 import { cheapestLiveModel, liveModelCost, liveModelControls } from "./models";
+import { harnessVersions } from "../provider-proxy/native-harness";
 import { collectLiveUsage, snapshotNativeUsage, type LiveUsageEvidence } from "./usage";
 import { randomBytes, createHash } from "node:crypto";
 import { createConnection } from "node:net";
@@ -198,7 +199,7 @@ async function makeReadable(root: string): Promise<void> {
 }
 
 export async function preflight(options: ScribeAcceptanceOptions, runner: string) {
-  const expected = JSON.parse(await readFile(new URL("../../runner/agent-runner/package.json", import.meta.url), "utf8")).dependencies;
+  const expected = await harnessVersions();
   const script = `import { readFile } from "node:fs/promises";
 import { loadUpstream } from "${RUNTIME}/app/src/openwiki/integration.mjs";
 await loadUpstream();

@@ -357,6 +357,76 @@ describe("provider proxy limits", () => {
     expect(handle.status(authorizationId)).toBeNull();
   });
 
+  test("a provider 401 stays outside the request limit, and the request after a renewal reaches the provider", async () => {
+    const tokens: string[] = [];
+    let rejected = false;
+    const { handle } = proxy({
+      credential: async () => credential(rejected ? { headers: { authorization: `Bearer ${renewalSecret}` } } : {}),
+      observe: observation => { rejected ||= observation.origin === "provider" && observation.http_status === 401; },
+      fetch: (async (_url: string, init: RequestInit) => {
+        const token = new Headers(init.headers).get("authorization")!;
+        tokens.push(token);
+        return token === `Bearer ${renewalSecret}` ? Response.json({ output: "ok" })
+          : Response.json({ error: { code: "invalid_api_key" } }, { status: 401 });
+      }) as typeof fetch,
+    });
+    const spec = authorization();
+    spec.limits.maxRequests = 1;
+    const { token, authorizationId } = handle.issue(spec);
+    const refused = await call(handle, token);
+    expect(refused.status).toBe(401);
+    expect(refused.headers.get("x-culler-origin")).toBe("provider");
+    await refused.text();
+    expect(handle.status(authorizationId)).toEqual({ requests: 0, modelRequests: 0, active: 0 });
+    const repeated = await call(handle, token);
+    expect(repeated.status).toBe(200);
+    await repeated.text();
+    expect(tokens).toEqual([`Bearer ${providerSecret}`, `Bearer ${renewalSecret}`]);
+    expect(handle.status(authorizationId)).toEqual({ requests: 1, modelRequests: 1, active: 0 });
+    expect((await call(handle, token)).status).toBe(429);
+    expect(tokens).toHaveLength(2);
+  });
+
+  test.each([400, 422])("a provider %i stays outside the request limit, and the request in another form reaches the provider", async status => {
+    let sent = 0;
+    const { handle } = proxy({
+      fetch: (async () => ++sent === 1 ? Response.json({ error: { type: "invalid_request_error" } }, { status })
+        : Response.json({ output: "ok" })) as typeof fetch,
+    });
+    const spec = authorization();
+    spec.limits.maxRequests = 1;
+    const { token, authorizationId } = handle.issue(spec);
+    const rejected = await call(handle, token);
+    expect(rejected.status).toBe(status);
+    expect(rejected.headers.get("x-culler-origin")).toBe("provider");
+    await rejected.text();
+    expect(handle.status(authorizationId)).toEqual({ requests: 0, modelRequests: 0, active: 0 });
+    const accepted = await call(handle, token);
+    expect(accepted.status).toBe(200);
+    await accepted.text();
+    expect(handle.status(authorizationId)).toEqual({ requests: 1, modelRequests: 1, active: 0 });
+    expect((await call(handle, token)).status).toBe(429);
+    expect(sent).toBe(2);
+  });
+
+  test.each([404, 429, 500])("a provider %i uses the request limit", async status => {
+    let sent = 0;
+    const { handle } = proxy({
+      fetch: (async () => { sent++; return Response.json({ error: { type: "provider_error" } }, { status }); }) as typeof fetch,
+    });
+    const spec = authorization();
+    spec.limits.maxRequests = 1;
+    const { token, authorizationId } = handle.issue(spec);
+    const failed = await call(handle, token);
+    expect(failed.status).toBe(status);
+    await failed.text();
+    expect(handle.status(authorizationId)).toEqual({ requests: 1, modelRequests: 1, active: 0 });
+    const denied = await call(handle, token);
+    expect(denied.status).toBe(429);
+    expect(denied.headers.get("x-culler-origin")).toBe("proxy_limit");
+    expect(sent).toBe(1);
+  });
+
   test("holds the concurrency slot until response completion", async () => {
     const finish = deferred();
     const started = deferred();

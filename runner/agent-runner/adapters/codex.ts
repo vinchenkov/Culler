@@ -62,14 +62,14 @@ export function codexArgv(
     ...(model === "" ? [] : ["--model", model]),
     "--json", "--strict-config",
     ...(effort ? ["--config", `model_reasoning_effort="${effort}"`] : []),
-    // Approval is a config key, not an `exec` flag: codex 0.156.1 accepts
-    // --ask-for-approval only before the subcommand and rejects it here. Under
-    // --strict-config an unknown key is a hard error, so a future rename fails
-    // loudly instead of silently reverting to interactive approval.
+    // Approval is a config key: `codex exec` rejects --ask-for-approval.
+    // --strict-config makes an unknown key a hard error.
     "--config", 'approval_policy="never"',
     // The container supplies the isolation boundary. The inner sandbox blocks the protected mc command.
     "--config", 'sandbox_mode="danger-full-access"',
-    "--config", "shell_environment_policy.ignore_default_excludes=false",
+    // By default, Codex removes each variable with KEY, SECRET, or TOKEN in its name from a command.
+    // The commands of the agent keep the variables of the container, without the Culler token.
+    "--config", "shell_environment_policy.ignore_default_excludes=true",
     "--config", 'shell_environment_policy.exclude=["CULLER_PROXY_TOKEN"]',
     // Codex reads no env var for shell-tool output; tool_output_token_limit is
     // the config key that governs exec-output truncation (unit: tokens, about

@@ -2,7 +2,7 @@ import { chmod, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs
 import { resolve, join, relative } from "node:path";
 import { randomBytes, randomUUID } from "node:crypto";
 import { copyTrace } from "../../resident/src/trace-copy";
-import { runNativeHarness } from "./native-harness";
+import { harnessVersions, runNativeHarness } from "./native-harness";
 import { liveModelControls } from "../live-model/models";
 
 const argument = (name: string) => process.argv[process.argv.indexOf(name) + 1];
@@ -27,6 +27,8 @@ async function command(args: string[]) {
 const event = (type: string, value: object) => `event: ${type}\ndata: ${JSON.stringify({ type, ...value })}\n\n`;
 const finalText = "CULLER_PROXY_REPLY_OK";
 const preliminary = "CULLER_PROXY_PRELIMINARY";
+// The name holds TOKEN. A harness can remove such a variable from the environment of a command.
+const variable = { name: "PROJECT_ACCESS_TOKEN", value: "project-access-value" };
 interface Scenario {
   label: string;
   token: string;
@@ -40,7 +42,7 @@ const states = new Map<string, Scenario>();
 try {
   const stage = join(root, "runtime");
   await command(["python3", join(source, "runner/image/stage-runtime.py"), stage]);
-  const pins = JSON.parse(await readFile(join(source, "runner/agent-runner/package.json"), "utf8")).dependencies;
+  const pins = await harnessVersions();
   const actual = await command(["docker", "run", "--rm", "--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
     "--entrypoint", "/opt/culler-runtime/bin/bun", image, "-e",
     `console.log(JSON.stringify(Object.fromEntries(${JSON.stringify(Object.keys(pins))}.map(name => [name, require('/app/node_modules/' + name + '/package.json').version]))))`]);
@@ -85,7 +87,7 @@ try {
       const tool = harness === "codex" ? body.tools.find((item: any) => ["exec_command", "shell", "shell_command"].includes(item.name))
         : body.tools.find((item: any) => item.name === "Bash");
       if (!final && !tool) throw new Error("The harness supplied no shell tool.");
-      const shell = "printf 'CULLER_TOOL_OK' > culler-tool.txt; cat /mc/provider-access.json";
+      const shell = `printf 'CULLER_TOOL_OK' > culler-tool.txt; printf '%s' "$${variable.name}" > culler-variable.txt; printf '%s' "$CULLER_PROXY_TOKEN" > culler-token-variable.txt; cat /mc/provider-access.json`;
       const properties = tool?.parameters?.properties ?? {};
       const arguments_ = properties.cmd ? { cmd: shell, max_output_tokens: 100 }
         : properties.command?.type === "array" ? { command: ["sh", "-c", shell] } : { command: shell };
@@ -145,7 +147,7 @@ try {
       const result = await runNativeHarness({ image,
         access: { version: 1, url: address, token: state.token, ca, harness: harness as "codex" | "claude-sdk",
           authMode: authMode as "api-key" | "account" },
-        model, runtimeDirectory: stage, adapterArgs: controls.args,
+        model, runtimeDirectory: stage, adapterArgs: controls.args, containerArgs: ["-e", `${variable.name}=${variable.value}`],
         sessionDirectory: join(work, "session"), workspaceDirectory: join(work, "workspace"), nativeReference: native,
         prompt: native ? "Continue the conversation and repeat the previous reply." : label,
         onEvent(item) {
@@ -173,11 +175,15 @@ try {
     }
     const native = await turn();
     if (rejected) {
-      if (state.requests !== 1) throw new Error("The harness retried a rejected proxy token.");
+      // With an account, the Claude harness repeats a rejected request one time, because the host can renew the credential.
+      const expected = harness === "claude-sdk" && authMode === "account" ? 2 : 1;
+      if (state.requests !== expected) throw new Error(`The harness sent ${state.requests} requests with a rejected proxy token.`);
       return native;
     }
     if (!native || !state.preliminaryObserved || state.requests !== 2) throw new Error("The first turn lacks native or incremental response evidence.");
     if (await readFile(join(work, "workspace/culler-tool.txt"), "utf8") !== "CULLER_TOOL_OK") throw new Error("The agent action failed.");
+    if (await readFile(join(work, "workspace/culler-variable.txt"), "utf8") !== variable.value) throw new Error("The agent command lost a container variable.");
+    if (harness === "codex" && await readFile(join(work, "workspace/culler-token-variable.txt"), "utf8") !== "") throw new Error("The agent command received the Culler token variable.");
     let retainedToken = false;
     async function scan(path: string): Promise<void> {
       for (const entry of await readdir(path, { withFileTypes: true })) {
@@ -208,7 +214,8 @@ try {
   if (failures.length) throw new Error(failures.join("\n"));
   console.log(JSON.stringify({ result: "CULLER_HARNESS_PROXY_OK", harness, authMode, versions: pins, requests: 7,
     tls: true, preliminary_before_completion: true, native_resume: true, isolated_conversations: true,
-    proxy_rejection_correlation: true, original_session_preservation: true, trace_token_redaction: true }));
+    proxy_rejection_correlation: true, original_session_preservation: true, trace_token_redaction: true,
+    container_variable_in_command: true }));
 } finally {
   for (const state of states.values()) state.release?.();
   server?.stop(true);

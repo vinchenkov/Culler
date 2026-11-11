@@ -59,7 +59,7 @@ describe("Codex production adapter", () => {
       CODEX_BIN, "exec", "--json", "--strict-config",
       "--config", 'approval_policy="never"',
       "--config", 'sandbox_mode="danger-full-access"',
-      "--config", "shell_environment_policy.ignore_default_excludes=false",
+      "--config", "shell_environment_policy.ignore_default_excludes=true",
       "--config", 'shell_environment_policy.exclude=["CULLER_PROXY_TOKEN"]',
       "--config", "tool_output_token_limit=100000",
       "--config", "memories.generate_memories=false",
@@ -70,7 +70,7 @@ describe("Codex production adapter", () => {
       CODEX_BIN, "exec", "resume", "--json", "--strict-config",
       "--config", 'approval_policy="never"',
       "--config", 'sandbox_mode="danger-full-access"',
-      "--config", "shell_environment_policy.ignore_default_excludes=false",
+      "--config", "shell_environment_policy.ignore_default_excludes=true",
       "--config", 'shell_environment_policy.exclude=["CULLER_PROXY_TOKEN"]',
       "--config", "tool_output_token_limit=100000",
       "--config", "memories.generate_memories=false",
@@ -252,6 +252,7 @@ describe("Claude-SDK production adapter", () => {
           "/usr/local/bin/node", "/app/src/openwiki/server.ts", "--repo", "/workspace/source",
           "--receipt", "/tmp/openwiki-completion.json",
         ],
+        alwaysLoad: true,
       },
     });
     expect(options.settings).toEqual({ autoMemoryEnabled: false, autoDreamEnabled: false });

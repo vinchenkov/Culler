@@ -6,6 +6,12 @@ import { parseProviderAccess, type ProviderAccess } from "../../runner/agent-run
 
 const source = resolve(import.meta.dir, "../..");
 const verifiedImages = new Set<string>();
+
+/** The versions that the harness pins install. An alias pin holds the package version after its last "@". */
+export async function harnessVersions(): Promise<Record<string, string>> {
+  const pins: Record<string, string> = JSON.parse(await readFile(join(source, "runner/agent-runner/package.json"), "utf8")).dependencies;
+  return Object.fromEntries(Object.entries(pins).map(([name, pin]) => [name, pin.startsWith("npm:") ? pin.slice(pin.lastIndexOf("@") + 1) : pin]));
+}
 const event = (type: string, value: object) => `event: ${type}\ndata: ${JSON.stringify({ type, ...value })}\n\n`;
 
 export function syntheticFinalResponse(harness: string, body: unknown, text = "CULLER_REPAIR_OK", phase?: "commentary" | "final"): Response {
@@ -115,7 +121,7 @@ export async function runNativeHarness(options: NativeHarnessOptions): Promise<N
   let child: ReturnType<typeof Bun.spawn> | undefined;
   try {
     if (!verifiedImages.has(options.image)) {
-      const pins = JSON.parse(await readFile(join(source, "runner/agent-runner/package.json"), "utf8")).dependencies;
+      const pins = await harnessVersions();
       const actual = await command(["docker", "run", "--rm", "--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
         ...(options.containerArgs ?? []),
       "--entrypoint", "/opt/culler-runtime/bin/bun", options.image, "-e",

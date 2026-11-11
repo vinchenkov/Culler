@@ -50,6 +50,14 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - With OpenCode, a background command keeps the turn of the agent open, and the agent receives the result when the command ends. Culler stops the background commands of a turn after ten minutes without a new event from OpenCode and completes the turn with the last reply.
 - The OpenCode release catalog holds 209 providers. Wally is a new provider.
 - The release catalog omits a provider that reads its key from `GITHUB_TOKEN`, because the commands of an agent read that variable for GitHub. This rule omits GitHub Copilot.
+- Culler uses Claude Agent SDK 0.3.322 and Codex 0.167.2.
+- With the Claude harness, a background command keeps the turn of the agent open, and the agent receives the result when the command ends. Culler stops the background commands of a turn after ten minutes without a new event from the harness and completes the turn with the last reply.
+- With a Claude account, the harness repeats a request one time after the provider rejects the credential. Culler renews the account credential before the second request, and the run, the connection test, or the model test continues after a successful renewal.
+- After the provider rejects a request with status 400 or 422, the Claude harness sends the request again without optional features. A request that the provider rejects with status 400, 401, or 422 does not use the request limit of a connection test or a model test, so the test shows the reason of the provider or passes after an accepted request.
+- The Claude harness loads the tools of a Model Context Protocol (MCP) server after a tool search. The OpenWiki tools of a wiki update load with each request.
+- With the Claude harness, the context window of a model can have 1,000,000 tokens, where it had 200,000 tokens. When the provider rejects a prompt as too long, the harness compacts the conversation and continues the run.
+- With Codex, a command of an agent keeps each variable of its container, also a variable with KEY, SECRET, or TOKEN in its name. The temporary Culler token is absent from the environment of a command.
+- A profile that uses a default of its harness follows the new default. For the effort Default, the Claude harness selects the level medium for some models that had the level high. Codex selects a newer default model.
 
 ### Known limits
 
