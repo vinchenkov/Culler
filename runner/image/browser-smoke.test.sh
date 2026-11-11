@@ -66,7 +66,7 @@ grep -Fx -- '/opt/culler-runtime/commands/playwright-cli' "$TMP/docker-runtime.l
 # Each role surface must select the installed browser.
 for surface in \
   ../../mc/verbs/skills/verifier/verify-behavior/SKILL.md \
-  ../../mc/verbs/directives/packager.md; do
+  ../../mc/verbs/skills/packager/packager-browser/SKILL.md; do
   path="$HERE/$surface"
   test -f "$path" || fail "role surface missing: $surface"
   grep -F -- '--browser=chromium' "$path" >/dev/null ||

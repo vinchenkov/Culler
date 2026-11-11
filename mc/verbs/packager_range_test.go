@@ -11,10 +11,8 @@ import (
 	"mc/repository"
 )
 
-// packagerGit runs one Git command of the mc-packager skill in a repository.
-// The skill must hold the command, so the test proves the text that the
-// Packager reads.
-func packagerGit(t *testing.T, repo, command string, values map[string]string) (string, error) {
+// Execute the command from its delivered skill against the test repository.
+func packagerGit(t *testing.T, repo, skillName, command string, values map[string]string) (string, error) {
 	t.Helper()
 	skills, err := RoleSkillSet(dispatch.RolePackager)
 	if err != nil {
@@ -23,10 +21,10 @@ func packagerGit(t *testing.T, repo, command string, values map[string]string) (
 	line := "git -C /workspace/source " + command
 	var found bool
 	for _, skill := range skills {
-		found = found || (skill.Name == "mc-packager" && strings.Contains(skill.Body, line))
+		found = found || (skill.Name == skillName && strings.Contains(skill.Body, line))
 	}
 	if !found {
-		t.Fatalf("the mc-packager skill omits the command %q", line)
+		t.Fatalf("the %s skill omits the command %q", skillName, line)
 	}
 	for name, value := range values {
 		command = strings.ReplaceAll(command, "<"+name+">", value)
@@ -86,26 +84,26 @@ func TestPackagerAfterAMergeRepairReadsTheWorkAndItsDifference(t *testing.T) {
 		t.Fatalf("the fixture has no other contribution after the base commit: %q", names)
 	}
 
-	start, err := packagerGit(t, repo, "merge-base refs/mc/destination <Submitted commit>", map[string]string{"Submitted commit": second})
+	start, err := packagerGit(t, repo, "mc-packager", "merge-base refs/mc/destination <Submitted commit>", map[string]string{"Submitted commit": second})
 	if err != nil || start != destination {
 		t.Fatalf("the reviewed range starts at %s, %v; want the merged destination commit %s", start, err, destination)
 	}
-	reviewed, err := packagerGit(t, repo, "diff <range start> <Submitted commit>", map[string]string{"range start": start, "Submitted commit": second})
+	reviewed, err := packagerGit(t, repo, "mc-packager", "diff <range start> <Submitted commit>", map[string]string{"range start": start, "Submitted commit": second})
 	if err != nil || !strings.Contains(reviewed, "+worker 1") || strings.Contains(reviewed, "other.txt") {
 		t.Fatalf("the reviewed change is not the change of the work alone: %v\n%s", err, reviewed)
 	}
 
-	previousStart, err := packagerGit(t, repo, "merge-base refs/mc/destination <previous commit>", map[string]string{"previous commit": first})
+	previousStart, err := packagerGit(t, repo, "packager-previous-packet", "merge-base refs/mc/destination <previous commit>", map[string]string{"previous commit": first})
 	if err != nil || previousStart != base {
 		t.Fatalf("the previous reviewed range starts at %s, %v; want %s", previousStart, err, base)
 	}
-	applied, err := packagerGit(t, repo, "merge-tree --write-tree --merge-base=<previous start> <previous commit> <range start>",
+	applied, err := packagerGit(t, repo, "packager-previous-packet", "merge-tree --write-tree --merge-base=<previous start> <previous commit> <range start>",
 		map[string]string{"previous start": previousStart, "previous commit": first, "range start": start})
 	if exit, ok := err.(*exec.ExitError); err != nil && (!ok || exit.ExitCode() != 1) {
 		t.Fatalf("the previous reviewed change did not apply: %v", err)
 	}
 	tree, _, _ := strings.Cut(applied, "\n")
-	difference, err := packagerGit(t, repo, "diff <tree> <Submitted commit>", map[string]string{"tree": tree, "Submitted commit": second})
+	difference, err := packagerGit(t, repo, "packager-previous-packet", "diff <tree> <Submitted commit>", map[string]string{"tree": tree, "Submitted commit": second})
 	if err != nil || !strings.Contains(difference, "-<<<<<<<") || !strings.Contains(difference, "+worker 1") || strings.Contains(difference, "other.txt") {
 		t.Fatalf("the difference from the previous packet is not the conflict resolution alone: %v\n%s", err, difference)
 	}

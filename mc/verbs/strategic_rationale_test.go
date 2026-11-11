@@ -311,8 +311,7 @@ func TestPacketOpeningTextFollowsTheTaskOrigin(t *testing.T) {
 	})
 }
 
-// The Packager learns the first section of each task origin from its directive
-// and its skill. The Strategist learns the rationale procedure from its own.
+// Each role receives the rationale procedure that its responsibility requires.
 func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 	skill := func(role dispatch.Role) string {
 		t.Helper()
@@ -352,18 +351,18 @@ func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 			"| `description` | Optional in the command schema; contains the scope and the acceptance criteria. |",
 		}},
 		{"Packager directive", directive(dispatch.RolePackager), []string{
-			"The first section is the only section that gives the opening overview and the\njustification of the work.",
-			"- The heading of the first section is **Strategic rationale**. The packet has\n  no **Summary** section.",
-			"- The section starts with your statement of the delivered change, in one or\n  two sentences.",
-			"- The complete rationale of the Strategist follows, with its evidence.",
-			"- The heading of the first section is **Summary**. The section holds the same\n  text that you submit with `--thesis`.",
-			"- The packet has no **Strategic rationale** section.",
-			"1. **Strategic rationale** or **Summary** — the first section, as its rules\n   above state.",
-			"The first section of a task that the Strategist proposed stays first and keeps its heading.",
-			"Culler stores the result as the opening text of the packet.",
+			"The first section alone gives the overview and justification.",
+			"Without a **Strategic rationale** part, start with **Summary** and use the text that you submit through `--thesis`.",
+			"With that part, read packager-rationale for its required first section.",
 		}},
-		{"Packager skill", skill(dispatch.RolePackager), []string{
-			"For a task that the Strategist proposed, `mc` stores your text and then the Strategic rationale of the task as the opening text of the packet.",
+		{"Packager rationale skill", roleSkillBody(t, dispatch.RolePackager, "packager-rationale"), []string{
+			"Keep **Strategic rationale** as the first packet section, including when operator customization changes other sections.",
+			"Start with your statement of the delivered change in one or two sentences.",
+			"Use that statement alone for `--thesis`, the overview argument in mc-packager's **Packet result** procedure.",
+			"Follow that statement with the complete rationale and its evidence.",
+			"Name the Strategist as its author.",
+			"Convert its Markdown to Hypertext Markup Language (HTML) without a content change.",
+			"Distinguish its prior observations and assumptions from the results of the reviewed change.",
 		}},
 	} {
 		for _, want := range test.want {

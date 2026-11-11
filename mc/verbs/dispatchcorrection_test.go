@@ -128,6 +128,7 @@ func TestDispatchCorrectionBeforeAndAfterApproval(t *testing.T) {
 	for _, approved := range []bool{false, true} {
 		t.Run(fmt.Sprintf("approved=%t", approved), func(t *testing.T) {
 			f := newDispatchLifecycle(t)
+			clocks := fixClocks(t, f.db)
 			f.commitMain("answer.txt", "original\n")
 			if _, err := ConfigureRepositoryLimits(f.db, nil, "ws-test", RepositoryLimits{QuietSeconds: 1}); err != nil {
 				t.Fatal(err)
@@ -155,7 +156,7 @@ func TestDispatchCorrectionBeforeAndAfterApproval(t *testing.T) {
 					t.Fatalf("application missed the changed destination: %+v", result)
 				}
 				f.requireHold()
-				time.Sleep(time.Second)
+				clocks.advance(time.Second)
 				first = f.candidate(task, nil)
 			} else {
 				independent = f.independentTask()
@@ -350,6 +351,7 @@ func TestDispatchMergeRepairsHaveNoLimit(t *testing.T) {
 // merge repair.
 func TestDispatchApprovalMergesDuringAMergeRepair(t *testing.T) {
 	f := newDispatchLifecycle(t)
+	clocks := fixClocks(t, f.db)
 	f.commitMain("answer.txt", "original\n")
 	if _, err := ConfigureRepositoryLimits(f.db, nil, "ws-test", RepositoryLimits{QuietSeconds: 1}); err != nil {
 		t.Fatal(err)
@@ -372,7 +374,7 @@ func TestDispatchApprovalMergesDuringAMergeRepair(t *testing.T) {
 		t.Fatalf("the merge missed the changed destination: %+v", result)
 	}
 	f.requireHold()
-	time.Sleep(time.Second)
+	clocks.advance(time.Second)
 	if candidate := f.candidate(x, nil); candidate.Status != "conflict" {
 		t.Fatalf("the new candidate of task X missed its conflict: %+v", candidate)
 	}

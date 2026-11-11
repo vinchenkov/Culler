@@ -98,11 +98,15 @@ func TestPlatformLimitsAndEvidenceReachEveryRequiredRole(t *testing.T) {
 		t.Fatal(err)
 	}
 	requireAgentText(t, "Packager directive", strings.Join(strings.Fields(packager), " "), []string{
-		"Preserve each `UNVERIFIED` entry from the Verifier's evidence.",
-	}, nil)
-	requireAgentText(t, "mc-packager", roleSkillBody(t, dispatch.RolePackager, "mc-packager"), []string{
-		"Each `UNVERIFIED` entry and the coverage that remains unverified.",
+		"Group checks by the behavior or criterion that they verify.",
+		"Group unverified checks with a common cause into one concise explanation.",
+		"Use individual test names or raw output only when the operator needs that detail for the decision.",
+		"The Verifier evidence retains detailed results and each exact `UNVERIFIED` entry.",
 		"Keep actual command results separate from the task verdict.",
-		"These observations alone create no mandatory manual check or additional approval requirement.",
+		"Distinguish failed checks from skipped or unavailable checks.",
+		"Unchanged failures and unavailable checks alone create no mandatory manual check or additional approval requirement.",
 	}, nil)
+	requireAgentText(t, "mc-packager", roleSkillBody(t, dispatch.RolePackager, "mc-packager"), nil, []string{
+		"Each `UNVERIFIED` entry and the coverage that remains unverified.",
+	})
 }
