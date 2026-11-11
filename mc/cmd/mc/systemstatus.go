@@ -603,7 +603,7 @@ func recordModelVerification(home, operation string) error {
 	if err != nil || proof == nil || proof.Status != "succeeded" {
 		return err
 	}
-	required, err := systemRequirements()
+	required, err := systemRequirementsAt(home)
 	if err != nil {
 		return err
 	}
@@ -625,17 +625,7 @@ func recordModelVerification(home, operation string) error {
 		if connection.AuthorizationID != auth {
 			return nil
 		}
-		scopes := []verbs.ConnectionCheck{}
-		if proof.Kind == "authorization" {
-			scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: auth, Operation: connection.Operation})
-		}
-		if connection.Operation != "token_refresh" && proof.Status == "succeeded" {
-			scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: auth, Operation: connection.Operation})
-		}
-		if proof.Profile != nil {
-			scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: auth, Operation: "model_access", ProfileID: binding, ProfileRevision: profileRevision})
-		}
-		for _, scope := range scopes {
+		for _, scope := range modelVerificationScopes(connection, proof.Kind, auth, binding, profileRevision) {
 			sum := sha256.Sum256([]byte(operation + scope.Operation + scope.ProfileID))
 			event := hex.EncodeToString(sum[:16])
 			check := sha256.Sum256([]byte(operation))
@@ -647,6 +637,23 @@ func recordModelVerification(home, operation string) error {
 		}
 	}
 	return nil
+}
+
+// modelVerificationScopes returns the health records that one passing dashboard test verifies.
+// A test of an unsaved agent profile verifies no profile record: the saved profile keeps its own
+// record until Save makes the tested profile the saved profile.
+func modelVerificationScopes(connection verbs.ConnectionRequirement, kind, auth, binding, profileRevision string) []verbs.ConnectionCheck {
+	scopes := []verbs.ConnectionCheck{}
+	if kind == "authorization" {
+		scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: auth, Operation: connection.Operation})
+	}
+	if connection.Operation != "token_refresh" {
+		scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: auth, Operation: connection.Operation})
+	}
+	if saved, ok := connection.Profiles[binding]; ok && saved == profileRevision {
+		scopes = append(scopes, verbs.ConnectionCheck{ConnectionID: connection.ID, AuthorizationID: auth, Operation: "model_access", ProfileID: binding, ProfileRevision: profileRevision})
+	}
+	return scopes
 }
 
 func connectionAccessState(required verbs.SystemStatusRequest, connection string) (string, error) {

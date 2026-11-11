@@ -212,7 +212,11 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 		if err := decode(&request); err != nil {
 			return nil, err
 		}
-		return deployment.AgentProfileSave(home, request)
+		catalog, err := deployment.AgentProfileSave(home, request)
+		if err != nil || request.TestID == "" {
+			return catalog, err
+		}
+		return catalog, recordModelVerification(home, request.TestID)
 	case "connection-save":
 		var request deployment.AgentConnectionRequest
 		if err := decode(&request); err != nil {

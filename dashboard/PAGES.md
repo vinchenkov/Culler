@@ -2099,6 +2099,8 @@ Current connection and model access checks still control each Collie launch and 
 Each model test requires an explicit action.
 The review offers two actions: **Test model** and **Save**.
 **Save** requires a successful model test of the current values.
+A model test of unsaved values leaves the connection state of the saved profile unchanged.
+**Save** records the successful model test as the verification of the saved profile.
 Each role selector offers a saved profile.
 The review holds no assignment action.
 The review shows the model test state and each review error above its actions.
