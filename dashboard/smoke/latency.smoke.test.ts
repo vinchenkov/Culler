@@ -97,6 +97,9 @@ test("The first page visit shows its structure during supplementary reads", asyn
 
 test("Every direct page shares initial reads and supports a narrow viewport", async () => {
   const { page, server } = smoke;
+  // An active conversation keeps this read test free of session writes and their cache invalidation.
+  await mc(["collie", "start", "--from", "dashboard:latency", "--ensure"]);
+  await gotoReady(smoke);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   try {
@@ -104,11 +107,14 @@ test("Every direct page shares initial reads and supports a narrow viewport", as
       // End the previous page before the next page counts its initial requests.
       await page.goto("about:blank");
       const counts = new Map<string, number>();
+      const sessionWrites: string[] = [];
       const registry = page.waitForResponse(response => response.url().endsWith("/api/pause"));
       await page.route("**/api/**", async route => {
         const path = new URL(route.request().url()).pathname;
         if (route.request().method() === "GET") {
           counts.set(path, (counts.get(path) ?? 0) + 1);
+        } else if (path.startsWith("/api/sessions")) {
+          sessionWrites.push(path);
         }
         if (path === "/api/health") await registry;
         await route.continue();
@@ -117,6 +123,7 @@ test("Every direct page shares initial reads and supports a narrow viewport", as
         await page.goto(`${server.url}?latency=${crypto.randomUUID()}#${tab}`);
         await registry;
         await page.waitForFunction(() => document.body.dataset.ready && !document.querySelector('.panel:not([hidden]) [aria-busy="true"]'));
+        expect({ tab, sessionWrites }).toEqual({ tab, sessionWrites: [] });
         expect({ tab, duplicates: [...counts].filter(([, count]) => count !== 1) }).toEqual({ tab, duplicates: [] });
         expect(counts.has("/api/doctor")).toBe(tab === "configs");
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
