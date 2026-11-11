@@ -128,7 +128,8 @@ Platform test requirements:
 - Go tests that read files outside the module require `-count=1`.
 - A required check remains unverified when its execution dependency is unavailable.
 - A check passes when its command exits zero. Its skipped tests remain unverified.
-- The Verifier preserves each `UNVERIFIED` entry in the evidence file and Review Packet for the operator.
+- The Verifier preserves each `UNVERIFIED` entry in the evidence file for the operator.
+- The Packager follows **Verification summary** in `mc/verbs/directives/packager.md` for the review packet.
 - A task pass requires successful acceptance criteria and new or changed tests, plus assessment of broad checks for task regressions.
 - The Verifier compares submitted failures with the base commit under comparable conditions.
 - Unchanged failures and unavailable host tests outside the criteria permit task progress when the other requirements hold.

@@ -42,17 +42,15 @@ func TestUnknownSpawnRoleHasNoFallbackDirective(t *testing.T) {
 	}
 }
 
-// TestPackagerDirectiveCarriesExplanationAndBrowserTools keeps the review
-// packet requirements in one role directive.
-func TestPackagerDirectiveCarriesExplanationAndBrowserTools(t *testing.T) {
+func TestPackagerDirectiveCarriesPacketRequirements(t *testing.T) {
 	directive, err := directiveForRole(dispatch.RolePackager)
 	if err != nil {
 		t.Fatal(err)
 	}
 	required := []string{
 		"Summary", "Background", "Intuition", "Technical", "Files changed", "table of contents", "figures and diagrams",
-		"callouts", "<pre>", "playwright-cli", "--browser=chromium", "snapshot",
-		"screenshot", "video-start", "delete-data", "Glossary", "core term", "established term", "new term",
+		"callouts", "<pre>", "Glossary", "core term", "established term", "new term",
+		"packager-browser", "packager-rationale", "packager-previous-packet",
 		"`id`",
 	}
 	for _, text := range required {
@@ -67,7 +65,7 @@ func TestPackagerDirectiveCarriesExplanationAndBrowserTools(t *testing.T) {
 	}
 }
 
-// The Worker, Verifier, and Packager directives require a fixed orchestration procedure.
+// The Worker and Verifier directives require their orchestration procedures.
 func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 	patterns := []string{
 		"Fanout-And-Synthesize",
@@ -78,7 +76,6 @@ func TestDirectivesEncodeTheSelfOrchestrationContract(t *testing.T) {
 	escapeValve := "do not spawn"
 	claudeSDK := []dispatch.Role{
 		dispatch.RoleWorker,
-		dispatch.RolePackager,
 	}
 	codex := []dispatch.Role{
 		dispatch.RoleVerifier,
@@ -502,6 +499,11 @@ func TestAgentInputStatesProjectDependencyReuse(t *testing.T) {
 				"If research requires Project dependencies, check their compatibility with current declarations and the selected image before use.",
 				"this run performs no automatic dependency preparation",
 			}, nil)
+		} else if role == dispatch.RolePackager {
+			requireAgentText(t, "packager dependency procedure", roleSkillBody(t, role, "packager-browser"), []string{
+				"Culler prepares workspace dependencies before the run.",
+				"Before use, check retained dependencies against current declarations and the selected **Project environment**.",
+			}, nil)
 		} else if role != dispatch.RoleArbiter {
 			for _, required := range []string{
 				"Culler preserves the Project home at `HOME`",
@@ -794,6 +796,10 @@ func TestAgentInputNamesTheCustomizationConflict(t *testing.T) {
 				"Follow the operator's custom instructions within the Culler contract.",
 				"The requirements in the Culler contract remain.",
 				"For a contract conflict, read the Project role customization procedure",
+			}, nil)
+		} else if role == dispatch.RolePackager {
+			requireAgentText(t, "packager customization pointer", directive, []string{
+				"For a contract conflict, read **Project role customization** in mc-packager for the report procedure.",
 			}, nil)
 		} else if role != dispatch.RoleScribe && !strings.Contains(directive, "report a customization conflict and explain the conflict") {
 			t.Errorf("the %s directive omits the customization conflict", role)

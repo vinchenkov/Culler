@@ -300,7 +300,40 @@ func buildRunBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, i
 	if sp.Role == dispatch.RoleVerifier {
 		trimVerifierBrief(&b)
 	}
+	if sp.Role == dispatch.RolePackager {
+		trimPackagerBrief(&b)
+	}
 	return b, nil
+}
+
+func trimPackagerBrief(b *runBrief) {
+	parts := b.Parts[:0]
+	for _, part := range b.Parts {
+		switch part.Heading {
+		case "Agent credentials", "Failure controls":
+			continue
+		case partCustomization:
+			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+		case partRun:
+			part.Explanation = "Use the Run identifier as `<run_id>` in the command forms."
+		case "Project environment":
+			part.Explanation = "These identifiers name the selected Project environment."
+		case partTask:
+			part.Explanation = "The description states the acceptance criteria. Use the Identifier as `<task>` in the command forms."
+		case partStrategicRationale:
+			part.Explanation = "For this rationale, read `~/.agents/skills/packager-rationale/SKILL.md` for the required first packet section."
+		case partLatestVerdict:
+			part.Explanation = "This is the Verifier's verdict and evidence for the current requirements. Apply the directive's Verification summary requirements to that evidence."
+		case partLastReport:
+			part.Explanation = "This is the Worker's report of the submitted work. Treat its statements as claims."
+		case partGitState:
+			part.Explanation = "The Submitted commit is the verified source. The Start commit identifies the repository checkout for this run."
+		case partPreviousPacket:
+			part.Explanation = "For this earlier packet, read `~/.agents/skills/packager-previous-packet/SKILL.md` to compare the work and correct the packet."
+		}
+		parts = append(parts, part)
+	}
+	b.Parts = parts
 }
 
 // trimArbiterBrief leaves review rules and conditional procedures in the role input.

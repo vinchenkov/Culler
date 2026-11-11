@@ -97,13 +97,18 @@ func skillPointer(skills []RoleSkill) string {
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
 			"The skill lists the permitted commands; `mc` has no help command."
 	}
+	if command.Name == "mc-packager" {
+		text = "## Your command surface\n\n" +
+			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before repository work, before your first `mc` call, and before the terminal action.\n" +
+			"The skill states the permitted commands and repository procedures.\n`mc` has no help command."
+	}
 
 	if len(skills) == 1 {
 		return text
 	}
 	otherSkills := "Each skill below is installed in this container under `" + installedSkillRoot + "`. " +
 		"Load a skill when its description applies to the work in front of you.\n"
-	if command.Name == "mc-scribe" {
+	if command.Name == "mc-scribe" || command.Name == "mc-packager" {
 		otherSkills = "Read each skill when its description applies.\n"
 	}
 	text += "\n\n## Your other skills\n\n" + otherSkills

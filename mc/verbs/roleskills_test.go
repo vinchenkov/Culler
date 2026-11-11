@@ -131,22 +131,6 @@ func TestVerifierShipsVerifyBehavior(t *testing.T) {
 	}
 }
 
-// TestPackagerShipsNoRoleSkill keeps the review packet instructions in the
-// Packager directive: the set is the command surface and the shared skills.
-func TestPackagerShipsNoRoleSkill(t *testing.T) {
-	set, err := RoleSkillSet(dispatch.RolePackager)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var names []string
-	for _, skill := range set {
-		names = append(names, skill.Name)
-	}
-	if strings.Join(names, ",") != "mc-packager,project-environment-setup,project-wiki,task-description,writing" {
-		t.Fatalf("packager set = %v", names)
-	}
-}
-
 // TestEveryTierShipsTheWritingSkill pins the one shared skill: every pipeline
 // role and the Collie tier close their set with `writing`, the standard for
 // each text a human or another agent reads.
@@ -325,6 +309,7 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 			"Always end your turn with a terminal action",
 			"Every turn must end with the terminal action",
 			"End the run with exactly one permitted terminal action, including after an execution failure",
+			"Submit exactly one permitted terminal action without operator confirmation",
 		} {
 			if strings.Contains(directive, sentence) {
 				forbids = true
@@ -344,7 +329,7 @@ func TestEveryDirectiveForbidsASilentExit(t *testing.T) {
 		if subjectless {
 			continue
 		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleVerifier || role == dispatch.RoleArbiter {
+		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleVerifier || role == dispatch.RoleArbiter || role == dispatch.RolePackager {
 			name, err := RoleSkillName(role)
 			if err != nil {
 				t.Fatal(err)
@@ -399,24 +384,7 @@ func TestProseVerbInvocationsKeepsOtherToolFlagsSeparate(t *testing.T) {
 	}
 }
 
-func TestDirectivesWithPipelineContextStateTaskStages(t *testing.T) {
-	for _, role := range allSpawnRoles {
-		prose, err := roleProseDirective(role)
-		if err != nil {
-			t.Fatalf("%s: %v", role, err)
-		}
-		if role == dispatch.RoleWorker || role == dispatch.RoleScribe || role == dispatch.RoleStrategist || role == dispatch.RoleVerifier || role == dispatch.RoleArbiter {
-			continue
-		}
-		flat := strings.Join(strings.Fields(prose), " ")
-		for _, want := range []string{
-			"The Worker builds each task. The Verifier judges the result. The Packager writes the review packet that the operator approves or rejects.",
-		} {
-			if !strings.Contains(flat, want) {
-				t.Errorf("%s directive omits %q", role, want)
-			}
-		}
-	}
+func TestCollieDescribesWikiUpdates(t *testing.T) {
 	collie, err := CollieSkill()
 	if err != nil {
 		t.Fatal(err)
