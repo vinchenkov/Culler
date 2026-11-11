@@ -33,7 +33,9 @@ A test result describes only the paths that the test executes.
 | Provider refusal | Account, model, quota, and temporary failures retain their distinct remedies. | `mc/verbs/provideraccess_test.go`, `dashboard/src/ui/systemhealth.test.ts` |
 | Certificate lifecycle | Private keys stay protected; leaf renewal preserves active streams and listener identity. | `mc/deployment/provider_tls_test.go`, `resident/src/provider-proxy.test.ts` |
 | Unattended host storage | Isolated macOS Keychain records support large values, reads, and deletion. | `mc/deployment/host_secret_darwin_test.go`, `host_secret_lifecycle_test.go` |
-| Upgrade | Existing authorization and conversation data survive the boundary change. | `mc/deployment/provider_credential_test.go`, `provider_artifacts_test.go`, `mc/cmd/mc/onboard_home_prod_test.go`, `mc/verbs/collierestart_test.go` |
+| Original sessions | Deployment and adapters preserve original records and provider blocks. | `mc/deployment/host_release_test.go`, `runner/agent-runner/adapters/startup.test.ts`, `session-store.test.ts`, `runner/agent-runner/opencode.test.ts` |
+| Trace copies | Copies mask identified credentials. Collie and AgentsView inspect copies. | `resident/src/trace-mask.test.ts`, `trace-copy.test.ts`, `trace-lane.test.ts`, `tests/provider-proxy/harness.ts` |
+| Conversation errors | A rejected request preserves shared access and the identity of its reply attempt. | `mc/verbs/provideraccess_test.go`, `resident/src/provider-proxy.test.ts`, `provider-lifetime.test.ts` |
 | Real provider protocol | Each real connection completes a shell tool and native continuation through the proxy. | `tests/live-model/proxy.ts` |
 | Live test cost | The suite selects the cheapest compatible offered model and records bounded requests and available usage. | `resident/src/live-model-policy.test.ts`, `live-model-usage.test.ts`, `tests/live-model/proxy.ts` |
 | Scribe tools | Both harnesses complete the OpenWiki tool protocol through the proxy. | `tests/provider-proxy/scribe-native.ts`, `tests/live-model/scribe.ts`, `resident/src/scribe-acceptance.test.ts` |

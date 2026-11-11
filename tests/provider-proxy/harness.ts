@@ -1,6 +1,7 @@
 import { chmod, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import { resolve, join } from "node:path";
+import { resolve, join, relative } from "node:path";
 import { randomBytes, randomUUID } from "node:crypto";
+import { copyTrace } from "../../resident/src/trace-copy";
 import { runNativeHarness } from "./native-harness";
 import { liveModelControls } from "../live-model/models";
 
@@ -177,14 +178,26 @@ try {
     }
     if (!native || !state.preliminaryObserved || state.requests !== 2) throw new Error("The first turn lacks native or incremental response evidence.");
     if (await readFile(join(work, "workspace/culler-tool.txt"), "utf8") !== "CULLER_TOOL_OK") throw new Error("The agent action failed.");
+    let retainedToken = false;
     async function scan(path: string): Promise<void> {
       for (const entry of await readdir(path, { withFileTypes: true })) {
         const child = join(path, entry.name);
-        if (entry.isDirectory()) await scan(child);
-        else if ((await readFile(child)).includes(Buffer.from(state.token))) throw new Error("The native session exposed the Culler token.");
+        if (entry.isDirectory()) { await scan(child); continue; }
+        const original = await readFile(child);
+        retainedToken ||= original.includes(Buffer.from(state.token));
+        if (!child.endsWith(".jsonl")) continue;
+        const sessionRoot = join(work, "session");
+        const dest = join(work, "copies", relative(sessionRoot, child));
+        const copy = { root: sessionRoot, source: child, dest };
+        while (!(await copyTrace(copy, Date.now())).caughtUp) {}
+        if (!original.equals(await readFile(child))) throw new Error("The trace copy changed an original session.");
+        if (await Bun.file(dest).exists() && (await readFile(dest)).includes(Buffer.from(state.token))) {
+          throw new Error("The trace copy exposed the Culler token.");
+        }
       }
     }
     await scan(join(work, "session"));
+    if (!retainedToken) throw new Error("The original session lost the native tool result.");
     const next = await turn(native);
     if (next !== native || state.requests !== 3) throw new Error("The resumed turn changed its native context or request count.");
     return native;
@@ -195,7 +208,7 @@ try {
   if (failures.length) throw new Error(failures.join("\n"));
   console.log(JSON.stringify({ result: "CULLER_HARNESS_PROXY_OK", harness, authMode, versions: pins, requests: 7,
     tls: true, preliminary_before_completion: true, native_resume: true, isolated_conversations: true,
-    proxy_rejection_correlation: true, native_token_redaction: true }));
+    proxy_rejection_correlation: true, original_session_preservation: true, trace_token_redaction: true }));
 } finally {
   for (const state of states.values()) state.release?.();
   server?.stop(true);

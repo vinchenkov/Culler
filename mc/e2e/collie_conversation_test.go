@@ -222,7 +222,7 @@ func TestCollieConversationDockerBoundary(t *testing.T) {
 	// /mc/traces, and the mount refuses each write. The trace is synthetic.
 	const tracedRun = "trace-mount-probe"
 	const traceRecord = `{"type":"assistant","message":{"content":[{"type":"text","text":"synthetic trace"}]}}` + "\n"
-	tracedSession := filepath.Join(f.home, "sessions", tracedRun)
+	tracedSession := filepath.Join(f.home, "agentsview", "inspection", tracedRun)
 	if err := os.MkdirAll(tracedSession, 0o755); err != nil {
 		t.Fatalf("create the synthetic session folder: %v", err)
 	}

@@ -422,10 +422,11 @@ Collie can inspect the environment but cannot approve changes or build images.
 
 ## Run traces
 
-A trace is the native record that the harness writes for one run or one Collie session.
+A trace copy contains native records with credential masks.
 The trace mount `/mc/traces` holds one session folder for each run and each Collie session.
 The name of the session folder is the run identifier or the Collie session identifier.
 The trace mount is read-only.
+Your harness uses a separate original session to resume.
 
 Use the trace to explain why an agent made a decision.
 Cite the trace file and the line numbers that support each explanation.
@@ -465,7 +466,17 @@ A null `trace_filename` means that the run has no main trace. Report that fact t
 A repository operation, such as a merge step, has no agent and no main trace.
 A run that failed before the agent started has no main trace.
 
-The harness in `binding` selects the layout of the session folder:
+The file `status.json` lists each trace filename and its availability:
+
+- The value `ready` means that the copy contains each complete record from the last pass.
+- The value `pending` means that a copy pass or a complete record remains due.
+- The value `unavailable` means that the resident cannot supply the copy.
+
+A missing folder or status file means that trace availability is unknown.
+Read the copy again later when it is pending or unavailable.
+Report the availability when a valid copy remains absent.
+
+The harness in `binding` selects the layout of the trace copies:
 
 - The harness `claude-sdk` writes the main trace to `native.jsonl`.
   Each child trace is a file `subagents/agent-<id>.jsonl`.
@@ -473,7 +484,7 @@ The harness in `binding` selects the layout of the session folder:
   `trace_filename` names the main trace. Each other `rollout-*.jsonl` file in the session folder is a child trace.
 
 - The harness `opencode` writes `rollout-<trace identifier>.jsonl` with the Codex record layout.
-  Its native database stays under `opencode/` in the session folder.
+  Its original database remains separate from the trace copies.
 
 The session folder of a Collie session has the same layout.
 
@@ -490,7 +501,7 @@ Print only the lines and the fields that you need.
 3. Read the lines before and after a decision. They show the evidence that the agent had at that time.
 
 The trace of an active run gets new lines while the run continues.
-The last line of that trace can be incomplete. Skip an incomplete last line and read the file again for later records.
+The copy contains complete records only. Read the copy again for later records.
 
 ### Records of the `claude-sdk` harness
 

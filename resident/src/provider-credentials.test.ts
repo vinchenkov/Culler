@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { createTraceMask } from "./trace-mask";
 import { createProviderCredentials, type HostCredentialSnapshot } from "./provider-credentials";
 
 function fixture(type: "api_key" | "account" = "account", observe?: (value: Record<string, unknown>) => Promise<void>) {
@@ -385,4 +386,20 @@ test("malformed credentials and failed owner access record a host failure withou
     expect(observations.at(-1)).toMatchObject({ origin: "credential_store", outcome: "failed" });
     expect(JSON.stringify(observations)).not.toContain("private");
   }
+});
+
+test("trace masks retain the host credentials before and after renewal", async () => {
+  const observations: Record<string, unknown>[] = [];
+  const f = fixture("account", async value => { observations.push(value); });
+  await f.service.renew("one");
+  const values = ["synthetic-access-one", "synthetic-refresh-one", "synthetic-identity-one",
+    "synthetic-access-two", "synthetic-refresh-two", "synthetic-identity-two"];
+  const original = Buffer.from(JSON.stringify({ text: values.join(" "), signature: "opaque-provider-data" }));
+  const copy = createTraceMask(f.service.traceSecrets()).apply(original).toString();
+  for (const value of values) {
+    expect(original.toString()).toContain(value);
+    expect(copy).not.toContain(value);
+    expect(JSON.stringify(observations)).not.toContain(value);
+  }
+  expect(JSON.parse(copy).signature).toBe("opaque-provider-data");
 });

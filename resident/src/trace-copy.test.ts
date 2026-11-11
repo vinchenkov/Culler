@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { appendFile, chmod, mkdir, mkdtemp, open, readFile, readdir, rename, rm, stat, symlink, truncate, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { createTraceMask } from "./trace-mask";
 import { checkInside, copyTrace, openFolderInside, type CopyState } from "./trace-copy";
 
 let root: string;
@@ -126,7 +127,7 @@ describe("copyTrace", () => {
     await copyTrace(restarted, 2);
     expect(await read(dest)).toBe(line(1) + line(2) + line(3));
     expect(restarted.recopy).toBeUndefined();
-    expect(await readdir(join(root, "copies", "culler"))).toEqual(["11111111-1111-4111-8111-111111111111.jsonl"]);
+    expect((await readdir(join(root, "copies", "culler"))).sort()).toEqual(["11111111-1111-4111-8111-111111111111.jsonl", "11111111-1111-4111-8111-111111111111.jsonl.mask"]);
   });
 
   test("a copy that ends inside a line is made again", async () => {
@@ -382,4 +383,53 @@ describe("a folder swapped for a symbolic link", () => {
       await file.close();
     }
   });
+});
+
+test("credential discovery masks the entire copy, including a prefix before the restart tail", async () => {
+  const secret = "exact-credential-value";
+  const body = JSON.stringify({ text: secret }) + "\n" + line(1).repeat(100);
+  await writeFile(source, body);
+  const copy = state();
+  await copyTrace(copy, 1);
+  const mask = createTraceMask([secret]);
+  await copyTrace(copy, 2, {}, mask);
+  expect(await read(dest)).not.toContain(secret);
+  const safe = await read(dest);
+  await copyTrace(state(), 3, {}, mask);
+  expect(await read(dest)).toBe(safe);
+  await rm(dest);
+  await copyTrace(state(), 4, { chunkBytes: 32 }, mask);
+  expect(await read(dest)).toBe(safe);
+  expect(await read(source)).toBe(body);
+});
+
+test("encoded tokens cross reads and incomplete lines without changes to originals", async () => {
+  const token = "culler_proxy_" + "x".repeat(43);
+  const secret = "exact-private-value";
+  const values = [token, Buffer.from(token).toString("base64"), secret, Buffer.from(secret).toString("base64")];
+  const body = values.map(text => JSON.stringify({ text }) + "\n").join("");
+  await writeFile(source, body.slice(0, -1));
+  const copy = state(), mask = createTraceMask([secret]);
+  await copyTrace(copy, 1, { chunkBytes: 17 }, mask);
+  expect((await read(dest)).split("\n").filter(Boolean)).toHaveLength(3);
+  await appendFile(source, "\n");
+  await copyTrace(copy, 2, { chunkBytes: 17 }, mask);
+  const result = await read(dest);
+  for (const value of values) expect(result).not.toContain(value);
+  expect(await read(source)).toBe(body);
+  expect(Buffer.byteLength(result)).toBe(Buffer.byteLength(body));
+});
+
+test("a restart after credential replacement retains earlier masks without saved secrets", async () => {
+  const first = "first-private-credential", second = "second-private-credential";
+  const body = JSON.stringify({ text: first }) + "\n" + JSON.stringify({ text: second }) + "\n";
+  await writeFile(source, body);
+  await copyTrace(state(), 1, {}, createTraceMask([first]));
+  await copyTrace(state(), 2, {}, createTraceMask([second]));
+  const masked = await read(dest);
+  expect(masked).not.toContain(first);
+  expect(masked).not.toContain(second);
+  await copyTrace(state(), 3, {}, createTraceMask());
+  expect(await read(dest)).toBe(masked);
+  expect(await read(source)).toBe(body);
 });

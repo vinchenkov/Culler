@@ -17,6 +17,7 @@ type ProviderLaunchLifetime struct {
 	ProviderLaunchIdentity
 	Allowed   bool   `json:"allowed"`
 	ExpiresAt string `json:"expires_at,omitempty"`
+	AttemptID string `json:"attempt_id,omitempty"`
 }
 
 // ProviderAccessLifetimes derives temporary authority from current control state.
@@ -45,6 +46,10 @@ func ProviderAccessLifetimes(db *sql.DB, id *RunIdentity, launches []ProviderLau
 		if err == nil && expiry.After(now) {
 			row.Allowed = true
 			row.ExpiresAt = expiry.Format(time.RFC3339Nano)
+			err := db.QueryRow(`SELECT attempt_id FROM collie_reply_attempts WHERE session_id=? AND launch_id=? AND state='active' ORDER BY rowid DESC LIMIT 1`, launch.RunID, launch.LaunchID).Scan(&row.AttemptID)
+			if err != nil && err != sql.ErrNoRows {
+				return nil, err
+			}
 		}
 		results = append(results, row)
 	}

@@ -1,8 +1,8 @@
 import { expect, test } from "bun:test";
-import { mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { loadProviderAccess, parseProviderAccess, redactNativeAccess, writeProviderCA } from "./provider-access";
+import { loadProviderAccess, parseProviderAccess, writeProviderCA } from "./provider-access";
 
 const access = { version: 1, url: "https://host.docker.internal:4433", token: "culler_proxy_" + "c".repeat(43),
   ca: "-----BEGIN CERTIFICATE-----\nsynthetic\n-----END CERTIFICATE-----", harness: "codex", authMode: "api-key" };
@@ -34,24 +34,5 @@ test("the public certificate file is private and refuses an existing replacement
     expect((await stat(path)).mode & 0o777).toBe(0o400);
     await expect(writeProviderCA({ ...config, ca: "replacement" }, root)).rejects.toThrow();
     expect(await readFile(path, "utf8")).toBe(access.ca);
-  } finally { await rm(root, { recursive: true, force: true }); }
-});
-
-test("native redaction detects a deliberate token across its byte boundary", async () => {
-  const root = await mkdtemp(join(tmpdir(), "culler-native-redaction-"));
-  try {
-    await mkdir(join(root, "subagents"));
-    const file = join(root, "subagents/trace.jsonl");
-    const text = JSON.stringify({ type: "user", uuid: "native-id", body: "x".repeat((1 << 20) - 70) + access.token }) + "\n";
-    await writeFile(file, text);
-    expect((await readFile(file)).includes(Buffer.from(access.token))).toBe(true);
-    await redactNativeAccess(root, access.token);
-    const result = await readFile(file, "utf8");
-    expect(result).not.toContain(access.token);
-    expect(Buffer.byteLength(result)).toBe(Buffer.byteLength(text));
-    expect(JSON.parse(result).uuid).toBe("native-id");
-    expect(JSON.parse(result).body).toEndWith("*".repeat(access.token.length));
-    await symlink(file, join(root, "outside.jsonl"));
-    await expect(redactNativeAccess(root, access.token)).rejects.toThrow("symbolic link");
   } finally { await rm(root, { recursive: true, force: true }); }
 });

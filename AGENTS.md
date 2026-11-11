@@ -267,7 +267,11 @@ The proxy consumes the grant once and keeps the AgentsView token on the host.
 The proxy reads its service address and token through the host-only `mc __agentsview-access` command.
 The dashboard process serves each wiki export at the wiki address below the wiki key, a secret path prefix in `MC_HOME/state/wiki-key`.
 An agent container can reach the loopback addresses of the host. The token and the wiki key refuse those requests.
-Each Collie container reads the session folders in `MC_HOME/sessions` through a read-only mount at `/mc/traces`.
+
+Each Collie container reads trace copies in `MC_HOME/agentsview/inspection` through a read-only mount at `/mc/traces`.
+Each inspection file links to a trace copy. The original session remains separate.
+Each session folder has a `status.json` file with trace availability.
+
 The Collie container of a packet conversation reads the artifact files of its task through a read-only mount.
 Each artifact path that the spine records for that task resolves through that mount.
 The resident resolves the host folder of that mount through the host-only `mc __task-artifacts` command.

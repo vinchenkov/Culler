@@ -52,7 +52,7 @@ func ValidateInfrastructureFailureReport(report InfrastructureFailureReport) err
 		return invalid("The provider response status is invalid.")
 	}
 	switch report.ProviderErrorCode {
-	case "", "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "model_not_found", "permission_denied", "authentication_failed", "oauth_org_not_allowed", "billing_error", "rate_limit", "overloaded", "invalid_request", "server_error":
+	case "", "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "model_not_found", "permission_denied", "authentication_failed", "oauth_org_not_allowed", "billing_error", "rate_limit", "overloaded", "invalid_request", "invalid_request_error", "invalid_encrypted_content", "invalid_signature", "server_error":
 	default:
 		return invalid("The provider error code is invalid.")
 	}
@@ -129,6 +129,8 @@ func runFailureReason(report InfrastructureFailureReport) (reason string, system
 		return "agent", false
 	case report.NetworkError != "":
 		return "network", true
+	case report.Cause != "connection" && providerRequestLocal(ProviderAccessObservation{Origin: "provider", HTTPStatus: report.HTTPStatus, ProviderErrorCode: report.ProviderErrorCode}) && (report.HTTPStatus != nil || report.ProviderErrorCode != ""):
+		return "provider", false
 	case report.HTTPStatus != nil || report.ProviderErrorCode != "":
 		return "provider", true
 	case report.Source == "resident" && (report.Cause == "credentials" || report.Cause == "connection"):

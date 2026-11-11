@@ -100,6 +100,6 @@ export function providerFailureFields(value: unknown): Pick<AdapterFailure, "htt
   const result: Pick<AdapterFailure, "http_status" | "provider_error_code" | "proxy_request_id"> = proxyRequestFields(fields);
   if (Number.isInteger(status) && (status as number) >= 400 && (status as number) <= 599) result.http_status = status as number;
   const code = fields.provider_error_code ?? fields.code ?? fields.error;
-  if (typeof code === "string" && ["invalid_grant", "invalid_client", "refresh_token_reused", "temporarily_unavailable", "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "model_not_found", "permission_denied", "authentication_failed", "oauth_org_not_allowed", "billing_error", "rate_limit", "overloaded", "invalid_request", "server_error"].includes(code)) result.provider_error_code = code;
+  if (typeof code === "string" && ["invalid_grant", "invalid_client", "refresh_token_reused", "temporarily_unavailable", "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "model_not_found", "permission_denied", "authentication_failed", "oauth_org_not_allowed", "billing_error", "rate_limit", "overloaded", "invalid_encrypted_content", "invalid_signature", "invalid_request_error", "invalid_request", "server_error"].includes(code)) result.provider_error_code = code;
   return result;
 }

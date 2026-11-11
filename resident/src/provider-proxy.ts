@@ -93,7 +93,7 @@ export interface ProviderProxyOptions {
 
 export interface ProviderProxyDependencies {
   credential(connection: string, signal: AbortSignal): Promise<ProviderCredential>;
-  isLaunchCurrent?(spec: ProviderRunAuthorization, signal: AbortSignal): Promise<boolean>;
+  isLaunchCurrent?(spec: ProviderRunAuthorization, signal: AbortSignal): Promise<boolean | { allowed: boolean; attemptId?: string }>;
   observe?(observation: ProviderRequestObservation): Promise<void> | void;
   now?(): number;
   /** Tests can replace transport without an address override in runtime configuration. */
@@ -203,7 +203,7 @@ const providerErrorCodes = new Set([
   "insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached",
   "model_not_found", "permission_denied", "not_found_error", "permission_error", "oauth_org_not_allowed",
   "rate_limit_exceeded", "rate_limit_error", "rate_limit", "overloaded", "overloaded_error",
-  "server_error", "api_error", "temporarily_unavailable", "invalid_request", "invalid_request_error",
+  "server_error", "api_error", "temporarily_unavailable", "invalid_encrypted_content", "invalid_signature", "invalid_request_error", "invalid_request",
 ]);
 
 function knownProviderError(value: unknown, secrets: string[]): string | undefined {
@@ -457,6 +457,8 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
       const started = now();
       let held: Authorization | undefined;
       let operation: ProviderOperation | undefined;
+      let requestAttempt: string | undefined;
+      let attemptChecked = false;
       let credential: ProviderCredential | undefined;
       let sent = false;
       let observed = false;
@@ -484,7 +486,7 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
           ...(held ? {
             authorization_id: held.id, run_id: held.spec.runId, launch_id: held.spec.launchId,
             connection: held.spec.connection, profile_id: held.spec.profileId,
-            profile_revision: held.spec.profileRevision, attempt_id: held.spec.attemptId,
+            profile_revision: held.spec.profileRevision, attempt_id: attemptChecked ? requestAttempt : held.spec.attemptId,
           } : {}),
           ...(credential ? { authorization_revision: credential.authorizationRevision, credential_ref: credential.credentialRef } : {}),
           operation: operation?.id, origin, outcome, provider_sent: sent,
@@ -580,10 +582,15 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
         const checkLiveness = async (): Promise<Response | null> => {
           if (!held!.spec.requireLiveness) return null;
           if (!dependencies.isLaunchCurrent) return refuse(503, "proxy", "launch_control_unavailable");
-          let current: boolean;
+          let current: boolean | { allowed: boolean; attemptId?: string };
           try { current = await abortable(dependencies.isLaunchCurrent(structuredClone(held!.spec), controller.signal), controller.signal); }
           catch { return refuse(503, "proxy", "launch_control_unavailable"); }
-          if (!current) {
+          if (typeof current === "object") {
+            if (attemptChecked && requestAttempt !== current.attemptId) return refuse(409, "proxy_authorization", "reply_changed");
+            requestAttempt = current.attemptId;
+            attemptChecked = true;
+          }
+          if (!(typeof current === "boolean" ? current : current.allowed)) {
             const response = await refuse(401, "proxy_authorization", "launch_ended");
             revoke(held!.id);
             return response;

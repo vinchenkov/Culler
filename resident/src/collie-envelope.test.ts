@@ -10,7 +10,7 @@ const cmd = ["bun", "/app/src/collie-runner/main.ts"];
 const binds = [
   "/host/session:/mc/session",
   "/host/run.json:/mc/run.json:ro",
-  "/host/sessions:/mc/traces:ro",
+  "/host/agentsview/inspection:/mc/traces:ro",
   "mc-spine:/mc/spine",
 ];
 const labels = {

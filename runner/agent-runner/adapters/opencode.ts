@@ -1,8 +1,6 @@
 #!/usr/bin/env bun
-import { appendFile, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
-import { Database } from "bun:sqlite";
-import { redactProviderTokens } from "../../shared/provider-token";
 import { openCodeTraceID } from "../../shared/opencode-trace";
 import { loadProviderAccess, writeProviderCA, type ProviderAccess } from "./provider-access";
 import { adapterFailure, loadDiagnosticRedactor, redactDiagnosticEvent } from "../diagnostics";
@@ -75,40 +73,6 @@ export function openCodeEvent(value: any): { session?: string; text?: string; to
   }
 }
 
-/** The native process must stop before the session database changes. */
-export async function redactOpenCodeSession(root: string): Promise<void> {
-  const quote = (name: string) => '"' + name.replaceAll('"', '""') + '"';
-  async function walk(directory: string) {
-    for (const entry of await readdir(directory, { withFileTypes: true })) {
-      const path = join(directory, entry.name);
-      if (entry.isSymbolicLink()) throw new Error("The OpenCode session contains a symbolic link.");
-      if (entry.isDirectory()) { if (entry.name !== "cache") await walk(path); continue; }
-      if (entry.name.endsWith(".db") || entry.name.endsWith(".sqlite")) {
-        const db = new Database(path);
-        try {
-          db.exec("PRAGMA secure_delete=ON");
-          db.transaction(() => {
-            for (const { name } of db.query<{ name: string }, []>("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all()) {
-              const columns = db.query<{ name: string; type: string }, []>(`PRAGMA table_info(${quote(name)})`).all().filter(column => /TEXT|CHAR|CLOB/i.test(column.type));
-              for (const column of columns) {
-                const field = quote(column.name), table = quote(name);
-                for (const row of db.query<{ rowid: number; value: string }, []>(`SELECT rowid, ${field} AS value FROM ${table} WHERE instr(${field}, 'culler_proxy_') > 0`).all()) {
-                  db.query(`UPDATE ${table} SET ${field}=? WHERE rowid=?`).run(redactProviderTokens(row.value), row.rowid);
-                }
-              }
-            }
-          })();
-          db.exec("PRAGMA wal_checkpoint(TRUNCATE)");
-        } finally { db.close(); }
-      } else if (/\.(?:log|json|jsonl|jsonc|txt)$/.test(entry.name)) {
-        const body = await readFile(path, "utf8"), safe = redactProviderTokens(body);
-        if (body !== safe) await writeFile(path, safe);
-      }
-    }
-  }
-  await walk(root);
-}
-
 async function main(): Promise<number> {
   const arg = (flag: string) => { const at = process.argv.indexOf(flag); return at < 0 ? undefined : process.argv[at + 1]; };
   const directory = arg("--session-dir"), workspace = arg("--workspace"), model = arg("--model");
@@ -139,13 +103,13 @@ async function main(): Promise<number> {
   const argv = [process.env.MC_OPENCODE_BIN ?? `${OPENCODE_ROOT}/node_modules/@opencode/cli-linux-arm64/bin/opencode`,
     "run", "--standalone", "--auto", "--format", "json", "--title", "Culler agent", ...(native ? ["--session", native] : [])];
   const prompt = await Bun.stdin.text();
-  let session: string | undefined, filename: string | undefined, reply: string | undefined, failed = false, complete = false, cleaned = false;
+  let session: string | undefined, filename: string | undefined, reply: string | undefined, failed = false, complete = false;
   const proc = Bun.spawn(argv, { cwd: workspace, env, stdin: new TextEncoder().encode(prompt), stdout: "pipe", stderr: "pipe" });
   const stop = () => proc.kill("SIGTERM");
   process.on("SIGTERM", stop); process.on("SIGINT", stop);
   const stderr = new Response(proc.stderr).text();
   async function trace(type: string, payload: unknown) {
-    if (filename) await appendFile(join(directory!, filename), JSON.stringify(redactDiagnosticEvent({ timestamp: new Date().toISOString(), type, payload }, safe)) + "\n");
+    if (filename) await appendFile(join(directory!, filename), JSON.stringify({ timestamp: new Date().toISOString(), type, payload }) + "\n");
   }
   let registration: Promise<void> | undefined;
   function registerSession(id: string): Promise<void> {
@@ -210,9 +174,6 @@ async function main(): Promise<number> {
     await sessionObserver;
     if (sessionError) throw sessionError;
     const error = safe(await stderr);
-    await rm(caDirectory, { recursive: true, force: true });
-    await redactOpenCodeSession(root);
-    cleaned = true;
     if (code !== 0 || failed || !session || reply === undefined || !complete) {
       if (!failed) emit(adapterFailure("The OpenCode run ended without a complete reply.", error, redact));
       return code || 2;
@@ -224,10 +185,7 @@ async function main(): Promise<number> {
     await sessionObserver;
     if (proc.exitCode === null) { proc.kill("SIGTERM"); await proc.exited; }
     process.off("SIGTERM", stop); process.off("SIGINT", stop);
-    if (!cleaned) {
-      await rm(caDirectory, { recursive: true, force: true });
-      await redactOpenCodeSession(root);
-    }
+    await rm(caDirectory, { recursive: true, force: true });
   }
 }
 

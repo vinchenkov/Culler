@@ -2045,7 +2045,7 @@ describe("collie tier (lease-free)", () => {
     expect(create).toContain(`${testConfig.mcHome}/runs/scratch/h-abc:/mc/scratch`);
     expect(create).toContain(`${testConfig.mcHome}/sessions/h-abc:/mc/session`);
     // Each session folder is readable below the trace mount, never writable.
-    expect(create).toContain(`${testConfig.mcHome}/sessions:/mc/traces:ro`);
+    expect(create).toContain(`${testConfig.mcHome}/agentsview/inspection:/mc/traces:ro`);
     expect(create.filter((arg) => arg.includes(":/mc/traces"))).toHaveLength(1);
     expect(create).toContain(`${testConfig.mcHome}/logs/runs/h-abc:/mc/logs`);
     // Operator read-scope: the workspace is bound RO, never RW.
@@ -2244,7 +2244,7 @@ describe("collie tier (lease-free)", () => {
       expect(create.join(" ")).not.toContain("CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST");
       expect(create.join(" ")).not.toContain("host-minted-access");
       expect(create).toContain("MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json");
-      expect(create).toContain(`${testConfig.mcHome}/sessions:/mc/traces:ro`);
+      expect(create).toContain(`${testConfig.mcHome}/agentsview/inspection:/mc/traces:ro`);
     });
 
     test("a Codex resume preserves its session store and uses private Culler access", async () => {
@@ -2266,7 +2266,7 @@ describe("collie tier (lease-free)", () => {
       expect(create).toContain(`${authPath}:/mc/provider-access.json:ro`);
       expect(create).not.toContain(`${testConfig.mcHome}/runs/h-abc.codex-auth.json:/mc/codex/auth.json`);
       expect(create).toContain(`${testConfig.mcHome}/sessions/h-abc:/mc/session`);
-      expect(create).toContain(`${testConfig.mcHome}/sessions:/mc/traces:ro`);
+      expect(create).toContain(`${testConfig.mcHome}/agentsview/inspection:/mc/traces:ro`);
       expect(create.join(" ")).not.toContain("CODEX_HOME");
       expect(create.join(" ")).not.toContain("REFRESH_TOKEN");
     });

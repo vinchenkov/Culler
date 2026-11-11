@@ -8,9 +8,9 @@
 // source file and folder must be the entry at its real path inside the real
 // session folder.
 
-import { constants, lstat, mkdir, open, realpath, rename, stat, type FileHandle } from "node:fs/promises";
+import { constants, lstat, mkdir, open, realpath, readFile, rename, stat, writeFile, type FileHandle } from "node:fs/promises";
 import { basename, dirname, join, relative, sep } from "node:path";
-import { maskProviderTokens, PROVIDER_TOKEN_LENGTH } from "../../runner/shared/provider-token";
+import { defaultTraceMask, type TraceMask } from "./trace-mask";
 
 /** The last bytes of a copy that a restart compares with the source. */
 export const TAIL_CHECK_BYTES = 4096;
@@ -36,6 +36,7 @@ export interface CopyState {
   /** The size of the verified copy. The lane verifies the copy again when
    * this value is undefined. */
   position?: number;
+  maskRevision?: string;
   /** The device and inode of the source at the last pass. */
   sourceId?: string;
   sourceMtimeMs?: number;
@@ -159,10 +160,14 @@ async function writeAt(handle: FileHandle, data: Buffer, position: number): Prom
   }
 }
 
+function maskedPrefix(copy: Buffer, source: Buffer): boolean {
+  return copy.length <= source.length && copy.every((byte, index) => byte === source[index] || byte === 0x2a);
+}
+
 /** The size and time of a copy whose last bytes equal the same bytes of the
  * source, or undefined when the copy must be made again. */
 async function verifiedCopy(
-  dest: string, source: FileHandle, size: number,
+  dest: string, source: FileHandle, size: number, mask: TraceMask,
 ): Promise<{ size: number; mtimeMs?: number } | undefined> {
   const copy = await openForRead(dest, "trace copy");
   if (copy === undefined) return { size: 0 };
@@ -172,10 +177,10 @@ async function verifiedCopy(
     if (info.size > size) return undefined;
     const length = Math.min(TAIL_CHECK_BYTES, info.size);
     const start = info.size - length;
-    const overlap = Math.min(start, PROVIDER_TOKEN_LENGTH - 1);
+    const overlap = Math.min(start, mask.overlap);
     const [mine, raw] = await Promise.all([readAt(copy, start, length), readAt(source, start - overlap, length + overlap)]);
-    const theirs = maskProviderTokens(raw).subarray(overlap);
-    if (mine.length !== length || mine[length - 1] !== NEWLINE || !mine.equals(theirs)) return undefined;
+    const theirs = mask.apply(raw).subarray(overlap);
+    if (mine.length !== length || mine[length - 1] !== NEWLINE || !maskedPrefix(mine, theirs)) return undefined;
     return { size: info.size, mtimeMs: info.mtimeMs };
   } finally {
     await copy.close();
@@ -232,7 +237,7 @@ async function unchanged(state: CopyState): Promise<boolean> {
  * limit. The pass remembers an unterminated last line, so the next pass
  * reads only the bytes after it. */
 async function appendLines(
-  source: FileHandle, size: number, state: CopyState, limits: Required<CopyLimits>,
+  source: FileHandle, size: number, state: CopyState, limits: Required<CopyLimits>, mask: TraceMask,
 ): Promise<{ start: number; end: number; caughtUp: boolean }> {
   const start = state.recopy?.position ?? state.position!;
   const target = state.recopy?.temp ?? state.dest;
@@ -241,9 +246,18 @@ async function appendLines(
   let scanned = state.scan !== undefined && state.scan.from === start && state.scan.to <= size ? state.scan.to : start;
   let budget = limits.passBytes;
   let output: FileHandle | undefined;
+  const previous = state.recopy ? await openForRead(state.dest, "trace copy") : undefined;
   const write = async (data: Buffer) => {
     output ??= await openTarget(target, position);
-    await writeAt(output, maskProviderTokens(data), position);
+    const safe = mask.apply(data);
+    if (previous) {
+      const old = await readAt(previous, position, data.length);
+      // Retain earlier masks after credential rotation without a credential catalog.
+      if (maskedPrefix(old, data)) {
+        for (let index = 0; index < old.length; index++) if (old[index] === 0x2a) safe[index] = 0x2a;
+      }
+    }
+    await writeAt(output, safe, position);
     position += data.length;
     scanned = position;
   };
@@ -289,6 +303,7 @@ async function appendLines(
     return { start, end: position, caughtUp: scanned >= size };
   } finally {
     await output?.close();
+    await previous?.close();
   }
 }
 
@@ -297,12 +312,23 @@ async function appendLines(
  * absent or has another size than the copy position starts a complete new
  * copy in a temporary file. A rename replaces the copy when the new copy
  * reaches the source. */
-export async function copyTrace(state: CopyState, now: number, limits: CopyLimits = {}): Promise<CopyResult> {
+export async function copyTrace(state: CopyState, now: number, limits: CopyLimits = {}, mask: TraceMask = defaultTraceMask): Promise<CopyResult> {
   const bounds: Required<CopyLimits> = {
     chunkBytes: limits.chunkBytes ?? CHUNK_BYTES,
     passBytes: limits.passBytes ?? PASS_BYTES,
     maxLineBytes: limits.maxLineBytes ?? MAX_LINE_BYTES,
   };
+  if (state.maskRevision !== mask.revision) {
+    const previous = state.maskRevision ?? await readFile(`${state.dest}.mask`, "utf8").catch(error => {
+      if (code(error) === "ENOENT") return undefined;
+      throw error;
+    });
+    if (previous !== mask.revision && (await lstat(state.dest).catch(() => undefined)) !== undefined) {
+      await beginRecopy(state);
+      state.scan = undefined;
+    }
+    state.maskRevision = mask.revision;
+  }
   if (await unchanged(state)) return { copied: 0, caughtUp: true, absent: false, replaced: false };
   const source = await openForRead(state.source, "trace file");
   if (source === undefined) return { copied: 0, caughtUp: true, absent: true, replaced: false };
@@ -311,16 +337,16 @@ export async function copyTrace(state: CopyState, now: number, limits: CopyLimit
     const info = await source.stat();
     const id = `${info.dev}:${info.ino}`;
     if (state.sourceId !== id) {
+      if (state.recopy !== undefined) await beginRecopy(state);
       state.sourceId = id;
       state.position = undefined;
-      state.recopy = undefined;
       state.scan = undefined;
     }
     state.sourceMtimeMs = info.mtimeMs;
     state.sourceSize = info.size;
     const size = info.size;
     if (state.recopy === undefined && state.position === undefined) {
-      const copy = await verifiedCopy(state.dest, source, size);
+      const copy = await verifiedCopy(state.dest, source, size, mask);
       if (copy === undefined) {
         await beginRecopy(state);
       } else {
@@ -334,11 +360,11 @@ export async function copyTrace(state: CopyState, now: number, limits: CopyLimit
     }
     let appended;
     try {
-      appended = await appendLines(source, size, state, bounds);
+      appended = await appendLines(source, size, state, bounds, mask);
     } catch (error) {
       if (!(error instanceof CopyChanged)) throw error;
       await beginRecopy(state);
-      appended = await appendLines(source, size, state, bounds);
+      appended = await appendLines(source, size, state, bounds, mask);
     }
     const { start, end, caughtUp } = appended;
     let replaced = false;
@@ -354,6 +380,10 @@ export async function copyTrace(state: CopyState, now: number, limits: CopyLimit
     } else if (end > start) {
       state.position = end;
       state.changedAt = now;
+    }
+    if (state.recopy === undefined && state.position !== undefined) {
+      await mkdir(dirname(state.dest), { recursive: true, mode: 0o700 });
+      await writeFile(`${state.dest}.mask`, mask.revision, { mode: 0o600 });
     }
     return { copied: end - start, caughtUp, absent: false, replaced };
   } finally {

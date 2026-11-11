@@ -73,6 +73,7 @@ func TestProviderAccessRejectsObsoleteAuthorizationAndCredentialResults(t *testi
 		t.Run(obsolete, func(t *testing.T) {
 			db := proxyHealth(t, "connection_access")
 			a := proxyObservation("provider", 403)
+			a.ProviderErrorCode = "permission_denied"
 			switch obsolete {
 			case "authorization":
 				a.CurrentAuthorizationRevision = "authorization-2"
@@ -308,6 +309,7 @@ func TestProviderAccessKeychainRecoveryPreservesSavedAuthorization(t *testing.T)
 func TestProviderAccessObservationIsIdempotentAndRejectsConflictingOrigin(t *testing.T) {
 	db := proxyHealth(t, "connection_access")
 	a := proxyObservation("provider", 403)
+	a.ProviderErrorCode = "permission_denied"
 	first := observeProxy(t, db, a)
 	a.CurrentCredentialRef = "credential-replaced-after-observation"
 	replay := observeProxy(t, db, a)
@@ -432,6 +434,115 @@ func TestProviderAccessDelayedConnectionEvidencePreservesNewerHealth(t *testing.
 				if observeProxy(t, db, lateSuccess).Applied || proxyState(t, db, "") != "unknown" {
 					t.Fatal("A delayed renewal success cleared a newer access failure.")
 				}
+			}
+		})
+	}
+}
+
+func TestProviderAccessConversationErrorsPreserveSharedHealth(t *testing.T) {
+	for _, code := range []string{"invalid_encrypted_content", "invalid_signature", "invalid_request_error", "invalid_request", ""} {
+		t.Run("code="+code, func(t *testing.T) {
+			db := proxyHealth(t, "connection_access")
+			id := proxyRun(t, db)
+			snapshot := func() string {
+				var result string
+				if err := db.QueryRow(`SELECT json_group_array(json_object('operation',operation,'state',state,'verified',verified_at,'failures',failure_count,'revision',revision,'diagnostic',latest_diagnostic_id)) FROM connection_health`).Scan(&result); err != nil {
+					t.Fatal(err)
+				}
+				return result
+			}
+			before := snapshot()
+			a := proxyObservation("provider", 400)
+			a.ProviderErrorCode, a.CurrentCredentialType = code, "api_key"
+			first := observeProxy(t, db, a)
+			if first.Applied || !observeProxy(t, db, a).Duplicate || snapshot() != before {
+				t.Fatal("A conversation error changed shared connection evidence")
+			}
+			if err := ProviderAccessAdmission(context.Background(), db, a.Connection); err != nil {
+				t.Fatal(err)
+			}
+			result := fhReport(t, db, id, domain.InfrastructureFailureReport{Source: "runner", Condition: "The request failed.", ProxyRequestID: a.RequestID})
+			if result["charged"] != true || result["remaining"] != 2 {
+				t.Fatalf("The request lost its task allowance: %v", result)
+			}
+			if again := fhReport(t, db, id, domain.InfrastructureFailureReport{Source: "runner", Condition: "The request failed.", ProxyRequestID: a.RequestID}); again["charged"] != false {
+				t.Fatal("A duplicate charged twice")
+			}
+			if snapshot() != before {
+				t.Fatal("The run report changed shared connection evidence")
+			}
+			var stored, condition string
+			if err := db.QueryRow(`SELECT provider_error_code,condition FROM diagnostic_events WHERE id=?`, first.DiagnosticID).Scan(&stored, &condition); err != nil {
+				t.Fatal(err)
+			}
+			if stored != code || strings.Contains(condition, "connection") {
+				t.Fatalf("The request lost its cause: %s %s", stored, condition)
+			}
+		})
+	}
+}
+
+func TestProviderAccessConversationErrorsRetainReplyIdentityAndPermitOtherWork(t *testing.T) {
+	for _, code := range []string{"invalid_encrypted_content", "invalid_request_error"} {
+		t.Run(code, func(t *testing.T) {
+			db, session, id, _ := collieRuntimeChangeFixture(t)
+			claimed, err := CollieClaim(db, id, session)
+			if err != nil {
+				t.Fatal(err)
+			}
+			attempt := claimed.(map[string]any)["message"].(map[string]any)["attempt_id"].(string)
+			a := proxyObservation("provider", 400)
+			a.RunID, a.LaunchID, a.ProviderErrorCode = session, id.Launch, code
+			control, err := ProviderAccessLifetimes(db, nil, []ProviderLaunchIdentity{{RunID: session, LaunchID: id.Launch}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			current := control.(map[string]any)["launches"].([]ProviderLaunchLifetime)[0]
+			if !current.Allowed || current.AttemptID != attempt {
+				t.Fatalf("The request received another attempt: %+v", current)
+			}
+			a.AttemptID = current.AttemptID
+			result := observeProxy(t, db, a)
+			var linked string
+			if err := db.QueryRow(`SELECT reply_attempt_id FROM diagnostic_events WHERE id=?`, result.DiagnosticID).Scan(&linked); err != nil || linked != attempt {
+				t.Fatalf("The request lost its reply attempt: %s %v", linked, err)
+			}
+			if _, err := CollieReplyFailure(db, id, attempt, "The request failed.", domain.InfrastructureFailureReport{ProxyRequestID: a.RequestID}); err != nil {
+				t.Fatal(err)
+			}
+			var actual, condition string
+			if err := db.QueryRow(`SELECT d.provider_error_code,d.condition FROM collie_reply_attempts a JOIN diagnostic_events d ON d.id=a.latest_diagnostic_id WHERE a.attempt_id=?`, attempt).Scan(&actual, &condition); err != nil || actual != code {
+				t.Fatalf("The reply lost its specific cause: %s %v", actual, err)
+			}
+			if strings.Contains(condition, "connection") || proxyState(t, db, "") != "ready" || proxyState(t, db, "profile") != "ready" {
+				t.Fatal("A reply error changed shared access")
+			}
+			if _, _, err := ConnectionAdmission(context.Background(), db, "proxy-test", "profile", time.Now(), "profile-revision"); err != nil {
+				t.Fatal("The request stopped pipeline admission:", err)
+			}
+			other := startedSession(t, db, "dashboard:other")
+			if _, err := CollieSend(db, nil, CollieSendArgs{Session: other, From: "dashboard:other", Body: "Independent message."}); err != nil {
+				t.Fatal(err)
+			}
+			peer := &RunIdentity{Tier: "collie", RunID: other, RuntimeBinding: id.RuntimeBinding}
+			if _, err := CollieClaim(db, peer, other); err != nil {
+				t.Fatal("The request stopped another reply:", err)
+			}
+			status, err := SystemStatus(db, nil, SystemStatusRequest{})
+			if err != nil {
+				t.Fatal(err)
+			}
+			found := false
+			for _, issue := range status.(SystemStatusResult).Conditions {
+				if issue.Action == "Review connection" {
+					t.Fatal("A reply error requested connection repair")
+				}
+				if issue.SessionID == session {
+					found = issue.Action == "Retry reply"
+				}
+			}
+			if !found {
+				t.Fatal("The failed reply has no reply action")
 			}
 		})
 	}

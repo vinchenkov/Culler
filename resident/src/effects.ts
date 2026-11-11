@@ -598,6 +598,7 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
   // only, never the harness event stream, and a leaf the container can write.
   const runsLogDir = `${config.mcHome}/logs/runs/${session}`;
   await deps.fs.mkdir(sessionDir);
+  await deps.fs.mkdir(`${config.mcHome}/agentsview/inspection`);
   await deps.fs.mkdir(runsDir(config.mcHome));
   await deps.fs.mkdir(scratchDir);
   await deps.fs.mkdir(runsLogDir, { mode: 0o777 });
@@ -702,7 +703,7 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
     ...(config.runtimeVolume ? ["--entrypoint", `${CULLER_RUNTIME}/bin/bun`] : []),
     "-v", `${sessionDir}:/mc/session`,
     // Collie can read the trace of each run and each Collie session.
-    "-v", `${config.mcHome}/sessions:${COLLIE_TRACE_MOUNT}:ro`,
+    "-v", `${config.mcHome}/agentsview/inspection:${COLLIE_TRACE_MOUNT}:ro`,
     "-v", `${runJsonPath}:/mc/run.json:ro`,
     "-v", `${attachmentTree.inbound_published}:/mc/attachments/in:ro`,
     "-v", `${attachmentTree.outbound}:/mc/private/attachments/out`,

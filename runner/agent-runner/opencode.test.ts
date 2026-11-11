@@ -3,7 +3,7 @@ import { Database } from "bun:sqlite";
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { openCodeConfiguration, openCodeEnvironment, openCodeEvent, redactOpenCodeSession } from "./adapters/opencode";
+import { openCodeConfiguration, openCodeEnvironment, openCodeEvent } from "./adapters/opencode";
 import { parseProviderAccess, type ProviderAccess } from "./adapters/provider-access";
 import control, { cleanShellEnvironment, waitForOpenWiki } from "../opencode/control/server.mjs";
 
@@ -139,26 +139,22 @@ console.log(JSON.stringify({type:"step_finish",sessionID:"ses_delayed",part:{rea
   }
 });
 
-test("the native database keeps session rows and removes retained tokens", async () => {
-  const root = await mkdtemp(join(tmpdir(), "culler-opencode-test-")); roots.push(root);
-  const path = join(root, "native.db");
-  const db = new Database(path); db.exec("PRAGMA journal_mode=WAL; CREATE TABLE session(id TEXT PRIMARY KEY, message TEXT)");
-  db.query("INSERT INTO session VALUES (?,?)").run("session-1", JSON.stringify({ text: token })); db.close();
-  await writeFile(join(root, "native.log"), token);
-  await redactOpenCodeSession(root);
-  const checked = new Database(path);
-  expect(checked.query("PRAGMA integrity_check").get()).toEqual({ integrity_check: "ok" });
-  expect(checked.query("SELECT id FROM session").get()).toEqual({ id: "session-1" }); checked.close();
-  expect((await readFile(path)).includes(Buffer.from(token))).toBe(false);
-  expect(await readFile(join(root, "native.log"), "utf8")).not.toContain(token);
-});
-
 test("the adapter preserves JSON events, durable input, completion, and session continuation", async () => {
   const root = await mkdtemp(join(tmpdir(), "culler-opencode-adapter-")); roots.push(root);
   await mkdir(join(root, "session")); await mkdir(join(root, "workspace"));
   await writeFile(join(root, "access.json"), JSON.stringify(access));
+  const originalDir = join(root, "session/opencode/data");
+  await mkdir(originalDir, { recursive: true });
+  const databasePath = join(originalDir, "native.db");
+  const db = new Database(databasePath);
+  db.exec("CREATE TABLE session(id TEXT PRIMARY KEY, message TEXT)");
+  db.query("INSERT INTO session VALUES (?,?)").run("ses_fixture", token);
+  db.close();
+  await writeFile(join(originalDir, "native.jsonl"), JSON.stringify({ signature: token }) + "\n");
+  const originalDB = await readFile(databasePath);
+  const originalFile = await readFile(join(originalDir, "native.jsonl"));
   const native = join(root, "native");
-  await writeFile(native, `#!${process.execPath}\nconst prompt=await Bun.stdin.text(); await Bun.write(process.env.FIXTURE_OUTPUT,JSON.stringify({prompt,args:process.argv,config:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT)}));\nfor(const event of [{type:'step_start',sessionID:'ses_fixture',part:{}},{type:'text',sessionID:'ses_fixture',part:{text:'A reply with tokens: 4'}},{type:'step_finish',sessionID:'ses_fixture',part:{reason:'stop'}}]) console.log(JSON.stringify(event));\n`, { mode: 0o755 });
+  await writeFile(native, `#!${process.execPath}\nconst prompt=await Bun.stdin.text(); await Bun.write(process.env.FIXTURE_OUTPUT,JSON.stringify({prompt,args:process.argv,config:JSON.parse(process.env.OPENCODE_CONFIG_CONTENT)}));\nfor(const event of [{type:'step_start',sessionID:'ses_fixture',part:{}},{type:'tool_use',sessionID:'ses_fixture',part:{tool:'shell',id:'tool-1',state:{input:{command:'cat'},output:${JSON.stringify(token)}}}},{type:'text',sessionID:'ses_fixture',part:{text:'A reply with tokens: 4'}},{type:'step_finish',sessionID:'ses_fixture',part:{reason:'stop'}}]) console.log(JSON.stringify(event));\n`, { mode: 0o755 });
   for (const resume of [false, true]) {
     const child = Bun.spawn([process.execPath, join(import.meta.dir, "adapters/opencode.ts"), "--model", "fixture-model", "--effort", "high", "--workspace", join(root,"workspace"), "--session-dir", join(root,"session"), ...(resume ? ["--native-ref", "ses_fixture"] : [])], {
       env: { ...process.env, MC_PROVIDER_ACCESS_FILE: join(root,"access.json"), MC_OPENCODE_BIN: native, FIXTURE_OUTPUT: join(root,"invocation.json") }, stdin: new TextEncoder().encode(resume ? "Second input" : "Role directive and run brief"), stdout: "pipe", stderr: "pipe" });
@@ -170,8 +166,11 @@ test("the adapter preserves JSON events, durable input, completion, and session 
     const invocation = JSON.parse(await readFile(join(root,"invocation.json"),"utf8"));
     expect(invocation.prompt).toBe(resume ? "Second input" : "Role directive and run brief");
     expect(invocation.args.includes("--session")).toBe(resume);
+    expect(await readFile(databasePath)).toEqual(originalDB);
+    expect(await readFile(join(originalDir, "native.jsonl"))).toEqual(originalFile);
   }
   const trace = (await readFile(join(root,"session/rollout-7e556d01-59fc-8ae6-b393-64609e645994.jsonl"),"utf8")).trim().split("\n").map(line => JSON.parse(line));
   expect(trace.filter(line => line.type === "session_meta")).toHaveLength(1);
+  expect(trace.filter(line => line.type === "response_item" && line.payload.type === "function_call_output").map(line => line.payload.output)).toEqual([token, token]);
   expect(trace.filter(line => line.payload.role === "user")).toHaveLength(2);
 });

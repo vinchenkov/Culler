@@ -33,6 +33,10 @@ export function createProviderLifetimeCheck(handle: CredentialProjectorHandle, r
 }
 
 export async function providerLaunchIsCurrent(runMc: Exec, runId: string, launchId: string, signal: AbortSignal): Promise<boolean> {
+  return (await providerLaunchState(runMc, runId, launchId, signal)).allowed;
+}
+
+export async function providerLaunchState(runMc: Exec, runId: string, launchId: string, signal: AbortSignal): Promise<{ allowed: boolean; attemptId?: string }> {
   signal.throwIfAborted();
   const result = await runMc(["connection", "proxy-lifetimes"], new TextEncoder().encode(JSON.stringify({
     launches: [{ run_id: runId, launch_id: launchId }],
@@ -42,5 +46,7 @@ export async function providerLaunchIsCurrent(runMc: Exec, runId: string, launch
   const rows = JSON.parse(result.stdout).launches;
   if (!Array.isArray(rows) || rows.length !== 1) throw new Error("The provider launch control state is invalid.");
   const row = rows[0];
-  return row?.run_id === runId && row?.launch_id === launchId && row.allowed === true && Date.parse(row.expires_at) > Date.now();
+  if (row?.attempt_id !== undefined && !/^[a-f0-9]{32}$/.test(row.attempt_id)) throw new Error("The reply attempt identity is invalid.");
+  return { allowed: row?.run_id === runId && row?.launch_id === launchId && row.allowed === true && Date.parse(row.expires_at) > Date.now(),
+    ...(row?.attempt_id ? { attemptId: row.attempt_id } : {}) };
 }
