@@ -185,6 +185,7 @@ var hostReleaseFiles = []string{
 	"resident/src/skill-store.ts",
 	"resident/src/tick-loop.ts",
 	"resident/src/trace-copy.ts",
+	"resident/src/trace-mask.ts",
 	"resident/src/trace-lane.ts",
 	"resident/src/setup-traces.ts",
 	"resident/src/types.ts",

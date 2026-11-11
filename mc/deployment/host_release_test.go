@@ -1,6 +1,7 @@
 package deployment
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"testing"
@@ -79,5 +80,40 @@ func TestInstallHostReleaseAtomicallyReplacesChangedPayload(t *testing.T) {
 	after, err := os.Stat(installed)
 	if err != nil || os.SameFile(before, after) {
 		t.Fatalf("changed host release retained directory identity: %v", err)
+	}
+}
+
+func TestReleaseInstallationPreservesOriginalSessions(t *testing.T) {
+	home := t.TempDir()
+	if err := os.Chmod(home, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	original := []byte(`{"type":"response_item","payload":{"type":"reasoning","id":"r1","encrypted_content":"AAAA-sk-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","token":"culler_proxy_ccccccccccccccccccccccccccccccccccccccccccc"}}
+{"type":"assistant","message":{"content":[{"type":"thinking","thinking":"context","signature":"c2stYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh"},{"type":"redacted_thinking","data":"c2stYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFh"}]}}
+`)
+	paths := []string{"sessions/run/native.jsonl", "sessions/run/subagents/agent-1.jsonl", "sessions/collie/rollout.jsonl", "environment-runs/setup/session/native.jsonl", "sessions/run/opencode/native.db"}
+	for _, path := range paths {
+		full := filepath.Join(home, path)
+		if err := os.MkdirAll(filepath.Dir(full), 0o700); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(full, original, 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	host, runner := hostReleaseSourceFixture(t), runnerReleaseSourceFixture(t)
+	for range 2 {
+		if _, err := InstallHostRelease(home, host); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := InstallRunnerRelease(home, runner); err != nil {
+			t.Fatal(err)
+		}
+		for _, path := range paths {
+			body, err := os.ReadFile(filepath.Join(home, path))
+			if err != nil || !bytes.Equal(body, original) {
+				t.Fatalf("The release changed original %s: %v", path, err)
+			}
+		}
 	}
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { loadProviderAccess, writeProviderCA, codexProviderArgs, redactNativeAccess, type ProviderAccess } from "./provider-access";
+import { loadProviderAccess, writeProviderCA, codexProviderArgs, type ProviderAccess } from "./provider-access";
 import { open, readdir, stat, mkdtemp, symlink, rm } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { makeLogger, parseLevel } from "../../shared/log";
@@ -227,10 +227,6 @@ export function codexResponseWatcher(path: string, offset: number, observe: (lin
   return { async stop() { stopped = true; clearTimeout(timer); await read(); } };
 }
 
-function arg(name: string): string | undefined {
-  const i = process.argv.indexOf(name);
-  return i >= 0 ? process.argv[i + 1] : undefined;
-}
 
 export async function directoryExists(path: string): Promise<boolean> {
   try {
@@ -346,7 +342,8 @@ export async function executeCodexProcess(
   }
 }
 
-async function main(): Promise<number> {
+export async function runCodexAdapter(args: string[] = process.argv, dependencies: { input?: () => Promise<string>; spawn?: typeof Bun.spawn } = {}): Promise<number> {
+  const arg = (flag: string) => { const index = args.indexOf(flag); return index < 0 ? undefined : args[index + 1]; };
   const sessionDir = arg("--session-dir");
   const workspace = arg("--workspace");
   const mode = (arg("--mode") ?? "fresh") as "fresh" | "native";
@@ -355,12 +352,12 @@ async function main(): Promise<number> {
   const effort = arg("--effort");
   const refuse = async (message: string) => {
     const failure = adapterFailure(message,
-      `Server: ${process.argv.includes("--openwiki") ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor());
+      `Server: ${args.includes("--openwiki") ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor());
     console.log(JSON.stringify(failure));
     log.error("adapter.launch_failed", failure.condition);
     return 2;
   };
-  if ((process.argv.includes("--base-url") || process.argv.includes("--test-upstream")) || !sessionDir || !workspace || (mode !== "fresh" && mode !== "native") ||
+  if ((args.includes("--base-url") || args.includes("--test-upstream")) || !sessionDir || !workspace || (mode !== "fresh" && mode !== "native") ||
       effort !== undefined && !["none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"].includes(effort)) {
     return refuse("codex adapter: invalid invocation");
   }
@@ -375,16 +372,15 @@ async function main(): Promise<number> {
   try {
     const access = await loadProviderAccess("codex");
     const ca = await writeProviderCA(access, localRoot);
-    await redactNativeAccess(sessionDir, access.token);
     await symlink(sessionDir, join(localRoot, "sessions"));
     env = codexAdapterEnv(process.env, access, ca, localRoot);
     argv = codexArgv(mode, nativeRef, model,
-      process.argv.includes("--openwiki") ? workspace : undefined, arg("--openwiki-input-commit"),
+      args.includes("--openwiki") ? workspace : undefined, arg("--openwiki-input-commit"),
       effort);
     argv.splice(argv.length - 1, 0, ...codexProviderArgs(access));
   } catch (err) {
     const failure = adapterFailure(err instanceof Error ? err.message : String(err),
-      `Server: ${process.argv.includes("--openwiki") ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor());
+      `Server: ${args.includes("--openwiki") ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor());
     console.log(JSON.stringify(failure));
     log.error("adapter.stream_error", failure.condition);
     await rm(localRoot, { recursive: true, force: true });
@@ -399,24 +395,23 @@ async function main(): Promise<number> {
       // The byte boundary excludes responses from a resumed attempt.
       let offsets: Map<string, number> | undefined;
       try { offsets = await codexTraceOffsets(sessionDir); } catch {}
-      const proc = Bun.spawn(argv, {
+      const proc = (dependencies.spawn ?? Bun.spawn)(argv, {
         cwd: workspace, env,
-        stdin: new TextEncoder().encode(await Bun.stdin.text()),
+        stdin: new TextEncoder().encode(await (dependencies.input ?? (() => Bun.stdin.text()))()),
         stdout: "pipe", stderr: "pipe",
       });
-      return await executeCodexProcess(proc, sessionDir, process.argv.includes("--openwiki"), { signal: abort.signal, model, offsets, env });
+      return await executeCodexProcess(proc, sessionDir, args.includes("--openwiki"), { signal: abort.signal, model, offsets, env });
     } finally {
       process.off("SIGTERM", stop);
       process.off("SIGINT", stop);
     }
   } catch (error) {
     console.log(JSON.stringify(adapterFailure(error instanceof Error ? error.message : String(error),
-      `Server: ${process.argv.includes("--openwiki") ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor())));
+      `Server: ${args.includes("--openwiki") ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor())));
     return 2;
   } finally {
-    await redactNativeAccess(sessionDir, env.CULLER_PROXY_TOKEN!);
     await rm(localRoot, { recursive: true, force: true });
   }
 }
 
-if (import.meta.main) process.exit(await main());
+if (import.meta.main) process.exit(await runCodexAdapter());

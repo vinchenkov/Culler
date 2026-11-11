@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { createProviderLifetimeCheck, providerLaunchIsCurrent } from "./provider-lifetime";
+import { createProviderLifetimeCheck, providerLaunchIsCurrent, providerLaunchState } from "./provider-lifetime";
 import type { CredentialProjectorHandle } from "./credential-projector";
 import type { Exec } from "./types";
 
@@ -84,4 +84,10 @@ test("each provider request checks its exact current launch and propagates cance
   let called = false;
   await expect(providerLaunchIsCurrent(async () => { called = true; return result([live]); }, "run", "launch", cancelled.signal)).rejects.toThrow();
   expect(called).toBe(false);
+});
+
+test("the launch control response supplies the active reply identity", async () => {
+  const row = { run_id: "run", launch_id: "launch", allowed: true, expires_at: new Date(Date.now() + 60_000).toISOString(), attempt_id: "a".repeat(32) };
+  const state = await providerLaunchState(async () => result([row]), "run", "launch", new AbortController().signal);
+  expect(state).toEqual({ allowed: true, attemptId: row.attempt_id });
 });

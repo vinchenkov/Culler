@@ -335,7 +335,7 @@ test("reply retry shows immediate progress across controls and survives a histor
   let release!: () => void;
   let held = new Promise<void>(resolve => { release = resolve; });
   const historyPath = `**/api/sessions/${session.id}/history`;
-  const condition = { id: "reply:1", name: "Collie", group: "execution", state: "failed", action: "Retry reply", session_id: session.id, message_id: 1, attempt_id: "old-attempt" };
+  const condition = { id: "reply:1", name: "Collie", group: "execution", state: "failed", condition: "The provider rejected the conversation encrypted content.", provider_error_code: "invalid_encrypted_content", action: "Retry reply", session_id: session.id, message_id: 1, attempt_id: "old-attempt" };
   await page.route(historyPath, route => route.fulfill({ json: {
     session_id: session.id, status: "active", messages: [{ id: 1, direction: "inbound", body: "Inspect this Project.", created_at: "2020-01-01T00:00:00Z", reply_state: replyState, attempt_id: replyState === "failed" ? "old-attempt" : "new-attempt" }],
   } }));
@@ -357,6 +357,7 @@ test("reply retry shows immediate progress across controls and survives a histor
     const notices = page.getByTestId("system-notices");
     await transcript.getByRole("button", { name: "Retry reply", exact: true }).waitFor();
     await notices.getByRole("button", { name: "Retry reply", exact: true }).waitFor();
+    expect(await notices.getByRole("button", { name: "Review connection", exact: true }).count()).toBe(0);
     await transcript.getByRole("button", { name: "Retry reply", exact: true }).click();
     expect(await transcript.getByRole("button", { name: "Retry requested…", exact: true }).isDisabled()).toBe(true);
     expect(await notices.getByRole("button", { name: "Retry requested…", exact: true }).isDisabled()).toBe(true);

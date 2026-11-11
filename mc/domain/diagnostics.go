@@ -116,7 +116,7 @@ func ConnectionEligible(state string, expires sql.NullString, now time.Time) boo
 }
 
 func recordRunConnectionFailure(ctx context.Context, q Q, run string, diagnostic int64, report InfrastructureFailureReport) error {
-	if report.TrustedProxy {
+	if report.TrustedProxy || providerRequestLocal(ProviderAccessObservation{Origin: "provider", HTTPStatus: report.HTTPStatus, ProviderErrorCode: report.ProviderErrorCode}) {
 		return nil
 	}
 	if report.HTTPStatus == nil && report.ProviderErrorCode == "" {
@@ -238,7 +238,7 @@ func RecoverNetworkAttempt(ctx context.Context, q Q, run, attempt string, source
 }
 
 func RecordConnectionFailure(ctx context.Context, q Q, connection, auth, profile, profileRevision string, revision, diagnostic int64, report InfrastructureFailureReport) error {
-	if report.TrustedProxy {
+	if report.TrustedProxy || providerRequestLocal(ProviderAccessObservation{Origin: "provider", HTTPStatus: report.HTTPStatus, ProviderErrorCode: report.ProviderErrorCode}) {
 		return nil
 	}
 	if (report.HTTPStatus == nil && report.ProviderErrorCode == "") || connection == "" {

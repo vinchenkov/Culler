@@ -430,6 +430,8 @@ describe("provider proxy response delivery", () => {
       ["error", { type: "error", error: { type: "overloaded_error", message: providerSecret } }, "overloaded_error"],
       ["error", { type: "error", code: "rate_limit_exceeded", message: providerSecret }, "rate_limit_exceeded"],
       ["response.failed", { type: "response.failed", response: { error: { code: "invalid_api_key", message: providerSecret } } }, "invalid_api_key"],
+      ["error", { type: "error", error: { type: "invalid_request_error", code: "invalid_encrypted_content", message: providerSecret } }, "invalid_encrypted_content"],
+      ["error", { type: "error", error: { type: "invalid_request_error", message: providerSecret } }, "invalid_request_error"],
       ["error", { type: "error", code: "arbitrary_private_value", message: providerSecret }, "provider_stream_error"],
     ] as const) {
       const finish = deferred();
@@ -799,4 +801,31 @@ describe("OpenCode provider routes", () => {
     expect((await call(handle, token, { headers, body: "{}" }, "/v1beta/models/small-model:streamGenerateContent?key=leak")).status).toBe(403);
     expect(sent).toHaveLength(1);
   });
+});
+
+test("each warm-session request retains the current reply attempt", async () => {
+  let attempt = "a".repeat(32);
+  const { handle, observations } = proxy({
+    isLaunchCurrent: async () => ({ allowed: true, attemptId: attempt }),
+    fetch: (async () => Response.json({ error: { type: "invalid_request_error", code: "invalid_encrypted_content" } }, { status: 400 })) as typeof fetch,
+  });
+  const { token } = handle.issue(authorization({ requireLiveness: true, attemptId: undefined }));
+  for (const next of ["a".repeat(32), "b".repeat(32)]) {
+    attempt = next;
+    const response = await call(handle, token);
+    await response.text();
+    expect(response.status).toBe(400);
+    expect(observations.at(-1)).toMatchObject({ attempt_id: next, provider_error_code: "invalid_encrypted_content" });
+  }
+});
+
+test("a reply change during credential renewal refuses the earlier request", async () => {
+  let checks = 0;
+  const { handle, sent, observations } = proxy({ isLaunchCurrent: async () => ({ allowed: true, attemptId: (++checks === 1 ? "a" : "b").repeat(32) }) });
+  const { token } = handle.issue(authorization({ requireLiveness: true, attemptId: undefined }));
+  const response = await call(handle, token);
+  await response.text();
+  expect(response.status).toBe(409);
+  expect(sent).toHaveLength(0);
+  expect(observations.at(-1)).toMatchObject({ attempt_id: "a".repeat(32), origin: "proxy_authorization" });
 });

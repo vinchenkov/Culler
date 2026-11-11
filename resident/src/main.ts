@@ -52,7 +52,7 @@ import {
   type RuntimeBindingSpec,
   type CredentialProjectorHandle,
 } from "./credential-projector";
-import { createProviderLifetimeCheck, providerLaunchIsCurrent } from "./provider-lifetime";
+import { createProviderLifetimeCheck, providerLaunchState } from "./provider-lifetime";
 import { createProviderCredentials } from "./provider-credentials";
 
 interface MainConfig extends ResidentConfig {
@@ -302,7 +302,7 @@ async function startProjector(mcPath: string, mcHome: string, log: Logger,
   });
   const refreshConnection = (connection: string) => refreshConnectionCheck(runMc, credentials.renew, connection);
   const handle = startCredentialProjector({ credentials, tls, refreshConnection, observe,
-    isLaunchCurrent: (run, launch, signal) => providerLaunchIsCurrent(runMc, run, launch, signal) }, catalog);
+    isLaunchCurrent: (run, launch, signal) => providerLaunchState(runMc, run, launch, signal) }, catalog);
   try {
     await observe({ request_id: crypto.randomUUID(), operation: "service", origin: "proxy", outcome: "ready",
       provider_sent: false, observed_at: new Date().toISOString(), duration_ms: 0 });
@@ -339,7 +339,7 @@ async function startProjector(mcPath: string, mcHome: string, log: Logger,
     } finally { probing = false; }
   };
   const timer = setInterval(() => void probe().catch(() => {}), 30_000);
-  void probe().catch(() => {});
+  await probe().catch(() => {});
   const stop = handle.stop;
   handle.stop = () => { clearInterval(timer); stop(); };
   return handle;
@@ -739,6 +739,7 @@ async function main(): Promise<void> {
   const schedule = (fn: () => void, ms: number) => setTimeout(fn, ms);
   const cancel = (handle: unknown) => clearTimeout(handle as ReturnType<typeof setTimeout>);
   const traceLane = createTraceLane({
+    credentials: () => credentialHandle.traceSecrets(),
     runMc,
     log,
     mcHome: config.mcHome,

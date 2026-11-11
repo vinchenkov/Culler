@@ -58,6 +58,12 @@ export function createProviderCredentials(deps: ProviderCredentialDependencies) 
   }));
   let draining = false;
   const rejected = new Set<string>();
+  const traceSecrets = new Set<string>();
+  function remember(record: HostCredentialRecord): void {
+    for (const value of [record.api_key, record.access_token, record.id_token, record.refresh_token]) {
+      if (value) traceSecrets.add(value);
+    }
+  }
   const pending = new Map<string, { snapshot: HostCredentialSnapshot; record: HostCredentialRecord }>();
 
   async function observe(value: Record<string, unknown>): Promise<void> {
@@ -79,6 +85,7 @@ export function createProviderCredentials(deps: ProviderCredentialDependencies) 
           !["api_key", "account"].includes(snapshot.record.type) || !["codex", "claude", "opencode"].includes(snapshot.record.channel) ||
           !snapshot.authorization_id || !snapshot.credential_ref ||
           snapshot.record.type === "api_key" && !snapshot.record.api_key) throw new Error("shape");
+      remember(snapshot.record);
       await observe({ request_id: crypto.randomUUID(), connection, operation: "service", origin: "credential_store",
         outcome: "ready", provider_sent: false, authorization_revision: snapshot.authorization_id, credential_ref: snapshot.credential_ref,
         observed_at: new Date(now()).toISOString(), duration_ms: 0 });
@@ -92,6 +99,7 @@ export function createProviderCredentials(deps: ProviderCredentialDependencies) 
 
   async function save(snapshot: HostCredentialSnapshot, next: HostCredentialRecord): Promise<HostCredentialSnapshot> {
     const connection = snapshot.record.credential;
+    remember(next);
     pending.set(connection, { snapshot, record: next });
     const saved = await deps.runMc(["agent-profile", "credential-renew"], new TextEncoder().encode(JSON.stringify({
       connection_id: connection, authorization_id: snapshot.authorization_id,
@@ -291,6 +299,7 @@ export function createProviderCredentials(deps: ProviderCredentialDependencies) 
   }
 
   return {
+    traceSecrets: () => [...traceSecrets],
     read,
     renew,
     async drain(maximumMilliseconds = 30_000): Promise<void> {

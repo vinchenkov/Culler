@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import { loadProviderAccess, writeProviderCA, redactNativeAccess, type ProviderAccess } from "./provider-access";
+import { loadProviderAccess, writeProviderCA, type ProviderAccess } from "./provider-access";
 import { cp, mkdir, mkdtemp, rm, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { query, type Options } from "@anthropic-ai/claude-agent-sdk";
@@ -223,10 +223,6 @@ export async function mirrorRoleSkill(
   }
 }
 
-function arg(name: string): string | undefined {
-  const i = process.argv.indexOf(name);
-  return i >= 0 ? process.argv[i + 1] : undefined;
-}
 
 /** The optional `--max-turns` value: undefined when absent, null when it is
  * not a positive integer. */
@@ -358,7 +354,8 @@ export async function executeClaudeQuery(
   }
 }
 
-async function main(): Promise<number> {
+export async function runClaudeAdapter(args: string[] = process.argv, dependencies: { input?: () => Promise<string>; query?: typeof query } = {}): Promise<number> {
+  const arg = (flag: string) => { const index = args.indexOf(flag); return index < 0 ? undefined : args[index + 1]; };
   const channel = arg("--channel");
   const sessionDir = arg("--session-dir");
   const workspace = arg("--workspace");
@@ -367,7 +364,7 @@ async function main(): Promise<number> {
   const maxTurns = parseMaxTurns(arg("--max-turns"));
   const effort = arg("--effort");
   const maxOutputTokens = parseMaxTurns(arg("--max-output-tokens"));
-  const openWiki = process.argv.includes("--openwiki");
+  const openWiki = args.includes("--openwiki");
   const refuse = async (message: string) => {
     const failure = adapterFailure(message,
       `Server: ${openWiki ? "openwiki" : "unknown"}\nLast connection status: unknown\nOutcome: adapter launch failed`, await loadDiagnosticRedactor());
@@ -375,7 +372,7 @@ async function main(): Promise<number> {
     log.error("adapter.launch_failed", failure.condition);
     return 2;
   };
-  if (channel !== "claude" || process.argv.includes("--base-url") || process.argv.includes("--test-upstream") || !sessionDir || !workspace || maxTurns === null ||
+  if (channel !== "claude" || args.includes("--base-url") || args.includes("--test-upstream") || !sessionDir || !workspace || maxTurns === null ||
       effort !== undefined && !["low", "medium", "high", "xhigh", "max"].includes(effort) || maxOutputTokens === null ||
       maxOutputTokens !== undefined && (!Number.isSafeInteger(maxOutputTokens) || maxOutputTokens > 128_000)) {
     return refuse("claude adapter: invalid invocation");
@@ -396,8 +393,7 @@ async function main(): Promise<number> {
   let redact = await loadDiagnosticRedactor();
   try {
     const access = await loadProviderAccess("claude-sdk");
-    await redactNativeAccess(sessionDir, access.token);
-    const store = new NativeSessionStore(sessionDir, value => value.split(access.token).join("[redacted]"));
+    const store = new NativeSessionStore(sessionDir);
     const ca = await writeProviderCA(access, localRoot);
     const env = claudeAdapterEnv(channel, process.env, configDir, access, ca);
     redact = await loadDiagnosticRedactor(env);
@@ -406,9 +402,9 @@ async function main(): Promise<number> {
     process.on("SIGTERM", stop);
     process.on("SIGINT", stop);
     try {
-      return await executeClaudeQuery(await Bun.stdin.text(),
+      return await executeClaudeQuery(await (dependencies.input ?? (() => Bun.stdin.text()))(),
         claudeOptions(model, workspace, env, store, nativeRef, maxTurns,
-          openWiki, arg("--openwiki-input-commit"), effort as Options["effort"], maxOutputTokens), openWiki, { signal: abort.signal });
+          openWiki, arg("--openwiki-input-commit"), effort as Options["effort"], maxOutputTokens), openWiki, { signal: abort.signal, query: dependencies.query });
     } finally {
       process.off("SIGTERM", stop);
       process.off("SIGINT", stop);
@@ -427,4 +423,4 @@ async function main(): Promise<number> {
   }
 }
 
-if (import.meta.main) process.exit(await main());
+if (import.meta.main) process.exit(await runClaudeAdapter());

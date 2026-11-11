@@ -1,6 +1,5 @@
 import { lstat, mkdir, open, readdir, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import { redactProviderTokens } from "../../shared/provider-token";
 import type {
   SessionKey,
   SessionStore,
@@ -50,7 +49,7 @@ async function loadEntries(path: string): Promise<SessionStoreEntry[] | null> {
   const entries: SessionStoreEntry[] = [];
   for (const line of body.split("\n")) {
     if (line === "") continue;
-    const value = JSON.parse(redactProviderTokens(line)) as unknown;
+    const value = JSON.parse(line) as unknown;
     if (value === null || typeof value !== "object" || Array.isArray(value) ||
         typeof (value as { type?: unknown }).type !== "string") {
       throw new Error("native transcript contains a malformed entry");
@@ -64,7 +63,7 @@ export class NativeSessionStore implements SessionStore {
   private tail: Promise<void> = Promise.resolve();
   private identity: { projectKey: string; sessionId: string } | undefined;
 
-  constructor(private readonly root: string, private readonly redact: (value: string) => string = value => value) {}
+  constructor(private readonly root: string) {}
 
   private bind(key: SessionKey): void {
     validateKey(key);
@@ -99,7 +98,7 @@ export class NativeSessionStore implements SessionStore {
       if (fresh.length === 0) return;
       const handle = await open(path, "a", 0o600);
       try {
-        await handle.writeFile(fresh.map((entry) => redactProviderTokens(this.redact(JSON.stringify(entry))) + "\n").join(""));
+        await handle.writeFile(fresh.map((entry) => JSON.stringify(entry) + "\n").join(""));
         await handle.sync();
       } finally {
         await handle.close();

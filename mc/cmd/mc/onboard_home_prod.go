@@ -107,7 +107,7 @@ func brokerOnboardHome(args []string, private bool, stdout, stderr io.Writer) in
 		if err != nil {
 			return writeVerbError(stdout, stderr, err)
 		}
-		if err := deployment.RetireProviderCredentialArtifacts(home, func() error { return removeManagedReleaseUsers(manager) }); err != nil {
+		if err := removeManagedReleaseUsers(manager); err != nil {
 			return writeVerbError(stdout, stderr, verbs.Domainf("stop the previous release containers: %v", err))
 		}
 	}

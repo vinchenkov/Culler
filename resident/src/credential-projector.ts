@@ -92,6 +92,7 @@ export interface CredentialProjectorHandle {
   projector: CredentialProjector;
   proxy: ProviderProxyHandle;
   ready: Promise<void>;
+  traceSecrets(): string[];
   refreshConnection(connection: string): Promise<void>;
   revokeConnection(connection: string, authorizationRevision: string): void;
   replaceTLS(tls: { ca: string; cert: string; key: string }): void;
@@ -108,7 +109,7 @@ export interface CredentialProjectorDeps {
   tls: { ca: string; cert: string; key: string };
   observe?(observation: ProviderRequestObservation): Promise<void>;
   refreshConnection?(connection: string): Promise<void>;
-  isLaunchCurrent?(runId: string, launchId: string, signal: AbortSignal): Promise<boolean>;
+  isLaunchCurrent?(runId: string, launchId: string, signal: AbortSignal): Promise<boolean | { allowed: boolean; attemptId?: string }>;
   fetch?: typeof fetch;
 }
 
@@ -176,6 +177,7 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
 
   return {
     projector, proxy, ready: Promise.resolve(),
+    traceSecrets: () => deps.credentials.traceSecrets(),
     revokeConnection(connection, authorizationRevision) {
       disconnected.set(connection, authorizationRevision);
       proxy.revokeConnection(connection);

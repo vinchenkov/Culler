@@ -316,8 +316,8 @@ describe("trace copies", () => {
     expect(await read(join(r.paths.codex, CODEX_FILE))).toBe(codexLine(0) + codexLine(1));
     expect(await read(join(r.paths.codex, CODEX_CHILD_FILE))).toBe(codexLine(0, CODEX_CHILD_REF));
     expect(await Bun.file(join(r.paths.codex, "native.jsonl")).exists()).toBe(false);
-    expect((await stat(join(claude, `${CLAUDE_REF}.jsonl`))).mode & 0o777).toBe(0o600);
-    expect((await stat(join(r.paths.codex, CODEX_FILE))).mode & 0o777).toBe(0o600);
+    expect((await stat(join(claude, `${CLAUDE_REF}.jsonl`))).mode & 0o777).toBe(0o644);
+    expect((await stat(join(r.paths.codex, CODEX_FILE))).mode & 0o777).toBe(0o644);
     expect((await stat(join(r.paths.codex, "2026", "09", "29"))).mode & 0o777).toBe(0o700);
     expect((await stat(join(home, "agentsview"))).mode & 0o777).toBe(0o700);
     expect(r.records.filter((record) => record.level !== "info")).toEqual([]);
@@ -462,7 +462,7 @@ describe("trace copies", () => {
     await r.at(COPY_INTERVAL_MS);
     await r.lane.copyPass();
     const children = join(r.paths.claude, CLAUDE_REF, "subagents");
-    expect((await readdir(children)).sort()).toEqual(["agent-a.jsonl", "agent-b.jsonl"]);
+    expect((await readdir(children)).filter(name => name.endsWith(".jsonl")).sort()).toEqual(["agent-a.jsonl", "agent-b.jsonl"]);
     expect(r.events("trace.copy_failed").map((record) => record.msg)).toEqual([
       "The session folder of run r-claude holds more than 3 trace files or 256 folders. " +
         "The resident copies at most 3 trace files of one session.",
@@ -1132,3 +1132,34 @@ describe("parseAgentsViewBind", () => {
   });
 });
 
+
+test("inspection exposes masked copies and availability without original access", async () => {
+  const secret = "exact-private-credential";
+  const r = rig({ credentials: () => [secret] });
+  r.rows = [claudeRow("r-copy"), codexRow("h-copy")];
+  const token = "culler_proxy_" + "c".repeat(43);
+  const original = JSON.stringify({ type: "assistant", signature: "sk-" + "a".repeat(80), text: `${secret} ${token}` }) + "\n";
+  const native = await r.write("r-copy", "native.jsonl", original);
+  const child = await r.write("r-copy", "subagents/agent-a.jsonl", original);
+  await r.write("h-copy", CODEX_FILE, "{}");
+  await r.lane.copyPass();
+  const inspection = join(r.paths.inspection, "r-copy/native.jsonl");
+  const copy = join(r.paths.claude, `${CLAUDE_REF}.jsonl`);
+  expect((await stat(inspection)).ino).toBe((await stat(copy)).ino);
+  expect((await stat(inspection)).ino).not.toBe((await stat(native)).ino);
+  for (const path of [inspection, join(r.paths.inspection, "r-copy/subagents/agent-a.jsonl")]) {
+    expect(await read(path)).not.toContain(secret);
+    expect(await read(path)).not.toContain(token);
+    expect(await read(path)).toContain("sk-" + "a".repeat(80));
+  }
+  expect(JSON.parse(await read(join(r.paths.inspection, "h-copy/status.json"))).files[CODEX_FILE]).toBe("pending");
+  expect(await Bun.file(join(r.paths.inspection, "h-copy", CODEX_FILE)).exists()).toBe(false);
+  await rm(copy);
+  await r.lane.copyPass();
+  expect(await read(inspection)).toBe(await read(copy));
+  await rm(native);
+  await r.lane.copyPass();
+  expect(JSON.parse(await read(join(r.paths.inspection, "r-copy/status.json"))).files["native.jsonl"]).toBe("unavailable");
+  expect(await Bun.file(inspection).exists()).toBe(false);
+  expect(await read(child)).toBe(original);
+});

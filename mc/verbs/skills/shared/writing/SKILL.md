@@ -74,50 +74,7 @@ Do not include these items in a specification, a plan, or a design record:
 If a past event is important, show the result in the outcomes, the constraints,
 and the invariants. Do not write commentary.
 
-## Write for two audiences
+## Writing standard
 
-Agents read the text. Humans must also understand the text. Write in ASD-STE100
-Simplified Technical English (STE).
-
-## Writing standard — ASD-STE100 Simplified Technical English
-
-Write all text in STE. This is a rule, not a preference.
-
-1. **Use one word for one thing.** Select a word, then use the same word each
-   time you write about that thing. Do not use a synonym for variety.
-2. **Keep sentences short.** An instruction can have a maximum of 20 words. A
-   description can have a maximum of 25 words.
-3. **Keep paragraphs short.** A paragraph can have a maximum of 6 sentences.
-4. **Put one idea in one sentence.**
-5. **Use the active voice.** Write "Thinking Machines opened 8 jobs". Do not
-   write "8 jobs were opened".
-6. **Use the simple tenses only** — simple past, simple present, simple future.
-   Do not write "has grown" or "had been listed". Write "grew" and "was listed".
-7. **Do not use an -ing word as a noun or as an adjective.** Write "the board
-   changed", not "the changing board" or "the changing of the board".
-8. **Use articles.** Write "the job board". Do not write "job board".
-9. **Do not delete words to make the text short.** Write complete sentences.
-10. **Use a maximum of 3 nouns together.** "research infrastructure role" is
-    correct. "board expansion follow-up queue item" is not correct.
-11. **Write positive statements.** Write "The page shows 24 posts". Do not write
-    "The page does not show fewer than 24 posts". To state the opposite, write
-    "The page shows less than 24 posts."
-12. **Use "can" for ability. Use "must" for a requirement. Use "do not" for a
-    prohibition.** Do not write "should", "ought to", or "may want to".
-13. **Do not use jargon, idiom, metaphor, humor, or shorthand.**
-14. **Write an abbreviation in full the first time you use it in a record.**
-    Write "Forward Deployed Engineer (FDE)", then write "FDE" after that.
-15. **Use a vertical list when you have more than two related items.**
-
-## Check the text before you deliver it
-
-Read the text again and confirm each item:
-
-- Each term is a term that the project or the domain already uses.
-- Each requirement states an end state.
-- The text names an implementation element only when the identity of that
-  element is part of the requirement.
-- The text holds no decision history, no rejected alternative, and no
-  implementation history.
-- A reader with no conversation context can act on the text.
-- Each sentence follows the 15 STE rules.
+Agents read the text. Humans must also understand the text.
+Write in ASD-STE100 Simplified Technical English (STE).

@@ -43,14 +43,31 @@ describe("Claude native SessionStore", () => {
     ]);
   });
 
-  test("a tool result loses its Culler token before durable native storage", async () => {
+  test("signed records and credentials survive append, load, and resume intact", async () => {
     const dir = root();
-    const token = "synthetic-culler-token-000000000000000000000000";
-    const store = new NativeSessionStore(dir, value => value.split(token).join("[redacted]"));
-    await store.append(key, [{ type: "user", uuid: "u-1", body: `tool result: ${token}` }]);
-    const restored = new NativeSessionStore(dir);
-    expect(await restored.load(key)).toEqual([{ type: "user", uuid: "u-1", body: "tool result: [redacted]" }]);
-    expect(await Bun.file(join(dir, MAIN_NATIVE_FILE)).text()).not.toContain(token);
+    const token = "culler_proxy_" + "c".repeat(43);
+    const signature = Buffer.from("sk-" + "a".repeat(80)).toString("base64");
+    const entries = [
+      { type: "user", uuid: "u-1", message: { content: `tool result: ${token}` } },
+      { type: "assistant", uuid: "a-1", parentUuid: "u-1", message: {
+        id: "msg-1", content: [
+          { type: "thinking", thinking: `context ${token}`, signature },
+          { type: "redacted_thinking", data: signature },
+          { type: "text", text: "sk-" + "b".repeat(80) },
+        ],
+      } },
+    ];
+    for (const subpath of [undefined, "subagents/agent-7"]) {
+      const sessionKey = { ...key, subpath };
+      await new NativeSessionStore(dir).append(sessionKey, entries);
+      const path = join(dir, subpath ? `${subpath}.jsonl` : MAIN_NATIVE_FILE);
+      const before = await Bun.file(path).text();
+      expect(before).toBe(entries.map(entry => JSON.stringify(entry) + "\n").join(""));
+      const restored = new NativeSessionStore(dir);
+      expect(await restored.load(sessionKey)).toEqual(entries);
+      await restored.append(sessionKey, entries);
+      expect(await Bun.file(path).text()).toBe(before);
+    }
   });
 
   test("subagent transcripts stay native and are discoverable for resume", async () => {

@@ -8,14 +8,15 @@
 // longer before each new attempt. A complete AgentsView session list, read in
 // pages over several passes, reaches every main session, the oldest included.
 
-import { constants, lstat, mkdir, open, readdir, rename, stat, writeFile, type FileHandle } from "node:fs/promises";
-import { join } from "node:path";
+import { constants, chmod, link, lstat, mkdir, open, readdir, rename, rm, stat, writeFile, type FileHandle } from "node:fs/promises";
+import { dirname, join, relative } from "node:path";
 import type { Ctx, Event, Logger } from "../../runner/shared/log";
 import type { Exec, ExecResult } from "./types";
 import { checkInside, copyTrace, openFolderInside, type CopyLimits, type CopyState } from "./trace-copy";
 import { AgentsViewAnswer, type AgentsViewClient, type AgentsViewPage, type AgentsViewSession } from "./agentsview";
 import { recoverSetupTrace, setupTraceCandidates, setupTraceFolder, SETUP_RECOVERY_PER_PASS } from "./setup-traces";
 import { SAFE_ID } from "./pipeline-liveness";
+import { createTraceMask } from "./trace-mask";
 import { openCodeTraceID } from "../../runner/shared/opencode-trace";
 
 export const COPY_INTERVAL_MS = 2_000;
@@ -91,6 +92,7 @@ export interface TraceLaneDeps {
   /** Epoch milliseconds. */
   now(): number;
   limits?: CopyLimits;
+  credentials?(): readonly string[];
   requestsPerPass?: number;
   recentPageSize?: number;
   sweepPageSize?: number;
@@ -116,12 +118,14 @@ export interface TraceCopyPaths {
   claude: string;
   codex: string;
   health: string;
+  inspection: string;
 }
 
 export function traceCopyPaths(mcHome: string): TraceCopyPaths {
   const traces = join(mcHome, "agentsview", "traces");
   return {
     sessions: join(mcHome, "sessions"),
+    inspection: join(mcHome, "agentsview", "inspection"),
     claude: join(traces, "claude", "projects", "culler"),
     codex: join(traces, "codex", "sessions"),
     health: join(mcHome, "health", "agentsview.json"),
@@ -274,6 +278,7 @@ interface FileState extends CopyState {
   failures?: number;
   /** The lane tries the file again at this time. */
   retryAt?: number;
+  availability?: "ready" | "pending" | "unavailable";
 }
 
 /** A change of a main copy that AgentsView did not show yet. */
@@ -293,6 +298,7 @@ interface SessionState {
   main: FileState;
   children: Map<string, FileState>;
   settled: boolean;
+  inspectionStatus?: string;
   /** The first change of the main copy that AgentsView did not show yet. */
   pending?: Pending;
   /** The last time that the lane learned the state of the main session in
@@ -328,6 +334,7 @@ interface Sweep {
 export function createTraceLane(deps: TraceLaneDeps): TraceLane {
   const paths = traceCopyPaths(deps.mcHome);
   const maxFiles = deps.maxSessionFiles ?? MAX_SESSION_FILES;
+  let mask = createTraceMask(deps.credentials?.());
   const controller = new AbortController();
   const stopped = new Promise<"stopped">((resolve) => {
     controller.signal.addEventListener("abort", () => resolve("stopped"), { once: true });
@@ -671,6 +678,7 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
     if (!state.truncated && !state.failed) {
       for (const label of [...session.children.keys()]) {
         if (present.has(label)) continue;
+        await rm(join(paths.inspection, row.id, label), { force: true });
         session.children.delete(label);
         failures.delete(copyKey(row.id, label));
       }
@@ -689,6 +697,51 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
     }
   }
 
+  async function inspectionDirectory(directory: string): Promise<void> {
+    await mkdir(directory, { recursive: true, mode: 0o755 });
+    const folder = await openFolderInside(paths.inspection, directory, "trace inspection folder");
+    await folder.close();
+    // The private deployment home contains this mount. The container user needs traversal inside it.
+    let path = paths.inspection;
+    await chmod(path, 0o755);
+    for (const part of relative(paths.inspection, directory).split("/").filter(Boolean)) {
+      path = join(path, part);
+      await chmod(path, 0o755);
+    }
+  }
+
+  async function publishInspection(session: SessionState, file: FileState): Promise<void> {
+    const target = join(paths.inspection, session.row.id, file.label);
+    if (file.recopy || file.availability === "unavailable" || !file.position) {
+      await rm(target, { force: true });
+      return;
+    }
+    const source = await lstat(file.dest);
+    if (!source.isFile()) throw new Error("The trace copy is not a regular file.");
+    const current = await lstat(target).catch(error => {
+      if (code(error) === "ENOENT") return undefined;
+      throw error;
+    });
+    if (current?.isFile() && current.dev === source.dev && current.ino === source.ino) return;
+    await inspectionDirectory(dirname(target));
+    await chmod(file.dest, 0o644);
+    const stage = `${target}.next`;
+    await rm(stage, { force: true });
+    await link(file.dest, stage);
+    await rename(stage, target);
+  }
+
+  async function publishAvailability(session: SessionState, files: FileState[]): Promise<void> {
+    const body = JSON.stringify({ files: Object.fromEntries(files.map(file => [file.label, file.availability ?? "pending"])) }) + "\n";
+    if (body === session.inspectionStatus && (await lstat(join(paths.inspection, session.row.id, "status.json")).catch(() => undefined))?.isFile()) return;
+    const directory = join(paths.inspection, session.row.id);
+    await inspectionDirectory(directory);
+    const stage = join(directory, ".status.next");
+    await writeFile(stage, body, { mode: 0o644 });
+    await rename(stage, join(directory, "status.json"));
+    session.inspectionStatus = body;
+  }
+
   async function copySession(session: SessionState, now: number): Promise<void> {
     if (session.row.kind === "setup") await setupTraceFolder(deps.mcHome, session.row.id);
     const files = await traceFiles(session);
@@ -703,7 +756,9 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
       }
       const before = file.position;
       try {
-        const result = await copyTrace(file, now, deps.limits);
+        const result = await copyTrace(file, now, deps.limits, mask);
+        file.availability = result.absent ? "unavailable" : result.caughtUp && !file.scan && file.position ? "ready" : "pending";
+        await publishInspection(session, file);
         file.failures = 0;
         file.retryAt = undefined;
         if (!result.caughtUp) complete = false;
@@ -714,6 +769,8 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
         }
         if (file === session.main) noteChange(session, before, result.replaced, now);
       } catch (error) {
+        file.availability = "unavailable";
+        await publishInspection(session, file).catch(() => {});
         file.failures = (file.failures ?? 0) + 1;
         file.retryAt = now + Math.min(COPY_INTERVAL_MS * 2 ** (file.failures - 1), RETRY_MAX_MS);
         if (file.failures < SETTLE_FAILURES) complete = false;
@@ -721,6 +778,7 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
       }
       newest = Math.max(newest, file.sourceMtimeMs ?? 0);
     }
+    await publishAvailability(session, files);
     if (session.row.ended && complete && now - newest >= SETTLE_MS) session.settled = true;
   }
 
@@ -731,6 +789,8 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
       try {
         await copySession(session, now);
       } catch (error) {
+        session.main.availability = "unavailable";
+        await publishAvailability(session, [session.main, ...session.children.values()]).catch(() => {});
         reportCopy(session, "", message(error), true);
       }
     }
@@ -751,10 +811,12 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
       const session = next.value;
       if (!session.settled || sessions.get(session.row.id) !== session) continue;
       checked += 1;
+      if (!(await lstat(join(paths.inspection, session.row.id, "status.json")).catch(() => undefined))?.isFile()) session.settled = false;
       for (const file of [session.main, ...session.children.values()]) {
         if (file.position === undefined || (file.failures ?? 0) > 0) continue;
         const copy = await lstat(file.dest).catch(() => undefined);
-        if (copy === undefined || !copy.isFile() || copy.size !== file.position) {
+        const inspection = await lstat(join(paths.inspection, session.row.id, file.label)).catch(() => undefined);
+        if (copy === undefined || !copy.isFile() || copy.size !== file.position || inspection?.ino !== copy.ino || inspection.dev !== copy.dev) {
           session.settled = false;
           break;
         }
@@ -767,6 +829,11 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
    * holds the session list that this pass started. The result is an object,
    * because a promise that a promise resolves takes the state of that promise. */
   async function copyPassNow(): Promise<{ refresh?: Promise<void> }> {
+    const nextMask = createTraceMask(deps.credentials?.());
+    if (nextMask.revision !== mask.revision) {
+      mask = nextMask;
+      for (const session of sessions.values()) session.settled = false;
+    }
     const now = deps.now();
     const names = await listFolders();
     let refresh: Promise<void> | undefined;

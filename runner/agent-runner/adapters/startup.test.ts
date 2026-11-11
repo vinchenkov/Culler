@@ -1,9 +1,9 @@
 import { afterEach, expect, test } from "bun:test";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { executeClaudeQuery } from "./claude";
-import { codexArgv, executeCodexProcess } from "./codex";
+import { executeClaudeQuery, runClaudeAdapter } from "./claude";
+import { codexArgv, executeCodexProcess, runCodexAdapter } from "./codex";
 import { OPENWIKI_TOOLS, type OpenWikiStatus } from "./openwiki";
 
 const connected: OpenWikiStatus = {
@@ -129,7 +129,11 @@ async function codexFixture(script: string, signal?: AbortSignal) {
   const root = await mkdtemp(join(tmpdir(), "mc-codex-startup-"));
   roots.push(root);
   const thread = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-  await writeFile(join(root, `${thread}.jsonl`), "{}\n");
+  const original = JSON.stringify({ type: "response_item", payload: {
+    type: "reasoning", id: "reasoning-1", encrypted_content: "AAAA-sk-" + "a".repeat(160),
+    token: "culler_proxy_" + "c".repeat(43),
+  } }) + "\n";
+  await writeFile(join(root, `${thread}.jsonl`), original);
   const proc = Bun.spawn([process.execPath, "-e", `
     const emit = (event) => console.log(JSON.stringify(event));
     const thread = ${JSON.stringify(thread)};
@@ -283,7 +287,11 @@ test("Codex preserves native identity and redacts Culler access after its file i
   const reply = `The response belongs to ${thread}.`;
   const accessPath = join(root, "provider-access.json");
   await writeFile(accessPath, JSON.stringify({ token }));
-  await writeFile(join(root, `${thread}.jsonl`), "{}\n");
+  const original = JSON.stringify({ type: "response_item", payload: {
+    type: "reasoning", id: "reasoning-1", encrypted_content: "AAAA-sk-" + "a".repeat(160),
+    token: "culler_proxy_" + "c".repeat(43),
+  } }) + "\n";
+  await writeFile(join(root, `${thread}.jsonl`), original);
   const proc = Bun.spawn([process.execPath, "-e", `
     const emit = (event) => console.log(JSON.stringify(event));
     await Bun.sleep(50);
@@ -308,4 +316,47 @@ test("Codex preserves native identity and redacts Culler access after its file i
     http_status: 401, provider_error_code: "authentication_failed", proxy_request_id: request,
   });
   expect(events.find((event) => event.type === "turn.failed").error.message).toBe("[redacted]");
+  expect(await Bun.file(join(root, `${thread}.jsonl`)).text()).toBe(original);
+});
+
+test("both adapters preserve existing originals during startup and shutdown", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mc-original-lifecycle-")); roots.push(root);
+  const token = "culler_proxy_" + "c".repeat(43);
+  const native = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+  const original = JSON.stringify({ type: "assistant", uuid: "signed-1", message: { content: [
+    { type: "thinking", thinking: token, signature: Buffer.from("sk-" + "a".repeat(80)).toString("base64") },
+    { type: "redacted_thinking", data: "AAAA-sk-" + "a".repeat(160) },
+  ] }, encrypted_content: "AAAA-sk-" + "b".repeat(160) }) + "\n";
+  const previous = process.env.MC_PROVIDER_ACCESS_FILE;
+  try {
+    process.env.MC_PROVIDER_ACCESS_FILE = join(root, "access.json");
+    for (const harness of ["codex", "claude-sdk"] as const) {
+      const directory = join(root, harness);
+      await mkdir(join(directory, "subagents"), { recursive: true });
+      const file = join(directory, harness === "codex" ? `rollout-${native}.jsonl` : "native.jsonl");
+      const child = join(directory, "subagents/agent-1.jsonl");
+      await writeFile(file, original, { mode: 0o600 });
+      await writeFile(child, original, { mode: 0o600 });
+      await writeFile(process.env.MC_PROVIDER_ACCESS_FILE, JSON.stringify({ version: 1, harness, authMode: "api-key", token,
+        url: "https://host.docker.internal:4433", ca: "-----BEGIN CERTIFICATE-----\nsynthetic\n-----END CERTIFICATE-----" }));
+      const args = ["--channel", "claude", "--workspace", root, "--session-dir", directory, "--native-ref", native, "--mode", "native", "--model", "fixture-model"];
+      for (let repeat = 0; repeat < 2; repeat++) {
+        const code = harness === "codex"
+          ? await runCodexAdapter(args, { input: async () => "Continue", spawn: ((_argv: unknown, options: any) => {
+            return Bun.spawn([process.execPath, "-e", `console.log(JSON.stringify({type:'thread.started',thread_id:'${native}'})); console.log(JSON.stringify({type:'turn.completed'}));`], { ...options, stdin: "ignore" });
+          }) as typeof Bun.spawn })
+          : await runClaudeAdapter(args, { input: async () => "Continue", query: (({ options }: any) => Object.assign((async function* () {
+            expect(await options.sessionStore.load({ projectKey: "workspace", sessionId: native })).toEqual([JSON.parse(original)]);
+            yield { type: "system", subtype: "init", session_id: native };
+            yield { type: "result", subtype: "success", is_error: false, result: "Complete" };
+          })(), { close: () => {} })) as any });
+        expect(code).toBe(0);
+        expect(await readFile(file, "utf8")).toBe(original);
+        expect(await readFile(child, "utf8")).toBe(original);
+      }
+    }
+  } finally {
+    if (previous === undefined) delete process.env.MC_PROVIDER_ACCESS_FILE;
+    else process.env.MC_PROVIDER_ACCESS_FILE = previous;
+  }
 });

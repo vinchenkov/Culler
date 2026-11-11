@@ -78,13 +78,22 @@ func providerCondition(a ProviderAccessObservation) (string, string) {
 	case "client":
 		return "The client ended the provider request.", "Retry reply"
 	}
+	if providerRequestLocal(a) {
+		switch a.ProviderErrorCode {
+		case "invalid_encrypted_content":
+			return "The provider rejected the conversation's encrypted content.", ""
+		case "invalid_signature":
+			return "The provider rejected the conversation's signature.", ""
+		}
+		return "The provider rejected this request.", ""
+	}
 	if a.HTTPStatus != nil && *a.HTTPStatus == 401 || a.ProviderErrorCode == "invalid_api_key" || a.ProviderErrorCode == "authentication_error" || a.ProviderErrorCode == "authentication_failed" {
 		return "The provider rejected the request credential.", "Review connection"
 	}
 	switch a.ProviderErrorCode {
 	case "insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached":
 		return "The provider account has no available allowance.", "Review account allowance"
-	case "model_not_found", "permission_denied", "not_found_error":
+	case "model_not_found", "permission_denied", "permission_error", "not_found_error", "oauth_org_not_allowed", "access_denied":
 		return "The provider refused the selected model.", "Review connection"
 	}
 	if providerTransient(a) {
@@ -107,6 +116,22 @@ func providerTransient(a ProviderAccessObservation) bool {
 		return a.HTTPStatus != nil && (*a.HTTPStatus == 429 || *a.HTTPStatus >= 500)
 	}
 	return false
+}
+
+// A request failure needs evidence of a shared restriction before it changes access.
+func providerRequestLocal(a ProviderAccessObservation) bool {
+	if a.Origin != "provider" || providerTransient(a) {
+		return false
+	}
+	switch a.ProviderErrorCode {
+	case "invalid_encrypted_content", "invalid_signature", "invalid_request", "invalid_request_error":
+		return true
+	case "invalid_api_key", "authentication_error", "authentication_failed",
+		"insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached",
+		"model_not_found", "permission_denied", "permission_error", "not_found_error", "oauth_org_not_allowed", "access_denied":
+		return false
+	}
+	return a.HTTPStatus == nil || *a.HTTPStatus != 401
 }
 
 func currentProviderObservation(ctx context.Context, q Q, a ProviderAccessObservation, operation, profile string) (bool, error) {
@@ -192,6 +217,9 @@ func RecordProviderAccess(ctx context.Context, q Q, a ProviderAccessObservation)
 	result.DiagnosticID, err = AppendDiagnostic(ctx, q, d, string(body))
 	if err != nil {
 		return result, err
+	}
+	if failed && providerRequestLocal(a) {
+		return result, nil
 	}
 	current := a.Connection != "" && a.AuthorizationRevision != "" && a.AuthorizationRevision == currentAuthorization &&
 		a.CredentialRef != "" && a.CredentialRef == currentCredential
@@ -410,12 +438,15 @@ func ApplyProviderEvidence(ctx context.Context, q Q, run string, report Infrastr
 	report.ProxyRequestID = a.RequestID
 	report.Source, report.Cause = "resident", "connection"
 	report.Condition, report.OperatorAction = providerCondition(a)
+	if providerRequestLocal(a) {
+		report.Cause = "unknown"
+	}
 	report.Evidence = "The host recorded request " + a.RequestID + " from " + a.Origin + "."
 	report.HTTPStatus, report.ProviderErrorCode, report.NetworkError = nil, "", ""
 	if a.Origin == "provider" {
 		report.HTTPStatus = a.HTTPStatus
 		switch a.ProviderErrorCode {
-		case "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "model_not_found", "permission_denied", "authentication_failed", "oauth_org_not_allowed", "billing_error", "rate_limit", "overloaded", "invalid_request", "server_error":
+		case "invalid_api_key", "insufficient_quota", "rate_limit_exceeded", "model_not_found", "permission_denied", "authentication_failed", "oauth_org_not_allowed", "billing_error", "rate_limit", "overloaded", "invalid_request", "invalid_request_error", "invalid_encrypted_content", "invalid_signature", "server_error":
 			report.ProviderErrorCode = a.ProviderErrorCode
 		}
 	} else if a.Origin == "provider_network" {

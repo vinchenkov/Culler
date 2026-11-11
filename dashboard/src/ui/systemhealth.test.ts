@@ -422,3 +422,14 @@ test("connection titles use the profile name instead of its identifier", () => {
   expect(conditionTitle({ ...condition, profile_name: undefined, model: "review-model" })).toBe("Subscription account / review-model · Retry pending");
   expect(conditionTitle({ ...condition, profile_name: undefined })).toBe("Subscription account / Agent profile · Retry pending");
 });
+
+test("a conversation rejection presents the reply action", () => {
+  for (const provider_error_code of ["invalid_encrypted_content", "invalid_request_error"]) {
+    const reply = { id: "reply:1", name: "Collie", group: "execution", state: "failed", action: "Retry reply", session_id: "h-1", attempt_id: "a-1", provider_error_code };
+    expect(systemIssues([reply])).toEqual([reply]);
+    expect(actionControl(reply)).toBe(true);
+    expect(conditionTitle(reply)).toContain("Collie");
+    expect(conditionTitle(reply)).not.toContain("Model access");
+    expect(repairText(reply)).not.toContain("connection");
+  }
+});
