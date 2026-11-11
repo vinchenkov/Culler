@@ -982,20 +982,20 @@ describe("pipeline, configs, and logs reads", () => {
     };
     const mc = new FakeMc().on(["routing", "set"], ok(table));
     const res = await handleApi(
-      ...apiReq("POST", "/api/routing", { role: "worker", binding: "claude" }),
+      ...apiReq("POST", "/api/routing", { role: "worker", binding: "claude", expected: "endpoint" }),
       deps({ mc }),
     );
     expect(res?.status).toBe(200);
     expect(await res?.json()).toEqual(table);
-    expect(mc.calls).toEqual([["routing", "set", "--role", "worker", "--binding", "claude"]]);
+    expect(mc.calls).toEqual([["routing", "set", "--role", "worker", "--binding", "claude", "--expected", "endpoint"]]);
   });
 
   test("POST /api/routing passes the verb's rejection through as the mc envelope", async () => {
     // A disabled binding and an unknown role both reach the verb; the API
     // restates neither list.
     for (const [body, message] of [
-      [{ role: "worker", binding: "endpoint" }, 'routing set: binding "endpoint" is not enabled'],
-      [{ role: "painter", binding: "claude" }, 'routing set: unknown role "painter"'],
+      [{ role: "worker", binding: "endpoint", expected: "claude" }, 'routing set: binding "endpoint" is not enabled'],
+      [{ role: "painter", binding: "claude", expected: "endpoint" }, 'routing set: unknown role "painter"'],
     ] as const) {
       const mc = new FakeMc().on(["routing", "set"], domain(message));
       const res = await handleApi(...apiReq("POST", "/api/routing", body), deps({ mc }));
@@ -1003,7 +1003,7 @@ describe("pipeline, configs, and logs reads", () => {
       const envelope = (await res?.json()) as { error: { code: string; message: string } };
       expect(envelope.error.code).toBe("domain-rejection");
       expect(envelope.error.message).toBe(message);
-      expect(mc.calls).toEqual([["routing", "set", "--role", body.role, "--binding", body.binding]]);
+      expect(mc.calls).toEqual([["routing", "set", "--role", body.role, "--binding", body.binding, "--expected", body.expected]]);
     }
   });
 
@@ -1020,7 +1020,7 @@ describe("pipeline, configs, and logs reads", () => {
   test("POST /api/routing reports an environment failure as 500", async () => {
     const mc = new FakeMc().on(["routing", "set"], environment("spine unreachable"));
     const res = await handleApi(
-      ...apiReq("POST", "/api/routing", { role: "worker", binding: "claude" }),
+      ...apiReq("POST", "/api/routing", { role: "worker", binding: "claude", expected: "endpoint" }),
       deps({ mc }),
     );
     expect(res?.status).toBe(500);

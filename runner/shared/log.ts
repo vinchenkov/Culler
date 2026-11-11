@@ -58,6 +58,8 @@ export const EVENTS = [
   "evaluation.capture_failed",
   "repository.start_failed", "repository.owner_refused", "repository.heartbeat_failed",
   "repository.stop_failed", "repository.follow_failed", "repository.execution_failed",
+  "operator.request_failed", "operator.unavailable",
+  "runner.skill_unavailable",
   "trace.copy_failed", "trace.sessions_failed",
   "agentsview.available", "agentsview.unavailable", "agentsview.request_failed", "agentsview.health_failed",
   "wiki.exported", "wiki.export_failed",

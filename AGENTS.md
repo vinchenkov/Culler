@@ -286,20 +286,30 @@ The resident resolves the host folder of that mount through the host-only `mc __
 Each Collie container shows the `.mc-artifacts` folder of each Project folder as an empty read-only folder.
 
 **Shipped skills.** Each shipped skill lives at `mc/verbs/skills/<role>/<skill-name>/SKILL.md`.
-The `mc` binary embeds these files.
-Each role directory contains its `mc-<role>` command surface and additional skills.
+The `mc` binary embeds each complete skill tree.
+Pipeline and setup role directories contain their `mc-<role>` command skill and additional skills.
+Collie receives the common `culler` skill and its reference files.
+The external agent receives the same skill under `MC_HOME/release/host/skills/culler/`.
+The `installation.json` file identifies that installation's executable, release, and evidence paths.
+Command help describes the supported operator commands without a live service.
+Help grants no additional role authority.
 The `shared` directory supplies skills to pipeline agents, setup agents, and Collie.
 Its `writing` skill defines the standard for text that a person or another agent reads.
 Its `project-environment-setup` skill defines dependency preparation and reports of environment limits.
 Its `task-description` skill defines the standard for a task description. The Strategist, the Arbiter, and Collie apply it.
 
-The launch envelope carries the shipped skills.
+The launch envelope carries each main skill file and its declared relative reference files.
+The installer rejects absolute paths, traversal, and file links.
+The common skill derives its text and task description standards from the shared skills.
+The Collie directive derives its authorization section from the common skill's authoritative section.
 The resident adds the operator's Project skills for the assigned role.
 The runner installs these skills at `~/.agents/skills/` before the harness starts.
 That path uses storage that belongs to each container, separate from the persistent Project home.
 Concurrent roles preserve each other's skills and instructions.
 
 An additional skill can name only commands from the role's command surface.
+The operator command definitions supply Collie's command syntax and result contracts.
+The common skill supplies procedures that an agent reads when the request requires them.
 The directory name and the frontmatter `name` must match.
 
 **Agent input.** Each pipeline run starts in a fresh container, and the agent knows only its agent input. The agent input has three parts: the role directive (`mc/verbs/directives/<role>.md`), the run brief (`mc/verbs/brief.go`), and the skills of the role. The run brief is a text document that a human operator can read and check. Each part of the run brief has a heading and an explanation of a maximum of two sentences. The role directive holds the rules for each run. A skill holds the procedure for a case that occurs in some runs.

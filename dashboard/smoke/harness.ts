@@ -25,6 +25,7 @@ import { startDashboardServer, type DashboardServerHandle } from "../src/server"
 import { startWikiServer, type WikiServerHandle } from "../src/wiki-server";
 import { makeLogger, parseLevel } from "../../runner/shared/log";
 import { openFileSink } from "../../runner/shared/log-sink";
+import { createOperatorLane } from "../../resident/src/operator-lane";
 
 export const MC_BIN = process.env["MC_SMOKE_BIN"] ?? "";
 const { chromium } = await import(process.env["MC_SMOKE_PLAYWRIGHT"] ?? "playwright");
@@ -142,6 +143,7 @@ export interface Smoke {
   context: BrowserContext;
   page: Page;
   browserLog: string[];
+  operatorLane: ReturnType<typeof createOperatorLane>;
 }
 
 // One Chromium per bun process, shared by every smoke file. A second
@@ -217,7 +219,7 @@ async function seedAcceptedEnvironment(smoke: Smoke, project: string): Promise<v
   const base = `sha256:${"a".repeat(64)}`;
   const files = `sha256:${"b".repeat(64)}`;
   const configuration = { base_digest: base };
-  await mc(["environment", "save"], {}, { project_id: project, configuration });
+  await mc(["environment", "save"], {}, { project_id: project, expected_revision_id: "", configuration });
   await mc(["environment", "assist"], {}, { project_id: project, instruction: "Prepare the Project dependencies." });
   const request = { default_image_digest: base, runtime_identity: "dashboard-smoke" };
   const work = await mc(["environment", "work"], {}, request);
@@ -327,7 +329,22 @@ export async function bootSmoke(options: { releaseID?: string; observedCommand?:
   page.on("crash", () => browserLog.push("PAGE CRASHED"));
   page.on("framenavigated", (frame) => browserLog.push(`framenavigated: ${frame.url()}`));
 
-  return { scratch, stateScratch, home, server, wiki, wikiKey, agentsview, agentsviewToken, context, page, browserLog };
+  const operatorEnvironment = { ...process.env, MC_RUN_JSON: join(stateScratch, "absent-run.json"), MC_OPERATOR_ORIGIN: "component" };
+  const operatorLane = createOperatorLane(async (args, input, options) => {
+    const proc = Bun.spawn([MC_BIN, ...args], {
+      env: operatorEnvironment, stdin: input ?? "ignore", stdout: "pipe", stderr: "pipe",
+    });
+    const stop = () => { proc.kill("SIGTERM"); };
+    options?.signal?.addEventListener("abort", stop, { once: true });
+    try {
+      const [stdout, stderr, exitCode] = await Promise.all([
+        new Response(proc.stdout).text(), new Response(proc.stderr).text(), proc.exited,
+      ]);
+      return { stdout, stderr, exitCode };
+    } finally { options?.signal?.removeEventListener("abort", stop); }
+  }, makeLogger({ comp: "resident", level: "warn", sink: openFileSink({ dir: join(home, "logs"), name: "resident.ndjson" }) }), 100);
+  await operatorLane.start();
+  return { scratch, stateScratch, home, server, wiki, wikiKey, agentsview, agentsviewToken, context, page, browserLog, operatorLane };
 }
 
 /** Selects the dashboard theme through its button, including inside a dialog. */
@@ -399,6 +416,7 @@ export async function teardown(smoke: Smoke | undefined) {
   smoke.server?.stop();
   smoke.wiki?.stop();
   smoke.agentsview?.stop();
+  await smoke.operatorLane?.stop();
   await smoke.context?.close();
   if (smoke.scratch) {
     rmSync(smoke.scratch, { recursive: true, force: true });

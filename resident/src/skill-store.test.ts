@@ -139,3 +139,12 @@ describe("creating a Project's store directories at first spawn", () => {
     expect(fs.events).toEqual([]);
   });
 });
+
+test("shipped reference trees survive the resident envelope", () => {
+  const skill = { name: "culler", body: "main", files: { "references/tasks.md": "procedure", "installation.json": "{}" } };
+  const delivered = shippedSkillsFrom([skill]);
+  expect(delivered).toEqual([skill]);
+  expect(composeRunSkills(delivered!, { skills: [], problems: [] }).skills).toEqual([skill]);
+  expect(shippedSkillsFrom([{ ...skill, files: { "../outside": "x" } }])).toBeUndefined();
+  expect(shippedSkillsFrom([{ ...skill, files: { "references/link": { symlink: "/outside" } } }])).toBeUndefined();
+});

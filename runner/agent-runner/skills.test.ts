@@ -170,3 +170,35 @@ describe("the codex-native and model-readable skill root", () => {
     expect(agentSkillRoot({ HOME: "home/agent" })).toBeUndefined();
   });
 });
+
+describe("skill reference files", () => {
+  test("the complete tree survives delivery and each run keeps its own files", async () => {
+    const first = await root();
+    const second = await root();
+    const files = { "references/tasks.md": "task procedure", "references/deep/detail.md": "detail", "installation.json": "{}" };
+    await installRunSkills(first, [runSkillFrom({ name: "culler", body: "main", files })]);
+    await installRunSkills(second, [{ name: "culler", body: "other", files: { "references/tasks.md": "other procedure" } }]);
+    for (const [name, body] of Object.entries(files)) expect(await readFile(join(first, "culler", name), "utf8")).toBe(body);
+    expect(await readFile(join(second, "culler/references/tasks.md"), "utf8")).toBe("other procedure");
+  });
+
+  test("unsafe references refuse before the previous skill set changes", async () => {
+    const directory = await root();
+    await installRunSkills(directory, [{ name: "culler", body: "previous" }]);
+    for (const path of ["../outside", "/absolute", "references/../outside", "references//a", "references\\a", "SKILL.md", "C:/file"]) {
+      await expect(installRunSkills(directory, [{ name: "culler", body: "new", files: { [path]: "x" } }])).rejects.toThrow();
+      expect(await readFile(join(directory, "culler/SKILL.md"), "utf8")).toBe("previous");
+    }
+    expect(() => runSkillFrom({ name: "culler", body: "main", files: { "reference.md": { symlink: "/outside" } } })).toThrow();
+    expect(() => runSkillFrom({ name: "culler", body: "main", files: { "references": "file", "references/a": "file" } })).toThrow();
+  });
+});
+
+test("a required common skill prevents a launch when its envelope cannot install", async () => {
+  const home = await root();
+  const log = makeTestLogger();
+  expect(await installEnvelopeSkills([], [], log, { HOME: home }, ["culler"])).toBe(false);
+  expect(await installEnvelopeSkills([{ name: "culler", body: "main", files: { "../outside": "x" } }], [], log, { HOME: home }, ["culler"])).toBe(false);
+  expect(await installEnvelopeSkills([{ name: "culler", body: "main", files: { "references/tasks.md": "procedure" } }], [], log, { HOME: home }, ["culler"])).toBe(true);
+  expect(await readFile(join(home, ".agents/skills/culler/references/tasks.md"), "utf8")).toBe("procedure");
+});

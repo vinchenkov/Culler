@@ -118,29 +118,12 @@ func VisionDraftContext(ctx context.Context, q Q, project string) (map[string]an
 }
 
 func requireVisionAccess(ctx context.Context, q Q, id *RunIdentity, action, project string) error {
-	if action == "vision-draft" || action == "vision-edit" {
-		verb := "project.vision-draft"
-		if action == "vision-edit" {
-			verb = "project.vision-edit"
-		}
-		if err := RequireOperatorVerb(id, verb); err != nil {
-			return err
-		}
-		if err := requireOperatorVerbTx(ctx, q, id, verb); err != nil {
-			return err
-		}
-		if id != nil {
-			var bound sql.NullString
-			if err := q.QueryRowContext(ctx, `SELECT vision_project_id FROM collie_sessions WHERE id=?`, id.RunID).Scan(&bound); err != nil {
-				return err
-			}
-			if !bound.Valid || bound.String != project {
-				return Domainf("This Collie conversation cannot access that Project's Vision draft.")
-			}
-		}
-		return nil
+	switch action {
+	case "vision-draft", "vision-edit", "vision-rebase", "vision-submit", "vision-submission":
+		return AuthorizeOperator(ctx, q, id, "project."+action, project)
+	default:
+		return RequireHostScope(id, "Vision setup")
 	}
-	return RequireHostScope(id, "Vision setup")
 }
 
 // ProjectVision executes the closed draft and submission command surface.

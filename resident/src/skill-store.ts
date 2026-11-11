@@ -19,6 +19,7 @@
 export interface RunSkill {
   name: string;
   body: string;
+  files?: Record<string, string>;
 }
 
 export interface OperatorSkills {
@@ -205,9 +206,13 @@ export function shippedSkillsFrom(value: unknown): RunSkill[] | undefined {
   const skills: RunSkill[] = [];
   for (const entry of value) {
     if (typeof entry !== "object" || entry === null) return undefined;
-    const { name, body } = entry as { name?: unknown; body?: unknown };
+    const { name, body, files } = entry as { name?: unknown; body?: unknown; files?: unknown };
     if (typeof name !== "string" || !SKILL_NAME.test(name) || typeof body !== "string" || body === "") return undefined;
-    skills.push({ name, body });
+    if (files !== undefined && (typeof files !== "object" || files === null || Array.isArray(files))) return undefined;
+    if (files !== undefined && Object.entries(files).some(([path, content]) =>
+      !path || path === "SKILL.md" || path.split("/").some((part) => !part || part === "." || part === "..") ||
+      /[\\\0:]/.test(path) || typeof content !== "string")) return undefined;
+    skills.push({ name, body, ...(files === undefined ? {} : { files: files as Record<string, string> }) });
   }
   return skills;
 }

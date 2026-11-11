@@ -159,9 +159,9 @@ export function createPacketChat({ api, renderMessage, openConversation, project
   const model = createModelPicker({
     api, prefix: "packet-chat", onRouting, openProfiles,
     session: () => ({ id: current?.id ?? null, binding: current?.binding ?? null, messages: hasMessages() || sending.has(packet?.packet_id) }),
-    switchModel: async binding => {
+    switchModel: async (binding, retry, expected) => {
       let routing;
-      try { routing = await post("/api/routing", { role: "collie", binding }); }
+      try { routing = await post("/api/routing", { role: "collie", binding, expected }); }
       catch (err) { throw new Error(`${err.message} Collie keeps its current model.`); }
       if (current !== null && collieModelView(routing, current.binding).current?.id !== binding && !await startNewConversation()) {
         throw new Error("New conversations use the selected model. Culler could not start a new conversation for this packet. Select Retry.");

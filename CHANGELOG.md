@@ -8,6 +8,12 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 
 ### Changes
 
+- Collie and external coding agents share the supported operator commands and a common `culler` skill.
+- The command help describes each operation, its request, its result, and its authority requirements.
+- Culler retains operator requests and their results. An uncertain request never repeats its effects automatically.
+- The release includes the common skill, its procedure files, and the native trace reader.
+- Terminal setup offers a personal skill link for Claude Code and preserves existing skill files.
+- A role assignment requires the current assignment, so a stale request preserves a later change.
 - The dashboard browser test waits for profile recovery before it checks Save.
 - The test closes the profile dialog after a failure to protect subsequent tests.
 - The application package builds alongside the component checks, so the image build can start sooner.
@@ -44,12 +50,13 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 
 ### Database compatibility
 
+- The operator request records change the database schema.
 - The Strategic rationale field changes the database schema.
-- The current update code cannot convert a database of version 0.2.0 or version 0.1.0.
+- The updater requires a compatible database from an earlier release.
 
 ### Update effects
 
-- This test release permits new installations. The updater rejects the incompatible database of an earlier version.
+- This test release permits new installations. The updater rejects an incompatible database from an earlier release.
 
 ## 0.2.0
 

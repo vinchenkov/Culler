@@ -355,7 +355,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
   async function assign(profileID) {
     const serial = generation;
     const assignedRole = role;
-    const result = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: assignedRole, binding: profileID }) });
+    const result = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: assignedRole, binding: profileID, expected: routes.find(row => row.role === assignedRole)?.binding }) });
     routes = result.routes || [];
     onAssigned(result);
     if (serial !== generation) return;

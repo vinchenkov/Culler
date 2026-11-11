@@ -163,7 +163,7 @@ func TestProjectDeletePreservesTaskAndReviewIdentifiersAcrossReimport(t *testing
 	}
 }
 
-func TestProjectDeleteRefusesEveryAgentIdentity(t *testing.T) {
+func TestProjectDeleteRefusesUnassignedAgentIdentities(t *testing.T) {
 	for _, tier := range []string{"pipeline", "setup", "collie", ""} {
 		id := &RunIdentity{Tier: tier, VerbAllowlist: []string{"project.delete", "project.delete-preview"}}
 		if _, err := ProjectDelete(nil, id, "project"); err == nil {

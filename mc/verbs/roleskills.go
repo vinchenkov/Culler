@@ -2,43 +2,27 @@ package verbs
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
 	"io/fs"
+	"path"
 	"regexp"
 	"strings"
 
 	"mc/dispatch"
 )
 
-// Every skill Culler ships to an agent, embedded beside the frozen
-// directives and installed into the run's container as a real agent skill.
+// Shipped skills contain a main file and optional reference files.
 //
-// The layout is one directory per role, holding one directory per skill:
-//
-//	skills/<role-basename>/<skill-name>/SKILL.md
-//
-// A role's set always holds its command surface, named `mc-<role-basename>`:
-// `mc` ships no help surface — bare `mc` names zero verbs and `mc --help` is
-// an unknown verb — so that skill is the only verb surface a container agent
-// can read. The other skills in the directory are the role's additional skills:
-// how to do a part of its job that its command surface does not cover. The
-// `shared` directory holds the skills every tier ships; they close each set.
-// The operator store adds per-Project skills.
-//
-// A skill rather than brief text, for two reasons. Cost: only the frontmatter
-// description stays resident, and the body loads when the agent reaches for
-// it. Isolation: the body is a file the run's own container carries, so a
-// role's skills are delivered per role rather than concatenated into text
-// every role's brief already pays for.
-//
-//go:embed skills/*/*/SKILL.md
+//go:embed skills
 var roleSkillFS embed.FS
 
 // RoleSkill is one shipped skill: the directory name the harness discovers it
 // by, and the SKILL.md body.
 type RoleSkill struct {
-	Name string
-	Body string
+	Name  string
+	Body  string
+	Files map[string]string
 }
 
 // Description is the skill's single-line frontmatter description, the one
@@ -118,6 +102,9 @@ func CollieSkill() (RoleSkill, error) { return commandSkillByBasename(CollieSkil
 func CollieSkillSet() ([]RoleSkill, error) { return skillSetByBasename(CollieSkillBasename) }
 
 func commandSkillByBasename(basename string) (RoleSkill, error) {
+	if basename == CollieSkillBasename {
+		return skillByPath(basename, "culler")
+	}
 	return skillByPath(basename, commandSkillPrefix+basename)
 }
 
@@ -185,7 +172,41 @@ func skillByPath(basename, name string) (RoleSkill, error) {
 	if declared := SkillFrontmatterField(string(body), "name"); declared != name {
 		return RoleSkill{}, fmt.Errorf("skill %q for %q declares name %q", name, basename, declared)
 	}
-	return RoleSkill{Name: name, Body: strings.TrimSpace(string(body)) + "\n"}, nil
+	skill := RoleSkill{Name: name, Body: strings.TrimSpace(string(body)) + "\n", Files: map[string]string{}}
+	root := "skills/" + basename + "/" + name
+	err = fs.WalkDir(roleSkillFS, root, func(file string, entry fs.DirEntry, err error) error {
+		if err != nil || entry.IsDir() || file == root+"/SKILL.md" {
+			return err
+		}
+		rel := strings.TrimPrefix(file, root+"/")
+		if !SafeSkillFilePath(rel) || !entry.Type().IsRegular() {
+			return fmt.Errorf("unsafe skill file %q", file)
+		}
+		content, err := roleSkillFS.ReadFile(file)
+		if err == nil {
+			skill.Files[rel] = string(content)
+		}
+		return err
+	})
+	if err != nil {
+		return RoleSkill{}, err
+	}
+	if name == "culler" {
+		for _, shared := range []string{"task-description", "writing"} {
+			body, err := roleSkillFS.ReadFile("skills/shared/" + shared + "/SKILL.md")
+			if err != nil {
+				return RoleSkill{}, err
+			}
+			skill.Files["references/"+shared+".md"] = string(body)
+		}
+		metadata, _ := json.Marshal(map[string]any{
+			"environment": "container", "executable": "/usr/local/bin/mc", "skill": "~/.agents/skills/culler",
+			"trace_root": "/mc/traces", "trace_reader": "/opt/culler-runtime/app/src/shared/trace-read.ts",
+			"bun": "/opt/culler-runtime/bin/bun", "scratch": "/mc/scratch", "release_record": "/mc/run.json",
+		})
+		skill.Files["installation.json"] = string(metadata) + "\n"
+	}
+	return skill, nil
 }
 
 // SkillsEffectValue is the shape a spawn or wake effect carries a skill set
@@ -194,7 +215,11 @@ func skillByPath(basename, name string) (RoleSkill, error) {
 func SkillsEffectValue(set []RoleSkill) []map[string]any {
 	value := make([]map[string]any, 0, len(set))
 	for _, skill := range set {
-		value = append(value, map[string]any{"name": skill.Name, "body": skill.Body})
+		entry := map[string]any{"name": skill.Name, "body": skill.Body}
+		if len(skill.Files) > 0 {
+			entry["files"] = skill.Files
+		}
+		value = append(value, entry)
 	}
 	return value
 }
@@ -311,4 +336,9 @@ func proseCommandSpans(text string) []string {
 		}
 	}
 	return spans
+}
+
+// SafeSkillFilePath restricts files to one skill tree.
+func SafeSkillFilePath(file string) bool {
+	return file != "" && file != "SKILL.md" && file != "." && path.Clean(file) == file && !strings.HasPrefix(file, "/") && !strings.HasPrefix(file, "../") && !strings.ContainsAny(file, "\\\x00:")
 }

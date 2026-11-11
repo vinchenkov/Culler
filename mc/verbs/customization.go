@@ -148,6 +148,9 @@ func ProjectRoleSave(db *sql.DB, id *RunIdentity, a RoleSaveRequest) (any, error
 	}
 	var result RoleCustomization
 	err := inTx(db, func(ctx context.Context, q Q) error {
+		if err := AuthorizeOperator(ctx, q, id, "project.role-save", a.Project); err != nil {
+			return err
+		}
 		c, err := customizationCurrent(ctx, q, a.Project, a.Role)
 		if err != nil {
 			return err
@@ -321,6 +324,9 @@ func ProjectRoleUnblock(db *sql.DB, id *RunIdentity, a RoleUnblockRequest) (any,
 		return nil, Usagef("The block requires a resolution reason.")
 	}
 	err := inTx(db, func(ctx context.Context, q Q) error {
+		if err := requireOperatorVerbTx(ctx, q, id, "project.role-unblock"); err != nil {
+			return err
+		}
 		actor := "operator"
 		if id != nil {
 			actor = "collie:" + id.RunID

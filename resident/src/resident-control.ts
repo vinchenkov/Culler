@@ -244,7 +244,7 @@ async function execControlledDispatch(
 }
 
 function mcEnvironment(mcHome: string): Record<string, string | undefined> {
-  const env: Record<string, string | undefined> = { ...process.env, MC_HOME: mcHome };
+  const env: Record<string, string | undefined> = { ...process.env, MC_HOME: mcHome, MC_OPERATOR_ORIGIN: "component" };
   // A resident invocation is always the Darwin host scope. Ambient developer
   // variables must not turn it into a direct-spine or agent-scoped call and
   // bypass the resident-only dispatch broker.

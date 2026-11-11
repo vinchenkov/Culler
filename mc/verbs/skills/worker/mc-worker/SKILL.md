@@ -5,6 +5,9 @@ description: Worker commands, submission checks, and procedures for conditional 
 
 # mc — Worker
 
+`mc --help` describes operator commands; it grants no additional role authority.
+Use this role skill for assigned run commands and terminal submissions.
+
 The same command authority applies to Codex, the Claude Agent Software Development Kit (SDK), and OpenCode.
 Culler supplies the harness configuration and the skills at `~/.agents/skills/`.
 

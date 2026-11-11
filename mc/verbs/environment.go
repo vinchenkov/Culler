@@ -81,6 +81,10 @@ func ProjectEnvironment(db *sql.DB, id *RunIdentity, action string, req Environm
 					return Domainf("This setup agent belongs to another Project.")
 				}
 			}
+		} else if isOperatorEnvironmentAction(action) {
+			if err := AuthorizeOperator(ctx, q, id, "environment."+action, req.ProjectID); err != nil {
+				return err
+			}
 		} else if err := RequireHostScope(id, "Project environment "+action); err != nil {
 			return err
 		}
@@ -899,4 +903,13 @@ func preserveEnvironmentRepairTx(ctx context.Context, q Q, id string, prior Envi
 	metadata, _ := json.Marshal(operation.Metadata)
 	_, err = q.ExecContext(ctx, `UPDATE environment_operations SET metadata=? WHERE id=?`, string(metadata), id)
 	return err
+}
+
+func isOperatorEnvironmentAction(action string) bool {
+	switch action {
+	case "get", "save", "approve", "deny", "assist", "retry", "cache-clear":
+		return true
+	default:
+		return false
+	}
 }

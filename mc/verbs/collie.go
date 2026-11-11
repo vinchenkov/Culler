@@ -11,35 +11,15 @@ import (
 	"time"
 
 	"mc/domain"
+	"mc/operatorcmd"
 	"mc/trace"
 )
 
-// Collie agent verbs are the maximum structural surface that may be frozen
-// into a session. Reads outside the Collie session-state family remain
-// governed by their own read surface and need no allowlist row. Project
-// registration is a host effect that a container cannot honor, so it is
-// absent here.
-var maximumCollieAgentVerbs = []string{
-	"board.write",
-	"collie.draft",
-	"collie.end",
-	"collie.history",
-	"collie.list",
-	"collie.title",
-	"environment.get",
-	"packet.decide",
-	"project.archive",
-	"project.pause",
-	"project.role-save",
-	"project.role-unblock",
-	"project.vision-draft",
-	"project.vision-edit",
-	"task.block",
-	"task.cancel",
-	"task.interrupt",
-	"task.resume",
-	"task.unblock",
-}
+// New sessions use the supported operator permissions of this release.
+// Existing sessions retain their frozen permissions.
+var maximumCollieAgentVerbs = sortedUniqueStrings(append(operatorcmd.Permissions(),
+	"collie.draft", "collie.end", "collie.history", "collie.list", "collie.title",
+))
 
 // MaximumCollieAgentVerbs exposes that registry to callers outside this package
 // — in practice test fixtures that must fabricate a run.json envelope matching
@@ -1473,6 +1453,9 @@ func requireActiveCollieVerb(ctx context.Context, q Q, id *RunIdentity, verb str
 	envelope := sortedUniqueStrings(id.VerbAllowlist)
 	if !equalStrings(persisted, envelope) {
 		return Domainf("Collie session %q envelope allowlist does not match its frozen registry value", id.RunID)
+	}
+	if verb == "" {
+		return nil
 	}
 	for _, allowed := range persisted {
 		if allowed == verb {

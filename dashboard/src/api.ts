@@ -689,10 +689,11 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     }
     const role = body["role"];
     const binding = body["binding"];
-    if (typeof role !== "string" || role === "" || typeof binding !== "string" || binding === "") {
-      return usageError('routing requires non-empty string fields "role" and "binding"');
+    const expected = body["expected"];
+    if (typeof role !== "string" || role === "" || typeof binding !== "string" || binding === "" || typeof expected !== "string" || expected === "") {
+      return usageError('routing requires non-empty string fields "role", "binding", and "expected"');
     }
-    return verbResponse(await deps.mc.run(["routing", "set", "--role", role, "--binding", binding]));
+    return verbResponse(await deps.mc.run(["routing", "set", "--role", role, "--binding", binding, "--expected", expected]));
   }
 
   // System Logs: the run lane's own list — which runs left diagnostics.

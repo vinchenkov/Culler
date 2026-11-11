@@ -33,6 +33,7 @@ mise exec -- env GOOS=linux GOARCH=arm64 go vet -tags test_scratch_spine ./...
 
 # These tests read files outside this Go module. Run them without the test cache.
 ./test.sh -count=1 ./deployment/ ./testenv/
+./test.sh -count=1 ./cmd/mc -run '^TestReleaseSkillWorksForExternalAgentWithoutSourceOrDevelopmentTools$'
 
 # install.sh is the production front door. Its Level-0 failure boundary is a
 # shell contract, so keep the Docker-free probe in this fast lane rather than

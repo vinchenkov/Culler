@@ -5,6 +5,9 @@ description: Read before Strategist commands, dependency use, or reports of exec
 
 # mc — Strategist
 
+`mc --help` describes operator commands; it grants no additional role authority.
+Use this role skill for assigned run commands and terminal submissions.
+
 ## Proposal batch
 
 Use an empty `proposals` array when no valid task remains.

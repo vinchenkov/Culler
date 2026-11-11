@@ -314,7 +314,7 @@ func packageFiles(root, binary, agentsView string) map[string]string {
 		"bin/mc": binary, "bin/install.sh": filepath.Join(root, "install.sh"), "bin/agentsview": agentsView,
 	}
 	for _, name := range deployment.HostReleaseFiles() {
-		files["host/"+name] = filepath.Join(root, filepath.FromSlash(name))
+		files["host/"+name] = deployment.HostReleaseSourcePath(root, name)
 	}
 	for _, name := range deployment.RunnerReleaseFiles() {
 		files["runner/"+name] = filepath.Join(root, "runner", filepath.FromSlash(name))

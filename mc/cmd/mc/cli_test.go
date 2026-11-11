@@ -26,6 +26,7 @@ import (
 	"golang.org/x/sys/unix"
 	operatorconfig "mc/config"
 	"mc/domain"
+	"mc/operatorcmd"
 	"mc/routing"
 	"mc/substrate"
 	"mc/testenv"
@@ -130,6 +131,8 @@ func runMC(t *testing.T, env []string, stdin string, args ...string) mcResult {
 	t.Helper()
 	cmd := exec.Command(mcBin, args...)
 	cmd.Env = hermeticEnv(env...)
+	stopHost := serveOperatorRequests(cmd.Env, args)
+	defer stopHost()
 	if stdin != "" {
 		cmd.Stdin = strings.NewReader(stdin)
 	}
@@ -151,6 +154,56 @@ func runMC(t *testing.T, env []string, stdin string, args ...string) mcResult {
 		}
 	}
 	return res
+}
+
+// The host fixture executes queued requests through the real command transport.
+func serveOperatorRequests(env, args []string) func() {
+	d, ok := operatorcmd.Lookup(args)
+	if !ok || (!d.Host && !d.Mutates) {
+		return func() {}
+	}
+	var identityPath string
+	for _, value := range env {
+		if strings.HasPrefix(value, "MC_RUN_JSON=") {
+			identityPath = strings.TrimPrefix(value, "MC_RUN_JSON=")
+		}
+	}
+	body, err := os.ReadFile(identityPath)
+	var identity verbs.RunIdentity
+	if err != nil || json.Unmarshal(body, &identity) != nil || identity.Tier != "collie" {
+		return func() {}
+	}
+	hostEnv := append(append([]string{}, env...), "MC_RUN_JSON="+filepath.Join(testHome, "operator-host-identity-absent"))
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+		tick := time.NewTicker(25 * time.Millisecond)
+		defer tick.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-tick.C:
+				list := exec.CommandContext(ctx, mcBin, "__operator-due")
+				list.Env = hostEnv
+				list.Stdin = strings.NewReader("{}")
+				output, err := list.Output()
+				var requests struct {
+					Operations []verbs.OperatorRequest `json:"operations"`
+				}
+				if err != nil || json.Unmarshal(output, &requests) != nil {
+					continue
+				}
+				for _, request := range requests.Operations {
+					execute := exec.CommandContext(ctx, mcBin, "__operator-execute", request.ID)
+					execute.Env = hostEnv
+					_ = execute.Run()
+				}
+			}
+		}
+	}()
+	return func() { cancel(); <-done }
 }
 
 func TestStructuredErrorJSON(t *testing.T) {
@@ -6665,6 +6718,7 @@ func TestRoutingShowCLI(t *testing.T) {
 
 func TestRoutingSetCLI(t *testing.T) {
 	home, env := dashReadHome(t)
+	env = append(env, "MC_SPINE="+initSpine(t))
 	routeOf := func(res mcResult, role string) map[string]any {
 		t.Helper()
 		routes, ok := res.json["routes"].([]any)
@@ -6691,8 +6745,7 @@ func TestRoutingSetCLI(t *testing.T) {
 			t.Fatalf("%v exit=%d stderr=%q, want usage", args, usage.code, usage.stderr)
 		}
 	}
-	// second-endpoint is configured but not enabled; a disabled binding is a
-	// domain rejection, as is an unknown role.
+	// A disabled binding is a domain rejection. An unknown role is a usage error.
 	if _, err := operatorconfig.UpdateAtomic(filepath.Join(home, "config.toml"), func(cfg *operatorconfig.Config) error {
 		cfg.Runtimes.Credentials["second-endpoint"] = cfg.Runtimes.Credentials["claude"]
 		cfg.Runtimes.Bindings["second-endpoint"] = operatorconfig.RuntimeBinding{
@@ -6704,20 +6757,21 @@ func TestRoutingSetCLI(t *testing.T) {
 	}
 	for _, tc := range []struct {
 		role, binding, want string
+		code                int
 	}{
-		{"worker", "second-endpoint", "not enabled"},
-		{"worker", "missing", "not enabled"},
-		{"critic", "claude", "unknown role"},
+		{"worker", "second-endpoint", "not enabled", 1},
+		{"worker", "missing", "not enabled", 1},
+		{"critic", "claude", "role accepts", 2},
 	} {
-		refused := runMC(t, env, "", "routing", "set", "--role", tc.role, "--binding", tc.binding)
-		if refused.code != 1 || !strings.Contains(refused.stderr, tc.want) {
+		refused := runMC(t, env, "", "routing", "set", "--role", tc.role, "--binding", tc.binding, "--expected", "endpoint")
+		if refused.code != tc.code || !strings.Contains(refused.stderr, tc.want) {
 			t.Fatalf("routing set %s %s exit=%d stderr=%q, want %q", tc.role, tc.binding, refused.code, refused.stderr, tc.want)
 		}
 	}
 	if worker := routeOf(runMC(t, env, "", "routing", "show"), "worker"); worker["binding"] != "endpoint" {
 		t.Fatalf("a refused routing set changed the table: %#v", worker)
 	}
-	set := runMC(t, env, "", "routing", "set", "--role", "worker", "--binding", "claude")
+	set := runMC(t, env, "", "routing", "set", "--role", "worker", "--binding", "claude", "--expected", "endpoint")
 	if set.code != 0 {
 		t.Fatalf("routing set exit=%d stderr=%q", set.code, set.stderr)
 	}

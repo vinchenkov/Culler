@@ -53,7 +53,7 @@ func TestDashboardProjectSetupLifecycle(t *testing.T) {
 			}
 		}
 		ws := must("setup-preview", map[string]any{"path": path + "/"})["workspace"].(map[string]any)
-		request := map[string]any{"id": id, "title": id, "path": path, "identity": ws["identity"], "create": true, "confirm_access": true}
+		request := map[string]any{"id": id, "title": id, "path": path, "identity": ws["identity"], "create": true, "confirm_access": true, "revision": ws["vision"].(map[string]any)["revision"]}
 		registered := must("setup-save", request)
 		draft := registered["draft"].(map[string]any)
 		if draft["content"] != initial || draft["setup_status"] != "vision" {

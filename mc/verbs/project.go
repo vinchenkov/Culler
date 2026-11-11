@@ -128,7 +128,7 @@ func ProjectSetStatus(db *sql.DB, id *RunIdentity, project, target string) (any,
 		return nil, err
 	}
 	err := inTx(db, func(ctx context.Context, q Q) error {
-		if err := requireOperatorVerbTx(ctx, q, id, verb); err != nil {
+		if err := AuthorizeOperator(ctx, q, id, verb, project); err != nil {
 			return err
 		}
 		var current, setup string

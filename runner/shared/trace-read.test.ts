@@ -3,7 +3,7 @@ import { Database } from "bun:sqlite";
 import { mkdtemp, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { readNativeTrace } from "./trace-read";
+import { nativeTraceRoot, readNativeTrace } from "./trace-read";
 
 const roots: string[] = [];
 afterEach(async () => { for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true }); });
@@ -32,4 +32,9 @@ test("the native trace reader preserves record identifiers and bounds long messa
   await symlink(path, link);
   await expect(readNativeTrace(link, [], root)).rejects.toThrow();
   await expect(readNativeTrace(path, [], join(root, "other"))).rejects.toThrow();
+});
+
+test("the host trace root override cannot change the container trace root", () => {
+  expect(nativeTraceRoot({ MC_TRACE_ROOT: "/host/inspection" }, false)).toBe("/host/inspection");
+  expect(nativeTraceRoot({ MC_TRACE_ROOT: "/mc/spine" }, true)).toBe("/mc/traces");
 });

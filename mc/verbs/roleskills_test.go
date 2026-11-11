@@ -82,7 +82,7 @@ func TestRoleSkillSetIsTheCommandSurfaceThenTheAdditionalSkills(t *testing.T) {
 		if err != nil {
 			t.Fatalf("%s: %v", tier, err)
 		}
-		if len(set) == 0 || !strings.HasPrefix(set[0].Name, "mc-") {
+		if len(set) == 0 || (tier == "collie" && set[0].Name != "culler") || (tier != "collie" && !strings.HasPrefix(set[0].Name, "mc-")) {
 			t.Fatalf("%s set does not open with its command surface: %v", tier, set)
 		}
 		command := set[0]
@@ -99,7 +99,7 @@ func TestRoleSkillSetIsTheCommandSurfaceThenTheAdditionalSkills(t *testing.T) {
 				t.Errorf("%s additional skill %q has no single-line description", tier, skill.Name)
 			}
 			for _, invocation := range proseVerbInvocations(skill.Body) {
-				if strings.HasPrefix(invocation, "mc") && !strings.Contains(command.Body, invocation) {
+				if tier != "collie" && strings.HasPrefix(invocation, "mc") && !strings.Contains(command.Body, invocation) {
 					t.Errorf("%s additional skill %q names %q, which the command surface omits", tier, skill.Name, invocation)
 				}
 			}
@@ -182,57 +182,35 @@ func TestNoTwoRolesShareASkill(t *testing.T) {
 	}
 }
 
-// TestCollieSkillEnumeratesExactlyItsAllowlist judges the Collie contract by the
-// authority that actually gates it: maximumCollieAgentVerbs, the compiled-in set
-// `mc collie start` freezes onto a session and the agent-scoped `mc` capability
-// enforces. Not by the file's own declaration.
-//
-// Both directions matter. A verb the allowlist grants and the skill omits is a
-// capability the operator's surface never learns it has; a verb the skill names
-// and the allowlist withholds is a call refused by scope, which is the exact
-// waste this artifact exists to prevent. The narrowed-session case does not
-// weaken this: `--allow` can only ever select a SUBSET of the same set.
-func TestCollieSkillEnumeratesExactlyItsAllowlist(t *testing.T) {
+func TestCollieSkillReferencesResolveInDeliveredTree(t *testing.T) {
 	skill, err := CollieSkill()
 	if err != nil {
-		t.Fatalf("collie: %v", err)
+		t.Fatal(err)
 	}
-	enumerated := map[string]bool{}
-	for _, command := range ParseSkillCommands(skill.Body) {
-		fields := strings.Fields(command)
-		// "mc" plus verb plus optional subverb; the allowlist's own grammar is
-		// dotted ("packet.decide"), so normalize to that.
-		if len(fields) < 2 || fields[0] != "mc" {
-			t.Errorf("collie skill lists a non-mc command %q", command)
-			continue
-		}
-		head := fields[1]
-		if len(fields) > 2 && !strings.HasPrefix(fields[2], "-") && !strings.HasPrefix(fields[2], "<") {
-			head += "." + fields[2]
-		}
-		enumerated[head] = true
+	if skill.Name != "culler" {
+		t.Fatalf("skill name = %q", skill.Name)
 	}
-	// The runner, not the model, calls these; the brief keeps them out of
-	// the model's vocabulary.
-	runnerOwned := map[string]bool{"collie.draft": true}
-	granted := map[string]bool{}
-	for _, verb := range maximumCollieAgentVerbs {
-		granted[verb] = true
-		if !enumerated[verb] && !runnerOwned[verb] {
-			t.Errorf("collie allowlist grants %q, which the skill never enumerates", verb)
+	links := regexp.MustCompile(`\]\((references/[^)]+)\)`)
+	for _, match := range links.FindAllStringSubmatch(skill.Body, -1) {
+		if skill.Files[match[1]] == "" {
+			t.Errorf("reference %q is absent", match[1])
 		}
 	}
-	// Reads are ungated and correctly absent from the allowlist, so only the
-	// write-shaped heads are held to it.
-	reads := map[string]bool{
-		"task.get": true, "task.list": true, "packet.list": true,
-		"activity.list": true, "project.list": true,
-		"project.role-show": true, "run.customization": true, "run.list": true,
-	}
-	for head := range enumerated {
-		if !granted[head] && !reads[head] {
-			t.Errorf("collie skill names %q, which is neither on its allowlist nor an ungated read", head)
+	for _, name := range []string{"writing", "task-description"} {
+		source, err := skillByPath("shared", name)
+		if err != nil {
+			t.Fatal(err)
 		}
+		if strings.TrimSpace(skill.Files["references/"+name+".md"]) != strings.TrimSpace(source.Body) {
+			t.Errorf("%s reference differs from its authoritative source", name)
+		}
+	}
+	if !strings.Contains(skill.Body, "mc --help") || len(ParseSkillCommands(skill.Body)) != 0 {
+		t.Fatal("the operator skill must use help rather than duplicate its command catalog")
+	}
+	effect := SkillsEffectValue([]RoleSkill{skill})
+	if len(effect[0]["files"].(map[string]string)) != len(skill.Files) {
+		t.Fatal("the launch lost skill files")
 	}
 }
 
@@ -393,7 +371,7 @@ func TestCollieDescribesWikiUpdates(t *testing.T) {
 		"A wiki update has no task and holds no Project lease.",
 		"Culler merges an accepted wiki commit without operator review.",
 	} {
-		if !strings.Contains(collie.Body, want) {
+		if !strings.Contains(collie.Files["references/culler-model.md"], want) {
 			t.Errorf("collie command skill omits %q", want)
 		}
 	}
@@ -602,5 +580,23 @@ func TestTaskDescriptionSkillIsTheOneStandard(t *testing.T) {
 				t.Errorf("%s restates the task-description rule %q", name, rule)
 			}
 		}
+	}
+}
+
+func TestCollieDirectiveUsesTheCommonAuthorizationSource(t *testing.T) {
+	skill, err := CollieSkill()
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, rest, found := strings.Cut(skill.Body, "## Authorization\n")
+	policy, _, closed := strings.Cut(rest, "\n## Procedures\n")
+	if !found || !closed {
+		t.Fatal("the common authorization is absent")
+	}
+	if strings.Count(collieDirective, strings.TrimSpace(policy)) != 1 {
+		t.Fatal("the directive must receive the common authorization exactly once")
+	}
+	if strings.Contains(collieDirectiveTemplate, strings.TrimSpace(policy)) {
+		t.Fatal("the directive template duplicates the common authorization")
 	}
 }

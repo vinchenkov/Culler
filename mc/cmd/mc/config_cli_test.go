@@ -25,12 +25,13 @@ func TestConfigCommandsRequireHostScope(t *testing.T) {
 }
 
 func TestConfigSaveCommandPersistsAndRejectsMalformedRequests(t *testing.T) {
-	home := t.TempDir()
+	spine := initSpine(t)
+	home := filepath.Dir(spine)
 	path := filepath.Join(home, "config.toml")
 	if _, err := operatorconfig.WriteAtomic(path, operatorconfig.Default()); err != nil {
 		t.Fatal(err)
 	}
-	env := []string{"MC_HOME=" + home}
+	env := spineEnv(spine)
 	request := `{"changes":[{"key":"timing.backup_retain","expected":12,"value":8}]}`
 	result := runMC(t, env, request, "config", "save")
 	if result.code != 0 {

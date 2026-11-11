@@ -104,7 +104,7 @@ type SystemStatusResult struct {
 }
 
 func SystemStatus(db *sql.DB, id *RunIdentity, a SystemStatusRequest) (any, error) {
-	if err := RequireHostScope(id, "system status"); err != nil {
+	if err := AuthorizeOperator(context.Background(), db, id, "", ""); err != nil {
 		return nil, err
 	}
 	ctx := context.Background()
@@ -454,7 +454,7 @@ func wikiMergeConditions(ctx context.Context, q Q) ([]SystemCondition, error) {
 }
 
 func DiagnosticHistory(db *sql.DB, id *RunIdentity, connection, run, attempt string, after int64, project ...string) (any, error) {
-	if err := RequireHostScope(id, "diagnostic history"); err != nil {
+	if err := AuthorizeOperator(context.Background(), db, id, "", ""); err != nil {
 		return nil, err
 	}
 	scope := ""
@@ -497,7 +497,7 @@ func DiagnosticHistory(db *sql.DB, id *RunIdentity, connection, run, attempt str
 }
 
 func ProjectInfrastructureResume(db *sql.DB, id *RunIdentity, project, connection, profile string, expected ...ConnectionCheck) (any, error) {
-	if err := RequireHostScope(id, "resume Project infrastructure"); err != nil {
+	if err := RequireOperatorVerb(id, "system.resume-infrastructure"); err != nil {
 		return nil, err
 	}
 	check := ConnectionCheck{}
@@ -508,6 +508,9 @@ func ProjectInfrastructureResume(db *sql.DB, id *RunIdentity, project, connectio
 		}
 	}
 	err := inTx(db, func(ctx context.Context, q Q) error {
+		if err := AuthorizeOperator(ctx, q, id, "system.resume-infrastructure", project); err != nil {
+			return err
+		}
 		if check.CheckID != "" {
 			var recorded string
 			err := q.QueryRowContext(ctx, `SELECT COALESCE(project_id,'') FROM diagnostic_events WHERE event_id=?`, check.CheckID).Scan(&recorded)

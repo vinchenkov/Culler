@@ -5,6 +5,9 @@ description: Arbiter commands, batch constraints, and procedures for the cases n
 
 # mc — Arbiter
 
+`mc --help` describes operator commands; it grants no additional role authority.
+Use this role skill for assigned run commands and terminal submissions.
+
 ## Terminal action
 
 - `mc arbiter decide --run <run_id> --batch -`

@@ -490,7 +490,7 @@ Unavailable platform checks remain explicitly unverified under the repository's 
 
 These files establish the baseline contracts that the requirements preserve or extend:
 
-- [Collie directive](../mc/verbs/directives/collie.md) and [command skill](../mc/verbs/skills/collie/mc-collie/SKILL.md).
+- [Collie directive](../mc/verbs/directives/collie.md) and [command skill](../mc/verbs/skills/collie/culler/SKILL.md).
 - [Collie permissions](../mc/verbs/collie.go) and [caller scope](../mc/verbs/verbs.go).
 - [Collie turn context](../runner/collie-runner/main.ts).
 - [Skill definitions](../mc/verbs/roleskills.go) and [skill installer](../runner/agent-runner/skills.ts).

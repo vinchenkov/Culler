@@ -51,6 +51,15 @@ func PacketDecide(db *sql.DB, id *RunIdentity, task int64, decision, reason stri
 		if len(reviewed) != 2 || reviewed[0] < 1 || reviewed[1] < 1 {
 			return Domainf("the decision requires the reviewed packet and submitted version")
 		}
+		if id != nil {
+			var packet sql.NullInt64
+			if err := q.QueryRowContext(ctx, `SELECT packet_id FROM collie_sessions WHERE id=?`, id.RunID).Scan(&packet); err != nil {
+				return err
+			}
+			if packet.Valid && packet.Int64 != reviewed[0] {
+				return Domainf("This packet conversation belongs to another review packet.")
+			}
+		}
 		if decision == "approve" {
 			if err := domain.ApproveReview(ctx, q, task, reviewed[0], reviewed[1]); err != nil {
 				return err

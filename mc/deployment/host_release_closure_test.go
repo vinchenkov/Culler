@@ -31,7 +31,7 @@ func hostReleaseEntryClosure(t *testing.T, repoRoot string) map[string]bool {
 	// manifest had drifted again — nine UI modules behind the shell it shipped —
 	// because the browser graph was hand-listed here instead of derived; the
 	// deployed dashboard rendered its tabs and then 404'd every page module.
-	stack := []string{"resident/src/main.ts", "resident/src/provider-foreground.ts", "dashboard/src/main.ts", "dashboard/src/ui/app.js"}
+	stack := []string{"resident/src/main.ts", "resident/src/provider-foreground.ts", "runner/shared/trace-read.ts", "dashboard/src/main.ts", "dashboard/src/ui/app.js"}
 	for len(stack) > 0 {
 		rel := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
@@ -195,10 +195,10 @@ func TestHostReleaseManifestShipsNothingUnreachable(t *testing.T) {
 	}
 	reachable := hostReleaseEntryClosure(t, repoRoot)
 	for _, rel := range hostReleaseFiles {
-		if info, err := os.Stat(filepath.Join(repoRoot, rel)); err != nil || !info.Mode().IsRegular() {
+		if info, err := os.Stat(HostReleaseSourcePath(repoRoot, rel)); err != nil || !info.Mode().IsRegular() {
 			t.Fatalf("host release manifest names a file the repository does not have: %s", rel)
 		}
-		if !reachable[rel] && !served[rel] && !strings.HasPrefix(rel, "third_party/") {
+		if !reachable[rel] && !served[rel] && !strings.HasPrefix(rel, "third_party/") && !strings.HasPrefix(rel, "skills/culler/") {
 			t.Fatalf("host release ships %s, which no entry point imports and no server serves", rel)
 		}
 	}

@@ -48,6 +48,10 @@ func main() {
 // Closing the logger matters: rotation reopens the fd, and a process that exits
 // without closing can leave the last record unflushed on a full disk.
 func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+	if handled, code := runOperatorHelp(args, stdout, stderr); handled {
+		return code
+	}
+	defer enterOperatorOwner(args)()
 	// Saved and restored, not simply cleared: `mc __onboard verify` re-enters
 	// run() for each smoke command, and a nested call that reset cliLog to nil
 	// on the way out would silently stop the OUTER invocation from logging
@@ -67,6 +71,9 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 }
 
 func dispatchArgs(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
+	if handled, code := operatorPreDispatch(args, stdin, stdout, stderr); handled {
+		return code
+	}
 	if len(args) == 0 {
 		fmt.Fprintln(stderr, "usage: mc <verb> …")
 		writeErrorEnvelope(stdout, stderr, "usage", "usage: mc <verb> …")
@@ -391,7 +398,7 @@ func hasFlag(args []string, name string) bool {
 func runLocal(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	out, err := dispatchVerb(args, stdin)
 	if err != nil {
-		return writeVerbError(stdout, stderr, err)
+		return writeVerbError(stdout, stderr, annotateOperatorUsage(args, err))
 	}
 	if err := writeJSON(stdout, out); err != nil {
 		fmt.Fprintln(stderr, "mc:", err)
@@ -434,7 +441,7 @@ func writeVerbError(stdout, stderr io.Writer, err error) int {
 
 func delegate(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	helper := helperContainerName()
-	argv := append([]string{"exec", "-i", helper, "mc"}, args...)
+	argv := append([]string{"exec", "-i", helper, "mc"}, operatorHelperArgs(args)...)
 	cmd := exec.Command("docker", argv...)
 	cmd.Stdin = stdin
 	// Both streams are teed for the same reason, and neither is altered: the
@@ -867,7 +874,7 @@ func dispatchVerb(args []string, stdin io.Reader) (any, error) {
 		if len(rest) > 0 && isVisionDraftAction(rest[0]) {
 			return commandVisionDraft(rest, stdin)
 		}
-		return cmdProject(rest)
+		return cmdProject(rest, stdin)
 	case "environment":
 		return commandEnvironment(rest, stdin)
 	case "packet":
@@ -1039,7 +1046,7 @@ func dispatchVerb(args []string, stdin io.Reader) (any, error) {
 		// Host-side only: the role-to-runtime table, collie included. `show`
 		// reads it; `set` replaces one role's binding under the same
 		// validation as onboarding.
-		usage := "usage: mc routing show | mc routing set --role <role> --binding <binding>"
+		usage := "usage: mc routing show | mc routing set --role <role> --binding <binding> --expected <binding>"
 		if len(rest) == 0 {
 			return nil, verbs.Usagef("%s", usage)
 		}
@@ -1060,13 +1067,14 @@ func dispatchVerb(args []string, stdin io.Reader) (any, error) {
 			fs := newFlags("mc routing set")
 			role := fs.String("role", "", "the role to route")
 			binding := fs.String("binding", "", "the enabled binding the role uses")
+			expected := fs.String("expected", "", "the previous binding of the role")
 			if err := parse(fs, rest[1:]); err != nil {
 				return nil, err
 			}
-			if *role == "" || *binding == "" || fs.NArg() != 0 {
+			if *role == "" || *binding == "" || *expected == "" || fs.NArg() != 0 {
 				return nil, verbs.Usagef("%s", usage)
 			}
-			return verbs.RoutingSet(*role, *binding)
+			return verbs.RoutingSet(*role, *binding, *expected)
 		}
 		return nil, verbs.Usagef("%s", usage)
 	case "logs":
@@ -1570,7 +1578,7 @@ func cmdTask(args []string) (any, error) {
 	return nil, verbs.Usagef("unknown subverb: mc task %s", args[0])
 }
 
-func cmdProject(args []string) (any, error) {
+func cmdProject(args []string, stdin io.Reader) (any, error) {
 	if len(args) == 0 {
 		return nil, verbs.Usagef("usage: mc project add|list|pause|resume|archive …\n" +
 			"mc project add --sandbox-profile <id> develops that profile's workspace root with git: " +
@@ -1578,7 +1586,7 @@ func cmdProject(args []string) (any, error) {
 	}
 	switch args[0] {
 	case "role-show", "role-save", "role-unblock":
-		return cmdProjectRole(args)
+		return cmdProjectRole(args, stdin)
 	case "container-targets":
 		if len(args) != 2 {
 			return nil, verbs.Usagef("Project container inspection requires one Project.")

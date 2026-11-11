@@ -5,6 +5,9 @@ description: Read before repository work or an mc call for Packager command form
 
 # mc — Packager
 
+`mc --help` describes operator commands; it grants no additional role authority.
+Use this role skill for assigned run commands and terminal submissions.
+
 The **Run** and **Task** parts of the run brief define the command arguments.
 A call with another run identity fails without a state change.
 

@@ -24,6 +24,7 @@ import { startTickLoop } from "./tick-loop";
 import { createInstallMaintenance, readInstallMaintenance, waitForUpdateActivation } from "./install-maintenance";
 import { createRepositoryLane, type StartEvent } from "./repository-lane";
 import { createEnvironmentLane } from "./environment-lane";
+import { createOperatorLane } from "./operator-lane";
 import { createAgentProfileRuntimeRefresh, readAgentProfileRuntimeCatalog } from "./agent-profile-runtime";
 import { hostZone } from "./host-zone";
 import { discarder, PROJECT_ID } from "./effects";
@@ -721,6 +722,7 @@ async function main(): Promise<void> {
   };
   let shutdown: (reason: string, code?: number) => void = (_reason, code = 0) => process.exit(code);
   let environmentOperations = () => 0;
+  let operatorOperations = () => 0;
   const maintenance = createInstallMaintenance(config.mcHome, config.releaseBuildId);
   const lane = createRepositoryLane({
     runMc,
@@ -733,7 +735,7 @@ async function main(): Promise<void> {
     cancel: (handle) => clearTimeout(handle as ReturnType<typeof setTimeout>),
     follow: (argv, onLine) => followLines([config.dockerPath ?? "docker", ...argv], onLine),
     now: () => performance.now(),
-    maintenance: (active) => maintenance(active + environmentOperations()),
+    maintenance: (active) => maintenance(active + environmentOperations() + operatorOperations()),
     exit: (code) => shutdown("owner-refusal", code),
   });
   const schedule = (fn: () => void, ms: number) => setTimeout(fn, ms);
@@ -801,6 +803,8 @@ async function main(): Promise<void> {
   });
   environmentOperations = environmentLane.activeCount;
   await environmentLane.prepare();
+  const operatorLane = createOperatorLane(runMc, log, 1000, async () => (await readInstallMaintenance(config.mcHome)) !== null);
+  operatorOperations = operatorLane.activeCount;
   const handle = startTickLoop(deps);
   let nudgeSocket: Awaited<ReturnType<typeof startNudgeSocket>>;
   try {
@@ -832,7 +836,7 @@ async function main(): Promise<void> {
     const services = discord.stop().then(() => nudgeSocket.stop())
       .then(() => providerAcceptance.stop())
       .then(() => handle.stop())
-      .then(() => Promise.all([lane.stop(), traceLane.stop(), wikiLane.stop(), environmentLane.stop()]))
+      .then(() => Promise.all([lane.stop(), traceLane.stop(), wikiLane.stop(), environmentLane.stop(), operatorLane.stop()]))
       .then(() => attachmentHealthGuard.stop());
     void Promise.allSettled([credentialDrain, services]).then(results => {
       if (results[0]?.status === "rejected") log.error("credential.refresh_failed", "The host could not save renewed credentials before shutdown.");
@@ -848,6 +852,7 @@ async function main(): Promise<void> {
   traceLane.start();
   wikiLane.start();
   environmentLane.start();
+  await operatorLane.start();
   // The first round runs at start. The release activation waits for its receipt.
   handle.nudge();
 }

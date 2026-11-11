@@ -363,7 +363,7 @@ test("the Pipeline tab shows the topology and recent runs; Configs checks the de
   const refused = await fetch(`${server.url}api/routing`, {
     method: "POST",
     headers: { ...SMOKE_BEARER, "content-type": "application/json" },
-    body: JSON.stringify({ role: "worker", binding: "not-enabled" }),
+    body: JSON.stringify({ role: "worker", binding: "not-enabled", expected: "claude" }),
   });
   expect(refused.status).toBe(400);
   const refusal = (await refused.json()) as { error: { message: string } };
@@ -901,7 +901,7 @@ test("profile creation from a role returns to the role selector after the save",
   await page.route(assignmentRoute, async (route) => {
     if (route.request().method() === "POST") {
       assignments++;
-      expect(route.request().postDataJSON()).toEqual({ role: "worker", binding: "new" });
+      expect(route.request().postDataJSON()).toEqual({ role: "worker", binding: "new", expected: "old" });
       if (assignments === 1) {
         await route.fulfill({ status: 409, json: { error: "The assignment changed. Retry the assignment." } });
         return;

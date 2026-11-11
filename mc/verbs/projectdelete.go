@@ -107,7 +107,7 @@ func projectDeletionView(ctx context.Context, q Q, project string) (ProjectDelet
 }
 
 func ProjectDeletePreview(db *sql.DB, id *RunIdentity, project string) (ProjectDeletion, error) {
-	if err := RequireHostScope(id, "project.delete-preview"); err != nil {
+	if err := AuthorizeOperator(context.Background(), db, id, "project.delete-preview", project); err != nil {
 		return ProjectDeletion{}, err
 	}
 	v, err := projectDeletionView(context.Background(), db, project)
@@ -118,11 +118,14 @@ func ProjectDeletePreview(db *sql.DB, id *RunIdentity, project string) (ProjectD
 }
 
 func ProjectDelete(db *sql.DB, id *RunIdentity, project string) (ProjectDeletion, error) {
-	if err := RequireHostScope(id, "project.delete"); err != nil {
+	if err := RequireOperatorVerb(id, "project.delete"); err != nil {
 		return ProjectDeletion{}, err
 	}
 	var v ProjectDeletion
 	err := inTx(db, func(ctx context.Context, q Q) error {
+		if err := AuthorizeOperator(ctx, q, id, "project.delete", project); err != nil {
+			return err
+		}
 		var err error
 		v, err = projectDeletionView(ctx, q, project)
 		if err != nil {

@@ -736,6 +736,40 @@ END;
 -- Collie tier: session registry, bindings, conversation rows.
 ------------------------------------------------------------------------------
 
+CREATE TABLE operator_requests (
+    id TEXT PRIMARY KEY CHECK(length(id) BETWEEN 1 AND 128),
+    origin TEXT NOT NULL CHECK(origin IN ('external','dashboard','collie','component')),
+    session_id TEXT NOT NULL DEFAULT '',
+    operator_message_seq INTEGER NOT NULL DEFAULT 0,
+    identity TEXT NOT NULL CHECK(json_valid(identity)),
+    permission TEXT NOT NULL,
+    target TEXT NOT NULL DEFAULT '',
+    command TEXT NOT NULL CHECK(json_valid(command) AND json_type(command)='array'),
+    input TEXT NOT NULL,
+    release TEXT NOT NULL,
+    state TEXT NOT NULL DEFAULT 'pending' CHECK(state IN ('pending','active','complete','uncertain')),
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    started_at TEXT,
+    completed_at TEXT,
+    exit_code INTEGER CHECK(exit_code BETWEEN 0 AND 2),
+    result TEXT CHECK(result IS NULL OR json_valid(result)),
+    error TEXT NOT NULL DEFAULT '',
+    CHECK((state='complete') = (completed_at IS NOT NULL)),
+    CHECK((state='complete') = (exit_code IS NOT NULL)),
+    CHECK((state='complete') = (result IS NOT NULL)),
+    CHECK((origin='collie') = (session_id<>''))
+);
+CREATE INDEX operator_requests_due ON operator_requests(state,created_at);
+CREATE TRIGGER operator_requests_identity BEFORE UPDATE ON operator_requests
+WHEN NEW.id<>OLD.id OR NEW.origin<>OLD.origin OR NEW.session_id<>OLD.session_id
+ OR NEW.operator_message_seq<>OLD.operator_message_seq OR NEW.identity<>OLD.identity
+ OR NEW.permission<>OLD.permission OR NEW.target<>OLD.target OR NEW.command<>OLD.command
+ OR NEW.input<>OLD.input OR NEW.release<>OLD.release OR NEW.created_at<>OLD.created_at
+BEGIN SELECT RAISE(ABORT,'An operator request retains its original identity and content.'); END;
+CREATE TRIGGER operator_requests_terminal BEFORE UPDATE ON operator_requests
+WHEN OLD.state='complete'
+BEGIN SELECT RAISE(ABORT,'An operator request retains its terminal result.'); END;
+
 CREATE TABLE collie_sessions (
     id                 TEXT PRIMARY KEY,   -- also the session's run_id
     vision_project_id  TEXT REFERENCES projects(id),

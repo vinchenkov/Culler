@@ -45,15 +45,7 @@ func TestEveryRoleSkillCommandIsRecognizedByTheRealCLI(t *testing.T) {
 		}
 		skills[string(role)] = skill.Body
 	}
-	// The Collie tier is not a dispatch role and takes no lease, but its
-	// surface is shipped the same way and drifts the same way, so it is judged
-	// by the same binary. Its verbs are operator-scope: refused to a pipeline
-	// identity, reachable here, and either way never for "unknown verb".
-	collie, err := verbs.CollieSkill()
-	if err != nil {
-		t.Fatalf("collie: %v", err)
-	}
-	skills["collie"] = collie.Body
+	// Operator commands use the executable help contract tests.
 
 	for tier, body := range skills {
 		commands := verbs.ParseSkillCommands(body)

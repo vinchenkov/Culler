@@ -5,6 +5,9 @@ description: Submit a wiki result, report a failure, or report a conflict with P
 
 # mc — Scribe
 
+`mc --help` describes operator commands; it grants no additional role authority.
+Use this role skill for assigned run commands and terminal submissions.
+
 ## Repository checks
 
 Keep the `Start commit` of the **Git state** part as an ancestor of the wiki result.

@@ -10,6 +10,19 @@ import (
 )
 
 var hostReleaseFiles = []string{
+	"skills/culler/SKILL.md",
+	"skills/culler/installation.json",
+	"skills/culler/references/culler-model.md",
+	"skills/culler/references/tasks.md",
+	"skills/culler/references/packet-decisions.md",
+	"skills/culler/references/project-configuration.md",
+	"skills/culler/references/configuration.md",
+	"skills/culler/references/diagnostics.md",
+	"skills/culler/references/traces.md",
+	"skills/culler/references/task-description.md",
+	"skills/culler/references/writing.md",
+	"runner/shared/trace-read.ts",
+	"resident/src/operator-lane.ts",
 	"runner/shared/provider-token.ts",
 	"runner/shared/opencode-trace.ts",
 	"runner/agent-runner/adapters/provider-access.ts",
@@ -217,6 +230,9 @@ func HostReleaseFiles() []string {
 
 var hostReleaseDirs = []string{
 	".",
+	"skills",
+	"skills/culler",
+	"skills/culler/references",
 	"mc",
 	"mc/substrate",
 	"dashboard",
@@ -326,9 +342,15 @@ func InstallHostRelease(home, repoRoot string) (string, error) {
 	}
 	bodies := make(map[string][]byte, len(hostReleaseFiles))
 	for _, rel := range hostReleaseFiles {
-		body, err := readReleaseSource(repoRoot, rel)
+		body, err := readHostReleaseSource(repoRoot, rel)
 		if err != nil {
 			return "", err
+		}
+		if rel == "skills/culler/installation.json" {
+			body, err = agentSkillInstallation(canonicalHome)
+			if err != nil {
+				return "", err
+			}
 		}
 		bodies[rel] = body
 	}
@@ -406,6 +428,11 @@ func InstallHostRelease(home, repoRoot string) (string, error) {
 
 // HostReleaseMatches compares the installed files without a release change.
 func HostReleaseMatches(home, source string) (bool, error) {
+	canonical, err := CanonicalHome(home)
+	if err != nil {
+		return false, err
+	}
+	home = canonical
 	root := filepath.Join(home, "release", "host")
 	if source == "" {
 		return false, nil
@@ -413,5 +440,21 @@ func HostReleaseMatches(home, source string) (bool, error) {
 	if err := ValidateHostRelease(root); err != nil {
 		return false, nil
 	}
-	return hostReleasesEqual(root, source)
+	for _, rel := range hostReleaseFiles {
+		actual, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(rel)))
+		if err != nil {
+			return false, err
+		}
+		expected, err := readHostReleaseSource(source, rel)
+		if rel == "skills/culler/installation.json" {
+			expected, err = agentSkillInstallation(home)
+		}
+		if err != nil {
+			return false, err
+		}
+		if !bytes.Equal(actual, expected) {
+			return false, nil
+		}
+	}
+	return true, nil
 }

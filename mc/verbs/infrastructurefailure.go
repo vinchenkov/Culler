@@ -49,10 +49,13 @@ func resumeTaskTx(ctx context.Context, q Q, task int64, reason, actor string) er
 }
 
 func ProposalDecisionResolve(db *sql.DB, id *RunIdentity, project string, decision int64, reason string) (any, error) {
-	if err := RequireHostScope(id, "resolve proposal decision"); err != nil {
+	if err := RequireOperatorVerb(id, "system.resolve-proposals"); err != nil {
 		return nil, err
 	}
 	err := inTx(db, func(ctx context.Context, q Q) error {
+		if err := AuthorizeOperator(ctx, q, id, "system.resolve-proposals", project); err != nil {
+			return err
+		}
 		return domain.ResolveProposalDecision(ctx, q, project, decision, reason)
 	})
 	return map[string]any{"project_id": project, "decision_id": decision, "resolved": err == nil}, err

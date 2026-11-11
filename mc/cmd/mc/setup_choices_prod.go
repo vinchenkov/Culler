@@ -533,5 +533,5 @@ func (w *setupWizard) commandAvailability() error {
 		return &setupFailure{cause: setupSafeDiagnostic(err.Error()), command: cullerInstallCommand(w.home)}
 	}
 	w.ui.Panel("", lines)
-	return nil
+	return w.offerAgentSkillIntegration()
 }

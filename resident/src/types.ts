@@ -313,7 +313,7 @@ export type Effect =
       /** This run's shipped skills, command surface first, which the agent
        * runner installs before the harness starts. The envelope carries the
        * run's own role set alone. */
-      skills: { name: string; body: string }[];
+      skills: { name: string; body: string; files?: Record<string, string> }[];
       /** The operator skill store directory this run reads, MC_HOME-relative.
        * Every run names one and the resident refuses a spawn without it. */
       skill_store_dir: string;
@@ -369,7 +369,7 @@ export type Effect =
       /** The Collie tier's shipped skills, command surface first, installed by
        * the runner before the harness starts. One static set for every
        * session. */
-      skills: { name: string; body: string }[];
+      skills: { name: string; body: string; files?: Record<string, string> }[];
       /** The Collie tier's operator skill store directory, MC_HOME-relative. */
       skill_store_dir?: string;
       /** The session's frozen operator-verb allowlist, re-read from the

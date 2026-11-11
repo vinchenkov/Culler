@@ -75,6 +75,10 @@ func inTx(db *sql.DB, fn func(ctx context.Context, q Q) error) error {
 	if _, err := conn.ExecContext(ctx, "BEGIN IMMEDIATE"); err != nil {
 		return Usagef("begin immediate: %v", err)
 	}
+	if err := authorizeOperatorTransaction(ctx, conn); err != nil {
+		_, _ = conn.ExecContext(ctx, "ROLLBACK")
+		return classify(err)
+	}
 	if err := fn(ctx, conn); err != nil {
 		_, _ = conn.ExecContext(ctx, "ROLLBACK")
 		return classify(err)
@@ -147,6 +151,7 @@ func baseRole(role string) string {
 // tier and role are read only from run.json, never from arguments.
 type RunIdentity struct {
 	Launch         string                `json:"launch"`
+	ReleaseBuildID string                `json:"release_build_id,omitempty"`
 	RuntimeBinding PrivateRuntimeBinding `json:"runtime_binding"`
 	RunID          string                `json:"run_id"`
 	Tier           string                `json:"tier"`
@@ -209,6 +214,9 @@ func RequireOperatorVerb(id *RunIdentity, verb string) error {
 		return nil
 	}
 	if id.Tier == "collie" {
+		if id.RunID == "" {
+			return Domainf("The operator command requires an active Collie session identity.")
+		}
 		for _, allowed := range id.VerbAllowlist {
 			if allowed == verb {
 				return nil
@@ -284,6 +292,9 @@ func fixedMountRoot(fixed, goos string, ruid, euid int, override string) string 
 
 // LoadIdentity reads run.json if present. (nil, nil) = host scope.
 func LoadIdentity() (*RunIdentity, error) {
+	if currentOperatorCaller != nil {
+		return currentOperatorCaller, nil
+	}
 	b, err := os.ReadFile(RunJSONPath())
 	if err != nil {
 		if os.IsNotExist(err) {

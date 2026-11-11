@@ -307,14 +307,23 @@ func RemoveCLIInstallation(home string) error {
 
 // PrepareCLIUninstall retains ownership data for command cleanup after directory removal.
 func PrepareCLIUninstall(home string) (func() error, error) {
+	removeSkill, err := PrepareAgentSkillUninstall(home)
+	if err != nil {
+		return nil, err
+	}
 	r, err := ReadCLIInstallation(home)
 	if errors.Is(err, os.ErrNotExist) {
-		return func() error { return nil }, nil
+		return removeSkill, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	return func() error { return removeCLIInstallation(home, r) }, nil
+	return func() error {
+		if err := removeSkill(); err != nil {
+			return err
+		}
+		return removeCLIInstallation(home, r)
+	}, nil
 }
 
 func removeCLIInstallation(home string, r CLIInstallation) error {

@@ -282,7 +282,7 @@ const COLLIE_MEMORY_BYTES = 1024 * 1024 * 1024;
 const COLLIE_PIDS_LIMIT = 128;
 const COLLIE_USER = "10002:10002";
 /** Where a Collie container reads each session folder. The Collie role directive
- * and the `mc-collie` skill name this path. */
+ * and the `culler` skill name this path. */
 const COLLIE_TRACE_MOUNT = "/mc/traces";
 /** The artifact root of a Project, relative to its folder. */
 const PROJECT_ARTIFACT_DIR = ".mc-artifacts";
@@ -625,6 +625,7 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
     ...(effect.vision_project_id === undefined ? {} : { vision_project_id: effect.vision_project_id }),
     ...(packet === undefined ? {} : { packet }),
     tier: "collie",
+    release_build_id: config.releaseBuildId ?? "development",
     directive: effect.directive,
     mode,
     binding,

@@ -299,6 +299,12 @@ func runUninstallWith(ctx context.Context, args []string, stdout, stderr io.Writ
 	for _, home := range homes {
 		command, err := deployment.ReadCLIInstallation(home)
 		if os.IsNotExist(err) {
+			remove, skillErr := deployment.PrepareAgentSkillUninstall(home)
+			if skillErr != nil {
+				problem("prepare removal of the Culler skill: %v", skillErr)
+			} else {
+				removeCommands = append(removeCommands, remove)
+			}
 			continue
 		}
 		if err != nil {

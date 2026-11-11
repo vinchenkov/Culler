@@ -1,4 +1,5 @@
 import { Database } from "bun:sqlite";
+import { existsSync } from "node:fs";
 import { lstat, realpath } from "node:fs/promises";
 import { relative, resolve, sep } from "node:path";
 
@@ -6,6 +7,10 @@ const CHUNK = 16_000;
 const identifier = /^[A-Za-z0-9_][A-Za-z0-9_-]{0,127}$/;
 
 /** The reader returns bounded records from a native trace copy. */
+export function nativeTraceRoot(env: Record<string, string | undefined>, container = existsSync("/mc/run.json")): string {
+  return container ? "/mc/traces" : env["MC_TRACE_ROOT"] || "/mc/traces";
+}
+
 export async function readNativeTrace(path: string, args: string[], root = "/mc/traces") {
   const absolute = resolve(path);
   const base = await realpath(root);
@@ -38,6 +43,7 @@ if (import.meta.main) {
   try {
     const [path, ...args] = process.argv.slice(2);
     if (!path) throw new Error("Supply the native database path.");
-    console.log(JSON.stringify(await readNativeTrace(path, args)));
+    const root = nativeTraceRoot(process.env);
+    console.log(JSON.stringify(await readNativeTrace(path, args, root)));
   } catch { console.error("The native trace read failed. Check the path, arguments, and status.json."); process.exitCode = 1; }
 }

@@ -31,7 +31,22 @@ var scribeDirective string
 var packagerDirective string
 
 //go:embed directives/collie.md
-var collieDirective string
+var collieDirectiveTemplate string
+
+var collieDirective = composeCollieDirective()
+
+func composeCollieDirective() string {
+	body, err := roleSkillFS.ReadFile("skills/collie/culler/SKILL.md")
+	if err != nil {
+		panic(err)
+	}
+	_, rest, found := strings.Cut(string(body), "## Authorization\n")
+	policy, _, closed := strings.Cut(rest, "\n## Procedures\n")
+	if !found || !closed || strings.TrimSpace(policy) == "" {
+		panic("the Culler skill requires its authorization section")
+	}
+	return strings.Replace(collieDirectiveTemplate, "{{operator_authorization}}", "## Authorization\n"+strings.TrimSpace(policy), 1)
+}
 
 // directiveForRole assembles what the model is actually handed: the frozen
 // prose plus one line naming the role's command contract. The contract itself
@@ -68,14 +83,13 @@ func skillPointer(skills []RoleSkill) string {
 		"Every `mc` command available to you, with its exact flags and constraints, is the " +
 		command.Name + " skill, installed in this container at `" + installedSkillRoot + command.Name + "/SKILL.md`. " +
 		"Load it before your first `mc` call and again before you submit your terminal.\n\n" +
-		"`mc` ships no help surface: bare `mc` names zero verbs and `mc --help` is an unknown " +
-		"verb. That skill is the complete surface your role may call. A verb absent from it " +
-		"does not exist for you, and a search for one wastes the run."
+		"`mc --help` describes operator commands. It grants no additional role authority. " +
+		"This skill defines your assigned run commands and terminal submissions."
 	if command.Name == "mc-worker" || command.Name == "mc-scribe" || command.Name == "mc-verifier" {
-		help := "The skill lists the permitted commands; `mc` has no help command."
+		help := "The skill lists the permitted role commands. `mc --help` grants no additional role authority."
 		terminal := "the terminal"
 		if command.Name == "mc-scribe" {
-			help = "The skill lists the permitted commands.\n`mc` has no help command."
+			help = "The skill lists the permitted role commands.\n`mc --help` grants no additional role authority."
 			terminal = "the terminal action"
 		}
 		text = "## Your command surface\n\n" +
@@ -89,18 +103,18 @@ func skillPointer(skills []RoleSkill) string {
 	if command.Name == "mc-strategist" {
 		text = "## Your command surface\n\n" +
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before each `mc` call.\n" +
-			"The skill lists the permitted commands; `mc` has no help command."
+			"The skill lists the permitted role commands. `mc --help` grants no additional role authority."
 	}
 
 	if command.Name == "mc-arbiter" {
 		text = "## Your command surface\n\n" +
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before your first `mc` call and before the terminal.\n" +
-			"The skill lists the permitted commands; `mc` has no help command."
+			"The skill lists the permitted role commands. `mc --help` grants no additional role authority."
 	}
 	if command.Name == "mc-packager" {
 		text = "## Your command surface\n\n" +
 			"Read `" + installedSkillRoot + command.Name + "/SKILL.md` before repository work, before your first `mc` call, and before the terminal action.\n" +
-			"The skill states the permitted commands and repository procedures.\n`mc` has no help command."
+			"The skill states the permitted commands and repository procedures.\n`mc --help` grants no additional role authority."
 	}
 
 	if len(skills) == 1 {

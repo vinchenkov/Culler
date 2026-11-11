@@ -33,6 +33,26 @@ Without an explicit token path or a default token file, it checks the GitHub com
 A token file must contain only the token, belong to the operator, and use mode `600`.
 An invalid configured credential can stop installation even when the release is public.
 
+## Use an external agent
+
+The release includes the same Culler skill that Collie uses.
+Setup offers a personal Claude Code integration at `~/.claude/skills/culler`.
+The integration preserves an existing skill that Culler does not own.
+An update preserves the integration and your custom skills.
+Uninstall removes only the integration link that Culler owns.
+
+You can also give any agent with file and command access this skill path:
+
+```text
+~/.culler/release/host/skills/culler/SKILL.md
+```
+
+For a custom deployment home, replace `~/.culler` with that home.
+The skill identifies the actual executable and deployment through its `installation.json` file.
+The agent discovers commands through command help and reads procedure files as needed.
+It needs no Culler source checkout or development tools.
+The same operator decisions and domain checks apply to Collie and the external agent.
+
 ## Setup and updates
 
 The installer prepares the runtime and guides service setup.

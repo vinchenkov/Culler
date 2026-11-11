@@ -296,13 +296,13 @@ export function createModelPicker({ api, session, startOver, switchModel, onRout
     busy = true; error = ""; retryBinding = binding; paint();
     try {
       if (switchModel) {
-        const result = await switchModel(binding, retry);
+        const result = await switchModel(binding, retry, routing?.routes?.find(row => row.role === "collie")?.binding);
         routing = result.routing;
         error = result.notice ?? "";
         retryBinding = null;
         onRouting?.(routing);
       } else {
-        routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "collie", binding }) });
+        routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "collie", binding, expected: routing?.routes?.find(row => row.role === "collie")?.binding }) });
         onRouting?.(routing);
         const current = session();
         if (current.binding && current.binding !== binding && !await startOver(false)) {

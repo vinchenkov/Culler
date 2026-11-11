@@ -113,12 +113,13 @@ func TestCustomizationPermissionsAndStaleSave(t *testing.T) {
 		t.Fatal("A stale save succeeded.")
 	}
 	a.ExpectedRevision = &one
-	for _, id := range []*RunIdentity{{Tier: "pipeline", Role: "worker"}, {Tier: "collie"}} {
+	restricted := operatorSession(t, db, "collie-restricted", []string{"project.pause"})
+	for _, id := range []*RunIdentity{{Tier: "pipeline", Role: "worker"}, {Tier: "collie"}, restricted} {
 		if _, err := ProjectRoleSave(db, id, a); err == nil {
 			t.Fatal("An unauthorized save succeeded.")
 		}
 	}
-	collie := &RunIdentity{Tier: "collie", RunID: "collie-test", VerbAllowlist: MaximumCollieAgentVerbs()}
+	collie := operatorSession(t, db, "collie-test", []string{"project.role-save"})
 	r, err := ProjectRoleSave(db, collie, a)
 	if err != nil {
 		t.Fatal(err)

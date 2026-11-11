@@ -110,7 +110,7 @@ func TestSetupReleaseReportsOlderCommitAndLocalChanges(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(home, "supervision", "resident.json"), body, 0600); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(args.HostReleaseSource, deployment.HostReleaseFiles()[0]), []byte("local change\n"), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(args.HostReleaseSource, "resident", "src", "main.ts"), []byte("local change\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
 	state := inspectSetupRelease(home, args, onboarding.DockerStatus{})

@@ -164,7 +164,7 @@ test("each assignment choice offers Edit and preserves the role assignment", asy
   expect(assignments).toEqual([]);
   await assignment.getByText("review-model:v2", { exact: true }).click();
   await page.getByTestId("profile-notice").getByText("The Worker role now uses this agent profile across all Projects.", { exact: true }).waitFor();
-  expect(assignments).toEqual([{ role: "worker", binding: "careful" }]);
+  expect(assignments).toEqual([{ role: "worker", binding: "careful", expected: "daily" }]);
   expect(await page.getByTestId("profile-assignment-careful").isChecked()).toBe(true);
 }, 30000);
 

@@ -5,6 +5,9 @@ description: Verifier commands, evidence requirements, and procedures for the ca
 
 # mc — Verifier
 
+`mc --help` describes operator commands; it grants no additional role authority.
+Use this role skill for assigned run commands and terminal submissions.
+
 ## Verdict terminal
 
 - `mc verifier verdict <task> --run <run_id> --outcome pass --evidence <path> --sha <sha>`

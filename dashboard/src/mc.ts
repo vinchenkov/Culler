@@ -46,7 +46,7 @@ export function makeMcRunner(mcBin: string, options: McRunnerOptions = {}): McRu
       try {
         const proc = Bun.spawn([mcBin, ...argv], {
           // The environment reflects each call, including changes after module import.
-          env: { ...process.env },
+          env: { ...process.env, MC_OPERATOR_ORIGIN: "dashboard" },
           stdin: input === undefined ? "ignore" : new TextEncoder().encode(input),
           stdout: "pipe",
           stderr: "pipe",

@@ -43,7 +43,11 @@ func pauseStatus(ctx context.Context, q Q) (PipelinePauseStatus, error) {
 // SetEveryProjectPause pauses every active Project, or resumes every paused
 // Project whose setup is ready. Pipeline agents cannot change a pause.
 func SetEveryProjectPause(db *sql.DB, id *RunIdentity, paused bool) (any, error) {
-	if err := RequireHostScope(id, "pipeline pause control"); err != nil {
+	permission := "resume"
+	if paused {
+		permission = "pause"
+	}
+	if err := RequireOperatorVerb(id, permission); err != nil {
 		return nil, err
 	}
 	update := `UPDATE projects SET status = 'active' WHERE status = 'paused' AND setup_status = 'ready'`
@@ -52,6 +56,9 @@ func SetEveryProjectPause(db *sql.DB, id *RunIdentity, paused bool) (any, error)
 	}
 	var result PipelinePauseStatus
 	err := inTx(db, func(ctx context.Context, q Q) error {
+		if err := AuthorizeOperator(ctx, q, id, permission, ""); err != nil {
+			return err
+		}
 		if paused {
 			if _, err := q.ExecContext(ctx, `UPDATE project_environments SET pause_after_setup=1 WHERE project_id IN (SELECT id FROM projects WHERE status<>'archived' AND setup_status<>'ready')`); err != nil {
 				return err

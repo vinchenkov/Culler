@@ -3231,7 +3231,7 @@ async function setRoute(role, binding) {
   flow.pickError = null;
   renderConfigRoute();
   try {
-    const res = await api("/api/routing", { method: "POST", body: JSON.stringify({ role, binding }) });
+    const res = await api("/api/routing", { method: "POST", body: JSON.stringify({ role, binding, expected: routingRoutes.find(row => row.role === role)?.binding }) });
     routingRoutes = res.routes ?? [];
     flow.bindings = res.bindings ?? [];
     vision.setRouting(res);
@@ -4405,7 +4405,7 @@ $("resume").addEventListener("click", async () => {
 });
 
 let collieModelRequest = null;
-async function switchCollieModel(binding, retry = false) {
+async function switchCollieModel(binding, retry = false, expected) {
   if (state.collieSessionBusy || state.sendInFlight || state.collieReplyBusy || !state.selected) {
     throw new Error("Wait for the current conversation operation to finish.");
   }
@@ -4440,7 +4440,7 @@ async function switchCollieModel(binding, retry = false) {
     catch (err) { throw new Error(`The model change succeeded. Culler could not load the conversation. ${err.message} Select Retry.`); }
     let routing;
     try {
-      routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "collie", binding }) });
+      routing = await api("/api/routing", { method: "POST", body: JSON.stringify({ role: "collie", binding, expected }) });
     } catch (err) {
       throw new Error(`The conversation uses the selected model. Culler could not set the default model. ${err.message} Select Retry.`);
     }

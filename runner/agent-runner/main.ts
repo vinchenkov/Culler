@@ -49,7 +49,7 @@ export interface RunEnvelope {
    * from an older `mc` carries none, and a run without one is degraded, not
    * broken — the frozen directive still names the command skill and its
    * path. */
-  skills?: { name: string; body: string }[];
+  skills?: { name: string; body: string; files?: Record<string, string> }[];
   /** What the host skill store could not deliver; written into the run's log. */
   skill_problems?: string[];
   mode?: "fresh" | "native";

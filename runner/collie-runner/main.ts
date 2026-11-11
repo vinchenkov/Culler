@@ -91,7 +91,8 @@ export interface CollieEnvelope {
   /** The Collie tier's skill set: its command surface first, then the
    * operator's Collie skills. Optional for the same reason the pipeline
    * envelope's is: an older `mc` carries none. */
-  skills?: { name: string; body: string }[];
+  skills?: { name: string; body: string; files?: Record<string, string> }[];
+  release_build_id?: string;
   /** What the host skill store could not deliver; written into the run's log. */
   skill_problems?: string[];
   harness_config?: { behavior: string };
@@ -362,23 +363,32 @@ export function parseClaimedMessage(value: unknown, sessionID: string): ClaimedM
 
 export function visionTurnContext(vision: VisionContext): string {
   return "# Project Vision context\n\n" +
-    "This conversation develops the selected Project draft. The context describes the current draft before this turn.\n" +
-    "The workspace is read-only at /workspaces/" + vision.project_id + ".\n" +
-    "Use the current draft revision for each edit. An edit changes Culler storage only.\n" +
-    "The operator uses Save Vision to write VISION.md. Repository evidence does not establish the operator’s goals.\n\n" +
-    JSON.stringify(vision, null, 2);
+    "This snapshot describes the selected Project draft before this turn.\n\n" + JSON.stringify(vision, null, 2);
 }
 
-/** This function builds the model input of one turn. `packetContext` is present
- * only at the first turn of each native session of a packet conversation. */
+/** The turn context contains variable facts and snapshots. */
 export function collieTurnPrompt(
   run: CollieEnvelope,
   message: ClaimedMessage,
   turn: string,
   packetContext?: string,
 ): string {
-  return `${run.directive}\n\n# Conversation\n\nThis session receives operator messages from the dashboard or another connected surface. A Board message carries Project context and requires confirmation for a new state change. A packet conversation carries packet context about one packet. Project initialization runs before pipeline work. For environment questions, inspect the Project through mc environment get. Image dependencies require operator approval in the Setup Journal or Environment page.\n\n# Discord access\n\nDiscord setup and account approval belong to Configs → Discord. Culler consumes account confirmation codes before Collie receives operator messages. A channel message starts a Collie session in its own Discord thread. The operator can continue that session from its thread or the dashboard. A reply reaches the same thread when the operator uses the dashboard.\n\n# Trace access\n\nThe read-only trace copies at /mc/traces/<id>/<trace_filename> contain complete records with credential masks. The status.json file states availability. The ready state identifies a current copy. The delayed state identifies an older valid copy. The pending state requires a later read. The unavailable state identifies an absent valid copy.\n\nOpenCode copies use SQLite databases and native session references. The mc-collie skill describes the runtime reader. Cite each native message or tool identifier with its database copy and session. The status reports AgentsView import separately.\n\n# Diagnostic context\n\nA dashboard diagnostic message contains a short issue summary and references for permitted reads. A proposed state change requires explicit operator confirmation.\n\n` +
-    `Conversation identifier: ${run.session_id}\nOperator message sequence: ${message.seq}\n\n` +
+  const context = {
+    session_id: run.session_id,
+    operator_message_sequence: message.seq,
+    surface: message.surface,
+    conversation_type: run.packet ? "packet" : run.vision_project_id ? "vision" : "ordinary",
+    project_id: run.packet?.project_id ?? run.vision_project_id,
+    packet: run.packet,
+    release: run.release_build_id ?? "unknown",
+    skill: "~/.agents/skills/culler/SKILL.md",
+    repositories: "/workspaces",
+    repository: run.vision_project_id ? `/workspaces/${run.vision_project_id}` : run.packet ? `/workspaces/${run.packet.project_id}` : undefined,
+    traces: "/mc/traces",
+    scratch: run.mounts.workspace,
+  };
+  return `${run.directive}\n\n# Conversation\n\nThese facts identify this turn and its available paths.\n\n` +
+    JSON.stringify(context, null, 2) + "\n\n" +
     (packetContext === undefined ? "" : packetContext + "\n\n") +
     (message.vision_context === undefined ? "" : visionTurnContext(message.vision_context) + "\n\n") +
     `# Operator message\n\n${turn}`;
@@ -906,7 +916,10 @@ async function main(): Promise<number> {
     { session: run.session_id, binding: run.binding, mode: run.mode });
   // Before the first turn, so the harness discovers it in its own startup scan.
   // The container is rebuilt on every wake, so installing once here covers it.
-  await installEnvelopeSkills(run.skills, run.skill_problems, log.child({ session: run.session_id }));
+  if (!await installEnvelopeSkills(run.skills, run.skill_problems, log.child({ session: run.session_id }), process.env, ["culler"])) {
+    log.error("runner.skill_unavailable", "The complete Culler skill is unavailable.");
+    return 2;
+  }
   try {
     collieAdapterInvocation(run);
   } catch (err) {

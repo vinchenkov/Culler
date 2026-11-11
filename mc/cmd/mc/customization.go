@@ -2,13 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"io"
 	"os"
 
 	"mc/dispatch"
 	"mc/verbs"
 )
 
-func cmdProjectRole(args []string) (any, error) {
+func cmdProjectRole(args []string, stdin io.Reader) (any, error) {
 	id, err := verbs.LoadIdentity()
 	if err != nil {
 		return nil, err
@@ -28,13 +29,13 @@ func cmdProjectRole(args []string) (any, error) {
 		return withSpineRead(func(db *sql.DB) (any, error) { return verbs.ProjectRoleShow(db, id, *project, dispatch.Role(*role)) })
 	case "role-save":
 		var a verbs.RoleSaveRequest
-		if err := readDeliveryInput(*request, os.Stdin, &a); err != nil {
+		if err := readDeliveryInput(*request, stdin, &a); err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) { return verbs.ProjectRoleSave(db, id, a) })
 	case "role-unblock":
 		var a verbs.RoleUnblockRequest
-		if err := readDeliveryInput(*request, os.Stdin, &a); err != nil {
+		if err := readDeliveryInput(*request, stdin, &a); err != nil {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) { return verbs.ProjectRoleUnblock(db, id, a) })

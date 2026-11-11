@@ -674,8 +674,8 @@ func callPrivateHelper(verb string, request, response any) error {
 	// process, that process inherits only the remaining time (or exits 124
 	// immediately when the deadline has already passed).
 	helperDeadline := time.Now().Add(privateHelperSelfTimeout).UnixMilli()
-	cmd := exec.CommandContext(ctx, "docker", "exec", "-i", helperContainerName(), "mc", verb,
-		"--deadline-unix-ms", strconv.FormatInt(helperDeadline, 10))
+	helperArgs := operatorHelperArgs([]string{verb, "--deadline-unix-ms", strconv.FormatInt(helperDeadline, 10)})
+	cmd := exec.CommandContext(ctx, "docker", append([]string{"exec", "-i", helperContainerName(), "mc"}, helperArgs...)...)
 	cmd.Stdin = &input
 	var output boundedBuffer
 	output.limit = maxPrivateFrameBytes + 4

@@ -82,9 +82,29 @@ func TestRoutingShowReturnsEveryRoleWithItsModel(t *testing.T) {
 	}
 }
 
+func TestRoutingSetRejectsAnObsoleteAssignment(t *testing.T) {
+	rsHome(t, rsTable)
+	if _, err := RoutingSet("worker", "claude", "endpoint"); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RoutingSet("worker", "chatgpt", "endpoint"); err == nil {
+		t.Fatal("An obsolete assignment replaced the current assignment.")
+	}
+	if _, err := RoutingSet("worker", "claude", "endpoint"); err != nil {
+		t.Fatalf("An identical retry failed: %v", err)
+	}
+	result, err := RoutingShow()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if rsRoutesByRole(t, result)["worker"]["binding"] != "claude" {
+		t.Fatal("The failed change replaced the role assignment.")
+	}
+}
+
 func TestRoutingSetWritesATableThatRoutingShowReadsBack(t *testing.T) {
 	home := rsHome(t, rsTable)
-	res, err := RoutingSet("worker", "claude")
+	res, err := RoutingSet("worker", "claude", "endpoint")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +148,7 @@ func TestRoutingSetRejectsADisabledBindingAndAnUnknownRole(t *testing.T) {
 		{"worker", "missing", "not enabled"},
 		{"critic", "claude", "unknown role"},
 	} {
-		_, err := RoutingSet(tc.role, tc.binding)
+		_, err := RoutingSet(tc.role, tc.binding, "endpoint")
 		if err == nil || !strings.Contains(err.Error(), tc.want) {
 			t.Fatalf("routing set %s %s error = %v, want %q", tc.role, tc.binding, err, tc.want)
 		}
