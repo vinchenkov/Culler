@@ -75,6 +75,47 @@ Name each responsible entity at the level that the explanation needs.
 Use relevant media from the Verifier evidence.
 When browser evidence can confirm the change, read packager-browser for media selection and capture.
 
+## Explanation
+
+The packet explains the reviewed change to the reader. Use clear, precise
+prose.
+
+When you name a responsible entity, use the level of abstraction appropriate
+to the explanation. Make responsibility clear without unnecessary specificity.
+
+| Context | Too broad | Appropriate |
+| --- | --- | --- |
+| Evaluation responsibilities | “The system assesses the answer.” | “The judge model assesses the answer.” |
+
+The default explanation includes these sections:
+
+- **Background** describes the part of the Project that the change touches,
+  as it was before the change. It gives the depth that the reader needs to
+  follow the change. The section ends with the narrow background for the
+  change.
+- **Intuition** explains the central idea without all implementation details.
+  It uses concrete examples with small sample data.
+- **Technical** explains the mechanism of the change at the level that the
+  change needs. It groups related changes in a logical order.
+
+**Use figures and diagrams when to make the change easier to understand.**
+
+Useful diagram forms include:
+
+- a simple view of the user interface;
+- a system diagram with data flow and sample data.
+
+Use Hypertext Markup Language (HTML) elements for each diagram. Do not use
+American Standard Code for Information Interchange (ASCII) diagrams. Use
+callouts for important context and edge cases.
+
+Use `<pre>` for every code block. Each code block must use `white-space: pre`
+or `white-space: pre-wrap`.
+
+The packet includes a table of contents. The packet uses one long page with
+section headings. Do not use tabs for the top-level structure. The layout must
+work on a desktop and a phone.
+
 ## Verification summary
 
 Cover each acceptance criterion from **Task** in **Criterion evidence** or the operator's replacement section.
@@ -149,22 +190,3 @@ The dashboard supplies the off-white background (`#fffdf9`) and base typography.
 Preserve both.
 Keep page containers transparent.
 Optional additional style belongs in an inline `<style>` element for diagrams and other visual content.
-
-## Orchestration
-
-Use read-only, depth-1 subagents by default for these tasks:
-
-- Independent record collation.
-- Media checks.
-- Review of whether the packet supports the operator decision.
-
-Select subagent tasks whose full context you can discard after a small artifact returns.
-A small artifact can be one of these records:
-
-- A brief.
-- A verdict.
-- A ranked list.
-
-Only this main run writes the packet.
-Use one context only when the work is trivial and needs no separate context.
-State that reason in the packet.
