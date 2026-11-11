@@ -401,33 +401,6 @@ func environmentTestMissingImageRepair(t *testing.T, rebuilt string) {
 	}
 }
 
-func TestEnvironmentExecutionEvidenceRequiresAssignedLivePreparation(t *testing.T) {
-	db := dvSpine(t)
-	task := dvTask(1, dispatch.ScopeTask, dispatch.StatusSeeded, 1)
-	dvInsertTask(t, db, task)
-	dvExec(t, db, `INSERT INTO execution_owners(owner) VALUES(1)`)
-	dvExec(t, db, `INSERT INTO runs(id,tier,role,project,subject,session_path,binding) VALUES('environment-prepare','pipeline','worker','ws-test',1,'sessions/environment-prepare','mechanical')`)
-	dvExec(t, db, `INSERT INTO repository_executions(run_id,project,task_id,operation,target,owner,effect,boot_id,heartbeat_uptime_ms,deadline_uptime_ms) VALUES('environment-prepare','ws-test',1,'prepare','environment-prepare',1,'{}','fixture',0,300000)`)
-	request := EnvironmentRequest{RunID: "environment-prepare", ToolVersions: map[string]string{"node": "v24.1.0"}, PackageRecords: []string{"package-lock.json sha256:example"}}
-	if _, err := ProjectEnvironment(db, nil, "execution-evidence", request); err == nil {
-		t.Fatal("An unassigned execution supplied evidence.")
-	}
-	environmentCall(t, db, nil, "resolve", EnvironmentRequest{ProjectID: "ws-test", RunID: request.RunID, SourceCommit: environmentTestCommit, RuntimeIdentity: "runtime-one"})
-	if _, err := ProjectEnvironment(db, &RunIdentity{Tier: "pipeline", Role: "worker", RunID: request.RunID}, "execution-evidence", request); err == nil {
-		t.Fatal("An agent supplied host evidence.")
-	}
-	environmentCall(t, db, nil, "execution-evidence", request)
-	environmentCall(t, db, nil, "execution-evidence", request)
-	request.ToolVersions["node"] = "v25.0.0"
-	if _, err := ProjectEnvironment(db, nil, "execution-evidence", request); err == nil {
-		t.Fatal("An execution replaced its evidence.")
-	}
-	dvExec(t, db, `UPDATE repository_executions SET ended_at=datetime('now'),end_reason='result',stopped_at=datetime('now') WHERE run_id='environment-prepare'`)
-	if _, err := ProjectEnvironment(db, nil, "execution-evidence", request); err == nil {
-		t.Fatal("An ended execution supplied evidence.")
-	}
-}
-
 func TestEnvironmentBaseUsesLocalConfigurationDigest(t *testing.T) {
 	configuration := environmentTestConfiguration()
 	configuration.BaseDigest = "registry.example/culler-project@" + environmentTestBase

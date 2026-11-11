@@ -99,40 +99,42 @@ test("application uses its exact run and grants no preparation command", async (
   expect(JSON.parse(rig.mc.inputs[0]!)).toEqual(applied);
 });
 
-test("merge candidate checks retain tool evidence without spine access", async () => {
+test("merge preparation records the Git candidate without Project setup", async () => {
   const rig = makeRig();
   rig.deps.config = { ...rig.deps.config, runtimeVolume: "runtime-test" };
-  const image = `sha256:${"d".repeat(64)}`;
   const candidate = { status: "merged", commit: "c".repeat(40), submitted_commit: execution.submitted_commit };
   const events: string[] = [];
-  const evidence = { tool_versions: { node: "24.18.0" }, package_records: ["package-lock.json sha256:exact"] };
   rig.deps.runMc = async (args, input) => {
+    if (args[0] === "environment") {
+      events.push(`environment:${args[1]}`);
+      return fail(2, "Project setup is unavailable.");
+    }
     if (args[0] === "__repository") {
       const envelope = envelopeOf(rig, args);
-      return ok(JSON.stringify(envelope.operation === "retain-candidate" ? { task_id: 42, candidate }
-        : { task_id: 42, input_commit: "a".repeat(40), destination_commit: "b".repeat(40) }));
+      if (envelope.operation === "retain-candidate") {
+        events.push("retain-candidate");
+        expect(envelope.candidate).toEqual(candidate);
+        return ok(JSON.stringify({ task_id: 42, candidate }));
+      }
+      return ok(JSON.stringify({ task_id: 42, input_commit: "a".repeat(40), destination_commit: "b".repeat(40) }));
     }
-    if (args[0] === "environment") {
-      events.push(args[1]!);
-      if (args[1] === "resolve") return ok(JSON.stringify({ image_digest: image, configuration: { secrets: [] } }));
-      expect(JSON.parse(new TextDecoder().decode(input))).toEqual({
-        run_id: execution.run_id, tool_versions: evidence.tool_versions, package_records: evidence.package_records,
-      });
-    } else if (args[3] === "prepare") events.push("record:prepare");
+    if (args[3] === "prepare") {
+      events.push("record:prepare");
+      expect(JSON.parse(new TextDecoder().decode(input))).toEqual({ task_id: 42, candidate });
+    }
     return ok("{}");
   };
   rig.deps.docker = async args => {
-    if (args.at(-1) === "/opt/culler-runtime/app/src/shared/check-project.ts") {
-      events.push("check");
-      expect(args).toContain(image);
-      expect(args.join(" ")).not.toContain(rig.deps.config.spineVolume);
-      expect(args.join(" ")).not.toContain("docker.sock");
-      return ok(JSON.stringify(evidence));
-    }
+    events.push("merge");
+    expect(args.slice(-2)).toEqual(["prepare", "/mc/repository.json"]);
+    expect(args[args.indexOf("--network") + 1]).toBe("none");
+    expect(args).toContain("runtime-test:/opt/culler-runtime:ro");
+    expect(args.join(" ")).not.toContain(rig.deps.config.spineVolume);
+    expect(args.join(" ")).not.toContain("docker.sock");
     return ok(JSON.stringify({ task_id: 42, candidate }));
   };
   await runExecution(execution, rig.deps, context().ctx);
-  expect(events).toEqual(["resolve", "check", "execution-evidence", "record:prepare"]);
+  expect(events).toEqual(["merge", "retain-candidate", "record:prepare"]);
 });
 
 test("source acceptance records its environment hold before the merge and resolves it before dispatch", async () => {

@@ -29,7 +29,6 @@ var runnerReleaseFiles = []string{
 	"shared/project-files.ts",
 	"shared/project-cache.ts",
 	"shared/project-evidence.ts",
-	"shared/check-project.ts",
 	"openwiki/server.ts",
 	"openwiki/integration.mjs",
 	// The shared structured logger, same physical file the host tier ships. See

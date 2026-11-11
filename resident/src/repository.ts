@@ -3,7 +3,7 @@
 // This module runs one execution to its record or to its failure report.
 
 import type { TickDeps } from "./types";
-import { deploymentArguments, CULLER_RUNTIME, runtimeArguments, projectCacheArguments, projectSecretValues } from "./environment-lane";
+import { deploymentArguments, runtimeArguments } from "./environment-lane";
 import {
   confirmRunContainersAbsent, pipelineContainerName, PRODUCER_ABSENCE_ATTEMPTS, PROJECT_ID, SAFE_ID,
 } from "./pipeline-liveness";
@@ -290,7 +290,6 @@ async function executionFlow(execution: StartedExecution, deps: RepositoryDeps, 
       envelope.input_commit = prepared.input_commit;
       const facts = await mergeContainer(execution, envelope, deps, ctx);
       if (facts === undefined) return;
-      await checkCandidateEnvironment(execution, facts, deps, ctx);
       checkStop();
       const retained = await runNative({ ...envelope, operation: "retain-candidate", candidate: facts.candidate });
       checkStop();
@@ -335,51 +334,6 @@ async function acceptSourceEnvironment(execution: StartedExecution, facts: Repos
     project_id: execution.project, source_commit: applied.commit, candidate_source: candidateSource,
   })));
   if (result.exitCode !== 0) throw new Error("The source environment association requires recovery.");
-}
-
-async function checkCandidateEnvironment(execution: StartedExecution, facts: RepositoryResult, deps: RepositoryDeps, ctx: ExecutionContext): Promise<void> {
-  if (!deps.config.runtimeVolume || execution.wiki_update) return;
-  const candidate = facts.candidate as { status?: string; commit?: string; submitted_commit?: string } | undefined;
-  if (candidate?.status !== "merged") return;
-  const selected = await deps.runMc(["environment", "resolve"], new TextEncoder().encode(JSON.stringify({
-    project_id: execution.project, run_id: execution.run_id, source_commit: candidate.commit,
-    candidate_source: candidate.submitted_commit, runtime_identity: deps.config.releaseBuildId ?? "development",
-  })));
-  if (selected.exitCode !== 0) throw new Error("The merge candidate environment is unavailable.");
-  const environment = JSON.parse(selected.stdout);
-  if (!/^sha256:[0-9a-f]{64}$/.test(environment.image_digest)) throw new Error("The merge candidate image is invalid.");
-  const path = `${deps.config.mcHome}/runs/${execution.run_id}.environment.json`;
-  await deps.fs.writeFile(path, JSON.stringify({ configuration: environment.configuration }), { mode: 0o644 });
-  const secrets = await projectSecretValues(environment.configuration, execution.project, deps);
-  const name = pipelineContainerName(execution.project, execution.run_id);
-  const stop = () => { void deps.docker(["stop", name]); };
-  ctx.signal.addEventListener("abort", stop, { once: true });
-  try {
-    if (ctx.signal.aborted) throw new ExecutionStopped();
-    const result = await deps.docker(["run", "--rm", "--interactive", "--name", name,
-      "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=pipeline", "--label", `mc-run-id=${execution.run_id}`,
-      "--label", `mc-project=${execution.project}`,
-      "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
-      "--memory", "4g", "--cpus", "2", "--pids-limit", "512",
-      "--entrypoint", `${CULLER_RUNTIME}/bin/bun`, ...runtimeArguments(deps),
-      ...projectCacheArguments(deps.config.mcHome, execution.project, environment.image_digest),
-      "--mount", `type=bind,src=${repositoryRunRoot(deps, execution.run_id, subjectFields(execution))}/repo,dst=/workspace/source`,
-      "--mount", `type=bind,src=${path},dst=/mc/environment.json,readonly`,
-      environment.image_digest, `${CULLER_RUNTIME}/app/src/shared/check-project.ts`],
-    new TextEncoder().encode(JSON.stringify(secrets) + "\n"));
-    if (result.stdout.trim().startsWith("{")) {
-      const evidence = JSON.parse(result.stdout);
-      if (!evidence.tool_versions || !Array.isArray(evidence.package_records)) throw new Error("The merge candidate environment evidence is incomplete.");
-      const recorded = await deps.runMc(["environment", "execution-evidence"], new TextEncoder().encode(JSON.stringify({
-        run_id: execution.run_id, tool_versions: evidence.tool_versions, package_records: evidence.package_records,
-      })));
-      if (recorded.exitCode !== 0) throw new Error("The merge candidate environment evidence could not be recorded.");
-    } else if (result.exitCode === 0) throw new Error("The merge candidate environment evidence is unavailable.");
-    if (result.exitCode !== 0) throw new Error(`The merge candidate environment preparation failed. ${result.stderr.slice(-2048)} ${result.stdout.slice(-2048)}`);
-  } finally {
-    ctx.signal.removeEventListener("abort", stop);
-    await deps.fs.rm(path);
-  }
 }
 
 /** Capture and cleanup start only when the containers of the ended run are

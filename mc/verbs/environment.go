@@ -85,17 +85,6 @@ func ProjectEnvironment(db *sql.DB, id *RunIdentity, action string, req Environm
 			return err
 		}
 		switch action {
-		case "execution-evidence":
-			var active bool
-			if err := q.QueryRowContext(ctx, `SELECT EXISTS(SELECT 1 FROM repository_executions x JOIN run_environments e ON e.run_id=x.run_id AND e.project_id=x.project WHERE x.run_id=? AND x.operation='prepare' AND x.ended_at IS NULL)`, req.RunID).Scan(&active); err != nil {
-				return err
-			}
-			if !active {
-				return Domainf("Environment evidence requires its assigned active merge preparation.")
-			}
-			err := environmentRunEvidenceTx(ctx, q, req)
-			result = map[string]any{"run_id": req.RunID, "recorded": err == nil}
-			return err
 		case "base-record":
 			reference, _ := req.Metadata["registry_reference"].(string)
 			release, _ := req.Metadata["release_identity"].(string)
