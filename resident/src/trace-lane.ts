@@ -9,7 +9,7 @@
 // pages over several passes, reaches every main session, the oldest included.
 
 import { constants, chmod, link, lstat, mkdir, open, readdir, rename, rm, stat, writeFile, type FileHandle } from "node:fs/promises";
-import { dirname, join, relative } from "node:path";
+import { basename, dirname, join, relative } from "node:path";
 import type { Ctx, Event, Logger } from "../../runner/shared/log";
 import type { Exec, ExecResult } from "./types";
 import { checkInside, copyTrace, openFolderInside, type CopyLimits, type CopyState } from "./trace-copy";
@@ -17,7 +17,8 @@ import { AgentsViewAnswer, type AgentsViewClient, type AgentsViewPage, type Agen
 import { recoverSetupTrace, setupTraceCandidates, setupTraceFolder, SETUP_RECOVERY_PER_PASS } from "./setup-traces";
 import { SAFE_ID } from "./pipeline-liveness";
 import { createTraceMask } from "./trace-mask";
-import { openCodeTraceID } from "../../runner/shared/opencode-trace";
+import { openCodeTraceID, OPENCODE_DATABASE } from "../../runner/shared/opencode-trace";
+import { copyNativeDatabase, publishNativeFile } from "./opencode-copy";
 
 export const COPY_INTERVAL_MS = 2_000;
 /** The longest time between two session lists. */
@@ -64,9 +65,10 @@ export interface TraceSession {
   kind: "run" | "collie" | "setup";
   id: string;
   session_path: string;
-  format: "claude" | "codex";
+  format: "claude" | "codex" | "opencode";
   native_session_ref: string;
   trace_filename: string;
+  legacy_filename?: string;
   agentsview_session: string;
   display_name: string;
   ended: boolean;
@@ -117,6 +119,7 @@ export interface TraceCopyPaths {
   sessions: string;
   claude: string;
   codex: string;
+  opencode: string;
   health: string;
   inspection: string;
 }
@@ -128,6 +131,7 @@ export function traceCopyPaths(mcHome: string): TraceCopyPaths {
     inspection: join(mcHome, "agentsview", "inspection"),
     claude: join(traces, "claude", "projects", "culler"),
     codex: join(traces, "codex", "sessions"),
+    opencode: join(traces, "opencode"),
     health: join(mcHome, "health", "agentsview.json"),
   };
 }
@@ -223,8 +227,11 @@ function invalidRow(row: Record<string, unknown>): string | undefined {
     if (!CLAUDE_FILE.test(row.trace_filename)) return "the trace file name is not valid";
   } else if (row.format === "codex") {
     if (!CODEX_FILE.test(row.trace_filename)) return "the trace file name is not a Codex rollout";
+  } else if (row.format === "opencode") {
+    if (row.trace_filename !== OPENCODE_DATABASE) return "the native database path is invalid";
+    if (row.legacy_filename !== undefined && (typeof row.legacy_filename !== "string" || !CODEX_FILE.test(row.legacy_filename))) return "the retained export path is invalid";
   } else {
-    return "the format is not claude or codex";
+    return "the trace format is invalid";
   }
   if (typeof row.agentsview_session !== "string" || row.agentsview_session === "") {
     return "the AgentsView session is missing";
@@ -266,6 +273,7 @@ export function parseTraceSessions(stdout: string): {
       kind: valid.kind, id: valid.id, session_path: valid.session_path, format: valid.format,
       native_session_ref: valid.native_session_ref, trace_filename: valid.trace_filename,
       agentsview_session: valid.agentsview_session, display_name: valid.display_name, ended: valid.ended,
+      ...(valid.legacy_filename ? { legacy_filename: valid.legacy_filename } : {}),
     });
   }
   return { sessions, invalid };
@@ -278,7 +286,7 @@ interface FileState extends CopyState {
   failures?: number;
   /** The lane tries the file again at this time. */
   retryAt?: number;
-  availability?: "ready" | "pending" | "unavailable";
+  availability?: "ready" | "pending" | "delayed" | "unavailable";
 }
 
 /** A change of a main copy that AgentsView did not show yet. */
@@ -299,6 +307,11 @@ interface SessionState {
   children: Map<string, FileState>;
   settled: boolean;
   inspectionStatus?: string;
+  native?: { digest: string; members: string[]; queue: string[]; imported?: string; checkedAt: number };
+  nativeCause?: string;
+  nativeImportCause?: string;
+  exportRetired?: boolean;
+  legacy?: FileState;
   /** The first change of the main copy that AgentsView did not show yet. */
   pending?: Pending;
   /** The last time that the lane learned the state of the main session in
@@ -348,6 +361,8 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
   const failures = new Map<string, Set<string>>();
   let lastRefreshAt: number | undefined;
   let recoveryCursor = 0;
+  let nativeCursor = 0;
+  let nativeImportCursor = 0;
   let lastRefreshFailed = false;
   let refreshing: Promise<void> | undefined;
   let audit: Iterator<SessionState> | undefined;
@@ -404,7 +419,7 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
   function mainState(row: TraceSession, dir: string): FileState {
     const dest = row.format === "claude"
       ? join(paths.claude, `${row.native_session_ref}.jsonl`)
-      : join(paths.codex, row.trace_filename);
+      : row.format === "opencode" ? join(paths.opencode, `opencode-${row.id}.db`) : join(paths.codex, row.trace_filename);
     return { root: dir, source: join(dir, row.trace_filename), dest, label: row.trace_filename };
   }
 
@@ -564,8 +579,10 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
         if (registered === "stopped") break;
         if (registered === "timeout") throw new Error("setup trace registration exceeded the recovery deadline");
         if (registered.exitCode !== 0) throw new Error(detail(registered));
-        parsed.sessions.push({ ...row, native_session_ref: found.nativeRef, trace_filename: found.filename,
-          agentsview_session: row.format === "codex" ? `codex:${found.nativeRef.startsWith("ses_") ? openCodeTraceID(found.nativeRef) : found.nativeRef}` : found.nativeRef });
+        parsed.sessions.push({ ...row, native_session_ref: found.nativeRef,
+          trace_filename: row.format === "opencode" ? OPENCODE_DATABASE : found.filename,
+          ...(row.format === "opencode" && found.filename !== OPENCODE_DATABASE ? { legacy_filename: found.filename } : {}),
+          agentsview_session: row.format === "opencode" ? `opencode:${found.nativeRef}` : row.format === "codex" ? `codex:${found.nativeRef}` : found.nativeRef });
         failures.delete(`recovery:${row.id}`);
       } catch (error) {
         reportOnce(`recovery:${row.id}`, message(error), "trace.sessions_failed",
@@ -732,7 +749,12 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
   }
 
   async function publishAvailability(session: SessionState, files: FileState[]): Promise<void> {
-    const body = JSON.stringify({ files: Object.fromEntries(files.map(file => [file.label, file.availability ?? "pending"])) }) + "\n";
+    const body = JSON.stringify({ files: Object.fromEntries(files.map(file => [file.label, file.availability ?? "pending"])),
+      ...(session.row.format === "opencode" ? { format: "opencode", native_session_ref: session.row.native_session_ref,
+        copy: session.main.availability ?? "pending", cause: session.nativeCause ?? null,
+        import: session.native?.imported === session.native?.digest && session.native ? "current" : "pending",
+        import_cause: session.nativeImportCause ?? null,
+        ...(session.legacy ? { export: { filename: session.legacy.label, format: "OpenCode export" } } : {}) } : {}) }) + "\n";
     if (body === session.inspectionStatus && (await lstat(join(paths.inspection, session.row.id, "status.json")).catch(() => undefined))?.isFile()) return;
     const directory = join(paths.inspection, session.row.id);
     await inspectionDirectory(directory);
@@ -743,6 +765,10 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
   }
 
   async function copySession(session: SessionState, now: number): Promise<void> {
+    if (session.row.format === "opencode") {
+      await copyNative(session, now);
+      return;
+    }
     if (session.row.kind === "setup") await setupTraceFolder(deps.mcHome, session.row.id);
     const files = await traceFiles(session);
     let complete = true;
@@ -782,12 +808,76 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
     if (session.row.ended && complete && now - newest >= SETTLE_MS) session.settled = true;
   }
 
+  async function copyNative(session: SessionState, now: number): Promise<void> {
+    const file = session.main;
+    if ((file.retryAt ?? 0) > now) return;
+    session.exportRetired ??= !!(await lstat(file.dest + ".retired").catch(() => undefined))?.isFile();
+    const accept = async (result: Awaited<ReturnType<typeof copyNativeDatabase>>) => {
+      file.position = result.bytes.length;
+      if (session.native?.digest !== result.digest || result.changed) {
+        const queue = [...new Set([...(session.native?.queue ?? []).filter(id => result.sessions.includes(id)), ...result.sessions])];
+        session.native = { digest: result.digest, members: result.sessions, queue, checkedAt: now };
+        session.pending ??= { since: now, position: file.position };
+        file.changedAt = now;
+      }
+      session.native!.checkedAt = now;
+      await publishInspection(session, file);
+    };
+    try {
+      const source = await openFolderInside(deps.mcHome, session.dir, "native session folder");
+      await source.close();
+      await mkdir(paths.opencode, { recursive: true, mode: 0o700 });
+      const destination = await openFolderInside(deps.mcHome, paths.opencode, "native trace folder");
+      await destination.close();
+      const result = await copyNativeDatabase(session.dir, file.dest, session.row.native_session_ref, deps.credentials?.() ?? [], controller.signal);
+      file.availability = "ready";
+      file.failures = 0;
+      file.retryAt = undefined;
+      session.nativeCause = undefined;
+      await accept(result);
+      failures.delete(copyKey(session.row.id, file.label));
+    } catch (error) {
+      // An older complete database remains available after a failed refresh.
+      const previous = await lstat(file.dest).catch(() => undefined);
+      file.availability = previous?.isFile() ? "delayed" : "unavailable";
+      file.position = previous?.isFile() ? previous.size : 0;
+      if (previous?.isFile() && !controller.signal.aborted) {
+        try {
+          // The last copy can need new masks after the original becomes unavailable.
+          await accept(await copyNativeDatabase(paths.opencode, file.dest, session.row.native_session_ref,
+            deps.credentials?.() ?? [], controller.signal, basename(file.dest)));
+        } catch { /* The last complete copy remains available. */ }
+      }
+      await publishInspection(session, file);
+      session.nativeCause = message(error);
+      file.failures = (file.failures ?? 0) + 1;
+      file.retryAt = now + Math.min(COPY_INTERVAL_MS * 2 ** (file.failures - 1), RETRY_MAX_MS);
+      reportCopy(session, file.label, message(error));
+    }
+    if (session.row.legacy_filename && !session.exportRetired) {
+      session.legacy ??= { root: session.dir, source: join(session.dir, session.row.legacy_filename),
+        dest: join(paths.codex, session.row.legacy_filename), label: session.row.legacy_filename };
+      try {
+        const copied = await copyTrace(session.legacy, now, deps.limits, mask);
+        session.legacy.availability = copied.absent ? "unavailable" : copied.caughtUp ? "ready" : "pending";
+        await publishInspection(session, session.legacy);
+      } catch (error) { reportCopy(session, session.legacy.label, message(error)); }
+    }
+    await publishAvailability(session, [file, ...(session.legacy ? [session.legacy] : [])]);
+  }
+
   async function copySessions(now: number): Promise<void> {
+    const native = [...sessions.values()].filter(session => session.row.format === "opencode");
+    const selected = new Set(Array.from({ length: Math.min(4, native.length) }, (_, index) => native[(nativeCursor + index) % native.length]));
+    nativeCursor = native.length ? (nativeCursor + selected.size) % native.length : 0;
     for (const session of [...sessions.values()]) {
       if (closed) return;
       if (session.settled) continue;
+      if (session.row.format === "opencode" && (!selected.has(session) ||
+          (session.row.ended && session.native && now - session.native.checkedAt < SESSIONS_REFRESH_MS && session.main.maskRevision === mask.revision))) continue;
       try {
         await copySession(session, now);
+        session.main.maskRevision = mask.revision;
       } catch (error) {
         session.main.availability = "unavailable";
         await publishAvailability(session, [session.main, ...session.children.values()]).catch(() => {});
@@ -889,7 +979,13 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
       await mkdir(directory, { recursive: true, mode: 0o700 });
       const stage = join(directory, `.agentsview.${process.pid}.next`);
       const observedAt = new Date(deps.now()).toISOString();
-      await writeFile(stage, JSON.stringify({ observed_at: observedAt, overdue: list }) + "\n", { mode: 0o600 });
+      const native = [...sessions.values()].filter(session => session.row.format === "opencode").map(session => ({
+          kind: session.row.kind, id: session.row.id, copy: session.main.availability ?? "pending",
+          import: session.native && session.native.imported === session.native.digest ? "current" : "pending",
+          cause: session.nativeCause ?? null,
+          import_cause: session.nativeImportCause ?? null,
+        }));
+      await writeFile(stage, JSON.stringify({ observed_at: observedAt, overdue: list, ...(native.length ? { native } : {}) }) + "\n", { mode: 0o600 });
       await rename(stage, paths.health);
       failures.delete("health");
     } catch (error) {
@@ -901,6 +997,7 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
   /** True when AgentsView shows the pending change: its last line has a time
    * at or after the time of the last line of the copy at that change. */
   async function imported(session: SessionState, pending: Pending, endedAt: string | null): Promise<boolean> {
+    if (session.row.format === "opencode") return !!session.native && session.native.imported === session.native.digest;
     if (pending.mark === undefined) pending.mark = await copyMark(session.main.dest, pending.position);
     if (pending.mark === null) return true;
     const shown = endedAt === null ? Number.NaN : parseTime(endedAt);
@@ -972,6 +1069,49 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
    * request limit of one pass. The result is false after a network failure. */
   async function checkSessions(client: AgentsViewClient): Promise<boolean> {
     let budget = deps.requestsPerPass ?? REQUESTS_PER_PASS;
+    const native = [...sessions.values()].filter(session => session.row.format === "opencode");
+    for (let i = 0; i < native.length && budget > 8 && !closed; i++) {
+      const session = native[(nativeImportCursor + i) % native.length]!;
+      const state = session.native;
+      if (!state) {
+        if (session.legacy?.position) {
+          budget--;
+          await client.rename(`codex:${openCodeTraceID(session.row.native_session_ref)}`, `OpenCode export · ${session.row.display_name}`, controller.signal).catch(requestFailed);
+        }
+        continue;
+      }
+      try {
+        while (state.queue.length && budget > 8 && !closed && session.native === state) {
+          const id = state.queue[0]!;
+          budget--;
+          await client.syncNative(`opencode:${id}`, controller.signal);
+          if (session.native !== state) break;
+          state.queue.shift();
+          if (state.queue.length === 0) state.imported = state.digest;
+        }
+        if (session.native !== state) continue;
+        session.nativeImportCause = undefined;
+        if (state.imported === state.digest && !session.exportRetired) {
+          const legacy = `codex:${openCodeTraceID(session.row.native_session_ref)}`;
+          budget -= 3;
+          await client.retireExport(legacy, session.row.agentsview_session, controller.signal);
+          if (session.legacy) {
+            await rm(session.legacy.dest, { force: true });
+            await rm(join(paths.inspection, session.row.id, session.legacy.label), { force: true });
+            session.legacy = undefined;
+          }
+          await publishNativeFile(paths.opencode, session.main.dest + ".retired", session.row.agentsview_session + "\n");
+          session.exportRetired = true;
+        }
+        await publishAvailability(session, [session.main, ...(session.legacy ? [session.legacy] : [])]);
+      } catch (error) {
+        session.nativeImportCause = message(error);
+        await publishAvailability(session, [session.main, ...(session.legacy ? [session.legacy] : [])]);
+        if (session.pending && deps.now() >= deadline(session.pending)) session.lateAt = deps.now();
+        requestFailed(error);
+      }
+    }
+    nativeImportCursor = native.length ? (nativeImportCursor + 1) % native.length : 0;
     const index = new Map<string, SessionState>();
     for (const session of sessions.values()) {
       if ((session.main.position ?? 0) > 0) index.set(session.row.agentsview_session, session);
@@ -1101,6 +1241,10 @@ export function createTraceLane(deps: TraceLaneDeps): TraceLane {
       for (const session of sessions.values()) {
         const position = session.main.position ?? 0;
         if (position > 0) session.pending ??= { since: now, position };
+        if (session.native) {
+          session.native.imported = undefined;
+          session.native.queue = [...session.native.members];
+        }
       }
     }
     let reachable = true;

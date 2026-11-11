@@ -21,6 +21,7 @@ import (
 // an operator-present launchd activation.
 var hostReleaseImport = regexp.MustCompile(`(?:from|import)\s*["'](\.[^"']+)["']`)
 var hostReleaseReadAsset = regexp.MustCompile(`readFileSync\(join\(import\.meta\.dir,\s*["'](\.[^"']+)["']\)\)`)
+var hostReleaseWorker = regexp.MustCompile(`new Worker\(new URL\(["'](\.[^"']+)["'],\s*import\.meta\.url\)`)
 
 func hostReleaseEntryClosure(t *testing.T, repoRoot string) map[string]bool {
 	t.Helper()
@@ -49,7 +50,8 @@ func hostReleaseEntryClosure(t *testing.T, repoRoot string) map[string]bool {
 			}
 			seen[asset] = true
 		}
-		for _, match := range hostReleaseImport.FindAllStringSubmatch(string(body), -1) {
+		imports := append(hostReleaseImport.FindAllStringSubmatch(string(body), -1), hostReleaseWorker.FindAllStringSubmatch(string(body), -1)...)
+		for _, match := range imports {
 			base := filepath.Join(filepath.Dir(rel), match[1])
 			resolved := ""
 			// Bun resolves an extensionless specifier; the manifest cannot, so

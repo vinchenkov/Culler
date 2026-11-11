@@ -17,7 +17,7 @@ const NARROW = { width: 390, height: 844 };
 const COMMIT = "0123456789abcdef0123456789abcdef01234567";
 const CLAUDE_REF = "11111111-1111-4111-8111-111111111111";
 const CODEX_REF = "22222222-2222-4222-8222-222222222222";
-const RUN = { claude: "trace-claude-worker", fake: "trace-fake-arbiter", codex: "trace-codex-verifier" };
+const RUN = { claude: "trace-claude-worker", fake: "trace-fake-arbiter", codex: "trace-codex-verifier", opencode: "trace-opencode-packager" };
 const externalRequests: string[] = [];
 const evidence = evidencePath("viewers-evidence");
 
@@ -25,6 +25,7 @@ const tracesHref = () => `/agentsview/open?path=${encodeURIComponent("/sessions?
 const traceHref = (path: string) => `/agentsview/open?path=${encodeURIComponent(path)}`;
 const CLAUDE_PATH = `/sessions/${CLAUDE_REF}?msg=last`;
 const CODEX_PATH = `/sessions/codex/${CODEX_REF}?msg=last`;
+const OPENCODE_PATH = "/sessions/opencode/ses_native_packager?msg=last";
 const wikiHref = () => new URL(`/${smoke.wikiKey}/viewer-alpha/`, smoke.wiki.url).href;
 const TRACES_TITLE = "All traces in AgentsView. The trace list opens in a new tab.";
 
@@ -99,6 +100,7 @@ beforeAll(async () => {
     run.run(RUN.claude, "worker", taskID, "claude-sdk/claude", CLAUDE_REF, "native.jsonl");
     run.run(RUN.fake, "arbiter", taskID, "fake/fake", null, null);
     run.run(RUN.codex, "verifier", taskID, "codex/chatgpt", CODEX_REF, "rollout-2026-09-29T00-00-00-22222222-2222-4222-8222-222222222222.jsonl");
+    run.run(RUN.opencode, "packager", taskID, "opencode/catalog", "ses_native_packager", "opencode/data/opencode/opencode.db");
   } finally { db.close(); }
   writeExport(smoke.home);
   // A prepared AgentsView unit makes the status command ask AgentsView.
@@ -277,6 +279,7 @@ test("each run with a main trace links to its AgentsView session", async () => {
   const row = (id: string) => page.locator(`[data-testid="run-row"][data-key="${id}"]`);
   expect(await row(RUN.claude).getByTestId("run-trace-link").getAttribute("href")).toBe(traceHref(CLAUDE_PATH));
   expect(await row(RUN.codex).getByTestId("run-trace-link").getAttribute("href")).toBe(traceHref(CODEX_PATH));
+  expect(await row(RUN.opencode).getByTestId("run-trace-link").getAttribute("href")).toBe(traceHref(OPENCODE_PATH));
   expect(await row(RUN.fake).getByTestId("run-trace-link").count()).toBe(0);
   expect(await row(RUN.fake).getByTestId("run-log-link").count()).toBe(1);
   expect(await linkState(row(RUN.claude).getByTestId("run-trace-link"))).toMatchObject({
@@ -289,6 +292,13 @@ test("each run with a main trace links to its AgentsView session", async () => {
     expect(await trace.getByText("AgentsView fixture").isVisible()).toBe(true);
     expect(await trace.evaluate(() => [window.opener, document.referrer])).toEqual([null, ""]);
   } finally { await trace.close(); }
+  const native = await openTab(row(RUN.opencode).getByTestId("run-trace-link"));
+  try {
+    await native.waitForURL(url => url.pathname + url.search === OPENCODE_PATH);
+    expect(await native.getByText("AgentsView fixture").isVisible()).toBe(true);
+    expect(await native.evaluate(() => [window.opener, document.referrer])).toEqual([null, ""]);
+    await native.screenshot({ path: join(evidence, "opencode-trace.png") });
+  } finally { await native.close(); }
   await page.screenshot({ path: join(evidence, "pipeline-runs-wide.png"), fullPage: true });
 
   await openTask();

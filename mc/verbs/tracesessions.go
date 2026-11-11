@@ -16,6 +16,7 @@ type TraceSession struct {
 	Format            string `json:"format"`
 	NativeSessionRef  string `json:"native_session_ref"`
 	TraceFilename     string `json:"trace_filename"`
+	LegacyFilename    string `json:"legacy_filename,omitempty"`
 	AgentsViewSession string `json:"agentsview_session"`
 	DisplayName       string `json:"display_name"`
 	Ended             bool   `json:"ended"`
@@ -148,5 +149,11 @@ func TraceSessions(db *sql.DB) (any, error) {
 func traceSession(session *TraceSession, binding string) bool {
 	session.Format = trace.Format(binding)
 	session.AgentsViewSession = trace.SessionID(binding, session.NativeSessionRef)
+	if session.Format == trace.FormatOpenCode && session.NativeSessionRef != "" {
+		if session.TraceFilename != trace.OpenCodeDatabase && trace.ValidFilename(binding, session.TraceFilename) {
+			session.LegacyFilename = session.TraceFilename
+		}
+		session.TraceFilename = trace.OpenCodeDatabase
+	}
 	return session.AgentsViewSession != "" && session.SessionPath != "" && session.TraceFilename != ""
 }

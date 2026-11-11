@@ -25,7 +25,7 @@ func RegisterSetupSession(db *sql.DB, id *RunIdentity, operationID, nativeRef, f
 			return Usagef("The setup trace identity or relative filename is invalid.")
 		}
 		if op.NativeSessionRef != "" || op.TraceFilename != "" {
-			if op.NativeSessionRef == nativeRef && op.TraceFilename == file {
+			if op.NativeSessionRef == nativeRef && op.TraceFilename == trace.Filename(binding, file) {
 				return nil
 			}
 			return Domainf("The setup trace identity is immutable after registration.")

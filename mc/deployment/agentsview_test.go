@@ -140,6 +140,7 @@ func TestAgentsViewPathsFollowTheMCHomeLayout(t *testing.T) {
 		ClaudeTraceRoot:   "/Users/alice/.culler/agentsview/traces/claude/projects",
 		ClaudeTraceCopies: "/Users/alice/.culler/agentsview/traces/claude/projects/culler",
 		CodexTraceRoot:    "/Users/alice/.culler/agentsview/traces/codex/sessions",
+		OpenCodeTraceRoot: "/Users/alice/.culler/agentsview/traces/opencode",
 		StdoutLog:         "/Users/alice/.culler/logs/agentsview.stdout.log",
 		StderrLog:         "/Users/alice/.culler/logs/agentsview.stderr.log",
 		Health:            "/Users/alice/.culler/health/agentsview.json",

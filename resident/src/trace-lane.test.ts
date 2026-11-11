@@ -672,7 +672,7 @@ describe("the session list", () => {
       { id: "r-ref", cause: "the native session ID is not valid" },
       { id: "r-path", cause: "the session path does not match its operation" },
       { id: "h-codex", cause: "the trace file name is not a Codex rollout" },
-      { id: "r-format", cause: "the format is not claude or codex" },
+      { id: "r-format", cause: "the trace format is invalid" },
     ]);
     expect(() => parseTraceSessions("{}")).toThrow("the output holds no session list");
   });

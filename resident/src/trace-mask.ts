@@ -4,7 +4,7 @@ import { isProviderToken, PROVIDER_TOKEN_PREFIX, PROVIDER_TOKEN_LENGTH } from ".
 export interface TraceMask {
   revision: string;
   overlap: number;
-  apply(value: Buffer): Buffer;
+  apply(value: Buffer, matched?: (start: number, length: number) => void): Buffer;
 }
 
 const escape = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -37,10 +37,13 @@ export function createTraceMask(credentials: readonly string[] = []): TraceMask 
   return {
     revision: createHash("sha256").update(JSON.stringify([1, values])).digest("hex"),
     overlap: Math.max(PROVIDER_TOKEN_LENGTH * 6, ...values.map(value => Buffer.byteLength(value) * 6)),
-    apply(value) {
+    apply(value, matched) {
       const text = value.toString("latin1");
       const out = Buffer.from(value);
-      const mask = (start: number, length: number) => out.fill(0x2a, start, start + length);
+      const mask = (start: number, length: number) => {
+        matched?.(start, length);
+        out.fill(0x2a, start, start + length);
+      };
       for (const pattern of patterns) {
         for (const match of text.matchAll(pattern)) mask(match.index!, match[0].length);
       }

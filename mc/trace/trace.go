@@ -11,8 +11,10 @@ import (
 )
 
 const (
-	FormatClaude = "claude"
-	FormatCodex  = "codex"
+	FormatClaude     = "claude"
+	FormatCodex      = "codex"
+	FormatOpenCode   = "opencode"
+	OpenCodeDatabase = "opencode/data/opencode/opencode.db"
 )
 
 const (
@@ -31,8 +33,10 @@ func Format(binding string) string {
 	switch harness {
 	case "claude-sdk":
 		return FormatClaude
-	case "codex", "opencode":
+	case "codex":
 		return FormatCodex
+	case "opencode":
+		return FormatOpenCode
 	}
 	return ""
 }
@@ -49,10 +53,9 @@ func SessionID(binding, nativeRef string) string {
 	case FormatClaude:
 		return nativeRef
 	case FormatCodex:
-		if strings.HasPrefix(binding, "opencode/") {
-			nativeRef = OpenCodeID(nativeRef)
-		}
 		return "codex:" + nativeRef
+	case FormatOpenCode:
+		return "opencode:" + nativeRef
 	}
 	return ""
 }
@@ -67,15 +70,14 @@ func Path(binding, nativeRef string) string {
 	case FormatClaude:
 		return "/sessions/" + nativeRef + "?msg=last"
 	case FormatCodex:
-		if strings.HasPrefix(binding, "opencode/") {
-			nativeRef = OpenCodeID(nativeRef)
-		}
 		return "/sessions/codex/" + nativeRef + "?msg=last"
+	case FormatOpenCode:
+		return "/sessions/opencode/" + nativeRef + "?msg=last"
 	}
 	return ""
 }
 
-// OpenCodeID supplies the stable trace identifier that AgentsView requires.
+// OpenCodeID identifies a retained Codex export of an OpenCode session.
 func OpenCodeID(nativeRef string) string {
 	value := sha256.Sum256([]byte("culler-opencode-trace\x00" + nativeRef))
 	value[6] = value[6]&15 | 128
@@ -145,6 +147,16 @@ func ValidFilename(binding, filename string) bool {
 		return claudeFilename.MatchString(filename)
 	case FormatCodex:
 		return codexFilename.MatchString(filename)
+	case FormatOpenCode:
+		return filename == OpenCodeDatabase || codexFilename.MatchString(filename)
 	}
 	return false
+}
+
+// Filename selects the native database for current and retained OpenCode records.
+func Filename(binding, filename string) string {
+	if Format(binding) == FormatOpenCode && filename != "" {
+		return OpenCodeDatabase
+	}
+	return filename
 }

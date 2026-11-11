@@ -161,6 +161,9 @@ dirs = ["` + filepath.Join(home, "agentsview", "traces", "claude", "projects") +
 
 [agents.codex]
 dirs = ["` + filepath.Join(home, "agentsview", "traces", "codex", "sessions") + `"]
+
+[agents.opencode]
+dirs = ["` + filepath.Join(home, "agentsview", "traces", "opencode") + `"]
 `
 	if string(body) != want {
 		t.Fatalf("AgentsView configuration:\n%s\nwant:\n%s", body, want)
@@ -247,7 +250,7 @@ func TestActivationWritesTheAgentsViewConfigurationBeforeItsBootstrap(t *testing
 				t.Fatalf("AgentsView bootstrap preceded its configuration: %q %v %v", body, err, statErr)
 			}
 			for _, dir := range []string{
-				paths.Root, paths.Data, paths.Home, paths.ClaudeTraceRoot, paths.ClaudeTraceCopies, paths.CodexTraceRoot,
+				paths.Root, paths.Data, paths.Home, paths.ClaudeTraceRoot, paths.ClaudeTraceCopies, paths.CodexTraceRoot, paths.OpenCodeTraceRoot,
 				filepath.Join(paths.Root, "traces"), filepath.Join(paths.Root, "traces", "claude"), filepath.Join(paths.Root, "traces", "codex"),
 			} {
 				if err := requireOwnerOnlyDirectory(dir, "AgentsView folder"); err != nil {

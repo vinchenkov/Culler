@@ -461,6 +461,10 @@ func TestCollieAgentInputStatesTheTraceAccess(t *testing.T) {
 		"Each other `rollout-*.jsonl` file in the session folder is a child trace.",
 		"Search the file first.",
 		"The copy contains complete records only.",
+		"The harness `opencode` uses `opencode/data/opencode/opencode.db`.",
+		"The value `delayed` means that an older valid database remains available after a failed refresh.",
+		"The file `status.json` supplies the native session reference and the copy state.",
+		"Use the message identifier and the tool identifier together when you cite a tool result.",
 		"### Records of the `claude-sdk` harness",
 		"### Records of the `codex` harness",
 	} {

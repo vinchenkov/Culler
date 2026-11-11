@@ -1,6 +1,8 @@
 import { constants, lstat, open, opendir } from "node:fs/promises";
 import { join } from "node:path";
 import { checkInside, openFolderInside } from "./trace-copy";
+import { readNativeSnapshot } from "./opencode-copy";
+import { OPENCODE_DATABASE } from "../../runner/shared/opencode-trace";
 
 const NATIVE_REF = /^[A-Za-z0-9_][A-Za-z0-9._-]{0,127}$/;
 const ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
@@ -14,7 +16,7 @@ export interface SetupTraceCandidate {
   kind: "setup";
   id: string;
   session_path: string;
-  format: "claude" | "codex";
+  format: "claude" | "codex" | "opencode";
   display_name: string;
   ended: boolean;
 }
@@ -23,7 +25,7 @@ export function setupTraceCandidates(value: unknown): SetupTraceCandidate[] {
   if (!Array.isArray(value)) return [];
   return value.filter((row): row is SetupTraceCandidate => row && row.kind === "setup" &&
     typeof row.id === "string" && ID.test(row.id) && row.session_path === `environment-runs/${row.id}/session` &&
-    (row.format === "claude" || row.format === "codex") && typeof row.display_name === "string" && typeof row.ended === "boolean");
+    (row.format === "claude" || row.format === "codex" || row.format === "opencode") && typeof row.display_name === "string" && typeof row.ended === "boolean");
 }
 
 /** The operation controls no path outside this fixed folder. */
@@ -118,6 +120,35 @@ async function codexMain(root: string): Promise<string> {
 
 export async function recoverSetupTrace(home: string, row: SetupTraceCandidate): Promise<{ nativeRef: string; filename: string }> {
   const root = await setupTraceFolder(home, row.id);
+  if (row.format === "opencode") {
+    const path = join(root, "opencode/native-session");
+    const handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK).catch(error => {
+      if (error.code !== "ENOENT") throw error;
+    });
+    let main: string | undefined;
+    if (handle) {
+      try {
+        await checkInside(handle, root, path, "native session marker");
+        const info = await handle.stat();
+        if (!info.isFile() || info.size > 128) throw new Error("The native session marker is invalid.");
+        main = (await handle.readFile("utf8")).trim();
+        if (!/^ses_[A-Za-z0-9_-]+$/.test(main)) throw new Error("The native session marker is invalid.");
+      } finally { await handle.close(); }
+    }
+    try {
+      const snapshot = await readNativeSnapshot(root, main);
+      return { nativeRef: snapshot.main, filename: OPENCODE_DATABASE };
+    } catch (error) {
+      if (main && await lstat(join(root, OPENCODE_DATABASE)).catch(() => undefined)) throw error;
+      const filename = await codexMain(root);
+      const { body } = await prefix(root, filename);
+      const first = JSON.parse(body.split("\n")[0]!);
+      if (first?.payload?.originator !== "OpenCode") throw error;
+      const nativeRef = nativeTraceIdentity("codex", body);
+      if (!/^ses_[A-Za-z0-9_-]+$/.test(nativeRef) || main && nativeRef !== main) throw error;
+      return { nativeRef, filename };
+    }
+  }
   const filename = row.format === "claude" ? "native.jsonl" : await codexMain(root);
   const nativeRef = nativeTraceIdentity(row.format, (await prefix(root, filename)).body);
   return { nativeRef, filename };

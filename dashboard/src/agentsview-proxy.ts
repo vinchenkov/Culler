@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { openCodeTraceID } from "../../runner/shared/opencode-trace";
 import type { McRunner } from "./mc";
 import { accessPage, ACCESS_MESSAGES, AGENTSVIEW_BRIDGE, type AccessFailure } from "./agentsview-pages";
 
@@ -12,7 +13,7 @@ const noStore = { "cache-control": "no-store", "referrer-policy": "no-referrer" 
 export function agentsViewDestination(value: unknown): string | null {
   if (typeof value !== "string" || value.length > 2048) return null;
   const [path, query = ""] = value.split("?");
-  if (!/^\/sessions(?:\/(?:codex\/)?[A-Za-z0-9_][A-Za-z0-9_.-]{0,127})?$/.test(path!)) return null;
+  if (!/^\/sessions(?:\/(?:(?:codex|opencode)\/)?[A-Za-z0-9_][A-Za-z0-9_.-]{0,127})?$/.test(path!)) return null;
   const params = new URLSearchParams(query);
   for (const [key, value] of params) {
     if (params.getAll(key).length !== 1) return null;
@@ -130,11 +131,20 @@ export function createAgentsViewProxy(mc: McRunner, now = Date.now) {
     const health = await readBody(ping, "json").catch(() => { throw new AccessError("unavailable"); });
     if (!ping.ok || health?.service !== "agentsview") throw new AccessError("unavailable");
     if (path.split("?")[0] !== "/sessions") {
-      const id = path.split("?")[0]!.slice("/sessions/".length).replace(/^codex\//, "codex:");
+      const id = path.split("?")[0]!.slice("/sessions/".length).replace(/^(codex|opencode)\//, "$1:");
       const trace = await upstream(`/api/v1/sessions/${encodeURIComponent(id)}`);
+      if (trace.status === 404 && id.startsWith("opencode:")) {
+        await trace.body?.cancel();
+        const legacy = openCodeTraceID(id.slice("opencode:".length));
+        const exported = await upstream(`/api/v1/sessions/codex:${legacy}`);
+        if (!exported.ok) { await exported.body?.cancel(); throw new AccessError("trace"); }
+        await readBody(exported, "json").catch(() => { throw new AccessError("trace"); });
+        return `/sessions/codex/${legacy}?${path.split("?")[1] ?? "msg=last"}`;
+      }
       if (!trace.ok) { await trace.body?.cancel(); throw new AccessError("trace"); }
       await readBody(trace, "json").catch(() => { throw new AccessError("trace"); });
     }
+    return path;
   }
 
   function broker(origin: string, path: string) {
@@ -246,14 +256,14 @@ export function createAgentsViewProxy(mc: McRunner, now = Date.now) {
       if (stopped) throw new AccessError("unavailable");
       const destination = agentsViewDestination(path);
       if (!destination) throw new AccessError("invalid");
-      await deadline(check(destination));
+      const resolved = await deadline(check(destination));
       if (stopped) throw new AccessError("unavailable");
       dashboardOrigin = origin;
       start();
       prune();
       if (grants.size >= MAX_ACCESS) grants.delete(grants.keys().next().value!);
       const grant = secret();
-      grants.set(grant, { path: destination, origin, until: now() + GRANT_MS });
+      grants.set(grant, { path: resolved, origin, until: now() + GRANT_MS });
       return { url: `http://127.0.0.1:${server!.port}/__culler/access`, grant };
     },
     stop() { stopped = true; server?.stop(true); server = null; grants.clear(); sessions.clear(); },

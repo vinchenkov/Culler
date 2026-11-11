@@ -186,7 +186,10 @@ dirs = [%s]
 
 [agents.codex]
 dirs = [%s]
-`, tomlString(host), port, tomlString(token), strings.Join(quoted, ", "), tomlString(paths.ClaudeTraceRoot), tomlString(paths.CodexTraceRoot)))
+
+[agents.opencode]
+dirs = [%s]
+`, tomlString(host), port, tomlString(token), strings.Join(quoted, ", "), tomlString(paths.ClaudeTraceRoot), tomlString(paths.CodexTraceRoot), tomlString(paths.OpenCodeTraceRoot)))
 }
 
 func tomlString(value string) string {
@@ -230,7 +233,7 @@ func InstallAgentsViewConfig(home string) error {
 		paths.Root, paths.Data, paths.Home,
 		filepath.Dir(filepath.Dir(paths.ClaudeTraceRoot)), filepath.Dir(paths.ClaudeTraceRoot),
 		paths.ClaudeTraceRoot, paths.ClaudeTraceCopies,
-		filepath.Dir(paths.CodexTraceRoot), paths.CodexTraceRoot,
+		filepath.Dir(paths.CodexTraceRoot), paths.CodexTraceRoot, paths.OpenCodeTraceRoot,
 	} {
 		if err := ensureOwnerDirectory(dir, "AgentsView folder"); err != nil {
 			return err

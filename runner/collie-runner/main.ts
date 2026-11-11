@@ -22,6 +22,7 @@
 // carries the packet context that `mc collie packet-context` builds.
 
 import { modelResponseReporter } from "../shared/model-response";
+import { openCodeTraceID, OPENCODE_DATABASE } from "../shared/opencode-trace";
 import { makeLogger, parseLevel, type Logger } from "../shared/log";
 import { runLogSink } from "../shared/log-sink";
 import {
@@ -376,7 +377,7 @@ export function collieTurnPrompt(
   turn: string,
   packetContext?: string,
 ): string {
-  return `${run.directive}\n\n# Conversation\n\nThis session receives operator messages from the dashboard or another connected surface. A Board message carries Project context and requires confirmation for a new state change. A packet conversation carries packet context about one packet. Project initialization runs before pipeline work. For environment questions, inspect the Project through mc environment get. Image dependencies require operator approval in the Setup Journal or Environment page.\n\n# Discord access\n\nDiscord setup and account approval belong to Configs → Discord. Culler consumes account confirmation codes before Collie receives operator messages. A channel message starts a Collie session in its own Discord thread. The operator can continue that session from its thread or the dashboard. A reply reaches the same thread when the operator uses the dashboard.\n\n# Trace access\n\nThe read-only trace copies at /mc/traces/<id>/<trace_filename> contain complete records with credential masks. The status.json file states availability; a missing or pending copy requires a later read.\n\n# Diagnostic context\n\nA dashboard diagnostic message contains a short issue summary and references for permitted reads. A proposed state change requires explicit operator confirmation.\n\n` +
+  return `${run.directive}\n\n# Conversation\n\nThis session receives operator messages from the dashboard or another connected surface. A Board message carries Project context and requires confirmation for a new state change. A packet conversation carries packet context about one packet. Project initialization runs before pipeline work. For environment questions, inspect the Project through mc environment get. Image dependencies require operator approval in the Setup Journal or Environment page.\n\n# Discord access\n\nDiscord setup and account approval belong to Configs → Discord. Culler consumes account confirmation codes before Collie receives operator messages. A channel message starts a Collie session in its own Discord thread. The operator can continue that session from its thread or the dashboard. A reply reaches the same thread when the operator uses the dashboard.\n\n# Trace access\n\nThe read-only trace copies at /mc/traces/<id>/<trace_filename> contain complete records with credential masks. The status.json file states availability. The ready state identifies a current copy. The delayed state identifies an older valid copy. The pending state requires a later read. The unavailable state identifies an absent valid copy.\n\nOpenCode copies use SQLite databases and native session references. The mc-collie skill describes the runtime reader. Cite each native message or tool identifier with its database copy and session. The status reports AgentsView import separately.\n\n# Diagnostic context\n\nA dashboard diagnostic message contains a short issue summary and references for permitted reads. A proposed state change requires explicit operator confirmation.\n\n` +
     `Conversation identifier: ${run.session_id}\nOperator message sequence: ${message.seq}\n\n` +
     (packetContext === undefined ? "" : packetContext + "\n\n") +
     (message.vision_context === undefined ? "" : visionTurnContext(message.vision_context) + "\n\n") +
@@ -688,7 +689,9 @@ export async function runCollieLoop(run: CollieEnvelope, deps: RunnerDeps): Prom
     );
     const registerNative = async (nativeSessionId: string, nativeFile: string) => {
       if ((turnRun.native_session_ref !== undefined && turnRun.native_session_ref !== nativeSessionId) ||
-          (turnRun.trace_filename !== undefined && turnRun.trace_filename !== nativeFile)) {
+          (turnRun.trace_filename !== undefined && turnRun.trace_filename !== nativeFile &&
+            !(turnRun.harness === "opencode" && nativeFile === OPENCODE_DATABASE &&
+              turnRun.trace_filename === `rollout-${openCodeTraceID(nativeSessionId)}.jsonl`))) {
         throw new Error("The harness changed the native session identity.");
       }
       if (!registered) {

@@ -173,7 +173,12 @@ Your trace access is read-only.
 Your harness uses a separate original session to resume.
 
 Each session folder has a `status.json` file with trace availability.
-A missing folder or a pending copy requires a later read.
+The `ready` state identifies a current copy. The `delayed` state identifies an older valid copy.
+The `pending` state identifies a copy that needs more records. The `unavailable` state identifies an absent valid copy.
+A missing folder or status file leaves availability unknown.
+OpenCode traces use a native SQLite database. The `mc-collie` skill describes the runtime reader and the native record identifiers.
+The status identifies the native session and reports the copy separately from the AgentsView import.
+Each database citation must identify the copy, the native session, and the message or tool identifier.
 
 - Base each explanation of an agent decision on the trace of that run.
 - Identify each conclusion that the trace does not state.

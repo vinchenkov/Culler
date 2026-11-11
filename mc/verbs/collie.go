@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"mc/domain"
+	"mc/trace"
 )
 
 // Collie agent verbs are the maximum structural surface that may be frozen
@@ -1511,6 +1512,9 @@ type collieListRow struct {
 }
 
 func (r collieListRow) jsonMap() map[string]any {
+	if filename, ok := r.TraceFilename.(string); ok {
+		r.TraceFilename = trace.Filename(r.Binding, filename)
+	}
 	return map[string]any{
 		"id": r.ID, "title": r.Title, "first_message": r.FirstMessage, "status": r.Status,
 		"vision_project": r.VisionProject, "packet": r.Packet,

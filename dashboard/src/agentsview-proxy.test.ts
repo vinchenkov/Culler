@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { accessBody, agentsViewDestination, createAgentsViewProxy } from "./agentsview-proxy";
 import { startDashboardServer } from "./server";
 import { deps, ok } from "./test-helpers";
+import { openCodeTraceID } from "../../runner/shared/opencode-trace";
 
 const TOKEN = "a".repeat(64);
 const AUTH = { authorization: "Bearer dashboard-secret" };
@@ -10,6 +11,7 @@ function fixture() {
   let token = TOKEN;
   let supplied = TOKEN;
   let reachable = true;
+  let nativeAvailable = false;
   let calls = 0;
   const requests: Request[] = [];
   const upstream = Bun.serve({ hostname: "127.0.0.1", port: 0, fetch(req) {
@@ -20,6 +22,7 @@ function fixture() {
     if (path === "/api/ping") return Response.json({ service: "agentsview", pid: 1 });
     if (path === "/api/v1/settings" || path === "/api/v1/%73ettings") return Response.json({ auth_token: token, require_auth: true });
     if (path === "/api/v1/sessions/absent") return new Response("Not found", { status: 404 });
+    if (decodeURIComponent(path) === "/api/v1/sessions/opencode:ses_retained" && !nativeAvailable) return new Response("Not found", { status: 404 });
     if (path === "/api/v1/redirect") return new Response(null, { status: 302, headers: { location: "https://example.com" } });
     if (path.startsWith("/api/")) return Response.json({ id: "trace", messages: ["Trace content"] });
     return new Response('<!doctype html><html><head></head><body>Trace content</body></html>', { headers: { "content-type": "text/html" } });
@@ -29,6 +32,7 @@ function fixture() {
   const origin = new URL(dashboard.url).origin;
   return { dashboard, origin, mc, requests, get calls() { return calls; },
     set supplied(value: string) { supplied = value; }, set token(value: string) { token = value; }, set reachable(value: boolean) { reachable = value; },
+    set nativeAvailable(value: boolean) { nativeAvailable = value; },
     async grant(path = "/sessions/trace?msg=last", headers = AUTH) {
       return fetch(`${origin}/api/agentsview/access`, { method: "POST", headers: { ...headers, "content-type": "application/json" }, body: JSON.stringify({ path }) });
     },
@@ -48,7 +52,7 @@ describe("AgentsView destinations", () => {
     await expect(accessBody(new Request("http://localhost", { method: "POST", body: "x".repeat(4097) }))).rejects.toThrow("invalid");
   });
   test("retains the requested session and filters", () => {
-    for (const path of ["/sessions", "/sessions?include_one_shot=true&include_automated=true", "/sessions/codex/uuid?msg=last", "/sessions/uuid?msg=4", "/sessions/trace.1?msg=last"]) {
+    for (const path of ["/sessions", "/sessions?include_one_shot=true&include_automated=true", "/sessions/codex/uuid?msg=last", "/sessions/opencode/ses_native?msg=last", "/sessions/uuid?msg=4", "/sessions/trace.1?msg=last"]) {
       expect(agentsViewDestination(path)).toBe(path);
     }
     for (const path of ["https://example.com", "//example.com/sessions", "/sessions/../api", "/sessions/%2fsettings", "/sessions/a?token=secret",
@@ -59,6 +63,20 @@ describe("AgentsView destinations", () => {
 });
 
 describe("AgentsView access boundary", () => {
+  test("a native link selects retained evidence until the native import becomes available", async () => {
+    const f = fixture();
+    try {
+      const path = "/sessions/opencode/ses_retained?msg=last";
+      const fallback = await consume(await (await f.grant(path)).json(), f.origin);
+      expect(await fallback.response.text()).toContain(`/sessions/codex/${openCodeTraceID("ses_retained")}?msg=last`);
+      f.nativeAvailable = true;
+      const grant = await (await f.grant(path)).json();
+      expect(JSON.stringify(grant)).not.toContain(TOKEN);
+      const native = await consume(grant, f.origin);
+      expect(await native.response.text()).toContain(path);
+    } finally { f.stop(); }
+  });
+
   test("requires dashboard authorization and the exact origin before any host command", async () => {
     const f = fixture();
     try {

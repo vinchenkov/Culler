@@ -271,6 +271,13 @@ An agent container can reach the loopback addresses of the host. The token and t
 
 Each Collie container reads trace copies in `MC_HOME/agentsview/inspection` through a read-only mount at `/mc/traces`.
 Each inspection file links to a trace copy. The original session remains separate.
+OpenCode trace copies use native SQLite databases under `MC_HOME/agentsview/traces/opencode/`.
+Each copy includes committed write-ahead log records and contains only transcript tables with credential masks.
+The resident replaces each complete copy atomically and preserves the last valid copy after a failed refresh.
+The inspection status reports the copy state and the AgentsView import state separately.
+The runtime supplies `runner/shared/trace-read.ts` for Collie database reads and citations through native record identifiers.
+The resident retires each converted OpenCode export after the native import succeeds.
+AgentsView retains the export and its operator annotations in its trash.
 Each session folder has a `status.json` file with trace availability.
 
 The Collie container of a packet conversation reads the artifact files of its task through a read-only mount.

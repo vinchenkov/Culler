@@ -28,8 +28,8 @@ func TestMainTraceIdentityForEachHarness(t *testing.T) {
 			FormatCodex, "codex:" + codexRef, "/sessions/codex/" + codexRef + "?msg=last",
 		},
 		"opencode run": {
-			"opencode/catalog", "ses_fixture", FormatCodex,
-			"codex:7e556d01-59fc-8ae6-b393-64609e645994", "/sessions/codex/7e556d01-59fc-8ae6-b393-64609e645994?msg=last",
+			"opencode/catalog", "ses_fixture", FormatOpenCode,
+			"opencode:ses_fixture", "/sessions/opencode/ses_fixture?msg=last",
 		},
 		"binding with a slash in its name": {
 			"codex/team/chatgpt", codexRef,

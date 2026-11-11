@@ -101,6 +101,11 @@ func RunList(db *sql.DB, selection RunSelection) (any, error) {
 	}
 	for _, row := range out {
 		row["agentsview"] = agentsViewSession(row["binding"], row["native_session_ref"])
+		if binding, ok := row["binding"].(string); ok {
+			if filename, ok := row["trace_filename"].(string); ok {
+				row["trace_filename"] = trace.Filename(binding, filename)
+			}
+		}
 		id, _ := row["id"].(string)
 		row["wiki_update"] = updates[id]
 	}

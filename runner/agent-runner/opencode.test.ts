@@ -139,7 +139,7 @@ console.log(JSON.stringify({type:"step_finish",sessionID:"ses_delayed",part:{rea
   }
 });
 
-test("the adapter preserves JSON events, durable input, completion, and session continuation", async () => {
+test("the adapter registers the native database and preserves events, completion, and session continuation", async () => {
   const root = await mkdtemp(join(tmpdir(), "culler-opencode-adapter-")); roots.push(root);
   await mkdir(join(root, "session")); await mkdir(join(root, "workspace"));
   await writeFile(join(root, "access.json"), JSON.stringify(access));
@@ -161,6 +161,7 @@ test("the adapter preserves JSON events, durable input, completion, and session 
     const output = await new Response(child.stdout).text(); const error = await new Response(child.stderr).text();
     expect(await child.exited, error+output).toBe(0);
     const events = output.trim().split("\n").map(line => JSON.parse(line));
+    expect(events.find(event => event.event === "session-start")).toMatchObject({ session_id: "ses_fixture", native_file: "opencode/data/opencode/opencode.db" });
     expect(events.at(-1)).toMatchObject({ event: "turn-complete", status: "success" });
     expect(output).not.toContain(token);
     const invocation = JSON.parse(await readFile(join(root,"invocation.json"),"utf8"));
@@ -169,8 +170,5 @@ test("the adapter preserves JSON events, durable input, completion, and session 
     expect(await readFile(databasePath)).toEqual(originalDB);
     expect(await readFile(join(originalDir, "native.jsonl"))).toEqual(originalFile);
   }
-  const trace = (await readFile(join(root,"session/rollout-7e556d01-59fc-8ae6-b393-64609e645994.jsonl"),"utf8")).trim().split("\n").map(line => JSON.parse(line));
-  expect(trace.filter(line => line.type === "session_meta")).toHaveLength(1);
-  expect(trace.filter(line => line.type === "response_item" && line.payload.type === "function_call_output").map(line => line.payload.output)).toEqual([token, token]);
-  expect(trace.filter(line => line.payload.role === "user")).toHaveLength(2);
+  expect(await Bun.file(join(root,"session/rollout-7e556d01-59fc-8ae6-b393-64609e645994.jsonl")).exists()).toBe(false);
 });

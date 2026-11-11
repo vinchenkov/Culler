@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"mc/domain"
+	"mc/trace"
 )
 
 // Heartbeat is the pipeline runner's private lifecycle verb. It stamps the
@@ -103,9 +104,10 @@ func registerCollieSessionLocators(db *sql.DB, id *RunIdentity, sessionID, nativ
 	}
 	err := inTx(db, func(ctx context.Context, q Q) error {
 		var existingRef, existingFile sql.NullString
+		var binding string
 		err := q.QueryRowContext(ctx, `
-			SELECT native_session_ref, trace_filename FROM collie_sessions WHERE id = ?`, sessionID,
-		).Scan(&existingRef, &existingFile)
+			SELECT native_session_ref, trace_filename, binding FROM collie_sessions WHERE id = ?`, sessionID,
+		).Scan(&existingRef, &existingFile, &binding)
 		if err == sql.ErrNoRows {
 			return Domainf("unknown Collie session %q", sessionID)
 		}
@@ -114,7 +116,9 @@ func registerCollieSessionLocators(db *sql.DB, id *RunIdentity, sessionID, nativ
 		}
 		if existingRef.Valid || existingFile.Valid {
 			if existingRef.Valid && existingFile.Valid &&
-				existingRef.String == nativeRef && existingFile.String == file {
+				existingRef.String == nativeRef && (existingFile.String == file ||
+				(trace.Format(binding) == trace.FormatOpenCode && file == trace.OpenCodeDatabase &&
+					existingFile.String == "rollout-"+trace.OpenCodeID(nativeRef)+".jsonl")) {
 				return nil // same-value lifecycle retry is idempotent
 			}
 			return Domainf("Collie session %q locators are immutable once registered", sessionID)

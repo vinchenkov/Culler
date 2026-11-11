@@ -3,6 +3,7 @@ package verbs
 import (
 	"context"
 	"database/sql"
+	"mc/trace"
 )
 
 // EvaluationRecords captures the original records without authentication fields from run rows.
@@ -134,9 +135,9 @@ func EvaluationExpiredCases(db *sql.DB, task int64) (any, error) {
 }
 
 func EvaluationTrace(db *sql.DB, run string) (any, error) {
-	var session, trace sql.NullString
-	if err := db.QueryRow(`SELECT session_path,trace_filename FROM runs WHERE id=? AND role='packager'`, run).Scan(&session, &trace); err != nil {
+	var session, filename, binding sql.NullString
+	if err := db.QueryRow(`SELECT session_path,trace_filename,binding FROM runs WHERE id=? AND role='packager'`, run).Scan(&session, &filename, &binding); err != nil {
 		return nil, err
 	}
-	return map[string]any{"session_path": session.String, "trace_filename": trace.String}, nil
+	return map[string]any{"session_path": session.String, "trace_filename": trace.Filename(binding.String, filename.String)}, nil
 }

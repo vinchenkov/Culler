@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 
-/** AgentsView requires a UUID for a Codex-format trace. */
+export const OPENCODE_DATABASE = "opencode/data/opencode/opencode.db";
+
+/** The identifier of a retained Codex export. */
 export function openCodeTraceID(nativeRef: string): string {
   const bytes = createHash("sha256").update("culler-opencode-trace\0" + nativeRef).digest().subarray(0, 16);
   bytes[6] = (bytes[6]! & 15) | 128;

@@ -108,6 +108,8 @@ export interface AgentsViewClient {
   /** One imported session, or null when AgentsView did not import it. */
   session(id: string, signal: AbortSignal): Promise<AgentsViewSession | null>;
   rename(id: string, displayName: string, signal: AbortSignal): Promise<void>;
+  syncNative(id: string, signal: AbortSignal): Promise<void>;
+  retireExport(legacy: string, native: string, signal: AbortSignal): Promise<void>;
 }
 
 function sessionPath(id: string): string {
@@ -236,6 +238,24 @@ export function agentsViewClient(bind: string, options: AgentsViewClientOptions)
     },
     async rename(id, displayName, signal) {
       await (await success("PATCH", `${sessionPath(id)}/rename`, signal, { display_name: displayName })).body?.cancel();
+    },
+    async syncNative(id, signal) {
+      // The explicit session sync forces a parse, including edits with unchanged native timestamps.
+      const response = await success("POST", "/api/v1/sessions/sync", signal, { id, subagents: true });
+      const row = await response.json() as { id?: unknown; agent?: unknown };
+      if (row.id !== id || row.agent !== "opencode") throw new AgentsViewAnswer("AgentsView did not confirm the native OpenCode import.");
+    },
+    async retireExport(legacy, native, signal) {
+      if (!legacy.startsWith("codex:") || !native.startsWith("opencode:")) throw new Error("The trace retirement identities are invalid.");
+      const exists = await request("GET", sessionPath(legacy), signal);
+      if (exists.status === 404) { await exists.body?.cancel(); return; }
+      if (!exists.ok) throw new AgentsViewAnswer("AgentsView could not read the retained export.", exists.status);
+      const row = await exists.json() as { display_name?: string; deleted_at?: unknown };
+      if (row.deleted_at) return;
+      // Soft deletion preserves the original pins, notes, and stars in the AgentsView trash.
+      await (await success("PATCH", `${sessionPath(legacy)}/rename`, signal,
+        { display_name: `OpenCode export · ${row.display_name ?? legacy}` })).body?.cancel();
+      await (await success("DELETE", sessionPath(legacy), signal)).body?.cancel();
     },
   };
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
-import { appendFile, mkdir, readFile, rm } from "node:fs/promises";
+import { mkdir, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
-import { openCodeTraceID } from "../../shared/opencode-trace";
+import { OPENCODE_DATABASE } from "../../shared/opencode-trace";
 import { loadProviderAccess, writeProviderCA, type ProviderAccess } from "./provider-access";
 import { adapterFailure, loadDiagnosticRedactor, redactDiagnosticEvent } from "../diagnostics";
 import { openWikiServer, OPENWIKI_TOOLS } from "./openwiki";
@@ -103,14 +103,11 @@ async function main(): Promise<number> {
   const argv = [process.env.MC_OPENCODE_BIN ?? `${OPENCODE_ROOT}/node_modules/@opencode/cli-linux-arm64/bin/opencode`,
     "run", "--standalone", "--auto", "--format", "json", "--title", "Culler agent", ...(native ? ["--session", native] : [])];
   const prompt = await Bun.stdin.text();
-  let session: string | undefined, filename: string | undefined, reply: string | undefined, failed = false, complete = false;
+  let session: string | undefined, reply: string | undefined, failed = false, complete = false;
   const proc = Bun.spawn(argv, { cwd: workspace, env, stdin: new TextEncoder().encode(prompt), stdout: "pipe", stderr: "pipe" });
   const stop = () => proc.kill("SIGTERM");
   process.on("SIGTERM", stop); process.on("SIGINT", stop);
   const stderr = new Response(proc.stderr).text();
-  async function trace(type: string, payload: unknown) {
-    if (filename) await appendFile(join(directory!, filename), JSON.stringify({ timestamp: new Date().toISOString(), type, payload }) + "\n");
-  }
   let registration: Promise<void> | undefined;
   function registerSession(id: string): Promise<void> {
     if (registration) return registration;
@@ -119,11 +116,7 @@ async function main(): Promise<number> {
     }
     session = id;
     registration = (async () => {
-      const traceID = openCodeTraceID(id);
-      filename = `rollout-${traceID}.jsonl`;
-      if (!native) await trace("session_meta", { id: traceID, native_session_ref: id, cwd: workspace, originator: "OpenCode", cli_version: "2.2.5", source: "exec", timestamp: new Date().toISOString() });
-      await trace("response_item", { type: "message", role: "user", content: [{ type: "input_text", text: prompt }] });
-      emit({ event: "session-start", session_id: id, native_file: filename });
+      emit({ event: "session-start", session_id: id, native_file: OPENCODE_DATABASE });
     })();
     return registration;
   }
@@ -159,12 +152,9 @@ async function main(): Promise<number> {
         }
         if (event.text !== undefined) {
           reply = event.text;
-          await trace("response_item", { type: "message", role: "assistant", content: [{ type: "output_text", text: event.text }] });
           emit({ event: "model-response" }); emit({ event: "turn-text", text: safe(event.text) });
         }
         if (event.tool) {
-          await trace("response_item", { type: "function_call", name: event.tool.tool, call_id: event.tool.id, arguments: JSON.stringify(event.tool.state?.input) });
-          await trace("response_item", { type: "function_call_output", call_id: event.tool.id, output: event.tool.state?.output });
           emit({ event: "model-response" });
         }
       }

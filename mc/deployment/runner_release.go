@@ -40,6 +40,7 @@ var runnerReleaseFiles = []string{
 	"shared/network-error.ts",
 	"shared/provider-token.ts",
 	"shared/opencode-trace.ts",
+	"shared/trace-read.ts",
 	"shared/setup-error.ts",
 	"shared/model-response.ts",
 }

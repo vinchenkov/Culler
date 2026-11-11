@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"mc/dispatch"
+	"mc/trace"
 )
 
 func TestTraceSessionsListEachMainTraceWithItsDisplayName(t *testing.T) {
@@ -74,6 +75,45 @@ func TestTraceSessionsListEachMainTraceWithItsDisplayName(t *testing.T) {
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("trace sessions =\n%#v\nwant\n%#v", got, want)
+	}
+}
+
+func TestOpenCodeTracesRetainNativeIdentityAcrossExecutions(t *testing.T) {
+	db := dvSpine(t)
+	for _, role := range []string{"packager", "scribe"} {
+		dvExec(t, db, `INSERT INTO runs(id,tier,role,project,session_path,binding,native_session_ref,trace_filename)
+		 VALUES (?,'pipeline',?,'ws-test',?,'opencode/catalog',?,?)`, role, role, "sessions/"+role,
+			"ses_"+role, "rollout-"+trace.OpenCodeID("ses_"+role)+".jsonl")
+	}
+	hwSessionBound(t, db, "native-collie", "opencode/catalog")
+	legacy := "rollout-" + trace.OpenCodeID("ses_collie") + ".jsonl"
+	id := &RunIdentity{Tier: "collie", RunID: "native-collie"}
+	if _, err := RegisterSession(db, id, id.RunID, "ses_collie", legacy); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RegisterSession(db, id, id.RunID, "ses_collie", trace.OpenCodeDatabase); err != nil {
+		t.Fatal(err)
+	}
+	var stored string
+	if err := db.QueryRow(`SELECT trace_filename FROM collie_sessions WHERE id=?`, id.RunID).Scan(&stored); err != nil || stored != legacy {
+		t.Fatalf("retained locator changed: %q, %v", stored, err)
+	}
+	listed, err := TraceSessions(db)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rows := listed.(map[string]any)["sessions"].([]TraceSession)
+	if len(rows) != 3 {
+		t.Fatalf("native traces: %+v", rows)
+	}
+	for _, row := range rows {
+		if row.Format != "opencode" || row.TraceFilename != trace.OpenCodeDatabase || row.LegacyFilename == "" || row.AgentsViewSession != "opencode:"+row.NativeSessionRef {
+			t.Fatalf("native trace: %+v", row)
+		}
+	}
+	evaluation, err := EvaluationTrace(db, "packager")
+	if err != nil || evaluation.(map[string]any)["trace_filename"] != trace.OpenCodeDatabase {
+		t.Fatalf("evaluation native trace: %+v, %v", evaluation, err)
 	}
 }
 

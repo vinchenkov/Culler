@@ -605,6 +605,7 @@ func environmentOperationsTx(ctx context.Context, q Q, where string, args ...any
 		binding := o.RuntimeBinding.Harness + "/" + o.RuntimeBinding.ID
 		if trace.ValidFilename(binding, o.TraceFilename) {
 			o.Trace = agentsViewSession(binding, o.NativeSessionRef)
+			o.TraceFilename = trace.Filename(binding, o.TraceFilename)
 		}
 		ops = append(ops, o)
 	}

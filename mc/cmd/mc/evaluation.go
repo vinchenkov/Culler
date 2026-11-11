@@ -22,6 +22,7 @@ import (
 	"mc/deployment"
 	"mc/evalcase"
 	"mc/repository"
+	traceformat "mc/trace"
 	"mc/verbs"
 )
 
@@ -746,12 +747,21 @@ func captureEvaluationTrace(home string, s evalcase.Store, m *evalcase.Manifest)
 	if err != nil {
 		return err
 	}
+	return captureEvaluationTraceRecord(home, s, m, record)
+}
+
+func captureEvaluationTraceRecord(home string, s evalcase.Store, m *evalcase.Manifest, record map[string]any) error {
 	session, trace := evalText(record["session_path"]), evalText(record["trace_filename"])
 	if session == "" || trace == "" {
 		m.Absences["execution_trace"] = "The original Packager has no recorded execution trace."
 		return nil
 	}
 	root := filepath.Join(home, "sessions", m.Identity.Run)
+	artifact, mediaType := "execution/trace.jsonl", "application/x-ndjson"
+	if trace == traceformat.OpenCodeDatabase {
+		root = filepath.Join(home, "agentsview", "inspection", m.Identity.Run)
+		artifact, mediaType = "execution/trace.db", "application/vnd.sqlite3"
+	}
 	if session != "sessions/"+m.Identity.Run || filepath.IsAbs(trace) || filepath.Clean(trace) != trace || trace == ".." || strings.HasPrefix(trace, "../") {
 		return fmt.Errorf("The original trace path is outside its run.")
 	}
@@ -775,7 +785,7 @@ func captureEvaluationTrace(home string, s evalcase.Store, m *evalcase.Manifest)
 	if err != nil {
 		return err
 	}
-	if err = evalPut(s, m, "execution/trace.jsonl", body, "original Packager execution trace", "application/x-ndjson"); err != nil {
+	if err = evalPut(s, m, artifact, body, "Packager execution trace", mediaType); err != nil {
 		return err
 	}
 	delete(m.Absences, "commands")

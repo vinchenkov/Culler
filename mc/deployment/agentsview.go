@@ -105,7 +105,7 @@ func (p AgentsViewPin) validate() error {
 		if seen[agent] {
 			return fmt.Errorf("disabled_agents contains %q more than once", agent)
 		}
-		if agent == "claude" || agent == "codex" {
+		if agent == "claude" || agent == "codex" || agent == "opencode" {
 			return fmt.Errorf("disabled_agents must not contain %q, because AgentsView reads its trace copies", agent)
 		}
 		seen[agent] = true
@@ -132,6 +132,7 @@ type AgentsViewPaths struct {
 	ClaudeTraceRoot   string
 	ClaudeTraceCopies string
 	CodexTraceRoot    string
+	OpenCodeTraceRoot string
 	StdoutLog         string
 	StderrLog         string
 	Health            string
@@ -152,6 +153,7 @@ func AgentsViewPathsFor(home string) AgentsViewPaths {
 		ClaudeTraceRoot:   claude,
 		ClaudeTraceCopies: filepath.Join(claude, "culler"),
 		CodexTraceRoot:    filepath.Join(root, "traces", "codex", "sessions"),
+		OpenCodeTraceRoot: filepath.Join(root, "traces", "opencode"),
 		StdoutLog:         filepath.Join(home, "logs", "agentsview.stdout.log"),
 		StderrLog:         filepath.Join(home, "logs", "agentsview.stderr.log"),
 		Health:            filepath.Join(home, "health", "agentsview.json"),
