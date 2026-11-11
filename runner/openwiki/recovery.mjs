@@ -4,7 +4,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { createRepositorySourceSnapshot } from "./agent/utils.js";
+import { createRepositorySourceSnapshot, getRepositoryCommitContext } from "./agent/utils.js";
 import { ClaimsStore } from "./claims/brains/code/store.js";
 import { normalizeWikiPagePath, toClaimsSidecarRelativePath } from "./claims/brains/code/paths.js";
 import { readRepositoryPageManifest } from "./generation/page-manifest.js";
@@ -86,7 +86,11 @@ export async function recoveryWindows(root, ignore, pages) {
     const entry = manifest.pages[page];
     const saved = record.pages[page];
     const baseline = entry?.gitHead;
-    if (!comparisons.has(baseline)) comparisons.set(baseline, await compareGitSource(root, baseline, ignore));
+    if (!comparisons.has(baseline)) {
+      const result = await compareGitSource(root, baseline, ignore);
+      // The commit messages give the intent of the source changes after a readable baseline.
+      comparisons.set(baseline, { ...result, commits: result.known ? await getRepositoryCommitContext(root, ignore, baseline) : [] });
+    }
     const comparison = comparisons.get(baseline);
     const previous = record.sources[saved?.sourceFingerprint];
     let changedPaths;
@@ -102,7 +106,7 @@ export async function recoveryWindows(root, ignore, pages) {
       changedPaths = [];
       basis = "unavailable";
     }
-    const comparisonView = { ...(baseline ? { baseGitHead: baseline } : {}), changedPaths,
+    const comparisonView = { ...(baseline ? { baseGitHead: baseline } : {}), changedPaths, commits: comparison.commits,
       fullReview: basis === "unavailable", basis, ...(comparison.known ? {} : { historyIssue: comparison.reason }) };
     const key = JSON.stringify(comparisonView);
     if (!windows.has(key)) windows.set(key, { pages: [], ...comparisonView });

@@ -6,8 +6,8 @@ import { dirname, join, resolve, posix } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const execute = promisify(execFile);
-export const VERSION = "0.7.0";
-export const REVISION = "sha512-Tw3AZE9eEmB9P8078lWCfjtrd7Xrl2rwBKfX5suie6sUH3gPLzEeGVIIugGtg1fnWfyJiVcqmw6WbXzujA1N7A==";
+export const VERSION = "0.9.0";
+export const REVISION = "sha512-ARArQcKjvBWD56cAl0L5SGNmPfrE957zTPVvY+Hi1wVqBg7FqWWeqquPA4+fkA+iHAWclCScD9Snu7jUB9DCHw==";
 const STATE = "openwiki/.culler-run.json";
 const LIFECYCLE_TOOLS = new Map([
   ["openwiki_begin", "Start or resume an OpenWiki update."],
@@ -224,7 +224,10 @@ export async function createIntegration({ root, inputCommit, receiptPath, upstre
     } finally { await rm(temporary, { force: true }); }
     return receipt;
   }
-  const tools = manager.tools().filter((tool) => LIFECYCLE_TOOLS.has(tool.name)).map((tool) => ({ ...tool, description: LIFECYCLE_TOOLS.get(tool.name), handle: async (input) => {
+  const tools = manager.tools().filter((tool) => LIFECYCLE_TOOLS.has(tool.name)).map((tool) => ({ ...tool, description: LIFECYCLE_TOOLS.get(tool.name),
+    // A deferred Claim issue leaves the update incomplete, and completion requires a complete update.
+    ...(tool.name === "openwiki_submit_plan" ? { schema: tool.schema.omit({ deferUnplannedClaimIssues: true }) } : {}),
+    handle: async (input) => {
     if (busy) throw new Error("An OpenWiki operation is active.");
     busy = true;
     try {
@@ -264,6 +267,7 @@ export async function createIntegration({ root, inputCommit, receiptPath, upstre
       if (!state) throw new Error("Begin the OpenWiki run before page work.");
       await checkDocuments();
       if (tool.name === "openwiki_submit_plan") {
+        if (input.deferUnplannedClaimIssues) throw new Error("A wiki update reviews each Claim issue. Submit the plan without deferUnplannedClaimIssues.");
         for (const name of [...(input.pages ?? []).map((page) => page.path), ...(input.deletePages ?? [])]) {
           const page = posix.normalize(name.startsWith("/openwiki/") ? name.slice(1) : name.startsWith("openwiki/") ? name : `openwiki/${name}`);
           if (state.documents[page]) throw new Error("A generated page plan cannot revise a project document.");

@@ -63,11 +63,15 @@ test("the server exposes six tools and points to the shipped procedure", async (
   try {
     await server.connect(serverTransport);
     await client.connect(clientTransport);
-    const names = (await client.listTools()).tools.map((tool) => tool.name);
+    const tools = (await client.listTools()).tools;
+    const names = tools.map((tool) => tool.name);
     expect(names).toEqual([
       "openwiki_begin", "openwiki_submit_plan", "openwiki_next_page",
       "openwiki_inspect_page_claims", "openwiki_submit_page", "openwiki_finish",
     ]);
+    const planSchema = tools.find((tool) => tool.name === "openwiki_submit_plan")!.inputSchema;
+    expect(Object.keys(planSchema.properties ?? {}).sort()).toEqual(["deletePages", "pages", "runId"]);
+    expect(planSchema.additionalProperties).toBe(false);
     const instructions = client.getInstructions() ?? "";
     const pointer = instructions.match(/~\/\.agents\/skills\/([a-z-]+)\/SKILL\.md/);
     expect(pointer).not.toBeNull();
@@ -410,6 +414,46 @@ test("an absent commit uses the source inventory and detects added, edited, and 
   expect(begin.pageUpdateWindows.every((window) => window.basis === "source_inventory" && !window.fullReview && window.historyIssue)).toBe(true);
   expect(begin.changedPaths.sort()).toEqual(["AGENTS.md", "new.txt", "storage.txt"]);
   expect([...new Set(begin.claimIssues.map((issue) => issue.page))]).toEqual(["/openwiki/storage.md"]);
+}, 30000);
+
+test("a begin response limits long lists, keeps exact totals, and gives the commit messages", async () => {
+  const { root } = await recoveryFixture();
+  for (let index = 0; index < 205; index++) await put(root, `archive/report-${String(index).padStart(3, "0")}.txt`, `The archive keeps report ${index}.\n`);
+  await git(root, "add", ".");
+  await git(root, "commit", "--quiet", "-m", "Add the report archive", "-m", "The archive holds each accepted report.");
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.changedPathCount).toBe(205);
+  expect(begin.changedPaths).toHaveLength(200);
+  expect(begin.changedPathsTruncated).toBe(true);
+  expect(begin.pageUpdateWindows).toHaveLength(1);
+  const [window] = begin.pageUpdateWindows;
+  expect(window.basis).toBe("source_inventory");
+  expect(window.changedPathCount).toBe(205);
+  expect(window.changedPaths).toHaveLength(200);
+  expect(window.changedPathsTruncated).toBe(true);
+  expect(window.commits.map(({ subject, body }) => ({ subject, body }))).toEqual([
+    { subject: "Add the report archive", body: "The archive holds each accepted report." },
+  ]);
+  const listed = (await git(root, "diff", "--name-only", `${window.baseGitHead}..HEAD`)).split("\n").filter((path) => path && !path.startsWith("openwiki/"));
+  expect(listed).toHaveLength(205);
+  expect(begin.claimIssueCount).toBe(begin.claimIssues.length);
+  expect(begin.claimIssuesTruncated).toBe(false);
+  expect(begin.claimIssuePages).toEqual([...new Set(begin.claimIssues.map((issue) => issue.page))].sort());
+}, 60000);
+
+test("a page plan cannot defer a Claim issue", async () => {
+  const { root } = await recoveryFixture();
+  await put(root, "openwiki/storage.md", await readFile(join(root, "openwiki/storage.md"), "utf8") + "\nThe operator added this paragraph.\n");
+  await commit(root);
+  const provider = await createIntegration({ root, upstream });
+  const begin = await call(provider, "openwiki_begin", { root, mode: "update" });
+  expect(begin.claimIssuePages).toEqual(["/openwiki/storage.md"]);
+  await expect(call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [], deferUnplannedClaimIssues: true }))
+    .rejects.toThrow("A wiki update reviews each Claim issue");
+  await call(provider, "openwiki_submit_plan", { runId: begin.runId, pages: [] });
+  expect(await completeRecoveryJobs(provider, root, begin.runId)).toEqual(["/openwiki/storage.md"]);
+  expect(JSON.parse(await readFile(join(root, "openwiki/.last-update.json"), "utf8")).status).toBe("complete");
 }, 30000);
 
 test("unknown history requires only pages without a source inventory", async () => {

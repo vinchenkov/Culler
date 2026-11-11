@@ -1,5 +1,5 @@
 {
-  "openwiki_version": "0.7.0",
+  "openwiki_version": "0.9.0",
   "libraries": [
     {
       "package": "force-graph",

@@ -43,6 +43,9 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - When an update changes the release catalog or the OpenCode version, the update confirmation names each enabled agent profile whose model or effort level only a live model supplies. The update starts a refresh of the live models, and a failed refresh stops the work of such a profile until repair in the dashboard.
 - The Configure step of the Agent profiles panel shows the OpenCode download as a card with a progress indicator, the current stage, and the statement that the model test waits for the download.
 - A background update of the Agent profiles panel changes only the elements whose content changed. Each control keeps its focus, its entered text, its selection, its scroll position, and its open list.
+- Culler uses OpenWiki 0.9.0.
+- The begin response of a wiki update gives the newest commit messages after the last review of each page group. It limits the lists of changed source paths and Claim issues and gives their exact numbers, and the Scribe lists the remaining paths through Git.
+- A wiki update reviews each Claim issue. Culler rejects a page plan that defers one.
 
 ### Known limits
 

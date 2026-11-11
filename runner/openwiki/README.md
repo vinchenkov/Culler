@@ -1,6 +1,6 @@
 # OpenWiki integration
 
-Culler uses OpenWiki 0.7.0 through its six host tools.
+Culler uses OpenWiki 0.9.0 through its six host tools.
 The package lock identifies the complete dependency set and package integrity.
 The runner image installs that set without package scripts.
 Node 24.18.0 supplies the runtime.
@@ -95,6 +95,10 @@ OpenWiki uses a saved source inventory when one exists.
 Without an inventory, a successful Git comparison supplies the changed source paths.
 When neither comparison works, only the affected page group requires a full review.
 The Scribe assesses added source files even when no existing Claim cites them.
+
+A begin response holds a limited number of changed source paths and Claim issues, together with their exact numbers.
+Each page group with a known Git comparison also holds the newest commit messages after its baseline.
+Each Claim issue receives a review in the same wiki update, so the integration rejects a page plan that defers one.
 
 The Scribe inspects the Claims after its final page edit.
 Submission rejects a subsequent page or Claim edit.

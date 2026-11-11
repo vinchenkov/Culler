@@ -18,8 +18,8 @@ import (
 	"mc/repository"
 )
 
-const Version = "0.7.0"
-const Revision = "sha512-Tw3AZE9eEmB9P8078lWCfjtrd7Xrl2rwBKfX5suie6sUH3gPLzEeGVIIugGtg1fnWfyJiVcqmw6WbXzujA1N7A=="
+const Version = "0.9.0"
+const Revision = "sha512-ARArQcKjvBWD56cAl0L5SGNmPfrE957zTPVvY+Hi1wVqBg7FqWWeqquPA4+fkA+iHAWclCScD9Snu7jUB9DCHw=="
 const maxWikiBytes = 64 << 20
 
 type Completion struct {

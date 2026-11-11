@@ -4,6 +4,6 @@
   "type": "module",
   "dependencies": {
     "entities": "6.0.1",
-    "openwiki": "0.7.0"
+    "openwiki": "0.9.0"
   }
 }

@@ -69,11 +69,15 @@ import { randomUUID }`],
     const windows = [];
     const baselines = [...pagesByBaseline.keys()].sort(compareCodeUnits);
     for (const baseline of baselines) {
+        const fullReview = baseline.length === 0 || !(await isReadableGitCommit(root, baseline));
         windows.push({
             ...(baseline ? { baseGitHead: baseline } : {}),
             pages: [...(pagesByBaseline.get(baseline) ?? [])].sort(compareCodeUnits),
             changedPaths: await getRepositoryChangedPaths(root, ignore, baseline || undefined),
-            fullReview: baseline.length === 0,
+            commits: fullReview
+                ? []
+                : await getRepositoryCommitContext(root, ignore, baseline),
+            fullReview,
         });
     }
     return windows;
@@ -91,12 +95,23 @@ import { randomUUID }`],
     if (!source.gitHead)
         return;
     const manifest = await readRepositoryPageManifest(root);
+    // Pages usually share a baseline, and every Git lookup starts a process.
+    const unchangedByBaseline = new Map();
     for (const page of [...pages].sort(compareCodeUnits)) {
         const entry = manifest.pages[page];
         if (!entry?.gitHead || entry.gitHead === source.gitHead)
             continue;
-        const changedPaths = await getRepositoryChangedPaths(root, ignore, entry.gitHead);
-        if (changedPaths.length > 0)
+        let unchanged = unchangedByBaseline.get(entry.gitHead);
+        if (unchanged === undefined) {
+            // An unreadable baseline (shallow clone, rewritten history) hides which
+            // paths changed, so the page keeps its checkpoint and gets reviewed.
+            unchanged =
+                (await isReadableGitCommit(root, entry.gitHead)) &&
+                    (await getRepositoryChangedPaths(root, ignore, entry.gitHead))
+                        .length === 0;
+            unchangedByBaseline.set(entry.gitHead, unchanged);
+        }
+        if (!unchanged)
             continue;
         await recordRepositoryPageCompletion(root, page, source, entry.completedBy, entry.completedRunId);
     }

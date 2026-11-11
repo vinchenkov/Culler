@@ -7,21 +7,21 @@ import { createHash } from "node:crypto";
 const originalHashes = {
   "generation/page-manifest.js": "e375f4fda0da32b503f6e30f2b3ded38cff59aec6eb91fbc4d31aaa1ff0ec496",
   "claims/brains/code/preflight.js": "e7924cf4c7303759d754f849f2c0a020bb239ed88c42545867317f4c273892f1",
-  "integrations/mcp/server.js": "068551c0918ca74fd7ad3fea0efff18612ab11e54e5cf814f51a3222200974bd",
-  "agent/utils.js": "e5f7b8840cfaf6ab640c7e521bd5edcbe3fad5751d8e713da4913ff9af88223e",
+  "integrations/mcp/server.js": "0f57b7840465b1800c092f3d5c73b360c453055df7aeb67bcc73c717a01d9ffb",
+  "agent/utils.js": "5f8a6af94959826d936468785d99ce6dbaeacd26d6ed097c1cebca43fb38db8d",
   "claims/evidence/repository/resolver.js": "c74185081e7d7e61cb50a6fa2e8aef48de3780622f283c0d1e7f0b379927133d",
   "claims/evidence/repository/resource.js": "0a143f8cec906fa5d36a7f3c625f5fbc0e99dc515f5586d45eda326d8e560a63",
-  "generation/repository-run.js": "e7876e5cb975ffad00817078b85052bd8d8081a94fa87110013a2804f902afd8",
+  "generation/repository-run.js": "733b54287f13e36f2c29488e12db92a4655ecba24617e1c1c5fa2def4a5d1bd4",
   "claims/brains/code/store.js": "639274171a320ba6a8d7e088621583c20cdb2553e70643656652c2500ac4dafa",
   "okf/index-sync.js": "979afafdf360a4ca7eb9578adf71f1cfe044b8248119b3b8816cdcf0744d764a",
-  "agent/wiki-link-validator.js": "650b08fa773a4926d348a877de5e694cd8d4f3ff7cdc7907a59cd54038e1d86f",
+  "agent/wiki-link-validator.js": "0ce650934f06ae72731fabfb4fb4bc2123757ebf5039bdc6d66d62dba790e6bd",
   "mermaid/wiki.js": "1c640e2d4d3b7e5f8fed9afdc40370815e1d25ed3ff9e5fe32fad345b2026db2",
 };
 const patchMarker = "// culler-openwiki-patch\n";
 
 export async function patchUpstream(root) {
   const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
-  if (manifest.version !== "0.7.0") throw new Error("The OpenWiki package version requires compatibility tests.");
+  if (manifest.version !== "0.9.0") throw new Error("The OpenWiki package version requires compatibility tests.");
   const patches = [
     ["generation/page-manifest.js", []],
     ["claims/brains/code/preflight.js", []],

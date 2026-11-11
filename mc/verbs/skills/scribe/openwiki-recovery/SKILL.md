@@ -11,6 +11,11 @@ A Claim record is the file under `openwiki/.claims/` that holds the Claims of on
 ## Required review
 
 The `openwiki_begin` response reports Claim issues in `claimIssues`.
+OpenWiki limits the length of `claimIssues`, and `claimIssueCount` gives the exact number of Claim issues.
+`claimIssuePages` names each page with a Claim issue, and OpenWiki adds a page job for each of these pages.
+When `claimIssuesTruncated` is `true`, a page in `claimIssuePages` can have no `claimIssues` entry.
+Such a page without a file is an absent generated page. Each other such page requires the review of a changed page.
+
 Use each `claimIssues` entry to select the required review:
 
 - Review a changed page or Claim record against the current source evidence for that page.
