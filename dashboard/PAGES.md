@@ -93,10 +93,9 @@ The Review badge counts the selected Project's live packets.
 AgentsView is the trace viewer.
 It shows the traces of pipeline runs, Collie sessions, and setup agent operations.
 The OpenWiki viewer shows the wiki of one Project.
-The header shows two links after the page tabs:
-
-- **Wiki** opens the OpenWiki viewer of the selected Project.
-- **Traces** opens the list of all traces in AgentsView, including one-shot and automated sessions.
+The header shows the **Traces** link after the page tabs.
+The **Traces** link opens the list of all traces in AgentsView, including one-shot and automated sessions.
+Each entry of the Project selector shows a **Wiki** link that opens the OpenWiki viewer of that Project.
 
 A viewer link opens a new browser tab.
 A viewer link is separate from the page tabs. Its appearance differs from the page tabs.

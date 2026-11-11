@@ -137,11 +137,10 @@ describe("the link attributes", () => {
     });
   });
 
-  test("the header links start in the state before the status response", () => {
-    expect(headerAnchor("header-wiki")).toEqual({
-      class: "viewer-link", id: "header-wiki", "data-testid": "header-wiki",
-      ...present(viewerLinkAttributes("Wiki", { href: null, title: "Loading wiki status…" })),
-    });
+  test("the header shows only the Traces viewer link before the status response", () => {
+    const html = readFileSync(join(import.meta.dir, "index.html"), "utf8");
+    expect([...html.matchAll(/<a\s[^>]*\bclass="viewer-link"[^>]*\bid="([^"]*)"/g)].map((match) => match[1]))
+      .toEqual(["header-traces"]);
     expect(headerAnchor("header-traces")).toEqual({
       class: "viewer-link", id: "header-traces", "data-testid": "header-traces",
       ...present(viewerLinkAttributes("Traces", tracesLink(null, true))),

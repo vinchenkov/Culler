@@ -675,9 +675,8 @@ function projectWikiLink(id) {
     { pending: viewersPending(), registryError: state.pauseError });
 }
 
-/** The header links follow the selected Project and the status response. */
+/** The Traces link follows the status response. */
 function renderViewerLinks() {
-  applyViewerLink($("header-wiki"), projectWikiLink(state.project));
   applyViewerLink($("header-traces"), tracesLink(systemView.viewers, viewersPending()));
 }
 

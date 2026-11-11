@@ -174,33 +174,19 @@ async function noHorizontalScroll() {
   expect(await smoke.page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 }
 
-test("the header links open the wiki and the traces in a new tab", async () => {
+test("the header shows only the Traces viewer link and opens the traces in a new tab", async () => {
   const { page } = smoke;
   await hrefIs("header-traces", tracesHref());
-  await hrefIs("header-wiki", wikiHref());
-  for (const [testid, name] of [["header-wiki", "Wiki"], ["header-traces", "Traces"]] as const) {
-    const link = page.getByTestId(testid);
-    expect(await link.evaluate((node) => node.tagName)).toBe("A");
-    expect(await link.evaluate((node) => node.classList.contains("tab") || node.hasAttribute("data-page") || node.closest("nav") !== null)).toBe(false);
-    const state = await linkState(link);
-    expect(state).toMatchObject({ target: "_blank", rel: "noopener noreferrer", disabled: null, label: `${name}, opens a new tab` });
-    expect(state.href).not.toContain(SMOKE_TOKEN);
-    expect((await link.innerText()).trim()).toBe(`${name} ↗`);
-  }
-  expect(await page.getByTestId("header-wiki").getAttribute("title")).toBe("Wiki of Viewer Alpha at commit 0123456");
+  expect(await page.getByTestId("viewer-links").getByRole("link").allTextContents()).toEqual(["Traces ↗"]);
+  const link = page.getByTestId("header-traces");
+  expect(await link.evaluate((node) => node.tagName)).toBe("A");
+  expect(await link.evaluate((node) => node.classList.contains("tab") || node.hasAttribute("data-page") || node.closest("nav") !== null)).toBe(false);
+  const state = await linkState(link);
+  expect(state).toMatchObject({ target: "_blank", rel: "noopener noreferrer", disabled: null, label: "Traces, opens a new tab" });
+  expect(state.href).not.toContain(SMOKE_TOKEN);
+  expect((await link.innerText()).trim()).toBe("Traces ↗");
   expect(await page.getByTestId("header-traces").getAttribute("title")).toBe(TRACES_TITLE);
   expect(await page.getByTestId("header-traces").getAttribute("href")).not.toContain(smoke.agentsviewToken);
-
-  const wiki = await openTab(page.getByTestId("header-wiki"));
-  try {
-    await wiki.waitForSelector("body[data-ready]", { timeout: 15000 });
-    expect(wiki.url()).toBe(wikiHref());
-    expect(await wiki.getByRole("heading", { name: "Architecture" }).isVisible()).toBe(true);
-    expect(await wiki.evaluate(() => [window.opener, document.referrer])).toEqual([null, ""]);
-    expect(await wiki.evaluate(() => [...document.scripts].map((script) => new URL(script.src).pathname)))
-      .toEqual([...WIKI_LIBRARIES.map((library) => `/${smoke.wikiKey}/_openwiki/${library.file}`), `/${smoke.wikiKey}/viewer-alpha/client.js`]);
-    await wiki.screenshot({ path: join(evidence, "wiki-tab.png") });
-  } finally { await wiki.close(); }
 
   const traces = await openTab(page.getByTestId("header-traces"));
   try {
@@ -259,17 +245,24 @@ test("the Project menu gives each Project its wiki link", async () => {
   // The list closes after the link opens the wiki.
   const wiki = await openTab(alpha);
   try {
+    await wiki.waitForSelector("body[data-ready]", { timeout: 15000 });
     expect(wiki.url()).toBe(wikiHref());
+    expect(await wiki.getByRole("heading", { name: "Architecture" }).isVisible()).toBe(true);
+    expect(await wiki.evaluate(() => [window.opener, document.referrer])).toEqual([null, ""]);
+    expect(await wiki.evaluate(() => [...document.scripts].map((script) => new URL(script.src).pathname)))
+      .toEqual([...WIKI_LIBRARIES.map((library) => `/${smoke.wikiKey}/_openwiki/${library.file}`), `/${smoke.wikiKey}/viewer-alpha/client.js`]);
+    await wiki.screenshot({ path: join(evidence, "wiki-tab.png") });
   } finally { await wiki.close(); }
+  expect(externalRequests).toEqual([]);
   await page.getByTestId("project-listbox").waitFor({ state: "hidden" });
   await selectProject(smoke, "viewer-beta");
-  await hrefIs("header-wiki", null);
-  expect(await linkState(page.getByTestId("header-wiki"))).toMatchObject({
+  expect(await linkState(page.getByTestId("project-wiki-viewer-beta"))).toMatchObject({
+    href: null,
     disabled: "true", tabindex: "0",
     title: "Viewer Beta has no wiki export. Culler exports the wiki when the accepted commit holds an openwiki/ folder.",
   });
   await selectProject(smoke, "viewer-alpha");
-  await hrefIs("header-wiki", wikiHref());
+  await hrefIs("project-wiki-viewer-alpha", wikiHref());
 }, 30000);
 
 test("each run with a main trace links to its AgentsView session", async () => {
@@ -364,7 +357,7 @@ test("an unavailable AgentsView keeps each trace link in place and states the re
     await page.screenshot({ path: join(evidence, "packet-runs-unavailable.png") });
     await closeReader();
     // The wiki does not depend on AgentsView.
-    expect(await page.getByTestId("header-wiki").getAttribute("href")).toBe(wikiHref());
+    expect(await page.getByTestId("project-wiki-viewer-alpha").getAttribute("href")).toBe(wikiHref());
     await page.screenshot({ path: join(evidence, "header-unavailable.png") });
   } finally {
     smoke.agentsview.answering = true;
@@ -405,12 +398,10 @@ test("the viewer links fit a narrow window", async () => {
   try {
     await page.getByTestId("tab-board").click();
     await noHorizontalScroll();
-    for (const testid of ["header-wiki", "header-traces"]) {
-      const box = await page.getByTestId(testid).boundingBox();
-      expect(box).not.toBeNull();
-      expect(box!.x).toBeGreaterThanOrEqual(0);
-      expect(box!.x + box!.width).toBeLessThanOrEqual(NARROW.width);
-    }
+    const box = await page.getByTestId("header-traces").boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x).toBeGreaterThanOrEqual(0);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(NARROW.width);
     await page.screenshot({ path: join(evidence, "header-narrow.png") });
 
     await page.getByTestId("project-button").click();
