@@ -1,4 +1,0 @@
-{"stage": "verify-resources", "type": "helper-install-progress"}
-{"stage": "backup", "type": "helper-install-progress"}
-{"stage": "copy", "type": "helper-install-progress"}
-{"backup": "/private/tmp/culler-performance/20261011-mac-command/helper-install-verified.json.original", "record": "/private/tmp/culler-performance/20261011-mac-command/helper-install-verified.json", "sha256": "749be0b65d4895e9518c8c9c3f59d4dd3f04453ce0f091b6426f18b8f3360074", "status": "verified", "type": "helper-install-result"}

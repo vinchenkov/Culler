@@ -49,15 +49,13 @@ runner/image/mc-prod-bin
 
 DRIVER.md
 
-# Verification artifacts (verify-behavior): screenshots and video are large,
-# they are re-made by re-running the evidence dir's own script, and they are
-# read from disk beside the report that cites them. The report, the script
-# and the console-problem log stay tracked; the recordings do not.
-.tracking/**/evidence/**/*.png
-.tracking/**/evidence/**/*.jpg
-.tracking/**/evidence/**/*.jpeg
-.tracking/**/evidence/**/*.webm
-.tracking/**/evidence/**/*.mp4
+# Local agent permissions and task reports.
+/.claude/settings.local.json
+/.tracking/
+/work/
+
+# Preserve tracked benchmark evidence. Ignore new benchmark output.
+/performance/results/
 
 # The image build stages the exact runner release here.
 runner/runtime-source/

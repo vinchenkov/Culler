@@ -340,29 +340,9 @@ Clock differences and delays before Linux wrapper entry remain separate limits.
 The netdb overlay changes when exported tables receive their contents.
 It remains an experiment until a product change preserves the required dependency behavior.
 
-## Historical validation
+## Historical source and cleanup
 
-These checks cover the original experimental source and benchmark tools.
-They do not validate the later product changes that exclude the deadline and library experiments.
-
-The dashboard check passes all 784 tests across 37 files.
-The [dashboard log](results/2026-10-11/dashboard-check.log) retains that result.
-The shared component check passes all 93 tests across ten files with authorized host access.
-The [authorized shared log](results/2026-10-11/shared-check-authorized.log) retains that result.
-The full `mc/check.sh` check passes, as the retained [check log](results/2026-10-11/mc-check.log) records.
-
-The restricted shared check fails four tests because the sandbox denies required host operations.
-One failure reports a refused listen operation on the loopback address.
-Three failures report operation-not-permitted errors when the tests start `ps` to inspect descendants.
-The [restricted shared log](results/2026-10-11/shared-check.log) retains those exact failures.
-
-The first full `mc/check.sh` attempt returns a failure with truncated output.
-That attempt remains inconclusive because its cause is unknown.
-The repeated check passes and retains its complete output.
 The [candidate source hashes](results/2026-10-11/candidate-sources.json) identify the original experimental source.
-
-The benchmark checks pass six Bun tests with 34 assertions and 18 Python tests.
-The [Bun log](results/2026-10-11/performance-bun-check.log) and [Python log](results/2026-10-11/performance-python-check.log) retain those results.
 
 The cleanup script removes the exact scratch helper and volume after all experiments end.
 The [cleanup record](results/2026-10-11/fixture-cleanup.jsonl) retains the removal result.
