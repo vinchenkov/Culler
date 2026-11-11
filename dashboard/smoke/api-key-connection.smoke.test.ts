@@ -170,6 +170,59 @@ test("OpenCode search, catalog models, download retry, and model test retain the
   await page.getByTestId("profile-create").waitFor();
 }, 40000);
 
+test("Continue opens the Configure step with the pending download before the connection save completes", async () => {
+  const { page } = smoke;
+  await page.setViewportSize({ width: 1280, height: 900 });
+  const provider = { id: "opencode:fixture", name: "Fixture provider", harness: "opencode", kind: "opencode-api-key", catalog_entry: "fixture", address: "https://api.fixture.invalid/v1", website: "https://fixture.invalid/docs", web_search: true };
+  const data: any = { revision: "save-revision", providers: [provider], integrations: [], connections: [], profiles: [] };
+  const download = { operation_id: "opencode-download", kind: "opencode_download", status: "running", message: "Download OpenCode and its web search plugin." };
+  const saves: Array<(reject: boolean) => Promise<void>> = [];
+  await page.route("**/api/agent-profiles", route => route.fulfill({ json: data }));
+  await page.route("**/api/agent-profiles/connection-save", route => { saves.push(async reject => {
+    if (reject) return route.fulfill({ status: 400, json: { error: { code: "domain-rejection", message: "The fixture provider rejected the key." } } });
+    data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider API key", access_status: "connected", authorization_id: "fixture-authorization" }];
+    await route.fulfill({ json: { ...data, opencode: download, connection_id: "fixture-connection" } });
+  }); });
+  await page.route("**/api/agent-profiles/models", route => route.fulfill({ json: { connection_id: "fixture-connection", web_search: true, source: "release_catalog", models: [
+    { id: "fixture-k3", name: "Fixture K3", context: 262144, input_price: 0.5, output_price: 1.8, effort_levels: [], effort_support_known: true },
+  ] } }));
+  await page.route("**/api/agent-profiles/operation-status", route => route.fulfill({ json: download }));
+  await gotoReady(smoke);
+  await page.getByTestId("tab-pipeline").click();
+  await page.getByRole("button", { name: "Model configuration", exact: true }).click();
+  await page.getByTestId("profile-create").click();
+  await page.getByTestId("profile-use-provider").click();
+  await page.getByTestId("profile-provider-opencode:fixture").click();
+  await page.getByTestId("profile-api_key").fill("synthetic-open-key");
+  const current = () => page.locator('.profile-step[aria-current="step"]').innerText();
+
+  // A rejected save returns to the Connect step with the error and the key.
+  await page.getByTestId("profile-key-connect").click();
+  await page.waitForFunction(() => document.querySelector('.profile-step[aria-current="step"]')?.textContent?.includes("Configure"));
+  await page.getByTestId("profile-opencode-progress").waitFor();
+  while (!saves.length) await page.waitForTimeout(20);
+  await saves.shift()!(true);
+  await page.getByTestId("profile-error").waitFor();
+  expect(await page.getByTestId("profile-error").innerText()).toContain("The fixture provider rejected the key.");
+  expect(await current()).toContain("Connect");
+  expect(await page.getByTestId("profile-api_key").inputValue()).toBe("synthetic-open-key");
+
+  // An accepted save continues on the Configure step that opened before the save completed.
+  await page.getByTestId("profile-key-connect").click();
+  await page.getByTestId("profile-opencode-progress").waitFor();
+  expect(await current()).toContain("Configure");
+  expect(await page.getByTestId("profile-notice").innerText()).toBe("Culler saves the connection.");
+  expect(await page.getByTestId("profile-opencode-stage").innerText()).toBe("OpenCode waits for the download.");
+  expect(await page.locator('[data-testid="profile-model"] option').first().innerText()).toBe("Loading models…");
+  await page.screenshot({ path: evidencePath("opencode-connection-save-pending.png") });
+  while (!saves.length) await page.waitForTimeout(20);
+  await saves.shift()!(false);
+  await page.getByTestId("profile-model").locator('option[value="fixture-k3"]').waitFor({ state: "attached" });
+  expect(await page.getByTestId("profile-notice").innerText()).toBe("The connection is saved. Other agent profiles can also use this connection.");
+  expect(await page.getByTestId("profile-opencode-stage").innerText()).toBe("Download OpenCode and its web search plugin.");
+  expect(await page.getByTestId("profile-opencode-progress").count()).toBe(1);
+}, 30000);
+
 test("the OpenCode download status and a refresh of the live models keep the Model control, its focus, and its selection", async () => {
   const { page } = smoke;
   await page.setViewportSize({ width: 1280, height: 900 });

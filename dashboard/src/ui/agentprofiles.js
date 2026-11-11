@@ -687,9 +687,10 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       if (generation === serial && dialog.open) render();
     }, DOWNLOAD_INTERVAL);
   }
+  // The connection save starts an absent download, so the form shows that download as pending during the save.
   function downloadNode(source) {
     if (source?.harness !== "opencode") return null;
-    const shown = downloadView(catalog.opencode);
+    const shown = downloadView(draft?.saving && !catalog.opencode ? { status: "pending", message: "OpenCode waits for the download." } : catalog.opencode);
     watchDownload();
     return el("section", { class: `profile-download profile-download-${shown.tone}`, testid: "profile-opencode-download" },
       el("p", { class: "profile-download-stage", role: "status", testid: "profile-opencode-stage", text: shown.stage }),
@@ -700,9 +701,9 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       }), "profile-opencode-retry"));
   }
   function modelNode(source) {
-    if (!listsModels(source)) return field("Model", "model");
-    if (!modelLists.has(source.id)) loadModels(source);
-    const list = modelLists.get(source.id);
+    if (!draft.saving && !listsModels(source)) return field("Model", "model");
+    if (!draft.saving && !modelLists.has(source.id)) loadModels(source);
+    const list = draft.saving ? { status: "loading" } : modelLists.get(source.id);
     if (list.status === "failed") return [
       el("p", { class: "profile-error", role: "alert", testid: "profile-model-list-error", text: list.error }),
       field("Model", "model", { hint: "Enter the model identifier, or retry the model list." }),
@@ -711,7 +712,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     const loading = list.status === "loading";
     if (!listFocused()) showChangedModels(list);
     if (list.refreshing) watchModels(source);
-    const live = source.harness === "opencode";
+    const live = source?.harness === "opencode";
     const offered = loading || !draft.model || list.models.some((model) => model.id === draft.model);
     const placeholder = el("option", { value: "", disabled: true, selected: !draft.model, text: loading ? "Loading models…" : "Select a model" });
     const choices = loading ? (draft.model ? [{ value: draft.model, text: draft.model, selected: true }] : []) : modelChoices(list.models, draft.model);
@@ -762,7 +763,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       draft.mode === "existing" && !choices.length && note("No connection has usable access. Select Back to sign in to an account."),
       source && note(`Connection access: ${accessLabel(source.access_status)}`),
       source?.authorization_message && note(source.authorization_message),
-      downloadNode(source),
+      downloadNode(draft.saving ? { harness: "opencode" } : source),
       modelNode(source),
       source?.harness === "opencode" && note(modelLists.get(source.id)?.web_search ? "The agents of this connection can search the web." : "The agents of this connection cannot search the web."),
       effortNode(source),
@@ -862,6 +863,20 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     if (!apiKey && connection()?.access_status !== "connected") await startOperation("authorization", draft.connection_id);
     else draft.step = 2;
   }
+  // The Configure step opens before the save completes. A rejected save returns to the Connect step and keeps the key.
+  async function connectDuringConfigure(template) {
+    const serial = generation;
+    Object.assign(draft, { step: 2, saving: true });
+    notice = "Culler saves the connection.";
+    render();
+    try { await connect(template, `${template.name} API key`, true); }
+    catch (err) {
+      if (serial === generation) { draft.step = 1; notice = ""; }
+      throw err;
+    } finally {
+      if (serial === generation && draft) draft.saving = false;
+    }
+  }
   const keyField = () => field("API key", "api_key", { type: "password", autocomplete: "new-password", spellcheck: false });
   function providerNode(provider, checked) {
     return el("label", { class: `profile-choice profile-provider${checked ? " selected" : ""}`, testid: "profile-provider-result" },
@@ -900,7 +915,8 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
         keyField(),
         actionsNode(back, button("Continue", () => perform(() => {
           if (!selected) throw new Error("Select the provider.");
-          return connect(selected, `${selected.name} API key`, true);
+          if (!draft.api_key) throw new Error("Enter the API key.");
+          return connectDuringConfigure(selected);
         }), "profile-key-connect", false, PRIMARY)));
     }
     const provider = releaseProviders(catalog).find(row => row.harness === draft.harness);

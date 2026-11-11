@@ -2012,6 +2012,10 @@ A connection with that name and no credential receives the new credential, unles
 Another connection with that name gives the new connection the next free number.
 The API key form contains one concealed key field.
 A successful save clears that field.
+**Continue** of **Use another provider** opens the Configure step at once, and the connection save continues on that step.
+During that save, the step states that Culler saves the connection, and the Model control waits for the model list.
+During that save, an absent OpenCode download shows as a pending download.
+A rejected save returns to the Connect step with its error and keeps the key in the field.
 The browser keeps the key out of browser storage and diagnostic records.
 A failed model test preserves the saved connection and the nonsecret form values.
 A retry uses the saved connection without another key entry.
