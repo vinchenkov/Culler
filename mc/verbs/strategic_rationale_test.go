@@ -356,13 +356,13 @@ func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 			"With that part, read packager-rationale for its required first section.",
 		}},
 		{"Packager rationale skill", roleSkillBody(t, dispatch.RolePackager, "packager-rationale"), []string{
-			"Keep **Strategic rationale** as the first packet section, including when operator customization changes other sections.",
-			"Start with your statement of the delivered change in one or two sentences.",
+			"The **Strategic rationale** stands in place for the Summary in the packet, when the strategic rationale field exists as part of the task object.",
+			"The strategic rationale contains the Strategist's reason for the task.",
+			"start the section with a statement of the overall delivered change in one or two sentences.",
 			"Use that statement alone for `--thesis`, the overview argument in mc-packager's **Packet result** procedure.",
-			"Follow that statement with the complete rationale and its evidence.",
-			"Name the Strategist as its author.",
-			"Convert its Markdown to Hypertext Markup Language (HTML) without a content change.",
-			"Distinguish its prior observations and assumptions from the results of the reviewed change.",
+			"present a **distilled* version of the Strategist's rationale.",
+			"include key figures and evidence provided by the Strategist if they exist.",
+			"Culler stores the rationale after your overview text.",
 		}},
 	} {
 		for _, want := range test.want {

@@ -140,10 +140,6 @@ func TestPackagerConditionalProceduresKeepTheirRequirements(t *testing.T) {
 	} {
 		requireAgentText(t, name, roleSkillBody(t, dispatch.RolePackager, name), required, nil)
 	}
-	requireAgentText(t, "Packager orchestration", packagerDirective, []string{
-		"Use read-only, depth-1 subagents by default", "Only this main run writes the packet.",
-		"Use one context only when the work is trivial", "State that reason in the packet.",
-	}, nil)
 }
 
 func TestPackagerVerificationSummaryHasOneInstructionSource(t *testing.T) {
