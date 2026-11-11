@@ -144,10 +144,6 @@ func (w *setupWizard) resumeAccess() error {
 			}
 			connection := setupConnection{Binding: choice.Binding, Mode: choice.Mode}
 			if choice.Mode == "login" {
-				connection.Harness = choice.Harness
-				if choice.NewAccount {
-					connection.Account = choice.Name
-				}
 				connection.Prepare = func() error { return w.prepareAccessChoice(choice) }
 			}
 			err = w.checkConnection(connection)

@@ -101,7 +101,7 @@ func (u *setupFlowTestUI) Input(prompt, _ string, secret bool) (string, error) {
 }
 
 func TestTerminalSetupDefaultFlowReachesDashboardWithoutPipeline(t *testing.T) {
-	w, ui := setupTestWizard(t, "continue", "provider:codex", "login", "check", "start", "open")
+	w, ui := setupTestWizard(t, "continue", "provider:codex", "login", "start", "open")
 	workspace := t.TempDir()
 	flow := &setupFlowTestUI{setupTestUI: ui, workspace: workspace}
 	w.ui = flow

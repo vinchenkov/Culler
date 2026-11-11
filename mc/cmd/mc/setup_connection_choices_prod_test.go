@@ -46,7 +46,7 @@ func (ui *setupAccessTestUI) Problem(title string, lines []string) {
 }
 
 func (ui *setupAccessTestUI) Choose(prompt string, choices []onboarding.Choice, selected int) (string, error) {
-	if (prompt == "Sign in and connect?" || prompt == "Test this connection?") && ui.beforeConfirm != nil {
+	if prompt == "Test this connection?" && ui.beforeConfirm != nil {
 		ui.beforeConfirm()
 	}
 	return ui.setupChoiceUI.Choose(prompt, choices, selected)
@@ -95,7 +95,7 @@ func setupChoiceIDs(choices []onboarding.Choice) []string {
 }
 
 func TestTerminalSetupSubscriptionResumePreservesHealthyAccount(t *testing.T) {
-	w, ui := setupAccessFixture(t)
+	w, _ := setupAccessFixture(t)
 	cfg, err := w.catalog()
 	if err != nil {
 		t.Fatal(err)
@@ -105,7 +105,7 @@ func TestTerminalSetupSubscriptionResumePreservesHealthyAccount(t *testing.T) {
 	w.session.RuntimeBindings = []string{first}
 	w.session.RuntimeVerified[first] = true
 	w.session.RuntimeIdentities[first] = setupAccessIdentity(cfg, first, strings.Repeat("a", 64))
-	ui.answers = []setupChoiceAnswer{{prompt: "Sign in and connect?", err: onboarding.ErrExit}}
+	w.deps.connect = func(*setupWizard, setupConnection) error { return onboarding.ErrExit }
 	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrExit) {
 		t.Fatalf("subscription exit = %v", err)
 	}
@@ -113,8 +113,7 @@ func TestTerminalSetupSubscriptionResumePreservesHealthyAccount(t *testing.T) {
 	if w.session.Access == nil || w.session.Access.Step != "check" || w.session.Access.Binding != "codex-2" || w.session.Access.Mode != "login" {
 		t.Fatal("the subscription lost its completed account choices")
 	}
-	setupAssertAccessDraftAbsent(t, w, "codex-2")
-	ui.answers = []setupChoiceAnswer{{prompt: "Sign in and connect?", value: "check"}}
+
 	w.deps.connect = func(w *setupWizard, connection setupConnection) error {
 		current, err := w.catalog()
 		if err != nil || current.Runtimes.Bindings[first] != original || current.Runtimes.Bindings[connection.Binding].Credential == original.Credential {
@@ -134,7 +133,8 @@ func TestTerminalSetupSubscriptionResumePreservesHealthyAccount(t *testing.T) {
 }
 
 func TestTerminalSetupFlagSignInResumesWithoutFlags(t *testing.T) {
-	w, ui := setupAccessFixture(t, setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit})
+	w, _ := setupAccessFixture(t)
+	w.deps.connect = func(*setupWizard, setupConnection) error { return onboarding.ErrExit }
 	cfg, err := w.catalog()
 	if err != nil {
 		t.Fatal(err)
@@ -147,9 +147,6 @@ func TestTerminalSetupFlagSignInResumesWithoutFlags(t *testing.T) {
 	setupAccessReload(t, w)
 	if w.session.Access == nil || w.session.Access.Binding != binding || w.session.Access.Mode != "login" {
 		t.Fatal("the flag selection lost its sign-in")
-	}
-	ui.answers = []setupChoiceAnswer{
-		{prompt: "Sign in and connect?", value: "check"},
 	}
 	calls := 0
 	w.deps.connect = func(_ *setupWizard, connection setupConnection) error {
@@ -220,7 +217,8 @@ func TestTerminalSetupSubscriptionUsesReferenceBinding(t *testing.T) {
 }
 
 func TestTerminalSetupNamesAnAdditionalAccountWithoutAPrompt(t *testing.T) {
-	w, ui := setupAccessFixture(t, setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit})
+	w, ui := setupAccessFixture(t)
+	w.deps.connect = func(*setupWizard, setupConnection) error { return onboarding.ErrExit }
 	w.deps.identity = func(string, string) (string, error) { return strings.Repeat("a", 64), nil }
 	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrExit) {
 		t.Fatalf("subscription exit = %v", err)
@@ -234,10 +232,15 @@ func TestTerminalSetupNamesAnAdditionalAccountWithoutAPrompt(t *testing.T) {
 }
 
 func TestTerminalSetupGivesTheNameOfAnUntestedAccountToTheNewAccount(t *testing.T) {
-	w, ui := setupAccessFixture(t,
-		setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrBack},
-		setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit},
-	)
+	w, ui := setupAccessFixture(t)
+	calls := 0
+	w.deps.connect = func(*setupWizard, setupConnection) error {
+		calls++
+		if calls == 1 {
+			return onboarding.ErrBack
+		}
+		return onboarding.ErrExit
+	}
 	w.deps.identity = func(string, string) (string, error) { return strings.Repeat("a", 64), nil }
 	first, err := w.subscriptionChoice("codex")
 	if err != nil || first.Name != "codex-2" || first.CreatedBinding != "" {
@@ -250,8 +253,8 @@ func TestTerminalSetupGivesTheNameOfAnUntestedAccountToTheNewAccount(t *testing.
 	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrBack) {
 		t.Fatalf("Back = %v", err)
 	}
-	if !slices.Contains(w.session.RuntimeCreated, "other-untested") {
-		t.Fatal("the account choice removed another untested connection before the confirmation")
+	if slices.Contains(w.session.RuntimeCreated, "other-untested") {
+		t.Fatal("The sign-in retained another untested connection.")
 	}
 	if err := w.subscriptionAccess("codex"); !errors.Is(err, onboarding.ErrExit) {
 		t.Fatalf("exit = %v", err)
@@ -264,10 +267,8 @@ func TestTerminalSetupGivesTheNameOfAnUntestedAccountToTheNewAccount(t *testing.
 func TestTerminalSetupRenamesAnAccountWhoseNameIsTaken(t *testing.T) {
 	for _, step := range []string{"check", "account-name"} {
 		t.Run(step, func(t *testing.T) {
-			w, ui := setupAccessFixture(t,
-				setupChoiceAnswer{prompt: "Sign in and connect?", value: "check"},
-				setupChoiceAnswer{prompt: "Sign in and connect?", err: onboarding.ErrExit},
-			)
+			w, ui := setupAccessFixture(t)
+			w.deps.connect = func(*setupWizard, setupConnection) error { return onboarding.ErrExit }
 			w.session.Access = &onboarding.AccessChoice{Mode: "login", Step: step, Harness: "codex", Template: "chatgpt", Binding: "chatgpt", Name: "claude", NewAccount: true}
 			if err := w.resumeAccess(); !errors.Is(err, onboarding.ErrExit) {
 				t.Fatalf("resume = %v", err)

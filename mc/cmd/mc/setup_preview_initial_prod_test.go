@@ -146,7 +146,6 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 		result.steps = []setupPreviewStep{
 			{Wait: "q exit", Send: "\r", Name: "Select the provider"},
 			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
-			{Wait: "Sign in and connect?", Send: "\r", Name: "Sign in and connect"},
 			{Wait: "q exit", Send: "q", Name: "Connection failure"},
 		}
 		result.run = func() {
@@ -165,7 +164,6 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 		result.steps = []setupPreviewStep{
 			{Wait: "q exit", Send: choose, Name: "Connect an agent"},
 			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
-			{Wait: "Sign in and connect?", Send: "\r", Name: "Sign in and connect"},
 			{Wait: "q exit", Send: "q", Name: "Sign-in failure"},
 		}
 		result.run = func() {
@@ -177,7 +175,7 @@ func setupPreviewInitial(t *testing.T, name string) setupPreviewCase {
 		result.steps = []setupPreviewStep{
 			{Wait: "q exit", Send: "\r", Name: "Connect an agent"},
 			{Wait: "Choose the access method", Send: "\r", Name: "Select the sign-in"},
-			{Wait: "Sign in and connect?", Send: "q", Name: "Added account and confirmation"},
+			{Wait: "Your agent", Name: "Added account"},
 		}
 		result.run = func() {
 			stage(3, "welcome", "prepare")

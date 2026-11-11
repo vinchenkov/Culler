@@ -144,7 +144,7 @@ func (s *setupScreenSession) send(input string) {
 	}
 }
 
-func TestTerminalSetupSignInConfirmationFitsTheScreen(t *testing.T) {
+func TestTerminalSetupSignInStartsFromAccessChoice(t *testing.T) {
 	t.Setenv("TERM", "xterm-256color")
 	for _, columns := range []int{80, 40} {
 		for _, color := range []bool{true, false} {
@@ -167,7 +167,18 @@ func TestTerminalSetupSignInConfirmationFitsTheScreen(t *testing.T) {
 					terminal := onboarding.NewTerminal(slave, slave)
 					terminal.SetStageTitles(setupStageTitles)
 					w.ui, w.input, w.output = terminal, slave, terminal
-					w.deps.connect = func(*setupWizard, setupConnection) error { t.Fatal("The confirmation started a test"); return nil }
+					release := make(chan struct{})
+					t.Cleanup(func() {
+						select {
+						case <-release:
+						default:
+							close(release)
+						}
+					})
+					w.deps.connect = func(*setupWizard, setupConnection) error {
+						<-release
+						return onboarding.ErrExit
+					}
 					done := make(chan error, 1)
 					go func() {
 						w.session.Stage, w.session.Completed = 2, []string{"welcome", "prepare"}
@@ -191,18 +202,22 @@ func TestTerminalSetupSignInConfirmationFitsTheScreen(t *testing.T) {
 						t.Fatalf("The access methods lack the sign-in before the API key: %q", access)
 					}
 					session.send("\r")
-					screen = session.wait("Sign in and connect?")
+					screen = session.wait("Connecting " + setupProgramName(harness))
 					text := strings.Join(screen, "\n")
-					for _, line := range []string{"Culler", "✓  ✓  ●  ·  ·  ·", "3 of 6  Connect an agent", "Sign in and connect?", "↑↓ move  enter select  b back  q exit"} {
+					for _, line := range []string{"Culler", "✓  ✓  ●  ·  ·  ·", "3 of 6  Connect an agent"} {
 						if !slices.Contains(screen, line) {
-							t.Fatalf("The confirmation lacks %q:\n%s", line, text)
+							t.Fatalf("The progress screen lacks %q:\n%s", line, text)
 						}
 					}
-					session.send("q")
+					if strings.Contains(session.visible.String(), "Sign in and connect?") {
+						t.Fatal("Sign-in requested another choice.")
+					}
+					t.Logf("Access choice:\n%s\nSign-in progress:\n%s\nRaw terminal output: %q", strings.Join(access, "\n"), text, session.raw.String())
+					close(release)
 					select {
 					case err := <-done:
 						if !errors.Is(err, onboarding.ErrExit) {
-							t.Fatalf("The confirmation exit = %v", err)
+							t.Fatalf("The sign-in exit = %v", err)
 						}
 					case <-time.After(10 * time.Second):
 						t.Fatal("Setup did not exit")

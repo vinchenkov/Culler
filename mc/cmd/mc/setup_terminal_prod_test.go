@@ -105,13 +105,17 @@ func setupTestWizard(t *testing.T, answers ...string) (*setupWizard, *setupTestU
 	return w, u
 }
 
-func TestTerminalSetupProviderCheckRequiresSelection(t *testing.T) {
-	w, _ := setupTestWizard(t, ":back")
-	calls := 0
-	w.deps.connect = func(*setupWizard, setupConnection) error { calls++; return nil }
-	err := w.checkConnection(setupConnection{Binding: "fixture", Mode: "login"})
-	if !errors.Is(err, onboarding.ErrBack) || calls != 0 {
-		t.Fatalf("check = %v; requests = %d", err, calls)
+func TestTerminalSetupModelTestRequiresSelection(t *testing.T) {
+	for _, mode := range []string{"api_key", "saved"} {
+		t.Run(mode, func(t *testing.T) {
+			w, _ := setupTestWizard(t, ":back")
+			calls := 0
+			w.deps.connect = func(*setupWizard, setupConnection) error { calls++; return nil }
+			err := w.checkConnection(setupConnection{Binding: "fixture", Mode: mode})
+			if !errors.Is(err, onboarding.ErrBack) || calls != 0 {
+				t.Fatalf("check = %v; requests = %d", err, calls)
+			}
+		})
 	}
 }
 
@@ -169,8 +173,8 @@ func TestTerminalSetupNewAccountPreservesCurrentConnection(t *testing.T) {
 	if !slices.Contains(w.session.RuntimeBindings, "codex-2") {
 		t.Fatal("the new account did not retain its selection")
 	}
-	if detail := ui.choices[0][0].Detail; detail != "Sign in to Codex in your browser. Culler saves this account as codex-2 and keeps the existing account. Culler then tests the connection." {
-		t.Fatalf("the sign-in of the new account names no program: %q", detail)
+	if len(ui.choices) != 0 {
+		t.Fatal("Sign-in requested another choice.")
 	}
 }
 

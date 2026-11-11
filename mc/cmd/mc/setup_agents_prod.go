@@ -28,9 +28,6 @@ type setupConnection struct {
 	Binding string
 	Mode    string
 	Prepare func() error
-	// Harness names the program of an account that Prepare creates, and Account names that account.
-	Harness string
-	Account string
 	// Reported is true when the line above the failure already names the agent and the result.
 	Reported bool
 }
@@ -364,29 +361,17 @@ func (w *setupWizard) connectFlagSelections() error {
 }
 
 func (w *setupWizard) checkConnection(connection setupConnection) error {
-	program := setupProgramName(connection.Harness)
-	if cfg, err := w.catalog(); err == nil && program == "" {
-		program = setupProgramName(cfg.Runtimes.Bindings[connection.Binding].Harness)
-	}
-	if program == "" {
-		program = "the agent"
-	}
-	prompt := "Sign in and connect?"
-	added := ""
-	if connection.Account != "" {
-		added = " Culler saves this account as " + connection.Account + " and keeps the existing account."
-	}
-	choice := setupChoice("check", "Sign in", "Sign in to "+program+" in your browser."+added+" Culler then tests the connection.")
-	if connection.Mode == "api_key" || connection.Mode == "saved" {
-		prompt = "Test this connection?"
-		choice = setupChoice("check", "Test model", "The test uses the selected model and can incur provider charges.")
-	} else if connection.Mode != "login" {
-		return &setupFailure{cause: "The selected credential source is unsupported."}
-	}
-	if !w.answers.ConfirmLiveSpend {
-		if _, err := w.ui.Choose(prompt, []onboarding.Choice{choice}, 0); err != nil {
-			return err
+	switch connection.Mode {
+	case "login":
+	case "api_key", "saved":
+		if !w.answers.ConfirmLiveSpend {
+			choice := setupChoice("check", "Test model", "The test uses the selected model and can incur provider charges.")
+			if _, err := w.ui.Choose("Test this connection?", []onboarding.Choice{choice}, 0); err != nil {
+				return err
+			}
 		}
+	default:
+		return &setupFailure{cause: "The selected credential source is unsupported."}
 	}
 	if err := w.removeUntestedConnections(connection.Binding); err != nil {
 		return err
