@@ -54,7 +54,7 @@ func Parse(data []byte) (Catalog, error) {
 	if err := decoder.Decode(&catalog); err != nil {
 		return catalog, err
 	}
-	if catalog.Version != 1 || catalog.OpenCodeVersion != "2.2.5" || catalog.WebSearchVersion != "0.7.1" || len(catalog.Providers) == 0 {
+	if catalog.Version != 1 || catalog.OpenCodeVersion != "2.2.7" || catalog.WebSearchVersion != "0.7.1" || len(catalog.Providers) == 0 {
 		return Catalog{}, fmt.Errorf("The provider catalog version is invalid.")
 	}
 	ids := map[string]bool{}

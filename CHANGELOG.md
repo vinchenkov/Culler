@@ -46,6 +46,10 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - Culler uses OpenWiki 0.9.0.
 - The begin response of a wiki update gives the newest commit messages after the last review of each page group. It limits the lists of changed source paths and Claim issues and gives their exact numbers, and the Scribe lists the remaining paths through Git.
 - A wiki update reviews each Claim issue. Culler rejects a page plan that defers one.
+- Culler uses OpenCode 2.2.7.
+- With OpenCode, a background command keeps the turn of the agent open, and the agent receives the result when the command ends. Culler stops the background commands of a turn after ten minutes without a new event from OpenCode and completes the turn with the last reply.
+- The OpenCode release catalog holds 209 providers. Wally is a new provider.
+- The release catalog omits a provider that reads its key from `GITHUB_TOKEN`, because the commands of an agent read that variable for GitHub. This rule omits GitHub Copilot.
 
 ### Known limits
 

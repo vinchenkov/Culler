@@ -2,7 +2,7 @@ import { Database } from "bun:sqlite";
 import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 
-/** OpenCode 2.2.5 uses these transcript columns. Account data stays outside the transcript. */
+/** OpenCode 2.2.7 uses these transcript columns. Account data stays outside the transcript. */
 export function nativeFixture(path: string, text = "A native reply", main = "ses_main") {
   mkdirSync(dirname(path), { recursive: true });
   const db = new Database(path);

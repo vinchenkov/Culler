@@ -3,8 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "dependencies": {
-    "@opencode/cli-linux-arm64": "2.2.5",
+    "@opencode/cli-linux-arm64": "2.2.7",
     "opencode-websearch": "0.7.1"
   },
-  "overrides": { "@opencode/plugin": "2.2.5" }
+  "overrides": { "@opencode/plugin": "2.2.7" }
 }

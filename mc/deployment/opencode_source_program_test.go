@@ -20,7 +20,7 @@ with tempfile.TemporaryDirectory() as temporary:
     root.mkdir()
     binary = root / 'node_modules/@opencode/cli-linux-arm64/bin/opencode'
     binary.parent.mkdir(parents=True)
-    binary.write_text('#!/bin/sh\nprintf "opencode v2.2.5\\n"\n')
+    binary.write_text('#!/bin/sh\nprintf "opencode v2.2.7\\n"\n')
     binary.chmod(0o755)
     plugin = root / 'plugin'
     plugin.write_text('original plugin')
@@ -33,7 +33,7 @@ with tempfile.TemporaryDirectory() as temporary:
     assert expected == module['volume_digest'](root)
     (root / 'release-id').write_text('release\n')
     (root / 'archive-sha256').write_text('archive\n')
-    def verify(version='2.2.5', digest=expected):
+    def verify(version='2.2.7', digest=expected):
         return subprocess.run([sys.executable, sys.argv[1], 'verify', str(root), digest, 'archive', 'release', version], capture_output=True, text=True)
     assert verify().returncode == 0
     assert verify('2.2.6').returncode != 0
@@ -41,8 +41,8 @@ with tempfile.TemporaryDirectory() as temporary:
     assert verify().returncode != 0
     changed = module['volume_digest'](root)
     assert verify('2.2.6', changed).returncode == 0
-    assert verify('2.2.5', changed).returncode != 0
-    binary.write_text('#!/bin/sh\nprintf "opencode v2.2.5\\n"\n')
+    assert verify('2.2.7', changed).returncode != 0
+    binary.write_text('#!/bin/sh\nprintf "opencode v2.2.7\\n"\n')
     plugin.write_text('damaged plugin')
     assert verify().returncode != 0
     plugin.write_text('original plugin')

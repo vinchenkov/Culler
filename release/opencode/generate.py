@@ -16,6 +16,9 @@ PINS = json.loads((ROOT / 'pins.json').read_text())
 # mc embeds the same plugin for the model facts of the live model list.
 FACTS = ROOT.parent.parent / 'mc' / 'opencodecatalog' / 'facts'
 KEY = 'culler-catalog-probe'
+# The adapter sets the key variable in the environment of the agent, and the commands of the agent inherit it.
+# The catalog omits a provider whose key variable holds the credential of another tool.
+TOOL_VARIABLES = {'GITHUB_TOKEN'}
 
 
 def environment(root):
@@ -130,7 +133,7 @@ def main():
     entries = []
     packages = {}
     for provider in sorted(providers, key=lambda provider: provider['id']):
-        if len(provider['key_variables']) != 1:
+        if len(provider['key_variables']) != 1 or provider['key_variables'][0] in TOOL_VARIABLES:
             continue
         models = [m for m in provider['models'] if m['type'] == 'chat' and m['status'] != 'deprecated' and m['tools']]
         if not models:

@@ -17,7 +17,7 @@ def inspect(files, read):
         raise ValueError('The OpenCode program must use Linux arm64.')
     if any('cli-linux-arm64-musl' in name or 'cli-darwin' in name or 'cli-linux-x64' in name for name in files):
         raise ValueError('The archive contains another OpenCode platform.')
-    for package, version in [('@opencode/cli-linux-arm64', '2.2.5'), ('opencode-websearch', '0.7.1')]:
+    for package, version in [('@opencode/cli-linux-arm64', '2.2.7'), ('opencode-websearch', '0.7.1')]:
         if json.loads(read(f'node_modules/{package}/package.json'))['version'] != version:
             raise ValueError('The archive package differs from its release pin.')
     for name in ['control/server.mjs', 'control/shell', 'control/package.json']:

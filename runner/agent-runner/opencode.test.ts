@@ -182,6 +182,48 @@ console.log(JSON.stringify({type:"step_finish",sessionID:"ses_delayed",part:{rea
   }
 });
 
+async function backgroundTurn(native: string, waitMs: number) {
+  const root = await mkdtemp(join(tmpdir(), "culler-opencode-wait-")); roots.push(root);
+  await mkdir(join(root, "session")); await mkdir(join(root, "workspace"));
+  await writeFile(join(root, "access.json"), JSON.stringify(access));
+  await writeFile(join(root, "native"), `#!${process.execPath}\nawait Bun.stdin.text();
+const say = (event) => console.log(JSON.stringify({ sessionID: "ses_wait", ...event }));
+say({ type: "text", part: { text: "The check runs in the background." } });
+say({ type: "step_finish", part: { reason: "stop" } });
+say({ type: "background_wait", jobs: [{ id: "sh_fixture", kind: "shell", title: "check" }] });
+${native}\n`, { mode: 0o755 });
+  const child = Bun.spawn([process.execPath, join(import.meta.dir, "adapters/opencode.ts"), "--model", "fixture-model", "--workspace", join(root, "workspace"), "--session-dir", join(root, "session")], {
+    env: { ...process.env, MC_PROVIDER_ACCESS_FILE: join(root, "access.json"), MC_OPENCODE_BIN: join(root, "native"), MC_OPENCODE_BACKGROUND_WAIT_MS: String(waitMs) },
+    stdin: new TextEncoder().encode("Role directive and run brief"), stdout: "pipe", stderr: "pipe",
+  });
+  const output = await new Response(child.stdout).text(), error = await new Response(child.stderr).text();
+  return { code: await child.exited, error, events: output.trim().split("\n").map(line => JSON.parse(line)) };
+}
+
+test("a finished background job continues the turn, and the reply is the text after the job", async () => {
+  const turn = await backgroundTurn(`await Bun.sleep(100);
+say({ type: "step_start", part: {} });
+await Bun.sleep(1600);
+say({ type: "text", part: { text: "The check passed." } });
+say({ type: "step_finish", part: { reason: "stop" } });`, 1000);
+  expect(turn.code, turn.error).toBe(0);
+  expect(turn.events.filter(event => event.event === "turn-text").map(event => event.text)).toEqual(["The check runs in the background.", "The check passed."]);
+  expect(turn.events.at(-1)).toEqual({ event: "turn-complete", status: "success", output: "The check passed." });
+});
+
+test("the adapter stops a background job that outlasts the wait and completes the turn with the reply", async () => {
+  const turn = await backgroundTurn(`process.on("SIGTERM", () => {
+  say({ type: "step_start", part: {} });
+  say({ type: "text", part: { text: "The job stopped." } });
+  process.exit(143);
+});
+setInterval(() => {}, 1000);`, 200);
+  expect(turn.code, turn.error).toBe(0);
+  expect(turn.events.filter(event => event.event === "turn-text").map(event => event.text)).toEqual(["The check runs in the background."]);
+  expect(turn.events.some(event => event.type === "background_wait")).toBe(true);
+  expect(turn.events.at(-1)).toEqual({ event: "turn-complete", status: "success", output: "The check runs in the background." });
+});
+
 test("the adapter registers the native database and preserves events, completion, and session continuation", async () => {
   const root = await mkdtemp(join(tmpdir(), "culler-opencode-adapter-")); roots.push(root);
   await mkdir(join(root, "session")); await mkdir(join(root, "workspace"));

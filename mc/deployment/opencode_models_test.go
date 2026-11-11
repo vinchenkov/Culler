@@ -748,7 +748,7 @@ func TestOpenCodeFactsContainerHasNoNetworkKeyOrProjectData(t *testing.T) {
 		case 1:
 			return []byte("WARNING: platform\n\n" + marker + "\n" + string(fixture.baseline) + "\n" + marker + "\n" + string(fixture.live) + "\n" + marker + "\n"), nil
 		case 2:
-			return []byte("The installed OpenCode is opencode v0.0.1. This release requires OpenCode 2.2.5.\n"), errors.New("exit status 1")
+			return []byte("The installed OpenCode is opencode v0.0.1. This release requires OpenCode 2.2.7.\n"), errors.New("exit status 1")
 		}
 		return []byte("\n" + marker + "\nonly one report\n" + marker + "\n"), nil
 	}
@@ -761,7 +761,7 @@ func TestOpenCodeFactsContainerHasNoNetworkKeyOrProjectData(t *testing.T) {
 		t.Fatalf("The derivation returned other reports: %v", err)
 	}
 	if _, _, err := deriveOpenCodeModelFacts(context.Background(), home, "mc-prod", []byte("the record"), run); err == nil ||
-		err.Error() != "The pinned OpenCode could not derive the model facts: The installed OpenCode is opencode v0.0.1. This release requires OpenCode 2.2.5." {
+		err.Error() != "The pinned OpenCode could not derive the model facts: The installed OpenCode is opencode v0.0.1. This release requires OpenCode 2.2.7." {
 		t.Fatalf("The derivation lost its cause: %v", err)
 	}
 	if _, _, err := deriveOpenCodeModelFacts(context.Background(), home, "mc-prod", []byte("the record"), run); err == nil {

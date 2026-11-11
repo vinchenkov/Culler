@@ -17,7 +17,7 @@ try {
 import { Database } from 'bun:sqlite';
 const binary='/opencode/node_modules/@opencode/cli-linux-arm64/bin/opencode';
 const version=Bun.spawn([binary,'--version'],{stdout:'pipe',stderr:'pipe'});
-if ((await new Response(version.stdout).text()).trim() !== 'opencode v2.2.5' || await version.exited !== 0) throw new Error('The OpenCode version differs from the pin.');
+if ((await new Response(version.stdout).text()).trim() !== 'opencode v2.2.7' || await version.exited !== 0) throw new Error('The OpenCode version differs from the pin.');
 let requests=0;
 const server=Bun.serve({hostname:'127.0.0.1',port:0,async fetch(request){
  const body=await request.json();
@@ -79,7 +79,7 @@ try {for(let turn=1;turn<=2;turn++){
     assert(messages.includes("NATIVE_FIXTURE_REPLY_1") && messages.includes("NATIVE_FIXTURE_REPLY_2"));
     assert(!messages.includes("synthetic-native-key"));
   } finally { copy.close(); }
-  console.log("PASS OpenCode 2.2.5 native resume after a host snapshot, stable identity, and both turns in the final copy");
+  console.log("PASS OpenCode 2.2.7 native resume after a host snapshot, stable identity, and both turns in the final copy");
 } finally {
   if (child) {
     await Bun.spawn(["docker", "rm", "-f", container], { stdout: "ignore", stderr: "ignore" }).exited;

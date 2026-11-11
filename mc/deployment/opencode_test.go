@@ -234,7 +234,7 @@ func TestOpenCodeModelTestRequiresNativeToolAndFinalReply(t *testing.T) {
 }
 
 func TestOpenCodeInstallChecksTheNativeVersion(t *testing.T) {
-	for _, version := range []string{"opencode v2.2.5", "opencode v2.2.4", "2.2.5"} {
+	for _, version := range []string{"opencode v2.2.7", "opencode v2.2.6", "2.2.7"} {
 		t.Run(version, func(t *testing.T) {
 			root := t.TempDir()
 			output := filepath.Join(root, "output")
@@ -261,9 +261,9 @@ func TestOpenCodeInstallChecksTheNativeVersion(t *testing.T) {
 				}
 			}
 			script := strings.NewReplacer("/output", output, "/archive.tar.gz", archive).Replace(openCodeInstallScript)
-			result, err := exec.Command("/bin/sh", "-ec", script, "install", "release", "checksum", "2.2.5").CombinedOutput()
-			if version != "opencode v2.2.5" {
-				if err == nil || !strings.Contains(string(result), "This release requires OpenCode 2.2.5.") {
+			result, err := exec.Command("/bin/sh", "-ec", script, "install", "release", "checksum", "2.2.7").CombinedOutput()
+			if version != "opencode v2.2.7" {
+				if err == nil || !strings.Contains(string(result), "This release requires OpenCode 2.2.7.") {
 					t.Fatalf("The version check passed: %s", result)
 				}
 				if _, err := os.Stat(filepath.Join(output, "release-id")); !os.IsNotExist(err) {

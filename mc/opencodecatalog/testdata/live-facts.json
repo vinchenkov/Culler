@@ -30,21 +30,65 @@
     },
     {
      "address": "https://api.moonshot.ai/v1",
-     "context": 262144,
-     "digest": "732b5d74e5c5749b604325b31b4e0368cf014be21b34c275fc3e7d8e89e3b58a",
-     "id": "kimi-k2.7-code",
-     "input_price": 0.95,
-     "name": "Kimi K2.7 Code",
-     "output": 262144,
-     "output_price": 4,
+     "context": 1048576,
+     "digest": "56f895cdfe9a8c3f57cbb8543dc2268450bd1d4381653b5acb67483140db1455",
+     "id": "kimi-k3",
+     "input_price": 3,
+     "name": "Kimi K3",
+     "output": 1048576,
+     "output_price": 15,
      "package": "@opencode/ai/providers/moonshot/chat",
      "sources": [
-      "kimi-k2.7-code"
+      "kimi-k3"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 262144,
+     "digest": "4f81d04af657973212f84efa86ce4a79ff92b6dd0e0e40f0e89506e55a6f61fc",
+     "id": "kimi-k2.7-code-highspeed",
+     "input_price": 1.9,
+     "name": "Kimi K2.7 Code HighSpeed",
+     "output": 262144,
+     "output_price": 8,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k2.7-code-highspeed"
      ],
      "status": "active",
      "tools": true,
      "type": "chat",
      "variants": []
+    },
+    {
+     "address": "https://api.moonshot.ai/v1",
+     "context": 1048576,
+     "digest": "317ea8b3d3aa820d146ff3115ff3ed24eaee0ff821de49c8f2960562a71cbffe",
+     "id": "kimi-k3.1-pro-highspeed",
+     "input_price": 4,
+     "name": "Kimi K3.1 Pro Highspeed",
+     "output": 1048576,
+     "output_price": 20,
+     "package": "@opencode/ai/providers/moonshot/chat",
+     "sources": [
+      "kimi-k3.1-pro-highspeed"
+     ],
+     "status": "active",
+     "tools": true,
+     "type": "chat",
+     "variants": [
+      "low",
+      "high",
+      "max"
+     ]
     },
     {
      "address": "https://api.moonshot.ai/v1",
@@ -70,64 +114,20 @@
     {
      "address": "https://api.moonshot.ai/v1",
      "context": 262144,
-     "digest": "4f81d04af657973212f84efa86ce4a79ff92b6dd0e0e40f0e89506e55a6f61fc",
-     "id": "kimi-k2.7-code-highspeed",
-     "input_price": 1.9,
-     "name": "Kimi K2.7 Code HighSpeed",
+     "digest": "732b5d74e5c5749b604325b31b4e0368cf014be21b34c275fc3e7d8e89e3b58a",
+     "id": "kimi-k2.7-code",
+     "input_price": 0.95,
+     "name": "Kimi K2.7 Code",
      "output": 262144,
-     "output_price": 8,
+     "output_price": 4,
      "package": "@opencode/ai/providers/moonshot/chat",
      "sources": [
-      "kimi-k2.7-code-highspeed"
+      "kimi-k2.7-code"
      ],
      "status": "active",
      "tools": true,
      "type": "chat",
      "variants": []
-    },
-    {
-     "address": "https://api.moonshot.ai/v1",
-     "context": 1048576,
-     "digest": "56f895cdfe9a8c3f57cbb8543dc2268450bd1d4381653b5acb67483140db1455",
-     "id": "kimi-k3",
-     "input_price": 3,
-     "name": "Kimi K3",
-     "output": 1048576,
-     "output_price": 15,
-     "package": "@opencode/ai/providers/moonshot/chat",
-     "sources": [
-      "kimi-k3"
-     ],
-     "status": "active",
-     "tools": true,
-     "type": "chat",
-     "variants": [
-      "low",
-      "high",
-      "max"
-     ]
-    },
-    {
-     "address": "https://api.moonshot.ai/v1",
-     "context": 1048576,
-     "digest": "317ea8b3d3aa820d146ff3115ff3ed24eaee0ff821de49c8f2960562a71cbffe",
-     "id": "kimi-k3.1-pro-highspeed",
-     "input_price": 4,
-     "name": "Kimi K3.1 Pro Highspeed",
-     "output": 1048576,
-     "output_price": 20,
-     "package": "@opencode/ai/providers/moonshot/chat",
-     "sources": [
-      "kimi-k3.1-pro-highspeed"
-     ],
-     "status": "active",
-     "tools": true,
-     "type": "chat",
-     "variants": [
-      "low",
-      "high",
-      "max"
-     ]
     }
    ],
    "name": "Moonshot AI",

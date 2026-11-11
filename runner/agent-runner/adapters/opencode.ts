@@ -7,6 +7,8 @@ import { adapterFailure, loadDiagnosticRedactor, redactDiagnosticEvent } from ".
 import { openWikiServer, OPENWIKI_TOOLS } from "./openwiki";
 
 export const OPENCODE_ROOT = "/opt/culler-opencode";
+/** OpenCode keeps a turn open while a background job runs. The adapter stops a wait that has no new event for this time. */
+export const BACKGROUND_WAIT_MS = 600_000;
 
 export function openCodeConfiguration(access: ProviderAccess, model: string, effort: string | undefined, skills: string, root = OPENCODE_ROOT, wiki?: { workspace: string; commit?: string }) {
   const selected = access.opencode;
@@ -64,13 +66,14 @@ export function openCodeEnvironment(base: Record<string, string | undefined>, co
   return env;
 }
 
-export function openCodeEvent(value: any): { session?: string; text?: string; tool?: any; failure?: string; complete?: boolean } {
+export function openCodeEvent(value: any): { session?: string; text?: string; tool?: any; failure?: string; complete?: boolean; waiting?: boolean } {
   const session = typeof value?.sessionID === "string" ? value.sessionID : undefined;
   switch (value?.type) {
     case "text": return { session, text: typeof value.part?.text === "string" ? value.part.text : undefined };
     case "tool_use": return { session, tool: value.part };
     case "error": return { session, failure: value.error?.data?.message ?? value.error?.message ?? JSON.stringify(value.error) };
     case "step_finish": return { session, complete: value.part?.reason === "stop" };
+    case "background_wait": return { session, waiting: true };
     default: return { session };
   }
 }
@@ -109,6 +112,8 @@ async function main(): Promise<number> {
     "run", "--standalone", "--auto", "--format", "json", "--title", "Culler agent", ...(native ? ["--session", native] : [])];
   const prompt = await Bun.stdin.text();
   let session: string | undefined, reply: string | undefined, failed = false, complete = false;
+  const waitLimit = Number(process.env.MC_OPENCODE_BACKGROUND_WAIT_MS) || BACKGROUND_WAIT_MS;
+  let waitTimer: ReturnType<typeof setTimeout> | undefined, waitEnded = false;
   const proc = Bun.spawn(argv, { cwd: workspace, env, stdin: new TextEncoder().encode(prompt), stdout: "pipe", stderr: "pipe" });
   const stop = () => proc.kill("SIGTERM");
   process.on("SIGTERM", stop); process.on("SIGINT", stop);
@@ -145,8 +150,12 @@ async function main(): Promise<number> {
       for (let at = buffer.indexOf("\n"); at >= 0; at = buffer.indexOf("\n")) {
         const line = buffer.slice(0, at); buffer = buffer.slice(at + 1);
         let value; try { value = JSON.parse(line); } catch { continue; }
+        // The stop cancels each background job, and OpenCode reports that to the model. That report is outside the turn.
+        if (waitEnded) continue;
+        clearTimeout(waitTimer);
         emit(redactDiagnosticEvent(value, safe));
         const event = openCodeEvent(value);
+        if (event.waiting) waitTimer = setTimeout(() => { waitEnded = true; proc.kill("SIGTERM"); }, waitLimit);
         if (event.complete) complete = true;
         if (event.session) await registerSession(event.session);
         if (event.failure) {
@@ -169,13 +178,14 @@ async function main(): Promise<number> {
     await sessionObserver;
     if (sessionError) throw sessionError;
     const error = safe(await stderr);
-    if (code !== 0 || failed || !session || reply === undefined || !complete) {
+    if ((code !== 0 && !waitEnded) || failed || !session || reply === undefined || !complete) {
       if (!failed) emit(adapterFailure("The OpenCode run ended without a complete reply.", error, redact));
       return code || 2;
     }
     emit({ event: "turn-complete", status: "success", output: safe(reply) });
     return 0;
   } finally {
+    clearTimeout(waitTimer);
     observeSession = false;
     await sessionObserver;
     if (proc.exitCode === null) { proc.kill("SIGTERM"); await proc.exited; }
