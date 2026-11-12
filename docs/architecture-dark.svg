@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 872" width="1360" height="872" role="img" aria-labelledby="title desc">
+<title id="title">The architecture of Culler</title>
+<desc id="desc">FIG. 3, architecture. On your Mac, the Browser opens the dashboard. The dashboard reaches AgentsView through a local proxy and serves OpenWiki. The dashboard and the resident run mc on the host. That mc reads and writes the spine. Inside Docker Desktop, the spine is one SQLite database in a named volume. The resident starts each agent container. Each agent container runs mc inside the container and reads and writes the spine. The Project repositories supply a fresh source workspace for each run, mounted at /workspace/source, and keep the result commit after the run. Provider credentials stay in the macOS Keychain. mc reads them for the provider proxy in the resident. Agent containers send model requests with a temporary Culler token to the proxy. The proxy adds the credentials and sends each request to the model provider. Agent containers hold no provider credentials. Discord is optional.</desc>
+<style>
+  .mac { fill: #14222f; stroke: #84b9e8; stroke-width: 2; }
+  .docker { fill: #1a2b3a; stroke: #3f566a; stroke-width: 1.5; stroke-dasharray: 7 5; }
+  .box { fill: #1f3345; stroke: #3f566a; stroke-width: 1.4; }
+  .back { fill: #1f3345; stroke: #3f566a; stroke-width: 1.2; opacity: .6; }
+  .box-blue { fill: #20405a; stroke: #84b9e8; stroke-width: 1.8; }
+  .box-orange { fill: #472c1c; stroke: #f0935c; stroke-width: 1.8; }
+  .box-green { fill: #1d3d2b; stroke: #7ccf9a; stroke-width: 1.8; }
+  .outside { fill: #1f3345; stroke: #8d9cab; stroke-width: 1.4; stroke-dasharray: 5 4; }
+  .chip-blue { fill: #20405a; stroke: #84b9e8; stroke-width: 1.6; }
+  .chip-orange { fill: #472c1c; stroke: #f0935c; stroke-width: 1.6; }
+  .region { font: 700 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; letter-spacing: 1.2px; fill: #a6b6c5; }
+  .title { font: 650 16px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #e8eef4; }
+  .sub { font: 400 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #a6b6c5; }
+  .strong { font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #e8eef4; }
+  .code { font: 600 12.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .code-title { font: 700 18px ui-monospace, "SF Mono", Menlo, Consolas, monospace; fill: #e8eef4; }
+  .label { font: 500 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #a6b6c5; }
+  .label-blue { font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #84b9e8; }
+  .label-orange { font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #f0935c; }
+  .label-green { font: 600 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #7ccf9a; }
+  .ink-blue { fill: #84b9e8; }
+  .ink-orange { fill: #f0935c; }
+  .end { text-anchor: end; }
+  .mid { text-anchor: middle; }
+  .line-blue { fill: none; stroke: #84b9e8; stroke-width: 2.4; }
+  .line-orange { fill: none; stroke: #f0935c; stroke-width: 2.4; }
+  .line-green { fill: none; stroke: #7ccf9a; stroke-width: 2.4; }
+  .line-gray { fill: none; stroke: #8d9cab; stroke-width: 1.7; }
+  .head-blue { fill: #84b9e8; }
+  .head-orange { fill: #f0935c; }
+  .head-green { fill: #7ccf9a; }
+  .head-gray { fill: #8d9cab; }
+
+  .legend-t { font: 400 14px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", sans-serif; fill: #a6b6c5; }
+  .legend-mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.9px; }
+</style>
+<rect width="1360" height="872" rx="16" fill="#0f1a24"/>
+<text class="region" x="24" y="40">FIG. 3 · ARCHITECTURE</text>
+<path class="line-blue" d="M582 35H610"/><text class="legend-t" x="618" y="40">Path to the spine through <tspan class="legend-mono">mc</tspan></text>
+<path class="line-orange" d="M825 35H853"/><text class="legend-t" x="861" y="40">Repository mount</text>
+<path class="line-green" d="M1000 35H1028"/><text class="legend-t" x="1036" y="40">Provider credentials</text>
+<path class="line-gray" d="M1189 35H1217"/><text class="legend-t" x="1225" y="40">Other connection</text>
+<g transform="translate(0 56)">
+      <defs>
+        <marker id="head-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head-blue" d="M0 .8 10 5 0 9.2Z"/></marker>
+        <marker id="head-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head-orange" d="M0 .8 10 5 0 9.2Z"/></marker>
+        <marker id="head-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head-green" d="M0 .8 10 5 0 9.2Z"/></marker>
+        <marker id="head-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="head-gray" d="M0 .8 10 5 0 9.2Z"/></marker>
+      </defs>
+
+      <!-- Regions -->
+      <rect class="mac" x="24" y="24" width="994" height="768" rx="20"/>
+      <text class="region" x="48" y="54">YOUR MAC</text>
+      <text class="sub end" x="994" y="54">launchd keeps the dashboard, the resident, and AgentsView running.</text>
+      <text class="region" x="1168" y="54">OUTSIDE YOUR MAC</text>
+      <rect class="docker" x="44" y="316" width="954" height="304" rx="16"/>
+      <text class="region" x="64" y="604">DOCKER DESKTOP · LINUX VIRTUAL MACHINE</text>
+
+      <!-- Host programs -->
+      <rect class="box" x="52" y="76" width="160" height="72" rx="10"/>
+      <text class="title" x="68" y="106">Browser</text>
+      <text class="sub" x="68" y="128">You read and decide.</text>
+
+      <rect class="box" x="276" y="76" width="170" height="72" rx="10"/>
+      <text class="title" x="292" y="106">dashboard</text>
+      <text class="sub" x="292" y="128">Bun · 127.0.0.1:7333</text>
+
+      <rect class="box" x="530" y="76" width="160" height="48" rx="10"/>
+      <text class="title" x="546" y="97">AgentsView</text>
+      <text class="sub" x="546" y="115">traces of each run</text>
+
+      <rect class="box" x="530" y="130" width="160" height="48" rx="10"/>
+      <text class="title" x="546" y="151">OpenWiki</text>
+      <text class="sub" x="546" y="169">wiki of each Project</text>
+
+      <rect class="box" x="774" y="76" width="220" height="192" rx="12"/>
+      <text class="title" x="790" y="106">resident</text>
+      <text class="sub" x="790" y="128">Bun · tick loop and lanes</text>
+      <rect class="box-green" x="790" y="168" width="188" height="88" rx="10"/>
+      <text class="title" x="806" y="192">provider proxy</text>
+      <text class="sub" x="806" y="213">checks the Culler token</text>
+      <text class="sub" x="806" y="231">adds the credentials</text>
+
+      <rect class="box-green" x="52" y="196" width="160" height="72" rx="10"/>
+      <text class="title" x="68" y="226">macOS Keychain</text>
+      <text class="sub" x="68" y="248">provider credentials</text>
+
+      <rect class="box-blue" x="296" y="196" width="394" height="72" rx="10"/>
+      <text class="code-title mid" x="493" y="226">mc</text>
+      <text class="sub mid" x="493" y="248">on the host · one process for each call</text>
+
+      <!-- Host connections -->
+      <path class="line-gray" d="M212 112H272" marker-end="url(#head-gray)"/>
+      <text class="label mid" x="242" y="102">opens</text>
+      <path class="line-gray" d="M446 100H526" marker-end="url(#head-gray)"/>
+      <text class="label mid" x="486" y="90">local proxy</text>
+      <path class="line-gray" d="M446 140H526" marker-end="url(#head-gray)"/>
+      <text class="label mid" x="486" y="130">serves</text>
+      <path class="line-gray" d="M960 268V312" marker-end="url(#head-gray)"/>
+      <text class="label end" x="950" y="296">starts each container</text>
+      <path class="line-gray" d="M994 112H1164" marker-start="url(#head-gray)" marker-end="url(#head-gray)"/>
+      <text class="label mid" x="1093" y="102">messages and alerts</text>
+
+      <!-- mc from the dashboard and the resident -->
+      <path class="line-blue" d="M400 148V192" marker-end="url(#head-blue)"/>
+      <text class="label-blue" x="410" y="175">runs mc</text>
+      <path class="line-blue" d="M774 212H694" marker-end="url(#head-blue)"/>
+      <text class="label-blue mid" x="732" y="202">runs mc</text>
+      <path class="line-blue" d="M330 272V420" marker-start="url(#head-blue)" marker-end="url(#head-blue)"/>
+      <text class="label-blue" x="340" y="300">read/write</text>
+
+      <!-- Provider credentials -->
+      <path class="line-green" d="M216 232H292" marker-start="url(#head-green)" marker-end="url(#head-green)"/>
+      <text class="label-green mid" x="254" y="222">read/write</text>
+      <path class="line-green" d="M694 240H786" marker-start="url(#head-green)" marker-end="url(#head-green)"/>
+      <text class="label-green mid" x="732" y="258">credentials</text>
+      <path class="line-green" d="M978 212H1164" marker-end="url(#head-green)"/>
+      <text class="label-green mid" x="1093" y="184">model requests with</text>
+      <text class="label-green mid" x="1093" y="201">provider credentials</text>
+
+      <!-- db -->
+      <path class="box-blue" d="M228 440V564C228 573 274 580 330 580S432 573 432 564V440"/>
+      <ellipse class="box-blue" cx="330" cy="440" rx="102" ry="16"/>
+      <text class="title mid" x="330" y="494">spine</text>
+      <text class="sub mid" x="330" y="516">one SQLite database</text>
+      <text class="sub mid" x="330" y="534">in a named volume</text>
+
+      <!-- Agent containers -->
+      <rect class="back" x="572" y="368" width="262" height="216" rx="12"/>
+      <rect class="back" x="564" y="376" width="262" height="216" rx="12"/>
+      <rect class="box" x="556" y="384" width="262" height="216" rx="12"/>
+      <text class="title" x="572" y="412">agent containers</text>
+      <text class="sub" x="572" y="432">one fresh container for each run</text>
+      <text class="sub" x="572" y="456">Worker · Verifier · Packager · Scribe</text>
+      <text class="sub" x="572" y="474">Strategist · Arbiter · setup agent</text>
+      <rect class="chip-blue" x="568" y="486" width="58" height="32" rx="8"/>
+      <text class="code ink-blue mid" x="597" y="507">mc</text>
+      <text class="sub" x="636" y="507">runs inside the container</text>
+      <text class="strong" x="572" y="542">no provider credentials</text>
+      <rect class="chip-orange" x="612" y="554" width="150" height="32" rx="8"/>
+      <text class="code ink-orange mid" x="687" y="575">/workspace/source</text>
+
+      <path class="line-blue" d="M436 502H564" marker-start="url(#head-blue)" marker-end="url(#head-blue)"/>
+      <text class="label-blue mid" x="500" y="492">read/write</text>
+
+      <!-- Model requests from the agent containers -->
+      <path class="line-gray" d="M800 364V260" marker-end="url(#head-gray)"/>
+      <text class="label" x="812" y="336">model requests</text>
+      <text class="label" x="812" y="354">temporary Culler token</text>
+
+      <!-- Repositories -->
+      <rect class="box-orange" x="556" y="676" width="262" height="92" rx="10"/>
+      <text class="title" x="572" y="706">Project repositories</text>
+      <text class="sub" x="572" y="728">Git, on your disk</text>
+      <text class="sub" x="572" y="748">Approved commits merge into main.</text>
+
+      <path class="line-orange" d="M687 672V590" marker-start="url(#head-orange)" marker-end="url(#head-orange)"/>
+      <text class="label-orange" x="697" y="642">mounted as a fresh source workspace</text>
+      <text class="label-orange" x="697" y="660">result commit kept after the run</text>
+
+      <!-- Outside the Mac -->
+      <rect class="outside" x="1168" y="76" width="170" height="72" rx="10"/>
+      <text class="title" x="1184" y="106">Discord</text>
+      <text class="sub" x="1184" y="128">optional</text>
+      <rect class="outside" x="1168" y="172" width="170" height="80" rx="10"/>
+      <text class="title" x="1184" y="204">Model provider</text>
+      <text class="sub" x="1184" y="226">HTTPS</text>
+    </g>
+</svg>
