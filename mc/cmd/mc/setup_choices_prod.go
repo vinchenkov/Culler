@@ -532,6 +532,12 @@ func (w *setupWizard) commandAvailability() error {
 	if err != nil {
 		return &setupFailure{cause: setupSafeDiagnostic(err.Error()), command: cullerInstallCommand(w.home)}
 	}
-	w.ui.Panel("", lines)
-	return w.offerAgentSkillIntegration()
+	// The skill links are a convenience; a link failure leaves a finished setup intact.
+	_ = w.installAgentSkill()
+	if terminal, ok := w.ui.(interface{ Highlight([]string) }); ok {
+		terminal.Highlight(lines)
+	} else {
+		w.ui.Panel("", lines)
+	}
+	return nil
 }

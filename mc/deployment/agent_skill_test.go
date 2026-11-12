@@ -74,15 +74,21 @@ func agentSkillIntegrationFixture(t *testing.T) (string, string, string) {
 	if err := os.WriteFile(filepath.Join(target, "SKILL.md"), []byte("skill"), 0600); err != nil {
 		t.Fatal(err)
 	}
-	return home, user, filepath.Join(user, ".claude", "skills", "culler")
+	return home, user, target
 }
 
+func skillLink(user, root string) string { return filepath.Join(user, root, "skills", "culler") }
+
 func TestAgentSkillIntegrationPreservesOwnershipAcrossUpdateAndUninstall(t *testing.T) {
-	home, user, link := agentSkillIntegrationFixture(t)
+	home, user, target := agentSkillIntegrationFixture(t)
 	for range 2 {
-		status, err := InstallAgentSkillIntegration(home, user)
-		if err != nil || status != "installed" {
-			t.Fatalf("install = %q, %v", status, err)
+		if err := InstallAgentSkillIntegration(home, user, []string{".agents", ".claude", ".codex"}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, root := range AgentSkillRoots {
+		if link, err := os.Readlink(skillLink(user, root)); err != nil || link != target {
+			t.Fatalf("%s link = %q, %v", root, link, err)
 		}
 	}
 	remove, err := PrepareCLIUninstall(home)
@@ -95,46 +101,96 @@ func TestAgentSkillIntegrationPreservesOwnershipAcrossUpdateAndUninstall(t *test
 	if err := remove(); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := os.Lstat(link); !os.IsNotExist(err) {
-		t.Fatalf("the owned link remains: %v", err)
+	for _, root := range AgentSkillRoots {
+		if _, err := os.Lstat(skillLink(user, root)); !os.IsNotExist(err) {
+			t.Fatalf("the owned %s link remains: %v", root, err)
+		}
 	}
 }
 
-func TestAgentSkillIntegrationKeepsUnrelatedSkillAndReplacement(t *testing.T) {
-	home, user, link := agentSkillIntegrationFixture(t)
-	if err := os.MkdirAll(link, 0700); err != nil {
+func TestAgentSkillIntegrationFollowsHarnessSelection(t *testing.T) {
+	home, user, target := agentSkillIntegrationFixture(t)
+	if err := InstallAgentSkillIntegration(home, user, []string{".agents", ".claude"}); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(link, "SKILL.md"), []byte("unrelated"), 0600); err != nil {
+	if _, err := os.Lstat(filepath.Join(user, ".codex")); !os.IsNotExist(err) {
+		t.Fatalf("an unselected harness received a skill directory: %v", err)
+	}
+	if err := InstallAgentSkillIntegration(home, user, []string{".agents", ".codex"}); err != nil {
 		t.Fatal(err)
 	}
-	if status, err := InstallAgentSkillIntegration(home, user); err != nil || status != "conflict" {
-		t.Fatalf("conflict = %q, %v", status, err)
+	if _, err := os.Lstat(skillLink(user, ".claude")); !os.IsNotExist(err) {
+		t.Fatalf("the deselected harness keeps the owned link: %v", err)
 	}
-	if body, _ := os.ReadFile(filepath.Join(link, "SKILL.md")); string(body) != "unrelated" {
-		t.Fatal("the unrelated skill changed")
+	for _, root := range []string{".agents", ".codex"} {
+		if link, err := os.Readlink(skillLink(user, root)); err != nil || link != target {
+			t.Fatalf("%s link = %q, %v", root, link, err)
+		}
 	}
-	if err := os.RemoveAll(link); err != nil {
+}
+
+func TestAgentSkillIntegrationReadsSingleLinkRecord(t *testing.T) {
+	home, user, target := agentSkillIntegrationFixture(t)
+	link := skillLink(user, ".claude")
+	if err := os.MkdirAll(filepath.Dir(link), 0700); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := InstallAgentSkillIntegration(home, user); err != nil {
+	if err := os.Symlink(target, link); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(home, "state"), 0700); err != nil {
+		t.Fatal(err)
+	}
+	body, _ := json.Marshal(AgentSkillIntegration{Path: link, Target: target})
+	if err := os.WriteFile(filepath.Join(home, agentSkillIntegrationRecord), body, 0600); err != nil {
 		t.Fatal(err)
 	}
 	remove, err := PrepareAgentSkillUninstall(home)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Remove(link); err != nil {
+	if err := remove(); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Lstat(link); !os.IsNotExist(err) {
+		t.Fatalf("the recorded link remains: %v", err)
+	}
+}
+
+func TestAgentSkillIntegrationKeepsUnrelatedSkillAndReplacement(t *testing.T) {
+	home, user, _ := agentSkillIntegrationFixture(t)
+	link := skillLink(user, ".claude")
+	if err := os.MkdirAll(link, 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(link, "SKILL.md"), []byte("unrelated"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := InstallAgentSkillIntegration(home, user, []string{".agents", ".claude"}); err != nil {
+		t.Fatal(err)
+	}
+	if body, _ := os.ReadFile(filepath.Join(link, "SKILL.md")); string(body) != "unrelated" {
+		t.Fatal("the unrelated skill changed")
+	}
+	remove, err := PrepareAgentSkillUninstall(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	agents := skillLink(user, ".agents")
+	if err := os.Remove(agents); err != nil {
 		t.Fatal(err)
 	}
 	replacement := t.TempDir()
-	if err := os.Symlink(replacement, link); err != nil {
+	if err := os.Symlink(replacement, agents); err != nil {
 		t.Fatal(err)
 	}
 	if err := remove(); err != nil {
 		t.Fatal(err)
 	}
-	if target, err := os.Readlink(link); err != nil || target != replacement {
+	if target, err := os.Readlink(agents); err != nil || target != replacement {
 		t.Fatal("uninstall removed the replacement")
+	}
+	if body, _ := os.ReadFile(filepath.Join(link, "SKILL.md")); string(body) != "unrelated" {
+		t.Fatal("uninstall changed the unrelated skill")
 	}
 }

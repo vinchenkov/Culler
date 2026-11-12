@@ -15,6 +15,7 @@ const (
 	textDone    = "32"
 	textAction  = "33"
 	textMuted   = "2"
+	textNotice  = "1;32"
 )
 
 var stageIDs = []string{"welcome", "prepare", "agents", "review", "start", "dashboard"}

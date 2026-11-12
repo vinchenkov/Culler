@@ -65,7 +65,7 @@ func TestSetupCommandAvailabilityShowsOneNotice(t *testing.T) {
 	if err := w.commandAvailability(); err != nil {
 		t.Fatal(err)
 	}
-	want := "\nThe culler command is installed for lifecycle operations. Continue to the dashboard for the Culler experience."
+	want := "\nThe culler cli is installed for lifecycle operations. Continue to the dashboard for the Culler experience."
 	if len(ui.panels) != 1 || ui.panels[0] != want {
 		t.Fatalf("The command notice differs: %q", ui.panels)
 	}

@@ -36,10 +36,12 @@ An invalid configured credential can stop installation even when the release is 
 ## Use an external agent
 
 The release includes the same Culler skill that Collie uses.
-Setup offers a personal Claude Code integration at `~/.claude/skills/culler`.
-The integration preserves an existing skill that Culler does not own.
-An update preserves the integration and your custom skills.
-Uninstall removes only the integration link that Culler owns.
+Setup links the skill at `~/.agents/skills/culler`.
+When you select Claude Code, setup also links it at `~/.claude/skills/culler`.
+When you select Codex, setup also links it at `~/.codex/skills/culler`.
+Setup preserves an existing skill that Culler does not own.
+An update preserves the links and your custom skills.
+Uninstall removes only the links that Culler owns.
 
 You can also give any agent with file and command access this skill path:
 

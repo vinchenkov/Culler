@@ -16,6 +16,7 @@ import (
 // Session holds setup choices. Credential values and vision content stay outside this record.
 // RuntimeCreated lists the connections that setup created and that have not passed a test.
 type Session struct {
+	// AgentSkillOffered has no effect. Saved setup records can contain it.
 	AgentSkillOffered     bool              `json:"agent_skill_offered,omitempty"`
 	StageName             string            `json:"stage_name,omitempty"`
 	Stage                 int               `json:"stage"`

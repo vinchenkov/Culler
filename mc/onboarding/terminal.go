@@ -77,6 +77,15 @@ func (t *Terminal) Panel(title string, lines []string) {
 	t.writeLines(t.panelBlock(title, lines, false))
 }
 
+// Highlight shows a panel without a title in a style that menus do not use.
+func (t *Terminal) Highlight(lines []string) {
+	var block []terminalLine
+	for _, line := range lines {
+		block = append(block, t.hangingLines(line, textNotice, 2, 2)...)
+	}
+	t.writeLines(append(block, terminalLine{}))
+}
+
 // Problem shows a panel that names a failure or a rejected answer.
 func (t *Terminal) Problem(title string, lines []string) {
 	t.writeLines(t.panelBlock(title, lines, true))

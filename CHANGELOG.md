@@ -13,7 +13,8 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - The command help describes each operation, its request, its result, and its authority requirements.
 - Culler retains operator requests and their results. An uncertain request never repeats its effects automatically.
 - The release includes the common skill, its procedure files, and the native trace reader.
-- Terminal setup offers a personal skill link for Claude Code and preserves existing skill files.
+- Terminal setup links the `culler` skill for external agents at `~/.agents/skills/` and for each selected Claude Code or Codex harness. It preserves existing skill files.
+- Terminal setup highlights the notice for the `culler` command.
 - A role assignment requires the current assignment, so a stale request preserves a later change.
 - The dashboard browser test waits for profile recovery before it checks Save.
 - The test closes the profile dialog after a failure to protect subsequent tests.

@@ -48,7 +48,7 @@ func TestCLIPathPreservesShellTextAndRemovesOnlyOwnedFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(lines) != 1 || lines[0] != "The culler command is installed for lifecycle operations. Continue to the dashboard for the Culler experience." {
+	if len(lines) != 1 || lines[0] != "The culler cli is installed for lifecycle operations. Continue to the dashboard for the Culler experience." {
 		t.Fatal(lines)
 	}
 	if err := os.WriteFile(filepath.Join(directory, "culler"), []byte("replacement executable"), 0755); err != nil {

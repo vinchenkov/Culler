@@ -294,7 +294,7 @@ func CLIAvailability(home string) ([]string, error) {
 	if err != nil || digest != r.SHA256 || !r.Verified {
 		return nil, errors.New("The Culler command requires an availability check.")
 	}
-	return []string{"The culler command is installed for lifecycle operations. Continue to the dashboard for the Culler experience."}, nil
+	return []string{"The culler cli is installed for lifecycle operations. Continue to the dashboard for the Culler experience."}, nil
 }
 
 func RemoveCLIInstallation(home string) error {

@@ -418,12 +418,13 @@ The operator continues to use `culler` for lifecycle operations and `install.sh`
 Operator-facing instructions identify the skill for the external agent.
 They do not instruct the operator to execute `mc` commands.
 
-The installer offers a Claude Code skill integration.
-That integration exposes the installed skill through `~/.claude/skills/culler`.
-Claude Code supports personal skill directories and directory symlinks at that location.
-The [Claude Code skill documentation](https://code.claude.com/docs/en/skills#choose-where-skills-load) defines that discovery behavior.
+Setup links the installed skill at `~/.agents/skills/culler` without a question.
+A selected Claude Code harness adds a link at `~/.claude/skills/culler`.
+A selected Codex harness adds a link at `~/.codex/skills/culler`.
+The [Claude Code skill documentation](https://code.claude.com/docs/en/skills#choose-where-skills-load) defines the personal skill directory of Claude Code.
 
 The integration preserves an existing skill or link that Culler does not own.
+A setup without a harness removes the Culler-owned link of that harness.
 The installation record identifies every integration link that Culler owns.
 A link conflict leaves the canonical installed skill available through its direct path.
 An external agent with file and command access can use that path without harness-specific command adapters.
