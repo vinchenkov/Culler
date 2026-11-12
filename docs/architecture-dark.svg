@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 872" width="1360" height="872" role="img" aria-labelledby="title desc">
 <title id="title">The architecture of Culler</title>
-<desc id="desc">FIG. 3, architecture. On your Mac, the Browser opens the dashboard. The dashboard reaches AgentsView through a local proxy and serves OpenWiki. The dashboard and the resident run mc on the host. That mc reads and writes the spine. Inside Docker Desktop, the spine is one SQLite database in a named volume. The resident starts each agent container. Each agent container runs mc inside the container and reads and writes the spine. The Project repositories supply a fresh source workspace for each run, mounted at /workspace/source, and keep the result commit after the run. Provider credentials stay in the macOS Keychain. mc reads them for the provider proxy in the resident. Agent containers send model requests with a temporary Culler token to the proxy. The proxy adds the credentials and sends each request to the model provider. Agent containers hold no provider credentials. Discord is optional.</desc>
+<desc id="desc">FIG. 3, architecture. On your Mac, the Browser opens the dashboard. The dashboard reaches AgentsView through a local proxy and serves OpenWiki. The dashboard and the resident run mc on the host. That mc reaches the db through docker exec and the helper container. Inside Docker Desktop, the db is one SQLite database in a named volume. The resident starts each agent container. Each agent container runs mc inside the container and reads and writes the db. The Project repositories supply a fresh source workspace for each run, mounted at /workspace/source, and keep the result commit after the run. Provider credentials stay in the macOS Keychain. mc reads them for the provider proxy in the resident. Agent containers send model requests with a temporary Culler token to the proxy. The proxy adds the credentials and sends each request to the model provider. Agent containers hold no provider credentials. Discord is optional.</desc>
 <style>
   .mac { fill: #14222f; stroke: #84b9e8; stroke-width: 2; }
   .docker { fill: #1a2b3a; stroke: #3f566a; stroke-width: 1.5; stroke-dasharray: 7 5; }
@@ -40,7 +40,7 @@
 </style>
 <rect width="1360" height="872" rx="16" fill="#0f1a24"/>
 <text class="region" x="24" y="40">FIG. 3 · ARCHITECTURE</text>
-<path class="line-blue" d="M582 35H610"/><text class="legend-t" x="618" y="40">Path to the spine through <tspan class="legend-mono">mc</tspan></text>
+<path class="line-blue" d="M582 35H610"/><text class="legend-t" x="618" y="40">Path to the db through <tspan class="legend-mono">mc</tspan></text>
 <path class="line-orange" d="M825 35H853"/><text class="legend-t" x="861" y="40">Repository mount</text>
 <path class="line-green" d="M1000 35H1028"/><text class="legend-t" x="1036" y="40">Provider credentials</text>
 <path class="line-gray" d="M1189 35H1217"/><text class="legend-t" x="1225" y="40">Other connection</text>
@@ -91,7 +91,7 @@
 
       <rect class="box-blue" x="296" y="196" width="394" height="72" rx="10"/>
       <text class="code-title mid" x="493" y="226">mc</text>
-      <text class="sub mid" x="493" y="248">on the host · one process for each call</text>
+      <text class="sub mid" x="493" y="248">on the host · through the helper container</text>
 
       <!-- Host connections -->
       <path class="line-gray" d="M212 112H272" marker-end="url(#head-gray)"/>
@@ -125,7 +125,7 @@
       <!-- db -->
       <path class="box-blue" d="M228 440V564C228 573 274 580 330 580S432 573 432 564V440"/>
       <ellipse class="box-blue" cx="330" cy="440" rx="102" ry="16"/>
-      <text class="title mid" x="330" y="494">spine</text>
+      <text class="title mid" x="330" y="494">db</text>
       <text class="sub mid" x="330" y="516">one SQLite database</text>
       <text class="sub mid" x="330" y="534">in a named volume</text>
 
@@ -134,7 +134,7 @@
       <rect class="back" x="564" y="376" width="262" height="216" rx="12"/>
       <rect class="box" x="556" y="384" width="262" height="216" rx="12"/>
       <text class="title" x="572" y="412">agent containers</text>
-      <text class="sub" x="572" y="432">one fresh container for each run</text>
+      <text class="sub" x="572" y="432">a new container for each run</text>
       <text class="sub" x="572" y="456">Worker · Verifier · Packager · Scribe</text>
       <text class="sub" x="572" y="474">Strategist · Arbiter · setup agent</text>
       <rect class="chip-blue" x="568" y="486" width="58" height="32" rx="8"/>
