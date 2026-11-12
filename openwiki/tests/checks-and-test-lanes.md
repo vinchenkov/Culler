@@ -172,6 +172,10 @@ sources:
     resource: repo://resident/src/connection-recovery.test.ts
   - id: openwiki-source-ed495aeb639dfd64cad84dde
     resource: repo://resident/src/dependency-reuse.ts
+  - id: openwiki-source-0b192bad84f1104f5cd7c072
+    resource: repo://resident/src/effects.test.ts
+  - id: openwiki-source-f3babed308d9c6a9d29d3eeb
+    resource: repo://resident/src/environment-lane.test.ts
   - id: openwiki-source-a34ade05dc0d7c781a7d0f1d
     resource: repo://resident/src/main.test.ts
   - id: openwiki-source-41da535b70edb44b29c38c2c
@@ -188,10 +192,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T09:22:03.309Z
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -923,3 +927,15 @@ These statements describe test coverage; this wiki update does not execute the s
 `mc/cmd/mc/agent_skill_prod_test.go` checks automatic links for selected harnesses and the absence of an integration question.
 `mc/deployment/agent_skill_test.go` checks changes in harness selection, the earlier single-link record, ownership across updates and uninstall, and preservation of unrelated skills or replacement files.
 These are source-defined checks; this wiki update does not execute the setup or deployment suites.
+
+
+## Container resource policy checks
+
+`mc/config/config_test.go` checks unlimited CPU and memory defaults and rejects negative or excessive values.
+`mc/verbs/configsave_test.go` checks saving limits, clearing them to zero, invalid input, and the minimum shown by the settings interface.
+`resident/src/environment-lane.test.ts` checks setup defaults, configured limits, and refusal when settings are unavailable or invalid.
+`resident/src/effects.test.ts` checks the same policy on pipeline and Collie launches, including equal memory and swap allowances and the 2,048-process limit.
+It also checks refusal after a failed settings read and after a Collie container differs from its expected memory allowance.
+`mc/cmd/mc/helper_manager_test.go` checks the helper's unlimited CPU and memory values and fixed process limit.
+These assertions describe test coverage; this wiki update does not execute the component suites.
+See [agent container limits](../architecture/resident.md#agent-container-limits) for configuration and launch behavior.

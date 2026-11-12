@@ -30,10 +30,10 @@ sources:
     resource: repo://resident/src/run-log-prune.ts
   - id: openwiki-source-79628d0b1a3667fb37eebff9
     resource: repo://resident/src/tick-loop.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # The resident host daemon
@@ -73,6 +73,7 @@ Two timers run beside these steps. Every 60 seconds the resident runs `mc evalua
 At the end of startup, `main()` calls `handle.nudge()` after it starts the independent lanes.
 This requests the first round immediately, without a wait for the 60-second default interval.
 The round uses the same preparation guard, maintenance check, and receipt path as later rounds.
+The resident writes its start log after operator-lane recovery completes, then requests this first round.
 Release activation waits for the tick receipt.
 
 
@@ -92,6 +93,15 @@ The runtime envelope carries a configured effort when the profile selects one.
 The setup lane uses the same value for setup agent runs.
 For a Collie wake, the resident reads the conversation's stored effort and puts it in the launch envelope.
 The current profile still supplies the connection and model access for that launch.
+
+## Agent container limits
+
+Before each pipeline, setup, or Collie container starts, the resident reads the CPU and memory settings through `mc config show`.
+The default applies no CPU or memory limit. A configured memory limit sets the same memory and swap allowance, which permits no additional swap.
+Each container has a limit of 2,048 processes.
+`agentContainerLimits` and `agentLimitArguments` in `resident/src/environment-lane.ts` supply the shared policy.
+A failed or invalid settings read prevents the launch.
+The operator changes these settings on **Configs → Advanced**; existing containers retain their launch settings.
 
 ## Project storage at launch
 

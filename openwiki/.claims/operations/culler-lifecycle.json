@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:7db367764ece232a964923e28cda43cb7bc71d7cfc65e8c708bee3f51d40d7a8",
+  "pageVersion": "sha256:7ded9ca157d06a773245eafe963f1e02814239056d757d0770ddea5f5d4046e8",
   "claims": [
     {
       "id": "claim_40bf16bc04264ce683e954dec92e3a71",
@@ -75,7 +75,7 @@
       "statement": "Uninstall covers all detected installations; both modes preserve Project repositories and shared tools, while keep-data preserves configuration, credentials, and history.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L217-L253",
+          "resource": "repo://INSTALL.md#L219-L255",
           "version": "repo-lines-v1:sha256:8d3d0ab59848ad605e8e9bf74afc838bfc6fd670293bef9db54945d160db09fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyOTkzZjllZDhlNGU1MzdmODBjZGNkMGVlZWRlYWY3YTQzODVmZGRmYmQyYmYwMDg1NTdmNzA0ZWZiOTNlN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMzYzM2EwYzM0ZjIxYWJjNDhhYmVlZmE5NWIwMDg5YzU5MTBiYmVmZWJhMDUwZDk3M2QxZjBhNDY4MDQ4MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5YmZiNzBkNTRmNmM0NTRlYmIzMTJkZGY1OWI3MmY3NTNhZTgzZmUzMmRlNzNhZDk1MjU5NjAxZjExNmQxZmMifQ"
         }
       ]
@@ -99,8 +99,8 @@
       "statement": "Published update checks run the candidate runtime on selected Project images with temporary volumes and no live spine mount.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L154-L255",
-          "version": "repo-lines-v1:sha256:87890f769ee66def3411b12f9017ddd3e1ed19ecb8dbda520fdd36b7cce529ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZGExZDc5MTQ4MDllMzQ5OWQ0NTczZThiZmU1ODI2YWUwODJlYTJlMmExNGRiN2NjMTQxNzI1NzdjNmE3MzVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2MThhNjEzNDUyZTBlMTBhNjVmMTJkMjM1MTcyNzZjN2U3NjdmMDE1YTk1MjkzYWU2NzEzMzRjNmRiOTkyMDVmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIn0"
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L157-L258",
+          "version": "repo-lines-v1:sha256:8a774ebcc64344c00bb299fc8d8865c7ad89af92abc5c55f2b7085a1587912a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMGY0MmY3NzAyNmNhODk2ZDk4ZjI1ZGE2YmVkZTE2ZmY4YjY5ODczMmY1ZGI3YzRjMTA5ZDc4YTZiY2I5ZTExIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0YzBkMzA2YzE1OTM3NGRkZTBkMGY0NmNmOTk4NWIwOGFhOTVhM2I3MTkyMDU4MzBkOTJlMGIyMzdjNDM3NWY2In0"
         }
       ]
     },
@@ -116,7 +116,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

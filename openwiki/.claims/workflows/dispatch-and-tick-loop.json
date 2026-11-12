@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:536370c1924a0a3ed259b23be819895782947ce1d5a0a622e360c9e22d0c6671",
+  "pageVersion": "sha256:7b7106c7e07c4f63ce56124bfb443090ebbc1065ef3c96339efea01a1e40297b",
   "claims": [
     {
       "id": "claim_4665dd1d847544b8aca52a0ff841277e",
@@ -115,7 +115,7 @@
       "statement": "A reap stops the setup and pipeline containers, calls mc run stopped, and only then discards the launch envelope and plan files.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1655-L1700",
+          "resource": "repo://resident/src/effects.ts#L1657-L1702",
           "version": "repo-lines-v1:sha256:c8ac047f142187c7fd66b73b64fce65b195bc6ccfd321ca7762a8af64074982e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NjE0YTUwYjZmNWI3ZTVmMDVlMjVkMWM3YzVjZjQwNjQwNTBiZmRlMWZjNTVjNTc1OTE4MGZmOWExZWQ4ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwMmZlZTcwZDg4N2Y4ZDI0YzcyMjI3MjkwNzhjNWU0MWQzZjZhNDFkZjY3OGM4NDYyNzAwZjJhNDJhMmIyMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjOWIzYTYwNjdkOTI2OWQ4OGYyNDZhMDkwN2QzYzZjODYyYmI1ZTBhMTcxOGYxZjU5NDdlMzMwYTRjMjZjNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2YTZjYjNhODgwYTJkNjMzY2NjYmFmNTYyNjE2ZDE4NGE4ODAwOTY4Njk1NGNjNjczZmNiNDNiYjgzNmU1OTIifQ"
         }
       ]
@@ -150,7 +150,7 @@
         },
         {
           "resource": "repo://resident/src/main.ts",
-          "version": "repo-file-v1:sha256:989883525feed4195f427f750b0fd47e569320d2c5a83632f3997216d1ffe1a8"
+          "version": "repo-file-v1:sha256:50c9d0cf5fee015fefaba02cdc764f76a6449c65b08dab62e0704e5948c5d4a4"
         }
       ]
     },
@@ -185,6 +185,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T09:22:03.309Z"
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

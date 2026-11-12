@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bddd01b5315daf9d7a73c5e5a6c252146a80065fe4753d5028a08af9a57acbd6",
+  "pageVersion": "sha256:bf059c9761a7e9b547f277c4e66d50a6741c9a34f1db121bdf5db3004d1192da",
   "claims": [
     {
       "id": "claim_1b1da26c13474a2480c90cc3ed038cf5",
@@ -96,7 +96,7 @@
         },
         {
           "resource": "repo://resident/src/main.ts",
-          "version": "repo-file-v1:sha256:989883525feed4195f427f750b0fd47e569320d2c5a83632f3997216d1ffe1a8"
+          "version": "repo-file-v1:sha256:50c9d0cf5fee015fefaba02cdc764f76a6449c65b08dab62e0704e5948c5d4a4"
         }
       ]
     },
@@ -120,7 +120,7 @@
       "evidence": [
         {
           "resource": "repo://resident/src/main.ts",
-          "version": "repo-file-v1:sha256:989883525feed4195f427f750b0fd47e569320d2c5a83632f3997216d1ffe1a8"
+          "version": "repo-file-v1:sha256:50c9d0cf5fee015fefaba02cdc764f76a6449c65b08dab62e0704e5948c5d4a4"
         }
       ]
     },
@@ -129,12 +129,12 @@
       "statement": "Setup and pipeline launch code use projectHomeArguments to bind the persistent home and separate per-container role storage.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1514-L1514",
-          "version": "repo-lines-v1:sha256:86e2265e980514628055239afcf3d70e683480c7c4e4a6c3253b92aa06fa386a:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODZlMjI2NWU5ODA1MTQ2MjgwNTUyMzlhZmNmM2Q3MGU2ODM0ODBjN2M0ZTRhNmMzMjUzYjkyYWEwNmZhMzg2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODZlMjI2NWU5ODA1MTQ2MjgwNTUyMzlhZmNmM2Q3MGU2ODM0ODBjN2M0ZTRhNmMzMjUzYjkyYWEwNmZhMzg2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2Y3NTBiN2Y1NzNkNDc2M2JiOGMwMTFiNzFjZGRmNjk4NDUxMGY5YjkwNTc4YjdmZDhiZTAzMjJhMGRhMTQxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzRhM2NlNGIxM2U5MmY3NWNmNTE4YjI5NjljZWMwNzg2MjBkOThkZDFiMjA4YWVkYmY1YmI0OGNjMDU2NjIxMSJ9"
+          "resource": "repo://resident/src/effects.ts#L1514-L1516",
+          "version": "repo-lines-v1:sha256:a4eae40537bf45f37d960b67e9b00d98867a7f2773b2b5d83ccf633d1ac98389:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjZjNjU1YmNhM2JjNGM2OWNmOWJmMGVhMDc3ZDc0NDJiMDM2OWRhY2JkOGIwZjI0NzgwYjNkMGYwY2FmMDllNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODZlMjI2NWU5ODA1MTQ2MjgwNTUyMzlhZmNmM2Q3MGU2ODM0ODBjN2M0ZTRhNmMzMjUzYjkyYWEwNmZhMzg2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzViZDUxN2YzNzg0NmIwMGNkYWRmNmVkNDYzZmMyNjg2YjMzYzllNzVkMzBhNGMxNDcyOWM2YTI2ZjNiZjJmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzRhM2NlNGIxM2U5MmY3NWNmNTE4YjI5NjljZWMwNzg2MjBkOThkZDFiMjA4YWVkYmY1YmI0OGNjMDU2NjIxMSJ9"
         },
         {
           "resource": "repo://resident/src/environment-lane.ts",
-          "version": "repo-file-v1:sha256:aab82f9e12d149577121d169f3398e5a8122bc70699b7854cc9c99d01cd3ce2b"
+          "version": "repo-file-v1:sha256:96fbc976dd5bb5acb3909e4ddf31d537585482bfd20d926ce1eec5ce7dfb1296"
         }
       ]
     },
@@ -144,7 +144,7 @@
       "evidence": [
         {
           "resource": "repo://resident/src/main.ts",
-          "version": "repo-file-v1:sha256:989883525feed4195f427f750b0fd47e569320d2c5a83632f3997216d1ffe1a8"
+          "version": "repo-file-v1:sha256:50c9d0cf5fee015fefaba02cdc764f76a6449c65b08dab62e0704e5948c5d4a4"
         },
         {
           "resource": "repo://resident/src/tick-loop.ts",
@@ -200,7 +200,7 @@
       "evidence": [
         {
           "resource": "repo://resident/src/main.ts",
-          "version": "repo-file-v1:sha256:989883525feed4195f427f750b0fd47e569320d2c5a83632f3997216d1ffe1a8"
+          "version": "repo-file-v1:sha256:50c9d0cf5fee015fefaba02cdc764f76a6449c65b08dab62e0704e5948c5d4a4"
         },
         {
           "resource": "repo://resident/src/provider-credentials.ts",
@@ -214,11 +214,11 @@
       "evidence": [
         {
           "resource": "repo://resident/src/effects.ts",
-          "version": "repo-file-v1:sha256:23cb2a7175f4938499c1c649e31cccd88ea361f4c14dbd941ed3df266d7274ff"
+          "version": "repo-file-v1:sha256:30b2ec13b9c78d7529aa797e19d2b41e8fe546125984536ab481879f1bd9b3df"
         },
         {
           "resource": "repo://resident/src/environment-lane.ts",
-          "version": "repo-file-v1:sha256:aab82f9e12d149577121d169f3398e5a8122bc70699b7854cc9c99d01cd3ce2b"
+          "version": "repo-file-v1:sha256:96fbc976dd5bb5acb3909e4ddf31d537585482bfd20d926ce1eec5ce7dfb1296"
         }
       ]
     },
@@ -235,10 +235,20 @@
           "version": "repo-lines-v1:sha256:ea9345665a793cd36fa511116399fde1ed84c3dafc7b46d406f80f35a2daed91:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjM2U1YmZhYTQ0Mzc5OGU4MmY2NmFkYmM1ZTM2NDQzNjlkNjk1MDMxMjE0ZTJhMWI1NzE3ODY5MDY1NGQ2ZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiNDczNDgyZGJmOWQwYTBkYjZjNTI5YWM5ZDg0N2E1MWFhMzM4ZGYwNTEwNWI0Njg5ZWU1Njg4YjNmNGExOGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZjAzNTZhZGE0MGZkYWMyYmUxNWQ2ZDAzZWRkMTgwOGJlYzA5NTAzZWU1NzQxYmIxZDIxZjU2NmMwODkzZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZDY3ZjZlYjdjZjAyNjBhMzFkNjA4ODRmODU5ODlmMjZjMzMzOTc2NDkyZTk2ZGUzMmQzNTVmOGVkNTI2NzYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_9007c3b37b36422c9d8392e82a125fa1",
+      "statement": "New agent containers read optional CPU and memory limits through mc config show and use a 2048-process limit; a configured memory limit permits no additional swap.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L43-L82",
+          "version": "repo-lines-v1:sha256:8f4497bd5c5503e833c60bcdc27fc219fbeda34be067d39e7e8751c7b5b80b15:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNWQ3NTExMmI4ZjQ4MjAzODI1ZmRkMzJhZWRiOGUzZGNhMWM0N2E5NTg3YzhlYjBkNDY4M2E1ZTcwZGI4MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ODYwMzZhZDFiMDlmNDVmMTk3ZjAzMTgyODliNjg3Y2Y2Nzc2YzQ3NWQ3YjNhYTczMDFjY2JkNWFhYjk5N2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmYjdjZTg1ZmFiZDgzYjJjYjE0NjQyOWQ2ZjkzYWQzZTA4YWY2NjZmYzY2MjA1MzM4YWMxMDczN2UxMjhiZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0MDA1MjRmZDJjOWUwNzVhNzQ2YjM3MTc0M2EwMjFmNDY0ODlkNjYwYTMxNjA1YjkzNTA2MjcyODZjM2M2OGYifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

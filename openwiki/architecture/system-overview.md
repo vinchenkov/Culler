@@ -32,8 +32,8 @@ sources:
     resource: repo://runner/agent-runner/main.ts
 generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Culler system architecture

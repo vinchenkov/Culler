@@ -18,6 +18,8 @@ sources:
     resource: repo://mc/cmd/mc/runtime_scope_prod.go
   - id: openwiki-source-42421fcd4e919150079ddaf4
     resource: repo://mc/cmd/mc/runtime_scope_testfake.go
+  - id: openwiki-source-02886ae4c9efa40e167cf53b
+    resource: repo://mc/config/config.go
   - id: openwiki-source-7ba97e8fd5c9270622015405
     resource: repo://mc/routing/registry_active_fake.go
   - id: openwiki-source-02743ab9dfa15349cb2629c2
@@ -36,10 +38,10 @@ sources:
     resource: repo://runner/image/mc_dispatch.go
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # The mc CLI, verb scope, and boundaries
@@ -79,7 +81,7 @@ On macOS the spine lives in a Docker named volume that the host cannot open. The
 
 `delegate` runs `docker exec -i <helper> mc <argv…>`. It passes stdin through and tees stdout and stderr: the caller gets every byte unchanged, and `mc` keeps a bounded copy (8 KiB, first bytes kept) so it can log the refusal code from the inner error envelope. A failure of the wrapper itself, where the inner `mc` never ran, exits 2 with `self-delegation failed`.
 
-`ensureRuntimeHelper` (`mc/cmd/mc/helper_manager.go`) makes the helper match one exact shape before use. It runs the production image as `/bin/sleep infinity`, uid `10002:10002`, `--network none`, `--cap-drop ALL`, private IPC, 0.5 CPU, 512 MiB memory, 128 pids, the host time zone, and one mount: the spine volume at `/mc/spine`. `helperExact` inspects every one of these fields. A managed container that drifts is removed and recreated. A container with the helper's name but without the `mc-managed`/`mc-component=helper` labels is never removed; `ensure` refuses instead. `mc/cmd/mc/helper_manager_test.go` covers the create arguments, rejection of authority widening, and preservation of unmanaged name collisions.
+`ensureRuntimeHelper` (`mc/cmd/mc/helper_manager.go`) makes the helper match one exact shape before use. It runs the production image as `/bin/sleep infinity`, uid `10002:10002`, `--network none`, `--cap-drop ALL`, private IPC, a limit of 2,048 processes and no CPU or memory limit, the host time zone, and one mount: the spine volume at `/mc/spine`. `helperExact` inspects every one of these fields. A managed container that drifts is removed and recreated. A container with the helper's name but without the `mc-managed`/`mc-component=helper` labels is never removed; `ensure` refuses instead. `mc/cmd/mc/helper_manager_test.go` covers the create arguments, rejection of authority widening, and preservation of unmanaged name collisions.
 
 `AGENTS.md` describes delegation in terms of `MC_HELPER`. In the code, that variable matters only in `test_fake_routing` builds. There `mc/cmd/mc/runtime_scope_testfake.go` delegates when `MC_HELPER` is set and `MC_SPINE` is not, and uses `MC_SPINE` as the direct spine path. The CLI tests and the development install use this build.
 

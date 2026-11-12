@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a5fa59143d9a9e4c1a7bd0c0a7e31ab82763f5db57f695801ecefc99865abed5",
+  "pageVersion": "sha256:54cb43a99e56fa8caba03aafa96f9cfe78882869eac7f6466a30abea4c571488",
   "claims": [
     {
       "id": "claim_d0901f87144148f29fca692817e602f8",
@@ -308,7 +308,7 @@
         },
         {
           "resource": "repo://resident/src/effects.ts",
-          "version": "repo-file-v1:sha256:23cb2a7175f4938499c1c649e31cccd88ea361f4c14dbd941ed3df266d7274ff"
+          "version": "repo-file-v1:sha256:30b2ec13b9c78d7529aa797e19d2b41e8fe546125984536ab481879f1bd9b3df"
         }
       ]
     },
@@ -354,7 +354,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

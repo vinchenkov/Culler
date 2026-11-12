@@ -72,6 +72,8 @@ sources:
     resource: repo://mc/dispatch/README.md
   - id: openwiki-source-45770f873ba593d4d685f66f
     resource: repo://mc/substrate/substrate.go
+  - id: openwiki-source-f3e18532108643d261c29701
+    resource: repo://mc/verbs/configsave.go
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
     resource: repo://mc/verbs/directives/setup.md
   - id: openwiki-source-72313a4f79741897a46d7a11
@@ -102,10 +104,10 @@ sources:
     resource: repo://runner/image/Dockerfile
   - id: openwiki-source-1430dd49737c0f35b616bb76
     resource: repo://runner/image/runtime-check.sh
-generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T09:22:03.309Z
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Culler quickstart
@@ -455,3 +457,12 @@ Save replaces the current text. Save empty text to use the standard instructions
 Each run keeps the instructions it received.
 Saving instructions preserves an existing customization block.
 See [agent input](concepts/agent-input.md#the-run-brief) for the contract boundary and run snapshots.
+
+
+## Set agent container limits
+
+Open **Configs → Advanced** to set the CPU limit and memory limit for new agent containers.
+Zero means no limit and is the default for both settings. A memory limit permits no additional swap.
+The settings apply to new pipeline, setup, and Collie containers. Existing containers keep their launch settings.
+Each container has a limit of 2,048 processes.
+See [resident limits](architecture/resident.md#agent-container-limits) for the settings read and launch behavior, and [policy checks](tests/checks-and-test-lanes.md#container-resource-policy-checks) for source-defined test coverage.

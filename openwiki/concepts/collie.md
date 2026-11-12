@@ -42,10 +42,10 @@ sources:
     resource: repo://resident/src/vision-save.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Collie, the conversational tier
@@ -94,6 +94,11 @@ The resident handles `collie-wake`, `collie-adopt`, `collie-stop`, and `collie-r
 - `CollieRuntimeRegistry` (`collie-runtime.ts`) is a memory-only table keyed by a random per-boot key. It HMACs the envelope rather than hashing it plainly, because the envelope contains a temporary Culler token. It binds one container id to one registered launch. After a resident restart the key is gone. An old container can still be inventoried for cleanup but can never be adopted and started.
 
 The spine side records `mc collie launch-bind`, `mc collie runner-started`, and `mc collie exit` (`CollieLaunchBind`, `CollieRunnerStarted`, `CollieExit`). When a container exits with an owed reply, the session recovers instead of ending (`TestCollieContainerExitWithAnOwedReplyRecoversInsteadOfEnding`).
+
+New Collie containers use the current optional CPU and memory limits from **Configs → Advanced**.
+Both default to no limit. A memory limit permits no additional swap, and each container has a limit of 2,048 processes.
+`agentContainerLimits` reads the settings before launch; the expected container envelope uses those memory and process values.
+See [resident limits](../architecture/resident.md#agent-container-limits).
 
 ## The runner loop
 

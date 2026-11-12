@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:38a0232d22fb22824a7377c989e4aa226b4079beb31f1584703a245b711ca018",
+  "pageVersion": "sha256:7953892e113abd3d6dcad4021793de2d63a05cc7482a4b34203fc3e1cab6c516",
   "claims": [
     {
       "id": "claim_fdd699f503a748f28d95ccb82cfcba94",
@@ -65,11 +65,11 @@
       "statement": "The OpenCode archive installer validates the archive before volume replacement and refuses foreign volumes or active volume users.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode.go#L319-L369",
-          "version": "repo-lines-v1:sha256:d57f25bb312f88ffa86f478ee2c330cccdfa9d2134dd176ebfa033c07f48f820:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZjQ4ZTNlNjc5NGQwZTU5YmMzZmZlNGYyYzc2NTdiNTM5OWM4ZmNjOTY1MTg0YWNmMGY3NjBmYWNkZDIwODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwMzYxNGJhYTZkMjAzMDIwMGJhZjMzNWI5NmVkNDdlZGFiNTkzZGJjNTUyZmI4N2YwZjRkNWNjOTRjY2FjNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlZDdhMmQ1YzAyNzljYTQzYjZhOWZjMWYxMGUzZWYwNTkyZWZmZjNjYzZlMGVlYTc3ZWNkYWI0NGQwNTM1NDMifQ"
+          "resource": "repo://mc/deployment/opencode.go#L320-L370",
+          "version": "repo-lines-v1:sha256:f11bf2bde792b30d50ce4f0653c920e1b64147af558f27b6ff29602d8f56cbd6:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZjQ4ZTNlNjc5NGQwZTU5YmMzZmZlNGYyYzc2NTdiNTM5OWM4ZmNjOTY1MTg0YWNmMGY3NjBmYWNkZDIwODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwMzYxNGJhYTZkMjAzMDIwMGJhZjMzNWI5NmVkNDdlZGFiNTkzZGJjNTUyZmI4N2YwZjRkNWNjOTRjY2FjNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlZDdhMmQ1YzAyNzljYTQzYjZhOWZjMWYxMGUzZWYwNTkyZWZmZjNjYzZlMGVlYTc3ZWNkYWI0NGQwNTM1NDMifQ"
         },
         {
-          "resource": "repo://mc/deployment/opencode.go#L371-L460",
+          "resource": "repo://mc/deployment/opencode.go#L372-L461",
           "version": "repo-lines-v1:sha256:934a1298af17a98284f805f18e9326c5ffb86abee4d59c74cd3a2d336d8e6273:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMTY3MjhhOThiMDA2ZGM4ZjRhZmVkNTg3ZjA2MThjODUzYWQ1NzRkMzJkNDRiZjgzNjY0MDc1NmI4YjU4YzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
         }
       ]
@@ -94,7 +94,7 @@
         },
         {
           "resource": "repo://mc/deployment/opencode_source.go",
-          "version": "repo-file-v1:sha256:cc379e0e79b1642d32f1c72f44779fa1bcc270d81629d690aec1b2e7ded9f290"
+          "version": "repo-file-v1:sha256:42d2f9082d1a76e78e9c0fb72de2ced84742f78ee0245b2caad1a0031ca580c5"
         }
       ]
     },
@@ -103,7 +103,7 @@
       "statement": "Source preparation exports committed OpenCode files into a temporary snapshot and rejects checkout differences from the selected release.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L209-L269",
+          "resource": "repo://mc/deployment/opencode_source.go#L210-L270",
           "version": "repo-lines-v1:sha256:63db7186fbfabcc3018e8bcfffadb86a46e50bd42f96be8a7cc753625007cb3a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ODU1YTQ0MDcyNjNmYjUyYWY5NzZhMzNhMGZmZWNmNzk3MTk3NTAwZmE1MjUxNzc1MTc1NzQwZTE1ZWQyNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwYjZjZmMzYWZlNjliNjI4OTdhNTI2MTVlODZjODA4YjA4Yzg4MmNjMDRiYTQ2N2Q2Y2NmYzRjMmU5MTYyZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmNTQxNGVmMzM0NGE2ZmNkZDIyNTIwMGY5ZDgyYjc1YTc5N2E1NzdhNWFhY2M2OGFhODFmMGZkYTdkMjQzYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlNzBjZDljMWNlZTdlY2VhMDk0YmJmYzJlNDE5MmQ4YmYxNTRmMzQ1MGFjZTVkMGJiZTk2MzZiMDUyYmRiNjIifQ"
         }
       ]
@@ -113,19 +113,19 @@
       "statement": "Source preparation uses the selected Linux arm64 image with a fixed environment, disposable package paths, and user 10002.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L272-L277",
-          "version": "repo-lines-v1:sha256:93c1dc4823296c4b9cf5e866c5129d061dc51cd41c507f383b8ef6499a7f5820:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EyNjU4MjhhZjNkY2UwODQ3Mzc1NWFlNTc3YjM0NDExNDUxOWJhZjZlMGE2Y2JiOWY3N2FhZjE3YzFjOTM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA5MzU0NjRiODZkMjVmODk3MGNiMGFiYjk5NzQxYWRhOGY0Y2U0ZWM4OGZjNmVhZmRhZmNiOTYzZDM3ZWM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVmZjEzMjk5OWUyYzM4MjQwZjE4OGUzNDlkYjA2NDU5NWE1NTkyMDUxZmIzOTMxMDYxMDI5ZmU3OGYzOTM2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk0MmE0YWM1OTU5OWZmMzIzMGZjYzA3MzcwZDc0MjU2NmMyYTdkZGFmMTQ3ODZjYjEwODBiZDA5MjUzOTY3ZiJ9"
+          "resource": "repo://mc/deployment/opencode_source.go#L273-L278",
+          "version": "repo-lines-v1:sha256:7d5a0bc6d3fbef127b2c0a78f9fcf0ced21fbfc1a1b521f423b409bdf57977ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EyNjU4MjhhZjNkY2UwODQ3Mzc1NWFlNTc3YjM0NDExNDUxOWJhZjZlMGE2Y2JiOWY3N2FhZjE3YzFjOTM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA5MzU0NjRiODZkMjVmODk3MGNiMGFiYjk5NzQxYWRhOGY0Y2U0ZWM4OGZjNmVhZmRhZmNiOTYzZDM3ZWM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVmZjEzMjk5OWUyYzM4MjQwZjE4OGUzNDlkYjA2NDU5NWE1NTkyMDUxZmIzOTMxMDYxMDI5ZmU3OGYzOTM2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk0MmE0YWM1OTU5OWZmMzIzMGZjYzA3MzcwZDc0MjU2NmMyYTdkZGFmMTQ3ODZjYjEwODBiZDA5MjUzOTY3ZiJ9"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L28-L29",
+          "resource": "repo://mc/deployment/opencode_source.go#L29-L30",
           "version": "repo-lines-v1:sha256:9b4567201d1325617ef2e02e2f965ea1877058de844949b35612960208e791e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWY4NmMxN2FjYmVlM2RhN2I1NGMzMjY0MzAzN2M2Mzg2NGI1ZDJhYWM1NjQ0YjkyZjViYmIxMjE3ZDBlN2M0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q3ODljYTIyMGU3NGFlY2YyYjBmYzUyNmE0OGFiYmU2ZjYyMGY2NjZjODBlMWMyY2M1ZDg1M2ZhN2NiNjkwYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAxYTg5MjYxNjg5Y2M4MTkxYzY1NWJlOGNmNzA3MjZhNDE0Yzk5MWU1MDI1MmRjYjI3NzlkNzg1YWZjZjEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjc0MGM2Mjk5ODY2OTY2Mjg4MWEzNWQ2ZjY5OGUzNjIyZTYzMzQyMDZkNWRjNzgxZDAxMTVlMmQwMDc2M2NmZiJ9"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L311-L329",
+          "resource": "repo://mc/deployment/opencode_source.go#L312-L330",
           "version": "repo-lines-v1:sha256:22551ff097e028ee1d4905da8addad45524c1e2054c3674d60739adf47ee9e89:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkOGM0M2E1YWMxZGM3MzdhOGI5OWUxMzY4MTE1N2ZmOTYxYTVmMTJmZTM0NmY2ODU3ZGIwMDVlOWMwYzg2YzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlNTdiOGY0MGU2ZmQ1YTQ1ZWVjNGIyMGY4NWEwNDFkMjA1N2Q0OTllN2U3ZWE1NjhkYzA2MjM5NzlhNWUyNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkYjY1YmUxOTg3YjhkMDI5OTM2ODY4NzFjNzZjZmQ1NzI2MGFlODQ0ZDVjOGUwZGJhNDZhNmM3NmM1MzA5MWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYjk0NzhmNTVmMmQ3ZDk0MGZmNzYwZWJkOWRkOGFkMzMxNDMxMmJhNjM2ZTZkYWEzMzc1M2I0ZWYyOThhYjgifQ"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L356-L370",
+          "resource": "repo://mc/deployment/opencode_source.go#L357-L371",
           "version": "repo-lines-v1:sha256:6b1040c4f47ecadc7e30ae83f8211dd23b07937fcca5e521f9e5a94a33c7f397:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjODg1MmMyOGYzMGI5N2MwMDJkYmY1NWZmYmViMzcxNTkyOTczODUyN2MwNzk4ZmJjYTY1NDBlODE1YWRiMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYmMwYTUxZmY1ZTVmNTRlOWMyNDkxNzE5MjE1MjAyNTFlMjU2YjYzNzY4NDAxNTFmOGNiZmIyNjk5ZDRmNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzZjU0Njk1MmI4MzdlY2ZhZWEzZWJkNjUxNDNiMGY1OWQzNmZmZjIxNWNjMDVmNzI0MmEzZGU1MzA5MTRmNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNzJkOTk5ODYyNjg2YzRjYjVjZGY2MmNiOWM5MGNkMjk1MjFkM2UyNmU3NGFkNjgwY2ZmMDFjZjg5ODk1ZWEifQ"
         }
       ]
@@ -135,15 +135,15 @@
       "statement": "The source package identity includes committed file hashes, tool identity, preparation rules, platform, and version, separately from the Culler commit.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L264-L267",
+          "resource": "repo://mc/deployment/opencode_source.go#L265-L268",
           "version": "repo-lines-v1:sha256:1d1c02636fa807ad1f9fff1a4b9a2523f781878176661139eaaeb35cecb7b771:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDRjMDc1MzY0NDFjYTRmMTkzNDJiNjc1MTVlNmEzZjg5NDgxYWQ1OGI1ODRmZTI5ZDgzNGMyMWMxMDNmNjU4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmM1OTNmNzhlNGRhOWNlODU0Y2UxOGYzNzYwZGYzNWZhNmEwZDRkMGMwNjIwZmVkOTA0NWJkNGEyNzhlM2NmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGUwNWRhN2E3ZjY1ZWIxY2VlZGE3NGZlMTYzMGFkMTMyMzcxY2NlNTYwMzllM2NhMzE2ZDA1NzcwYzU0OTNkMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWEyOTYzZDY2YjlmMzIzZGM0ZTNiOTg2NTAxMmQ3NjJkY2RmOTRlNDAxM2VhM2ZlZGJjMWVkOTk4MWVlZDJkOCJ9"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L31-L45",
+          "resource": "repo://mc/deployment/opencode_source.go#L32-L46",
           "version": "repo-lines-v1:sha256:a9aecddffd2342b9de34f9bb9322d47801fcc9a2dc0e1b97e89156ced5ae71cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZWVhNjhjZjlmYTA4MTI3M2ViNzJkZjIzNzRkYjYzNmRmZTNhN2M0NTcyYWYwNzZkYTFhMmIyYmZkYTAxZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwYWJjZDExY2E4ODRjZjNmZjdmMmEwMjg1MjVjZGNlODdmNTQzYmFkZTE0MGRmMzFkN2JjY2RmYmEyMjAyYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2NzQ0ZDJkZTAzNDE0MDY0ZDM5ZWE5NWMwNDNiMDIzM2UxYjExNDZkYTU5MzYwNWYwNGEwMmZhYjc3NDg0YTUifQ"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L319-L353",
+          "resource": "repo://mc/deployment/opencode_source.go#L320-L354",
           "version": "repo-lines-v1:sha256:06803c9ad8bccb22dca30eecb8e3b95825522d9c2bf37e0e074822436e6bd855:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZjhlMTRmODY0YjAxNjBhNGFkZjMwNGEyODI2ODRiNzQzMDA4NWM1MjJkMWM2MDU5YjgxNTk4MjcxMzA1NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhYWJkYjA0NzE4NDE1ZDU1MDNjNTk1ODkyMTgzNDQxYTI3Y2YzMmFmNzkxYmJlMmM1NDczYmJkZTk0OGI0NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmZmY3MWYxZmQ3NmE5MGJhN2I3YzhlMzI4OTA0MzNlNzVmNDc5MzA1NGFmOTIwMWQ4N2RlNDIwZDhlMDM1YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5YmQ0MTZlNjllN2ZlNjRiOWU2MjNiZTU3YTFkMWZjOWVmY2FjOWU1Nzk5NTU1ZDk2ZjJkMmZlZTEzOTNmOTQifQ"
         },
         {
@@ -157,7 +157,7 @@
       "statement": "Source package verification checks installed content and markers before it executes the native version check without network access.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L406-L413",
+          "resource": "repo://mc/deployment/opencode_source.go#L407-L414",
           "version": "repo-lines-v1:sha256:cb81d27bbb679fc76259fb7ba7b916c7f2d08d05f53e68e0e960e6a94589f216:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzYxMjFjMTlmM2U5ODg3Zjg1MjkyZmJjNWQ5NmI1ZTQ5MDJmNWRjMmMzNjFhNWQ5OTFiYjQzYTVhMDgwMGE3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRhMWQ3OTE0ODA5ZTM0OTlkNDU3M2U4YmZlNTgyNmFlMDgyZWEyZTJhMTRkYjdjYzE0MTcyNTc3YzZhNzM1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDEyYmZmOGFiNzQ4YzcyODY3OTMyMzUzNzUyZThlNDFjZjkyOGJlMWU1MTFjYzBmN2VhZjMzNTQ2ZjVkNzcyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjVjMWI1MzMzY2FhZmMwZDAxMWJiNDljMGNlYWZhYmRjNzFiZDQ2ZWIxYTJjOTZkMmVhYjU5YzI0NTMxYTRiMCJ9"
         },
         {
@@ -175,12 +175,12 @@
       "statement": "Verified source reuse preserves package files and updates release metadata when the selected Culler commit changes.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L343-L354",
+          "resource": "repo://mc/deployment/opencode_source.go#L344-L355",
           "version": "repo-lines-v1:sha256:c1b1d7b0d589c685fe83608557f10b48e631950111f045d6010069d8ed00b2a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNzYzNWY0MDUzNDQwY2NmZTVlNWVlY2EzMjYyZmRjMTdhYWZkZTJmNjA4YjRjMmM1MTg3YWJmOWFjZThjZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3Mzk2ZWI3YTZhNGM4ZWI3NDZiY2Y1NmZhOTg1MTgwYzBkOWFiMzRlNDA1NjI0ODdiMWMwOGFmYzdlZDlmYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmNDEzMGUzOTFlMjMzZjVlZjExNTMzMjRjZGZlNGZmMzMwMWRiNWIzZTYzMWNjNzIzNDQxMzJhNWI1YjUyYmUifQ"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L416-L427",
-          "version": "repo-lines-v1:sha256:dde6093b76f61d806a0dc4b0f8f236676a537f0fa57912383f10ad9e34b38934:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzZWNiYmFmZTk5NWM4OTcxMjAyY2FkZWNkMTUwNDE4OGU4ZGExOWEwNDNkMTkxOWY4MDQwMGU0N2EwODkzYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzMzc1YTc2ZjY5ZjNhMzM1OGFiNTNjODBhMTk5MDUxYTdmMGY5OTM2NWM1ZTVlNDMxYTM3MTA1YmE2ZjVjN2UifQ"
+          "resource": "repo://mc/deployment/opencode_source.go#L417-L428",
+          "version": "repo-lines-v1:sha256:d08b74e91c7fe91af8d07e2767776d6831244305c1bd724073a424c0559a541f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzZWNiYmFmZTk5NWM4OTcxMjAyY2FkZWNkMTUwNDE4OGU4ZGExOWEwNDNkMTkxOWY4MDQwMGU0N2EwODkzYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzMzc1YTc2ZjY5ZjNhMzM1OGFiNTNjODBhMTk5MDUxYTdmMGY5OTM2NWM1ZTVlNDMxYTM3MTA1YmE2ZjVjN2UifQ"
         }
       ]
     },
@@ -189,11 +189,11 @@
       "statement": "Source preparation serializes package work and records readiness or a failure with its stage and cause.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L160-L206",
+          "resource": "repo://mc/deployment/opencode_source.go#L161-L207",
           "version": "repo-lines-v1:sha256:7e5cc524adce6e7a5da1392117cbfa6f52346615f44b82582894e25215539dff:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMTc0MmU4MjZkYzE0NmJlNTZjNjA0N2JhYTY4ZmMwYjQ3ODM0ZjMwYzJjN2Q3NmQzZmU1ZTg3YTAzMDdhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzllNDM0YmI4MTQ4N2IxYWM2YzgyOWE1ZGQ2OGQyODkwN2FkODg5OWIwMmRlNmJkYjI5MGU1YTRmNGYzZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZDkzMWFiYTNlYzExNTU5ODZjMTYwNDMyZDg1YzBjNDViZmE4ZGJhZTQwMjRjMWEzZDVjZWZhOWY2NWE0MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNWM2MTQ5ODQ3MTE3ZDQ2MTBhMzQzMTQ1N2MxOGE1NDE2Y2JmNGUwMWQ5ZTgwMzQ2YWNhZTAzNTQ1NjRkM2QifQ"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L47-L76",
+          "resource": "repo://mc/deployment/opencode_source.go#L48-L77",
           "version": "repo-lines-v1:sha256:68cf7fd6266c323409c34a40614ee9cd578939dba5c3fed016bf5a14cda411a9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViNGE4MjEyY2QzMjYwZmMxMThjMmQ4MjY4YTJmMDRlNGFkNjJlMjljNTYwZTdjZDA3NTMwZTA0NDAwNDc0YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0ODAyMzAwNWVmNjdmNTJhZGUwYTUyZjZjZmYzNDE5ZDVhZjZiZDA5MjQ1MTYwNjJiODYxNGE3OWUyMzYzN2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3NGEwZWRhYmExMGM0ZjM2ZGJjMDA0YjQ4MGQ1YjBmNDhhY2VlY2NiYjlmYzQwYjJhN2I4ZjI5NDQ3MzNlNjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyNGVkZjM0ZTM0NjcwZjVkNDhkYTdjNDJjZTA0MjZmMTYxMjg3MGFiZGQ4ZmZlN2FkZDhkMjRiNDIwMzQwZjgifQ"
         }
       ]
@@ -203,7 +203,7 @@
       "statement": "An active published update or matching published image takes precedence over retained source records.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L79-L98",
+          "resource": "repo://mc/deployment/opencode_source.go#L80-L99",
           "version": "repo-lines-v1:sha256:0d14a1cb8686a2f17188d9d1a785ec971bff2bafa38d76ae296c8cd048e9387b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMjQyOWY4OTQwNjM3YWI5NzQ3MDM2NDNjY2U0NzYxYzBhNmI3NTBjYTY3OWM0NTMzZDRmZDAxODllMWViMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyZTZmZTVkY2Y0NzdjYjJlYTZlZjhjZGU5NTMzYmQwNjI2YzFkYmJlZDRjMGI5ZWE4ODUyNTVlMmJiNTVlOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwMmNkZmRiNzRlZjE5MTEzMDBlMjU5YTdiMGU5YTY5YWU0MTc1NGVkNDUwNWI4YmM4NjcwYWMzNmJjYzQ5OTgifQ"
         }
       ]
@@ -214,11 +214,11 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/opencode.go",
-          "version": "repo-file-v1:sha256:b46a36ab5b937a98e0476943e869f0f7017f2245850752bbe4e896ade7444cc6"
+          "version": "repo-file-v1:sha256:61393e35c3bd2ff98fd9364c494dfc28b1c3226b2d9c23722fdb1bb43e3b863b"
         },
         {
           "resource": "repo://mc/deployment/opencode_source.go",
-          "version": "repo-file-v1:sha256:cc379e0e79b1642d32f1c72f44779fa1bcc270d81629d690aec1b2e7ded9f290"
+          "version": "repo-file-v1:sha256:42d2f9082d1a76e78e9c0fb72de2ced84742f78ee0245b2caad1a0031ca580c5"
         }
       ]
     },
@@ -227,11 +227,11 @@
       "statement": "A published deployment with an absent source volume clears obsolete readiness after the worker lock and a second volume check.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode.go#L269-L278",
+          "resource": "repo://mc/deployment/opencode.go#L270-L279",
           "version": "repo-lines-v1:sha256:3e611b3385d9f5fd6b740e3c94e8445a4bca1467c3612c01494eab3f7b7eb5a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZTFkNmM0NjNhMGVkYzFiMzNiNmMyYjY2ZTVkOGE3YjY2ZTUyYjRhM2Y2ZDg2M2Y1YjkwYzJkNmQ1NTcwN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjNjNlNTE1NjI1NDk3ZmQwOTJlY2M2NzI3MzUxNzRiNjE0NDkxNTEzMGQxN2E5YTkwOTY1MzFiMjQ5MGRiZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiODZhNDM3ZjgwOWQ5ZGFlMGQzMWU2ODU5OGM5Y2U1ODJkZDE1ODljN2VmZjI0ZmNiNTg2NjFhYWFmMzllOGIifQ"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L126-L157",
+          "resource": "repo://mc/deployment/opencode_source.go#L127-L158",
           "version": "repo-lines-v1:sha256:2f431373fac7272b94c533cf20723c28b586d78ef78bd5cff94da5d1e3d86bee:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiZTkwMmQ0OWYzNjk2NGFjYTAxMGJjZDgxZTc4NWVlNWIyMWQ0NzQ2ODJiZjZlYjg0ZWVmZTExOTMzODZhYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMmY2ZjBmOGE0ZjU3MmUxZWEzYjVmYWY5MDQxOWViNjdiYjBkY2Q3Y2E0ZjQ0NDc2M2VjZjc1MzI2OWIxMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3MGY2YzU3ZjJlMDUyZTlkNDY4MTVkM2M1YWRkNTlhZjU1ZDAzYjMzMzJjMThmOTBmMzMxZTBjYTYyNGJhODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MTIyNDllZDRjYzQ1ZTU0ZWRlYTNhMjM2NDVkMzFkNThkMDM1MTA5YjcxNWExN2YxNmE2ZjQ2ZWYwNTZlY2UifQ"
         }
       ]
@@ -256,11 +256,11 @@
     },
     {
       "id": "claim_9755d5ed08a04252bf3f0175166f65b8",
-      "statement": "Published update checks run each distinct selected Project image with temporary candidate runtime volumes, no live spine mount, resource limits, and a two-minute timeout.",
+      "statement": "Published update checks run each distinct selected Project image with temporary candidate runtime volumes, no live spine mount, a 2048-process limit, no CPU or memory limit, and a two-minute timeout.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L154-L255",
-          "version": "repo-lines-v1:sha256:87890f769ee66def3411b12f9017ddd3e1ed19ecb8dbda520fdd36b7cce529ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZGExZDc5MTQ4MDllMzQ5OWQ0NTczZThiZmU1ODI2YWUwODJlYTJlMmExNGRiN2NjMTQxNzI1NzdjNmE3MzVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2MThhNjEzNDUyZTBlMTBhNjVmMTJkMjM1MTcyNzZjN2U3NjdmMDE1YTk1MjkzYWU2NzEzMzRjNmRiOTkyMDVmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIn0"
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L157-L258",
+          "version": "repo-lines-v1:sha256:8a774ebcc64344c00bb299fc8d8865c7ad89af92abc5c55f2b7085a1587912a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMGY0MmY3NzAyNmNhODk2ZDk4ZjI1ZGE2YmVkZTE2ZmY4YjY5ODczMmY1ZGI3YzRjMTA5ZDc4YTZiY2I5ZTExIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0YzBkMzA2YzE1OTM3NGRkZTBkMGY0NmNmOTk4NWIwOGFhOTVhM2I3MTkyMDU4MzBkOTJlMGIyMzdjNDM3NWY2In0"
         }
       ]
     },
@@ -278,13 +278,13 @@
         },
         {
           "resource": "repo://runner/image/project-smoke.sh#L52-L59",
-          "version": "repo-lines-v1:sha256:f017ac8415494db207196494091a6ba9ac1e8daee582d9edd8f7100a3950e624:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
+          "version": "repo-lines-v1:sha256:d154e56f6236e01760f0a9a7608bf3863ab06a1e99f04296b2be317acd8b66ae:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T09:22:03.309Z"
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

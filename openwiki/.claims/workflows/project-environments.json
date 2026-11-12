@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:69d0a0df95e3447ce8f05c361ad87d1b1481a2ad900356e73bc71a7f0651e410",
+  "pageVersion": "sha256:78d9b74aada23ad14ee6de6972d0536f38a1198b1648f944c9e1e27de5c8b21c",
   "claims": [
     {
       "id": "claim_466ab5d7597d42d0aa65e312b0b60f6a",
@@ -95,11 +95,11 @@
       "statement": "The shared environment skill requires dependency availability in fresh containers and classification of unresolved results and missing prerequisites.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L150-L185",
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L152-L187",
           "version": "repo-lines-v1:sha256:ba85ed80a5c5fb0c4f9de26ab552c69200bfadd7a5cc16ddee1dddc3d389cfab:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4ZjYwNjE4ZjRkZGFiNjYzYjNhZDkyMjVlN2ZhOTQzMGYwNTE5Nzc1NTg0MmMwNDIzNjljNWQ2MjM4NGFiODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMmM2ZThhN2FhODUxZWY1MTMxZWRhOWFkOGNlM2Q3NGYzNzRiZjZkMDkwZWYyOWJkZDNjYmNlODVlNzA1NGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlMTg4NDg4ZDZmNDdlNDEyZjJmMjdkMTYyMWQ4MzM4YTdjMGVkYzMzYTlmM2ViZDVjNjRiZWYyYzJjYTRiYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4MDRkNDhiOTA5YjRlNWEwNzExZGI5ODFlOTA5NGQ3MmNmZTBkODQ0MTBmNTEyNjg2YzQ4NmM2YzUwMGFlNjcifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L33-L87",
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L35-L89",
           "version": "repo-lines-v1:sha256:c4b2a00c5c98dd0b68148172ed00febd14076cd2c9b18b3a20cc26959c2e13f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhNjM0YmY0YWE5ZjFkZjNiZTY0YzI4YjU0NWU3NGZmNzFhZWMzNDBmZjFjNmE5Yjk0MWRkMWMyNTY5NTZjYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5M2MwZTAwNzRhOTY2M2RlMzViNzEwZDg4NDUwYTFkMTE5NDdjMTVkM2Y1MzNjMGM3ODk3NmNhMWRiMmUzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5ZjQ2MGViMGI4YmQzMTgyZDQ4NGQ1ZDJmOGVlMWE5MGNkMmE1NzcwYWFhODcwNDcxODIxZjlkZjFiNjM2ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4ZjQ3MGE5MzgyZmIwOGFjNzczOTU1YWU3ZmI1YWRkZjk2N2M4NDc2MmFmYjBhNjA5ZDdlNjIyZTdmYzJiN2UifQ"
         }
       ]
@@ -109,7 +109,7 @@
       "statement": "Image proposals require credible feasibility evidence, a material development benefit, and an assessment of remaining prerequisites and image costs.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L118-L149",
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L120-L151",
           "version": "repo-lines-v1:sha256:630d314e147dd1cc88f0fbb36154c718c9e5d7c5a408484a3ca897df1e031cb0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhYzNmNjMxZjdjNDI3MDc5MjU3MTJlZDc2ZWExODkwNjAwZTkwZDA0ZTQzNDcwMzBjODdkYzM5OTkyMTQ2MTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxNmZiZmQ5NWJjOGEwYTAyNTA5ZWU0ZjNlMzFjOWFjNzc1ZDYwY2U5ZjI4ZjdmZmFjN2MwNzM3NTA4OGI2NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlYjU5ZDdmMDEyZGU3YTdjNjMzMGFmMmJiYTQ0ZmMzYmI3M2E3NmYyZDdmZjhmMmExZDk3MDhhNmI2MWExNTQifQ"
         }
       ]
@@ -119,7 +119,7 @@
       "statement": "Image additions cannot supply host access, macOS interfaces, or extra container privileges, and a Docker client alone supplies no daemon.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L110-L115",
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L112-L117",
           "version": "repo-lines-v1:sha256:0e8ff38a75b2ebf8c4037ee1836283cdb671bb6b48aac6ff1d19aa2c18289703:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhlYWRjMTM5MTIxMjU3YTYwYWZmMmNjNjI1M2VlOThkMzA3OTQyYjQ5NTAyODFhNzEyOTY4ZWFmODk1MDdhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI5MGUyYjE1Y2I2MTg4NGQ2MmVkZTVjNWRjOWQ4YWFmOTc5ZTBjNTEyOWM1NzkyZmIxZTM4ZjMxYjk3Nzc2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODljM2Q0MjFkODNiNzg1OTE0NjYyMTMyZWFlMDNlMGVjMmQyYTQ1ZTJiZjMyNTE1MjM3YjI4ODY5ZWYzNjhmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZiOTI2MTNhNzQ3ZDUwMzExNTNkNjA1ZTM0NGJkMThjMmJhYjg3NTJjM2RjMGUxNTA4NjdhZDQyZmM4ZmQ4MCJ9"
         }
       ]
@@ -160,15 +160,15 @@
     },
     {
       "id": "claim_48df9d66dd6a40d2832346f67b781434",
-      "statement": "Setup and pipeline agents share limits of 4 GiB memory, two processors, and 512 processes.",
+      "statement": "Setup and pipeline containers use a 2048-process limit and optional CPU and memory limits that default to no limit; a configured memory limit permits no additional swap.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L19-L19",
-          "version": "repo-lines-v1:sha256:cb9e30902fb0fbd94b66221948dd06982ba6b1c602ea7e6e89319820d09622a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2I5ZTMwOTAyZmIwZmJkOTRiNjYyMjE5NDhkZDA2OTgyYmE2YjFjNjAyZWE3ZTZlODkzMTk4MjBkMDk2MjJhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2I5ZTMwOTAyZmIwZmJkOTRiNjYyMjE5NDhkZDA2OTgyYmE2YjFjNjAyZWE3ZTZlODkzMTk4MjBkMDk2MjJhMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTQ2OTZkMzhmYWYyYTZhZGY3OTA4MDVjNTYzZDBmNGZjM2E3ZjM3YmM3ZWFhYjI0ODllYmRlY2IzNjRkM2M0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTg3NjFjZWRhNDc5NjA1YjA1ZGRhZjkzNTU0ZmEwYTFiMzBiZjdjMzMyM2I5YTVlM2E0ZDhmMzdkZWNhNGM4YSJ9"
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L19-L23",
+          "version": "repo-lines-v1:sha256:b13742668bc7f5d5868e235354bac12c11e09acfe798aaf62b1ff4e6f7711864:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkyYmVjZmViNDkxNzFlNDRmNTc2NGNkM2VhNmIwYjdiNWQyZGQ4NGI2NmU0M2Q5ZTBlNjY0MDFiODhhM2U1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBmOTljZjQzYjliOGQ3NTIwODM3NjFiNzllNWI3Mjk4Y2E4ODYwOTgxOWE5ZTNhYzNhNjZhMTkxODY3MzlmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTQ2OTZkMzhmYWYyYTZhZGY3OTA4MDVjNTYzZDBmNGZjM2E3ZjM3YmM3ZWFhYjI0ODllYmRlY2IzNjRkM2M0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE5NzYwZTczODYzZmE1NGM2NjQ4MTIyYjQ3OTg0NWUxNWY4YzgwNDUzMjMwNWRjNGI2NDM5N2U4ZmE5ZmVkOSJ9"
         },
         {
-          "resource": "repo://resident/src/environment-lane.ts#L48-L48",
-          "version": "repo-lines-v1:sha256:0a6105622729310dff3e83fdebfa7e0732774e91d66e2688c77dfc82ec2d3f94:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGE2MTA1NjIyNzI5MzEwZGZmM2U4M2ZkZWJmYTdlMDczMjc3NGU5MWQ2NmUyNjg4Yzc3ZGZjODJlYzJkM2Y5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGE2MTA1NjIyNzI5MzEwZGZmM2U4M2ZkZWJmYTdlMDczMjc3NGU5MWQ2NmUyNjg4Yzc3ZGZjODJlYzJkM2Y5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzc4NDdjOWM4MTBkOTk0ZmRiMWI3ZWVmMmIwNWZmMzU1NjQzNjA3ZTg5ZTliNmQ0Mzk1YmE3ODk5MDU2NTQ2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2ZhM2MzODU4NjdjNDk4YzU3YWU5NWM3NDYzNmY0Y2I1MzgyMWQ5YzkxZTBmZTM5MThkNjcxNDgwMTgxOWE5NCJ9"
+          "resource": "repo://resident/src/environment-lane.ts#L43-L82",
+          "version": "repo-lines-v1:sha256:8f4497bd5c5503e833c60bcdc27fc219fbeda34be067d39e7e8751c7b5b80b15:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNWQ3NTExMmI4ZjQ4MjAzODI1ZmRkMzJhZWRiOGUzZGNhMWM0N2E5NTg3YzhlYjBkNDY4M2E1ZTcwZGI4MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ODYwMzZhZDFiMDlmNDVmMTk3ZjAzMTgyODliNjg3Y2Y2Nzc2YzQ3NWQ3YjNhYTczMDFjY2JkNWFhYjk5N2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmYjdjZTg1ZmFiZDgzYjJjYjE0NjQyOWQ2ZjkzYWQzZTA4YWY2NjZmYzY2MjA1MzM4YWMxMDczN2UxMjhiZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0MDA1MjRmZDJjOWUwNzVhNzQ2YjM3MTc0M2EwMjFmNDY0ODlkNjYwYTMxNjA1YjkzNTA2MjcyODZjM2M2OGYifQ"
         }
       ]
     },
@@ -177,11 +177,11 @@
       "statement": "Project containers share a persistent home while separate temporary .agents, .claude, and .codex mounts isolate their role files.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1507-L1518",
+          "resource": "repo://resident/src/effects.ts#L1509-L1520",
           "version": "repo-lines-v1:sha256:461f792ad846d382fa4c23ddc1a79257c0f6ec69fda3dc1803a76e9e5e98ce47:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDU2NDA4MmUxNzZjMjJhZmE0OGE4NGJlOTNjZmM2N2U0NWVhNmY3YzFmZWFhZjM3ZWVlMjQzZDBmYzgyZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMWMxN2I5MjMxNzllZDBlMTFlMzhiYjVlNjY4YjIxYjBmOTI0MzU2ZjkwZTBhNjBiNTE1N2YxOWE2ZTQ0YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMWQxYTM0ZWM1MWQ2YjJhZWI1Y2YwOWM4MzE1NGFiMDE0YjM4OTM3OTY4MzE5NTYxNzA1MmM0ZWVlOWJhNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwY2IxYWViN2U4MzcwOThmMGI0OTEwMjY0OWU0ZTZkNTg1MzNiMzU1NDI0OTRhZjBiMzljODMxMGVjMWMyNWYifQ"
         },
         {
-          "resource": "repo://resident/src/environment-lane.ts#L109-L120",
+          "resource": "repo://resident/src/environment-lane.ts#L140-L151",
           "version": "repo-lines-v1:sha256:b14329384acde232b879cfedfbc4458632917c9f01f347fedbd74fd4f890d7b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0YmVhYTdlMmUyMWM0NGRlNGYwZGFiMjc3YjZlMTFlYTM2NTg5MWFiMDk1MmEwY2U5YTdmODNlMmYzNWNmMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MmI1ZjEwNTJlZTE2NTM1NjY4NjdmMDQ3ZGM4ODUxMTRhYTk3OWMxNmJmODZjYTFlZGUxNDQzYTk2MDM2NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MjJiZmFiYzgwZjMwM2QxOGJmMDc1ZmU1NzBlMjZiN2E2ZTk3YzZmMzk0ZmU4MWQzYTZhNTMyMzdkN2JmZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhZmJkYzBjNWNmZDNhZjFlOGFiYjUwZmM0YTUwNzk5ZDJjNWE5MjM4NmZmMzllOWM2M2RhYTQ0YmUwODAyZjEifQ"
         }
       ]
@@ -201,8 +201,8 @@
       "statement": "The environment lane measures and reports Project home bytes separately from disposable cache bytes.",
       "evidence": [
         {
-          "resource": "repo://resident/src/environment-lane.ts#L257-L275",
-          "version": "repo-lines-v1:sha256:8946486648a9928ee611b257bf790b40c83c1a60a51116e595db8b03ba5e4b01:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5MDAwMDE2ZTJjOTVhMmEwYTlhNGQ3ZWQ3MWUzMWU5MTU4ODUxYjMyMmYzODU3MTYyYWRjN2E5NzM1ZThiNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYWRiMDg5N2E1ODM5ZmZhZmJjMWU0NmE5NGNlZDIzMjJiMTE5NGRjYjhkMjdiMjM1Njg4YjhmNzBjMzViZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3MDU3MWYwODkxYWViMDQ4ZDdkN2M3ZjQwNDhiYmFkZWYzZWEzN2I4MmFmYTVlMjE4ODEwZWJhNzA2NjJhM2MifQ"
+          "resource": "repo://resident/src/environment-lane.ts#L289-L309",
+          "version": "repo-lines-v1:sha256:79f76bbeda981cfea0d29f425d84bf59934e0727662afe01d05137a1b4730962:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1ZWEzNTU2MTg3ZjdmYjg3MTViYTc1M2QzZWEyNTQ0ZTIzMDYxM2ExYTEyM2MwNmYzNWQxNDk2MzgwZDczNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5MjM0NWQ1YzYyMDYzYzczNWU3NjdmOTkyNTUzNTcxNmZhMWUxM2U5YTA0NmNmYWFjZjg4MDJhNmI2OTQ4ZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhMzZiYjAwZDQ2ZjgzNDcwZmQ3NTlkMzJkNTkwNDU2YmYxZWFkMTRkYjJiMjg5MTIzZmM5MzJmOTJjMWExMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMjU1NWUyODM0YzI5MzM3YWMzOTViN2M0NWM2ZWU0Yjk5OWRjNjYyYWQ1YzFlY2QxMzY5ZWIyMDlkOTY4OTkifQ"
         }
       ]
     },
@@ -211,7 +211,7 @@
       "statement": "The shared environment skill assigns automatic setup preparation to Worker, Verifier, and Packager runs and exempts Scribe, Strategist, and Arbiter runs.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L41-L49",
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L43-L51",
           "version": "repo-lines-v1:sha256:04375e49a7fb1c4994fb1e1288d980d1fc634ff03b3112b5b4127e4b9e861cd3:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2E1ZjIwYTljZWMwODU2ODUzNThmZjRkNDFhMmI2ZjA5NjYzNmQzNzI5MThlYjgzMjMxMzI3ZjFlOTg3YzJkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDdhNWUxYzk4OGE4NGVlYmFkOWRjYzkyNTU0MWJlYTlhZDVhN2E5ZGUyYzBiOTcyYWIxNTMyZDU2NmE3Nzc3YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU1YmY4MGM4MWNkMWNhMTZmYmE2MGQ0NWM1NTk0OGQ4NzU0NDRhODFlOTA0ZDVmMTdmY2Q3NTM5MTUxMGZhNCJ9"
         }
       ]
@@ -291,7 +291,7 @@
           "version": "repo-lines-v1:sha256:c8dc1beb3180dffe9baeb299688895c630bd3c5005718214ce50522ef29e0d1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzM2FkMGM4MGUxYzkxY2ZkYWJlY2E5NzIwN2ZjODJkYjBlMzk1NTY5ODc0NmY5NjI0YzE3ZmU3YWY2ZjdmYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2OWIxNDg4MWM4ODY3Y2IxOWIzZjE5NGI5Y2U2MTY0MTA2NWI5NzIyMmFlZGE3MzcxZGQzMTZkNTUxYzJjMTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExOGRlNzhkNzMyMGVlODc5NzlkOGI3YzZjNGMwNjZmNTVkNDFhY2NjMTZiYzJhNTFlYTliY2NlMjRmOWJiYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5ZDYzMzY4MTNhZjczODA2ODQ0OGUzZjA0M2VjYmIyNjQwODkxYTk2MTIxMTY2YzM0M2EwOGU3MTBkZTdlNTYifQ"
         },
         {
-          "resource": "repo://resident/src/environment-lane.ts#L551-L585",
+          "resource": "repo://resident/src/environment-lane.ts#L582-L616",
           "version": "repo-lines-v1:sha256:1dbbbedd0ae16b39686468f0164fd744cefa8864826d76433b962af036b56bf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5OWQ1NGMyNjI2YWRjNmYxZWRkZWFhMWEzZmUyNmJiNGY4ZjA2YTNlZDhjYWMxZDg1ZmQzZTRjMmE0ZDZlYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyMGNjNDVlOGQ5MTUxMTNmNmNkZTBkZjhkMzRhZDM3MGVjYmVmODNkZDlkZGIwOGY4NTE5NTQ2Njk2NjhiZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMDQ4NWUwYTM4NTRjZjFkOTNhOGUyYzc2YjIzNjE3NjBhM2E3NjZkZjczN2Y4NjlmODZjZTY5ZjU3ZTk4YTEifQ"
         }
       ]
@@ -305,7 +305,7 @@
           "version": "repo-lines-v1:sha256:f8542c9de1c2bca6f6032b6f8230739ccf9bd1c14a8dcb5992002f3d6dd9e08e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwMjY5Y2M0N2U2Mzc2NjVlMmRjYjM1Y2UwMjBiYWRkNTM3ZWNhODZjNjc4YjU2ODQ5M2UwYmQ0ZWE2ZWE0NGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjODZkNWM5MzU4OWZjOTAzMzY5YWEzOGMzZjVmZWVjNjAxMjkzMjQ2NDNhMmM1NDhhZWJlYjhlYjQ3M2FiZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5MTIzZDJlY2RhOTAzNWE3OTU4MWZmNmU4ZWVkYmQzM2M5NTYyMzZkNzg1ZTBjODg3Y2FkNWE1ZTZiYTYxNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiOWMwNzJmM2ZiYzA3YzU0ZWMwYzE2ZWM3YjU3NjZhNjI4ZmQ1YTRmNmQ3MjE3MWIwNGQ3ZDRjZmM4ODJmMjAifQ"
         },
         {
-          "resource": "repo://resident/src/environment-lane.ts#L148-L193",
+          "resource": "repo://resident/src/environment-lane.ts#L179-L224",
           "version": "repo-lines-v1:sha256:f7d2a4e718bed5605970475d64c7d999c50d700a51e5828f52400dc104d96974:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMDA2ZTFjYTNlZjk2NmI4YmNmNWExZjgzNzAyYmNlM2FkNGU4N2VmYzc3YTE5YTUxY2QxNzViM2RhY2FmMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NWNmYThiN2M3YWE3YmQzNDBlNTA2ZmRhOWI5NmViNDY2YzRkOTFhY2I0N2RmNGEyZTFmYzdlYTU4ZTU4MmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2YzQzN2ExZTYxMDQ2ODMyYjJmNGQzZWRmMGJhMTY5NDQwNzAzMTQ3MjlmODdhODg0ZmVmMWUzMjljZThiYTUifQ"
         }
       ]
@@ -377,7 +377,7 @@
       "statement": "A recorded runtime check does not skip the optional OpenCode compatibility check when its volume exists; the selected image must execute the OpenCode program.",
       "evidence": [
         {
-          "resource": "repo://resident/src/environment-lane.ts#L196-L253",
+          "resource": "repo://resident/src/environment-lane.ts#L227-L284",
           "version": "repo-lines-v1:sha256:0494566e30a1454a1faca2e177331440ad3bd733792832673df5c50620420d88:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YjhiMzIzZmUzYTBkN2E4Yzg4YTY3ODJiMzY0M2RiNDRjOTE5OTA3MjczZjJmNzBhYzRiZDNiOTdjOWY2ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NzY3NjJhM2JiN2RmMDRmYWIyNjQ4ZWRiY2EwNjFhY2Y0ODcyM2NkNWM2NmM4OTViMDVjMDZhY2ViNmIwZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYjk4OWYxMjBhMTdmMDViMWY1OTg5NjQxNGU4MzY1M2IwMWYzOTFkZDRmMmQ4OTA2OGIyNTE5Y2UxNzJhZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViYWRiMDg5N2E1ODM5ZmZhZmJjMWU0NmE5NGNlZDIzMjJiMTE5NGRjYjhkMjdiMjM1Njg4YjhmNzBjMzViZTYifQ"
         }
       ]
@@ -436,7 +436,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

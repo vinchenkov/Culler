@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1f9f871761f53d52d97ea3655018296333b7e8bd05110328f374c574bb1d5f74",
+  "pageVersion": "sha256:218a8debd98fe51b2fd42d96bd0e19f53d692070dbd0eb900ac86cb04b82cc86",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -353,7 +353,7 @@
       "statement": "Configuration validation rejects unsupported credential kinds and custom provider destinations.",
       "evidence": [
         {
-          "resource": "repo://mc/config/config.go#L1051-L1086",
+          "resource": "repo://mc/config/config.go#L1067-L1102",
           "version": "repo-lines-v1:sha256:fcf3d26a52741568110b5c18dbc5e54444177c91a5c7e7ea9544cb6f602a0cec:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkYzI4MzNmYTMzNzQxZDBmMzcwMGU5YzI4NDZlMzY4ZGExZWVmNGM2MTU3MmU3N2RlNzFkNjk2MTgxMGQ4NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljNWZmMTI0OGM0OTY4Mzc3NjgwODhmODgxOTAyYTc1NDRjMGIzYTliZWNjOTE0MzU1YThlY2QwZWU0YzExYjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3ZjE0NGVjNzgzYjFhMmE2NzVkMGRjZTgxMDZjMDgwY2I1NTY4ZTRkZDNlYmM3ZGI1ODI2NTUzZGNjNTUwNDgifQ"
         }
       ]
@@ -521,11 +521,11 @@
           "version": "repo-lines-v1:sha256:73c438ec6f2ae908a4c14fe5bf98a6771d7ccd20a3b9922b64c067146ff9e48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyODZjYjBmZjkzZGE4MmYwNGVjNjFjYTUwNGM4YWEwNDk1N2MzYmNhNzljMWNlMjhhMWJhZDc0MzNmOGE3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc2MmFjZTliZDJhNjY0ZjI1MjE3M2EzMDNiYTIwMGFjZDZhZDMzYzQ4ODkwYjNlMzAzZDJmMDNjODI1MWY4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRkOTUwYzFiNzk0NDUwNjZiNDJjYTI1MzEyNGEwZGNkNDNlZDVlMTAwNDYxYTZkMTYxZjBjNjFmODFiMWU1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjNmNjMxNDRmNTRkYTkzOTk2NmUxZGMxNmY1MDYzMDliY2EzM2MwNTI2MmY1Mzg2YmU2NWQyMzNmMjhiNjYzMyJ9"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L272-L277",
-          "version": "repo-lines-v1:sha256:93c1dc4823296c4b9cf5e866c5129d061dc51cd41c507f383b8ef6499a7f5820:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EyNjU4MjhhZjNkY2UwODQ3Mzc1NWFlNTc3YjM0NDExNDUxOWJhZjZlMGE2Y2JiOWY3N2FhZjE3YzFjOTM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA5MzU0NjRiODZkMjVmODk3MGNiMGFiYjk5NzQxYWRhOGY0Y2U0ZWM4OGZjNmVhZmRhZmNiOTYzZDM3ZWM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVmZjEzMjk5OWUyYzM4MjQwZjE4OGUzNDlkYjA2NDU5NWE1NTkyMDUxZmIzOTMxMDYxMDI5ZmU3OGYzOTM2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk0MmE0YWM1OTU5OWZmMzIzMGZjYzA3MzcwZDc0MjU2NmMyYTdkZGFmMTQ3ODZjYjEwODBiZDA5MjUzOTY3ZiJ9"
+          "resource": "repo://mc/deployment/opencode_source.go#L273-L278",
+          "version": "repo-lines-v1:sha256:7d5a0bc6d3fbef127b2c0a78f9fcf0ced21fbfc1a1b521f423b409bdf57977ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EyNjU4MjhhZjNkY2UwODQ3Mzc1NWFlNTc3YjM0NDExNDUxOWJhZjZlMGE2Y2JiOWY3N2FhZjE3YzFjOTM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA5MzU0NjRiODZkMjVmODk3MGNiMGFiYjk5NzQxYWRhOGY0Y2U0ZWM4OGZjNmVhZmRhZmNiOTYzZDM3ZWM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVmZjEzMjk5OWUyYzM4MjQwZjE4OGUzNDlkYjA2NDU5NWE1NTkyMDUxZmIzOTMxMDYxMDI5ZmU3OGYzOTM2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk0MmE0YWM1OTU5OWZmMzIzMGZjYzA3MzcwZDc0MjU2NmMyYTdkZGFmMTQ3ODZjYjEwODBiZDA5MjUzOTY3ZiJ9"
         },
         {
-          "resource": "repo://mc/deployment/opencode_source.go#L365-L370",
+          "resource": "repo://mc/deployment/opencode_source.go#L366-L371",
           "version": "repo-lines-v1:sha256:a76ffe38db655a2270cdff52245a600b0032dbb7b7923238a6d98e94d9d4cd4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGViOGE4ZDdiZjQ0ZmVjZDkxMjA2MDk3OTVlOTJmZWYxY2I0N2E0MmI5MzU2MGQxMzJkMmQ0YzBkNTlkZGMwNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGJiYzBhNTFmZjVlNWY1NGU5YzI0OTE3MTkyMTUyMDI1MWUyNTZiNjM3Njg0MDE1MWY4Y2JmYjI2OTlkNGY3MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTI3NjcyMWFiNTA1ZmQ2OWJlNTc4NGEzNTQ3YzAzYjYxNDUyMzAyZDJiNzBmYzU3ZDhjYmM1Zjc5MjZmNmFlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmY3MmQ5OTk4NjI2ODZjNGNiNWNkZjYyY2I5YzkwY2QyOTUyMWQzZTI2ZTc0YWQ2ODBjZmYwMWNmODk4OTVlYSJ9"
         }
       ]
@@ -553,8 +553,8 @@
       "statement": "Published updates run an isolated candidate runtime check on each distinct selected Project image before replacement.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L154-L255",
-          "version": "repo-lines-v1:sha256:87890f769ee66def3411b12f9017ddd3e1ed19ecb8dbda520fdd36b7cce529ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZGExZDc5MTQ4MDllMzQ5OWQ0NTczZThiZmU1ODI2YWUwODJlYTJlMmExNGRiN2NjMTQxNzI1NzdjNmE3MzVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2MThhNjEzNDUyZTBlMTBhNjVmMTJkMjM1MTcyNzZjN2U3NjdmMDE1YTk1MjkzYWU2NzEzMzRjNmRiOTkyMDVmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIn0"
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L157-L258",
+          "version": "repo-lines-v1:sha256:8a774ebcc64344c00bb299fc8d8865c7ad89af92abc5c55f2b7085a1587912a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMGY0MmY3NzAyNmNhODk2ZDk4ZjI1ZGE2YmVkZTE2ZmY4YjY5ODczMmY1ZGI3YzRjMTA5ZDc4YTZiY2I5ZTExIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0YzBkMzA2YzE1OTM3NGRkZTBkMGY0NmNmOTk4NWIwOGFhOTVhM2I3MTkyMDU4MzBkOTJlMGIyMzdjNDM3NWY2In0"
         }
       ]
     },
@@ -709,6 +709,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T09:22:03.309Z"
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

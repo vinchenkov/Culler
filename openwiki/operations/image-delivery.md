@@ -38,10 +38,10 @@ sources:
     resource: repo://runner/image/runtime-check.sh
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T09:22:03.309Z
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Image delivery and update cleanup
@@ -74,7 +74,7 @@ Each check runs as `10002:10002` with these restrictions:
 
 - Network access is disabled, and all capabilities are dropped.
 - The root filesystem and runtime mount are read-only; `/tmp` uses disposable memory storage.
-- `no-new-privileges` blocks privilege gains, and process, memory, and CPU limits bound resource use.
+- `no-new-privileges` blocks privilege gains. Each check has a limit of 2,048 processes and sets no CPU or memory limit.
 - Each image check has a two-minute timeout.
 
 `mc/cmd/mc/candidate-runtime-check.sh` is the shared shell program embedded in the updater.

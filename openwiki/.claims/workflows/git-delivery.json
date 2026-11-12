@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5c0844923e5cc02cab23328a1937ded2ac055fa9fd4c576ee032caec0ca4220e",
+  "pageVersion": "sha256:b0df34b61ce7bc9f45ecd5731ed4c7ea4beddfc56e777394dfd7c0d6a5f9039d",
   "claims": [
     {
       "id": "claim_e15e571807ef4a4093ee4cf416a06313",
@@ -27,7 +27,7 @@
       "statement": "The spawn effect binds <run root>/repo at /workspace/source, read-only for the Scribe with only openwiki/ and .git writable.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1481-L1488",
+          "resource": "repo://resident/src/effects.ts#L1483-L1490",
           "version": "repo-lines-v1:sha256:a91026a1a384f22f9f8fb2bc048caf3ec54b94d08f8b34b296c9bff34efbb0b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDVkMzQ3MDk1MTExNWVkMDcyMTQzNTZlMWQwYjFkZDJkNTc4ZGUxOTUxMWEyOTJiOTc0YzhhYTQ5MjM2NDdlOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDRlMjJkMWU5ZDJiYjlhYjFkOGJhMTUyYTM2YjZmNDRmNjcxMGZkMTU2YjllMzZlMDYxNWM3MWI0NDMzN2JjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2I3NjI2MWU5Njc2ODNiM2NjNjlkMTc2NmIzNzkzYTY4Y2M3ZWE2YTk2YzAzNTY0ZGI5MjkzYzUxZTYwZWE3OCJ9"
         }
       ]
@@ -106,11 +106,11 @@
     },
     {
       "id": "claim_200eb1e9bbfa41ff80a68151260cc099",
-      "statement": "Merge containers run with no network, user 10002, all capabilities dropped, one CPU, 1024m memory, and a 128-process limit; prepare mounts only the run folder while apply mounts the operator workspace.",
+      "statement": "Merge containers use no network, user 10002, dropped capabilities, a 2048-process limit, and no CPU or memory limit; prepare mounts the run folder while apply mounts the operator workspace.",
       "evidence": [
         {
           "resource": "repo://resident/src/repository.ts#L381-L416",
-          "version": "repo-lines-v1:sha256:4564e7d66c73099499bcd0dfcfaa1c732a513a4926b316696bf4fc5285f1d012:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5N2U0YzQ5YWZjZjUwZjNkOWRmOGNhMzMzMWM3M2JhNzcwOTY2OWIyYzA1M2NjYzZkNGVjMjIxYmEzM2ZhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYzRkYjA5MTUwYTgyZDhiYWMyZmY5NmViYmJlM2QxZDllOWExMTk4MTA3ZmYzMTgxMGJkMjc2ZmU0NzFiZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0YjQ2OGI4YjUyMTcxNmQyYzEwMmM2YWEyM2M5OTIzNWRjNzdkN2RlNjUwOWM4MTQ5OTlmY2U1YzEyZTZhNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5ODBjMjViODBlMDJjMGNkOGJjNTMwMjliNmYzZDdhNDg3YzBkMDc1NmU3N2MzMzFjYWQ4NTIyZWM5MTI2ZjUifQ"
+          "version": "repo-lines-v1:sha256:ed28829057fcf590e050902ff53edba9d8681609dcfeeb1204bd6156ad0162b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5N2U0YzQ5YWZjZjUwZjNkOWRmOGNhMzMzMWM3M2JhNzcwOTY2OWIyYzA1M2NjYzZkNGVjMjIxYmEzM2ZhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYzRkYjA5MTUwYTgyZDhiYWMyZmY5NmViYmJlM2QxZDllOWExMTk4MTA3ZmYzMTgxMGJkMjc2ZmU0NzFiZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0YjQ2OGI4YjUyMTcxNmQyYzEwMmM2YWEyM2M5OTIzNWRjNzdkN2RlNjUwOWM4MTQ5OTlmY2U1YzEyZTZhNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5ODBjMjViODBlMDJjMGNkOGJjNTMwMjliNmYzZDdhNDg3YzBkMDc1NmU3N2MzMzFjYWQ4NTIyZWM5MTI2ZjUifQ"
         }
       ]
     },
@@ -160,7 +160,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fdc13a976ea90ec1efffb4a26178a74c82c7664431fc1d653041d49c1050f2ed",
+  "pageVersion": "sha256:79f8f31fcb62e7e9e9ec5992ede99d8c1f73dfdfbf6d9db82c4db83662c26cde",
   "claims": [
     {
       "id": "claim_0e880ef8eb5e4b06b827221b7df78b3a",
@@ -108,7 +108,7 @@
       "evidence": [
         {
           "resource": "repo://resident/src/environment-lane.ts",
-          "version": "repo-file-v1:sha256:aab82f9e12d149577121d169f3398e5a8122bc70699b7854cc9c99d01cd3ce2b"
+          "version": "repo-file-v1:sha256:96fbc976dd5bb5acb3909e4ddf31d537585482bfd20d926ce1eec5ce7dfb1296"
         },
         {
           "resource": "repo://runner/agent-runner/skills.ts",
@@ -162,7 +162,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md",
-          "version": "repo-file-v1:sha256:add3da0c207feda6ae77a0713d22a8e25e4a40ae74a17292b2aabc6db89c06a1"
+          "version": "repo-file-v1:sha256:6352d21401bc67cf2eff2995b66b67daffd73b4e7d4e9ca4addcbd8744480b04"
         }
       ]
     },
@@ -182,7 +182,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md",
-          "version": "repo-file-v1:sha256:add3da0c207feda6ae77a0713d22a8e25e4a40ae74a17292b2aabc6db89c06a1"
+          "version": "repo-file-v1:sha256:6352d21401bc67cf2eff2995b66b67daffd73b4e7d4e9ca4addcbd8744480b04"
         }
       ]
     },
@@ -239,7 +239,7 @@
       "statement": "The shared environment skill requires fresh source and repeated dependency preparation against the persistent Project home, with Scribe, Strategist, and Arbiter exemptions.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L32-L61",
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L34-L63",
           "version": "repo-lines-v1:sha256:6f495821544beb2be990805c13a36e1942c51f19e6df5d605b0cf42681d2cf09:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNzJmMzIyZTc0OGY3MzA1YWU0MGE1NmMxMTFhMDM0OTA2ODQ1ODY1YjVlZmJiOTAyOTYyZjgzYTFkNDA2MzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiYjkxMDFkMzI4MWU0Mzg4NmZkZGY4MjcyYWFhNjBhMTY5ZjBhMDUwNzQ1OTg3ODIyNGNhZjRhM2RlZGYwZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMjJlYTBiZTUwYzMwM2Q0MTc2MzllNmVkYTgyY2M3NDVjNzg0YTk0N2YyNjVmOTMwZDllNWNlYzIyZmVhYmQifQ"
         }
       ]
@@ -711,6 +711,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T09:22:03.309Z"
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

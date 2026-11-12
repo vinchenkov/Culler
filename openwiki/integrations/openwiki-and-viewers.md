@@ -12,6 +12,8 @@ sources:
     resource: repo://mc/cmd/mc/agentsview_access.go
   - id: openwiki-source-34ce6a1ce9505093ba601ecc
     resource: repo://mc/cmd/mc/wiki_export.go
+  - id: openwiki-source-02886ae4c9efa40e167cf53b
+    resource: repo://mc/config/config.go
   - id: openwiki-source-b40f0fb7710571de842a0cb3
     resource: repo://mc/deployment/agentsview_supervision.go
   - id: openwiki-source-b498a26a6023737a41613629
@@ -52,10 +54,10 @@ sources:
     resource: repo://runner/openwiki/server.ts
   - id: openwiki-source-a37b5e4aedd4e9eae5294f1a
     resource: repo://runner/shared/opencode-trace.ts
-generated: { by: "culler-scribe", at: "2026-11-12T05:23:35.047Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T05:23:35.047Z
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # OpenWiki export and AgentsView trace viewer
@@ -128,7 +130,7 @@ The resident's wiki lane (`resident/src/wiki-lane.ts`) calls `mc __wiki-export -
 
 A failure writes `failure.json` and keeps the previous export. A stop signal is not recorded as a failure. Projects that failed last time run last. A lock file serializes concurrent exporters.
 
-`ExportDockerArgs` defines the container: `--network none`, uid 10002, `--cap-drop ALL`, `no-new-privileges`, `--read-only`, 1 CPU, 1024 MB of memory, 128 pids, and an empty environment (`env -i PATH=…`). The command is OpenWiki's `visualize … --export /output`. `DockerExport` enforces `ExportTimeout` (120 s) and force-removes a failed container. These properties are covered by `mc/wiki/export_test.go`, for example `TestExportUsesTheAcceptedOpenWikiTreeOnly`, `TestAFailedExportKeepsThePreviousExport`, and `TestExportDockerArgsIsolateTheContainer`.
+`ExportDockerArgs` defines the container: `--network none`, uid 10002, `--cap-drop ALL`, `no-new-privileges`, `--read-only`, a limit of 2,048 processes, no CPU or memory limit, and an empty environment (`env -i PATH=…`). The command is OpenWiki's `visualize … --export /output`. `DockerExport` enforces `ExportTimeout` (120 s) and force-removes a failed container. These properties are covered by `mc/wiki/export_test.go`, for example `TestExportUsesTheAcceptedOpenWikiTreeOnly`, `TestAFailedExportKeepsThePreviousExport`, and `TestExportDockerArgsIsolateTheContainer`.
 
 ### Serving: the wiki address in the dashboard process
 

@@ -44,10 +44,10 @@ sources:
     resource: repo://runner/image/toolchain-smoke.sh
   - id: openwiki-source-a1d3951819531015b34e3c43
     resource: repo://runner/shared/setup-error.ts
-generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T09:22:03.309Z
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Runner containers and harness adapters
@@ -95,7 +95,7 @@ These scripts run against a built image and need Docker, so they sit outside the
 
 `project-smoke.sh` also executes the compatibility check that a published update uses before it accepts a Project image.
 It mounts the candidate runtime volume read-only and runs as user 10002 with no network or additional privileges.
-The container has a read-only root, a writable temporary directory, and explicit resource limits.
+The container has a read-only root, a writable temporary directory, and a limit of 2,048 processes. It sets no CPU or memory limit.
 `mc/cmd/mc/candidate-runtime-check.sh` requires real `/mc` and `/workspace` directories and an absent `/mc/run.json`.
 It executes the runtime check and requires the expected release identifier.
 This checks the image and runtime combination before a later agent launch.
@@ -235,6 +235,8 @@ See [Checks and test lanes](../tests/checks-and-test-lanes.md) for the Docker e2
 
 Setup and pipeline agents share the container policy in `resident/src/environment-lane.ts`.
 The policy includes Docker's init process to reap child processes, the agent user, capability removal, and configured resource limits.
+Each new agent container has a limit of 2,048 processes. CPU and memory limits default to zero, which means no limit.
+The operator can set these limits on **Configs → Advanced**. A memory limit permits no additional swap.
 The launch envelope and credentials still define each role's separate authority.
 `resident/src/effects.ts` applies that policy to pipeline containers.
 

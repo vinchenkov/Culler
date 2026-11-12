@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ff4d60fd55c728e39ecf7e1ecde72f6ff69fdd2caeb91e50529f91b46008a787",
+  "pageVersion": "sha256:570fb3d56b3c8b0ca078e535383b4688d2c9069e042de27e94cbb35a25a36f46",
   "claims": [
     {
       "id": "claim_7ba26c16d0434b749aa6b15f31009048",
@@ -41,7 +41,7 @@
       "statement": "The production build delegates on darwin, uses the fixed spine path /mc/spine/spine.db, and takes the helper name from the deployment names of the canonical MC_HOME.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/helper_manager.go#L199-L213",
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L200-L214",
           "version": "repo-lines-v1:sha256:05f5f11b52ecb814eb609da4e562a97f242d42fa1fb41269863741058a79c5de:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NTc0NmY5NGQwZjBiZjQyMjkxOWI2MjhmZDEyYTc3MWQ1ZmZmZjI4Y2VmNjliYmFkNjZiMGIyNzQ5NWQxYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwYjE2ODg0MTI4NmJkN2UyYjJjNjJkZTUwN2E4YjBlYzFhODE1MzM4MzA3NTAxNjU2MmVkZTUxYzUyY2Q3MjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4MjBjOWI3ZjhhMDI4YmUxNjI1NmNmNzhmMjg0ZGZkY2Q4ZGFlNjQ2ZTM1YzJjMzA2MzU5NzFjYTE4MzRkYmIifQ"
         },
         {
@@ -62,11 +62,15 @@
     },
     {
       "id": "claim_dabe488b49dd4f65b611b7950f21e0db",
-      "statement": "The helper container runs /bin/sleep infinity as uid 10002 with no network, all capabilities dropped, fixed CPU, memory, and pid limits, and only the spine volume mounted at /mc/spine.",
+      "statement": "The helper runs /bin/sleep infinity as uid 10002 with no network, all capabilities dropped, a 2048-process limit, no CPU or memory limit, and only the spine volume mounted at /mc/spine.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/helper_manager.go#L215-L238",
-          "version": "repo-lines-v1:sha256:32420719f8b49de50dff85446d3b3018ae618c503b7141b1393f1bf519b5ba61:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMDQ4ODBmZjFkNzFmZDhkNTY4YWE1Mjc2ZDUzZWRmMGNmNmRkMjc1ZmZjYmM2NTNmYjRlZDQxODJhMzlmZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZjFjZmFmOGY4OThjNGQzNzY0NTI5OTNjYTQ3MzY2MTE5NjI4NzA2ZjNhZWFkM2ExYWIzYmRkYjU5OGE5M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1ZWE2OTExNjdkNTBlYjI0NTIxNWM4MzdlZGVjYjAyMzAzYzk0YzgzZTUzMWFhMmNiZDNhNzYxYzU2MTdlZTMifQ"
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L216-L238",
+          "version": "repo-lines-v1:sha256:d27df64e29fadb9b17902f2fa56bab4e43cf0a282f94a47ba0fb842fa2627bcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMDQ4ODBmZjFkNzFmZDhkNTY4YWE1Mjc2ZDUzZWRmMGNmNmRkMjc1ZmZjYmM2NTNmYjRlZDQxODJhMzlmZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNWNmN2MyNTFjYmRjZmQ0ZTY4MjhkMjkxZGFhNDM5MjAyYjc2ZWM4M2E1OWI2ZGE1YWM2OGYzMzBkNjZjNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZjFjZmFmOGY4OThjNGQzNzY0NTI5OTNjYTQ3MzY2MTE5NjI4NzA2ZjNhZWFkM2ExYWIzYmRkYjU5OGE5M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3MDZjMjg4MDRiMDViMzRiOTJlZmM0MjUwNjdkOGFjZDBmNDc0NmY3NGRjZTY3N2RjZjllZmJjNmNjZDQwZmYifQ"
+        },
+        {
+          "resource": "repo://mc/config/config.go#L250-L258",
+          "version": "repo-lines-v1:sha256:d8e823d89d7ddd37279a85c1f1e2ac6f5b39dedbd44230f6136945a129b743d9:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBkOTg2YjBkZjdlOWM0N2FhNzgyYjA2NjA5NDY5YmM4ZWVjYTQ3NjEyYjgzOGNmODI5ZGRhNGJjZGRkMzMyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTNlYzdmNDdlZjZiMzY3NjhhMjJkZGI0MTc5YTg1M2VmODc0NDY3ODRjY2NjMWI1YmU0NDBiODA0ODEzNWUwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY2OTJkYzVjODMwNGQ4NjkzNzFhY2U5ODczYmI1MzcxZDRiOTgzYTFmMGNiNTEyMWEyYzUzOTViZGVkMDJiYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODQ3N2Y5YzBiN2M2M2ViZTI4MDI5MmY1NWM1ZDg0NzU5NjY5ZmQzOWEwNWEwZGU4YTBjMjFhMGRjMzNiMDM4YiJ9"
         }
       ]
     },
@@ -75,7 +79,7 @@
       "statement": "ensure refuses to remove a container that holds the helper name without the mc-managed helper labels.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/helper_manager.go#L289-L295",
+          "resource": "repo://mc/cmd/mc/helper_manager.go#L287-L293",
           "version": "repo-lines-v1:sha256:eeaccc65f1cb1cde8d0ad6607b979209e5515a50d0d8e2b2d8fe9db006d41d9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y4OWRkZWU3ODZkMDZhYWNlMTkyOTgxNTY0NDcxMzBlNDU1NzFiZWQ3Nzc0YmM4N2NlNDVhNjAwODU1ZDExYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmY4NmY5OGNkYTk1YjMwY2UwMDQ5YjNiM2IyN2I4OWFiZDUwOWZmZDFlYzllOWE0NWM3ODdjNzJmMGQwMWQxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGYwNzIwMTE4NjExMzYzN2UyZTEyOTgzZGY3ODZmN2M1NTYxYjhjMjM4Nzk2YmNiYmIzYTU2MGM5NzMzZjNiYSJ9"
         }
       ]
@@ -188,7 +192,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

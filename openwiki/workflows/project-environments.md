@@ -60,10 +60,10 @@ sources:
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-074a0c31b85dc048be2b3972
     resource: repo://runner/shared/project-cache.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Project setup and environment lifecycle
@@ -255,7 +255,12 @@ An incompatible image therefore cannot replace the runtime's protected authority
 
 ## Runtime and per-run dependencies
 
-Setup and pipeline agents share the same container policy: 4 GiB of memory, two processors, and 512 processes.
+Setup and pipeline agents share a limit of 2,048 processes.
+CPU and memory limits default to no limit. The operator can set optional limits on **Configs → Advanced**.
+The resident reads `container.cpu_limit` and `container.memory_limit_mb` before each new agent container.
+Zero means no limit; a configured memory limit permits no additional swap.
+Existing containers retain their launch settings.
+The shared environment skill directs agents to read effective CPU and memory limits from cgroup files before dependency work.
 Docker init reaps child processes. The default seccomp profile denies user namespaces.
 Role authority and credential scopes remain separate.
 

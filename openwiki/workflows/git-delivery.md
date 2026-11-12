@@ -28,10 +28,10 @@ sources:
     resource: repo://resident/src/repository.ts
   - id: openwiki-source-876efa27a35b34c8f8651db4
     resource: repo://runner/image/mc-land
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Git delivery and repository operations
@@ -95,7 +95,7 @@ The resident drives operations through host-scope verbs in `mc/verbs/deliverysta
 
 ## Merge candidate and merge: mc-land
 
-`runner/image/mc-land` is a short shell script supplied by the private runtime. It accepts `prepare` or `apply` and an envelope file, and runs `exec mc __repository <file>`. It never opens the database. The resident starts it through `mergeContainer` in `resident/src/repository.ts` with `docker run --rm --network none`, user `10002:10002`, `--cap-drop ALL`, `no-new-privileges`, one CPU, 1,024 MiB memory, and a limit of 128 processes. A stop request repeats `docker stop` until the container run ends.
+`runner/image/mc-land` is a short shell script supplied by the private runtime. It accepts `prepare` or `apply` and an envelope file, and runs `exec mc __repository <file>`. It never opens the database. The resident starts it through `mergeContainer` in `resident/src/repository.ts` with `docker run --rm --network none`, user `10002:10002`, `--cap-drop ALL`, `no-new-privileges`, a limit of 2,048 processes, and no CPU or memory limit. A stop request repeats `docker stop` until the container run ends.
 
 `mc` inside the image is `runner/image/mc_dispatch.go`, a wrapper that execs the setuid `/opt/culler-runtime/libexec/mc-real`. That binary fixes identity reads to `/mc/run.json` so a process cannot redirect its authorization through the environment.
 

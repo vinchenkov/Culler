@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ccd1a432fb31117a5de48a9330b60bce8cc89d14365f11d456d084802623591e",
+  "pageVersion": "sha256:21b6853cb4c1ce35895f18dd75b69dc895729b63dfb3d3c51b3735eebe7c1988",
   "claims": [
     {
       "id": "claim_9b499244e0744b82b23967e19b689227",
@@ -55,22 +55,26 @@
       "statement": "An export reads the openwiki tree of the main branch commit, skips an unchanged commit and tree, waits 10 minutes before retrying a failed commit and tree, and keeps the previous export on failure.",
       "evidence": [
         {
-          "resource": "repo://mc/wiki/export.go#L170-L215",
+          "resource": "repo://mc/wiki/export.go#L171-L216",
           "version": "repo-lines-v1:sha256:29c0dc2f7824bbf4f5c16ef7a7561fbde358c8c55cde58746a1f7ea713c8dc18:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4MjBmNzQyYWNjZDczNWQ2MTJjNGVkYzM1NmIwNjZjNDZhZDc3NWQyYWY4ZjMwZWIwNDhlOGZkYjk3ZWM1YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0MTg5MzgzMzhkZjdkZjQxNWYyMmJhOTNjYmQ5MDAyZjM2MjA5OTY2NjM1YThjOGI5NDM4MDdiY2Y2YWJlMDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjY2I3N2VlZTcxYjliYjQ2MDIzYzg2ZTU0ODk3MDk1ZTgxY2UxZTk5Mzc1NDBkZDUzZTIzNjgxZWVmYmVlN2YifQ"
         },
         {
-          "resource": "repo://mc/wiki/export.go#L30-L34",
+          "resource": "repo://mc/wiki/export.go#L31-L35",
           "version": "repo-lines-v1:sha256:cbb55b0ead07938b98b9d7e0013cffd3a9556f411850b7d9acd7685d2f9e725f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE2ZGJjZjhlZTkzMGQ4MTkyOTA2ODE5ZWIxY2ExYmVkNjgyNjk4OTE4ZTFjMTkwNmVjZmNmMzk5ZTNiMGZjNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWY2MDQ5YTc1N2ExODg0OWVjZjg1NDY5MDJmZWQwYzVkYmU3ODE4MmUyYjYzYWMxZjE3ZmZiYWNiZWZhMDhjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJjNTU1NDUzZjU3ZWVlZWIwOTkwMmRmNzkyMGM1YjFhYjFlYmVjNzIzZTczYmNlNWI2ZWQyZjgxMjE4ZGRmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhMTZjNDVkNmVhOTViNDgzOGZiZTNlZWZhOGU1NTM1YzVkZjVkZDQyZjVkODUwYzNmNzU0ZTk2MDcxZWRhZCJ9"
         }
       ]
     },
     {
       "id": "claim_e036f5f3913d45dc87bc4507f09f4e4a",
-      "statement": "The export container runs with no network, uid 10002, all capabilities dropped, a read-only root, limited CPU, memory, and pids, and an empty environment.",
+      "statement": "The export container uses no network, uid 10002, dropped capabilities, a read-only root, a 2048-process limit, no CPU or memory limit, and an empty environment.",
       "evidence": [
         {
-          "resource": "repo://mc/wiki/export.go#L552-L565",
-          "version": "repo-lines-v1:sha256:e5c8ca57bd17c91b749fa3027c185997d71c9136b16da5b37a3ab655472c0651:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2NmOGUzNjgzOTE1OTg0ODY2MTU0N2FkNjAwNWE1YTExZWJiODZiODkwYTM2NGI3OWIwNzU3NzFjMWZkM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlMDY3ZjU5NTcwMDk2ZDk4MzQ1MGE4YWI4MzFmZWI0ZTRjNjBlNTdiZDViZTkyNzJlZGRhMjVmODA2ZTk2YjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4ZmIzMjBmNGFhZjc4NmY2MDNjZDcwOTUwOTdlMzkzMmYyYTcwZjhjNTcyODZlYTE1YjY3NGJjNjkxZWRhOGIifQ"
+          "resource": "repo://mc/config/config.go#L250-L258",
+          "version": "repo-lines-v1:sha256:d8e823d89d7ddd37279a85c1f1e2ac6f5b39dedbd44230f6136945a129b743d9:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBkOTg2YjBkZjdlOWM0N2FhNzgyYjA2NjA5NDY5YmM4ZWVjYTQ3NjEyYjgzOGNmODI5ZGRhNGJjZGRkMzMyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTNlYzdmNDdlZjZiMzY3NjhhMjJkZGI0MTc5YTg1M2VmODc0NDY3ODRjY2NjMWI1YmU0NDBiODA0ODEzNWUwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY2OTJkYzVjODMwNGQ4NjkzNzFhY2U5ODczYmI1MzcxZDRiOTgzYTFmMGNiNTEyMWEyYzUzOTViZGVkMDJiYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODQ3N2Y5YzBiN2M2M2ViZTI4MDI5MmY1NWM1ZDg0NzU5NjY5ZmQzOWEwNWEwZGU4YTBjMjFhMGRjMzNiMDM4YiJ9"
+        },
+        {
+          "resource": "repo://mc/wiki/export.go#L553-L567",
+          "version": "repo-lines-v1:sha256:6e17f748c32c59ab2d6e00bc3d69039cadde6267859225c02636629c7e5d98b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3Y2NmOGUzNjgzOTE1OTg0ODY2MTU0N2FkNjAwNWE1YTExZWJiODZiODkwYTM2NGI3OWIwNzU3NzFjMWZkM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlMDY3ZjU5NTcwMDk2ZDk4MzQ1MGE4YWI4MzFmZWI0ZTRjNjBlNTdiZDViZTkyNzJlZGRhMjVmODA2ZTk2YjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmYjJiZjMwMjg0ZmEyNzBjNGQ5NGQ5NzQ5N2QwYjJhMjAzMTc2M2RjM2MwZDRiNmEzMDExNDRhZjIwZjlmZTUifQ"
         }
       ]
     },
@@ -305,6 +309,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T05:23:35.047Z"
+    "at": "2026-11-12T17:31:21.412Z"
   }
 }

@@ -82,10 +82,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T17:31:21.412Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T09:22:03.309Z
+    at: 2026-11-12T17:31:21.412Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -410,6 +410,8 @@ It also supplies the setup skills and any initial continuation requirements.
 
 Setup and pipeline agents share container permissions, resource limits, network policy, and workspace paths.
 Their role authority and credentials remain separate.
+The shared environment skill states the 2,048-process limit and the optional CPU and memory limits, which default to no limit.
+Agents read effective limits from cgroup files such as `/sys/fs/cgroup/cpu.max` and `/sys/fs/cgroup/memory.max`.
 The setup directive requires an ordered checklist within the assignment's authority and attempt limit.
 The agent identifies required commands, inspects capabilities, prepares Workspace dependencies, executes applicable checks, and assesses every missing prerequisite.
 The shared `project-environment-setup` skill defines the evidence for an image proposal and the reasons for deferral.
