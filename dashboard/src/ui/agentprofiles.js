@@ -120,8 +120,15 @@ export function plannedConnection(catalog, template, name) {
     && row.access_status === "disconnected" && !(catalog.profiles || []).some(profile => profile.enabled && profile.connection_id === row.id));
   if (idle) return { id: idle.id, name: idle.name || idle.id };
   let unused = name;
-  for (let suffix = 2; connections.some(row => sameName(row, unused)); suffix++) unused = `${name} ${suffix}`;
+  for (let suffix = 2; connections.some(row => sameName(row, unused)); suffix++) unused = name.endsWith(" connection") ? `${name.slice(0, -11)} ${suffix} connection` : `${name} ${suffix}`;
   return { id: null, name: unused };
+}
+
+export function defaultProfileName(rows, connectionName, id) {
+  const base = connectionName.replace(/ (?:connection|API key|subscription)( \d+)?$/i, "$1");
+  let name = `${base} profile`;
+  for (let suffix = 2; rows.some(row => row.id !== id && sameName(row, name)); suffix++) name = `${base} ${suffix} profile`;
+  return name;
 }
 
 export function effortChoices(model, current = "") {
@@ -641,11 +648,6 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     disconnectID = null;
     render();
   }
-  function suggestedName(rows, base, id) {
-    let name = base;
-    for (let suffix = 2; duplicate(rows, name, id); suffix++) name = `${base} ${suffix}`;
-    return name;
-  }
   function choicesNode(back) {
     const choose = (mode, heading, harness = "") => {
       Object.assign(draft, { mode, heading, harness, chosen: true });
@@ -756,7 +758,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       draft.mode === "existing" && el("label", { class: "profile-field" }, el("span", { text: "Connection" }),
         el("select", { class: "field", testid: "profile-connection_id", "aria-label": "Connection", disabled: busy || operationActive(), onchange: (event) => {
           update("connection_id", event.target.value);
-          suggest("name", connection() ? suggestedName(catalog.profiles, connection().name || connection().id, draft.id) : "");
+          suggest("name", connection() ? defaultProfileName(catalog.profiles, connection().name || connection().id, draft.id) : "");
           render();
         } }, el("option", { value: "", selected: !choices.some((choice) => choice.selected), text: "Select a connection" }),
         choices.map((choice) => el("option", choice)))),
@@ -858,7 +860,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     draft.connection_edit_id = result.connection_id;
     draft.connection_submission_id = uuid();
     draft.connection_revision = null;
-    suggest("name", suggestedName(catalog.profiles, draft.connection_name, draft.id));
+    suggest("name", defaultProfileName(catalog.profiles, draft.connection_name, draft.id));
     notice = "The connection is saved. Other agent profiles can also use this connection.";
     if (!apiKey && connection()?.access_status !== "connected") await startOperation("authorization", draft.connection_id);
     else draft.step = 2;
@@ -869,7 +871,7 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     Object.assign(draft, { step: 2, saving: true });
     notice = "Culler saves the connection.";
     render();
-    try { await connect(template, `${template.name} API key`, true); }
+    try { await connect(template, `${template.name} connection`, true); }
     catch (err) {
       if (serial === generation) { draft.step = 1; notice = ""; }
       throw err;
@@ -923,9 +925,9 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
     if (!provider) return el("div", {}, note("This provider is unavailable. Select Back to select another provider."), actionsNode(back));
     // The key action is the main action after a key entry, and for a provider without a sign-in.
     const keyFirst = Boolean(draft.api_key) || !provider.subscription;
-    const signIn = provider.subscription && button("Sign in", () => perform(() => connect(provider.subscription, `${provider.name} subscription`, false)),
+    const signIn = provider.subscription && button("Sign in", () => perform(() => connect(provider.subscription, `${provider.name} connection`, false)),
       `profile-sign-in-${provider.subscription.id}`, provider.subscription.authorization_available === false, keyFirst ? {} : PRIMARY);
-    const saveKey = button("Save key", () => perform(() => connect(provider.api_key, `${provider.name} API key`, true)), "profile-key-connect", false, keyFirst ? PRIMARY : {});
+    const saveKey = button("Save key", () => perform(() => connect(provider.api_key, `${provider.name} connection`, true)), "profile-key-connect", false, keyFirst ? PRIMARY : {});
     return el("div", {},
       signIn && el("section", { class: "profile-card", testid: "profile-access-subscription" },
         el("h4", { text: "Sign in with your subscription" }),

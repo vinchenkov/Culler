@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, jest, test } from "bun:test";
-import { createAgentProfiles, downloadView, effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, modelSourceHint, needsAuthorization, operationSummary, plannedConnection, profilePayload, profileStatus, providerChoices, releaseProviders } from "./agentprofiles.js";
+import { createAgentProfiles, defaultProfileName, downloadView, effortChoices, connectionChoices, currentProfileStatus, elapsedLabel, listedProfiles, listsModels, modelChoices, modelSourceHint, needsAuthorization, operationSummary, plannedConnection, profilePayload, profileStatus, providerChoices, releaseProviders } from "./agentprofiles.js";
 import { installFakeDocument, type FakeDocument, type FakeNode } from "./fakedom";
 
 const ROLES = ["strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie"];
@@ -237,7 +237,7 @@ test("the release providers list the first harness family first, each with its s
   expect(releaseProviders({ providers: [], integrations: [] })).toEqual([]);
 });
 
-test("a new connection receives a name from its provider and its access method", () => {
+test("a connection reuses an idle match and avoids names that already exist", () => {
   const template = { id: "codex-api-key", kind: "codex-api-key", harness: "codex", catalog_entry: "fixture" };
   const idle = { id: "codex-api-key", name: "Fixture API key", kind: "codex-api-key", access_status: "disconnected" };
   expect(plannedConnection({ connections: [], profiles: [] }, template, "Fixture API key")).toEqual({ id: null, name: "Fixture API key" });
@@ -297,11 +297,11 @@ describe("the Configure step of an OpenCode connection", () => {
       starts: 0,
     };
     const data = { revision: "revision-1", providers: [provider], integrations: [], connections: [] as unknown[], profiles: [] };
-    const api = async (path: string) => {
+    const api = async (path: string, options?: { body: string }) => {
       if (path === "/api/routing") return { routes: [] };
       if (path === "/api/agent-profiles") return structuredClone({ ...data, opencode: host.download });
       if (path.endsWith("/connection-save")) {
-        data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider API key", access_status: "connected", authorization_id: "authorization-1" }];
+        data.connections = [{ ...provider, id: "fixture-connection", name: JSON.parse(options!.body).name, access_status: "connected", authorization_id: "authorization-1" }];
         return structuredClone({ ...data, opencode: host.download, connection_id: "fixture-connection" });
       }
       if (path.endsWith("/models")) { host.modelRequests++; return structuredClone(host.models); }
@@ -326,6 +326,8 @@ describe("the Configure step of an OpenCode connection", () => {
     await node("profile-api_key")!.dispatch("input");
     await click("profile-key-connect");
     await settle();
+    expect(data.connections[0]).toMatchObject({ name: "Fixture provider connection" });
+    expect(node("profile-name")!.value).toBe("Fixture provider profile");
     const model = node("profile-model")!;
     model.value = "fixture-k3";
     await model.dispatch("change");
@@ -441,4 +443,16 @@ describe("the Configure step of an OpenCode connection", () => {
     expect(view.node("profile-model")).toBe(view.model);
     view.panel.close();
   });
+});
+
+test("default names identify the connection and the profile with unique names", () => {
+  const template = { kind: "codex-api-key" };
+  expect(plannedConnection({ connections: [] }, template, "Fixture connection").name).toBe("Fixture connection");
+  expect(plannedConnection({ connections: [{ name: "Fixture connection", access_status: "connected" }] }, template, "Fixture connection").name).toBe("Fixture 2 connection");
+  for (const connection of ["Fixture connection", "Fixture API key", "Fixture subscription", "Fixture"]) {
+    expect(defaultProfileName([], connection)).toBe("Fixture profile");
+  }
+  expect(defaultProfileName([], "Fixture 2 connection")).toBe("Fixture 2 profile");
+  expect(defaultProfileName([{ id: "saved", name: "Fixture profile" }], "Fixture connection")).toBe("Fixture 2 profile");
+  expect(defaultProfileName([{ id: "saved", name: "Fixture profile" }], "Fixture connection", "saved")).toBe("Fixture profile");
 });
