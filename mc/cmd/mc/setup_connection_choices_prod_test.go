@@ -195,6 +195,17 @@ func TestTerminalSetupSubscriptionUsesReferenceBinding(t *testing.T) {
 			if err != nil || choice.Binding != reference || choice.Template != reference || choice.NewAccount {
 				t.Fatalf("first sign-in = %#v, %v", choice, err)
 			}
+			if err := w.prepareAccessChoice(choice); err != nil {
+				t.Fatal(err)
+			}
+			first, err := w.catalog()
+			if err != nil {
+				t.Fatal(err)
+			}
+			base := setupProviderName(harness)
+			if first.Runtimes.Credentials[reference].Name != base+" connection" || first.Runtimes.Bindings[reference].Name != base+" profile" {
+				t.Fatal("The first account lacks separate default names.")
+			}
 			w.deps.identity = func(string, string) (string, error) { return strings.Repeat("a", 64), nil }
 			choice, err = w.subscriptionChoice(harness)
 			if err != nil || choice.Template != reference || !choice.NewAccount || choice.Name != harness+"-2" {
@@ -208,6 +219,9 @@ func TestTerminalSetupSubscriptionUsesReferenceBinding(t *testing.T) {
 				t.Fatal(err)
 			}
 			created, want := cfg.Runtimes.Bindings[choice.Name], cfg.Runtimes.Bindings[reference]
+			if created.Name != base+" 2 profile" || cfg.Runtimes.Credentials[choice.Name].Name != base+" 2 connection" {
+				t.Fatal("The second account lacks separate unique default names.")
+			}
 			if created.Harness != want.Harness || created.Model != want.Model || created.Credential != choice.Name ||
 				cfg.Runtimes.Credentials[choice.Name].Kind != setupHarnessKind(harness) {
 				t.Fatalf("second account = %#v", created)
@@ -293,5 +307,21 @@ func TestTerminalSetupRejectsUnsupportedConnectionBeforePreparation(t *testing.T
 	cfg, err := w.catalog()
 	if err != nil || len(cfg.Runtimes.EnabledBindings) != 0 {
 		t.Fatal("The unsupported connection changed the configuration")
+	}
+}
+
+func TestTerminalSetupDefaultNames(t *testing.T) {
+	cfg := operatorconfig.Default()
+	for _, base := range []string{"Fixture", "Fixture API key", "Fixture subscription", "Fixture connection"} {
+		if got := setupDefaultName(cfg, "new", base, "connection"); got != "Fixture connection" {
+			t.Fatal(got)
+		}
+		if got := setupDefaultName(cfg, "new", base, "profile"); got != "Fixture profile" {
+			t.Fatal(got)
+		}
+	}
+	cfg.Runtimes.Bindings["custom"] = operatorconfig.RuntimeBinding{Name: "My agent"}
+	if got := setupProfileDefault(cfg, "custom", "Fixture connection"); got != "My agent" {
+		t.Fatal(got)
 	}
 }

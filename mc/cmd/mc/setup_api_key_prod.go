@@ -100,6 +100,13 @@ func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 			save = deployment.AgentConnectionSave
 		}
 		request := deployment.AgentConnectionRequest{SubmissionID: "setup-key-" + rand.Text(), Revision: catalog.Revision, ID: choice.Binding, Name: source.Name, TemplateID: choice.Template, APIKey: key, AuthorizationID: source.AuthorizationID}
+		if request.AuthorizationID == "" {
+			cfg, err := w.catalog()
+			if err != nil {
+				return err
+			}
+			request.Name = setupDefaultName(cfg, choice.Binding, source.Name, "connection")
+		}
 		if err := w.removeUntestedConnections(choice.Binding); err != nil {
 			return err
 		}
@@ -138,7 +145,7 @@ func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 			if !ok {
 				return fmt.Errorf("The API connection is unavailable.")
 			}
-			cfg.Runtimes.Bindings[choice.Binding] = operatorconfig.RuntimeBinding{Name: source.Name, Harness: source.Harness(), Model: model, Credential: choice.Binding}
+			cfg.Runtimes.Bindings[choice.Binding] = operatorconfig.RuntimeBinding{Name: setupProfileDefault(*cfg, choice.Binding, source.Name), Harness: source.Harness(), Model: model, Credential: choice.Binding}
 			return cfg.Validate()
 		})
 		if err != nil {
@@ -147,4 +154,11 @@ func (w *setupWizard) apiKeyStep(choice *onboarding.AccessChoice) error {
 		choice.Step = "check"
 	}
 	return nil
+}
+
+func setupProfileDefault(cfg operatorconfig.Config, id, connectionName string) string {
+	if profile := cfg.Runtimes.Bindings[id]; profile.Name != "" {
+		return profile.Name
+	}
+	return setupDefaultName(cfg, id, connectionName, "profile")
 }
