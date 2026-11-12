@@ -1,6 +1,9 @@
-![The Culler logo: a chick and two eggs in a nest, next to the word Culler, on a navy tile](docs/logo-full.svg)
+<p align="center">
+  <img src="docs/logo-full.svg" alt="The Culler logo: a chick and two eggs in a nest, next to the word Culler, on a navy tile">
+</p>
 
 **Software factory at home**
+
 Culler is a project factory that runs on your own Mac. You own the factory, the code, and the final say. Its agents work toward your vision, on your repositories, through any AI provider.
 
 ![The factory line. One task moves from VISION.md through five numbered roles: 01 Strategist, 02 Arbiter, 03 Worker, 04 Verifier, and 05 Packager. Below each role, the db records the new stage of the task: Proposed, Seeded, Worked, Verified, and Packaged. At the end, you approve the packet, the db records Approved, and the change goes to the main branch.](docs/hero-dark.svg)
@@ -48,7 +51,9 @@ One packet for each decision.
 ## Features
 
 **Proactive work.** Culler does work in between your decisions.
+
 **Illustrative review packets.** Maintain effective command of your projects by never losing picture of them.
+
 **Openwiki.** Culler creates and maintains a wiki for each project, maintained by a scheduled agent named **Scribe**. It serves three purposes:
 
 1. Acts as index into the repository's ground truth for agents to enable more efficient search.
@@ -56,10 +61,13 @@ One packet for each decision.
 3. Provides a viewer so you can re-familiarize yourself with your project as it continually develops.
 
 **AgentsView.** A trace viewer for agent observability.
+
 **Prepared environments.** When you start a project, the setup agent prepares the Project dependencies and reports each environment limit. A Project image change waits for your approval.
+
 **Tried and trued harnesses.** Culler leverages frontier lab and community vetted harnesses . Any gains they acquire, Culler acquires.
 
 **Multiple Projects.** Different Projects run at the same time.
+
 **Discord Integration.** Keep in tandem when you're away from your work device.
 
 ---
