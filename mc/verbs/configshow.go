@@ -33,7 +33,7 @@ func configView(cfg operatorconfig.Config) map[string]any {
 			"label": setting.label, "description": setting.description, "type": setting.kind,
 		}
 		if setting.kind == "integer" {
-			row["min"] = 1
+			row["min"] = setting.minimum
 			row["max"] = setting.maximum
 		}
 		if setting.kind == "lines" {

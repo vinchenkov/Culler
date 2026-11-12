@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	operatorconfig "mc/config"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -554,7 +555,7 @@ func ExportDockerArgs(c ExportContainer) []string {
 		"run", "--rm", "--name", c.Name, "--pull", "never",
 		"--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
 		"--security-opt", "no-new-privileges=true", "--read-only",
-		"--cpus", "1", "--memory", "1024m", "--pids-limit", "128",
+		operatorconfig.PidsLimitFlag,
 		"--label", "mc-managed=true", "--label", "mc-deployment=" + c.Deployment, "--label", "mc-tier=wiki-export", "--label", "mc-project=" + c.Project,
 		"-v", c.Input + ":/input/openwiki:ro", "-v", c.Output + ":/output",
 		c.Image,

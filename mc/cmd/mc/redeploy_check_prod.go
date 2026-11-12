@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
+	operatorconfig "mc/config"
 	"os"
 	"path/filepath"
 	"strings"
@@ -96,7 +97,7 @@ func checkRedeployDatabase(docker dockerCommandRunner, home, imageRef, linuxMC s
 	}
 	// The mc in the image runs with the user identity that owns the database.
 	// This mc runs directly, so the container takes that identity.
-	args := []string{"run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10001:10001",
+	args := []string{"run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10001:10001",
 		"--security-opt", "no-new-privileges",
 		"--mount", "type=volume,src=" + names.Volume + ",dst=/mc/spine,readonly",
 		"--mount", "type=bind,src=" + linuxMC + ",dst=" + redeployCheckMC + ",readonly",

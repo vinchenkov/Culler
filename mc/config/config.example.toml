@@ -82,6 +82,9 @@ mount_allowlist = "mount-allowlist"
 #     { kind = "basename-glob", pattern = "*.agekey" },
 #   ]
 additional_blocked_patterns = []
+# Optional limits for each new agent container. 0 means no limit.
+cpu_limit = 0
+memory_limit_mb = 0
 
 [surfaces.dashboard]
 bind = "127.0.0.1:7333"

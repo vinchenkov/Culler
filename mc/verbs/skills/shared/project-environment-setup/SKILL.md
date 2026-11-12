@@ -16,7 +16,9 @@ Culler keeps provider credentials on the host.
 This container uses a temporary Culler token through the host provider proxy.
 The host renews account access without a credential update inside the container.
 Preserve the proxy configuration and exclude Culler tokens from output.
-The shared limits are 4 GiB of memory, two processors, and 512 processes.
+Each agent container has a limit of 2048 processes.
+The operator can set CPU and memory limits; by default, no CPU or memory limit applies.
+Read the effective limits from the cgroup files, such as `/sys/fs/cgroup/cpu.max` and `/sys/fs/cgroup/memory.max`.
 Agent containers use the default Docker seccomp profile, which denies user namespaces.
 Fake harness containers have no network access.
 

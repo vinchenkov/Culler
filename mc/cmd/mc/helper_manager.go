@@ -5,6 +5,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	operatorconfig "mc/config"
 	"os"
 	"os/exec"
 	"strconv"
@@ -224,10 +225,7 @@ func (m *helperManager) createArgs(imageID string) []string {
 		"--cap-drop", "ALL",
 		"--privileged=false",
 		"--ipc", "private",
-		"--cpus", "0.5",
-		"--memory", "512m",
-		"--memory-swap", "512m",
-		"--pids-limit", "128",
+		operatorconfig.PidsLimitFlag,
 		"--oom-kill-disable=false",
 		"--mount", "type=volume,src=" + m.names.Volume + ",dst=/mc/spine",
 	}
@@ -368,8 +366,8 @@ func (m *helperManager) helperExact(c helperContainerInspect, imageID string) bo
 		c.HostConfig.UTSMode == "" && c.HostConfig.UsernsMode == "" && c.HostConfig.CgroupnsMode == "private" &&
 		!c.HostConfig.Privileged && len(c.HostConfig.Binds) == 0 && len(c.HostConfig.CapAdd) == 0 &&
 		stringSliceEqual(c.HostConfig.CapDrop, []string{"ALL"}) && len(c.HostConfig.SecurityOpt) == 0 &&
-		c.HostConfig.NanoCPUs == 500000000 && c.HostConfig.Memory == 536870912 &&
-		c.HostConfig.MemorySwap == 536870912 && c.HostConfig.PidsLimit == 128 && oomDisabled &&
+		c.HostConfig.NanoCPUs == 0 && c.HostConfig.Memory == 0 &&
+		c.HostConfig.MemorySwap == 0 && c.HostConfig.PidsLimit == operatorconfig.ContainerPidsLimit && oomDisabled &&
 		len(c.HostConfig.Devices) == 0 && len(c.HostConfig.DeviceRequests) == 0 &&
 		len(c.Mounts) == 1 && c.Mounts[0].Type == "volume" && c.Mounts[0].Name == m.names.Volume &&
 		c.Mounts[0].Destination == "/mc/spine" && c.Mounts[0].RW &&

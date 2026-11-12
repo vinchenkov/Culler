@@ -704,7 +704,7 @@ func TestOpenCodeFactsContainerHasNoNetworkKeyOrProjectData(t *testing.T) {
 	run := func(_ context.Context, stdin string, args ...string) ([]byte, error) {
 		calls++
 		line := strings.Join(args, " ")
-		for _, required := range []string{"run --rm -i --pull never", "--network none", "--cap-drop ALL", "--security-opt no-new-privileges", "--user 10002:10002",
+		for _, required := range []string{"run --rm --pids-limit=2048 -i --pull never", "--network none", "--cap-drop ALL", "--security-opt no-new-privileges", "--user 10002:10002",
 			"--mount type=volume,src=" + volume + ",dst=" + OpenCodeRoot + ",readonly,volume-nocopy", "mc-prod /usr/bin/env -i PATH=/usr/local/bin:/usr/bin:/bin /bin/sh -ec"} {
 			if !strings.Contains(line, required) {
 				t.Errorf("The container lacks %q.", required)

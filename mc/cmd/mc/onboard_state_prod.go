@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	operatorconfig "mc/config"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -39,7 +40,7 @@ func productionOnboardGitArgs(root string) ([]string, error) {
 		return nil, verbs.Domainf("workspace root %q cannot be represented by Docker's bind-mount grammar", root)
 	}
 	args := []string{
-		"run", "--rm", "--network", "none", "--read-only",
+		"run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--read-only",
 		"--cap-drop", "ALL", "--security-opt", "no-new-privileges",
 		"--user", fmt.Sprintf("%d:%d", os.Getuid(), os.Getgid()),
 		"--env", "HOME=/tmp", "--tmpfs", "/tmp:rw,noexec,nosuid,nodev,size=16m",

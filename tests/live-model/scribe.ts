@@ -248,7 +248,7 @@ async function runProfile(options: ScribeAcceptanceOptions, profile: SelectedPro
     }))));
     for (const path of [root, session, home, temporary]) await makeReadable(path);
     const args = ["docker", "run", "-i", "--name", name, "--user", "10002:10002",
-      "--memory", "4g", "--cpus", "2", "--cap-drop", "ALL", "--pids-limit", "512",
+      "--cap-drop", "ALL", "--pids-limit", "2048",
       "--workdir", "/workspace/source",
       "--label", "mc-managed=true", "--label", "mc-tier=scribe-acceptance",
       "-v", `${runner}:${RUNTIME}/app/src:ro`, "-v", `${root}:/workspace/source`, "-v", `${session}:/mc/session`,

@@ -65,7 +65,7 @@ func TestRedeployCheckReadsTheDeployedDatabaseReadOnly(t *testing.T) {
 				}
 				steps = append(steps, inspect)
 			}
-			run := []string{"run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10001:10001",
+			run := []string{"run", "--rm", "--pids-limit=2048", "--network", "none", "--cap-drop", "ALL", "--user", "10001:10001",
 				"--security-opt", "no-new-privileges",
 				"--mount", "type=volume,src=" + names.Volume + ",dst=/mc/spine,readonly",
 				"--mount", "type=bind,src=" + linuxMC + ",dst=/mc/check/mc,readonly",

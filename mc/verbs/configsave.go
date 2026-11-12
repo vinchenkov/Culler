@@ -12,23 +12,25 @@ import (
 
 type dashboardSetting struct {
 	key, label, description, kind, column string
-	maximum                               int
+	minimum, maximum                      int
 	value                                 func(*operatorconfig.Config) any
 }
 
 var dashboardSettings = []dashboardSetting{
-	{"development.capture_evaluation_cases", "Capture evaluation cases", "Preserve subsequent Packager inputs for private evaluation cases. This development feature takes effect at once.", "boolean", "", 0, func(c *operatorconfig.Config) any { return &c.Development.CaptureEvaluationCases }},
-	{"budgets.review_wip_cap", "Review capacity", "Maximum review slots per Project. Approved tasks retain their slots until archive. The next dispatch uses this value.", "integer", "review_wip_cap", 1000000, func(c *operatorconfig.Config) any { return &c.Budgets.ReviewWIPCap }},
-	{"timing.timeout_minutes", "Lease timeout (minutes)", "Time without a heartbeat before a lease expires. The next lease check uses this value.", "integer", "timeout_minutes", 525600, func(c *operatorconfig.Config) any { return &c.Timing.TimeoutMinutes }},
-	{"timing.grace_minutes", "Lease grace (minutes)", "Additional time before Culler reclaims an expired lease. The next lease check uses this value.", "integer", "grace_minutes", 525600, func(c *operatorconfig.Config) any { return &c.Timing.GraceMinutes }},
-	{"timing.heartbeat_interval_s", "Heartbeat interval (seconds)", "New runs use this interval between heartbeats.", "integer", "heartbeat_interval_s", 2147483, func(c *operatorconfig.Config) any { return &c.Timing.HeartbeatIntervalS }},
-	{"timing.spawn_grace_s", "First heartbeat grace (seconds)", "Time for a new run to send its first heartbeat. Scribe receives at least 60 seconds.", "integer", "spawn_grace_s", 31536000, func(c *operatorconfig.Config) any { return &c.Timing.SpawnGraceS }},
-	{"timing.hard_deadline_minutes", "Run deadline (minutes)", "Maximum duration for new runs. Current runs retain their deadlines.", "integer", "hard_deadline_minutes", 525600, func(c *operatorconfig.Config) any { return &c.Timing.HardDeadlineMinutes }},
-	{"timing.collie_idle_timeout_s", "Collie idle timeout (seconds)", "Time before an idle Collie session expires. The next session check uses this value.", "integer", "collie_idle_timeout_s", 31536000, func(c *operatorconfig.Config) any { return &c.Timing.CollieIdleTimeoutS }},
-	{"timing.wiki_update_interval_s", "Wiki update interval (seconds)", "The minimum time between the starts of two wiki updates of one Project. The next wiki update check uses this value.", "integer", "wiki_update_interval_s", 31536000, func(c *operatorconfig.Config) any { return &c.Timing.WikiUpdateIntervalS }},
-	{"timing.backup_retain", "Backup retention", "Number of backups to retain. The next backup uses this value.", "integer", "", 1000000, func(c *operatorconfig.Config) any { return &c.Timing.BackupRetain }},
-	{"container.additional_blocked_patterns", "Additional blocked paths", "New runs reject paths that match these rules. Built-in rules always apply.", "patterns", "", 0, func(c *operatorconfig.Config) any { return &c.Container.AdditionalBlockedPatterns }},
-	{"runtimes.forbidden_env", "Additional forbidden environment variables", "Enter one variable name per line. New runs reject these variables. Built-in restrictions always apply.", "lines", "", 0, func(c *operatorconfig.Config) any { return &c.Runtimes.ForbiddenEnv }},
+	{"development.capture_evaluation_cases", "Capture evaluation cases", "Preserve subsequent Packager inputs for private evaluation cases. This development feature takes effect at once.", "boolean", "", 0, 0, func(c *operatorconfig.Config) any { return &c.Development.CaptureEvaluationCases }},
+	{"budgets.review_wip_cap", "Review capacity", "Maximum review slots per Project. Approved tasks retain their slots until archive. The next dispatch uses this value.", "integer", "review_wip_cap", 1, 1000000, func(c *operatorconfig.Config) any { return &c.Budgets.ReviewWIPCap }},
+	{"timing.timeout_minutes", "Lease timeout (minutes)", "Time without a heartbeat before a lease expires. The next lease check uses this value.", "integer", "timeout_minutes", 1, 525600, func(c *operatorconfig.Config) any { return &c.Timing.TimeoutMinutes }},
+	{"timing.grace_minutes", "Lease grace (minutes)", "Additional time before Culler reclaims an expired lease. The next lease check uses this value.", "integer", "grace_minutes", 1, 525600, func(c *operatorconfig.Config) any { return &c.Timing.GraceMinutes }},
+	{"timing.heartbeat_interval_s", "Heartbeat interval (seconds)", "New runs use this interval between heartbeats.", "integer", "heartbeat_interval_s", 1, 2147483, func(c *operatorconfig.Config) any { return &c.Timing.HeartbeatIntervalS }},
+	{"timing.spawn_grace_s", "First heartbeat grace (seconds)", "Time for a new run to send its first heartbeat. Scribe receives at least 60 seconds.", "integer", "spawn_grace_s", 1, 31536000, func(c *operatorconfig.Config) any { return &c.Timing.SpawnGraceS }},
+	{"timing.hard_deadline_minutes", "Run deadline (minutes)", "Maximum duration for new runs. Current runs retain their deadlines.", "integer", "hard_deadline_minutes", 1, 525600, func(c *operatorconfig.Config) any { return &c.Timing.HardDeadlineMinutes }},
+	{"timing.collie_idle_timeout_s", "Collie idle timeout (seconds)", "Time before an idle Collie session expires. The next session check uses this value.", "integer", "collie_idle_timeout_s", 1, 31536000, func(c *operatorconfig.Config) any { return &c.Timing.CollieIdleTimeoutS }},
+	{"timing.wiki_update_interval_s", "Wiki update interval (seconds)", "The minimum time between the starts of two wiki updates of one Project. The next wiki update check uses this value.", "integer", "wiki_update_interval_s", 1, 31536000, func(c *operatorconfig.Config) any { return &c.Timing.WikiUpdateIntervalS }},
+	{"timing.backup_retain", "Backup retention", "Number of backups to retain. The next backup uses this value.", "integer", "", 1, 1000000, func(c *operatorconfig.Config) any { return &c.Timing.BackupRetain }},
+	{"container.additional_blocked_patterns", "Additional blocked paths", "New runs reject paths that match these rules. Built-in rules always apply.", "patterns", "", 0, 0, func(c *operatorconfig.Config) any { return &c.Container.AdditionalBlockedPatterns }},
+	{"container.cpu_limit", "Agent container CPU limit", "Maximum CPUs for each agent container. 0 means no limit. New agent containers use this value.", "integer", "", 0, operatorconfig.MaxContainerCPULimit, func(c *operatorconfig.Config) any { return &c.Container.CPULimit }},
+	{"container.memory_limit_mb", "Agent container memory limit (MB)", "Maximum memory in megabytes for each agent container, without additional swap. 0 means no limit. New agent containers use this value.", "integer", "", 0, operatorconfig.MaxContainerMemoryLimitMB, func(c *operatorconfig.Config) any { return &c.Container.MemoryLimitMB }},
+	{"runtimes.forbidden_env", "Additional forbidden environment variables", "Enter one variable name per line. New runs reject these variables. Built-in restrictions always apply.", "lines", "", 0, 0, func(c *operatorconfig.Config) any { return &c.Runtimes.ForbiddenEnv }},
 }
 
 type ConfigChange struct {
@@ -75,8 +77,8 @@ func applyConfigChanges(cfg *operatorconfig.Config, request ConfigSaveRequest) (
 		if err := decoder.Decode(target); err != nil {
 			return false, Usagef("The value for %s has the wrong type.", setting.key)
 		}
-		if value, ok := target.(*int); ok && (*value < 1 || *value > setting.maximum) {
-			return false, Usagef("The value for %s must be an integer from 1 to %d.", setting.key, setting.maximum)
+		if value, ok := target.(*int); ok && (*value < setting.minimum || *value > setting.maximum) {
+			return false, Usagef("The value for %s must be an integer from %d to %d.", setting.key, setting.minimum, setting.maximum)
 		}
 		project = project || setting.column != ""
 	}

@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	operatorconfig "mc/config"
 	"os"
 	"os/exec"
 	"path"
@@ -118,7 +119,7 @@ func sourceOpenCodeNeedsPublishedArchive(ctx context.Context, home, image, volum
 	if archive == nil {
 		return true
 	}
-	output, err := run(ctx, "", "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount",
+	output, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount",
 		"type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy", image, "cat", OpenCodeRoot+"/archive-sha256")
 	return err != nil || strings.TrimSpace(string(output)) != archive.SHA256
 }
@@ -270,7 +271,7 @@ func snapshotOpenCodeSource(ctx context.Context, source runtimeSourceRecord, roo
 }
 
 func openCodeSourceContainer(image string, args ...string) []string {
-	base := []string{"run", "--rm", "--pull", "never", "--platform", "linux/arm64", "--cap-drop", "ALL", "--security-opt", "no-new-privileges"}
+	base := []string{"run", "--rm", operatorconfig.PidsLimitFlag, "--pull", "never", "--platform", "linux/arm64", "--cap-drop", "ALL", "--security-opt", "no-new-privileges"}
 	base = append(base, args...)
 	base = append(base, image, "/usr/bin/env", "-i")
 	base = append(base, openCodeSourceEnvironment...)
@@ -418,7 +419,7 @@ func updateOpenCodeSourceRelease(ctx context.Context, image, volume, release str
 	if err != nil || strings.TrimSpace(string(users)) != "" {
 		return fmt.Errorf("Stop the OpenCode agents before the OpenCode update.")
 	}
-	output, err := run(ctx, "", "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "0:0", "--mount",
+	output, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "0:0", "--mount",
 		"type=volume,src="+volume+",dst=/output,volume-nocopy", image, "/bin/sh", "-ec",
 		`printf '%s\n' "$1" > /output/.release-id; chmod 644 /output/.release-id; mv /output/.release-id /output/release-id`, "release", release)
 	if err != nil {

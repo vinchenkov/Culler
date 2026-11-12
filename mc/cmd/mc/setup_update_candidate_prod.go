@@ -228,7 +228,7 @@ func (p *publishedSetup) checkCandidateProjectImages(ctx context.Context) error 
 	if _, err := p.docker(ctx, "volume", "create", "--label", "mc-component=update-check", "--label", "mc-deployment="+names.Suffix, volume); err != nil {
 		return err
 	}
-	if output, err := p.docker(ctx, "run", "--rm", "--name", container, "--label", "mc-managed=true", "--label", "mc-deployment="+liveNames.Suffix, "--network", "none", "--user", "0:0", "--entrypoint", "/bin/sh", "--mount", "type=volume,src="+volume+",dst=/runtime-check,volume-nocopy", p.record.Image, "-ec", "cp -a /opt/culler-runtime/. /runtime-check/"); err != nil {
+	if output, err := p.docker(ctx, "run", "--rm", operatorconfig.PidsLimitFlag, "--name", container, "--label", "mc-managed=true", "--label", "mc-deployment="+liveNames.Suffix, "--network", "none", "--user", "0:0", "--entrypoint", "/bin/sh", "--mount", "type=volume,src="+volume+",dst=/runtime-check,volume-nocopy", p.record.Image, "-ec", "cp -a /opt/culler-runtime/. /runtime-check/"); err != nil {
 		return fmt.Errorf("The candidate runtime check could not start: %s", strings.TrimSpace(string(output)))
 	}
 	checkedOptional, err := p.candidateCheckOpenCode(ctx, root)
@@ -240,7 +240,7 @@ func (p *publishedSetup) checkCandidateProjectImages(ctx context.Context) error 
 		if checked[selection.Image] {
 			continue
 		}
-		args := []string{"run", "--rm", "--name", container, "--label", "mc-managed=true", "--label", "mc-deployment=" + liveNames.Suffix, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--read-only", "--security-opt", "no-new-privileges=true", "--pids-limit", "128", "--memory", "512m", "--cpus", "1", "--entrypoint", "/bin/sh", "--tmpfs", "/tmp:rw,nosuid,nodev,mode=1777", "--mount", "type=volume,src=" + volume + ",dst=" + deployment.RuntimeRoot + ",readonly,volume-nocopy"}
+		args := []string{"run", "--rm", "--name", container, "--label", "mc-managed=true", "--label", "mc-deployment=" + liveNames.Suffix, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--read-only", "--security-opt", "no-new-privileges=true", operatorconfig.PidsLimitFlag, "--entrypoint", "/bin/sh", "--tmpfs", "/tmp:rw,nosuid,nodev,mode=1777", "--mount", "type=volume,src=" + volume + ",dst=" + deployment.RuntimeRoot + ",readonly,volume-nocopy"}
 		if checkedOptional != "" {
 			args = append(args, "--mount", "type=volume,src="+optionalVolume+",dst="+deployment.OpenCodeRoot+",readonly,volume-nocopy")
 		}

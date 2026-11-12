@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	operatorconfig "mc/config"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -495,7 +496,7 @@ func SyncUpdateDeployment(ctx context.Context, home string, j *UpdateJournal, ru
 		}
 	}
 	run = updateOwnedDocker(j, run)
-	if _, err := run(ctx, "", "run", "--rm", "--network", "none", "--user", "0:0", j.Candidate.Image, "/bin/sync"); err != nil {
+	if _, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--user", "0:0", j.Candidate.Image, "/bin/sync"); err != nil {
 		return fmt.Errorf("Synchronize the installed runtime: %w", err)
 	}
 	return nil
@@ -616,7 +617,7 @@ func ensureUpdateBackupVolume(ctx context.Context, name string, j *UpdateJournal
 }
 func copyUpdateVolume(ctx context.Context, image, source, target string, run RuntimeDocker) error {
 	script := `set -eu; need=$(du -sk /source | cut -f1); free=$(df -Pk /destination | tail -n 1 | awk '{print $4}'); test "$free" -ge "$((need + 262144))"; cp -a /source/. /destination/; sync`
-	out, err := run(ctx, "", "run", "--rm", "--network", "none", "--user", "0:0", "--mount", "type=volume,src="+source+",dst=/source,readonly,volume-nocopy", "--mount", "type=volume,src="+target+",dst=/destination,volume-nocopy", image, "/bin/sh", "-ec", script)
+	out, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--user", "0:0", "--mount", "type=volume,src="+source+",dst=/source,readonly,volume-nocopy", "--mount", "type=volume,src="+target+",dst=/destination,volume-nocopy", image, "/bin/sh", "-ec", script)
 	if err != nil {
 		return fmt.Errorf("Copy the update volume: %w: %s", err, lastLine(out))
 	}
@@ -626,7 +627,7 @@ func copyUpdateVolume(ctx context.Context, image, source, target string, run Run
 const updateVolumeHashScript = `const fs=require('fs'),p=require('path'),c=require('crypto'),h=c.createHash('sha256');function walk(root,rel){const f=p.join(root,rel),s=fs.lstatSync(f);h.update(JSON.stringify([rel,s.mode,s.uid,s.gid]));if(s.isDirectory()){for(const n of fs.readdirSync(f).sort())walk(root,p.join(rel,n));}else if(s.isSymbolicLink()){h.update(fs.readlinkSync(f));}else if(s.isFile()){const d=c.createHash('sha256'),fd=fs.openSync(f,'r'),b=Buffer.alloc(1048576);try{let n;while((n=fs.readSync(fd,b,0,b.length,null))>0)d.update(b.subarray(0,n));}finally{fs.closeSync(fd)}h.update(d.digest());}else throw Error('Unsupported checkpoint file');}walk('/source','');process.stdout.write(h.digest('hex'));`
 
 func updateVolumeDigest(ctx context.Context, image, name string, run RuntimeDocker) (string, error) {
-	body, err := run(ctx, "", "run", "--rm", "--network", "none", "--user", "0:0", "--mount", "type=volume,src="+name+",dst=/source,readonly,volume-nocopy", image, RuntimeRoot+"/node/bin/node", "-e", updateVolumeHashScript)
+	body, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--user", "0:0", "--mount", "type=volume,src="+name+",dst=/source,readonly,volume-nocopy", image, RuntimeRoot+"/node/bin/node", "-e", updateVolumeHashScript)
 	digest := strings.TrimSpace(string(body))
 	if err != nil || !validSHA256(digest) {
 		return "", errors.New("The volume checksum check failed.")
@@ -634,7 +635,7 @@ func updateVolumeDigest(ctx context.Context, image, name string, run RuntimeDock
 	return digest, nil
 }
 func checkUpdateSpine(ctx context.Context, image, name, schema string, run RuntimeDocker) error {
-	body, err := run(ctx, "", "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+name+",dst=/mc/spine,readonly", image, "mc", "__release-database")
+	body, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+name+",dst=/mc/spine,readonly", image, "mc", "__release-database")
 	var record struct {
 		Schema string `json:"schema"`
 		Empty  bool   `json:"empty"`

@@ -1,6 +1,6 @@
 import { describe, expect, spyOn, test } from "bun:test";
-import { createEnvironmentLane, checkRuntimeCompatibility, environmentContainerName, projectCacheArguments, projectHomeArguments, projectSecretValues, safeBuildPath, type EnvironmentOperation } from "./environment-lane";
-import { makeRig, ok, settle } from "./test-helpers";
+import { agentContainerLimits, agentLimitArguments, createEnvironmentLane, checkRuntimeCompatibility, environmentContainerName, projectCacheArguments, projectHomeArguments, projectSecretValues, safeBuildPath, type EnvironmentOperation } from "./environment-lane";
+import { agentLimitsConfig, makeRig, ok, settle } from "./test-helpers";
 
 const image = "sha256:" + "a".repeat(64);
 const candidate = "sha256:" + "b".repeat(64);
@@ -651,9 +651,11 @@ for (const harness of ["fake", "codex"] as const) {
       expect(create).toBeDefined();
       expect(create).toContain("--init");
       for (const [flag, value] of [["--user", "10002:10002"], ["--cap-drop", "ALL"],
-        ["--memory", "4g"], ["--cpus", "2"], ["--pids-limit", "512"], ["--workdir", "/workspace/source"]]) {
+        ["--pids-limit", "2048"], ["--workdir", "/workspace/source"]]) {
         expect(create[create.indexOf(flag!) + 1]).toBe(value!);
       }
+      expect(create).not.toContain("--cpus");
+      expect(create).not.toContain("--memory");
       expect(create).toContain("TZ=America/Los_Angeles");
       expect(create).toContain(image);
       expect(create).toContain("type=bind,src=/projects/demo,dst=/workspace/source");
@@ -669,3 +671,42 @@ for (const harness of ["fake", "codex"] as const) {
     } finally { await lane.stop(); }
   });
 }
+
+test("setup applies the configured agent container limits", async () => {
+  const { deps } = makeRig();
+  deps.config = { ...deps.config, runtimeVolume: "runtime-test", projectImage: "project-test" };
+  const op = operation("setup");
+  const calls: string[][] = [];
+  deps.runMc = async args => args[0] === "config" && args[1] === "show"
+    ? agentLimitsConfig({ cpus: 4, memory_mb: 6144 })
+    : ok(JSON.stringify(args[0] === "__project-home"
+      ? { canonical: `${deps.config.mcHome}/state/projects/${args[1]}/home` }
+      : args[1] === "work" ? { operations: [op] } : {}));
+  deps.docker = async args => {
+    calls.push(args);
+    if (args[0] === "image") return ok(JSON.stringify([{ Id: image }]));
+    if (args[0] === "container") return { exitCode: 1, stdout: "", stderr: "No such container" };
+    return ok("");
+  };
+  const lane = createEnvironmentLane(deps);
+  try {
+    await lane.request(); await settle();
+    const create = calls.find(args => args[0] === "create")!;
+    for (const [flag, value] of [["--cpus", "4"], ["--memory", "6144m"], ["--memory-swap", "6144m"], ["--pids-limit", "2048"]]) {
+      expect(create[create.indexOf(flag!) + 1]).toBe(value!);
+    }
+  } finally { await lane.stop(); }
+});
+
+test("agent container limits come from the operator configuration", async () => {
+  expect(await agentContainerLimits(async () => agentLimitsConfig({ cpus: 2, memory_mb: 4096 }))).toEqual({ cpus: 2, memory_mb: 4096 });
+  expect(await agentContainerLimits(async () => ok(JSON.stringify({ families: [] })))).toEqual({ cpus: 0, memory_mb: 0 });
+  expect(agentLimitArguments({ cpus: 0, memory_mb: 0 })).toEqual([]);
+  expect(agentLimitArguments({ cpus: 2, memory_mb: 4096 })).toEqual(["--cpus", "2", "--memory", "4096m", "--memory-swap", "4096m"]);
+  await expect(agentContainerLimits(async () => ({ exitCode: 2, stdout: "", stderr: "unreadable" })))
+    .rejects.toThrow("The agent container limits are unavailable.");
+  for (const value of [-1, 1.5, "4"]) {
+    await expect(agentContainerLimits(async () => ok(JSON.stringify({ families: [{ knobs: [{ key: "container.cpu_limit", value }] }] }))))
+      .rejects.toThrow("The agent container limits are invalid.");
+  }
+});

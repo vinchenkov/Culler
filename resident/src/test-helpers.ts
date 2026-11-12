@@ -485,6 +485,8 @@ export const testConfig: ResidentConfig = {
 
 export interface TestRig {
   deps: TickDeps;
+  /** The agent container limits that `mc config show` reports. */
+  limits: { cpus: number; memory_mb: number };
   timer: FakeTimer;
   mc: FakeExec;
   docker: FakeExec;
@@ -496,6 +498,14 @@ export interface TestRig {
   sleeps: number[];
 }
 
+/** The `mc config show` answer with the given agent container limits. */
+export function agentLimitsConfig(limits: { cpus: number; memory_mb: number }): ExecResult {
+  return ok(JSON.stringify({ families: [{ family: "container", knobs: [
+    { key: "container.cpu_limit", value: limits.cpus },
+    { key: "container.memory_limit_mb", value: limits.memory_mb },
+  ] }] }));
+}
+
 export function makeRig(overrides: Partial<TickDeps> = {}): TestRig {
   const timer = new FakeTimer();
   const mc = new FakeExec();
@@ -504,6 +514,8 @@ export function makeRig(overrides: Partial<TickDeps> = {}): TestRig {
   const logs: string[] = [];
   const logRecords: LogRecord[] = [];
   const sleeps: number[] = [];
+  const rigLimits = { cpus: 0, memory_mb: 0 };
+  const configShow = () => agentLimitsConfig(rigLimits);
   const attachmentConfinement = new AttachmentConfinementHealth();
   attachmentConfinement.markHealthy(greenAttachmentCanaryReceipt());
   const deps: TickDeps = {
@@ -511,6 +523,9 @@ export function makeRig(overrides: Partial<TickDeps> = {}): TestRig {
     setTimer: timer.setTimer,
     clearTimer: timer.clearTimer,
     runMc: async (argv, stdin, options) => {
+      // Container starts read the agent container limits. Tests that script
+      // mc calls in order do not script this read.
+      if (argv[0] === "config" && argv[1] === "show" && argv.length === 2) return configShow();
       const result = await mc.exec(argv, stdin, options);
       if (result.exitCode === 0 && argv[0] === "run" && argv[1] === "launch-check") {
         return { ...result, stdout: JSON.stringify({ ...JSON.parse(result.stdout || "{}"), expires_at: new Date(Date.now() + 3_600_000).toISOString() }) };
@@ -556,7 +571,7 @@ export function makeRig(overrides: Partial<TickDeps> = {}): TestRig {
     config: testConfig,
     ...overrides,
   };
-  return { deps, timer, mc, docker, fakeFs, logs, logRecords, sleeps };
+  return { deps, timer, mc, docker, fakeFs, logs, logRecords, sleeps, limits: rigLimits };
 }
 
 /** A promise plus its resolver, for holding a tick open mid-test. */

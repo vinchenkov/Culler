@@ -924,9 +924,11 @@ describe("spawn effect", () => {
       const create = rig.docker.calls[0]!;
       expect(create).not.toContain("--network");
       expect(create).not.toContain("--security-opt");
-      for (const [flag, value] of [["--memory", "4g"], ["--cpus", "2"], ["--pids-limit", "512"], ["--workdir", "/workspace/source"]]) {
+      for (const [flag, value] of [["--pids-limit", "2048"], ["--workdir", "/workspace/source"]]) {
         expect(create[create.indexOf(flag!) + 1]).toBe(value!);
       }
+      expect(create).not.toContain("--cpus");
+      expect(create).not.toContain("--memory");
       expect(create.join(" ")).not.toContain("CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST");
       expect(create.join(" ")).not.toContain("host-minted-access");
       expect(create).toContain("MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json");
@@ -954,9 +956,11 @@ describe("spawn effect", () => {
       expect(create.join(" ")).not.toContain("REFRESH_TOKEN");
       expect(create).not.toContain("--network");
       expect(create).not.toContain("--security-opt");
-      for (const [flag, value] of [["--memory", "4g"], ["--cpus", "2"], ["--pids-limit", "512"], ["--workdir", "/workspace/source"]]) {
+      for (const [flag, value] of [["--pids-limit", "2048"], ["--workdir", "/workspace/source"]]) {
         expect(create[create.indexOf(flag!) + 1]).toBe(value!);
       }
+      expect(create).not.toContain("--cpus");
+      expect(create).not.toContain("--memory");
     });
 
     test("a refused projection spawns nothing and writes nothing", async () => {
@@ -991,6 +995,31 @@ describe("spawn effect", () => {
     });
   });
 
+  test("configured agent limits reach the pipeline container", async () => {
+    const rig = repositoryRig();
+    rig.limits.cpus = 6;
+    rig.limits.memory_mb = 8192;
+    rig.docker.enqueue(ok("container-id\n"), ok(""));
+    await applyEffect(spawnEffect, rig.deps);
+    const create = rig.docker.calls[0]!;
+    const flag = (name: string) => create[create.indexOf(name) + 1];
+    expect(flag("--cpus")).toBe("6");
+    expect(flag("--memory")).toBe("8192m");
+    expect(flag("--memory-swap")).toBe("8192m");
+    expect(flag("--pids-limit")).toBe("2048");
+  });
+
+  test("an unavailable limit read refuses the pipeline container", async () => {
+    const rig = repositoryRig();
+    const scripted = rig.deps.runMc;
+    rig.deps.runMc = async (argv, stdin, options) => argv[0] === "config" && argv[1] === "show"
+      ? { exitCode: 2, stdout: "", stderr: "config.toml is unreadable" }
+      : scripted(argv, stdin, options);
+    await applyEffect(spawnEffect, rig.deps);
+    expect(rig.docker.calls.some((call) => call[0] === "create")).toBe(false);
+    expect(rig.logRecords.some((record) => record.event === "spawn.limits_failed")).toBe(true);
+  });
+
   test("docker create+start argv: --rm, --network none, exact name, labels, hardening, plan binds, the repository, MC_SPINE", async () => {
     const rig = repositoryRig();
     rig.docker.enqueue(ok("container-id\n"), ok(""));
@@ -999,7 +1028,7 @@ describe("spawn effect", () => {
       [
         "create", "--rm", "--init",
         "--user", "10002:10002", "--cap-drop", "ALL",
-        "--pids-limit", "512", "--memory", "4g", "--cpus", "2",
+        "--pids-limit", "2048",
         "--workdir", "/workspace/source",
         "--network", "none",
         "--name", "mc-ws-e2e-run-42-worker",
@@ -2032,12 +2061,12 @@ describe("collie tier (lease-free)", () => {
     expect(create).toContain("mc-tier=collie");
     expect(create).toContain(`mc-launch-id=${wake.launch}`);
     expect(create).toContain("--rm");
-    // A memory cap with no swap headroom and a pids cap; no CPU cap.
+    // The default agent limits leave CPU and memory open.
     const flag = (name: string) => create[create.indexOf(name) + 1];
-    expect(flag("--memory")).toBe("1024m");
-    expect(flag("--memory-swap")).toBe("1024m");
-    expect(flag("--pids-limit")).toBe("128");
+    expect(flag("--pids-limit")).toBe("2048");
     expect(create).not.toContain("--cpus");
+    expect(create).not.toContain("--memory");
+    expect(create).not.toContain("--memory-swap");
     // No Collie runs as root: uid 10002 without capabilities reaches the spine
     // only through the setuid mc.
     expect(flag("--user")).toBe("10002:10002");
@@ -2104,8 +2133,30 @@ describe("collie tier (lease-free)", () => {
     expect("idle_timeout_s" in parsed).toBe(false);
   });
 
+  test("wake: configured agent limits reach the Collie container", async () => {
+    const rig = makeRig();
+    rig.limits.cpus = 3;
+    rig.limits.memory_mb = 1536;
+    rig.docker.enqueue(ok(""), ok(cid + "\n"));
+    rig.docker.enqueue((_argv: string[], calls: string[][]) => {
+      const create = calls.find((call) => call[0] === "create")!;
+      return ok(JSON.stringify([collieInspectFromCreate(
+        create, cid, rig.deps.config.image, rig.deps.config.collieCmd ?? rig.deps.config.agentCmd,
+      )]));
+    });
+    await applyEffect(wake, rig.deps);
+    const create = rig.docker.calls.find((call) => call[0] === "create")!;
+    const flag = (name: string) => create[create.indexOf(name) + 1];
+    expect(flag("--cpus")).toBe("3");
+    expect(flag("--memory")).toBe("1536m");
+    expect(flag("--memory-swap")).toBe("1536m");
+    expect(flag("--pids-limit")).toBe("2048");
+    expect(rig.docker.calls.some((call) => call[0] === "start")).toBe(true);
+  });
+
   test("wake: a container whose memory cap drifted from the plan is refused", async () => {
     const rig = makeRig();
+    rig.limits.memory_mb = 1024;
     rig.docker.enqueue(ok(""), ok(cid + "\n"));
     rig.docker.enqueue((_argv: string[], calls: string[][]) => {
       const create = calls.find((call) => call[0] === "create")!;
