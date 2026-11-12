@@ -759,7 +759,7 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.route(saveRoute, async route => {
     const body = route.request().postDataJSON();
     expect(body.template_id).toBe("claude");
-    expect(body.name).toBe("Smoke provider subscription");
+    expect(body.name).toBe("Smoke provider connection");
     for (const field of ["kind", "token", "base_url"]) expect(body).not.toHaveProperty(field);
     catalog.connections = [{ id: "smoke-account", name: body.name, kind: "claude-oauth", access_status: "connected", models: [] }];
     await route.fulfill({ json: { ...catalog, connection_id: "smoke-account" } });
@@ -784,7 +784,7 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.getByTestId("profile-model").fill("manual/model:v1");
   await page.getByTestId("profile-name").fill("Smoke draft");
   await page.getByTestId("profile-configure-next").click();
-  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke provider subscription");
+  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke provider connection");
   expect(await page.getByTestId("profile-save").isDisabled()).toBe(true);
   expect(await page.getByTestId("profile-test").evaluate((node) => node.classList.contains("profile-primary"))).toBe(true);
   let tests = 0;
@@ -823,7 +823,7 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.getByTestId("profile-model").waitFor();
   expect(await page.locator('.profile-steps [aria-current="step"]').textContent()).toContain("Configure");
   await page.getByTestId("profile-back").click();
-  expect(await page.getByTestId("profile-connection-saved").textContent()).toContain("Smoke provider subscription");
+  expect(await page.getByTestId("profile-connection-saved").textContent()).toContain("Smoke provider connection");
   await page.getByTestId("profile-back").click();
   await page.getByTestId("profile-use-claude-sdk").waitFor();
   await page.getByTestId("profile-back").click();
@@ -836,9 +836,9 @@ test("agent profiles walk back through each step, preserve form values after a f
   await page.getByTestId("configs-profiles").click();
   await page.getByTestId("profile-create").click();
   await page.getByTestId("profile-use-existing").click();
-  const saved = await page.getByTestId("profile-connection_id").locator("option", { hasText: "Smoke provider subscription" }).getAttribute("value");
+  const saved = await page.getByTestId("profile-connection_id").locator("option", { hasText: "Smoke provider connection" }).getAttribute("value");
   await page.getByTestId("profile-connection_id").selectOption(saved!);
-  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke provider subscription");
+  expect(await page.getByTestId("profile-review").textContent()).toContain("Smoke provider connection");
   expect(await page.getByTestId("profile-save").isDisabled()).toBe(true);
   expect(await page.getByTestId("agent-profiles-panel").textContent()).not.toContain("null");
   expect(await page.locator("#agent-profiles-title").evaluate((node) => node.getBoundingClientRect().top)).toBeGreaterThanOrEqual(0);
@@ -982,7 +982,7 @@ for (const kind of ["codex-oauth", "claude-oauth"]) test(`${kind} authorization 
       await route.fulfill({ json: { connection_id: "team-account", models: [{ id: "model-a", name: "Model A" }, { id: "model-b", name: "Model B" }] } });
     } else if (path.endsWith("connection-save")) {
       const body = route.request().postDataJSON();
-      expect(body.name).toBe("Team subscription");
+      expect(body.name).toBe("Team connection");
       catalog.connections = [{ ...integration, id: "team-account", name: body.name, access_status: "disconnected" }];
       await route.fulfill({ json: { ...catalog, connection_id: "team-account" } });
     } else if (path.endsWith("operation-start") || path.endsWith("operation-status")) {
@@ -1008,10 +1008,10 @@ for (const kind of ["codex-oauth", "claude-oauth"]) test(`${kind} authorization 
     expect(await page.getByTestId("profile-operation-status").count()).toBe(0);
     authorized = true;
     await page.getByTestId("profile-model").waitFor();
-    expect(await page.getByTestId("profile-name").inputValue()).toBe("Team subscription");
+    expect(await page.getByTestId("profile-name").inputValue()).toBe("Team profile");
     expect(await page.getByTestId("profile-notice").textContent()).toBe("The connection is saved. Other agent profiles can also use this connection.");
     await page.getByTestId("profile-back").click();
-    expect(await page.getByTestId("profile-connection-saved").textContent()).toContain("Team subscription");
+    expect(await page.getByTestId("profile-connection-saved").textContent()).toContain("Team connection");
     await page.getByTestId("profile-back").click();
     await page.getByTestId("profile-back").click();
     await page.getByTestId("profile-create").click();

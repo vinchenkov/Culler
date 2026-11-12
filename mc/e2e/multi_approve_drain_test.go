@@ -20,18 +20,18 @@ import (
 // destination. The task waits for the quiet interval, observes the
 // destination, and prepares a new candidate against the moved destination.
 // That candidate merges with no merge repair and no new decision. After the
-// drain, one wiki update covers both tasks: main gets one wiki commit, and a
-// navigation page names each project document.
+// drain, one wiki update covers both tasks: main gets one wiki commit, and
+// each project document stays unchanged outside the wiki.
 func TestMultiApproveDrainDockerBoundary(t *testing.T) {
 	f := setup(t, withDueWikiUpdate())
 
 	// A short quiet interval keeps the drain within the lane budget.
 	f.mcOK("", "delivery", "limits", "--project", project, "--quiet-seconds", "2")
 
-	// Each Worker commit holds one project document below openwiki/.
+	// Each Worker commit holds one project document below docs/.
 	writeBehaviorFile(t, f, "worker.json", behaviorSteps(
 		execStep(`set -e
-reports=/workspace/source/openwiki/reports
+reports=/workspace/source/docs/reports
 mkdir -p "$reports"
 printf '%s\n' '---' "title: Report of task $MC_SUBJECT_ID" 'type: Research' 'document: true' '---' '' "# Report of task $MC_SUBJECT_ID" '' 'The task adds one file.' > "$reports/task-$MC_SUBJECT_ID.md"
 bun /mc/behaviors/worker.ts`),
@@ -179,15 +179,11 @@ bun /mc/behaviors/worker.ts`),
 			t.Fatalf("the wiki commit changes %s, a path outside openwiki/", name)
 		}
 	}
-	// The navigation page names each project document, and each body stays.
-	navigation := f.git("show", "main:openwiki/reports/index.md")
+	// Each project document stays unchanged on main.
 	for _, id := range ids {
 		title := fmt.Sprintf("Report of task %d", id)
-		if !strings.Contains(navigation, title) {
-			t.Fatalf("the navigation page does not name %q:\n%s", title, navigation)
-		}
 		want := "---\ntitle: " + title + "\ntype: Research\ndocument: true\n---\n\n# " + title + "\n\nThe task adds one file."
-		if got := f.git("show", fmt.Sprintf("main:openwiki/reports/task-%d.md", id)); got != want {
+		if got := f.git("show", fmt.Sprintf("main:docs/reports/task-%d.md", id)); got != want {
 			t.Fatalf("the project document of task %d changed:\n%s", id, got)
 		}
 	}
