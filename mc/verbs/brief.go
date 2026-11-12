@@ -321,7 +321,7 @@ func trimPackagerBrief(b *runBrief) {
 		case partTask:
 			part.Explanation = "The description states the acceptance criteria. Use the Identifier as `<task>` in the command forms."
 		case partStrategicRationale:
-			part.Explanation = "For this rationale, read `~/.agents/skills/packager-rationale/SKILL.md` for the required first packet section."
+			part.Explanation = "Apply the directive's Strategic rationale requirements to this rationale."
 		case partLatestVerdict:
 			part.Explanation = "This is the Verifier's verdict and evidence for the current requirements. Apply the directive's Verification summary requirements to that evidence."
 		case partLastReport:

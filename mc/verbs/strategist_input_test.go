@@ -64,7 +64,7 @@ func TestStrategistInputDeliversRulesOnceAndResolvesProcedures(t *testing.T) {
 	// Shared skills keep their own contract and stay outside this duplicate audit.
 	input := strings.Join(strings.Fields(text+"\n"+skill), " ")
 	for _, rule := range []string{
-		"The arbiter selects amongst your proposals to advance only one.",
+		"The Arbiter selects one of your proposals to advance.",
 		"End the run with exactly one permitted terminal action, including after an execution failure.",
 		"Apply the task-description skill to the description of each proposal.",
 		"Exclude equivalent work in the repository, **Active tasks**, **Rejected work**, and **Cancelled work**",
@@ -111,9 +111,9 @@ func TestStrategistBriefDeliversTaskSelectionGuidance(t *testing.T) {
 		"Record the evidence for the problem and the proposed benefit.",
 		"Investigate the assumption that can make your proposed task unnecessary or ineffective.",
 		"Write the Strategic rationale of each candidate to its own file under `/tmp` before you file the batch.",
-		"Cite the evidence for the problem or the opportunity: what fails or is absent now.",
-		"Explain why the task deserves priority now.",
-		"Separate what you observed from what you assume.",
+		"State the hypothesis in one sentence: how the proposed change can advance the Vision.",
+		"Cite the evidence that supports the hypothesis, if any.",
+		"Identify an expected benefit without evidence as an assumption.",
 		"When the written rationale does not justify the task, discard that candidate and research again.",
 		"The rationale adds no requirement to the task.",
 		"Leave their final rank to the Arbiter.",

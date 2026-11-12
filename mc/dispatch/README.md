@@ -596,7 +596,7 @@ The next proposal run receives the recorded operator answer.
 
 Each Strategist proposal holds a Strategic rationale, a task field separate from the description.
 `mc strategist propose` refuses a proposal without a nonempty rationale.
-The rationale states the evidence for the task, its value for the Project vision, and its priority.
+The rationale states a hypothesis of how the task advances the Project vision, with any evidence.
 The description remains the complete source of scope and success criteria.
 The rationale stays unchanged after creation, and a task that the operator defined holds none.
 

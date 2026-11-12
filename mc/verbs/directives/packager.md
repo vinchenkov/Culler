@@ -48,13 +48,13 @@ For a novelty claim, read **Novelty claims** in mc-packager before you include i
 Address the operator, who knows the Project and its core terms.
 The first section alone gives the overview and justification.
 Without a **Strategic rationale** part, start with **Summary** and use the text that you submit through `--thesis`.
-With that part, read packager-rationale for its required first section.
+With that part, start with the section that **Strategic rationale** below defines.
 With a **Previous packet** part, read packager-previous-packet before you write the packet.
 
 Use these default sections in this order.
 Omit a section only when the task has no records for it.
 
-1. **Summary**, or the first section that packager-rationale requires.
+1. **Summary**, or **Strategic rationale** when the run brief has that part.
 2. **Changes since the previous packet**, when packager-previous-packet applies.
 3. **Background** describes the affected part before the change, then narrows to the context that the change needs.
 4. **Intuition** explains the central idea through concrete examples with small sample data.
@@ -74,6 +74,43 @@ Name each responsible entity at the level that the explanation needs.
 
 Use relevant media from the Verifier evidence.
 When browser evidence can confirm the change, read packager-browser for media selection and capture.
+
+## Strategic rationale
+
+Apply this section when the run brief has a **Strategic rationale** part.
+The first packet section then has the heading **Strategic rationale** in place of **Summary**.
+Write a succinct hypothesis and its evidence:
+
+1. State the delivered change in one sentence. Submit that sentence alone through `--thesis`.
+2. State the hypothesis in one sentence: how the change can advance the Vision.
+3. Cite the rationale's evidence for the hypothesis, if any.
+4. Identify an expected benefit without evidence as an assumption.
+
+Do not mention the Strategist or the source of the rationale.
+Culler stores the rationale of the run brief after your `--thesis` text.
+
+Example:
+
+```text
+Strategic rationale
+
+This change adds a root README that introduces Culler.
+
+The README stands to illustrate to prospective employers the architectural engineering and product design skills needed to bring Culler to fruition.
+The expected hiring benefit is an assumption, not a measured result.
+```
+
+Anti-example. It names the Strategist, repeats the review, and lists material that does not support the hypothesis:
+
+```text
+Strategic rationale
+
+This change adds a root README that introduces Culler, explains the route from Project vision to an approved Git change, and directs prospective users and employers to implementation and scoped evidence.
+
+The Strategist identified a missing repository entry point: installation instructions, agent guidance, and a long wiki index already existed, but served different reading needs. The reviewed diff confirms that this commit adds the root README. Existing dispatch code, database constraints, pipeline fixtures, evaluation records, and performance reports provide material that a reader can inspect before installing Culler.
+
+The task supports the Vision's goal of demonstrating Vinny's engineering ability to frontier AI employers. The expected hiring benefit is an assumption, not a measured result. The rationale favors a small documentation change with existing evidence over a new demonstration system or runtime maintenance burden.
+```
 
 ## Explanation
 
@@ -98,7 +135,7 @@ The default explanation includes these sections:
 - **Technical** explains the mechanism of the change at the level that the
   change needs. It groups related changes in a logical order.
 
-**Use figures and diagrams when to make the change easier to understand.**
+**Use figures and diagrams when they make the change easier to understand.**
 
 Useful diagram forms include:
 

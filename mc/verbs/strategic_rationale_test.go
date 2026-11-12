@@ -142,7 +142,8 @@ func TestStrategicRationaleReachesTheArbiterAndThePackagerOnly(t *testing.T) {
 			t.Fatalf("The pool explanation does not name the rationale: %s", brief.part(partPool).Explanation)
 		}
 		for _, rule := range []string{
-			"Use the rationale when you assess those three properties.",
+			"Each proposal holds a `strategic_rationale`: the Strategist's hypothesis of how the task advances the Vision, with any evidence.",
+			"Use the rationale when you assess the value of the proposal.",
 			"Treat its statements as claims: check the cited evidence in the repository copy, and give an assumption less weight than an observation.",
 			"The rationale adds no requirement; the description holds the scope and the acceptance criteria.",
 		} {
@@ -337,12 +338,12 @@ func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 			"Each proposal also holds a Strategic rationale, separate from its description.",
 			"The Worker and the Verifier receive the description without the rationale.",
 			"Write the Strategic rationale of each candidate to its own file under `/tmp` before you file the batch.",
-			"- State the proposed change in one or two sentences.",
-			"- Cite the evidence for the problem or the opportunity: what fails or is absent now.",
-			"- Explain how the task advances the Vision.",
-			"- Explain why the expected benefit justifies the effort.",
-			"- Explain why the task deserves priority now.",
-			"- Separate what you observed from what you assume.",
+			"The rationale is a succinct hypothesis and its evidence:",
+			"- State the hypothesis in one sentence: how the proposed change can advance the Vision.",
+			"- Cite the evidence that supports the hypothesis, if any.",
+			"- Identify an expected benefit without evidence as an assumption.",
+			"Write nothing else. The description states the change and its scope.",
+			"Anti-example.",
 			"When the written rationale does not justify the task, discard that candidate and research again.",
 			"In each `strategic_rationale` field, supply the text of the candidate's rationale file without changes.",
 		}},
@@ -353,16 +354,18 @@ func TestRoleInputsDescribeTheStrategicRationale(t *testing.T) {
 		{"Packager directive", directive(dispatch.RolePackager), []string{
 			"The first section alone gives the overview and justification.",
 			"Without a **Strategic rationale** part, start with **Summary** and use the text that you submit through `--thesis`.",
-			"With that part, read packager-rationale for its required first section.",
+			"With that part, start with the section that **Strategic rationale** below defines.",
+			"The first packet section then has the heading **Strategic rationale** in place of **Summary**.",
+			"1. State the delivered change in one sentence. Submit that sentence alone through `--thesis`.",
+			"2. State the hypothesis in one sentence: how the change can advance the Vision.",
+			"3. Cite the rationale's evidence for the hypothesis, if any.",
+			"4. Identify an expected benefit without evidence as an assumption.",
+			"Do not mention the Strategist or the source of the rationale.",
+			"Culler stores the rationale of the run brief after your `--thesis` text.",
+			"Anti-example.",
 		}},
-		{"Packager rationale skill", roleSkillBody(t, dispatch.RolePackager, "packager-rationale"), []string{
-			"The **Strategic rationale** stands in place for the Summary in the packet, when the strategic rationale field exists as part of the task object.",
-			"The strategic rationale contains the Strategist's reason for the task.",
-			"start the section with a statement of the overall delivered change in one or two sentences.",
-			"Use that statement alone for `--thesis`, the overview argument in mc-packager's **Packet result** procedure.",
-			"present a **distilled* version of the Strategist's rationale.",
-			"include key figures and evidence provided by the Strategist if they exist.",
-			"Culler stores the rationale after your overview text.",
+		{"Packager skill", roleSkillBody(t, dispatch.RolePackager, "mc-packager"), []string{
+			"With **Strategic rationale**, apply the directive's **Strategic rationale** requirements to that text.",
 		}},
 	} {
 		for _, want := range test.want {

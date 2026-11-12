@@ -93,7 +93,7 @@ func TestPackagerSkillPointersResolveToDeliveredFiles(t *testing.T) {
 		}
 	}
 	for _, name := range []string{
-		"mc-packager", "packager-browser", "packager-previous-packet", "packager-rationale",
+		"mc-packager", "packager-browser", "packager-previous-packet",
 		"project-environment-setup", "project-wiki", "task-description", "writing",
 	} {
 		if !delivered[name] || !strings.Contains(directive, installedSkillRoot+name+"/SKILL.md") {
