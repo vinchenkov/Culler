@@ -28,11 +28,11 @@ if [ -z "$HOME" ]; then echo "NO CONTAINER HOME: the skill root cannot be derive
 if [ ! -d "$root" ]; then echo "NO SKILL ROOT: $root is not a directory" >&2; exit 1; fi
 if [ ! -f "$root/mc-worker/SKILL.md" ]; then echo "OWN ROLE SKILL MISSING: $root/mc-worker/SKILL.md" >&2; exit 1; fi
 if ! grep -q '^name: mc-worker$' "$root/mc-worker/SKILL.md"; then echo "FRONTMATTER NAME IS NOT mc-worker" >&2; exit 1; fi
-for skill in writing project-wiki project-environment-setup; do
+for skill in writing project-wiki project-environment-setup task-description; do
   if [ ! -f "$root/$skill/SKILL.md" ]; then echo "SHARED SKILL MISSING: $skill" >&2; exit 1; fi
   if ! grep -q "^name: $skill$" "$root/$skill/SKILL.md"; then echo "SHARED SKILL NAME WRONG: $skill" >&2; exit 1; fi
 done
-foreign=$(ls -A "$root" | grep -Ev '^(mc-worker|writing|project-wiki|project-environment-setup)$' || true)
+foreign=$(ls -A "$root" | grep -Ev '^(mc-worker|writing|project-wiki|project-environment-setup|task-description)$' || true)
 if [ -n "$foreign" ]; then echo "FOREIGN ROLE SKILL PRESENT: $foreign" >&2; exit 1; fi
 bun /mc/behaviors/worker.ts`),
 		succeedStep("worked"),
@@ -112,15 +112,15 @@ func TestScribeSkillIsolationDockerBoundary(t *testing.T) {
 root="$HOME/.agents/skills"
 if [ -z "$HOME" ]; then echo "NO CONTAINER HOME: the skill root cannot be derived" >&2; exit 1; fi
 if [ ! -d "$root" ]; then echo "NO SKILL ROOT: $root is not a directory" >&2; exit 1; fi
-for skill in mc-scribe openwiki; do
+for skill in mc-scribe openwiki openwiki-documents openwiki-recovery; do
   if [ ! -f "$root/$skill/SKILL.md" ]; then echo "OWN ROLE SKILL MISSING: $skill" >&2; exit 1; fi
   if ! grep -q "^name: $skill$" "$root/$skill/SKILL.md"; then echo "OWN ROLE SKILL NAME WRONG: $skill" >&2; exit 1; fi
 done
-for skill in writing project-wiki project-environment-setup; do
+for skill in writing project-wiki project-environment-setup task-description; do
   if [ ! -f "$root/$skill/SKILL.md" ]; then echo "SHARED SKILL MISSING: $skill" >&2; exit 1; fi
   if ! grep -q "^name: $skill$" "$root/$skill/SKILL.md"; then echo "SHARED SKILL NAME WRONG: $skill" >&2; exit 1; fi
 done
-foreign=$(ls -A "$root" | grep -Ev '^(mc-scribe|openwiki|writing|project-wiki|project-environment-setup)$' || true)
+foreign=$(ls -A "$root" | grep -Ev '^(mc-scribe|openwiki|openwiki-documents|openwiki-recovery|writing|project-wiki|project-environment-setup|task-description)$' || true)
 if [ -n "$foreign" ]; then echo "FOREIGN ROLE SKILL PRESENT: $foreign" >&2; exit 1; fi
 bun /mc/behaviors/scribe.ts`),
 		succeedStep("updated"),
@@ -165,13 +165,13 @@ func TestCollieSkillIsolationDockerBoundary(t *testing.T) {
 root="$HOME/.agents/skills"
 test -n "$HOME" || { echo "NO CONTAINER HOME"; exit 1; }
 test -d "$root" || { echo "NO SKILL ROOT: $root"; exit 1; }
-test -f "$root/mc-collie/SKILL.md" || { echo "OWN SKILL MISSING"; exit 1; }
-grep -q '^name: mc-collie$' "$root/mc-collie/SKILL.md" || { echo "FRONTMATTER NAME WRONG"; exit 1; }
-for skill in writing project-wiki project-environment-setup; do
+test -f "$root/culler/SKILL.md" || { echo "OWN SKILL MISSING"; exit 1; }
+grep -q '^name: culler$' "$root/culler/SKILL.md" || { echo "FRONTMATTER NAME WRONG"; exit 1; }
+for skill in writing project-wiki project-environment-setup task-description; do
   test -f "$root/$skill/SKILL.md" || { echo "SHARED SKILL MISSING: $skill"; exit 1; }
   grep -q "^name: $skill$" "$root/$skill/SKILL.md" || { echo "SHARED SKILL NAME WRONG: $skill"; exit 1; }
 done
-foreign=$(ls -A "$root" | grep -Ev '^(mc-collie|writing|project-wiki|project-environment-setup)$' || true)
+foreign=$(ls -A "$root" | grep -Ev '^(culler|writing|project-wiki|project-environment-setup|task-description)$' || true)
 test -z "$foreign" || { echo "FOREIGN SKILL PRESENT: $foreign"; exit 1; }
 echo OK`,
 		).CombinedOutput()

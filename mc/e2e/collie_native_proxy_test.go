@@ -163,7 +163,7 @@ func startNativeProxyResident(t *testing.T, f *fixture, control string) {
 	f.resLog = file
 	repo := mustAbs(t, "../..")
 	cmd := exec.Command("mise", "exec", "--", "bun", "--preload", filepath.Join(repo, "tests/provider-proxy/collie-resident-preload.ts"),
-		"src/main.ts", "--config", filepath.Join(f.base, "resident.json"))
+		"src/main.ts", "--config", f.residentConfig())
 	cmd.Dir = filepath.Join(repo, "resident")
 	cmd.Env = append(append([]string{}, f.env...), "CULLER_COLLIE_PROXY_FIXTURE="+control)
 	cmd.Stdout, cmd.Stderr = file, file

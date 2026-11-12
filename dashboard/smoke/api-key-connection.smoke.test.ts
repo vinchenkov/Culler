@@ -29,7 +29,7 @@ test("one masked key creates a connection and survives a failed model test witho
     const request = route.request().postDataJSON();
     expect(request.api_key).toBe(secret);
     expect(request.template_id).toBe("claude-api-key");
-    expect(request.name).toBe("Second provider API key");
+    expect(request.name).toBe("Second provider connection");
     keySaves++;
     data.connections = [{ id: "key-connection", name: request.name, kind: "claude-api-key", access_status: "connected", authorization_id: "authorization-1", models: [] }];
     await route.fulfill({ json: { ...data, connection_id: "key-connection" } });
@@ -98,7 +98,7 @@ test("OpenCode search, catalog models, download retry, and model test retain the
   await page.route("**/api/agent-profiles/connection-save", async route => {
     const request = route.request().postDataJSON();
     expect(request.template_id).toBe("opencode:fixture");
-    expect(request.name).toBe("Fixture provider API key");
+    expect(request.name).toBe("Fixture provider connection");
     data.connections = [{ ...providers[1], id: "fixture-connection", access_status: "connected", authorization_id: "fixture-authorization", models: [] }];
     await route.fulfill({ json: { ...data, connection_id: "fixture-connection" } });
   });
@@ -180,7 +180,7 @@ test("Continue opens the Configure step with the pending download before the con
   await page.route("**/api/agent-profiles", route => route.fulfill({ json: data }));
   await page.route("**/api/agent-profiles/connection-save", route => { saves.push(async reject => {
     if (reject) return route.fulfill({ status: 400, json: { error: { code: "domain-rejection", message: "The fixture provider rejected the key." } } });
-    data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider API key", access_status: "connected", authorization_id: "fixture-authorization" }];
+    data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider connection", access_status: "connected", authorization_id: "fixture-authorization" }];
     await route.fulfill({ json: { ...data, opencode: download, connection_id: "fixture-connection" } });
   }); });
   await page.route("**/api/agent-profiles/models", route => route.fulfill({ json: { connection_id: "fixture-connection", web_search: true, source: "release_catalog", models: [
@@ -240,7 +240,7 @@ test("the OpenCode download status and a refresh of the live models keep the Mod
   const data: any = { revision: "download-revision", providers: [provider], integrations: [], connections: [], profiles: [] };
   await page.route("**/api/agent-profiles", route => route.fulfill({ json: { ...data, opencode: host.download } }));
   await page.route("**/api/agent-profiles/connection-save", async route => {
-    data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider API key", access_status: "connected", authorization_id: "fixture-authorization" }];
+    data.connections = [{ ...provider, id: "fixture-connection", name: "Fixture provider connection", access_status: "connected", authorization_id: "fixture-authorization" }];
     await route.fulfill({ json: { ...data, opencode: host.download, connection_id: "fixture-connection" } });
   });
   await page.route("**/api/agent-profiles/models", async route => { host.modelRequests++; await route.fulfill({ json: host.models }); });

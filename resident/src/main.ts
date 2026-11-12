@@ -819,9 +819,6 @@ async function main(): Promise<void> {
     await Promise.all([providerAcceptance.stop(), credentialHandle.drain()]);
     process.exit(2);
   }
-  deps.log.info("boot.started",
-    `started: tick every ${intervalMs} ms, nudges on ${nudgeSocket.path}, mc=${config.mcPath}`,
-    { interval_ms: intervalMs });
   const discord = await startDiscordConfiguration(config.mcHome, runMc, log, () => handle.nudge());
 
   let shuttingDown = false;
@@ -853,6 +850,9 @@ async function main(): Promise<void> {
   wikiLane.start();
   environmentLane.start();
   await operatorLane.start();
+  deps.log.info("boot.started",
+    `started: tick every ${intervalMs} ms, nudges on ${nudgeSocket.path}, mc=${config.mcPath}`,
+    { interval_ms: intervalMs });
   // The first round runs at start. The release activation waits for its receipt.
   handle.nudge();
 }

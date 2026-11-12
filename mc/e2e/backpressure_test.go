@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -121,7 +120,7 @@ func addResidentRoleBehavior(t *testing.T, f *fixture, role, behaviorPath string
 // Must run after setup() (which writes the config) and before startResident().
 func patchResidentConfig(t *testing.T, f *fixture, mutate func(map[string]any)) {
 	t.Helper()
-	path := filepath.Join(f.base, "resident.json")
+	path := f.residentConfig()
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)

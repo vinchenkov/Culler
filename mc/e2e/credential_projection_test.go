@@ -139,7 +139,7 @@ console.log("CULLER_CONTAINER_PROVIDER_BOUNDARY_OK");
 
 func mutateResidentConfig(t *testing.T, f *fixture, mutate func(map[string]any)) {
 	t.Helper()
-	cfgBytes, err := os.ReadFile(filepath.Join(f.base, "resident.json"))
+	cfgBytes, err := os.ReadFile(f.residentConfig())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -152,7 +152,7 @@ func mutateResidentConfig(t *testing.T, f *fixture, mutate func(map[string]any))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(f.base, "resident.json"), out, 0o644); err != nil {
+	if err := os.WriteFile(f.residentConfig(), out, 0o644); err != nil {
 		t.Fatal(err)
 	}
 }

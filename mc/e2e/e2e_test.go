@@ -898,10 +898,10 @@ if (begin.status !== "noop") {
     const pending = await call("openwiki_next_page", { runId: begin.runId });
     if (pending.status === "complete") break;
     if (pending.job.path !== "/openwiki/quickstart.md") throw new Error("The fixture received an unexpected wiki page.");
-    const current = await call("openwiki_inspect_page_claims", { runId: begin.runId, jobId: pending.job.id });
     const line = (await readFile(root + "/README.md", "utf8")).split("\\n")[0].trim();
     const statement = "The project is the " + line + ".";
     await writeFile(root + "/openwiki/quickstart.md", "---\\ntitle: Project overview\\ntype: Guide\\n---\\n\\n# Project overview\\n\\n" + statement + "\\n");
+    const current = await call("openwiki_inspect_page_claims", { runId: begin.runId, jobId: pending.job.id });
     await call("openwiki_submit_page", { runId: begin.runId, jobId: pending.job.id,
       retractedClaimIds: current.claims.map((claim) => claim.id),
       claims: [{ statement, evidence: [{ resource: "repo://README.md#L1" }] }],
@@ -1037,9 +1037,19 @@ func (f *fixture) writeResidentConfig(repoRoot string) {
 	if err != nil {
 		f.t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(f.base, "resident.json"), b, 0o644); err != nil {
+	if err := os.MkdirAll(filepath.Dir(f.residentConfig()), 0o755); err != nil {
 		f.t.Fatal(err)
 	}
+	if err := os.WriteFile(f.residentConfig(), b, 0o644); err != nil {
+		f.t.Fatal(err)
+	}
+}
+
+// residentConfig is the production path of the resident configuration. The
+// host mc reads the release and MC_HOME of the running services from it
+// before each operator change.
+func (f *fixture) residentConfig() string {
+	return filepath.Join(f.home, "supervision", "resident.json")
 }
 
 // startResident launches the real resident on the real timer; the test only
@@ -1053,7 +1063,7 @@ func (f *fixture) startResident() {
 	}
 	f.resLog = logFile
 
-	cmd := exec.Command("mise", "exec", "--", "bun", "src/main.ts", "--config", filepath.Join(f.base, "resident.json"))
+	cmd := exec.Command("mise", "exec", "--", "bun", "src/main.ts", "--config", f.residentConfig())
 	cmd.Dir = filepath.Join(mustAbs(f.t, "../.."), "resident")
 	cmd.Env = f.env
 	cmd.Stdout = logFile
