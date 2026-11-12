@@ -40,8 +40,8 @@ sources:
     resource: repo://runner/image/runtime.Dockerfile
 generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T09:22:03.309Z
 ---
 
 # Image delivery and update cleanup

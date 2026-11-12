@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d9551c305b134f2f5127dd5f62cf445e59de47ab12788af83d5a21cf89afe7a9",
+  "pageVersion": "sha256:fdc13a976ea90ec1efffb4a26178a74c82c7664431fc1d653041d49c1050f2ed",
   "claims": [
     {
       "id": "claim_0e880ef8eb5e4b06b827221b7df78b3a",
@@ -58,7 +58,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/brief.go",
-          "version": "repo-file-v1:sha256:15e2256d780c1d6c08dd6395073a1b5927216eb77c7623f84777cd6e81cdbd4c"
+          "version": "repo-file-v1:sha256:1e122db1c47cceda8bb1f8ab442a85a3af8c818af7eaf2c40b23129ade75ff29"
         }
       ]
     },
@@ -342,15 +342,15 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/brief.go",
-          "version": "repo-file-v1:sha256:15e2256d780c1d6c08dd6395073a1b5927216eb77c7623f84777cd6e81cdbd4c"
+          "version": "repo-file-v1:sha256:1e122db1c47cceda8bb1f8ab442a85a3af8c818af7eaf2c40b23129ade75ff29"
         },
         {
           "resource": "repo://mc/verbs/directives/packager.md",
-          "version": "repo-file-v1:sha256:5110fb7319168eb7839b929cd36be44d19e9e459075f05f796f996ba10d527a1"
+          "version": "repo-file-v1:sha256:14049b4ccf533f383d9a657d1a2a6f2a0660ee1baf8c02b5183f8b26790bcbc2"
         },
         {
           "resource": "repo://mc/verbs/skills/packager/mc-packager/SKILL.md",
-          "version": "repo-file-v1:sha256:fa71e926e32d78323a6d3eb3f47f1b6095188da2f14ca2ab2b60eb0b05523bda"
+          "version": "repo-file-v1:sha256:afe1d75a7530289230082e70497eda4502a8d5c9b066258c190a3f9565d984b5"
         }
       ]
     },
@@ -404,7 +404,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/packager.md",
-          "version": "repo-file-v1:sha256:5110fb7319168eb7839b929cd36be44d19e9e459075f05f796f996ba10d527a1"
+          "version": "repo-file-v1:sha256:14049b4ccf533f383d9a657d1a2a6f2a0660ee1baf8c02b5183f8b26790bcbc2"
         }
       ]
     },
@@ -466,7 +466,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/brief.go",
-          "version": "repo-file-v1:sha256:15e2256d780c1d6c08dd6395073a1b5927216eb77c7623f84777cd6e81cdbd4c"
+          "version": "repo-file-v1:sha256:1e122db1c47cceda8bb1f8ab442a85a3af8c818af7eaf2c40b23129ade75ff29"
         },
         {
           "resource": "repo://mc/verbs/verifier_input_test.go",
@@ -490,11 +490,11 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/brief.go",
-          "version": "repo-file-v1:sha256:15e2256d780c1d6c08dd6395073a1b5927216eb77c7623f84777cd6e81cdbd4c"
+          "version": "repo-file-v1:sha256:1e122db1c47cceda8bb1f8ab442a85a3af8c818af7eaf2c40b23129ade75ff29"
         },
         {
           "resource": "repo://mc/verbs/strategist_input_test.go",
-          "version": "repo-file-v1:sha256:143c303e3daa46c1935876f91c72d9c38ac2ed40df604c4c626a30a4e19426b2"
+          "version": "repo-file-v1:sha256:ccfb3d35690a5e490d1ecfaa6c3735171a0792373f26b6f1f4ef46f37914779b"
         }
       ]
     },
@@ -504,7 +504,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/strategist.md",
-          "version": "repo-file-v1:sha256:bbeb57a88c05db92f05a3670978d6747bcd294427a77e48616124a932e979d1c"
+          "version": "repo-file-v1:sha256:8e0d5d87b19a82fc67923b94bb49ce56c88770ee6bdc008f10adc0f1832bc4c8"
         },
         {
           "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md",
@@ -527,8 +527,8 @@
       "statement": "The Strategist directive requires evidence for a useful result, checks existing capabilities, and considers effort and risk before proposal submission.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/strategist.md#L32-L95",
-          "version": "repo-lines-v1:sha256:859beaee20d7ba124d09c4659d684bd19539247151a25e2f9c545192daaefdff:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNGQ0MzlhY2RkMmEyNDczNWYyMDU1ZWJmMTgyZTY3MWIxNWFhNWU0MmVkMmQ5MjIwNmI2MTc0YTE5ZDIyZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYmRlMzE2MWJjNTIyMmRiZTcyMjhlNmZlYWFkZWQ1ZjAxOWM3NDhiMDE2ZTk3NjA1YTc2ZjNkZmMyMjRjZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzYzMGQ0NDRlNTljMGQ2ZjBjZWM4ODk0M2M4ZDE0OTFlMTE3Njc5OTI2YmVmZTJkNWViOWNlM2YxZWExZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2YWFhMzdjZjZmZWEwYTAyNjc0MDY1YzI3NjgwYmY1YTFlMGM2MmQ4MzM5MGQ5ZDI1ZWRmNzQ4YjNiZTU3Y2EifQ"
+          "resource": "repo://mc/verbs/directives/strategist.md#L32-L111",
+          "version": "repo-lines-v1:sha256:cec3b37cea9093a38c30fcbd2b5bc397afeaace017d81285ca9080d053e4bac2:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNGQ0MzlhY2RkMmEyNDczNWYyMDU1ZWJmMTgyZTY3MWIxNWFhNWU0MmVkMmQ5MjIwNmI2MTc0YTE5ZDIyZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYmRlMzE2MWJjNTIyMmRiZTcyMjhlNmZlYWFkZWQ1ZjAxOWM3NDhiMDE2ZTk3NjA1YTc2ZjNkZmMyMjRjZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzYzMGQ0NDRlNTljMGQ2ZjBjZWM4ODk0M2M4ZDE0OTFlMTE3Njc5OTI2YmVmZTJkNWViOWNlM2YxZWExZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2YWFhMzdjZjZmZWEwYTAyNjc0MDY1YzI3NjgwYmY1YTFlMGM2MmQ4MzM5MGQ5ZDI1ZWRmNzQ4YjNiZTU3Y2EifQ"
         }
       ]
     },
@@ -538,7 +538,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/strategist_input_test.go#L96-L125",
-          "version": "repo-lines-v1:sha256:68cd0642b2ef677a33498032846c6def8ae3483e783f8340bcc7422a4b5ab682:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
+          "version": "repo-lines-v1:sha256:9c183bbda4f999d06153acc3c033b0fae1952812c171a1f1f0ac04503b37e423:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
         }
       ]
     },
@@ -586,7 +586,7 @@
         },
         {
           "resource": "repo://mc/verbs/brief.go",
-          "version": "repo-file-v1:sha256:15e2256d780c1d6c08dd6395073a1b5927216eb77c7623f84777cd6e81cdbd4c"
+          "version": "repo-file-v1:sha256:1e122db1c47cceda8bb1f8ab442a85a3af8c818af7eaf2c40b23129ade75ff29"
         }
       ]
     },
@@ -610,7 +610,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/arbiter.md",
-          "version": "repo-file-v1:sha256:ebffa1f090320c1ffaca820052539e3204cf015496ef2e00187eabf4b57e5ad6"
+          "version": "repo-file-v1:sha256:5e9844c9e4863294f3d1f2c9d905b5bb6cdbe5be3a410cd103df684761688545"
         },
         {
           "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md",
@@ -624,7 +624,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/arbiter.md#L16-L23",
-          "version": "repo-lines-v1:sha256:fcf083dd0fe01f2c3f929e2dc6d355b08415f0130d18e1dc729bc34f0aac5aa1:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZjODM3OTVkMDE0YWQ5MDg2NmUxM2I5MDgxMjJjNGUzMTg3ZjhiYjhlZmY0MGQ1MmU3Mjg0MDc4MTI1MDVkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWM5OTI0NzMzZmJiOWI1ZjE1NGRiMjE5YzdhYWQ1ODFlZWEwYWU0ZWFiMTNiNDEyYWIxYzI4NDU3YWI0MDRjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTQxM2RhYmNlOTMwODZlZjAxMjBkZGZhZmUwYjU5MDk4ODA1MzlkMjljMWQ5NzZkNzQ1YzI4ZDJmNWUxNTRjMyJ9"
+          "version": "repo-lines-v1:sha256:d72c55de4fe1355126772ee5e76c72bdc464e1c0a1d718e68547a3b33b31f02d:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZjODM3OTVkMDE0YWQ5MDg2NmUxM2I5MDgxMjJjNGUzMTg3ZjhiYjhlZmY0MGQ1MmU3Mjg0MDc4MTI1MDVkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWM5OTI0NzMzZmJiOWI1ZjE1NGRiMjE5YzdhYWQ1ODFlZWEwYWU0ZWFiMTNiNDEyYWIxYzI4NDU3YWI0MDRjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTQxM2RhYmNlOTMwODZlZjAxMjBkZGZhZmUwYjU5MDk4ODA1MzlkMjljMWQ5NzZkNzQ1YzI4ZDJmNWUxNTRjMyJ9"
         }
       ]
     },
@@ -689,10 +689,28 @@
           "version": "repo-lines-v1:sha256:fe1d6b5f996fa725d45378a2ddaa15898bfe17429224b19e628d1269b544f5ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5N2ZjMTIzOTNhMDdjOGJlZjc0YzU4NDk4MWY0MWRiOWFmMDgyOWRmOTRmMDI2MzVmZjI3Y2UwZmVmZmVlZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhYTkzYzE5NDQwNzQ3NjFiNzI0MzViMzA2MmI2ZTVhZTU4YzZlOTFhYTkyM2I1MWM4ZjM5ODY3OTg3MzdmZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzN2YzZjdlNWQyMDUxZDNkNzA3NDlhNzBiMzFjMTgwMjY5MDZiMTA3MjM5Yzc3YjU4Y2YxNDUxYmNlNGEwMWEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_33483a5a6d8f4d6097b53b48371ef630",
+      "statement": "The Strategist writes a one-sentence hypothesis with supporting evidence when available and identifies unsupported benefits as assumptions; the Packager directive owns the corresponding packet opening requirements.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/brief.go#L321-L325",
+          "version": "repo-lines-v1:sha256:093969417bce4814301eac031f96e650f146fa674d8be1b6142fc5c7cd84d7e2:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q1NjVhZDE1NzBlZjY2NWQxZWQ3NDVjNDQ2NmE0MjZiODljYmQzYzk0M2U3MmI4MzJmYzY1YmZlNWI2MzAzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODY0ZWQ4YzFlNWExNDU2MmY2Y2MxOTEyNzJiZWMwZThlNjQ1M2FkOWExZWI2OGMxMzE5NDJmOTkyNjUzMjdiZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTg1ODMyZjZlZmI0YzVkZjg0ZDRlY2ViMTJlYzQ3NTZmYmVkNDk1NWY5NmViNDdmMGQ3ZTMwMmI4NzM2Njc5YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNThkOWUxMDE2MzU1YmQyMzkxMzA0ZmU0YTJiMmQ0M2MxMjgwYzdkZWQxMDNlMDU3NTg4NWI1MDcyZTQxOWFlZSJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/directives/packager.md#L78-L92",
+          "version": "repo-lines-v1:sha256:181d4b0247d8471d6105b47a8f33ca6974e8273e94e6936a218cdec343e16997:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmYzOWZlNmI5MzdiNjJjNWFhNTA5NDg0NWM2YTRlZGVkZDY2NjYxMmFjNWEzM2RkMTVjZWI5MGFlOWY2ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1OTZiNTkwNjlmNTljNmI2NDNlM2Q1NjUwY2VjNzJmNDY2MTUyYWEzMDY5YThhZWVjODhjZDZlN2I4NDFiNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1MjExNDBmYzFlOThhNmI0ZThlN2Y0MjhmNGNkMTM3MWJlM2FkYmQ3OTA0Mjk5ZmEwZDdmMGM5NWM4ZmZiYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiODdmZTgxNGQ4MWM1Yzk3ZjU2YWI2OWMwOGI1OGE3Yjc5YjFmYTUwZmZlNTA2OWQxNzk0MWNkYzJmMzBjM2MifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/directives/strategist.md#L73-L84",
+          "version": "repo-lines-v1:sha256:4f4912b7574a7075f35f563cef7c653b66cc66f806923e7b36bfe64602866e16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYmE1YjRmYmM4Y2M2YzEwZTI1NGI1YmQwY2NhODYzZjQ1ZmVhMWIzZmJjZjcyMzUyZGEzNzU4NTYwNzkwOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1OTZiNTkwNjlmNTljNmI2NDNlM2Q1NjUwY2VjNzJmNDY2MTUyYWEzMDY5YThhZWVjODhjZDZlN2I4NDFiNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhYjQ1ZmFiZDE0ZWNkM2YwNjg2ZGM0ZmJmYzc3MDFkOTY2ODkwNmU0OGQxZjI3MTkxZWJhODFmNDcxZmVmYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhM2M0ZWQyYzJjZDRjYmViOGVmM2RlNGZiNmViYWI1ZGI2ZDcyYTRkMzhlMDE2ZDcwMGM1NDUzZDI4ODFhNmQifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T07:12:03.178Z"
+    "at": "2026-11-12T09:22:03.309Z"
   }
 }

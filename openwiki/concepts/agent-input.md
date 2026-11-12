@@ -82,10 +82,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T07:12:03.178Z
+    at: 2026-11-12T09:22:03.309Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -143,7 +143,9 @@ Only the Arbiter selects proposals for development.
 The directive starts task selection with a useful result that the Project cannot yet deliver well.
 The Strategist traces the user's route through the repository and identifies the step that prevents success or causes substantial effort.
 It considers new capabilities and defects, checks existing capabilities, and investigates assumptions that can invalidate the proposed benefit.
-Each Strategic rationale explains the present problem, expected result, current value, and substantial effort or risk.
+Each Strategic rationale states a one-sentence hypothesis of how the proposed change can advance the Vision.
+It cites supporting evidence when available and identifies an unsupported expected benefit as an assumption.
+The description holds the change and its scope.
 The Strategist writes each rationale to its own temporary file and reviews it before submission.
 The submitted `strategic_rationale` field contains that file's text unchanged.
 The description holds every task requirement; the rationale supplies decision evidence.
@@ -310,7 +312,9 @@ This keeps task requirements in the description while the rationale remains prop
 `mc/verbs/strategic_rationale_test.go` checks delivery and omission across the roles.
 
 The Packager starts the first section with its statement of the delivered change.
-For a Strategist task, the section is Strategic rationale. It follows the delivered-change overview with a distilled rationale and the Strategist’s key figures and evidence.
+For a Strategist task, the section is Strategic rationale. It states the delivered change in one sentence, then the hypothesis in one sentence and its evidence.
+An unsupported benefit is marked as an assumption. The text names neither the Strategist nor the source of the rationale.
+The Packager directive owns these requirements; the brief and command skill point to that section.
 An operator task instead starts with Summary.
 Project instructions preserve the first Strategic rationale section while they can replace the remaining default structure.
 

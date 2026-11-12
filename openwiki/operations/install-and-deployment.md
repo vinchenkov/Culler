@@ -14,6 +14,8 @@ sources:
     resource: repo://INSTALL.md
   - id: openwiki-source-03ffc32a0ca502ab67c54b25
     resource: repo://install.sh
+  - id: openwiki-source-2421a6d0188a5ae9913930bf
+    resource: repo://mc/cmd/mc/agent_skill_prod.go
   - id: openwiki-source-8887a56335011659b61b947b
     resource: repo://mc/cmd/mc/candidate-runtime-check.sh
   - id: openwiki-source-f4ac2493f15eb122b68f1029
@@ -22,6 +24,8 @@ sources:
     resource: repo://mc/cmd/mc/onboard_home_prod.go
   - id: openwiki-source-b7fbb75b893eadf967f11537
     resource: repo://mc/cmd/mc/setup_agents_prod.go
+  - id: openwiki-source-5a0c2550f7339d2e521c247e
+    resource: repo://mc/cmd/mc/setup_choices_prod.go
   - id: openwiki-source-c6b3c0255eecd5c285f3893e
     resource: repo://mc/cmd/mc/setup_install_prod.go
   - id: openwiki-source-023af04189f7504ce88d56f5
@@ -46,6 +50,8 @@ sources:
     resource: repo://mc/cmd/mc/uninstall_prod.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
+  - id: openwiki-source-742785bcdc10cca69fe87d3f
+    resource: repo://mc/deployment/agent_skill_integration.go
   - id: openwiki-source-7c0475e3159de8f777665c70
     resource: repo://mc/deployment/agent_skill.go
   - id: openwiki-source-0c1bf38213ed3591fc2a6f4d
@@ -94,10 +100,10 @@ sources:
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:22:22.352Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T09:22:03.309Z
 ---
 
 # Installation, deployment, and release
@@ -433,8 +439,13 @@ The host release installs the common `culler` skill at `MC_HOME/release/host/ski
 The installed entry point selects the deployment without a source checkout.
 The host and runner manifests include the complete skill references and native trace reader.
 
-Terminal setup offers a skill integration at `~/.claude/skills/culler`.
-`agent_skill_integration.go` records owned links, preserves unrelated files, and keeps the canonical installed skill available after a conflict.
+Terminal setup automatically links the skill at `~/.agents/skills/culler`.
+It also links `~/.claude/skills/culler` for a selected Claude Code harness and `~/.codex/skills/culler` for a selected Codex harness.
+`mc/cmd/mc/agent_skill_prod.go` derives those locations from the selected runtime bindings.
+`mc/deployment/agent_skill_integration.go` records owned links and preserves unrelated files.
+It creates links only in operator-owned directories that other users cannot write.
+A link failure leaves completed setup intact and leaves the canonical installed skill available.
+A later selection removes owned links outside the selected locations. The integration record also accepts the earlier single-link format.
 Uninstall removes only owned integration links. Operator skills remain separate under `MC_HOME/skills/`.
 
 Selecting subscription sign-in starts authorization and its connection test directly.

@@ -48,8 +48,6 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
-  - id: openwiki-source-ed89bac39c80e2500197689e
-    resource: repo://mc/verbs/skills/packager/packager-rationale/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
   - id: openwiki-source-a6635e9c51b05f45725be1ce
@@ -64,10 +62,10 @@ sources:
     resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T07:12:03.178Z
+    at: 2026-11-12T09:22:03.309Z
 ---
 
 # The task pipeline roles
@@ -194,14 +192,11 @@ One task can span several components.
 
 Each proposal also holds a Strategic rationale, separate from its description.
 The Strategist writes each rationale to its own file under `/tmp` before it submits the batch.
-The rationale states these points:
-
-- The proposed change and evidence for the present problem or opportunity.
-- The contribution to the Vision and the reason for priority now.
-- The expected benefit relative to implementation, verification, and maintenance cost.
-- The distinction between observations and assumptions.
-
-The Strategist reads that file from the Arbiter's and operator's perspective.
+The rationale states a one-sentence hypothesis of how the proposed change can advance the Vision.
+It cites evidence that supports that hypothesis when available.
+An expected benefit without evidence is identified as an assumption.
+The description holds the proposed change and scope.
+The Strategist reviews the rationale before submission.
 It discards a candidate when the rationale does not justify the work.
 The submitted `strategic_rationale` contains the file's text unchanged and adds no task requirement.
 
@@ -405,7 +400,9 @@ See [agent input](../concepts/agent-input.md#packager-page-style-guidance) for t
 ### The packet opening
 
 For a Strategist task, the first section is Strategic rationale.
-It starts with one or two sentences about the delivered change, followed by a distilled version of the Strategist's rationale and its key figures and evidence.
+It states the delivered change in one sentence, then the hypothesis in one sentence and any supporting evidence.
+It identifies an unsupported expected benefit as an assumption and names neither the Strategist nor the source of the rationale.
+The Packager directive defines this opening; the brief and command skill point to the directive.
 The delivered-change statement alone supplies the submitted thesis.
 Those statements describe observations and assumptions before the work, not verified results of the change.
 An operator task starts with Summary and uses the submitted `--thesis` text.

@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T07:12:03.178Z
+    at: 2026-11-12T09:22:03.309Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml

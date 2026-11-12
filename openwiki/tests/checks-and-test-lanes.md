@@ -46,6 +46,8 @@ sources:
     resource: repo://evals/culler_evals/cli.py
   - id: openwiki-source-43c99b2bf6bbadedfe48eeb3
     resource: repo://mc/check.sh
+  - id: openwiki-source-956e6a6507b5fa74d11c5e2e
+    resource: repo://mc/cmd/mc/agent_skill_prod_test.go
   - id: openwiki-source-54e7de3880f31c0fd5089921
     resource: repo://mc/cmd/mc/arbiter_criteria_test.go
   - id: openwiki-source-a7ca3be58a8971f19014beb8
@@ -72,6 +74,8 @@ sources:
     resource: repo://mc/cmd/mc/systemstatus_setup_test.go
   - id: openwiki-source-9f816a6d1f5994d193ba7ab4
     resource: repo://mc/config/agentprofiles_test.go
+  - id: openwiki-source-a1ac2c30b885592aaecb74c3
+    resource: repo://mc/deployment/agent_skill_test.go
   - id: openwiki-source-e52c730e2e47b3a8099643b1
     resource: repo://mc/deployment/agentprofile_models_test.go
   - id: openwiki-source-01b3ed2178627bc0a419fe9f
@@ -184,10 +188,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T07:12:03.178Z
+    at: 2026-11-12T09:22:03.309Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -394,7 +398,8 @@ It also checks that other role instructions do not repeat the standard's rules.
 - The Arbiter and Packager receive the rationale; Worker and Verifier briefs omit it.
 - Task reads omit the rationale for the Worker and Verifier while permitted decision readers receive it.
 - Packet text and Collie context use the correct opening for each task origin.
-- The role input describes rationale authorship, evidence preservation, and the first packet section.
+- The role input describes a one-sentence Vision hypothesis, supporting evidence, explicit assumptions, and the first packet section.
+- The Packager directive owns the opening requirements, and the command skill points to that directive.
 
 `mc/substrate/task_model_test.go` checks immutable rationale storage and the operator origin constraint.
 `mc/cmd/mc/cli_test.go` checks refusal of a Collie allowlist with `task.add` and retains host task creation at Seeded.
@@ -912,3 +917,9 @@ The tests also check isolation between roles and Projects.
 `dashboard/src/ui/agentprofiles.test.ts` checks the same final words, collision numbers before those words, and reuse of an existing profile name.
 These checks keep the visible record types distinct while several profiles can share one connection.
 These statements describe test coverage; this wiki update does not execute the suites.
+
+### External agent skill installation checks
+
+`mc/cmd/mc/agent_skill_prod_test.go` checks automatic links for selected harnesses and the absence of an integration question.
+`mc/deployment/agent_skill_test.go` checks changes in harness selection, the earlier single-link record, ownership across updates and uninstall, and preservation of unrelated skills or replacement files.
+These are source-defined checks; this wiki update does not execute the setup or deployment suites.

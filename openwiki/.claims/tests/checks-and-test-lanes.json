@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5dc27e8335eaeb63b745f646bdd0fd3b6e856b5ec52b34cd38b9a27d593c1e8b",
+  "pageVersion": "sha256:6ef73b6d48b5547472000379b32314cbe226256df0891bb63d08e92984228b05",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -480,7 +480,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/packager.md",
-          "version": "repo-file-v1:sha256:5110fb7319168eb7839b929cd36be44d19e9e459075f05f796f996ba10d527a1"
+          "version": "repo-file-v1:sha256:14049b4ccf533f383d9a657d1a2a6f2a0660ee1baf8c02b5183f8b26790bcbc2"
         }
       ]
     },
@@ -664,7 +664,7 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/cli_install_test.go",
-          "version": "repo-file-v1:sha256:819f1170bdc09541fa6dfadd8ee7fc3ea886f8c4c09d302a6d468dc98d83d96a"
+          "version": "repo-file-v1:sha256:f71b37da14281d02e0bc2027115885ab783451e7fdfa932053ba952586d6ab21"
         }
       ]
     },
@@ -938,7 +938,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/strategist_input_test.go",
-          "version": "repo-file-v1:sha256:143c303e3daa46c1935876f91c72d9c38ac2ed40df604c4c626a30a4e19426b2"
+          "version": "repo-file-v1:sha256:ccfb3d35690a5e490d1ecfaa6c3735171a0792373f26b6f1f4ef46f37914779b"
         }
       ]
     },
@@ -972,7 +972,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/strategist_input_test.go#L96-L125",
-          "version": "repo-lines-v1:sha256:68cd0642b2ef677a33498032846c6def8ae3483e783f8340bcc7422a4b5ab682:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
+          "version": "repo-lines-v1:sha256:9c183bbda4f999d06153acc3c033b0fae1952812c171a1f1f0ac04503b37e423:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxNDIyZWExZWY2ZTc4ODcwMzk4N2Q4Y2NmY2IzNmMyZmZiZjc5MGU2NDkxMTRmOGMxM2YzOTJkNTU0ZjcwY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiZDZhZjhmNDJlMGRiNWQ4MzQ3NmYxNWFiYTU2MDk4MDk3YzlmYzczYTRkOWI0NWI1MDI1NmJmMDM3YTRmMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlZTVlNGIxY2NkOTgzOTM5NjY5YjI3MTMzNGJiOTVlYWQ2YjY2ZDY1YTFjZDE1Y2IwYTBmZTYxYWI5NDE2NDAifQ"
         }
       ]
     },
@@ -1074,7 +1074,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives_test.go",
-          "version": "repo-file-v1:sha256:fa5da524e9c0914ac015524fdbb6be13ca86785558380bdb44c5b0161176522d"
+          "version": "repo-file-v1:sha256:4cc682543623432207593e54183df29cbd103305a76e066c46897dcf11c96156"
         }
       ]
     },
@@ -1239,10 +1239,24 @@
           "version": "repo-lines-v1:sha256:fe1d6b5f996fa725d45378a2ddaa15898bfe17429224b19e628d1269b544f5ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5N2ZjMTIzOTNhMDdjOGJlZjc0YzU4NDk4MWY0MWRiOWFmMDgyOWRmOTRmMDI2MzVmZjI3Y2UwZmVmZmVlZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhYTkzYzE5NDQwNzQ3NjFiNzI0MzViMzA2MmI2ZTVhZTU4YzZlOTFhYTkyM2I1MWM4ZjM5ODY3OTg3MzdmZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzN2YzZjdlNWQyMDUxZDNkNzA3NDlhNzBiMzFjMTgwMjY5MDZiMTA3MjM5Yzc3YjU4Y2YxNDUxYmNlNGEwMWEifQ"
         }
       ]
+    },
+    {
+      "id": "claim_bb6fe77bbccf424b9681ce81966983ec",
+      "statement": "The setup skill test checks automatic links for selected harnesses without a question; deployment skill tests check selection changes, legacy records, and preservation of unrelated entries.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/agent_skill_prod_test.go",
+          "version": "repo-file-v1:sha256:769d977288d26fd15ad6531432703fe36f7effcf8ae006f3e956a83123678d07"
+        },
+        {
+          "resource": "repo://mc/deployment/agent_skill_test.go#L82-L186",
+          "version": "repo-lines-v1:sha256:aaba147557ec20d4129c740f8c3e5024d01c58d4ea71cf693cc2d8e21b5dac8b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NWQzY2MwZWI4YzA0M2U1ZDQzMzQ2MmU4M2E3MzFhZmIyNDVkNTI2ZjU3NmQ4MTY5MWZmZWMzNjRhZmQzNjk3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzOGIyODQxMmMzMDE4MmQzYmYxYjM0MDNjM2I5MDkzODZiODRmNjgzZTNhODAyNmVlZGI0MTY2YjY2Mzk0ZDBkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0ZTgwZDg5M2U1NjRkMjI3MDJiYmNlOTBiYTNhODQ0ZTMzZjRjYTk3OTJiMDllMTIwNjhjMGE0OTU2ZDMzOWRjIn0"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T07:12:03.178Z"
+    "at": "2026-11-12T09:22:03.309Z"
   }
 }

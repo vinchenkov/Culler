@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d307dc98e5a53fe5a4772acb819b3c7f70572ee5b4f67197e83113f3b5d18345",
+  "pageVersion": "sha256:38a0232d22fb22824a7377c989e4aa226b4079beb31f1584703a245b711ca018",
   "claims": [
     {
       "id": "claim_fdd699f503a748f28d95ccb82cfcba94",
@@ -90,7 +90,7 @@
       "evidence": [
         {
           "resource": "repo://INSTALL.md",
-          "version": "repo-file-v1:sha256:ce7c71266e51093491ed3fa7f3e3196b89901002aef4b0812eb18250760e23ab"
+          "version": "repo-file-v1:sha256:a2395774e6bccda1847535cf2c3bab7668a236de19d6c25c66abe63365f039aa"
         },
         {
           "resource": "repo://mc/deployment/opencode_source.go",
@@ -284,7 +284,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T09:22:03.309Z"
   }
 }

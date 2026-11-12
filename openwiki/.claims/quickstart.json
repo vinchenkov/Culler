@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a0ace7603d0344add896b3236effef402bddd3fa571d8a675f179a409fb52128",
+  "pageVersion": "sha256:73ce1be1fbea598578e28751f029ce03f2ba787dc9826ee2e4c1939cec798152",
   "claims": [
     {
       "id": "claim_42d820f5d8a6460084195657876ba264",
@@ -488,7 +488,7 @@
       "evidence": [
         {
           "resource": "repo://INSTALL.md",
-          "version": "repo-file-v1:sha256:ce7c71266e51093491ed3fa7f3e3196b89901002aef4b0812eb18250760e23ab"
+          "version": "repo-file-v1:sha256:a2395774e6bccda1847535cf2c3bab7668a236de19d6c25c66abe63365f039aa"
         }
       ]
     },
@@ -497,7 +497,7 @@
       "statement": "An interrupted update retries its exact candidate, permits checkpoint restoration before commit, and keeps ordinary work stopped until candidate verification succeeds.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L152-L155",
+          "resource": "repo://INSTALL.md#L154-L157",
           "version": "repo-lines-v1:sha256:3539bd4e66f90bde9b5adbd769f465740c5a922bb472dd43fe9802ff1dd978d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDdiZDM3OGRjYzYwNTNlZDQ5OTQwYjAwMDFlZTRiYWQ1YjNkODNmNGM5NzgyZmNmNTIwMTc3YzEyMGY2NWI3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ExOTlhZjIwNmVlMzJhYzhjNjBkNGUxYmUyYTI2MjM3N2I5MGU0N2IzMzg0OGM4OWViYzQ0NDkzYjBjMzA3YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTU5YmZhMGU5ZDljMjRkZGI2ZDA5ZDZlYzNjOTBhZGY3NjMyYjRlNTk2OTY2NjdlNWIwZThlNDg1MzVkOTMxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjQ5NjYzZDU0ZDkwMjgzYTYwN2I5OWNmNjVlODRkYTE2NTM0MTRlOGMyZjBhMGYxYjY2ZjZhYWFhNDAyMzc5MCJ9"
         }
       ]
@@ -507,7 +507,7 @@
       "statement": "Source deployments prepare OpenCode before activation and reuse verified packages when their inputs remain equal across unrelated commits or checkout paths.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L417-L431",
+          "resource": "repo://INSTALL.md#L419-L433",
           "version": "repo-lines-v1:sha256:eecc1f805da4d8ebf7fc7eb94e1e1e645c6df3cc4b79c788f6de5ebe594cba5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3Mjg2Y2IwZmY5M2RhODJmMDRlYzYxY2E1MDRjOGFhMDQ5NTdjM2JjYTc5YzFjZTI4YTFiYWQ3NDMzZjhhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzY0N2QwNjEwNWE2MDJhYzg2ZmNlMmRjMDI4ZWE4NTYzYjAxOGUzNjhlOGQ1NmNmZDM5Zjc3ZDg1MjMyNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDk1MGMxYjc5NDQ1MDY2YjQyY2EyNTMxMjRhMGRjZDQzZWQ1ZTEwMDQ2MWE2ZDE2MWYwYzYxZjgxYjFlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzY2ZTg4NWM5YmI4ZWUxMWMwMGUzZTJkMDk0NWQ2MTc4OWVhZjlkZjEwMmI5MjlkYWMyZGNjODE3ZDI1MTIifQ"
         }
       ]
@@ -517,7 +517,7 @@
       "statement": "The first source OpenCode connection uses the verified package without another download.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L505-L506",
+          "resource": "repo://INSTALL.md#L507-L508",
           "version": "repo-lines-v1:sha256:6eac626212b1f6ddd4971fce19f5c12ba8e1201903c846393915dafde4afa5b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQwNTcxNTBiNzYwN2MxZWFmODNjZGFjMzAyODFjYzRhNzdkYjNkYzcyNDM5ZGViM2MwZWVjN2RlNmEzZjg1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJmNDNmM2Q3NTE1YTUyOTZhYjIyZjg0OGZhNzExNzZmZDQ2Nzk1ZDhmNmNmMDQzZTVkYjdjNTIzZjEyYWM2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDdmOGRkYTU3YjE3ZDIzMzI0MjgwNjIzZDRlYTc0OTRmNDZmOWZlNGRiZDA3NTJkZmE1NGJlNDMzZGVhNGRiNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
@@ -580,7 +580,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/strategist.md#L7-L29",
-          "version": "repo-lines-v1:sha256:ed563ee840c852e821c7cb639290982c7be29c1a6db4c7182d6ffc8de627ab32:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMDY4MTkxMzM5ZjdiMTBjYmI1M2Q1YzliNDVlZmZlNWU4M2ExMmY3OGI4NDVkNjg1YjAzMWFlNzg3OGVhMTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZjNmNzllMjAwZjNjYjljMmY1MjA1OGFlYTQzMjJjOTQzNDQxNTY4Y2U4ZTRmMDFhYmQ1MmYxODJkMzQ2YTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3NTQ4ZmQ1ODEyODNkNmIxZDUyNjE3MzczMTNkNWFlYjJkNjI3ZTVhYjdmZjFlMDVkNTc3YjRmNWM4MmI5OWEifQ"
+          "version": "repo-lines-v1:sha256:87a1fca444eb8c2030d7567d9a5286844ec13db96a0ab2ccb7a63386a87b4330:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMDY4MTkxMzM5ZjdiMTBjYmI1M2Q1YzliNDVlZmZlNWU4M2ExMmY3OGI4NDVkNjg1YjAzMWFlNzg3OGVhMTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZjNmNzllMjAwZjNjYjljMmY1MjA1OGFlYTQzMjJjOTQzNDQxNTY4Y2U4ZTRmMDFhYmQ1MmYxODJkMzQ2YTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3NTQ4ZmQ1ODEyODNkNmIxZDUyNjE3MzczMTNkNWFlYjJkNjI3ZTVhYjdmZjFlMDVkNTc3YjRmNWM4MmI5OWEifQ"
         }
       ]
     },
@@ -641,7 +641,7 @@
       "statement": "Terminal setup offers providers before access methods and assigns connection and additional account names automatically.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L451-L467",
+          "resource": "repo://INSTALL.md#L453-L469",
           "version": "repo-lines-v1:sha256:1ca08fe8276f91da771c56c3d371fae1e203fd110883ac3dd18dcc45fc89a3f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MWZiMGZkZGEzMWMxYTQ2Mjk4MjM0ZGQyYWUzMWE1Y2UyYTUwNjc4NzMzMzg5ZDA5YWJiZWM2YTM2NjhiNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNzdiNmEzMDc4NTcwYzM0NDVkY2I5ZmM0YjcxYWZjN2UwZmMxZTgwYTZhZDkzODFkNmU0NTNmNTdkOTA3ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1YTExYTQwYmRjOGJlYTc1NzQ1ZThlNWFjZjM0YjMzYjUwMTUyYzlhMzM5OWYxZTBlNmFmMTk4YmYwMmU0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmNDI5NmZlODk0NTlkZjlmZjFiY2E5ZmFjYjA5OTZhN2Y3YTZhZGUxNzYzMjJhZGQ5YWQ0MWU3MDUzYWUyYzgifQ"
         }
       ]
@@ -721,10 +721,24 @@
           "version": "repo-lines-v1:sha256:28de7c5136e8711f8f7d7053432c47c8d2c9e36536b3d19e2b42c440b86d38b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWVjZDVjZmJjOWQzNzQyMDM2Y2Q2MGJhZmIxMzAyOGEwYWY4NDRiMzg0ZGYyZTIwYmRiM2JkNjUyNjFiOGJjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzBjNTczNTdmMWY3OTI3NWYyYTYzMjllNWE2OGVmNGFlNmExMDdjNTcwMzk5ZjM5MDAwMDE3YjIxN2ZmYjdkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg0ZjYxYjcyZjQyYTgyZGNjMDhmNzRkOTJlNmE5ZjNlZTQ2YWMxMzdkMGY2OWZjNjRlY2UxYWNmNDkwMTQyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWUyOThjNWEzZTBmYTcxNWZhMWZlMDkzM2Q1ZjBhZTVlYTYxNDIzYmY2OGM0ZTMyZTU5MTJjMzM1ZWVmODYwZCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_c2d93f7a4aa34e43b8bc7ce4cbeeb0a0",
+      "statement": "Setup links the host Culler skill automatically under .agents and the selected Claude Code or Codex personal skill directory, while preserving unrelated skills.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md#L36-L45",
+          "version": "repo-lines-v1:sha256:cad1a4eeeb165c687413209d2037bce0d405eea1f014a583065a22f8791f31f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1MTdhZWI5NzliY2VmZmUzMmM5ZmNjZmIzZjUwNWVkM2I3M2Q4NTAzNmYwN2ZhYzkxYzY3ZmZhMDUyMTMyYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1ZTJkZjFiMTk4OGY4MWRhN2VlMTUyMDJkMTUzZWYxM2JmNzdmOTI0ZmViYWIwM2ZlZjQ3ZGRkZWM3YTBhM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0NmVkNDIyNmMxYTY2YjExMzFiNzY4ZTc3NGFmYjI2ZGVjN2M2NzlmYmE3ODFjY2U4MWI1NGM1MjA0NjI1MmMifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/agent_skill_prod.go",
+          "version": "repo-file-v1:sha256:a89e1577fb17daf06ddd901c615abfd2a89e6cddb57d14f188916d6aae39264a"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T07:12:03.178Z"
+    "at": "2026-11-12T09:22:03.309Z"
   }
 }

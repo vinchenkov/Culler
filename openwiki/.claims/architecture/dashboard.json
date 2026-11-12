@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9b1c2efe9654064d0707af5ed0e0f9353368d4c7bef174997750b2092ba1c46d",
+  "pageVersion": "sha256:4f8d9f8027ea8bc7ec2074e3870f9cd3751caeb9cc0c2aff892a93cc791ec37e",
   "claims": [
     {
       "id": "claim_92773894f36348b5bc17a0e35b0538f1",
@@ -1074,7 +1074,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/directives/packager.md",
-          "version": "repo-file-v1:sha256:5110fb7319168eb7839b929cd36be44d19e9e459075f05f796f996ba10d527a1"
+          "version": "repo-file-v1:sha256:14049b4ccf533f383d9a657d1a2a6f2a0660ee1baf8c02b5183f8b26790bcbc2"
         }
       ]
     },
@@ -1723,6 +1723,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T07:12:03.178Z"
+    "at": "2026-11-12T09:22:03.309Z"
   }
 }

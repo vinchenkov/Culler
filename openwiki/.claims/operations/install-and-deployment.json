@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:24519af4d28dad31500b52ab972c78b48fa84bc8c913791449be946918221041",
+  "pageVersion": "sha256:1f9f871761f53d52d97ea3655018296333b7e8bd05110328f374c574bb1d5f74",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -343,7 +343,7 @@
       "statement": "Setup saves the model selected during a successful new Codex profile connection test for later runs.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L102-L105",
+          "resource": "repo://INSTALL.md#L104-L107",
           "version": "repo-lines-v1:sha256:dde399d6609928c09bebf6b6c37a144cd4d352c67cb4b7050ee29753b1ea9e25:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjdhMWZiMGUxZGFkYzc4NjVkNTI1YTViMWUxYzZkNmRkOTM4OTNhOWEzYjcwMDVlYzBjZmI2MjI0YTQyYjM2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTExN2M0MmY2NjI3NTA4OWNmZmFlNzU0NzA2ZTllOWM5MTBjYjVmMTA2ZDI0MDk5MDgwNjExMzY4OWQ3OTg5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzViZGE4MzA4MDA4NGNlOWFjNzBlMGRiMjUxZmU1M2M3N2QyNTBhZTRmNTVlOWZhNDkzODU1NGU0NzdiNTAzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQ4NzJlOTZiNGUxYzgwMzc0ZTA1ZjZmNmUzOGM4MTc4M2Q5MGZkM2JkYjg2MWYyODIyN2IxM2MwNjVkNjU3ZiJ9"
         }
       ]
@@ -499,7 +499,7 @@
       "statement": "Production source installation and redeploy prepare OpenCode before service activation, including deployments without an OpenCode connection.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L403-L438",
+          "resource": "repo://INSTALL.md#L405-L440",
           "version": "repo-lines-v1:sha256:50dbaf6f8837dfbb9dae42d52e91f9fb150740ddee3f5725a04a1ffd87dd323c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MWRkMmU2Y2E5YmJlZTIyNjgwZjMyOGJmZmY0ZTFjNTdkMzNiMDg1M2I1YzZlNjMwMzk0MGJjNTE4YjcyNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YzMzOTU2NDhlYmIwYTAwOTVjZWY1ZTA4ZjU0OTI1YjY0OTc2Y2JhMzhmODVhNjlkNGI4OTc1MmU5MjllODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjMzYxNzI0MmM3NDM1MjUxMTczNjlkNjcxNjFjMDZlZDliOWFmMjZhMjc1NjY5Mzc1YjBjNWYwYmI1ZjA2YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1MWFlMmVjNDM5ZGY5MmE0ZTY5NzBjMjgwOGQ3NGMyZjI3M2M5Zjk1OWViZmY2OWY2OGVkNWY5YzVhMzkwZmMifQ"
         },
         {
@@ -517,7 +517,7 @@
       "statement": "Source OpenCode preparation uses package tools from the selected Linux arm64 image and requires no host npm installation.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L417-L420",
+          "resource": "repo://INSTALL.md#L419-L422",
           "version": "repo-lines-v1:sha256:73c438ec6f2ae908a4c14fe5bf98a6771d7ccd20a3b9922b64c067146ff9e48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyODZjYjBmZjkzZGE4MmYwNGVjNjFjYTUwNGM4YWEwNDk1N2MzYmNhNzljMWNlMjhhMWJhZDc0MzNmOGE3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc2MmFjZTliZDJhNjY0ZjI1MjE3M2EzMDNiYTIwMGFjZDZhZDMzYzQ4ODkwYjNlMzAzZDJmMDNjODI1MWY4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRkOTUwYzFiNzk0NDUwNjZiNDJjYTI1MzEyNGEwZGNkNDNlZDVlMTAwNDYxYTZkMTYxZjBjNjFmODFiMWU1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjNmNjMxNDRmNTRkYTkzOTk2NmUxZGMxNmY1MDYzMDliY2EzM2MwNTI2MmY1Mzg2YmU2NWQyMzNmMjhiNjYzMyJ9"
         },
         {
@@ -633,7 +633,7 @@
       "statement": "Terminal setup offers providers first, assigns connection names automatically, and limits another-provider search to the OpenCode catalog.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L451-L467",
+          "resource": "repo://INSTALL.md#L453-L469",
           "version": "repo-lines-v1:sha256:1ca08fe8276f91da771c56c3d371fae1e203fd110883ac3dd18dcc45fc89a3f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MWZiMGZkZGEzMWMxYTQ2Mjk4MjM0ZGQyYWUzMWE1Y2UyYTUwNjc4NzMzMzg5ZDA5YWJiZWM2YTM2NjhiNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNzdiNmEzMDc4NTcwYzM0NDVkY2I5ZmM0YjcxYWZjN2UwZmMxZTgwYTZhZDkzODFkNmU0NTNmNTdkOTA3ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1YTExYTQwYmRjOGJlYTc1NzQ1ZThlNWFjZjM0YjMzYjUwMTUyYzlhMzM5OWYxZTBlNmFmMTk4YmYwMmU0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmNDI5NmZlODk0NTlkZjlmZjFiY2E5ZmFjYjA5OTZhN2Y3YTZhZGUxNzYzMjJhZGQ5YWQ0MWU3MDUzYWUyYzgifQ"
         },
         {
@@ -687,10 +687,28 @@
           "version": "repo-file-v1:sha256:058abcc11626dd1d11d5f1eafd09ea8f23882bcba274c0a9ddbf050653ee9ddf"
         }
       ]
+    },
+    {
+      "id": "claim_c3450fc1d5b249cb826057586e5af30d",
+      "statement": "Setup automatically links the common Culler skill under .agents and under .claude or .codex for selected harnesses, preserves unrelated skills, and treats link errors as nonfatal to completed setup.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/agent_skill_prod.go",
+          "version": "repo-file-v1:sha256:a89e1577fb17daf06ddd901c615abfd2a89e6cddb57d14f188916d6aae39264a"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_choices_prod.go#L531-L542",
+          "version": "repo-lines-v1:sha256:e0332e195948297f1797fc79b98c1cc2ce090a62e1a7fe54c539ff5613f0fcc1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkNzY3N2Q2NThiMWU2Njk3ZTk0NDY0OTljMDU5NmE3ZWJlN2JlNTVjMDJhNTg4ZWNhODA1YmU1YWE1ZTEzN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1M2I0ZDcxM2Q4MWNjNTQ4ZjdhMDA1NDIyOGIxNDZjMTdkMDM2ZGIxMWY0ZjNhMWRjYWNlMDllMzBlY2M0OWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/agent_skill_integration.go",
+          "version": "repo-file-v1:sha256:46c101b80c66fe0966f5cbcf69c295e1682fe4f023c463c7bb95ff626564fdd2"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:22:22.352Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T09:22:03.309Z"
   }
 }

@@ -46,6 +46,8 @@ sources:
     resource: repo://dashboard/src/ui/theme.js
   - id: openwiki-source-096a781fb160ef979fa31121
     resource: repo://INSTALL.md
+  - id: openwiki-source-2421a6d0188a5ae9913930bf
+    resource: repo://mc/cmd/mc/agent_skill_prod.go
   - id: openwiki-source-8887a56335011659b61b947b
     resource: repo://mc/cmd/mc/candidate-runtime-check.sh
   - id: openwiki-source-a7ca3be58a8971f19014beb8
@@ -100,10 +102,10 @@ sources:
     resource: repo://runner/image/Dockerfile
   - id: openwiki-source-1430dd49737c0f35b616bb76
     resource: repo://runner/image/runtime-check.sh
-generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T09:22:03.309Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T07:12:03.178Z
+    at: 2026-11-12T09:22:03.309Z
 ---
 
 # Culler quickstart
@@ -264,7 +266,8 @@ The Strategist submits at most two proposals per batch.
 Its directive requires two proposals together; the command skill permits an empty batch when no valid task remains.
 Each proposal uses repository evidence, excludes equivalent work, and states scope and container-checkable criteria.
 The Strategist starts with a useful result, checks existing capabilities, and considers the full cost and risk.
-Each proposal holds a Strategic rationale that explains its value, priority, evidence, and assumptions.
+Each proposal holds a Strategic rationale: a one-sentence hypothesis of how the change can advance the Vision, with supporting evidence when available.
+An unsupported expected benefit is identified as an assumption.
 The rationale stays separate from the description and adds no requirements.
 The Worker and Verifier receive the description without it.
 The Arbiter checks the rationale; the Packager presents it after its statement of the delivered change.
@@ -432,6 +435,8 @@ See [shared proposal decisions](workflows/decision-resolution.md#shared-proposal
 
 Collie and external agents use the common `culler` skill and supported operator command catalog.
 The installed host skill identifies the exact deployment executable and evidence paths; an external agent needs no source checkout.
+Setup links it automatically under `~/.agents/skills/culler` and under the personal skill directory for a selected Claude Code or Codex harness.
+Existing skills that Culler does not own remain intact.
 See [operator command boundaries](architecture/mc-cli-and-verb-scope.md#supported-operator-commands) and [external agent installation](operations/install-and-deployment.md#external-agent-installation).
 
 Native OpenCode traces use masked database copies, separate from original sessions.
