@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:2edbc353c973ed56a6a6a9071915eb013a4aae1b3740249cfb09492b84254811",
+  "pageVersion": "sha256:80653b484996e833e3a3ec8d821fbed8ff10880f7f4b5bff09ec560f374883c0",
   "claims": [
     {
       "id": "claim_aee9aadca2bf4c71862803d812043b81",
@@ -182,7 +182,7 @@
         },
         {
           "resource": "repo://mc/deployment/agentprofile_models.go",
-          "version": "repo-file-v1:sha256:68bee5466e4fa65bd68e8040836baafdcdd1e54aaa0881565d17d86e93bc884c"
+          "version": "repo-file-v1:sha256:f9d04aea2e6655bc6a38b0925fe9c213cbaebf3905feafa246121cd590957a9a"
         },
         {
           "resource": "repo://mc/deployment/agentprofile_testop.go",
@@ -206,7 +206,7 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/agentprofile_models.go",
-          "version": "repo-file-v1:sha256:68bee5466e4fa65bd68e8040836baafdcdd1e54aaa0881565d17d86e93bc884c"
+          "version": "repo-file-v1:sha256:f9d04aea2e6655bc6a38b0925fe9c213cbaebf3905feafa246121cd590957a9a"
         },
         {
           "resource": "repo://mc/deployment/api_key_validation.go",
@@ -415,10 +415,34 @@
           "version": "repo-lines-v1:sha256:5c5cb47c2ae65a8206918a133df73d4da31cf8ed9f7bdc823888f069b7f5ea3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMzE0YWM0NWVkOGM4OGI3ODhjMDNjZTFiNDMwZmIxNTk5NGUyNGUzNjNkZDAzNGU1YjM4ZDY1MGVhYWEzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGRlYjY3NmI1YmQ3ZTI3MWRmYmEwNmE3ZDk3MTg4N2MwYzI2ODk2NmUzMjc4ZDBmYzAyNzhkM2FkNGJhMTIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_19b4a6cb2a8747eeadc4292fe422a699",
+      "statement": "Catalog generation excludes providers whose key variable is GITHUB_TOKEN to preserve Project tool credentials.",
+      "evidence": [
+        {
+          "resource": "repo://release/opencode/generate.py#L133-L139",
+          "version": "repo-lines-v1:sha256:743b18816066a1016117ca303a0b81cf506e198502a90c722ec5168236244d4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU3YWZiMDdlYjYzY2YzYTI1NWYyODViOWQ2YWI0NDhjOGY3ZjQwZGJmYmJlMWEwN2M5Zjc1MGU1MzA0ZGRiZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjgyN2NiZGYwZWE3NmEzZTQxMWQ2NjBlYzA3ZjQ3Njk4MWMwNDM5YWIwZTUzM2ViY2M2NDRmNjJmNmNjNzUyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGUwNjNiYmMxNWIwZWY4NzJiYTZmMzFhYTljZjEzMzVhZDU3NzU4ZTgyODU4Y2E0Zjk2OTQ3M2FhZDdiZmIxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTAxZmI0OGZkNTdmMjM3OGJlMjY2OGQ3NGY3MmVhZDZjZmVhZjlmYTg0MGFkM2QxOGFlYzcwN2JhNmNiNzQ1NSJ9"
+        },
+        {
+          "resource": "repo://release/opencode/generate.py#L17-L21",
+          "version": "repo-lines-v1:sha256:a5803e61aa5573178dcfb452b04e7477acdbe7e9ec8622bad7dd9ccf1be4b7ca:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM1Mzk3ZWY0Y2E3NjY3ZDVmNjdlYzkyYjMxNTBmYzE5Y2UyMWM2NzY5YTg2MzhlMDdkYzMxNmU0OWI4MTEzOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ1ZjA4M2Q2MDMwZTMzYjRjYmIxMWJjNWUwMTUwZjA0NGE4NDYzMjYwNmU4ODljODFkNzljNDQwMjMxMDRjMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY0MjNlMzcxYWIzYmMyYjE3ZDQwZjNhZjE4ZWQ0M2RkYWQ4ZjhjMmQ4M2Y3MmU3MGE3ODBkYjg0MzVlNDBkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWU5MjY0ZDk0MTMxZjlhMDA0ZDBhNGE5ODAwODkzN2NhMWVlMThlNzYyN2Q4NGY1YjkxOTQ4ODRkYzA1YjE2NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9d72cb290e94cc2a52dfcfb02bea497",
+      "statement": "Upstream HTTP 400, 401, and 422 responses release the proxy request count and model request count.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/provider-proxy.ts#L676-L683",
+          "version": "repo-lines-v1:sha256:9ab6aea02f4bca4a19a7d06edc225d0bafd3cb72bac92d7a708400cea3924b0e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMwZGQ1NDhhMzA4MmFmMmU3MmUxNmEyMTFkZjU2NjFkZWNjNTkzZGZhOGFlOWIwMDM0MTIxYjQ5ZDBhODliMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhlOTIwNTcxMTQ3ZjA1NTVhMzNhYzI3ZmQ5ZGFmY2JlMDRkYTZhYjkwZWFjNzcyYjk4NjBmY2RjNGZiNzBkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTY2OTg5N2NjN2Y5MmZhZGJhZThlOTJjODMyOGRhMGMxMDljZDllZjUxMWIxZDNkODRiNDdkYTc3OWMzN2JmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE1MjNkODEyYjA0ZGI5NzE5MjEyODRjODFiOTZjZmU0NWFlOGU3YTViNjAwYzI0NjM4YTZiMzk3NjhmNzljOSJ9"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T05:20:43.904Z"
   }
 }

@@ -78,10 +78,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:22:22.352Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T05:20:43.904Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -272,6 +272,11 @@ Saving a new customization preserves an existing block.
 The Scribe brief identifies the Project and the accepted start commit.
 It includes the prior successful start commit and merged task descriptions when those records exist.
 Source evidence establishes actual behavior; task descriptions establish intent.
+The OpenWiki begin response groups pages by their last source review and supplies recent commit messages for intent.
+Its changed-path and Claim-issue lists have size limits and exact counts.
+The Scribe uses `git diff --name-only <baseGitHead>..HEAD` for a truncated changed-path group, excluding wiki and ignored paths.
+A truncated group without a baseline requires review of every page in that group.
+The recovery skill uses `claimIssuePages` to retain review coverage when individual Claim issues are omitted from the response.
 Without a prior successful update, the Scribe covers the whole repository.
 
 The Project environment part identifies the configuration revision, selected image, and base.

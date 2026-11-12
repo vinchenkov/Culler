@@ -52,6 +52,8 @@ sources:
     resource: repo://mc/verbs/providerlifetime.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
+  - id: openwiki-source-55a77f851b2af31942b7f086
+    resource: repo://release/opencode/generate.py
   - id: openwiki-source-3fc938040bede67eab99b0e0
     resource: repo://resident/src/agent-profile-runtime.ts
   - id: openwiki-source-473a9f9ce4c4f72240c3f031
@@ -62,10 +64,12 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+  - id: openwiki-source-1f5e3c410b2b7d805b40d03a
+    resource: repo://resident/src/provider-proxy.ts
+generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T05:20:43.904Z
 ---
 
 # Agent connections and access renewal
@@ -199,6 +203,9 @@ Arrow keys move the selection; Enter selects the provider.
 A terminal without screen controls asks for a query and then shows the matches.
 `mc/onboarding/terminal_search.go` owns the terminal interaction; `mc/cmd/mc/setup_opencode_prod.go` supplies the catalog search.
 The release catalog supplies baseline models. The host combines these with validated live models from the pinned OpenCode package.
+`release/opencode/generate.py` derives the catalog from that pinned program.
+It excludes providers whose key variable is `GITHUB_TOKEN`, because OpenCode assigns its temporary Culler token to the selected provider's key variable.
+Agent commands inherit that variable, so this exclusion preserves a Project's GitHub credential.
 The model test verifies the saved key and selected model.
 
 In a published installation, the first OpenCode connection starts a separate download of the pinned program and web search plugin.
@@ -346,3 +353,11 @@ The host preserves the last successful list after refresh failure.
 A test of an unsaved profile does not replace the saved profile's verification.
 Matching model configuration and credential authorization evidence apply when the profile is saved.
 `mc/cmd/mc/systemstatus_setup_test.go` checks this separation.
+
+## Rejected provider requests
+
+The host proxy returns upstream HTTP 400, 401, and 422 responses without charging the request count or model request count.
+The harness can retry after account renewal or with another request form within the same authorization.
+Other provider errors retain their charge, and all authorization and lifetime limits still apply.
+`resident/src/provider-proxy.test.ts` checks these counts with controlled responses and synthetic credentials.
+See [runner adapters](../architecture/runners.md#provider-access) for the container boundary.

@@ -44,10 +44,10 @@ sources:
     resource: repo://runner/image/toolchain-smoke.sh
   - id: openwiki-source-a1d3951819531015b34e3c43
     resource: repo://runner/shared/setup-error.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T05:20:43.904Z
 ---
 
 # Runner containers and harness adapters
@@ -151,8 +151,23 @@ A prompt hook exposes the native session identity before the first provider resp
 The adapter registers that identity with the native database locator.
 The resident publishes masked trace copies and preserves the original session database for resume.
 These databases belong to OpenCode; Culler state remains in the spine behind `mc`.
-The adapter requires a successful process, a session identity, reply text, and a completed step before it reports success.
+The adapter requires a session identity, reply text, and a completed step before it reports success.
+A process failure prevents success unless the adapter stopped an expired background wait.
 `runner/agent-runner/opencode.test.ts` checks configuration isolation, trace registration, redaction, and terminal results.
+
+### Background commands and shell variables
+
+The Claude SDK and OpenCode harnesses keep a turn open while background commands run.
+Their adapters allow ten minutes without a new event during that wait.
+A later model response continues the turn, and the last reply becomes the result.
+When the wait expires, the adapter stops the harness and retains the completed reply.
+An expired wait cannot turn an incomplete OpenCode reply into success.
+`adapters/startup.test.ts` and `opencode.test.ts` check continuation and the wait limit.
+
+The Codex shell keeps the container environment, including variable names that contain `KEY`, `SECRET`, or `TOKEN`.
+Its explicit shell exclusion removes `CULLER_PROXY_TOKEN`.
+The adapter removes provider credentials before it starts the harness.
+This preserves Project tool credentials in agent commands while keeping the temporary proxy token outside those commands.
 
 ### Provider access
 
@@ -163,6 +178,9 @@ The host supplies and renews provider credentials outside the container.
 The proxy accepts only the connection, model, operations, and lifetime that the host assigns to the run.
 The adapters remove ambient provider credentials and provider destination overrides.
 The host records the origin of each request failure.
+During a model test, upstream HTTP 400, 401, and 422 responses release the request count and model request count.
+A harness can therefore retry a rejected request after renewal or with another request form.
+These responses remain failures in the diagnostic record; other upstream failures retain their request charge.
 See [Agent connections and access renewal](../operations/agent-connections.md) for the host storage and failure behavior.
 
 ## Project preparation and setup

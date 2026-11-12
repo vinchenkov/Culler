@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b2ab7dac01a88ff67790f06b3680549da819580249a066ca188aaa1534aa8779",
+  "pageVersion": "sha256:920fe572aad5115c230a2bc7d0a1184e87e72ba7373495088fb96cb494ffbd80",
   "claims": [
     {
       "id": "claim_0e880ef8eb5e4b06b827221b7df78b3a",
@@ -428,11 +428,11 @@
         },
         {
           "resource": "repo://mc/verbs/skills/scribe/openwiki-recovery/SKILL.md",
-          "version": "repo-file-v1:sha256:8309dd27678c19e776ebe2fd2c80609d8405bf21cc8e6baa027859135be455bf"
+          "version": "repo-file-v1:sha256:11162680bd077233954fcca82c0b74e7df63b622d24ea3fbc43514c864b2d13d"
         },
         {
           "resource": "repo://mc/verbs/skills/scribe/openwiki/SKILL.md",
-          "version": "repo-file-v1:sha256:e7e706c0924ca956ba4eb492fac481290ea6fec0a8e0846e0e4cafe0d96ef61c"
+          "version": "repo-file-v1:sha256:5419b6360c5a7062e24e7434ac20f7e5e51cf7fff96b61f9ac5ae47bfd30b543"
         }
       ]
     },
@@ -661,10 +661,24 @@
           "version": "repo-file-v1:sha256:d3a52a110b2ba82d6eec9c9a84d44917214ae434d91821010f7eb0e0acf9bdee"
         }
       ]
+    },
+    {
+      "id": "claim_01db256b9d87434589b91626d0ac2e39",
+      "statement": "The Scribe lists the complete source diff for truncated changed-path groups with a baseline and uses claimIssuePages for truncated Claim issues.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/scribe/openwiki-recovery/SKILL.md#L10-L16",
+          "version": "repo-lines-v1:sha256:7b5c8db43d479e1f3ece157a221b0f7faa781713f46105fd0b31626f7227cc4e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE3M2U3NTU3MGQyYzAxY2Y5OTFkMzVkYWVmM2EyMmE2MjUyMTNkODU4Mjk2MDZkMGI3Mjg2NzRhZjliY2IzMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQ4MGVhYjMxMzdiYzBiMjUyODVkYTNiZjRiOWRmNzFmMThlMTgxNzhjMTdkZjNkYzc1ZDNiMzE5ZDM2NGFmMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTM5MGMyZTBjYmQzYmVjMDdkNTBjYmJiNjZkZThlYjZjYjBjZmUyZWI4ZmRlMTc4MzRmNGQ2M2NhMTVmYjU5ZSJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/scribe/openwiki/SKILL.md#L15-L24",
+          "version": "repo-lines-v1:sha256:085ffbdc47f425f273a32cfd39194d1864f20750469e4245ea372bd604106dd9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0MWQ1ZjM3ZDA4Y2E0ZDk1YTQ3NzYzYWViM2ZmNTgyN2ZiNjhlNzhlNDc0ZGM4YzAzNWUyNDkxNjQ4OWIyNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwYTA1Y2IwMjQ3MjA4NGI4MGNjOGE3OGQ4YjYyZjQ2NDNjZWM1YjhlOTFjZWMzZDdkYTIwMzJmN2QxZGIyYTcifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:22:22.352Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T05:20:43.904Z"
   }
 }

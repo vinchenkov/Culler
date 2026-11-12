@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5fa31d33cb21a733fe027bb08809892fcaee2adfdc4bba5299a98c33833b589b",
+  "pageVersion": "sha256:ccd1a432fb31117a5de48a9330b60bce8cc89d14365f11d456d084802623591e",
   "claims": [
     {
       "id": "claim_9b499244e0744b82b23967e19b689227",
@@ -206,11 +206,11 @@
     },
     {
       "id": "claim_512d2be46d5e44ea8da2b2326dac735f",
-      "statement": "The proxy keeps the AgentsView token out of settings responses and refuses service configuration and synchronization paths.",
+      "statement": "The proxy removes the AgentsView token from settings responses and refuses service configuration, synchronization, and embeddings paths.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/agentsview-proxy.ts#L206-L228",
-          "version": "repo-lines-v1:sha256:298d6d21f77cfbdf1f11b992de9c2ab5b830f3f1fe71aaa0d3edb8f1c3395167:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiOTE1ZDg2NGFmNjYyMTdiZTEzZGI4OWZiM2JkOGU2YTM4OTlkMWUwZTg0ZDIzMTlmZTljZGE3M2NkZDc1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlOTdhZWYxNjc4NmRiZmMwOTZiNGZhMTkxMDc2NzJjZjlkYjE4YmY2YzVhYTFmYzVmY2VhMzJmN2ExNTdhYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiYTkyYWQ1NjIxN2Q2OWY5ZDIxZWZlNGNiNjY5NTAxNzAwYTNiNTUzOWIyZDc4ZWZjNWQ0NGMzMjA4NjgxOGYifQ"
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L203-L228",
+          "version": "repo-lines-v1:sha256:50f7d753d4235ca6b6e3ccdb9f5a14fa4d46fdeaf5e3c6437b489a15f66337ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjYjU4ODg3NDBmYTFjMTI3NzQ2Yzk1Mjg0NjU5N2FlZDQwNjYxYmNlZDFlNzVjNzQ2MWIzODIzYjc3MTYwOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhM2UwOTc4Njc0YTNkMTczNjk5NWM4ZDk2NDdkMzA4NmI5ZjYzMjE5Mzk2NDdiNDgwNjEzNWMyYzI3MTQ5OTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4ZTYwN2NkYTM5N2Q0NzgwZjYzMDQwYWExYjFhMGFlNWE0ZDI1OTMyYjE5YWQ5NjA2YmE4ZTRlMzZlYjNlYzAifQ"
         }
       ]
     },
@@ -249,8 +249,8 @@
       "statement": "OpenWiki requires review after external page or Claim edits and reopens invalid completions when an update resumes.",
       "evidence": [
         {
-          "resource": "repo://runner/openwiki/README.md#L76-L105",
-          "version": "repo-lines-v1:sha256:4683c20251c399a1625797ff389edbd683911e729080c97ca56a4251660fe27a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5ZmVlYTkzMjZkNWMxNDM2NzM1YTZlODY2NTI0MmRhOTgzY2VkYTJhMjdiNjNkMzM4YTc4YTUwNmNmNDUzNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhOWMyZDU2NDVjODFmYmYxNjY2MDNlNGVmMzljOTg1ZDdiMzNiZTc0Y2Y5MmJiNTQ3NDcxZTcyNWRmMmU0NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2NTMyODc1MzU2MDZjNzRkODVjZDgwY2ZjZDE5NDVmMTc4MzYyNjcwYjA2NDJkOWQ4NzljNmZjZDQ2NDA1OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0N2ZmM2FlOTE0ZTI1ZWUxYzRkODY1YTJmNDAyMTI0ZGU2YWJmNmViYzE5NjU2ZjRkY2UwZDYzNjYwNjJiOTIifQ"
+          "resource": "repo://runner/openwiki/README.md#L76-L109",
+          "version": "repo-lines-v1:sha256:04e5c4671ffa29ad127408f34ab7d080bad01938b7bd53625df58b34c0f4d238:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5ZmVlYTkzMjZkNWMxNDM2NzM1YTZlODY2NTI0MmRhOTgzY2VkYTJhMjdiNjNkMzM4YTc4YTUwNmNmNDUzNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhOWMyZDU2NDVjODFmYmYxNjY2MDNlNGVmMzljOTg1ZDdiMzNiZTc0Y2Y5MmJiNTQ3NDcxZTcyNWRmMmU0NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2NTMyODc1MzU2MDZjNzRkODVjZDgwY2ZjZDE5NDVmMTc4MzYyNjcwYjA2NDJkOWQ4NzljNmZjZDQ2NDA1OGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0N2ZmM2FlOTE0ZTI1ZWUxYzRkODY1YTJmNDAyMTI0ZGU2YWJmNmViYzE5NjU2ZjRkY2UwZDYzNjYwNjJiOTIifQ"
         }
       ]
     },
@@ -267,10 +267,44 @@
           "version": "repo-file-v1:sha256:50f3b68c0ec440334a09db64047351f82366ebd6bc38507eb8e4af07b3781f6a"
         }
       ]
+    },
+    {
+      "id": "claim_359670a8acf5453d94af4acb6e87557f",
+      "statement": "The resident includes child sessions when listing AgentsView sessions.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/agentsview.ts#L207-L212",
+          "version": "repo-lines-v1:sha256:0f72b86d03fd6ea4785d46a5f7bd0f1aaae73fce9f2e1c874b0f50258c8e121c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDI5MDcwMjczNjc0MjE1NzU5YjEzNDEwN2VjNDZhMDZlZjIxMzRhN2M0ODI1N2ExZTAzOWQ0NWRiZmJkNjUyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmY4ODdiNGQ1NzBjZmI2OGI5N2Y1ZTkxYjExMzdkNjU0OWU4OGE2ZTMxMTU1NTJhOGI1ZGI5ZWQ4MDhjOTMxNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTY2MjdmNTAzMDZkYzdiMWVmZmIyMDUxY2ZmNDhhYzEyZDFjNzMxYTA5NGJmMTJkZmZlMTg2NjNkMWYwMmZjNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzFiYzcwMmYzOGEwYTQ3NDFjMDJiNDc3YTllM2I0MjhjNTNjYmViNDhlYWU0NzRiNjZjZTJiZDY5MTZkNGYzNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8640a6f3381148258c5cfb9b103f2ab3",
+      "statement": "The OpenWiki integration rejects plans that defer Claim issues.",
+      "evidence": [
+        {
+          "resource": "repo://runner/openwiki/integration.mjs#L267-L272",
+          "version": "repo-lines-v1:sha256:b73b308248e2888d9f057766886c1516427e51c3fef66c6f288be95a90fd47d2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZlZTE3NjBhMjkyY2RlNGZkMGM3MzBjZjhjOGEwMDVkNTQ5YTQ4MTE5ODNjNGZkN2VjZTc4MTg3ZDE3NzUyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg4ZDJmNDRiYTQ2NTZiOGQ2ZmI3MGY4Mjk3NTZiYTNhODM5MzcxY2E2NWJhMTA5MGYzNWVmYTE1YjNhYzZjMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTVjNmQwNTFhMjdmMzVjMzVkYzA2OGZmOGE3ZDdlZjQxNTYyOGZlMTllODVhN2Q5M2E2ODZiODFlZTZjZWY0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZkM2M0ODEwNjg2YWRjOTQ3Yzg0NGZiNGY2Y2U1YmMxMGFlOGFiOTlhOTdlNzNkMWZkODg4OWYyMzQ1MWU1OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6cf286cabf24454b32fc6020fea4fc8",
+      "statement": "Culler pins OpenWiki package version 0.9.0 and checks that version before applying upstream patches.",
+      "evidence": [
+        {
+          "resource": "repo://runner/openwiki/package.json",
+          "version": "repo-file-v1:sha256:ba69af9fc24ee71a3e80eaee22c5167fac42eba0399d3e95962a55a37161c772"
+        },
+        {
+          "resource": "repo://runner/openwiki/patch-upstream.mjs",
+          "version": "repo-file-v1:sha256:886cdc5720fa331045f4fdc83d99ae0f81da84616437218ccd70f2806ffe0807"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T05:23:35.047Z"
   }
 }

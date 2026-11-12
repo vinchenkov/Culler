@@ -182,10 +182,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T05:20:43.904Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -710,6 +710,8 @@ The assertion also checks that the error excludes the supplied refresh value.
 
 The resident tests cover proxy authorization, certificate trust, renewal, revocation, and diagnostic attribution.
 `provider-proxy.test.ts` distinguishes local refusals from provider failures and checks incremental response delivery.
+It checks that upstream HTTP 400, 401, and 422 responses permit another request within a one-request limit.
+The same tests require HTTP 404, 429, and 500 responses to retain their request charge.
 `provider-credentials.test.ts` checks shared renewal, cancellation, durable rotation, and bounded retries.
 `resident/src/connection-recovery.test.ts` runs resident ticks against the actual Go connection controls with synthetic credentials and provider responses.
 It checks retry timing, service recreation, expired access, launch admission, overlapping ticks, stopped authorization, and obsolete results.
@@ -786,6 +788,9 @@ These descriptions identify source assertions; this wiki update does not execute
 ## OpenCode and update recovery checks
 
 `runner/agent-runner/opencode.test.ts` checks model variants, local plugins, role skills, OpenWiki readiness, native session identity, continuation, completion, and diagnostic token removal.
+Its background-command fixtures check that a finished job continues the turn and that an expired wait retains the completed reply.
+`runner/agent-runner/adapters/startup.test.ts` checks the corresponding Claude SDK continuation and wait limit.
+The fixtures shorten the wait; the production limit is ten minutes.
 `mc/deployment/opencode_test.go` checks baseline model lists, download retry, unsafe archives, interrupted extraction, native version checks, and model-test evidence.
 These checks use controlled fixtures and do not establish live provider availability.
 
@@ -867,6 +872,8 @@ This wiki update reviews these source assertions and does not report a fresh Go,
 It checks original document preservation, Claim evidence, navigation, and receipt access across user identities.
 The recovery cases cover external page and sidecar edits, absent Git history, source inventory changes, deleted pages, and malformed metadata.
 They also check edits after inspection, edits during evidence resolution, rejected completion, and resumed updates with valid prior page completions.
+A 205-file fixture checks the 200-path response limit, exact counts, truncation flags, complete Git diff, and commit intent.
+A separate case requires a plan to review each Claim issue and rejects attempted deferral.
 `runner/openwiki/check.sh` runs through the image component check.
 See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md#page-verification-and-recovery) for the contract.
 
@@ -885,3 +892,10 @@ The lane and trace-reader tests cover import state and bounded native queries.
 Dashboard model tests cover download progress and preservation of focused controls.
 `systemstatus_setup_test.go` checks saved-profile verification during a draft model test.
 Setup sign-in screen tests cover direct authorization after one selection and retained confirmation for other model tests.
+
+### Viewer child sessions and embedded fonts
+
+`resident/src/trace-lane.test.ts` requires child sessions in each viewer session-list request and checks Codex display names through a child-session fixture.
+`dashboard/src/agentsview-proxy.test.ts` checks embedded data fonts in the content security policy and refusal of embeddings endpoints.
+`dashboard/acceptance/agentsview.test.ts` checks loaded fonts through the authenticated real viewer and trace restoration after cookie removal.
+These are source assertions; this wiki update did not execute the application tests or viewer acceptance lane.

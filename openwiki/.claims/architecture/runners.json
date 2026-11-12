@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:20792b39deb2b1efed95c44336c0d2c4b3d821696f027cd6ad7490737890a19a",
+  "pageVersion": "sha256:d1620d41c0a15fd7f7ba6eb3a3f6a4fb6540bb2009d3b37239561d4b3ef59296",
   "claims": [
     {
       "id": "claim_72140ad5595540da9dadcbf90a41c767",
@@ -228,7 +228,7 @@
       "evidence": [
         {
           "resource": "repo://resident/src/provider-proxy.ts",
-          "version": "repo-file-v1:sha256:277a6e711e6df9be70bc5e4abb55af45621ac0e74cc090a5bd6c824b9702e2f2"
+          "version": "repo-file-v1:sha256:dcadc258d95fe1f5db0226ec38d53fbf52c5136ea8390b78d198259f59c514e0"
         }
       ]
     },
@@ -238,15 +238,15 @@
       "evidence": [
         {
           "resource": "repo://runner/agent-runner/adapters/claude.ts",
-          "version": "repo-file-v1:sha256:42ccf95b92abc7d98edb3baac0bdf3d401f853517c90fb1a162be811c2ee7b3e"
+          "version": "repo-file-v1:sha256:1f81dd0ef6896f81b5d63f413bf9807ee497b019ee92c6b742fe7d2d074fe1dd"
         },
         {
           "resource": "repo://runner/agent-runner/adapters/codex.ts",
-          "version": "repo-file-v1:sha256:a87415673b196f5b2b95ca008504a45392d5a00b382c6a0425b501932954c09a"
+          "version": "repo-file-v1:sha256:a6b53a8ef7b3e705165bab94a32ad44830299f9e4d3228778b374529b7ae353d"
         },
         {
           "resource": "repo://runner/agent-runner/adapters/opencode.ts",
-          "version": "repo-file-v1:sha256:bc950854d4ed991b8d248d859ff68aae8d15e1d88acb493b03528af2be85076c"
+          "version": "repo-file-v1:sha256:2ab87df860b4e6097547c2b4109856d331d4b83a8f95cabe47e6cadd0e233b1b"
         },
         {
           "resource": "repo://runner/agent-runner/main.ts",
@@ -270,7 +270,7 @@
       "evidence": [
         {
           "resource": "repo://runner/agent-runner/adapters/opencode.ts",
-          "version": "repo-file-v1:sha256:bc950854d4ed991b8d248d859ff68aae8d15e1d88acb493b03528af2be85076c"
+          "version": "repo-file-v1:sha256:2ab87df860b4e6097547c2b4109856d331d4b83a8f95cabe47e6cadd0e233b1b"
         }
       ]
     },
@@ -307,10 +307,34 @@
           "version": "repo-lines-v1:sha256:f017ac8415494db207196494091a6ba9ac1e8daee582d9edd8f7100a3950e624:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_1a6c30e7b4344b66be300d3d08b17c98",
+      "statement": "The Claude SDK and OpenCode adapters stop a background wait after ten minutes without a new event.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/adapters/claude.ts",
+          "version": "repo-file-v1:sha256:1f81dd0ef6896f81b5d63f413bf9807ee497b019ee92c6b742fe7d2d074fe1dd"
+        },
+        {
+          "resource": "repo://runner/agent-runner/adapters/opencode.ts",
+          "version": "repo-file-v1:sha256:2ab87df860b4e6097547c2b4109856d331d4b83a8f95cabe47e6cadd0e233b1b"
+        }
+      ]
+    },
+    {
+      "id": "claim_905e79e8dc9b4c15aa03161cac5ed93a",
+      "statement": "The Codex shell inherits container variables while explicitly excluding CULLER_PROXY_TOKEN.",
+      "evidence": [
+        {
+          "resource": "repo://runner/agent-runner/adapters/codex.ts#L65-L73",
+          "version": "repo-lines-v1:sha256:b28a151894382916c22c14a67a6d66e144c1a1eb607800a09c0412619ba735f9:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU5NDg2NmE1NzVmNjYzMDMwYWU5ZDU4ODczYzVlYTM4OGYwNDI0ZTEwNDVjMzIyZmU1NWM3ZWYzMGE4OWI0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGI0NzFjNThhZGM4MzQ1YjBmYTg3OGIxYTYyMDhlMDlkNTUxYmJkZTM4OTQ4YWUxNmI5OWRjZDIwZTc2YTE1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmU1YjU2ODY3NzI5ZGI5MmYzZTYzNDgzZDFmZTRhOWI3ZGIzNWRkZTdkZmVhY2IwNmQ1ODVmNzQ5NThjNGY4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjUwOWU5NzFkOTNiOWRkOGY3NTY5M2U3ODkzNWZmNDAyYmI5MWM2NTQ5M2FjMzQ0NGQ1MTY3MGYxMzQ1ZGI1OCJ9"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T05:20:43.904Z"
   }
 }

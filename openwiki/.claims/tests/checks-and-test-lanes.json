@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:1e359ce559bda14ef9a2614786502e42414df61ae47c7660a17189e35d135dc4",
+  "pageVersion": "sha256:d9e60dfc4b075777d13f85dca24d0ce4fa1e1fa4ca8d2956dc750b19bf0bc7c9",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -624,7 +624,7 @@
         },
         {
           "resource": "repo://runner/agent-runner/adapters/adapters.test.ts",
-          "version": "repo-file-v1:sha256:264ed6a98b3db14a18e850b569ac1fbc9eef6dc425359a8265328e575113814f"
+          "version": "repo-file-v1:sha256:236bea4a1d7ef3c4e8df1798c87f12c03e508402f5e29257d5aaa3ba16340f9e"
         }
       ]
     },
@@ -745,8 +745,8 @@
       "statement": "OpenWiki compatibility tests cover external edits, missing history, source inventories, interrupted updates, and page or Claim changes during review.",
       "evidence": [
         {
-          "resource": "repo://runner/openwiki/compatibility.test.ts#L373-L526",
-          "version": "repo-lines-v1:sha256:1c6075a6e6061377d8a0a22532bf835178df9cd5ee4605bd109ce628baa68b2b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2YjUxMzhkNjNiOGM4OWMwOTQwNDhmNWJhNDkxOTI5MzkwZWE4OGMwYWVjNTFmMjc1NDYzMmRmZjI1NmU5MTBlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4ZTdhNGNmZTg3ZDI3N2Y2MGVkYzU4Mjk1ZjJjMjY0NTk4NjBmZjZkZWY5MWE3MTlkZTc2NDVmYWE3NjQzZWExIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4MDE4MmY2YmYxNjkxMTYyZGJjMDA2N2ViN2M4ODRkZGEyYzJjMDc2MWI5NDNkMDY2OGMyODRhMGM4Mzc2ZDBlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4NjY1MTBiMTg2NzcyYTg2NDc2MTI0YTAzY2NhNGIxYTAxZTdjNGZkYWM0ODgyMjhjZTA1ZjE0ZWYyOTE1YmYxIn0"
+          "resource": "repo://runner/openwiki/compatibility.test.ts",
+          "version": "repo-file-v1:sha256:da635b2deeff5ff02a899bb111fe6b219a84485eadf47942707256cdeeeeb01a"
         }
       ]
     },
@@ -756,11 +756,11 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/opencode_test.go",
-          "version": "repo-file-v1:sha256:70771cad0d9d2441a34a612ea65e3b9c4e6fa582c22e6b313224c138dde534e1"
+          "version": "repo-file-v1:sha256:1ccbf0dd07e4792b94fcb8f3a377d436cc654a69e6c464c1f75fa2abb11fe0d3"
         },
         {
           "resource": "repo://runner/agent-runner/opencode.test.ts",
-          "version": "repo-file-v1:sha256:b4e79e3756c1bcd228a7fc742bd1b771dbb22424f9a93e30473b643eef159a86"
+          "version": "repo-file-v1:sha256:076ce262d6693ebc744846dccb0e1a84b470148eacdadd6eae91d278d7fc8e21"
         }
       ]
     },
@@ -800,7 +800,7 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/opencode_source_program_test.go#L10-L70",
-          "version": "repo-lines-v1:sha256:8dcad6106881d3720612faee1d99cec96e4617365e93c164bb64adc96dc1415a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4OWVmMGRhZjMyYmVmZTU4OTUwMjQ5MDc0MTAwYzA0NzlhZTc2NzBjNDE5OTE4NDczMzliMGQwZDg4ZGIyMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "version": "repo-lines-v1:sha256:58a08d56a48386c5ae6e91c49e333fec0d198d262cbfc220215897623fae4ba6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4OWVmMGRhZjMyYmVmZTU4OTUwMjQ5MDc0MTAwYzA0NzlhZTc2NzBjNDE5OTE4NDczMzliMGQwZDg4ZGIyMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -1219,10 +1219,20 @@
           "version": "repo-lines-v1:sha256:5c5cb47c2ae65a8206918a133df73d4da31cf8ed9f7bdc823888f069b7f5ea3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMzE0YWM0NWVkOGM4OGI3ODhjMDNjZTFiNDMwZmIxNTk5NGUyNGUzNjNkZDAzNGU1YjM4ZDY1MGVhYWEzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGRlYjY3NmI1YmQ3ZTI3MWRmYmEwNmE3ZDk3MTg4N2MwYzI2ODk2NmUzMjc4ZDBmYzAyNzhkM2FkNGJhMTIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_740b59c08ed047e8b369ebcf2545b38c",
+      "statement": "The OpenWiki compatibility suite checks bounded changed-path lists with exact counts and rejects Claim issue deferral.",
+      "evidence": [
+        {
+          "resource": "repo://runner/openwiki/compatibility.test.ts#L426-L467",
+          "version": "repo-lines-v1:sha256:5b315be0956c055170cb0c7197acf8513dec797eaa1b286fb009adf4e89f95dc:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNzZhMWNhNjc1NjhlODIwNGM3ZTI4MDcyMjhkNGUxOGQyOGI1ZTE1ZDNiMDIwMGI0Mjg0ODMyZTg0YWE1ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjhlZmJmZTE0Yjg5M2Q5MjhkOTUzZjAxYjFkYTVjZTk4MjEyNWYzNDFkMjczMzI2YzZhMzI5Njk5ZmIyZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhYTliMzhhZjkwYTkxNDI3MDBkNmI1NDc2MGFjMjgxODhiZDc2MWE1M2EyZDlmNDEwZjhjYTVjNTZhYTRhZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzOTBkMWRlZDI1YTU5MjY0OGFmY2QyY2IwOTIyZTEyMmU1ZWZlYTI4ZGM1NTJmYTIxNDllNDc0M2RjYjgwYWIifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:11:01.469Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T05:20:43.904Z"
   }
 }

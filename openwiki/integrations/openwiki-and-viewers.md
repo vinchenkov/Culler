@@ -40,27 +40,33 @@ sources:
     resource: repo://resident/src/wiki-lane.ts
   - id: openwiki-source-dea7f0a13923e087ab24e792
     resource: repo://runner/agent-runner/adapters/openwiki.ts
+  - id: openwiki-source-45c5b80a26df13dfbeddcb87
+    resource: repo://runner/openwiki/integration.mjs
+  - id: openwiki-source-0ed903ccac623e89a97565d1
+    resource: repo://runner/openwiki/package.json
+  - id: openwiki-source-9bdf2689e08b7fd68ad0d8c9
+    resource: repo://runner/openwiki/patch-upstream.mjs
   - id: openwiki-source-bd92323608bb4fe6f961f632
     resource: repo://runner/openwiki/README.md
   - id: openwiki-source-ace63dad3a5b181560e37003
     resource: repo://runner/openwiki/server.ts
   - id: openwiki-source-a37b5e4aedd4e9eae5294f1a
     resource: repo://runner/shared/opencode-trace.ts
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T05:23:35.047Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T05:23:35.047Z
 ---
 
 # OpenWiki export and AgentsView trace viewer
 
-Culler integrates two third-party tools. **OpenWiki** (package version 0.7.0) maintains a Claim-checked knowledge base under each Project's `openwiki/` folder. The Scribe role writes it, and the operator reads it through the wiki address. **AgentsView** is a local trace viewer that shows the native transcripts of pipeline runs, Collie sessions, and setup operations. Both are optional to the pipeline's correctness, so failures in either one are logged and never block dispatch. Both listen on loopback addresses that agent containers can reach, so each protects itself with a viewer secret.
+Culler integrates two third-party tools. **OpenWiki** (package version 0.9.0) maintains a Claim-checked knowledge base under each Project's `openwiki/` folder. The Scribe role writes it, and the operator reads it through the wiki address. **AgentsView** is a local trace viewer that shows the native transcripts of pipeline runs, Collie sessions, and setup operations. Both are optional to the pipeline's correctness, so failures in either one are logged and never block dispatch. Both listen on loopback addresses that agent containers can reach, so each protects itself with a viewer secret.
 
 ## OpenWiki for the Scribe
 
 ### Runner side: `runner/openwiki/`
 
-The runner image installs the locked OpenWiki package into `/opt/culler-runtime/openwiki` with `npm ci --omit=dev --ignore-scripts`. It then runs `patch-upstream.mjs`, which checks each upstream file against a recorded SHA-256 and the exact version `0.7.0` before it rewrites that file. According to `runner/openwiki/README.md`, the patches give Culler control of repository setup, preserve project documents (Markdown with `document: true` frontmatter), and keep those documents out of generated Claim state. They also stop finalization when the source changed. For example, the resolver patch refuses a generated Claim whose evidence is under `openwiki/` unless that path is a project document. `project-documents.mjs` holds the set of project-document paths that the patched code consults.
+The runner image installs the locked OpenWiki package into `/opt/culler-runtime/openwiki` with `npm ci --omit=dev --ignore-scripts`. It then runs `patch-upstream.mjs`, which checks each upstream file against a recorded SHA-256 and the exact version `0.9.0` before it rewrites that file. According to `runner/openwiki/README.md`, the patches give Culler control of repository setup, preserve project documents (Markdown with `document: true` frontmatter), and keep those documents out of generated Claim state. They also stop finalization when the source changed. For example, the resolver patch refuses a generated Claim whose evidence is under `openwiki/` unless that path is a project document. `project-documents.mjs` holds the set of project-document paths that the patched code consults.
 
 `server.ts` is the MCP server. It takes `--repo`, `--input-commit`, and `--receipt`, builds the integration with `createIntegration` from `integration.mjs`, and serves OpenWiki's six host tools over stdio:
 
@@ -87,6 +93,11 @@ It detects source changes when the previous Git commit is unavailable.
 OpenWiki uses a Git comparison when no saved inventory exists.
 If neither comparison works, the affected page group requires a full review.
 Added source files also require assessment, even when no existing Claim cites them.
+
+The begin response limits changed-path and Claim-issue lists and reports their exact counts.
+Each page group with a readable Git baseline includes recent commit messages for change intent.
+The Scribe expands truncated source lists through Git and uses `claimIssuePages` to cover each affected page.
+The integration rejects a plan that defers a Claim issue; every issue requires review in the same update.
 
 An external edit to a generated page or Claim sidecar requires page review.
 A malformed or absent sidecar requires new Claims.
@@ -160,7 +171,10 @@ A session expires after 12 hours. The proxy retains both grants and sessions in 
 A dashboard restart therefore requires a new grant.
 
 The proxy supplies the AgentsView token only to upstream requests.
-It removes the token from settings responses and refuses service configuration and synchronization paths.
+It removes the token from settings responses and refuses service configuration, synchronization, and embeddings paths.
+Embeddings operations download a model and remain outside the browser proxy.
+The content security policy permits embedded data fonts from the pinned viewer.
+The proxy adds its bridge script to the viewer page and preserves the page's font links.
 The separate origin and content security policy isolate trace content from the dashboard.
 The proxy validates session destinations and checks the service and requested trace before it grants access.
 Failures show a specific access state with a path back through Culler.
@@ -173,6 +187,8 @@ Failures show a specific access state with a path back through Culler.
 `resident/src/trace-lane.ts` runs on its own timers, outside the tick loop. Every 2 seconds it copies traces. It obtains sessions from `mc __trace-sessions` (`mc/verbs/tracesessions.go`), which returns each run, Collie session, and setup operation with its format, native session ref, AgentsView session id, and display name. The lane writes Claude traces to `MC_HOME/agentsview/traces/claude/projects/culler/` and Codex traces to `MC_HOME/agentsview/traces/codex/sessions/`.
 
 `resident/src/trace-copy.ts` copies only new bytes and stops at the last complete line. The copy size is the resume position, so a restart produces no duplicate and no gap. It opens files and folders with `O_NOFOLLOW` and checks that each one is inside the real session folder, because an agent can swap a folder for a symlink. Each pass has work limits and per-file retry backoff. A separate reconcile pass sets display names and reports main trace copies that AgentsView has not imported.
+The resident requests child sessions as well as one-shot and automated sessions.
+The pinned viewer records non-interactive Codex traces as child sessions, so this selection preserves their display names and import status.
 
 `mc/trace/trace.go` is the single source of AgentsView identity.
 `Format` maps each harness to its native trace format.
