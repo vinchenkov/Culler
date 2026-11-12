@@ -73,9 +73,9 @@ Stop research when you can explain the benefit and define a feasible task. Conti
 ### Write the Strategic rationale
 
 Write the Strategic rationale of each candidate to its own file under `/tmp` before you file the batch.
-The rationale is a succinct hypothesis and its evidence:
+The rationale is a **succinct** hypothesis and its evidence:
 
-- State the hypothesis in one sentence: how the proposed change can advance the Vision.
+- State the hypothesis: how the proposed change can advance the Vision.
 - Cite the evidence that supports the hypothesis, if any.
 - Identify an expected benefit without evidence as an assumption.
 

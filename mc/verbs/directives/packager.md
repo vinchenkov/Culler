@@ -79,10 +79,10 @@ When browser evidence can confirm the change, read packager-browser for media se
 
 Apply this section when the run brief has a **Strategic rationale** part.
 The first packet section then has the heading **Strategic rationale** in place of **Summary**.
-Write a succinct hypothesis and its evidence:
+Write a **succinct** hypothesis and its evidence:
 
-1. State the delivered change in one sentence. Submit that sentence alone through `--thesis`.
-2. State the hypothesis in one sentence: how the change can advance the Vision.
+1. State the delivered change. Submit that sentence alone through `--thesis`.
+2. State the hypothesis: how the change can advance the Vision.
 3. Cite the rationale's evidence for the hypothesis, if any.
 4. Identify an expected benefit without evidence as an assumption.
 
