@@ -1328,9 +1328,9 @@ func TestWikiSchemaObjects(t *testing.T) {
 
 	// The insert order: the run, the wiki update, the customization record.
 	wikiUpdate("run1", "p1", c1)
-	const customization = `INSERT INTO run_customizations(run_id,project,role,revision,standard_directive,standard_digest)
+	const customization = `INSERT INTO run_customizations(run_id,project,role,instructions,standard_directive,standard_digest)
 		VALUES(?,?,?,?,'directive','digest')`
-	mustExec(t, db, customization, "run1", "p1", "scribe", nil)
+	mustExec(t, db, customization, "run1", "p1", "scribe", "")
 	if got := oneInt(t, db, `SELECT COUNT(*) FROM leases WHERE run_id IS NOT NULL`); got != 0 {
 		t.Fatalf("held leases = %d, want 0: a wiki update run holds no lease", got)
 	}
@@ -1349,8 +1349,7 @@ func TestWikiSchemaObjects(t *testing.T) {
 	const claim = `UPDATE leases SET run_id=?,subject=?,owner='worker',acquired_at=datetime('now'),boot_id='boot',
 		acquired_uptime_ms=1,deadline_uptime_ms=2 WHERE project=?`
 	mustExec(t, db, claim, "worker1", task, "p2")
-	mustExec(t, db, `INSERT INTO role_customizations(project,role,revision,instructions,author) VALUES('p2','worker',1,'Write short code.','operator')`)
-	mustExec(t, db, customization, "worker1", "p2", "worker", 1)
+	mustExec(t, db, customization, "worker1", "p2", "worker", "Write short code.")
 	mustExec(t, db, `INSERT INTO runs(id,tier,role,project,binding) VALUES('worker2','pipeline','worker','p3','fake/fake')`)
 	wantMessage(t, db, requires, insert, "p3", "worker2", c1)
 	mustExec(t, db, `INSERT INTO runs(id,tier,role,project,binding) VALUES('mech1','pipeline','scribe','p3','mechanical')`)
@@ -1375,7 +1374,7 @@ func TestWikiSchemaObjects(t *testing.T) {
 
 	// A customization record requires a lease or an active wiki update.
 	mustExec(t, db, `INSERT INTO runs(id,tier,role,project,binding) VALUES('scribe9','pipeline','scribe','p3','fake/fake')`)
-	wantMessage(t, db, "customization input requires its assigned active run", customization, "scribe9", "p3", "scribe", nil)
+	wantMessage(t, db, "customization input requires its assigned active run", customization, "scribe9", "p3", "scribe", "")
 
 	// The heartbeat stamp holds the time and the uptime together.
 	wantMessage(t, db, check, `UPDATE wiki_updates SET last_heartbeat_at=datetime('now') WHERE run_id='run1'`)
@@ -1386,8 +1385,7 @@ func TestWikiSchemaObjects(t *testing.T) {
 		`INSERT INTO infrastructure_failures(run_id,task_id,allowance,condition,source) VALUES('run1',NULL,'project','failed','resident')`)
 
 	// The customization conflict: a wiki update run gets a cleared row, and a lease run gets an active row.
-	mustExec(t, db, `INSERT INTO role_customizations(project,role,revision,instructions,author) VALUES('p2','scribe',1,'Write short pages.','operator')`)
-	mustExec(t, db, customization, "run3", "p2", "scribe", 1)
+	mustExec(t, db, customization, "run3", "p2", "scribe", "Write short pages.")
 	const conflict = `INSERT INTO customization_conflicts(run_id,project_title,passage,requirement,reason,cleared_at,cleared_by,resolution)
 		VALUES(?,'p2',?,'the directive','conflict',?,?,?)`
 	wantMessage(t, db, "the conflict of a wiki update run sets no role block", conflict, "run3", "short pages", nil, nil, nil)

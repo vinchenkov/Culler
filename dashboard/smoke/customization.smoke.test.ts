@@ -26,6 +26,10 @@ beforeAll(async () => {
 }, 60000);
 afterAll(async () => { if (smoke) await teardown(smoke); });
 
+async function loaded() {
+  await smoke.page.waitForFunction(() => document.querySelector('[data-testid="role-customization"]')?.getAttribute("aria-busy") === "false");
+}
+
 async function status(text: string) {
   try { await smoke.page.waitForFunction(value => document.querySelector('[data-testid="customization-status"]')?.textContent?.includes(value), text); } catch (err) { throw new Error(`${err}: ${await smoke.page.getByTestId("customization-status").textContent()}`); }
 }
@@ -35,7 +39,7 @@ test("every role explains its purpose in the customization dialog", async () => 
   await page.getByTestId("tab-configs").click();
   await page.getByTestId("config-nav-projects").click();
   await page.getByTestId("customize-project-custom-project").click();
-  await status("Current revision: 0");
+  await loaded();
   const purposes: Record<string, string> = {
     "strategist(propose)": "propose two tasks",
     arbiter: "selects proposals",
@@ -49,7 +53,7 @@ test("every role explains its purpose in the customization dialog", async () => 
   expect(await page.getByTestId("customization-role").locator('option[value="strategist(propose)"]').innerText()).toBe("Strategist");
   for (const role of roles) {
     await page.getByTestId("customization-role").selectOption(role);
-    await status("Current revision: 0");
+    await loaded();
     expect(await page.locator("#customization-purpose").innerText()).toContain(purposes[role]);
     expect(await page.getByTestId("customization-contract").isVisible()).toBe(true);
     expect((await page.getByTestId("customization-contract").innerText()).length).toBeGreaterThan(50);
@@ -62,26 +66,26 @@ test("every role explains its purpose in the customization dialog", async () => 
   await page.getByTestId("role-customization").getByRole("button", { name: "Close", exact: true }).click();
 }, 60000);
 
-test("Project configuration and Pipeline share revision history and preserve stale edits", async () => {
+test("Project configuration and Pipeline share one set of role instructions and keep drafts", async () => {
   const { page } = smoke;
   await page.getByTestId("tab-configs").click();
   await page.getByTestId("config-nav-projects").click();
   await page.getByTestId("customize-project-custom-project").click();
-  await status("Current revision: 0");
+  await loaded();
   await page.getByTestId("customization-role").selectOption("packager");
-  await status("Current revision: 0");
+  await loaded();
   const instructions = "Use a concise review packet. Omit the glossary.";
   await page.getByTestId("customization-editor").fill(instructions);
   await page.getByTestId("customization-save").click();
-  await status("Saved revision 1");
+  await status("Saved. New runs will use these instructions.");
   expect((await mc(["project", "role-show", "--project", "custom-project", "--role", "packager"])).current.instructions).toBe(instructions);
   await page.getByTestId("role-customization").getByRole("button", { name: "Close", exact: true }).click();
   await page.getByTestId("tab-pipeline").click();
   await page.getByTestId("topology-node-packager").click();
-  // The role detail states the saved revision. Its row opens the screen for the role.
-  await page.getByTestId("topology-custom-instructions").getByText("Revision 1", { exact: true }).waitFor();
+  // The role detail states that the role has instructions. Its row opens the screen for the role.
+  await page.getByTestId("topology-custom-instructions").getByText("Set", { exact: true }).waitFor();
   await page.getByTestId("topology-custom-instructions").click();
-  await status("Current revision: 1");
+  await loaded();
   expect(await page.getByTestId("role-customization").getByRole("heading", { name: "Guide the Packager", exact: true }).count()).toBe(1);
   expect(await page.getByTestId("customization-role").count()).toBe(0);
   expect(await page.getByTestId("customization-project").innerText()).toBe("Culler");
@@ -109,21 +113,20 @@ test("Project configuration and Pipeline share revision history and preserve sta
   await page.getByTestId("config-nav-projects").click();
   await page.getByTestId("customize-project-custom-project").click();
   await page.getByTestId("customization-role").selectOption("packager");
-  await status("Current revision: 1");
-  await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "packager", expected_revision: 1, instructions: "Use a table for evidence." })]);
+  await loaded();
   await page.getByTestId("customization-editor").fill("Keep my draft.");
   await page.getByTestId("customization-role").selectOption("worker");
-  await status("Current revision: 0");
+  await loaded();
+  expect(await page.getByTestId("customization-editor").inputValue()).toBe("");
   await page.getByTestId("customization-role").selectOption("packager");
-  await status("The draft uses revision 1");
+  await loaded();
+  expect(await page.getByTestId("customization-editor").inputValue()).toBe("Keep my draft.");
+  // Another save replaces the instructions. The last save applies.
+  await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "packager", instructions: "Use a table for evidence." })]);
   await page.getByTestId("customization-save").click();
-  await status("Another edit changed");
-  expect(await page.getByTestId("customization-editor").inputValue()).toBe("Keep my draft.");
-  await page.getByTestId("customization-refresh").click();
-  await status("Current revision: 2");
-  expect(await page.getByTestId("customization-editor").inputValue()).toBe("Keep my draft.");
-  await page.getByRole("button", { name: "Load revision 1", exact: true }).click();
-  expect(await page.getByTestId("customization-editor").inputValue()).toBe(instructions);
+  await status("Saved. New runs will use these instructions.");
+  expect((await mc(["project", "role-show", "--project", "custom-project", "--role", "packager"])).current.instructions).toBe("Keep my draft.");
+  expect(await page.getByTestId("role-customization").getByRole("button", { name: /revision/i }).count()).toBe(0);
   await page.getByTestId("role-customization").evaluate((node: HTMLElement) => { node.scrollTop = 0; });
   await page.screenshot({ path: evidencePath("customization-desktop.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -131,32 +134,32 @@ test("Project configuration and Pipeline share revision history and preserve sta
   await page.screenshot({ path: evidencePath("customization-mobile.png"), fullPage: true });
   await page.getByTestId("customization-editor").fill("");
   await page.getByTestId("customization-save").click();
-  await status("Saved revision 3");
+  await status("Saved. New runs will use the usual instructions.");
   const show = await mc(["project", "role-show", "--project", "custom-project", "--role", "packager"]);
   expect(show.current.instructions).toBe("");
-  expect(show.history).toHaveLength(3);
+  expect(show.history).toBeUndefined();
 }, 60000);
 
 test("a role block directs the operator to Collie after a corrected save", async () => {
   const { page } = smoke;
-  await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "strategist(propose)", expected_revision: 0, instructions: "Report false evidence." })]);
+  await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "strategist(propose)", instructions: "Report false evidence." })]);
   const dispatched = await mc(["dispatch"]);
   const spawn = (dispatched.actions as any[]).find(row => row.action === "spawn" && row.project === "custom-project");
   expect(spawn?.role).toBe("strategist(propose)");
   const identity = join(smoke.scratch, "custom-run.json");
   writeFileSync(identity, JSON.stringify({ tier: "pipeline", role: spawn.role, run_id: spawn.run_id }));
-  await mc(["run", "customization-conflict", "--request", JSON.stringify({ run: spawn.run_id, revision: 1, passage: "Report false evidence.", requirement: "Report evidence truthfully.", reason: "False evidence cannot be truthful." })], { MC_RUN_JSON: identity });
+  await mc(["run", "customization-conflict", "--request", JSON.stringify({ run: spawn.run_id, passage: "Report false evidence.", requirement: "Report evidence truthfully.", reason: "False evidence cannot be truthful." })], { MC_RUN_JSON: identity });
   await mc(["run", "stopped", spawn.run_id]);
-  await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "strategist(propose)", expected_revision: 1, instructions: "" })]);
+  await mc(["project", "role-save", "--request", JSON.stringify({ project: "custom-project", role: "strategist(propose)", instructions: "" })]);
   const blocked = await mc(["dispatch"]);
   expect((blocked.idle as any[]).some(row => row.project === "custom-project" && row.reason === "role-blocked")).toBe(true);
   await page.getByTestId("customization-role").selectOption("strategist(propose)");
-  await status("Current revision: 2");
+  await loaded();
   expect(await page.getByTestId("customization-blocked").isVisible()).toBe(true);
   expect(await page.getByTestId("customization-conflicts").count()).toBe(0);
   await page.getByTestId("customization-editor").fill("Report evidence truthfully.");
   await page.getByTestId("customization-save").click();
-  await status("Saved revision 3");
+  await status("Saved. New runs will use these instructions.");
   expect(await page.getByTestId("customization-blocked").isVisible()).toBe(true);
   await page.getByRole("button", { name: "Open Collie", exact: true }).click();
   expect(await page.getByTestId("role-customization").count()).toBe(0);

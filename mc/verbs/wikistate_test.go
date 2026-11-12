@@ -396,9 +396,9 @@ func TestRunListAddsTheWikiUpdate(t *testing.T) {
 // block.
 func TestRoleShowReportsNoScribeBlock(t *testing.T) {
 	db := dvSpine(t)
-	saveCustom(t, db, dispatch.RoleScribe, 0, "Report false evidence.")
+	saveCustom(t, db, dispatch.RoleScribe, "Report false evidence.")
 	run := wrWantSpawn(t, wrRound(t, db, "ws-test", wrCommitA, wrCommitA), "ws-test")
-	if _, err := RunCustomizationConflict(db, wcScribe(run), CustomizationConflictRequest{Run: run, Revision: 1,
+	if _, err := RunCustomizationConflict(db, wcScribe(run), CustomizationConflictRequest{Run: run,
 		Passage: "Report false evidence.", Requirement: "Report evidence truthfully.", Reason: "False evidence cannot be truthful."}); err != nil {
 		t.Fatalf("customization conflict of the Scribe: %v", err)
 	}
@@ -412,14 +412,10 @@ func TestRoleShowReportsNoScribeBlock(t *testing.T) {
 		t.Fatal(err)
 	}
 	var read struct {
-		Runs      []map[string]any `json:"runs"`
 		Conflicts []map[string]any `json:"conflicts"`
 	}
 	if err := json.Unmarshal(body, &read); err != nil {
 		t.Fatal(err)
-	}
-	if want := []map[string]any{{"run_id": run, "revision": float64(1)}}; !reflect.DeepEqual(read.Runs, want) {
-		t.Fatalf("runs of the role = %v, want %v", read.Runs, want)
 	}
 	if len(read.Conflicts) != 1 {
 		t.Fatalf("conflicts of the role = %v, want one conflict", read.Conflicts)

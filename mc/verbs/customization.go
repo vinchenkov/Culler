@@ -14,19 +14,17 @@ import (
 type RoleCustomization struct {
 	Project           string        `json:"project"`
 	Role              dispatch.Role `json:"role"`
-	Revision          int64         `json:"revision"`
 	Instructions      string        `json:"instructions"`
-	Author            string        `json:"author"`
-	CreatedAt         string        `json:"created_at"`
+	Author            string        `json:"author,omitempty"`
+	UpdatedAt         string        `json:"updated_at,omitempty"`
 	StandardDirective string        `json:"standard_directive,omitempty"`
 	StandardDigest    string        `json:"standard_digest,omitempty"`
 }
 
 type RoleSaveRequest struct {
-	Project          string        `json:"project"`
-	Role             dispatch.Role `json:"role"`
-	ExpectedRevision *int64        `json:"expected_revision"`
-	Instructions     *string       `json:"instructions"`
+	Project      string        `json:"project"`
+	Role         dispatch.Role `json:"role"`
+	Instructions *string       `json:"instructions"`
 }
 
 func customizationReader(id *RunIdentity) error {
@@ -51,7 +49,7 @@ func customizationCurrent(ctx context.Context, q Q, project string, role dispatc
 	}
 	c.StandardDirective = directive
 	c.StandardDigest = fmt.Sprintf("%x", sha256.Sum256([]byte(directive)))
-	err = q.QueryRowContext(ctx, `SELECT revision,instructions,author,created_at FROM role_customizations WHERE project=? AND role=? ORDER BY revision DESC LIMIT 1`, project, role).Scan(&c.Revision, &c.Instructions, &c.Author, &c.CreatedAt)
+	err = q.QueryRowContext(ctx, `SELECT instructions,author,updated_at FROM role_customizations WHERE project=? AND role=?`, project, role).Scan(&c.Instructions, &c.Author, &c.UpdatedAt)
 	if err == sql.ErrNoRows {
 		err = nil
 	}
@@ -86,46 +84,6 @@ func ProjectRoleShow(db *sql.DB, id *RunIdentity, project string, role dispatch.
 			roles = append(roles, map[string]string{"role": string(r), "title": roleTitle[r]})
 		}
 		result["roles"] = roles
-		rows, err := q.QueryContext(ctx, `SELECT revision,instructions,author,created_at FROM role_customizations WHERE project=? AND role=? ORDER BY revision DESC`, project, role)
-		if err != nil {
-			return err
-		}
-		history := []RoleCustomization{}
-		for rows.Next() {
-			r := RoleCustomization{Project: project, Role: role}
-			if err := rows.Scan(&r.Revision, &r.Instructions, &r.Author, &r.CreatedAt); err != nil {
-				rows.Close()
-				return err
-			}
-			history = append(history, r)
-		}
-		err = rows.Err()
-		rows.Close()
-		if err != nil {
-			return err
-		}
-		result["history"] = history
-		runRows, err := q.QueryContext(ctx, `SELECT c.run_id,COALESCE(c.revision,0) FROM run_customizations c JOIN runs r ON r.id=c.run_id WHERE c.project=? AND c.role=? ORDER BY r.created_seq DESC`, project, role)
-		if err != nil {
-			return err
-		}
-		runs := []map[string]any{}
-		for runRows.Next() {
-			var run string
-			var revision int64
-			if err := runRows.Scan(&run, &revision); err != nil {
-				runRows.Close()
-				return err
-			}
-			runs = append(runs, map[string]any{"run_id": run, "revision": revision})
-		}
-		err = runRows.Err()
-		runRows.Close()
-		if err != nil {
-			return err
-		}
-		result["runs"] = runs
-
 		conflicts, err := customizationConflicts(ctx, q, project, role)
 		result["conflicts"] = conflicts
 		return err
@@ -140,8 +98,8 @@ func ProjectRoleSave(db *sql.DB, id *RunIdentity, a RoleSaveRequest) (any, error
 	if err := RequireOperatorVerb(id, "project.role-save"); err != nil {
 		return nil, err
 	}
-	if a.ExpectedRevision == nil || *a.ExpectedRevision < 0 || a.Instructions == nil {
-		return nil, Usagef("The save requires instructions and the revision that you read.")
+	if a.Instructions == nil {
+		return nil, Usagef("The save requires instructions.")
 	}
 	if len(*a.Instructions) > 65536 {
 		return nil, Usagef("Custom instructions exceed 65536 bytes.")
@@ -151,18 +109,22 @@ func ProjectRoleSave(db *sql.DB, id *RunIdentity, a RoleSaveRequest) (any, error
 		if err := AuthorizeOperator(ctx, q, id, "project.role-save", a.Project); err != nil {
 			return err
 		}
-		c, err := customizationCurrent(ctx, q, a.Project, a.Role)
-		if err != nil {
+		if _, err := customizationCurrent(ctx, q, a.Project, a.Role); err != nil {
 			return err
-		}
-		if c.Revision != *a.ExpectedRevision {
-			return domain.Errf(domain.CodeRecordConflict, "Another edit changed this customization. Read the current revision and compare your text.")
 		}
 		author := "operator"
 		if id != nil {
 			author = "collie:" + id.RunID
 		}
-		if _, err := q.ExecContext(ctx, `INSERT INTO role_customizations(project,role,revision,instructions,author) VALUES(?,?,?,?,?)`, a.Project, a.Role, c.Revision+1, *a.Instructions, author); err != nil {
+		// Empty instructions remove the customization of the role.
+		var err error
+		if strings.TrimSpace(*a.Instructions) == "" {
+			_, err = q.ExecContext(ctx, `DELETE FROM role_customizations WHERE project=? AND role=?`, a.Project, a.Role)
+		} else {
+			_, err = q.ExecContext(ctx, `INSERT INTO role_customizations(project,role,instructions,author) VALUES(?,?,?,?)
+ ON CONFLICT(project,role) DO UPDATE SET instructions=excluded.instructions,author=excluded.author,updated_at=datetime('now')`, a.Project, a.Role, *a.Instructions, author)
+		}
+		if err != nil {
 			return err
 		}
 		result, err = customizationCurrent(ctx, q, a.Project, a.Role)
@@ -180,8 +142,7 @@ func customizationForRun(ctx context.Context, q Q, sp *dispatch.Spawn, run strin
 }
 func loadRunCustomization(ctx context.Context, q Q, run string) (RoleCustomization, error) {
 	var c RoleCustomization
-	err := q.QueryRowContext(ctx, `SELECT c.project,c.role,COALESCE(c.revision,0),COALESCE(r.instructions,''),COALESCE(r.author,''),COALESCE(r.created_at,''),c.standard_directive,c.standard_digest
- FROM run_customizations c LEFT JOIN role_customizations r ON r.project=c.project AND r.role=c.role AND r.revision=c.revision WHERE c.run_id=?`, run).Scan(&c.Project, &c.Role, &c.Revision, &c.Instructions, &c.Author, &c.CreatedAt, &c.StandardDirective, &c.StandardDigest)
+	err := q.QueryRowContext(ctx, `SELECT project,role,instructions,standard_directive,standard_digest FROM run_customizations WHERE run_id=?`, run).Scan(&c.Project, &c.Role, &c.Instructions, &c.StandardDirective, &c.StandardDigest)
 	return c, err
 }
 func recordRunCustomization(ctx context.Context, q Q, sp *dispatch.Spawn, run string) error {
@@ -189,11 +150,7 @@ func recordRunCustomization(ctx context.Context, q Q, sp *dispatch.Spawn, run st
 	if err != nil {
 		return err
 	}
-	var revision any
-	if c.Revision > 0 {
-		revision = c.Revision
-	}
-	_, err = q.ExecContext(ctx, `INSERT INTO run_customizations(run_id,project,role,revision,standard_directive,standard_digest) VALUES(?,?,?,?,?,?)`, run, c.Project, c.Role, revision, c.StandardDirective, c.StandardDigest)
+	_, err = q.ExecContext(ctx, `INSERT INTO run_customizations(run_id,project,role,instructions,standard_directive,standard_digest) VALUES(?,?,?,?,?,?)`, run, c.Project, c.Role, c.Instructions, c.StandardDirective, c.StandardDigest)
 	return err
 }
 func RunCustomization(db *sql.DB, id *RunIdentity, run string) (any, error) {
@@ -209,7 +166,6 @@ func RunCustomization(db *sql.DB, id *RunIdentity, run string) (any, error) {
 
 type CustomizationConflictRequest struct {
 	Run         string `json:"run"`
-	Revision    int64  `json:"revision"`
 	Passage     string `json:"passage"`
 	Requirement string `json:"requirement"`
 	Reason      string `json:"reason"`
@@ -239,8 +195,8 @@ func RunCustomizationConflict(db *sql.DB, id *RunIdentity, a CustomizationConfli
 		if id != nil && string(c.Role) != id.Role {
 			return Domainf("The role differs from the assigned run role.")
 		}
-		if a.Revision == 0 || a.Revision != c.Revision || !strings.Contains(c.Instructions, a.Passage) {
-			return Domainf("The conflict must cite a passage from the revision assigned to this run.")
+		if !strings.Contains(c.Instructions, a.Passage) {
+			return Domainf("The conflict must cite a passage from the custom instructions of this run.")
 		}
 		var title string
 		if err := q.QueryRowContext(ctx, `SELECT title FROM projects WHERE id=?`, c.Project).Scan(&title); err != nil {
@@ -254,7 +210,7 @@ func RunCustomizationConflict(db *sql.DB, id *RunIdentity, a CustomizationConfli
 		if _, err := q.ExecContext(ctx, insert, a.Run, title, a.Passage, a.Requirement, a.Reason); err != nil {
 			return err
 		}
-		report := fmt.Sprintf("Project: %s (%s)\nRole: %s\nRun: %s\nCustomization revision: %d\nPassage: %s\nContract requirement: %s\nReason: %s", title, c.Project, c.Role, a.Run, c.Revision, a.Passage, a.Requirement, a.Reason)
+		report := fmt.Sprintf("Project: %s (%s)\nRole: %s\nRun: %s\nPassage: %s\nContract requirement: %s\nReason: %s", title, c.Project, c.Role, a.Run, a.Passage, a.Requirement, a.Reason)
 		if subject != nil {
 			report = fmt.Sprintf("Subject: %d\n%s", *subject, report)
 			if err := blockTaskTx(ctx, q, *subject, domain.BlockCustomization, report, string(c.Role)); err != nil {
@@ -281,7 +237,6 @@ type CustomizationConflict struct {
 	Project      string `json:"project"`
 	ProjectTitle string `json:"project_title"`
 	Role         string `json:"role"`
-	Revision     int64  `json:"revision"`
 	Task         *int64 `json:"task"`
 	Passage      string `json:"passage"`
 	Requirement  string `json:"requirement"`
@@ -292,7 +247,7 @@ type CustomizationConflict struct {
 }
 
 func customizationConflicts(ctx context.Context, q Q, project string, role dispatch.Role) ([]CustomizationConflict, error) {
-	rows, err := q.QueryContext(ctx, `SELECT f.run_id,c.project,f.project_title,c.role,c.revision,r.subject,f.passage,f.requirement,f.reason,f.created_at,
+	rows, err := q.QueryContext(ctx, `SELECT f.run_id,c.project,f.project_title,c.role,r.subject,f.passage,f.requirement,f.reason,f.created_at,
  CASE WHEN r.subject IS NULL THEN f.cleared_at IS NULL ELSE t.blocked AND f.cleared_at IS NULL END,COALESCE(f.resolution,'')
  FROM customization_conflicts f JOIN run_customizations c ON c.run_id=f.run_id JOIN runs r ON r.id=f.run_id
  LEFT JOIN tasks t ON t.id=r.subject WHERE c.project=? AND c.role=? ORDER BY r.created_seq DESC`, project, role)
@@ -303,7 +258,7 @@ func customizationConflicts(ctx context.Context, q Q, project string, role dispa
 	result := []CustomizationConflict{}
 	for rows.Next() {
 		var c CustomizationConflict
-		if err := rows.Scan(&c.Run, &c.Project, &c.ProjectTitle, &c.Role, &c.Revision, &c.Task, &c.Passage, &c.Requirement, &c.Reason, &c.CreatedAt, &c.Blocked, &c.Resolution); err != nil {
+		if err := rows.Scan(&c.Run, &c.Project, &c.ProjectTitle, &c.Role, &c.Task, &c.Passage, &c.Requirement, &c.Reason, &c.CreatedAt, &c.Blocked, &c.Resolution); err != nil {
 			return nil, err
 		}
 		result = append(result, c)

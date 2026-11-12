@@ -243,8 +243,8 @@ func TestScribeBriefHoldsTheStartCommit(t *testing.T) {
 		heading, explanation string
 		facts                map[string]string
 	}{
-		{partCustomization, "This part identifies the operator's custom instructions and their revision.",
-			map[string]string{"Project": "ws-test", "Role": "scribe", "Customization revision": "0",
+		{partCustomization, "This part holds the operator's custom instructions.",
+			map[string]string{"Project": "ws-test", "Role": "scribe",
 				"Standard directive digest": brief.part(partCustomization).fact("Standard directive digest")}},
 		{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
 			map[string]string{"Run identifier": "run-scribe"}},
@@ -383,8 +383,8 @@ func TestScribeBriefParts(t *testing.T) {
 		heading, explanation string
 		facts                []string
 	}{
-		{partCustomization, "This part identifies the operator's custom instructions and their revision.",
-			[]string{"Project", "Role", "Customization revision", "Standard directive digest"}},
+		{partCustomization, "This part holds the operator's custom instructions.",
+			[]string{"Project", "Role", "Standard directive digest"}},
 		{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", []string{"Run identifier"}},
 		{partProject, "The assigned repository is at `/workspace/source`.", []string{"Identifier"}},
 		{partGitState, "The repository starts at the accepted `Start commit`. The previous update identifies the earlier source version when available.",

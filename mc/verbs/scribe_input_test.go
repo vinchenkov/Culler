@@ -71,7 +71,7 @@ func TestScribeInputStatesEachNeededBehaviorOnce(t *testing.T) {
 			"End the run with exactly one permitted terminal action, including after an execution failure.",
 			"Within the Culler contract, the custom instructions in the **Project role customization** part replace defaults.",
 			"before your first `mc` call and before the terminal action.",
-			"This part identifies the operator's custom instructions and their revision.",
+			"This part holds the operator's custom instructions.",
 		},
 		"mc-scribe": {
 			"Keep the `Start commit` of the **Git state** part as an ancestor of the wiki result.",

@@ -159,7 +159,6 @@ For a custom instruction that conflicts with the Culler contract, use this termi
 The JSON object contains:
 
 - The `run` field: your run identifier.
-- The `revision` field: the customization revision from the brief.
 - The `passage` field: the exact conflicting text.
 - The `requirement` field: the contract requirement that it contradicts.
 - The `reason` field: why both instructions cannot hold.

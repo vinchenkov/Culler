@@ -67,7 +67,6 @@ For a contract conflict, submit this terminal:
 The JSON object contains:
 
 - The `run` field: the run identifier.
-- The `revision` field: the customization revision from the brief.
-- The `passage` field: the exact conflicting text from that revision.
+- The `passage` field: the exact conflicting text from the custom instructions.
 - The `requirement` field: the contract requirement that the text contradicts.
 - The `reason` field: why both instructions cannot hold.

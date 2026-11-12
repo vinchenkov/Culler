@@ -992,8 +992,8 @@ func TestDispatchSpawnBriefCarriesClaimedState(t *testing.T) {
 			heading, explanation string
 			facts                map[string]string
 		}{
-			{partCustomization, "This part identifies the operator's custom instructions and their revision.",
-				map[string]string{"Project": "ws-test", "Role": "scribe", "Customization revision": "0"}},
+			{partCustomization, "This part holds the operator's custom instructions.",
+				map[string]string{"Project": "ws-test", "Role": "scribe"}},
 			{partRun, "This value identifies this run. It is the `<run_id>` value of each `mc` command.", map[string]string{"Run identifier": run}},
 			{partProject, "The assigned repository is at `/workspace/source`.", map[string]string{"Identifier": "ws-test"}},
 			{partGitState, "The repository starts at the accepted `Start commit`. The previous update identifies the earlier source version when available.",

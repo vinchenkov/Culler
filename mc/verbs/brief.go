@@ -313,7 +313,7 @@ func trimPackagerBrief(b *runBrief) {
 		case "Agent credentials", "Failure controls":
 			continue
 		case partCustomization:
-			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+			part.Explanation = "This part holds the operator's custom instructions."
 		case partRun:
 			part.Explanation = "Use the Run identifier as `<run_id>` in the command forms."
 		case "Project environment":
@@ -344,7 +344,7 @@ func trimArbiterBrief(b *runBrief) {
 		case "Agent credentials", "Failure controls":
 			continue
 		case partCustomization:
-			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+			part.Explanation = "This part holds the operator's custom instructions."
 		case partRun:
 			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
 		case "Project environment":
@@ -372,7 +372,7 @@ func trimStrategistBrief(b *runBrief) {
 		case "Agent credentials", "Failure controls":
 			continue
 		case partCustomization:
-			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+			part.Explanation = "This part holds the operator's custom instructions."
 		case partRun:
 			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
 		case "Project environment":
@@ -399,7 +399,7 @@ func trimVerifierBrief(b *runBrief) {
 		case "Agent credentials", "Failure controls", "Correction allowances":
 			continue
 		case partCustomization:
-			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+			part.Explanation = "This part holds the operator's custom instructions."
 		case partRun:
 			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
 		case partTask:
@@ -435,7 +435,7 @@ func trimWorkerBrief(b *runBrief) {
 		case "Agent credentials", "Correction allowances", "Failure controls":
 			continue
 		case partCustomization:
-			part.Explanation = "This part identifies the operator's custom instructions and their revision."
+			part.Explanation = "This part holds the operator's custom instructions."
 		case partRun:
 			part.Explanation = "Use this identifier as `<run_id>` in command forms that require it."
 		case partTask:
@@ -473,7 +473,7 @@ func customizationPart(sp *dispatch.Spawn, custom RoleCustomization, conflict st
 	return briefPart{
 		Heading:     partCustomization,
 		Explanation: "These operator instructions replace standard defaults within the Culler contract. " + conflict,
-		Facts:       []briefFact{{"Project", sp.Project}, {"Role", string(sp.Role)}, {"Customization revision", strconv.FormatInt(custom.Revision, 10)}, {"Standard directive digest", custom.StandardDigest}},
+		Facts:       []briefFact{{"Project", sp.Project}, {"Role", string(sp.Role)}, {"Standard directive digest", custom.StandardDigest}},
 		Rows:        map[string]any{"instructions": custom.Instructions},
 	}
 }
@@ -495,7 +495,7 @@ func runPart(runID string) briefPart {
 func buildScribeBrief(ctx context.Context, q Q, sp *dispatch.Spawn, runID string, custom RoleCustomization, in briefInputs) (runBrief, error) {
 	b := runBrief{Role: sp.Role, RunID: runID, Directive: custom.StandardDirective}
 	customization := customizationPart(sp, custom, "")
-	customization.Explanation = "This part identifies the operator's custom instructions and their revision."
+	customization.Explanation = "This part holds the operator's custom instructions."
 	b.Parts = append(b.Parts,
 		customization,
 		runPart(runID),

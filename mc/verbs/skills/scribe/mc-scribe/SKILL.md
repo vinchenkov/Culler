@@ -57,8 +57,7 @@ Use this terminal action when a custom instruction of the operator contradicts t
 The JavaScript Object Notation (JSON) object contains these fields:
 
 - The `run` field contains the `Run identifier` fact of the **Run** part.
-- The `revision` field contains the `Customization revision` fact of the **Project role customization** part.
-- The `passage` field contains the exact conflicting text from that revision.
+- The `passage` field contains the exact conflicting text from the custom instructions.
 - The `requirement` field names the Culler contract requirement that the text contradicts.
 - The `reason` field explains why both instructions cannot hold.
 

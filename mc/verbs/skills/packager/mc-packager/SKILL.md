@@ -130,7 +130,6 @@ Submit the conflict through this terminal action:
 The JavaScript Object Notation (JSON) object holds these fields:
 
 - The `run` field: the `<run_id>` of this run.
-- The `revision` field: the `Customization revision` from **Project role customization**.
-- The `passage` field: the exact conflicting text from that revision.
+- The `passage` field: the exact conflicting text from the custom instructions.
 - The `requirement` field: the contract requirement that the text contradicts.
 - The `reason` field: why both instructions cannot hold.

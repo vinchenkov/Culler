@@ -4658,29 +4658,8 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
 .customization-footer > p[role="status"] { margin: 0; flex: 1 1 14rem; color: var(--ink-3); font-size: 12.5px; }
 .customization-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
 .customization-note { margin: 16px 0 10px; color: var(--ink-2); font-size: 13px; }
-/* Each saved revision has its own row. */
-.customization-records { margin-top: 16px; border-top: 1px solid var(--line); }
-.customization-record { padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
-.customization-record:last-child { border-bottom: 0; }
-.customization-record > h3 { margin: 0 0 10px; font-size: 13px; }
-.customization-record > pre { margin: 0; }
-.customization-count:not(:empty) {
-  margin-left: 8px; padding: 1px 7px; border-radius: 999px; background: var(--surface-3);
-  color: var(--ink-2); font-size: 11.5px; font-weight: 700; font-variant-numeric: tabular-nums;
-}
 .role-customization h3 { padding-top: 14px; border-top: 1px solid var(--line); }
 .role-customization header + * + h3, .role-customization h3:first-of-type { border-top: 0; padding-top: 0; }
-.customization-revision {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 14px;
-  padding: 10px 0; border-bottom: 1px solid var(--line);
-}
-.customization-revision:last-child { border-bottom: 0; }
-.customization-revision-name { font-weight: 700; color: var(--ink); }
-.customization-revision-meta { color: var(--ink-3); font-size: 12.5px; }
-.customization-revision > pre { grid-column: 1 / -1; margin: 8px 0; font-size: 12.5px; }
-.role-customization [data-testid="customization-history"]:empty::before {
-  display: block; color: var(--ink-3); content: "Your saved instructions will appear here.";
-}
 .customization-context { grid-column: 1 / -1; color: var(--ink-2); font-size: 13px; }
 .customization-context p { margin: 0 0 6px; }
 .customization-context p:last-child { margin-bottom: 0; }
@@ -4703,8 +4682,6 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
 .customization-contract-card > p { margin: 0; color: var(--ink-2); font-size: 13px; line-height: 1.6; }
 .customization-contract-card [data-testid="customization-contract"] { color: var(--ink-2); font-size: 14px; line-height: 1.6; }
 .customization-contract-card > .customization-contract-note { margin-top: 10px; color: var(--ink-3); font-size: 12px; }
-.customization-records { margin-top: 16px; border-top: 0; }
-.customization-records > section { color: var(--ink-2); }
 .customization-footer { margin-top: 16px; padding-top: 16px; padding-bottom: 16px; background: var(--surface); }
 @media (max-width: 520px) {
   .role-customization { width: 94vw; padding-inline: 18px; max-height: 94dvh; }
@@ -4715,8 +4692,6 @@ html:has(.system-notices.folded) { scroll-padding-top: 64px; }
   .customization-footer { margin-inline: -18px; padding-inline: 18px; }
   .customization-actions { width: 100%; }
   .customization-actions .btn { flex: 1; }
-  .customization-revision { grid-template-columns: 1fr; }
-  .customization-revision > pre { grid-column: 1; }
 }
 
 /* -------------------------------------------------------------- responsive */
@@ -5217,7 +5192,6 @@ dialog.ui-dialog .ui-dialog-foot {
 .ui-dialog .customization-purpose { margin-top: 0; }
 .ui-dialog .customization-contract-card { border-radius: var(--r-sm); background: var(--surface-2); }
 .ui-dialog .customization-footer > p[role="status"] { min-width: 0; overflow-wrap: anywhere; }
-.ui-dialog .customization-records { min-width: 0; }
 .ui-dialog .profile-choice { border-radius: var(--r-sm); }
 .ui-dialog .profile-choice.selected { background: var(--select); border-color: var(--select-line); }
 .ui-dialog .td-body { display: grid; }
