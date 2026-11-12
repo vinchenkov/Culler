@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:6a2c43bc90fa4180d8f7c085d7bfecd377eaa09e8730141efabd1fc50136c600",
+  "pageVersion": "sha256:89ba26fa2b432bc1e04b1e73e45f82682eaa3296326120af8a905be4120244e7",
   "claims": [
     {
       "id": "claim_468e53bf5b144c04aa76315c3640fe7a",
@@ -381,12 +381,8 @@
       "statement": "The Strategist command skill permits an empty proposal batch and defines terminals for execution problems, required operator decisions, and customization conflicts.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md#L48-L73",
-          "version": "repo-lines-v1:sha256:d0c5b05973d433f866339cc422f968eb07c0cbd05f081b0fc7f0fec1924b93ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYzI1ZTVlODg3ZmVlOTY0NDEyY2YyMDY0OTQ1YWY5MmVlM2M5MWM2YmU3MWMxOWFiYjI4YjM5YTE2ZWE0ODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1OTlmMzJhY2Q0NGQyMzBlNTYyMzkzZmVjMzE0N2FiZGYxZWU2NTZiMTVkNWFkZGMzOGU4NTQ3ZGEyNWI5ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlNzNkYzFkYmE5YzE2YTI2Mzk2YmFlOGI2Mjk5NjVjMzU5ZTc1NjBhYWU1MWU4NjE5ZThmNTNiMjE4NTZiNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
-        },
-        {
-          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md#L11-L29",
-          "version": "repo-lines-v1:sha256:ea83e8d7302e9e399fe73d5284563114e3a8d1668e6227324ca4f8d6e1d3f593:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExMzQ4ODMwZjg0YWUwYzhiOThlYTQ4OTRmOTJjNDQzNmU4MDk2OWY1ZDBmMDI5N2I5YmY0OTNhYWRhODkzZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhZGVhNjVhOGM2ZTExZTE3MWEwZjYwMzAxNjUzZTliNjM0NDM2ZGUzOTNlNWU1YzgzMjVlYmU2N2RiMzUwNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNGYwYzM2YTNlYTU2MjJjODgxZWM4YzE4MWFjNTI0YTQwNGFkMjUxZDJlYjY2N2YwMzU3MDBiMjhiZDE5MGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNmNmMGIzYTZlNDRiYzRmZTE1NmYzMDk2NzIxZDc3MWY0MmUyNjdkZWJiYTNmMjZlNTA2YjI5NWRjMWUzMTkifQ"
+          "resource": "repo://mc/verbs/skills/strategist/mc-strategist/SKILL.md",
+          "version": "repo-file-v1:sha256:541576b498078adbd93cfc4aa986fd0e8734df30ef50626d172a04e369f13b36"
         }
       ]
     },
@@ -540,7 +536,7 @@
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:22:22.352Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T07:12:03.178Z"
   }
 }

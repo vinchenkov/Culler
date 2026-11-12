@@ -18,6 +18,10 @@ sources:
     resource: repo://mc/verbs/brief_test.go
   - id: openwiki-source-7f547d2c5de5589b3c27e6a4
     resource: repo://mc/verbs/brief.go
+  - id: openwiki-source-d51bf11cb67af161f4de940e
+    resource: repo://mc/verbs/customization_test.go
+  - id: openwiki-source-2ace014b73897f1358a673f8
+    resource: repo://mc/verbs/customization.go
   - id: openwiki-source-6227f25ba09e5ec68ceb60f9
     resource: repo://mc/verbs/directives.go
   - id: openwiki-source-3bc5b077708f9534abc3b95d
@@ -78,10 +82,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T05:20:43.904Z
+    at: 2026-11-12T07:12:03.178Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -263,7 +267,12 @@ The Proposed pool explanation defines `priority` as the task priority that the o
 The value -1 means expedited work; 0 through 3 mean P0 through P3.
 The Proposal decisions explanation requires application of each relevant operator resolution.
 
-The Project role customization part names the exact revision and standard directive digest.
+The Project role customization part holds the instructions and standard directive digest.
+Each Project role has one set of custom instructions or none.
+A save replaces that set; empty text removes it.
+`mc/verbs/customization.go` copies the instructions and standard directive into the run record when the run starts.
+Later saves preserve this snapshot.
+A conflict report cites a passage from that run's instructions, the contract requirement, and the reason for the conflict.
 Custom instructions replace defaults within the Culler contract.
 A contract conflict ends the run with a customization conflict.
 A Scribe conflict ends its wiki update as failed.

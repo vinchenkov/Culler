@@ -14,6 +14,8 @@ sources:
     resource: repo://mc/boundary/envpolicy.go
   - id: openwiki-source-b7fbb75b893eadf967f11537
     resource: repo://mc/cmd/mc/setup_agents_prod.go
+  - id: openwiki-source-67ed0032a65682468db4b06d
+    resource: repo://mc/cmd/mc/setup_api_key_prod.go
   - id: openwiki-source-a77127dcfe4e292e8c900b44
     resource: repo://mc/cmd/mc/setup_connection_choices_prod.go
   - id: openwiki-source-023af04189f7504ce88d56f5
@@ -66,10 +68,10 @@ sources:
     resource: repo://resident/src/provider-lifetime.ts
   - id: openwiki-source-1f5e3c410b2b7d805b40d03a
     resource: repo://resident/src/provider-proxy.ts
-generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T05:20:43.904Z
+    at: 2026-11-12T07:12:03.178Z
 ---
 
 # Agent connections and access renewal
@@ -99,6 +101,10 @@ Back from either method returns to the access-method choice.
 Provider names come from the release catalog in `mc/cmd/mc/setup_agents_prod.go`.
 
 Setup assigns connection and additional account names automatically.
+Default display names end with **connection** or **profile**, according to the record type.
+A collision number appears before that final word.
+Setup fills missing display names on existing account records and preserves a profile name that is already set.
+`setupDefaultName` and `setupProfileDefault` separate these display names from internal binding identifiers.
 For an additional subscription account, `setup_connection_choices_prod.go` selects an available harness name with a numeric suffix.
 An unused, untested account from the same setup can supply its existing name.
 If another operation takes the name, setup selects the next available name and retries.
@@ -149,9 +155,10 @@ The dashboard first offers the providers for the Codex and Claude Code harnesses
 The creation flow contains Connect, Configure, and Test and save.
 Each provider with a subscription integration offers sign-in before its API key form.
 
-`plannedConnection` in `dashboard/src/ui/agentprofiles.js` derives a name from the provider and access method.
+`plannedConnection` in `dashboard/src/ui/agentprofiles.js` selects a provider name that ends with **connection**.
+`defaultProfileName` replaces the connection or access-method suffix with **profile** and selects an unused profile name.
 It reuses a disconnected connection with that name, kind, and catalog entry when no enabled profile uses it.
-Otherwise, an occupied name gives the new connection the next free number.
+Otherwise, an occupied name gives the new connection the next free number before **connection**.
 The operator edits the agent profile name during model configuration.
 
 Native sign-in uses the existing provider authorization process.

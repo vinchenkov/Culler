@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:80653b484996e833e3a3ec8d821fbed8ff10880f7f4b5bff09ec560f374883c0",
+  "pageVersion": "sha256:e412f747b58a04f62ecd9316270fa4f199c2bb7c701d455c56977994177fb220",
   "claims": [
     {
       "id": "claim_aee9aadca2bf4c71862803d812043b81",
@@ -364,21 +364,17 @@
       "evidence": [
         {
           "resource": "repo://mc/cmd/mc/setup_connection_choices_prod.go",
-          "version": "repo-file-v1:sha256:8d9286309d738460190bd993f88eb4c2912e72e08d5d1f8814915b3c2404dcc6"
+          "version": "repo-file-v1:sha256:8891379d5059b6cfe6bdd186e1db553db4d52ad6fa203b3fffe9ea85e6d8d99a"
         }
       ]
     },
     {
       "id": "claim_45d07a39f02d4a7dad4c3310768865e0",
-      "statement": "The dashboard derives connection names from provider and access method and reuses only eligible disconnected connections.",
+      "statement": "The dashboard gives new connections names ending in connection and reuses only eligible disconnected connections.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L828-L856",
-          "version": "repo-lines-v1:sha256:351215042758a2ce4a36ebe620bd8afd3827a1b21331643da9bb2d9a8d5b42cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ZDhkMmU4Y2RmZmMyM2UyMjlmNGRiOTkzZTkxMjcwYzU3ZjRjZjNlMTkzMTI0Yjc3YjhiMDAxZDlhODAyNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyM2ExOGRjODcxNmJkNDI4Yzg5MWUyNTBhNzA0ZGNmNjUwNDVhZmFhNjhmZGFmMWQwZTU4YTA2MmM0MzcwMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NGNjMjVlNDA2OTkyZDZjZWJkNWY2MGNmZjZiNzQ2MjUzN2E4YjM2Mzk2MWM2NWFlNmE2Njk2MWUyN2ZmZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjOGNmNmIzNGU1MWQ5YTQ1MTNkN2JmOWZmYjMwZGM4NmU3NDhjYTIxMTAwNTAwOGE2NWExZGI1YjFiMWE1Y2IifQ"
-        },
-        {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L111-L123",
-          "version": "repo-lines-v1:sha256:2f533ddd2e154c4c01bca5d84bfbd4e2583008c9b700401107f8ae04060b9890:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Q3Nzc1MTY3ZDcyYTk1ZTUxM2E3N2NlOWVjYTI5MGIyZjA1MGU1Y2YxYWZiNjE5ZDBmZjlmNGE1YTUwODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMGE3N2Y4ZTA0OTZiMWVjMjRlZTA5M2FjNTc0YWM2ODZjYzc4YjE4NGFjNWQ3ZjU0YmRiMzg1NWFkMzkzZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWZkZDcxMmM4NWM3MzRmNWMyY2E0ZDBiYTY3YTBiY2YyNTA5ZjRkMGY4ZGExNmYyY2YxZGRmNzNkM2E0NjIifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -439,10 +435,24 @@
           "version": "repo-lines-v1:sha256:9ab6aea02f4bca4a19a7d06edc225d0bafd3cb72bac92d7a708400cea3924b0e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMwZGQ1NDhhMzA4MmFmMmU3MmUxNmEyMTFkZjU2NjFkZWNjNTkzZGZhOGFlOWIwMDM0MTIxYjQ5ZDBhODliMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhlOTIwNTcxMTQ3ZjA1NTVhMzNhYzI3ZmQ5ZGFmY2JlMDRkYTZhYjkwZWFjNzcyYjk4NjBmY2RjNGZiNzBkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTY2OTg5N2NjN2Y5MmZhZGJhZThlOTJjODMyOGRhMGMxMDljZDllZjUxMWIxZDNkODRiNDdkYTc3OWMzN2JmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE1MjNkODEyYjA0ZGI5NzE5MjEyODRjODFiOTZjZmU0NWFlOGU3YTViNjAwYzI0NjM4YTZiMzk3NjhmNzljOSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_9c69cca5e95c4a529f568130c5529278",
+      "statement": "Terminal setup uses distinct connection and profile display names, places collision numbers before the record type, and preserves an existing profile name.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_api_key_prod.go#L159-L164",
+          "version": "repo-lines-v1:sha256:835d1033932c9f80fec4b13705499df03debba2978205ff9dc73b879d5613737:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZThkZmQxN2EyODAyNGZmZTYyZDhmYjg2MWQxM2QzYzRhYjQxOWRlZThkN2FkNmY5ODc5MzgyNTI5MzdiMzZhNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTYzMWI2ZTJjYTA3ZDhiYWYwZWI0NGU3NDlkYmY0OTBiMzkyZTNhNTM0ZWY2MTAyMjc3MTE0NmNkZjlhZjFhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_connection_choices_prod.go#L305-L334",
+          "version": "repo-lines-v1:sha256:f7c8a6a7f0e66acaaead91e33941dc826adb77216900235fcd4a3c997e7b4b87:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjOTY1ZWIxM2VmZGFiNzhhMTQ5MTYxYzE2ZDI5NjNhZjc2ZGNlZDk1OWE0YjZkYTg0NDY1NDUwMmI4ZjgxOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhYTU5YTZjMjQ0ZDgyM2Q2NTRiMGY5YTEzNTQ1ZDYyZjNiNzViZDg2OTJmYWQyZTRiNWZmNzFjNzgyZGViNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T05:20:43.904Z"
+    "at": "2026-11-12T07:12:03.178Z"
   }
 }

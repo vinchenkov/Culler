@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d9e60dfc4b075777d13f85dca24d0ce4fa1e1fa4ca8d2956dc750b19bf0bc7c9",
+  "pageVersion": "sha256:5dc27e8335eaeb63b745f646bdd0fd3b6e856b5ec52b34cd38b9a27d593c1e8b",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -937,8 +937,8 @@
       "statement": "The Strategist input test checks preserved Project evidence, operator instructions, proposal resolutions, delivered skills, procedure pointers, and selected rules once.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/strategist_input_test.go#L11-L91",
-          "version": "repo-lines-v1:sha256:66bbe78ae24880b60d2895566ff7cf38ea227b6f57485453b50ddb6e7aa811eb:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmNDAwMDA4NTJlZDJhNDNhYmVmZmZmZDQ0OTM5ZmI0ZmU4Nzc3MzM0YjgyNTBmNDBmZGNhYmQ1ZTgxMDNhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNGQ4MDgxZDFiZWZlNDljM2M0Y2FjMjYwNTA4OTkyOTlhMzc4NDJjMzJhODMzMzk0ZDM5YTM1MWU2NDk3MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhYjJkODUzYjk5OGRlNGQ4NmUyZmNjM2I2ODBjNWUyYTQzMDM2YTlmMjI5MWJkZTBjMjIzZjczMTgwYzYyYjMifQ"
+          "resource": "repo://mc/verbs/strategist_input_test.go",
+          "version": "repo-file-v1:sha256:143c303e3daa46c1935876f91c72d9c38ac2ed40df604c4c626a30a4e19426b2"
         }
       ]
     },
@@ -1026,7 +1026,7 @@
       "evidence": [
         {
           "resource": "repo://mc/cmd/mc/setup_opencode_screen_prod_test.go",
-          "version": "repo-file-v1:sha256:278e95dd8c7a4cd0d4f09cb69c801f3a13793e222ca5235858746e586e5d943c"
+          "version": "repo-file-v1:sha256:a35c548f2c0984d761b6c7e335fd45505d618a2f098d59450eb361db302cf7c0"
         },
         {
           "resource": "repo://mc/cmd/mc/setup_untested_connections_screen_prod_test.go",
@@ -1039,8 +1039,8 @@
       "statement": "The Arbiter input test checks assignment descriptions, custom instructions, operator resolutions, skill paths, procedure pointers, and single occurrences of selected rules.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/arbiter_input_test.go#L10-L154",
-          "version": "repo-lines-v1:sha256:0bc52f13ae2a8a34202ca490328e3919b0b3034b20764b8b36ccb4caacf92f55:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmYWZiYTA1MjdjMzk1M2M0YjZlMGU1YjU3MzliYTgzNjEyZjgwNTNiY2RjOTQ2NjczMDE5M2NkMWQ1OTBiNDA4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2MTYyNTU0OGZiZWEwZjNlODNiZDlhOTc1OGQwODBkZDQzODdkNzdlN2FkZjBhY2M2YjQ5OTdmZDhiMjg1YzQzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlOWZlNDFmNjA5Y2QzMWE3MmY4MGY0ZDRmNDJiNjdiYzkwYmNiN2Y4NGI0ZmQ1NmY4MDI5MGQwOTFiZjU4M2JkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyYzkzMzA1NGJjMWEwZWY1M2ZhYzljNThmZDcwOTk5NzBlOTg4NzM1N2NlYTU1MGY4NzFlNzJkMTJlNWQxM2EzIn0"
+          "resource": "repo://mc/verbs/arbiter_input_test.go",
+          "version": "repo-file-v1:sha256:f0355c1965b7fb658cc874c74b98725a0341dbcf9134525fa3fc32f2c8736f07"
         }
       ]
     },
@@ -1104,7 +1104,7 @@
       "evidence": [
         {
           "resource": "repo://mc/cmd/mc/setup_connection_choices_prod_test.go",
-          "version": "repo-file-v1:sha256:0d428589a4a605ca45f694eccaaba55474cd209af7745ce86bd059cbe2172482"
+          "version": "repo-file-v1:sha256:f4e2089d99eac98c41d13f813288ec62d2443ec578a85bdb3d871602ecde2975"
         }
       ]
     },
@@ -1229,10 +1229,20 @@
           "version": "repo-lines-v1:sha256:5b315be0956c055170cb0c7197acf8513dec797eaa1b286fb009adf4e89f95dc:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNzZhMWNhNjc1NjhlODIwNGM3ZTI4MDcyMjhkNGUxOGQyOGI1ZTE1ZDNiMDIwMGI0Mjg0ODMyZTg0YWE1ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiZjhlZmJmZTE0Yjg5M2Q5MjhkOTUzZjAxYjFkYTVjZTk4MjEyNWYzNDFkMjczMzI2YzZhMzI5Njk5ZmIyZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhYTliMzhhZjkwYTkxNDI3MDBkNmI1NDc2MGFjMjgxODhiZDc2MWE1M2EyZDlmNDEwZjhjYTVjNTZhYTRhZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzOTBkMWRlZDI1YTU5MjY0OGFmY2QyY2IwOTIyZTEyMmU1ZWZlYTI4ZGM1NTJmYTIxNDllNDc0M2RjYjgwYWIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_a5e4077a00bf4d6894f3c53595fc5dd7",
+      "statement": "Customization tests prove replacement, blank removal, and preservation of the exact instructions assigned to an existing run.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/customization_test.go#L36-L81",
+          "version": "repo-lines-v1:sha256:fe1d6b5f996fa725d45378a2ddaa15898bfe17429224b19e628d1269b544f5ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5N2ZjMTIzOTNhMDdjOGJlZjc0YzU4NDk4MWY0MWRiOWFmMDgyOWRmOTRmMDI2MzVmZjI3Y2UwZmVmZmVlZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhYTkzYzE5NDQwNzQ3NjFiNzI0MzViMzA2MmI2ZTVhZTU4YzZlOTFhYTkyM2I1MWM4ZjM5ODY3OTg3MzdmZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzN2YzZjdlNWQyMDUxZDNkNzA3NDlhNzBiMzFjMTgwMjY5MDZiMTA3MjM5Yzc3YjU4Y2YxNDUxYmNlNGEwMWEifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-12T05:20:43.904Z"
+    "at": "2026-11-12T07:12:03.178Z"
   }
 }

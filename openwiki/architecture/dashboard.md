@@ -4,8 +4,8 @@ title: The operator dashboard
 description: How the Bun dashboard server mirrors mc verbs over an authenticated loopback API, serves the browser modules and wiki exports, and how its smoke harness proves it.
 tags: [dashboard, bun, api, security, smoke]
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:22:22.352Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T07:12:03.178Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -127,6 +127,8 @@ sources:
     resource: repo://mc/repository/read.go
   - id: openwiki-source-a44ab4c2d26db975bde190a0
     resource: repo://mc/verbs/collie.go
+  - id: openwiki-source-2ace014b73897f1358a673f8
+    resource: repo://mc/verbs/customization.go
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
@@ -141,7 +143,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
 ---
 
 # The operator dashboard
@@ -870,7 +872,9 @@ A checked radio button and a selection mark identify the selected provider.
 A summary above the concealed key field keeps that selection visible when another query hides its result row.
 The results list has its own scroll position, which survives a render.
 
-The form derives a connection name from the provider and access method.
+The form gives each new connection a name that ends with **connection**.
+The suggested agent profile name ends with **profile**.
+A numeric suffix appears before that final word when a name is occupied.
 It can reuse a disconnected connection with that name, the same kind, and the same catalog entry.
 Reuse also requires that no enabled profile uses the connection.
 Otherwise, the form selects the next free numeric suffix for an occupied name.
@@ -947,3 +951,14 @@ Only matching execution configuration and authorization evidence can verify a sa
 `createSystemStatus` in `dashboard/src/ui/systemhealth.js` preserves the prior view after one failed read.
 Two consecutive failures show Status unavailable. A successful read resets the failure count.
 This prevents a brief load peak from replacing a valid status display.
+
+## Project role instructions
+
+Each Project role has one set of custom instructions or none.
+The dialog in `dashboard/src/ui/customization.js` shows an editor and Save.
+A save replaces the current instructions; empty text removes them.
+Each run retains the instructions and standard directive that it received.
+A later save preserves that run snapshot and any existing customization block.
+The run view shows those retained instructions.
+`mc/verbs/customization.go` owns persistence and conflict reports; the browser sends requests through the dashboard API.
+`dashboard/smoke/customization.smoke.test.ts` checks replacement, removal, retained drafts, and blocks after a save.

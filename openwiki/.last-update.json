@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-12T05:23:55.090Z",
+  "updatedAt": "2026-11-12T07:15:02.440Z",
   "command": "update",
-  "gitHead": "a5952cd78bcd2bf2c2911e2c9d4de8f85158d36f",
+  "gitHead": "91aed58daaffb5aa7424d64fb699beac8401c38c",
   "model": "host-agent/culler",
   "status": "complete",
   "language": "en"

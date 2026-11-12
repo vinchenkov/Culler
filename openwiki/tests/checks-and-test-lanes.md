@@ -118,6 +118,8 @@ sources:
     resource: repo://mc/verbs/arbiter_input_test.go
   - id: openwiki-source-3a72fe65b15fd6f2f9988f26
     resource: repo://mc/verbs/colliepacket_test.go
+  - id: openwiki-source-d51bf11cb67af161f4de940e
+    resource: repo://mc/verbs/customization_test.go
   - id: openwiki-source-bdcdf989ab8381c989787604
     resource: repo://mc/verbs/directives_test.go
   - id: openwiki-source-959768f661d526f65eea9d8d
@@ -182,10 +184,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-12T05:20:43.904Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-12T05:20:43.904Z
+    at: 2026-11-12T07:12:03.178Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -899,3 +901,14 @@ Setup sign-in screen tests cover direct authorization after one selection and re
 `dashboard/src/agentsview-proxy.test.ts` checks embedded data fonts in the content security policy and refusal of embeddings endpoints.
 `dashboard/acceptance/agentsview.test.ts` checks loaded fonts through the authenticated real viewer and trace restoration after cookie removal.
 These are source assertions; this wiki update did not execute the application tests or viewer acceptance lane.
+
+## Role instruction and default name checks
+
+`mc/verbs/customization_test.go` checks that a save replaces the one instruction set for a Project role, blank text removes it, and an existing run retains its exact input.
+The tests also check isolation between roles and Projects.
+`dashboard/smoke/customization.smoke.test.ts` checks saved and removed instructions, draft retention between role selections, and preservation of a customization block after a save.
+
+`mc/cmd/mc/setup_connection_choices_prod_test.go` checks default display names for connection and profile records.
+`dashboard/src/ui/agentprofiles.test.ts` checks the same final words, collision numbers before those words, and reuse of an existing profile name.
+These checks keep the visible record types distinct while several profiles can share one connection.
+These statements describe test coverage; this wiki update does not execute the suites.

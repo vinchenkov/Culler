@@ -100,10 +100,10 @@ sources:
     resource: repo://runner/image/Dockerfile
   - id: openwiki-source-1430dd49737c0f35b616bb76
     resource: repo://runner/image/runtime-check.sh
-generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T07:12:03.178Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:11:01.469Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T07:12:03.178Z
 ---
 
 # Culler quickstart
@@ -373,7 +373,9 @@ The [Discord guide](integrations/discord.md) explains permissions, temporary dra
 Culler supports account sign-in and static application programming interface (API) keys for Codex and Claude Code.
 Terminal setup and dashboard profile creation first offer providers with sign-in, then **Use another provider**.
 Each subscription provider offers sign-in before its API key method.
-Culler assigns connection names automatically; the dashboard still offers an editable agent profile name.
+Culler assigns names that end with **connection** and suggests names that end with **profile**.
+A number before that final word distinguishes an occupied name.
+The dashboard offers an editable agent profile name.
 **Use another provider** selects an OpenCode connection from the release catalog.
 An empty provider search lists all providers that OpenCode runs.
 The dashboard marks the selected provider and keeps its summary above the key field when another query hides that provider.
@@ -440,3 +442,11 @@ The [viewer guide](integrations/openwiki-and-viewers.md#native-opencode-copy-lif
 Selecting subscription sign-in in terminal setup starts authorization directly.
 A draft profile test preserves the saved profile's verification until matching evidence applies to its save.
 See [agent connections](operations/agent-connections.md) for model refresh and connection lifecycle.
+
+## Guide a Project role
+
+Custom instructions apply to one role in one Project.
+Save replaces the current text. Save empty text to use the standard instructions.
+Each run keeps the instructions it received.
+Saving instructions preserves an existing customization block.
+See [agent input](concepts/agent-input.md#the-run-brief) for the contract boundary and run snapshots.

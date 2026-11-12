@@ -66,8 +66,8 @@ sources:
     resource: repo://openwiki/operations/worker-instruction-audit.md
 generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-12T00:22:22.352Z
+  - by: openwiki/0.9.0
+    at: 2026-11-12T07:12:03.178Z
 ---
 
 # The task pipeline roles

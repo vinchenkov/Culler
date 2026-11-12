@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ce33dca82dea56af7bddbafbf402504b5186a443bda2447642eb3c201228e24c",
+  "pageVersion": "sha256:9b1c2efe9654064d0707af5ed0e0f9353368d4c7bef174997750b2092ba1c46d",
   "claims": [
     {
       "id": "claim_92773894f36348b5bc17a0e35b0538f1",
@@ -565,7 +565,7 @@
       "statement": "The global reduced-motion preference rule disables role egg animation.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/style.css#L4840-L4843",
+          "resource": "repo://dashboard/src/ui/style.css#L4815-L4818",
           "version": "repo-lines-v1:sha256:622f6dce280ad0407e43b3721b5310964c2d0474b2e24f722881480d58e8fd19:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNhNjk3NDE3MjlhZGU2ODVmODY3YmFkZjk5ZTY5NzI3ZmQ2NjA5YzhkY2UxOTdlMjA2OTEwNzEzNjU0YzY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDlmOTMwODNjMTk3MTIxYjk4MjcwMGJhOGFmYWJkMTcyMmNmMWQzZTc0MDQ1MDllODBlZmEyNzI0N2Y2MmYwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDcxNjY3Mzg2NTE2OWM0OTYxNWY1MmNkZjZjMDMxNDg0OGNkMjdkZjU3NWUxY2YyM2I0NGE3NTM0ODMyOTM1MCJ9"
         }
       ]
@@ -885,7 +885,7 @@
           "version": "repo-lines-v1:sha256:4e2fdf487ee68d20dce6e70d17cce4dca5e8f79cd70d16ea8f253cf3353baef8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NTRlZmY3YWZiMWJmMTIxNjMzMmI2YTY5NGMwZDcxNzAxNzZhZTQ1OTk1ZWE4YTFmZTdmMDQ5ODA5MTM5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWY0MWQ3NzBhZWExM2EyNDM5MTY3NTYyMjcyMDExNDIyMmE5MmM1MDU0ODAzNjI2MDljZWU0MWUyMjM5ODJlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDNhNzhhOTljMWM3NjhiMWFhNGY0NTlmMzA2YjgyYWIzNmUzZjYwMDA1NGI4N2Y3ZWFhZjczNjUwZmFhNmZkOCJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/style.css#L5136-L5210",
+          "resource": "repo://dashboard/src/ui/style.css#L5111-L5185",
           "version": "repo-lines-v1:sha256:c88969eee49b9a842e588460c149135221761796648a292c09ed6e7b4ba2bacc:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MzFlYTg5MjFkZWMxMzRiZWZmNzQ0MmQ2MjVlNmYwNjg4MjgxYjYyNzM2MTcwM2Q3ZWU1N2FiNTUzM2JjNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZGEwNjFiNGVhZmEyOGVkNDdlMTllNDc5NzhmZmY4NDExNTJkNDIzY2M2OTFiZmIwZGMxMzlmMWZmNWRjYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZTBhMjQwNDdiMmIyMGVhZWQ1Y2ExNDk1NzQyZGNlMDZmNTRlNzk1ZjljNzI0Y2MxMTljMzRhZGE1ODYxMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNGM1NzA0NzU1MDQ2NzkxZmU4NWZlMjQ1NjgzOTgzNTQwNzlkNzg5ZDg2NDEzYzM3OWNlZjZhMjBjNzA0NTUifQ"
         }
       ]
@@ -930,7 +930,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         },
         {
           "resource": "repo://dashboard/src/ui/projects.js",
@@ -943,7 +943,7 @@
       "statement": "The convention smoke represents 200 percent desktop zoom with a 720 by 450 layout viewport.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/conventions.smoke.test.ts#L145-L169",
+          "resource": "repo://dashboard/smoke/conventions.smoke.test.ts#L142-L166",
           "version": "repo-lines-v1:sha256:bd4f7fd8a891cf07a26207e3da3a11243bb6d53e9ed63e6a429587cd34abd60f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0NjQxMDAzZmMyOGMyYTc3OTg4ODc2ZjBlOTVmNWJmNTY2Zjg4ZWYyODgwYmI0N2RkYzU1MDEwOWE1NzQyOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyMDkzZTg3MzA0YWY3NjNmYTBhOWZhMzIwY2RmNTg4ZTVjY2FmOTU5NGZlZjM2OTM1YWQxN2I4YmZhMDUxNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhODIyZDAzMzM4MzI0OGIzMzM0OTE0MzVkNWMxMzc0NzgwYjRhOGY1OTRmNWQ4MTM4Y2E5N2I1YTRjMzVmNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmZmYwMGM0NTZiYTg1N2U0OTNhZDQ2ODkyNGZkYTAzNmVkY2VmN2I2ZDdiNjAyOTkyNjE5ZDkzN2Y0MTRhZTcifQ"
         }
       ]
@@ -987,7 +987,7 @@
       "statement": "At 721 through 1024 pixels the header status group sits above the viewer links in the right grid column; narrower layouts retain the group in the wrapped header.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/style.css#L4765-L4780",
+          "resource": "repo://dashboard/src/ui/style.css#L4740-L4755",
           "version": "repo-lines-v1:sha256:5a571fe6f9cfa1f4b3ef2aa35787a6768cf4ca28175145e1c8a1551d383457ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmOWQxNDdiNjYxN2E1ZjUzMGViMDY5NWUxMmZkZDM0ZDczMzk3ZTMzOWUwYjA5ZTJlMTI1NDFlZWIyMzcyZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MTFhZWQ2MTEyMjliOWQxN2VhNDFmMGFiMjY4NWU3M2Y3MTgyZDNkZWUyYTY0MmVjNjBkN2E0MjQzMzJmMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YjE1YTk0NmE5OTU2YmQ0ZmUyYjMyMWE0ODE0MmZkYjcxZTI1OTc5YjhiMjU5YTZjYTM0NGVmMzk3NDRhMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzN2MzMzcxYzM0YzVhMTlhN2QwYTUzYzY0YWU3YjIyYWFmYTEzZDZlMmVlZDQ3ZjQ1ZWFiYjY2Y2Q0MzNkNDUifQ"
         },
         {
@@ -1114,7 +1114,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -1496,7 +1496,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -1506,7 +1506,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -1516,7 +1516,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -1618,15 +1618,11 @@
     },
     {
       "id": "claim_d6a9f7d484514626bb35c179c97c1d7a",
-      "statement": "The form derives connection names from provider and access method, reuses eligible disconnected connections, and adds a number when the name is occupied.",
+      "statement": "The form uses names ending in connection, reuses eligible disconnected connections, and places collision numbers before connection.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L828-L856",
-          "version": "repo-lines-v1:sha256:351215042758a2ce4a36ebe620bd8afd3827a1b21331643da9bb2d9a8d5b42cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ZDhkMmU4Y2RmZmMyM2UyMjlmNGRiOTkzZTkxMjcwYzU3ZjRjZjNlMTkzMTI0Yjc3YjhiMDAxZDlhODAyNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyM2ExOGRjODcxNmJkNDI4Yzg5MWUyNTBhNzA0ZGNmNjUwNDVhZmFhNjhmZGFmMWQwZTU4YTA2MmM0MzcwMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NGNjMjVlNDA2OTkyZDZjZWJkNWY2MGNmZjZiNzQ2MjUzN2E4YjM2Mzk2MWM2NWFlNmE2Njk2MWUyN2ZmZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjOGNmNmIzNGU1MWQ5YTQ1MTNkN2JmOWZmYjMwZGM4NmU3NDhjYTIxMTAwNTAwOGE2NWExZGI1YjFiMWE1Y2IifQ"
-        },
-        {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L111-L123",
-          "version": "repo-lines-v1:sha256:2f533ddd2e154c4c01bca5d84bfbd4e2583008c9b700401107f8ae04060b9890:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Q3Nzc1MTY3ZDcyYTk1ZTUxM2E3N2NlOWVjYTI5MGIyZjA1MGU1Y2YxYWZiNjE5ZDBmZjlmNGE1YTUwODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMGE3N2Y4ZTA0OTZiMWVjMjRlZTA5M2FjNTc0YWM2ODZjYzc4YjE4NGFjNWQ3ZjU0YmRiMzg1NWFkMzkzZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWZkZDcxMmM4NWM3MzRmNWMyY2E0ZDBiYTY3YTBiY2YyNTA5ZjRkMGY4ZGExNmYyY2YxZGRmNzNkM2E0NjIifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -1636,7 +1632,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/agentprofiles.js",
-          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
+          "version": "repo-file-v1:sha256:f6ed562f80724a0f7c9cabc4879f3aab8908f684b1dcfd0170b870439a9773de"
         }
       ]
     },
@@ -1713,10 +1709,20 @@
           "version": "repo-lines-v1:sha256:6af2f8427f1a7cee55a70d15925560efa5bd22e9d8e2382ecbab3d8ba9a026c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3YjQwMWIxOGYxNzExZWIzMjcxMDBjYjcxMTM1ZDQ4MjY0OWZkNTI5Y2JhNDI2ODI2ZDQ3ZDA5MDU2MzA4YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2YTkwMzFhYzE2YTQ0MWU0MzU2ZmM4MTc3OTQxMWU1MDJmYWRlNGVkMDFhY2FhYjM3ZGYxZGIyZGM4ODIyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjMzYzYjM0ZWQ2ZjBiZDYyYjFiYTA5NTEzNDNjOTQwZGRiZGZkNDgwNzVjYWMxY2UxNTYyZmIyMzljMTI0N2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMDNmNWZmNmMxZDFkNmMyZTg2MjdlMzNmNzY3OGJkMzVjNDkzNzM0ZmM1YWI3YzcwN2UzM2NhMjg5MzE5MzMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_dae63f37c92646be8832bf4b1dc6ff8d",
+      "statement": "A role instruction save replaces the Project role instructions, empty text removes them, and each run retains its own copy.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/customization.go#L95-L155",
+          "version": "repo-lines-v1:sha256:e3a0b98f4f0a393a9473fdaa17103b642a68f90caf2579b9b41ae3d92e68db73:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyMTEzMTg0MWI3NjE2MWI1MmExZDk5MjQzNWQ5NjE4ZmRlMjNjNjNmYmQ3NTc3MmM0OThiNmQ3ODBlYTdmOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwNDMwZmVlMGZjZmZmZWU0NDVhYjgxNGFmMzljNzg4OGVlZmE4YmFkYTUyMjc2MjQ2YWFjNzkyZmMwZDMzY2YifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.0",
-    "at": "2026-11-12T00:22:22.352Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-12T07:12:03.178Z"
   }
 }
