@@ -3,9 +3,6 @@ type: workflows
 title: Dashboard background picture and motion
 description: The logo button controls a stored picture selection, separate animated parts, and a static final state.
 tags: [dashboard, theme, animation, accessibility]
-verified:
-  - by: openwiki/0.7.0
-    at: 2026-11-10T19:18:31.051Z
 sources:
   - id: openwiki-source-614e912b08da5924b7d82e0a
     resource: repo://dashboard/smoke/theme.smoke.test.ts
@@ -26,6 +23,9 @@ sources:
   - id: openwiki-source-d2a2a705448c3432ad6c1337
     resource: repo://mc/deployment/host_release.go
 generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
+verified:
+  - by: openwiki/0.7.0
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Dashboard background picture and motion

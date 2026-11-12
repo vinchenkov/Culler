@@ -100,22 +100,10 @@ sources:
     resource: repo://runner/image/Dockerfile
   - id: openwiki-source-1430dd49737c0f35b616bb76
     resource: repo://runner/image/runtime-check.sh
-  - id: openwiki-source-afc1b9cc18bf71238f6d8781
-    resource: repo://work/dashboard-theme-sets/implementation-inventory.md
-  - id: openwiki-source-56ebfdef4e75b22f9a00bc23
-    resource: repo://work/dashboard-theme-sets/index.html
-  - id: openwiki-source-8728a03b395bc31867fc976f
-    resource: repo://work/pipeline-fonts.html
-  - id: openwiki-source-14429182ea3f0f7fb7ef44f9
-    resource: repo://work/render-font-comparison.swift
-  - id: openwiki-source-757fb199673cdc77495feb98
-    resource: repo://work/security-posture-2026-10-19/culler-security-posture.html
-  - id: openwiki-source-ab3baadfec4a3008dbdc8ae9
-    resource: repo://work/security-posture-2026-10-19/culler-security-research.html
-generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T19:18:31.051Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Culler quickstart
@@ -326,37 +314,6 @@ The same conversation remains available on the Collie page after its first messa
 The runner supplies the report context and read-only access to that task's artifacts.
 See [packet conversations](workflows/packet-conversations.md) for preparation, report limits, decisions, and recovery.
 
-The repository keeps additional design and research material under `work/`:
-
-- [Dashboard theme comparison](../work/dashboard-theme-sets/index.html) compares Culler blue, Soft blue, Paper, and Slate in light and dark previews.
-- [Dashboard conventions](../work/dashboard-theme-sets/dashboard-conventions.md) defines the Culler blue design requirements.
-- [Implementation inventory](../work/dashboard-theme-sets/implementation-inventory.md) maps shared components, exceptions, and recorded checks.
-
-- [Pipeline font examples](../work/pipeline-fonts.html) compare typefaces in a Pipeline preview.
-- [Font comparison](../work/pipeline-font-comparison.html) displays the retained comparison image.
-- [The image](../work/pipeline-font-comparison.png) and [Swift renderer](../work/render-font-comparison.swift) preserve the comparison artifact and its generation code.
-- [Security proposals](../work/security-posture-2026-10-19/culler-security-posture.html) describe proposed controls and a separate dependency-storage follow-up.
-- [Security research](../work/security-posture-2026-10-19/culler-security-research.html) preserves the source review and its evidence dated 19 October 2026.
-
-The security research names commit `816470a9f790005da233081a7d8ef60ba84b5973` as its reviewed source.
-It separates selected executed checks from unverified deployment, authentication, and broader security checks.
-Its findings remain attributed research at that commit.
-The proposal page identifies a separate documentation baseline at `839b8ef2402f` for its Tools across runs follow-up.
-Neither document establishes fresh verification of the accepted deployment.
-
-The proposal page contains component diagrams, data-flow examples, and glossaries for its proposed controls.
-Its scope covers these groups:
-
-- Release checks, dashboard access, secret storage, and release identity.
-- Provider credentials, Project secrets, network access, and Collie file access.
-- Sandboxes, external actions, tool isolation, hostile Projects, and tools across runs.
-
-The Tools across runs section proposes separate role tool state and verified disposable download caches.
-The current implementation instead shares a persistent Project home while separating role credentials, sessions, skills, and instructions.
-See [Project storage](workflows/project-environments.md#runtime-and-per-run-dependencies) for that implemented boundary.
-The comparison section proposes deployment checks with synthetic data and explicit evidence for each image and platform.
-The document labels these controls as proposals and the diagrams as illustrative examples.
-The font and theme previews are design material. The dashboard source defines the product's actual appearance.
 The shipped dashboard uses Culler blue in light and dark themes.
 It uses the light theme until the operator selects another theme.
 The browser preserves the selection across reloads and dashboard tabs.
@@ -369,9 +326,7 @@ Page loads, theme changes, window size changes, and selections from other tabs a
 The system's reduced motion preference also gives an immediate state change.
 See [Dashboard background picture and motion](workflows/dashboard-background.md) for the sequence and controller.
 
-The theme comparison viewer keeps its own preference and preview controls; it supplies no production theme selector.
 See [shared dashboard conventions](architecture/dashboard.md#shared-culler-blue-conventions) for dialog controls, trace pages, and browser checks.
-The implementation inventory records earlier check results. Those results are separate from this wiki update's source review.
 
 
 ## Discuss a diagnostic issue
@@ -412,8 +367,6 @@ The bot needs Create Public Threads and Send Messages in Threads permissions.
 The connection card controls Blocked tasks and System health alerts, connection checks, edits, and disconnect.
 Check connection sends no test message.
 The [Discord guide](integrations/discord.md) explains permissions, temporary drafts, account access, delivery retirement, and recovery.
-The [verification report](../.tracking/discord-configuration/REPORT.md) preserves historical results and their limits.
-It leaves a reply from a live agent unverified.
 
 ## Agent sign-in
 
@@ -427,7 +380,7 @@ The dashboard marks the selected provider and keeps its summary above the key fi
 The terminal and dashboard provider searches list name matches before identifier and address matches.
 Terminal setup updates the list after each key when screen controls are available.
 In a published installation, the first such connection starts a separate download of OpenCode and its web search plugin.
-The catalog defines available models, effort levels, provider destinations, and web search support.
+The release catalog fixes provider destinations and baseline models. Validated live OpenCode model records extend the available model list.
 
 A published installation without an OpenCode connection downloads no OpenCode program.
 Source deployments prepare and verify OpenCode before service activation, even without an OpenCode connection.
@@ -472,3 +425,18 @@ Open the shared issue to read its complete question and follow its affected prop
 Select **Resolve proposal decision** to record the resolution reason.
 Separate task blocks, retry exhaustion, and allowance conditions retain their own issues.
 See [shared proposal decisions](workflows/decision-resolution.md#shared-proposal-decisions) for the controls and resolution boundaries.
+
+## Agent command access and native traces
+
+Collie and external agents use the common `culler` skill and supported operator command catalog.
+The installed host skill identifies the exact deployment executable and evidence paths; an external agent needs no source checkout.
+See [operator command boundaries](architecture/mc-cli-and-verb-scope.md#supported-operator-commands) and [external agent installation](operations/install-and-deployment.md#external-agent-installation).
+
+Native OpenCode traces use masked database copies, separate from original sessions.
+The [viewer guide](integrations/openwiki-and-viewers.md#native-opencode-copy-lifecycle) explains copy availability, import status, and bounded inspection.
+`docs/native-opencode-traces.md` defines that contract.
+`docs/collie-command-access.md` defines command access; its companion validation report records implementation evidence and limits.
+
+Selecting subscription sign-in in terminal setup starts authorization directly.
+A draft profile test preserves the saved profile's verification until matching evidence applies to its save.
+See [agent connections](operations/agent-connections.md) for model refresh and connection lifecycle.

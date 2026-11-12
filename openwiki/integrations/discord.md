@@ -6,8 +6,6 @@ tags: [discord, collie, configuration, alerts]
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
-  - id: openwiki-source-558b441656a2e13884540dca
-    resource: repo://.tracking/discord-configuration/REPORT.md
   - id: openwiki-source-6ff7ec04aac5c9f6567d2d84
     resource: repo://dashboard/smoke/harness.ts
   - id: openwiki-source-9dc12756d2cc067f897826b6
@@ -24,10 +22,10 @@ sources:
     resource: repo://resident/src/discord-config.ts
   - id: openwiki-source-c18554fde4cd0e38831a6f1d
     resource: repo://resident/src/discord.ts
-generated: { by: "culler-scribe", at: "2026-11-05T10:01:23.917Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Discord setup, account access, and delivery
@@ -156,7 +154,7 @@ Only **Send test message** performs that explicit delivery check.
 Ordinary inbound messages require a non-bot author in the allowed account list and the configured server.
 The destination must be the configured channel or a recognized thread below it.
 The connector consumes bare confirmation codes before ordinary Collie routing.
-The Collie directive and runner prompt assign Discord credentials and account approval to host controls.
+Discord credentials and account approval belong to host controls.
 See [Collie](../concepts/collie.md) for conversation records and run authority.
 
 ### Thread conversations
@@ -210,9 +208,4 @@ Run that suite through `./dashboard/smoke.sh`; the [test guide](../tests/checks-
 The smoke harness rejects a scratch `discord.socket` path above 103 bytes before it creates the scratch home.
 The CI browser job sets `MC_SMOKE_ROOT` below `$RUNNER_TEMP/smoke` to keep this path short.
 
-The [retained verification report](../../.tracking/discord-configuration/REPORT.md) records automated and live checks from 28 October 2026.
-It reports live account confirmation, inbound Gateway delivery, both alert types, and a scripted Collie reply after a retry.
-It explicitly leaves a reply from a live agent unverified.
-It also records Unix socket path-length limits with a long macOS temporary path.
-These are attributed historical results, not a fresh test run or production acceptance by this wiki update.
-The implementation and its checks establish the behavior described here.
+These checks define coverage; this wiki review does not establish a fresh live-service result.

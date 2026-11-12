@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a1bdf517d7fe5e2ac519a050f03975d9e42716a61b61c85d8467a74135a92521",
+  "pageVersion": "sha256:5fa31d33cb21a733fe027bb08809892fcaee2adfdc4bba5299a98c33833b589b",
   "claims": [
     {
       "id": "claim_9b499244e0744b82b23967e19b689227",
@@ -45,7 +45,7 @@
           "version": "repo-lines-v1:sha256:ddfe1f09adf73fbe4e948a4f2019e0d68864f8dbd10fd1737e6d1d2a07b243be:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxNjM5MzliNjg5NjIyNjg4ZjE2NmMxOTUwYWExOTU1NWM2ZTE3ODEzYTZmZTM1Njk2ZjExNjJhNDg2MzNhMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2YzI4ZGMzMGI5ZDcxNzQyNWYxMmU2MzE2OWNhYzI0OTFlNmZjZDA0MGRlYTllYzBkY2ZmYzVjNDcxNWE1YTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjYWM1ODgxNWJkNjU0NjBiNGRlMWFiMzZiNDU2YTVhOGVmYWFiNTIzYmI4ZGY5ZTliMjA5MTUyN2QzMzkxNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2OGExZjU4NjNmYzYxMTM1OGEyY2VkZmI5NGVlZjNhZGUzMTZkYzIyZDhhY2Y2NzgwYTBlZjhhMzlkMThjMTgifQ"
         },
         {
-          "resource": "repo://mc/deployment/agentsview.go#L161-L165",
+          "resource": "repo://mc/deployment/agentsview.go#L163-L167",
           "version": "repo-lines-v1:sha256:ddab7746ce4523f9a1bb2c6ceae736f8ddd031af8aacea818617270fae1755ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzA4NTNlODgwODljZGUyZDUzM2IxYjk5NzI0YTgzZjY2NjkyMGIzMGI5N2Y1MDI1NzhhZjg0YjE0MDQ3ZTlkNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
@@ -107,12 +107,8 @@
       "statement": "The AgentsView pin is embedded in mc, must target darwin-arm64, and must not disable the claude or codex agents.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/agentsview.go#L15-L16",
-          "version": "repo-lines-v1:sha256:c47d89c57126e023eceb95c975cc6cfc84e36a4fe0cc9e6ea4225e5dcd661a69:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmY1YTJkNjhiNTMzZjRhYmRkYjI0NTI4OWVlZDA4OTQ2MTcxZmIyZWM1NDMzMzI3NjkxZTAyZWNkYmI4NDY2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQ2NDIyMjQ3M2Y5ZDM1OGVlNzUwN2Q1YTA5ZTBhMjc1NGM5N2RlZDI1NmY3YTg5ZDA5NDBhMjAwODI2NmMyMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGQ1ZGU2NzM5MGNlMzJiZmZlZjBkZTk2NGMxYzcyMDA5OTVkNjhjYTNlZWNhZGViM2RkMDliODcyYTU0ZWI3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWRhYTNkZDE3NDlkNDY5NTZlMTgyOTZiMGM2MjdkMzBmMTY4MzdiMWNkY2I0MzFkMWJhZDAwZWE4ZTE1MWY4ZCJ9"
-        },
-        {
-          "resource": "repo://mc/deployment/agentsview.go#L66-L112",
-          "version": "repo-lines-v1:sha256:5e1a1cdffa0a7bb359c57d68b7904f7cf7e68f805294e6bf9b2ed925b8e0eb4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3YjhlYmFmY2JkNjQxYjliY2JiZWY0MTg5NTUxY2MyYTAwZmMzMWI4OTI2ZmYyNzdjODhhNmY4NjVkMWI3ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIifQ"
+          "resource": "repo://mc/deployment/agentsview.go",
+          "version": "repo-file-v1:sha256:d1e6cb84fffa9f1767017718dcfd01b4ac911bc12f0bb48cb128bfed682f76be"
         }
       ]
     },
@@ -131,12 +127,12 @@
       "statement": "The AgentsView configuration sets require_auth = true with the deployment token and points the claude and codex agents at the trace-copy folders.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/agentsview.go#L139-L159",
-          "version": "repo-lines-v1:sha256:893149b143882ecc59a753be0c54023418a942f650ff75a2ceb5e1e56af2d1c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkZGZkNzE1NTk1MDEwMjY5ZDhjOWNiNWFjZmRlZjRiYWI2OTM3ZTgyMjFkZmU4OWRhYWFmYzJhNTUyZDFmNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiZGZhZDljNzRiYjFkZWFiZGYxZmVjOTBhZmIzMDBhNjk1MGFmYjQwZTU2MDM5Zjk1ODg2Njc3ZDQzYjI4OTEifQ"
+          "resource": "repo://mc/deployment/agentsview.go",
+          "version": "repo-file-v1:sha256:d1e6cb84fffa9f1767017718dcfd01b4ac911bc12f0bb48cb128bfed682f76be"
         },
         {
-          "resource": "repo://mc/deployment/agentsview_supervision.go#L166-L190",
-          "version": "repo-lines-v1:sha256:7f0540059abe52c756b2cb47d8f59f5ab12ba410770bd420245d4dd78339ea05:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3OTkzMmZhMThiOGEzNWZmOWYwYWM0MGQxODdlMjk3NjAzYzIzYWIxYzA5MTQ4ZDRkYzg5NmI4MGQ4ZTQxNTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyYmE3OTUzYTk2ZDVlZjI1NzAxMGU4ODkxZTc4NGJjN2Y0MDY1YWJhMzk0OTZkNGNhYzEyMzllMWJjMDMzZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyM2Y1YzI4YTRiYTIzMWJlMTI2MWY2MmQ2NTk2MzhiMzdlMjU0MGZlOGMwNjg4NGQyM2IyZWRkZWFkODZiOTAifQ"
+          "resource": "repo://mc/deployment/agentsview_supervision.go",
+          "version": "repo-file-v1:sha256:c28cb3f52dbe64ad6ecfb5896531d22baff0eed8ba6da9fbb162f8e3736db3f4"
         }
       ]
     },
@@ -145,22 +141,22 @@
       "statement": "The resident AgentsView client sends the token as a bearer authorization header on each request.",
       "evidence": [
         {
-          "resource": "repo://resident/src/agentsview.ts#L128-L140",
+          "resource": "repo://resident/src/agentsview.ts#L130-L142",
           "version": "repo-lines-v1:sha256:9977e0beff4893a76d396d34a349afd1806b2784e6b0bcdfd283763666f476db:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNTAwNGJjOGQ2ODk3MGFhZTAyNmFjMDIwZWQzNDRjNTUyOGE4MjMxZGYxNDdkZjdmODlkZTFkYjA3Zjk2YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MzMyOGFhYmY3NDc1MTY2MGQ0YjdiMjU4NzVlYjZkNTg0MDFjMjM3MjM0MzAzOTg0ZGQyZWJiYTcwZTdlYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmMjA1MDdhYjk5NzhkYmFjODhmZTM3MGM1Zjg1YzQyNjNiMDE0OTdmMjM0ODdlMzE4NzIyMTIxNTY4NTEzNTIifQ"
         }
       ]
     },
     {
       "id": "claim_d9c3c8b6e7b1452bb4a6ed38aaabe116",
-      "statement": "mc/trace maps claude-sdk to the Claude format and codex and opencode to the Codex format. OpenCode uses a stable derived trace identifier.",
+      "statement": "OpenCode trace identity uses its native format and native session reference.",
       "evidence": [
         {
-          "resource": "repo://mc/trace/trace.go#L23-L86",
-          "version": "repo-lines-v1:sha256:36db969a9ff7c67257c7b5ee5e67dc090fd31ea6cab2ca78e9334ac515053cb8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0OGZjZDU0YWMwMGQ4NDczYjAyYWFkZjg3MGU4NTVlNmUyNzAyMTM0MmM1YWYzNWVkYTkwNjg3NmJjYjljMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxODljMTE1ZmY5NGFhOGMxMWEyODk4OGE3YmQyZjhjMWI2NmQ1NDk5ZDQ4NzVhYTRkNmQ4YmU0NGQyMGNlM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5NDAzZTk4ZDNjMDVlYWJkMDlhMzE0YTUwMDQxMzliZjI5Y2MzYjhjMDRmNTAzMDQ1ZGJhZGI1MTQ0NmZkNTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxYzY1MGM0MGM0YmM2NDQ4NzU2NTU0NzE4NjI5Y2JjZjU0ZjIxZWIzNmEzOWI3OWE5YTgxNTdkZmM2NzViZjYifQ"
+          "resource": "repo://mc/trace/trace.go",
+          "version": "repo-file-v1:sha256:32598bb45112e57f05666173ad581680932ea58424d48e5e7802e7de54d1098f"
         },
         {
-          "resource": "repo://runner/shared/opencode-trace.ts#L1-L10",
-          "version": "repo-lines-v1:sha256:2422053b46c0699b940535a14ba6322dc820e0e73f84454b8711e116a987b107:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNTNhZTcwOWRiNTcyOTA5ZWQ4YjRjNjdhNzViYjE2ODkwMWFkNzk2ZDllYjQ2MzVmYTEyZjU5ZWIxNzI1MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://runner/shared/opencode-trace.ts",
+          "version": "repo-file-v1:sha256:cadcbae61195a109436ad27bc305a5add089ec0150dc4a0e1fbd299d8eb45a56"
         }
       ]
     },
@@ -199,11 +195,11 @@
       "statement": "The AgentsView proxy exchanges a single-use 30-second grant for a 12-hour session cookie on a separate loopback origin.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/agentsview-proxy.ts#L147-L174",
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L157-L184",
           "version": "repo-lines-v1:sha256:2d932b75a86b9c868e0c9e6e909ffc157e58257b26541d4146cdc5947e79760f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NGExMzE2N2ZkZWEyMWFhNGM2YzU1ZGU3MzZmNThhNTAzYTQ2ODEzYjE0ZTlmYTM2YzcwYWZjMmRkYTNkOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZGExMDZmMDRkOGZhNmE2Y2M2YzE0NjgzNzZlOThmYTdiZmExMGQ0MzgyMjA4NzRkYjA2ZmQ5ZWU2OWI1ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZGM5MDE1NjhhZGI4NDZkM2YyMGRjMTA5YzNlMzcxZWM3MDBiODIwYTZiMGJiM2ZlZDQyMjkwYWQ3NDk2NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhMzdkZWQxMmU1NDViYzBjYzRmZjc4ODg5MTEwZTEwZTc2ZTg4MDczMDAwNGMyZWMxNjlmOGU4NzQxYTgzN2UifQ"
         },
         {
-          "resource": "repo://dashboard/src/agentsview-proxy.ts#L5-L8",
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L6-L9",
           "version": "repo-lines-v1:sha256:607ff484876145039061673398be3119d5cbdd204230cb126433d25f912ae830:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQ1NTc3NWE5YTRhZjdjMDkwYWJjOTQ4MmEyNzM1MzhiNjRiNzQ2NTg2Y2IwZWRkMjMzOWJjNTI2OWZiMDMyZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRlOGE0MzVlMTdhYTFkNzRiNmIzNjU0YmY5MWZhOGFmOWFjYTIzNzdhNjg4YzU1ZGRkMWZkYTU2MGYzM2UxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGFjMmVhYTA2ZGZkZmI3Y2M2MzdjNTkyYjc4ZDM1ZGYzODAwMGNkOTZiNWViMGY4NjczZDg0MGU5NzBhMjNmYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2M0YzY4ZWRmZDcwMjVmYzY4YTM5MDM3MjBkNDUwZmZmNDI3NmY3NzI1MzZiN2QyOWVhYzcyNTI5YjhmYzk4NyJ9"
         }
       ]
@@ -213,7 +209,7 @@
       "statement": "The proxy keeps the AgentsView token out of settings responses and refuses service configuration and synchronization paths.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/agentsview-proxy.ts#L196-L218",
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L206-L228",
           "version": "repo-lines-v1:sha256:298d6d21f77cfbdf1f11b992de9c2ab5b830f3f1fe71aaa0d3edb8f1c3395167:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiOTE1ZDg2NGFmNjYyMTdiZTEzZGI4OWZiM2JkOGU2YTM4OTlkMWUwZTg0ZDIzMTlmZTljZGE3M2NkZDc1NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MDA1ZDU3MTA2YTM2MmViMDAwZGFmM2RhNDY3NGM4MmI1MThmZjVhMmUyZjY3ZWU4ZTc1N2EzMzNjMmFmNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlOTdhZWYxNjc4NmRiZmMwOTZiNGZhMTkxMDc2NzJjZjlkYjE4YmY2YzVhYTFmYzVmY2VhMzJmN2ExNTdhYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiYTkyYWQ1NjIxN2Q2OWY5ZDIxZWZlNGNiNjY5NTAxNzAwYTNiNTUzOWIyZDc4ZWZjNWQ0NGMzMjA4NjgxOGYifQ"
         }
       ]
@@ -260,21 +256,21 @@
     },
     {
       "id": "claim_7f9e1484f9854cc7b3f7b06d59852b22",
-      "statement": "The OpenCode adapter writes token-redacted Codex-format traces for the shared viewer.",
+      "statement": "The resident publishes masked native OpenCode database copies while preserving original sessions.",
       "evidence": [
         {
-          "resource": "repo://runner/agent-runner/adapters/opencode.ts#L115-L161",
-          "version": "repo-lines-v1:sha256:e2955049cd0c988c1c7edae197447c944196219f94634b9f5ca5c360b9e2bd7b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZmE3ZTZhM2U3YjZhMmRkNjM4MjA3OGM3YWZlYTc3YzNiZWNjNGMyNDE4YTJkOTE3MzA4YTdjNjY2ZjJkODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5NDg5MjJjNTZjYWMxYTA5YzMxYWNkNzlmODFjMzRiMGQ4MzNkYmVhNzMzYjExNmYwYjM0NjUyNTYzNTYxNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0NDU0NTlhNGZjY2EyYTM3MDhjZDBhMmU0YTA2MDA3MmYzN2FhNWFlYjU1YzAzNGJkOWEzZWJjNDEyYTRlNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0OWI4N2UzYzQ0Nzg2N2E4NjU1MTA3YzM4NDJhMzhmMTBhOWZjODkyM2U4OGI4Y2NlMTI5MGE4OTZlODFhMDgifQ"
+          "resource": "repo://resident/src/opencode-copy.ts",
+          "version": "repo-file-v1:sha256:ea73217312e431e98dce3e61799539c780399ed0fec41221d07269302b84a60d"
         },
         {
-          "resource": "repo://runner/agent-runner/adapters/opencode.ts#L194-L204",
-          "version": "repo-lines-v1:sha256:8102f5c4b67ef80651bae03c65b67fef4434f812747db5806055d4b154da71f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYTRhODk2OGYwM2YwMzQxNzI0NmI1NTRiNjcwMGMwZjIzZWJlZWI1ZWViNmEwODc2MDA2ZGQ0MTUyYmZmNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjZmQyODBlNjg3YjJmODI5M2U4ZTNjZGNkMmQ1MTE1OTU4MjhhODkxODlmZTMyZjZiYmY0ZWZjZDYwODVlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5ZmRmZDRjMmEwODc2MGQ0ZDU2YzI3NDgxNTljMTRmMTRhZDhhODE5YzlkNTQyZWM1MDU0NDM3MmNhZmE1MDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM0YmVjMWZjNzlhNzI4ZjFmODU4N2E0NmRlYTg0ZmVkMzcxYzBlZTcwYmU5OTlkN2FlMjE5NDYwOTlhMjMyNjgifQ"
+          "resource": "repo://resident/src/opencode-snapshot.ts",
+          "version": "repo-file-v1:sha256:50f3b68c0ec440334a09db64047351f82366ebd6bc38507eb8e4af07b3781f6a"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

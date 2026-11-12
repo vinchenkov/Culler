@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d449bb184f086f2501c2cd210b340b0e676100d24fd292a983b51b5d28e08977",
+  "pageVersion": "sha256:200abe60c2e3038a07d710800c9188fd1cec8615a9a9774018a42bde37cbdaff",
   "claims": [
     {
       "id": "claim_70c4bb3813634779b2c8216ae9996cf7",
@@ -163,7 +163,7 @@
       "statement": "The spine stores a unique Discord thread identifier for each associated Collie session and prevents changes to its association.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L950-L966",
+          "resource": "repo://mc/substrate/schema.sql#L984-L1000",
           "version": "repo-lines-v1:sha256:85fa1b3e690d38720b24a307d00db81e916d4ce2a5304589d033c5a2d1aaabe8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiMjQ5Yzc2YzRkODg2MjQyY2ZhNjU3MGQxMDJkMWNkMzY4ZGYzZjcyZGEzNWY2ZmJkNTViNmQzNGQ1ZjE2OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNDc1YjExZGNjZjc2ZDE1Y2UwYzRiYmY5OGI0NmRkMGZiNjlmNjcyNTFiNDFiOTZiZDMxNjMzOGQwMDQxNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1M2Q5Y2NkN2MwZGVjMGJjYzc4MWMyMzAwMGZmODhjMmJiYThlMmJiYmNkOTAwNmViOGY3NGZiMWE1NWY4M2QifQ"
         }
       ]
@@ -191,10 +191,20 @@
           "version": "repo-lines-v1:sha256:6bbe2b74d60264e8459a40f9ca70c72b1b1fda19e36e8e1ac70cf661e1477e10:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhOWU3MWU3YTc3ZWViMTQ5YWVmZTJhNDc4Y2Q4NWYzNzNiZjZiNGRkY2Y3ZjdmYTQwYTliYjc2NmE0YTBmOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiZWFmODY2NjdmOGRmMTdiNDg2MDk4ZjQzNjk1YjQyNzcxM2E4YzBjNDhlN2ZiNzQxYzE2ZGQzOWI5MGJmNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5MWI2ZTAzYjE0NTQzMjYzNWVlYWI5OTBhMTg0MGFlZjYzNmRiYjUyNTcyYTYyMzIyYzBkZGQ0Yzc5OTU0ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlYTk1NDg4NzYwOWU5NzgwMDMxMTFmOWFkYzZlNDUxN2NjN2ZmZjhjZDQ3MDVkY2M0MzRjNTFmNDE5NGQwMTMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_84408ff45d694ebab9c8e1a17c644317",
+      "statement": "Operator request identity and completed results are immutable, and complete requires result, exit code, and completion time.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L739-L771",
+          "version": "repo-lines-v1:sha256:2fb28bee1483c2aeed0175119227618b544c71cfcb4904be965670c46788e037:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlOWI2MWU2ZDg0ODA4NGU1YTM3MmU0ZDdmMjA5NTcwMGY3NGYwMjZjNDU0ZWUxZDQyYmYwNTYwODM3YjliNTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ZTFmYzEyZjFjNjE5ZWJhZWUzZWY2ZGFkMThkYzFmMGI2NDViMDU1ZWJmMmUxNjM1ZmIyNzc5YTUxODYyYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMWNjY2IwYjJkMTRkYjU3NTExZGIxYzI5Nzg2OGUwY2Y5MWUzZTgxN2IyOGQzZTc0YmM0Y2FmYmFhODgxZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjNDY5MzBjZDIwODI5MjRjMTQ2Y2U5ZGU4N2JmOWU2NTk4MTZmMWM0NGRhZjEzNjdiOTY2NGU2ZDk2ZmY1YzAifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T18:18:18.729Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3d55e746fc1a03666576d3e78ed80bda55d5f953f67439bdcf2c06e540d74dec",
+  "pageVersion": "sha256:a5fa59143d9a9e4c1a7bd0c0a7e31ab82763f5db57f695801ecefc99865abed5",
   "claims": [
     {
       "id": "claim_d0901f87144148f29fca692817e602f8",
@@ -17,7 +17,7 @@
       "statement": "A Collie session row has status active, ended, or reaped and stores a frozen verb_allowlist JSON array.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L738-L754",
+          "resource": "repo://mc/substrate/schema.sql#L772-L788",
           "version": "repo-lines-v1:sha256:803a7fa8dda47b6ff35e62977593f45d7d5d17faba55c23a6d22993309f6cf8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4Mjg3OTA2NzBmZWQ3NDY2ZDhhMmJjZjcxMGNlYTMzZjBiZmE4OWQ5NmNmZTc0NzRlZjA3ZDY5NjExZjY0Y2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmY2VjODRiMWZkMWY5NDYyMTVmMWI1OGI3Y2U4Njc2Yjk4YzFlMzRiZGZiMGEyMWVmMmNiN2Y4YWYyMGU5ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlZDgwYmNmNmNlOGYyMTkzOTQ3YmU2ZjdjOGQ2MTViMzQ5MjYyN2YzMGU4NWM2YzJmYTQyMTkzYmIyYmQ2NGEifQ"
         }
       ]
@@ -34,11 +34,11 @@
     },
     {
       "id": "claim_bbfd78b30c0a4c5a95b85bfdc4e6d2e5",
-      "statement": "maximumCollieAgentVerbs is the compiled maximum set of operator verbs a Collie session may hold, and project registration is absent.",
+      "statement": "Collie maximum permissions derive from the supported operator command catalog and include host operations through retained requests.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L15-L41",
-          "version": "repo-lines-v1:sha256:c8111e3830d65924719b6490596bf8f731e193336c8075d9ce3ee5b4867cad10:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2YzA0M2M3YzY4YWEyM2E3M2I0NDY5NzQ0MTY2MDI5NTQ3MWZiYzgyMjU4NDM0ODVmYzEyNTM1YTdlZGE3M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0NmM4ZTM0ODc2YjQwZTU1MzczMTQyNzRjMDQyYjFkMTgyODllZDExMTA1MWZjOWQ2YzVkZDljNTg0MzlkZGUifQ"
+          "resource": "repo://mc/verbs/collie.go",
+          "version": "repo-file-v1:sha256:eee8e7d8af1f87ed9876d95c1f22f7e7962136acf78db61721f59296ef5c557e"
         }
       ]
     },
@@ -47,7 +47,7 @@
       "statement": "canonicalCollieAllowlist defaults to the maximum set and refuses any requested verb outside it.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L91-L124",
+          "resource": "repo://mc/verbs/collie.go#L72-L105",
           "version": "repo-lines-v1:sha256:0609509acd62a774f29244af3200628996a1f168880b8a771058cab78442eb94:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiMzc3MmVlYTNmNTlkMjRmYjI0M2Y4ZDE0MjcxYzU0MjY4YTQ4NWJiOTY4ZDA4YWUxMDI0MTZmZDRhYzA3ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmZWM2NTkzM2JjZjIzN2RjZmFkNTA0OTZiNjIyZmNhYTg1ZGFiMDU0NDMzYWYzYjMzNTBlZjM1ZDczYTYyODEifQ"
         }
       ]
@@ -57,8 +57,8 @@
       "statement": "requireActiveCollieVerb requires an active session, an envelope allowlist equal to the frozen value, and the verb in that allowlist.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L1450-L1482",
-          "version": "repo-lines-v1:sha256:69fd4f7bc5f0519098fde5a118e2b867e5533a9e67fae042d0b8c9e55418ad9e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmMDUzYmUyNTM4MDczNjQwN2JkYmYyOWJlYjRkZDFmMmE5ZGUxZThhOGY1ODE0Nzc2MGZiYjNiYTI3ZjAyZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5ZDBjNWQxZDA1ZDVlZmQ4MmNhMDA0NDljNTkxNjc0MWFmMDgyOTk5ZjRmYTQxYzVhYTJkNTJjOTFlZGQ2YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1YjJiMTNmM2ZhZjg5NWI0ZDQwOTQ2OWM4ZWI1MGQ0YTE2NDNlZjdmMmVmOGY3YmM3OTUxNGZiNmUyZmQ1NDYifQ"
+          "resource": "repo://mc/verbs/collie.go",
+          "version": "repo-file-v1:sha256:eee8e7d8af1f87ed9876d95c1f22f7e7962136acf78db61721f59296ef5c557e"
         }
       ]
     },
@@ -107,7 +107,7 @@
       "statement": "A model change derives the new session id from the previous session and request id, and ends and deletes the previous session only when it has no messages.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L291-L388",
+          "resource": "repo://mc/verbs/collie.go#L272-L369",
           "version": "repo-lines-v1:sha256:055453d9588049276e14676fa3b596011e8f1925652c7c2ca1f78f01fb3b5452:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1MjdkMDE1MGJlMmRhMzZmMmM3YWI4Zjc1OTE0NzIzM2EyMWUxZTM3ZDk0M2E2YjZiMTE5YTRkNDg5YjcxYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0MmU4YTk4MDU5M2YxYTU1NDdhNTBlOTU3NzlmMjgwYzJhZjk1ZTQ2YmQzYmY3YzYzZmI0MzZjNmVjYjIxZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3Nzc2YzVmYjI4ZjhiZjlkNDQ3OGJlNDM5YjA5OTcyZDI1ZGRiZDdmMWI2OWIwYWM2ZTc4NTZmN2UwM2Y2NGQifQ"
         }
       ]
@@ -137,7 +137,7 @@
       "statement": "A Collie session has an immutable optional packet identifier and cannot be both a Vision session and a packet conversation.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L738-L884",
+          "resource": "repo://mc/substrate/schema.sql#L772-L918",
           "version": "repo-lines-v1:sha256:f345cb88771631eec488eb98fca89a50be5b997ac3888eb4431a52a5f7a2ba1b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmZmNlYzg0YjFmZDFmOTQ2MjE1ZjFiNThiN2NlODY3NmI5OGMxZTM0YmRmYjBhMjFlZjJjYjdmOGFmMjBlOWY1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlNzEwODBjMmZjZDQ1OGUzM2YzNDA3M2Y4ZDY4NGE1OWE5MTYzY2FhYjI3ODE5ZGY2MWRjMTA3Y2M5NGU5NjBkIn0"
         }
       ]
@@ -147,11 +147,11 @@
       "statement": "Packet preparation checks the current packet and version, then returns, resumes, or creates its conversation in one transaction.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L436-L444",
+          "resource": "repo://mc/verbs/collie.go#L417-L425",
           "version": "repo-lines-v1:sha256:e31e8c99063303dadd23a1f9f2f980d801797c14ac9dead3d83da0e18313da87:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q4YWM4ZTA4Y2NkOGZjZmVkYmZhMzk1NmEyOGJlMTNlNDQyMTQyMzYzNjNhMTcwODIyYTEwYTUwN2U3NmExZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTY4MDZmMTU1YzVhYzFhZTI3MjJjYTA2ZjJhYzljYWRjYjg4MWI5MTIzY2I2MjRhM2MxMDQ3NWI0NDQ5ZGMyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2M5YjE2YjdlODM3MWVjMGZlMzU3YmRmM2RiMzcyOGM2MDM1MTA1YmVlYjI2NjVlMTMyNDNlNGQzZThlMjAyOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTgxODk2MDUzNGU5ZGRjZGY5YWNmNDhiOGQ3YzE0OTk0YmE3ZDYzOWI2NjhkMjM1ZTJmYjI0YTc0ZjI4MDNjYiJ9"
         },
         {
-          "resource": "repo://mc/verbs/collie.go#L521-L577",
+          "resource": "repo://mc/verbs/collie.go#L502-L558",
           "version": "repo-lines-v1:sha256:071b23d9378d125b61a512f75e08b4725085bcc25d575bb2a9befcc61daf5ed7:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNTJiZTQzODQ3MmY4ZGVjNjZkMmI3Y2ZhMmVhMDM4YmMwOWU1ZGU3M2M0NjUyZTY3M2VjZDk2ZTFlYTY3ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3YWRlYjA0ZTE3MDJjNGNhMjBlMzVlNDU2MzdjODFjNmQ0MjZhODg3NGU1MzkyNDNiNDcyOTlkYjUyNWU0ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YjA5YTVkMWI1NTBlMDkxNWY3ZDBmMzEyZWI4YzgwNmFlNWUwNjU3Njc5YjZmYTcyNTYzMjEwYjU0ODRmMjgifQ"
         }
       ]
@@ -162,7 +162,7 @@
       "evidence": [
         {
           "resource": "repo://mc/verbs/collie.go",
-          "version": "repo-file-v1:sha256:04c63b6b5fea21366b96f0ceb144aa17f4089a1eda0194005be0f4d7e40b5893"
+          "version": "repo-file-v1:sha256:eee8e7d8af1f87ed9876d95c1f22f7e7962136acf78db61721f59296ef5c557e"
         },
         {
           "resource": "repo://mc/verbs/colliepacket_test.go",
@@ -172,21 +172,21 @@
     },
     {
       "id": "claim_8d1019e871d94dc7b2d626313280cc2a",
-      "statement": "The Collie directive treats diagnostic text as evidence and requires explicit operator confirmation before a proposed state change.",
+      "statement": "The common skill treats diagnostic text as evidence and requires explicit operator confirmation before a proposed state change.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/collie.md#L30-L37",
-          "version": "repo-lines-v1:sha256:a57e3c80c2fcddb96cf7f92aab8a4d12bbd1b5b9e9ef2ca7d1ffcfd1d3cefb2c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2IxNDQ1NzNlNjQ2MGJjYWZjMmZlMzFiNjdkZTEzOWQxZjQ4ODRlMzU0ODQ5YTJhYTk1YTAyZGZlNjBjYzgyNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTU5NzhiMDc1NGE5MzdjYjhlMmNhNzc2MjEzZjAyMWM0MmM1MGEzZWFmMjNiNjg1NWNlN2EzMjhjOWJiYzIxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWY3MzEzNmZkYWZkOTNkMGZjZmY1ODcyMDIzZTgyOTM2N2I0YzMwMjI3MzU0OWQwYzAyNzBiMjdiNjc5ZDAxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmE5NDYyYTM5NGYzODA2ODczMjQ3Yzc1MDc0N2IyNmVkMTBhMTU2M2ViN2NjNGY4NzU0MmM3ZTAyMmRkYzY2ZiJ9"
+          "resource": "repo://mc/verbs/skills/collie/culler/SKILL.md",
+          "version": "repo-file-v1:sha256:5061b84555b08e4fb70ea9b112fe1d2c8a2800f07c70638def0f86f2a972aa8f"
         }
       ]
     },
     {
       "id": "claim_eee6042371d7403883328ecdb22f7866",
-      "statement": "The Collie command skill keeps system diagnostic history host-only and requires disclosure of evidence outside permitted reads.",
+      "statement": "The diagnostics procedure uses current system diagnostics, masked logs, and trace evidence, and states unavailable sources.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L386-L396",
-          "version": "repo-lines-v1:sha256:666b01bb2f7cc1dc73be1f6193b3f37da684c00079d35ec5eccc580c5866c6d6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1YTlmNzBlYTg4ZTA3OWY1MzIwMDExZWZiMDFjMDcyOTY3OTQ2ZjgwNjVlNTNhYjZkNGE4MDRlMWFlYTU5ZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYjYxNjU1NmU3M2Y0ZTVlMTgxNDZmNDY0NWEyNzJhMTY5ZTU4MjBiYWMzMTU4NjM2YTM3MzJiYmVkNGEzMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyNmNmMGIzYTZlNDRiYzRmZTE1NmYzMDk2NzIxZDc3MWY0MmUyNjdkZWJiYTNmMjZlNTA2YjI5NWRjMWUzMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmMjM3OWMzODllYzM1NDkwNGJiNTY2ODQyNTliOGVlMjMwNmY0ZGJkMTIzN2QwYzhlNjBkNWIxMjU5MzIyYTUifQ"
+          "resource": "repo://mc/verbs/skills/collie/culler/references/diagnostics.md",
+          "version": "repo-file-v1:sha256:0983dc5523a480103e40224d5b0329b4b0cb44a963742a599274945ca2fcb803"
         }
       ]
     },
@@ -196,11 +196,11 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/conversation.js",
-          "version": "repo-file-v1:sha256:fb8b234aab9e4a1ea504f4c2c07f495081342062ecfb84a8e35b3384f52b71de"
+          "version": "repo-file-v1:sha256:0c43e93645b3d84418761dac1760a9fc5016f4dcd3f471bddfc88a14eb772a2a"
         },
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
+          "version": "repo-file-v1:sha256:4da7126e9b258471b60c41f9a6404a7306f9e77e54b798467d09a4804f552135"
         }
       ]
     },
@@ -209,12 +209,12 @@
       "statement": "Collie resolves an operator decision report through BoardWrite revise with a changed description and reason; reason-only unblock is refused.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/decisionresolution_test.go#L387-L413",
-          "version": "repo-lines-v1:sha256:5e620b673e4f179553499d2a9dc9fd9488a01683487ef2b1be1d2c96ea8a41bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMTkyOWY2MDZlNjU1ZDljZGNiZjdmNWZlNzYyOTIzZmJkNjQxZDA3NzJjMjUyOTdkODNlODA3NjYzM2Y4ZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlOTcxYWZjZTFlNzllNmQyY2VhNjZiZjhmMzNhNjAxMDVlYzU3ZWFiNGQyOWZlN2ViNjFlMWQzZTExMzg2NjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3YzEyOTYwYTAxZTc1MTMxNDU1NDhlZmJiMTM5MWFhYmFkMjhiOGYyODgwMzk4OGU2YTdlMjZiYjJmNTkwMDEifQ"
+          "resource": "repo://mc/verbs/decisionresolution_test.go",
+          "version": "repo-file-v1:sha256:8d06965d0b5340019926a6690a79658572fbb5fafda89ea289ccb184e4bc9533"
         },
         {
-          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L544-L586",
-          "version": "repo-lines-v1:sha256:9e3c2b842044bb1603eada5f149bc4aa6d313ee60547ad63b92e7ffae2c4236a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMWQyYWFjMjJiOTQ5M2M0N2UwNzU5OWU4ZmYwY2MyZjkzMDlmNTRmYjMzYjNjNmJhYmU1YjUyYWU5NGMzNzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NDljN2ZkYjc3YTNmNjY3NjliZmQxMDIyOTcyMzQ2NmFhNTk1Y2Q3NzMwMGFiYWNkMGRkN2ZjMmJhOTEzYmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2ODA3ZGI2Y2RhZGFlYjFjMzBmMTBjZTQwMzQ1YjQyNzIxMjRlN2UyMGIzMmQzNTIzYWYxMGIwYmFhMTcxMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmZDA0Yjc4NThjODk4N2I4Yjc0N2E1MGMyNzRkOGJmYTUzYzEyZmUzNmFlMzY0MWY2YWQ3OTZmNjNkYTM3NDgifQ"
+          "resource": "repo://mc/verbs/skills/collie/culler/references/diagnostics.md",
+          "version": "repo-file-v1:sha256:0983dc5523a480103e40224d5b0329b4b0cb44a963742a599274945ca2fcb803"
         }
       ]
     },
@@ -261,7 +261,7 @@
       "statement": "A Discord thread start reuses the session associated with that thread and refuses a retired or deleted association.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L317-L341",
+          "resource": "repo://mc/verbs/collie.go#L298-L322",
           "version": "repo-lines-v1:sha256:763da23bd652edaf5e6c0516cd49be4b27bcee24485340c53b5dc05e7ac96ff2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZDM5NTQ5MTUyNWZlMTJiMjdlMWU3MjIxNjU2ODhmMzUzMzA5NDQzNWE1ZGZiMGRjNzk3MDkwMDBmY2Y5ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0ZjU4N2QxMjlkNGI2OTcyYzAxNjAzYjMwZWQ1Zjc4NDE0NWYyZGIyNWNlYjJmYTE1OGUzZThlNzBkYjVlODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMWYwZThkMmZjOGNjY2QzZDlhYjQ1ODlkNzQyNzAyZmJhYzY0MWFkYjQ3YzMyODg5ZjNjNTAyMzMxYmU4ZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwNDQ5OTdlNmIxMzVmZmIwNTdmMGM1ODY0NWI4MzliMzIwYWI5ZGQwYWI2M2EzZWE2NDU5OTU5NzQyMDkwYmEifQ"
         }
       ]
@@ -271,7 +271,7 @@
       "statement": "A repeated Discord source message reuses its transcript entry when its session, thread, and body match.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collie.go#L868-L893",
+          "resource": "repo://mc/verbs/collie.go#L849-L874",
           "version": "repo-lines-v1:sha256:81b09b970ac0228996917b298171955ef8bf0a8be0f7eba90d3fc911cbf54a2a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmYmQxNDhkYTdkNzMxNzM2OTQ0ZDZmOGZjYWRmZmI2NTQ0YjAyODJmYzgyOWJlM2Q1NDRhMWYwMWYzMmYwY2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1MmQwMjQ1M2VkZTA0Nzk1MTA2YjFiNTJhNWVmMWE3MDY1ZjdmN2ViOTIzZDgyYjE4MDJmYjQ5MDI3ZGNjN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMTJmNWQ1MDNkZTM5N2FiNDdmZDllZTFlODE1YzQyM2NiYjk1Y2M5MjNlODEzMjU5Mjc1ZDQ1MjUxNjE5OTMifQ"
         }
       ]
@@ -281,19 +281,19 @@
       "statement": "Collie stores the profile effort when a session starts, and the schema prevents a later effort change.",
       "evidence": [
         {
-          "resource": "repo://mc/substrate/schema.sql#L749-L758",
+          "resource": "repo://mc/substrate/schema.sql#L783-L792",
           "version": "repo-lines-v1:sha256:97d6b13d6acc8d754c843010a66b2d0e8d057c4faa10bd4983450fe0fb9bba3f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4ZGI3MmNmMjYwZTE5ZDZjMGU5NGZjN2ZjNWRjOGZiODI5NzgxYWE3ODAwYTM2NjlkZWJhYTAwNTQyYzMzNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1ZDNhNTczNjNhZGZjOGZjMWEyNjQwOGMwZmVjMGQ1ZWJkYWZkMGVmMzdiOWZlNGVjNjhlYjNkN2JjMGIyOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlZjFmNWMyNmFmMDA3MTUxOTRkNjdlZTYzYmFlNjJhYzFlNGIwMjQ4Mzg2NWNhMmViMThjMmMwNjIwNGFkNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwOGI2NjBjNzNlZjVkZTI5NDYyNzgyOWI3OThmNzQ2MTg5YzU1NDM5ODQ3ZmFjM2ExMTdkMTZlNWJhMGRkMTcifQ"
         },
         {
-          "resource": "repo://mc/substrate/schema.sql#L866-L885",
+          "resource": "repo://mc/substrate/schema.sql#L900-L919",
           "version": "repo-lines-v1:sha256:d910f8f5257daf37a5bcce3be4d18bae59d60420c3cb7210badb9edd9d5b58fd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiYzdmZjUwMTRiNzljMWY3YmUwMGU0YTEzMDc0OGJhYWRhM2QyMDBlMjBjZDU1YmRlYjU1NTFmNjY5YWFmOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiYTIxYjVjMzk0M2IwZDBkMGIzZTZjZWRkNzBkZGI3ODVlYzUwYzExNmMzNWM0OGMyMmE0MDdiOTkzZjY3YjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwYWM1NDZhY2I0OWY2ZWQ4MjRhN2U0MmYyZTc1YzQyODU0MmUwNmJlMDQyNTRkZjFlZjY4ZTJjODExYzMwM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0ZGNiNjZlNTE5MTVmOTMxYzc1MzJlMzk0ZWFiYTBhMjkyZGE3YjE3ODdiMTNlNjdmZDhjN2EzOTc1NjMwNmIifQ"
         },
         {
-          "resource": "repo://mc/verbs/collie.go#L241-L263",
+          "resource": "repo://mc/verbs/collie.go#L222-L244",
           "version": "repo-lines-v1:sha256:17c5279fa21e7e8bcf73411aecdf4888f80649fe55b21de2ed3d711069e602cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzMjM4NDAwY2U3MzJiNjAzOWM0NGMyZTU2YTAwYmRhM2IzNjExZDZkYTZiMTRmNmY3MmNmMjlkZTZhMTEwNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlNTQ1YzZhNmIwZTk0OGRjNjc3MDMyMTcyYWQ0YWFiMWJhM2JiZjAzNWRiN2Y4YjJlMDE0Y2YxYjM4ZWY3NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1NmQ1NWIxZjFjNTE4ZDhlYWQ2ZjExMzgxN2U2MGNjMmVjYWQ0YjhlN2Q4YWQwMzVmOTRhZjA1YjliODRhYTcifQ"
         },
         {
-          "resource": "repo://mc/verbs/collie.go#L455-L465",
+          "resource": "repo://mc/verbs/collie.go#L436-L446",
           "version": "repo-lines-v1:sha256:530b6b766621c545ed8e6bb9fffc6edd4b7735c4a27342b13247854d33f111dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTU3YTM3MzIxNzkzZTM5YmJmODkxNDU4ZTlkNTJhODM0ZmYxYTgyM2U5MTFkNzExMjNmN2ZiMmJiNmFmYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczOTA5Yzg0NmFjYjA2NGRiZWFiMWY5N2Q4NTk0MTM2MGI4ODJlMjkyZGY5NzI1NWMzYWIxNzE1NjYyNmFkMTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU2NmIzZmJjN2E5ZDA2OGMwY2ZmY2IwNWE5YWQ4YmZkMjE2NzYyYTA4N2Q5OGJiZTA5MzUxMGU5NzFiZDg3ZmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmYWYxZmVlOWJhNzAyOThjNWIzMjE0MWNkYzY3NDdlZGNiZWQ0NWYyMTE4MjY3OTk4MjYyYmZiYjdiOTYzMTgifQ"
         }
       ]
@@ -303,16 +303,12 @@
       "statement": "A Collie wake carries the session's stored effort to the resident.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/collieselect.go#L269-L284",
-          "version": "repo-lines-v1:sha256:258f6b27cdd52ee6eaee13aa08339ab8041abbfd9712bb6f94022827b9bb2cdc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YzhmNGU5MzVhMmQxNzNkZmRjZmI3NDc5NDcwYTg3NTVmMmUwNTNhYzUwMzMyODFiNjRlMWUxNWNlZmQwZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MzI1YTFlZDJjZTUyZTE0NTJkODUyZWU1MjhjZDQxOTE1NzE2OTRlNzA0ZTJkNzRkMzMzOGE1NTBmZmJmY2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5Nzc4NTA5YTg5MDBlYzViOGYyMTRkNDk1ZGJhYzdlOWIwNTU5YjZiZTliNzI5YzkzMzQ5ZTc5ODVjMGVlMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkMGI5ZjA0NmY0ZTgzYzIxY2YyZTE5ZjgzYjg5ZDdjYjEyY2ZmMTMyZDFiODAzYjkyZjVmZTI5M2Q5NTMxNjMifQ"
+          "resource": "repo://mc/verbs/collieselect.go",
+          "version": "repo-file-v1:sha256:3cef0c71875cf48ddc256d840795bc9e3f9a1f803356912ce422218089fb5616"
         },
         {
-          "resource": "repo://mc/verbs/collieselect.go#L320-L329",
-          "version": "repo-lines-v1:sha256:a46f3f05c0347bb2daad1984136dec3d63e1b2770af85a6efeb6701c9e481a65:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4ZDhhZWU2OGUyZDM3YWVkNDA5NjMwNjRiYjQzZmQ4YjhkNjZlMTcxNmZhOWY4ZjFmMGUzZmY2ZjgyODJlZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ODg2NWRmYWU2MzFhMTY3MWExNTg1MzAyZmY0ZmEwOGU2MzYyZWY3MWI1ODE4ZjFkNTgxY2FlNWE4ZmYwN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlM2VmMGE5MzQ5MmUxZTIyMDhmZjAzMjQzNDI4NmM3ZjI3OTk4ZmUwOTU3Nzc5N2Y5YWI4MmM5YzVmNmViNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NDY5MjE2NzQwYTZmODVhMmQ4ODU1YzBmNWM4NDQyOTAxZjZhYjA3ZDlhM2U5ZmUxNGRlN2M1ODNjN2NiYzYifQ"
-        },
-        {
-          "resource": "repo://resident/src/effects.ts#L626-L636",
-          "version": "repo-lines-v1:sha256:bb0d876aee9248fa27f257326e24e37e4a1b04b965145913cedfb96bb41e1fca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMjgyMjYxZmQxNzUyM2QyODBhY2E3OTRiNmZlY2VhOTJhN2EwNTRmNTk1OTlmMTIxYjUyNzM5OGYzYTBmNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNTA2NjVkY2E5MTk5NTczMGMwN2NiZjY2ZmNkZTVhZDFlOTA2NGM2NWJkYTI5ZGMxMWNiNjE3NWJmNjU3N2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhODZhZTQxZGE1YmMyZTlmNjZkZWZhMGM5ZjM1MjU2MDE4M2RmNWJmZjQzZDhmMzQxMzdmMWZlMzQxZjAwYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmYzc3OWUzOTRkYTFhY2MxYTk5NWVmOTMxODQyMGZiMWQ1YzYwM2NkYmFkNzRkN2EwM2IzM2VjYTQyOGE3NmQifQ"
+          "resource": "repo://resident/src/effects.ts",
+          "version": "repo-file-v1:sha256:23cb2a7175f4938499c1c649e31cccd88ea361f4c14dbd941ed3df266d7274ff"
         }
       ]
     },
@@ -328,11 +324,11 @@
     },
     {
       "id": "claim_500549abd7844df089a9ea51b02a1267",
-      "statement": "The Collie command skill gives task priority 2 by default and preserves active runs, approved merges, review capacity, and required branch updates.",
+      "statement": "Task priority selects later work without interrupting an active run.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L171-L178",
-          "version": "repo-lines-v1:sha256:a1b3bff98c462a7e9219bfc199dbfac7b66666c67e063800a057fc54852efd85:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYwOTRlMTlhZDkwZDQ1MThhYWQ1MjZhOTg1Y2VmZDhiOTFlNTBkM2UyYmNlNjNlZTM1MWZjYWQzYTNhOTIzNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjYzMGY3OGZiNDIzODkwOWRiNGM0N2JhY2JiZTI3MWJiNmRkNzc0ZmZhNTM4MzZlNTMxNDI3OTBmNzliNzM2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjY5MmViZDU0M2U2NzM1YjdkMGFkZThiNjI0NzQ5MmQ1MDE1NGJkNTQxNjE4NjM3OWEyNDgzMjQ2ODEwY2ZjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjMxNWUxMzMyNTdmMzU3ZWJjYWVlY2UwZDYwMDk0Y2JhM2Q4N2NlODc0NTcxNTgxOTEzYzYxY2FlZDM3YmM1NiJ9"
+          "resource": "repo://mc/verbs/skills/collie/culler/references/tasks.md",
+          "version": "repo-file-v1:sha256:98846087a740d5a0ffd5e32b78a17f09606937be08e44ab30c19fb260b2a74a3"
         }
       ]
     },
@@ -351,14 +347,14 @@
       "statement": "Collie applies the task-description skill to new tasks and revisions and submits the text that the operator confirms.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/collie.md#L235-L247",
-          "version": "repo-lines-v1:sha256:dc140a02c921331abbe5879f7cec75b71d631200af983ce79e628d84c21e29f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxOWRhOWEwYmMyMzg1MWUwOWU4YzhkMWI3MjhkNDI5OTNlNTFlMWQ0MTk2YTJiNGE0MmY4ODNiMDMwYmJhYTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1YzU2MWYzZjA0YzAzM2JkNmNmNTVmOTg5YzM1YWRjNThjMGVkOGMwOGMwNjhlMWUxYmRhYzk2ZjVlNTUzMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiNGMyNzY4ZDQzMmNlOTIyZTU2YzgwNGZjYWMzYzliNjBlODYwMzNjZDY2OGIzNjIwYmM5MDM2YzE4ZTMxNDUifQ"
+          "resource": "repo://mc/verbs/directives/collie.md",
+          "version": "repo-file-v1:sha256:ab959e40e5275966d72d730e6e3029620941dc382be503d47bd78fedaad43018"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T18:18:18.729Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

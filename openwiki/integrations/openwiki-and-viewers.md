@@ -32,10 +32,12 @@ sources:
     resource: repo://mc/wiki/export.go
   - id: openwiki-source-d43ba5150b1dcd48ee382e77
     resource: repo://resident/src/agentsview.ts
+  - id: openwiki-source-85e596193d0d86cbb20c87e8
+    resource: repo://resident/src/opencode-copy.ts
+  - id: openwiki-source-8251344551ae8ddd6e723ab3
+    resource: repo://resident/src/opencode-snapshot.ts
   - id: openwiki-source-32f0aa3264ff5051674a12ed
     resource: repo://resident/src/wiki-lane.ts
-  - id: openwiki-source-1e8e75808ab8bc689f8e57e8
-    resource: repo://runner/agent-runner/adapters/opencode.ts
   - id: openwiki-source-dea7f0a13923e087ab24e792
     resource: repo://runner/agent-runner/adapters/openwiki.ts
   - id: openwiki-source-bd92323608bb4fe6f961f632
@@ -44,10 +46,10 @@ sources:
     resource: repo://runner/openwiki/server.ts
   - id: openwiki-source-a37b5e4aedd4e9eae5294f1a
     resource: repo://runner/shared/opencode-trace.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # OpenWiki export and AgentsView trace viewer
@@ -129,7 +131,7 @@ The export page normally loads four libraries from a CDN. `rewriteExportPage` po
 
 ### Pin and install
 
-`mc/deployment/agentsview.json` pins one AgentsView release. It records the version, the `darwin-arm64` platform, and the archive URL, size, and SHA-256. It also records the extracted executable's size and SHA-256, plus a `disabled_agents` list. The file is embedded in `mc`. `ParseAgentsViewPin` rejects unknown fields and invalid versions, and it refuses a `disabled_agents` list that contains `claude` or `codex`, because AgentsView must read those traces. `mc/deployment/agentsview_install.go` downloads the archive (HTTPS only), verifies size and digest, extracts the single executable, verifies it, and installs it at `MC_HOME/bin/agentsview`. `redeploy.sh` runs this step as `mc __onboard agentsview`.
+`mc/deployment/agentsview.json` pins one AgentsView release. It records the version, the `darwin-arm64` platform, and the archive URL, size, and SHA-256. It also records the extracted executable's size and SHA-256, plus a `disabled_agents` list. The file is embedded in `mc`. `ParseAgentsViewPin` rejects unknown fields and invalid versions, and it refuses a `disabled_agents` list that contains `claude`, `codex`, or `opencode`, because AgentsView must read those traces. `mc/deployment/agentsview_install.go` downloads the archive (HTTPS only), verifies size and digest, extracts the single executable, verifies it, and installs it at `MC_HOME/bin/agentsview`. `redeploy.sh` runs this step as `mc __onboard agentsview`.
 
 ### Supervision and the token
 
@@ -140,7 +142,7 @@ The export page normally loads four libraries from a CDN. `rewriteExportPage` po
 - `HTTP_PROXY` and `HTTPS_PROXY` point at the dead `127.0.0.1:9`, which blocks the pricing refresh.
 - `PATH` is `/usr/bin:/bin`.
 
-`agentsViewConfigTOML` writes `require_auth = true` with the deployment token, and it points AgentsView's `claude` and `codex` agents at the trace-copy folders. The default bind is `127.0.0.1:7334`.
+`agentsViewConfigTOML` writes `require_auth = true` with the deployment token, and it points AgentsView's `claude`, `codex`, and `opencode` agents at the trace-copy folders. The default bind is `127.0.0.1:7334`.
 
 The AgentsView token lives at `MC_HOME/agentsview/token`, outside the data folder, so it survives a lost archive. `EnsureAgentsViewToken` creates it once and never rewrites it. Both viewer secrets must be 64 lowercase hex characters, readable only by the operator account. `PingAgentsView` sends the token on every Go request. The resident's client in `resident/src/agentsview.ts` reads the same file and sends `Authorization: Bearer <token>` on every request. That client handles the ping, the project mapping rules (`/workspace`, `/workspaces`, `/mc` map to the AgentsView project `Culler`), the session list, and the display names.
 
@@ -173,10 +175,9 @@ Failures show a specific access state with a path back through Culler.
 `resident/src/trace-copy.ts` copies only new bytes and stops at the last complete line. The copy size is the resume position, so a restart produces no duplicate and no gap. It opens files and folders with `O_NOFOLLOW` and checks that each one is inside the real session folder, because an agent can swap a folder for a symlink. Each pass has work limits and per-file retry backoff. A separate reconcile pass sets display names and reports main trace copies that AgentsView has not imported.
 
 `mc/trace/trace.go` is the single source of AgentsView identity.
-`Format` maps `claude-sdk` to `claude` and both `codex` and `opencode` to `codex`.
-`SessionID` returns the bare ref for the Claude format and a `codex:` prefix for the Codex format.
-For OpenCode, Go and `runner/shared/opencode-trace.ts` derive the same stable trace identifier from the native session reference.
-`runner/agent-runner/adapters/opencode.ts` writes OpenCode events in the Codex trace format and removes the token from trace text.
+`Format` maps each harness to its native trace format.
+OpenCode uses `opencode:<native_session_ref>` and the database locator in `runner/shared/opencode-trace.ts`.
+The adapter registers that original session; the resident publishes its masked database copy.
 `Path` builds `/sessions/…?msg=last` links.
 `RunDisplayName` and `CollieDisplayName` join their parts with ` · `.
 A native ref that is not a plain identifier gets no trace, because the ref becomes a file name and link path.
@@ -225,3 +226,21 @@ Setup traces use `environment-runs/<operation>/session` and the setup operation 
 The runner registers native sessions separately from setup reports.
 The trace lane can recover a missing registration. Trace failures leave the setup result unchanged.
 `resident/src/setup-traces.test.ts` and `mc/verbs/setuptrace_test.go` check that separation.
+
+## Native OpenCode copy lifecycle
+
+`docs/native-opencode-traces.md` defines the native trace contract and its acceptance lanes.
+`opencode-copy.ts` validates bounded regular source files and publishes each complete copy by atomic rename.
+`opencode-snapshot.ts` reads one committed state, including committed write-ahead log records, and builds a fresh database from transcript tables.
+It preserves native session relationships and message identifiers while excluding account tables and unused source pages.
+Credential masks apply before publication. Hash records retain prior masks without retaining credential values.
+
+Original databases remain available for native resume.
+AgentsView reads flat `opencode-<id>.db` copies under `MC_HOME/agentsview/traces/opencode/`.
+Collie reads the inspection mount at `/mc/traces`; `runner/shared/trace-read.ts` provides bounded native-record queries and citations.
+Each inspection status separates copy state (ready, pending, delayed, unavailable) from import state.
+A failed refresh preserves the last valid copy. A successful native import permits retirement of the converted export into AgentsView trash, preserving annotations.
+
+Copy work runs outside dispatch with a five-second worker deadline, source and transcript size limits, and record and session limits.
+The copy, lane, trace-reader, and browser tests cover masks, committed records, recovery, bounded access, and authenticated native links.
+Optional acceptance programs in `resident/acceptance/` check the pinned viewer, concurrent container writes, and native resume with synthetic inputs.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:8b4deddbe00c5d1437c08637b136e421334d2b415ddcd3693b5bdb61908d82a9",
+  "pageVersion": "sha256:53c5185879adc7b5ee5229032c3c9c11eace128104a43e536796e06ec1f5d5ce",
   "claims": [
     {
       "id": "claim_4665dd1d847544b8aca52a0ff841277e",
@@ -115,18 +115,18 @@
       "statement": "A reap stops the setup and pipeline containers, calls mc run stopped, and only then discards the launch envelope and plan files.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1653-L1698",
+          "resource": "repo://resident/src/effects.ts#L1655-L1700",
           "version": "repo-lines-v1:sha256:c8ac047f142187c7fd66b73b64fce65b195bc6ccfd321ca7762a8af64074982e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1NjE0YTUwYjZmNWI3ZTVmMDVlMjVkMWM3YzVjZjQwNjQwNTBiZmRlMWZjNTVjNTc1OTE4MGZmOWExZWQ4ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwMmZlZTcwZDg4N2Y4ZDI0YzcyMjI3MjkwNzhjNWU0MWQzZjZhNDFkZjY3OGM4NDYyNzAwZjJhNDJhMmIyMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjOWIzYTYwNjdkOTI2OWQ4OGYyNDZhMDkwN2QzYzZjODYyYmI1ZTBhMTcxOGYxZjU5NDdlMzMwYTRjMjZjNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2YTZjYjNhODgwYTJkNjMzY2NjYmFmNTYyNjE2ZDE4NGE4ODAwOTY4Njk1NGNjNjczZmNiNDNiYjgzNmU1OTIifQ"
         }
       ]
     },
     {
       "id": "claim_9946beff805a42c591df0b7260bee7ca",
-      "statement": "Pause all sets every active Project to paused, and resume all reactivates only paused Projects whose setup_status is ready, each in one transaction and only from host scope.",
+      "statement": "Pause all sets every active Project to paused, and resume all reactivates only paused Projects whose setup_status is ready, each in one transaction and with operator authority.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/pause.go#L43-L71",
-          "version": "repo-lines-v1:sha256:3bc705b5de5a3450093467b84507be4239924a246d4cb10626139bd27fd9597b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NzdhOGY1MDRjNjI1N2NjMTQ3NWUyZDBlNjljMjRmYTAzYTYxN2FmMDgyZTQzOGY1NzA4NzVkZGEzNzYwZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljMGExMmJmMjcyNjdhN2RmMzA1ZmRiYmIxYTllZWYyZjY4Yjk2YmM1OWI1NWYwYTYyNjc3YTZhYTY5MGRiNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://mc/verbs/pause.go",
+          "version": "repo-file-v1:sha256:b3503b23797935d0c36f8325348c2756d9a8ab2baf51cf0a1813fbf873cda19f"
         }
       ]
     },
@@ -145,12 +145,12 @@
       "statement": "The resident requests the first tick at startup and later timer ticks use a default interval of 60 seconds.",
       "evidence": [
         {
-          "resource": "repo://mc/dispatch/README.md#L1-L7",
-          "version": "repo-lines-v1:sha256:73df343899543d6792f4d5286e85bfcf6b6cd57d45479e43202c46eae5e2b9c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjMzYTQ4ZDhkMGE4NmI1ZDFkYmI4ODk5ZTIyNTRmY2ExNWRlMmE5NGY1OWE1YzA1YTRjN2FjYzA3MmFlYmE2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UyYzRlMjY3NzI5NmRhZjFmYzJkMTE0YzE5ZjkyZTA4M2U4NWY0MGM3Y2Y1NTA3MDg2MWUwNDJiZDA3ODdmNSJ9"
+          "resource": "repo://mc/dispatch/README.md",
+          "version": "repo-file-v1:sha256:e9ae217ff3bf8a5267aa11a09ce2df14c04861c46bbef08b0cf2a68529aef430"
         },
         {
-          "resource": "repo://resident/src/main.ts#L842-L852",
-          "version": "repo-lines-v1:sha256:a8123f2c24af3da7b63acd1cf114e63427b0f28ef01956f03d6297a6607f6e9b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjZjVmOThiYmVlNmU4ZTk1MmI1ZjBlMWU4ZDZkMmY1MzVlMTY1OTlmMjdlYmJiMzEzNTNjNGZiZmM0NTU4OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZjA2ZDBjNjJkZDU0MDZmMjU2MGY5ZTAzZGVlZWFhYzEyNzdiZTBhZDZlMDYxYWNjMDYwMGJhNzFjNTcwYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4ODViOGU5MGFkMzUwNDU5OTMyOTg1MDRlNWNkNzBhN2E2MmYxYjBkZDExZjNkMTU3ZWU1MThkYWM0ODA1NTAifQ"
+          "resource": "repo://resident/src/main.ts",
+          "version": "repo-file-v1:sha256:989883525feed4195f427f750b0fd47e569320d2c5a83632f3997216d1ffe1a8"
         }
       ]
     },
@@ -185,6 +185,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T02:41:58.373Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

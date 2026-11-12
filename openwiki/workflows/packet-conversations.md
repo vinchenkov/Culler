@@ -22,8 +22,6 @@ sources:
     resource: repo://mc/verbs/colliepacket_test.go
   - id: openwiki-source-81e49db5f10e4699bcadf8d3
     resource: repo://mc/verbs/collierestart_test.go
-  - id: openwiki-source-6c249547ec5cf1c015cbdcb1
-    resource: repo://mc/verbs/directives/collie.md
   - id: openwiki-source-f1ae658c98ff5e2d177d4b8a
     resource: repo://mc/verbs/packet.go
   - id: openwiki-source-e3610626a23cdc8d1f3a1018
@@ -32,18 +30,20 @@ sources:
     resource: repo://mc/verbs/packetcontext.go
   - id: openwiki-source-b2183a36b08ae9d3254fe2ae
     resource: repo://mc/verbs/projectdelete.go
-  - id: openwiki-source-332034bad01f6c1d71fb1474
-    resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-0f8470e4c37127c6974a11b4
+    resource: repo://mc/verbs/skills/collie/culler/references/packet-decisions.md
+  - id: openwiki-source-b8bfd4cae8b08f0dd90bb773
+    resource: repo://mc/verbs/skills/collie/culler/SKILL.md
   - id: openwiki-source-e7572dd15953464a4a2391cf
     resource: repo://mc/verbs/taskartifacts.go
   - id: openwiki-source-e028a0037f071b894557c29d
     resource: repo://resident/src/effects.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Packet conversations from Review to Collie
@@ -162,7 +162,7 @@ The quick chat's empty text names the same content for the operator.
 The rationale remains proposal evidence from before the work; it adds no requirement to the description.
 
 The context excludes review state, merge state, and blocks because those facts can change during the conversation.
-The Collie directive requires current packet reads before answers about those states or a packet decision.
+The common skill’s packet-decisions reference requires current packet reads before answers about those states or a packet decision.
 The packet list supports task selection while preserving the normal record fields.
 Each row includes the task `title`, `packet_id`, and `version_id`.
 The Collie command skill identifies these fields for the current packet read.
@@ -240,3 +240,8 @@ The divider browser check waits for the narrow conversation before it asserts vi
 Its cleanup restores the desktop viewport before it resets the divider.
 These checks preserve packet content, draft text, and the preferred width across layout changes.
 See [divider browser checks](../tests/checks-and-test-lanes.md#collie-divider-browser-checks) for the complete assertions.
+
+The common `culler` skill supplies packet decision and evidence procedures.
+The runner supplies the conversation identity and artifact paths as turn facts.
+Host requests preserve the frozen session permissions and exact reviewed packet version.
+A retained operation can remain incomplete after acceptance; Collie checks its status before reporting a completed effect.

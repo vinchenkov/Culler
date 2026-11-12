@@ -26,8 +26,12 @@ sources:
     resource: repo://mc/verbs/directives/collie.md
   - id: openwiki-source-4cf2679db61bdfa9a802d9d2
     resource: repo://mc/verbs/pause_test.go
-  - id: openwiki-source-332034bad01f6c1d71fb1474
-    resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-70036e7e15ac4ec2f0a44592
+    resource: repo://mc/verbs/skills/collie/culler/references/diagnostics.md
+  - id: openwiki-source-2ac019cf0635c7e749a5ac3f
+    resource: repo://mc/verbs/skills/collie/culler/references/tasks.md
+  - id: openwiki-source-b8bfd4cae8b08f0dd90bb773
+    resource: repo://mc/verbs/skills/collie/culler/SKILL.md
   - id: openwiki-source-1655883a2300ff18955c5910
     resource: repo://resident/src/collie-runtime.ts
   - id: openwiki-source-c18554fde4cd0e38831a6f1d
@@ -38,17 +42,17 @@ sources:
     resource: repo://resident/src/vision-save.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Collie, the conversational tier
 
 Collie is the operator's conversational assistant. It answers questions about Culler's state and Project repositories, and it carries out authorized requests through `mc`. Pipeline roles are leased per Project; Collie is a separate tier that holds no Project lease. A Collie session lives as long as its conversation, not for one task. The `runs.tier` column has two values, `pipeline` and `collie`. The `leases.owner` column admits Strategist, Arbiter, Worker, Verifier, and Packager, so a Collie session can never occupy a Project's single agent slot.
 
-Collie's own text is `mc/verbs/directives/collie.md` and its command surface skill is `mc/verbs/skills/collie/mc-collie/SKILL.md` (see [agent input](agent-input.md)). The spine code is `mc/verbs/collie*.go`. The host side is in `resident/src/effects.ts`, `resident/src/collie-runtime.ts`, and `resident/src/collie-envelope.ts`. The container side is `runner/collie-runner/main.ts`.
+Collie's own text is `mc/verbs/directives/collie.md` and its command surface skill is `mc/verbs/skills/collie/culler/SKILL.md` (see [agent input](agent-input.md)). The spine code is `mc/verbs/collie*.go`. The host side is in `resident/src/effects.ts`, `resident/src/collie-runtime.ts`, and `resident/src/collie-envelope.ts`. The container side is `runner/collie-runner/main.ts`.
 
 ## Records
 
@@ -61,11 +65,15 @@ Collie's own text is `mc/verbs/directives/collie.md` and its command surface ski
 
 ## Starting a session and the verb allowlist
 
-`mc collie start` (`CollieStart` in `mc/verbs/collie.go`) creates the session row and freezes its allowlist. The maximum set is the compiled list `maximumCollieAgentVerbs`: `board.write`, `environment.get`, `collie.draft`, `collie.end`, `collie.history`, `collie.list`, `collie.title`, `packet.decide`, `project.archive`, `project.pause`, `project.role-save`, `project.role-unblock`, `project.vision-draft`, `project.vision-edit`, `task.block`, `task.cancel`, `task.interrupt`, `task.resume`, and `task.unblock`. `canonicalCollieAllowlist` defaults to the whole set. `--allow` can only narrow it, and `--allow none` gives a read-only session. Project registration is absent because a container cannot perform that host effect.
+`CollieStart` in `mc/verbs/collie.go` freezes the session's permission set.
+The maximum derives from `mc/operatorcmd` plus Collie conversation commands.
+New default sessions receive the release's supported operator permissions; existing sessions retain their frozen set.
+An explicit allowlist can narrow that set.
+Host operations, including Project registration, use retained requests through the resident operator lane.
 
 Every operator write that Collie can make checks the allowlist with `requireActiveCollieVerb`. The session must be `active`, the allowlist in the container's `run.json` must equal the frozen value, and the verb must be in it. This is why the wake effect must carry `verb_allowlist`: without it the container's `mc` refuses every write that the skill advertises.
 
-Reads do not need allowlist rows. Collie can read state across all Projects. According to its directive, each Project repository is mounted read-only at `/workspaces/<project-id>`, and pipeline roles make the repository changes.
+Reads retain session and target checks; supported commands can also require a permission. Ordinary conversations can target an explicitly identified Project. According to its directive, each Project repository is mounted read-only at `/workspaces/<project-id>`, and pipeline roles make the repository changes.
 
 ## Scheduling: the Collie stage of a tick
 
@@ -195,16 +203,16 @@ The [dashboard](../architecture/dashboard.md#diagnostic-conversations) bounds th
 
 The Collie directive requires current task, run, or environment reads before the agent describes the current issue.
 Its command skill permits further evidence reads when they help answer the request, including referenced traces within its access.
-System diagnostic history remains host-only.
+System diagnostics are available through the supported host request path.
 Collie must state which evidence its permitted reads cannot supply.
 
 Diagnostic text supplies evidence only.
 A record identifier grants no additional command, artifact access, or authority.
 The directive requires Collie to describe a proposed state change and request explicit operator confirmation before execution.
 The ordinary session retains its existing command and artifact boundaries.
-The [runner](../architecture/runners.md) also includes the confirmation requirement in the turn prompt.
+The common skill supplies the confirmation requirement; the runner supplies turn facts.
 
-The authority rules come from `mc/verbs/directives/collie.md` and `mc/verbs/skills/collie/mc-collie/SKILL.md`.
+The authority rules come from `mc/verbs/directives/collie.md` and `mc/verbs/skills/collie/culler/SKILL.md`.
 They define required agent behavior; the presence of the prompt alone does not prove compliance in every conversation.
 
 ## Task descriptions and creation
@@ -230,7 +238,7 @@ See [the shared task description standard](agent-input.md#shared-task-descriptio
 ## Task priority
 
 Collie records explicit operator task requests at Seeded through the `create` action of `board.write`.
-The command skill states that priority 2 is the default and priority -1 is the highest.
+Task creation uses priority 2 by default; priority -1 is the highest.
 A higher task priority receives the next eligible agent run before a lower task priority.
 An active run continues after a priority change.
 Approved merge work, required branch updates, and review capacity retain precedence.
@@ -276,7 +284,7 @@ The source message identifier prevents a repeated Discord message from adding a 
 Retired or deleted thread associations cannot reopen a conversation.
 Connection replacement or disconnect deactivates old Discord bindings and retires pending messages for that destination.
 Retirement preserves conversation history and leaves those messages undelivered.
-The Collie directive and turn prompt keep Discord credentials and account approval under host authority.
+Discord credentials and account approval remain under host authority.
 See [Discord setup and delivery](../integrations/discord.md) for permissions, confirmation expiry, activation, and recovery.
 
 ## Profile and authorization changes
@@ -284,3 +292,13 @@ See [Discord setup and delivery](../integrations/discord.md) for permissions, co
 The host stops a Collie container when its assigned profile or authorization changes.
 The next eligible start creates a container with current proxy access.
 The conversation record remains available for the next turn.
+
+## Command discovery and retained requests
+
+The common `culler` skill selects procedures for tasks, packets, configuration, diagnostics, and traces.
+Command help supplies syntax and result contracts without a live service.
+`mc/verbs/operator_requests.go` preserves request identity and rechecks the active session before execution.
+A stable request identifier prevents duplicate effects after an uncertain response.
+A completed request retains its result. Acceptance alone does not establish completion.
+The host checks release compatibility and update maintenance before writes.
+See [command boundaries](../architecture/mc-cli-and-verb-scope.md#supported-operator-commands).

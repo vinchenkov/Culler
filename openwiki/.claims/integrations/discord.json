@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:18c336989e0dab048d71518ace48ef6224cd8aba04fd3f743080fff8604e342b",
+  "pageVersion": "sha256:01eb0e993397e481e87a5a65218141a94c33596cac7d6a961226bdbed02f8d22",
   "claims": [
     {
       "id": "claim_5c6436ecf1274a14833c50e97ecfbf57",
@@ -59,16 +59,6 @@
       ]
     },
     {
-      "id": "claim_2c1f23f4014a44b5bc5bfab9380f5728",
-      "statement": "The retained Discord report leaves a reply from a live agent unverified and attributes the reply-delivery check to a scripted reply.",
-      "evidence": [
-        {
-          "resource": "repo://.tracking/discord-configuration/REPORT.md#L42-L73",
-          "version": "repo-lines-v1:sha256:1b279ed5cfaea20dd0516779e774b0d7318ceda312cdc5a2fe262bfb92d8483f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNDc0NDY2ZTYzMzg4ZDg5ZTIyOGJhZjkwYmNhZjRjNjI1MDIyZDEwYWRmYzgyN2Q0M2ZkMDQwZTdmOGZhNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Yjk4MjM2Yjc4OTkxMWQ5NGFmYjdiODAwY2E1YWJlMGMyN2YzNWUxZjY2Y2ZiZjJmM2MzYmQ0MTdkYjMxOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwZTNlOTRmMWIzOGJkMTQ1Yjc0ZWU0MTkzNGU3OTM0NTE4MWFiMjAwMDkwZDU2NTE3ZjY3NDZmMzYzNmIxNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2ZTg1NDZkYWI3ZWM2MzlkN2RlODQ5NDc2MmQxOTg4OGE5YjlkNzk3ZDYwNzg1ZDBiNzkyOWI3N2U4YmUxNzUifQ"
-        }
-      ]
-    },
-    {
       "id": "claim_2b96ecdfdabc44bb9f0f7687650368c7",
       "statement": "The Discord setup refresh control reloads servers and channels and retains an available selected channel.",
       "evidence": [
@@ -123,7 +113,7 @@
       "statement": "The Discord browser smoke harness rejects a scratch socket path above 103 bytes before it creates the home.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/harness.ts#L244-L254",
+          "resource": "repo://dashboard/smoke/harness.ts#L246-L256",
           "version": "repo-lines-v1:sha256:50d4adcc57a3d9b6d9e356ede301225acf5907df87b486d792305963280a7af3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ZDJmNjFhMWQ3NDRlZDYxYmIwNGJhZjJkZTQyMjg2NGU1NDhkZDMwOGQ0OTRhNmI3ZmU2NWIzZTZhNWI3NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MDU3MzU0M2IxNTdmMGNhNTk3YjM4NmVmYzkzZGNlZDNkZjIyM2Y1Y2EwMDYwYjEyMzg0MWMyMTJlNjkzOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZGFjNTA3YzNlODViZWE3YTlkMWYyODg4OTE1YzYzZDc0NmE5MTQ3OGI0ZjEzZmI2NjBjYmJmM2NmMDMwMDIifQ"
         }
       ]
@@ -141,6 +131,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

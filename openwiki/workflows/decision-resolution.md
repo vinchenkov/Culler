@@ -36,16 +36,16 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
-  - id: openwiki-source-332034bad01f6c1d71fb1474
-    resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-2ac019cf0635c7e749a5ac3f
+    resource: repo://mc/verbs/skills/collie/culler/references/tasks.md
   - id: openwiki-source-0097b0a41bffd53dce10abf3
     resource: repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md
   - id: openwiki-source-f1f8658bc93aa1e51c399e87
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:22:22.352Z
 ---
 
 # Decision Pending and requirements revisions
@@ -141,7 +141,7 @@ A checkpoint equal to the base also fails.
 A Strategist task retains its original Strategic rationale through a requirements revision.
 The revision changes the description only; the rationale remains evidence of the original proposal.
 Collie applies the shared `task-description` standard to the revised description and shows the complete draft and reason before operator confirmation.
-`mc/verbs/skills/collie/mc-collie/SKILL.md` defines this separation.
+`mc/verbs/skills/collie/culler/references/tasks.md` defines this separation.
 
 The Verifier judges the full change from the original base to the submitted commit against the revised description.
 The requirements revision does not itself establish a pass.
@@ -177,7 +177,7 @@ Unchanged failures outside the criteria alone require no operator decision or ad
 Unavailable host tests outside the criteria also permit progress when the other requirements hold.
 That exception excludes new or changed tests, which must pass.
 The Worker continues independent work and checks; the Verifier executes later independent checks after an earlier failure.
-The evidence file and Review Packet retain every unavailable check and each `UNVERIFIED` entry.
+The evidence file retains every unavailable check and exact `UNVERIFIED` entry. The packet groups shared coverage limits while preserving material results and their recorded effect on the verdict.
 An executed criterion failure, failed new or changed test, or task regression requires CORRECT.
 See [agent input](../concepts/agent-input.md) and [the test guide](../tests/checks-and-test-lanes.md).
 

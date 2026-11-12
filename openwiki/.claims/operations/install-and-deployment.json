@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:339fe958f8708d21d09b0402bb9ce2baf130b4cc2852533630238cadaded66b7",
+  "pageVersion": "sha256:24519af4d28dad31500b52ab972c78b48fa84bc8c913791449be946918221041",
   "claims": [
     {
       "id": "claim_9fc4b78448174aec9bc010bc35adf8e9",
@@ -87,7 +87,7 @@
       "statement": "ValidateHostRelease rejects unexpected, missing, symlinked, or non-operator-owned entries and requires 0700 directories and 0600 files.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release.go#L237-L286",
+          "resource": "repo://mc/deployment/host_release.go#L257-L306",
           "version": "repo-lines-v1:sha256:a0facc3882f1c82a5bc62200f4eadc9192b42bf0c422d8c07ffab2f2c49bbf08:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOTQ1ZmNkMDRhZDI1NWM1Y2RjMjE3NTdhYzllNjU5OGY2ZTFhOGFlOTU1ZTA2YjQ4NDYwYzk0OGQ4ZWQ0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YTE4NTI4MDg2M2NmYjcxOTExYjZhZmFkYWY5YWUzMzI4ZmQyMmJjY2RmOGQ3Y2Y3YWFhMWExYjM5YWNmYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTJhY2Q5MmIzNTRiMWNhMGI5Y2RiNTI4N2YxNDRkMTBmZDk4ZTUzZTUwMTEwNjFhYzgxMTZmMTYzZTY4YTEifQ"
         }
       ]
@@ -133,7 +133,7 @@
           "version": "repo-lines-v1:sha256:6242e85b0d16c146b10b1a78de6822cbdc022e8f6c630e4ff8971a349597fcfa:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGYxZDdiYjQ3ZDE3YjZlYjAxZjdjNzgzNDIyNWMwODMwMzliMjdiNWVmZTc0YzZiNGYzZGM0ZmUwNWI3NmZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWExZDFhNjMzOTAyMjljNzk4MzQ3ZTgzYTA0MDU0NDFjOTQwMDAzNTI4NGFkMTY4YzFiZjZjZGYxZDcwYTM3MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNkOTU5ZTY0Y2IwNTQ2N2NiYmRhMmU4MGY1MDk5N2JmZjM2ODFlOTU3YzNlYWQyZmE4NzM5NDQ5YTA3NzY3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGVkY2RhNjk5YzRjYjhiYjRlZGYzY2I0OWU2NzkxNjYyM2Y2NTA4Y2ZhOTA5MWU1ZTUwZGExNWIyM2FlOGZkYiJ9"
         },
         {
-          "resource": "repo://mc/deployment/host_release.go#L84-L87",
+          "resource": "repo://mc/deployment/host_release.go#L97-L100",
           "version": "repo-lines-v1:sha256:3a409ace927d9295b034da788d51adf8dd4afca740308fc92d4f201b840c9091:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE0MjIwYjExZDRhNGI2NjI2YjRiOTA1MDI5YTY5YzhiMzBmZGMxMjI2NzJjZjlkMGRlMDE5ZmYyMTI1M2RlNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjA4MWEzZTFiNDMwZTg1ZDE3M2FjOTE4N2Q0NGY5ZjUwZWZmMDVjNzIxMzQ0OTRhZDY4MmNlMmNkMGEzMWRhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTRhNTgxZmQ2ODYwZmZiMzJlMDZlMmRkMjMzOTVkYzIxN2IwYzE4OGZkNDUzOTQxMWMwMjZmNjJhNTU4ODczZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjM3MmI0MGE3YzMzM2Q0ODBkNGVkYTJlODMwZWQ2NTYwMWEzZjczN2EyNjViMDkxNWY5NzczMzA3ZGE2YzJkMCJ9"
         }
       ]
@@ -143,12 +143,8 @@
       "statement": "The host release closure test compares the dashboard's served static assets with the files in the host release manifest.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release_closure_test.go#L100-L115",
-          "version": "repo-lines-v1:sha256:02a59424b0c89ce73e9c382792aca52275179f7ccb246efe187fc00fec2ad517:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMTA0ZTdkMmVmZDJiZTY2YzVjYzI5ZjMxY2Q1NTZhZjM1YTZmNWNiMGZkNWIyMjE5YTRhYmIzN2ExMTdkMTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1NjExYTNjNTYyMDVjMDk0YTMyZTQxNDFjMjMwOWU3MmNlNzJjOTRmNGRlOWM2MWVkOTNkYTk2YmQ3YjI3NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwMTgxZjY4NWEyYThmMTBjMjdhZDgwMmY0NWYxMmNlMjZjNjNmYTlkY2QzZjNmZWYyNTI2NDMyYjk2ZTdmMmYifQ"
-        },
-        {
-          "resource": "repo://mc/deployment/host_release_closure_test.go#L177-L210",
-          "version": "repo-lines-v1:sha256:db21139c5eee873acd396a65df522672a3297c20f1fbe35ce8abe10ba619ff9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmZmE4MjI2MjdkZmNkZDYzNWNkMGQyNmI0NGRiZDQ3MzdmZTBlMTBlZGRkOGFiYWE2OTAzNGY3ZmQ5YmRhNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwMzk5NDVmNzEzY2VjY2MyYTJiZTk4MWFiNWM1ZWVhMzdmOTVmOTc2OWU1NzVjZDhlZDlhOWZjYmFmZGYwNmEifQ"
+          "resource": "repo://mc/deployment/host_release_closure_test.go",
+          "version": "repo-file-v1:sha256:b54ab23e4896c8fcad0533df5e6c4c99a7040c62b9480c3d0aeec1a60cd29457"
         }
       ]
     },
@@ -157,8 +153,8 @@
       "statement": "The host release closure test checks that every served dashboard file ships and that each shipped file exists and is reachable.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release_closure_test.go#L182-L211",
-          "version": "repo-lines-v1:sha256:492fbef585ce03a2840a1d1dd0c61b830bc6a35f2d75ef611cc11cbab25e6cf2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmYTdhNzA0NGRjY2IxOTk1ZTZmMmZhZDdmNzk4MWQzNmI2MGFhNDE0MTI5Mjk2MzZiZGNlNTM3OWY1MmM4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5MDE0ZjQwYjAxMWZkYWY5ZGMwOGY0NTllZDQ5MzdjZTY0NDIzNjc4MzM1NWUyOWM4ZjFhNzBmZDlkZmY3ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://mc/deployment/host_release_closure_test.go",
+          "version": "repo-file-v1:sha256:b54ab23e4896c8fcad0533df5e6c4c99a7040c62b9480c3d0aeec1a60cd29457"
         }
       ]
     },
@@ -333,11 +329,11 @@
       "statement": "The host release manifest ships the Discord dashboard module and resident configuration service.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release.go#L160-L167",
+          "resource": "repo://mc/deployment/host_release.go#L173-L180",
           "version": "repo-lines-v1:sha256:43b0ec5284bca286562067989cc1a671fd67be4ab674501ed74717b30101a907:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWM2M2Y5MDE0NGNhMWQyYjdlNTQxMjM3OTNhYTA2YjRkOTk3YTk5M2ExYjU4NmJiZjA3MDc4ODcwMmY5OGFkYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzhjMWQ2YjczMWU3NTEzMGU4NWE5N2RlZTBiYzNjYWQyMWFlNjliODIwN2FkZmJiODUyNWM3YWQxZGViYzlhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTdmYjZkNTI4NzA1NTlmOWQwZGJlN2MwZDU0ZDc0NWY4M2E3OGI5YzYzMWFiZmZiZTYxMzc2YTJlYTdmOTM3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDNmMjk1MjMyMGM1NGQ4N2RkZGFiNDBiODZkYzU3ODUyNmI1Mzc2NDg5NGQxMTMxOGE0NjI2NTQ3YTAzZmQwMSJ9"
         },
         {
-          "resource": "repo://mc/deployment/host_release.go#L40-L46",
+          "resource": "repo://mc/deployment/host_release.go#L53-L59",
           "version": "repo-lines-v1:sha256:2e6999d2abb5c44ba9ba537cbfb75e48ffdd39aaee1c415d33abc36c0d33430b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRjYTU4ZDllM2YxMGM3NjE2ZDIxZTlhY2NhNjgwOTQxNTdkOTM5MzE0NmJiMmQzMmYzMjE5NWM0MTcwZjViNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmRmODNlNTgzM2U2NTVmMDg5OGJjZjM4OWJlNDgzMzM1ZDFmYzk3ZmJkYTNhMjhhYTJhYzMzNTk3MGZlYzNlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmY4ZjRmODFmNmMzNzViZmYzYjgyOTM5MDVjNGJjMDA5ZjRmYTFmZjgwNDhmMWQ5OGUzYzVjOTBhMmRkYzI1YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjZjMDU2ZmYyZjk1MmU0OTgwMTQyZWFkZDZmNmZiMjZhMjIwMmUzYWZiNGI3MmQzMTI3MTZiMDgzNTZhMzk3NCJ9"
         }
       ]
@@ -347,7 +343,7 @@
       "statement": "Setup saves the model selected during a successful new Codex profile connection test for later runs.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L82-L85",
+          "resource": "repo://INSTALL.md#L102-L105",
           "version": "repo-lines-v1:sha256:dde399d6609928c09bebf6b6c37a144cd4d352c67cb4b7050ee29753b1ea9e25:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjdhMWZiMGUxZGFkYzc4NjVkNTI1YTViMWUxYzZkNmRkOTM4OTNhOWEzYjcwMDVlYzBjZmI2MjI0YTQyYjM2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTExN2M0MmY2NjI3NTA4OWNmZmFlNzU0NzA2ZTllOWM5MTBjYjVmMTA2ZDI0MDk5MDgwNjExMzY4OWQ3OTg5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzViZGE4MzA4MDA4NGNlOWFjNzBlMGRiMjUxZmU1M2M3N2QyNTBhZTRmNTVlOWZhNDkzODU1NGU0NzdiNTAzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQ4NzJlOTZiNGUxYzgwMzc0ZTA1ZjZmNmUzOGM4MTc4M2Q5MGZkM2JkYjg2MWYyODIyN2IxM2MwNjVkNjU3ZiJ9"
         }
       ]
@@ -415,7 +411,7 @@
           "version": "repo-lines-v1:sha256:3e05f041630fd072664a1282ddc2e873bd9937a7e3ceb59c286068365d7df04a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYxNzMyYWZkYTk0MWY0M2ZiMWMyOGJjZmIwNjJiNDg4NzhiNWJmNjBlMDRhZDQzNzlkZWUzNzhmZjAxMmFhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzNkMWIzNjQ3ZjM2MzdjNzdlZTg1OGY4NWU2MTgzYWM3ZmJhZmRmNTA4ZTNkZGY4ZDBkZjEwYjAyNmU5ODQzYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDEyYWY4ZTRkOGNlMTVmNjUxYjRjNjcyZjI3OTc1ZDkzMWNkMDVhYzdlYTZkZTU2MTgxNDg3YTU4N2ZkNWQ0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFkNDQ4ZTc3ZmMwZjlhZWRmMTMzMjM4ODk5M2RmNGRiYmZjZWM2OGYxYmM2MTZiNWJiZGM3M2Y4MGM0OWJkNSJ9"
         },
         {
-          "resource": "repo://mc/cmd/mc/uninstall_prod.go#L437-L445",
+          "resource": "repo://mc/cmd/mc/uninstall_prod.go#L443-L451",
           "version": "repo-lines-v1:sha256:1284750b9294f4fd35532aab489b2a0530585d8548e72764d746c400ab867b69:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWUzZGZhYzhlNjg3NWU5ZDJkZjQzNDI2OTJlMjc3N2FlNTVkMjczZmVkZTY3ODI4MTA1ZWExYjBkOTYyZjRjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGExMjE1OTZjM2NkNGUxMDk4NTliODk0NGQwMjgxYjAxNzQzYTViZDk5YTQ4Nzg1NTUwMzM0YWMyN2Y4M2QyMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzBlZDExMjZiMTY3OTA2MGY2ZWQ0M2UzZDBlYWFjZjdjYTliNGZjZDdjNmI2NTQ4ZGM0MDRmNThlOWU5YjA5OCJ9"
         }
       ]
@@ -503,7 +499,7 @@
       "statement": "Production source installation and redeploy prepare OpenCode before service activation, including deployments without an OpenCode connection.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L383-L418",
+          "resource": "repo://INSTALL.md#L403-L438",
           "version": "repo-lines-v1:sha256:50dbaf6f8837dfbb9dae42d52e91f9fb150740ddee3f5725a04a1ffd87dd323c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MWRkMmU2Y2E5YmJlZTIyNjgwZjMyOGJmZmY0ZTFjNTdkMzNiMDg1M2I1YzZlNjMwMzk0MGJjNTE4YjcyNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0YzMzOTU2NDhlYmIwYTAwOTVjZWY1ZTA4ZjU0OTI1YjY0OTc2Y2JhMzhmODVhNjlkNGI4OTc1MmU5MjllODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjMzYxNzI0MmM3NDM1MjUxMTczNjlkNjcxNjFjMDZlZDliOWFmMjZhMjc1NjY5Mzc1YjBjNWYwYmI1ZjA2YTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1MWFlMmVjNDM5ZGY5MmE0ZTY5NzBjMjgwOGQ3NGMyZjI3M2M5Zjk1OWViZmY2OWY2OGVkNWY5YzVhMzkwZmMifQ"
         },
         {
@@ -521,7 +517,7 @@
       "statement": "Source OpenCode preparation uses package tools from the selected Linux arm64 image and requires no host npm installation.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L397-L400",
+          "resource": "repo://INSTALL.md#L417-L420",
           "version": "repo-lines-v1:sha256:73c438ec6f2ae908a4c14fe5bf98a6771d7ccd20a3b9922b64c067146ff9e48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTcyODZjYjBmZjkzZGE4MmYwNGVjNjFjYTUwNGM4YWEwNDk1N2MzYmNhNzljMWNlMjhhMWJhZDc0MzNmOGE3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc2MmFjZTliZDJhNjY0ZjI1MjE3M2EzMDNiYTIwMGFjZDZhZDMzYzQ4ODkwYjNlMzAzZDJmMDNjODI1MWY4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODRkOTUwYzFiNzk0NDUwNjZiNDJjYTI1MzEyNGEwZGNkNDNlZDVlMTAwNDYxYTZkMTYxZjBjNjFmODFiMWU1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjNmNjMxNDRmNTRkYTkzOTk2NmUxZGMxNmY1MDYzMDliY2EzM2MwNTI2MmY1Mzg2YmU2NWQyMzNmMjhiNjYzMyJ9"
         },
         {
@@ -557,7 +553,7 @@
       "statement": "Published updates run an isolated candidate runtime check on each distinct selected Project image before replacement.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L124-L225",
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L154-L255",
           "version": "repo-lines-v1:sha256:87890f769ee66def3411b12f9017ddd3e1ed19ecb8dbda520fdd36b7cce529ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZGExZDc5MTQ4MDllMzQ5OWQ0NTczZThiZmU1ODI2YWUwODJlYTJlMmExNGRiN2NjMTQxNzI1NzdjNmE3MzVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2MThhNjEzNDUyZTBlMTBhNjVmMTJkMjM1MTcyNzZjN2U3NjdmMDE1YTk1MjkzYWU2NzEzMzRjNmRiOTkyMDVmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIn0"
         }
       ]
@@ -599,7 +595,7 @@
       "statement": "Terminal setup records successful tests in the spine and preserves the connection if it cannot record the result.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L564-L595",
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L549-L580",
           "version": "repo-lines-v1:sha256:a5ebd956325e39d641d57797dce81c6f358afa64375f2382cb388765a23d65ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwY2ZlNjgxNjliZTM1NjBlN2ZiM2VkYzlhMDlhNWZhZGJmOThjYmM1NjZjMmY2MTAxZTYzY2I1ZjY3MzA5ZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkMzQ1N2YzNDg4Y2Q2YTM3NjEwMTM4NWEwMzc3OTY5OTVkZjY5MzVlOWNjOTZlNzYxZGYwNjI1MGYwNmEzZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjN2ZhZmY3NWI1Yzg0Mjc2NTNkMmU2Yzk5MjBjMDNjMTFiYzlkODhhYzMzYjJmYTE5MWU5MDRmZDdmMDlkMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzOWJjYTkxZjljMzQ5ZWIwMjY1NzdlMGEzNTMwZGE5NzBmNGY1N2QwMGYwZWFkMjZlMDI0YzdhZDZlNGQwYjYifQ"
         },
         {
@@ -613,7 +609,7 @@
       "statement": "Setup retains untested connections for retry and removes unused setup connections when another connection replaces them.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L214-L308",
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L211-L305",
           "version": "repo-lines-v1:sha256:649e6edbd0fa2893212b0c45f0838630e2da69fb1593f0f51bfa3c53052d188c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YjE3MTE0Y2QxNmNmMGE4OGZjYTU5YzgwMmMwOTQ0MDJiYjVmOGEyZjg5ZTIzNzk3ZThjYjQyOGQ4NjkyYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWFjYzRjYzBjZmU1NmZhYTM1NTY3ODRjODhlMGM2YTc0OWNhYTk1YzU5MWNkNGVlZjlmOWQ0OWYxMjRlMTMifQ"
         },
         {
@@ -637,15 +633,15 @@
       "statement": "Terminal setup offers providers first, assigns connection names automatically, and limits another-provider search to the OpenCode catalog.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L431-L447",
+          "resource": "repo://INSTALL.md#L451-L467",
           "version": "repo-lines-v1:sha256:1ca08fe8276f91da771c56c3d371fae1e203fd110883ac3dd18dcc45fc89a3f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0MWZiMGZkZGEzMWMxYTQ2Mjk4MjM0ZGQyYWUzMWE1Y2UyYTUwNjc4NzMzMzg5ZDA5YWJiZWM2YTM2NjhiNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNzdiNmEzMDc4NTcwYzM0NDVkY2I5ZmM0YjcxYWZjN2UwZmMxZTgwYTZhZDkzODFkNmU0NTNmNTdkOTA3ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1YTExYTQwYmRjOGJlYTc1NzQ1ZThlNWFjZjM0YjMzYjUwMTUyYzlhMzM5OWYxZTBlNmFmMTk4YmYwMmU0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmNDI5NmZlODk0NTlkZjlmZjFiY2E5ZmFjYjA5OTZhN2Y3YTZhZGUxNzYzMjJhZGQ5YWQ0MWU3MDUzYWUyYzgifQ"
         },
         {
-          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L149-L213",
+          "resource": "repo://mc/cmd/mc/setup_agents_prod.go#L146-L210",
           "version": "repo-lines-v1:sha256:51f5f0dab77ea0e955fa4015977c5c6f0f73b8bf9f8060d0d81074c187275250:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczOWE4OTc5NDg2Yjk4ZDIwNjY3MThkY2Q1NTUwNTM0NDY3M2M3ZWUzNjZhNTQ2YjhjMzNmMjQzM2FjMzU2OTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNjJiNzlkZjc1ZDBiZGVjMzg5ZTk2ZjQzMDhjMThkM2E0NTcxZDBlYTYxMjAwZmMyYTUyY2I5YThkYjU1MzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5ODVhMzBlYjYwMmIyMjI5NWQwYjg5NTFmNGVlMTI1Y2E4ZWRmMGY5NzgxN2ExODFmYTRmNzU5ZDkzMGRkMzEifQ"
         },
         {
-          "resource": "repo://mc/cmd/mc/setup_opencode_prod.go#L20-L54",
+          "resource": "repo://mc/cmd/mc/setup_opencode_prod.go#L19-L53",
           "version": "repo-lines-v1:sha256:0de7cb4c0f65ba12dd35d2c85d50393a5dc489e25daba7a2961c088b65a77694:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1NjVmYzA3M2U0ZjZhYzNjMjZiZWVhZTUyZWI3YzMyZmIwODc5NzJkYzFlYzRlODJlMzQ1MzNmMGU5MmJjNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMGVlNzAzZGI0NmQxYzEwZjQyZjE5ODJiZTRkNzgyZTE5OGUyMWY3Y2NkOTNhY2EwZjRmNWM0OWFiNmRlOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNjNkMGM5N2QzZWNkMTgyMTYyMWY3MWJlMjBkMzQzOTdhY2FmYTdhMmJkM2ZhMWIyYjE5NTI2NmJjYTM2ZDQifQ"
         }
       ]
@@ -663,7 +659,7 @@
           "version": "repo-lines-v1:sha256:0b4f4328040589ef57b2d2649ff7009ce5490e7ba6b7ee57157d5928ffdad675:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyODY3NzQ3NDEwMzI1MmZiNTg2M2Y2OTY1MzY5NWE5MTEzODM2ZjZhZTIxMjdjOWIwNDBiOWMwZmYwOTEwMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlMzMzYTcxOGRlZjU3NzRjZTU1MDY1MDc1MDZiZmEzN2E4MmVlOTM2Mzk5NDM4ZWE2ZGM5MjI5YmUzOWJhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMjk3YjIwZDg5MWNkM2I4NDI1YTkwN2I4MjUyMzIwM2ZhMjMzNGMyNDE0NTQzYWM4MmFlYTIyNjdkNmY4MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MDAyMTY4ZjY5ZDFmNzhiYzkxNDNkMmE0YTgxMGMwMzlkMDdkOTU1ZGMyY2JkZWRkNjNlMjQzZjM3MTcxYWUifQ"
         },
         {
-          "resource": "repo://mc/deployment/host_release.go#L74-L81",
+          "resource": "repo://mc/deployment/host_release.go#L87-L94",
           "version": "repo-lines-v1:sha256:ad8a02cbe648dcc63aba4065cc63d9d1685e9dca86ed3c377d13e2e637cd66e8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJmM2E5ZGMwMWRlMWU0ZGU3NjY3YjJiOTg3ZGE1MmE3OGJiYjUwOTBhMjNhNDkxMWQ1Mzg4YjE3YzVkYjRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFlNWYzYWFkNGRjZDJmN2YxYTcwNGMxZTVkNTgyM2U4MjU5MmYzYjNkMjExNmVmMDcwNTQ5MTZkYjE3YjcyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODI5MWIxNzIyNmNiN2YxZmNjMDc4MWEyOWNhMmE4MTg0MjVmM2Y3ZWU0ZDJhZTVlMjBmZTQ4M2UyYjgxYzZiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzA0NzMzOThkOTI0NmQ3NWQ3Yzc5ZDNmNzMzMDMyMzUxZTg0ODgxYTI4NDFhNTIzNjM5MTY4ODM3YTMzNjA0MiJ9"
         }
       ]
@@ -681,10 +677,20 @@
           "version": "repo-lines-v1:sha256:5c5cb47c2ae65a8206918a133df73d4da31cf8ed9f7bdc823888f069b7f5ea3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzMzE0YWM0NWVkOGM4OGI3ODhjMDNjZTFiNDMwZmIxNTk5NGUyNGUzNjNkZDAzNGU1YjM4ZDY1MGVhYWEzZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMGRlYjY3NmI1YmQ3ZTI3MWRmYmEwNmE3ZDk3MTg4N2MwYzI2ODk2NmUzMjc4ZDBmYzAyNzhkM2FkNGJhMTIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_4b916c86925b4ff5a7ba71615cb1438f",
+      "statement": "The host skill installation records the exact deployment executable, release, trace reader, and scratch paths.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/agent_skill.go",
+          "version": "repo-file-v1:sha256:058abcc11626dd1d11d5f1eafd09ea8f23882bcba274c0a9ddbf050653ee9ddf"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T19:18:31.051Z"
+    "at": "2026-11-12T00:22:22.352Z"
   }
 }

@@ -44,10 +44,10 @@ sources:
     resource: repo://runner/image/toolchain-smoke.sh
   - id: openwiki-source-a1d3951819531015b34e3c43
     resource: repo://runner/shared/setup-error.ts
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Runner containers and harness adapters
@@ -116,7 +116,7 @@ The Codex adapter accepts `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `
 The Claude SDK adapter accepts `low`, `medium`, `high`, `xhigh`, and `max`.
 Without a selected effort, the harness uses its default.
 2. **Repository preamble.** `runStorePreamble` runs only when the envelope carries `repository`. It requires a canonical commit id, a Git work tree, and a resolvable commit. For a Scribe run, the preamble only verifies that the tree equals the input commit. For other roles, it runs `git reset --hard <commit>` and `git clean -fdx`. A refusal is logged as `runner.store_preamble_refused` and reported as an infrastructure failure, and the runner exits 2.
-3. **Skills.** `installEnvelopeSkills` in `skills.ts` replaces `$HOME/.agents/skills/` with the assigned skills. A temporary mount gives each container separate `.agents` storage. Replacement preserves concurrent roles and persistent dependencies. Skill names must match `^[a-z0-9][a-z0-9-]*$`. The step never throws: a missing or malformed skill is logged and skipped, because a degraded run is worth more than a refused one. The Claude adapter mirrors the set into its own config directory, because the SDK reads skills from `CLAUDE_CONFIG_DIR`.
+3. **Skills.** `installEnvelopeSkills` in `skills.ts` replaces `$HOME/.agents/skills/` with the assigned skills. A temporary mount gives each container separate `.agents` storage. Replacement preserves concurrent roles and persistent dependencies. Skill names must match `^[a-z0-9][a-z0-9-]*$`. The installer logs malformed entries and returns false when the complete installation or a required skill is unavailable. Collie requires the common `culler` skill before it starts. Declared reference files are validated and staged with the main skill file. The Claude adapter mirrors the set into its own config directory, because the SDK reads skills from `CLAUDE_CONFIG_DIR`.
 4. **Process start and brief.** The runner spawns the adapter and calls `mc run process-started`. It writes the brief to the adapter's stdin only after that call succeeds. If the call fails, the runner kills the adapter before it receives the brief.
 5. **Event stream.** The adapter writes JSON event lines to stdout. On the first `session-start`, the runner calls `mc run register-session --native-ref … --file …` with a validated relative locator. It sends an immediate heartbeat. Runs with environment preparation already have a heartbeat timer; other runs start that timer after session registration. The harness never heartbeats. A `model-response` event triggers `mc run model-response` once per attempt, through `modelResponseReporter` in `runner/shared/model-response.ts`. An `infrastructure-failure` event is kept as the diagnosis.
 6. **Exit.** After the adapter exits, the runner waits for any pending registration and, unless it was stopped by a signal, calls `mc run infra-failure`. It does this even for exit 0. The `mc` side compares the report with the recorded run outcome and keeps an accepted result. Role terminals (`mc complete`, `mc arbiter decide`, `mc verifier verdict`) are called by the agent itself through the same setuid `mc`.
@@ -133,7 +133,7 @@ The adapters emit `session-start`, `model-response`, `turn-text`, `turn-complete
 
 ### OpenCode runtime and traces
 
-`runner/agent-runner/adapters/opencode.ts` uses the selected release catalog model and its supported effort variants.
+`runner/agent-runner/adapters/opencode.ts` uses the selected catalog model, including a validated live model record, and its supported effort variants.
 The resident mounts the separate OpenCode volume read-only at `/opt/culler-opencode` through `openCodeArguments` in `resident/src/environment-lane.ts`.
 The installation supplies the executable, provider packages, control plugin, and shell wrapper.
 Source deployments prepare and verify this package before service activation, even without an OpenCode connection.
@@ -148,8 +148,8 @@ Its policy permits the selected provider and controls web search through the ass
 The native process uses separate data, configuration, cache, and state paths within the run's session directory.
 
 A prompt hook exposes the native session identity before the first provider response.
-The adapter registers that identity and writes a normalized trace for AgentsView.
-After the native process stops, it redacts temporary tokens from session text and the native SQLite databases.
+The adapter registers that identity with the native database locator.
+The resident publishes masked trace copies and preserves the original session database for resume.
 These databases belong to OpenCode; Culler state remains in the spine behind `mc`.
 The adapter requires a successful process, a session identity, reply text, and a completed step before it reports success.
 `runner/agent-runner/opencode.test.ts` checks configuration isolation, trace registration, redaction, and terminal results.
@@ -187,18 +187,11 @@ See [Project environments](../workflows/project-environments.md) for image decis
 
 The Collie runner serves the lease-free conversational tier (see [Collie](../concepts/collie.md)). It reuses `adapterInvocation`, `installEnvelopeSkills`, and the diagnostics from the agent runner, but it never heartbeats and holds no lease. It reports `mc collie runner-started` once and exits if a newer launch fenced that report. It then loops: `mc collie claim` takes the oldest pending turn, the runner runs one harness turn, it posts provisional text through `mc collie draft` at most once per second, and it finishes with `mc collie reply --to <id>`. The resident stops the container on the idle timeout. The resident pins `HOME=/home/mc-model` for Collie containers, so skill installation has an absolute root.
 
-`collieTurnPrompt` adds Discord access and Diagnostic context sections to each turn prompt.
-The Discord section assigns setup and account approval to **Configs → Discord**.
-It states that Culler consumes account confirmation codes before Collie receives messages.
-It tells Collie that each channel message starts a session in its own Discord thread.
-The operator can continue that session from the thread or the dashboard, and a dashboard reply reaches the thread.
-The host owns this authority; the runner receives no Discord configuration command.
-See [Discord setup](../integrations/discord.md) for the host checks.
-It identifies dashboard diagnostic messages as short summaries with references for permitted reads.
-It also states that a proposed state change requires explicit operator confirmation.
-The prompt keeps the conversation identifier and operator message sequence alongside optional packet and Vision context.
-`runner/collie-runner/main.test.ts` checks the prompt text in ordinary turns and native-session continuation cases.
-See [diagnostic authority](../concepts/collie.md#diagnostic-context-and-authority) for the role's evidence and access limits.
+`collieTurnPrompt` supplies variable facts: session and message identity, conversation type, release, repository, trace, scratch, packet, and Vision context.
+The directive and common `culler` skill own authorization and procedures.
+The skill reference tree includes diagnostics, traces, configuration, tasks, and packet decisions.
+This keeps stable rules separate from the facts of a turn.
+`runner/collie-runner/main.test.ts` checks prompt context and required skill delivery.
 
 ## The fake harness: `runner/fake-harness/`
 

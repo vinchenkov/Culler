@@ -5,7 +5,7 @@ description: How the Bun dashboard server mirrors mc verbs over an authenticated
 tags: [dashboard, bun, api, security, smoke]
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T19:18:31.051Z
+    at: 2026-11-12T00:22:22.352Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -141,7 +141,7 @@ sources:
     resource: repo://mc/verbs/repositoryfile.go
   - id: openwiki-source-229935765a2017befaf3bc59
     resource: repo://mc/verbs/systemstatus.go
-generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
 ---
 
 # The operator dashboard
@@ -171,7 +171,7 @@ One extra route is not an `mc` verb: `POST /api/projects/choose-folder` runs `os
 
 `handleApi` in `dashboard/src/api.ts` maps each route to one `mc` invocation. For example, `GET /api/tasks` runs `mc task list`, `GET /api/projects` runs `mc project list`, and `POST /api/config` runs `mc config save` with the body on stdin. The module has no cache and no interpretation. Grouping and filtering happen in the browser. `verbResponse` turns the result into HTTP: exit 0 returns the JSON with 200; exit 1 or a `usage` error returns 400; `record-conflict` and `operation-conflict` return 409; other failures return 500. When `mc` prints no error envelope, `verbResponse` synthesizes one from stderr.
 
-`dashboard/src/mc.ts` is the single spawn seam. `makeMcRunner` runs `Bun.spawn([mcBin, ...argv])` with a fresh copy of the process environment and optional stdin. It parses stdout as one JSON object or returns `json: null`. Passing the environment through untouched lets the production binary delegate into the helper container and lets the `test_fake_routing` build honor `MC_SPINE`. Structured input and secrets travel on stdin, not in arguments; `mc.test.ts` verifies this.
+`dashboard/src/mc.ts` is the single spawn seam. `makeMcRunner` runs `Bun.spawn([mcBin, ...argv])` with a fresh copy of the process environment and optional stdin. It parses stdout as one JSON object or returns `json: null`. The spawn sets `MC_OPERATOR_ORIGIN=dashboard`. Passing the remaining environment through lets the production binary delegate into the helper container and lets the `test_fake_routing` build honor `MC_SPINE`. Structured input and secrets travel on stdin, not in arguments; `mc.test.ts` verifies this.
 
 ### Release identity and update recovery
 
@@ -193,7 +193,7 @@ The dashboard exposes Project pipeline pause through dedicated commands:
 | `POST /api/resume` | `mc resume` (Resume all) |
 | `POST /api/projects/<id>/pause` or `/resume` | `mc project pause|resume <id>` |
 
-The work happens in `SetEveryProjectPause` (`mc/verbs/pause.go`). Pause all sets every active Project to paused in one transaction. Resume all resumes only paused Projects whose `setup_status` is `ready`, so Projects with incomplete initialization stay paused. Pipeline agents cannot change a pause (`RequireHostScope`). `mc/verbs/pause_test.go` verifies that pause still allows Collie dispatch. In the browser, `pauseAllView` (`dashboard/src/ui/format.js`) counts only non-archived, setup-ready Projects to decide whether the button reads "Pause all" or "Resume all".
+The work happens in `SetEveryProjectPause` (`mc/verbs/pause.go`). Pause all sets every active Project to paused in one transaction. Resume all resumes only paused Projects whose `setup_status` is `ready`, so Projects with incomplete initialization stay paused. Pipeline agents cannot change a pause. `RequireOperatorVerb` and transaction-level authorization admit permitted operator callers. `mc/verbs/pause_test.go` verifies that pause still allows Collie dispatch. In the browser, `pauseAllView` (`dashboard/src/ui/format.js`) counts only non-archived, setup-ready Projects to decide whether the button reads "Pause all" or "Resume all".
 
 ### Side seams
 
@@ -211,7 +211,7 @@ The work happens in `SetEveryProjectPause` (`mc/verbs/pause.go`). Pause all sets
 ### Header status and theme control
 
 `dashboard/src/ui/index.html` places the theme button immediately before the lease badge inside `.header-status`.
-Wiki and Traces remain in the navigation's viewer links.
+The navigation provides the Traces viewer link. The Pipeline page provides Project wiki access.
 The button and badge retain their element identifiers and `data-testid` hooks.
 
 `dashboard/src/ui/style.css` keeps the button and badge together in a flex row with an 8-pixel gap.
@@ -333,10 +333,6 @@ The model-configuration and Project setup smokes delay responses to check draft,
 Other updated smokes use the shared body scroll region and Close control.
 These descriptions identify test assertions; this wiki update does not execute the browser suite.
 
-The [theme comparison viewer](../../work/dashboard-theme-sets/index.html) is a retained design artifact.
-The [conventions document](../../work/dashboard-theme-sets/dashboard-conventions.md) states the design requirements.
-The [implementation inventory](../../work/dashboard-theme-sets/implementation-inventory.md) maps components, exceptions, and recorded checks.
-Its pass counts describe its recorded implementation review, rather than fresh evidence from this wiki update.
 Production appearance comes from the shipped stylesheet and browser modules.
 
 ### Dialog backdrops and case assessment
@@ -934,3 +930,20 @@ This prevents a shared decision from hiding a separate repair action.
 It also checks that three blocked tasks can produce two issues and that resolution preserves an independent task block.
 These statements describe test source; this wiki update does not execute those tests.
 See [decision resolution](../workflows/decision-resolution.md#shared-proposal-decisions) for the operator controls and state transition.
+
+## Live model lists and status recovery
+
+The model panel combines the release catalog with the live OpenCode model list.
+`mc/deployment/opencode_models.go` owns that list; the browser reports its source.
+An active download has a progress indicator and delays model testing.
+Failed or absent downloads offer Retry. A completed download triggers a model refresh.
+The browser preserves an available list after a failed background request and delays changed choices while Model or Effort has focus.
+`reconcileChildren` in `dashboard/src/ui/dom.js` preserves unchanged controls during polling.
+
+A draft model test preserves the saved profile's verification.
+Only matching execution configuration and authorization evidence can verify a saved profile.
+`mc/cmd/mc/systemstatus_setup_test.go` checks the draft, save, and verification boundaries.
+
+`createSystemStatus` in `dashboard/src/ui/systemhealth.js` preserves the prior view after one failed read.
+Two consecutive failures show Status unavailable. A successful read resets the failure count.
+This prevents a brief load peak from replacing a valid status display.

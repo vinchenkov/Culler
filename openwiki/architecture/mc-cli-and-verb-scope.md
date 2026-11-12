@@ -12,6 +12,8 @@ sources:
     resource: repo://mc/cmd/mc/helper_manager.go
   - id: openwiki-source-d836d340a3e63f02aab7a979
     resource: repo://mc/cmd/mc/main.go
+  - id: openwiki-source-47d33f42b4eeb3c2e4a59220
+    resource: repo://mc/cmd/mc/operator_bridge.go
   - id: openwiki-source-933d0f6cd75c6be8beefdb55
     resource: repo://mc/cmd/mc/runtime_scope_prod.go
   - id: openwiki-source-42421fcd4e919150079ddaf4
@@ -28,14 +30,16 @@ sources:
     resource: repo://mc/verbs/task.go
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
+  - id: openwiki-source-12764378a8b31b3916b3e3ed
+    resource: repo://resident/src/operator-lane.ts
   - id: openwiki-source-1af81418c71ef16693e3dabe
     resource: repo://runner/image/mc_dispatch.go
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # The mc CLI, verb scope, and boundaries
@@ -149,3 +153,28 @@ The request carries JSON over that local socket.
 The host compares the expected configuration revision before changes and repeats that check within the atomic configuration update.
 This rejects a stale dashboard write before it changes the connection.
 See [Discord configuration](../integrations/discord.md) for activation and recovery across these boundaries.
+
+## Supported operator commands
+
+`mc/operatorcmd/` supplies command definitions, input validation, permissions, results, and retry rules.
+`operator_help.go` exposes root, family, and command help without a live service.
+Help describes an interface; it grants no authority.
+Collie and an external agent use the common `culler` skill for procedures and confirmation requirements.
+
+`operator_bridge.go` validates supported requests before execution.
+Collie submits host work through a retained operator request in the spine.
+`resident/src/operator-lane.ts` executes due requests through the host command.
+The request contains one catalog operation, not an arbitrary executable or shell command.
+`operator_access.go` checks the active session and frozen permission set.
+Vision and packet conversations retain their target constraints.
+Pipeline agents cannot acquire operator authority through this path.
+
+Each write retains its origin, target, and request identity.
+An identical retry returns the retained operation; different content under the same identity is refused.
+A timeout can return accepted work that is still incomplete. Its operation status resolves that uncertainty.
+`operator_guard.go` rejects writes during incomplete updates and across incompatible releases.
+Transaction-level checks remain responsible for domain state.
+
+The command and boundary tests cover static help, restricted and ended sessions, forged identities, retries, and protected host execution.
+`docs/collie-command-access.md` defines the accepted contract.
+`docs/collie-command-access-validation.md` records implementation checks and their platform and complete-suite limits.

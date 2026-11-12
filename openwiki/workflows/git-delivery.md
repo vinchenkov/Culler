@@ -28,10 +28,10 @@ sources:
     resource: repo://resident/src/repository.ts
   - id: openwiki-source-876efa27a35b34c8f8651db4
     resource: repo://runner/image/mc-land
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Git delivery and repository operations
@@ -143,3 +143,8 @@ Source acceptance associates the checked source with its immutable environment r
 An interrupted association holds new work until receipt recovery resolves it.
 That use preserves the Project's global image selection.
 See [Project environments](project-environments.md) and [wiki updates](../integrations/openwiki-and-viewers.md).
+
+Merge preparation constructs and retains the Git candidate through `resident/src/repository.ts`.
+Project dependency preparation belongs to agent execution and the environment workflow.
+The repository lane preserves the checked source/environment association at acceptance through `acceptSourceEnvironment`.
+These boundaries keep Project setup execution outside the Git merge operation.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9e2152cfae54aed05e16897e6773b216397a6191b488fe19638e21650e166a59",
+  "pageVersion": "sha256:7db367764ece232a964923e28cda43cb7bc71d7cfc65e8c708bee3f51d40d7a8",
   "claims": [
     {
       "id": "claim_40bf16bc04264ce683e954dec92e3a71",
@@ -75,7 +75,7 @@
       "statement": "Uninstall covers all detected installations; both modes preserve Project repositories and shared tools, while keep-data preserves configuration, credentials, and history.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L197-L233",
+          "resource": "repo://INSTALL.md#L217-L253",
           "version": "repo-lines-v1:sha256:8d3d0ab59848ad605e8e9bf74afc838bfc6fd670293bef9db54945d160db09fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyOTkzZjllZDhlNGU1MzdmODBjZGNkMGVlZWRlYWY3YTQzODVmZGRmYmQyYmYwMDg1NTdmNzA0ZWZiOTNlN2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwMzYzM2EwYzM0ZjIxYWJjNDhhYmVlZmE5NWIwMDg5YzU5MTBiYmVmZWJhMDUwZDk3M2QxZjBhNDY4MDQ4MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5YmZiNzBkNTRmNmM0NTRlYmIzMTJkZGY1OWI3MmY3NTNhZTgzZmUzMmRlNzNhZDk1MjU5NjAxZjExNmQxZmMifQ"
         }
       ]
@@ -99,14 +99,24 @@
       "statement": "Published update checks run the candidate runtime on selected Project images with temporary volumes and no live spine mount.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L124-L225",
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L154-L255",
           "version": "repo-lines-v1:sha256:87890f769ee66def3411b12f9017ddd3e1ed19ecb8dbda520fdd36b7cce529ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZGExZDc5MTQ4MDllMzQ5OWQ0NTczZThiZmU1ODI2YWUwODJlYTJlMmExNGRiN2NjMTQxNzI1NzdjNmE3MzVhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2MThhNjEzNDUyZTBlMTBhNjVmMTJkMjM1MTcyNzZjN2U3NjdmMDE1YTk1MjkzYWU2NzEzMzRjNmRiOTkyMDVmIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_4992ae2df8af421ea2d6d6f4527703a5",
+      "statement": "Uninstall prepares removal of the agent skill integration even when the command installation record is absent.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/uninstall_prod.go#L299-L312",
+          "version": "repo-lines-v1:sha256:a093a222f29341fc4a3fc3516108461c1544fbba6f599bf3def4ab433ae3cd42:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2MTczMmFmZGE5NDFmNDNmYjFjMjhiY2ZiMDYyYjQ4ODc4YjViZjYwZTA0YWQ0Mzc5ZGVlMzc4ZmYwMTJhYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTU3MDgxMDUxZjQ2ODJhN2RiM2U1OTBiNGRkNTQxM2Q1M2RjOWEwMTU1MTI3NmRhY2I1MjFhN2UxZGI5YTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3MmI1OGFmNDJlY2VjNjYzMjQwZDBhYjMwZWUxMTU3ZDAwYzQ1YzA1ZjY0YzNhNzBlNTFlYzQ5ZmI2MDIwODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzZTdkMzZlOTllZTkxN2I1NWU5MjhiZDMxOTkxNDljNTBiNmU2MzhjN2MwYTc3ZjA3YzI2ZWMwZjM5Y2E5ODEifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-09T19:06:13.611Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

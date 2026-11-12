@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:496b93da2e1b1e50a361c1d522fad2538e1faf8bb7503dd1f30cdcdfbdf5b5b6",
+  "pageVersion": "sha256:20c06b854a0d5521f9b856d7269f0e5279019c44d73a32995079c9d632dce11b",
   "claims": [
     {
       "id": "claim_7e701e9fbdc84e238f485a2bc67b0108",
@@ -61,10 +61,20 @@
           "version": "repo-lines-v1:sha256:f372dc8218b0a49291d4dcb66177dd1e8e755484a0df94e8033b8132b5307afd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGUxYTFhMTg3NjVmNmY0ZjY4ZjQ2N2RkNzVjM2FiNjUyZDU5ZWMyYTM4NzJiOTdjYmQ3ZTBjN2E4MDQ5OWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MjNmODRiYzEwYzc0YWI5MDM3MDZmZjIxYjRhMTE3MmVjMjNlYWJkZDUyN2VkNTY4MmZiZDI0OWYyNTUxYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMTVmMDExNDlkYTU2Y2NjMDEyM2E4MjM2ODU0YWI0ZGVjNTExMzY4ZWJjMGZkM2MyNTNmMTRlZDI1OTM1NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MjA2MWUzYTAxNzdmYmY2NGJlMTc3MDIwNDU2MTExMjMzZmM2YmUyNzZiZGUyYmQ3ZjRlNDk3Y2I5MjczMzYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_53d340761c314d5e8c48fceb28b61dda",
+      "statement": "OpenCode evaluation traces use execution/trace.db with the SQLite media type.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/evaluation.go#L750-L770",
+          "version": "repo-lines-v1:sha256:1e60e37dae7d0719382085224b5cd03d9e992a73e4cd9dd5674fc29731c1a1af:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1NjE1OTFjYWRiOTA0NDAyNjJjZGFjMWVkNWFlMWQ2NDY0NDE3ZGE0ODg1M2M3MGU1OTg1MDJkZTBjYzc5N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NjhmOWQ1YjJiYjNmMTNhYmIzOWEzOTgxOWMxMWEzNmVlMDQxMDY3NmI4ODE0OGMwNDY4YTczY2VhODgwNzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjNjNlNTE1NjI1NDk3ZmQwOTJlY2M2NzI3MzUxNzRiNjE0NDkxNTEzMGQxN2E5YTkwOTY1MzFiMjQ5MGRiZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2ODU4ZjJhMWUxN2M5NzIwNWJhZGVmNWEzYWJjZTkxYWQzN2U2NmJlMzU1ZGNiNTEwMDViYjk1M2I0M2FmMmIifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T18:18:18.729Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

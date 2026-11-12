@@ -22,8 +22,6 @@ sources:
     resource: repo://mc/verbs/directives.go
   - id: openwiki-source-3bc5b077708f9534abc3b95d
     resource: repo://mc/verbs/directives/arbiter.md
-  - id: openwiki-source-6c249547ec5cf1c015cbdcb1
-    resource: repo://mc/verbs/directives/collie.md
   - id: openwiki-source-959768f661d526f65eea9d8d
     resource: repo://mc/verbs/directives/packager.md
   - id: openwiki-source-4b2c2a82df1cffc64cdb7c34
@@ -46,8 +44,10 @@ sources:
     resource: repo://mc/verbs/setup_agent_input_test.go
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
-  - id: openwiki-source-332034bad01f6c1d71fb1474
-    resource: repo://mc/verbs/skills/collie/mc-collie/SKILL.md
+  - id: openwiki-source-0f8470e4c37127c6974a11b4
+    resource: repo://mc/verbs/skills/collie/culler/references/packet-decisions.md
+  - id: openwiki-source-b8bfd4cae8b08f0dd90bb773
+    resource: repo://mc/verbs/skills/collie/culler/SKILL.md
   - id: openwiki-source-9992dda8c04b35911bec9f64
     resource: repo://mc/verbs/skills/packager/mc-packager/SKILL.md
   - id: openwiki-source-f7b77b556b18b6d3270e2193
@@ -78,10 +78,10 @@ sources:
     resource: repo://runner/agent-runner/skills.ts
   - id: openwiki-source-d1b22419782a460caf6dbe3c
     resource: repo://runner/collie-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:22:22.352Z
 ---
 
 # Agent input: directives, run brief, and shipped skills
@@ -95,7 +95,7 @@ Each pipeline run starts in a fresh container, and the agent knows only its agen
 `mc` owns all three. The directives and shipped skills are embedded in the `mc` binary with `go:embed`, so an installation cannot omit them or change them locally. The resident adds the operator's per-Project skills, and the runner installs the set. The [Collie](collie.md) tier uses the same directive and skill mechanism but has no run brief.
 
 The agent profile sets the model and effort for each run.
-The Verifier, Packager, and setup directives state this fact.
+The runtime capability supplies these execution choices.
 The Verifier directive states the profile rule once and leaves harness details to the runtime.
 The private runtime capability and launch envelope carry the selected effort to the runner.
 An empty effort leaves the harness default in effect.
@@ -119,7 +119,7 @@ Each directive states the Culler contract, the customization rules, and the role
 
 `directiveForRole` appends one generated section, built by `skillPointer`, to the prose:
 
-- **Your command surface** names the `mc-<role>` skill and its path, `~/.agents/skills/mc-<role>/SKILL.md`. The Strategist reads this skill before each `mc` call. Other pipeline roles read it before the first call and before the terminal. The pointer also states that `mc` has no help command.
+- **Your command surface** names the `mc-<role>` skill and its path, `~/.agents/skills/mc-<role>/SKILL.md`. The Strategist reads this skill before each `mc` call. Other pipeline roles read it before the first call and before the terminal. The pointer states that operator help grants no additional role authority.
 - **Your other skills** lists each additional and shared skill with its path and frontmatter description.
 
 The pointer carries only names and descriptions, never skill bodies. It is the trigger that makes the agent load a skill. It is also the fallback when a harness fails to list skills, because each skill is a readable file at a fixed path.
@@ -296,9 +296,7 @@ This keeps task requirements in the description while the rationale remains prop
 `mc/verbs/strategic_rationale_test.go` checks delivery and omission across the roles.
 
 The Packager starts the first section with its statement of the delivered change.
-For a Strategist task, the section is Strategic rationale, followed by the complete rationale with the Strategist as author.
-The Packager converts its Markdown to HTML and preserves its claims and evidence.
-It identifies the rationale as observations and assumptions from before the work.
+For a Strategist task, the section is Strategic rationale. It follows the delivered-change overview with a distilled rationale and the Strategist’s key figures and evidence.
 An operator task instead starts with Summary.
 Project instructions preserve the first Strategic rationale section while they can replace the remaining default structure.
 
@@ -330,7 +328,7 @@ The `verify-behavior` skill applies when a criterion or broad check needs browse
 It defines browser sessions, evidence media, and cleanup.
 
 The Packager brief, directive, and skill require preservation of unchanged failures, base comparisons, and unverified coverage.
-Each `UNVERIFIED` entry remains in the Review Packet.
+The packet groups checks by behavior or criterion and common coverage limits. Detailed Verifier evidence retains each exact `UNVERIFIED` entry.
 These observations alone create no additional approval requirement.
 The [test guide](../tests/checks-and-test-lanes.md) explains the distinction between command results and the task verdict.
 
@@ -340,7 +338,7 @@ The Packager input assigns the page style to the dashboard across three sources:
 
 - `subjectExplanation` in `mc/verbs/brief.go` requires coverage of each criterion and identifies the dashboard as the page style owner.
 - `mc/verbs/directives/packager.md` requires preservation of the off-white background and base typography, with transparent page containers.
-- The `mc-packager` skill repeats these constraints and requires preservation of the page style when the Packager copies a previous packet.
+- The `packager-previous-packet` skill supplies the previous-packet procedure.
 
 The directive permits optional inline styles for diagrams and other visual content.
 Project instructions can replace default sections while preserving the first Strategic rationale section for a Strategist task.
@@ -410,17 +408,17 @@ These assertions check supplied instructions. They do not prove that an agent fo
 
 ## Shipped skills
 
-`mc/verbs/roleskills.go` embeds `skills/*/*/SKILL.md`. The layout is `mc/verbs/skills/<role-basename>/<skill-name>/SKILL.md`. One map, `roleDirectiveBasename`, gives each role both its directive file and its skill directory, so the two cannot drift apart. The current tree:
+`mc/verbs/roleskills.go` embeds complete role skill trees. The layout is `mc/verbs/skills/<role-basename>/<skill-name>/SKILL.md`. One map, `roleDirectiveBasename`, gives each role both its directive file and its skill directory, so the two cannot drift apart. The current tree:
 
 - Each role directory holds `mc-<role>`, the command surface. It is a bullet list of exact `mc` commands with flags.
 - The Scribe receives `openwiki`, `openwiki-documents`, and `openwiki-recovery`.
 - The Verifier receives `verify-behavior` for browser evidence.
 - `shared/` supplies writing, Project wiki, environment, and task description skills to pipeline agents, setup agents, and Collie.
-- `collie/mc-collie` is the Collie tier's command surface.
+- `collie/culler` supplies the common skill for Collie and external agents.
 
 `RoleSkillSet` returns the command surface first, then the role's additional skills in name order, then the shared skills in name order. `skillByPath` enforces two rules at load. The directory name must match `^[a-z0-9][a-z0-9-]*$`, because the runner joins it under a root it wipes. The frontmatter `name` must equal the directory name. `SkillFrontmatterField` reads flat `key: value` lines and is deliberately not a YAML parser.
 
-The spawn effect in `mc/verbs/dispatchverb.go` carries the set as `skills` (`SkillsEffectValue`: `{name, body}` per skill) and the operator store directory as `skill_store_dir`. The Collie wake effect in `mc/verbs/collieselect.go` carries `CollieSkillSet()` and `skills/collie` the same way.
+The spawn effect in `mc/verbs/dispatchverb.go` carries the set as `skills` (`SkillsEffectValue`: `{name, body, files}` per skill) and the operator store directory as `skill_store_dir`. The Collie wake effect in `mc/verbs/collieselect.go` carries `CollieSkillSet()` and `skills/collie` the same way.
 
 ## Scribe coverage and recovery
 
@@ -447,7 +445,7 @@ Its shipped command skill uses `strategist/mc-strategist/SKILL.md` in the reposi
 
 Operators add skills under `MC_HOME/skills/`. The paths are `projects/<project-id>/<role-dir>/<skill-name>/SKILL.md` for pipeline roles and `collie/<skill-name>/SKILL.md` for Collie (`mc/verbs/skillstore.go`). `resident/src/skill-store.ts` reads the directory that the effect names. `readOperatorSkills` visits entries in name order. It skips and reports any entry with a bad name, an unreadable file, missing frontmatter, a `name` that differs from the directory, an empty description, or an empty body. An absent directory is not a problem. `composeRunSkills` appends operator skills after the shipped set and refuses an operator skill that reuses a shipped name, so an operator cannot shadow Culler's guidance. The resident also creates the per-role store directories for a Project the first time it spawns there (`ensureProjectSkillStore`).
 
-Skill delivery never stops a run. Each problem becomes a line in `run.json`'s `skill_problems`, and the runner logs it.
+Skill delivery records problems in `run.json` and the runner log. Collie refuses to start without its required common skill.
 
 ## Runner install
 
@@ -455,8 +453,8 @@ Skill delivery never stops a run. Each problem becomes a line in `run.json`'s `s
 `installEnvelopeSkills` logs delivery problems, validates entries, and calls `installRunSkills`.
 That function replaces the root and writes each `<name>/SKILL.md` with mode 0600.
 An empty set clears the root. Duplicate names install once.
-The envelope installer logs failures and permits execution with degraded guidance.
-The Collie runner uses the same installer.
+The envelope installer logs failures and returns installation success or failure.
+The Collie runner requires the common skill and stops when its installation fails.
 
 Project containers mount separate temporary `.agents`, `.claude`, and `.codex` directories inside the persistent home.
 These mounts isolate concurrent role files before skill installation starts.
@@ -491,11 +489,11 @@ A new native session receives the context again.
 `mc/verbs/packetcontext.go` supplies the identity, opening text, criteria, report text, commit identifiers, and readable artifact paths.
 The opening heading is Strategic rationale for an autonomous task and Thesis for an operator task.
 The context excludes current review decisions, merge state, and blocks.
-The Collie directive requires a current packet read before statements about those states or a packet decision.
+The packet-decisions reference requires a current packet read before statements about those states or a packet decision.
 Report text and artifact files supply evidence. Only an operator message authorizes a state change.
 The directive requires a description and explicit confirmation before a new state change.
 
-The `mc-collie` skill explains packet reads, candidate diffs, evidence files, report media, task traces, and refusal of an outdated decision.
+The common skill’s packet-decisions reference explains packet reads, candidate diffs, evidence files, report media, task traces, and refusal of an outdated decision.
 The shared `project-wiki` skill defines document ownership and separates original deliverables from task execution artifacts.
 See [packet conversations](../workflows/packet-conversations.md) for the complete sequence and access checks.
 
@@ -517,7 +515,7 @@ Tests enforce most of these rules mechanically:
 - `mc/verbs/directives_test.go`: every spawn role has a directive, and unknown roles have none (`TestFrozenRoleDirectivesCoverEverySpawnRole`, `TestUnknownSpawnRoleHasNoFallbackDirective`). `TestAgentTextNamesOnlyThePartsThatTheRunBriefRenders` fails if a directive or skill names a `**Part** part` heading that the brief does not render. Other tests pin role-specific contract text, such as one Project per role and no approval wait.
 - `mc/verbs/brief_test.go`: each role's brief holds its directive. Only the selecting and planning roles get the vision. `TestRunBriefExplainsEachPart` requires unique headings and a one- or two-sentence explanation ending in a period. Subjects carry no board state.
 - `mc/verbs/brief_render_test.go`: `parseRenderedBrief` reads rendered text back into header, directive, and parts. The brief tests assert on that parse.
-- `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. Role-specific skills remain separate; shared skills reach every role. The Collie skill lists exactly its allowlist. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
+- `mc/verbs/roleskills_test.go`: every role ships `mc-<role>` first, and every tier ships `writing`. Role-specific skills remain separate; shared skills reach every role. The common Collie skill points to the supported command catalog and retains session authority limits. `TestProseNamesNoCommandTheSkillOmits` fails if a directive names an `mc` command or flag that the command surface omits. `TestEveryDirectiveForbidsASilentExit` checks that each directive forbids ending without a terminal.
 - `mc/verbs/skillstore_test.go`, `resident/src/skill-store.test.ts`, and `runner/agent-runner/skills.test.ts` cover store layout, operator skill validation, shipped-name protection, wipe-before-install, and traversal-shaped names.
 
 `mc/verbs/verifier_input_test.go` checks the Verifier contract exposed to Collie and the rendered Verifier input.
@@ -566,12 +564,15 @@ These instructions preserve the operator's authority to change criteria.
 `mc/verbs/directives_test.go` checks the corresponding role instructions.
 See [decision resolution](../workflows/decision-resolution.md) for the state transition and retained commits.
 
-## Collie Discord authority
+## Common operator skill
 
-The Collie directive assigns Discord setup, account approval, and connection changes to the dashboard.
-The command skill directs the operator to **Configs → Discord** and states that setup codes grant no agent authority.
-The Collie runner adds the same boundary to its turn prompt.
-The directive and command skill tell Collie that one Discord thread and its dashboard view share a session.
-They assign delivery to Culler, so Collie returns its reply to the runner instead of sending it to a surface.
-Culler consumes account confirmation codes before it forwards ordinary messages to Collie.
-See [Discord setup and account access](../integrations/discord.md) for the host implementation.
+`mc/verbs/skills/collie/culler/` holds the shared entry point and conditional procedures.
+`directives.go` derives Collie authorization from that skill's authoritative Authorization section.
+The command catalog supplies syntax and result contracts through static help.
+The skill supplies decisions, safe retries, and evidence procedures.
+The installed `installation.json` identifies the deployment executable and evidence paths.
+
+The runner stages the main skill and validated relative reference files together.
+Absolute paths, traversal, and file links are refused by the delivery boundary.
+The host installation receives the same skill under `MC_HOME/release/host/skills/culler/`.
+The shared writing and task-description files supply the corresponding references.

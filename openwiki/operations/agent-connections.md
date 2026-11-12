@@ -62,10 +62,10 @@ sources:
     resource: repo://resident/src/provider-credentials.ts
   - id: openwiki-source-67e3529d84ef7148d75124ac
     resource: repo://resident/src/provider-lifetime.ts
-generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T19:18:31.051Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Agent connections and access renewal
@@ -98,7 +98,7 @@ Setup assigns connection and additional account names automatically.
 For an additional subscription account, `setup_connection_choices_prod.go` selects an available harness name with a numeric suffix.
 An unused, untested account from the same setup can supply its existing name.
 If another operation takes the name, setup selects the next available name and retries.
-The sign-in confirmation identifies the additional account and states that the existing account remains.
+Selecting sign-in starts authorization and the connection test directly. API key and saved-connection tests retain their model-spend confirmation.
 
 Setup records each connection it creates until that connection passes a test.
 `RuntimeCreated` in `mc/onboarding/session.go` preserves this list across setup restarts.
@@ -198,7 +198,7 @@ It shows four matches at a time and the selected provider's address and website 
 Arrow keys move the selection; Enter selects the provider.
 A terminal without screen controls asks for a query and then shows the matches.
 `mc/onboarding/terminal_search.go` owns the terminal interaction; `mc/cmd/mc/setup_opencode_prod.go` supplies the catalog search.
-The release catalog supplies the model list without a live provider request.
+The release catalog supplies baseline models. The host combines these with validated live models from the pinned OpenCode package.
 The model test verifies the saved key and selected model.
 
 In a published installation, the first OpenCode connection starts a separate download of the pinned program and web search plugin.
@@ -334,3 +334,15 @@ The same test checks that setup still receives the authorization address.
 `mc/cmd/mc/systemstatus_setup_test.go` checks the connection and profile states after setup records a successful test.
 `dashboard/src/ui/systemhealth.test.ts` checks issue exclusion and disclosure groups for unused connections.
 These descriptions identify assertions in the source; this wiki update does not execute the tests.
+
+## Live model ownership and draft verification
+
+`mc/deployment/opencode_models.go` retains successful live refreshes with the release catalog digest and OpenCode version.
+A mismatched record supplies no live models. The catalog remains the provider and package trust boundary.
+A model-list request can start a due refresh and returns both the source and refresh state.
+The host preserves the last successful list after refresh failure.
+`mc/opencodecatalog/live.go` validates live model facts; the adapter receives a selected model record instead of fetching its own list.
+
+A test of an unsaved profile does not replace the saved profile's verification.
+Matching model configuration and credential authorization evidence apply when the profile is saved.
+`mc/cmd/mc/systemstatus_setup_test.go` checks this separation.

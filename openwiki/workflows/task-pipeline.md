@@ -48,6 +48,8 @@ sources:
     resource: repo://mc/verbs/roles.go
   - id: openwiki-source-717b9c51f4b41e8d918f5c19
     resource: repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md
+  - id: openwiki-source-ed89bac39c80e2500197689e
+    resource: repo://mc/verbs/skills/packager/packager-rationale/SKILL.md
   - id: openwiki-source-04cae9da859027e703632c1b
     resource: repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md
   - id: openwiki-source-a6635e9c51b05f45725be1ce
@@ -62,10 +64,10 @@ sources:
     resource: repo://mc/verbs/strategist_input_test.go
   - id: openwiki-source-1ea8a5db4f70db6483d19a8a
     resource: repo://openwiki/operations/worker-instruction-audit.md
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:22:22.352Z
 ---
 
 # The task pipeline roles
@@ -388,7 +390,7 @@ Under the default structure, a section is absent only when the task has no recor
 Project instructions can replace the default section structure and omit the glossary.
 A Strategist task keeps Strategic rationale first, with that heading.
 The packet must retain all decision evidence, material behavior, risks, and verification results.
-It includes unchanged failures, their base comparisons, skipped checks, unavailable checks, and each `UNVERIFIED` entry.
+It groups checks by behavior or criterion and preserves material failures, base comparisons, and coverage limits. The Verifier evidence retains each exact `UNVERIFIED` entry.
 The packet separates actual command results from the task verdict.
 A nonzero command remains unsuccessful even when the task receives PASS.
 These observations alone create no mandatory manual check or additional approval requirement.
@@ -397,14 +399,14 @@ These rules come from `mc/verbs/directives/packager.md`; they govern authorship 
 The Packager writes one self-contained `packet.html` with embedded media and no scripts.
 The dashboard supplies the off-white page background and base typography.
 The Packager keeps page containers transparent and can add inline styles for diagrams or other visual content.
-The `mc-packager` skill requires preservation of this page style when a previous packet supplies the starting content.
+The conditional `packager-previous-packet` skill governs use of a previous packet.
 See [agent input](../concepts/agent-input.md#packager-page-style-guidance) for these instructions and [the report frame](../architecture/dashboard.md#report-page-style) for their display.
 
 ### The packet opening
 
 For a Strategist task, the first section is Strategic rationale.
-It starts with the Packager's statement of the delivered change, followed by the complete rationale with the Strategist as author.
-The Packager converts the rationale from Markdown to HTML and preserves its claims and evidence.
+It starts with one or two sentences about the delivered change, followed by a distilled version of the Strategist's rationale and its key figures and evidence.
+The delivered-change statement alone supplies the submitted thesis.
 Those statements describe observations and assumptions before the work, not verified results of the change.
 An operator task starts with Summary and uses the submitted `--thesis` text.
 Only one of these sections appears in a packet.

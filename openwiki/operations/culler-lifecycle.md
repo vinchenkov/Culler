@@ -16,16 +16,18 @@ sources:
     resource: repo://mc/cmd/mc/setup_update_stop_prod_test.go
   - id: openwiki-source-30e353995389d69cb272185f
     resource: repo://mc/cmd/mc/setup_update_transaction_prod.go
+  - id: openwiki-source-4e67d5d53e1cf48154d0675b
+    resource: repo://mc/cmd/mc/uninstall_prod.go
   - id: openwiki-source-a69635b1c1f62a5cb37186fd
     resource: repo://mc/deployment/lifecycle.go
   - id: openwiki-source-26d5c493ee5be4c7eb7219f5
     resource: repo://release/UPDATE-VERIFICATION.md
   - id: openwiki-source-09c5383289d9635a85a372a3
     resource: repo://release/UPDATES.md
-generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T19:06:13.611Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Culler lifecycle command
@@ -143,3 +145,7 @@ The service command reports current service checks after a failure.
 `mc/deployment/lifecycle_test.go` covers the stop record and service definition checks.
 `mc/cmd/mc/setup_update_stop_prod_test.go` checks the previous helper identity, helper-before-services order, and refusal after helper failure.
 These source assertions remain separate from complete packaged restoration through macOS launchd.
+
+The installed external-agent skill belongs to the release.
+Uninstall prepares removal of Culler-owned skill integration links even when the command installation record is absent.
+`mc/deployment/agent_skill_integration.go` checks ownership and preserves unrelated skills and links.

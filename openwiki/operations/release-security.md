@@ -35,7 +35,7 @@ sources:
 generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Release security scans

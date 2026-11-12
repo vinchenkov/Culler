@@ -182,10 +182,10 @@ sources:
     resource: repo://runner/openwiki/compatibility.test.ts
   - id: openwiki-source-2c053b8b3481c318e616a628
     resource: repo://runner/shared/test-environment.ts
-generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T19:18:31.051Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Checks, test lanes, and evaluations
@@ -283,7 +283,7 @@ A criterion that promises repair of an old defect still requires that repair.
 A criterion without its required evidence remains unmet.
 Separate release and host acceptance requirements retain their authority.
 
-The evidence file and Review Packet preserve every `UNVERIFIED` entry, comparison, unavailable check, and reason.
+The Verifier evidence preserves each exact `UNVERIFIED` entry. The packet groups checks and shared coverage limits while preserving material results and base comparisons.
 These observations alone create no mandatory manual check, separate repair task, or additional approval requirement.
 The source rules are `mc/verbs/directives/verifier.md` and `mc/verbs/skills/verifier/mc-verifier/SKILL.md`.
 See [the task pipeline](../workflows/task-pipeline.md) for verdict effects and packet duties.
@@ -366,7 +366,7 @@ These checks establish delivered instruction content and payload preservation; t
 
 The `verify-behavior` skill applies when a criterion or broad check needs browser interaction or visual confirmation.
 It selects the installed browser with `--browser=chromium` and defines evidence media and session cleanup.
-`runner/image/browser-smoke.test.sh` checks that browser selection in the Verifier skill and Packager directive.
+`runner/image/browser-smoke.test.sh` checks that browser selection in the Verifier and Packager browser skills.
 These are source-defined assertions. This wiki update does not report fresh execution or prove that an agent follows the instructions.
 
 ### Invalid criteria checks
@@ -686,11 +686,6 @@ The normal `./dashboard/smoke.sh` entry point runs these checks.
 `dashboard/smoke/discord-conversation.smoke.test.ts` checks one conversation across Discord and dashboard after an idle period and connector restart.
 It also checks a separate channel conversation, interrupted starts, and delivery when another thread fails.
 
-The retained [Discord verification report](../../.tracking/discord-configuration/REPORT.md) records separate live checks with a bot and channel.
-It reports a scripted Collie reply after a retry and explicitly leaves a live-agent reply unverified.
-Its counts and outcomes are historical evidence; this wiki update executes no application or live Discord tests.
-See [Discord setup and delivery](../integrations/discord.md) for the implementation and recovery boundaries.
-
 The Packet divider smoke waits for the narrow conversation before it checks visibility.
 Its cleanup restores the desktop viewport before it resets the divider.
 These waits preserve the existing layout assertions and prevent a transition from being mistaken for a completed state.
@@ -790,8 +785,8 @@ These descriptions identify source assertions; this wiki update does not execute
 
 ## OpenCode and update recovery checks
 
-`runner/agent-runner/opencode.test.ts` checks model variants, local plugins, role skills, OpenWiki readiness, session identity, continuation, completion, and token removal.
-`mc/deployment/opencode_test.go` checks catalog-only model lists, download retry, unsafe archives, interrupted extraction, native version checks, and model-test evidence.
+`runner/agent-runner/opencode.test.ts` checks model variants, local plugins, role skills, OpenWiki readiness, native session identity, continuation, completion, and diagnostic token removal.
+`mc/deployment/opencode_test.go` checks baseline model lists, download retry, unsafe archives, interrupted extraction, native version checks, and model-test evidence.
 These checks use controlled fixtures and do not establish live provider availability.
 
 ### Source OpenCode package checks
@@ -874,3 +869,19 @@ The recovery cases cover external page and sidecar edits, absent Git history, so
 They also check edits after inspection, edits during evidence resolution, rejected completion, and resumed updates with valid prior page completions.
 `runner/openwiki/check.sh` runs through the image component check.
 See [OpenWiki and viewers](../integrations/openwiki-and-viewers.md#page-verification-and-recovery) for the contract.
+
+## Operator commands and native trace checks
+
+`mc/check.sh` runs the external-agent release-skill test without the Go test cache because it reads release files outside the module.
+The command catalog, operator help, bridge, guard, and request tests cover executable syntax, static discovery, frozen permissions, target constraints, stable retries, and release refusal before effects.
+`mc/boundarydocker/operator_transport_test.go` exercises the protected production command across the host boundary.
+`docs/collie-command-access-validation.md` records prior results and limits; it does not establish a complete fast-suite or browser pass.
+
+Native trace tests in `resident/src/opencode-copy.test.ts` check committed WAL records, excluded incomplete transactions, masking, child sessions, unchanged original stores, and retention after failed refreshes.
+The lane and trace-reader tests cover import state and bounded native queries.
+`docs/native-opencode-traces.md` describes the optional synthetic viewer, container, and resume acceptance checks.
+
+`mc/deployment/opencode_models_test.go` covers live model refresh, retained lists after failures, catalog restrictions, and refresh isolation from credentials and Project data.
+Dashboard model tests cover download progress and preservation of focused controls.
+`systemstatus_setup_test.go` checks saved-profile verification during a draft model test.
+Setup sign-in screen tests cover direct authorization after one selection and retained confirmation for other model tests.

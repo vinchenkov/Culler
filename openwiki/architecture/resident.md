@@ -30,10 +30,10 @@ sources:
     resource: repo://resident/src/run-log-prune.ts
   - id: openwiki-source-79628d0b1a3667fb37eebff9
     resource: repo://resident/src/tick-loop.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # The resident host daemon
@@ -79,7 +79,7 @@ Release activation waits for the tick receipt.
 `startTickLoop` (`tick-loop.ts`) fires on an interval and runs one tick at a time. A timer firing during a tick is skipped. A nudge during a tick books exactly one more round. Each tick:
 
 1. Asks the installer pause check (`maintenance`). If an install pause is active, the tick only writes its receipt.
-The resident acknowledges the pause as ready after repository and environment operations finish.
+The resident acknowledges the pause as ready after repository, environment, and operator operations finish.
 The [lifecycle command](../operations/culler-lifecycle.md) uses that result before it stops the resident.
 2. Runs `beforeTick` chores: the environment preparation guard, pending Vision saves (`vision-save.ts`), agent profile refresh, backup, account renewal selection from `mc system status`, attachment expiry, run log pruning, and artifact expiry (`mc __prune-artifacts`).
 3. Runs `mc dispatch` and requires one `{action: "tick", actions: [...]}` object.
@@ -122,7 +122,7 @@ The lanes keep slow host work off the dispatch path. A tick never waits for a me
 ## Wake and control surfaces
 
 - **Nudge socket** (`nudge-socket.ts`): an owner-only Unix socket at `MC_HOME/resident.socket`. It accepts one line of at most 64 bytes: a Collie session ID, `vision-save`, `project-start`, or `packet-decide`. `routeNudge` in `main.ts` sends `packet-decide` to the repository lane and wakes the tick for every other value. The socket refuses a stale path that is not an owned socket.
-- **Install maintenance** (`install-maintenance.ts`). When `MC_HOME/state/install-maintenance.json` exists as an owner-only regular file, the resident writes an acknowledgement. The acknowledgement is `ready` only when no repository or environment operation is active. This lets `install.sh` wait for a quiet resident.
+- **Install maintenance** (`install-maintenance.ts`). When `MC_HOME/state/install-maintenance.json` exists as an owner-only regular file, the resident writes an acknowledgement. The acknowledgement is `ready` only when no repository, environment, or operator operation is active. This lets `install.sh` wait for a quiet resident.
 - **Discord** (`discord.ts`). An optional native surface that routes messages through `mc` and drains the outbox. Its header states that it never opens the spine and never interprets natural language.
 
 ## Credentials for runs
@@ -160,7 +160,7 @@ See [Agent connections and access renewal](../operations/agent-connections.md) f
 
 ## Shutdown
 
-On SIGINT or SIGTERM, `shutdown` stops Discord and the credential projector, then the nudge socket and the acceptance socket, then the tick loop. It then waits for the repository, trace, wiki, and environment lanes together, stops the health guard, and exits. The host allows a sent renewal to save its rotated token before a bounded shutdown completes.
+On SIGINT or SIGTERM, `shutdown` stops Discord and the credential projector, then the nudge socket and the acceptance socket, then the tick loop. It then waits for the repository, trace, wiki, environment, and operator lanes together, stops the health guard, and exits. The host allows a sent renewal to save its rotated token before a bounded shutdown completes.
 
 ## Tests
 
@@ -188,3 +188,15 @@ The host command coordinates configuration writes, spine projection, and service
 A replacement first proves its access with an inactive preview connection.
 The host then stops old delivery, projects the new routes, and activates the checked connection.
 See [Discord setup and delivery](../integrations/discord.md) for account checks, expiry, rollback, and delivery retirement.
+
+## Retained operator execution and native traces
+
+`operator-lane.ts` polls due operator requests independently of dispatch.
+It starts recovery before its first poll, permits one execution at a time, and applies a five-minute execution deadline.
+Maintenance prevents new execution. An interrupted execution asks `mc` to retain an uncertain result for inspection.
+The lane never opens the spine and supplies no arbitrary command interface to Collie.
+
+The trace lane publishes masked native OpenCode database copies through `opencode-copy.ts` and `opencode-snapshot.ts`.
+The original session remains available for resume. Collie reads a separate inspection mount.
+Copy status and AgentsView import status remain distinct; a failed refresh preserves the last valid copy.
+See [trace access](../integrations/openwiki-and-viewers.md) for evidence limits and retirement of converted exports.

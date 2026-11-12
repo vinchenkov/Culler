@@ -60,10 +60,10 @@ sources:
     resource: repo://resident/src/environment-lane.ts
   - id: openwiki-source-074a0c31b85dc048be2b3972
     resource: repo://runner/shared/project-cache.ts
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Project setup and environment lifecycle
@@ -402,3 +402,13 @@ The availability flag belongs to the installation and survives later Project del
 The dashboard reveals **Configs → Discord** after the authoritative availability read.
 It preserves the current section and adds no setup requirement to Project work.
 See [Discord setup and delivery](../integrations/discord.md) for existing-installation recognition and the optional connection lifecycle.
+
+## Operator command boundary
+
+The supported environment reads and changes use transaction-level operator authorization in `mc/verbs/environment.go`.
+Collie can request get, save, approve, deny, assist, retry, and cache-clear within its frozen permissions and Project constraints.
+Host execution remains with the resident and command owners.
+The common skill's Project configuration procedure preserves image decisions, revisions, and explicit confirmation.
+
+Project dependency setup runs before the assigned agent steps.
+Git merge preparation retains the candidate and source association through the repository lane; it does not own Project setup execution.

@@ -26,10 +26,10 @@ sources:
     resource: repo://mc/verbs/outbox.go
   - id: openwiki-source-c7f396a36b94cc764d4a5cdb
     resource: repo://resident/src/resident-control.ts
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # The spine: SQLite substrate and schema
@@ -165,3 +165,15 @@ The schema permits retirement only for an undelivered Discord row and prevents a
 
 `mc/verbs/discord_test.go` checks retained availability, route preservation, retirement, and refused acknowledgement.
 See [Discord configuration](../integrations/discord.md) for the host transaction and resident activation sequence.
+
+## Operator request receipts
+
+`operator_requests` retains operator commands across the container and host boundary.
+Each row fixes its caller origin, session and message identity, permission, target, command, input, and release.
+Schema triggers prevent changes to that identity and to a completed result.
+The states are pending, active, complete, and uncertain. Complete requires a result, exit code, and completion time.
+
+`mc/verbs/operator_requests.go` owns submission, authority checks, claims, results, and recovery.
+A repeated identifier must have identical content. Recovery preserves uncertainty instead of repeating an effect.
+The resident executes through `mc`; it never reads this table directly.
+See [operator command access](mc-cli-and-verb-scope.md#supported-operator-commands) for the host boundary.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:c90b1e9b994421a63900454e727e55353708b1b9400def1dc69bde1422ce4d29",
+  "pageVersion": "sha256:1e359ce559bda14ef9a2614786502e42414df61ae47c7660a17189e35d135dc4",
   "claims": [
     {
       "id": "claim_307239e03a82428c8b39bb994d34c56d",
@@ -37,12 +37,12 @@
       "statement": "mc/check.sh runs install, redeploy, source-update-guard, and uninstall contract tests, then the Go suite through test.sh.",
       "evidence": [
         {
-          "resource": "repo://mc/check.sh#L34-L52",
-          "version": "repo-lines-v1:sha256:d2dbaf614ca329d829ec0c7de29e24a62959c2cb510cd9309b2935aa251cebf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhZWYxMTQ4NWM2NTg3ZDZlY2U4Mzc1OWQ5NDZhYWVmMjIyMDFjNzAyZTg5ZTBhZGM3YjI2YjFhOTkwZjQ3MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmNDAxMWQ1N2QwMjhjMzA0Nzc2MjkxOWEyNGQzMDA5ZWZlMWJjZWYwZGUwMjAwNGE5MzhmMjBkMGZhNzkwOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://mc/check.sh",
+          "version": "repo-file-v1:sha256:95789c8381b22830e5d23c3d07691c6ca0d1953960d15ffa538e072f0b981d03"
         },
         {
-          "resource": "repo://mc/test.sh#L6-L16",
-          "version": "repo-lines-v1:sha256:a4cadf30dfc2353e14c362111ec0b3c2257914691111e1645361f6ca0c7609f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MzI5OTg3ODc4YjM1NWU0NmUwMjVmMjI3NzcwOTJhMmU0N2Y2MGY5NWE4M2I5OWM0ZjZjNmZjODdkYzM5YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiNGMwM2E5MmZiMWM3YWI1M2Q0MmZiODUzMDI1ZDcwZWI0ZjUxMmYxOWY2NDAxZGQ5OTY4YTM0OGVlMGJiNmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMTU4OWRhYjc4NDYyNGEzZmY1ZGU4YWQ2OGZiNTg4MzA5NWRmNDdhNDgwYWFjY2I3ZDRiNTAxYTg0NzQ5NjUifQ"
+          "resource": "repo://mc/test.sh",
+          "version": "repo-file-v1:sha256:ac9efa0f2dfa83caad0fd79bc095ac3efa676ba16802da90157f28596eb1c301"
         }
       ]
     },
@@ -173,7 +173,7 @@
       "statement": "On Linux, mc/check.sh runs the filesystem guard tests in ./substrate/ again with -tags= after the full Go test run.",
       "evidence": [
         {
-          "resource": "repo://mc/check.sh#L46-L52",
+          "resource": "repo://mc/check.sh#L47-L53",
           "version": "repo-lines-v1:sha256:b14eead76b3f36af141568bcac99cf990c42a3d69caada9efce9d18f0a140d50:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ5NjYxY2IxYTg3ODgwMTljMTE5MmExMTlhNjU3Y2Y0N2JkM2I3NTk3MTEyYzI4Njg1Y2Q3YTc4OTNiMmNiNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzc2OWQyMzdjZDQyMGI5ZDM4Yjk4MWEwYTRmNjc3MDE5MGE0YTgzZGNhMWZlNTZjNGY1YmExZTJjYmMwZWY3NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQyNjM1ZmNlYWVmMTg5MDg1YTFkMjI3OTJiMzlhNTcwNWEyMDhkMjg3YmY0MGI5ZmU3YWQ4M2VmYTYyNmU5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
@@ -188,7 +188,7 @@
         },
         {
           "resource": "repo://runner/shared/test-environment.ts",
-          "version": "repo-file-v1:sha256:3280f4dc0d6b04d03d36ec81c5038661d85b32cebaec2e79e4353862081b3c65"
+          "version": "repo-file-v1:sha256:605974a6425c51513dba2fc0248853b03130591336dba0e080f0e9f2eb696559"
         }
       ]
     },
@@ -449,7 +449,7 @@
       "statement": "The Verifier compares submitted failures with the base under comparable conditions and treats matching check and cause as an unchanged failure.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L56-L79",
           "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
@@ -459,7 +459,7 @@
       "statement": "An unchanged failure outside the criteria permits task PASS when criteria, new or changed tests, and regression assessment satisfy the contract.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L56-L79",
           "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
@@ -469,18 +469,18 @@
       "statement": "The Verifier must execute later independent checks after an early failure when the container supports them.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L53-L76",
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L56-L79",
           "version": "repo-lines-v1:sha256:006d85a718e9b2691bf741a4dc39de6e383548ea694dd998d41fc322b9917068:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNmE2NTIyZDg3YjIzM2UzMGYzZjdiOTNjZjk3YTc1Njk0MGVlZDI2NWU3ODU1NmNkZjU3Nzg3ZWNlOWE1MWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MWIyNDc1OTgzODlmNjIyZWIwMzA1Y2NhMmQ5YjNlNmQyMTkwOTNhZmRkMTk3MGNjNzViODUwNDJhYzJlNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjdhN2VjODJmNzVmZWQ1MTBlODY2ZDk4ZTRjNmQxNzI0MjI5ZDJjNDhkMDI2YmRmOWU3MDJlZmNiNWJkNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNDhmODkxNmYzMjdkNDQzOTIyODlkYjhmZTdhNjg4YmQxMjFkZGFkYzc4NTQ4OThmNDZhNjU0OTBiMjQwZmMifQ"
         }
       ]
     },
     {
       "id": "claim_b7a8501df0bd4effb418e0b75fda3b56",
-      "statement": "The Packager preserves every UNVERIFIED entry and base comparisons without an additional approval requirement.",
+      "statement": "The Packager groups unverified coverage while preserving material results and base comparisons; detailed evidence retains exact UNVERIFIED entries.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/packager.md#L318-L322",
-          "version": "repo-lines-v1:sha256:f52340414d89556e97cc25d8b47e59e66b721019cf9fc4f33febe6721f145f85:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJlNTdkY2Y1ODkxNDE5MzJjZDczNWQ4OWUwMWQ0ZDIwZjM2ZGFiNDkzM2E2NDAzNmRmZjA5YjJhYWMyM2VlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjczZDg5NDZhYjFhNjJkYmRjMzdhMGUxZGM5ZjAxNjQ0ZmQ5N2M3MWVmMjU1YmVkNzU5N2M0OTJjMWU3M2I5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzkxOGExYmY2MTk5OWZkNjc4Y2FiNWQwYjdlYWEzMmRkOTA3MjlmYzZjNzRkYWRiNzMxNDVhYmRmN2Q1NDA5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDIwZmMzNGVhMWUyZDhmYzExZWU3NDliZjdlYzdiZDY0ZTFhYzkyNmUwMWZhMmNkZjk5MDUwMzBiOTEyMmNhZiJ9"
+          "resource": "repo://mc/verbs/directives/packager.md",
+          "version": "repo-file-v1:sha256:5110fb7319168eb7839b929cd36be44d19e9e459075f05f796f996ba10d527a1"
         }
       ]
     },
@@ -643,8 +643,8 @@
       "statement": "The dashboard model configuration smoke checks profile Edit actions in the role assignment dialog.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts#L90-L169",
-          "version": "repo-lines-v1:sha256:4f6bf7e32e51534306515e5c011f67ee054056c032b10e097afec39ad501d51a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljODAxN2MwOTU3YjY1YjJkMDA4Yzg3NjAyNmUyNDA4ODc1NjYyNzRkODJiOWUyZjU4NTc4NWQyMzdmMzk2MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlN2E0Y2ZlODdkMjc3ZjYwZWRjNTgyOTVmMmMyNjQ1OTg2MGZmNmRlZjkxYTcxOWRlNzY0NWZhYTc2NDNlYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5ZmZhMzkxZmE1NTNkZWEzNTRiYWUyZTAyNTgyNjU3ZDM4OWM2NmM2MDVjY2Y0MWUxNGYzODFlMjdmZjU0ZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwYTZmMjU0ZWMzMjYzYTRiMzA3NjQ5NzkyYTM2NjFkYWJiZjY4NmRmN2VlNGZkNWE5ZTEwNWI5M2Q1ZDJjMjQifQ"
+          "resource": "repo://dashboard/smoke/model-configuration.smoke.test.ts",
+          "version": "repo-file-v1:sha256:e8053fada1ac6c3997aee685938f43e6032019ed5b13d647e3f510e804c7159f"
         }
       ]
     },
@@ -715,7 +715,7 @@
       "statement": "The dashboard smoke harness rejects a scratch Discord socket path above 103 bytes before it creates the home.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/harness.ts#L244-L254",
+          "resource": "repo://dashboard/smoke/harness.ts#L246-L256",
           "version": "repo-lines-v1:sha256:50d4adcc57a3d9b6d9e356ede301225acf5907df87b486d792305963280a7af3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ZDJmNjFhMWQ3NDRlZDYxYmIwNGJhZjJkZTQyMjg2NGU1NDhkZDMwOGQ0OTRhNmI3ZmU2NWIzZTZhNWI3NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MDU3MzU0M2IxNTdmMGNhNTk3YjM4NmVmYzkzZGNlZDNkZjIyM2Y1Y2EwMDYwYjEyMzg0MWMyMTJlNjkzOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZGFjNTA3YzNlODViZWE3YTlkMWYyODg4OTE1YzYzZDc0NmE5MTQ3OGI0ZjEzZmI2NjBjYmJmM2NmMDMwMDIifQ"
         }
       ]
@@ -755,24 +755,12 @@
       "statement": "OpenCode fixture tests check adapter configuration, sessions, token removal, catalog model lists, archive integrity, download retry, and native model-test evidence.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/opencode_test.go#L182-L217",
-          "version": "repo-lines-v1:sha256:489ccf14d6a51e2f83ec17f1b4655bf0690cd42fec46d297e3a51a35e7daa646:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyYzFjMDAyMTIzMGM4ZDYyMDYyNzk1NmI1YjI2ZjFjOTJjYzA1Mjc0MGNkNGEwNTI3NmUzNjE4MDE0NGRlOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMTliNjFjZmExOGJiMDI0YTJkM2M4ZmYyOTI3Njg2ODAwZWNjMDUzMzg4NDAwNzViYTJhZjFjYjNmZWQ3ZmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExNDFmYzM3OTg2Y2UzMDJhNjZjMDczZWUyZjk0ZjIwMmUxYTZhNjAwMTdmOWFkNmQyY2VmZDViYjU2NTA2YTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiNmZmNzFmNDM5YTI2YmI0ZjhiZDZmY2E0MDEwZjAyMDVmODVmMGYzMTRkNTE2Yjc1Nzk5MjAzNjY4NjM4MGMifQ"
+          "resource": "repo://mc/deployment/opencode_test.go",
+          "version": "repo-file-v1:sha256:70771cad0d9d2441a34a612ea65e3b9c4e6fa582c22e6b313224c138dde534e1"
         },
         {
-          "resource": "repo://mc/deployment/opencode_test.go#L245-L278",
-          "version": "repo-lines-v1:sha256:825fb7be483f0672cf52666c0aa6929646eb34931f3aae023c1c8f945f8dc61f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyN2IwMzRkZmFlZjMzMmE0ZWRiZDdkYzNhYjMyZWYyYjM2NzExZmYxOGFjNzg2YTdkMTE1YTlhZTdkM2ExOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2ODA2ZjE1NWM1YWMxYWUyNzIyY2EwNmYyYWM5Y2FkY2I4ODFiOTEyM2NiNjI0YTNjMTA0NzViNDQ0OWRjMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkMDU5NGEzYzZiNGZlZDQ4ODJkMjc4MzUwZWE1YmM5ZDFiYzRhNjhjYWU2MTA3ZDM3NzgxYjEzYmQ3ZWU0OTgifQ"
-        },
-        {
-          "resource": "repo://mc/deployment/opencode_test.go#L71-L136",
-          "version": "repo-lines-v1:sha256:c2c2217ecf62e6a8f9f373e1a25e2d5c632dba551af04f3d7e30145e77accef6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NjgzMzdiYjcxYTE4MGY3MjgwYzVlZjY4MTQzM2Y4ZjUxYmQ0NmUwMWU2ZWM1ZThmYzI5ZjE2NDlmZTdkMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhODgzZWY3NWE2NDU2OTJhMTkzYTljMWZhNWQ1NGZhMGMxMWRlNjEyMGUxZDZiMzk3NDUxODM2OGIzMjM5ZjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllOWE5NmZkNTk3YmE3YzY5OTVkNzFmMTBlMzUzMGJhNDM5ZDZjN2Y2MjI1OWY2NmViNTMzYjhkMzhiZmFlN2MifQ"
-        },
-        {
-          "resource": "repo://runner/agent-runner/opencode.test.ts#L142-L174",
-          "version": "repo-lines-v1:sha256:5c5692607d389ba14de9f0d75db6f9a3b4203f5f36d93acf962dc58fbc3a09e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1N2FiNDg1YjVlNzc4ZjllZjEwYWFmNWFmODMwZmQzMWE1MGVlNTAwMmRjZDU1N2I4ZGJmZjZhMTUyNGNlOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhZjg1NzMzNmNmODIxNzA4Y2Q4YmQ1MzA3NWNmN2M5MWY2NTcwNjYzOWVmNmZiZTUxNTZjYTdlYjI2NzA4NzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMWVhMTVhMGY3YjFkNzc0MWMwOTJkZTgwMmQzOWZkYTQ0MzRlY2YwNWY5NDM1OGM2ZjM2OWNhOTExNmUyMmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1Nzc5ZWRkYzEyMDBiMDlhMDBhMDY0YTNhNDU0MzYyNzYxYzVmMDFhNDkyMTcyNmZmZTM3NjlmOWUxOGE3NjcifQ"
-        },
-        {
-          "resource": "repo://runner/agent-runner/opencode.test.ts#L16-L44",
-          "version": "repo-lines-v1:sha256:b71dc26bc87a7b70e2376a66e2121ebbaaaa0b03007018427ccb2bce896b84db:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlOTk4ZWVmMDBiMGU5YmJlMWFkNWY2ZTBhNzMwZjI2Y2MyNzY0YWMyNGExYzM1NzhjNTg2NjhlMTFlYTY4OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxOGQzZDBlMjQ3YTYwNWJiZmEzYmVkZGFlMTIyYmQwYzk0NWI4MDI4ZGQ1Mzg4Yzk1OTllNjI4MzhhODUyYmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3ZjMzNjI2ODQzY2I4OWU1YWI1ZjRmNWNlNGY2NzliNTk1OTM3M2I4NjhjYTRmYzE3ZWFmMTNmNTBmMWViNjMifQ"
+          "resource": "repo://runner/agent-runner/opencode.test.ts",
+          "version": "repo-file-v1:sha256:b4e79e3756c1bcd228a7fc742bd1b771dbb22424f9a93e30473b643eef159a86"
         }
       ]
     },
@@ -851,7 +839,7 @@
       "statement": "The unavailable-host-test exception excludes new or changed tests, and unavailable criterion checks or changed tests use outcomes selected by cause.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L78-L106",
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L81-L109",
           "version": "repo-lines-v1:sha256:489b9de13d5121cfcb11f22707ebffc85592a296c56dafa38def2bcf93e76a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZDc5Yjc0NzdiN2NkM2Y5OThmOTgzNmNlZTJkNGIzZmNkYzhjZjY1NWYzZTkxYTFlYmYyOWFmMGIxYmQ5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
         }
       ]
@@ -881,18 +869,18 @@
       "statement": "Platform input tests check unavailable-check outcomes, independent work, failed-read terminals, and preservation of unverified evidence.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/platform_input_test.go#L10-L108",
-          "version": "repo-lines-v1:sha256:54568b40dda927408277b7bc6d06854dba99bcd77582edf7459695ed3e0d1f1c:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNGYzN2UyZWQ3YTc5N2IwMzBlNDBkZWE3MGFiNjgyNTdjNjhjNWQ5Yzg5Y2IzOTU3NmYzMDEwZTFiZWUxNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://mc/verbs/platform_input_test.go",
+          "version": "repo-file-v1:sha256:5c76b921d9c64cb679d72e21f321b04b89ee0601dbfd9b9d25dca56a824ad99c"
         }
       ]
     },
     {
       "id": "claim_ce24c1d2e88a4b4199439b9d14b217f5",
-      "statement": "The browser smoke contract checks explicit Chromium selection in the Verifier browser skill and Packager directive.",
+      "statement": "The browser smoke contract checks explicit Chromium selection in the Verifier and Packager browser skills.",
       "evidence": [
         {
-          "resource": "repo://runner/image/browser-smoke.test.sh#L66-L73",
-          "version": "repo-lines-v1:sha256:42c020476a2f11b1365a88f24c9d62a130dd2c7d45caf08d1724a9d46f8a1b34:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNlZWY0OWQxNTIzNjFkNWI0Mjc5MDJjZDViNzBjMWVmODU5MWEyYzY5ZmUzNTNiYzEwMDdmZmE3MzMzMGRmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmNkNWRlNTIwNWIyMDdkNzgzMzlkNGNkNmI3MDQxMGQwYzdiMzM3ZDVkOGEyZWY3OTFhZDMwNTJkMDhjN2MzYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWMxOTlhNThkZGQ2NGViNmQxOGQ3NGI4OTRmNmQzYmFjNGFkYTQ1NzIyZWQ4MjFkMzVjMmU3Y2U0MzQ3NjQxMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjM2ZmQzNzNhZjVkYTkwNWI2Y2FkZDJlNzQxNzQzN2ExY2QzODczY2Q3ZmNlZDA5NDAwOWI2NDRiNWVlYTM2NiJ9"
+          "resource": "repo://runner/image/browser-smoke.test.sh",
+          "version": "repo-file-v1:sha256:6dbffd3601c7802f7c8c59efb85b353794f58b10bffceddb042bb848bd849c49"
         }
       ]
     },
@@ -1013,8 +1001,8 @@
       "statement": "A scratch-spine test checks that a recorded setup test verifies both connection access and model access.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/systemstatus_setup_test.go#L16-L95",
-          "version": "repo-lines-v1:sha256:c1bde5f17ad98cef218a1ded25e4dc3858fbafc260fad63eec0954e660368cb0:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4Nzg5NzVkYzI0NDdhYzY1M2QyMjY4OGU2ZDRiYTdiNWY4NWM2NmY5Yjg2OGMwZTNiODg0NDAyNmRhMzEyOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkNmIwOTE5NGEyYmM5ZDc1YTNmMzRjYWM2N2EzMjE0MjQzZjljYzcxYWZjMGFkZjViZjdjZTk4ZGUxM2M5ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://mc/cmd/mc/systemstatus_setup_test.go",
+          "version": "repo-file-v1:sha256:130e12d06c44153bf383dd6dcb6e699e0912f66b8d13cce0654a2eb9a231d754"
         }
       ]
     },
@@ -1037,12 +1025,12 @@
       "statement": "Setup screen tests exercise provider search and connection failures at 80 and 40 columns with and without color.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_opencode_screen_prod_test.go#L25-L40",
-          "version": "repo-lines-v1:sha256:58242ad7f727ae8ef1e6a28fd862ef2a8fc68af859b72fd90bd54449648ea734:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OTQ2YjAwZDA4OTQxYTNhMTZjNjk5OGNkZDUzNmViYTNjYjMyZWY5MjkzMTg0ZGRkMTg2YjMwZGMzNDdkOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0YWMzY2I0NWNhNDNhNTdlMzU3YTFmMzcxMGQ3OGU2YzUxNzA1YzJjZWE1YTFiZWEwNTk2ZDIzYTVhYWUxYTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNDY2NDI0ZmUzZjY1NWUwNDUyMmFjZWMxMzEzZTA1ZTFjMjAyYmYwYTg5ZjUzZjAzZTI0MGM5ODAyMDdhODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiYTNhZTk5YTMwYjgzZjMwMDdlZThjNWY0MjUyODhjNGEwOGM3MGY5ZjUxMWI3NDQwYWM1NDU5YWJmYzkxOGMifQ"
+          "resource": "repo://mc/cmd/mc/setup_opencode_screen_prod_test.go",
+          "version": "repo-file-v1:sha256:278e95dd8c7a4cd0d4f09cb69c801f3a13793e222ca5235858746e586e5d943c"
         },
         {
-          "resource": "repo://mc/cmd/mc/setup_untested_connections_screen_prod_test.go#L21-L40",
-          "version": "repo-lines-v1:sha256:4f7471045c8b740d2786274e57a17a291ee35c9071a55877e91abbadc32021d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZTIzMWE2OTBjZDE5OTZiOGIyM2RiNDdjNWVhN2E4YzVkZjFkZDE2ZGFmMzY2ODUwODhhNjFkNjI2MWRiZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlYmNjYjY3M2UwMjQwM2EwOGMwMjVjNjI4OGQ2NDVlNGY4M2M4MTgyZWJkMGNlNTM0M2E2MDE4NmNhZDRiNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkODA2ZWQ2NTFhZmUxMTAxYTVlZDY1OWQzODk3M2E0YTY0NjY1MzllNTIxODA3MjMyYzIxYjRmZDg1NjMwNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyYmY4NmM5MzFmMGZjYjA3YmJhNDNmNTdkZDM1MWFhOTY2ZGQzZDRmMGQ5MGNiNGM0ZmFkNWU3NDg2Mjk0NDUifQ"
+          "resource": "repo://mc/cmd/mc/setup_untested_connections_screen_prod_test.go",
+          "version": "repo-file-v1:sha256:4fff36250ae88f832db2e3696860097ef32e100a8324ff90fef352138b12d23f"
         }
       ]
     },
@@ -1085,12 +1073,8 @@
       "statement": "The dependency test excludes Arbiter role-specific assertions; the customization test checks the Arbiter contract boundary and procedure pointer text.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives_test.go#L491-L511",
-          "version": "repo-lines-v1:sha256:b36d5e80a55b6af5281328bc2e381c070ebe3e3b2ecd80231ce5c8af5c4f6c86:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3YmI2ODEwOTdjZjczYTY4NGQ5Y2U5OThiZDIyNTVlZWVmODEwOGYyMjJhMTYyNmEzY2NjMzFkMTQ3MjcyNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjg4M2Q4MTUyYzY1Yjc3OTM3YTNhNmUwMmZjMmU0YzU0MWM4NDk5Mzc1ZDYxMzNjZDkwZTY2ZmRkNTg2M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3Njg1NDc0YzhkNjc3ODUyZWM2MTU3ZDBiY2U5MzNhMzVmM2M0ZTgxNTM5ZTE4OThiN2E2ODk5ZWUyYTcyMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyN2VkZmE4ZDcyN2UwNzlkNTg1NTRkOTZhZDBlZTRjMTBiNTYwNmZlNmRiMTk4ZWUxMjllZmYxNTU2ODdjMmYifQ"
-        },
-        {
-          "resource": "repo://mc/verbs/directives_test.go#L792-L797",
-          "version": "repo-lines-v1:sha256:a983feddad1a8bec440d927545b3dd0d7c9f88e19bb5793f219fd60e34619f8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTg5Njg3YTgxZjdhYTBmZGIyMzBhZjk3MzYxM2RjN2EwZGI0ZTk1YzExMjBlZmVhNDZjMzU0MmZkODNiMTkxMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzdiYjY4MTA5N2NmNzNhNjg0ZDljZTk5OGJkMjI1NWVlZWY4MTA4ZjIyMmExNjI2YTNjY2MzMWQxNDcyNzI3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODY1MzAwZTkyZGIwYmQzNWYyZmZlZWJjZTc2MDczYzk0NmUzMmE1NGY0OGY2MjJmNTkyMjg2YjkzNTBiOTA1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQyY2M5N2E5MDBkMDk4OTEyOTg1NWE5OWJiZDJmYmNhNTY2MDI1YzE1OGQ1YmYzNmVmZWFjMTk1ZDQ0OTRjYiJ9"
+          "resource": "repo://mc/verbs/directives_test.go",
+          "version": "repo-file-v1:sha256:fa5da524e9c0914ac015524fdbb6be13ca86785558380bdb44c5b0161176522d"
         }
       ]
     },
@@ -1099,8 +1083,8 @@
       "statement": "The smoke harness selects themes through the dashboard button and supplies a stored dark selection for MC_SMOKE_COLOR_SCHEME=dark.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/harness.ts#L315-L340",
-          "version": "repo-lines-v1:sha256:28a7abcc5ba3f8e62306d9a290a8e72dfce71faed23628cb6069824da3276ee0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4MzEyNWQ1YWY0Mjg3YWFlYTM1ZDM4NDFmZmJkOTgyODE5NWFlZDc0ODBhYmQyNDhlNDYzNWRiNDJhMWMyODAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMGM1OGE5MTcwNWFhODYzZTdmZDIzOTJkZGE0ZGNhYzM0YjQwODQ0ZjQ2NzgxZGNjOWI2M2VlYTM3ZmRjMmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3ZmExMzIzM2IwN2NhY2VhM2MyZTg1ZjFjNTk2N2ZhOGUxNDJlNjNmYTE5ZjRmM2MwMGMxMTJlY2IzOTI0OTgifQ"
+          "resource": "repo://dashboard/smoke/harness.ts",
+          "version": "repo-file-v1:sha256:ff16e3e231b916f79a7ba69863244ac2c6d46db9096a3e7e09dd94c53848928a"
         }
       ]
     },
@@ -1119,8 +1103,8 @@
       "statement": "The additional-account tests check automatic names, reuse of an untested name, and recovery from a name collision.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/setup_connection_choices_prod_test.go#L222-L280",
-          "version": "repo-lines-v1:sha256:3c4c9a2e44610dbc44d7d70146e7dc6e161dd9c0bfce65b2ce869fc16bb10d5e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkMjhlZDllNDQzN2VmZDU0ZjZlNGFmOGUwZWU3ZDVlZTRhMjMyZWU0ZDljMTllNTEwYzZkYTkwNjgxYWVmMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVkNGJkMzNhYmIyMTU0YTNiOTNkMWMyNWQzNjg5NjBmYWU5OWRmMDY3NzU4NmE1ZGViNjE4OTAwZGNjZGZlN2MifQ"
+          "resource": "repo://mc/cmd/mc/setup_connection_choices_prod_test.go",
+          "version": "repo-file-v1:sha256:0d428589a4a605ca45f694eccaaba55474cd209af7745ce86bd059cbe2172482"
         }
       ]
     },
@@ -1167,7 +1151,7 @@
       "statement": "The Strategist command test rejects a proposal priority and then accepts proposals at priority 2.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/cli_test.go#L2444-L2470",
+          "resource": "repo://mc/cmd/mc/cli_test.go#L2497-L2523",
           "version": "repo-lines-v1:sha256:239c9844c8e831caf33c6cf2b6d80b90d248822c26ec54765c82f9b747fcbfcf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiODBhZWUyMWQxZGI3YTQ3MWJmNWY4MDA1NDA2OThhYjVmYzA3ZGY3OTUxODg5YzY4ZTk3MTZiYzNmOTA5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZGMyZjQ5MWY0YWNlMzE2MWNkNmMzYjkxYmRhZDU2MzY3YjcwN2VhZDk0ZWZmYjNkMGU0Y2ZjMGJkOWYxN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5YTZmNDczYzk4MTQ1NTlkOGNjYjdhOTg2NjAzMjYyMjI1YjZlNmE0M2YwY2M3NTE4N2QzYWVhOTYxNDkyNzkifQ"
         }
       ]
@@ -1177,7 +1161,7 @@
       "statement": "The dispatch workflow test starts a higher-priority task before a merge repair.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/dispatchcorrection_test.go#L238-L250",
+          "resource": "repo://mc/verbs/dispatchcorrection_test.go#L239-L251",
           "version": "repo-lines-v1:sha256:10522dae3437a573b80786123d50963eb4335d5d32b795e37ce0445267fe121c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2NmE4NjcwNGVmMTQ5NzUzOGQ0ZWFmMjViYTdkMzJiMTdjOGU0ZTIxYjQ5OWUxYmEyMmNjNmQwNDc4OGVjYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1NzRhNjUzODk2NDc2NjAxNjgwNmNkMGM5OGU3NDZiOWE5NzM0NjA3Y2FjZGRjMmJmNzc1ZGVjNzNmNDc3ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3MTAwM2QxNzI4ZmQ3MzljNDdmODViMzVmZjY3YTJhMDUyNDNlYzJmNzA5NjY4ZWU3ODkwNTA4ODgwNmUwNmYifQ"
         }
       ]
@@ -1201,8 +1185,8 @@
       "statement": "The direct-page latency smoke visits about:blank before it installs the next page's request counter.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/latency.smoke.test.ts#L98-L126",
-          "version": "repo-lines-v1:sha256:cb4d44422a170f8e684c93451e2357a0910dc08aae37a3833adfb80417f01e6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MzcxNGJlOTlkYTk5OWNjYjM3OWIwZDhkZDA2NjlhYTA5ODkzM2RkZDRlNzA2ZTA3Y2E0ZjBjNWFjNzljYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMmI1NGFkNzRlYTgxZDhkYjk3MTIzMGNiYWUxYTVkNTVmZDE4NDY0ODczYjU3MzZlYzc0M2I0NTdlOTQ2NTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4ZmYzYjk1ZTA0Y2VjNWM0YTZmYjFjM2U1YzlhZjQ4M2JiYmJhOTQzYTk1NTM2NTExMDUzNjJhYTgwMDU5MDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNmI0ZGNjNGMwNmUzNzZhMWQ2ZTVjMDNkYzNlZGI2OWQ1NmZlMGQ1YmMzY2U4ODE3MTJlZmY0MzI1MWRlMzQifQ"
+          "resource": "repo://dashboard/smoke/latency.smoke.test.ts",
+          "version": "repo-file-v1:sha256:721d137f97c7ceeee0458d31e8245c01625f4d2ef5a18430c9b2aeac140a3f2b"
         }
       ]
     },
@@ -1239,6 +1223,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T19:18:31.051Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

@@ -46,6 +46,8 @@ sources:
     resource: repo://mc/cmd/mc/uninstall_prod.go
   - id: openwiki-source-02886ae4c9efa40e167cf53b
     resource: repo://mc/config/config.go
+  - id: openwiki-source-7c0475e3159de8f777665c70
+    resource: repo://mc/deployment/agent_skill.go
   - id: openwiki-source-0c1bf38213ed3591fc2a6f4d
     resource: repo://mc/deployment/cli_install.go
   - id: openwiki-source-78f1d76d5a5b9577a60c9016
@@ -92,10 +94,10 @@ sources:
     resource: repo://scripts/install-source.sh
   - id: openwiki-source-94e7bca26bc3525581ff6cdf
     resource: repo://VERSION
-generated: { by: "culler-scribe", at: "2026-11-10T19:18:31.051Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:22:22.352Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T19:18:31.051Z
+    at: 2026-11-12T00:22:22.352Z
 ---
 
 # Installation, deployment, and release
@@ -197,7 +199,7 @@ A failure stops home preparation before activation and records the failed stage 
 The source installer can resume an incomplete installation after repair.
 The published installer retains its first-connection download and its separate update recovery procedure.
 
-[OpenCode for source installations](../../specs/source-opencode-installation.md) defines these source and published boundaries.
+`mc/deployment/opencode_source.go` and `INSTALL.md` define these source and published boundaries.
 See [source package preparation and reuse](image-delivery.md#source-package-preparation-and-reuse) for package identity, verification, and repair.
 
 ### redeploy.sh and redeploy-dashboard.sh
@@ -326,7 +328,7 @@ Terminal setup first offers providers with a sign-in, then **Use another provide
 Each subscription provider offers sign-in before its API key method.
 Setup assigns connection and additional account names automatically.
 An additional subscription account receives an available harness name with a numeric suffix.
-The confirmation names that account and explains that the existing account remains.
+Selecting sign-in starts authorization for that account directly.
 `mc/cmd/mc/setup_agents_prod.go` owns the provider and access choices.
 `mc/cmd/mc/setup_connection_choices_prod.go` owns additional account names and access transitions.
 
@@ -423,3 +425,18 @@ The feature also requires host command and spine schema changes.
 A dashboard-only redeploy cannot supply those changes; the full deployment procedure applies.
 The normal schema compatibility check still controls database preservation or a separately confirmed reset.
 See [Discord configuration](../integrations/discord.md) for connection recovery and the limits of the retained acceptance report.
+
+## External agent installation
+
+The host release installs the common `culler` skill at `MC_HOME/release/host/skills/culler/`.
+`mc/deployment/agent_skill.go` resolves its authoritative source files and writes installation-specific executable, release, trace-reader, and scratch paths.
+The installed entry point selects the deployment without a source checkout.
+The host and runner manifests include the complete skill references and native trace reader.
+
+Terminal setup offers a skill integration at `~/.claude/skills/culler`.
+`agent_skill_integration.go` records owned links, preserves unrelated files, and keeps the canonical installed skill available after a conflict.
+Uninstall removes only owned integration links. Operator skills remain separate under `MC_HOME/skills/`.
+
+Selecting subscription sign-in starts authorization and its connection test directly.
+API key and saved-connection model tests retain their expenditure confirmation.
+`setup_agents_prod.go` owns this distinction; the setup screen tests cover the resulting flow.

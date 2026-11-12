@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0349309e28f5941a8f570e98dfba6c636565a8bbdc069a7a75928211b56a00d2",
+  "pageVersion": "sha256:20792b39deb2b1efed95c44336c0d2c4b3d821696f027cd6ad7490737890a19a",
   "claims": [
     {
       "id": "claim_72140ad5595540da9dadcbf90a41c767",
@@ -41,7 +41,7 @@
       "statement": "Pipeline containers use the configured runtime volume; the source bind mount is a fallback without that volume.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1492-L1512",
+          "resource": "repo://resident/src/effects.ts#L1494-L1514",
           "version": "repo-lines-v1:sha256:53187dd91ba542e869ba35ad9ed5b291b834ddb1f0644d506c82be1756f7d5e2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNzI2OTM1MDY2NmJhZWUxYzgzZmNmNzgzOTA5M2UyYWYwYzQ0NWJkMzU4MTQzOWQ3MTI5MTBmOTcxZmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZTIyNjVlOTgwNTE0NjI4MDU1MjM5YWZjZjNkNzBlNjgzNDgwYzdjNGU0YTZjMzI1M2I5MmFhMDZmYTM4NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MWYzZjQ0OTUzZGYwYmJkNjg1YTE2ZjVlZjIwMGNmNGNlZDhhZWIyMWYwYmM4ODgzMWE1NGYwZWQxZGQ3ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0YTNjZTRiMTNlOTJmNzVjZjUxOGIyOTY5Y2VjMDc4NjIwZDk4ZGQxYjIwOGFlZGJmNWJiNDhjYzA1NjYyMTEifQ"
         }
       ]
@@ -102,11 +102,11 @@
     },
     {
       "id": "claim_ba819ec7a5a34951acbe0ffd9c4c20ac",
-      "statement": "Skill installation writes to $HOME/.agents/skills and never throws; it logs and skips on failure.",
+      "statement": "Skill installation stages the main file and validated reference files, and returns false when a required skill or complete installation is unavailable.",
       "evidence": [
         {
-          "resource": "repo://runner/agent-runner/skills.ts#L99-L150",
-          "version": "repo-lines-v1:sha256:8d08f5a7fc1bbe9d70ce27359635c01c5e69b9fd8ebbf1493c41b80551fb79ce:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNThkNjIzNzgwMGE5ZDdmYTgyN2Y1ZTlmZTYzMTRkOGZjOWVjOTJjMjM4N2JkNGMwM2YxN2M0NjFhYTkyZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://runner/agent-runner/skills.ts",
+          "version": "repo-file-v1:sha256:f689957a20f95552ced32dcf26e042aeb12d0237658f689af5df39b67de7b331"
         }
       ]
     },
@@ -126,7 +126,7 @@
       "evidence": [
         {
           "resource": "repo://mc/deployment/runner_release.go",
-          "version": "repo-file-v1:sha256:6ea3f9fc1cc323dbda3c3656e17a5cd8e36b84cb1659ce51767000d3a17ca8ef"
+          "version": "repo-file-v1:sha256:f241fe3bb3ba8822c3cf32a65f5bffbbdcf6c0717cbb5e4d65fbb449aec0b043"
         }
       ]
     },
@@ -173,7 +173,7 @@
       "statement": "Setup and pipeline containers share a policy that includes Docker init to reap child processes.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1492-L1502",
+          "resource": "repo://resident/src/effects.ts#L1494-L1504",
           "version": "repo-lines-v1:sha256:1ae0d57e1ffa566d0966879690d6ce2a3094d3bc2ce56e3fc9a411ac5e41cd35:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNzI2OTM1MDY2NmJhZWUxYzgzZmNmNzgzOTA5M2UyYWYwYzQ0NWJkMzU4MTQzOWQ3MTI5MTBmOTcxZmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MmI3ZWU4ZGJkNDA5OTFjZjYyYTE0N2I5ZDVhZmRjM2E0ZGNjMDc2ZDc1ZTAzODcyMzkxZjJhMTQ4NjFjMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MWYzZjQ0OTUzZGYwYmJkNjg1YTE2ZjVlZjIwMGNmNGNlZDhhZWIyMWYwYmM4ODgzMWE1NGYwZWQxZGQ3ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM0ZjIwMDNlYzg3ODNkOTY3YTVhNDExMDRmNWIzZWE1YThmNzk1OTI2NGQyOTRhMzdlOTllODdhN2FlMDI2MmYifQ"
         },
         {
@@ -213,26 +213,6 @@
       ]
     },
     {
-      "id": "claim_e5e105557a71466ab7ec90b34911147c",
-      "statement": "The Collie turn prompt includes diagnostic context and requires explicit operator confirmation for a proposed state change.",
-      "evidence": [
-        {
-          "resource": "repo://runner/collie-runner/main.ts#L372-L385",
-          "version": "repo-lines-v1:sha256:ba0c3b0f070f5b3394ce8da2b75aa3b714461fbf441141a067b17189b89d774d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5OTAxMWJmYWNhMzkyNTQ1YWJmMmExOTljMzFlZDljZWYyZjM4MTk2NTQ2MDFjOTUyYTNlNDM1ODAzYTEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjhlYzFiZDFkZmE3YTFmZDM0MjE2NDU4MjMwZDdkNTBhODk3MTdkNjBlNjNhMGI2YjlmZDE4YmY3NzlhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EifQ"
-        }
-      ]
-    },
-    {
-      "id": "claim_d21702d865d14eb1a45c1dd0109cf737",
-      "statement": "The Collie turn prompt assigns Discord setup and account approval to Configs → Discord.",
-      "evidence": [
-        {
-          "resource": "repo://runner/collie-runner/main.ts#L372-L385",
-          "version": "repo-lines-v1:sha256:ba0c3b0f070f5b3394ce8da2b75aa3b714461fbf441141a067b17189b89d774d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5OTAxMWJmYWNhMzkyNTQ1YWJmMmExOTljMzFlZDljZWYyZjM4MTk2NTQ2MDFjOTUyYTNlNDM1ODAzYTEzMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhNjhlYzFiZDFkZmE3YTFmZDM0MjE2NDU4MjMwZDdkNTBhODk3MTdkNjBlNjNhMGI2YjlmZDE4YmY3NzlhNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkZjdkODJkOTA5ZmFjNTExZWRkYzFlOWJmNzNjMDAyOGFiMzllNWI1Mzc4MWJkMWVlZTIwYzMxM2VkZTdhY2EifQ"
-        }
-      ]
-    },
-    {
       "id": "claim_bc299ae85731409cb6f931d437fbf57b",
       "statement": "The runner rejects a nonempty runtime base URL and a channel that mismatches its supported harness family.",
       "evidence": [
@@ -248,17 +228,7 @@
       "evidence": [
         {
           "resource": "repo://resident/src/provider-proxy.ts",
-          "version": "repo-file-v1:sha256:3ec3290f156ecab924db8e928b85e6f7b035f7b571a86332777edc47e1e5c15e"
-        }
-      ]
-    },
-    {
-      "id": "claim_af67d294bcdc4553bbd4be1e306b8e0d",
-      "statement": "The Collie turn prompt says a Discord channel message starts a session in a thread and dashboard replies reach that thread.",
-      "evidence": [
-        {
-          "resource": "repo://runner/collie-runner/main.ts#L379-L379",
-          "version": "repo-lines-v1:sha256:2bfc959316563075e52a6047428992169ea873282803a79604d144493f39d59a:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJmYzk1OTMxNjU2MzA3NWU1MmE2MDQ3NDI4OTkyMTY5ZWE4NzMyODI4MDNhNzk2MDRkMTQ0NDkzZjM5ZDU5YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJmYzk1OTMxNjU2MzA3NWU1MmE2MDQ3NDI4OTkyMTY5ZWE4NzMyODI4MDNhNzk2MDRkMTQ0NDkzZjM5ZDU5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWYwNzE2ZjZiMGQ1OGUxZTBmZDcyNjg3NTNjMmU4NmU4ZmQxYTliM2VkOGE2ODkyNzNjZDhmNDE2ZDJiOTQzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGZhOTkyMzBmYWZhODk0ZmYxOTZlOTFiOTZmZjQ2YWRmNDI2Zjk2MmQ5ZmM3YWVjOWQ0YTAxYThiY2E4ZjZhZCJ9"
+          "version": "repo-file-v1:sha256:277a6e711e6df9be70bc5e4abb55af45621ac0e74cc090a5bd6c824b9702e2f2"
         }
       ]
     },
@@ -267,20 +237,20 @@
       "statement": "The runner passes configured effort to its adapter, and each adapter checks its supported levels.",
       "evidence": [
         {
-          "resource": "repo://runner/agent-runner/adapters/claude.ts#L375-L382",
-          "version": "repo-lines-v1:sha256:9759c38ac93f750d7c3aa285cf8eb6a4e832ec789e90a899b411fad49636bc08:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM5ODdkNzcxODc5MGI0ZTk1NWMwYzM5NjUyZWE5MjdiN2I1ZDEyNWU2ZTZkMzljMWY0YjllYmM3ZTkyM2I3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzM4ZTJlZDUwNDFjYzlhOTY5YTRlMDUzNjQzM2IwY2YwMTM2YWE4MWJlYTIxMmY0ZTM2MGM5Y2FiZTdlNzAzZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmU4MmUzMThiYWQwYzI3YTJjYjNlMDFhYmQzODdjNjJiMThiYWZmMmViNzQ3Y2ZmZTM2MjNhYjIwNmYxNDRkMCJ9"
+          "resource": "repo://runner/agent-runner/adapters/claude.ts",
+          "version": "repo-file-v1:sha256:42ccf95b92abc7d98edb3baac0bdf3d401f853517c90fb1a162be811c2ee7b3e"
         },
         {
-          "resource": "repo://runner/agent-runner/adapters/codex.ts#L360-L365",
-          "version": "repo-lines-v1:sha256:a28dae3861ce21189b44a8ad2fefc6a50c8113c9f519799bce3ab1ecce1b2b58:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM5ODdkNzcxODc5MGI0ZTk1NWMwYzM5NjUyZWE5MjdiN2I1ZDEyNWU2ZTZkMzljMWY0YjllYmM3ZTkyM2I3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTI4OGVkMTAxNTZiN2YxYWNkZjkzMzliYTczM2ZmMTNlNmRlNWE2YjhkODUwZDk3Mjk1NGU3YWE0YjY3ZjQxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjg2OTk4MDE5YmQyZGY5ZDc5MGE4MmE1ZjQ1YjhmNmM1YTcxYzdmZDI1ZjIzZWQwOWM0OWI1NjQxOWI0ZTU1OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2IyMDU5MTgwZmEwMmE4MzE4YjkwYjNkNjM3ZjM3ZWY4NTc3Zjc3MWVhYTg4ODhjZjI3N2U3NjllY2Y5YTJiNiJ9"
+          "resource": "repo://runner/agent-runner/adapters/codex.ts",
+          "version": "repo-file-v1:sha256:a87415673b196f5b2b95ca008504a45392d5a00b382c6a0425b501932954c09a"
         },
         {
-          "resource": "repo://runner/agent-runner/adapters/opencode.ts#L13-L18",
-          "version": "repo-lines-v1:sha256:f51621458d4b078d8442e984fa0bd7366c87f68b24a215a0ad3cde8a8221922a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTZkZDRlZjQ0MDJhMzJkZGIyZjNiMzk1ZDI1OGZhYmU4OTk2NDg3ZGIxMjY4YTg5N2NjYTVjZmViZTZkZjdlMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWExMjYzOTczN2E0N2Q4MDU4YWQyOGFiOTY4NjQ3ZjRiNTViNjFjMzAxMjhjNjVlNWNlNjEwZDhhZDdmYmJhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjIxYWVmYTgxY2ExZjFiZTM0NTAwODIxZmM0MWU5OTAyOTZjYmZkM2U0ZTIxMjRiNmEwM2Q1NTFkMWExMzhhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY1ZDI0M2Q4MGNiZGY0ZjQ4M2RiZDVmYjBlOTNmYjQyOTBjZjM4ODRlZjkxMTk1ZjRlYTQyNGI2MmI3YTJlMSJ9"
+          "resource": "repo://runner/agent-runner/adapters/opencode.ts",
+          "version": "repo-file-v1:sha256:bc950854d4ed991b8d248d859ff68aae8d15e1d88acb493b03528af2be85076c"
         },
         {
-          "resource": "repo://runner/agent-runner/main.ts#L116-L137",
-          "version": "repo-lines-v1:sha256:df0b9ff5336f9a1039d1b5c73cb052121075aa44be561142daab5259c408fcf0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2Y2FmYzFmNGY1ZWRkMWM2N2ZhNGVmMmVhZGZjOTU3ODg5ODIwZmM4OWQ5YzZjNzBjZmQ0ZTgxMTIwN2Y0NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMWNjMTNkY2FlZjcyZTJjNjQ3Nzk0Yjg0MTczNjg3OWQxYjU2MWU4Y2ViZGY0MDdkYTgxM2UzMzkyMTAzOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MzU0MzcyN2RlMTM0ZmU0YjM1MGQ4NzNhMmUwNzRiY2FkZDVkNzdjODAxZjFlMTVkZjc4MDQ3NjMyMzc2YmUifQ"
+          "resource": "repo://runner/agent-runner/main.ts",
+          "version": "repo-file-v1:sha256:c09214eac1988937e6680c7b3f5ecffe0963bff8c2178b81a107b5e1924033d3"
         }
       ]
     },
@@ -296,11 +266,11 @@
     },
     {
       "id": "claim_5caf623fb8e84873a1111bee1b9423f2",
-      "statement": "The OpenCode adapter isolates native configuration and redacts temporary tokens from its stopped session databases.",
+      "statement": "The OpenCode adapter isolates configuration and registers the original native database for separate trace copying.",
       "evidence": [
         {
-          "resource": "repo://runner/agent-runner/adapters/opencode.ts#L48-L110",
-          "version": "repo-lines-v1:sha256:19aba9beafcec49b6791f50371b6fd2f15f703dc7853375dc91c3348f6ab79b3:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2M2IwZGMxNDczNWFiYTgwOWQwNjdlN2FjNjhiMjdmNGQ5ZGE5OTZjY2Y3OWQ3NGU0YzczZDk3ZmUxYzA4NzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyYzNjMTliOTIzMjIzYzczZWE5NWZkNmFlYjBjNWJlODQyMzFiMzk0MGQxNjkzOGE3Mzc3ZjgyMmUyNTM1MjMifQ"
+          "resource": "repo://runner/agent-runner/adapters/opencode.ts",
+          "version": "repo-file-v1:sha256:bc950854d4ed991b8d248d859ff68aae8d15e1d88acb493b03528af2be85076c"
         }
       ]
     },
@@ -319,12 +289,8 @@
       "statement": "Source deployments prepare OpenCode before service activation, while published installations defer the package download until the first OpenCode connection.",
       "evidence": [
         {
-          "resource": "repo://INSTALL.md#L397-L411",
-          "version": "repo-lines-v1:sha256:eecc1f805da4d8ebf7fc7eb94e1e1e645c6df3cc4b79c788f6de5ebe594cba5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3Mjg2Y2IwZmY5M2RhODJmMDRlYzYxY2E1MDRjOGFhMDQ5NTdjM2JjYTc5YzFjZTI4YTFiYWQ3NDMzZjhhN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YzY0N2QwNjEwNWE2MDJhYzg2ZmNlMmRjMDI4ZWE4NTYzYjAxOGUzNjhlOGQ1NmNmZDM5Zjc3ZDg1MjMyNDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0ZDk1MGMxYjc5NDQ1MDY2YjQyY2EyNTMxMjRhMGRjZDQzZWQ1ZTEwMDQ2MWE2ZDE2MWYwYzYxZjgxYjFlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyYzY2ZTg4NWM5YmI4ZWUxMWMwMGUzZTJkMDk0NWQ2MTc4OWVhZjlkZjEwMmI5MjlkYWMyZGNjODE3ZDI1MTIifQ"
-        },
-        {
-          "resource": "repo://INSTALL.md#L447-L459",
-          "version": "repo-lines-v1:sha256:9f30c7509ada5bdec173ddce46fab13e42455114c79d327badc6c013a6100b13:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNzdiNmEzMDc4NTcwYzM0NDVkY2I5ZmM0YjcxYWZjN2UwZmMxZTgwYTZhZDkzODFkNmU0NTNmNTdkOTA3ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyZjQzZjNkNzUxNWE1Mjk2YWIyMmY4NDhmYTcxMTc2ZmQ0Njc5NWQ4ZjZjZjA0M2U1ZGI3YzUyM2YxMmFjNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4YWFjMTk0YmVkZTY4ZjE5NjQxNDQyNTJmZTNhYWVhY2Q0MjQwYTkzMDA4Nzg5ZWU4MTIwNzRhYzNiZTA5NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://INSTALL.md",
+          "version": "repo-file-v1:sha256:ce7c71266e51093491ed3fa7f3e3196b89901002aef4b0812eb18250760e23ab"
         }
       ]
     },
@@ -345,6 +311,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T18:18:18.729Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

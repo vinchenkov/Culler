@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:9bbe6d246dd9836cccdd859802d1bdc312237ed6b81cdeec80f902a7da8fd218",
+  "pageVersion": "sha256:7b2bddd1f8f7ac9797a7b46bfd49dcd2a9c2fa6e502ea8b16cd4fac6400811f3",
   "claims": [
     {
       "id": "claim_ad4f33e8a02c4cbd8f42ca9a4af54d0c",
@@ -81,7 +81,7 @@
           "version": "repo-lines-v1:sha256:8ad4aa61d0e4aa1775a34385c980a3bd25797f1f70ea7b667af905f465ed7581:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzYzJmYmE3NGNhZjBmNjkzOWRmYzFiOTE4ZmU5ZWNkMjU1ZGJmYTY0NDI4OWZkOGRmZGE1OWZkZDc1YWZmN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2NmI5YTljMmMwOTIxOGM2MGYyM2MzMjU2YWFlM2EyMTNlOWM4YzM0YmJjZTEwZDMxZDk5NTc5M2NiNTMyYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhMGU4MWMyNDE3OWUyODNkZmZhMDdmMWU2ZTVlNDY3ZDQ4OWY0ZTMzOGE0NmUyMWRkOGUxNDU2ODdmOGJjNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4NGU5ZjBiZDRiMGI2NTZmNTJiYjBmNmUyNDRlMmFkNjkyZDI2YTU5MzQ1NGY3OWFjOWYwYmNiMjk4ODU2N2MifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L306-L317",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L316-L327",
           "version": "repo-lines-v1:sha256:9d2e3cebd72fd176575014731c27bcc67ce85dca01ea6ebe17c8f9671a61c8a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzI5YjJmMjBhMTViM2IyNzg5NzI0NTA4OTJmZDBlZmI5YjZmNDZkZDFiZjcwN2U0NDdjNTUzMWMwYzYyMzUifQ"
         }
       ]
@@ -101,11 +101,11 @@
       "statement": "A criterion check or new or changed test needs an operator decision when no agent container has its required capability.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L106",
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L82-L109",
           "version": "repo-lines-v1:sha256:cd732813c6094d22c66e4c1187fff51e5e2278d2d206e102b4ac609572bff9ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L115-L133",
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L118-L136",
           "version": "repo-lines-v1:sha256:8aff6bc87cabea4e26969f9a99d82302bfdca1322deb879561823b91f790362b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
         }
       ]
@@ -115,7 +115,7 @@
       "statement": "The Arbiter skill requires a duplicate reference or invalid_criteria category and a reason for each rejection in an all-reject batch.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L25-L44",
+          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L28-L47",
           "version": "repo-lines-v1:sha256:d815fb85af3264048ffea43ec14d613ff735c73673addc68c79e3a6051f02883:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ZWZmYTU0OTc5NGVjYjg1ZTQ3ZTk4NWEzMWRmZDgxMzZlZGI0NThiZjRmOWE4MzQ3NzYzOTI2OGQyY2FmYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5ODNkNDMxYjZiZGRjNTgzMTU1MmNiODZkYTEzZDkxNmY0OTAxMTZjZTA1N2E1ZGNkMzYwODBmOWZlMDUyNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1YTU3Yzc1ZTgxMzVhNDdjZDc5OTY4OTNmMjYwNzkzZTg4ZDlkMjQ4YzZkMjMwODI0ZWNmYzc2Yjc3NzYxOGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3NDVkNmNmY2NkYjdjZWExZmU3NTgyMTlkNmRmNmI2NTk5ODY2M2FmNzBlOWQ3MTk3MDY3NTExNjdmMzA3NDkifQ"
         }
       ]
@@ -153,11 +153,11 @@
       "statement": "The Worker repairs permitted dependency defects or proposes Image dependencies with a checkpoint; the Verifier returns CORRECT for these repairable causes.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L79-L97",
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L82-L100",
           "version": "repo-lines-v1:sha256:b95b7571d7a901c86819a6099c50962ffbcce5f3de857acacd571203060ed2ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNTVkMzRmNTUxNmNmN2EzN2VjMjQ5NzE5N2ExNzA3ODc0MTRlYzJlNmEzM2U0MjJiYTNjMDNjNGU4OGQyNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyMjkwMjRhYmMyMjVlNmRmYjU5NGM2NTEyYmY1Yjk5OTM4NzI5YTM4N2JhZmI3ZjE2YWQyYWM1OTEyNTFiZjgifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L123-L133",
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L126-L136",
           "version": "repo-lines-v1:sha256:e3107ceaa34fa237ab734b69acd66f63a1cd3d2eaf16d0f22935be4ff6ed9168:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5ZmI0YWJmMTY0ZDhjMjgxZGJjNzU3YTQzNDFmNTNjNTk1Yzk5YzY2YzFhZDkzMTI4MjYwODM1Y2VmZTA4M2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjZmVlMDliYTEyOGI2ZWJjNjExMmM0OTZmY2FhOWY1M2MxMTExZTJhNDljYzFkODZlMjI1YWYxMzc4MTAxYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
         }
       ]
@@ -167,11 +167,11 @@
       "statement": "The browser excludes unused connection conditions from issues while retaining unused entries in the connection groups.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L181-L195",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L191-L205",
           "version": "repo-lines-v1:sha256:d61e7e51e393ea68d0980117465f0c4155f25b885bf042bccac6d9de8e706b1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYWMyODhjNDI5YjA0NjU3OTBiNWEyNmVjNDY5ODk3MGFkMTcxNzZiODE1MmM2NGJkYzlmNWMyYmMwNTRlOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZTFkOWFjZThkM2RmM2ZkYTI3NmRiMWE5NTRhOWFjYzBlYjM3MTk5ZGM3Y2QzYjAwZjRjNmE3MzNmMmU5NzgifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L306-L317",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L316-L327",
           "version": "repo-lines-v1:sha256:9d2e3cebd72fd176575014731c27bcc67ce85dca01ea6ebe17c8f9671a61c8a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzI5YjJmMjBhMTViM2IyNzg5NzI0NTA4OTJmZDBlZmI5YjZmNDZkZDFiZjcwN2U0NDdjNTUzMWMwYzYyMzUifQ"
         }
       ]
@@ -185,7 +185,7 @@
           "version": "repo-lines-v1:sha256:5e411d36ecc9c9a78e769ee2c788f94f134c0b5b1d06253fcaf55206efcfe48d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0Yjg2YjMzNDIwYWEyZjZmNzQ2MzM3Y2MwNjA3ODFmYmJlYzNjMjY4NDJmYzc4MGZkMzM2YjI5MWVjZDMzNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NWU1YTQ5NzA5MTYxN2M1YWUyNWNmYWI0YzJmMWI0ODQwNmM1NTkwY2QzYzhhYTQzZmM1YTQyMWFkMmFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBlZmE3Njg5NjcyNTJjYTNhYzlkN2YwYWIzYWRmZDcwNWVmYzE3YzRlNGQ3NmJlY2FlMzM0YjE0ZDljOWYwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZiMDg4NDg2ODM0NWRiYzg3MTM2MmY1ZDI0ZmUwMjI1NzI3N2QwYzgzOTE3NWJlYjc5ODJhZWZkZmJiMDA4MyJ9"
         },
         {
-          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L53-L65",
+          "resource": "repo://mc/verbs/skills/arbiter/mc-arbiter/SKILL.md#L56-L68",
           "version": "repo-lines-v1:sha256:a3bf49cb14eb551cd13ba32c8a24e4f30a59f881c222d01d143e8e0f5e3e4876:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNTk0NzVlZTU5NTVhMGFhZWQyMGJiYTI5YmQyZDFiZmRkNzcxZGQyNjFlMGMyODRiNTNkYTYxZGVlOGFmZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNjQyODY5ZGVjNzViNDMxNmE0MThlMWE3ODNmYmFjYWRkYzQ2YjUyOWMxNDAxOWE5ODRlOWY1OTg1ZjViNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMzExOWUyYjFjYjFiNmUzNGFmOTVjMGQ4M2ZlOWZhZGYxMmY4YWNlNDk3MmYwODYzZjVjZmQ4NzQyNDk2ZGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzZTE2MWFlOTI3NDdiZmFhMWE0YjZjOTAxNGQzYjg1MjIzM2E1MjUwNmYyMDQ4MWMwZDM4OWM5NjJmMzM5MTgifQ"
         }
       ]
@@ -233,14 +233,14 @@
           "version": "repo-lines-v1:sha256:21a383659ef4d808567f5049f31ea5174419c023c4c19951d4014d0534d2ce49:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxZGQyZGI3MTRkNmY5OTlhNDRjNGFmODE1NTNkNzNjOTY5MGZkYmQwNDFlYjQwOGQ2NDdjOWE4YjM4ODUzNmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3NDJjMGNmMWQ4MzVhOWViNjliNzljNTAyMjYyOGY2OGQwNzEyOGVmNjc2YjgwMWViM2M2ZjA1MzVlN2MyNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjNiYzMxMjkzMjBlZDY4NzJiZGY0YjczM2JmMzYxNDVmYTY1OTIxYTJjMDFkOGNlYjk0OGYyOGVlZTI3N2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiYjE2Y2I4OWU0YzRiYTEwOGVmZTUwNmViNDlmZWE2NDM4MWZkNTNhZDlmYzcxNDgwODIwZGMxOWQwNjhiMDgifQ"
         },
         {
-          "resource": "repo://mc/verbs/skills/collie/mc-collie/SKILL.md#L158-L160",
-          "version": "repo-lines-v1:sha256:e5771865b7b80139c3bc20c93374658f82264554f85f1a2765ca4d6865aada09:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmIyMDdlMmQzMDZjZjNmZDVlYzQ3NzFiYTI2ZTJlZGZlOGM3NWE5ZTY3MGI2NTRkMzA3Y2NjNGIwMjBkNDRiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ4NzAxNjIyNWM3MmFmMjNjM2I0MTZiMWFkYzNhMmU5MGNiMmFiMTBjNzcyZDhmMWJkNWQ2ZGU5MGY2MTMwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjUyYjlhMjU0ZjQ0OGY0MTRmNTBlZjBmNzViZjZiNmVjN2Y2YTY3OGNiMmEzNGQyYmVhZDJkODBkYzE5M2NiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ2ZjQ3ZjU5MGJmZTQ1ZjY5YWY4YWJlNjM3NTUxNGEyMjg1MGM0OTE1MDA4NTZjYmRkNzRlNjg4M2QyM2UwNyJ9"
+          "resource": "repo://mc/verbs/skills/collie/culler/references/tasks.md",
+          "version": "repo-file-v1:sha256:98846087a740d5a0ffd5e32b78a17f09606937be08e44ab30c19fb260b2a74a3"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T18:18:18.729Z"
+    "at": "2026-11-12T00:22:22.352Z"
   }
 }

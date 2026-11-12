@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bb59787ee41660a84dad7b304ffef409a6670b4021ebe0c7b6582072e41aa7c8",
+  "pageVersion": "sha256:ec4ce13d48e6c805f01501eeaf7928c187df0345fc660cfdd785303de373d0be",
   "claims": [
     {
       "id": "claim_a72c6a21827440248c90076ab963276f",
@@ -17,8 +17,8 @@
       "statement": "The dashboard reaches the spine by spawning mc and parsing one JSON object from stdout.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/mc.ts#L41-L80",
-          "version": "repo-lines-v1:sha256:8e81a8add0be85a6defd1b7d6d12d292e73e28fb0da41e52d84c49129fcdf490:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmM2ZiZGZmN2Y4MDJiYzM2NDUyNGJkNzI2ZTcxNjhmOTZkMjBhOWJlY2I5NDhhNzUxODExY2MwNzFhZjdjYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxNmRhNzQ5NGUyYWViODg3YzVmMTM2MjRjODFjNTI5NzE4NDczODA0NDA4ZDAxNjA1OTA0M2YzNjgzNTAwY2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0ZGUwODAzNDhmZDVjOTllZjk0NjIzNzhlODg5OGI2YjhkN2M0NDg0NzczNzJiMmEzZmExZTU0MzRlYmUxNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRkODhlNmVmYjk0N2MyMmZhZWJjN2Q2YzZkYTY5YjM0ZDdhNTNjMmUxZThkY2IzZDhlYTYxMDUwNzY5NjA3OTcifQ"
+          "resource": "repo://dashboard/src/mc.ts",
+          "version": "repo-file-v1:sha256:c990f201925e930ad5a28bb9987f9ffadae4da77ec1cc087e7fdda9bacc60fe1"
         }
       ]
     },
@@ -75,8 +75,8 @@
       "statement": "Delegation re-runs the same arguments as docker exec -i <helper> mc.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/main.go#L435-L439",
-          "version": "repo-lines-v1:sha256:542b4e41cc6b83ccfb693bdb66f21fcdabb8347ecb434364233784c10199839e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU1YmQ1NGNiN2MzMjJlODAwYTE4OWUzZmJmYmYwZjg0M2M3ZmJjMzU2YzdmMmQyZWI3Y2M0NGYxNGY1ZmZlNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWM1ZmE4MzU1YmQzNzMwNTFiNTU2NDcyMjE2N2E0Mzc3OGM1NGE1M2MzOGNkNDg5MTUyZmZmNjhkMDk0MDM0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGI1MzRlMDkwNzM5ZTRjZmM0OTdlMWU2MTYyNDgzNjg5MjEwM2I5NWE0ZjI5MjI0NmRiMjUzMzZkNjllMTdlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzYzYzI1ZDc4ZTFkNGJmMTYwMWIyZDJiYmFiNGYzODEzOGJhZmY5NWM5ZjBjZDA2YjYyYzFjOWMzNDgyNDdkNiJ9"
+          "resource": "repo://mc/cmd/mc/main.go",
+          "version": "repo-file-v1:sha256:96be9f8a432a571256a8cfbd976fc276c97a9f65197a0ac1ada7791b363a4736"
         }
       ]
     },
@@ -95,7 +95,7 @@
       "statement": "Host-file verbs such as health, logs, config, and routing run locally instead of delegating to the helper.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/main.go#L306-L311",
+          "resource": "repo://mc/cmd/mc/main.go#L313-L318",
           "version": "repo-lines-v1:sha256:03a4fe0fb9b115305c969a67fec066cf71dc729921d36a9d7cc3c6d9360d9f30:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODJkMmMyYmRlOTJhMzMyYmNmNTk1MDRkMDQ0NzM4OGI5Mzg5OWEyYTcyMjVmMDI2NmE0MGJhODhmNThiODY2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQzZjkwMDJkZDhiNDljN2M3YjNlMDRmNzZmMDBkNmVhYWIyZTdiN2RjODY5MTU0OGUyODUyN2VlMjc4ZWQxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmYyZGE2ZWQ1NTQzNjY2NWI5ZTlhMzE5MWVhMjU0MDdiZmJjMWFjNTlkYjVkZjRmZjBkMjRmNTZhZTIwNDZmNSJ9"
         }
       ]
@@ -105,7 +105,7 @@
       "statement": "Pipeline containers run as uid 10002 with dropped capabilities and a read-only identity mount.",
       "evidence": [
         {
-          "resource": "repo://resident/src/effects.ts#L1492-L1507",
+          "resource": "repo://resident/src/effects.ts#L1494-L1509",
           "version": "repo-lines-v1:sha256:c3a605cf454f495c4647cf18656b03f41ad45b5ac2ad4b83a9a00213d53d64a7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNzI2OTM1MDY2NmJhZWUxYzgzZmNmNzgzOTA5M2UyYWYwYzQ0NWJkMzU4MTQzOWQ3MTI5MTBmOTcxZmVlY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ZjA3YWE4MDZhNDE3MGNiOWQzMmZkNTk2NDk1NTgzNjg0ZTQ3ZmMyYTVlODRjMzg5MmJjYmRkZjkzOTk4MWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0MWYzZjQ0OTUzZGYwYmJkNjg1YTE2ZjVlZjIwMGNmNGNlZDhhZWIyMWYwYmM4ODgzMWE1NGYwZWQxZGQ3ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4OTkzMDU0Mjk3Njc3NjYzNGM4M2U3OWE5MjhjOGNjOGNmNDc5MDgwYWUzNDk5NTQyYzMyMGYzYmYxZjRmMmQifQ"
         },
         {
@@ -161,6 +161,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-07T01:30:07.289Z"
+    "at": "2026-11-12T00:11:01.469Z"
   }
 }

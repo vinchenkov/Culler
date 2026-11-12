@@ -30,10 +30,10 @@ sources:
     resource: repo://resident/src/nudge-socket.ts
   - id: openwiki-source-79628d0b1a3667fb37eebff9
     resource: repo://resident/src/tick-loop.ts
-generated: { by: "culler-scribe", at: "2026-11-10T02:41:58.373Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T02:41:58.373Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Dispatch and the resident tick loop
@@ -171,7 +171,7 @@ Run logs remain available for diagnosis.
 
 ## Project pause and resume
 
-`mc pause` and `mc resume` (`mc/cmd/mc/main.go`) call `SetEveryProjectPause` in `mc/verbs/pause.go`. Pause sets every active Project to paused in one transaction. Resume sets every paused Project with `setup_status = 'ready'` back to active; Projects with incomplete setup stay paused. Pipeline agents cannot call it (`RequireHostScope`). The dashboard drives these commands.
+`mc pause` and `mc resume` (`mc/cmd/mc/main.go`) call `SetEveryProjectPause` in `mc/verbs/pause.go`. Pause sets every active Project to paused in one transaction. Resume sets every paused Project with `setup_status = 'ready'` back to active; Projects with incomplete setup stay paused. Pipeline agents cannot call it. The dashboard and permitted operator agents use these commands through `RequireOperatorVerb` and transaction-level session authorization.
 
 A pause makes `Decide` return `project-inactive` but still reconciles the lease, so an active run finishes and a dead run is still reaped. Collie keeps working. Tests:
 

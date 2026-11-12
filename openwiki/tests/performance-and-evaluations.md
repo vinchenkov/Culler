@@ -10,14 +10,16 @@ sources:
     resource: repo://evals/culler_evals/assessment.py
   - id: openwiki-source-2be379c33f071a0be3a55552
     resource: repo://evals/culler_evals/runtime.py
+  - id: openwiki-source-9bcc2dc53d09a23139672935
+    resource: repo://mc/cmd/mc/evaluation.go
   - id: openwiki-source-bdb34dc5adc4a25690eda4c2
     resource: repo://mc/evalcase/README.md
   - id: openwiki-source-26c5d70e54df94e2f1b4579b
     resource: repo://performance/compare.py
-generated: { by: "culler-scribe", at: "2026-11-10T18:18:18.729Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-10T18:18:18.729Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Performance experiments and agent evaluations
@@ -113,3 +115,7 @@ A complete capture proves preserved inputs, not the truth of every behavior clai
 `mc/evalcase/store_test.go` checks reconstruction, tamper rejection, and retention boundaries.
 
 Related: [command duration logs](../concepts/logging.md), [Git delivery](../workflows/git-delivery.md), and [installation](../operations/install-and-deployment.md).
+
+Native OpenCode evaluation capture preserves a masked SQLite artifact as `execution/trace.db` with its SQLite media type.
+`mc/cmd/mc/evaluation.go` selects the artifact by native trace format.
+This preserves record identity for later assessment without changing the original session store.

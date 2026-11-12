@@ -30,10 +30,10 @@ sources:
     resource: repo://resident/src/resident-control.ts
   - id: openwiki-source-ecd0ea64f1d6275775d38f43
     resource: repo://runner/agent-runner/main.ts
-generated: { by: "culler-scribe", at: "2026-11-07T01:30:07.289Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-07T01:30:07.289Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Culler system architecture
@@ -149,3 +149,15 @@ A connection serves one server and one channel for authorized Collie conversatio
 The resident consumes account confirmation codes before ordinary conversation handling.
 Connection changes require host authority and apply without a process restart.
 The [Discord guide](../integrations/discord.md) traces setup, account approval, replacement, and retirement across these components.
+
+## Agent operator access
+
+Collie and external agents share the supported command definitions in `mc/operatorcmd/` and the common `culler` skill.
+A Collie host request becomes a retained spine record before the resident operator lane executes it.
+The host validates session authority, target scope, and release compatibility; a request grants no arbitrary host shell access.
+External agents use the installed entry point and skill under the selected `MC_HOME` without a source checkout.
+The operator continues to use the dashboard, Collie, and the `culler` lifecycle command.
+
+Native OpenCode sessions remain separate from the masked database copies that AgentsView and Collie inspect.
+`resident/src/opencode-copy.ts` owns publication of those copies.
+This trace database access does not grant spine access.

@@ -6,6 +6,8 @@ tags: [release, images, runtime, deployment]
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-096a781fb160ef979fa31121
+    resource: repo://INSTALL.md
   - id: openwiki-source-8887a56335011659b61b947b
     resource: repo://mc/cmd/mc/candidate-runtime-check.sh
   - id: openwiki-source-b3bb40a3cb242690b078558d
@@ -36,12 +38,10 @@ sources:
     resource: repo://runner/image/runtime-check.sh
   - id: openwiki-source-471e78eafbc0a8c07a4a7149
     resource: repo://runner/image/runtime.Dockerfile
-  - id: openwiki-source-fb9561d88a21eed75b76c0a6
-    resource: repo://specs/source-opencode-installation.md
-generated: { by: "culler-scribe", at: "2026-11-09T19:06:13.611Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T19:06:13.611Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Image delivery and update cleanup
@@ -120,8 +120,7 @@ The package remains separate from the product image and the ordinary runtime vol
 
 ### Source package preparation and reuse
 
-[OpenCode for source installations](../../specs/source-opencode-installation.md) defines the package, reuse, readiness, repair, and published installation requirements.
-Its scope includes `scripts/install-source.sh` and `redeploy.sh` with real harnesses.
+`mc/deployment/opencode_source.go` and `INSTALL.md` define source preparation and reuse for `scripts/install-source.sh` and `redeploy.sh` with real harnesses.
 The development tier with a fake harness retains its separate behavior.
 
 `mc/cmd/mc/onboard_home_prod.go` records the source and calls `UpdateOpenCodeVolume` before activation.
@@ -190,3 +189,7 @@ The image content tests and runtime install tests check their respective boundar
 The source package tests cover input changes, content damage, concurrent requests, readiness repair, and published transitions.
 An opt-in Docker test prepares a real package, then checks reuse without network access.
 See [OpenCode checks](../tests/checks-and-test-lanes.md#opencode-and-update-recovery-checks) for test paths and execution limits.
+
+The OpenCode update waits for the operation worker lock before volume replacement.
+This serializes installation with live model refreshes that read that volume.
+After a successful update, the host starts a fresh model-list refresh for the current catalog and pinned program.

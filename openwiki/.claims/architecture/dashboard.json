@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:ffda455425881c94c941d279159d5e614e507855d1a9d4fbc62feab285d3c499",
+  "pageVersion": "sha256:ce33dca82dea56af7bddbafbf402504b5186a443bda2447642eb3c201228e24c",
   "claims": [
     {
       "id": "claim_92773894f36348b5bc17a0e35b0538f1",
@@ -59,8 +59,8 @@
       "statement": "The dashboard reaches the spine only by spawning the mc binary with the process environment passed through and parsing one JSON object from stdout.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/mc.ts#L1-L86",
-          "version": "repo-lines-v1:sha256:99de6603d24bb0d108859529d1a0d9294d17dff78c89db015c70d485e206bccb:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkNTQ4N2Y0YmVjNGM3NDM3MWRlNWM4ZWFlYTM2YzU0NmFhNzM3ZTIzNTBiMjA2ZGViODQyOWE2NGRjYjNlZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNDQ2MmQwNzIyZmRmYzA2YmE3YmZlNWMyMTA5ZThhM2RlZDY0N2U3MGNjYTY4MTU1NzBhOWU4MzE1ZDBkM2IifQ"
+          "resource": "repo://dashboard/src/mc.ts",
+          "version": "repo-file-v1:sha256:c990f201925e930ad5a28bb9987f9ffadae4da77ec1cc087e7fdda9bacc60fe1"
         }
       ]
     },
@@ -93,12 +93,12 @@
       "statement": "Pause all pauses every active Project in one transaction; Resume all resumes only paused Projects whose setup_status is ready, and pipeline agents cannot change a pause.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/pause.go#L43-L70",
-          "version": "repo-lines-v1:sha256:d93fae185ba15b51d7a0a0c497cfc2448e6b644e4ecec2869f70cd532a473809:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY5NzdhOGY1MDRjNjI1N2NjMTQ3NWUyZDBlNjljMjRmYTAzYTYxN2FmMDgyZTQzOGY1NzA4NzVkZGEzNzYwZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzY2M0NGRmNmEyMzdiNzMzYmY5YjQwZGQ4ZjUxMDZlOTAyYWNiNWJkN2ExMTdkN2RmZTc5NTQ2OTk0Y2M2ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljMGExMmJmMjcyNjdhN2RmMzA1ZmRiYmIxYTllZWYyZjY4Yjk2YmM1OWI1NWYwYTYyNjc3YTZhYTY5MGRiNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://mc/verbs/pause.go",
+          "version": "repo-file-v1:sha256:b3503b23797935d0c36f8325348c2756d9a8ab2baf51cf0a1813fbf873cda19f"
         },
         {
-          "resource": "repo://mc/verbs/pause_test.go#L12-L44",
-          "version": "repo-lines-v1:sha256:639e0d86a909501eede3fdedbda70e7408d81386187d8e22ba9a362b04b255f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyMTc0OTZlYzU5ZmNjNDlkNjBlZGZmZDJmNmRhNWVjODk2OWZlNWE0MTBkNTA3YjZiNWZmNTk2OWVmMTM1NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwZWZkNTZjYmExMjhlYTdiZTI2ZTRjYjYwZTgwNmY5Y2M2Zjc0YWI0MmQwNzM2MTc0NWI4ZTc2YWQxZjE3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3N2RlMDMwZDgwZjhkNjljMzU5Y2RkOWRlNGRlNDRkNmMxODA5MGE1YjBjZmEzOWRhMjZmNjNjNzNiNTVhOWIifQ"
+          "resource": "repo://mc/verbs/pause_test.go",
+          "version": "repo-file-v1:sha256:eda507895ae4b58ad1c38a5458f2deaca85a28487d20d4210ff2e36b659af2ed"
         }
       ]
     },
@@ -145,8 +145,8 @@
       "statement": "The host release closure test fails when the dashboard serves a file that the host release manifest does not ship.",
       "evidence": [
         {
-          "resource": "repo://mc/deployment/host_release_closure_test.go#L182-L211",
-          "version": "repo-lines-v1:sha256:492fbef585ce03a2840a1d1dd0c61b830bc6a35f2d75ef611cc11cbab25e6cf2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmYTdhNzA0NGRjY2IxOTk1ZTZmMmZhZDdmNzk4MWQzNmI2MGFhNDE0MTI5Mjk2MzZiZGNlNTM3OWY1MmM4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5MDE0ZjQwYjAxMWZkYWY5ZGMwOGY0NTllZDQ5MzdjZTY0NDIzNjc4MzM1NWUyOWM4ZjFhNzBmZDlkZmY3ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://mc/deployment/host_release_closure_test.go",
+          "version": "repo-file-v1:sha256:b54ab23e4896c8fcad0533df5e6c4c99a7040c62b9480c3d0aeec1a60cd29457"
         }
       ]
     },
@@ -155,11 +155,11 @@
       "statement": "The smoke harness shares one Chromium per Bun process and bootSmoke refuses to run without an absolute MC_SMOKE_BIN.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/harness.ts#L155-L172",
+          "resource": "repo://dashboard/smoke/harness.ts#L157-L174",
           "version": "repo-lines-v1:sha256:d376ce778fad8acd48de7af80d596820c6f2fd1c9844d0d9665057a8b9eb1355:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OTFkYTA1MWU4N2YzYzFiN2VhZjQxNWNkZDQ0NDgxODYyMjIwY2QwMTNhZjhkYzgxZGRlMmUwMmE0MmNiZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkOTk4ODk5NDdmMGJmZDhkYWRhNmQ0ZjIyZDI3NTViOTllYmNlMTA1NTE3ZTg4Njc1ZTY5M2I2MWQ2NWU2NzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzMDUyZGJlY2YyMGQ4NDkyNTg1NmYxODU2YTYwNjY5MmNlYzI2MjZmNzI1YTVmMGJiZDRlZTg0NjRhODUzYjIifQ"
         },
         {
-          "resource": "repo://dashboard/smoke/harness.ts#L241-L244",
+          "resource": "repo://dashboard/smoke/harness.ts#L243-L246",
           "version": "repo-lines-v1:sha256:b8688422c9240e52e627422c22cf3c762898f59128d3aed155251e09b1bf0944:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODQ4ZjE0MzQ1OGFiZGZiNzE4MmNkOGJjMDgxZDkyMmU2MWYxN2FlNmEzMTIzN2JlNmRiMThkMTUzZmUwNTlhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQwZjJkM2EzYWFkYTI3NTg2NDU3OGQwYTQzOTE1NjM4ZDU0M2ZlY2EyYzk0ODU4ZGI5NDEyMTFlODZjZWYyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTZmNTg1ODVhYmM4MjlmODJhMzQ0NTMyOWEzNjM5ZjI0YmY3NDFmNjgzOGQyNGZlY2UxNTVhMjNlMGVkOTEwMyJ9"
         }
       ]
@@ -193,7 +193,7 @@
       "statement": "The Board stats use Blocked tasks and Stalled; Review uses Awaiting decision.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1885-L1891",
+          "resource": "repo://dashboard/src/ui/app.js#L1884-L1890",
           "version": "repo-lines-v1:sha256:4f856c3e35d5ddf4d22d1067786cb3d9dbc78e871947231c667836a4f3d091f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDBiNWViNzU4ZGExNGYzNTZkZWFjM2UwN2Q4ODNiOGM2ZjE5ZDdlNTM5MWYxODVhMjFhYmFiZjY5MmFkYWUyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjhjZWNmNWY1NjRmZGJkYjhlZTM4YzhkYzM2OWY3YmVhOWI4OWUwYzU1NTg4NjVlN2IxYmUwNjVhN2ViYTJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTY3OTBhNzRmYjIzMTk4OGIzZmYyMzExMmMyOTM4ZTVmZDU1MDNmNjk2NmQ1NWRiY2NjNzQyYWQzZGM3YjBmZCJ9"
         },
         {
@@ -207,7 +207,7 @@
       "statement": "Board stats retain lead, zero, and blocked alert treatments; Review slots alert when capacity is exceeded.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1887-L1889",
+          "resource": "repo://dashboard/src/ui/app.js#L1886-L1888",
           "version": "repo-lines-v1:sha256:f2b6d22fb55c2753165e84b24b685425add3404b16bbf48ce14ea15fa52dc619:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmI5YTIyOGI1ODY3M2MyNWZlZjhiYTNjMWY3OTAzYmUxNWVmMWE4Zjk4ZWFiZDlmZDJhNjVhNzI2YzgzMThiMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU2YjkyZmVhN2RlYTY2Y2NkNTZlNjYyNDRmMTZmMWIzNTE2MTQ4MTI5MDEzYWMwNGIyMTgxMWQ1MTNkM2E0NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjk5ZTg0OWE5MTJlMWRlZjIyMTQ5Mjg2ZjUwZTM1Y2NjOGE1NjI5YzAxZmNiZTQ3ZDkxOTkyZTg0ZWI2Mzk4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTgxMDJmYjgxMWY3ZjA2MjFlNzg2MTA0MmJhMjQ2MGVjZGRkZjc5ODhmYjhmMmI5ZjY4YjFkYjJhZDBiMzIwMiJ9"
         },
         {
@@ -221,7 +221,7 @@
       "statement": "The Review packet viewer shows a status, spinner, and placeholder lines while the report request is pending, and it hides the thesis during that state.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2317-L2351",
+          "resource": "repo://dashboard/src/ui/app.js#L2316-L2350",
           "version": "repo-lines-v1:sha256:b09edd4d127555bc89992754b01e2257b6572a0f97e79b8fe84d9db391c3477e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzOTBjMzYwMjUzMGY2NDJlOTA3OWU1MDYzZjIyZTcyNmU5MjI4MGU5YWNjNjViMDA0MjExZjQ0ZTUyYTlmZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1NDQ2NTYzZDBmMzVlNDU0NjEyZjJkZjcyYjExYzY1ZTA2MTM3Yzc1NGM2ZDNiMjc1MTdjNDI2N2NlOTRiMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyN2U2Mzk3ODVhN2Q1ZjE0MzYwNmFlMzVjYTM5NTVhMGYyNWE5MDE3NjY0ZTkyZDg5Mzc1MDJmZTRlYTcwZjkifQ"
         },
         {
@@ -239,11 +239,11 @@
           "version": "repo-lines-v1:sha256:e7d2b4066505633af2d97e478124e6e50b82aada8142122d8d78fb3e2fed54d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1MDFkZDAxMmQ1OTY4NWVmNTVjMmVjYWY0NDk2MmU3ZmM3MmY4YjgzNWUxODQ4NTQ4NzcyN2RjOTYzYzEwZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0Mzk3NDM2NzAwZThkZDkwMjM5YTZjOWEwZmFiZmUyNGU3ZGE1MzczZmU5ZGU5MDg4ZTUwNWY0NDY2ODAxNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2MjliMGI4MmNiNDljY2JkNjU4MzZmNWVlMmI0NTI5NDA4ZmQwMGM1NzE5NmE4ZDU3YjQxZGI2MjNkNmE2ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0MGNlMDNjMWNjZjk2NzM4ZDU2NzMzMDliMjQ0YTdmZjdkNjlhYmVmMTZkYmY2MWRhYzcyNWExMDkzYWY2YjcifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2244-L2253",
+          "resource": "repo://dashboard/src/ui/app.js#L2243-L2252",
           "version": "repo-lines-v1:sha256:62598b774525cd8c012d6fb1617ee359c519d8d45f9f38d8366be0b53b4fe711:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTk1ZjRlZTVmZjYzZDUwOTUwNDE5ZGMzNDQxNDUxMzg1MWRjOTczNmZkMTdhNGY3YmZhOTMwYjI2MWI2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0ZmYxOTMxOGEwZjRlYTVkMDE5ZWZjZTRjOWFjZWMyNDY4MDhjNzc1YTNkMTZlYTFkMjllODQ5YjQwZGE5MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkZDg0ZmQ4ODBjNjk2NDhmODNmMGVmNDM2YTRiMWVkNTQ4OTQxY2E0NjgzNWZhYTU1MGQ3OTBlNjMyMzIwYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0NGZkZGM2NDZiYTNhOTJiNzE0MjhiZDY5MWEwYTNmYzM3ODYwMWMyODMxNThiYjc4YjE5NjIxMzFmMDVlNjIifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2480-L2503",
+          "resource": "repo://dashboard/src/ui/app.js#L2479-L2502",
           "version": "repo-lines-v1:sha256:e6a9dea76a53f937600d01b762dde4de17da3a67e00f0c1ceedef321483d8db0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZjQ3YWMxZGJkNzczODJhYmJhYjNhNjcwNDU2NzU5OGY0NGM2YTlkY2U1ZWVjMTIxMzY4YmVjMWI4MGMwNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3YTk4ZWRhNDRlMDA2ZTE3NTQzMWM3NzU3YmNjNTY0NjAzZDliMjUyNTBmZjIzZTY4NTBhMzdhZDM4NTNiMGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzZmY1MmNlNWNkNTdmYWIzZTZjMDVhNTZmNWRjNzVhOWFhY2EzOTAwMWU4YjI0ZjI1MGM3MjdkZTY0YmE4OGYifQ"
         }
       ]
@@ -321,7 +321,7 @@
       "statement": "The dashboard proxy obtains AgentsView credentials through the host command and keeps the token on the host.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/agentsview-proxy.ts#L86-L107",
+          "resource": "repo://dashboard/src/agentsview-proxy.ts#L87-L108",
           "version": "repo-lines-v1:sha256:78add0d79383cea90756b302db5fc1071a4799a66321daaf4ec0f2a7ab060b95:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMGJmZGMxN2VkYzY5OWUwZGY2YTljYjQ5ZjM1OGViMTZlOGFhNmQ5YzNhYjdmMWRlYTQ3ZGIyNGM3YjRhY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4MGIzNzQ1YjEwMzFhZTg5ZWZjN2Q4YmZhNTlhNGI4NTE3MmFkYjk5NWZlODA0ZmM0YzMxMjQ4OTA2NTc3NjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwYjNhODNhNjA3YTU3ODljZTkzN2YxM2U1MjViZTI3NWFkNWRhNDY1Nzc0ZDQ3OTJjODY1ZWRmNjJmZDlkZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1NDkxNWQyOWQ0ZmMwMDVlZmNiNTRjMGZlY2ZiZDg0ZmVlZjZlOGZiMzZkNzY2ZDAyYTNkMmI1NjE2YWZhZmMifQ"
         }
       ]
@@ -345,7 +345,7 @@
       "statement": "Pipeline and Configs role details open in centered native modal dialogs.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3285-L3345",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3344",
           "version": "repo-lines-v1:sha256:fc5a7bda6bcab4197e27e93501d22f32b04994a8eb27f23eba7781422d5474e9:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNDcxZmY1ODdkMTkzYTYwZTY1MzVmMWM0Zjg3ZjkwZTBmODEzYjYwMTM2YWI4Yzg4ZDQ1NGFhMmE3ODExN2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyMzU1YTU4ZTcxOTVkNzAwYTExOGU5YTI3MzJkMWI4MGY5M2E2YTYxMWMwZTUwMGY1MmE4MjgzYjMzYWExYzAifQ"
         },
         {
@@ -393,7 +393,7 @@
       "statement": "Before the first wiki state read, the Scribe section shows its schedule description.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3248-L3255",
+          "resource": "repo://dashboard/src/ui/app.js#L3247-L3254",
           "version": "repo-lines-v1:sha256:7c308075b68e0ec52672711cbb613a9107006c9d7c222fb35a94edc626abd3df:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQzYTJkYTY1ZDkxNzY3MGEyZDM4MmJmNGEyZTgyZDczODQzMWVhYjA4NTU0NjBiYmM3N2Y1MjY5YWUwZWY5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI1ODBlOTY0ZjgzYTQ3M2Y0M2Q0NDM4NDYyOTQ5ZDY4YjU2MDBmZGE3ODdmMTYzNzQ1ZDAwZGU4OWNiZjM2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzdjOTg2N2VkNWI1NTExNWUwZDk0NTRhMTczMDEyZmQzMWZkM2Q4MDgzOTFlZDZiMmU5YzZiZjVkYjYyZGEyYSJ9"
         },
         {
@@ -417,7 +417,7 @@
       "statement": "Role dialogs attach to the document body and preserve focus across polls; child modals defer content replacement.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3285-L3328",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3327",
           "version": "repo-lines-v1:sha256:87c60f42416563d17a417da3e953dfb97953f6ee637bd893413328edb6012c39:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4OWQ4OGVmYzc4M2VmMGMxNDM0ZjE1ODk0M2E1ZGIwYzY5NGI4MjY5MGZhOTIxNGE0YTlkZjA4Y2MxZmJkYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzYTc2MThjMzNkZDQ5MDgzMGZkYjk5MDdjODdlN2YxZTVkNDk1NGEwYmYyOTZlNDkxZDBjODVmZDU5YzBiYjkifQ"
         }
       ]
@@ -428,7 +428,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
+          "version": "repo-file-v1:sha256:4da7126e9b258471b60c41f9a6404a7306f9e77e54b798467d09a4804f552135"
         }
       ]
     },
@@ -448,7 +448,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
+          "version": "repo-file-v1:sha256:4da7126e9b258471b60c41f9a6404a7306f9e77e54b798467d09a4804f552135"
         }
       ]
     },
@@ -458,11 +458,11 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
+          "version": "repo-file-v1:sha256:4da7126e9b258471b60c41f9a6404a7306f9e77e54b798467d09a4804f552135"
         },
         {
           "resource": "repo://mc/verbs/collie.go",
-          "version": "repo-file-v1:sha256:04c63b6b5fea21366b96f0ceb144aa17f4089a1eda0194005be0f4d7e40b5893"
+          "version": "repo-file-v1:sha256:eee8e7d8af1f87ed9876d95c1f22f7e7962136acf78db61721f59296ef5c557e"
         }
       ]
     },
@@ -565,7 +565,7 @@
       "statement": "The global reduced-motion preference rule disables role egg animation.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/style.css#L4821-L4824",
+          "resource": "repo://dashboard/src/ui/style.css#L4840-L4843",
           "version": "repo-lines-v1:sha256:622f6dce280ad0407e43b3721b5310964c2d0474b2e24f722881480d58e8fd19:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNhNjk3NDE3MjlhZGU2ODVmODY3YmFkZjk5ZTY5NzI3ZmQ2NjA5YzhkY2UxOTdlMjA2OTEwNzEzNjU0YzY0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDlmOTMwODNjMTk3MTIxYjk4MjcwMGJhOGFmYWJkMTcyMmNmMWQzZTc0MDQ1MDllODBlZmEyNzI0N2Y2MmYwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDcxNjY3Mzg2NTE2OWM0OTYxNWY1MmNkZjZjMDMxNDg0OGNkMjdkZjU3NWUxY2YyM2I0NGE3NTM0ODMyOTM1MCJ9"
         }
       ]
@@ -625,15 +625,15 @@
       "statement": "The Pipeline Activity section follows the task path directly, while operator decisions and diagnostics use the persistent notice area.",
       "evidence": [
         {
-          "resource": "repo://dashboard/PAGES.md#L1607-L1608",
+          "resource": "repo://dashboard/PAGES.md#L1609-L1610",
           "version": "repo-lines-v1:sha256:c1511ea05913cc6fcef1c957dd291b4eb92643bf4079569e387f7431acd404bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y0YTYzNDU4NzgyOGM3ZmIxMzM1YzIwZTk1N2I2MmU3MmY2MDhkMjRmMmY1YTc3OGUzMDM2YmQ4MTgxMTUzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg0YTczNDgzMDY5ZmNkNWQ3OWMwZWIzZmQ4ODVhNDY3NDU4NzBhMjA1NGFmNzM5NGQ4YWQ3N2ZkM2NjNmZmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTYyYTlkZTI4YWZkOWMwZGJhZDZhNWM0MzU5MDliZTE2NWIzYzBjOTY2OTIxM2VmMTA1YjU0MmI1NTI2OTdiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmI2ODM4OTQwNWFmNWIwZmU1NzZiNTY5M2FiZDEzM2FhOTY3ZmZjOTUzYjg5ZDMwOGZmN2EyYWY2MDdiODVhMyJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3340-L3366",
+          "resource": "repo://dashboard/src/ui/app.js#L3339-L3365",
           "version": "repo-lines-v1:sha256:b5c814f8cbfa2d24b151a642abcf60ac12f8a0ede0a63eec833907172411cf70:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYmJhYmJkODc5OGE3M2Q0Mzc3OTNjZTdjMDc1YjZiNDI1NmY0ZmVhYzczYTRiYTEzNzlhYTU0NjAzZTI3MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZDNiNWE1NTRjZDhmYThhODQzOGQ5MzZjYjU4NzdkYTVmZmM3ZGVlOGE1YWZlNGQ4ZmZlZmVlYWIzMGMyMGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5YzgwNTZkODI1MzI5NjM1ZTZmMzNhMTUwYTI1ODE0MTg3NjkwZjI0YWI4ZDI4N2ZkYTQ1M2UzNzliYmRhMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUwZDQ4MDI3YjUzNmVmZDY3YzdiNDEzMWY3ZDgxMmZhNGEwOWRiNjZhYzEwZmQ5ZTdmMjk0Y2RkMDUzMmU2YWQifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/index.html#L341-L345",
+          "resource": "repo://dashboard/src/ui/index.html#L337-L341",
           "version": "repo-lines-v1:sha256:a8ba0d1c6b93ed9dfb84ba295fc6b87087c95af8a3679b63095f08e4dc1c047e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdhNzJlY2ZlZjNlNWI5ODQxMDMzMzA1MzhlODlmZDJiNWQ2MjAzZDI2ZDA3M2Y4NzBiZDVhYTViYzAwZWM5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjEwZTViNDg4NGYwZGZiNzk2OGNiNjEyYTQ0OTZjODI0ZjI2YTlhYTY5OWFhZmMxODA3ZjU3NTYzZDQ2NjcwYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGE5ZmQ5YzIyNTcyZGU0MzA3M2JkY2U4NGE2NDU0ZWE4MmNiMjgxYjg3ZDNiZjRlMmM0MjJkNWUyMTlmMGU0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmJmNDg5MzIyMTU3YzY3MjU1ZTk3M2JiODQxZWNhYTU5N2QwMTE5YTg5NGQ3NzRjNWNjNTA0MzVmMjY2MzY4YSJ9"
         }
       ]
@@ -653,7 +653,7 @@
       "statement": "Ask Collie opens the wide chat from the decision bar; the narrow layout hides that control and an empty decision bar.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/index.html#L298-L308",
+          "resource": "repo://dashboard/src/ui/index.html#L294-L304",
           "version": "repo-lines-v1:sha256:4bb60079249a9f3949fec7891dfb48e4f7846706e6108f75e245b86a3f154dfe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwNDhmMzE0ZjdjMTUwNjdiYjY0NmIzMDQxYjNmZTNiNTlkZTQzOWRhMzM5OGIxMmQzNGNmZGEyMTUxMDFmNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3OGEzZGI3M2FhN2Y3YTU1YjJjYjE2MGY0NTkzZmI2YWY0MDhhNDk2YjM3NDAwOTg4Yzg3OGFkZGQ1MGVmMDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5M2IwNTM5NTVhZTBmOTZkOTU0NWYwMDc2NmNmOTUwMmUyZDE5NTk2MTU1NDU2ZDkyNjZkMjBhZjJhZDJlZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZhNDFkNjE0ZGQxYzRiOWI0YmYwNjY3ZWE2NDY5ZWQ4NmJkZjg0MWRjZDA1MDc0OWNjOWE3M2FhMmI0ZDZjMTAifQ"
         },
         {
@@ -668,7 +668,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/src/ui/packetchat.js",
-          "version": "repo-file-v1:sha256:447f3306eb6e42fb1179954b02139521a6461ab20a90d281ee3b0d75961c557a"
+          "version": "repo-file-v1:sha256:4da7126e9b258471b60c41f9a6404a7306f9e77e54b798467d09a4804f552135"
         }
       ]
     },
@@ -677,8 +677,8 @@
       "statement": "A model change for a conversation with messages requires confirmation and retains the previous conversation in the session list.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/conversation.js#L285-L339",
-          "version": "repo-lines-v1:sha256:0079a0c688f75f8ade14d506f5ee0b6d56c7a6531cb37f3b73059d7580e0395c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNDY3YzZjNGU4ZjBjMGE4OTNmNmI5M2FhMGVlMDFjYWM5OGFkZTQ4YzQwNDgxMGIwNjM0MjZkMDU3YmU0ZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxMDRkZTc5ZGQzYzA3MWExZDc1YTc1YTRhYzdiZWRmMzVhMzI1NjdmYjM4MTg1YjM5ZjEyNjQ3NmUxYjFkY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0NDJmZjY3NDJkM2ZmOWFhMTNlZjI2ZjE0ZTBkNDU1ZmMyZTQ1NDBiNWM1YzdjMDU5YzkyY2FmODk0Zjk5YzkifQ"
+          "resource": "repo://dashboard/src/ui/conversation.js",
+          "version": "repo-file-v1:sha256:0c43e93645b3d84418761dac1760a9fc5016f4dcd3f471bddfc88a14eb772a2a"
         }
       ]
     },
@@ -705,7 +705,7 @@
       "statement": "The Setup history action selects the Project and opens its journal on the Board, focuses its heading, and requests a refresh.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3202-L3217",
+          "resource": "repo://dashboard/src/ui/app.js#L3201-L3216",
           "version": "repo-lines-v1:sha256:bd291fb5525dc2910939dbe1018dad20ef499ca49ca7c7245b3c3eabe82777aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhOTM0YTU0YTQwMjdiNTkxZGM0Y2FhZmM1MzNmOTAzY2VjYzUwNTg2YjNkYTlmNWQxN2RjZGI0MTY1NjZhNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYjliMzRmMDNjNWFmZTk5MzZjMDkxOWZiNGNjYWY3ZDZmMDkxNWNmMTdjYmEyNDk4Y2ZkOWIwN2IzMGY2NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNmZhNmU2NTk1NGJjZjVjMTNlNTQzNzUyODUxNGZlN2QwNWU5NjExNzQ2MWE0OWFjODg0NGY4NzIxZTdlZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY3MTJiZmQ4Y2Y2OGU4MmEwMzI1YzQ4YzZlZGVkN2M5ZTg5NjFlOTdkMDBiMjVlOTg4NWE3ZDBkZWIyZTM0M2IifQ"
         }
       ]
@@ -715,7 +715,7 @@
       "statement": "PacketList includes the task title in live and decided packet rows while retaining the thesis.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/packet.go#L127-L182",
+          "resource": "repo://mc/verbs/packet.go#L136-L191",
           "version": "repo-lines-v1:sha256:7f91d288f016e38874d0583aae47ff31d7f7cb85d1bdf334b164e4c62635c0cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVjMzczMjk0MDE2ZGQ0ZGM0OTI5MTU0ZWE3ODBmMDRhZjEzZTk4ODkzOTU4YjkxMTM4NWI1MjI3YzU0ZTA1OWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwODUxYzM2YTE5MzJjZjVlZjQyZjUxNDk4NDM2ODk2NGVjYzA3NmFjMjhhOWQ5NDRiOTRmMjZlOTlmZGIwZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZDBkZjIwYmU0YmQ3MGNhOTQxMjRjZjVlNzM0YzU0YzdkODhiM2M0MWFhODJjOTYyYWI5MGFhMDc2Yjc5MDQifQ"
         },
         {
@@ -729,7 +729,7 @@
       "statement": "Review cards show the task title below metadata, limit it to three lines, and place merge or return details below it.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1823-L1860",
+          "resource": "repo://dashboard/src/ui/app.js#L1822-L1859",
           "version": "repo-lines-v1:sha256:8a9a5ed7c560765253256b6f4af6a2b3c4503cb10cc32a9fdd49205ed7d3aff1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxNmFiODk2YmE2ODVhNTFhOTllYmUxOWQwNTQwZjEyYTE1NmM1YTBlMDliNzUwODEwMDBlNmE2ZThhNWM1OTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4MzU2YzcxNTFmOGNhNzY2ODg0NDM1MDY3MGQyMmE2NzVhOTAzYmM1NGI0YzgzOTU5YzAzYjYxNTg0MzYxZTYifQ"
         },
         {
@@ -743,7 +743,7 @@
       "statement": "The packet row title supplies the reader and quick chat headings without a separate task read; chat can fall back to its conversation task title.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2465-L2469",
+          "resource": "repo://dashboard/src/ui/app.js#L2464-L2468",
           "version": "repo-lines-v1:sha256:5bd572da827d63e46505739a7c581991607be11424588e65329149a190a2a2d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmZmJmMWFjMWYwMDk2ZDk0YzM3NDRmM2YyYWQyYzFhMWZhMzY2MDkxMzg3OWZhMTcxNWJhZWIwOTM3MDJjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ3YzkxYzQ1Yjc1MTg0NDM2MThmOGU5N2NiMTAzOWIyNzk5OWFjZmUzNmIwN2NjMmM2ZWZhMTFlMjJkZGRhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDE3ZjliYzgzZGU3Nzc3OGI5MjI3N2JiZGY0NDE3ODNmMTI3NjRlNmQ5MWM4MzE4ZDdhNWM4YzZlNjYyYjgzNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQxNTI0OGM3ZjViMTE1MGI2YThiMDJmOGYzNjE5NDljMDRlYWY0MjQ2OGFmZGJkYjcyMmE1OWU0MjQyZjA0MSJ9"
         },
         {
@@ -803,7 +803,7 @@
       "statement": "A periodic page read clears errors only when the page scope and error counter remain unchanged.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L4345-L4370",
+          "resource": "repo://dashboard/src/ui/app.js#L4344-L4369",
           "version": "repo-lines-v1:sha256:3588954fef608070bd3c0ad8e52f243ef936e2e5273fba3a675ea3a18f5ee1ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyODFhNDQxZTBjZDhmNjA3OGZhMzgwMzdiOWJlN2UxMGQwZDY0YmFkODNlMDVhNjliOGUyNWFmMDgzMTQwZTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4MTRkYTA4ZDcyZWJiMDI4NGJkMWRiZTMyYjczMzQ2MDEzY2U4ZjUxZTI3MzczN2RiZDc3MGVjODcwYmFjMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YzdjMGFjMDJlZWIxY2MyNmFjNmNiNWMwMjFlZDExYTk0MGI2NjgwNTY4Y2M5YjBlNjU2N2VjN2MwY2NhMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5MWFiNzAyZTllZWM3ODEwMmU2Njg2YTcwOTdhYzY0YWI2MDhhMWE5MWNmNjA2MTkxZjMwZmNjNGIwMTVlY2MifQ"
         }
       ]
@@ -813,7 +813,7 @@
       "statement": "The Board write callback preserves a task dialog closed during its refresh.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L882-L897",
+          "resource": "repo://dashboard/src/ui/app.js#L881-L896",
           "version": "repo-lines-v1:sha256:f87a7d86dfa4049bd5791e1eec4161c2215bb09336e0ff2a9115ab13cccc1807:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MDdlZjUzYTIyMmY0ZmNlNjAzNGExZjA2Zjk2ZjYyNTY3ZWY1MjBmNjQyNDRjZTkyNjI3ZjdlYjA0OGQ4OTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzODIzMzVmOGMwZGJlYTg0NTJmYzUzMzFjOGIzZTYyYjE0MWQzMGNlNzhiNTE1Yjc4ZjIyNTg5MmQxZDQxZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMTVhNzMxZWQ1NTJmOGViMTNkN2UzZDg4YjM1NmNiYjEwMWI0NTcxOGM4Y2IyNzlhNjIwMzEwN2Y0YmI2YTAifQ"
         }
       ]
@@ -885,7 +885,7 @@
           "version": "repo-lines-v1:sha256:4e2fdf487ee68d20dce6e70d17cce4dca5e8f79cd70d16ea8f253cf3353baef8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM2NTRlZmY3YWZiMWJmMTIxNjMzMmI2YTY5NGMwZDcxNzAxNzZhZTQ1OTk1ZWE4YTFmZTdmMDQ5ODA5MTM5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWY0MWQ3NzBhZWExM2EyNDM5MTY3NTYyMjcyMDExNDIyMmE5MmM1MDU0ODAzNjI2MDljZWU0MWUyMjM5ODJlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDNhNzhhOTljMWM3NjhiMWFhNGY0NTlmMzA2YjgyYWIzNmUzZjYwMDA1NGI4N2Y3ZWFhZjczNjUwZmFhNmZkOCJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/style.css#L5117-L5191",
+          "resource": "repo://dashboard/src/ui/style.css#L5136-L5210",
           "version": "repo-lines-v1:sha256:c88969eee49b9a842e588460c149135221761796648a292c09ed6e7b4ba2bacc:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MzFlYTg5MjFkZWMxMzRiZWZmNzQ0MmQ2MjVlNmYwNjg4MjgxYjYyNzM2MTcwM2Q3ZWU1N2FiNTUzM2JjNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZGEwNjFiNGVhZmEyOGVkNDdlMTllNDc5NzhmZmY4NDExNTJkNDIzY2M2OTFiZmIwZGMxMzlmMWZmNWRjYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFhZTBhMjQwNDdiMmIyMGVhZWQ1Y2ExNDk1NzQyZGNlMDZmNTRlNzk1ZjljNzI0Y2MxMTljMzRhZGE1ODYxMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNGM1NzA0NzU1MDQ2NzkxZmU4NWZlMjQ1NjgzOTgzNTQwNzlkNzg5ZDg2NDEzYzM3OWNlZjZhMjBjNzA0NTUifQ"
         }
       ]
@@ -929,12 +929,12 @@
       "statement": "Project and agent profile renders preserve focus, selection direction, and body scroll position.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L923-L958",
-          "version": "repo-lines-v1:sha256:2ecbca7e723e97efc22b00ec4b32b1837c64a8c5c80ae0fc7abf4d7b5242181f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYyM2ZjZjg4OTFmN2IwMGY0YTlhOWI4YzI4ZjFjZTQyMzE3MWI4NmY0MDdhMzdiZTAzMjY3ZDJlNzY2YWNiMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmM2NiNGM2NWE0Y2NjMWE4ZWJiNmM3NDc3ZGFiNGRmNTBlZDc5OGU5Yzg5NGY1YTc1OWM1ZjFmZDlkNTVjMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxMThlNjVhMTBlNzRiYzJjNjc5MmY5ZDA0YmMxZmJkZjRkMzM1YjBlNTEwM2MxYTZhMGQ1YmFmODk0MDFkYTkifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
         },
         {
-          "resource": "repo://dashboard/src/ui/projects.js#L119-L145",
-          "version": "repo-lines-v1:sha256:36b0b8e21ee44678397833470d95093fcbf3233d79376f934fb3994b81da5216:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NmY5ZjhjOTczYTcwYmJhNDMwNDc2YjA4ODc2M2RkNzM2ZmJlMmFhY2I1ZTZlYjM1OWRlYWQyYmE4M2UxMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1MWQ0MjI2NTNjOTgwZWNmZGFlMzk0MmE4ZGJiYjI0NGRjZmJiNWUxODY0YTk1YjhjNzliY2M5OWYzMGY3M2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVlZTRiYmU3YWVlYTdjMDZhMjFhZTg2OTM5M2UwMDJkNzM2MjZlNGEzNGYyMGFiYmZjMzliZmNiYmFjOTNkNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyMmVkYzlmZjBiZTFhNDU2YjlkNTc1NWFiNmJlNGY5ZDJmY2U1NjEyM2Q4OGZkY2FjNzlmYjRhNTE3NjczZjEifQ"
+          "resource": "repo://dashboard/src/ui/projects.js",
+          "version": "repo-file-v1:sha256:fa27a457d7f263f03fabc165b0266ceebf11537256e7a0bb98b0b4a1917af129"
         }
       ]
     },
@@ -957,18 +957,18 @@
           "version": "repo-lines-v1:sha256:ec911120d673e1a240e0c5a99f3cc2596d0bfc4a8dbff7dee1f277aefc194f84:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTc1NTlkMjllMWUyMzc3ZTUzNTkwMzJkMTA2ZmM0ZWUzZTA5NDI3MjBmNDFkYWM4NjVhNzYyNzFjN2U4MTIwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAyZDJjMGQ2ZGM1ZTc0ZDkyZmExNGI5MWRiZWEyNjQwOTBiZWIzNWZkYjkxODhkOWIzNDExODFkY2U5ZjRjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGEyODBiNzk4Y2M3NzkxYjY0ZWIxNzM0NjJmYTMwNzNiZTFlOGJkNWQ3NDA3YWNjZWY0Mzc4MDlmMjVhNThmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmVjOTY4NTU1NWFhMzgzN2EyOTgzMzA4OGFkYmY0MmU0YWQ0MWY0ZmVjZTBhYzJiNGYyZDM3MmRjMTFiMjVkOCJ9"
         },
         {
-          "resource": "repo://mc/deployment/host_release.go#L40-L64",
+          "resource": "repo://mc/deployment/host_release.go#L53-L77",
           "version": "repo-lines-v1:sha256:2e6e204a4d3d97554bf5bfe50026e28e7023badf4427e8176020a267346c9529:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0Y2E1OGQ5ZTNmMTBjNzYxNmQyMWU5YWNjYTY4MDk0MTU3ZDkzOTMxNDZiYjJkMzJmMzIxOTVjNDE3MGY1YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjMjcyZDA2NTQzZjQyNmQ3YTllZjJhOTQ5NGJkYmJhNTRlYTA1NWNkMTFhMjQ2M2JmZGJhNGQ0YWNiZmYwODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmOGY0ZjgxZjZjMzc1YmZmM2I4MjkzOTA1YzRiYzAwOWY0ZmExZmY4MDQ4ZjFkOThlM2M1YzkwYTJkZGMyNWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNhNDRmNzRmZjYyZjRkOTk0N2RmMThiYjJkNjlkZTNmMzM0ODdiMjRjMmYzOGFkNjVjMThhNjJmZjQyM2I0N2YifQ"
         }
       ]
     },
     {
       "id": "claim_01389ee3d486454f841de897471b1a74",
-      "statement": "The header places the theme button immediately before the lease badge in header-status and retains Wiki and Traces in the viewer links.",
+      "statement": "The header places the theme button before the lease badge and provides a Traces viewer link.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/index.html#L75-L92",
-          "version": "repo-lines-v1:sha256:0e999919af965a17c1859cef35eb752ede86348228af34c3808b4fb0ab75a7f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmYjdlODhiNWIzNGQ4OWUyM2U1NTdjODI4MTcxMzc2NGNiOTQzMmNhNjYyODExYjZkOWQ2ODFlMGZhYzY0MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2YjhmNGUwMDg0MzkwOTc4MzgxZjVjOGIzMmEzNWEwMzc2N2M1MTE2MzY0YmY4YTJiMzA2ODk5NjYwNGFiNjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3NzZjZDA5NTU2NWQ0MTk2MDJjMjg3OTc1ODU0ODAzZjYwY2JiZmIwN2M2OTAzMjcyNjY0OTRiZTU5OGVjZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMDk5ZTBmOGIyMjFjMDI3MTYyZjljZWFiZDZlODhlNTY2YzhjMjNjODU4NDg0ZGFkNTNlMmRiMGM0MjQzMjYifQ"
+          "resource": "repo://dashboard/src/ui/index.html",
+          "version": "repo-file-v1:sha256:98c4caca301b1409f7efd5ad167b88c6a0b63737194f94ca6f8accacd4fc7f1d"
         }
       ]
     },
@@ -987,7 +987,7 @@
       "statement": "At 721 through 1024 pixels the header status group sits above the viewer links in the right grid column; narrower layouts retain the group in the wrapped header.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/style.css#L4746-L4761",
+          "resource": "repo://dashboard/src/ui/style.css#L4765-L4780",
           "version": "repo-lines-v1:sha256:5a571fe6f9cfa1f4b3ef2aa35787a6768cf4ca28175145e1c8a1551d383457ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmOWQxNDdiNjYxN2E1ZjUzMGViMDY5NWUxMmZkZDM0ZDczMzk3ZTMzOWUwYjA5ZTJlMTI1NDFlZWIyMzcyZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MTFhZWQ2MTEyMjliOWQxN2VhNDFmMGFiMjY4NWU3M2Y3MTgyZDNkZWUyYTY0MmVjNjBkN2E0MjQzMzJmMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YjE1YTk0NmE5OTU2YmQ0ZmUyYjMyMWE0ODE0MmZkYjcxZTI1OTc5YjhiMjU5YTZjYTM0NGVmMzk3NDRhMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzN2MzMzcxYzM0YzVhMTlhN2QwYTUzYzY0YWU3YjIyYWFmYTEzZDZlMmVlZDQ3ZjQ1ZWFiYjY2Y2Q0MzNkNDUifQ"
         },
         {
@@ -1025,7 +1025,7 @@
       "statement": "Role dialogs close through Close, Escape, or an outside click and return focus to the selected role.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3285-L3309",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3308",
           "version": "repo-lines-v1:sha256:34b3f1e80c802e1e9b0bdcd65e23b16e5b7d155929a99043f1c37c878d101ec2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MWNlZTJiY2QwNjU3YTExMDMxYjliOGVkZDhhZjkxZjc4NDExMzM2NDllYTlhOWJkOTM2ODM3YjM1YTg2ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1Y2NlYjYyODNjYWI1ZDQxNmRkYTM3ZDczOTg4MWI3ZWM4YTRmZjJlYmM0YjcwZDYxYzNmZjc2MzBhOWQ5NWIifQ"
         },
         {
@@ -1073,8 +1073,8 @@
       "statement": "Project instructions can replace default packet sections; a Strategist task retains Strategic rationale as its first section.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/directives/packager.md#L297-L316",
-          "version": "repo-lines-v1:sha256:a978ba00131d01b31be80f7c6543549224344aee4441d887a11cfe1fd121a936:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxZDlkNjRkZmMwMjU1NmQ0ZmIxNGE2YWExZWJlNzdlZDFhYzE3ZmJiOTE1ZTFkMDVkZmQ2Nzg4NGQ1NjkxNTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkNmJiOTRmN2JjODMzYTg3MGQ3NGMxNTNhMDBjMWYwMWViMDZmNWE2Nzg2NTY1ZWJmZWE5MmI5ZTliZTRlZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1MmYyNjA4MDVmMzM2NDQ4M2I4YTFlMmIxNTNhZTY2ZmE0Mjc4Nzc4NTg0YTQ3M2E5ZDU5NTk4OTE1YmNiNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxNmVjZjQyY2VmNWQ5MGY3NDZlMzA4MjllODE5YjZjYjcwZjYwMGVmYjNmOGQ1ZGY5NTdkNzIyOTY4NDhjMTcifQ"
+          "resource": "repo://mc/verbs/directives/packager.md",
+          "version": "repo-file-v1:sha256:5110fb7319168eb7839b929cd36be44d19e9e459075f05f796f996ba10d527a1"
         }
       ]
     },
@@ -1113,12 +1113,8 @@
       "statement": "The connection panel offers release providers first, then another provider, then an existing connection; subscription providers show sign-in before API keys.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L593-L604",
-          "version": "repo-lines-v1:sha256:d84f7b7341830a48dbfb3993476b3c1c421bd01a802ef77ed9f8d30008bea937:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZmM5ZjljMjhkMjk4ZTkwN2FlNTFiMWVjODY4MWQxMTkzY2Y4OWM2MTNlZjI1MmRjYjAwYTY3MzZmYzlkNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5NTkyODBmNjE1NmMxZjY1MWI1MjJiMWIxODYxNjNiNjZkYjQ1YWRiZmE5YmM2NzFiZWQwNzM1MjllZWMxZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVjNjczNTk1YWU5ZmQzZDFlN2RhODk3YWNmMmU5ZTZhYTVkYmNkMTJlMjkyZDYxY2U1MmVlNmQ1OWRmYjQ0ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhYWVjM2QzN2IyN2Q0Yzk0YTAyNzMxYTFkODEzOTJhOTg1ZWM1MmNhMzllODMyZWJkMjNlYWQ5MmJhZjY0NmYifQ"
-        },
-        {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L824-L840",
-          "version": "repo-lines-v1:sha256:a5171a60e29355a90ae9fbe974123f522d830f58e6fd32f160eedd4dfe6f0e5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ODAyMDQ1MTU1Mjk2ZmYzYTFlN2NlNTNmYzZlMzA4MzQyMjc2ZmE4ZGRmOGQ1NTEyOWFhZTZjNTYyN2Y1NTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2YTQ1MWU5MWEyMWVjMDNkZGRmZjg3ZTQ1MGY4YjgxYjMyZjYxNzJjMGI1NzY0NmYyMmUyZDVmYjI3NzZmZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5Mzk3NzQyZTRlODM1MDNjNTBhYjQwNzRiMWIwOTA5MDkyYzY5ZmIyZjY4ZTQxMDJhNzA1ZGZkODYxNzdhNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRiNWIyYjExMTNhZjIxNTkwOTIzZjRlMjZjODMwOTU2ZTRiODlhYTNmNTFiMzA0Zjg0MDZmYjI4MjhjZTdhYjMifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
         }
       ]
     },
@@ -1127,7 +1123,7 @@
       "statement": "The browser excludes shared proposal task blocks from the issue count only with matching ownership and without a stall or allowance condition.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L306-L317",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L316-L327",
           "version": "repo-lines-v1:sha256:9d2e3cebd72fd176575014731c27bcc67ce85dca01ea6ebe17c8f9671a61c8a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzI5YjJmMjBhMTViM2IyNzg5NzI0NTA4OTJmZDBlZmI5YjZmNDZkZDFiZjcwN2U0NDdjNTUzMWMwYzYyMzUifQ"
         }
       ]
@@ -1147,15 +1143,15 @@
       "statement": "Shared proposal detail views link to affected proposals, and the task dialog links to its shared decision.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1046-L1054",
+          "resource": "repo://dashboard/src/ui/app.js#L1045-L1053",
           "version": "repo-lines-v1:sha256:4b7970f4e3b24c25561071b32996768547b64f4df88acb31c702c0a150ab9385:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBkYTdhYzljYmE1YmMxY2RjZGUwZDlhZDVlZmNlZDQ1Y2IxNTg5YWZhNGViNTdhMzhkOWUxZjljNjJjOGEzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWQ5ODM1NDk5ZTViYTkxZjg3MjY3Yzk1MmI3OGVhZWRkNmM0NjZmOTViNjg4MWIwN2I0NmNjYWVjMGNkZjE0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDI0NTk4ZDI2MWU2Y2YxODBiMjFlNDEzZDAzYTg5NTc5ZTA5ZGVlZjI2YTk4Y2QzNjkzNWQ0YWRhOWI3NWZmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjdiNWM1MGU0MDhlMTM4NjY0MTg3NzVkNWFmM2U5NzE5ZmU4YTU0Y2ZjYTA5ZmNhZTc1N2JhOGFmOTlhMTQ1ZiJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3053-L3055",
+          "resource": "repo://dashboard/src/ui/app.js#L3052-L3054",
           "version": "repo-lines-v1:sha256:8ff8861d5b1c7f228cf438a5cf44afa768fadaef2d865ae0c39fd5f4c340156e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRiYWQ4ZDYxMjY1MjQxZDRmNTMzODEwYzBkYjZlYmYyOTRkZjMzOGQ3YWU4NDQxMmY1MTk4MjEzMjFmMjNjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5MGViNmNjZGIwZmVmY2MzYzlhODgzYzg3OWM5ODY2YmUzMzkzMWNhYWFiZjM2NjJkN2FjNGM0MTNlYzhiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTc2NDg2NGEzYWQ0ZDgyYjYwNjA1M2NmODYwMGIxNzhjNTg1ZDE3OTc5ZGZjMTRhOGU1ODY4Nzg5Njc5NTlmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ5NWQwNmQxMmY5ZjhlZWUzYzBjMDZhYmY0MDdjMTllZGZjYjc4M2E4MTZkYWQ3NGM0ZTFlNDdiMmNhZjQ2MSJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L320-L327",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L330-L337",
           "version": "repo-lines-v1:sha256:d9314c955c743e1fb41a2d33f2ca2de09c9ccc56c22764e962675ff7ce1ca0c9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDcxYTA1MzQ4M2ExOWI3MmMzOTYzZmM5YWIwZDA5MGVjNzFkZDJjNTg5YmJiYjcyYjdlYzBlZTFjYjFkMGFlYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWRiMGY1YzA5N2NhNzU5ZmQ4MDA1OTA4MzRiNjNmMWM1NjNhMWYyZTk1NGNkZmZhMmZkYzA2NmNmNTkxYjZlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAzMWJkYmRhZWY2ZDViYzQ4ZGZiMzU4NmUzOTYzNWE5ZWY4YjI3ZWJkMGE4ODhjY2ExMDEzZjg5MmNmMWJjMyJ9"
         }
       ]
@@ -1165,7 +1161,7 @@
       "statement": "The Review Task control reads the selected task before opening the shared task dialog.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2681-L2693",
+          "resource": "repo://dashboard/src/ui/app.js#L2680-L2692",
           "version": "repo-lines-v1:sha256:f50b35bd64f0f7b1f5b00af33a185e19ab959b6565cab8310d28cc2fe7f687a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhYTEyMmVkYmQ1OTYwNzU5YWYyYjQ0NmFiNjI2NGJiMzYwYzZlMDExODU3ZGYzMDBlNzcwOGVkYTJjOTVlZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1MmFmNDg0ZGFkMTkzNDAzZWUzOTg3MTVhZjUwYmJhMDA3OTk1YjdmMGUyZTdlZmRmOWUwYjQzMThjYzFhMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwODk1MTlkMDZmMGJmZTdjMDIzMDIwMzdmNDhkY2NlZWY0ZTE3MTM2OGFiNzE0YmNmMTQ1MjQ5NTFkYzZiMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ0MzYwOTdmYWEyMjFkZWJlOTg3NmY4ZDU0Y2VkMGViNjZkZGFiNjY3YTYwOTQ4NGQyNTRmNWQ2Y2E5ODUzNmUifQ"
         }
       ]
@@ -1176,7 +1172,7 @@
       "evidence": [
         {
           "resource": "repo://dashboard/smoke/packet-reader.smoke.test.ts",
-          "version": "repo-file-v1:sha256:0ffb64bf0178d54a93362e47a26d44f6701e5f4b13c212cfdfa7ad6073993f81"
+          "version": "repo-file-v1:sha256:a9a3c3cead595fc20756add80eb6155f348941efbbf2b4608227489b43059218"
         }
       ]
     },
@@ -1185,7 +1181,7 @@
       "statement": "The reader bar omits queue age and the awaiting-decision tag while retaining decision time and the blocked task tag.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L2470-L2474",
+          "resource": "repo://dashboard/src/ui/app.js#L2469-L2473",
           "version": "repo-lines-v1:sha256:5d7eb90bc9fd01304827b6c2e34f90c34c131b6ff791aa1fac84062a866a1062:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTA1NjE0OWYyNDg5ZWE2ZjdhMWE2Mjk0ZmE4M2Q5MDc3MDZiMWViM2RjZjJiZWJkYjc4MzM0N2I4ZTFiNjE2YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlZjAxYmMwOGRiYzNiNjNlNGU3NWVhM2QyNmE1Yjk0MTg5MTg3N2UyN2FkODkxMzI5Yzg0MTFkN2Q4ZGM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjc3NWMzNDFkMmZiYTE2NDdkOWM0YjVkNDhiMTkwZTA1YjA4ZDM2ZTkwOWE3ZjYzZTM2ODkxMGNiODIwYjkzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDE0ODBiZDZhZGM2NmE5ZmJiNmY2MDZlOWE5ZGJiMmYxZWEzNzIzZTI4NGIxZGE3MzQ3ZTFhMTNiYzAzOTJkOCJ9"
         }
       ]
@@ -1271,7 +1267,7 @@
       "statement": "The dashboard light theme defines porcelain paper, white body surfaces, navy text, and a subtle gray surface.",
       "evidence": [
         {
-          "resource": "repo://dashboard/PAGES.md#L148-L154",
+          "resource": "repo://dashboard/PAGES.md#L147-L153",
           "version": "repo-lines-v1:sha256:f2734153241c8d33e1f10faa75cce401b44cebbc0c3efc02d1934805aa12f51d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjOWZkZmZlNzY4MDgyYzc5NDU3OTM1YzgyNGIzODEzN2ViYjM3M2EyOWQwYzFmMWY5MTg0N2IxM2ZjN2IyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjQ0NGI3YTk2NDNkNGY0OWFmMjNjYzA0NzZiNjAwN2RmODI4NDkxYWI2MjkyNTZmMmI5YjI1MzZlZWU2NDFkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWE2NmFlMzY3NTA2NWI3NTI3ODFlMjNlZGUwZWM0Y2ZkMTY4MjczMzYxOGUzOGVlMzJmYTYzOTUzYjkyZGJkNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzFmNzIwZWRiMWU5YmRhNTIxMzIyMWNjNmViOGMxZGM1ZTg5Yjg0N2Y5YjI4NGJlYWZlZTg2YmUxODllMDNmYSJ9"
         },
         {
@@ -1367,7 +1363,7 @@
           "version": "repo-lines-v1:sha256:4f0fd617023c495c3c4e0af182493f3a93871e52fec233ccde8c52bfda54402b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDE5YzdmMzVhZjE4MjcyY2Y4OWZiNzZiODI1M2JkNjZkZDkyY2RkNmFiMzgwNjE2NjAzNTFmNjZkZjg2NjQ3MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWVhN2RkZmQ2MGJmMTczZDdjNjJlZTBjYzQyNjhhMjIzNGI1MmIwMTQ1MWZmNzA1OWE0ZjBmMTg5MGM2ZGFmZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTY3ZWRkNGY1MmE4Yjk5NzFhNWRmNWMyNTY1NWNmMzhlMmQzYWM5ZWE5ODYwNzQ2NjQ4MjllNGQ5MTE1M2Q2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjljODBhZjQxMTNlM2QzNzNlOGNkYjAyYmE2OTdhMjUwMzFiYTNhOTVlNjc4ZjNiYzQwNTJlZjg5NTExY2U0MSJ9"
         },
         {
-          "resource": "repo://dashboard/src/ui/app.js#L1059-L1068",
+          "resource": "repo://dashboard/src/ui/app.js#L1058-L1067",
           "version": "repo-lines-v1:sha256:a6ff0a04d42ca259f91a1821b55a1c6e256c86b24c2f22a90f53b7cbab508136:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MmNmYjc4NDM1MTkzN2EyN2YwYmYyZmMxM2QyZjlmMGVmNzRjYTFlZDIzOGViNDE1NTg3NjYwMjg3NTcwYTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMTIyNjIyMWY2NjU0ZWJkN2UxMDRkNGEwOTU4NGFlNThkOWY0YzQ0M2M2MjhhMTlkNjdiNzFkMzQwNWFiMGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5YzU3MjNkZTk2ZmY0Yjk4M2E1Y2YxYjY4YTVhZjdlNTU5N2MwODYzMjg2MjM5MmU4Mjg0YjJiYzI5OWZjMGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2MjZlMTI5ODgxZjVkNzk0MzYzN2QyNjg1M2E5ZmM1ODlmYTg0Y2RiZjFhZWQzMWEzM2NjZGExODM3NjEwOTQifQ"
         }
       ]
@@ -1377,7 +1373,7 @@
       "statement": "A role dialog holds the latest content while a child modal is open and displays it when the child closes.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/app.js#L3285-L3325",
+          "resource": "repo://dashboard/src/ui/app.js#L3284-L3324",
           "version": "repo-lines-v1:sha256:9046c1bfc6bc4b4a923577c7b2d2e9ab2bd7d32744a08d0a29e1dd3a51e2c799:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MTUxMWZmZWEzOTIyMjhhZTU4NDdhZDZiY2RkNzQ0OGUxOWQ2ZWFiYTQ2YWRkODY1M2M5OTY0MTdlZTA2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0MWIzNTYwOThkOTZiNWE5YmFiMGVkMzdjMmFjMTBiZTQwN2JkMmI0MzQ4YWNhNDNmYzY1MDk2MGIyNzQwN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhYWUyMTQ0YjBiMDQ0YmIxMGI3NjU0MzViNzcyNzIxOTcxNjBiNThjMzg5NmVhOTA4MjhjYTAzMDFhYjUyMDQifQ"
         }
       ]
@@ -1397,7 +1393,7 @@
       "statement": "The Files changed controls occupy the reader view row, while the file tree and diff begin below it.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/index.html#L242-L291",
+          "resource": "repo://dashboard/src/ui/index.html#L238-L287",
           "version": "repo-lines-v1:sha256:e2872edbd77fdf8d74ebcc48e5cba370e3b1ba165fdcb2e3c3efb002a977ff38:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDlhNjFiNGM4ZDc4ZTRkMThlMmZjODBmMjE1NWE5NTNiYWY1YWNlY2Y5ZmRiM2QyNDIwNDFkOTM4NmNiYTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1YzZmYmI4YzAyNWRjMTljN2Q5NDIyYWYwNzQxMDZiOThiMjdjNTZhOWEwYzBmMjRlZDYxN2NmNTYyMDdkOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwMDU5MDg0YWRiYzdmMjRhMjMwYWU0MTAwMTg2YWJiZWI0NWJmOTFlZjAxZGY2YWFhNmUwZDZmNTc2ZjJhMDgifQ"
         },
         {
@@ -1415,7 +1411,7 @@
           "version": "repo-lines-v1:sha256:11027e41875bfadbfd6dc36ddc0b6be1f9a87efab631d0d4e54633afb24643e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmYjE2ZWI2ZjU4MTk5YmZjN2M4YmFhNTFjZTk1N2YxOGE5MGFkNWYyOTFlMTM1NGFjMzc5YjkzZjAyZWQ5ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlN2YxN2FmYjJjZTZhODhlMmEzMDlhOTBlYTM3NzljZDgwMGQ0OTI1NjdlMTNjY2U1MmJmOWM5MWQ5ZDcwNTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlOTJhMWFkZjliNzlkOWVkZjYxYjZhZTliMzYxYjNhYTUyMDQzYzI2MjRjYjVhMDVlZTQ2M2QxYjA1ZjJkYTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3NGFhMDkwMmM3N2FkNjg4MGU1ZmRhNjA0OTA5ZjYwNmY5ZjQ5ZDdiMjZlOWVkZWEzYjdkNWZmYjkzYzNkOTcifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/index.html#L274-L285",
+          "resource": "repo://dashboard/src/ui/index.html#L270-L281",
           "version": "repo-lines-v1:sha256:8725a3a82dfd5e097ac30594ca8140720db58b1e943ac6f734f7017079bd5be7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2ZDg2ZDkwMDY2YThkNDQ5ZjQ5YWFiNmZiMDhmMDY5OGYyMzAxMGY5MWY1ZmYyMGQ4ZGViNTg1MWI3ODkyN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwM2RmZDYxODY0MTlmNjVjNTdhMGNiNWU5MGJjODNmMGJjODkyOWNjYWQ3YWEwYjdiOTcyMzQwNTI1NTQ5ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4NjU4OTY3YjM5YmVjZTg5M2MwOWUwYmEzZGI0OTA5ZjI4NGQ5ODczOWM4ZTJiZDM3OWI4YTExNDMxODRhOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhNDQ5M2IwZjU1MWNmY2JkMWNkN2MzYjA1ZmVlNjQxYzI1ZDJmZTkxNjJiYmJlNmY4NGNlZGIwYmEzYTZjNzIifQ"
         }
       ]
@@ -1499,16 +1495,8 @@
       "statement": "The profile editor offers model effort levels, clears draft effort when the model or connection changes, and displays effort in profile and assignment views.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L193-L197",
-          "version": "repo-lines-v1:sha256:d291c5221eb4e62a888db57fda2409b43a5279292562d87e087c9ce61335fa79:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFmZjAyMjU4OTdiZTA1NGIwYmJkNzk3MzgwMjRhMGQ1MThlZmY5ODkzYjlhNjdkNzQ3MDI1ZGNmM2Q1OGI1NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYwYjEyZTc3YzE2MDNlZTY4MDUyMDIyMjJkZDkzZGI5YTgxN2UyMzQwZGQ0ZTYxYjk4MWQ5NjQ4MzgxZThmYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjA5NWZkYjM2ZDZlNTQ5OTNkY2QzNDgyMDI3NWUxMGY2OGU3N2UxYmJkOWFjMTRmZDVlZDIwYjBjZWQ5MDAwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWQ2YzM5NGM0ZGY5NTA1MWVkM2EwYjE3MmVjN2FiZGM1MjkxZjgwODdmYjlmNzJmMDYxODdiMzg4YzU4YmM4MiJ9"
-        },
-        {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L520-L580",
-          "version": "repo-lines-v1:sha256:12a19ccd98b0a4eb5a378418fdb2eec1585d24fceb292ed9d7266330b3474d04:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ZTZlMDQ3ZmRjNzNlZTVhMjRiNzgyYTQ1YjQzZjA5NGM4M2NhZWVmZWFlZWFkYWU3YjdlZGFhOGRiZDE1NWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwOTE2NzI4M2M2MmNhNGQ3NjU5Nzc3ZWY0YWE3NmJmZDQxMWNmNzY1N2Y1Y2Y4ZDA2ZTRkZDVmMTJhYzM5YTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OTgxNGMyZDIxMDY1NTE5MzgxZjY3N2FmMmI2ZjI1OWU2MmM0OGE0YjViYmNhZDBlNjhmMmFiN2JkZmIzOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxZjI1MTg4MTkzNmRjNzM2YjRiZDdmMTM2ZTNlZTM3MGY5MzFmN2U3YWQ4YTgyMjM1NjM2NTgwNDBlMTFhZGMifQ"
-        },
-        {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L653-L666",
-          "version": "repo-lines-v1:sha256:13466e29793e99f93c61df4e4f6c0db9e648180e5491bc9d6c2c8def2456019b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2E4OTJiN2NiY2YwOTAwNzk2MDk2YmVkNmMwNmE0MDg2MTI4MTdiNjA1MzdiMjRkZTBkNjM1YjAzYzc4NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmZkYTljODNlMzQzZDRhNTg4NjcyNzFiNDU2NDY4MmRiYTJjYTVjOGVhMmE1NzNhYTVmYTQyYmQ0YjIyZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2Njk4ZjFjODBjZmNlOTRmNTczNjUxMDBhMTdiNzI1MDZjNjUxNzcxMDhhOGM4ZGU4MWQyM2JjZjc0YTdiODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzODFiNGM5NmY3NTc1NDMxMDA3Zjc0MDUzNzA3OTQxZjBiMjQ0ZDlkZTA0NzI0MjYzMGE0OGFmNTZiZGFjYzcifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
         }
       ]
     },
@@ -1517,12 +1505,8 @@
       "statement": "The profile editor labels model effort support and requires an available effort before a model test.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L222-L227",
-          "version": "repo-lines-v1:sha256:5362ba981e9a60d5712854cd6ad15d52648af9d08d61f0d977fa80563e000f27:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTIyZTNjNjUzZWQxMWFjNmZjYjM1MDlkMmRjY2NhZGU4ZjM0MTJkODQyNGNkMmFkNDQ5ODc2MjRmMjY4NTdjZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQxNjVhODZkMTExN2VlNzg3OThjMWJmM2M1Y2MzNThjNGM4YTIyMGMzYWNlNGMxYWQxOTQxMGQzMjMxOTA2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFhODFjNTc1MGY1MWQ4NmMyYjI5ZGJiYTJhNDBmYTU0NWJhMGI1NTcyOGNiMmIxMjE1OTRlNTAzOTMxY2MxNCJ9"
-        },
-        {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L653-L666",
-          "version": "repo-lines-v1:sha256:13466e29793e99f93c61df4e4f6c0db9e648180e5491bc9d6c2c8def2456019b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2N2E4OTJiN2NiY2YwOTAwNzk2MDk2YmVkNmMwNmE0MDg2MTI4MTdiNjA1MzdiMjRkZTBkNjM1YjAzYzc4NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmZkYTljODNlMzQzZDRhNTg4NjcyNzFiNDU2NDY4MmRiYTJjYTVjOGVhMmE1NzNhYTVmYTQyYmQ0YjIyZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2Njk4ZjFjODBjZmNlOTRmNTczNjUxMDBhMTdiNzI1MDZjNjUxNzcxMDhhOGM4ZGU4MWQyM2JjZjc0YTdiODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzODFiNGM5NmY3NTc1NDMxMDA3Zjc0MDUzNzA3OTQxZjBiMjQ0ZDlkZTA0NzI0MjYzMGE0OGFmNTZiZGFjYzcifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
         }
       ]
     },
@@ -1531,8 +1515,8 @@
       "statement": "The role assignment dialog offers an Edit action for each enabled profile.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L540-L582",
-          "version": "repo-lines-v1:sha256:2917b29a1ab1a047552f09c9df792a786c26d902fa3aeb770ecdb59d8446b962:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkNWJjMDI0YzQ4YzVhNjZlMjQ4NTUyZjE2M2Y2ZTE4OWIxZWQzNDc0MGMwOTA3MWEzYjA1Nzg1MjQ1YmY1M2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NDdiZTUwZDhlYjUzM2ZmMTlmNzU3MWJjOGUwNjk4ZWZiMzEyOTE2ZTY2MWZmNGYyZDViZTlmYWNjM2QyNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkY2U0ZThhMzI4MGNhMWIzNTg1NGY3YTg5MjQzNjEwNjJkNTQwNGJjYjIzM2E2ODY3NTNhMmM4Y2M2NjY2ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NWRhZThhMGU4NjFiODU3ZDc0ZDNiMGQ0MGE2ZDVmYjEyMGFkNDNlZDIwN2JjNTg2OGEwZTEyZDY5ZGU0NjAifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
         }
       ]
     },
@@ -1541,7 +1525,7 @@
       "statement": "The smoke harness rejects a Discord socket path above 103 bytes before it creates the scratch home.",
       "evidence": [
         {
-          "resource": "repo://dashboard/smoke/harness.ts#L244-L254",
+          "resource": "repo://dashboard/smoke/harness.ts#L246-L256",
           "version": "repo-lines-v1:sha256:50d4adcc57a3d9b6d9e356ede301225acf5907df87b486d792305963280a7af3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ZDJmNjFhMWQ3NDRlZDYxYmIwNGJhZjJkZTQyMjg2NGU1NDhkZDMwOGQ0OTRhNmI3ZmU2NWIzZTZhNWI3NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MDU3MzU0M2IxNTdmMGNhNTk3YjM4NmVmYzkzZGNlZDNkZjIyM2Y1Y2EwMDYwYjEyMzg0MWMyMTJlNjkzOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZGFjNTA3YzNlODViZWE3YTlkMWYyODg4OTE1YzYzZDc0NmE5MTQ3OGI0ZjEzZmI2NjBjYmJmM2NmMDMwMDIifQ"
         }
       ]
@@ -1561,11 +1545,11 @@
       "statement": "Connection conditions show the profile name and retain the profile identifier in diagnostic facts.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L268-L277",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L278-L287",
           "version": "repo-lines-v1:sha256:5778880e119e347265427f552241e47628c4b5764d4b915e07b80e26c411d4d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkZjBhOTdlNTc0NDU2YTY5YzhhMDc5MzFjZDhhZWM5YjZjZThhZDA2MGM5MzZmMTZkYWVkYjIwMzhlOTI1NmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2YzdmNjg4YzE1MGI0MGJhODhjZjk4YWEyZDZhYzU1OGMyOTg2NjAwYmMwY2FlZDQ1OWY1MmExNTIxNWE5OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczOTM3MzExZGY2YTA3NDRiNjc4YTNiNWU4MDRiNmU2NWY5NzljZDU3NTEwOTcxMzQ0MzYwZjVjZTBhNTI3NDMifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L412-L416",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L422-L426",
           "version": "repo-lines-v1:sha256:c83af1ab3f36696054baa2df2416c63f71d2081f60eb7341a3fa0dbb5e16e81a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJiYWE1ZmM2N2ZiN2VmZWQ1ZThiMGExNzk5MzQ3YzFjZDk5ZWM0Y2E1ZDBjNzQ0M2NkOTBhYmJiNGU4ZmRhZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGRiN2FmNzY3ZjM0ODkxYjI0MWUzZGU1NGNkZjA5NDUzM2VlMzUwNTljODUzMGYxOWQyMjI2NmNmNGE4NTE3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTgyZGI5NTY5NWIzYzk3MDRjOTQ3MzYxYzI1ZjY1MmRjYjE0ODFhNzM0MTE1OWVlMmRkNmYyMDBjOThhY2M4NCJ9"
         }
       ]
@@ -1575,7 +1559,7 @@
       "statement": "System status retains an active run or Collie reply attempt identified by the current diagnostic after its connection revision changes.",
       "evidence": [
         {
-          "resource": "repo://mc/verbs/systemstatus.go#L545-L560",
+          "resource": "repo://mc/verbs/systemstatus.go#L548-L563",
           "version": "repo-lines-v1:sha256:fa998d2b42e40e900e3ef6100dbff3eb0f8d6480e86a5ff3b3a740951b3ad1f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2NmIwM2RhM2FhM2JkOGEzNjBkZDA0ZmYzM2YyNDI2NWY1NTk2MmFiNDg3OGExNDA4NjY5ZDBlZTA5MWQ2MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlMWI0OWRjNzJmNjMyNjNkYzRmODFkZDIxZGYzZWRiZmU2NWU5NjVlN2FmMjhjNDM4OGFmMjc0NThlZTYwY2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MWQyY2MwZDA0ZjkxODVmNmM2MjE4MTZmZTdmYmJlZjVkZTI3NzJhNGY5NzBiNzk5NGIyMjVjNjMzYTkxMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4MWZjNTJlMzZhMGM5MmVkN2Y0NjZiYzczNTFjNTJmNGM0YTAwYjRmNzcxOThmYjFmYjIzNWI4NGQ0ZjhhNDQifQ"
         }
       ]
@@ -1599,11 +1583,11 @@
       "statement": "System health excludes unused connection conditions from issues and groups unused connections separately from connections that require attention.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L181-L195",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L191-L205",
           "version": "repo-lines-v1:sha256:d61e7e51e393ea68d0980117465f0c4155f25b885bf042bccac6d9de8e706b1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYWMyODhjNDI5YjA0NjU3OTBiNWEyNmVjNDY5ODk3MGFkMTcxNzZiODE1MmM2NGJkYzlmNWMyYmMwNTRlOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3ZTFkOWFjZThkM2RmM2ZkYTI3NmRiMWE5NTRhOWFjYzBlYjM3MTk5ZGM3Y2QzYjAwZjRjNmE3MzNmMmU5NzgifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/systemhealth.js#L306-L317",
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L316-L327",
           "version": "repo-lines-v1:sha256:9d2e3cebd72fd176575014731c27bcc67ce85dca01ea6ebe17c8f9671a61c8a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmYjUyZDQ3YTRmNjNlNjcxOWIyOWU2NmU5ODdjM2U5MzE4MWQxM2QwMTliODkyNmM5MTU0NDQyZWRmMGU5Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZTk1ZjIyZDAwODAzOWZjYjhmNDRmZTQzNzY1ZjJhZDZjNjNhNTFkNTdiNDE1MGU1ZmJhY2Y4YmVhNDcxZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxYzI5YjJmMjBhMTViM2IyNzg5NzI0NTA4OTJmZDBlZmI5YjZmNDZkZDFiZjcwN2U0NDdjNTUzMWMwYzYyMzUifQ"
         }
       ]
@@ -1613,7 +1597,7 @@
       "statement": "Provider search lists OpenCode providers and ranks name matches before identifier and address matches; an empty query lists all OpenCode providers.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L58-L76",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L81-L99",
           "version": "repo-lines-v1:sha256:f37360439deb3eb1d122ba383f9e7dd29ca66ec29f7a3f28d4c5be8e853bb49a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwMjE2YTI0NjkxYTUwZjllYmQ5ODZhNTc3NjBkOWJmOWJiNGQyY2I0ZDk0OWYwNWVlMzZlYTI3NDkzOWRhNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjYTA0YTViZGJhZDI5MmE5ZjVjMDA4ZGYxYjJjMGUxY2UwMWVlZTVkODM0N2U0ZTczMzZhMTYzZjIxMmQwNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwMDJmNjU3YzM5NThkMTI1ZTE0ZDJmYWI4N2M4MmFkNjc2ZDI2MGIzOTRlNTViMjJjYjAzMzM4YmI3ZDIzMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmNWQwYzQ2YjY4MmRlZjY4MGU3OWQxY2VmZjhjZTUzMGQ2Y2M4ZWY0MWQ3ODAwMjJkNDNjMjBkMDhkZGFhYmMifQ"
         }
       ]
@@ -1623,12 +1607,12 @@
       "statement": "A successful setup test records connection and profile verification for system status.",
       "evidence": [
         {
-          "resource": "repo://mc/cmd/mc/systemstatus.go#L543-L585",
-          "version": "repo-lines-v1:sha256:2dec6f1f35ce1710078a55c0817829de2f1163863b6e0bac18fda3c3095473d9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMmNmODEyMjg5MDA3Zjk5NTI2MjNkMGI4Nzk1ZjliZjU3MDM5NTZiMWI3NjE1NzVjMzE0YjhmOTIzZDMxZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViMTQ5MmU5MTFlMGFmMjljZGYyM2VjNWM2Mzk3Mjg5MThiNTFmODFmYzIxZjAwM2Q1NTgwNjU0NDEwYjgxNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNzcwYTg2MGNmOGFkMjVhMzdjNTM0NzdiYmJkYTNlYzFmYjlhZjE3YTc4YTUxYTcxZWQ3MjNkM2YyZTZhODIifQ"
+          "resource": "repo://mc/cmd/mc/systemstatus.go",
+          "version": "repo-file-v1:sha256:3a813a31a235b8b1bb2a0e3ebb5a71d5c0941bb7a8a654d908988ce301733447"
         },
         {
-          "resource": "repo://mc/cmd/mc/systemstatus_setup_test.go#L74-L95",
-          "version": "repo-lines-v1:sha256:64252e9b02d95efbe5796aad4577851c76220a201f7a65abcd4e7b178e8121ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTczNTg4ZDcxMTUzZDE4MTFkOGI1ZWZlMDEyZjVmZDI3Yzc1ZGUwY2FjMDZmZGIwNDBlNzE5ZDgxYmUyN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjOGQ4ODk1YTA5NmY1NTQ0NGRhYjg3ODllNzE4NGY0Zjg1NmE1YTg1N2YwNjgwYWJmMDY1ZDNmZTRiOTMxYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://mc/cmd/mc/systemstatus_setup_test.go",
+          "version": "repo-file-v1:sha256:130e12d06c44153bf383dd6dcb6e699e0912f66b8d13cce0654a2eb9a231d754"
         }
       ]
     },
@@ -1637,11 +1621,11 @@
       "statement": "The form derives connection names from provider and access method, reuses eligible disconnected connections, and adds a number when the name is occupied.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L745-L773",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L828-L856",
           "version": "repo-lines-v1:sha256:351215042758a2ce4a36ebe620bd8afd3827a1b21331643da9bb2d9a8d5b42cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0ZDhkMmU4Y2RmZmMyM2UyMjlmNGRiOTkzZTkxMjcwYzU3ZjRjZjNlMTkzMTI0Yjc3YjhiMDAxZDlhODAyNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyM2ExOGRjODcxNmJkNDI4Yzg5MWUyNTBhNzA0ZGNmNjUwNDVhZmFhNjhmZGFmMWQwZTU4YTA2MmM0MzcwMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1NGNjMjVlNDA2OTkyZDZjZWJkNWY2MGNmZjZiNzQ2MjUzN2E4YjM2Mzk2MWM2NWFlNmE2Njk2MWUyN2ZmZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjOGNmNmIzNGU1MWQ5YTQ1MTNkN2JmOWZmYjMwZGM4NmU3NDhjYTIxMTAwNTAwOGE2NWExZGI1YjFiMWE1Y2IifQ"
         },
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L88-L100",
+          "resource": "repo://dashboard/src/ui/agentprofiles.js#L111-L123",
           "version": "repo-lines-v1:sha256:2f533ddd2e154c4c01bca5d84bfbd4e2583008c9b700401107f8ae04060b9890:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Q3Nzc1MTY3ZDcyYTk1ZTUxM2E3N2NlOWVjYTI5MGIyZjA1MGU1Y2YxYWZiNjE5ZDBmZjlmNGE1YTUwODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyMGE3N2Y4ZTA0OTZiMWVjMjRlZTA5M2FjNTc0YWM2ODZjYzc4YjE4NGFjNWQ3ZjU0YmRiMzg1NWFkMzkzZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQyNWZkZDcxMmM4NWM3MzRmNWMyY2E0ZDBiYTY3YTBiY2YyNTA5ZjRkMGY4ZGExNmYyY2YxZGRmNzNkM2E0NjIifQ"
         }
       ]
@@ -1651,8 +1635,8 @@
       "statement": "The selected provider summary remains above the key field when a new search hides the selected result.",
       "evidence": [
         {
-          "resource": "repo://dashboard/src/ui/agentprofiles.js#L803-L822",
-          "version": "repo-lines-v1:sha256:2c782c137c149f3a1802aee6aba42b754931c127126521d77160faf0709c2866:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNTY3NTc2NjViZWY5YWZhODZhZjEwNmExNWRiNDI4MzQyODU2ZTVkODNhODk1Y2UwNDlhMjI3MDhlZmQ5NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNjg1YmFjZDEzMTgyNjM2YjA4MTBhNTI3MDg2ZGVjNDcwZmQ3ODZjZDMyYjgwZDJlMmNkODMwYjhkMzU4NWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4MTY5NTVmNDJlOTZlNzUyMDM1YTY5YTcwNDJhYTZiN2JmNWZhN2E5M2ZlZjJkYWQ0YjIxYTk0Mjc0ZDM0YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjMzU1NDBjNjAxMjYzNGIwNTk4ZmEyOTNjYjliMGM3ZmY2M2Y5NjI5YTE4NTIyYTJkNDAxNmQwM2Q2NjkxYTcifQ"
+          "resource": "repo://dashboard/src/ui/agentprofiles.js",
+          "version": "repo-file-v1:sha256:ed9ce7c3ed26faf7f0ffccb74b32ae73e090fed3dd506683e12483d4af3c57af"
         }
       ]
     },
@@ -1683,7 +1667,7 @@
           "version": "repo-lines-v1:sha256:0b4f4328040589ef57b2d2649ff7009ce5490e7ba6b7ee57157d5928ffdad675:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyODY3NzQ3NDEwMzI1MmZiNTg2M2Y2OTY1MzY5NWE5MTEzODM2ZjZhZTIxMjdjOWIwNDBiOWMwZmYwOTEwMjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlMzMzYTcxOGRlZjU3NzRjZTU1MDY1MDc1MDZiZmEzN2E4MmVlOTM2Mzk5NDM4ZWE2ZGM5MjI5YmUzOWJhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMjk3YjIwZDg5MWNkM2I4NDI1YTkwN2I4MjUyMzIwM2ZhMjMzNGMyNDE0NTQzYWM4MmFlYTIyNjdkNmY4MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4MDAyMTY4ZjY5ZDFmNzhiYzkxNDNkMmE0YTgxMGMwMzlkMDdkOTU1ZGMyY2JkZWRkNjNlMjQzZjM3MTcxYWUifQ"
         },
         {
-          "resource": "repo://mc/deployment/host_release.go#L74-L81",
+          "resource": "repo://mc/deployment/host_release.go#L87-L94",
           "version": "repo-lines-v1:sha256:ad8a02cbe648dcc63aba4065cc63d9d1685e9dca86ed3c377d13e2e637cd66e8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJmM2E5ZGMwMWRlMWU0ZGU3NjY3YjJiOTg3ZGE1MmE3OGJiYjUwOTBhMjNhNDkxMWQ1Mzg4YjE3YzVkYjRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFlNWYzYWFkNGRjZDJmN2YxYTcwNGMxZTVkNTgyM2U4MjU5MmYzYjNkMjExNmVmMDcwNTQ5MTZkYjE3YjcyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODI5MWIxNzIyNmNiN2YxZmNjMDc4MWEyOWNhMmE4MTg0MjVmM2Y3ZWU0ZDJhZTVlMjBmZTQ4M2UyYjgxYzZiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzA0NzMzOThkOTI0NmQ3NWQ3Yzc5ZDNmNzMzMDMyMzUxZTg0ODgxYTI4NDFhNTIzNjM5MTY4ODM3YTMzNjA0MiJ9"
         }
       ]
@@ -1719,10 +1703,20 @@
           "version": "repo-lines-v1:sha256:28de7c5136e8711f8f7d7053432c47c8d2c9e36536b3d19e2b42c440b86d38b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWVjZDVjZmJjOWQzNzQyMDM2Y2Q2MGJhZmIxMzAyOGEwYWY4NDRiMzg0ZGYyZTIwYmRiM2JkNjUyNjFiOGJjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzBjNTczNTdmMWY3OTI3NWYyYTYzMjllNWE2OGVmNGFlNmExMDdjNTcwMzk5ZjM5MDAwMDE3YjIxN2ZmYjdkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg0ZjYxYjcyZjQyYTgyZGNjMDhmNzRkOTJlNmE5ZjNlZTQ2YWMxMzdkMGY2OWZjNjRlY2UxYWNmNDkwMTQyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWUyOThjNWEzZTBmYTcxNWZhMWZlMDkzM2Q1ZjBhZTVlYTYxNDIzYmY2OGM0ZTMyZTU5MTJjMzM1ZWVmODYwZCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_ce004d83e4e6461188ff290d3788d738",
+      "statement": "Two consecutive failed system status reads show Status unavailable; a successful read resets the failure count.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/systemhealth.js#L99-L137",
+          "version": "repo-lines-v1:sha256:6af2f8427f1a7cee55a70d15925560efa5bd22e9d8e2382ecbab3d8ba9a026c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3YjQwMWIxOGYxNzExZWIzMjcxMDBjYjcxMTM1ZDQ4MjY0OWZkNTI5Y2JhNDI2ODI2ZDQ3ZDA5MDU2MzA4YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2YTkwMzFhYzE2YTQ0MWU0MzU2ZmM4MTc3OTQxMWU1MDJmYWRlNGVkMDFhY2FhYjM3ZGYxZGIyZGM4ODIyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjMzYzYjM0ZWQ2ZjBiZDYyYjFiYTA5NTEzNDNjOTQwZGRiZGZkNDgwNzVjYWMxY2UxNTYyZmIyMzljMTI0N2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVjMDNmNWZmNmMxZDFkNmMyZTg2MjdlMzNmNzY3OGJkMzVjNDkzNzM0ZmM1YWI3YzcwN2UzM2NhMjg5MzE5MzMifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.0",
-    "at": "2026-11-10T19:18:31.051Z"
+    "at": "2026-11-12T00:22:22.352Z"
   }
 }

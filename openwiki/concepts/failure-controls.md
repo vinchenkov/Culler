@@ -36,10 +36,10 @@ sources:
     resource: repo://mc/verbs/skills/worker/mc-worker/SKILL.md
   - id: openwiki-source-947e8b3d1474c80d6712c56f
     resource: repo://mc/verbs/verbs.go
-generated: { by: "culler-scribe", at: "2026-11-09T18:05:27.232Z" }
+generated: { by: "culler-scribe", at: "2026-11-12T00:11:01.469Z" }
 verified:
   - by: openwiki/0.7.0
-    at: 2026-11-09T18:05:27.232Z
+    at: 2026-11-12T00:11:01.469Z
 ---
 
 # Failure controls and retry allowances
@@ -87,7 +87,7 @@ The correction allowance belongs to the delivery flow; see [task pipeline](../wo
 
 `agent_started_at` is set by `RunProcessStarted` (`mc run process-started`). The agent runner calls it before it writes the brief to the harness (`runner/agent-runner/main.ts`). A claim alone is not evidence that the agent started.
 
-`runFailureReason` then decides whether the failure is a **system condition**. A report with a network error class, an HTTP status or provider error code, or a resident-confirmed credential or connection cause is a system condition. It charges nothing and holds new runs through the connection state. An agent's own report is never a system condition; its cause is forced to `unknown`. A runner report without provider evidence is a `harness` failure and is charged.
+`runFailureReason` then decides whether the failure is a **system condition**. A network error or resident-confirmed credential or connection cause is a system condition. Provider evidence normally identifies a system condition, but request-local provider failures remain charged run failures unless reported as a connection cause. It charges nothing and holds new runs through the connection state. An agent's own report is never a system condition; its cause is forced to `unknown`. A runner report without provider evidence is a `harness` failure and is charged.
 
 Other no-charge paths:
 
