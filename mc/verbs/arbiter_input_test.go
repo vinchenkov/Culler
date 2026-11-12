@@ -22,7 +22,7 @@ func TestArbiterInputPreservesAssignmentAndDeliversRulesOnce(t *testing.T) {
 	insertHistoricalTask(t, db, 3, "ws-test", "rejected", "2001-01-01 00:00:00")
 	insertHistoricalTask(t, db, 4, "ws-test", "cancelled", "2001-01-01 00:00:00")
 	custom := "Prefer improvements to the report export."
-	saveCustom(t, db, dispatch.RoleArbiter, 0, custom)
+	saveCustom(t, db, dispatch.RoleArbiter, custom)
 	dvExec(t, db, `INSERT INTO proposal_decisions(project,question,resolution,resolved_at)
 		VALUES('ws-test','Which format?','Use the open format.','2001-01-01 00:00:00')`)
 	vision := &ProjectVisionCheck{Ready: true, Content: "The Project exports accessible reports."}

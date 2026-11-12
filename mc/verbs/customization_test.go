@@ -12,9 +12,9 @@ import (
 	"mc/domain"
 )
 
-func saveCustom(t *testing.T, db *sql.DB, role dispatch.Role, revision int64, text string) RoleCustomization {
+func saveCustom(t *testing.T, db *sql.DB, role dispatch.Role, text string) RoleCustomization {
 	t.Helper()
-	result, err := ProjectRoleSave(db, nil, RoleSaveRequest{Project: "ws-test", Role: role, ExpectedRevision: &revision, Instructions: &text})
+	result, err := ProjectRoleSave(db, nil, RoleSaveRequest{Project: "ws-test", Role: role, Instructions: &text})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,10 +34,10 @@ func claimCustom(t *testing.T, db *sql.DB, role dispatch.Role, subject *int64, r
 	}
 	return &RunIdentity{Tier: "pipeline", Role: string(role), RunID: run}
 }
-func TestCustomizationRevisionsAndRunIsolation(t *testing.T) {
+func TestCustomizationReplacementAndRunIsolation(t *testing.T) {
 	db := dvSpine(t)
 	raw := "  Use the tests in api/.\nKeep this exact text.\n"
-	c := saveCustom(t, db, dispatch.RoleStrategist, 0, raw)
+	saveCustom(t, db, dispatch.RoleStrategist, raw)
 	result, err := dvDispatchOne(db)
 	if err != nil {
 		t.Fatal(err)
@@ -50,30 +50,36 @@ func TestCustomizationRevisionsAndRunIsolation(t *testing.T) {
 	if effect["role"] != "strategist(propose)" {
 		t.Fatalf("The Strategist wire identifier changed: %v", effect["role"])
 	}
-	saveCustom(t, db, dispatch.RoleStrategist, c.Revision, "")
+	saveCustom(t, db, dispatch.RoleStrategist, "Replace the text.")
+	saveCustom(t, db, dispatch.RoleStrategist, "  \n")
 	got, err := RunCustomization(db, nil, run)
 	if err != nil {
 		t.Fatal(err)
 	}
 	original := got.(RoleCustomization)
-	if original.Instructions != raw || original.Revision != 1 || original.StandardDigest == "" {
+	if original.Instructions != raw || original.StandardDigest == "" {
 		t.Fatalf("The run lost its input: %+v", original)
 	}
+	if n := dfInt(t, db, `SELECT COUNT(*) FROM role_customizations`); n != 0 {
+		t.Fatalf("empty instructions kept %d records, want none", n)
+	}
+	saveCustom(t, db, dispatch.RoleStrategist, "First")
+	saveCustom(t, db, dispatch.RoleStrategist, "Second")
 	fresh, err := customizationCurrent(context.Background(), db, "ws-test", dispatch.RoleStrategist)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if fresh.Revision != 2 || fresh.Instructions != "" {
-		t.Fatalf("The empty revision differs: %+v", fresh)
+	if fresh.Instructions != "Second" || dfInt(t, db, `SELECT COUNT(*) FROM role_customizations`) != 1 {
+		t.Fatalf("The save did not replace the instructions: %+v", fresh)
 	}
 	other, err := customizationCurrent(context.Background(), db, "ws-test", dispatch.RoleWorker)
-	if err != nil || other.Revision != 0 {
-		t.Fatalf("The revision crossed roles: %+v %v", other, err)
+	if err != nil || other.Instructions != "" {
+		t.Fatalf("The instructions crossed roles: %+v %v", other, err)
 	}
 	dvAddProject(t, db, "other", "paused")
 	other, err = customizationCurrent(context.Background(), db, "other", dispatch.RoleStrategist)
-	if err != nil || other.Revision != 0 {
-		t.Fatalf("The revision crossed Projects: %+v %v", other, err)
+	if err != nil || other.Instructions != "" {
+		t.Fatalf("The instructions crossed Projects: %+v %v", other, err)
 	}
 	if err := inTx(db, func(ctx context.Context, q Q) error {
 		if err := endRun(ctx, q, run, "completed"); err != nil {
@@ -92,27 +98,18 @@ func TestCustomizationRevisionsAndRunIsolation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if nextRecord.(RoleCustomization).Revision != 2 || nextRecord.(RoleCustomization).Instructions != "" {
-		t.Fatal("The new run did not receive the empty revision.")
+	if nextRecord.(RoleCustomization).Instructions != "Second" {
+		t.Fatal("The new run did not receive the current instructions.")
 	}
-	if _, err := db.Exec(`UPDATE role_customizations SET instructions='replace'`); err == nil {
-		t.Fatal("The spine changed revision history.")
-	}
-	if _, err := db.Exec(`UPDATE run_customizations SET revision=2`); err == nil {
+	if _, err := db.Exec(`UPDATE run_customizations SET instructions='replace'`); err == nil {
 		t.Fatal("The spine changed run input.")
 	}
 }
-func TestCustomizationPermissionsAndStaleSave(t *testing.T) {
+func TestCustomizationPermissions(t *testing.T) {
 	db := dvSpine(t)
-	saveCustom(t, db, dispatch.RoleWorker, 0, "First")
+	saveCustom(t, db, dispatch.RoleWorker, "First")
 	text := "Second"
-	zero := int64(0)
-	one := int64(1)
-	a := RoleSaveRequest{Project: "ws-test", Role: dispatch.RoleWorker, ExpectedRevision: &zero, Instructions: &text}
-	if _, err := ProjectRoleSave(db, nil, a); err == nil {
-		t.Fatal("A stale save succeeded.")
-	}
-	a.ExpectedRevision = &one
+	a := RoleSaveRequest{Project: "ws-test", Role: dispatch.RoleWorker, Instructions: &text}
 	restricted := operatorSession(t, db, "collie-restricted", []string{"project.pause"})
 	for _, id := range []*RunIdentity{{Tier: "pipeline", Role: "worker"}, {Tier: "collie"}, restricted} {
 		if _, err := ProjectRoleSave(db, id, a); err == nil {
@@ -124,15 +121,15 @@ func TestCustomizationPermissionsAndStaleSave(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.(RoleCustomization).Author != "collie:collie-test" {
-		t.Fatal("The revision lost its author.")
+	if r.(RoleCustomization).Author != "collie:collie-test" || r.(RoleCustomization).Instructions != "Second" {
+		t.Fatalf("The save lost its author or text: %+v", r)
 	}
 	shown, err := ProjectRoleShow(db, collie, "ws-test", dispatch.RoleWorker)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(shown.(map[string]any)["history"].([]RoleCustomization)) != 2 {
-		t.Fatal("The history differs from the saves.")
+	if shown.(map[string]any)["current"].(RoleCustomization).Instructions != "Second" {
+		t.Fatal("The read differs from the last save.")
 	}
 	roles := shown.(map[string]any)["roles"].([]map[string]string)
 	if roles[0]["role"] != "strategist(propose)" || roles[0]["title"] != "Strategist" {
@@ -152,10 +149,10 @@ func TestCustomizationConflictBlocksSubjectOrRole(t *testing.T) {
 				dvInsertTask(t, db, dvTask(1, dispatch.ScopeTask, dispatch.StatusSeeded, 2))
 				dvExec(t, db, `UPDATE tasks SET correction_count=1,dispatch_retries=2 WHERE id=1`)
 			}
-			saveCustom(t, db, role, 0, "Report false evidence.")
+			saveCustom(t, db, role, "Report false evidence.")
 			id := claimCustom(t, db, role, subject, "conflict-run")
 			dvExec(t, db, `UPDATE projects SET status='paused' WHERE id='ws-test'`)
-			a := CustomizationConflictRequest{Run: id.RunID, Revision: 1, Passage: "Report false evidence.", Requirement: "Report evidence truthfully.", Reason: "False evidence cannot be truthful."}
+			a := CustomizationConflictRequest{Run: id.RunID, Passage: "Report false evidence.", Requirement: "Report evidence truthfully.", Reason: "False evidence cannot be truthful."}
 			wrong := *id
 			wrong.RunID = "other"
 			if _, err := RunCustomizationConflict(db, &wrong, a); err == nil {
@@ -181,12 +178,12 @@ func TestCustomizationConflictBlocksSubjectOrRole(t *testing.T) {
 			if dfInt(t, db, `SELECT COUNT(*) FROM infrastructure_failures`) != 0 {
 				t.Fatal("The block recorded an infrastructure failure.")
 			}
-			saveCustom(t, db, role, 1, "")
+			saveCustom(t, db, role, "")
 			reports, err := customizationConflicts(context.Background(), db, "ws-test", role)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(reports) != 1 || !reports[0].Blocked || reports[0].Revision != 1 || reports[0].Passage != a.Passage {
+			if len(reports) != 1 || !reports[0].Blocked || reports[0].Passage != a.Passage {
 				t.Fatalf("The save changed the report: %+v", reports)
 			}
 			if task {
@@ -244,10 +241,10 @@ func TestCustomizationConflictBlocksSubjectOrRole(t *testing.T) {
 // next start, and no operator action clears a block.
 func TestScribeCustomizationConflictSetsNoRoleBlock(t *testing.T) {
 	db := dvSpine(t)
-	saveCustom(t, db, dispatch.RoleScribe, 0, "Report false evidence.")
+	saveCustom(t, db, dispatch.RoleScribe, "Report false evidence.")
 	run := wrWantSpawn(t, wrRound(t, db, "ws-test", wrCommitA, wrCommitA), "ws-test")
 	id := wcScribe(run)
-	a := CustomizationConflictRequest{Run: run, Revision: 1, Passage: "Report false evidence.",
+	a := CustomizationConflictRequest{Run: run, Passage: "Report false evidence.",
 		Requirement: "Report evidence truthfully.", Reason: "False evidence cannot be truthful."}
 	bad := a
 	bad.Passage = "Invented passage"
@@ -286,7 +283,7 @@ func TestScribeCustomizationConflictSetsNoRoleBlock(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(reports) != 1 || reports[0].Blocked || reports[0].Run != run || reports[0].Revision != 1 || reports[0].Resolution != "The wiki update ended as failed." {
+	if len(reports) != 1 || reports[0].Blocked || reports[0].Run != run || reports[0].Resolution != "The wiki update ended as failed." {
 		t.Fatalf("conflict reports of the role = %+v, want one report with no block", reports)
 	}
 	rec, err := loadRecords(context.Background(), db, "ws-test")
@@ -317,7 +314,7 @@ func TestScribeCustomizationConflictSetsNoRoleBlock(t *testing.T) {
 
 func TestCustomizationConflictBlocksSubjectlessArbiter(t *testing.T) {
 	db, id := proposalReview(t)
-	saveCustom(t, db, dispatch.RoleArbiter, 0, "Report false evidence.")
+	saveCustom(t, db, dispatch.RoleArbiter, "Report false evidence.")
 	if err := inTx(db, func(ctx context.Context, q Q) error {
 		return recordRunCustomization(ctx, q, &dispatch.Spawn{Project: "ws-test", Role: dispatch.RoleArbiter}, id.RunID)
 	}); err != nil {
@@ -325,7 +322,7 @@ func TestCustomizationConflictBlocksSubjectlessArbiter(t *testing.T) {
 	}
 	dvExec(t, db, `UPDATE projects SET infrastructure_failure_count=1 WHERE id='ws-test'`)
 	_, err := RunCustomizationConflict(db, id, CustomizationConflictRequest{
-		Run: id.RunID, Revision: 1, Passage: "Report false evidence.",
+		Run: id.RunID, Passage: "Report false evidence.",
 		Requirement: "Report evidence truthfully.", Reason: "False evidence cannot be truthful.",
 	})
 	if err != nil {
@@ -337,7 +334,7 @@ func TestCustomizationConflictBlocksSubjectlessArbiter(t *testing.T) {
 	if dfInt(t, db, `SELECT COUNT(*) FROM tasks WHERE blocked=1 OR status<>'proposed'`) != 0 {
 		t.Fatal("The role block changed the proposal pool.")
 	}
-	saveCustom(t, db, dispatch.RoleArbiter, 1, "")
+	saveCustom(t, db, dispatch.RoleArbiter, "")
 	rec, err := loadRecords(context.Background(), db, "ws-test")
 	if err != nil {
 		t.Fatal(err)

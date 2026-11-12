@@ -128,7 +128,7 @@ func definitions() []Definition {
 	}
 	roleFlags := []Field{textField("project", "The Project identifier.", true), choice("role", "The pipeline role.", true, "strategist(propose)", "arbiter", "worker", "verifier", "packager", "scribe"), textField("request", "The request as JSON; - reads standard input.", false)}
 	for _, action := range []string{"role-show", "role-save", "role-unblock"} {
-		d = result(add("project "+action, "Inspect or change the Project's role instructions and independent role block.", action != "role-show", false, nil, roleFlags...), "customization", "runs")
+		d = result(add("project "+action, "Inspect or change the Project's role instructions and independent role block.", action != "role-show", false, nil, roleFlags...), "customization")
 		if action != "role-show" {
 			d.Flags = []Field{textField("request", "The request as JSON; - reads stdin.", false)}
 			request(d, 1024*1024)

@@ -1396,13 +1396,13 @@ func wrFailures() []wrFailure {
 			}},
 		wrFailure{name: "customization conflict", outcome: "completed", cause: "The custom instructions of the Scribe conflict with the Culler contract.",
 			fail: func(t *testing.T, db *sql.DB, project string) string {
-				revision, instructions := int64(0), "Report false evidence."
+				instructions := "Report false evidence."
 				if _, err := ProjectRoleSave(db, nil, RoleSaveRequest{Project: project, Role: dispatch.RoleScribe,
-					ExpectedRevision: &revision, Instructions: &instructions}); err != nil {
+					Instructions: &instructions}); err != nil {
 					t.Fatal(err)
 				}
 				run := wrStart(t, db, project)
-				if _, err := RunCustomizationConflict(db, wcScribe(run), CustomizationConflictRequest{Run: run, Revision: 1,
+				if _, err := RunCustomizationConflict(db, wcScribe(run), CustomizationConflictRequest{Run: run,
 					Passage: instructions, Requirement: "Report evidence truthfully.", Reason: "False evidence cannot be truthful."}); err != nil {
 					t.Fatalf("customization conflict of the Scribe: %v", err)
 				}
@@ -1779,9 +1779,9 @@ func TestActiveArtifactExpiryHoldsNoWikiUpdate(t *testing.T) {
 
 func TestWikiStartRecordOfALargeEffect(t *testing.T) {
 	db := dvSpine(t)
-	revision, instructions := int64(0), strings.Repeat("Keep each page short. ", 2000)
+	instructions := strings.Repeat("Keep each page short. ", 2000)
 	if _, err := ProjectRoleSave(db, nil, RoleSaveRequest{Project: "ws-test", Role: dispatch.RoleScribe,
-		ExpectedRevision: &revision, Instructions: &instructions}); err != nil {
+		Instructions: &instructions}); err != nil {
 		t.Fatal(err)
 	}
 	prepared := wrPrepare(t, db, "ws-test", wrCommitA, nil)

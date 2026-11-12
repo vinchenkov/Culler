@@ -2860,29 +2860,22 @@ CREATE TABLE role_customizations (
     project TEXT NOT NULL REFERENCES projects(id),
     role TEXT NOT NULL CHECK (role IN ('strategist(propose)',
         'arbiter', 'worker', 'verifier', 'scribe', 'packager')),
-    revision INTEGER NOT NULL CHECK (revision > 0),
-    instructions TEXT NOT NULL CHECK (length(CAST(instructions AS BLOB)) <= 65536),
+    instructions TEXT NOT NULL CHECK (length(trim(instructions)) > 0
+        AND length(CAST(instructions AS BLOB)) <= 65536),
     author TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT (datetime('now')),
-    PRIMARY KEY (project, role, revision)
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (project, role)
 );
-CREATE TRIGGER role_customizations_immutable BEFORE UPDATE ON role_customizations
-BEGIN SELECT RAISE(ABORT, 'customization revisions are immutable'); END;
-CREATE TRIGGER role_customizations_retained
-BEFORE DELETE ON role_customizations
-WHEN NOT EXISTS (SELECT 1 FROM project_deletion_records
-    WHERE table_name='role_customizations' AND row_id=OLD.rowid)
-BEGIN SELECT RAISE(ABORT, 'customization revisions are retained'); END;
 
+-- Each run keeps the instructions that it received.
 CREATE TABLE run_customizations (
     run_id TEXT PRIMARY KEY REFERENCES runs(id),
     project TEXT NOT NULL REFERENCES projects(id),
     role TEXT NOT NULL CHECK (role IN ('strategist(propose)',
         'arbiter', 'worker', 'verifier', 'scribe', 'packager')),
-    revision INTEGER,
+    instructions TEXT NOT NULL,
     standard_directive TEXT NOT NULL,
-    standard_digest TEXT NOT NULL,
-    FOREIGN KEY (project, role, revision) REFERENCES role_customizations(project, role, revision)
+    standard_digest TEXT NOT NULL
 );
 CREATE INDEX run_customizations_project_role ON run_customizations(project,role);
 
@@ -2916,10 +2909,6 @@ WHEN NOT EXISTS (SELECT 1 FROM project_deletion_records
     WHERE table_name='customization_conflicts' AND row_id=OLD.rowid)
 BEGIN SELECT RAISE(ABORT, 'conflict reports are retained'); END;
 
-CREATE TRIGGER role_customizations_sequence BEFORE INSERT ON role_customizations
-WHEN NEW.revision <> (SELECT COALESCE(MAX(revision),0)+1 FROM role_customizations WHERE project=NEW.project AND role=NEW.role)
-BEGIN SELECT RAISE(ABORT, 'customization revisions must be consecutive'); END;
-
 CREATE TRIGGER run_customizations_assigned_run BEFORE INSERT ON run_customizations
 WHEN NOT EXISTS (
     SELECT 1 FROM runs r
@@ -2935,11 +2924,10 @@ CREATE TRIGGER customization_conflicts_assigned_run BEFORE INSERT ON customizati
 WHEN NOT EXISTS (
     SELECT 1 FROM runs r
     JOIN run_customizations c ON c.run_id=r.id
-    JOIN role_customizations v ON v.project=c.project AND v.role=c.role AND v.revision=c.revision
     WHERE r.id=NEW.run_id AND r.ended_at IS NULL AND r.outcome IS NULL
       AND (EXISTS (SELECT 1 FROM leases l WHERE l.run_id=r.id)
         OR EXISTS (SELECT 1 FROM wiki_updates w WHERE w.run_id=r.id AND w.ended_at IS NULL))
-      AND instr(v.instructions,NEW.passage)>0
+      AND instr(c.instructions,NEW.passage)>0
 )
 BEGIN SELECT RAISE(ABORT, 'a conflict requires the custom instructions of its active run'); END;
 

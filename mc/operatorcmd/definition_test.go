@@ -55,7 +55,7 @@ func TestPublicRequestsPreserveSupportedInputForms(t *testing.T) {
 		{[]string{"project", "vision-draft", "example"}, ""},
 		{[]string{"project", "vision-edit", "example", "--revision", "r", "--content", ""}, ""},
 		{[]string{"project", "vision-edit"}, `{"id":"example","revision":"r","content":""}`},
-		{[]string{"project", "role-save", "--request", `{"project":"example","role":"worker","expected_revision":0,"instructions":""}`}, ""},
+		{[]string{"project", "role-save", "--request", `{"project":"example","role":"worker","instructions":""}`}, ""},
 		{[]string{"board", "write", "--request", `{"operation_id":"x","action":"create","scope":"task","project":"example","title":"Example"}`}, ""},
 		{[]string{"agent-profile", "operation-start"}, `{"operation_id":"x","kind":"opencode_download"}`},
 		{[]string{"agent-profile", "operation-start"}, `{"operation_id":"x","kind":"model_test","confirm_spend":true,"profile":{"id":"p","name":"P","connection_id":"c","model":"m"}}`},
@@ -83,9 +83,9 @@ func TestPublicRequestsKeepCredentialAuthorizationOnHost(t *testing.T) {
 
 func TestArgumentsUseDescribedValues(t *testing.T) {
 	for _, args := range [][]string{
-		{"project", "role-save", "-request", `{"project":"other","role":"worker","expected_revision":0,"instructions":"text"}`},
+		{"project", "role-save", "-request", `{"project":"other","role":"worker","instructions":"text"}`},
 		{"packet", "decide", "1", "--approve", "--packet", "1", "--packet", "2", "--version", "1"},
-		{"project", "role-save", "--project", "allowed", "--request", `{"project":"other","role":"worker","expected_revision":0,"instructions":"text"}`},
+		{"project", "role-save", "--project", "allowed", "--request", `{"project":"other","role":"worker","instructions":"text"}`},
 		{"packet", "decide", "1", "--approve", "--revise", "--packet", "1", "--version", "1"},
 		{"packet", "decide", "1", "--approve", "--packet", "0", "--version", "1"},
 		{"routing", "set", "--role", "worker", "--binding", "new"},

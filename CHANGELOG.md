@@ -8,6 +8,7 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 
 ### Changes
 
+- Each role of a Project has one set of custom instructions. A save replaces them, and the dashboard shows no revision history.
 - Collie and external coding agents share the supported operator commands and a common `culler` skill.
 - The command help describes each operation, its request, its result, and its authority requirements.
 - Culler retains operator requests and their results. An uncertain request never repeats its effects automatically.

@@ -44,7 +44,7 @@ func completeOperatorDescription(d operatorcmd.Definition) operatorcmd.Definitio
 	case "project vision-submission":
 		set("submission")
 	case "project role-show":
-		set("current", "contract", "project_title", "roles", "history", "runs", "conflicts")
+		set("current", "contract", "project_title", "roles", "conflicts")
 	case "project role-save", "run customization":
 		d.Result = commandFields(reflect.TypeOf(verbs.RoleCustomization{}), 0)
 	case "project role-unblock":

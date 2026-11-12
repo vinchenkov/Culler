@@ -181,19 +181,17 @@ func TestCollieApprovesTheExactEnvironmentProposal(t *testing.T) {
 func TestEndedCollieCannotSaveRoleInstructions(t *testing.T) {
 	db := dvSpine(t)
 	id := operatorSession(t, db, "role-operator", MaximumCollieAgentVerbs())
-	revision := int64(0)
 	instructions := "Use the Project check command before submission."
-	request := RoleSaveRequest{Project: "ws-test", Role: dispatch.RoleWorker, ExpectedRevision: &revision, Instructions: &instructions}
+	request := RoleSaveRequest{Project: "ws-test", Role: dispatch.RoleWorker, Instructions: &instructions}
 	if _, err := ProjectRoleSave(db, id, request); err != nil {
 		t.Fatal(err)
 	}
-	revision = 1
 	instructions = "An unauthorized replacement."
 	dvExec(t, db, `UPDATE collie_sessions SET status='ended' WHERE id=?`, id.RunID)
 	if _, err := ProjectRoleSave(db, id, request); err == nil {
 		t.Fatal("An ended session replaced the role instructions.")
 	}
-	if dfInt(t, db, `SELECT MAX(revision) FROM role_customizations WHERE project='ws-test' AND role='worker'`) != 1 {
-		t.Fatal("The refused change created another revision.")
+	if dfStr(t, db, `SELECT instructions FROM role_customizations WHERE project='ws-test' AND role='worker'`) != "Use the Project check command before submission." {
+		t.Fatal("The refused change replaced the role instructions.")
 	}
 }

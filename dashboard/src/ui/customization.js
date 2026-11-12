@@ -60,7 +60,6 @@ export function createRoleCustomization({ api, openCollie }) {
     const current = panel("Custom instructions", options);
     let role = customizationRole(fixedRole ?? "worker");
     let record = null;
-    let latestRevision = 0;
     let generation = 0;
     const drafts = new Map();
     const heading = current.querySelector("h2");
@@ -68,23 +67,18 @@ export function createRoleCustomization({ api, openCollie }) {
     const select = el("select", { testid: "customization-role", "aria-label": "Role" });
     const editor = el("textarea", { rows: 7, testid: "customization-editor" });
     const contract = el("div", { testid: "customization-contract" });
-    const history = el("div", { testid: "customization-history" });
     const blocked = el("aside", { class: "customization-blocked", testid: "customization-blocked", hidden: true },
       el("p", { text: "This role has a block. After you correct its instructions, ask Collie to clear the block." }),
       el("button", { type: "button", class: "btn small", text: "Open Collie", onclick: () => { close(); openCollie(); } }));
-    const historySection = el("section", { class: "customization-record" },
-      el("h3", {}, "Revision history", el("span", { class: "customization-count" })), history);
     const description = el("p", { id: "customization-purpose", class: "customization-purpose" });
     current.setAttribute("aria-describedby", "customization-purpose");
     const status = el("p", { role: "status", testid: "customization-status" });
     const save = el("button", { type: "button", class: "btn primary", text: "Save instructions", testid: "customization-save" });
-    const refresh = el("button", { type: "button", class: "btn", text: "Refresh revision", testid: "customization-refresh" });
     const busy = value => {
       current.setAttribute("aria-busy", String(value));
-      save.disabled = select.disabled = refresh.disabled = editor.disabled = value;
-      for (const button of history.querySelectorAll("button")) button.disabled = value;
+      save.disabled = select.disabled = editor.disabled = value;
     };
-    const load = async (keepDraft = false, baseRevision = null) => {
+    const load = async (keepDraft = false) => {
       const token = ++generation;
       busy(true);
       status.textContent = "Loading role customization…";
@@ -93,8 +87,6 @@ export function createRoleCustomization({ api, openCollie }) {
         if (token !== generation || dialog !== current) return;
         blocked.hidden = !data.conflicts.some(conflict => conflict.blocked && conflict.task == null);
         record = data.current;
-        latestRevision = record.revision;
-        if (baseRevision != null) record = { ...record, revision: baseRevision };
         title.textContent = data.project_title;
         const roleTitle = data.roles.find(row => row.role === role)?.title ?? role;
         heading.textContent = `Guide the ${roleTitle}`;
@@ -102,36 +94,23 @@ export function createRoleCustomization({ api, openCollie }) {
         select.replaceChildren(...data.roles.map(row => el("option", { value: row.role, text: row.title, selected: row.role === role })));
         contract.textContent = roleResponsibilities[role];
         if (!keepDraft) {
-          const draft = drafts.get(role);
-          editor.value = draft ? draft.instructions : record.instructions;
-          if (draft) record = { ...record, revision: draft.revision };
+          editor.value = drafts.has(role) ? drafts.get(role) : record.instructions;
         }
-        history.replaceChildren(...data.history.map(row => el("div", { class: "customization-revision" },
-          el("span", { class: "customization-revision-name", text: `Revision ${row.revision}` }),
-          el("span", { class: "customization-revision-meta", text: `${row.author} · ${row.created_at}` }),
-          el("button", { type: "button", class: "btn small", text: `Load revision ${row.revision}`, onclick: () => { editor.value = row.instructions; } }),
-          pre(row.instructions || "No custom instructions."))));
-        historySection.querySelector(".customization-count").textContent = data.history.length ? String(data.history.length) : "";
-        status.textContent = `Current revision: ${data.current.revision}.` + (record.revision === data.current.revision ? "" : ` The draft uses revision ${record.revision}.`);
+        status.textContent = "";
       } catch (err) { status.textContent = err.message; }
       finally { if (token === generation && dialog === current) { busy(false); save.disabled = !record; } }
     };
-    select.addEventListener("change", () => { if (record) drafts.set(role, { instructions: editor.value, revision: record.revision }); role = select.value; record = null; void load(); });
-    refresh.addEventListener("click", () => { void load(true); });
+    select.addEventListener("change", () => { if (record) drafts.set(role, editor.value); role = select.value; record = null; void load(); });
     save.addEventListener("click", async () => {
       const text = editor.value;
       busy(true);
       status.textContent = "Culler saves the customization.";
       try {
-        const result = await api("/api/projects/role-save", { method: "POST", body: JSON.stringify({
-          project, role, expected_revision: record.revision, instructions: text,
-        }) });
+        await api("/api/projects/role-save", { method: "POST", body: JSON.stringify({ project, role, instructions: text }) });
         if (dialog !== current) return;
         drafts.delete(role);
-        await load(true, result.revision);
-        status.textContent = latestRevision === result.revision
-          ? `Saved revision ${result.revision}. New runs will use these instructions.`
-          : `Saved revision ${result.revision}. Another edit created revision ${latestRevision}. Refresh the revision and compare your text.`;
+        await load(true);
+        status.textContent = text.trim() ? "Saved. New runs will use these instructions." : "Saved. New runs will use the usual instructions.";
       } catch (err) { status.textContent = err.message; }
       finally { busy(false); }
     });
@@ -147,10 +126,9 @@ export function createRoleCustomization({ api, openCollie }) {
       el("aside", { class: "customization-contract-card" },
         el("h3", { text: "What you can expect" }),
         contract,
-        el("p", { class: "customization-contract-note", text: "Your instructions guide its approach. These responsibilities stay the same." })),
-      el("div", { class: "customization-records" }, historySection));
+        el("p", { class: "customization-contract-note", text: "Your instructions guide its approach. These responsibilities stay the same." })));
     current.querySelector(".ui-dialog-shell").append(
-      dialogFooter({ class: "customization-footer" }, status, el("div", { class: "customization-actions" }, refresh, save)));
+      dialogFooter({ class: "customization-footer" }, status, el("div", { class: "customization-actions" }, save)));
     editor.id = "customization-text";
     editor.setAttribute("aria-describedby", "customization-help");
     editor.placeholder = "Describe what matters to you…";
@@ -164,7 +142,7 @@ export function createRoleCustomization({ api, openCollie }) {
     try {
       const data = await api(`/api/runs/${encodeURIComponent(run)}/customization`, { maxAge: 0 });
       if (dialog !== current) return;
-      status.textContent = `Project: ${data.project}. Role: ${data.role}. Revision: ${data.revision}.`;
+      status.textContent = `Project: ${data.project}. Role: ${data.role}.`;
       body.append(el("h3", { text: "Standard Culler directive" }), pre(data.standard_directive),
         el("h3", { text: "Operator instructions" }), pre(data.instructions || "No custom instructions."));
     } catch (err) { status.textContent = err.message; }

@@ -49,11 +49,11 @@ Use the exact Project identifier and required confirmation in the deletion reque
 
 ## Role instructions
 
-Read the role contract, current instructions, revision history, and conflict reports.
+Each role of a Project has one set of custom instructions or none.
+Read the role contract, current instructions, and conflict reports.
 The Culler contract retains authority over custom instructions.
-Save the requested instructions with the current expected revision.
+A save replaces the current instructions of the role.
 An empty instruction string removes the customization for new runs.
-A stale revision requires a fresh read and reconciliation that preserves the proposed text.
 A save affects new runs and preserves each block and the Project pause state.
 Resolve a role block separately with its conflict record and reason.
-Report the Project, role, saved revision, and saved instructions.
+Report the Project, role, and saved instructions.

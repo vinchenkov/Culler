@@ -20,7 +20,7 @@ func TestPackagerBriefPreservesItsRecords(t *testing.T) {
 		VALUES ('verifier', 'pipeline', 'verifier', 'ws-test', 1, 'pass', '/mc/artifacts/test/1/evidence.md')`)
 	dvExec(t, db, `INSERT INTO runs (id, tier, role, project, subject, output_path, outcome)
 		VALUES ('worker', 'pipeline', 'worker', 'ws-test', 1, '/mc/artifacts/test/1/report.md', 'completed')`)
-	saveCustom(t, db, dispatch.RolePackager, 0, "Use concise explanations.")
+	saveCustom(t, db, dispatch.RolePackager, "Use concise explanations.")
 	brief := briefFor(t, db, dispatch.RolePackager, ptr64(1), briefInputs{})
 	for _, heading := range []string{"Agent credentials", "Failure controls"} {
 		if brief.part(heading) != nil {

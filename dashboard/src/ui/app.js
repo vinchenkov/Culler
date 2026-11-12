@@ -3272,7 +3272,7 @@ async function readRoleInstructions(role) {
   try {
     const data = await api(`/api/projects/role-show?project=${encodeURIComponent(project)}&role=${encodeURIComponent(customizationRole(role))}`, { maxAge: 0 });
     const blocked = data.conflicts.some((conflict) => conflict.blocked);
-    instructions = { text: blocked ? "Customization conflict" : data.current.instructions ? `Revision ${data.current.revision}` : "None", blocked };
+    instructions = { text: blocked ? "Customization conflict" : data.current.instructions ? "Set" : "None", blocked };
   } catch {
     // The row stays without a state. The dialog of the row reports the failure.
   }

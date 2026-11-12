@@ -326,9 +326,9 @@ func namedFields(names ...string) []operatorcmd.Field {
 
 func fieldDescription(name string) string {
 	if text, ok := map[string]string{
-		"operation_id":  "The stable operation identifier. Reuse it only with the exact request.",
-		"submission_id": "The stable submission identifier. Reuse it only with the exact request.",
-		"revision":      "The current revision from the preceding read.", "expected_revision": "The expected current revision; zero selects the initial revision.",
+		"operation_id":         "The stable operation identifier. Reuse it only with the exact request.",
+		"submission_id":        "The stable submission identifier. Reuse it only with the exact request.",
+		"revision":             "The current revision from the preceding read.",
 		"expected_revision_id": "The current environment revision identifier.", "expected_version": "The displayed task record_version.",
 		"confirm_spend": "Explicit authorization for the model test's provider expenditure.", "confirm_access": "Explicit authorization for Culler to manage this Project folder.",
 		"test_id":            "The successful test for this exact profile configuration and credential authorization.",
@@ -370,7 +370,7 @@ func requestExample(name string) any {
 	case name == "project setup-save":
 		return map[string]any{"id": "example", "title": "Example", "path": "/Users/operator/Projects/example", "identity": "<current workspace identity>", "confirm_access": true}
 	case name == "project role-save":
-		return map[string]any{"project": "example", "role": "worker", "expected_revision": 0, "instructions": "Use the Project test command."}
+		return map[string]any{"project": "example", "role": "worker", "instructions": "Use the Project test command."}
 	case name == "project role-unblock":
 		return map[string]any{"run": "example", "reason": "The operator resolved the instruction conflict."}
 	case strings.HasPrefix(name, "project "):

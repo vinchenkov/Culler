@@ -71,7 +71,7 @@ func RequestFields(name string) []Field {
 	case "project role-save":
 		instructions := textField("instructions", "The complete custom instructions. Empty text removes the custom instructions.", true)
 		instructions.MaxBytes = 65536
-		return []Field{textField("project", "The Project identifier.", true), choice("role", "The pipeline role.", true, "strategist(propose)", "arbiter", "worker", "verifier", "packager", "scribe"), integer("expected_revision", "The current revision; zero selects the initial revision.", true, 0), instructions}
+		return []Field{textField("project", "The Project identifier.", true), choice("role", "The pipeline role.", true, "strategist(propose)", "arbiter", "worker", "verifier", "packager", "scribe"), instructions}
 	case "project role-unblock":
 		return []Field{textField("run", "The run with the independent role conflict.", true), textField("reason", "The operator's conflict resolution.", true)}
 	case "environment get", "environment retry", "environment cache-clear":

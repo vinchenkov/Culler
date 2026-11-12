@@ -1661,7 +1661,7 @@ The role detail of the Scribe holds the same parts as the role detail of each ta
 The role detail holds one row for each configuration:
 
 - **Agent profile** shows the model of the effective shared route. The row states that it applies to all Projects.
-- **Custom instructions** shows the current revision, or that the role has no custom instructions. The row states that it applies to the selected Project.
+- **Custom instructions** shows whether the role has custom instructions. The row states that it applies to the selected Project.
 
 The **Custom instructions** row shows a customization conflict that blocks the role.
 

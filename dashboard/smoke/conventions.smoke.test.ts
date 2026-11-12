@@ -16,7 +16,7 @@ beforeAll(async () => {
   await seedProject(smoke, "other", { title: "Other Project", environmentReady: true });
   taskID = Number((await mc(["task", "add", "A task with a long title that wraps within the shared blue header", "--project", "conventions",
     "--description", Array.from({ length: 40 }, (_, at) => `Paragraph ${at + 1} describes the task and its required evidence.`).join("\n\n")])).task_id);
-  await mc(["project", "role-save", "--request", JSON.stringify({ project: "conventions", role: "worker", expected_revision: 0, instructions: "Report the exact test results." })]);
+  await mc(["project", "role-save", "--request", JSON.stringify({ project: "conventions", role: "worker", instructions: "Report the exact test results." })]);
   await smoke.page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
   await gotoReady(smoke);
   await selectProject(smoke, "conventions");
@@ -116,7 +116,7 @@ test("equivalent dialog headers share colors and theme changes preserve the role
   await page.getByTestId("customize-project-conventions").click();
   const dialog = page.getByTestId("role-customization");
   const editor = page.getByTestId("customization-editor");
-  await page.waitForFunction(() => document.querySelector('[data-testid="customization-status"]')?.textContent?.includes("Current revision: 1"));
+  await page.waitForFunction(() => document.querySelector('[data-testid="role-customization"]')?.getAttribute("aria-busy") === "false");
   await editor.fill("Keep this unsaved draft across both themes.");
   await editor.focus();
   await editor.evaluate((node: HTMLTextAreaElement) => node.setSelectionRange(5, 12));
@@ -125,11 +125,8 @@ test("equivalent dialog headers share colors and theme changes preserve the role
     await surface(dialog, "role instructions", selected);
     expect(await editor.inputValue()).toBe("Keep this unsaved draft across both themes.");
     expect(await editor.evaluate((node: HTMLTextAreaElement) => [node === document.activeElement, node.selectionStart, node.selectionEnd])).toEqual([true, 5, 12]);
-    await page.getByTestId("customization-history").getByText("Revision 1", { exact: true }).waitFor();
     await page.screenshot({ path: evidencePath(`conventions/role-instructions-${selected}.png`), animations: "disabled" });
   }
-  await page.getByTestId("customization-refresh").click();
-  await page.waitForFunction(() => document.querySelector('[data-testid="customization-status"]')?.textContent?.includes("Current revision: 1"));
   expect(await editor.inputValue()).toBe("Keep this unsaved draft across both themes.");
   await page.keyboard.press("Escape");
   expect(await page.getByTestId("customize-project-conventions").evaluate(node => node === document.activeElement)).toBe(true);

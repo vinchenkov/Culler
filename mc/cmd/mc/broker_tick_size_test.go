@@ -44,10 +44,10 @@ func brokerTickProject(t *testing.T, spine, project string) {
 		[]verbs.OnboardWorkspaceRoot{{ID: project, Root: workspace}}, os.Getuid()); err != nil {
 		t.Fatal(err)
 	}
-	revision, instructions := int64(0), strings.Repeat("Keep each page short. ", 65536/22)
+	instructions := strings.Repeat("Keep each page short. ", 65536/22)
 	for _, role := range []roles.Role{roles.RoleStrategist, roles.RoleScribe} {
 		if _, err := verbs.ProjectRoleSave(db, nil, verbs.RoleSaveRequest{Project: project, Role: role,
-			ExpectedRevision: &revision, Instructions: &instructions}); err != nil {
+			Instructions: &instructions}); err != nil {
 			t.Fatalf("save the instructions of the role %s of %s: %v", role, project, err)
 		}
 	}
