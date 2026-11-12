@@ -42,7 +42,7 @@ func TestTerminalSetupAPIKeyResumesAndRetriesWithoutAnotherKey(t *testing.T) {
 				return "", nil
 			}
 			w.deps.saveKey = func(_ string, request deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error) {
-				if request.APIKey != secret || request.AuthorizationID != "" {
+				if request.APIKey != secret || request.AuthorizationID != "" || request.Name != setupProviderName(harness)+" connection" {
 					t.Fatal("The connection form changed the API key or its revision")
 				}
 				saved = true
@@ -80,6 +80,13 @@ func TestTerminalSetupAPIKeyResumesAndRetriesWithoutAnotherKey(t *testing.T) {
 			ui.answers = []setupChoiceAnswer{{prompt: "Choose the API key", value: "saved-key"}, {prompt: "Model", value: "fixture-cheap-model"}, {prompt: "Test this connection?", value: "check"}}
 			if err := w.apiKeyAccess(harness); err != nil {
 				t.Fatal(err)
+			}
+			cfg, err := w.catalog()
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got := cfg.Runtimes.Bindings[w.session.RuntimeBindings[0]].Name; got != setupProviderName(harness)+" profile" {
+				t.Fatal(got)
 			}
 			if saves != 1 || tests != 2 || len(w.session.RuntimeBindings) != 1 || len(w.session.RuntimeIncomplete) != 0 {
 				t.Fatal("The retry did not reuse the saved key")

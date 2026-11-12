@@ -77,11 +77,11 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 				var download atomic.Int32
 				download.Store(1)
 				w.deps.saveKey = func(_ string, req deployment.AgentConnectionRequest) (deployment.AgentProfileCatalog, error) {
-					if req.APIKey != "synthetic-opencode-screen-key" || req.TemplateID != "opencode:moonshotai" {
+					if req.APIKey != "synthetic-opencode-screen-key" || req.TemplateID != "opencode:moonshotai" || req.Name != "Moonshot AI connection" {
 						t.Error("The selected provider or key changed.")
 					}
 					_, err := operatorconfig.UpdateAtomic(filepath.Join(w.home, "config.toml"), func(cfg *operatorconfig.Config) error {
-						cfg.Runtimes.Credentials[req.ID] = operatorconfig.CredentialSource{Name: "Moonshot AI", Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
+						cfg.Runtimes.Credentials[req.ID] = operatorconfig.CredentialSource{Name: req.Name, Kind: operatorconfig.CredentialKindOpenCodeAPIKey, CatalogEntry: "moonshotai"}
 						return cfg.Validate()
 					})
 					return deployment.AgentProfileCatalog{}, err
@@ -211,7 +211,7 @@ func TestTerminalSetupOpenCodeScreens(t *testing.T) {
 					t.Fatal(err)
 				}
 				profile := cfg.Runtimes.Bindings["opencode-moonshotai"]
-				if profile.Harness != "opencode" || profile.Model != "kimi-k3" || profile.Effort != "high" {
+				if profile.Name != "Moonshot AI profile" || cfg.Runtimes.Credentials["opencode-moonshotai"].Name != "Moonshot AI connection" || profile.Harness != "opencode" || profile.Model != "kimi-k3" || profile.Effort != "high" {
 					t.Fatal("The selected profile changed.")
 				}
 				if root := os.Getenv("MC_SETUP_EVIDENCE_DIR"); root != "" {

@@ -259,7 +259,20 @@ func setupModelCorrection(model string) *onboarding.Correction {
 
 func (w *setupWizard) prepareAccessChoice(choice *onboarding.AccessChoice) error {
 	if !choice.NewAccount {
-		return nil
+		_, err := operatorconfig.UpdateAtomic(filepath.Join(w.home, "config.toml"), func(cfg *operatorconfig.Config) error {
+			binding := cfg.Runtimes.Bindings[choice.Binding]
+			source := cfg.Runtimes.Credentials[binding.Credential]
+			if source.Name == "" {
+				source.Name = setupDefaultName(*cfg, binding.Credential, setupProviderName(choice.Harness), "connection")
+			}
+			if binding.Name == "" {
+				binding.Name = setupDefaultName(*cfg, choice.Binding, source.Name, "profile")
+			}
+			cfg.Runtimes.Credentials[binding.Credential] = source
+			cfg.Runtimes.Bindings[choice.Binding] = binding
+			return cfg.Validate()
+		})
+		return err
 	}
 	_, err := operatorconfig.UpdateAtomic(filepath.Join(w.home, "config.toml"), func(cfg *operatorconfig.Config) error {
 		if !setupAccessNameAvailable(*cfg, choice.Name, choice.CreatedBinding) {
@@ -270,7 +283,9 @@ func (w *setupWizard) prepareAccessChoice(choice *onboarding.AccessChoice) error
 			return &setupFailure{cause: "The subscription configuration changed. Select the access method again."}
 		}
 		source := cfg.Runtimes.Credentials[binding.Credential]
-		source.Name, binding.Name, binding.Credential = choice.Name, choice.Name, choice.Name
+		source.Name = setupDefaultName(*cfg, choice.Name, setupProviderName(choice.Harness), "connection")
+		binding.Name = setupDefaultName(*cfg, choice.Name, source.Name, "profile")
+		binding.Credential = choice.Name
 		if existing, exists := cfg.Runtimes.Bindings[choice.Name]; exists && existing != binding {
 			return errSetupAccessNameTaken
 		}
@@ -285,4 +300,35 @@ func (w *setupWizard) prepareAccessChoice(choice *onboarding.AccessChoice) error
 	}
 	choice.CreatedBinding = choice.Name
 	return w.createdConnection(choice.Name)
+}
+
+// setupDefaultName keeps the record type at the end of each default name.
+func setupDefaultName(cfg operatorconfig.Config, id, base, kind string) string {
+	for _, suffix := range []string{" connection", " API key", " subscription"} {
+		if strings.HasSuffix(strings.ToLower(base), strings.ToLower(suffix)) {
+			base = base[:len(base)-len(suffix)]
+			break
+		}
+	}
+	used := func(name string) bool {
+		if kind == "connection" {
+			for key, source := range cfg.Runtimes.Credentials {
+				if key != id && strings.EqualFold(source.Name, name) {
+					return true
+				}
+			}
+		} else {
+			for key, profile := range cfg.Runtimes.Bindings {
+				if key != id && strings.EqualFold(profile.Name, name) {
+					return true
+				}
+			}
+		}
+		return false
+	}
+	name := base + " " + kind
+	for number := 2; used(name); number++ {
+		name = fmt.Sprintf("%s %d %s", base, number, kind)
+	}
+	return name
 }

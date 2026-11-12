@@ -158,7 +158,7 @@ func (w *setupWizard) openCodeEffort(choice *onboarding.AccessChoice) error {
 		if !ok || source.CatalogEntry != provider.ID {
 			return fmt.Errorf("The API connection is unavailable.")
 		}
-		cfg.Runtimes.Bindings[choice.Binding] = operatorconfig.RuntimeBinding{Name: source.Name, Harness: "opencode", Model: model.ID, Effort: effort, Credential: choice.Binding}
+		cfg.Runtimes.Bindings[choice.Binding] = operatorconfig.RuntimeBinding{Name: setupProfileDefault(*cfg, choice.Binding, source.Name), Harness: "opencode", Model: model.ID, Effort: effort, Credential: choice.Binding}
 		return cfg.Validate()
 	})
 	if err == nil {
