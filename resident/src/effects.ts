@@ -31,7 +31,7 @@ import {
   type RunSkill, type StoreFs,
 } from "./skill-store";
 import { configuredGitEnvironment } from "./git-identity";
-import { deploymentIdentity, deploymentArguments, CULLER_RUNTIME, projectExecutionArguments, runtimeArguments, openCodeArguments, projectCacheArguments, projectHomeArguments, projectSecretValues } from "./environment-lane";
+import { deploymentIdentity, deploymentArguments, CULLER_RUNTIME, CONTAINER_PIDS_LIMIT, PIDS_LIMIT_ARGUMENTS, agentContainerLimits, agentLimitArguments, type AgentContainerLimits, projectExecutionArguments, runtimeArguments, openCodeArguments, projectCacheArguments, projectHomeArguments, projectSecretValues } from "./environment-lane";
 import { prepareRepositoryRun, repositoryRunRoot, subjectFields } from "./repository";
 import {
   inspectPipelineRunContainer, pipelineContainerName, PROJECT_ID, SAFE_ID,
@@ -276,10 +276,6 @@ function resolvedRuntime(value: unknown): RuntimeBinding | null {
  * discovering it inside a started container. */
 const ADAPTER_HARNESS_FAMILIES = new Set(["claude-sdk", "codex", "opencode", "fake"]);
 
-/** The Collie container's memory cap, as Docker takes it and as it reports it. */
-const COLLIE_MEMORY = "1024m";
-const COLLIE_MEMORY_BYTES = 1024 * 1024 * 1024;
-const COLLIE_PIDS_LIMIT = 128;
 const COLLIE_USER = "10002:10002";
 /** Where a Collie container reads each session folder. The Collie role directive
  * and the `culler` skill name this path. */
@@ -450,6 +446,7 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
   // says only "wake refused" is unattributable the moment two sessions overlap,
   // and Collie sessions overlap by design — there is no lease here.
   const log = deps.log.child({ session, launch });
+  const limits = await agentContainerLimits(deps.runMc);
   const availableWorkspaces = await deps.readWorkspaces();
   const workspaces = effect.vision_project_id === undefined
     ? availableWorkspaces
@@ -675,9 +672,7 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
   // guarantees at most one LIVE generation per session, so force-remove any
   // stale same-named container before create (a no-op if absent). Labelled
   // mc-tier=collie for the inventory/reap sweep; --rm so the container is gone
-  // once the runner exits; mount set is fixed operator read-scope. The memory
-  // cap has no swap headroom and no CPU cap: the Collie answers the operator
-  // and must not be throttled while it does.
+  // once the runner exits; mount set is fixed operator read-scope.
   await deps.docker(["rm", "-f", container_name]);
   deps.collieRuntime.revokeSession(session);
   const createPrefix = [
@@ -687,9 +682,8 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
     // spine only through the setuid mc.
     "--user", COLLIE_USER,
     "--cap-drop", "ALL",
-    "--memory", COLLIE_MEMORY,
-    "--memory-swap", COLLIE_MEMORY,
-    "--pids-limit", String(COLLIE_PIDS_LIMIT),
+    ...PIDS_LIMIT_ARGUMENTS,
+    ...agentLimitArguments(limits),
     "--name", container_name,
     "--label", "mc-managed=true", ...deploymentArguments(config.mcHome),
     "--label", "mc-tier=collie",
@@ -812,11 +806,11 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
         "mc-session-id": session,
         "mc-tier": "collie",
       },
-      memory: COLLIE_MEMORY_BYTES,
-      memory_swap: COLLIE_MEMORY_BYTES,
+      memory: limits.memory_mb * 1024 * 1024,
+      memory_swap: limits.memory_mb * 1024 * 1024,
       name: container_name,
       network_modes: isFakeFamily ? ["none"] : ["default", "bridge"],
-      pids_limit: COLLIE_PIDS_LIMIT,
+      pids_limit: CONTAINER_PIDS_LIMIT,
       security_opt: [],
       state: "created",
       user: COLLIE_USER,
@@ -1456,7 +1450,7 @@ async function spawnAttempt(
 					"--label", "mc-managed=true", ...deploymentArguments(config.mcHome), "--label", "mc-tier=pipeline", "--label", `mc-run-id=${run_id}`,
 					"--label", `mc-project=${effect.project}`,
 					"--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
-					"--cpus", "1", "--memory", "1024m", "--pids-limit", "128",
+					...PIDS_LIMIT_ARGUMENTS,
 					"-v", `${step.workspace_root.canonical}:/repo/source:ro`,
 					"-v", `${root}:/repo/projection`, "-v", `${envelopePath}:/mc/setup.json:ro`,
 					...zoneEnv(deps),
@@ -1472,6 +1466,14 @@ async function spawnAttempt(
 			return;
 		}
 	}
+  let limits: AgentContainerLimits;
+  try {
+    limits = await agentContainerLimits(deps.runMc);
+  } catch (err) {
+    refuse("spawn.limits_failed", `spawn ${run_id}: ${(err as Error).message}`);
+    await removeLaunchFiles();
+    return;
+  }
   // The container identity is per Project.
   const name = pipelineContainerName(effect.project, run_id);
   const planBinds = effect.mount_plan.entries
@@ -1493,7 +1495,7 @@ async function spawnAttempt(
 	}
   const created = await deps.docker([
     "create", "--rm", ...(environment ? ["--interactive"] : []),
-    ...projectExecutionArguments(isFakeFamily, deps.hostZone(), scratchDir === undefined ? "/workspace/source" : "/mc/scratch"),
+    ...projectExecutionArguments(isFakeFamily, limits, deps.hostZone(), scratchDir === undefined ? "/workspace/source" : "/mc/scratch"),
     "--name", name,
     "--label", "mc-managed=true", ...deploymentArguments(config.mcHome),
     "--label", "mc-tier=pipeline",

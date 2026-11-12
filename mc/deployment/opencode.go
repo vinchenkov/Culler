@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	operatorconfig "mc/config"
 	"os"
 	"path"
 	"path/filepath"
@@ -277,7 +278,7 @@ func updateOpenCodeVolume(ctx context.Context, home, image, release string, run 
 			return fmt.Errorf("The host could not inspect the OpenCode volume.")
 		}
 	}
-	current, err := run(ctx, "", "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy", image, "cat", OpenCodeRoot+"/release-id")
+	current, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy", image, "cat", OpenCodeRoot+"/release-id")
 	if err == nil && strings.TrimSpace(string(current)) == release && !sourceOpenCodeNeedsPublishedArchive(ctx, home, image, volume, release, run) {
 		return nil
 	}
@@ -360,7 +361,7 @@ func InstallOpenCodeArchive(ctx context.Context, home, image, archive, checksum,
 			_, _ = run(context.WithoutCancel(ctx), "", "volume", "rm", volume)
 		}
 	}()
-	output, err := run(ctx, "", "run", "--rm", "--network", "none", "--user", "0:0", "--mount", "type=volume,src="+volume+",dst=/output,volume-nocopy", "--mount", "type=bind,src="+archive+",dst=/archive.tar.gz,readonly", image, "/bin/sh", "-ec", openCodeInstallScript, "install", release, checksum, opencodecatalog.Release().OpenCodeVersion)
+	output, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--user", "0:0", "--mount", "type=volume,src="+volume+",dst=/output,volume-nocopy", "--mount", "type=bind,src="+archive+",dst=/archive.tar.gz,readonly", image, "/bin/sh", "-ec", openCodeInstallScript, "install", release, checksum, opencodecatalog.Release().OpenCodeVersion)
 	if err != nil {
 		return fmt.Errorf("The OpenCode installation failed: %s", lastLine(output))
 	}

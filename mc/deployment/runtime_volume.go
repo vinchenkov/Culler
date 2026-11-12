@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	operatorconfig "mc/config"
 	"os/exec"
 	"strings"
 )
@@ -33,7 +34,7 @@ func runRuntimeDocker(ctx context.Context, stdin string, args ...string) ([]byte
 // runtimeInstallArgs are the docker arguments that run the install program.
 // The program reads the volume at /runtime-output and the runtime of the image.
 func runtimeInstallArgs(volume, image, release string) []string {
-	return []string{"run", "--rm", "-i", "--label", "mc-deployment=" + strings.TrimPrefix(volume, "mc-runtime-"), "--network", "none", "--user", "0:0", "--mount",
+	return []string{"run", "--rm", operatorconfig.PidsLimitFlag, "-i", "--label", "mc-deployment=" + strings.TrimPrefix(volume, "mc-runtime-"), "--network", "none", "--user", "0:0", "--mount",
 		"type=volume,src=" + volume + ",dst=/runtime-output,volume-nocopy", image,
 		RuntimeRoot + "/node/bin/node", "-", RuntimeRoot, "/runtime-output", release}
 }
@@ -76,7 +77,7 @@ func InstallRuntimeVolume(ctx context.Context, home, image, release string, run 
 		record.Labels["mc-component"] != "runtime" || record.Labels["mc-deployment"] != names.Suffix {
 		return fmt.Errorf("the Culler runtime volume has a different owner or configuration")
 	}
-	probe := []string{"run", "--rm", "--label", "mc-deployment=" + names.Suffix, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount",
+	probe := []string{"run", "--rm", operatorconfig.PidsLimitFlag, "--label", "mc-deployment=" + names.Suffix, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount",
 		"type=volume,src=" + volume + ",dst=" + RuntimeRoot + ",readonly,volume-nocopy", image, "/bin/sh", "-ec",
 		RuntimeRoot + "/bin/check >/dev/null; cat " + RuntimeRoot + "/release-id"}
 	current, probeErr := run(ctx, "", probe...)

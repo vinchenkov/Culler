@@ -243,7 +243,17 @@ type Container struct {
 	PackageCacheRoot          string           `toml:"package_cache_root"`
 	MountAllowlist            string           `toml:"mount_allowlist"`
 	AdditionalBlockedPatterns []BlockedPattern `toml:"additional_blocked_patterns"`
+	CPULimit                  int              `toml:"cpu_limit"`
+	MemoryLimitMB             int              `toml:"memory_limit_mb"`
 }
+
+const (
+	MaxContainerCPULimit      = 1024
+	MaxContainerMemoryLimitMB = 1048576
+	// ContainerPidsLimit is the process limit of each container that Culler starts.
+	ContainerPidsLimit = 2048
+	PidsLimitFlag      = "--pids-limit=2048"
+)
 
 // BlockedPattern is one operator-added deny. It is a table, not a bare
 // string, because `kind` selects the pattern language: component or
@@ -618,6 +628,12 @@ func (c Config) Validate() error {
 		if value <= 0 {
 			return fmt.Errorf("%s must be positive", name)
 		}
+	}
+	if c.Container.CPULimit < 0 || c.Container.CPULimit > MaxContainerCPULimit {
+		return fmt.Errorf("container.cpu_limit must be an integer from 0 to %d", MaxContainerCPULimit)
+	}
+	if c.Container.MemoryLimitMB < 0 || c.Container.MemoryLimitMB > MaxContainerMemoryLimitMB {
+		return fmt.Errorf("container.memory_limit_mb must be an integer from 0 to %d", MaxContainerMemoryLimitMB)
 	}
 	if c.Container.Runtime != "docker" || c.Container.BaseImage == "" ||
 		!safeRelative(c.Container.PackageCacheRoot) ||

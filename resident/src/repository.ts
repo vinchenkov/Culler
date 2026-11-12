@@ -3,7 +3,7 @@
 // This module runs one execution to its record or to its failure report.
 
 import type { TickDeps } from "./types";
-import { deploymentArguments, runtimeArguments } from "./environment-lane";
+import { PIDS_LIMIT_ARGUMENTS, deploymentArguments, runtimeArguments } from "./environment-lane";
 import {
   confirmRunContainersAbsent, pipelineContainerName, PRODUCER_ABSENCE_ATTEMPTS, PROJECT_ID, SAFE_ID,
 } from "./pipeline-liveness";
@@ -402,7 +402,7 @@ async function mergeContainer(
       "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=pipeline",
       "--label", `mc-run-id=${run}`, "--label", `mc-project=${execution.project}`,
       "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
-      "--cpus", "1", "--memory", "1024m", "--memory-swap", "1024m", "--pids-limit", "128",
+      ...PIDS_LIMIT_ARGUMENTS,
       ...(deps.config.runtimeVolume ? runtimeArguments(deps) : []),
       ...mounts, "-v", `${path}:/mc/repository.json:ro`, deps.config.image,
       ...deps.config.landCmd, execution.operation, "/mc/repository.json",

@@ -9,7 +9,7 @@ fixture=$(mktemp -d)
 docker volume create "$volume" >/dev/null
 docker volume create "$spine" >/dev/null
 trap 'docker volume rm "$volume" "$spine" >/dev/null; rm -rf "$fixture"' EXIT HUP INT TERM
-docker run --rm --network none --user 0:0 \
+docker run --rm --pids-limit 2048 --network none --user 0:0 \
   --mount "type=volume,src=$volume,dst=/runtime-output,volume-nocopy" \
   "$runtime" /bin/sh -ec 'cp -a /opt/culler-runtime/. /runtime-output/'
 docker run --rm --network none --user 10002:10002 --cap-drop ALL \
@@ -50,9 +50,9 @@ docker run --rm --network none --user 10002:10002 --cap-drop ALL \
   '
 
 # An update runs this check before it accepts the Project image.
-release_id=$(docker run --rm --network none --entrypoint /bin/cat "$runtime" /opt/culler-runtime/release-id)
+release_id=$(docker run --rm --pids-limit 2048 --network none --entrypoint /bin/cat "$runtime" /opt/culler-runtime/release-id)
 docker run --rm --network none --cap-drop ALL --user 10002:10002 --read-only \
-  --security-opt no-new-privileges=true --pids-limit 128 --memory 512m --cpus 1 \
+  --security-opt no-new-privileges=true --pids-limit 2048 \
   --tmpfs /tmp:rw,nosuid,nodev,mode=1777 \
   --mount "type=volume,src=$volume,dst=/opt/culler-runtime,readonly,volume-nocopy" \
   --entrypoint /bin/sh "$project" \

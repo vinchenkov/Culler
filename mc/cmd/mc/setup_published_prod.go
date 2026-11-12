@@ -755,7 +755,7 @@ func (p *publishedSetup) database(ctx context.Context) (verbs.ReleaseDatabase, e
 	if json.Unmarshal(body, &volume) != nil || volume.Name != names.Volume || volume.Driver != "local" || len(volume.Options) != 0 {
 		return r, errors.New("The deployment database volume identity is invalid.")
 	}
-	body, err = p.docker(ctx, "run", "--rm", "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002",
+	body, err = p.docker(ctx, "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002",
 		"--label", "mc-managed=true", "--label", "mc-deployment="+names.Suffix,
 		"--mount", "type=volume,src="+names.Volume+",dst=/mc/spine,readonly", p.record.Image, "mc", "__release-database")
 	if err != nil {

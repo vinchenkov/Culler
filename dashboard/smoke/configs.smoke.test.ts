@@ -27,7 +27,7 @@ test("the dashboard persists supported settings and applies the dispatch values"
   await openSettings();
   expect(await page.getByTestId("configs-stats").count()).toBe(0);
   const knobs = page.getByTestId("configs-knobs");
-  expect(await knobs.getByTestId("config-knob").count()).toBe(12);
+  expect(await knobs.getByTestId("config-knob").count()).toBe(14);
   for (const key of ["container.runtime", "container.base_image", "budgets.dispatch_retries", "git.author_name", "runtimes.bindings", "surfaces.dashboard.auth_token"]) {
     expect(await knobs.locator(`[data-key="${key}"]`).count()).toBe(0);
   }
@@ -48,6 +48,28 @@ test("the dashboard persists supported settings and applies the dispatch values"
   expect(await page.getByLabel("Lease timeout (minutes)", { exact: true }).inputValue()).toBe("75");
   expect(await page.getByLabel("Wiki update interval (minutes)", { exact: true }).inputValue()).toBe("120");
   expect(await page.getByLabel("Backup retention", { exact: true }).inputValue()).toBe("8");
+}, 30000);
+
+test("the agent container limits default to no limit and accept 0 again", async () => {
+  const { page } = smoke;
+  const cpu = page.getByLabel("Agent container CPU limit", { exact: true });
+  const memory = page.getByLabel("Agent container memory limit (MB)", { exact: true });
+  expect(await cpu.inputValue()).toBe("0");
+  expect(await memory.inputValue()).toBe("0");
+  await cpu.fill("4");
+  await memory.fill("8192");
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await saved();
+  const config = readFileSync(join(smoke.home, "config.toml"), "utf8");
+  expect(config).toContain("cpu_limit = 4");
+  expect(config).toContain("memory_limit_mb = 8192");
+  await cpu.fill("0");
+  await memory.fill("0");
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await saved();
+  const fields = ((await mc(["config", "show"])).families as any[]).flatMap(family => family.knobs);
+  expect(fields.find(field => field.key === "container.cpu_limit")).toMatchObject({ value: 0, min: 0 });
+  expect(fields.find(field => field.key === "container.memory_limit_mb")).toMatchObject({ value: 0, min: 0 });
 }, 30000);
 
 test("the policy editors preserve mandatory restrictions and persist supported rules", async () => {

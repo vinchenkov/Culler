@@ -100,7 +100,7 @@ try {
     const result = await runNativeHarness({ image, access: { version: 1, harness, authMode: "api-key", token, ca,
       url: `https://${process.platform === "darwin" ? "host.docker.internal" : "127.0.0.1"}:${server.port}` },
       model: harness === "codex" ? "gpt-5-nano" : "claude-haiku-5-5", prompt: "Call the supplied OpenWiki tool once.", workspaceDirectory: workspace,
-      containerArgs: ["--workdir", "/workspace/source", "--memory", "4g", "--cpus", "2", "--pids-limit", "512",
+      containerArgs: ["--workdir", "/workspace/source", "--pids-limit", "2048",
         "-v", `${home}:/home/agent`, "-v", `${temporary}:/tmp`, "-e", "HOME=/home/agent",
         "-e", "PATH=/opt/culler-runtime/commands:/usr/local/bin:/usr/bin:/bin",
         "-e", "LD_PRELOAD=", "-e", "LD_LIBRARY_PATH=", "-e", "NODE_OPTIONS=", "-e", "BUN_OPTIONS="],

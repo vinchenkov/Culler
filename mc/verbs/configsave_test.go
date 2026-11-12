@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	operatorconfig "mc/config"
@@ -32,6 +33,8 @@ func TestConfigSavePersistsEverySupportedSetting(t *testing.T) {
 		{"timing.collie_idle_timeout_s", 3600},
 		{"timing.wiki_update_interval_s", 7200},
 		{"timing.backup_retain", 8},
+		{"container.cpu_limit", 4},
+		{"container.memory_limit_mb", 8192},
 		{"container.additional_blocked_patterns", []operatorconfig.BlockedPattern{{Kind: "component", Pattern: "private"}, {Kind: "basename-glob", Pattern: "*.secret"}}},
 		{"runtimes.forbidden_env", append(operatorconfig.Default().Runtimes.ForbiddenEnv, "PRIVATE_TOKEN")},
 	}
@@ -64,7 +67,7 @@ func TestConfigSavePersistsEverySupportedSetting(t *testing.T) {
 			if err != nil || !sameKnobValue(csKnob(t, show, tc.key)["value"], tc.value) {
 				t.Fatalf("The value did not persist: %v", err)
 			}
-			expectedApply := tc.key != "timing.backup_retain" && tc.key != "container.additional_blocked_patterns" && tc.key != "runtimes.forbidden_env"
+			expectedApply := tc.key != "timing.backup_retain" && tc.key != "runtimes.forbidden_env" && !strings.HasPrefix(tc.key, "container.")
 			if applied != expectedApply {
 				t.Fatalf("State update = %v", applied)
 			}
@@ -78,6 +81,11 @@ func TestConfigSaveRejectsInvalidAndStaleEditsWithoutWrites(t *testing.T) {
 		configChange("git.author_name", "Culler", "Other"),
 		configChange("runtimes.bindings", []string{}, []string{}),
 		configChange("timing.backup_retain", 12, 0),
+		configChange("container.cpu_limit", 0, -1),
+		configChange("container.cpu_limit", 0, 1025),
+		configChange("container.cpu_limit", 0, 1.5),
+		configChange("container.memory_limit_mb", 0, -1),
+		configChange("container.memory_limit_mb", 0, 1048577),
 		configChange("timing.backup_retain", 12, 1.5),
 		configChange("timing.backup_retain", 12, "8"),
 		configChange("timing.backup_retain", 12, nil),
@@ -101,6 +109,26 @@ func TestConfigSaveRejectsInvalidAndStaleEditsWithoutWrites(t *testing.T) {
 				t.Fatal("An invalid edit changed the file")
 			}
 		})
+	}
+}
+
+func TestConfigSaveRemovesAgentContainerLimitsWithZero(t *testing.T) {
+	writeCSConfig(t, "config_version = 4\n[container]\ncpu_limit = 4\nmemory_limit_mb = 8192\n")
+	for _, change := range []ConfigSaveRequest{configChange("container.cpu_limit", 4, 0), configChange("container.memory_limit_mb", 8192, 0)} {
+		if _, err := ConfigSave(change, func(map[string]int) error { return nil }); err != nil {
+			t.Fatal(err)
+		}
+	}
+	cfg, err := operatorconfig.Load(filepath.Join(os.Getenv("MC_HOME"), "config.toml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Container.CPULimit != 0 || cfg.Container.MemoryLimitMB != 0 {
+		t.Fatalf("The limits remain: %+v", cfg.Container)
+	}
+	show, _ := ConfigShow()
+	if knob := csKnob(t, show, "container.cpu_limit"); knob["min"] != 0 || knob["max"] != operatorconfig.MaxContainerCPULimit {
+		t.Fatalf("The CPU limit bounds differ: %v", knob)
 	}
 }
 

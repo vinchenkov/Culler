@@ -967,3 +967,29 @@ func TestEvaluationCaptureDefaultsAndRoundTrip(t *testing.T) {
 		t.Fatalf("The flag changed: %v", err)
 	}
 }
+
+func TestAgentContainerLimitsDefaultToNoLimitAndStayInRange(t *testing.T) {
+	cfg, err := Parse(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Container.CPULimit != 0 || cfg.Container.MemoryLimitMB != 0 {
+		t.Fatalf("The default limits are %d CPUs and %d MB", cfg.Container.CPULimit, cfg.Container.MemoryLimitMB)
+	}
+	if _, err := Parse([]byte("[container]\ncpu_limit = 4\nmemory_limit_mb = 8192\n")); err != nil {
+		t.Fatal(err)
+	}
+	for _, body := range []string{
+		"[container]\ncpu_limit = -1\n",
+		"[container]\ncpu_limit = 1025\n",
+		"[container]\nmemory_limit_mb = -1\n",
+		"[container]\nmemory_limit_mb = 1048577\n",
+	} {
+		if _, err := Parse([]byte(body)); err == nil {
+			t.Fatalf("The configuration was accepted: %q", body)
+		}
+	}
+	if PidsLimitFlag != "--pids-limit="+strconv.Itoa(ContainerPidsLimit) {
+		t.Fatalf("The process limit flag %q differs from %d", PidsLimitFlag, ContainerPidsLimit)
+	}
+}

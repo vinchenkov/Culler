@@ -57,7 +57,8 @@ test.each(["setup", "validate"])("%s proxy access survives a lifetime sweep befo
   const { deps, fakeFs, logs } = makeRig();
   deps.config = { ...deps.config, mcHome: home, runtimeVolume: "test-runtime", projectImage: "test-project", releaseBuildId: "fixture-release" };
   deps.runMc = (args, input, options) => args[0] === "environment" && args[1] === "image-check"
-    ? Promise.resolve(ok("{}")) : runMc(args, input, options);
+    ? Promise.resolve(ok("{}"))
+    : args[0] === "config" && args[1] === "show" ? Promise.resolve(ok(JSON.stringify({ families: [] }))) : runMc(args, input, options);
   const events: string[] = [];
   let providerRequests = 0;
   const handle = startCredentialProjector({ tls,

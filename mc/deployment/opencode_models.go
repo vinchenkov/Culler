@@ -530,7 +530,7 @@ func deriveOpenCodeModelFacts(ctx context.Context, home, image string, record []
 	marker := "culler-model-facts-" + hex.EncodeToString(nonce)
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
 	defer cancel()
-	output, err := run(ctx, archive, "run", "--rm", "-i", "--pull", "never", "--platform", "linux/arm64", "--network", "none",
+	output, err := run(ctx, archive, "run", "--rm", operatorconfig.PidsLimitFlag, "-i", "--pull", "never", "--platform", "linux/arm64", "--network", "none",
 		"--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--user", "10002:10002",
 		"--tmpfs", "/tmp:rw,nosuid,nodev,mode=1777", "--tmpfs", "/etc/opencode:ro,nosuid,nodev,noexec,mode=0555",
 		"--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy",

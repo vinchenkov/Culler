@@ -58,8 +58,7 @@ func TestHelperCreateArgsPinLeastPrivilegeEnvelope(t *testing.T) {
 		"container", "create", "--rm", "--name", names.Helper,
 		"--label", "mc-managed=true", "--label", "mc-component=helper", "--label", "mc-deployment=" + names.Suffix,
 		"--network", "none", "--user", "10002:10002", "--cap-drop", "ALL",
-		"--privileged=false", "--ipc", "private", "--cpus", "0.5",
-		"--memory", "512m", "--memory-swap", "512m", "--pids-limit", "128",
+		"--privileged=false", "--ipc", "private", "--pids-limit=2048",
 		"--oom-kill-disable=false", "--mount", "type=volume,src=" + names.Volume + ",dst=/mc/spine",
 		imageID, "/bin/sleep", "infinity",
 	}
@@ -155,10 +154,7 @@ func exactHelperFixture(names deployment.Names, imageID string) helperContainerI
 	c.HostConfig.IpcMode = "private"
 	c.HostConfig.CgroupnsMode = "private"
 	c.HostConfig.CapDrop = []string{"ALL"}
-	c.HostConfig.NanoCPUs = 500000000
-	c.HostConfig.Memory = 536870912
-	c.HostConfig.MemorySwap = 536870912
-	c.HostConfig.PidsLimit = 128
+	c.HostConfig.PidsLimit = 2048
 	c.Mounts = append(c.Mounts, struct {
 		Type        string `json:"Type"`
 		Name        string `json:"Name"`
@@ -267,18 +263,20 @@ func TestHelperExactRejectsAuthorityWidening(t *testing.T) {
 	}
 
 	cases := map[string]func(*helperContainerInspect){
-		"root user":        func(c *helperContainerInspect) { c.Config.User = "0:0" },
-		"tier label":       func(c *helperContainerInspect) { c.Config.Labels["mc-tier"] = "pipeline" },
-		"host network":     func(c *helperContainerInspect) { c.HostConfig.NetworkMode = "host" },
-		"host pid":         func(c *helperContainerInspect) { c.HostConfig.PidMode = "host" },
-		"host userns":      func(c *helperContainerInspect) { c.HostConfig.UsernsMode = "host" },
-		"privileged":       func(c *helperContainerInspect) { c.HostConfig.Privileged = true },
-		"cap add":          func(c *helperContainerInspect) { c.HostConfig.CapAdd = []string{"CHOWN"} },
-		"NNP":              func(c *helperContainerInspect) { c.HostConfig.SecurityOpt = []string{"no-new-privileges:true"} },
-		"host bind":        func(c *helperContainerInspect) { c.HostConfig.Binds = []string{"/tmp:/tmp"} },
-		"extra mount":      func(c *helperContainerInspect) { c.Mounts = append(c.Mounts, c.Mounts[0]) },
-		"wrong image":      func(c *helperContainerInspect) { c.Image = "sha256:" + strings.Repeat("b", 64) },
-		"unbounded memory": func(c *helperContainerInspect) { c.HostConfig.Memory = 0 },
+		"root user":     func(c *helperContainerInspect) { c.Config.User = "0:0" },
+		"tier label":    func(c *helperContainerInspect) { c.Config.Labels["mc-tier"] = "pipeline" },
+		"host network":  func(c *helperContainerInspect) { c.HostConfig.NetworkMode = "host" },
+		"host pid":      func(c *helperContainerInspect) { c.HostConfig.PidMode = "host" },
+		"host userns":   func(c *helperContainerInspect) { c.HostConfig.UsernsMode = "host" },
+		"privileged":    func(c *helperContainerInspect) { c.HostConfig.Privileged = true },
+		"cap add":       func(c *helperContainerInspect) { c.HostConfig.CapAdd = []string{"CHOWN"} },
+		"NNP":           func(c *helperContainerInspect) { c.HostConfig.SecurityOpt = []string{"no-new-privileges:true"} },
+		"host bind":     func(c *helperContainerInspect) { c.HostConfig.Binds = []string{"/tmp:/tmp"} },
+		"extra mount":   func(c *helperContainerInspect) { c.Mounts = append(c.Mounts, c.Mounts[0]) },
+		"wrong image":   func(c *helperContainerInspect) { c.Image = "sha256:" + strings.Repeat("b", 64) },
+		"memory limit":  func(c *helperContainerInspect) { c.HostConfig.Memory = 536870912 },
+		"CPU limit":     func(c *helperContainerInspect) { c.HostConfig.NanoCPUs = 500000000 },
+		"process limit": func(c *helperContainerInspect) { c.HostConfig.PidsLimit = 128 },
 	}
 	for name, mutate := range cases {
 		t.Run(name, func(t *testing.T) {

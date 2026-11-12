@@ -64,6 +64,8 @@ The [installation guide](INSTALL.md#versions) gives the version rules.
 - AgentsView records a Codex run as a child session. The resident requests the child sessions with its session list, so the name and the import state of a Codex trace stay correct.
 - The trace viewer uses the fonts that AgentsView embeds in its page, and the page requests no font from another origin.
 - AgentsView offers Search by meaning, which downloads a model. Culler keeps AgentsView without network access, and the Culler proxy refuses the embeddings operations.
+- Culler sets no CPU or memory limit on its containers by default. Each container has a limit of 2048 processes.
+- The Advanced settings page sets an optional CPU limit and an optional memory limit for each new agent container. A memory limit permits no additional swap.
 
 ### Known limits
 

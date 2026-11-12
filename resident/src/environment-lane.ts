@@ -40,12 +40,43 @@ export interface EnvironmentOperation {
 
 type Dependencies = Pick<TickDeps, "runMc" | "docker" | "config" | "fs" | "log" | "credentials" | "hostZone"> & { redact?: (text: string) => string };
 
+export const CONTAINER_PIDS_LIMIT = 2048;
+export const PIDS_LIMIT_ARGUMENTS = ["--pids-limit", String(CONTAINER_PIDS_LIMIT)];
+
+export interface AgentContainerLimits {
+  cpus: number;
+  memory_mb: number;
+}
+
+// The operator sets agent container limits in config.toml. 0 means no limit.
+export async function agentContainerLimits(runMc: TickDeps["runMc"]): Promise<AgentContainerLimits> {
+  const result = await runMc(["config", "show"]);
+  if (result.exitCode !== 0) throw new Error("The agent container limits are unavailable.");
+  const knobs = new Map<string, unknown>();
+  for (const family of (JSON.parse(result.stdout) as { families?: Array<{ knobs?: Array<{ key?: string; value?: unknown }> }> }).families ?? []) {
+    for (const knob of family.knobs ?? []) knobs.set(String(knob.key), knob.value);
+  }
+  const limit = (key: string): number => {
+    const value = knobs.get(key) ?? 0;
+    if (!Number.isSafeInteger(value) || (value as number) < 0) throw new Error("The agent container limits are invalid.");
+    return value as number;
+  };
+  return { cpus: limit("container.cpu_limit"), memory_mb: limit("container.memory_limit_mb") };
+}
+
+export function agentLimitArguments(limits: AgentContainerLimits): string[] {
+  return [
+    ...(limits.cpus > 0 ? ["--cpus", String(limits.cpus)] : []),
+    ...(limits.memory_mb > 0 ? ["--memory", `${limits.memory_mb}m`, "--memory-swap", `${limits.memory_mb}m`] : []),
+  ];
+}
+
 // Setup probes and pipeline commands require the same container policy.
-export function projectExecutionArguments(fake: boolean, zone?: string, workspace = "/workspace/source"): string[] {
+export function projectExecutionArguments(fake: boolean, limits: AgentContainerLimits, zone?: string, workspace = "/workspace/source"): string[] {
   return [
     "--init",
     "--user", "10002:10002", "--cap-drop", "ALL",
-    "--pids-limit", "512", "--memory", "4g", "--cpus", "2",
+    ...PIDS_LIMIT_ARGUMENTS, ...agentLimitArguments(limits),
     "--workdir", workspace,
     ...(fake ? ["--network", "none"] : []),
     ...(zone ? ["-e", `TZ=${zone}`] : []),
@@ -251,7 +282,7 @@ async function performRuntimeCompatibility(image: string, operation: Environment
   await succeeded(deps.docker(["run", "--rm", "--name", name, "--network", "none", "--read-only",
     "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", `mc-project=${operation.project_id}`,
     "--user", "10002:10002", "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true",
-    "--pids-limit", "128", "--memory", "512m", "--cpus", "1", "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
+    ...PIDS_LIMIT_ARGUMENTS, "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
     ...runtimeArguments(deps), ...openCodeMount, image, "-e", script]), "The image cannot use the Culler runtime");
 }
 
@@ -261,7 +292,7 @@ async function measureEnvironment(project: string, image: string, deps: Dependen
   const home = await prepareProjectHome(project, deps);
   const result = await succeeded(deps.docker(["run", "--rm", "--network", "none", "--user", "10002:10002",
     "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", `mc-project=${project}`,
-    "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", "--memory", "512m", "--pids-limit", "128",
+    "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", ...PIDS_LIMIT_ARGUMENTS,
     "--entrypoint", `${CULLER_RUNTIME}/bin/bun`, ...runtimeArguments(deps),
     ...projectCacheArguments(deps.config.mcHome, project, image), ...projectHomeArguments(home, false), image, "-e",
     `const {projectHomeUsage,${clear ? "clearProjectCache" : "projectCacheUsage"}}=await import('${CULLER_RUNTIME}/app/src/shared/project-cache.ts');` +
@@ -366,7 +397,7 @@ async function acceptFiles(operation: EnvironmentOperation, deps: Dependencies):
   }
   if (!container) {
     await succeeded(deps.docker(["create", "--name", name, "--network", "none", "--user", "10002:10002",
-      "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", "--pids-limit", "128", "--memory", "1g",
+      "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", ...PIDS_LIMIT_ARGUMENTS,
       "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=setup", "--label", `mc-project=${operation.project_id}`,
       "--label", `com.culler.environment.operation=${operation.id}`, "--label", `com.culler.environment.inputs=${operation.inputs_digest}`,
       "--entrypoint", `${CULLER_RUNTIME}/bin/bun`, ...runtimeArguments(deps),
@@ -489,7 +520,7 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
     await succeeded(deps.docker(["run", "--rm", "--network", "none", "--user", "10002:10002",
       "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", `mc-project=${operation.project_id}`,
       "--label", `com.culler.environment.operation=${operation.id}`,
-      "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", "--entrypoint", "/bin/bash",
+      "--cap-drop", "ALL", "--security-opt", "no-new-privileges=true", ...PIDS_LIMIT_ARGUMENTS, "--entrypoint", "/bin/bash",
       "--mount", `type=bind,src=${source},dst=/source,readonly`,
       "--mount", `type=bind,src=${workspace},dst=/workspace/source`, operation.configuration.base_digest,
       "-e", "-c", "if [ ! -d /workspace/source/.git ]; then git clone --no-hardlinks /source /workspace/source; fi\ngit -C /workspace/source checkout --detach \"$1\"\ngit -C /workspace/source reset --hard \"$1\"\ngit -C /workspace/source clean -fdx", "setup", commit]),
@@ -521,7 +552,7 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
   await succeeded(deps.docker(["create", "--interactive", "--name", name, "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=setup",
     "--label", `mc-project=${operation.project_id}`, "--label", `com.culler.environment.operation=${operation.id}`,
     "--label", `com.culler.environment.inputs=${operation.inputs_digest}`,
-    ...projectExecutionArguments(runtime.harness === "fake", deps.hostZone()),
+    ...projectExecutionArguments(runtime.harness === "fake", await agentContainerLimits(deps.runMc), deps.hostZone()),
     "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
     ...runtimeArguments(deps), ...openCodeArguments(deps.config.mcHome, runtime?.harness), ...projectCacheArguments(deps.config.mcHome, operation.project_id, operation.image_digest),
     ...projectHomeArguments(home),
