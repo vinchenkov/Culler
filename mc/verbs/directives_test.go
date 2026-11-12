@@ -50,7 +50,7 @@ func TestPackagerDirectiveCarriesPacketRequirements(t *testing.T) {
 	required := []string{
 		"Summary", "Background", "Intuition", "Technical", "Files changed", "table of contents", "figures and diagrams",
 		"callouts", "<pre>", "Glossary", "core term", "established term", "new term",
-		"packager-browser", "packager-rationale", "packager-previous-packet",
+		"packager-browser", "packager-previous-packet", "Strategic rationale",
 		"`id`",
 	}
 	for _, text := range required {

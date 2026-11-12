@@ -84,7 +84,7 @@ Both flags are required.
 The `--thesis` value is your overview text, not a path or the packet title.
 Write one nonblank paragraph of at most 4096 bytes without control characters.
 State the delivered change and why it matters.
-With **Strategic rationale**, use packager-rationale for that text's scope.
+With **Strategic rationale**, apply the directive's **Strategic rationale** requirements to that text.
 Culler also presents this text in the review queue and packet conversations.
 
 A refused submission records nothing.
