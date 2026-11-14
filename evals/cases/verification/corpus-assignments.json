@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "author": "/root/case_corpus",
+  "recorded_at": "2026-10-03T03:01:43.431545+00:00",
+  "status": "verified_assignment_only",
+  "model_calls": 0,
+  "method": "Exact manifest comparison, with only the dataset field excluded, against the historical reconstruction inputs. Ready-case checks also verify source and media review bindings.",
+  "historical_reconstruction_sha256": "dc379467bca35292769c0b5e5320abd97bcffcaa2f363461f4bcd658afd2b582",
+  "previous_inventory_sha256": "91e0da327644ef9c09426e603b9b9d78d9a95caaf87505e1929543ac8339883a",
+  "inventory_sha256": "0feeeffcef3c3bc57a59e8cb3061647e6e4b9619c0491ac21bd79e63fca38809",
+  "protocol_datasets_sha256": "72c336a167b9eb4a420247d80594bb77b0b7c55ea705a3b4dd1d7e62dc3b83cb",
+  "counts": {
+    "trainset": 13,
+    "valset": 13,
+    "final": 9
+  },
+  "type_counts": {
+    "final": {
+      "configuration_or_compatibility": 1,
+      "data_or_access": 1,
+      "feature_across_components": 2,
+      "internal_refactor": 1,
+      "performance_change": 2,
+      "small_visible_change": 1,
+      "state_transition_or_recovery": 1
+    },
+    "trainset": {
+      "configuration_or_compatibility": 2,
+      "data_or_access": 2,
+      "feature_across_components": 1,
+      "internal_refactor": 2,
+      "performance_change": 2,
+      "small_visible_change": 2,
+      "state_transition_or_recovery": 2
+    },
+    "valset": {
+      "configuration_or_compatibility": 2,
+      "data_or_access": 2,
+      "feature_across_components": 2,
+      "internal_refactor": 2,
+      "performance_change": 1,
+      "small_visible_change": 2,
+      "state_transition_or_recovery": 2
+    }
+  },
+  "moves": [
+    {
+      "case_id": "memos-account-attachment-usage",
+      "from": "trainset",
+      "to": "valset",
+      "types": [
+        "feature_across_components"
+      ]
+    },
+    {
+      "case_id": "memos-disclosure-spacing",
+      "from": "final",
+      "to": "valset",
+      "types": [
+        "small_visible_change"
+      ]
+    },
+    {
+      "case_id": "memos-cookie-session-recovery",
+      "from": "final",
+      "to": "valset",
+      "types": [
+        "state_transition_or_recovery"
+      ]
+    },
+    {
+      "case_id": "memos-version-flag",
+      "from": "final",
+      "to": "valset",
+      "types": [
+        "configuration_or_compatibility"
+      ]
+    },
+    {
+      "case_id": "memos-missing-json-flags",
+      "from": "final",
+      "to": "valset",
+      "types": [
+        "data_or_access"
+      ]
+    },
+    {
+      "case_id": "memos-scheduler-membership-refactor",
+      "from": "final",
+      "to": "valset",
+      "types": [
+        "internal_refactor"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "case_id": "memos-account-attachment-usage",
+      "manifest": "memos/memos-account-attachment-usage.json",
+      "previous_dataset": "trainset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "9471758d299bf28f94317e301e89f7ee1787bebb31c5e61bbf7bd6a1e462c015",
+      "manifest_sha256": "66b75aa4a5b36743692399f54c8da6b8e709fdba131dac21a3569613c3b05e05",
+      "content_without_dataset_sha256": "ab96bb7c3a1b0e72c7411a1860371939d52fb681b60e7eedfe755943387257a3"
+    },
+    {
+      "case_id": "memos-archived-owner-access",
+      "manifest": "memos/memos-archived-owner-access.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "c12610f087b4ea1be2c22b0b0fad37d2c5017c96e973f0ef01c4825fbab4480e",
+      "manifest_sha256": "c12610f087b4ea1be2c22b0b0fad37d2c5017c96e973f0ef01c4825fbab4480e",
+      "content_without_dataset_sha256": "2f292821c0b76e29d5b12d33911a0280e0dd8c96d1f16b14cf7c2ab9aba6e25a"
+    },
+    {
+      "case_id": "memos-dark-mode-toast",
+      "manifest": "memos/memos-dark-mode-toast.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "5c3fe5ecf30ac6c2c13f630ae53e132d54a80bf02ad60f70dcd231c586dad531",
+      "manifest_sha256": "5c3fe5ecf30ac6c2c13f630ae53e132d54a80bf02ad60f70dcd231c586dad531",
+      "content_without_dataset_sha256": "869d7b6b1f9a99c04395dfbe2a8ca3e2bf262ebb39c0c20b82e7d92cffb4d0d5"
+    },
+    {
+      "case_id": "memos-link-cover-retry",
+      "manifest": "memos/memos-link-cover-retry.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "393196fca5aa71d2d3b7648b6d58633bd8b9e87dfc51a3f34020b2b61db25f18",
+      "manifest_sha256": "393196fca5aa71d2d3b7648b6d58633bd8b9e87dfc51a3f34020b2b61db25f18",
+      "content_without_dataset_sha256": "e9436f180d9d1629e678c43e30549dc17757c5694b88afd607e7081a0b9d7db9"
+    },
+    {
+      "case_id": "memos-log-level",
+      "manifest": "memos/memos-log-level.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "1e1f38c6ca5dd38b25e4b9cb56fbb45a17bdc7c91d629966d803831cde0c2afe",
+      "manifest_sha256": "1e1f38c6ca5dd38b25e4b9cb56fbb45a17bdc7c91d629966d803831cde0c2afe",
+      "content_without_dataset_sha256": "8135fa9babbe99f1dc4ee93db2113fd70c807b05b3d2ec435f82809751bbe4d6"
+    },
+    {
+      "case_id": "memos-reuse-list-settings",
+      "manifest": "memos/memos-reuse-list-settings.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "c9b5315983a6ccedb5b9f20708695cd168a3912c4150bd63e9be2d56106a6a8a",
+      "manifest_sha256": "c9b5315983a6ccedb5b9f20708695cd168a3912c4150bd63e9be2d56106a6a8a",
+      "content_without_dataset_sha256": "89fb104387bf36c11e5de8b22fcfc863ac6e37c67daa2cb6f7fdbec18c251778"
+    },
+    {
+      "case_id": "memos-webhook-label-refactor",
+      "manifest": "memos/memos-webhook-label-refactor.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "bca6871042a2a91b688522a68940b7136f62b210b49af467e192b55b2b92f68e",
+      "manifest_sha256": "bca6871042a2a91b688522a68940b7136f62b210b49af467e192b55b2b92f68e",
+      "content_without_dataset_sha256": "59fe5b354d418511807534c25668790e18fa87cd03658ccd1ed8f7256fa32d59"
+    },
+    {
+      "case_id": "memos-pinned-marker",
+      "manifest": "memos/corpus/memos-pinned-marker.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "3351065dc50a33043e9d4b6fd052e6939f641bc4fbaebc72d09cef575a821bb8",
+      "manifest_sha256": "3351065dc50a33043e9d4b6fd052e6939f641bc4fbaebc72d09cef575a821bb8",
+      "content_without_dataset_sha256": "0182ca1d8665f8497cb38290ddff281f201f52070628d72639013e5d5f231091"
+    },
+    {
+      "case_id": "memos-author-spacing",
+      "manifest": "memos/corpus/memos-author-spacing.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "684b56d8d676f0407691d0bf38cf3284f945eee4c89c430737117691e8f69778",
+      "manifest_sha256": "684b56d8d676f0407691d0bf38cf3284f945eee4c89c430737117691e8f69778",
+      "content_without_dataset_sha256": "fe3f9e48eaf8320cc251e5291544f9d5a42c6c3884b01ad8c6579800acb11b3f"
+    },
+    {
+      "case_id": "memos-metadata-hover",
+      "manifest": "memos/corpus/memos-metadata-hover.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "72225e9c52272f1fd1358739564a4449d320aec4e1d37af7e824b760c5d57f9c",
+      "manifest_sha256": "72225e9c52272f1fd1358739564a4449d320aec4e1d37af7e824b760c5d57f9c",
+      "content_without_dataset_sha256": "28a36d4758142c4382a53510e3ca5f8cafb16416cb719f489d7e2670f060a882"
+    },
+    {
+      "case_id": "memos-disclosure-spacing",
+      "manifest": "memos/corpus/memos-disclosure-spacing.json",
+      "previous_dataset": "final",
+      "dataset": "valset",
+      "previous_manifest_sha256": "865e288c05140c9a5332a3d48aa2917ef40b5c16cb7908e4652fad1d4523d076",
+      "manifest_sha256": "84b3aaa2b58474e87ffd6ccd4d645c440ff246144e180d760efc5ea31a1bf92a",
+      "content_without_dataset_sha256": "32e7f5eb3a8aa7fe54ee96f9d3849fc1c52d0182318812ca7796620bb45f40cc"
+    },
+    {
+      "case_id": "memos-batch-instance-settings",
+      "manifest": "memos/corpus/memos-batch-instance-settings.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "a5049c68d795cab6dfacd5abd404f11e7cce3caca78cb32e40e75a6dd814c62c",
+      "manifest_sha256": "a5049c68d795cab6dfacd5abd404f11e7cce3caca78cb32e40e75a6dd814c62c",
+      "content_without_dataset_sha256": "1191fcc07520d92150060c8713d19ec2a9226e8789d98761a9f82b26dfd5ae78"
+    },
+    {
+      "case_id": "memos-smtp-plugin",
+      "manifest": "memos/corpus/memos-smtp-plugin.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "3d97f38ffcf4bcb057c5e51c0fe150a73a1edf60dff68e9e0f965a68fb754c60",
+      "manifest_sha256": "3d97f38ffcf4bcb057c5e51c0fe150a73a1edf60dff68e9e0f965a68fb754c60",
+      "content_without_dataset_sha256": "4b2cc940b68d0c8cb8efb73a42a7da9aca26ad88880a732b62c94cd9da32679d"
+    },
+    {
+      "case_id": "memos-now-date-filters",
+      "manifest": "memos/corpus/memos-now-date-filters.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "064979c64be39e29e8ca8cd40178bb21066530cd0475be8b97122873971aadc0",
+      "manifest_sha256": "064979c64be39e29e8ca8cd40178bb21066530cd0475be8b97122873971aadc0",
+      "content_without_dataset_sha256": "6b6ba5953601f67f228246aee82807a6de542efca1ad5b20b97e9f028a2917da"
+    },
+    {
+      "case_id": "memos-scheduler-plugin",
+      "manifest": "memos/corpus/memos-scheduler-plugin.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "d7990cb84901f84bf4c6d275bc291c966a7540c9945cb5cefa2d19b5a03b7113",
+      "manifest_sha256": "d7990cb84901f84bf4c6d275bc291c966a7540c9945cb5cefa2d19b5a03b7113",
+      "content_without_dataset_sha256": "94b76d066843c328fdacf23bfb3fd2a1be20ae25f35ce5f8eaac8e67ad0a9b76"
+    },
+    {
+      "case_id": "memos-sqlite-immediate-mutation",
+      "manifest": "memos/corpus/memos-sqlite-immediate-mutation.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "6a9bb29f7351a11094fc17e43073bb31bcfb72408d119272d513452499c859fb",
+      "manifest_sha256": "6a9bb29f7351a11094fc17e43073bb31bcfb72408d119272d513452499c859fb",
+      "content_without_dataset_sha256": "887148bdfcf44e8e86b58eeceab22f3402e3a93966d3c3836df7e7626aad8544"
+    },
+    {
+      "case_id": "memos-cron-calendar-match",
+      "manifest": "memos/corpus/memos-cron-calendar-match.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "112ebf2cfbe039dd38b36f37008d9da92e8653fa17a07da40171e386a5360ee3",
+      "manifest_sha256": "112ebf2cfbe039dd38b36f37008d9da92e8653fa17a07da40171e386a5360ee3",
+      "content_without_dataset_sha256": "188d58252bb45990ac717eb8bc3bc0aebc9272640c16885916dc368b4b54a42a"
+    },
+    {
+      "case_id": "memos-sse-event-recovery",
+      "manifest": "memos/corpus/memos-sse-event-recovery.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "728052961016c270525073ca41e02a0d5013af7852e20e9c21d88e8bd93ae0fe",
+      "manifest_sha256": "728052961016c270525073ca41e02a0d5013af7852e20e9c21d88e8bd93ae0fe",
+      "content_without_dataset_sha256": "0b841362a7fa7b145c904cb42a8d8d507cc18c2ffe6c1adb226e6266252d187b"
+    },
+    {
+      "case_id": "memos-cookie-session-recovery",
+      "manifest": "memos/corpus/memos-cookie-session-recovery.json",
+      "previous_dataset": "final",
+      "dataset": "valset",
+      "previous_manifest_sha256": "2ba045e623f418110148b08f085845b5e34c61d2a95bc83c2a1fe28745cc4330",
+      "manifest_sha256": "b0503539a0bd9a3d840c62b88d6326b2128aa6878c308b88f4b4577e07c7a3b0",
+      "content_without_dataset_sha256": "756164d88d820b157f3394009d016133bc4e313bb97b95a6895e45e3be0b8d7c"
+    },
+    {
+      "case_id": "memos-secret-file-config",
+      "manifest": "memos/corpus/memos-secret-file-config.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "e70decf74fce6dc5fd815772f5704d67af72aa8887a25faaf506542841d3deee",
+      "manifest_sha256": "e70decf74fce6dc5fd815772f5704d67af72aa8887a25faaf506542841d3deee",
+      "content_without_dataset_sha256": "ec6a7ac56ab04ac8cac037af747cdcd1d1f998683725a90abfda2a691c743cb8"
+    },
+    {
+      "case_id": "memos-local-storage-default",
+      "manifest": "memos/corpus/memos-local-storage-default.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "ce7a6105d7c510045fe9dc3ee848dc67d7d118a8aa23dafc7e9ee939f5c1bdeb",
+      "manifest_sha256": "ce7a6105d7c510045fe9dc3ee848dc67d7d118a8aa23dafc7e9ee939f5c1bdeb",
+      "content_without_dataset_sha256": "d11f4dc5c3e8360a5c9feba1488c42ac8cd324365372d60ffcb0f40611ad78d0"
+    },
+    {
+      "case_id": "memos-frontend-cache-policy",
+      "manifest": "memos/corpus/memos-frontend-cache-policy.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "9361885f018c62c5292940853761ad7a339cbe697d2a6d87d011e87b7c779cce",
+      "manifest_sha256": "9361885f018c62c5292940853761ad7a339cbe697d2a6d87d011e87b7c779cce",
+      "content_without_dataset_sha256": "d93fbeef97761c5b6b3d71c521ab87a7f243ebe4ee0b4fd7dd4ac9dacca09687"
+    },
+    {
+      "case_id": "memos-version-flag",
+      "manifest": "memos/corpus/memos-version-flag.json",
+      "previous_dataset": "final",
+      "dataset": "valset",
+      "previous_manifest_sha256": "659a791469f64ddae6953a108c9fe82b8bc1570f47c7e0b9f231714a4e716f46",
+      "manifest_sha256": "ed5b3384230ff9a2c3a423604e51006156123545cff37bfbd9dfb7708c99cbc8",
+      "content_without_dataset_sha256": "658828b5f04a43732bdb968ab99ac538e490f89f3bb8580170be0e55ccfef2cd"
+    },
+    {
+      "case_id": "memos-unspecified-webhook-address",
+      "manifest": "memos/corpus/memos-unspecified-webhook-address.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "79e2038b2c38bee0bedb72c975166affc5d19929ad6c04829db10419e2e7d6a4",
+      "manifest_sha256": "79e2038b2c38bee0bedb72c975166affc5d19929ad6c04829db10419e2e7d6a4",
+      "content_without_dataset_sha256": "730ddb0299c5628da09de7463f3a9ab0528219a9d6bac95599d505363ff61440"
+    },
+    {
+      "case_id": "memos-cgnat-address-guard",
+      "manifest": "memos/corpus/memos-cgnat-address-guard.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "3d0bc4c4a00b1dfc6844f98fe7df5365035f755ac9477666defc2c3abf8c0945",
+      "manifest_sha256": "3d0bc4c4a00b1dfc6844f98fe7df5365035f755ac9477666defc2c3abf8c0945",
+      "content_without_dataset_sha256": "10160fadcef91ea4c2fc4d8407ba3a01ca779cf8c4c54c0b67d6cad68aacc66f"
+    },
+    {
+      "case_id": "memos-cors-credential-boundary",
+      "manifest": "memos/corpus/memos-cors-credential-boundary.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "559cc09ab4509073e9e1196d012941208c47c1582985d450284a0d73cdaf6682",
+      "manifest_sha256": "559cc09ab4509073e9e1196d012941208c47c1582985d450284a0d73cdaf6682",
+      "content_without_dataset_sha256": "ef0470098fad692454b513ae4bcab08da95504917b3a0b26b3e2862404c4cea8"
+    },
+    {
+      "case_id": "memos-missing-json-flags",
+      "manifest": "memos/corpus/memos-missing-json-flags.json",
+      "previous_dataset": "final",
+      "dataset": "valset",
+      "previous_manifest_sha256": "7323fc0aaeb0f5071ba0ecba8f8092d17074a9587c1edfb765064d3efd1069f9",
+      "manifest_sha256": "41e804e53cc96aa18040c5e2a1095874e9594ef8195898661b8085f98da973e0",
+      "content_without_dataset_sha256": "4b932d93a0c1a5690332bab6c185c6441c65c37fd6588cd830822bc4f27e2e81"
+    },
+    {
+      "case_id": "memos-managed-s3-comparison",
+      "manifest": "memos/corpus/memos-managed-s3-comparison.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "d6ebf64c86687e6f78e709c8c494aac498cbd9d9a6210d8f74ee7f6a1776006a",
+      "manifest_sha256": "d6ebf64c86687e6f78e709c8c494aac498cbd9d9a6210d8f74ee7f6a1776006a",
+      "content_without_dataset_sha256": "621795dc2ac6957f980ac0c25c86a9f59963e8d359d2c54569b67e61f68c1c7b"
+    },
+    {
+      "case_id": "memos-auth-helper-consolidation",
+      "manifest": "memos/corpus/memos-auth-helper-consolidation.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "90a0bf7f2acfe470c44e1cddd2239c01f79ee4cc62f22e5170582b6f193e8537",
+      "manifest_sha256": "90a0bf7f2acfe470c44e1cddd2239c01f79ee4cc62f22e5170582b6f193e8537",
+      "content_without_dataset_sha256": "8f64adff096acc562e243e1f66e1fe1c0e3b3106efe88fdc938c7c401a045f76"
+    },
+    {
+      "case_id": "memos-fileserver-simplification",
+      "manifest": "memos/corpus/memos-fileserver-simplification.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "bc6697fdd796d8503e16156c30f967a9df78404ff8cd2cb2216d1ef2af09b3f0",
+      "manifest_sha256": "bc6697fdd796d8503e16156c30f967a9df78404ff8cd2cb2216d1ef2af09b3f0",
+      "content_without_dataset_sha256": "9b85f8b06256fd0fcc45f6ac54e9ad2b6bc62210907961b808e6a419fc359442"
+    },
+    {
+      "case_id": "memos-scheduler-membership-refactor",
+      "manifest": "memos/corpus/memos-scheduler-membership-refactor.json",
+      "previous_dataset": "final",
+      "dataset": "valset",
+      "previous_manifest_sha256": "6873623e8ad9afb657981d878c1aa6925abdfb39d8ad16960ec8be66321f8a2b",
+      "manifest_sha256": "f6277c97c7e019e50a370c946626c3ba827e75a1c7e42b48fdeaf297b1421a26",
+      "content_without_dataset_sha256": "31f7b37522392e2481ef256c46115a8ea03465cf138d2389e355aaf244668942"
+    },
+    {
+      "case_id": "memos-batch-memo-relations",
+      "manifest": "memos/corpus/memos-batch-memo-relations.json",
+      "previous_dataset": "trainset",
+      "dataset": "trainset",
+      "previous_manifest_sha256": "f549bb1944aaae7b0d09b1dfee9aab16baa5fadeccefa96bfbd0a6fc3e65f43f",
+      "manifest_sha256": "f549bb1944aaae7b0d09b1dfee9aab16baa5fadeccefa96bfbd0a6fc3e65f43f",
+      "content_without_dataset_sha256": "32c13cfda5a6146231fcdbc9fe8b3d5c83f1802e14837539a5969a9678e72240"
+    },
+    {
+      "case_id": "memos-batch-rss-authors",
+      "manifest": "memos/corpus/memos-batch-rss-authors.json",
+      "previous_dataset": "valset",
+      "dataset": "valset",
+      "previous_manifest_sha256": "c4c7fbbc888d11d4502160653f44671de416f584be629f5bc915043d04f003dd",
+      "manifest_sha256": "c4c7fbbc888d11d4502160653f44671de416f584be629f5bc915043d04f003dd",
+      "content_without_dataset_sha256": "7eb3dd52677efa9f6c23172b38ecdf6625b761e446422a81fa646a00984ffb88"
+    },
+    {
+      "case_id": "memos-stream-media",
+      "manifest": "memos/corpus/memos-stream-media.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "8c3f2a6c936c5556bf3e49938f383f4df4497f17cbe97c81b96e09f872cf7405",
+      "manifest_sha256": "8c3f2a6c936c5556bf3e49938f383f4df4497f17cbe97c81b96e09f872cf7405",
+      "content_without_dataset_sha256": "06798a41441789553f513d9548043aeba1272e9bb6366eac5673a832b9c460b0"
+    },
+    {
+      "case_id": "memos-sse-connection-fanout",
+      "manifest": "memos/corpus/memos-sse-connection-fanout.json",
+      "previous_dataset": "final",
+      "dataset": "final",
+      "previous_manifest_sha256": "0a883ab9369872de3c60142f3c8feeca71de1df637a5791d4e0787cb1ca41b91",
+      "manifest_sha256": "0a883ab9369872de3c60142f3c8feeca71de1df637a5791d4e0787cb1ca41b91",
+      "content_without_dataset_sha256": "82e950dfbda66ece9e00984ab13b1e6626e73a496f64f72c49c9a559933c8c62"
+    }
+  ],
+  "checks": {
+    "ready_cases": 35,
+    "unchanged_case_contents": 35,
+    "changed_dataset_fields": 6,
+    "unchanged_prior_case_files": 261,
+    "author_tool_created_cases": 0,
+    "author_tool_preserved_cases": 35
+  },
+  "rationale": [
+    "The six moves preserve all seven case types in each dataset.",
+    "The five prior pilot groups remain in the training set.",
+    "The account usage case adds captured feature evidence to the validation set.",
+    "The final set retains two feature cases and two performance cases for complex mechanism coverage.",
+    "The assignments use source change type and complexity. They use no packet scores."
+  ],
+  "limits": [
+    "The record verifies dataset assignments only. It invokes no model or application test.",
+    "The original reconstruction record retains its original manifest hashes and dataset assignments.",
+    "Source facts, reports, media, and independent review records remain unchanged."
+  ]
+}

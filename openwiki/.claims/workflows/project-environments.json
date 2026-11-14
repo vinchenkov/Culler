@@ -1,0 +1,498 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7ec17ed34eede28b780bb047742cb486a839ba20230397d548e4befc6b000032",
+  "claims": [
+    {
+      "id": "claim_466ab5d7597d42d0aa65e312b0b60f6a",
+      "statement": "Complete setup reports permit source acceptance despite unavailable or failed build and test capabilities.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/environment_acceptance_test.go#L8-L36",
+          "version": "repo-lines-v1:sha256:badbde40f2d7436f22446ee9b05fd0eda1e1ac9be36dcd62dbf338d668f47906:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNGVhNzM4YzQ3ZTRmYTI3NTNiODdjYWMxNjMwM2Q3NmY4YTBkNTY0ZWEzMGJlZTc1NDNiZGU5Y2FjYzVlZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzZTljYzQ5MGMxMDE3OTYwOGZiMGI1MmViMjZkMDM2NGRiYjM3Zjg0YzMxYjQ1MDhmMzZlNjg3Zjk4YjhiZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2MWQ5NjllZDg0OGFkNzM2ZjA1NDRmZTJhMmMyZDEwMWZjOGFkYmY4ZGM5YjhiOGYxMTA0YmZkMTQ3N2NmYmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c75979dbe6904bb28d394b801043f8f7",
+      "statement": "Environment operations receive at most two automatic attempts, with a 30-second delay before the second.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/environment_execution.go#L398-L411",
+          "version": "repo-lines-v1:sha256:9c8e3ab3792271ef0f62cc1ac812eea98cdaea705a9f70452a0c3706c3dc03fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNGNmYmFlMWIzNWQ2Y2VmNGQ3ZDNlNWM4ZDUwMmQxMjcyYTZjYmQ5NDRjZWMyZjdjNmZjMjVmMmY4MGFlZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1NWJhODE4NWRjZWJmMzg1YjYzNzNkNzJhYTg1YWQwODgzNjc5ODhiZWZiMDU5ZTRjNGRkMzE3N2FmZTU1Y2EiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjNjNlNTE1NjI1NDk3ZmQwOTJlY2M2NzI3MzUxNzRiNjE0NDkxNTEzMGQxN2E5YTkwOTY1MzFiMjQ5MGRiZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NDNjNzk1YWZkZTk0YjU5NGIxN2EzNzMyM2MyMGJjNzZkNTM1YTRjNzQ2NTVjY2JhM2Q5ZTkyNzQ5YmI2MmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d13fd9b0b6f4fb5946f1c6879de9446",
+      "statement": "The resident limits each environment attempt to 45 minutes.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L20-L21",
+          "version": "repo-lines-v1:sha256:359089e551724002b97b46b949f22032d116e6ee95d77295d83086117f389d4b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDg1M2EzZGQ1MTI3MjM5YzYxZmI4YzFlMzhlMjBlNmU1YzYxMTdmZDBmYzc2YTdmNWRkNjVjOTY4ZjdkNjRhOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGYzMmQ4MDY1NzIyMGFlZDU1ZjJhYmZmYWUxZjZmZGViNmZjMTRmZWY3MzNhZWM1N2FjNGVlODU0M2I2YTk3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjk4OGEzMGQyYTg4ZjU5MjBmZDUwMjZkZWM0ZDIwYTNmNWMwNjNmZDU1ZjRmMmE0Y2E2ZDU4MWFkMzk2NWIxOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ0OGE4ZDNjOWY2NjhlM2ZlYzFlZjI3OTBjMTZiMjYzZjQ5MWMzN2FmZjlmNjBkZTkyNmJiYWM2MTA4NzE0OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a15c9a9436e4420baf768d147578b91",
+      "statement": "Project image checks inspect container archives without executing image programs.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/project_image.go#L32-L49",
+          "version": "repo-lines-v1:sha256:1e5b21f61d761285679796644d0a91a0881183437d3a29fe1ee0e26888777aa4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxYzYyNGVlZDdlODE5Nzc5ZjMzYzBlZDdiZGE5ODRlYjg3YmEyNDJkZTM5OWFkMjNhODIzZjQ0NjU3NWZjNGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE0NDlmZGI1NjVkYmQ3YmZjY2JhZTgyNTQ2Njg1Y2NkNGQ3MDBlMGFlMTIzNjkwZjEwNWQxYjA3Mzk5NTg4NWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjNmNlZTRmMDIzY2IwNmNjZDYzMDY2MTllMjcxNGQ1NWZjY2I2YTZiMjZiMjViMDc3OWI5MTEwYzdmNTZlODAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfec8eaf6b334a039cbc9158dd16f6b6",
+      "statement": "The deletion broker stops Project containers before deleting Project records.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/project_delete.go#L267-L295",
+          "version": "repo-lines-v1:sha256:38ad6c39d7a4c7d41e960b74ecd904949510e8114c54cdde83af68ab4b4cd30b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3NjA2ODdhNGM1ZjkzYTY2NzcxM2YxMzc3Y2Q1NzhmMzI3NmI5NDRlMTlkMGM3MDk2ZTE5NmU3YzYzODA1M2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRhY2VkMjA3NGEzZDI4MTA1Nzg5YWQ3OGQwZTcyZDAyMmUyYTUxZWM2NjBkMzY1YmZkMDYxODJmMTE0MTMzNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4ZjhmODg0MDRmYjNhNzkyZTM1NDM0N2RlZTM1ODRhNTQwYmNiMjQ5ZjE0NTVkM2I1YzQ1OTBhMTBiMmNiY2YifQ"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/project_delete.go#L298-L349",
+          "version": "repo-lines-v1:sha256:7fe1afc236303d1bab1b8f108b29f2213dd7770a576134a9d40bc4661032cf9a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYmZhOGNlYWVlZTljNDgyY2E2MjczMDVkYTAxYWNlZGU2ZTY3OGNkNWQ3NTU0NmUwYjkxNDYwMjllODA3MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_25b6eab38bd947b2acd6883442134499",
+      "statement": "The Setup Journal shows one latest-state row per milestone while retaining operation messages from earlier attempts.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.js#L334-L363",
+          "version": "repo-lines-v1:sha256:7ddb9344123c3f54a0ff1a866c090c5354c8e7f9d346f05d853e76c25ef6b960:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlOWY0ZGQzNzRlNTk5ZGY3ZmY5ZTdhN2Q5NzRhNzU4Yzg3YzcyNzU1NjZkMTBlZWM0NjJlNDMxYzFhMWE1YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhM2VjMDVlODJjOWNiMWExZjcyNzY3NTRkNjc2YzA0MDVjMGU0YzFhOTJlYWNhMWJkZTY0MzgzN2UxNDVjMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNWFkYjM2ZTUzZGExNWZkMWVhOWU4YWMzZjU0MDgyNzcxNTYzM2Q1YWM0YTkxNzVlYzEwYzk3OGY2YzhkODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_88b38e8d67e844b2a1d9c701b2f2c184",
+      "statement": "The Setup Journal requires initial acceptance and a ready environment for completion, and ends initial history at the first successful acceptance.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.js#L145-L155",
+          "version": "repo-lines-v1:sha256:55b8e8cf39355923a62f54c3f8959410a6e0df04000df1aa752e7d6429e151e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzZDlhODY0ZGZkZDMyZDNjMjE1ZGE3MTg0NGE2NDRlNzVhOTdlNmQxNDBhYTllZGEyMGI0NzQ1ODY2Mzg5MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYjc0MDg3NjUwMjllZTYyMWJhN2VjNGMwMTEyMTZjYjM5NzdiYjlkYzEyOGY5NjkxM2VhNzYzN2YwZmI1NzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1OTQxYTQzZTFiMzhlYTcyZGNlOWNjOTJmZmFlZDVlYTFmY2VlNTI2MzczNmMyOTdiOGYxMTdmZmFiMzM0MDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1YjcyNGUyMWQzZjNiY2RmMmNkZWUyZjhiNzQ1NThiMDMwNTQyODBjMDIzOTdkZDRiYWE2MDA3MTAxYTJjMjYifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.test.ts#L139-L157",
+          "version": "repo-lines-v1:sha256:86113af6fe90508e1fcd8bfa56c15899497d01fd460d910f27f0a18a9cf95d1c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyOTIzNjM1ZmVkNTk4YjQ3ZDUxNTI4ZDZhMDU1NDZmNjc5ODJiMjQ4MDYxNjQ5ZGM5ZjUxMTM0MjQ5MjcxMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1MWQ3M2NlMGI0MThlN2M1Y2I5YzhlNDFmY2FhNDgwMWY0YmE0YmI2YjVhZWJhYzVmMjk1ZDdlMjIyYjcxOWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_914b61966add415c8e8d5099f51d7ee7",
+      "statement": "The setup directive requires an ordered checklist from prerequisite discovery through the image proposal condition and post-decision verification.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/setup.md#L31-L60",
+          "version": "repo-lines-v1:sha256:d966a7b82221c246c39bad5c86d0a6f006edab4d77b261f6d3e3b15fd885443b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhOTQxOWM1MzgyMGU0YzhkY2UwOGJkMTdiZGE5NjVjNmQxODQyMTVjNzU0OGJjODhlNzk1MTQ0NmU0OGJiZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2Yjg4NTVhYjc1YWY0ZGE1ODgxYjU1ZGE0YTUzNmIzYjgzMzVjZWY4OTQwMmVjZWY1MjVhZjhlNmMzYmYyMTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliOTQ2YWQ1ZDg3ZGJkZGVmZTYyODJhNjI3MTM5ZTE4N2Q4MWQ5MzI2NDUwMTkyMTE4OWQwY2M0NmI0MDNhYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwY2IxNjYxY2JiOGFlMDNmNjZkNmIyZWRjOGUwYWFlY2JlMDlhNDYwM2ViNTBiMzZlZjNjMDBlMDc4ZTQ4ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_73c7de51d900466c86b8baffa506607f",
+      "statement": "The shared environment skill requires dependency availability in fresh containers and classification of unresolved results and missing prerequisites.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L148-L190",
+          "version": "repo-lines-v1:sha256:8614d75dd017b16e7b46b6b71eac2da026d5121566d1cefa1f4cbd8c805bfbc9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzMTFhN2ExZGJkZDcyMTUxM2FhN2UyNzI0MTdkY2U0YzMyNmZhZWM3MjU0Nzk2OWRiNmQ4ZGZkZWRiNTViOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4NGU2YjYyNTlhNWVlZGVkNWEzZjNlMDRkMjFmMzFkYjZlNDg3ZWY1YTU1NjdiNWNmNzMxOWI1ZTU3MjM2M2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmNjdhODRkNjAwNzhiMTdkZGMyZDZhYzRhNDkyMmYzMmNjNjI3ZTRiZTdhMzVlNjVlODYzMzMzNTY4Y2FkOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L35-L89",
+          "version": "repo-lines-v1:sha256:c4b2a00c5c98dd0b68148172ed00febd14076cd2c9b18b3a20cc26959c2e13f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhNjM0YmY0YWE5ZjFkZjNiZTY0YzI4YjU0NWU3NGZmNzFhZWMzNDBmZjFjNmE5Yjk0MWRkMWMyNTY5NTZjYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5M2MwZTAwNzRhOTY2M2RlMzViNzEwZDg4NDUwYTFkMTE5NDdjMTVkM2Y1MzNjMGM3ODk3NmNhMWRiMmUzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5ZjQ2MGViMGI4YmQzMTgyZDQ4NGQ1ZDJmOGVlMWE5MGNkMmE1NzcwYWFhODcwNDcxODIxZjlkZjFiNjM2ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4ZjQ3MGE5MzgyZmIwOGFjNzczOTU1YWU3ZmI1YWRkZjk2N2M4NDc2MmFmYjBhNjA5ZDdlNjIyZTdmYzJiN2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6632ef94c3c847eda4d9d9e4339714f6",
+      "statement": "Image proposals require credible feasibility evidence, a material development benefit, and an assessment of remaining prerequisites and image costs.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L119-L147",
+          "version": "repo-lines-v1:sha256:9d16b730ff9c7ae3c9f08f272f14d5276178ae0c3af8641bbcf2309946e73ee2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNmZjNTFmYmE3ODhkMzcwOGY2OWZkYjA0N2Y5NDA5NWU4NDRmYjQ3ZTQ2NWU0MWEwZDdiYmUyMmQxNTQ4MGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2OWM4MDM1OGQ2MjU5MjEyMGNhMGM4MGQ5MmNhYjBlYTg2YzUwN2RlZjBhZGI1MDNhMGVlZmYyNjg2NGMzZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0YTYxNTFlMWU3Y2I2MjQxZjQxNGQ5YWE0ZmViNTQyOGYzYWMzZDhiMjlkZDNhYmQ3ZWUyMGJhNGNjM2EyNDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_61d2aa9202644a05b19b0215ef0cb70a",
+      "statement": "Image additions cannot supply host access, macOS interfaces, or extra container privileges, and a Docker client alone supplies no daemon.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L112-L117",
+          "version": "repo-lines-v1:sha256:0e8ff38a75b2ebf8c4037ee1836283cdb671bb6b48aac6ff1d19aa2c18289703:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzhlYWRjMTM5MTIxMjU3YTYwYWZmMmNjNjI1M2VlOThkMzA3OTQyYjQ5NTAyODFhNzEyOTY4ZWFmODk1MDdhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI5MGUyYjE1Y2I2MTg4NGQ2MmVkZTVjNWRjOWQ4YWFmOTc5ZTBjNTEyOWM1NzkyZmIxZTM4ZjMxYjk3Nzc2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODljM2Q0MjFkODNiNzg1OTE0NjYyMTMyZWFlMDNlMGVjMmQyYTQ1ZTJiZjMyNTE1MjM3YjI4ODY5ZWYzNjhmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjZiOTI2MTNhNzQ3ZDUwMzExNTNkNjA1ZTM0NGJkMThjMmJhYjg3NTJjM2RjMGUxNTA4NjdhZDQyZmM4ZmQ4MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f58d6367aca4d78b5f33acc477e3a9b",
+      "statement": "After prerequisite assessment, setup permits completion with unavailable commands when the image proposal condition is false or the operation permits no proposal.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/setup.md#L123-L125",
+          "version": "repo-lines-v1:sha256:de5da9cb8d2ecc1178d61a1b1a9010c8aeeb320b5ba4e723eb8d4f3d17048b23:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMyNWIzMTQzMjRhYjg1YTZjODVhNGUxYmQyZjE4MTcyNmM1ZjdhMjQ5NGJjYTdhMjIzMDhlZGQ0ZjgxODk1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDQxMDMxZmVlNWM2M2ZiZmQ0YWE5NDNlZGFmODJlNmFiYTU0YjVmNTk4MzdlM2YwMmYxMjM3Y2VjZTM4YjI5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTI4N2IxMTEwZDUyMDI4Y2E1M2EwZDAwNzJkNDFhNDAyYTAyYTA3OGQ2OGNlNWY2OWEzMDFmZTMyMDc0OTM5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFhYmU0ZjU0ZDVjNTIwMGYyOWJmOTY3Nzc4MTFiZmQ1ODE5YjgyNTg5MmM5ZmNjZTdmNjljZmUyZDFlZmMyOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e21aca6710f54f589148c528cc64ebde",
+      "statement": "An initial continuation requires completion after approval or denial, and expected capabilities remain unverified until the assigned image executes affected commands.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/setup.md#L116-L122",
+          "version": "repo-lines-v1:sha256:39a59f209731d4d3f926a8f37f09e040cac12e4d5af87f6aeba81d5b10c91b53:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGU4ZWZkOTM1Y2UwZTQ1YTVkNTY5OGY3MTkzODRmZjU4ZGI2YzU2Mjg2ZTBjYjllNTY3MDZmOGIxMWU1ZWZhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTU3MDA3YjY4NmYyODFmZGFhNDE3MjYzZGFiNTRjZTExYWZmM2U4ODcwZDNmMGY3MjAxOWZiMWYwODMxMDZlMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGU1ZGE5Y2I4ZDJlY2MxMTc4ZDYxYTFiMWE5MDEwYzhhZWViMzIwYjViYTRlNzIzZWI4ZDRmM2QxNzA0OGIyMyJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/setup/mc-setup/SKILL.md#L48-L58",
+          "version": "repo-lines-v1:sha256:383a5a7b6b05b59c39f1e2fde16c855b8003ad7364dd7e0478fcc4570f5c470f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhNmYyNzZlZmZiOGYwNWZiYjU3ZjlhMzhjM2RiNjliNDBlY2FkMTM0MzEwMzM1MzQzMTA0M2IyNmE2NjMzMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlYTY3MDY0MjY0ZmZjNTg0YzgyMjFlMDc0OTQ5MzAzYzU2ZWQ0ODBmMTRkZTRlMWFlY2VmMDdjMjZiYWVlN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjNGZhM2JhYzM1YmVjNmZlYjFlZDAwMDY2MzZlNDFlMTNkODU1YzdhNWVmZDQwZGJkOGVjMTcyNTUxNDdlN2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c96a66bdcf8b45b3beff435b8f7fdef3",
+      "statement": "Initial setup completion can change the setup script without image approval, while image inputs must match the assigned configuration.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/setup/mc-setup/SKILL.md#L77-L88",
+          "version": "repo-lines-v1:sha256:5f3ce3909be50d1e6ccd42b5ee8d57893f121d3428edd668cd9b82229eea715a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlNzFhMjE1ZDI1N2M0M2Q2ZmI3NTU1ZDhhODFhZjVhMzRkYTk0OTIxODRiZTU1OGI4NjI1OTRmYzZkMzI4NGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMjU5NDk0NWM2YTQ3ZjQwOWI1OTQwZDRiZGM3ZTBhMDRlZjJlNWExMGRjODJiMDZiYTZjZWU4ZDc3NzAwYTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiNTBkNmRmMGNkODZiMmY5NjVlNjBiMWY3ZWIyM2VjNDc1NDk5YzM0OWI2MWZlYzYzZDI5ZGZiNzliNDgwYjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NjljNWJiMDRlZDFjOTk0YmU2Y2VjZmQ4NTg2YzU2NTUzZDE0NDhlN2ZhMmY3ZmNlZDQ4MjcxMmM2NTI2ZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_48df9d66dd6a40d2832346f67b781434",
+      "statement": "Setup and pipeline containers use a 2048-process limit and optional CPU and memory limits that default to no limit; a configured memory limit permits no additional swap.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L19-L23",
+          "version": "repo-lines-v1:sha256:b13742668bc7f5d5868e235354bac12c11e09acfe798aaf62b1ff4e6f7711864:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkyYmVjZmViNDkxNzFlNDRmNTc2NGNkM2VhNmIwYjdiNWQyZGQ4NGI2NmU0M2Q5ZTBlNjY0MDFiODhhM2U1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBmOTljZjQzYjliOGQ3NTIwODM3NjFiNzllNWI3Mjk4Y2E4ODYwOTgxOWE5ZTNhYzNhNjZhMTkxODY3MzlmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTQ2OTZkMzhmYWYyYTZhZGY3OTA4MDVjNTYzZDBmNGZjM2E3ZjM3YmM3ZWFhYjI0ODllYmRlY2IzNjRkM2M0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTE5NzYwZTczODYzZmE1NGM2NjQ4MTIyYjQ3OTg0NWUxNWY4YzgwNDUzMjMwNWRjNGI2NDM5N2U4ZmE5ZmVkOSJ9"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L66-L105",
+          "version": "repo-lines-v1:sha256:8f4497bd5c5503e833c60bcdc27fc219fbeda34be067d39e7e8751c7b5b80b15:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkNWQ3NTExMmI4ZjQ4MjAzODI1ZmRkMzJhZWRiOGUzZGNhMWM0N2E5NTg3YzhlYjBkNDY4M2E1ZTcwZGI4MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1ODYwMzZhZDFiMDlmNDVmMTk3ZjAzMTgyODliNjg3Y2Y2Nzc2YzQ3NWQ3YjNhYTczMDFjY2JkNWFhYjk5N2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2YzdlZDNkNmYwMzdhNDU2YjFiM2VhZWUzY2UzMjE0ZDZjYTYzOTg0ODk4NWUxNGEwNmU1YzIxYTUzYjc3YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0MDA1MjRmZDJjOWUwNzVhNzQ2YjM3MTc0M2EwMjFmNDY0ODlkNjYwYTMxNjA1YjkzNTA2MjcyODZjM2M2OGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ecaa1d51e57d4ec1a77ba6f25b15b49f",
+      "statement": "Project containers share a persistent home while separate temporary .agents, .claude, and .codex mounts isolate their role files.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts#L1509-L1520",
+          "version": "repo-lines-v1:sha256:461f792ad846d382fa4c23ddc1a79257c0f6ec69fda3dc1803a76e9e5e98ce47:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkNDU2NDA4MmUxNzZjMjJhZmE0OGE4NGJlOTNjZmM2N2U0NWVhNmY3YzFmZWFhZjM3ZWVlMjQzZDBmYzgyZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlMWMxN2I5MjMxNzllZDBlMTFlMzhiYjVlNjY4YjIxYjBmOTI0MzU2ZjkwZTBhNjBiNTE1N2YxOWE2ZTQ0YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMWQxYTM0ZWM1MWQ2YjJhZWI1Y2YwOWM4MzE1NGFiMDE0YjM4OTM3OTY4MzE5NTYxNzA1MmM0ZWVlOWJhNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwY2IxYWViN2U4MzcwOThmMGI0OTEwMjY0OWU0ZTZkNTg1MzNiMzU1NDI0OTRhZjBiMzljODMxMGVjMWMyNWYifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L163-L174",
+          "version": "repo-lines-v1:sha256:b14329384acde232b879cfedfbc4458632917c9f01f347fedbd74fd4f890d7b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0YmVhYTdlMmUyMWM0NGRlNGYwZGFiMjc3YjZlMTFlYTM2NTg5MWFiMDk1MmEwY2U5YTdmODNlMmYzNWNmMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MmI1ZjEwNTJlZTE2NTM1NjY4NjdmMDQ3ZGM4ODUxMTRhYTk3OWMxNmJmODZjYTFlZGUxNDQzYTk2MDM2NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY2MjJiZmFiYzgwZjMwM2QxOGJmMDc1ZmU1NzBlMjZiN2E2ZTk3YzZmMzk0ZmU4MWQzYTZhNTMyMzdkN2JmZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRhZmJkYzBjNWNmZDNhZjFlOGFiYjUwZmM0YTUwNzk5ZDJjNWE5MjM4NmZmMzllOWM2M2RhYTQ0YmUwODAyZjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b51147f8bd2744efbafef4dbab81ec67",
+      "statement": "Automatic cache eviction preserves .lock files and reports an error if remaining bytes exceed the limit; manual removal clears all cache entries.",
+      "evidence": [
+        {
+          "resource": "repo://runner/shared/project-cache.ts#L53-L73",
+          "version": "repo-lines-v1:sha256:5e1e66fc4f42ec02cf1b4c773a163a56746cdd3609c5f26d8e4f5e756fc7d1be:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNjg1MWUyODI2OTRhOGMwZTQwMWVlNDZjOGViMzY1YjU2YTc4YTkyYjY4NzMyNzc0OGM1NWQ3NjlmZDQzZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmNjNjMTg1ZTU5YzlmY2ZlMWI0NjIxZjIzMWM1YTQ3MDYxYzdjMTQ4ZWJhZDg4YWZjYjE4MzgzZmYwZDQ3NmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhNzZlZjRlOWUzNGNmNmQ2MDQ2NWZiYTQ4Y2ZlYjM2NTVlMGQzMjBmNTRjNGU5ZjcwNWMyZTI2MjhjOTYwYjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5daf4ecb78b2407c960224044feb6d1c",
+      "statement": "The environment lane measures and reports Project home bytes separately from disposable cache bytes.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L312-L332",
+          "version": "repo-lines-v1:sha256:79f76bbeda981cfea0d29f425d84bf59934e0727662afe01d05137a1b4730962:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1ZWEzNTU2MTg3ZjdmYjg3MTViYTc1M2QzZWEyNTQ0ZTIzMDYxM2ExYTEyM2MwNmYzNWQxNDk2MzgwZDczNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5MjM0NWQ1YzYyMDYzYzczNWU3NjdmOTkyNTUzNTcxNmZhMWUxM2U5YTA0NmNmYWFjZjg4MDJhNmI2OTQ4ZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhMzZiYjAwZDQ2ZjgzNDcwZmQ3NTlkMzJkNTkwNDU2YmYxZWFkMTRkYjJiMjg5MTIzZmM5MzJmOTJjMWExMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMjU1NWUyODM0YzI5MzM3YWMzOTViN2M0NWM2ZWU0Yjk5OWRjNjYyYWQ1YzFlY2QxMzY5ZWIyMDlkOTY4OTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d2ee72fa17714e5f84b81a087d6d2a8b",
+      "statement": "The shared environment skill assigns automatic setup preparation to Worker, Verifier, and Packager runs and exempts Scribe, Strategist, and Arbiter runs.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L43-L51",
+          "version": "repo-lines-v1:sha256:04375e49a7fb1c4994fb1e1288d980d1fc634ff03b3112b5b4127e4b9e861cd3:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2E1ZjIwYTljZWMwODU2ODUzNThmZjRkNDFhMmI2ZjA5NjYzNmQzNzI5MThlYjgzMjMxMzI3ZjFlOTg3YzJkZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDdhNWUxYzk4OGE4NGVlYmFkOWRjYzkyNTU0MWJlYTlhZDVhN2E5ZGUyYzBiOTcyYWIxNTMyZDU2NmE3Nzc3YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjU1YmY4MGM4MWNkMWNhMTZmYmE2MGQ0NWM1NTk0OGQ4NzU0NDRhODFlOTA0ZDVmMTdmY2Q3NTM5MTUxMGZhNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5e78a53e0a5f40b2aa15aa0476aa50da",
+      "statement": "Setup history requires a setup identifier and either completed initial setup or a selected environment revision.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.js#L113-L122",
+          "version": "repo-lines-v1:sha256:759ec94d116557e41b88e54f775526b8ac0c84b4502ba259488b1e0f0aacfc7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzOGZhNjY0NDYwOGZkNzFhMWZjNWFlOTdkNDkxYzUzMzVmMzBmZjZhMDllMTQ4NjAwODA1M2ZkZGExZWU1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMDQwZTA5NWE5NGUyYWRhNzRlNDIxZjM3MTg3NTFhOTFhODEwYmZkNjZmNDhmNGU5MzljN2I3NDgwZWI2NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiNmNlY2ZkNWU1Mjg0NDNkZWZkMDQ0OTRhY2E1Y2EzYjRjYThmOTk3OTdiYzkzNTAyOGUwZGNjZTAxZTdkMzQifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.test.ts#L159-L169",
+          "version": "repo-lines-v1:sha256:fa2a64a87c20a295cdaa4f5071fb7eb7985f026e26be350fb4e89af0b64311c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhNGUyNTNiYWY2Njg5N2NjZGU1YjMzNTZmOTc5ZmFiMTNjMGFiMmQ0YzkxYWIwOTYzMzIzMzA5MmY4YjI3OTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllYWNkZTBlYWVmNmRkMmIwNjU4NzM0MjFlOTBkMjNiZTQ4NjQxNTQzOGMzZWRiMDJjY2M0MWNhMTNmZjNiMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZlZmYyZWZiMWM0NzRlOWMyZjgwM2I4ZjI1ZTg2OTk2N2YyOTE1MDU5YzIyMmY3ODMxZDA1ZjlhY2NmOGZiNTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ffdd55fcfd104fa8a6152026f701edbf",
+      "statement": "The browser smoke checks history access through Environment, return to Environment, and the normal Board after reload.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/harness.ts#L402-L409",
+          "version": "repo-lines-v1:sha256:58330d7aabd72175aeb83ba56503d2dfbc2c9d524d981edf7779eee34edd3776:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjc5OTk3NTUyZjE3NDgxOWQ2MmJiNzkxZTllZmNjYjI0MGQwZjNjYmEwNGJjYThiMmFkMmJkZDg4M2VlNWU0ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y4Y2JjZDg1ZjU5ZmQwNzc3ODQ0OTQ5YjEzOWU2NTdhYTljODk4OTVlNzc3ZjIzYjg0MTQ1OWE0MzcwZTExNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTc5Y2RmN2Q3M2U1Yzg0ZWJjMzk2NWVlYjI0MmM0YmMyNzBkZjQzMGRlNmJiMmE1YjE0MDViY2EyYTkyZTJjMSJ9"
+        },
+        {
+          "resource": "repo://dashboard/smoke/setup-journal.smoke.test.ts#L162-L185",
+          "version": "repo-lines-v1:sha256:10db84f1f8d01b82451446987a1e971ca04805a44fcf4df7d8d5078f0b0e3aca:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1ODQxM2Q2YjU0NjZhMDcxMGY5ZmNhNGIzOTQ4MDA3OTNhMjU4NzhlZTdiZDAwNTdhMzFhZTBlOWQ4NGUwOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5YmEzNTA2ZmYwZWQ1MjM4NmM0OGUzMWVkZjA1ZGY4ODQ0MjNmZGEzODZmYjlmZmEwM2I4YTg4ZTk3NWUwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkN2VlMmViMDRmNmYwNDEyZDk0OTBiOWE5ZGRlNTAwYmQ3MTVhMDc5OTNiOTczNGYwM2VhMGIxZmNjMGE5NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwM2RmYjc1OTc1ZDEzZmE0YmJiYmNjYjIxYTM0ODY2NmRiMzZlMDIyNmQ4Y2Q3MmYzZjI1MTkyNTM0MzVhZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2b072db53e14d53886b6807c373915b",
+      "statement": "The current setup failure's Ask Collie action appears with the setup controls outside the transcript.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.js#L303-L316",
+          "version": "repo-lines-v1:sha256:d1053866c031b5660392461f75e387d298b7e504536991810af2e0f22ba3104a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiNzQwMTkwMzZhOGZjMjI1Y2ZlMjYwMjgwYzE1YWEyMTZiZTE3YjhlNjAxNzU0MmYwMjdmMzNiZjlmNzBiMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NWExOWQ3NTUwMTU5ZDY0YmJmMDA0ZWM0ZWQ5YzJlZjhmOTkxNDE0MTIzNWNhMDE0ZWQ1ODNmY2RiMjZiMTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkOWUzNjVmMTM5ZjVkMmZkNjE2YjhmNGE5NDk3MmQ4ZWYyMTNjYzE0ODAyODkwM2YxMDkzMWJmN2UwMjhkYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMzUxNzA1MTNkMWJkMjA4NDJkYzk5M2Y4NWM2MWY0YWYwOWI2YWY1MTM3MjQ5YzY4NjZjNDMzN2E5YjdiYWUifQ"
+        },
+        {
+          "resource": "repo://dashboard/src/ui/setup-journal.js#L453-L460",
+          "version": "repo-lines-v1:sha256:54a45709a5e6c6933745f8324b51659cfce883e31765d73e00dc3276d01d6ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjFhOTZkNzEwMmM4OWE1NmMxYTMxNzAyMWVkNDZhMTVmNTI4MGFiNzBmYjZiZGI5Y2Q1Nzk4MjE1ZjNhODI4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmYzOGEzOGNlZjM4NTdiNzExYjVlYWFhZDI5ZjAwMTk2NDUyMDM5YzVmMzA2ZmQ4ZTFmZDY1NDQzZGI0YmI5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4b2aa26c595f45919c14a9152705b336",
+      "statement": "The setup journal smoke checks Ask Collie beside Retry and the absence of action controls inside the transcript.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/setup-journal.smoke.test.ts#L345-L349",
+          "version": "repo-lines-v1:sha256:78da8edd623312f30bbf25a6a680388874f8048e9992a02ff24207a154d97790:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDZmZmU4ZDM2MWVmMDE4NzA0MWViNzM1MDYwOWMxYjBmNTUxM2U0ZmVkNGNmNGE2MDIwZjAzMjdlMzQ2YWJhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzUyMTA4NTllNmZkOWVhYzllNjI3OGY1MjI0ZWJhZjYyMGYxNzk5NmVjM2VmMjM2ZmNmNGJmOWFmYzc5ODFhMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTFmMjI2OTgwMDYyZjZlZWRkODM4NDc3NDlkNjc3ZjZhOGZmMjRjOWE2OWI2ZWQ1NjUyMGJmNzAyY2Q4ZDc3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDZhMzAxMzJkZTMzMzIwYWZmZWMwNDJlZTBiZmViNmE1ZjZmOWE5MDhhNmYxMTkyZDU0ZTFhNGYwODY2ZTAzMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b1e71591816d45d08ab2e4cb4612620d",
+      "statement": "Project selections include the last recorded runtime check, with empty fields when no check exists.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/environment.go",
+          "version": "repo-file-v1:sha256:84bca3f8d086b7e1b33faa48bf68e71066af765e4bd18a12810595d0b56a3832"
+        },
+        {
+          "resource": "repo://mc/verbs/environment_test.go",
+          "version": "repo-file-v1:sha256:382514542f225f3035f0a270326f8ba8a13ba117a9294f75b645c735e579e322"
+        }
+      ]
+    },
+    {
+      "id": "claim_b500a39ae0a1496c81f995644b52f2b0",
+      "statement": "The resident reuses a successful runtime check only when the recorded image digest and runtime identity match the current selection and release.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.test.ts#L439-L464",
+          "version": "repo-lines-v1:sha256:c8dc1beb3180dffe9baeb299688895c630bd3c5005718214ce50522ef29e0d1d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzM2FkMGM4MGUxYzkxY2ZkYWJlY2E5NzIwN2ZjODJkYjBlMzk1NTY5ODc0NmY5NjI0YzE3ZmU3YWY2ZjdmYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2OWIxNDg4MWM4ODY3Y2IxOWIzZjE5NGI5Y2U2MTY0MTA2NWI5NzIyMmFlZGE3MzcxZGQzMTZkNTUxYzJjMTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjExOGRlNzhkNzMyMGVlODc5NzlkOGI3YzZjNGMwNjZmNTVkNDFhY2NjMTZiYzJhNTFlYTliY2NlMjRmOWJiYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5ZDYzMzY4MTNhZjczODA2ODQ0OGUzZjA0M2VjYmIyNjQwODkxYTk2MTIxMTY2YzM0M2EwOGU3MTBkZTdlNTYifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L735-L769",
+          "version": "repo-lines-v1:sha256:1dbbbedd0ae16b39686468f0164fd744cefa8864826d76433b962af036b56bf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5OWQ1NGMyNjI2YWRjNmYxZWRkZWFhMWEzZmUyNmJiNGY4ZjA2YTNlZDhjYWMxZDg1ZmQzZTRjMmE0ZDZlYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyMGNjNDVlOGQ5MTUxMTNmNmNkZTBkZjhkMzRhZDM3MGVjYmVmODNkZDlkZGIwOGY4NTE5NTQ2Njk2NjhiZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMDQ4NWUwYTM4NTRjZjFkOTNhOGUyYzc2YjIzNjE3NjBhM2E3NjZkZjczN2Y4NjlmODZjZTY5ZjU3ZTk4YTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f3a9734f977d4d7baa58b14c517cc71d",
+      "statement": "Reuse of a recorded runtime check still verifies local image availability and records a failure if the selected image is missing.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.test.ts#L466-L479",
+          "version": "repo-lines-v1:sha256:f8542c9de1c2bca6f6032b6f8230739ccf9bd1c14a8dcb5992002f3d6dd9e08e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwMjY5Y2M0N2U2Mzc2NjVlMmRjYjM1Y2UwMjBiYWRkNTM3ZWNhODZjNjc4YjU2ODQ5M2UwYmQ0ZWE2ZWE0NGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjODZkNWM5MzU4OWZjOTAzMzY5YWEzOGMzZjVmZWVjNjAxMjkzMjQ2NDNhMmM1NDhhZWJlYjhlYjQ3M2FiZmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5MTIzZDJlY2RhOTAzNWE3OTU4MWZmNmU4ZWVkYmQzM2M5NTYyMzZkNzg1ZTBjODg3Y2FkNWE1ZTZiYTYxNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiOWMwNzJmM2ZiYzA3YzU0ZWMwYzE2ZWM3YjU3NjZhNjI4ZmQ1YTRmNmQ3MjE3MWIwNGQ3ZDRjZmM4ODJmMjAifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L202-L247",
+          "version": "repo-lines-v1:sha256:f7d2a4e718bed5605970475d64c7d999c50d700a51e5828f52400dc104d96974:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMDA2ZTFjYTNlZjk2NmI4YmNmNWExZjgzNzAyYmNlM2FkNGU4N2VmYzc3YTE5YTUxY2QxNzViM2RhY2FmMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NWNmYThiN2M3YWE3YmQzNDBlNTA2ZmRhOWI5NmViNDY2YzRkOTFhY2I0N2RmNGEyZTFmYzdlYTU4ZTU4MmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiNTgwZTk2NGY4M2E0NzNmNDNkNDQzODQ2Mjk0OWQ2OGI1NjAwZmRhNzg3ZjE2Mzc0NWQwMGRlODljYmYzNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2YzQzN2ExZTYxMDQ2ODMyYjJmNGQzZWRmMGJhMTY5NDQwNzAzMTQ3MjlmODdhODg0ZmVmMWUzMjljZThiYTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ae2e0dc73cb14ce29fe70f8c07e8d5e9",
+      "statement": "Initial environment acceptance sets installation-wide Discord availability in the transaction that marks the Project ready.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/environment_execution.go#L577-L586",
+          "version": "repo-lines-v1:sha256:66789616298303e74cf20a0039f9f9ef632fe360d19141888ce1836efc6fff08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjYzA2ODY1OTA2ODAwYTRkOTY5NzI1ZDdlYmVhMWQwMjU2MGNkNTY4OWE3ZjM5YzYyYTk5MTI3M2ExZThjM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjNGMzODg4M2EyN2NjY2M2ZTk3OGViM2RkNmRlOTFiNDE5Y2U1YjliM2ZjMjQyYzJiYWM1ZDA5NGMyZmM1MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fc0e0f6a101f4c2796ac2df9ffe5b622",
+      "statement": "The shared environment skill requires agents to preserve supplied credential configuration and exclude credential values from output.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/shared/project-environment-setup/SKILL.md#L13-L18",
+          "version": "repo-lines-v1:sha256:9f565048b292eed8664ebe28c234173e9ebff743a7763b1e594321d2e723dc4e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzVlNjUzNGJkYTM4MjFiNmM4NTYzZWYwNDhiNjkxNGM5OWVkMTk4YjIxYTQzODE0MzkyOTRhN2MzYWY2YjExMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg2N2NmYTY3OTg3Y2E3NTNlODgwMzM0MmE0NmMxZjUxMzM3NGEyZmRlMzIyZTIwYWI0NWM2ZThmNDJiZTI2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTJiNWEzNTFkOWY5NzU3ODg1NzAyZWEyM2FjNzBkNDk2YmU2ODNkY2NkOGE4NDU1MjBmMDU0YTRhYWU2OWJhNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZmNmNiODk0NWNiNjllNjY4YmI3ZjU3OTBmZjBhYTBkOTMyNGMwZDE4NWVjNTc1MzYzN2E3YTA1M2E1MGFkZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d13bc2dd80243878d86febdb51adc31",
+      "statement": "Workspace preview directs an existing file path to its containing Project folder and requires an accessible parent for an absent folder.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/workspacesetup.go#L37-L66",
+          "version": "repo-lines-v1:sha256:d1620410a1694c046b0ceb9e86514e5979d1962685c9309c71bb6ba06fc441a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyZmRkNjNlMWRlZTI1ZGMwMWE3OTUxMGIzMjlhMzJlZTU3OTM3NzY0Yjk0NGYwNmNhYTFmNGVjYjY0ZmE0MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZWI1YmMxNTFjMDI0MzMxNTA3YTE0ODk0MGQzNDFiNzk3Y2RkYWU4NWQyZmQyMTczMDI4NThjZGVjZmM2MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1MmUxODgzY2UxZjExMDE0YmJhNjcwOGZhNmM4YjY5NTMwNDllZDlhNDhlZjRmYTE4NTNjZjcyMzJiYTA3NDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNWQzODlkOWE2ZWIyYzg2OTc0OTgwZTUyMDhjZGJhYTVkZTkwOGIzYjI0MTZiZjVjZTc5MWQ1YzA0YmE4MjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/workspacesetup_test.go#L80-L106",
+          "version": "repo-lines-v1:sha256:da3ec61b89bd255f1c2284a362bd90b39121df6c3a75a18a4af99546c4b1e0d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkOTVmNTQwMzRkNmI1NzQ2NGQxZjY0Y2Y3N2JlNzkyYjRlMjI4ODQxNWRkYjMxMzljYzJiMmRiNjVmN2Q3YmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNTk0MzgzOTUwNGNlMmE1ZGUwNWQ5NGI3YTFkMjlmZTE1NjQ2ZGUyYzVjNTVhMjc0YTkxZjMzMmZiZWJmZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczMWRhNGRkMDY4Mjc0NDljNjYwOGUwMWE5YTY3NDBhNDFhYjc2MGU0ZjIyYjkzODFlMjJiMTNlOGIyZGM5ZTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d989dad820b9461aafb22e6d8dea82dc",
+      "statement": "The active queued or running setup and validation operation receives provider access before its first heartbeat, with a deadline 30 minutes after creation.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/providerlifetime.go#L94-L106",
+          "version": "repo-lines-v1:sha256:0318a860d495e6513fd51fd9a400b326e66dccabcb165d5310506b649e324059:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjOTZhOWY2MjlkNzA1ZTQxMDg3YjVlMGU0NzU5MzQ0ZWY2NmE2NTFlYzYzZTg2MTQ5YjcxMzMyYWVjYzc0MjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhZjYwN2YzNzUxOWRmMzJhZjVkMTFhODRjNjExNTYyYTI4ZTk1ZWRkZjQ3NzIwYTRkMDIwMjVjYTIyODBhNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/providerlifetime_test.go#L101-L140",
+          "version": "repo-lines-v1:sha256:d8b8e1d632b4e54a041266b745fec65174c7fec2015a22765ffa7fb1e393b7ca:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkYTQ4MDkzN2I4M2M4NzdjNjZkMjY5ZTliMDdhOGU1MzZhM2ExMDkxZmJlNDcxNGFlNDY2MjhkNjk2ZWIwMDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MDIyM2RjNDUwODU1ZDAxMDRlMWQxOGM1OGJjZGU0OGU3MzE0NjU5ODIzZjY1ODg2YzQ4ZGMzNzRkZmQ2ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzNGFlZTNkMzkwMWMwODMxODU3ODQxYjQ4MzdmMzNlNmQyZTRhM2EyOThmMDE4NDQwMzYwZjk1MjdmNWY1Y2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiZDdjY2Q0ODI0MmVmZGE5Y2RlOTExNTBmN2M1MjI0ZjNhZjk4YjAzODc2NDg0MDVjNWJlOTYyNGIxYjg5OWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2cd1209014cc49c0b3a955240edf01e8",
+      "statement": "The published update keeps the image and base digests that each Project selects.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/image_removal_prod.go#L29-L44",
+          "version": "repo-lines-v1:sha256:3afc56a5e0e94cfda5216b5487ea6b061b174a92a18b1633408dc09e23c73485:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhNTgwODBhODljZTRhYzZjNzljZjE0NmIxMzIwMjg3YTQxMGYyNGUyMTRlMDUwYjI5NmY0MjMzZTYyOGNkM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNzg4MmY0NDg3MzdhNDM5MTVmZDExYTFjMTQ4NjliZjJiZGMwYWU1OTg1NTYwZjJmYTJiMjZiZDcyZjA5MWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3MTc3N2NjODY1MzE3ZTc4MGQ5MzIxODAxY2ZjZGUzZTIxZDc1YmExYTI3YTc4ZmM4YjA2OGY3ZWZhODUxOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhZWI0MTFjNjA2MGY0MDJkZDRjOGE0YmM0ZjZkZTZhOWFlOWUzMzQyODRkMTcxMTg3ODM5ZWMzYWQyYzM0MjMifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/project_image_digests.go#L5-L26",
+          "version": "repo-lines-v1:sha256:9c924dc37eb28e8da46655b14dc725e7aa53ccc9c96c090fa497098cd89e7477:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3ZjdjNGJhODI0MjU0MTZjYmY3ZjliZTliZDVmMTFhYjE5ZDY3NjY4ZWJhZGNjZjFiZGQwYTI4MmU4M2ZmNWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc4Y2NhODkwZDYwMjUwNTAyYmRmMjZkNmVhMGNhNmRmOTBiZWM1YjZlYzI2MTg5OWMyZTAxZGMzMDJkMGRiMGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a16e3957bc9e40ff8d559a8ba0fec7b2",
+      "statement": "A recorded runtime check does not skip the optional OpenCode compatibility check when its volume exists; the selected image must execute the OpenCode program.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/environment-lane.ts#L250-L307",
+          "version": "repo-lines-v1:sha256:0494566e30a1454a1faca2e177331440ad3bd733792832673df5c50620420d88:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YjhiMzIzZmUzYTBkN2E4Yzg4YTY3ODJiMzY0M2RiNDRjOTE5OTA3MjczZjJmNzBhYzRiZDNiOTdjOWY2ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NzY3NjJhM2JiN2RmMDRmYWIyNjQ4ZWRiY2EwNjFhY2Y0ODcyM2NkNWM2NmM4OTViMDVjMDZhY2ViNmIwZDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViYjk4OWYxMjBhMTdmMDViMWY1OTg5NjQxNGU4MzY1M2IwMWYzOTFkZDRmMmQ4OTA2OGIyNTE5Y2UxNzJhZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwNjZmYzYzZDE4YWE4NjQ2MjQxNTA0MTZkZTkxODU0NmRjNGFmOGZlZmZjMjE3YzdlYzZmNmRiMGEwZGUyODQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_75bcdc3cd2be436089e00f986acd192f",
+      "statement": "Public updates check selected Project images, including archived Projects, and preserve them across runtime replacement.",
+      "evidence": [
+        {
+          "resource": "repo://release/UPDATES.md#L108-L118",
+          "version": "repo-lines-v1:sha256:18e8589201ec90c51e645b01ebf90809d4781f9055df1a4f2f3c736f61d91aa2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4YmM4NzFhZWIyYWY3N2I2ZGQ2NjVlOTZmNTI2OWI3MDAwZGYzZTNlZTNhNzdiNmMwZDJmODgyMDU1MWVmZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViMjEyODk3NWE2NmI1Yzc3NmU1ODYwN2ZiMTFiMzhhMDRjOTEwZWI1NjRiZTRmY2ZmZmRmYjk0ZDI5NWE2MjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwNDlkNjAxMGE0NjYxZDhjYzZlZGEyOWNhM2FiZTM2NzE1NDNiNWVkNTFhNTk5YzM2MWYxYWZiYzkwNDUwYjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkMGY4ZjFhZmE1NTQ4YmZiOWIyYTJlYjExOWU0MTVjOTA4ZjUwMzI5NjVlNWMyMGUyNmU1MTYyNzA0NGVjOGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a258ba032cd14ca7b6977e0b7563251f",
+      "statement": "Update reconciliation records interrupted environment operations as failed after writers stop and supplies an Environment-page retry action.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/update_reconcile.go#L101-L115",
+          "version": "repo-lines-v1:sha256:8fa51dcbeabcbd305e1ebb8dc2ca8dad06aa4e7ab990f48723c5b399f81b7207:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5MGFiYzRlNDBjYWMyNTZjY2I3YzJlYzBiN2E1ZGQzZDE5M2I0YWRhMTlhMTVjMDg0YTZmNDY1MTdlMmM4NTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkOTMxZDVjNDE1YzM4MDliZGMzYTEzZDFhNDk5ZTQwZjJjOTUxNmZkZTAwNzJlM2MzODk0MzI1YjFhZTI5NjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhYjkwMjJkOWJlZjVlYmUzYjZlZDdlNWM1MGUyZmZlOTIwYWMwM2M5YTBlZmI2ZWI5ZjM0OTg2YjBkNzIyZTEifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/update_reconcile.go#L17-L18",
+          "version": "repo-lines-v1:sha256:7e06edab2fc241f75d4dd4d7d5a09854883d37e501d91a83aeed51802cc82e2a:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMxZmNjNTFjYTEyNjM4NDY1MWNiYzFmZmZhMzlhNGViOTkxOWEzMzU2OTMwMWY4NzlmM2NiYTE4OGI1ZDNkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGJmNDM5ZGY0Y2MyMzRhMTc0MzI5NTkzOGIyMzUyODc1NzUwY2Q5MmEyZDk0NmEyYTFlYThkZTAyNjc5YTg2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Y5Mjk1MTU0Mjk5OTVjZDdmZjFkZjQ1MjEwYTIwM2YxMzBmMDdjNzgxYzk3NGEwYTJiNjYwMWU5OGY5M2Q1NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f609fa33652a492186865d43c3f9e493",
+      "statement": "The Worker uses a proposal and checkpoint for a prerequisite that Image dependencies can supply; the Verifier returns CORRECT for that cause.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L82-L109",
+          "version": "repo-lines-v1:sha256:cd732813c6094d22c66e4c1187fff51e5e2278d2d206e102b4ac609572bff9ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L118-L148",
+          "version": "repo-lines-v1:sha256:1596475831d56bbe739ce1bcfd0754afab65ee5a79159f6251d320baf7a6fb30:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNGNiNjNlZmY2OWZjNjVjNDJmYzdkMzFmNGU3NTA4MzQzNDU1NmVkNTU4Mjk0MzFjMWQ3ZWU3YzFjZDZiMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxOTYzMzNkN2I1ZjA4ZDE1MjVhNWQ4ZTUzMDM2ZmIzOGQwNmUzOGI2YzVkYzlmOTY0ODE3OGExMmE1N2MxNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_91da23bcacad410bbc968ffe8b9842b0",
+      "statement": "Unavailable checks remain unverified, and the exception for host checks outside criteria excludes new or changed tests.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L82-L109",
+          "version": "repo-lines-v1:sha256:cd732813c6094d22c66e4c1187fff51e5e2278d2d206e102b4ac609572bff9ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MzU3MGE1MzIwZmY2OTg0YTg5OGMwMDVhNzlkOWQxYTYyOTRmZTM4YTJlYWMzZDI0NTg4YzJhMzE0YzcxZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkZDgxNzYzYThjZTQ4NGZiZGRhZWFkYWEyZTBkYWFiNWMwYjZhYzU0ZmI0ODAxYmUwNzYwOTZjZmE5MGY0NTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L120-L136",
+          "version": "repo-lines-v1:sha256:cb7cfe9cd4c928d992fa85bfc5b325d2bbda093ad80ba17d2ea795f61b613adf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYmM5MmIxZjUwZDkzYTFiYTJmNmIzN2ZjNzgxYmY3Y2RmZWEzZjA3NjNiNjlmYzNkMWEzZjQ0OWExMThiMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0ODVhYTE3MjM5ODUyZWZkYjgzZDYyZjQ4M2NmOGFmNmI3YmU1MzYxMjE0ODViZTFiMDYyYTMxMjRjMWQ0OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyOGJhMDM0ODgxNWJhOWRhMzBjNTRmZDdkZTJlMjk5NDhiODQ0OGQyYmNiMjVhNjUzZGJmZTQyNzZjMjkyOGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9bd83a683e774875a4bc9f9c774c13b5",
+      "statement": "At the attempt limit the resident writes a limit record with the limit time, the container process list, and the command logs before it stops the setup container, and the failed result carries attempt_limit.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/environment_execution.go#L369-L385",
+          "version": "repo-lines-v1:sha256:1352b31800958bf7b030f775aec724de160a4b1dd3046134e3708ce0ea9dd321:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0OTVkZTIyZGZhYzkwMmY5NGE5ZmZkZGM2ZGY2ZWU2ZjhhYThlODUxODkyNTk0ZGY3ZThhNjRhYjY0ZTY3ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZDZiYjE3NTQzMjgzNTNlZDZjYzlmZGZjM2E0MWQ3MDgyOWU4NjAxYmJlOWIzMzFiODdlZjhkZDdmOTAwNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYjYwNGFkOWRhOThkMzBhYjc3ZmRkMjliZTBhYjJiYmFiMjBkZjgyODQyMzkwYzlmMzM2ZWM5ZDM0NDdiNGEifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts",
+          "version": "repo-file-v1:sha256:414df23b5b90fc6f730866133290ce2b36afb19a2ab1b0ad5c779dc82d1cee25"
+        }
+      ]
+    },
+    {
+      "id": "claim_b074c6a206444ab38e7c14d3bdc4e4eb",
+      "statement": "A replacement setup or validation attempt receives the failed attempt's trace copy, log folder, and limit record through read-only mounts, and the automatic attempt after an attempt limit is a review attempt.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/environment_decision.go#L110-L143",
+          "version": "repo-lines-v1:sha256:5c18f7ea84f9d5e15bcd06c963d84d0baf9497c4dc7c8ef9ed214c0c3f161741:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2M2U2ZmViOWU2ZWM5Yzk2YzMxNTg0MGNiMDlmMmI3ZWU1ZTdmZDA3NzU3YjcxYTE5ZjdmYTExODM4ZDFkOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2N2JjODM0YmI3MzcyMGQwNWZiZTE1YjYxZGFkMzgyZDQ0Mzg2NjE3MmU0YTY2N2YxYTAyZWI2MmMzOGU1YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/environment_execution.go#L405-L408",
+          "version": "repo-lines-v1:sha256:77da0930c2fcef927beafe58855d24886e9ba40603e4dcd7090cb6c772481c35:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU0ZTc4ZDJlYjY4M2U4NGZhOWQxMTNkMjZlMzkxM2IyMjU2ODJhNDBlNGI0MTgxNzU4Y2UyNDdlNTNmYmU4MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY3M2M1ZDljNjhmMmM2M2UwMTc0ZjRkNzJiZmZkODFmNTM5MjllOGVkZDhmMjFlZjdkMDhjMWRiMGFmMDg3NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODk1NDc0OTFhZTVlNzViOWZhYjFkYzI0NjYyOWVmZWYzODJiZmM4OWY0OWZiYWFkNTA2OWQyM2NkNTY3M2U3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTFlMTc2MWQzNzE3ODNmZTU0NmUyZWI4ODljZTRkODY3ODg0ZWUyODJjMjA4NGFlNjA5MDBhNzEyNGFmNmQ4MCJ9"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts",
+          "version": "repo-file-v1:sha256:414df23b5b90fc6f730866133290ce2b36afb19a2ab1b0ad5c779dc82d1cee25"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b2e9f6587884a059e187a2eff4db4d7",
+      "statement": "A review attempt executes no Project build or test command and classifies each command of the failed attempt as Completed, Stopped at the limit, or Not started.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/directives/setup.md#L88-L109",
+          "version": "repo-lines-v1:sha256:c23ad1ed2b806baa93afca842cc8c8257d06785a28ae7fd583f34cd90fe9ebc4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkYjgxYmM5N2M1ZDI4NzBkNDI2OTFjYjhjNzE4YzM1MWRmNDQ2YmI2M2E3NzI5Zjk2NmM3MDhkZWY4MGNjZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzZTAzMWQ0MmFlNzQ0ZGNhM2NmYTI2MmQ3ZDM2MzEwYWU2NWEwODE1Y2IzNDU1M2VkOTU3MWQ0ODQ5MzBjNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3YWIzZDRjZDRmYjMwNjZhNWZmNjlmOTE5MmY4Y2UzZWNiODNkZGFmYjk4OGUxZGQzNWI4YTZjYWY0ZmIxMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhODZhNjBhMWEwYmEzYjA1MDU3YzI0NDcxMDMwODU1YzVkMzZmYTNkNTE0Nzg3MmUwNDI1NzJkOTcxYjRkMmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b8d669fd1cbc426fa20ea59f636b6fcc",
+      "statement": "Initial setup works in a temporary repository at the tip of the culler branch, and delivery moves culler to the accepted setup commit.",
+      "evidence": [
+        {
+          "resource": "repo://GIT-DELIVERY.md#L21-L29",
+          "version": "repo-lines-v1:sha256:1dd83f488e8d70adf28e5bb95dd00b909e5cbc4ef8519671bb7eeb2b58b8f6fe:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWZmNTI3MWU3NjgxYzAzNWZlZWU2NDQ1YzQxMzZhZDkxZmFlZmY3ZDM5YmIzNGQ1ZWFjZTQ0ZmZmOTZlY2FjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU4MDVjNjBjYjhjNmY1ZjUyMDZhY2M1NzFjMzQxN2JmMGY0YzkxOTk0MjY5MmZhMjEzOGZjMzlhMWZiYWQ0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTJmNzdiOWM4NjE5MmRjYjUxMmZhNzIyNjUwNjkyM2Q3OTZhNzc5MGRkNzFkMzQ2MzE3NGE5MTdhNWI2NTg2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTMyYTZjMDJhMGIxMmI0Y2M0YjA5MmI0ZTI4ZDgyZDY3MzQ1ODNmNjRkMWE0YmMxNTVhYjZmZmM1NmU1ZGY4MCJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/setuprepository.go#L86-L184",
+          "version": "repo-lines-v1:sha256:e86d2e23c668ee4afcb83d55ea7541b350e5cf35c8ad3ab2b6878ce270db1136:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNjM2NWI1ODU4YTZlOGFhYzFiNDc1ZGU1NzhmYWJhMjNlYTE1NTNkYTA2NDAwYTg5ZTgwMjlkNjc4Mjg4MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5NDQyZjBjYTQ5Y2Q1NmVmMWI3YmFhMDZlNDAyMTFiOWU3ZTFiNDc5ZDljYWFjZGE0ZmJmYTM2ZDNlYmZmMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:23:34.077Z"
+  }
+}

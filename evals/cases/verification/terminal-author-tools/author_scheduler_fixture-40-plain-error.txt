@@ -1,0 +1,3 @@
+usage: author_scheduler_fixture.py
+       [-h] --cache EXTERNAL_MIRROR
+author_scheduler_fixture.py: error: the following arguments are required: --cache

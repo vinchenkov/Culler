@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-11T22:20:34.192492+00:00",
+  "checks": [
+    {
+      "kind": "container",
+      "name": "mc-helper-bcb8b1b9b872",
+      "absent": true,
+      "exitCode": 1,
+      "message": "Error response from daemon: No such container: mc-helper-bcb8b1b9b872"
+    },
+    {
+      "kind": "volume",
+      "name": "mc-spine-bcb8b1b9b872",
+      "absent": true,
+      "exitCode": 1,
+      "message": "Error response from daemon: get mc-spine-bcb8b1b9b872: no such volume"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "criteria": [
+    {
+      "criterion": "The shared toast host uses popover background and foreground variables.",
+      "evidence": [
+        {
+          "path": "web/src/main.tsx",
+          "symbol": "Main"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The toast position remains top-right.",
+      "evidence": [
+        {
+          "path": "web/src/main.tsx",
+          "symbol": "Main"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_checks": [
+      {
+        "expected_text": "background: \"var(--popover)\"",
+        "method": "source-text-presence",
+        "path": "web/src/main.tsx",
+        "result": "pass"
+      },
+      {
+        "expected_text": "color: \"var(--popover-foreground)\"",
+        "method": "source-text-presence",
+        "path": "web/src/main.tsx",
+        "result": "pass"
+      }
+    ],
+    "frontend_capture": {
+      "result": "captured",
+      "provenance": "/mc/artifacts/eval/701/media/capture.json",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite.",
+        "The capture triggers the unchanged toast library directly. It verifies notification appearance, not a completed save."
+      ],
+      "images": 4
+    }
+  },
+  "media": [
+    {
+      "path": "/mc/artifacts/eval/701/media/before-light.png",
+      "revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "sha256": "9e8191ac86e57136475bc5467a0b1c041aff77877c6f12d64b41abd8bb538c63",
+      "description": "Before: light. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/701/media/before-dark.png",
+      "revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "sha256": "c5229ea93f6ae6a5724523861622b953ee4dca3ee423bc4e7bfd420e19d15e61",
+      "description": "Before: dark. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/701/media/after-light.png",
+      "revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "sha256": "b2192d65f12a79550cf750c75edbf8db69df738027bc4041feee347069e9b4f0",
+      "description": "After: light. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/701/media/after-dark.png",
+      "revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "sha256": "25a8857f44eda7152c0cbaf93d11f83d047a729e9be3aa2344c8b5f2cafe2111",
+      "description": "After: dark. Fixed synthetic frontend state."
+    }
+  ],
+  "media_status": "supplied",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author inspected the pinned source and reconstructed the Git range. This is an authored record, not a captured Culler Verifier run.",
+  "task_id": 701,
+  "unverified": [
+    "The source change does not establish a measured contrast ratio.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite.",
+    "The capture triggers the unchanged toast library directly. It verifies notification appearance, not a completed save."
+  ]
+}

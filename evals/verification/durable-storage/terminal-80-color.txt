@@ -1,0 +1,73 @@
+COMMAND: serve help
+EXIT: 0
+usage: culler-evals serve [OPTIONS]
+       --protocol FILE
+
+Configure Genetic-Pareto (GEPA) experiments in the browser. Each experiment
+starts only when you select Start experiment.
+
+options:
+  -h, --help          show this help message and exit
+  --protocol FILE     Use these experiment defaults.
+  --preset NAME       Select a saved preset before the browser opens.
+  --source DIR        Use this Culler source checkout.
+  --output-root DIR   Save experiments in persistent storage. Default:
+                      ~/.local/share/culler-evals/experiments.
+  --cache DIR         Use this cache for pinned case repositories. Default:
+                      ~/.local/share/culler-evals/cache.
+  --credentials FILE  Use this private credential configuration.
+  --port PORT         Use this loopback port. The default selects an available
+                      port.
+  --no-browser        Print the browser address without opening a browser.
+
+COMMAND: run help
+EXIT: 0
+usage: culler-evals run [OPTIONS]
+       --protocol FILE --output DIR
+       --cache DIR
+
+Run Genetic-Pareto (GEPA), compare its candidate on the final holdout set, and
+show live records. Source adoption remains separate.
+
+options:
+  -h, --help          show this help message and exit
+  --protocol FILE     Use this complete experiment configuration.
+  --source DIR        Use this Culler source checkout.
+  --output DIR        Save the run in a persistent directory outside temporary
+                      storage.
+  --cache DIR         Use this cache for pinned case repositories.
+  --credentials FILE  Use this private credential configuration.
+  --resume            Continue the unchanged run in the output directory.
+  --port PORT         Use this loopback port. The default selects an available
+                      port.
+  --no-browser        Print the viewer address without opening a browser.
+  --no-wait           Close the live server after the run. Preserve the portable
+                      viewer.
+
+COMMAND: recover help
+EXIT: 0
+usage: culler-evals recover [-h] backup
+
+Restore an absent experiment directory from its local backup. Recovery preserves
+existing records and makes no model calls.
+
+positional arguments:
+  backup      Use this experiment backup. Existing records remain unchanged.
+
+options:
+  -h, --help  show this help message and exit
+
+COMMAND: temporary output rejection
+EXIT: 1
+Experiment records require a persistent directory. Use
+~/.local/share/culler-evals/experiments instead of a temporary directory.
+
+COMMAND: browser startup
+EXIT: 0
+Experiment browser: http://127.0.0.1:52637/6Nhf_13qEwSP3wsX58GOVfC8NvGcunX6/
+Experiment records: /Users/vinchenkov/.local/share/culler-evals/experiments
+Configure a new experiment, or select a saved experiment to resume.
+The server invokes models only after Start experiment or Resume experiment.
+Press Ctrl+C to close the server and interrupt an active experiment. The records
+remain intact.
+Status: experiment browser closed

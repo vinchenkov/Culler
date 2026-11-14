@@ -1,0 +1,43 @@
+{
+  "checks": [
+    {
+      "base_commit": "45519accd338fa29010db6a9d31de6fe252256ae",
+      "changed_paths": [
+        "web/src/components/MemoView/components/MemoHeader.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+      "reviewed_tree": "3de7d09d87bfedab18cc77429535ff59c55d89a7"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The creator link can shrink below that minimum width.",
+      "conditions": [
+        "The change affects the creator label beside the time and existing Space badge.",
+        "The change adds no new user data, API, or permission rule."
+      ],
+      "mechanism": "MemoHeader changes the creator link from min-w-16 to min-w-0."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The creator link can shrink below that minimum width.",
+  "task_id": 802,
+  "unverified": [
+    "The source declaration does not prove every browser width or every translated label fits.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "verified_source_commit": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+}

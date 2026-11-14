@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "name": "mc-control",
+      "sha256": "86b89128ac0185723dad309b9cd1c09030d261a57283df98fb091c218081e2b3",
+      "bytes": 23884930
+    },
+    {
+      "name": "mc-netdb-experiment",
+      "sha256": "c9e3ed2e236dc77b0ee6765f726e079a19fb853a83d234583174f0a643370496",
+      "bytes": 23851378
+    },
+    {
+      "name": "mc-linux-control",
+      "sha256": "749be0b65d4895e9518c8c9c3f59d4dd3f04453ce0f091b6426f18b8f3360074",
+      "bytes": 21655514
+    },
+    {
+      "name": "mc-baseline",
+      "sha256": "cc9d5ca70e9176f9c424e6ad6aa152e2bf057cd10a71c3dcb23408f6428a6611",
+      "bytes": 23884258
+    }
+  ],
+  "sourceBase": "c83ed353",
+  "releaseBuildID": "bbf00338ef733a8b04dbd46b5dbf78734455ba74",
+  "controlAndTreatmentModfile": "/private/tmp/culler-performance/20261011-mac-command/netdb-module/experiment.mod",
+  "treatmentOverlay": "/private/tmp/culler-performance/20261011-mac-command/netdb-module/overlay.json"
+}

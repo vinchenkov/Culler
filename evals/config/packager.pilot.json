@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "id": "packager-memos-pilot-01",
+  "role": "packager",
+  "source_revision": "02a33e61a012fdf4ee59291dc645b15abb81d218",
+  "runtime": {
+    "packager": {
+      "model_name": "GPT-6.1 Sol",
+      "model": "gpt-6.1-sol",
+      "harness": "codex",
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "effort": "high",
+      "fast_mode": false
+    },
+    "judge": {
+      "model_name": "Claude Opus 5.5",
+      "model": "claude-opus-5-5",
+      "harness": "claude",
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "effort": "high",
+      "fast_mode": false
+    },
+    "optimizer": {
+      "model_name": "GPT-6.1 Sol",
+      "model": null,
+      "harness": "codex",
+      "image": null,
+      "effort": "high",
+      "fast_mode": false
+    }
+  },
+  "operator_context": "The operator understands general software concepts, uses the Project, and knows its core terms. The packet explains the relevant Project structure and new terms with clear technical language. Core and established terms need no prose definition. New terms without prose definitions belong in the glossary.",
+  "rubric_file": "rubric.pilot.json",
+  "pilot": {
+    "cases": [
+      "../cases/memos/memos-link-cover-retry.json",
+      "../cases/memos/memos-log-level.json",
+      "../cases/memos/memos-archived-owner-access.json",
+      "../cases/memos/memos-webhook-label-refactor.json",
+      "../cases/memos/memos-reuse-list-settings.json"
+    ],
+    "assessment_status": "exploratory",
+    "score_interpretation": "The Judge is uncalibrated. The pilot scores establish no directive improvement."
+  },
+  "datasets": {
+    "trainset": [],
+    "valset": [],
+    "final": []
+  },
+  "trials": {
+    "pilot": 3,
+    "training": null,
+    "validation": null,
+    "confirmation": null,
+    "final": null
+  },
+  "search": {
+    "proposal_count": null,
+    "minibatch_size": null,
+    "concurrency": null,
+    "seed": null,
+    "sampler": "epoch_shuffled",
+    "skip_perfect": null,
+    "completion": {
+      "max_iterations": null,
+      "stagnation_iterations": null,
+      "minimum_gain": null
+    },
+    "confirmation": {
+      "enabled": null,
+      "reference": null,
+      "counter_policy": null
+    }
+  },
+  "protected": {
+    "spans": [],
+    "semantic_requirements": []
+  },
+  "retry": {
+    "external_attempts": 2,
+    "assessment_attempts": 2
+  },
+  "calibration": {
+    "record": null,
+    "check_record": null,
+    "minimum_agreement": null,
+    "minimum_critical_detection": null
+  },
+  "final_decision": {
+    "minimum_gain": null,
+    "case_type_regressions": null,
+    "bootstrap_samples": null,
+    "minimum_groups": null,
+    "maximum_interval_width": null,
+    "human_review": {
+      "method": "strict_pair_majority",
+      "required": true
+    }
+  }
+}

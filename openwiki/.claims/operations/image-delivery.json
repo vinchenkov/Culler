@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:41297d0b8855dcbf3faf537f33ae8e5006a0a21a0cd543a6a32860d5103b623c",
+  "claims": [
+    {
+      "id": "claim_fdd699f503a748f28d95ccb82cfcba94",
+      "statement": "The product image adds the private runtime to the default Project image.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/runtime.Dockerfile#L58-L68",
+          "version": "repo-lines-v1:sha256:5763780f502c29ea91cc51dce7554c4456c5aa5f32aa025c0a1ebd3d9e40a678:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2Mjc3ODRlYWUwZTcwMTYwOWZjOWM3YWZjNmY1NDI0NzgzYTA2NWZmZGE4YTA0NDczNzVmZGY1MWE5ZjMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwZTgzZWJiMWQzMjYwZTUzYzJlYWVhNGQ3NDliNWZiMjQyMTJlODU5NzExMGQ2NzE0NWQxNWFiYjcwZTAxZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwOWE0YTExOTc1Y2Y0YjJiOTJmNzU1Mzc0NTc4YmRjYmU3NmM4MWNjZmQxZDc2YmFiYjcxYTljMTMwZmQ5MmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9dc9e69f72c5418893a1cda19e771eec",
+      "statement": "The image content check verifies layer order, duplicate tool files, caches, access, and protected mc-real attributes.",
+      "evidence": [
+        {
+          "resource": "repo://release/image_contents.py#L415-L432",
+          "version": "repo-lines-v1:sha256:2b5ed1638f9b792c548ea2b1a3e8bae31ed36e57aa31e9facb45c34d7ff0105e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYzk1YzRmNTQwNzhjNTQzNDQzODVkNTg4OTZhN2NmZWY2Yzg5OWQ0NWM5MjJmMWUwNzUyOTc4YzJkZGZkOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5OGIwNjNkOWI0N2U2NTM3OTYyNTU3MmNjZTE5NzY2OWQ1NzY3ZTEyYzE4YmUwNzU2NTJiOGNkOTgxY2U4ZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMjgyMmYxYWQ1Mzc4NGY4ZTI0MThmYzZjZGQxYThmNjlhODI2M2Q4ZGI3MjFmOTI2YjRiZjMzYjIyYzIyNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_89f3df5d33fd47d5973675e22c75f9bf",
+      "statement": "The size report measures fresh install and update sizes from image archives.",
+      "evidence": [
+        {
+          "resource": "repo://release/size_report.py#L83-L149",
+          "version": "repo-lines-v1:sha256:e4b50352767897ab2fc1b03a3d7c554b9830f3730fb76e0944f82c09b8d72777:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNWYyMTdhZmE0NDU3ZWZiZmQxYTQ5YTNkMDBkNmNmMzkyZjA4NTVmMDEzMzRmNmJmMzE3NDhjNTg1MDJiMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2MTgyODc5M2E2YjNmYTgzZGI5YWEzN2Y1ZjRiNmQxNmNmNWM0ODM0YWUzMjhmNTQxNDU3MWQ2NGJlYmQ4OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0MjVlM2E3MjAzMjBiZGJiZDVlNWVmZWI0NjJhZTM4OWVlNTA0ZGQ4ZjExNmMwNGRlODUwZTcxMDI1NjU5MmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2447999866e344f9b8b822021a3081d2",
+      "statement": "The runtime installer compares manifests, writes changed files through new paths, and writes the release marker last.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/runtime_install.js#L117-L146",
+          "version": "repo-lines-v1:sha256:4b4d6c76425b641c02b0f9da9f8fd05e9e132294d527f5ba71e06fa7c78202c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYTczNjU1ZGI2MGMwNmI0NWE2Y2E2M2FlYmRiMWZlYTBkZjk2YjUxMDE1MTFmZTFkNzFjMWNjNzhhNWM0ZDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYzFlOWY3ZWMwNzFkN2Y4M2Y5NzVjZTBiODdhODgyOWZmNzY4ZTA3YTg0NTljY2UwYjk0ZWY1YTE4MjNhZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExODkwOTJjZjcyZjgwNjJmNTBkNmE2Y2ZhYmVlMjQ3NWNhODRiNjg3MzZlNTU5YTJmMGI5OTEyODFkODViZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4YzM1ODc4MGNlOTM3YTgwYTYzYTVjYjA5N2RmYzNkZmE3YjI2Y2JlMGM0ZGVjN2E5NWI0ZGQxNTFmMWJhYzYifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/runtime_install.js#L223-L319",
+          "version": "repo-lines-v1:sha256:912cb9421d74cbbe718702b2b97530982376cdc8f144f4f29c993c99badf6753:eyJzZWxlY3RlZExpbmVDb3VudCI6OTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhZDBkZTBmYTA4NzI3YWQzYTM1NmEwMzk3N2E1YjRlODUzNzY4NmZjOTVhZWE4ZDQxMGQ3OGQzNTExZTdmYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c1ef68a419d4968871df43c73ea7c61",
+      "statement": "A published update records removed images and keeps images that Projects need or containers use.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/image_removal_prod.go#L15-L44",
+          "version": "repo-lines-v1:sha256:4f98791f702bbcb142153bb650eb59d4430f05a1a35119fc419717ee3fe9c811:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MGFjZTRiNjVkZjZhNWFlZjk2NDJiYzhkYjk0ZTVlOTA4ZDc2ZWMzN2I5OTE3ZmQxYWUwYWI4NDBhM2Q0OGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjNzg4MmY0NDg3MzdhNDM5MTVmZDExYTFjMTQ4NjliZjJiZGMwYWU1OTg1NTYwZjJmYTJiMjZiZDcyZjA5MWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1YjBhYzgzODM2ZGZhNWJlZDQ1NWEwNjNlZmJkNTE3NDRhYzM0YjA1ZWQxNWYyMjc4ODdiMTlkODYwNDVmMTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhZWI0MTFjNjA2MGY0MDJkZDRjOGE0YmM0ZjZkZTZhOWFlOWUzMzQyODRkMTcxMTg3ODM5ZWMzYWQyYzM0MjMifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/image_removal.go#L39-L93",
+          "version": "repo-lines-v1:sha256:a60549a3ae5f07f76766946839d1cef49d0035b579ddffc7f88e7f8025087fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YTRhYjYyZmJhNzQ4Y2RjNmVlZTk1N2E3N2NiOGZmZDVlM2Y4MmYyZTQ2M2YyYzI0MDhiNDg2OTRlMmNmNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNDQ2MjM5MTE5MDM0OTNhODE3YTM0ZjIxODI0NGUyNjVkNDQwYjI2OWU5MGViNmEwZWRlODk0YTg4ZTE2YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkM2M1M2I3ODE1YWE4MjViNmM0ZDhlZTA1YTZkYTZiMzYyNTVhZmFiNGIyYWEyYzY0ZjM5ZTQwZmQ5MDY2ZTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjMGIzYWM5NGYyZTYzNTMyMWYxYThmNmVlZTMyYjVlNDFmNzk4ZTI1ZDU4YjlmMWNmYTI5YmIxOGIyYWZiNTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_19965de54bb74eadba71ea179d8ef6c6",
+      "statement": "The OpenCode archive installer validates the archive before volume replacement and refuses foreign volumes or active volume users.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode.go#L320-L370",
+          "version": "repo-lines-v1:sha256:f11bf2bde792b30d50ce4f0653c920e1b64147af558f27b6ff29602d8f56cbd6:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZjQ4ZTNlNjc5NGQwZTU5YmMzZmZlNGYyYzc2NTdiNTM5OWM4ZmNjOTY1MTg0YWNmMGY3NjBmYWNkZDIwODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwMzYxNGJhYTZkMjAzMDIwMGJhZjMzNWI5NmVkNDdlZGFiNTkzZGJjNTUyZmI4N2YwZjRkNWNjOTRjY2FjNGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlZDdhMmQ1YzAyNzljYTQzYjZhOWZjMWYxMGUzZWYwNTkyZWZmZjNjYzZlMGVlYTc3ZWNkYWI0NGQwNTM1NDMifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode.go#L372-L461",
+          "version": "repo-lines-v1:sha256:934a1298af17a98284f805f18e9326c5ffb86abee4d59c74cd3a2d336d8e6273:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhMTY3MjhhOThiMDA2ZGM4ZjRhZmVkNTg3ZjA2MThjODUzYWQ1NzRkMzJkNDRiZjgzNjY0MDc1NmI4YjU4YzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b9038a5338a449bbdd8a7cd092d6a35",
+      "statement": "Published updates perform image cleanup after commit and retain a retry on cleanup failure.",
+      "evidence": [
+        {
+          "resource": "repo://release/UPDATES.md#L66-L76",
+          "version": "repo-lines-v1:sha256:2786f5cd5a54b186b528ca5398d8ea332633569581de1a33b727f108d9976f9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDM1ZjkyMTFlNWFjNzc1ZDcwMTNhODM5NGE1ZGNjMTU5YmU1Y2QyOTVlYTk5YzJlY2EzNGI0Y2JiYTU2ZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0YmI1MWE2MWY2Y2ZiZTE5ZTU1ZDcwYmY0ZTU5ZmRiODkyYTllMTQ0MzM2MDZiODY4OTkzZjFhOGYyODUwMzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNiMmRjM2RmNjYyODY0NzdhMzczNjEwOWIzYzdhZTFiZWFkYjdiY2IzZDdlOWEyYWZjNWQ0MGUwODk5MzljMWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_344d193886ac410880a94edc76194431",
+      "statement": "Source installation prepares OpenCode before service activation; published installation retains the deferred download.",
+      "evidence": [
+        {
+          "resource": "repo://INSTALL.md",
+          "version": "repo-file-v1:sha256:a2395774e6bccda1847535cf2c3bab7668a236de19d6c25c66abe63365f039aa"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go",
+          "version": "repo-file-v1:sha256:42d2f9082d1a76e78e9c0fb72de2ced84742f78ee0245b2caad1a0031ca580c5"
+        }
+      ]
+    },
+    {
+      "id": "claim_d11207468809479eaebf896e850950e9",
+      "statement": "Source preparation exports committed OpenCode files into a temporary snapshot and rejects checkout differences from the selected release.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L210-L270",
+          "version": "repo-lines-v1:sha256:63db7186fbfabcc3018e8bcfffadb86a46e50bd42f96be8a7cc753625007cb3a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ODU1YTQ0MDcyNjNmYjUyYWY5NzZhMzNhMGZmZWNmNzk3MTk3NTAwZmE1MjUxNzc1MTc1NzQwZTE1ZWQyNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwYjZjZmMzYWZlNjliNjI4OTdhNTI2MTVlODZjODA4YjA4Yzg4MmNjMDRiYTQ2N2Q2Y2NmYzRjMmU5MTYyZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmNTQxNGVmMzM0NGE2ZmNkZDIyNTIwMGY5ZDgyYjc1YTc5N2E1NzdhNWFhY2M2OGFhODFmMGZkYTdkMjQzYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlNzBjZDljMWNlZTdlY2VhMDk0YmJmYzJlNDE5MmQ4YmYxNTRmMzQ1MGFjZTVkMGJiZTk2MzZiMDUyYmRiNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a86292a63efb4e208f13fbfe0f93c00d",
+      "statement": "Source preparation uses the selected Linux arm64 image with a fixed environment, disposable package paths, and user 10002.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L273-L278",
+          "version": "repo-lines-v1:sha256:7d5a0bc6d3fbef127b2c0a78f9fcf0ced21fbfc1a1b521f423b409bdf57977ef:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EyNjU4MjhhZjNkY2UwODQ3Mzc1NWFlNTc3YjM0NDExNDUxOWJhZjZlMGE2Y2JiOWY3N2FhZjE3YzFjOTM4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA5MzU0NjRiODZkMjVmODk3MGNiMGFiYjk5NzQxYWRhOGY0Y2U0ZWM4OGZjNmVhZmRhZmNiOTYzZDM3ZWM0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVmZjEzMjk5OWUyYzM4MjQwZjE4OGUzNDlkYjA2NDU5NWE1NTkyMDUxZmIzOTMxMDYxMDI5ZmU3OGYzOTM2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk0MmE0YWM1OTU5OWZmMzIzMGZjYzA3MzcwZDc0MjU2NmMyYTdkZGFmMTQ3ODZjYjEwODBiZDA5MjUzOTY3ZiJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L29-L30",
+          "version": "repo-lines-v1:sha256:9b4567201d1325617ef2e02e2f965ea1877058de844949b35612960208e791e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWY4NmMxN2FjYmVlM2RhN2I1NGMzMjY0MzAzN2M2Mzg2NGI1ZDJhYWM1NjQ0YjkyZjViYmIxMjE3ZDBlN2M0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q3ODljYTIyMGU3NGFlY2YyYjBmYzUyNmE0OGFiYmU2ZjYyMGY2NjZjODBlMWMyY2M1ZDg1M2ZhN2NiNjkwYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAxYTg5MjYxNjg5Y2M4MTkxYzY1NWJlOGNmNzA3MjZhNDE0Yzk5MWU1MDI1MmRjYjI3NzlkNzg1YWZjZjEzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjc0MGM2Mjk5ODY2OTY2Mjg4MWEzNWQ2ZjY5OGUzNjIyZTYzMzQyMDZkNWRjNzgxZDAxMTVlMmQwMDc2M2NmZiJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L312-L330",
+          "version": "repo-lines-v1:sha256:22551ff097e028ee1d4905da8addad45524c1e2054c3674d60739adf47ee9e89:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkOGM0M2E1YWMxZGM3MzdhOGI5OWUxMzY4MTE1N2ZmOTYxYTVmMTJmZTM0NmY2ODU3ZGIwMDVlOWMwYzg2YzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlNTdiOGY0MGU2ZmQ1YTQ1ZWVjNGIyMGY4NWEwNDFkMjA1N2Q0OTllN2U3ZWE1NjhkYzA2MjM5NzlhNWUyNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkYjY1YmUxOTg3YjhkMDI5OTM2ODY4NzFjNzZjZmQ1NzI2MGFlODQ0ZDVjOGUwZGJhNDZhNmM3NmM1MzA5MWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYjk0NzhmNTVmMmQ3ZDk0MGZmNzYwZWJkOWRkOGFkMzMxNDMxMmJhNjM2ZTZkYWEzMzc1M2I0ZWYyOThhYjgifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L357-L371",
+          "version": "repo-lines-v1:sha256:6b1040c4f47ecadc7e30ae83f8211dd23b07937fcca5e521f9e5a94a33c7f397:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjODg1MmMyOGYzMGI5N2MwMDJkYmY1NWZmYmViMzcxNTkyOTczODUyN2MwNzk4ZmJjYTY1NDBlODE1YWRiMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYmMwYTUxZmY1ZTVmNTRlOWMyNDkxNzE5MjE1MjAyNTFlMjU2YjYzNzY4NDAxNTFmOGNiZmIyNjk5ZDRmNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzZjU0Njk1MmI4MzdlY2ZhZWEzZWJkNjUxNDNiMGY1OWQzNmZmZjIxNWNjMDVmNzI0MmEzZGU1MzA5MTRmNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNzJkOTk5ODYyNjg2YzRjYjVjZGY2MmNiOWM5MGNkMjk1MjFkM2UyNmU3NGFkNjgwY2ZmMDFjZjg5ODk1ZWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_391a84af9573449b99d537dcd8409c40",
+      "statement": "The source package identity includes committed file hashes, tool identity, preparation rules, platform, and version, separately from the Culler commit.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L265-L268",
+          "version": "repo-lines-v1:sha256:1d1c02636fa807ad1f9fff1a4b9a2523f781878176661139eaaeb35cecb7b771:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDRjMDc1MzY0NDFjYTRmMTkzNDJiNjc1MTVlNmEzZjg5NDgxYWQ1OGI1ODRmZTI5ZDgzNGMyMWMxMDNmNjU4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmM1OTNmNzhlNGRhOWNlODU0Y2UxOGYzNzYwZGYzNWZhNmEwZDRkMGMwNjIwZmVkOTA0NWJkNGEyNzhlM2NmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGUwNWRhN2E3ZjY1ZWIxY2VlZGE3NGZlMTYzMGFkMTMyMzcxY2NlNTYwMzllM2NhMzE2ZDA1NzcwYzU0OTNkMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWEyOTYzZDY2YjlmMzIzZGM0ZTNiOTg2NTAxMmQ3NjJkY2RmOTRlNDAxM2VhM2ZlZGJjMWVkOTk4MWVlZDJkOCJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L32-L46",
+          "version": "repo-lines-v1:sha256:a9aecddffd2342b9de34f9bb9322d47801fcc9a2dc0e1b97e89156ced5ae71cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZWVhNjhjZjlmYTA4MTI3M2ViNzJkZjIzNzRkYjYzNmRmZTNhN2M0NTcyYWYwNzZkYTFhMmIyYmZkYTAxZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwYWJjZDExY2E4ODRjZjNmZjdmMmEwMjg1MjVjZGNlODdmNTQzYmFkZTE0MGRmMzFkN2JjY2RmYmEyMjAyYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM2NzQ0ZDJkZTAzNDE0MDY0ZDM5ZWE5NWMwNDNiMDIzM2UxYjExNDZkYTU5MzYwNWYwNGEwMmZhYjc3NDg0YTUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L320-L354",
+          "version": "repo-lines-v1:sha256:06803c9ad8bccb22dca30eecb8e3b95825522d9c2bf37e0e074822436e6bd855:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZjhlMTRmODY0YjAxNjBhNGFkZjMwNGEyODI2ODRiNzQzMDA4NWM1MjJkMWM2MDU5YjgxNTk4MjcxMzA1NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhYWJkYjA0NzE4NDE1ZDU1MDNjNTk1ODkyMTgzNDQxYTI3Y2YzMmFmNzkxYmJlMmM1NDczYmJkZTk0OGI0NGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmZmY3MWYxZmQ3NmE5MGJhN2I3YzhlMzI4OTA0MzNlNzVmNDc5MzA1NGFmOTIwMWQ4N2RlNDIwZDhlMDM1YjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5YmQ0MTZlNjllN2ZlNjRiOWU2MjNiZTU3YTFkMWZjOWVmY2FjOWU1Nzk5NTU1ZDk2ZjJkMmZlZTEzOTNmOTQifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.py#L80-L88",
+          "version": "repo-lines-v1:sha256:4fa5d528a3aaa173de479ce6c91dc7b583334e33c81be308f414d8a1a0295267:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjA5NTY0N2Q2YTlmYjM2N2FiZmM5N2MzZTlmMDM1YTc2NmFiYTk3MWU5ZDU5MmFhZTllMWRkNzY0ZDY5MDlhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI5MGZkMzMzOTA0YjdjY2Q2NWUzZWY3NzFhNDFmOTljZDMxZjVkMzg1MWY0NTNkZDk3YzI0NGIyNGI0Yjc1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzU3NjEyZmIyZDRlNjA4MDg1YjQxN2E5ZDBlYjJkOWJiYmIwN2YyODYxODEwNjUyMGNjODM5N2RjZTY4NDM1ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2JkZGNmZDExZDFkNDIzODNkZDE5NDI4ODVjMGZlZmNhYWIxNWQyMDU1MjI3NmEzYTg2MWRiZTI0N2ViMzk1YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5aabbb3eeae24add9cd6323698f303ad",
+      "statement": "Source package verification checks installed content and markers before it executes the native version check without network access.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L407-L414",
+          "version": "repo-lines-v1:sha256:cb81d27bbb679fc76259fb7ba7b916c7f2d08d05f53e68e0e960e6a94589f216:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzYxMjFjMTlmM2U5ODg3Zjg1MjkyZmJjNWQ5NmI1ZTQ5MDJmNWRjMmMzNjFhNWQ5OTFiYjQzYTVhMDgwMGE3NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWRhMWQ3OTE0ODA5ZTM0OTlkNDU3M2U4YmZlNTgyNmFlMDgyZWEyZTJhMTRkYjdjYzE0MTcyNTc3YzZhNzM1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDEyYmZmOGFiNzQ4YzcyODY3OTMyMzUzNzUyZThlNDFjZjkyOGJlMWU1MTFjYzBmN2VhZjMzNTQ2ZjVkNzcyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjVjMWI1MzMzY2FhZmMwZDAxMWJiNDljMGNlYWZhYmRjNzFiZDQ2ZWIxYTJjOTZkMmVhYjU5YzI0NTMxYTRiMCJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.py#L107-L121",
+          "version": "repo-lines-v1:sha256:2cf7bcb9d9abf48d1e1dd515fd53eb185ce08506e796404bedf78b01b46076af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NzkzYWM0NmM1ZGEyYjg5MjFlMWRiMzAxNjZkODNkMDdlNDFlOTkyNjYwMDNhZjJlZDBlNmUxODIyNmJhY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwODI1MjJjNjc3ZWFlOTM1ZDc2YzM0YzQ1NDFiYjVmMTRlYmYyM2MxNDJiMWY0ZDhjMTcyYTczNmJhMDU0MDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIwMTE5ZTNlOTAwYWRjZWNjMDMyYTFlMzk4ZTk3NGE5OTZjMzkzN2RjMzljZGZiNDBhNTNiNzVmYTRiY2Y4M2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2OWViY2MwNmQ0ZDhlZWFjNzdhODdhNGUyYmQyMWQyODNiNTU1ODM2MTA4NjNiM2RhYWQ4OWExZTQ4YmIyZGEifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.py#L48-L70",
+          "version": "repo-lines-v1:sha256:3fc60b7f52801edb1290092bd91b9d76d8d3fd691cc11215863a0211f47a5d7b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYTg5ZDEwMjhmMDQzNGRmMWU5OGQxYWNhYWMyZmFlNDljYTljMmUyMzMxNzE3M2E3MjA5NWRhNGQ2M2UxZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhYWE1Y2IxODQwYTU5Nzg4NzBhNWZjNWJiNjk1NmMwY2UxNGMzOTc0ZGY1ODA1ZGYxZGM5NWNkZmFkODJkYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczMTNlZmY1MjNlOTEwM2UzODhiYmFmMDM0MmNmNWQyYmUxNTBlMmQxOTVjYWZjN2JmOGI2Zjg5Y2M2MDI3NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjNGJmNTJiM2E4Njc3Y2JhODdmYTAxZjdlOTc2MmU0YjJlZWFlZGYxMThmMTUwNmEzOGQ4Zjk3NDY0ZTI2ZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8ef489f9b5e14b1c99c633ae118ab00b",
+      "statement": "Verified source reuse preserves package files and updates release metadata when the selected Culler commit changes.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L344-L355",
+          "version": "repo-lines-v1:sha256:c1b1d7b0d589c685fe83608557f10b48e631950111f045d6010069d8ed00b2a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhNzYzNWY0MDUzNDQwY2NmZTVlNWVlY2EzMjYyZmRjMTdhYWZkZTJmNjA4YjRjMmM1MTg3YWJmOWFjZThjZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3Mzk2ZWI3YTZhNGM4ZWI3NDZiY2Y1NmZhOTg1MTgwYzBkOWFiMzRlNDA1NjI0ODdiMWMwOGFmYzdlZDlmYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmNDEzMGUzOTFlMjMzZjVlZjExNTMzMjRjZGZlNGZmMzMwMWRiNWIzZTYzMWNjNzIzNDQxMzJhNWI1YjUyYmUifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L417-L428",
+          "version": "repo-lines-v1:sha256:d08b74e91c7fe91af8d07e2767776d6831244305c1bd724073a424c0559a541f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzZWNiYmFmZTk5NWM4OTcxMjAyY2FkZWNkMTUwNDE4OGU4ZGExOWEwNDNkMTkxOWY4MDQwMGU0N2EwODkzYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzMzc1YTc2ZjY5ZjNhMzM1OGFiNTNjODBhMTk5MDUxYTdmMGY5OTM2NWM1ZTVlNDMxYTM3MTA1YmE2ZjVjN2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd96cd7fbc1f40948a8a2736aa816fa0",
+      "statement": "Source preparation serializes package work and records readiness or a failure with its stage and cause.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L161-L207",
+          "version": "repo-lines-v1:sha256:7e5cc524adce6e7a5da1392117cbfa6f52346615f44b82582894e25215539dff:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMTc0MmU4MjZkYzE0NmJlNTZjNjA0N2JhYTY4ZmMwYjQ3ODM0ZjMwYzJjN2Q3NmQzZmU1ZTg3YTAzMDdhMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3NzllNDM0YmI4MTQ4N2IxYWM2YzgyOWE1ZGQ2OGQyODkwN2FkODg5OWIwMmRlNmJkYjI5MGU1YTRmNGYzZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZDkzMWFiYTNlYzExNTU5ODZjMTYwNDMyZDg1YzBjNDViZmE4ZGJhZTQwMjRjMWEzZDVjZWZhOWY2NWE0MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiNWM2MTQ5ODQ3MTE3ZDQ2MTBhMzQzMTQ1N2MxOGE1NDE2Y2JmNGUwMWQ5ZTgwMzQ2YWNhZTAzNTQ1NjRkM2QifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L48-L77",
+          "version": "repo-lines-v1:sha256:68cf7fd6266c323409c34a40614ee9cd578939dba5c3fed016bf5a14cda411a9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViNGE4MjEyY2QzMjYwZmMxMThjMmQ4MjY4YTJmMDRlNGFkNjJlMjljNTYwZTdjZDA3NTMwZTA0NDAwNDc0YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0ODAyMzAwNWVmNjdmNTJhZGUwYTUyZjZjZmYzNDE5ZDVhZjZiZDA5MjQ1MTYwNjJiODYxNGE3OWUyMzYzN2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM3NGEwZWRhYmExMGM0ZjM2ZGJjMDA0YjQ4MGQ1YjBmNDhhY2VlY2NiYjlmYzQwYjJhN2I4ZjI5NDQ3MzNlNjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyNGVkZjM0ZTM0NjcwZjVkNDhkYTdjNDJjZTA0MjZmMTYxMjg3MGFiZGQ4ZmZlN2FkZDhkMjRiNDIwMzQwZjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c551d96c55fc43a2b93ee7bd4c0980df",
+      "statement": "An active published update or matching published image takes precedence over retained source records.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L80-L99",
+          "version": "repo-lines-v1:sha256:0d14a1cb8686a2f17188d9d1a785ec971bff2bafa38d76ae296c8cd048e9387b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMjQyOWY4OTQwNjM3YWI5NzQ3MDM2NDNjY2U0NzYxYzBhNmI3NTBjYTY3OWM0NTMzZDRmZDAxODllMWViMzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyZTZmZTVkY2Y0NzdjYjJlYTZlZjhjZGU5NTMzYmQwNjI2YzFkYmJlZDRjMGI5ZWE4ODUyNTVlMmJiNTVlOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwMmNkZmRiNzRlZjE5MTEzMDBlMjU5YTdiMGU5YTY5YWU0MTc1NGVkNDUwNWI4YmM4NjcwYWMzNmJjYzQ5OTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0520c3b728648658a3d38ba215d5844",
+      "statement": "A retained source package requires the selected published archive checksum even when its Culler commit matches.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode.go",
+          "version": "repo-file-v1:sha256:61393e35c3bd2ff98fd9364c494dfc28b1c3226b2d9c23722fdb1bb43e3b863b"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go",
+          "version": "repo-file-v1:sha256:42d2f9082d1a76e78e9c0fb72de2ced84742f78ee0245b2caad1a0031ca580c5"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0e0a57ab0db4477a20e833bbd5c957e",
+      "statement": "A published deployment with an absent source volume clears obsolete readiness after the worker lock and a second volume check.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/opencode.go#L270-L279",
+          "version": "repo-lines-v1:sha256:3e611b3385d9f5fd6b740e3c94e8445a4bca1467c3612c01494eab3f7b7eb5a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZTFkNmM0NjNhMGVkYzFiMzNiNmMyYjY2ZTVkOGE3YjY2ZTUyYjRhM2Y2ZDg2M2Y1YjkwYzJkNmQ1NTcwN2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjNjNlNTE1NjI1NDk3ZmQwOTJlY2M2NzI3MzUxNzRiNjE0NDkxNTEzMGQxN2E5YTkwOTY1MzFiMjQ5MGRiZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiODZhNDM3ZjgwOWQ5ZGFlMGQzMWU2ODU5OGM5Y2U1ODJkZDE1ODljN2VmZjI0ZmNiNTg2NjFhYWFmMzllOGIifQ"
+        },
+        {
+          "resource": "repo://mc/deployment/opencode_source.go#L127-L158",
+          "version": "repo-lines-v1:sha256:2f431373fac7272b94c533cf20723c28b586d78ef78bd5cff94da5d1e3d86bee:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiZTkwMmQ0OWYzNjk2NGFjYTAxMGJjZDgxZTc4NWVlNWIyMWQ0NzQ2ODJiZjZlYjg0ZWVmZTExOTMzODZhYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMmY2ZjBmOGE0ZjU3MmUxZWEzYjVmYWY5MDQxOWViNjdiYjBkY2Q3Y2E0ZjQ0NDc2M2VjZjc1MzI2OWIxMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3MGY2YzU3ZjJlMDUyZTlkNDY4MTVkM2M1YWRkNTlhZjU1ZDAzYjMzMzJjMThmOTBmMzMxZTBjYTYyNGJhODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0MTIyNDllZDRjYzQ1ZTU0ZWRlYTNhMjM2NDVkMzFkNThkMDM1MTA5YjcxNWExN2YxNmE2ZjQ2ZWYwNTZlY2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_44c8b003daed4b27a4425b449b89c0f1",
+      "statement": "The candidate runtime check permits the default Project image's protected spine directory while requiring that directory to remain unreadable by user 10002.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/candidate-runtime-check.sh#L1-L8",
+          "version": "repo-lines-v1:sha256:07acee8d148a8ecdb522b657100187378b8375aead6b251a65826f8dc06ce649:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M3M2U4YzBmODdlNGFlZTU3NWE2MGNjZTc4YjJhMGE2ODBhZjFiYTk4NWZhYWM2ZjVlOWU3MGVhMmZhNDgyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmRiYmJkMWFlMTQ2NmU5Y2MwN2Y2YmFiNDgxZTQwMTdlNjg3YmM4ODk3OTEzNWI1NzExN2RmMDIyMTI2NzdlMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://runner/image/Dockerfile#L118-L127",
+          "version": "repo-lines-v1:sha256:80a0b4f5cf1da89afa3b8883034da5227a93a74900756d307c36844388ab3f6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YTNmOWE4OGMyYjNjNWE5YTY0NjRjMjIyNDE0MDA4MDBhOGZiZWY1ZDAyZDRmYTk3ZmRhM2VkODU2NjEwODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MDZmMDBlYWM2OGU5ZDJlYjgxY2EyNDVjMTM4MzgxYWI5NjkwODY5NDY2MDg0NWE1YTgyZjA1YWEyMzRmN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0NGRjYTBhZGE0YWIxNGI1Y2E0NjRhMDhkM2RiZDFmNDM5ZmM2YTBjMmY1ZjAxYjRiZWY3MDE1OGRjM2Y2YzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlMzA5OTZhMGEwZmIyODdiMmI0ZjU4NzA0MTU2ZDJkODIwNjRjNDQzYTYzYTVlYzA2YThiZjc4ZDZlOGE5NmEifQ"
+        },
+        {
+          "resource": "repo://runner/image/runtime-check.sh#L1-L8",
+          "version": "repo-lines-v1:sha256:8f6c64b21d8d766dd0fc9efa7d574e95e56ded6df0b6e37f9a3b13c662f65a07:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlMjhlMzVlMDgwMDQxMDY0MTQ5M2JmNzRjMDM2NjdiZDRjNjIyNWYxNTlmMzQ4NmE0ZDNjYWQwODA0OTlkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWJlZmI0OGJjZTAxMWMxYmZiY2JkYjE5ODY0YzJmMDQzMDhlZWJkMjljOGQ5ZTUyNzY5OGQ0Y2NjMmY0MjQ1MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9755d5ed08a04252bf3f0175166f65b8",
+      "statement": "Published update checks run each distinct selected Project image with temporary candidate runtime volumes, no live spine mount, a 2048-process limit, no CPU or memory limit, and a two-minute timeout.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L157-L258",
+          "version": "repo-lines-v1:sha256:8a774ebcc64344c00bb299fc8d8865c7ad89af92abc5c55f2b7085a1587912a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwMGY0MmY3NzAyNmNhODk2ZDk4ZjI1ZGE2YmVkZTE2ZmY4YjY5ODczMmY1ZGI3YzRjMTA5ZDc4YTZiY2I5ZTExIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwMWJhNDcxOWM4MGI2ZmU5MTFiMDkxYTdjMDUxMjRiNjRlZWVjZTk2NGUwOWMwNThlZjhmOTgwNWRhY2E1NDZiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxNjMxYjZlMmNhMDdkOGJhZjBlYjQ0ZTc0OWRiZjQ5MGIzOTJlM2E1MzRlZjYxMDIyNzcxMTQ2Y2RmOWFmMWEyIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0YzBkMzA2YzE1OTM3NGRkZTBkMGY0NmNmOTk4NWIwOGFhOTVhM2I3MTkyMDU4MzBkOTJlMGIyMzdjNDM3NWY2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4b1b2bf91c241ceb2079459d97f1c12",
+      "statement": "The release image smoke runs the updater's embedded shell program against the default Project image under the update check's container restrictions.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L429-L437",
+          "version": "repo-lines-v1:sha256:7080713b808e8fbffee2d220039ea76a86c082d577ea427d383b255ae407ac66:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkzOTJiZTIyYjE4MmQ1MWQ1ODRkMmJjZWRjZjZlZGMxOThiZTcyYWVkNGZjMDg3YTY4MWUzMThlZTlkNzU2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2E5N2IwNWQzMDUzZDQ5NjU2ODBkMmViNzYwZGY0MWY3MjIzYTUxMWViYjA1MGE0NTI4NDFiNzIzNDBlODI4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDAxZDMwNWFlZmI2ZDcwYWIzNGM4ZjU3N2QzNzVlYmM1N2VkMjZhODhmOTQzZDdkZDhmZTVjZjhhNDJmNzBiZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWZjYTI2ZDlhODU5MzMwZmQyZjE2NWMyM2M0ZWJhYTcwZjRiNGZiMzA1ZWMyYjcyMDQ5MGE1ZGZlMDgyMTg1NCJ9"
+        },
+        {
+          "resource": "repo://mc/cmd/mc/setup_update_candidate_prod.go#L24-L27",
+          "version": "repo-lines-v1:sha256:fae409d6f3751f47c937905022b9155a3e4c47ee7e5b4b8e8eed19e1892f037e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmVkOWFkMjFlMjI1OWJkZjA0ZWZjNWU4N2JlMWYyOTU5ZDc0MWJjZDMwZDAwYzc1OGEyN2UzZmQ2MjZkN2YzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjhlM2QyMzkwOWJiZmM3MjBjZmE1ZTZmZmU4Yjk2OGZlMmNlYTZmN2JkYmJiNjBjNTUyMDc4NDNmYjdiYjRhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWI0NjY0MjRmZTNmNjU1ZTA0NTIyYWNlYzEzMTNlMDVlMWMyMDJiZjBhODlmNTNmMDNlMjQwYzk4MDIwN2E4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTRlMjM2ZmM2MzYyN2JhOWU5ZTkzNTU4MzA2ZDg2YTJkMGNmYTI3ZTMwOWY3MDI4NWQzZTNhNzZlZjRlZDc1ZCJ9"
+        },
+        {
+          "resource": "repo://runner/image/project-smoke.sh#L52-L59",
+          "version": "repo-lines-v1:sha256:d154e56f6236e01760f0a9a7608bf3863ab06a1e99f04296b2be317acd8b66ae:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ3ZmMyZjNlYjU2OTE3YTgwNmFlZWZkYjlmYmQwYTdjZWU4OTExNTg4OWMyNjhlYzliZDJkNGJiNjczNGYwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzYyNThjZTRlNDgxMTRlNjZjM2I4OTViNzQ5MjA2ZjkwM2IxNTZmZTJiMmMxZTg5OTE3ZWE5YjBkNzViYjIyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmZhOTExMjJiYWMwZDZlZjA1NDEzZDY2N2VhMzcwOGMwNzk2ZWQ5YzlhNTgxOTViZTQ1N2M4NzE5YjZiNDY3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFlNWVkZDRjYjE3Yzg1ZjkxMmQ5OGYwODgyNGE3MjI3YzM0MTkzNTZjMDRhNWRmYTNiMzk0YTUyOWZmMGRhZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:23:34.077Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "evidence": [
+    {
+      "path": "server/auth/authenticator.go",
+      "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+    },
+    {
+      "path": "server/router/fileserver/fileserver.go",
+      "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+    },
+    {
+      "path": "server/router/mcp/auth_middleware.go",
+      "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+    }
+  ],
+  "finding": "The claim contradicts the pinned source conditions.",
+  "outcome": "fail",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "Every authentication outcome remains exactly identical after this refactor.",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "This is an authored source-inspection history, not an executed Culler run.",
+  "task_id": 822,
+  "unverified": [
+    "No authentication request or integration test ran for this preparation.",
+    "This range contains error-path differences. The packet cannot claim all runtime behavior remains identical.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

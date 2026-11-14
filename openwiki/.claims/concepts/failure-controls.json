@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:233eee661a950c5ec39c6f7d74f6136aaf17349fd6af5a288bc2d75a0372f3c2",
+  "claims": [
+    {
+      "id": "claim_637facb17ef542c7a1ee9d97d98a7b4a",
+      "statement": "The dashboard labels the blocked field Decision Pending and the stalled field Retries Exhausted.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/app.js#L922-L923",
+          "version": "repo-lines-v1:sha256:b756bac80b0970e5f4b3c95995c94a7901740cbf9805e2989e8f5274c6926950:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTJiZTIwMzU0OTIzZDUyMDJiMzg0YTM3NmFlYTNlY2YzYjdkMGE5ODY5ZmIzMWNjNGYxMzU1YjFiMDJmZTU2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2I3ZjBiMjBiOGQyZmUzYTQ1OWRlZjU0YjQxM2FmOGQ0NjA0M2U0NzNlYWM2ODU3YmQxMTc3YzM0ZjVjN2E5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDFlZDczYTRkNjljYzQwZGIzZDBkNTcxOGUxNjE4MTljNGRjZWYzM2ExZDNmMzBlMjQ3ODYxNzhiZTE0OGEwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWUzYmE0MjA1NzM0OTM4N2FiMjljZjkyNWNjODY2MTcyMjNjYTAxY2UyYWM2Mjk0NDc0Nzk2ZDk4ZWZiOGVjYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3b1b2da060d54451a77c74a2fa0bda16",
+      "statement": "stalled is a generated column equal to dispatch_retries = 0, and the task infrastructure_failure_count is generated as 3 - dispatch_retries.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L249-L251",
+          "version": "repo-lines-v1:sha256:edf39246efe7a4560d3d1f97582a7021cd0076283d066ac03d422f17f2a19ff9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjY4MjAyZGUyOTUyMDkxNmZjY2VhMTI3MDU3MDY3N2UzMmQ3ZGRlMGY0NzQ5Mjc3M2UwN2EyN2RmNjVlNGQ2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDFiOTQwOGQ5ZjAxYjM0NzBiNGIxOTBkYmM0YTc5NGU1ZmJhODE4MTU3YjY2OTI0Zjc1YTllMmQ3MjkxNDA2MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTFjMmJjZjQ5MzdhZTVmYTRmYzlhZWVhZGM3OGQyZTBiYTVjNzlmOTFkMmQ0MzY3NGQyMzM5MzZiNmQyYTU0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjU3MzkzODkyY2M4OTlhNzZjZjc2ZjhkMDQ4ZTU3MDViNzcyMzc3ODU3OTdiZjQyZmM4ZWI5Nzk5YmVhYmE1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b71bd134f534217b237dfb999759a16",
+      "statement": "A failure is charged to the Project allowance when the run has no recorded agent process start or is a subjectless Strategist or Arbiter run; otherwise it is charged to the task allowance.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/infrastructure.go#L181-L192",
+          "version": "repo-lines-v1:sha256:ac31d35cd3985d9a12c2e6037032cc29a3ce1428aaae27e1325bf57feb9f05f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MTAxYzc3ZGRiOGViMDVhM2ZhZGJlMmNmZjUyYmIwN2NhM2I5MjY5NWE2ZWQwMjAyYzExN2QzYTcxMmM4YTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjMzY5N2UwMzczMmNiYTY5YmI5YjRhMmI0ZWQyMTE4MDFlMWUwYWRkODdjNDczNDg1NjExOGNlYzZmZjRiOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzZTE2ZmVmOTIzOGYzZTc0NjBiMDdiMDEyZjFjMTU4ZDc5ZTY5YTM3YzlhMzc5MWYwY2EwZjc5YmUxNWJjZmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b468d7be744147b5b3092d762685a837",
+      "statement": "Network and confirmed connection failures are system conditions; request-local provider failures remain run failures unless reported as a connection cause, and agent reports are never system conditions.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/infrastructure.go#L122-L145",
+          "version": "repo-lines-v1:sha256:e162e3d55d3083a484a238af1f59eb5c03d4bad34c855867ec62be8e61a64580:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxZGJmMjY0MDFhMmIxNzkyY2E5OTRhYjI1N2Y3Y2FmZTRlMzM0NzFjZGUwNjc0ZmEwYThjNmI2MmYwZjFmZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1YTgyNzUzMmUxOTFmOTg0MmE4NzUyMWYwZTgwY2RlOWJhNGUzYjE0MDJiNmJhMDA5OTFlY2FiYzQ5YjhhNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzNzcwOGM1ZjFkYWVjNTkzZjQ4NDRiNTI3NTQ3NzcxNjUxMzAwNmFiMjZjYmYyY2RjMWU5YmZlOGE2MTU3YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzZmM4Y2Q3Nzg3ZTQ4NTIxYWY4MmNkM2RmMzQ5MDBjNmQ2MDI5MDMzMGU5OWMxNmJkYTY2ZTczYzc4ZWI4MzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e12bf00eb7244d48897e0192e0afaf2b",
+      "statement": "An agent-sourced infrastructure report has its cause forced to unknown and its operator action and quota reset time cleared.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/infrastructure.go#L104-L113",
+          "version": "repo-lines-v1:sha256:fae6cb59336c9eda250934f060e91eef4baaa29d6339e3d3d83852f8feff4f10:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NTMwMzdiYjEzOGM4ZTkzYmMwMjY0NTIxZjk5MDFmOThmYTI1Mzc4Zjg1YmRhMWQ3NjQ2OTQwZmVlYjZkYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlZmNlNTkxOTZmMmJiZmQyZjBhZDA4ZjUxNzE0MjRkMTAzYmJlNjdkOWU4YThjNjkyNDIyMDQ5YjM5ODNkM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxNGQ1NjNmZDhjYjg4ZDZlOTU3MDcyZjRjN2RmYjllNGNlNjNjZWYyNWU4MmFhMWIxZjg0NDA3MmNhNjY1MjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_02af3f025cd544679bdb4eb8b2c319f9",
+      "statement": "Automatic retries wait 30 seconds after the first failure, two minutes after the second, and five minutes thereafter.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/diagnostics.go#L94-L104",
+          "version": "repo-lines-v1:sha256:480c5fa27c167288a86913377ad0eb5aee90cb51b8ab861e8eb33ec4a9d4f665:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNWRkOGY2ZDI5ZmMwMzg1NDg1Yjk3NTY2YmRiMDhlZDBjNTI1NzcxZThmMGNhOGRlMDMzMWIxZDdmMGZkN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1ODA5Y2FhZDNlYzI5Y2NjNjk5ZjgzODhmZThmNjgyNjlmNWUwZWI3YzliZmZmOWNhYTNmZWNmOTVhYjU2YjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b9edb5072e545ddb8e253ac3132e039",
+      "statement": "The Project infrastructure charge caps the count at three and stores a next retry time only while the count is below three.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/health.go#L8-L26",
+          "version": "repo-lines-v1:sha256:3a8d1ee4d55e8164eb88039444c2ae8db6ee757b4efc874356adcd8a593aefe5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3OGExMjMzZTZlZjFlYWU1YTMwYjRkODNjNDVjMjVjYTcwZGJkMDEzMWZmYmY4ZDEzN2QxOTNiZWQyNDY1NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5ZWRkNzJiYTZiNDAwODNjZTk1MjY5ZmE1NmZjZjNhYzFiZDk4MjIxYWE2NjIxYTY4M2Y3ZDU2MzJiYjIxZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef7fb45717364732b7fb0f7d3df4058f",
+      "statement": "Dispatch idles a Project at three infrastructure failures and while its infrastructure retry time is in the future, and marks a task with a future retry time as execution-held.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L365-L376",
+          "version": "repo-lines-v1:sha256:c77eee8450119a319cf239087b7fa619d59c39e3e50442cc75c202d995a4e8d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzdjZmI3YTI3MWFlOTdiNTViN2U5YTYwM2Q3NTllNTNiYjVhYmFkNGY2NTBlOGY5ZGQxZThjZTQxZjk2NDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4MDk4MGViMWMyNzNlZTY5YjM0MmUzOGJmY2FjYmVhNGQ2ZDA1MmFlN2JjNThmZmQxYWMxNWM1N2IyM2RmNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2NzFmZmU2NWQ5ZjVkYmE5OTEzNTk5MjJmMjJkMzYzNDE0MGFjOGI3ODIxZTU4ZGU5MDAzNGIwZGM0ODBjMzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_315668e2808a428098df3fdb09ceaca8",
+      "statement": "Reaps for interrupted, reported-outcome, and vm-restart charge no allowance.",
+      "evidence": [
+        {
+          "resource": "repo://mc/dispatch/dispatch.go#L290-L293",
+          "version": "repo-lines-v1:sha256:ac7053e5b1dad796aa2db866772792c148be1cddcbd9e52ef6dda783697604d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ViMzk1ZmE4YjNhNGJjMGExZGM1NWM3MTczNDMzN2ExZTBlMTZiODBhZWQ4OGU4MGI4NGZlZmVjNDIyZGE0ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzUzOGQ3ODY1ODI5YTNjZjMzYzM1NDdjMTdlM2EzMWQ5ZWI4NzJlNDAwYWZjZWYxMGFkN2YwYjQ0MWJlMjJlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTE5OTFiNjFjM2U5ZTQ2ZTQxY2ZhYTlmNTIxZDFlODBjY2FkYmQwYzg2MjU5MWMwN2Y3YTIwMzBkNDhlOTFmOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b94ac52994234acfa64f48bb24a819a2",
+      "statement": "A forward stage transition restores three task run failure units through a schema trigger.",
+      "evidence": [
+        {
+          "resource": "repo://mc/substrate/schema.sql#L269-L279",
+          "version": "repo-lines-v1:sha256:8236cf8cf16447b8f6860f7ee6fb0ddc384cf498dc471b155175cd654f4239c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxYjQwMzY1MmMwNWFhMDQzYzM4OGZkYjgyN2VlMTUwMDdiMzExMjQ3ZGU4MjUwYmQyZmUyYWM2NDYxZTIzNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzgyZTQ4MGQ0NDNlMzM5ODk3NzljNjJjOTQ4Njg0OTliYTU2MmRhYTI5NzdiNWQ4ZWJkMmE0N2JmOGM0MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNjQwNGY2ZDgyNmYzYmQ5OGQzNDBmYjA0ZGEzMzliYTRhM2IxMTU2Mzc1MjBkMjViYTNkZGNhNzgxMDdhZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNjA2NWI2ZjA3OThhYzJmNTlhZDgxNDY5YzlmMzY3ZmQ3N2RmYzcyNDJiNGI1Y2ExNzc5ODBkOWQwMTg4NmIifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/infrabudget_test.go#L13-L26",
+          "version": "repo-lines-v1:sha256:31addcb2f6dea7918946353f25d505c6df40f47e882711e89570ad4fd3cf106e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2ZTIwNDBlNTM5Zjg0MjA1MjhkYjQ1ODgxYzVmYjgyZWExOTIxN2NhNDJhOTA0YmJjZjUwNTQyNzQ1YmJjY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjZWRmZDY1ZjA1MzUxYjVmMjBiMjRjMDM3ZWZmMDI2MGJmZGVlMWJhMzUwYTU0MWNmMWNkOWRmYmQ1NGMzMGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzMmNlODNkMjkzYzQ3YTI5YTk3NGZhYjUyMmMwYTZkYjE0MTRkNmM1N2I0NzZkMjc5Y2EwYTc4OTIwMmVkOWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9eb9f5f2e7954d2f9dbfaeea9d703ea4",
+      "statement": "A completed terminal result restores the Project infrastructure allowance unless the run submitted a checkpoint.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/failure_controls_test.go#L187-L203",
+          "version": "repo-lines-v1:sha256:64ada5aba28c54a838285934f3f63b92511227a6218786fe1c428155991745ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3NTFkY2FhNDIwYzA5NDBhMzA4N2Q3YjA1ZmZmYWY4NzJhN2VmZGEwYjRkNTRmZTMzZWIxMmEwN2VlMjc2OTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/verbs.go#L417-L430",
+          "version": "repo-lines-v1:sha256:dcf9bd0b020a6043faad98eae1fcfdbed03192a76d8555d530ea3913f66e47dd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmM2VmY2U2NTNmYTJiODFiNWY2ZTRlZDRiOGZiNGQ5NzgwODliODE2NWM4OWI2YjY5OGRmMTAwNmMyYTBkOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5ZmMyMzMwODY3ZTQyZWU1ZGM5YTdhOGI5OTMxNDM2ZDQ4MWFkNTYwYmU4NmQ0NGE4MTQ3MzY5YjgyYjQyZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlZTJiYWYwMmRhZDg2ZWZlYzY1NGQwMTc3N2RmZjhjNTg0NTE3NTM5MjZkMzhkMzQwMDc5Y2M1OGM0OGMzZTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e7f5eaa6385495aaef63daae323a4dd",
+      "statement": "Task resume requires a reason and a current Retries Exhausted condition, restores the task allowance, and preserves an independent block.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/infrabudget_test.go#L66-L81",
+          "version": "repo-lines-v1:sha256:6be85d17c66614e20fcfa1ed2cbe0194edddae8541b1b47e856972ec85615a3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkZWNiOTcyZWRjNzE4ZGM2MjhhZWE2NTkwMjk1MWQ0MjdkMzg1OTg5MTYxMzBhNWZlMWZmNTE0Nzk5YTkzZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyODg2MzMxYTFlZmY0MjU5ZGJmN2Y0Y2VlYjFkMDBhZDI1Y2YzZWRkMjAzYWI0NGMxMGFiZWE1ZmRlMmUxYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/infrastructurefailure.go#L30-L49",
+          "version": "repo-lines-v1:sha256:7cfe3e51c8962d42b60a7e8ab789640344e2d1fc4a9f6852bbd5bf162b7ec3ff:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOWM5NTg0NDE0OTRlNjhjODM2Y2E2N2QzYTgzYTk5NDMzMDI1MjM4YzUxOGNhZmJlOWNmN2Q3ZDU5NDA3MWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjMmU4ZTliN2QzYjVhZDE1OGRjZmEwMjFjMmIxNzJmYzM0ODA0OTA0Y2ZmNmVmNDhjNzMxY2RmZTk2Mzg1MDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMWM4YWQ5MjhlY2U0MzkzZjI0MGI1NjQ0OWJlNGFjZDU1ZGE1MmZkZjhmM2U4NjY0OTc3NWZmNmJmN2EyOTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f4b41ee6f6d24b85b87c4d347d31264a",
+      "statement": "A model response attempts provider recovery before eligible network recovery under the run's current connection and profile.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/diagnostics.go#L190-L238",
+          "version": "repo-lines-v1:sha256:93e4f953696617433c282194af92ed5e41ed8846c8cfd3dae5b9796994758879:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMTMwM2NhYjU0NGY2NjMyY2NkNzg2ZjA2ODY4ZWFmMDk2M2Y0OThhOWY4N2Y4NjJmZGIwNjZmOTkwMTA4NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4OGViZTZmYzhkMTUzYzgwNzUzMzcwMGZiMTAwNTI2ODhkYWFiOTE1YjJkNmNjZDFiZTBjODAzMTZmMDExMjEifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/runner.go#L137-L155",
+          "version": "repo-lines-v1:sha256:b2ccd75ea60eae8290bc18f3c34c8420f173d2a702f78ffb71e98bc2ab35e8ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhZjQwZDYyOGZjYjY5YzhkOGM1MjIxOTQwMjVjZDNmODQ5OTI0MDkyMzNmYjY3NmQ3NTU3YmEwNTZlMjMwNDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxMmZhMWEzNzIwOGU0NWUzMDc4MDdhYjYwNTkyYTNkOGY4YTdjYmM1MTM0ZDNhOTEwYmJmZjY0NjUwOWZmMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e86c48a9e2e46e9b89eadc01bae92df",
+      "statement": "Wiki infrastructure failure reports end the wiki update without charging a task or Project allowance.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/infrastructurefailure.go#L78-L102",
+          "version": "repo-lines-v1:sha256:ccb218c697a6e212c717de172f98cb5a29149dac36d590506aec766a8c22dfc8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmOTJjZDNjNTI1MzI3MjdjOWU5MDgzYzJhZjEwZDZmMjRiZTgwZjc5ZGFlOTU5YzI3MmI0NjBjNmRmYjZhMjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhNjc4Y2Q0ZDVjMDViZDE0YmMyOGYwMzllMWE0ZGY2ZDllZDk1MzgxMjVhMzE0NDQyYTcwNjcyNDhiNzFjOTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM0OWEzZTExMDA3NjdkNmE1YzZkNGI4NzlkZTE3YWUxMTVhNDVlNjEwZjRhNThiNGU0YTAzZTEyMTgxM2M5ODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_406e36d3e05342a48b27951b4b3c4449",
+      "statement": "Each merge conflict starts a task merge repair through RequestMergeRepair.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/allowances.go#L66-L83",
+          "version": "repo-lines-v1:sha256:6146ceb06ecf78790582ef640d1bd5d3a9ec360e1f5e2f4041fe50fc10bf2109:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYmQ3OGY1OTVkYTE1MWE0NjIyMzkxZWNmMjM0MTZhOWZiOTliYzgwNTRhZDUxMzQ1MThmYWEyZjFjNzdmZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMDFjZTdiYjBjZGQ3OTEyMDVjMDk0NzQ2ZDlmODMyOGIwODlkM2ZiNWUxNThhYTFkM2JkMmZmNjVmMDE0MjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4YjM3NzIyOWFjMTE0YzZlNTk5MjE2ZDAwZDI2NjBlZTFlODRkYTExZmI5ZjJhOTI5NDZkMjM5YTgyMDUwNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5MzFhODI2ZDc2YTE0YWE5YmMyZThmM2ZjZjAyM2MxN2VhOWExM2NmOTcwNjc3ODVlMzg1NTg3MTlhNDI2MDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b19d4cea0ec24203b08a398b28049042",
+      "statement": "The accepted merge repair implementation clears approval and starts a repair for each conflict without a separate finite merge repair allowance.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/allowances.go#L66-L83",
+          "version": "repo-lines-v1:sha256:6146ceb06ecf78790582ef640d1bd5d3a9ec360e1f5e2f4041fe50fc10bf2109:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYmQ3OGY1OTVkYTE1MWE0NjIyMzkxZWNmMjM0MTZhOWZiOTliYzgwNTRhZDUxMzQ1MThmYWEyZjFjNzdmZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMDFjZTdiYjBjZGQ3OTEyMDVjMDk0NzQ2ZDlmODMyOGIwODlkM2ZiNWUxNThhYTFkM2JkMmZmNjVmMDE0MjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4YjM3NzIyOWFjMTE0YzZlNTk5MjE2ZDAwZDI2NjBlZTFlODRkYTExZmI5ZjJhOTI5NDZkMjM5YTgyMDUwNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5MzFhODI2ZDc2YTE0YWE5YmMyZThmM2ZjZjAyM2MxN2VhOWExM2NmOTcwNjc3ODVlMzg1NTg3MTlhNDI2MDUifQ"
+        },
+        {
+          "resource": "repo://mc/domain/allowances.go#L8-L13",
+          "version": "repo-lines-v1:sha256:fe60f075f5b1b2e97a585e218d7df7902c000f841e8b55dd0362ed8461483963:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NmZWMzMmRmZDAyMjU0NTc1Y2Q4YTFkYTNjNmU2YzdhMGI0NjhlMWZkNTkxNTkzMDQzZDczZWYwZWQ4ZDkyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGQ1ZGU2NzM5MGNlMzJiZmZlZjBkZTk2NGMxYzcyMDA5OTVkNjhjYTNlZWNhZGViM2RkMDliODcyYTU0ZWI3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDBlYTgyNzcwMjAxMWQwMjIwYTMwNDRlNzMzZGVkYTZhYWJjMTE2Njk4ZTMyZjhjYjBmY2RiODBkYTBlODdiYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_07a363280221468dbd6051f5aba7dd1d",
+      "statement": "An applied requirements revision clears report and correction allowance conditions while preserving independent customization, confinement, checkout, and operator conditions.",
+      "evidence": [
+        {
+          "resource": "repo://mc/domain/requirements.go#L189-L229",
+          "version": "repo-lines-v1:sha256:fc4b10b67a3b91860078d9509cac3a2acd509bee3eb0ed7f1404dc82a3ece037:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkYmY5N2ZlMTJjZmM5NjRiMGY1Mjg1NzUyYjJjMjk4OWQwMGYyZGZmNmNjYmY0YjQwZjhhMmZjZTU5NzM4ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MmZiYjRjMTY2MDA5NzYyZjE4ZWI3OWU1ZTk1YTA5OGQ4NmNkZTk3YzVmZDg5NGQ3OTk2NmU2ZDI2MWVhNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZmZkNGRjNWM0MTJkMDQ5ZWViZTk0ZDg0ZWI2YTRiYWM4OTRhOTc5NzAxNGFhODQxZDdlODc0OGMwMWRmZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1N2QzMTBlZTg3NWJiMGM2MDFkM2Y2YThhYjA5NDlkY2UwYTZjODZjMjI4YTMzNDhiNWE5ODhhMGEyYjcwZTYifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/decisionresolution_test.go#L286-L321",
+          "version": "repo-lines-v1:sha256:98c9c81fe36d97e0c418631bae8d3bc388383103d464b13973b0166d8e103c59:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNzQwYmRkNjAzODQ2MmE3M2NlYWZiNzIyN2E4NzljM2Y1YjQzNTIyNTQ4M2Q4N2RhMGRlMWY1Y2MzMzQzMGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5NDc1ZWRhNjA1M2Y1MDc5NjBmMGJhODE5ZTIxNzY0YzA4NGZjNTlhNjk2MjM2MDUxMDNlMDBhMTNmNmQxMjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_46885921d03147b1b2ada89f14fd49ad",
+      "statement": "Unavailable host checks outside the criteria alone require no operator decision or task run failure; new or changed tests remain required.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/skills/verifier/mc-verifier/SKILL.md#L81-L109",
+          "version": "repo-lines-v1:sha256:489b9de13d5121cfcb11f22707ebffc85592a296c56dafa38def2bcf93e76a93:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmZWJkMDZhMDRkN2Y5NjMwMmE3NWY1YWJmM2JmYWViYTQxOTNjNTZlMjgwMDgwYTU2Nzc1OTJmMjRjNmU1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZDc5Yjc0NzdiN2NkM2Y5OThmOTgzNmNlZTJkNGIzZmNkYzhjZjY1NWYzZTkxYTFlYmYyOWFmMGIxYmQ5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NDdiMzE0NjdiMjg3MmM3MjQ5MTE2N2UyNDZlZjcyZjA0YmRjYjRiNTY2OGExNWU3ZTkxMzgyNjEyZjg5YjcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/skills/worker/mc-worker/SKILL.md#L118-L138",
+          "version": "repo-lines-v1:sha256:d437f6a04185b040122e6905eddb1d4a8c362c175b884e1d22715e3e2505fa57:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlYWFiYWQxNDQ4Y2E5Zjg3YjQyNDQ0ZTk2ZjFhY2FmMDM2NGEzMmM5MzA4OTI1NTIwODE4OGIwZTRhNTk1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3ZGZmMmVlYjIzODRkNWJjZGNmNWU0YzNiMDJmNjdlNzg3YTkxNTM0NWQzOGExYzEzMDlmNGY0MWRiNzExOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNmYTE2MjhiMTZkMTJiYzk5MmNlYWQ1YTkwNmFmNGU3YjNkMzA5ZGI2NjA4NTIzZjI3YTJmMTk0ZWE1MDFlNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNjg0NzVlNWZjMmM5YzMyNWYyMjM4Y2UxZjY2YWI5NGEyMjQwZWZjYjlmMjI2NDU1N2M5ZGRlNzRhZGFmYWYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:23:34.077Z"
+  }
+}

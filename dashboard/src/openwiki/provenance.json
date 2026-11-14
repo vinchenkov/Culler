@@ -1,0 +1,41 @@
+{
+  "openwiki_version": "0.9.0",
+  "libraries": [
+    {
+      "package": "force-graph",
+      "version": "1.49.5",
+      "file": "force-graph.min.js",
+      "source": "https://cdn.jsdelivr.net/npm/force-graph@1.49.5/dist/force-graph.min.js",
+      "integrity": "sha384-Q7cpDGRIjLb0dIzHOl/cCcP5MM6ixkekYU/M/Y4shUqh7h2IgtwAY7coox/PB0/S",
+      "license": "MIT",
+      "license_file": "LICENSE-force-graph"
+    },
+    {
+      "package": "marked",
+      "version": "12.0.2",
+      "file": "marked.min.js",
+      "source": "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js",
+      "integrity": "sha384-/TQbtLCAerC3jgaim+N78RZSDYV7ryeoBCVqTuzRrFec2akfBkHS7ACQ3PQhvMVi",
+      "license": "MIT",
+      "license_file": "LICENSE-marked"
+    },
+    {
+      "package": "dompurify",
+      "version": "3.4.12",
+      "file": "purify.min.js",
+      "source": "https://cdn.jsdelivr.net/npm/dompurify@3.4.12/dist/purify.min.js",
+      "integrity": "sha384-piCcpDdJ7qVeK4Tv8Z6Hpcr3ZBIgP16TxQTPVfsLFdZ5uDgwc3Y8Ho7oUnqf12qu",
+      "license": "(MPL-2.0 OR Apache-2.0)",
+      "license_file": "LICENSE-dompurify"
+    },
+    {
+      "package": "mermaid",
+      "version": "11.16.0",
+      "file": "mermaid.min.js",
+      "source": "https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js",
+      "integrity": "sha384-T/0lMUdJpd2S1ZHtRiofG3htU3xPCrFVeAQ1UUE2TJwlEJSV5NUwn30kP28n238E",
+      "license": "MIT",
+      "license_file": "LICENSE-mermaid"
+    }
+  ]
+}

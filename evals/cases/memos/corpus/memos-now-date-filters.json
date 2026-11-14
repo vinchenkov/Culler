@@ -1,0 +1,387 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/807/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "71905932d788f197f5c8fe2577f4a4ad33dfa1676ccc513cd84442efe67d3194",
+      "source": {
+        "kind": "file",
+        "path": "memos-now-date-filters/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/807/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "db38df7a5f1b31084ff1e52f91899083a00a28ec58b1048efb94c3c43fa6b481",
+      "source": {
+        "kind": "file",
+        "path": "memos-now-date-filters/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "scribe-report",
+      "kind": "report",
+      "path": "eval/807/scribe.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "59358b833e4d7f2562b4286d09a42e4ef7b249103682781f9d5c4360186ecf82",
+      "source": {
+        "kind": "file",
+        "path": "memos-now-date-filters/scribe.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "d2df437f53d2e40a7bb7e64e1881fa7e9d25d84bfa4c0fa9a6e03fcb60cc8310",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "67c483af878dbedd275700fdc65e37fe6340ada346dd02290f5bb57053a2e2d7",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "3091eca319a0ddee3bb5c94e8fcdc1143645015476b84762f7c5d81eab7db21e",
+    "role_inputs": "8dba879397b7543cc96a094a1c6d78a1d8e8f8b58122743c9af5c64e1b706fd4",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "final",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "9d64757cad5ff120b4ee5a5ee09b7d08a223080ec60eb06eb882908f8dcd1472"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "d6734f3682c6541313d0cdfbfee205b57ac65e2497ca7dbfeebbadd737d5f474"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "028ebc669aad7af6d068e02b82ec3a92fed0e5175d7ac1858d76ff2150299fd8"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "c94e435c5b3d0c384f5e2de63695085eb7f670ce9658f1ee450fff9e791db979"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-now-date-filters",
+  "id": "memos-now-date-filters",
+  "paths": {
+    "/mc/artifacts/eval/807/scribe.txt": "scribe-report",
+    "/mc/artifacts/eval/807/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/807/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+        "before": "The filter compiler does not fold the new now date accessor expressions.",
+        "conditions": [
+          "The current time is fixed for one compilation; a compiled statement does not update itself later.",
+          "The accessors accept no timezone argument and operate only on timestamp fields.",
+          "getMonth, getDayOfMonth, getDayOfWeek, and getDayOfYear use zero-based values; getDate uses one-based values."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The parser converts the accessor result into a literal before it renders the comparison.",
+        "sources": [
+          {
+            "path": "internal/filter/parser.go",
+            "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/41ff22b0cc432543594992fc3ee390179e2b47b0/internal/filter/parser.go"
+          }
+        ]
+      },
+      {
+        "after": "Two literal operands can produce a constant condition.",
+        "before": "The reviewed constant-comparison branches are absent.",
+        "conditions": [
+          "Numeric literals widen to float64 for the comparison.",
+          "Strings support ordered and equality comparisons; booleans support equality and inequality.",
+          "Unsupported literal combinations return an error.",
+          "The change adds source tests and filter documentation."
+        ],
+        "id": "behavior-2",
+        "mechanism": "The compiler swaps a left literal and a right field, then mirrors ordered operators.",
+        "sources": [
+          {
+            "path": "internal/filter/parser.go",
+            "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/41ff22b0cc432543594992fc3ee390179e2b47b0/internal/filter/parser.go"
+          },
+          {
+            "path": "internal/filter/README.md",
+            "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/41ff22b0cc432543594992fc3ee390179e2b47b0/internal/filter/README.md"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The preparation executes no filter test or database query.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-now-date-filters",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "807"
+          },
+          {
+            "label": "Title",
+            "value": "Support date comparisons against the current compile time"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The compiler folds now.getXxx expressions against its fixed UTC time.\n\nAcceptance criteria:\n- The compiler folds now.getXxx expressions against its fixed UTC time.\n- Two literal operands can produce a constant condition.\n- The current time is fixed for one compilation; a compiled statement does not update itself later.\n- The accessors accept no timezone argument and operate only on timestamp fields.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/807/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/807/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/807/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+          },
+          {
+            "label": "Base commit",
+            "value": "e3c231fcac5691f9590a5d685bdebec23b73be35"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      },
+      {
+        "explanation": "This report describes the documentation source supplied with the change. It does not establish application behavior.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/807/scribe.txt"
+          }
+        ],
+        "heading": "Scribe report",
+        "text": "The upstream reviewed commit contains the stated documentation changes. This fixture adds no separate Scribe source commit.",
+        "text_tag": "description"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 807": {
+        "acceptance_criteria": [
+          "The compiler folds now.getXxx expressions against its fixed UTC time.",
+          "Two literal operands can produce a constant condition.",
+          "The current time is fixed for one compilation; a compiled statement does not update itself later.",
+          "The accessors accept no timezone argument and operate only on timestamp fields."
+        ],
+        "description": "The compiler folds now.getXxx expressions against its fixed UTC time.\n\nAcceptance criteria:\n- The compiler folds now.getXxx expressions against its fixed UTC time.\n- Two literal operands can produce a constant condition.\n- The current time is fixed for one compilation; a compiled statement does not update itself later.\n- The accessors accept no timezone argument and operate only on timestamp fields.",
+        "id": 807,
+        "project_id": "memos-evaluation",
+        "purpose": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Support date comparisons against the current compile time"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The compiler folds now.getXxx expressions against its fixed UTC time.",
+            "Two literal operands can produce a constant condition.",
+            "The current time is fixed for one compilation; a compiled statement does not update itself later.",
+            "The accessors accept no timezone argument and operate only on timestamp fields."
+          ],
+          "description": "The compiler folds now.getXxx expressions against its fixed UTC time.\n\nAcceptance criteria:\n- The compiler folds now.getXxx expressions against its fixed UTC time.\n- Two literal operands can produce a constant condition.\n- The current time is fixed for one compilation; a compiled statement does not update itself later.\n- The accessors accept no timezone argument and operate only on timestamp fields.",
+          "id": 807,
+          "project_id": "memos-evaluation",
+          "purpose": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Support date comparisons against the current compile time"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The compiler folds now.getXxx expressions against its fixed UTC time.",
+        "Two literal operands can produce a constant condition.",
+        "The current time is fixed for one compilation; a compiled statement does not update itself later.",
+        "The accessors accept no timezone argument and operate only on timestamp fields."
+      ],
+      "description": "The compiler folds now.getXxx expressions against its fixed UTC time.\n\nAcceptance criteria:\n- The compiler folds now.getXxx expressions against its fixed UTC time.\n- Two literal operands can produce a constant condition.\n- The current time is fixed for one compilation; a compiled statement does not update itself later.\n- The accessors accept no timezone argument and operate only on timestamp fields.",
+      "id": 807,
+      "purpose": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+      "requirements_version": 1,
+      "title": "Support date comparisons against the current compile time"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "scribe-report",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "e3c231fcac5691f9590a5d685bdebec23b73be35",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/41ff22b0cc432543594992fc3ee390179e2b47b0",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+    "reviewed_tree": "6f8a54cd6f6a8fe8c77b4dbbc0b2a227f9affbf7",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "feature_across_components"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

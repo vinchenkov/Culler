@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "status": "accepted",
+  "base_revision": "8477d81d60e8cf8de6fff32a59576aae3f8509bd",
+  "model_calls": 0,
+  "experiments_started": 0,
+  "source_hashes": {
+    "evals/config/packager.json": "66c178d968f75bdb9efabd7b404d70487d1ce751452fc4a3660d25c12bd42d3c",
+    "evals/config/packager.test.json": "180b9bfa2d36feb8eb582b428a985ebbaa2301e806aa2c076f6699fbcf6fe4dc",
+    "evals/config/packager.presets.json": "8edf4ff828144ba24d87c10ba732eed6d6a3012a9f6a4e977b761835ecc6c4ac",
+    "evals/culler_evals/control_server.py": "eab94d91aabd49fd001cbe4fdf07916990087db96dbe1b49a7d82093db3aa880",
+    "evals/culler_evals/cli.py": "d41c2054042a29884552a5b3fd9af9dcb3c3e6656cf060aa743584472d340888",
+    "evals/web/control.html": "8880a2553619682523cab3414762e6a0ddd0722bb09084c68b66eb12d41a87cc",
+    "evals/tests/test_control_server.py": "3d2c37f023ac34c6311c87de524a09da1184aff6df8fd3d68c9c7b91d940b1a4",
+    "evals/tests/test_control_browser.py": "f256ec019909661dc226ebe79b94ca65ee309027d1079a0ddaf9b284f71d255b",
+    "evals/tests/test_cli_serve.py": "2ff7d53f0feca26e734a0d7c24a95da2b28fa45ee4240190499340ef7d0e103c"
+  },
+  "role_efforts": {
+    "packager": "high",
+    "judge": "high",
+    "optimizer": "high"
+  },
+  "runtime_configuration_hash": "3454f7df7776b3bdc1dc9474232d6d35613538965090de4e0c90954d4f959f26",
+  "final_decision_hash": "233822c69b474e0f43f7eaafd2a652263887a1f6e6a760240112eef9283b834b",
+  "checks": [
+    {
+      "name": "full_framework",
+      "passed": 540,
+      "subtests_passed": 4,
+      "seconds": 174.19,
+      "scope": "The full suite preceded the final preset error text and no-catalog guard check."
+    },
+    {
+      "name": "final_server_and_cli",
+      "passed": 58,
+      "seconds": 32.77
+    },
+    {
+      "name": "actual_control_browser",
+      "passed": 10,
+      "seconds": 46.24
+    },
+    {
+      "name": "protocol_readiness",
+      "ready": {
+        "production": true,
+        "test": true
+      }
+    }
+  ],
+  "presets": {
+    "production": {
+      "case_counts": {
+        "trainset": 13,
+        "valset": 13,
+        "final": 9
+      },
+      "trials": {
+        "training": 2,
+        "validation": 2,
+        "final": 3
+      },
+      "maximum_iterations": 12,
+      "maximum_packets_before_retries": 992
+    },
+    "test": {
+      "case_counts": {
+        "trainset": 7,
+        "valset": 7,
+        "final": 9
+      },
+      "trials": {
+        "training": 1,
+        "validation": 1,
+        "final": 1
+      },
+      "maximum_iterations": 2,
+      "maximum_packets_before_retries": 47
+    }
+  },
+  "browser_review": {
+    "accepted": true,
+    "findings": [],
+    "model_calls": 0,
+    "experiments_started": 0,
+    "console_errors": [],
+    "status": "ready",
+    "observations": [
+      {
+        "state": "test",
+        "case_counts": [
+          "7",
+          "7",
+          "9"
+        ],
+        "packet_estimate": "47 maximum packets before retries",
+        "description": "Checks execution with 23 cases, one trial per case, and at most two iterations. Scores remain exploratory; directive improvement requires a full evaluation.",
+        "available_cases": 35
+      },
+      {
+        "state": "production",
+        "case_counts": [
+          "13",
+          "13",
+          "9"
+        ],
+        "packet_estimate": "992 maximum packets before retries"
+      }
+    ],
+    "captures": [
+      {
+        "path": "/private/tmp/culler-eval-presets-browser-review/desktop-test.png",
+        "sha256": "fc30c6f8494ffbdd8b19e99853f5c0aa4f5d80fcf9d90c26f8b92931f1bd7b37"
+      },
+      {
+        "path": "/private/tmp/culler-eval-presets-browser-review/desktop-production.png",
+        "sha256": "9edd9f54ba6832d7c465cd0ec8c626cb9300ff8b0ff8824086f244a418002449"
+      },
+      {
+        "path": "/private/tmp/culler-eval-presets-browser-review/desktop-custom.png",
+        "sha256": "aa3237f0cbf358a9ec173ed36d751ced715659e1113c0496239ddcee1796d583"
+      },
+      {
+        "path": "/private/tmp/culler-eval-presets-browser-review/desktop-models.png",
+        "sha256": "bf5f3a5734f117ba61e6b3bfe6a3193e75c21e2e141b7a86e010c9bfcd8c68b6"
+      },
+      {
+        "path": "/private/tmp/culler-eval-presets-browser-review/narrow-test.png",
+        "sha256": "fbd9d752c41ff984ee0a5e6dfa07baf3665dbad8f70800dacaa91f1140b935d0"
+      },
+      {
+        "path": "/private/tmp/culler-eval-presets-browser-review/narrow-models.png",
+        "sha256": "17e8f2b37d9ad9710aa0ae039c8ff23740eb05e02c74f80a0c9aaf4f2f2b2fe3"
+      }
+    ],
+    "checks": [
+      "Test default uses 7 / 7 / 9 and maximum 47 packets.",
+      "Production restores 13 / 13 / 9 and maximum 992 packets.",
+      "Preset changes restore complete parameters.",
+      "Manual edits show Custom.",
+      "Restore preset sets returns the Test cases.",
+      "All 35 cases stay available.",
+      "All three roles use high effort.",
+      "Narrow layout has no horizontal overflow.",
+      "No experiment starts."
+    ]
+  },
+  "terminal_review": {
+    "captures": [
+      {
+        "command": "serve-help",
+        "columns": 80,
+        "color_mode": "color",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/serve-help-80-color.txt",
+        "sha256": "3cf7f368128ec3f11126fb56ebe9ff9cc7f3d06ce4d4917efd500f034d361378",
+        "exit_code": 0,
+        "maximum_line_width": 78
+      },
+      {
+        "command": "serve-help",
+        "columns": 80,
+        "color_mode": "plain",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/serve-help-80-plain.txt",
+        "sha256": "3cf7f368128ec3f11126fb56ebe9ff9cc7f3d06ce4d4917efd500f034d361378",
+        "exit_code": 0,
+        "maximum_line_width": 78
+      },
+      {
+        "command": "serve-help",
+        "columns": 40,
+        "color_mode": "color",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/serve-help-40-color.txt",
+        "sha256": "ed2a086703e945e20c88d18f83e10f7363d62063ab56968431521e5760b83dbb",
+        "exit_code": 0,
+        "maximum_line_width": 40
+      },
+      {
+        "command": "serve-help",
+        "columns": 40,
+        "color_mode": "plain",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/serve-help-40-plain.txt",
+        "sha256": "ed2a086703e945e20c88d18f83e10f7363d62063ab56968431521e5760b83dbb",
+        "exit_code": 0,
+        "maximum_line_width": 40
+      },
+      {
+        "command": "unknown-preset",
+        "columns": 80,
+        "color_mode": "color",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/unknown-preset-80-color.txt",
+        "sha256": "c81a882f6365c1cf46255bacdea742677457438afcc263b0759bb421c5656487",
+        "exit_code": 1,
+        "maximum_line_width": 40
+      },
+      {
+        "command": "unknown-preset",
+        "columns": 80,
+        "color_mode": "plain",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/unknown-preset-80-plain.txt",
+        "sha256": "c81a882f6365c1cf46255bacdea742677457438afcc263b0759bb421c5656487",
+        "exit_code": 1,
+        "maximum_line_width": 40
+      },
+      {
+        "command": "unknown-preset",
+        "columns": 40,
+        "color_mode": "color",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/unknown-preset-40-color.txt",
+        "sha256": "c81a882f6365c1cf46255bacdea742677457438afcc263b0759bb421c5656487",
+        "exit_code": 1,
+        "maximum_line_width": 40
+      },
+      {
+        "command": "unknown-preset",
+        "columns": 40,
+        "color_mode": "plain",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/unknown-preset-40-plain.txt",
+        "sha256": "c81a882f6365c1cf46255bacdea742677457438afcc263b0759bb421c5656487",
+        "exit_code": 1,
+        "maximum_line_width": 40
+      },
+      {
+        "command": "without-presets",
+        "columns": 80,
+        "color_mode": "color",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/without-presets-80-color.txt",
+        "sha256": "5a23e55a3a72a2209f51bf3504dae99ce381bfec2bd3098e8db408a31c38f199",
+        "exit_code": 1,
+        "maximum_line_width": 58
+      },
+      {
+        "command": "without-presets",
+        "columns": 80,
+        "color_mode": "plain",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/without-presets-80-plain.txt",
+        "sha256": "5a23e55a3a72a2209f51bf3504dae99ce381bfec2bd3098e8db408a31c38f199",
+        "exit_code": 1,
+        "maximum_line_width": 58
+      },
+      {
+        "command": "without-presets",
+        "columns": 40,
+        "color_mode": "color",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/without-presets-40-color.txt",
+        "sha256": "43ae7f1ca62756c93bc29e4a13a1980e12563425309906051d14b138cd7ff421",
+        "exit_code": 1,
+        "maximum_line_width": 35
+      },
+      {
+        "command": "without-presets",
+        "columns": 40,
+        "color_mode": "plain",
+        "path": "/private/tmp/culler-eval-presets-terminal-review/without-presets-40-plain.txt",
+        "sha256": "43ae7f1ca62756c93bc29e4a13a1980e12563425309906051d14b138cd7ff421",
+        "exit_code": 1,
+        "maximum_line_width": 35
+      }
+    ],
+    "model_calls": 0,
+    "experiments_started": 0,
+    "accepted": true,
+    "color_note": "The command emits plain text in both color modes."
+  },
+  "limitations": [
+    "The Judge remains uncalibrated.",
+    "These checks establish execution behavior, not directive improvement."
+  ]
+}

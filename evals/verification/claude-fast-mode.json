@@ -1,0 +1,60 @@
+{
+  "check": "claude_fast_mode",
+  "passed": true,
+  "model_calls": 0,
+  "checks": {
+    "framework_tests": 310,
+    "control_and_viewer_tests": 84,
+    "sdk_process_boundary": true
+  },
+  "presets": {
+    "production": {
+      "judge_fast_mode": true,
+      "effort": "high"
+    },
+    "production-short": {
+      "judge_fast_mode": true,
+      "effort": "high"
+    },
+    "test": {
+      "judge_fast_mode": true,
+      "effort": "high"
+    }
+  },
+  "container": {
+    "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+    "harness_version": "2.1.280",
+    "sdk_version": "0.3.280",
+    "network": "none",
+    "credentials": false,
+    "intercepted_before_spawn": true
+  },
+  "session_settings": {
+    "enabled": {
+      "fastMode": true,
+      "autoMemoryEnabled": false,
+      "autoDreamEnabled": false
+    },
+    "disabled": {
+      "fastMode": false,
+      "autoMemoryEnabled": false,
+      "autoDreamEnabled": false
+    }
+  },
+  "account_availability": "Unverified. The check made no provider request.",
+  "service_speed_evidence": "The SDK passed the configuration. This does not prove fast service.",
+  "official_documentation": "https://code.claude.com/docs/en/fast-mode",
+  "files": {
+    "evals/bridge/fast-mode.ts": "8bd7bbd0c0c9a76a0d01b3f08e3cc3b9b167c6ec9ef13c2bdc7a36f63e9ef625",
+    "evals/bridge/launch.ts": "8aa249376cecf79c13a3219840d56ea3f75883c7354cf6b6bf99466b04e385ad",
+    "evals/culler_evals/protocol.py": "fb50819249717d7fef298060846348ceed2f80eb56338112b8445c3b2d691b07",
+    "evals/culler_evals/runtime.py": "45f253ad5d2c400207bd52488d55cd9892665302b21c1281ff67cc63502370ac",
+    "evals/culler_evals/control_server.py": "df9a1d4003e0b3b573030d868f007d69431d302d2547b99610e65a14363a2ce6",
+    "evals/web/control.html": "ba4e92a97cefbb3908af063e50f0d5fa5f2b27eab5c607f0ee2b20ca8c381c2c",
+    "evals/web/experiment.html": "7b1a5adf9842f0499551b962728c658002ac5435fb695907a8237695af5eae01",
+    "evals/config/packager.json": "0424dfaed88df1933487feac7a5002811a282416513995aca5391313d7d1fad6",
+    "evals/config/packager.production-short.json": "4bb0031b1f4bb1ca98a9dd2f8421c5daa7636f4e40389f9b2ff3b9f0ea90db6e",
+    "evals/config/packager.test.json": "56b6e0cf80e9a813b25c5f304386e1f7b24f445da78b174edc47e709180b1968",
+    "evals/verification/claude-fast-mode.ts": "8916c80815099827babf6660efc6738a1ba113470494f0027fa6e21a8010b712"
+  }
+}

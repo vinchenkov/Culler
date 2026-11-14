@@ -1,0 +1,42 @@
+Memos
+Home
+Calendar
+Map
+Attachments
+BASIC
+My Account
+Spaces
+Access Tokens
+Preferences
+Webhooks
+Tags
+ADMIN
+Member
+System
+Memo
+Storage
+Notifications
+SSO
+AI
+Resources
+Case owner
+My Account
+Account Information
+Case owner@case-owner
+Edit
+Change password
+SSO Accounts
+
+Review each identity provider, see the current link state, and connect or disconnect external identities from this account.
+
+Provider	Account	
+No SSO found.
+Danger area
+
+Irreversible account actions live here. Review them carefully before continuing.
+
+Delete account
+
+Permanently remove this account and all associated access from this instance. This action cannot be undone.
+
+Delete account

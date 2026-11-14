@@ -1,0 +1,366 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/820/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "28ecf611c3703fa3f8f1fe80722f5360f9cbacf3a4deae105726464166db7d42",
+      "source": {
+        "kind": "file",
+        "path": "memos-missing-json-flags/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/820/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "dfd8845e741351313036955edeba4382113ae7e02d10a378656c120260a74667",
+      "source": {
+        "kind": "file",
+        "path": "memos-missing-json-flags/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "scribe-report",
+      "kind": "report",
+      "path": "eval/820/scribe.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "1cd0a6f54c9dbcb0bac5415bbfbd559e547ae960229881a6b380acfd67a7a38c",
+      "source": {
+        "kind": "file",
+        "path": "memos-missing-json-flags/scribe.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "6afca78e1639addbc954d01a1a20de319fd6014a738239bf38fb288d7c73a97a",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "3cba71fa9042b525c6970acac70660c48be67c617d527d171f3097e4f6901f86",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "e06449ce1864755f2154542ee73cf11bd1da5fbc61c206d2ec629a4c3ac24b67",
+    "role_inputs": "3c1de200c74da619150441ac669862f7abbe04f0a9aa36ce266d32d4b61340c3",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "1ef9e52f8b27e19738d6259740c8c67790c494a7dd428c6a2aaea73fed65c3b4"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "281674aac6b23941d9ded79a00d61107a1e10de820fb03ea176edfcec0bf0b5e"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-missing-json-flags",
+  "id": "memos-missing-json-flags",
+  "paths": {
+    "/mc/artifacts/eval/820/scribe.txt": "scribe-report",
+    "/mc/artifacts/eval/820/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/820/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "A missing flag follows the false branch in the shared boolean predicate.",
+        "before": "Some equality comparisons fail to include rows whose JSON flag is absent or whose payload is NULL.",
+        "conditions": [
+          "The change covers SQLite, MySQL, and PostgreSQL renderers.",
+          "SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+          "JSON presence conditions retain their distinct predicate behavior.",
+          "The change adds filter documentation, renderer tests, and store tests."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The renderer shares a positive JSON boolean predicate and negates it for false equality or true inequality.",
+        "sources": [
+          {
+            "path": "filter/render.go",
+            "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e/filter/render.go"
+          },
+          {
+            "path": "filter/README.md",
+            "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e/filter/README.md"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No renderer or database query test ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+      "Unexpected nonboolean JSON values can follow different conversion rules across database dialects."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-missing-json-flags",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "820"
+          },
+          {
+            "label": "Title",
+            "value": "Treat missing JSON boolean flags as false"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "A missing flag follows the false branch in the shared boolean predicate.\n\nAcceptance criteria:\n- A missing flag follows the false branch in the shared boolean predicate.\n- The change covers SQLite, MySQL, and PostgreSQL renderers.\n- SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/820/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/820/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/820/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+          },
+          {
+            "label": "Base commit",
+            "value": "0db0025d320758079e6acf7f69038b3a96755161"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      },
+      {
+        "explanation": "This report describes the documentation source supplied with the change. It does not establish application behavior.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/820/scribe.txt"
+          }
+        ],
+        "heading": "Scribe report",
+        "text": "The upstream reviewed commit contains the stated documentation changes. This fixture adds no separate Scribe source commit.",
+        "text_tag": "description"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 820": {
+        "acceptance_criteria": [
+          "A missing flag follows the false branch in the shared boolean predicate.",
+          "The change covers SQLite, MySQL, and PostgreSQL renderers.",
+          "SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE."
+        ],
+        "description": "A missing flag follows the false branch in the shared boolean predicate.\n\nAcceptance criteria:\n- A missing flag follows the false branch in the shared boolean predicate.\n- The change covers SQLite, MySQL, and PostgreSQL renderers.\n- SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+        "id": 820,
+        "project_id": "memos-evaluation",
+        "purpose": "A missing flag follows the false branch in the shared boolean predicate.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Treat missing JSON boolean flags as false"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "A missing flag follows the false branch in the shared boolean predicate.",
+            "The change covers SQLite, MySQL, and PostgreSQL renderers.",
+            "SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE."
+          ],
+          "description": "A missing flag follows the false branch in the shared boolean predicate.\n\nAcceptance criteria:\n- A missing flag follows the false branch in the shared boolean predicate.\n- The change covers SQLite, MySQL, and PostgreSQL renderers.\n- SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+          "id": 820,
+          "project_id": "memos-evaluation",
+          "purpose": "A missing flag follows the false branch in the shared boolean predicate.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Treat missing JSON boolean flags as false"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "A missing flag follows the false branch in the shared boolean predicate.",
+        "The change covers SQLite, MySQL, and PostgreSQL renderers.",
+        "SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE."
+      ],
+      "description": "A missing flag follows the false branch in the shared boolean predicate.\n\nAcceptance criteria:\n- A missing flag follows the false branch in the shared boolean predicate.\n- The change covers SQLite, MySQL, and PostgreSQL renderers.\n- SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+      "id": 820,
+      "purpose": "A missing flag follows the false branch in the shared boolean predicate.",
+      "requirements_version": 1,
+      "title": "Treat missing JSON boolean flags as false"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "scribe-report",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "0db0025d320758079e6acf7f69038b3a96755161",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+    "reviewed_tree": "d1606a9ad9f1d2422ffc8115027060e711cd3bf1",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "data_or_access"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

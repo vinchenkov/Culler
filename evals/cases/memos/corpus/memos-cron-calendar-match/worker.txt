@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "base_commit": "88f150502c9a1ec6050ff4bdd8f439f646829ab3",
+      "changed_paths": [
+        "internal/scheduler/parser.go",
+        "internal/scheduler/parser_calendar_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "3227748a3018688d1d0b5f16aab82ae8319dc1e1",
+      "reviewed_tree": "cd7b82ae2b7788cfc9a5b713de219f6104383c46"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The parser uses OR for two restricted day fields and AND when either field begins with an asterisk.",
+      "conditions": [
+        "An asterisk prefix includes a step expression such as */2.",
+        "Seconds, minutes, hours, and month must match before the day combination matters.",
+        "Sunday accepts both 0 and 7.",
+        "The five-field and six-field formats remain available; the change adds calendar tests."
+      ],
+      "mechanism": "ParseCronExpression records the wildcard condition; Schedule.matches applies that condition after the other fields match."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The parser uses OR for two restricted day fields and AND when either field begins with an asterisk.",
+  "task_id": 810,
+  "unverified": [
+    "No scheduled job or calendar test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "3227748a3018688d1d0b5f16aab82ae8319dc1e1"
+}

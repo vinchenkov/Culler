@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "base_commit": "2b2192d4e153bd04f1d325b60fd880cf00d68b01",
+      "changed_paths": [
+        "server/api/v1/attachment_service_storage.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "a1c3061c6c531406e19d3d79c176d5de89bafbc5",
+      "reviewed_tree": "40077f7f16ba5b4b996fbd404dc2b0c16cbede28"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The comparison returns early for missing objects or empty keys before it compares identities.",
+      "conditions": [
+        "Equal nonempty keys already imply that both keys are nonempty in the old expression.",
+        "The change preserves the other storage branches.",
+        "The source supports an equivalent comparison, not a measured performance gain."
+      ],
+      "mechanism": "The S3 branch checks both object pointers and keys, then compares the key and storage identifier."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The comparison returns early for missing objects or empty keys before it compares identities.",
+  "task_id": 821,
+  "unverified": [
+    "No attachment comparison test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "a1c3061c6c531406e19d3d79c176d5de89bafbc5"
+}

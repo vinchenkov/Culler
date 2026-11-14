@@ -1,0 +1,52 @@
+{
+  "check": "judge_structured_output",
+  "passed": true,
+  "automated_tests": 370,
+  "isolated_harness_sessions": 1,
+  "experiment_resumed": false,
+  "isolated_result": {
+    "requested_model": "claude-opus-5-5",
+    "effective_models": [
+      "claude-opus-5-5"
+    ],
+    "harness_versions": [
+      "2.1.280 (Claude Code)"
+    ],
+    "requested_effort": "high",
+    "configured_effort": "high",
+    "requested_fast_mode": true,
+    "configured_fast_mode": true,
+    "fast_mode_observations": [
+      {
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "preference"
+      },
+      {
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "preference"
+      }
+    ],
+    "output_format": "json_schema",
+    "output_schema_hash": "dc350f74f393d850ab53fba2938dfdc396ab5bb35fbbd5bfdec7c0b2d19f2acd",
+    "passed": true,
+    "harness_sessions": 1,
+    "experiment_resumed": false,
+    "fixture_matches": true
+  },
+  "checks": [
+    "The bridge preserves the native response and uses validated structured data.",
+    "The bridge rejects an absent structured result without a score.",
+    "The runtime requires the configured schema and structured output record.",
+    "The isolated result matches the fixed fixture and passes assessment validation."
+  ],
+  "official_documentation": "https://code.claude.com/docs/en/agent-sdk/structured-outputs",
+  "files": {
+    "evals/bridge/structured-output.ts": "f3a573af00f876b54fc5d2d7ccf73ae6e563f93d38157fe87d623e2f3c568958",
+    "evals/bridge/launch.ts": "83ec9a68a2433761de529e4c37bd35f27d825576a3890d2d8c4b09e7a6c3af03",
+    "evals/culler_evals/assessment.py": "d05c001ad5a77841a220a878326b3f3dfdf2f0407dc9628c1e1d2e32f6486f59",
+    "evals/culler_evals/protocol.py": "c64df6947bc719ab6e882bbd82da1cc5e5d9647f51158a8a4d4743f7870b58d4",
+    "evals/culler_evals/runtime.py": "61a27a4f7bcf4d9c617d2e03162d27ba50de30e638a8342df9dc824baecb3857"
+  },
+  "main_integration_tests": 268,
+  "main_revision": "8d1bb18a"
+}

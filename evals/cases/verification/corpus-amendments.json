@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "author": "/root/inputs_docs",
+  "recorded_at": "2026-10-17T16:52:06.353742+00:00",
+  "status": "verified_manifest_amendment",
+  "scope": [
+    "This record binds the current manifests to the historical assignment proof.",
+    "The scheduler fixture uses task scope and current report roles.",
+    "The other manifests retain their inputs and reference the same amended source review.",
+    "The source records and dataset assignments remain unchanged."
+  ],
+  "source_commit_before": "6a78cac4e0ffbf415912c0a3f7737a98baa65bd1",
+  "source_commit_after": "4a1ede8f71299ae34e978e71508f5df4bd4b8c47",
+  "assignment_proof": {
+    "path": "verification/corpus-assignments.json",
+    "sha256": "de89303fd35439b3363f8751fa172841c6084f6670e9c565a1979c0565a87a10"
+  },
+  "review_evidence": {
+    "path": "memos/corpus/reviews/independent-source.json",
+    "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+  },
+  "review": {
+    "date": "2026-10-17",
+    "observations": [
+      "The source identifiers and authored history remain unchanged.",
+      "The source behavior and evidence limits remain unchanged.",
+      "The original source review supplies the source acceptance. This amendment contains no new application test evidence."
+    ],
+    "result": "accepted",
+    "reviewer": "/root",
+    "scope": "The review covers the task scope, report roles, and removal of obsolete report artifacts."
+  },
+  "records": [
+    {
+      "case_id": "memos-auth-helper-consolidation",
+      "manifest": "memos/corpus/memos-auth-helper-consolidation.json",
+      "previous_manifest_sha256": "90a0bf7f2acfe470c44e1cddd2239c01f79ee4cc62f22e5170582b6f193e8537",
+      "manifest_sha256": "22ded3c49dcdaa50359a7f9758356014f37f117059d3e5aa19e9db5f120e5c0b",
+      "source_sha256": "eff46d7675bc761ec46dcb867fe9c6a1425abfacf3e5088f4984b5e588a89fac"
+    },
+    {
+      "case_id": "memos-batch-instance-settings",
+      "manifest": "memos/corpus/memos-batch-instance-settings.json",
+      "previous_manifest_sha256": "a5049c68d795cab6dfacd5abd404f11e7cce3caca78cb32e40e75a6dd814c62c",
+      "manifest_sha256": "d916a15d5a969b0e69a6c1d6ab6e2c8910644931d6a8901fb25f54038d4025fb",
+      "source_sha256": "73fb0ccabc41d6dbc974da465071967771f12f1fa6a63933fbe8d72f5bc7f996"
+    },
+    {
+      "case_id": "memos-batch-memo-relations",
+      "manifest": "memos/corpus/memos-batch-memo-relations.json",
+      "previous_manifest_sha256": "f549bb1944aaae7b0d09b1dfee9aab16baa5fadeccefa96bfbd0a6fc3e65f43f",
+      "manifest_sha256": "8116635a333267824c5fa477e1ff7b79e90b8e7defd6a47a5cc6920b222e228e",
+      "source_sha256": "4c0c24b31d396d0cfda895f6650c380d5e1af9c294828198930ee808833471c3"
+    },
+    {
+      "case_id": "memos-batch-rss-authors",
+      "manifest": "memos/corpus/memos-batch-rss-authors.json",
+      "previous_manifest_sha256": "c4c7fbbc888d11d4502160653f44671de416f584be629f5bc915043d04f003dd",
+      "manifest_sha256": "b337b67f95e37845337372d3d2f2a894d59690d5baf0b3101b0ddf96349a22b2",
+      "source_sha256": "bfef4c872ae94eab06d00e6fb85780e9de117208272bc78ae0a19c55f4bbe824"
+    },
+    {
+      "case_id": "memos-cgnat-address-guard",
+      "manifest": "memos/corpus/memos-cgnat-address-guard.json",
+      "previous_manifest_sha256": "3d0bc4c4a00b1dfc6844f98fe7df5365035f755ac9477666defc2c3abf8c0945",
+      "manifest_sha256": "cdfbc9757b5aa6695a66ec53008c05b08bc4d36ff1f1e9215c3284ffa2a4bd51",
+      "source_sha256": "2e088f3ef3c4b336641063b9ae1d92e41a751a7dc90f89a9f50b8719f89eef85"
+    },
+    {
+      "case_id": "memos-cookie-session-recovery",
+      "manifest": "memos/corpus/memos-cookie-session-recovery.json",
+      "previous_manifest_sha256": "b0503539a0bd9a3d840c62b88d6326b2128aa6878c308b88f4b4577e07c7a3b0",
+      "manifest_sha256": "fa8dc0d8d4bdbf47a04d137cb1b5fe22c57521bec874fd90756e00dc83a5c49b",
+      "source_sha256": "30d6997ac4293373a0458ae7d541f22df02efe9ef1123427375432767d82f405"
+    },
+    {
+      "case_id": "memos-cors-credential-boundary",
+      "manifest": "memos/corpus/memos-cors-credential-boundary.json",
+      "previous_manifest_sha256": "559cc09ab4509073e9e1196d012941208c47c1582985d450284a0d73cdaf6682",
+      "manifest_sha256": "4b6f00bb92f81ee0b7684906c0f00adc83d44c356a86be18544e445288e659c1",
+      "source_sha256": "417c008833e9d43dbc3cb70640b8fd2bd135498d999dc71c0bc001c64261608e"
+    },
+    {
+      "case_id": "memos-cron-calendar-match",
+      "manifest": "memos/corpus/memos-cron-calendar-match.json",
+      "previous_manifest_sha256": "112ebf2cfbe039dd38b36f37008d9da92e8653fa17a07da40171e386a5360ee3",
+      "manifest_sha256": "c51df5033f50ea4327ff12f7f8bd365abb06b1559472a6e6e9449e12b964af40",
+      "source_sha256": "c2fdab87495c83f70e4d824c44be0d1744fd5846b33260d95b7074a378edeb4e"
+    },
+    {
+      "case_id": "memos-fileserver-simplification",
+      "manifest": "memos/corpus/memos-fileserver-simplification.json",
+      "previous_manifest_sha256": "bc6697fdd796d8503e16156c30f967a9df78404ff8cd2cb2216d1ef2af09b3f0",
+      "manifest_sha256": "531709a9b19ae4495c1d7fba38c0f9fc1e2af8c230474dd1af77f5c88c76718a",
+      "source_sha256": "8cfacfbcfd5a573ca0d31f4e09c75afcbe1254792e7e4df7e0cf2ec38be83667"
+    },
+    {
+      "case_id": "memos-frontend-cache-policy",
+      "manifest": "memos/corpus/memos-frontend-cache-policy.json",
+      "previous_manifest_sha256": "9361885f018c62c5292940853761ad7a339cbe697d2a6d87d011e87b7c779cce",
+      "manifest_sha256": "83e95b148af98449de7b197e166e2e6de7695f5c0875147a99b5762c6659fbc1",
+      "source_sha256": "5c82ab3e0bdc2c92d8d87b4960692acae352a550049742145b1fc669432dbf01"
+    },
+    {
+      "case_id": "memos-local-storage-default",
+      "manifest": "memos/corpus/memos-local-storage-default.json",
+      "previous_manifest_sha256": "ce7a6105d7c510045fe9dc3ee848dc67d7d118a8aa23dafc7e9ee939f5c1bdeb",
+      "manifest_sha256": "dd0b64d89743f88348e25197bfe67519c2214a1e52b95fa67b05e16dfa9a94e3",
+      "source_sha256": "2e927edeb99566dfd56d4220bd227d5b2d99cdefab74057d60559fe18a1e6640"
+    },
+    {
+      "case_id": "memos-managed-s3-comparison",
+      "manifest": "memos/corpus/memos-managed-s3-comparison.json",
+      "previous_manifest_sha256": "d6ebf64c86687e6f78e709c8c494aac498cbd9d9a6210d8f74ee7f6a1776006a",
+      "manifest_sha256": "2318534b149b9c93ea9cb2a926978a1618234a7722c4c519092e13bb13a5c899",
+      "source_sha256": "5a1a17df42982dfe6f630bbb9b8070a9eb743cf621ca5b9861aaddc37e24abb8"
+    },
+    {
+      "case_id": "memos-missing-json-flags",
+      "manifest": "memos/corpus/memos-missing-json-flags.json",
+      "previous_manifest_sha256": "41e804e53cc96aa18040c5e2a1095874e9594ef8195898661b8085f98da973e0",
+      "manifest_sha256": "da52c4329e5d687868b245326bbc4a274cf782d2f418930303ba1b077895deaf",
+      "source_sha256": "37b69bcdd07e7808b6f7db7b955af24200760a7cffcf170816bd27a9c3dd4a2d"
+    },
+    {
+      "case_id": "memos-now-date-filters",
+      "manifest": "memos/corpus/memos-now-date-filters.json",
+      "previous_manifest_sha256": "064979c64be39e29e8ca8cd40178bb21066530cd0475be8b97122873971aadc0",
+      "manifest_sha256": "f43228820eb14a864e9d3c1e5866decce0b9c9b6517bddb72c2fe2ba9d0d057c",
+      "source_sha256": "a9442f58e26dfc625d331d9216f73a01b8c9572ca24ad9ce47dea9e6dda7a12c"
+    },
+    {
+      "case_id": "memos-scheduler-membership-refactor",
+      "manifest": "memos/corpus/memos-scheduler-membership-refactor.json",
+      "previous_manifest_sha256": "f6277c97c7e019e50a370c946626c3ba827e75a1c7e42b48fdeaf297b1421a26",
+      "manifest_sha256": "159b700e109d20436ba4b8b6c8ca3637aed9391ead2c0083ee99f62573bbc57b",
+      "source_sha256": "9b4fd78acf68b4840d578d0d8e12042899b2fe87aa27f6920a553880f8d9c564"
+    },
+    {
+      "case_id": "memos-scheduler-plugin",
+      "manifest": "memos/corpus/memos-scheduler-plugin.json",
+      "previous_manifest_sha256": "d7990cb84901f84bf4c6d275bc291c966a7540c9945cb5cefa2d19b5a03b7113",
+      "manifest_sha256": "3b7697b0f7881bd8591cd547b33b902cb3a51751c71b593a15448ffebba09844",
+      "source_sha256": "21108a0e86d536a437ac77f24647b93034957b36549a25a7d5b3fcf4aad4dc79"
+    },
+    {
+      "case_id": "memos-secret-file-config",
+      "manifest": "memos/corpus/memos-secret-file-config.json",
+      "previous_manifest_sha256": "e70decf74fce6dc5fd815772f5704d67af72aa8887a25faaf506542841d3deee",
+      "manifest_sha256": "35d20f32b9d25cd8fd3e080802c82fe09859497af295e7f18cf5349c1507e9a8",
+      "source_sha256": "cba942ff1ba7b5eab66cf1b2e9bf773394819c12859942efd596448c05453cdf"
+    },
+    {
+      "case_id": "memos-smtp-plugin",
+      "manifest": "memos/corpus/memos-smtp-plugin.json",
+      "previous_manifest_sha256": "3d97f38ffcf4bcb057c5e51c0fe150a73a1edf60dff68e9e0f965a68fb754c60",
+      "manifest_sha256": "436f045f28d9f882c611ad315163fdd4772bba75f614745bd3c59e59bf1b8275",
+      "source_sha256": "2c75c0a1a70b99541df41eb02b6caf82b3ca33d15d7cb8819e794a6eed880ef5"
+    },
+    {
+      "case_id": "memos-sqlite-immediate-mutation",
+      "manifest": "memos/corpus/memos-sqlite-immediate-mutation.json",
+      "previous_manifest_sha256": "6a9bb29f7351a11094fc17e43073bb31bcfb72408d119272d513452499c859fb",
+      "manifest_sha256": "ed87edc8a9017e61187454243b4606da6aa83e4e85e32a783b5df513a19f9132",
+      "source_sha256": "3d284fd139e3df96dfcc22d663d2b88397fe0ce507d47d84a9021a80b9b02a36"
+    },
+    {
+      "case_id": "memos-sse-connection-fanout",
+      "manifest": "memos/corpus/memos-sse-connection-fanout.json",
+      "previous_manifest_sha256": "0a883ab9369872de3c60142f3c8feeca71de1df637a5791d4e0787cb1ca41b91",
+      "manifest_sha256": "715a1e85fe04dc0149e09afa6a0f602e6e6855b81a5e4cc2cf232261a8b3ad59",
+      "source_sha256": "fef24ba2999b296d8cfc693da6b2e1abbd2e1448033e131f99d0e4b6f2c9c5fe"
+    },
+    {
+      "case_id": "memos-sse-event-recovery",
+      "manifest": "memos/corpus/memos-sse-event-recovery.json",
+      "previous_manifest_sha256": "728052961016c270525073ca41e02a0d5013af7852e20e9c21d88e8bd93ae0fe",
+      "manifest_sha256": "bff5fc80c45aa3b0a4dd2d4a6a349f92ab9a03f23964da7fb78cec3e5c079f36",
+      "source_sha256": "52203e24639c1018f8ad5e54341b6346be59cd7864411508a52e6595668f2ea6"
+    },
+    {
+      "case_id": "memos-stream-media",
+      "manifest": "memos/corpus/memos-stream-media.json",
+      "previous_manifest_sha256": "8c3f2a6c936c5556bf3e49938f383f4df4497f17cbe97c81b96e09f872cf7405",
+      "manifest_sha256": "0417fdcf1f4da19d9428d5d3279fffefbb7aae0a59212f7fa34c4b83a3aec371",
+      "source_sha256": "df6608e85e20d3179f384b323808086e4c20492ed3f88c1c4f41acd266d41ed6"
+    },
+    {
+      "case_id": "memos-unspecified-webhook-address",
+      "manifest": "memos/corpus/memos-unspecified-webhook-address.json",
+      "previous_manifest_sha256": "79e2038b2c38bee0bedb72c975166affc5d19929ad6c04829db10419e2e7d6a4",
+      "manifest_sha256": "f62d612cdeb42ff84e428318b9e16fd09ddb8a5f67b2d2f0948f9f055e7e5f54",
+      "source_sha256": "2050ce25e6f2c15a96c40cc6fccfa64506d08829fd9ccb5a5bb654665abed20e"
+    },
+    {
+      "case_id": "memos-version-flag",
+      "manifest": "memos/corpus/memos-version-flag.json",
+      "previous_manifest_sha256": "ed5b3384230ff9a2c3a423604e51006156123545cff37bfbd9dfb7708c99cbc8",
+      "manifest_sha256": "1f1e7ed7661ac527272bb4f5ab01e4dce32f9d8c516a767c0b6a3653cd3b3389",
+      "source_sha256": "9d223a97a6ab7a4464b9b4664e5e1a67bc2dc17cdbc1cc792dd0cb2837edb52c"
+    }
+  ]
+}

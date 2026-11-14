@@ -1,0 +1,41 @@
+VISION.md
+
+# Environment keys
+.env
+discord.env
+
+# Conventional in-repo MC_HOME location — a backstop fence.
+.mc/
+
+# Dev scratch state (dev MC_HOME lives OUT of tree; this is a second backstop).
+.mc-dev-home/
+
+# Build & dependency output
+node_modules
+__pycache__/
+spikes/*/out/
+dist/
+*.test
+/mc/mc
+spikes/**/bin/
+spikes/01-setuid-gate/probe/mcprobe
+
+/local-only/
+
+# OS noise
+.DS_Store
+/.codex/
+
+# build-prod.sh output: the production image binary
+runner/image/mc-prod-bin
+
+# Local agent permissions and task reports.
+/.claude/settings.local.json
+/.tracking/
+/work/
+
+# Preserve tracked benchmark evidence. Ignore new benchmark output.
+/performance/results/
+
+# The image build stages the exact runner release here.
+runner/runtime-source/

@@ -1,0 +1,106 @@
+{
+  "criteria": [
+    {
+      "criterion": "The compiler folds now.getXxx expressions against its fixed UTC time.",
+      "evidence": [
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/README.md",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Two literal operands can produce a constant condition.",
+      "evidence": [
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/README.md",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The current time is fixed for one compilation; a compiled statement does not update itself later.",
+      "evidence": [
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/README.md",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The accessors accept no timezone argument and operate only on timestamp fields.",
+      "evidence": [
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/parser.go",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        },
+        {
+          "path": "internal/filter/README.md",
+          "revision": "41ff22b0cc432543594992fc3ee390179e2b47b0"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "e3c231fcac5691f9590a5d685bdebec23b73be35",
+      "changed_paths": [
+        "internal/filter/README.md",
+        "internal/filter/functions_test.go",
+        "internal/filter/parser.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+      "reviewed_tree": "6f8a54cd6f6a8fe8c77b4dbbc0b2a227f9affbf7"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 807,
+  "unverified": [
+    "The preparation executes no filter test or database query.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

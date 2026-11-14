@@ -1,0 +1,28 @@
+{
+  "evidence": [
+    {
+      "path": "internal/webhook/validate.go",
+      "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+    },
+    {
+      "path": "internal/linkmeta/html_meta.go",
+      "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+    },
+    {
+      "path": ".github/workflows/backend-tests.yml",
+      "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+    }
+  ],
+  "finding": "The claim contradicts the pinned source conditions.",
+  "outcome": "fail",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "The new range guard makes every internal address request impossible under all configurations.",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "This is an authored source-inspection history, not an executed Culler run.",
+  "task_id": 818,
+  "unverified": [
+    "No network guard test or continuous integration job ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

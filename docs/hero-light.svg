@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 238" width="1000" height="238" role="img" aria-labelledby="title desc">
+<title id="title">The factory line of Culler</title>
+<desc id="desc">One task moves from VISION.md through five numbered roles: 01 Strategist, 02 Arbiter, 03 Worker, 04 Verifier, and 05 Packager. Below each role, the db records the new stage of the task: Proposed, Seeded, Worked, Verified, and Packaged. At the end, you approve the packet, the db records Approved, and the change goes to the main branch.</desc>
+
+<style>
+  .sans { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif; }
+  .mono { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  text { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif; fill: #163a5a; }
+  .tag { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 15px; font-weight: 600; letter-spacing: 1.6px; fill: #53677b; }
+  .name { font-size: 21px; font-weight: 700; }
+  .title { font-size: 19px; font-weight: 700; }
+  .body { font-size: 16px; fill: #53677b; }
+  .bodyink { font-size: 16px; fill: #163a5a; }
+  .small { font-size: 15px; fill: #53677b; }
+  .num { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 16px; font-weight: 600; fill: #53677b; }
+  .code { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 16px; fill: #163a5a; }
+  .flow { fill: none; stroke: #1f5078; stroke-width: 2; }
+  .ret { fill: none; stroke: #476889; stroke-width: 1.6; stroke-dasharray: 7 5; }
+  .tap { fill: none; stroke: #53677b; stroke-width: 1.4; stroke-dasharray: 1.5 4; stroke-linecap: round; }
+  .box { fill: #fffdfa; stroke: #1f5078; stroke-width: 1.5; }
+  .thin { fill: none; stroke: #c6cfd8; stroke-width: 1; }
+
+  .line { fill: none; stroke: #c6cfd8; stroke-width: 2; }
+  .prog { fill: none; stroke: #1f5078; stroke-width: 3; stroke-linecap: round;
+          stroke-dasharray: 855 855; stroke-dashoffset: 0; animation: dash 12.0s linear infinite; }
+  .token { animation: move 12.0s cubic-bezier(.45,0,.25,1) infinite; }
+  .token path { fill: #3b7a55; opacity: 0; animation: tfill 12.0s linear infinite, tfade 12.0s linear infinite; }
+  .lit { opacity: 1; }
+  .check { opacity: 1; animation: check 12.0s linear infinite; }
+  @keyframes move { 0.00% { transform: translateX(0px); } 6.67% { transform: translateX(0px); } 11.67% { transform: translateX(125px); } 18.33% { transform: translateX(125px); } 23.33% { transform: translateX(240px); } 30.00% { transform: translateX(240px); } 35.00% { transform: translateX(355px); } 41.67% { transform: translateX(355px); } 46.67% { transform: translateX(470px); } 53.33% { transform: translateX(470px); } 58.33% { transform: translateX(585px); } 65.00% { transform: translateX(585px); } 71.67% { transform: translateX(720px); } 85.00% { transform: translateX(720px); } 91.67% { transform: translateX(855px); } 100.00% { transform: translateX(855px); } }
+  @keyframes dash { 0.00% { stroke-dashoffset: 855; } 6.67% { stroke-dashoffset: 855; } 11.67% { stroke-dashoffset: 730; } 18.33% { stroke-dashoffset: 730; } 23.33% { stroke-dashoffset: 615; } 30.00% { stroke-dashoffset: 615; } 35.00% { stroke-dashoffset: 500; } 41.67% { stroke-dashoffset: 500; } 46.67% { stroke-dashoffset: 385; } 53.33% { stroke-dashoffset: 385; } 58.33% { stroke-dashoffset: 270; } 65.00% { stroke-dashoffset: 270; } 71.67% { stroke-dashoffset: 135; } 85.00% { stroke-dashoffset: 135; } 91.67% { stroke-dashoffset: 0; } 100.00% { stroke-dashoffset: 0; } }
+  @keyframes tfill { 0.00% { fill: #53677b; } 6.58% { fill: #53677b; } 11.67% { fill: #d26327; } 18.25% { fill: #d26327; } 23.33% { fill: #6589ac; } 29.92% { fill: #6589ac; } 35.00% { fill: #4b7499; } 41.58% { fill: #4b7499; } 46.67% { fill: #365d83; } 53.25% { fill: #365d83; } 58.33% { fill: #477c5b; } 64.92% { fill: #477c5b; } 71.67% { fill: #3b7a55; } 84.92% { fill: #3b7a55; } 91.67% { fill: #3b7a55; } 99.92% { fill: #3b7a55; } }
+  @keyframes tfade { 0% { opacity: 0; } 2% { opacity: 1; } 96% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes check { 0% { opacity: 0; } 76.67% { opacity: 0; } 79.17% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes lit0 { 0% { opacity: 0; } 0.00% { opacity: 0; } 2.50% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit1 { 0% { opacity: 0; } 11.67% { opacity: 0; } 14.17% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit2 { 0% { opacity: 0; } 23.33% { opacity: 0; } 25.83% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit3 { 0% { opacity: 0; } 35.00% { opacity: 0; } 37.50% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit4 { 0% { opacity: 0; } 46.67% { opacity: 0; } 49.17% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit5 { 0% { opacity: 0; } 58.33% { opacity: 0; } 60.83% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit6 { 0% { opacity: 0; } 76.67% { opacity: 0; } 79.17% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } } @keyframes lit7 { 0% { opacity: 0; } 91.67% { opacity: 0; } 94.17% { opacity: 1; } 97% { opacity: 1; } 100% { opacity: 0; } }
+  .lit0 { animation: lit0 12.0s linear infinite; } .lit1 { animation: lit1 12.0s linear infinite; } .lit2 { animation: lit2 12.0s linear infinite; } .lit3 { animation: lit3 12.0s linear infinite; } .lit4 { animation: lit4 12.0s linear infinite; } .lit5 { animation: lit5 12.0s linear infinite; } .lit6 { animation: lit6 12.0s linear infinite; } .lit7 { animation: lit7 12.0s linear infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .prog, .token, .token path, .check, .lit0, .lit1, .lit2, .lit3, .lit4, .lit5, .lit6, .lit7 { animation: none; }
+    .token path { opacity: 0; }
+  }
+</style>
+<defs>
+  <marker id="a-flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0.5 1 L9.5 5 L0.5 9 Z" fill="#1f5078"/></marker>
+  <marker id="a-ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0.5 1 L9.5 5 L0.5 9 Z" fill="#476889"/></marker>
+  <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0.5 1 L9.5 5 L0.5 9 Z" fill="#3b7a55"/></marker>
+  <marker id="a-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0.5 1 L9.5 5 L0.5 9 Z" fill="#d26327"/></marker>
+  <marker id="a-ink2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0.5 1 L9.5 5 L0.5 9 Z" fill="#53677b"/></marker>
+  <marker id="a-out" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0.5 1 L9.5 5 L0.5 9 Z" fill="#8c877d"/></marker>
+  
+</defs>
+<rect x="1" y="1" width="998" height="236" rx="16" fill="#faf5eb" stroke="#c6cfd8" stroke-width="1.5"/>
+<rect x="136" y="160" width="713" height="48" rx="10" fill="#1f5078" fill-opacity="0.05" stroke="#1f5078" stroke-width="1.3"/>
+<line x1="70" y1="78" x2="925" y2="78" class="line"/>
+<line x1="70" y1="78" x2="925" y2="78" class="prog"/>
+<path d="M56 60h19l9 9v27h-28Z" fill="#fffdfa" stroke="#1f5078" stroke-width="1.6"/>
+<path d="M75 60v9h9" fill="none" stroke="#1f5078" stroke-width="1.4"/>
+<line x1="62" y1="75" x2="78" y2="75" stroke="#53677b" stroke-width="1.2"/>
+<line x1="62" y1="81" x2="78" y2="81" stroke="#53677b" stroke-width="1.2"/>
+<line x1="62" y1="87" x2="78" y2="87" stroke="#53677b" stroke-width="1.2"/>
+<text x="70" y="126" class="code" text-anchor="middle" font-weight="700">VISION.md</text>
+<line x1="195" y1="142" x2="195" y2="167" class="tap"/>
+<rect x="146.0" y="168" width="98" height="32" rx="7" fill="#fffdfa" stroke="#d26327" stroke-width="1.4"/>
+<rect x="146.0" y="168" width="98" height="32" rx="7" fill="#d26327" fill-opacity="0.2" class="lit lit1"/>
+<text x="195" y="189" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#9e4016">Proposed</text>
+<text x="195" y="44" class="num" text-anchor="middle">01</text>
+<circle cx="195" cy="78" r="18" fill="#fffdfa" stroke="#d26327" stroke-width="2.2"/>
+<circle cx="195" cy="78" r="18" fill="#d26327" fill-opacity="0.22" class="lit lit1"/>
+<text x="195" y="126" class="title" text-anchor="middle" style="font-size:18px">Strategist</text>
+<line x1="310" y1="142" x2="310" y2="167" class="tap"/>
+<rect x="261.0" y="168" width="98" height="32" rx="7" fill="#fffdfa" stroke="#6589ac" stroke-width="1.4"/>
+<rect x="261.0" y="168" width="98" height="32" rx="7" fill="#6589ac" fill-opacity="0.2" class="lit lit2"/>
+<text x="310" y="189" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#476889">Seeded</text>
+<text x="310" y="44" class="num" text-anchor="middle">02</text>
+<circle cx="310" cy="78" r="18" fill="#fffdfa" stroke="#6589ac" stroke-width="2.2"/>
+<circle cx="310" cy="78" r="18" fill="#6589ac" fill-opacity="0.22" class="lit lit2"/>
+<text x="310" y="126" class="title" text-anchor="middle" style="font-size:18px">Arbiter</text>
+<line x1="425" y1="142" x2="425" y2="167" class="tap"/>
+<rect x="376.0" y="168" width="98" height="32" rx="7" fill="#fffdfa" stroke="#4b7499" stroke-width="1.4"/>
+<rect x="376.0" y="168" width="98" height="32" rx="7" fill="#4b7499" fill-opacity="0.2" class="lit lit3"/>
+<text x="425" y="189" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#345879">Worked</text>
+<text x="425" y="44" class="num" text-anchor="middle">03</text>
+<circle cx="425" cy="78" r="18" fill="#fffdfa" stroke="#4b7499" stroke-width="2.2"/>
+<circle cx="425" cy="78" r="18" fill="#4b7499" fill-opacity="0.22" class="lit lit3"/>
+<text x="425" y="126" class="title" text-anchor="middle" style="font-size:18px">Worker</text>
+<line x1="540" y1="142" x2="540" y2="167" class="tap"/>
+<rect x="491.0" y="168" width="98" height="32" rx="7" fill="#fffdfa" stroke="#365d83" stroke-width="1.4"/>
+<rect x="491.0" y="168" width="98" height="32" rx="7" fill="#365d83" fill-opacity="0.2" class="lit lit4"/>
+<text x="540" y="189" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#365d83">Verified</text>
+<text x="540" y="44" class="num" text-anchor="middle">04</text>
+<circle cx="540" cy="78" r="18" fill="#fffdfa" stroke="#365d83" stroke-width="2.2"/>
+<circle cx="540" cy="78" r="18" fill="#365d83" fill-opacity="0.22" class="lit lit4"/>
+<text x="540" y="126" class="title" text-anchor="middle" style="font-size:18px">Verifier</text>
+<line x1="655" y1="142" x2="655" y2="167" class="tap"/>
+<rect x="606.0" y="168" width="98" height="32" rx="7" fill="#fffdfa" stroke="#477c5b" stroke-width="1.4"/>
+<rect x="606.0" y="168" width="98" height="32" rx="7" fill="#477c5b" fill-opacity="0.2" class="lit lit5"/>
+<text x="655" y="189" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#2b6043">Packaged</text>
+<text x="655" y="44" class="num" text-anchor="middle">05</text>
+<circle cx="655" cy="78" r="18" fill="#fffdfa" stroke="#477c5b" stroke-width="2.2"/>
+<circle cx="655" cy="78" r="18" fill="#477c5b" fill-opacity="0.22" class="lit lit5"/>
+<text x="655" y="126" class="title" text-anchor="middle" style="font-size:18px">Packager</text>
+<line x1="790" y1="142" x2="790" y2="167" class="tap"/>
+<rect x="741.0" y="168" width="98" height="32" rx="7" fill="#fffdfa" stroke="#3b7a55" stroke-width="1.4"/>
+<rect x="741.0" y="168" width="98" height="32" rx="7" fill="#3b7a55" fill-opacity="0.2" class="lit lit6"/>
+<text x="790" y="189" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#2b6043">Approved</text>
+<circle cx="790" cy="78" r="24" fill="#fff8f1" stroke="#d26327" stroke-width="2.4"/>
+<circle cx="790" cy="78" r="24" fill="#d26327" fill-opacity="0.16" class="lit lit6"/>
+<path d="M781 79l6 6l12 -13" fill="none" stroke="#3b7a55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="check"/>
+<text x="790" y="40" class="tag" text-anchor="middle" style="fill:#9e4016">DECISION</text>
+<text x="790" y="128" class="title" text-anchor="middle" style="fill:#9e4016">You</text>
+<circle cx="925" cy="78" r="18" fill="#fffdfa" stroke="#3b7a55" stroke-width="2.2"/>
+<circle cx="925" cy="78" r="18" fill="#3b7a55" fill-opacity="0.22" class="lit lit7"/>
+<text x="925" y="126" class="code" text-anchor="middle" style="font-size:17px;font-weight:700;fill:#2b6043">culler</text>
+<text x="925" y="148" class="small" text-anchor="middle">your branch</text>
+<g class="token"><path d="M8 1.2C4.3 1.2 1.6 6.6 1.6 11.4 1.6 15.4 4.4 18.8 8 18.8s6.4-3.4 6.4-7.4C14.4 6.6 11.7 1.2 8 1.2Z" transform="translate(61.6 67.5) scale(1.05)" fill="#3b7a55"/></g>
+</svg>

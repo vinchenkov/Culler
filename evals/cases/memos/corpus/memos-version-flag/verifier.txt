@@ -1,0 +1,63 @@
+{
+  "criteria": [
+    {
+      "criterion": "The command supports --version and the uppercase -V shorthand with a bare version line.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "38584e8d6fe43c848cf3087b90e62ef36cb9c720"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The existing version subcommand remains available.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "38584e8d6fe43c848cf3087b90e62ef36cb9c720"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The change does not add lowercase -v support.",
+      "evidence": [
+        {
+          "path": "cmd/memos/main.go",
+          "revision": "38584e8d6fe43c848cf3087b90e62ef36cb9c720"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "fa5e55dfc169a8ae86d35560057bb96a456d6dd7",
+      "changed_paths": [
+        "cmd/memos/main.go",
+        "cmd/memos/main_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "38584e8d6fe43c848cf3087b90e62ef36cb9c720",
+      "reviewed_tree": "627116840eef8b3dbceb1653459c224011d36da1"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 816,
+  "unverified": [
+    "This preparation executes no Memos command.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

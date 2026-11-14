@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5ec625d6ff6449d514aefb3aeef7c1683904e1e944dd70c6d162b0edd949f46d",
+  "claims": [
+    {
+      "id": "claim_1e8ef1f983bb4576baa77cd0438bd6da",
+      "statement": "The release-checks job requires the fast suite, package, deployment, browser, and image jobs to succeed.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L51-L66",
+          "version": "repo-lines-v1:sha256:31e68b7fc2c881a04649c88f999684026d3582056997d6548efe1c1299974eb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4MWU5NjI1YmYyMTMyODY5MDhmN2Y4NjQzMzA4ZWY3YjE2MTliZjdkMTk4YWI5ZDgzMjc0ZmQwOTFkY2I3NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNTllODljMzllZWY2ZGJmYmQwOGVhMzM3N2ZkZDM2OWFiNWQ3OGIwM2U2ZjY3ZjJkZmMwYjhmMjU1ZWIwMDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkYTBmZWRhNzQ2MTdlMjExNTk3MDY1OTJhMjUyYmYzMWYzNjJiMjcwMThmOGVkMjVlMzBkZWYxYzcxNWVkOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmMzN2JkZTJkNTMzNGU5ZjcwNmQ3YjJmMWY0NGM3Yjk0NDUxMTk5OGEyNWMwN2FlMzA1YTEzNTA0OTRmOTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_41d292b020354733881e92c793c5f880",
+      "statement": "The scan jobs and the release check jobs use read-only permissions and fixed action references.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/security-gate.test.ts#L32-L46",
+          "version": "repo-lines-v1:sha256:14b296d6b96a7106fc65e1ce427e66ddd12429e6b210fb27ccddf92f6fce625b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2MDk3ZTk2NjdjNmNjZTk1ZmVmMWFjNmNjZjBmZmJiZjUyOWZlMzFjYTRmODYxMTY1MjNjYWJkMzFkM2UyNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5OWU4ZGExY2M0MGRkM2VkNTRkYmI3YzQ4YzI4YmI5YjMyNDQyZGU1ZWFiNjliOWU0OTg0YzQwZmQ0NTM2YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3ZjMyYTNiOGNlNDExYTVmMTA1NGE1M2U0M2EyMGYyMzUwMzlhN2EyZGVjYTc0YWIxYjg1MzlhM2JhZjgyNDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_582ca294edb44abe8ee22aec57c67811",
+      "statement": "No release job waits for a security scan job, and the fast suite and image jobs run no scan.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/security-gate.test.ts#L22-L30",
+          "version": "repo-lines-v1:sha256:9f7dc5ad039b00dca4637243fc479102c13a1f28b419bece82d5befc48a81317:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFhM2RlYmNiM2JlMzc5NTJlODBkYTAzMTVmMjJiZTYwNjk1YzcyZjIwOWFmYzFkODNkMjU2OTI0YjM2NmY5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjZmNWI0MGIxNTg0NTdkMTc4NjRmMjE3OTA3ODZkZDVhMmVjZGI2NGI2NmE2NTFmNzg4ZDRlMjVjZDMzMDNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA2NzYxMGY3NDMyZDkyMzdiM2QyYjkwZjgzNWM3MTFjYjUwZTQ2NDkxZDAwOGEwNmUxZjU4MmQ1OGNmN2VkMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzEzYzUxZDdlZjAxMTI2YmE2MDg0ZDFlZjliZTBlZDgxODczMTlmYzZkZWNiMzdkNTlhYTE1M2M3YzRhNTM5MyJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/release.yml#L51-L54",
+          "version": "repo-lines-v1:sha256:63bccc148cde2529516e116413834fd77374325d7b1a030275db016148212ac0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDgxZTk2MjViZjIxMzI4NjkwOGY3Zjg2NDMzMDhlZjdiMTYxOWJmN2QxOThhYjlkODMyNzRmZDA5MWRjYjc0ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzMxZjc1ODA3Njk4YzgzOWI5ODQ4ZDFhMmYxODAyYTkwNWE0Mjc3Y2UyMTZjNTI1ZTk0ZjUyM2JlNWQ5MWNiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWRhMGZlZGE3NDYxN2UyMTE1OTcwNjU5MmEyNTJiZjMxZjM2MmIyNzAxOGY4ZWQyNWUzMGRlZjFjNzE1ZWQ5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjRjMDMyYTMzYjY5ZjczYTVjNmFhNDI0ODA1NmMxYzVjNzVjN2UxMDM5MWI4N2FmMGQxODA5MmJhMWRiZmJkMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_727e279bb4e74ef4b01be4ed0e562cb8",
+      "statement": "A scan that cannot complete writes an unverified report and exits with status 2.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L217-L244",
+          "version": "repo-lines-v1:sha256:a41f4648470f1270d925fb3e5cec95257bd3f38192d59c5e220bb5b8e6c2a1b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyZTMxMjU3ZGMwYWUxZDU5MzAzN2MyODBjOWFkNTA4MTliOGE2YzhjZjcyOGJlMDcxNmQwMGEzZWVjYzA0YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MjU0YjZjY2MxNjU1MmZmMWNhMjBkY2FkNmM0ZGQ0OTVmYjU3YTkzMDZkZGM5MmQ1MGEyMTc1NWQ2NjI5MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3NzQwODkwMGFmNDZhMjQ3MWQ5YTUwNzY5NWQwMzMwODc0MGRkZGI5MGZmNDkyNjA4ZjQxOTE0ZDMwYjBkZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f2b3dfd782142408b7635f1369947c4",
+      "statement": "GitHub secret scanning is a repository setting that finds supported token formats, reports alerts on the Security tab, and runs without push protection.",
+      "evidence": [
+        {
+          "resource": "repo://release/security/README.md#L20-L20",
+          "version": "repo-lines-v1:sha256:aa8520fc37114ae18d1352fef4ae5624f2fad650c7a2973e345b8bcd0d7efb18:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE4NTIwZmMzNzExNGFlMThkMTM1MmZlZjRhZTU2MjRmMmZhZDY1MGM3YTI5NzNlMzQ1YjhiY2QwZDdlZmIxOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE4NTIwZmMzNzExNGFlMThkMTM1MmZlZjRhZTU2MjRmMmZhZDY1MGM3YTI5NzNlMzQ1YjhiY2QwZDdlZmIxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGU5OTdjNDBhNTE5Y2U1ZDVkYWIyYjQ0NTM2MDg4M2UyMmJlYmFkY2FiNTlhZmIyYzg0NzhkMzgxYTU1ZGExYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjZjZmRkYjgxNDgyZmI5YzE3YWU3MWI1NjQ5OTMyY2NjMWE5NWVmMzc3MzEwZmNhNWZjNjNjYzMwZDZlMWE1YiJ9"
+        },
+        {
+          "resource": "repo://release/security/README.md#L26-L32",
+          "version": "repo-lines-v1:sha256:bba138edd61f24f4c9b080bb7b2e2e4519a266b1d36134fc5ea958fa1fc957e3:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjg4ZDUyNjY2ZjUzM2ViZDcyYTkyNzM4YmU1Zjk4ZDJlZWE1NDZjZTMyYzVmMjllOGZlN2FkNTZjMTNjOTk2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODliNzYwODlhYjAyZmIwMWYyY2E1ZThmNmRmYWYwMmJiZmZiYWFjZDEwYTNhYjRkMzMzNDUzOTBkMDNhMGZlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzZlM2RhZjA3OGM1NGNjNGY3OWVjZDQ0NzM5NDM3ZDVhZGFlZmI4NWY1NjA0MWE2ODA5YzU0ZTBjY2UzMjc0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDVjYzNjMDc3ZjZmMmJmNWYyMTY4YzA2MjA4Njc4NWYyY2RjNDlhMjNmODVkYWVjNzIxMGRiZTk3ZDEzYjIxYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2e3514df463f48d9b12f0e4cf666f5eb",
+      "statement": "The image-vulnerabilities job scans the saved archives of release-images and preserves its reports as an artifact.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L473-L508",
+          "version": "repo-lines-v1:sha256:ad94b3b139a1c20cf75375fced705d380e72ae7b2c44285eb51bac2efdc6c2ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhODdkOWQzOGUxMDQ0ZTJmN2JkNTQ3ODE4YmY0YWViOWM1MGI0NzZjNzdhOGFlOTY3ODgyYWViZjM4YTg1MmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMzJhYzIwODBhMTM0NWM2NDY4ZDBlMGUwOWE0OTMyMDE1MTc2NzQzZjkyYTUyNTM1NWNmZGZkNTg5N2NmZDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhNjcxMjFiYzNhNTE5NmVjNDYwY2I5NzM2M2RmMGNkNDQ3ODJmZTk1MzY2ZTZiYWZlOGNmYjM4N2Y3MzMzYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkNGNkMzU4MGZmOTZmYWZmZTU0ZjI4MjA3YWE1ZWFlOWUxMzU1ZWUwMjhjNDhiMDBkMDcwNjg2M2Y5OTJiYzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a8f37b0eb293467ab34834135c79a372",
+      "statement": "The image upload checks the source revision label and the loaded image identity of each archive before it tags the image.",
+      "evidence": [
+        {
+          "resource": "repo://release/image_load.py#L13-L34",
+          "version": "repo-lines-v1:sha256:10cc67efe7b4792a35215fa28647f9981ec2324d9def1228c1c54c1b65bb55a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMjI3NzA0YWUxZGYwMzZmNDVmMDMxM2FlZTIxNjU1MTI2MmFmYTEzM2MxNWY2MjAzNjFjMDA4ZGFkYzM0MzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzYzE3ODhmZjViMWUzMjQ5M2I4NmIxMDM3ZDhiNTljN2ZhMjA1YjI2YzM4Y2NhNDM5ZDkwODc4ZTQ2YmU5M2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5MWJmM2Q5NmYxYjExOTY4OGRlZWE5YTAwNGIyYjNmZWJiMTgwYmI4ZmIyMzQ0NjI1NjE0YWRjODU5NTYzYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_008893b1d1fe4c76a32df1491375b924",
+      "statement": "Each release file upload downloads the file again and stops publication when its bytes differ.",
+      "evidence": [
+        {
+          "resource": "repo://release/publish.py#L174-L186",
+          "version": "repo-lines-v1:sha256:beef0baaddfb5a988dfe6ccdc05f1d043d821ada805255d65f957ca8001a6d2d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMmJiNmIyMzQ1NmFjMGQwMjQxYjg1MDUxMDg2MDYwODgzYjE4OWU3ZDgxYTI5Nzk3YTc0OGNjM2VkOTMyZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZTE1N2E0YTI0Y2QwYzgyYjg3ODNiOWVkY2RmNWQ3YjgxNGQ0MjBiMTU5NzgyZDVjMTM3Y2Y2ODMzYzI5ODMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlNzU3NWMzYjc3NzZjZjJmOWMyYmZiY2E0NGYyMTQ4MTNhNzgyN2VhYTljMzg0NTRjNzAzYjY4OWE3NDQzODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1NWE2MmFhMjZhNmQ2NjAzM2MyZTQ0YmE0N2Y1NWY3NTkzYTM0MWM4MDNjNzJmYTNjMDgzZjQwMjhjMDcyMTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f0e845cadd0f4ccfaca3eea36e1e95e4",
+      "statement": "The Trivy installation verifies the downloaded archive against its pinned checksum and makes at most 3 attempts after a temporary error.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_tools.py#L16-L52",
+          "version": "repo-lines-v1:sha256:66eb725a93d152af4dfe4af39522b3efcc886d1f3e879cbac533b57255bc17ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYzZjYTBjN2UxZjEzNjFjZDRhNzg0MmE4M2M5NzUxMmQ2NDg5ODBiNDYyZGYzZTVjZjQzOTZmMmVkNjUzYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMTc3MzI1MzU4ODkyNTlmNDQ5YTJhM2EzM2M1OGM1NzMxN2ZjMTI3NzRiMDg3NGQwMzA4ZmJlZDg0N2ExNWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3NGVjNTFhNzYyZjQ3YWQ3MTFmMWQxZGYzMGVjMjU0ZjUwNjdkYzMwOWZjODVjOWFjOGM3MWVkMjZkNjA4ZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_70e9ceb347b94ed5b661eadfc87701dc",
+      "statement": "The scan checks the Trivy version against its pin, records the executable checksum, and uses an empty configuration file and an empty ignore file.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L41-L63",
+          "version": "repo-lines-v1:sha256:06af2af39de164e6df902ad5b863ca0708bb3246e6601f06263a5ddd44ff84f0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmZTE4NTI3YjhlY2Y4YzA4NGVkZmJkYTMwYjg3Zjc2NzBjOWE2ZWNhODFjM2ViMDEzMWFiNjg4MTk0Yzg3MDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5YmU2NjE0OThhZDJmZTg0MDRkOTA4NGY2MDc3Njg5ZDk0OTczNGYwMmViMjRkMWVjZjZlZGI2ZWIyMWYxNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MjIzMTA2ZmQ4NzQyYjcwZWEyMzNmOWRjMzU5ZjRiMDJiYmIwNjliNzI4M2VlZjc2MjQ5OTUxNmJkN2I5YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlZDQ5YzdlNTU0N2M2ZTMzYTVlMTk4ZDAwMGFjZWU1NTZjNjNjZTM0NzEwZGYxMzQ0N2Q4YTk2YjRlODU5ZTMifQ"
+        },
+        {
+          "resource": "repo://release/security_scan.py#L80-L82",
+          "version": "repo-lines-v1:sha256:78caf3299d452da031cf7f3c8649831a078df43d38b8bd44c4ff376ed5916a2c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBlYTI2YjExOGZhYzBjMjFlNWZkNWVkNTY1YTU2ZDU5ODJjMGQ0MzE3NjMzYzMzMjY1MzFjYTFkZmFhYTYwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU0YjU5M2Q1MjlkOTRmYjBkOWViZjcwMDIxNWRhYjBjZWE3MmZmMzNkYWY0MDM4ZGM3NGFlMWIzODExZTAyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzJmZjgxYmIwMzEzM2E1MTUyMDY4ZDJlMTFjNzI4NjlhNmM3MGMyYTk4NTU1NWVhODJjMWRlYjhmZjVhN2Y0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2UwNTFmMzQ2NzRjYjYzY2M4YmU3M2JiMjY4OWVmNjY3ZTkyMDRiYjAzMmZjMzgxZWY1YTkxNjIyOWE2MDI0MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_60991f9b532d4f0eb29187a39fec644a",
+      "statement": "Reports omit raw scanner output and image environment values.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L30-L38",
+          "version": "repo-lines-v1:sha256:9a875259f5356a565788f3c808ae5e8641f883082ca889c9a9f7842d98452bfc:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI0NzQyNTBlZWU3NTI0ZDAwYzc5MzA3ODg4YmM3ZTI5ZjE2MmE0ZmE1MWNlMGJkMGE2Nzg2NzYzMjIxZDk4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmExMWMwNTY3ZDBhNWY5ZTliMTM1ZjY1Y2QyNTM3MmRmZDYyODc3NWY3YzFlZDI1M2Y4YmFkNDJkZDJkNjY2OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjJkOTJkMjNiMmMzZDc3ODRkNTZkYTJiMmEzM2M4NDFmMzI3MzUyOTFjZWVlYmViZDE2NzdmY2RmZGEzMTRiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGIxZGU2ZWRjMzNkOTUzNTRlNDlhYTIxOGZkMTFhZDJlMzAzODdmZDI0YzdiMDBjMjBkZTMzMjdmZmVkODA1NyJ9"
+        },
+        {
+          "resource": "repo://release/security_scan.py#L84-L93",
+          "version": "repo-lines-v1:sha256:8369e22363cf9027cec87d26ced848e17403c95c0ffc09749f2e3815fd1a86d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYWRkNDczYTNlYjA5OTE2MjdmMDM1ZTI2YzBmODlhN2YzOTEwMGQ4YTEzMzFkZjg4MzA2ODllYmQ3YzNhNzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyOTkxZTI1ODI0NzllN2RhMDE5OGJjMjNjNzlmYWE1MmU5NDk5ODM4NWJlOGZhYWY2MWU4MzRkN2VmZTU2M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU5OWRkNjc2OTM3N2QwNTQzZjg2NThlMzNhMTU0MWM5ODIwODNkYzlmNmM4ZDRhZWRhYjEwYmUxYzk1Zjk2NTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhN2NhYTMxNWI2MWE0ZTM0MTdhNGEwMTJmYjU0NWVjMGQyZjQ0MThhZDliZWI0Nzc4MmE2YmFkNTJjNGI5YzYifQ"
+        },
+        {
+          "resource": "repo://release/security_test.py#L53-L58",
+          "version": "repo-lines-v1:sha256:529b2a549884fe4f3307fe572d07bc7c2ad509b5a6863278fbd1219c1c3f714d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2NkNzM2ZTRmOTJiMGI1OGZjNjBhNzRlMzQ5NDRlZGNlZTNkNmZmNTBhNmFkNGJkYjNlNDcyOTViNzBmMzIyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTk4MWYwZDE1NDIwNjA5YTdjNDUxMWJiMDhmNDU3ODVlMWJiOWYwNjdhODZmNTRjMmI2MTk2NzA2ODZmN2JkOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTMwMzBlMDk5MTJlNzQ1MmQxMWY5Y2Y4ZTZmMmJmYTFhYzAyMTk4NTlmNjE2Y2UyYjhkYjZiMWI1MTUwZWY1ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjE2NjZiNTQ4YzVkMjZiMmRjMGIzY2IwNzdhZTlmYzJjNDY5NzYxMzgxZjY5MGEyODJmZDZhNDc3NzFhMThjZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e86930b7b3e4f95b06e2331556dcbf0",
+      "statement": "The image scan verifies Linux arm64, the source revision label, and each retained layer checksum, and Trivy runs only its vulnerability scanner.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L125-L172",
+          "version": "repo-lines-v1:sha256:4186541fa3570d2747bfde7aff609f34f53273649c14d73f25faaf8203fd6a3e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NDdlM2U5YWMxNTUyZTVmMTgxODhmNjM3NGRlMjQwMmJiMGIyNjNjMjcxYTY2NzI5ZjYzZjk1YzQ1MTM4NWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZTE1ODYxM2NmZmMzNWMxNzIyY2Q5MmU0YjIzMzMxYzAxNzI2YzNhM2E3MGMyZDY0ODdlOTgxYzhiMjVjM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmYWRkYzgzZmVmMmQ5YmZiYjljMTlkMjMyMjliYjZkOWQ5NDEzMThkZmQ5NGQ5ZTQ5NDRmMzg4YzI2Y2EzYjMifQ"
+        },
+        {
+          "resource": "repo://release/security_scan.py#L80-L82",
+          "version": "repo-lines-v1:sha256:78caf3299d452da031cf7f3c8649831a078df43d38b8bd44c4ff376ed5916a2c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBlYTI2YjExOGZhYzBjMjFlNWZkNWVkNTY1YTU2ZDU5ODJjMGQ0MzE3NjMzYzMzMjY1MzFjYTFkZmFhYTYwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWU0YjU5M2Q1MjlkOTRmYjBkOWViZjcwMDIxNWRhYjBjZWE3MmZmMzNkYWY0MDM4ZGM3NGFlMWIzODExZTAyYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzJmZjgxYmIwMzEzM2E1MTUyMDY4ZDJlMTFjNzI4NjlhNmM3MGMyYTk4NTU1NWVhODJjMWRlYjhmZjVhN2Y0YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2UwNTFmMzQ2NzRjYjYzY2M4YmU3M2JiMjY4OWVmNjY3ZTkyMDRiYjAzMmZjMzgxZWY1YTkxNjIyOWE2MDI0MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6ebd7d676e1348759a37582f0e6a3bf8",
+      "statement": "Image scans reject advisory data older than two days or more than five minutes in the future.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L65-L79",
+          "version": "repo-lines-v1:sha256:d21dbc41b70f38acca428cf679e0c849094aa8200bb98915b33bc9ddc3fe91ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0M2RjODJiNzA2YTBmYTJlMWMxNDAwY2NjMzk4YjY5YmUyYTBkMDM3OWIxZmI1ZjFmODRjOTg4NWI3MGVkYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExY2U5MDlmMzZjNGMxYjVlMmQzMzIwMjllMDdmNjM5NzYyMzBlYzA1YTJlNDA4NzcwYzA2ZTdmMjI0NjU3OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiZmEwMGFkMjcyODlmODk3ZjQ3ZTg4OTQ2YWY5Mzc4ZWQ3YTlkOWU5YWUyYjc5MWVlOTc1YWIzNzM3MDRkYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4Y2FmMzI5OWQ0NTJkYTAzMWNmN2YzYzg2NDk4MzFhMDc4ZGY0M2QzOGI4YmQ0NGM0ZmYzNzZlZDU5MTZhMmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac9df10c67384d82a9efa24a62fa2fbf",
+      "statement": "The image report lists each package without an identified version and records the operating system data of Trivy.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L96-L122",
+          "version": "repo-lines-v1:sha256:b82257beb0c7186c391b82cc772879c3d0ddd7c7a68bffe09af96fee5f1d4ba1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwNDlkMmQxYWM5ZDI5NGE0NDRkZDMzZjQxNmVjMDY0NmViN2Y2YjhmOWU3M2I4NzNmYjQ3ZDFjMTc5Y2RjYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiM2JhNTMzM2Q4MWNiM2E5M2Q2ZTZjNGExMjJhOGM2YjE0NTUyMTdkOGVmMDhkMTFiNDFkNmE5M2JjMTk1MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhYzYzMzAyMzhlMTAxMWFlODQ4MDBlNzA5ZTQ2NGU0YzVkNDFkM2ZiNDBjYzM2YzBmNGE0ZGQ2YmEzM2UzM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkZjc4OTA1MjYyM2NlNjI1ODMxZjViYmI0ZTgwNmZhYmZjYTIwNmFiMTVkYjVjMDg3MmJmNmFmM2VhZGMxZDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ff8a994b34b6467797258ab5835be450",
+      "statement": "The image job summary counts the results and the results with a fixed version for each severity.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L200-L214",
+          "version": "repo-lines-v1:sha256:b53b2419c17c097fa199089805cfab9bf1ef410dd994f6632ae076b22558ecbb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0YTJmMDM0MWVhNWVlMjE2ZGZkYWNmNDQwYjk3ZDIyODQzOTM5ZDgxNTVhZTdmMmI2OGQzYjNmZWVmNTNmNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNzBiYjg4NWNiOTJiMWQxMGJlYTVmYTExNWU1ZWYxNzgxZmQ5Y2ZjOWY3NjE4M2ZlM2FhMTg0ZTllMmIxMmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiNTcwMDBlZDY0OTY1NWRmYzQ0ZGNiMGQ1ZGQzNGI2YzUwNjljZTc1M2M0NGUwMDdlMGJiOWEwOTQ3MjZiZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5M2JkNjZlMmJiNzFmM2I4YTkyNDA2NGJiZjdiMDdjNTkwM2E3NzNmYTRmOGMzNTQ2MDYwMzg2NjcxZDNhNzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92526ac28cf442e0b150f352032b084f",
+      "statement": "The scan records bundled tool versions separately from advisory coverage.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_scan.py#L174-L187",
+          "version": "repo-lines-v1:sha256:a6b80ba23ed161ed9901ca0baee9faa5d73850d9ae7547e2baa577657cb4eed8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1NDY4MjViMzNhZmZmMzZiOGQ5Yjg4N2Y3YWE5NjU4ZjYxN2Q0OTc4ZDdlYWM5NTgyMGZhMjc2OTQ2ZTdhMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyMzNlYTA0NDg5NjYxMzQwZGE0N2YzMjQwNzgwMjMwOGYyYWNmNDk0ZjRhZjM3MGNhNzc3ZTU0NDkzMTRlMTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdhZTVhMTUxYmM5MjBjNThiYWY1MjZjYmJhZWFjNGRmZGY4Y2M5YTcxN2EyYzMzZTgxNTgxYmM2ZDg3MjJjNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzYjRmYzZjODc3M2NiMDc0OTIwNTZjM2ZiNWUzZjcxZWFkOGFhNjRlODBiZDA3ZmRmZmJiOTg2NGMxNjVjZDIifQ"
+        },
+        {
+          "resource": "repo://runner/image/project-manifest.sh#L1-L37",
+          "version": "repo-lines-v1:sha256:8527cac095805b10642dea36ad2936e40c491f50be6515b3edf6c13743d5361d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwMmU1NGU5NGEyNzVhOGM0NmQ4ZmVlZmQ1OTg2MmJiN2ViMjA5MjMzOGZkMzc0MDc4ZjJiZWMzMDA0NzlmMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://runner/image/runtime-manifest.sh#L1-L30",
+          "version": "repo-lines-v1:sha256:f2fff0b992a229d9a9e442e258039412131bfb9377e67601611f7c8231923563:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwMmU1NGU5NGEyNzVhOGM0NmQ4ZmVlZmQ1OTg2MmJiN2ViMjA5MjMzOGZkMzc0MDc4ZjJiZWMzMDA0NzlmMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f12bf7798707481f91002bff2583b0f4",
+      "statement": "The repository ruleset file requires release-checks on main and permits the repository admin role to bypass it.",
+      "evidence": [
+        {
+          "resource": "repo://.github/release-ruleset.json#L1-L15",
+          "version": "repo-lines-v1:sha256:84fa8326be5288e8e3ff76665ee2fb6b60d1e393ca207c4dde25d224ede778fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://release/security/README.md#L66-L70",
+          "version": "repo-lines-v1:sha256:72ad77194a2e4a56c098bb6ff4701195969024c862a5da9a857144a808c7a304:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWZiYTI4ZDZiNzdlZTZkYzdhNDljZTViM2NmZGYyMmEwM2ZjOWY5NTMyYjQ4YWZhNDlmM2JiOWMxZjczYTNjZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODZhNzljZDQ1NzMxYWI2MWZiODVkYmQ5NGM1MzNjOGUzMTc0YzUzODliYWYxNWM2ZDczYjFmNzU2MDg4NTA1YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTVlNTBiOTk2MmQ3MzAyODNlYzBkYjY5MjE3ZmMxMjRjYjU0YjZhN2I2NWI5MTk2NWFlN2ViYWYyOWVjZmZjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzgzZjEyNDE0Y2VkYzFiYWQ1YWMyMTk1YmE5YTdkZWY0MDZhZDdjM2ViYzQ0ODg4MzVjNzMwOTk3ZjU2Y2U4OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_58094e1b9e924236bfbdd8e60d6c4e5c",
+      "statement": "The nightly scan retrieves both images from the current release's immutable digest references.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_nightly.py#L22-L61",
+          "version": "repo-lines-v1:sha256:e104376631831ab96bb04170d5060ae9e65ef9d382ea81212e4b5f859023f64c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0YWI0ODE3N2U4YWJjNDEwMmIyMGY3M2JiMGQxM2UzYzA0ZDdhMWIzMDE2MDBjN2IzMmVmNGMyMzU0NWVhNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MGU2ZDMxNGZlM2MyNzUzNDQ4M2MzYTcwNDBjZmE3NzU2YmFkMWZlNTgwYTM1ODJlZmNiZTNjOWE2NDY3YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlZDUxMGMwZTVmYTMyYTRhZmYzNzExMjM4YjNjMDk1OGY5YTNjOGEwOTE0YTI5NmEzOTYyMWUxODQzZjkyZDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb6a915a37204ec181975769bbc9f0ca",
+      "statement": "Without a current release, the nightly scan writes a note in the job summary and succeeds.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_nightly.py#L15-L28",
+          "version": "repo-lines-v1:sha256:972e552ba37d20c79f97e45ae4b344d71a99f71d10aa8c257eaf98fd2db09546:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzMxMzQ4ZWNmMDE3YzZkMzFmNDBkYjgyNjFiZDA1ZGU3ZjgxMjYwOWEyZWNmNTE0YzBmY2VkYWMyZjVkZGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhMTY4MDljMDc1ZGIzMDllMDliYmM5YWI3ZWZlZTY5ZWZiNWY0MTliZDRkODkzMGQwMzgwNjYwMmRkMDJmZDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE0OGZkNTQwMGYyNzA4ZTFlMDcxZmI5YTg0YTg2ZjE4MzU5NjcxNWUzNTdlYmNjYzBmNDlhOTY2YzUxMjBmMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkYWI5NTljMDBmMjY5YWJlMmE3YzUyZGM3MDY5YTg1N2NkZjRkNzRjZWJiMmJhNmYwNWIzYjdkYzBmNmY1OTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_48e88ba4e146441088b029b8ea426d3a",
+      "statement": "The nightly workflow retains reports for 90 days.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/security-nightly.yml#L31-L38",
+          "version": "repo-lines-v1:sha256:8ec85fc0170cdcdada15d1b7e996c892889ceb33104754d2f02ef038514077a8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU4N2YwMTk4Mjg5ODhhNTRhMTVkNGNiMTU1ZWY2YTA1NmJjMDM2NTViMWEzOWY2NWVmYjc4MjhmMTBhZmJmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjYxMWYxOWFiYmJkNTA3ODFiMGM1NTEyNDg3MjgyYzllNGE1ZDFkNDFkNmIwMjQ2YjEyM2M3ZThlMDEwMjNiNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDQ0MDZlMThiNTE2ZmQ5NDUxZDE5ZDk2ZTAxY2I1MDcyYjU4NGJmMTE4ODFjOGJkMGM4ODM2MmQ1ZTRjZDAyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d4a374551cda46f58717d655b95d6d53",
+      "statement": "The acceptance tests check that a failed tool or an archive without a layer leaves the scan unverified and that the failed tool discloses no synthetic credential.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_acceptance.py#L69-L98",
+          "version": "repo-lines-v1:sha256:94f31962fd791fc9470de77e6684c3e1b61cb1e0c699aefd18a2c0b70d3155b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4NmY1NWQ5YjI0YzlkNWYyOGEwMDFiZmI2ODhmMDdmZWY1ODQ2NWJhNmViNmQzNzc4MjAzZmE5N2FhNjQxNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjMjNjZjJjZjRlNjAxODQyYzk5YWE5MmFjYmU4NTE5MWQzMTA0NTQwODE3NTQ3YWVmN2E4NGE2ZGM2MDVmZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NDNhYTliMzdhYzkxYjY2ZGYzZWQ2MTRmNGMxNWY1MjQ4M2MxN2MzYTlmYzU2ZWQwZTI0NjdhZmJiZTI0MzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNjcxMjU5NTdkMGExZjcyYzYwMTg2MDhhOTVmNGEzYWM4NzY2ZDlhZDhiNzU2YjY0NGM2ODJmMTMyNDJlYjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_46c537a143d64db0aa0532d84640df3b",
+      "statement": "Scanner acceptance tests change the advisory database while preserving the image identity.",
+      "evidence": [
+        {
+          "resource": "repo://release/security_acceptance.py#L100-L120",
+          "version": "repo-lines-v1:sha256:88390462ffd058a97ef4e8b9b8249dbc34cdc85e638009ee44246392a6bd4fd1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MWI5NjIyYWRjNTIyZWE2MDgzOGFlNDIwNDU5ZTQyNTA1NzJiOGZiZmU5OTdmYTYzZjY5OTY3ZTMxNWVmMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhMzZmOGU1ZGU5ZTk3NDJjNzZlOWU1YzkyOWQyYmI2MWMyMDA4YzE0MDMyZDU1ZGRmMTRhNWNmMzJmMjI3ZjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViYTg3ZjFiMTBkODAxM2FkZTgwYWUzMWU5NzEyOTczNzM4MjNjYzQxMGIwNDZlY2FiNGY3YmViZDg0NDM0NDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNDEzNDBjYzIzOWExNTljZTliNjAyMmU5ZjYzMjI4MzJlMmVhZDc2Y2FlOWU0NzU0ZDIxMGViOGZiNmQ1ZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_49c66910df384fafb105ed47d77eee0c",
+      "statement": "The release workflow checks image file contents before publication.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L433-L459",
+          "version": "repo-lines-v1:sha256:52ead0053b01641736e3f9a4e61a0fe5a8eb2de4808fe6900fae1f7a4e95e24d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNjYwMDE2MDRlMTU3MDBjODA2NDZkNmM3M2UzMWI1YTllNTY5MDJhYjEzZjZlY2Q5M2M5ZTJlYzAxOGRlZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzYTRlZTJiNzUxY2U2N2VkODJhZTVkZDA0NzJhZjAyN2RhNWU5ODA2NGQ0YzIzNmEwYjZkZDY1MTFjMmVjMzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzMWYwNTg4ZThkZWVkMDEzYzg3NDlmNjVhM2E3YWJlNjNjNWRmOTQwNjYyMmNiNGUzMTM1MGVkNTU1ZGVmNTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhNmM4YjEwNWVkYjM3Nzc5NmU2Yjg4MDFiZWZmNGE0ODllNjg4YWM3OTczYmEwYTY0Y2MyYTgyZjQwY2Q3ZGYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:44:23.605Z"
+  }
+}

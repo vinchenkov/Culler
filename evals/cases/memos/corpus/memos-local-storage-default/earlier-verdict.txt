@@ -1,0 +1,20 @@
+{
+  "evidence": [
+    {
+      "path": "store/instance_setting.go",
+      "revision": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+    }
+  ],
+  "finding": "The claim contradicts the pinned source conditions.",
+  "outcome": "fail",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "Every existing instance changes to local storage after this upgrade.",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "This is an authored source-inspection history, not an executed Culler run.",
+  "task_id": 814,
+  "unverified": [
+    "No migration or attachment operation ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

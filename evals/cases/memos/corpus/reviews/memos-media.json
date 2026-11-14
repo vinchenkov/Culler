@@ -1,0 +1,2199 @@
+{
+  "application_tests_executed": false,
+  "case_count": 6,
+  "cases": [
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "982ea5790788dacd2491bf6f98d5d5d1736d5c8fcffca2610072f323f06ee467"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "256301892d844e17cdd67c1b1aa3524a019ba1a0014a2c3775f428d9b1c01cc3"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "8b874e006b862fca52301ce5a59d526b737cc863f14c09db013f9e0050efc229"
+        },
+        {
+          "id": "media-before-total",
+          "kind": "media",
+          "sha256": "90bef5cec0595f2e0906da3b78dc996b97246ab5097d6adf1fbc61618f472d01"
+        },
+        {
+          "id": "media-after-total",
+          "kind": "media",
+          "sha256": "73bf05ba6a04469f9042e529f1ea54920a67195bc0072174fa5c8eccfc09d0ed"
+        },
+        {
+          "id": "media-after-zero",
+          "kind": "media",
+          "sha256": "05f76a2fbf39ed4bf0c6dd8e098fa5813ff93c797b431c3385478e0bbfe1ae55"
+        },
+        {
+          "id": "media-after-pending",
+          "kind": "media",
+          "sha256": "58b43b4f9ecb415648f752172f3610048df79fa9ad48f9d8060319a546467a25"
+        },
+        {
+          "id": "media-after-unavailable",
+          "kind": "media",
+          "sha256": "0bd4c457074aa1b716c2082ab9ebfcd874aeff8f2e5722d61de8dd9dbc268039"
+        },
+        {
+          "id": "media-provenance",
+          "kind": "source_record",
+          "sha256": "02956daa4dda0368f3a2cac325a6d5c57a459f5a2bf36e36414be33218f3e38f"
+        }
+      ],
+      "base_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "browser_version": "145.0.7632.6",
+      "capture_method": "unchanged_frontend_with_synthetic_service_responses",
+      "capture_record_sha256": "02956daa4dda0368f3a2cac325a6d5c57a459f5a2bf36e36414be33218f3e38f",
+      "capture_tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "changed_files": [
+        {
+          "path": "proto/api/v1/user_service.proto",
+          "sha256": {
+            "base": "2d11654c58e27c2dd8466f52a1f131bcb839dfc1fa955aa8d27afbd96c61472d",
+            "reviewed": "e9c118a8f2b349200d6137e19473df77f065fd1fcf2f1fe24909bafa0bced198"
+          }
+        },
+        {
+          "path": "proto/gen/api/v1/user_service.pb.go",
+          "sha256": {
+            "base": "c6052a5a6fe67154e652e95877f946ec6ff750b4ee7b01be50b920817a357066",
+            "reviewed": "242bf7482386fb6def03ee02f2c19ea8293b4f3942f2af10e94888033a01e2d7"
+          }
+        },
+        {
+          "path": "proto/gen/openapi.yaml",
+          "sha256": {
+            "base": "dd27436fe9827515d7f9a06781a589e3cedc7bfc3c28acc08b321d71b5e4c747",
+            "reviewed": "aa7770d0e47988e07e5131f0b44d8d683711542942a8379ea0db9f89066e3684"
+          }
+        },
+        {
+          "path": "server/api/v1/test/user_service_stats_test.go",
+          "sha256": {
+            "base": "ffe97382ce43fea33c9d62c1fac09f68eff48608cf1e03576c706707942c4f2b",
+            "reviewed": "1f54ec8ad785287412c649bc250750e4fa6ec94cdf18cfbbc4e96e0c11883ccf"
+          }
+        },
+        {
+          "path": "server/api/v1/user_service_stats.go",
+          "sha256": {
+            "base": "0aad4651c93abd2f32eb243068996d74ca37989d4b80867f9a457d825f2555dc",
+            "reviewed": "30ca74bd00e0ce9ebf51242dfff81daaad4e34c5e18fac7f39c178d4d154d666"
+          }
+        },
+        {
+          "path": "store/attachment.go",
+          "sha256": {
+            "base": "748bfaf3636a1fdd96d7f552624d53c9a97bd5fbfdea5cd3a5e606db26d39f88",
+            "reviewed": "af5382c4972213f0e358fbf3472490dd67871ff00e205f035c4174aad4b20779"
+          }
+        },
+        {
+          "path": "store/db/mysql/attachment.go",
+          "sha256": {
+            "base": "3160aedb83c3b8295ecd6349001f801d35bbeee6ce26aab9e6fbfb7875c78d2e",
+            "reviewed": "b69aae51900798546512478d480bbf3c6ac263a9f09a7af04d6443f5b6765d7c"
+          }
+        },
+        {
+          "path": "store/db/postgres/attachment.go",
+          "sha256": {
+            "base": "a3449704aaa6422aad0c76117f7d25a124477adcdbac943f0eb1084c0cda40cd",
+            "reviewed": "09a5df5dcac1da18fbe7b0015e618490628023a01b03fb58d19b53a0c82d8ae8"
+          }
+        },
+        {
+          "path": "store/db/sqlite/attachment.go",
+          "sha256": {
+            "base": "7e611f84b83d171946e5405853de6647f41e48128d756c4a99ccacfcf6d89950",
+            "reviewed": "3f74fc291521932fae8a978f32b6a3d2e9d4736101743ce63b0a1ff793d6e799"
+          }
+        },
+        {
+          "path": "store/driver.go",
+          "sha256": {
+            "base": "dff26c97266522195cb8ac217fc1181578ba76b79beaa9b7334e2fa688e4e5d5",
+            "reviewed": "8fb7f82b0338dbb5b9b683e7c6dd0b0107186b1106acf6d3cf292f2e6f8d24fb"
+          }
+        },
+        {
+          "path": "store/test/attachment_test.go",
+          "sha256": {
+            "base": "e829c335f18c907f45a08634638401da6deceb3a0c7f513b7ba98d070b77e6e8",
+            "reviewed": "0409c02dca5ed1f634b430d8db40cdc88b7071a180c91f3a4e6c316bf0945766"
+          }
+        },
+        {
+          "path": "web/src/components/Settings/MyAccountSection.tsx",
+          "sha256": {
+            "base": "785f349c2239765214b2b613ccb13348db7a1badfea1ad7933bacb75cc1c0273",
+            "reviewed": "3ecf04768411b7f64e8bff19c73fa89742676456ebbac1819fa372dd8e635e0d"
+          }
+        },
+        {
+          "path": "web/src/components/Settings/ResourceStatsSection.tsx",
+          "sha256": {
+            "base": "949e75a419c0a470b6e86840a04d4c60c47e8a8a976d778057452455373805ff",
+            "reviewed": "6151ca9694f537fc3718772982cef390cd7d142e936d2b91742a96fc4cf2b49f"
+          }
+        },
+        {
+          "path": "web/src/components/Settings/SettingList.tsx",
+          "sha256": {
+            "base": "d418b20c62f096cea048984a083c76eb79c20141fe6eca32d9f802bfae181ee2",
+            "reviewed": "57ce09366ac38f611b57966f23c7b4ff04879f2bd76630a0873d20216225de06"
+          }
+        },
+        {
+          "path": "web/src/components/Settings/UserStatsSection.tsx",
+          "sha256": {
+            "reviewed": "2cf379a56845867e921c7b1e5d2f2876b57a057d3834cbb6f3008802c05f26e1"
+          }
+        },
+        {
+          "path": "web/src/hooks/useAttachmentQueries.ts",
+          "sha256": {
+            "base": "a1d677fb1f1a199644682a66e9667d0d27a9d1f8f85203645e2f5a4bc341be4c",
+            "reviewed": "c4ada1bf7db2d7c0b90ff066c132a1e4e1528fff0e1a34b6bfdccf378272c9ce"
+          }
+        },
+        {
+          "path": "web/src/locales/az.json",
+          "sha256": {
+            "base": "6375b71dddb4f29448ee75f1d460a7876ad4ae45a7dc19e472e1337a121c7b66",
+            "reviewed": "338d9e6eb0ce4461b81b1d46b66bb8876dc4b1189a004ee0923f24a173a98fb2"
+          }
+        },
+        {
+          "path": "web/src/locales/en.json",
+          "sha256": {
+            "base": "faf5b31772f06dd45ba33dbcfe3870624937ee75bdcfa904609e696c134e9a19",
+            "reviewed": "fab17955a4b5959fdb617daf3b5e79f99a41b422343889059e7175ac7cdbde31"
+          }
+        },
+        {
+          "path": "web/src/locales/zh-Hans.json",
+          "sha256": {
+            "base": "b852f3cb5527ce05df3424da5661bdb57ad7d9366b8cf0158f743587fad15e0c",
+            "reviewed": "6e34a985f8d8b4e6e094fda355b6c3fc956bc1e8016830ade780037774816261"
+          }
+        },
+        {
+          "path": "web/src/locales/zh-Hant.json",
+          "sha256": {
+            "base": "78b7ec9448b95952ad05110d3b865a3b991b418a36c2a6d55e31db7c33e98b3b",
+            "reviewed": "cdd8bc61d4ec5765cd68b52152a3fcb1c8d4bfcd19cef2344bc51e2cedaa34a3"
+          }
+        },
+        {
+          "path": "web/src/types/proto/api/v1/user_service_pb.ts",
+          "sha256": {
+            "base": "43bd4458df5e136c2a571181d838ee8bb86e85225476ac25a3605173d0cfd976",
+            "reviewed": "12370e9f63eed3b5932592b9ba6b78dfd516d0789d0ffd87dc56370301e30e18"
+          }
+        },
+        {
+          "path": "web/tests/attachment-storage-usage.test.tsx",
+          "sha256": {
+            "reviewed": "42420131aa794feb8f430c698a6b0704078a714ea6b20ef0a380d3ad947c58fa"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-account-attachment-usage",
+      "images": [
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "before-total.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+            "/memos.api.v1.UserService/ListLinkedIdentities",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications"
+          ],
+          "sha256": "90bef5cec0595f2e0906da3b78dc996b97246ab5097d6adf1fbc61618f472d01",
+          "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+          "state": {
+            "name": "total"
+          },
+          "visible_text_sha256": "955c3be4acf358ea4746dde7d10aa2d13f23973d1e0b7166f4ae26e8c254a5bb"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-total.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+            "/memos.api.v1.UserService/ListLinkedIdentities",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "73bf05ba6a04469f9042e529f1ea54920a67195bc0072174fa5c8eccfc09d0ed",
+          "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+          "state": {
+            "name": "total"
+          },
+          "visible_text_sha256": "ecad78a06f3860b5f747694977b8f58d1a8ae1b67021280174c179da882e9d35"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "fa68d7ebf3dbf061315e6f8a99bc8a5529bb9cc7dbb264704f3a0a07ccc539f3",
+          "path": "after-zero.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+            "/memos.api.v1.UserService/ListLinkedIdentities",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "05f76a2fbf39ed4bf0c6dd8e098fa5813ff93c797b431c3385478e0bbfe1ae55",
+          "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+          "state": {
+            "name": "zero",
+            "storage_bytes": "0"
+          },
+          "visible_text_sha256": "f276725f7c9c2976b4d682dfeb07dd12b76dc6aba60a1c10ea47974b29621d74"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-pending.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+            "/memos.api.v1.UserService/ListLinkedIdentities",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications"
+          ],
+          "sha256": "58b43b4f9ecb415648f752172f3610048df79fa9ad48f9d8060319a546467a25",
+          "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+          "state": {
+            "name": "pending",
+            "stats_pending": true
+          },
+          "visible_text_sha256": "d5deb39ac3d424ecbe40afbb5f813efbc68fd8c2e5b1b44985e9585a57f91a8d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-unavailable.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+            "/memos.api.v1.UserService/ListLinkedIdentities",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "0bd4c457074aa1b716c2082ab9ebfcd874aeff8f2e5722d61de8dd9dbc268039",
+          "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+          "state": {
+            "name": "unavailable",
+            "stats_error": true
+          },
+          "visible_text_sha256": "94ab3d0f883e11e651318c063443dbcacbb9efc2418c41b673fa49859b061921"
+        }
+      ],
+      "media_artifact_hashes": [
+        "05f76a2fbf39ed4bf0c6dd8e098fa5813ff93c797b431c3385478e0bbfe1ae55",
+        "0bd4c457074aa1b716c2082ab9ebfcd874aeff8f2e5722d61de8dd9dbc268039",
+        "58b43b4f9ecb415648f752172f3610048df79fa9ad48f9d8060319a546467a25",
+        "73bf05ba6a04469f9042e529f1ea54920a67195bc0072174fa5c8eccfc09d0ed",
+        "90bef5cec0595f2e0906da3b78dc996b97246ab5097d6adf1fbc61618f472d01"
+      ],
+      "media_review_result": "accepted",
+      "observations": [
+        "The source adds an optional private storage field and checks the authenticated owner before it supplies that field.",
+        "All three database drivers sum persisted attachment sizes by creator. They apply no memo or Space filter.",
+        "The page requests user statistics. Deletion invalidates those statistics after either outcome.",
+        "The images show the original account page, 2.0 KB, zero bytes, an ellipsis, and the unavailable message.",
+        "Synthetic responses determine the displayed totals. The images establish no database sum or authorization result.",
+        "The complete source range also shares the statistic row and removes two unused attachment mutation hooks."
+      ],
+      "original_manifest_sha256": "cefddc0cfc3169a0d31d8936fdda897a67aea0f1096406c45ff8ee3cf37edcbb",
+      "reference_facts_hash": "b6bf66ebd7719259d092dd5a9587572e083435cf2c9389f4648d12de981883b6",
+      "reference_limits_hash": "b8b545425e939ac8fb36c7e4924898c3b53e53b9b77e7a32f20f3f9102ed7b6f",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "reviewed_diff_sha256": "8b874e006b862fca52301ce5a59d526b737cc863f14c09db013f9e0050efc229",
+      "reviewed_tree": "6e36e10908cc7fec638d328038a357b2438b0263",
+      "role_inputs_hash": "e6c1f051eb5abab9371e08fae42f6a4b786d31002b76834ffcd8a85f3ba3a033"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "f3b3848c6951f6acc124b49aa20274c00328f0a02b9198e1cfa00c8194e29548"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "597b91aabd8685aa7781ef75ad89aecea62dd1c02c1eb66565212db0f9eb8445"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "4712377231aaee2c8bdecbe4ccd8146832a02c58216269ab44bdfad8b9526901"
+        },
+        {
+          "id": "media-before-light",
+          "kind": "media",
+          "sha256": "9e8191ac86e57136475bc5467a0b1c041aff77877c6f12d64b41abd8bb538c63"
+        },
+        {
+          "id": "media-before-dark",
+          "kind": "media",
+          "sha256": "c5229ea93f6ae6a5724523861622b953ee4dca3ee423bc4e7bfd420e19d15e61"
+        },
+        {
+          "id": "media-after-light",
+          "kind": "media",
+          "sha256": "b2192d65f12a79550cf750c75edbf8db69df738027bc4041feee347069e9b4f0"
+        },
+        {
+          "id": "media-after-dark",
+          "kind": "media",
+          "sha256": "25a8857f44eda7152c0cbaf93d11f83d047a729e9be3aa2344c8b5f2cafe2111"
+        },
+        {
+          "id": "media-provenance",
+          "kind": "source_record",
+          "sha256": "2bc99ae7ca3e64de1b42bc7dea182b457fd4ce6e40bbfe373df7b1d2d2e5e0a7"
+        }
+      ],
+      "base_commit": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "browser_version": "145.0.7632.6",
+      "capture_method": "unchanged_frontend_with_synthetic_service_responses",
+      "capture_record_sha256": "2bc99ae7ca3e64de1b42bc7dea182b457fd4ce6e40bbfe373df7b1d2d2e5e0a7",
+      "capture_tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "changed_files": [
+        {
+          "path": "web/src/main.tsx",
+          "sha256": {
+            "base": "bdd971ce7770f42461ae43911ad93887a139cff587935ab16bff8ca61443ab9b",
+            "reviewed": "22a4ed6794ea936b08451b1788288ff735f1020285bd3fd62d248c2b4405cbf2"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-dark-mode-toast",
+      "images": [
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "before-light.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "9e8191ac86e57136475bc5467a0b1c041aff77877c6f12d64b41abd8bb538c63",
+          "source_revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+          "state": {
+            "name": "light",
+            "theme": "default",
+            "toast": true
+          },
+          "visible_text_sha256": "40209bc72cba43dc6aed0a7292db6708a9462dce6d1f269c767f6422aed3cc7a"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "05f4bc36e4ef1411ec94675da0c096fa0fbf451d1e2c6c5c53c9d88d7f533be5",
+          "path": "before-dark.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "c5229ea93f6ae6a5724523861622b953ee4dca3ee423bc4e7bfd420e19d15e61",
+          "source_revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+          "state": {
+            "name": "dark",
+            "theme": "default-dark",
+            "toast": true
+          },
+          "visible_text_sha256": "40209bc72cba43dc6aed0a7292db6708a9462dce6d1f269c767f6422aed3cc7a"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-light.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "b2192d65f12a79550cf750c75edbf8db69df738027bc4041feee347069e9b4f0",
+          "source_revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+          "state": {
+            "name": "light",
+            "theme": "default",
+            "toast": true
+          },
+          "visible_text_sha256": "40209bc72cba43dc6aed0a7292db6708a9462dce6d1f269c767f6422aed3cc7a"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "05f4bc36e4ef1411ec94675da0c096fa0fbf451d1e2c6c5c53c9d88d7f533be5",
+          "path": "after-dark.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "25a8857f44eda7152c0cbaf93d11f83d047a729e9be3aa2344c8b5f2cafe2111",
+          "source_revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+          "state": {
+            "name": "dark",
+            "theme": "default-dark",
+            "toast": true
+          },
+          "visible_text_sha256": "40209bc72cba43dc6aed0a7292db6708a9462dce6d1f269c767f6422aed3cc7a"
+        }
+      ],
+      "media_artifact_hashes": [
+        "25a8857f44eda7152c0cbaf93d11f83d047a729e9be3aa2344c8b5f2cafe2111",
+        "9e8191ac86e57136475bc5467a0b1c041aff77877c6f12d64b41abd8bb538c63",
+        "b2192d65f12a79550cf750c75edbf8db69df738027bc4041feee347069e9b4f0",
+        "c5229ea93f6ae6a5724523861622b953ee4dca3ee423bc4e7bfd420e19d15e61"
+      ],
+      "media_review_result": "accepted",
+      "observations": [
+        "The source supplies popover background and text variables to the shared toast host. Its position remains top right.",
+        "The light-theme pair preserves the light notification appearance. The dark-theme pair shows the new dark notification background.",
+        "The capture invokes the existing toast library directly. Its notification text establishes no completed save.",
+        "The evidence supplies no measured contrast ratio."
+      ],
+      "original_manifest_sha256": "045e2a75bfb5e301e614fd110111c317871d589606d8cee46c1d84d3ad327000",
+      "reference_facts_hash": "5443faba773940ace300a21dfe0634066bf873b597038237bd49a8461e9188eb",
+      "reference_limits_hash": "2a7957db0c85990335f449dd5136d86a1d22afc7e450f8d8ef9766640a7e394a",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "reviewed_diff_sha256": "4712377231aaee2c8bdecbe4ccd8146832a02c58216269ab44bdfad8b9526901",
+      "reviewed_tree": "2f6f2efc0c197f8934d0190fe08f7dd2a1a3130f",
+      "role_inputs_hash": "0256a5646446330d898b1beede4534b0527fd8934d84b9943fa3ec64e310fa30"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "a8f180e9dd839201ccbba81b88899876187dbf7b6fb7483d757cdaa3f03457f1"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "b282e0a20e5ba12571d443c0633445d5d860e403cac1ea6fee5db6c2a3e9cdf2"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "fe23ff30537aea2f7c223a17774d090a5d8312abdf494ef6f4a2d6a1c826dea1"
+        },
+        {
+          "id": "media-before-author",
+          "kind": "media",
+          "sha256": "21ed0e1c47d10ceba1a20d65cb4691d8ad2b053cb91f11ea472aec7dac1092e1"
+        },
+        {
+          "id": "media-after-author",
+          "kind": "media",
+          "sha256": "4b72309b26341cf629e2a73618aaafd4cedf094cbcb8aac6257ac14a3fbdf51a"
+        },
+        {
+          "id": "media-provenance",
+          "kind": "source_record",
+          "sha256": "8512d7ce4b1c10d26af6baebdb1eadb98334f5ef2385c51c3d61168381bca141"
+        }
+      ],
+      "base_commit": "45519accd338fa29010db6a9d31de6fe252256ae",
+      "browser_version": "145.0.7632.6",
+      "capture_method": "unchanged_frontend_with_synthetic_service_responses",
+      "capture_record_sha256": "8512d7ce4b1c10d26af6baebdb1eadb98334f5ef2385c51c3d61168381bca141",
+      "capture_tool_hashes": {
+        "capture_memos.py": "49eff933ca650fb9a036cb989e76fb7f26c8fc1d0247bc139012da924cb14d9a",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "changed_files": [
+        {
+          "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+          "sha256": {
+            "base": "33d05e7ef47cb43aa15ed076efc6440d3925bad8cdc8ec8af8d3c414456cd852",
+            "reviewed": "645c7f16818deed2feb10c66a53d84392933b0cf2d4220d43948d2298f1a0963"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-author-spacing",
+      "images": [
+        {
+          "attachment_display": null,
+          "fixture_sha256": "ef6b07b612aaf7f98dc10b8e1cc7dfb65c6fa8ee402da40697e767302d2fadb7",
+          "path": "before-author.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "21ed0e1c47d10ceba1a20d65cb4691d8ad2b053cb91f11ea472aec7dac1092e1",
+          "source_revision": "45519accd338fa29010db6a9d31de6fe252256ae",
+          "state": {
+            "display_name": "Al",
+            "name": "author"
+          },
+          "visible_text_sha256": "1e6ede24662cd65ac241c2fadf7da6ba80aa3f766f633638ebb8a6acef0d432b"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "ef6b07b612aaf7f98dc10b8e1cc7dfb65c6fa8ee402da40697e767302d2fadb7",
+          "path": "after-author.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "4b72309b26341cf629e2a73618aaafd4cedf094cbcb8aac6257ac14a3fbdf51a",
+          "source_revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+          "state": {
+            "display_name": "Al",
+            "name": "author"
+          },
+          "visible_text_sha256": "1e6ede24662cd65ac241c2fadf7da6ba80aa3f766f633638ebb8a6acef0d432b"
+        }
+      ],
+      "media_artifact_hashes": [
+        "21ed0e1c47d10ceba1a20d65cb4691d8ad2b053cb91f11ea472aec7dac1092e1",
+        "4b72309b26341cf629e2a73618aaafd4cedf094cbcb8aac6257ac14a3fbdf51a"
+      ],
+      "media_review_result": "accepted",
+      "observations": [
+        "The source replaces the creator link's four-rem minimum width with zero. The surrounding header remains unchanged.",
+        "Both images use the same short creator label, Al. The after image moves the time beside that label.",
+        "The revised images expose the removed gap at the fixed desktop viewport.",
+        "The images establish no result for every viewport or translated label."
+      ],
+      "original_manifest_sha256": "53488f6bfca15ccea689033d932d51a2c3adc4763907f6ffd9ed7507680368a3",
+      "reference_facts_hash": "a65a93793f665cb99cbb67a72b9c9647ad451db7427588eb0e1286d0bbd4ec88",
+      "reference_limits_hash": "3fe27b14a79c49cff715a342a973dbded1dd276d2a401e6fdf8155f175d9a78a",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+      "reviewed_diff_sha256": "fe23ff30537aea2f7c223a17774d090a5d8312abdf494ef6f4a2d6a1c826dea1",
+      "reviewed_tree": "3de7d09d87bfedab18cc77429535ff59c55d89a7",
+      "role_inputs_hash": "9a8b2b7be8d3b20ef13b4cdb92dfc6f7b1c07428d2f8a249be285973a58151b1"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "8cb6f09d1adff715958dffcaa9aaea88d06d94bacb5fda963774b106c15a023a"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "6b4a7a0a95051211a257146f5d91b676e8933e17bcccb09148fce875d7caffff"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "5250b88a9c4cbb06cf496b49eaab82d5992a0bbb928ea909535369232de95d05"
+        },
+        {
+          "id": "media-before-collapsed",
+          "kind": "media",
+          "sha256": "18a3e824bdaf050bdc0c1bc0b6fb9663cfee5b3c8bbeb9aa8860dc3458ca1491"
+        },
+        {
+          "id": "media-before-expanded",
+          "kind": "media",
+          "sha256": "821cde38b415cdb301c576bafea33b60927cbe188ac4747d269668b1a7e29ce3"
+        },
+        {
+          "id": "media-after-collapsed",
+          "kind": "media",
+          "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9"
+        },
+        {
+          "id": "media-after-expanded",
+          "kind": "media",
+          "sha256": "267103ffe6b078daca49dea63ae10e2b81aca858f15ab99633c474c3c65f6f73"
+        },
+        {
+          "id": "media-provenance",
+          "kind": "source_record",
+          "sha256": "7e54afec71ed6b3d1a6117d58b419064d1c0726e51ac9382a69e505fa8ab6165"
+        }
+      ],
+      "base_commit": "80bab62c723d2c016753679d61468aefd987201d",
+      "browser_version": "145.0.7632.6",
+      "capture_method": "unchanged_frontend_with_synthetic_service_responses",
+      "capture_record_sha256": "7e54afec71ed6b3d1a6117d58b419064d1c0726e51ac9382a69e505fa8ab6165",
+      "capture_tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "changed_files": [
+        {
+          "path": "web/src/lib/markdownStyles.ts",
+          "sha256": {
+            "base": "7b7e0819b732172175371038c103782198a23545a664ac8c60ec74e978157d4c",
+            "reviewed": "61807fae4dfbe9e880ebcecd9ce0d9c03b81ef6004f6dedc4e5a9062086aa2d3"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-disclosure-spacing",
+      "images": [
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "before-collapsed.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "18a3e824bdaf050bdc0c1bc0b6fb9663cfee5b3c8bbeb9aa8860dc3458ca1491",
+          "source_revision": "80bab62c723d2c016753679d61468aefd987201d",
+          "state": {
+            "name": "collapsed"
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "before-expanded.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "821cde38b415cdb301c576bafea33b60927cbe188ac4747d269668b1a7e29ce3",
+          "source_revision": "80bab62c723d2c016753679d61468aefd987201d",
+          "state": {
+            "expand": true,
+            "name": "expanded"
+          },
+          "visible_text_sha256": "750eb88d963e52256197ff39e81d3782474e4042e4f980ecb21a3e1db9fbb216"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-collapsed.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+          "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+          "state": {
+            "name": "collapsed"
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-expanded.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "267103ffe6b078daca49dea63ae10e2b81aca858f15ab99633c474c3c65f6f73",
+          "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+          "state": {
+            "expand": true,
+            "name": "expanded"
+          },
+          "visible_text_sha256": "750eb88d963e52256197ff39e81d3782474e4042e4f980ecb21a3e1db9fbb216"
+        }
+      ],
+      "media_artifact_hashes": [
+        "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+        "18a3e824bdaf050bdc0c1bc0b6fb9663cfee5b3c8bbeb9aa8860dc3458ca1491",
+        "267103ffe6b078daca49dea63ae10e2b81aca858f15ab99633c474c3c65f6f73",
+        "821cde38b415cdb301c576bafea33b60927cbe188ac4747d269668b1a7e29ce3"
+      ],
+      "media_review_result": "accepted",
+      "observations": [
+        "The source reduces disclosure indentation, icon size, summary spacing, and summary font weight.",
+        "The source preserves the existing open-state selectors, rotation, focus outlines, and reduced-motion declarations.",
+        "The four images show the same disclosure collapsed and expanded at both source revisions.",
+        "The after images show the smaller summary and indentation. They establish no result for every Markdown combination."
+      ],
+      "original_manifest_sha256": "d174e0e6a2951ab908c5d4f12504b53fbb5677fcdca11b40dcd56adf474bc04e",
+      "reference_facts_hash": "53a5f81014e9428b7c4f5cb20695db9f257df7bb88eb8b8c7f65abbf8fa9bd4d",
+      "reference_limits_hash": "ffc72315d97eee7593ac0d826c74fab4d64cbf9794862ec8ca704402c917a94b",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "reviewed_diff_sha256": "5250b88a9c4cbb06cf496b49eaab82d5992a0bbb928ea909535369232de95d05",
+      "reviewed_tree": "a18bb9c691b59da12c9bce1b4c45c499e020f906",
+      "role_inputs_hash": "d5f1ba6e0d0a9841e79a6aad8c265dbcd2c3c2eb898a6a6bc078307a14be83a4"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "45eb26eaeea693cf72698e14cf0ca69e7946834c318f423c0ad48061db7ad012"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "df86777891d7c0e7a1ec1f0088fc9fdcc9fd924252f5ab07f20e2c651150a6e8"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "535192e5d1ce06d1c88d433a8fad18a1a48d188d8412fcaf7e3cb2f6111fb313"
+        },
+        {
+          "id": "media-before-owner-idle",
+          "kind": "media",
+          "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50"
+        },
+        {
+          "id": "media-before-owner-hover",
+          "kind": "media",
+          "sha256": "882b1fa9569ab12bcecafe4076d68139eec165fa1627c79fa5234c776c3324bc"
+        },
+        {
+          "id": "media-before-other-idle",
+          "kind": "media",
+          "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861"
+        },
+        {
+          "id": "media-before-other-hover",
+          "kind": "media",
+          "sha256": "469baa58a207f572ac19f33fbe27ebd5e53d815dd4795f6bc067f90d28641541"
+        },
+        {
+          "id": "media-after-owner-idle",
+          "kind": "media",
+          "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50"
+        },
+        {
+          "id": "media-after-owner-hover",
+          "kind": "media",
+          "sha256": "eaca786cb22dbde7cf4218093d1e467cedecb8690ded793089d18210931b8609"
+        },
+        {
+          "id": "media-after-other-idle",
+          "kind": "media",
+          "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861"
+        },
+        {
+          "id": "media-after-other-hover",
+          "kind": "media",
+          "sha256": "d22bd8de472cbb778c3a4677eaafc55ef915f795af45e2957b63d2289f855d90"
+        },
+        {
+          "id": "media-provenance",
+          "kind": "source_record",
+          "sha256": "00ad36758aab4f00fce5bba73dd98ebac2417dd4add1455d83c164d5629d672e"
+        }
+      ],
+      "base_commit": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "browser_version": "145.0.7632.6",
+      "capture_method": "unchanged_frontend_with_synthetic_service_responses",
+      "capture_record_sha256": "00ad36758aab4f00fce5bba73dd98ebac2417dd4add1455d83c164d5629d672e",
+      "capture_tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "changed_files": [
+        {
+          "path": "web/src/components/MemoMetadata/MetadataSection.tsx",
+          "sha256": {
+            "base": "4f3b389ef63e50de232337d2f48dfb98acc25586a4b9359ee650799fa9552f43",
+            "reviewed": "3da9ef8b86ff2a3d8dabfdb6c1318b4e1ec9a00edef1b21923107591fb26465c"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-metadata-hover",
+      "images": [
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "1",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+                "opacity": "0",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+            "hover": false
+          },
+          "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+          "path": "before-owner-idle.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+          "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+          "state": {
+            "attachment": true,
+            "edit": true,
+            "hover": null,
+            "name": "owner-idle",
+            "other": false
+          },
+          "visible_text_sha256": "f52fbdcbafb8164fd464447f06e4ae0ea03a2bdcdf086a7124617115433ed04c"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "1",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+                "opacity": "0",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+            "hover": true
+          },
+          "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+          "path": "before-owner-hover.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "882b1fa9569ab12bcecafe4076d68139eec165fa1627c79fa5234c776c3324bc",
+          "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+          "state": {
+            "attachment": true,
+            "edit": true,
+            "hover": "attachment",
+            "name": "owner-hover",
+            "other": false
+          },
+          "visible_text_sha256": "f52fbdcbafb8164fd464447f06e4ae0ea03a2bdcdf086a7124617115433ed04c"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "1",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": {},
+                "opacity": "0",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+            "hover": false
+          },
+          "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+          "path": "before-other-idle.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/BatchGetUsers",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+          "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+          "state": {
+            "attachment": true,
+            "edit": false,
+            "hover": null,
+            "name": "other-idle",
+            "other": true
+          },
+          "visible_text_sha256": "87d7a4169b4cc35c7f3470978685c656302807c7a3a7a330fdb1a71518174262"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "1",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": {},
+                "opacity": "0",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+            "hover": true
+          },
+          "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+          "path": "before-other-hover.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/BatchGetUsers",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "469baa58a207f572ac19f33fbe27ebd5e53d815dd4795f6bc067f90d28641541",
+          "source_revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+          "state": {
+            "attachment": true,
+            "edit": false,
+            "hover": "attachment",
+            "name": "other-hover",
+            "other": true
+          },
+          "visible_text_sha256": "87d7a4169b4cc35c7f3470978685c656302807c7a3a7a330fdb1a71518174262"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "1",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+                "opacity": "0",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+            "hover": false
+          },
+          "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+          "path": "after-owner-idle.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+          "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+          "state": {
+            "attachment": true,
+            "edit": true,
+            "hover": null,
+            "name": "owner-idle",
+            "other": false
+          },
+          "visible_text_sha256": "f52fbdcbafb8164fd464447f06e4ae0ea03a2bdcdf086a7124617115433ed04c"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center relative overflow-hidden rounded-[5px] bg-muted/40",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "0",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": "flex shrink-0 items-center gap-0.5 transition-opacity md:absolute md:inset-y-0 md:end-1 md:opacity-0 md:group-hover/row:opacity-100 md:group-focus-within/row:opacity-100",
+                "opacity": "1",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground",
+            "hover": true
+          },
+          "fixture_sha256": "c0beda7898ecbdc5224852653cee53c776b1a76de329274108cdc3802424ccf1",
+          "path": "after-owner-hover.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.UserService/GetUserStats"
+          ],
+          "sha256": "eaca786cb22dbde7cf4218093d1e467cedecb8690ded793089d18210931b8609",
+          "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+          "state": {
+            "attachment": true,
+            "edit": true,
+            "hover": "attachment",
+            "name": "owner-hover",
+            "other": false
+          },
+          "visible_text_sha256": "f52fbdcbafb8164fd464447f06e4ae0ea03a2bdcdf086a7124617115433ed04c"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "1",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": {},
+                "opacity": "0",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+            "hover": false
+          },
+          "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+          "path": "after-other-idle.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/BatchGetUsers",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+          "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+          "state": {
+            "attachment": true,
+            "edit": false,
+            "hover": null,
+            "name": "other-idle",
+            "other": true
+          },
+          "visible_text_sha256": "87d7a4169b4cc35c7f3470978685c656302807c7a3a7a330fdb1a71518174262"
+        },
+        {
+          "attachment_display": {
+            "children": [
+              {
+                "class": "flex size-5 shrink-0 items-center justify-center",
+                "opacity": "1",
+                "text": ""
+              },
+              {
+                "class": "min-w-0 flex-1 truncate text-foreground",
+                "opacity": "1",
+                "text": "example.txt"
+              },
+              {
+                "class": "shrink-0 text-2xs tabular-nums text-muted-foreground/60 transition-opacity md:group-hover/row:opacity-0 md:group-focus-within/row:opacity-0 hidden items-center gap-1 sm:flex",
+                "opacity": "0",
+                "text": "TXT\u00b72.0 KB"
+              },
+              {
+                "class": {},
+                "opacity": "0.75",
+                "text": ""
+              }
+            ],
+            "class": "group/row relative flex h-7 w-full min-w-0 items-center gap-1 rounded-md px-2 text-start text-ui text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground aria-pressed:bg-accent aria-pressed:text-accent-foreground data-popup-open:bg-accent data-popup-open:text-accent-foreground focus-visible:outline-2 focus-visible:outline-solid focus-visible:-outline-offset-2 focus-visible:outline-ring/60",
+            "hover": true
+          },
+          "fixture_sha256": "1cb5b830789c840f02f683a13df307524ad34f463e298bc72dcc87f33770b0e0",
+          "path": "after-other-hover.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/BatchGetUsers",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "d22bd8de472cbb778c3a4677eaafc55ef915f795af45e2957b63d2289f855d90",
+          "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+          "state": {
+            "attachment": true,
+            "edit": false,
+            "hover": "attachment",
+            "name": "other-hover",
+            "other": true
+          },
+          "visible_text_sha256": "87d7a4169b4cc35c7f3470978685c656302807c7a3a7a330fdb1a71518174262"
+        }
+      ],
+      "media_artifact_hashes": [
+        "469baa58a207f572ac19f33fbe27ebd5e53d815dd4795f6bc067f90d28641541",
+        "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+        "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+        "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+        "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+        "882b1fa9569ab12bcecafe4076d68139eec165fa1627c79fa5234c776c3324bc",
+        "d22bd8de472cbb778c3a4677eaafc55ef915f795af45e2957b63d2289f855d90",
+        "eaca786cb22dbde7cf4218093d1e467cedecb8690ded793089d18210931b8609"
+      ],
+      "media_review_result": "accepted",
+      "observations": [
+        "The source replaces generated class fragments with complete literal desktop hover and focus classes.",
+        "The source preserves mobile classes and the distinction between editable and readonly rows.",
+        "The eight images show desktop idle and hover states for an editable owner row and a readonly other-user row.",
+        "After the change, hover reveals full-opacity edit controls or the 75-percent-opacity download hint and hides the detail rail.",
+        "The capture record's computed opacity values match the images and source declarations.",
+        "The images establish no keyboard traversal, narrow-viewport behavior, or backend permission result."
+      ],
+      "original_manifest_sha256": "b7ada422e3319478d4fbdfcac7107e85f1ae99f9172d8054469e47a3ac9c91b0",
+      "reference_facts_hash": "dc7536c2ed1a4efb7426c650bc6584f71b814f51c3534733eff2bc1f18a43edb",
+      "reference_limits_hash": "af3d19b479b248773f8c8815129d66caa9da481b1774455696da28519d83a4f1",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "reviewed_diff_sha256": "535192e5d1ce06d1c88d433a8fad18a1a48d188d8412fcaf7e3cb2f6111fb313",
+      "reviewed_tree": "9b2f1ed87ec1ba24ae200d3628997a120097ee91",
+      "role_inputs_hash": "fbaa0c5653ad7167db0a84f7652a127eb4a555180f20f52e72dc442c7903b754"
+    },
+    {
+      "artifact_hashes": [
+        {
+          "id": "worker-report",
+          "kind": "report",
+          "sha256": "c8df6734efffa790d0a6b347a1ef143f425681a4b425e8eb2a24e4eff23a8162"
+        },
+        {
+          "id": "verifier-evidence",
+          "kind": "report",
+          "sha256": "d3a2860e45f84efe20540959bfa92837b9c133e08bc0aa2cca70c1fe75f36aff"
+        },
+        {
+          "id": "reviewed-diff",
+          "kind": "source_diff",
+          "sha256": "d8107ec147a81b4d9291be26ba55ab9844e1fabb786752835840e39a5cc570e4"
+        },
+        {
+          "id": "media-before-pinned",
+          "kind": "media",
+          "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9"
+        },
+        {
+          "id": "media-before-unpinned",
+          "kind": "media",
+          "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a"
+        },
+        {
+          "id": "media-before-pinned-hover",
+          "kind": "media",
+          "sha256": "00cfc91ee80e2ee7b23dd76cbf3f40fed89c68365cc208d80a6078309ddd3f1a"
+        },
+        {
+          "id": "media-after-pinned",
+          "kind": "media",
+          "sha256": "960b0b8ce9fb4f49cfcc5e64b9ea3ccf5858d380cd3a6ef9d56210999ab0f7ce"
+        },
+        {
+          "id": "media-after-unpinned",
+          "kind": "media",
+          "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a"
+        },
+        {
+          "id": "media-after-pinned-hover",
+          "kind": "media",
+          "sha256": "c417a1a34eeeda50ecec972306be33c15476f6140bc92ee84d1c484e924a9935"
+        },
+        {
+          "id": "media-provenance",
+          "kind": "source_record",
+          "sha256": "c624e0448dbe0b5db3391244c5fe96749addd2bf079ebbfa36bcbe81798353e2"
+        }
+      ],
+      "base_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "browser_version": "145.0.7632.6",
+      "capture_method": "unchanged_frontend_with_synthetic_service_responses",
+      "capture_record_sha256": "c624e0448dbe0b5db3391244c5fe96749addd2bf079ebbfa36bcbe81798353e2",
+      "capture_tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "changed_files": [
+        {
+          "path": "web/src/components/MemoView/MemoView.tsx",
+          "sha256": {
+            "base": "f52bf80ecea2a4973daf5ae816de7e09a3a26822f39adbb1e06b1de15b0d8130",
+            "reviewed": "d1d31b61050050093f48cfafdb5ad5c6c7ff0dfa0055dfa0e1147406af2a56cc"
+          }
+        },
+        {
+          "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+          "sha256": {
+            "base": "645c7f16818deed2feb10c66a53d84392933b0cf2d4220d43948d2298f1a0963",
+            "reviewed": "75efeb54323428c60d6859f8e1d8daadf4f827948e0911ae93e1ff45723b251c"
+          }
+        },
+        {
+          "path": "web/src/components/MemoView/components/MemoPinnedMark.tsx",
+          "sha256": {
+            "reviewed": "85a82578972c0dd0497ef5d1a02dc78718b63f3e78a6988402f3ee10905adfb8"
+          }
+        },
+        {
+          "path": "web/src/components/MemoView/hooks/index.ts",
+          "sha256": {
+            "base": "aaa2ca911dc5a293266d726e11db9b9f669641a8c1c0671b9fef4a92c95106f2",
+            "reviewed": "593d9ba1e3eb0114ed8348825854539a922d01070b311759a8bb2dea04e38091"
+          }
+        },
+        {
+          "path": "web/src/components/MemoView/hooks/useMemoActions.ts",
+          "sha256": {
+            "base": "ce82814f37d79e018f36299afc6d2a2580af350eae7952ddc5382a0efd2bb109"
+          }
+        },
+        {
+          "path": "web/src/components/MemoView/types.ts",
+          "sha256": {
+            "base": "72cc2712653745db6240fd3cdf88cf9d66cc18f11058687064eed6f8ddff453e",
+            "reviewed": "a1d36fb80de2ae0de499f4e3a0cb87ed3f087095b17890af4a32bae7342e8dde"
+          }
+        },
+        {
+          "path": "web/src/locales/ar.json",
+          "sha256": {
+            "base": "69c73ea967acb2edebcc224b3a7e176b018d7aedba6461e451d731d7d4051e38",
+            "reviewed": "da6c91c3a1e53b2b0ec508876fffbeeacfc497e611a99309883329203377f707"
+          }
+        },
+        {
+          "path": "web/src/locales/az.json",
+          "sha256": {
+            "base": "d1c3369e3f6c217a9d86ceb00068b4700d59126e4abc93ae373a88d283d44c0d",
+            "reviewed": "96b0ac94386a15d02c65946558c7a9270c4c7e454573df5b8a2c60b4360fad86"
+          }
+        },
+        {
+          "path": "web/src/locales/bg.json",
+          "sha256": {
+            "base": "4d504e0deec5e63ebd2a7bd0927197e2678922b0be815e5258197eb84f8857be",
+            "reviewed": "1710380e2f28da112eb3db498225f722687ed06ff30b82d5345d52fc18565c97"
+          }
+        },
+        {
+          "path": "web/src/locales/ca.json",
+          "sha256": {
+            "base": "40b7914b6dec3893b75d8d7bdef4cb888316de1891fc61c23031bbdbbc3a0227",
+            "reviewed": "296cb13540429f734145e82a6041ca727929b408a99181d27d52b49b5d2facbb"
+          }
+        },
+        {
+          "path": "web/src/locales/cs.json",
+          "sha256": {
+            "base": "3e7a4ec807cc4f4212f9c3f0f7535237ee9a966e1dba4e6991ab30628ccd420d",
+            "reviewed": "4cdedd822f1e62b16265258d5789afcad66c6377b870b6b94855d6e746f00d2f"
+          }
+        },
+        {
+          "path": "web/src/locales/da.json",
+          "sha256": {
+            "base": "91f45754a7b0dc25c79f0adbd690bfda2c996ea5b603ed14f02d2440bfc5de38",
+            "reviewed": "2971228450892a2e82c9807cc7d283906438cf5f7d8f43653ebde0163d6ef9b8"
+          }
+        },
+        {
+          "path": "web/src/locales/de.json",
+          "sha256": {
+            "base": "1697edc1dde28e73ff6b5b5410cc29c79c5232bb3c90c24d31264cdef1152d08",
+            "reviewed": "e01f7efd690cc1c19ce901dce45f5269c5668e73dd6883885baad36f6b8d49ad"
+          }
+        },
+        {
+          "path": "web/src/locales/el.json",
+          "sha256": {
+            "base": "aeba3e7ed5ecd623f59b5aec03d6452c3cf24b7b13989ab9794c1501a86c7218",
+            "reviewed": "457fdab1dd2d039250843498ae47e5db68f05fdbf1e772c73f9af4d58d99f738"
+          }
+        },
+        {
+          "path": "web/src/locales/en-GB.json",
+          "sha256": {
+            "base": "f7b551ea803036648401420288233a8de2a70291bd45936b9401db10d9fec7e7",
+            "reviewed": "a908bf748a49ce1316480db06afe46e6881ae1895a80bc5ae67bd718ef1c57cd"
+          }
+        },
+        {
+          "path": "web/src/locales/en.json",
+          "sha256": {
+            "base": "e2fed400290696e241c4e2b697f30cbcd33c703f21e3e243487324988844406c",
+            "reviewed": "daa2499831b4aebd6e61f76c2d4f8f9ba32a1613998d510d68c13df7097d1f4d"
+          }
+        },
+        {
+          "path": "web/src/locales/es.json",
+          "sha256": {
+            "base": "3948229fbde4a4759873bb562d36a7c65e6784669eac32bca15d282f7172796a",
+            "reviewed": "4f7b2f6cdff81e4c47daf73f4c74be06cb9d1584b74b6fb26b5ba526d21e2389"
+          }
+        },
+        {
+          "path": "web/src/locales/et.json",
+          "sha256": {
+            "base": "a8eb0a9a130f0e1123fdbb690106ab5902e7d41c4a9bc5fd4b7850ecef9cfdcd",
+            "reviewed": "4c928295d23f46162ce2d35ac4df71206a2ea48111e5c30ac3f649f15596d003"
+          }
+        },
+        {
+          "path": "web/src/locales/fa.json",
+          "sha256": {
+            "base": "e2afc87dd5356a3124da435247e9188d724f0ebad99ce6fe0e50a009d909aca0",
+            "reviewed": "156e8473ad3ae7bd1089afdb9bd098178b9cc904b52bc548c7514bd0ae5c4f2d"
+          }
+        },
+        {
+          "path": "web/src/locales/fi.json",
+          "sha256": {
+            "base": "194c890677cd4cd8f077976c3e6ad278324235cdc3a6760d390fa5381e635b02",
+            "reviewed": "8c3689a0cc4938ee5335d10951b71b7dcd503637131571dff4a5e59927f40666"
+          }
+        },
+        {
+          "path": "web/src/locales/fr.json",
+          "sha256": {
+            "base": "15b68ce1441a3a2d5acb854676acfe750c33ce6bb29bb3021eebe5850197a48c",
+            "reviewed": "f8fc418b9e136997061ecf18932146efb4630fc6655ba4ca87ac8c3b1a98b5bb"
+          }
+        },
+        {
+          "path": "web/src/locales/gl.json",
+          "sha256": {
+            "base": "f07074fbc5b12962540ea640806f3e7d389163686e7f7e9289b81151f9ed2097",
+            "reviewed": "a4362fa85babedc0b443ef22e135b2f8546d552ee770bbaf22983b5b3c0c954f"
+          }
+        },
+        {
+          "path": "web/src/locales/he.json",
+          "sha256": {
+            "base": "bdf83ffd8f57aa758dae4c632b2f7a2e14a7b68e94b54688b492dd62703c578f",
+            "reviewed": "330f67c8a786a090722799fc6aa07841feafa1d3f19dbc306c4dc4df018780e9"
+          }
+        },
+        {
+          "path": "web/src/locales/hi.json",
+          "sha256": {
+            "base": "2ca29e14b32afa15d72d51dcddbacaf9a574633c98976bf296a7f69241dde841",
+            "reviewed": "d6b00126f2b5f341c11353d7661603cd06921266208fb58666584b387f725dc8"
+          }
+        },
+        {
+          "path": "web/src/locales/hr.json",
+          "sha256": {
+            "base": "e91041e8312fc47509e9ea8629b74d80602c4c8db365ccc57ca222a7987b4dec",
+            "reviewed": "3939f10d77ffb136b2c2cc19f7cad2a624ed6e25d446808fb54f3b4155243612"
+          }
+        },
+        {
+          "path": "web/src/locales/hu.json",
+          "sha256": {
+            "base": "6c664c9d2b1a48d514311fd7b4aebfb3280431c4688ae46842d4e5b1df8f1657",
+            "reviewed": "dc6c1df4ec4d2da85d9ffc951928e17524de84c7a9f6a4470bb6af4dc339de02"
+          }
+        },
+        {
+          "path": "web/src/locales/id.json",
+          "sha256": {
+            "base": "a81d820a3e8ea19a60b61f8d744f112206d9da33dfa6556d71621ace1d8e96f4",
+            "reviewed": "a72b0fb933daf92a9b3cc8e48d66fe06ff9462feea3d733342dbe4d054dac641"
+          }
+        },
+        {
+          "path": "web/src/locales/it.json",
+          "sha256": {
+            "base": "e7078212212410a9fa2a4eae13270b6d743107f9ec4256bc705cc8e8f0fbdb23",
+            "reviewed": "74c453446c69a9323339a6e86feadc40d6cd2d87c12987fc69e451caa0417cb2"
+          }
+        },
+        {
+          "path": "web/src/locales/ja.json",
+          "sha256": {
+            "base": "f2a9b56ce29bf4684d44dd4433e0bda89a33cf99d1747e42b31e6bc2dc8cec0e",
+            "reviewed": "be710b8ab5f60caf798be400c3c78694de82ce1115eccba2acdde8a039d75825"
+          }
+        },
+        {
+          "path": "web/src/locales/ka-GE.json",
+          "sha256": {
+            "base": "52fe1c1f1bc3b5f49e528c47b0fe897aa3569fb500a0cfa35bd906e4dcb6b777",
+            "reviewed": "3445027e0c08a293b0bc57e2abe4132fccfaaf2d95149b7def09b9410d53dd81"
+          }
+        },
+        {
+          "path": "web/src/locales/ko.json",
+          "sha256": {
+            "base": "058873db8987d1d119abfe3fd0ecd587e8742ec3967ee7d7ba68f08311da49ef",
+            "reviewed": "9828182a7ac8cf7a3887e4fdfbd16bceab5c4f30cfb8007832de03a38a76663b"
+          }
+        },
+        {
+          "path": "web/src/locales/lt.json",
+          "sha256": {
+            "base": "c34e218e28a9355a47680901f76c9517dad99053c9605bea0043c0b751c8d5ed",
+            "reviewed": "42226e90a048b9392c535c749e746d0735714792a83921e27e1f106b7910d8cf"
+          }
+        },
+        {
+          "path": "web/src/locales/lv.json",
+          "sha256": {
+            "base": "8280df376fae0a5b249ee0907dc79be1558e39e66e72c077ffea91c80155405d",
+            "reviewed": "90f5dc20ffe4a48e88b5505b1d6b56dacb1d6c4acc0b01206993dcab4a5a2c7a"
+          }
+        },
+        {
+          "path": "web/src/locales/mr.json",
+          "sha256": {
+            "base": "90f2b8b5ae22b61c139f434a2485a8e7d0a028b648a3a9c0a97256a6acdf598b",
+            "reviewed": "2ef46e4ff5f684787778d4f404461e7fe21420eb09572d584c40a969acf2c64c"
+          }
+        },
+        {
+          "path": "web/src/locales/nb.json",
+          "sha256": {
+            "base": "0f28989867471bf4db4a219bbb060ffe82ebf9af7d6ec0b75ca9479b865cd4e3",
+            "reviewed": "bb873adc80a4070da26235002e6523ee71b8eec21a76fff52a300b773fec9889"
+          }
+        },
+        {
+          "path": "web/src/locales/nl.json",
+          "sha256": {
+            "base": "5bce1e007294d731173d0ae126f2e47958a5d629b366ee28a6a8c56f752aa451",
+            "reviewed": "171ed6944bb8756a85f7e572ef598fd42876707209fc536d6ddf8613abea5c0e"
+          }
+        },
+        {
+          "path": "web/src/locales/pl.json",
+          "sha256": {
+            "base": "ae6ae7d4c39623f679da0afb7d265e77da9adeb98d083833bb287ab687475d77",
+            "reviewed": "c9416492b4a72a3e2050bf74ae330a21132f751ea2c5edbc00abed8eddd4793e"
+          }
+        },
+        {
+          "path": "web/src/locales/pt-BR.json",
+          "sha256": {
+            "base": "07d91544f77db7ef34b8ff353d8a3e1d53c97ae9d2cf1783d791a230937fc496",
+            "reviewed": "5e9ac0131f11b7a8aa989db3fe9cd2858920ae5a903cd1eb0e2efc9e67c9085f"
+          }
+        },
+        {
+          "path": "web/src/locales/pt-PT.json",
+          "sha256": {
+            "base": "c9d6f9f74fded8908cf86f7e1d037f3fc799608d060845f249c94908f6931500",
+            "reviewed": "9f57f1544a87794c0863f158adbfac0d5d346a5d3a6a0f498e0d03e14157d1d8"
+          }
+        },
+        {
+          "path": "web/src/locales/ro.json",
+          "sha256": {
+            "base": "34cae23657edb3ef714ebbcde4ba297593d53a659b902b47aa304befb9570f76",
+            "reviewed": "8f9265877252a3422e643382a726c884c5eb5d144d85bc9a82d119b8d869d37b"
+          }
+        },
+        {
+          "path": "web/src/locales/ru.json",
+          "sha256": {
+            "base": "34c2f2fd74423f19e019e9f5075f69a55586e3fc4c89ed94275ec025106a3d60",
+            "reviewed": "fbba4c8bc68faf087feb6e64942210baabd8cabbbcd86bcbf983a3a03f147aa7"
+          }
+        },
+        {
+          "path": "web/src/locales/sk.json",
+          "sha256": {
+            "base": "f7ea5ac033ef8cddbb2e202e0f8e8928acb6ef54a99e2fd2a14970e1964aeba9",
+            "reviewed": "4ff373d1971da939a4c6b7b988331cbf6e8cc5c89bb2583741e574876e6191e2"
+          }
+        },
+        {
+          "path": "web/src/locales/sl.json",
+          "sha256": {
+            "base": "709fb27fca9b0b8c50005f82acbd318a8c0f2af3b135f0f8b77dc9a1cd037a88",
+            "reviewed": "7bbb6b6e9e3f316848a8cdf754d967e76be43c7af602c59ff8d8656dbca9b403"
+          }
+        },
+        {
+          "path": "web/src/locales/sr.json",
+          "sha256": {
+            "base": "2b301f559e155705a6393700e87ebc429178533935cd28e311137bdeb0b33f07",
+            "reviewed": "484d443f29c7598fcd6377f38d72996337684b488ecc91f3b674bc378f3ea31f"
+          }
+        },
+        {
+          "path": "web/src/locales/sv.json",
+          "sha256": {
+            "base": "8cdba892535e216a1bb718c0d47b1f9c8c7512c3071bcb0d6b6dc4c2909400b3",
+            "reviewed": "3ea35da3db24189e87010637f17f37ccb69685582d76664f8df4bddea9542ef8"
+          }
+        },
+        {
+          "path": "web/src/locales/th.json",
+          "sha256": {
+            "base": "4555cdae5de0222655f485a624eaec52f5e038b7cb2f712b1b10d545065ba30f",
+            "reviewed": "aeeb2058747b5bfc3927807bdc7b6454324453bb3d785d8987666e2ecb74de73"
+          }
+        },
+        {
+          "path": "web/src/locales/tr.json",
+          "sha256": {
+            "base": "ad1d535b5c0d6270a2a774d692780d711c66ff6779dbd6b45e0b73c1a3038db7",
+            "reviewed": "b6a9fbf23910e76c32356eb4d0014ff30929c9d1d5b1e87364aa86a8b78ba0ed"
+          }
+        },
+        {
+          "path": "web/src/locales/uk.json",
+          "sha256": {
+            "base": "971c1fe0770020987403c68971232922d3381724e03c67bf3233ef324daf77ed",
+            "reviewed": "feb27941e18ed699bee094d6d547ee7889c2e3a36c89bbf745fb64b7a00dfb83"
+          }
+        },
+        {
+          "path": "web/src/locales/vi.json",
+          "sha256": {
+            "base": "eda2f3ec45e5ddc168a6eca6d1be986296c3b2ce7044ae8e37cf060ee797f86a",
+            "reviewed": "5a03eb90f5ae2520332f5a184a8e5d201ab179869d0d50eb4c2fcef9a0823b53"
+          }
+        },
+        {
+          "path": "web/src/locales/zh-Hans.json",
+          "sha256": {
+            "base": "23dba937edac5f0d486c3f8a1201c4f8633c1151db2ffa7d744c29bec4dd110b",
+            "reviewed": "fd052d96e7b4877dcdd82c002093e1d5db267b0358402e407884363a28b4a211"
+          }
+        },
+        {
+          "path": "web/src/locales/zh-Hant.json",
+          "sha256": {
+            "base": "8f51e8c9c816d307e6a61a4425f0d1e60b9ee3dc65ef67a2776264bfbd4960f5",
+            "reviewed": "d10c4d724b617866420001e782319eeb5a71d69ea11dd2de61aa8431f57ea0d3"
+          }
+        },
+        {
+          "path": "web/tests/memo-header-navigation.test.tsx",
+          "sha256": {
+            "base": "7d848868bbc5bc7ea6d1a55ec8eb051e02b97ecca80e6c1ded484edf08c053fa",
+            "reviewed": "dace36464dba17e92ad11f30ae433084546b5e7638d2378aa51e73e2e3922a72"
+          }
+        },
+        {
+          "path": "web/tests/memo-pinned-mark.test.tsx",
+          "sha256": {
+            "reviewed": "9d3171d302b5847d9094e2d15acd5a415b68f6f75397f87abf3e5d7efd49f2ca"
+          }
+        }
+      ],
+      "git_diff_check": {
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "id": "memos-pinned-marker",
+      "images": [
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "before-pinned.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+          "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+          "state": {
+            "name": "pinned",
+            "pinned": true
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "a8ee68139bfa242a753798490bdec683493aa228cd1e1784a01ca59d3dc45d3b",
+          "path": "before-unpinned.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+          "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+          "state": {
+            "name": "unpinned",
+            "pinned": false
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "before-pinned-hover.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "00cfc91ee80e2ee7b23dd76cbf3f40fed89c68365cc208d80a6078309ddd3f1a",
+          "source_revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+          "state": {
+            "hover": "header",
+            "name": "pinned-hover",
+            "pinned": true
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-pinned.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "960b0b8ce9fb4f49cfcc5e64b9ea3ccf5858d380cd3a6ef9d56210999ab0f7ce",
+          "source_revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+          "state": {
+            "name": "pinned",
+            "pinned": true
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "a8ee68139bfa242a753798490bdec683493aa228cd1e1784a01ca59d3dc45d3b",
+          "path": "after-unpinned.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+          "source_revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+          "state": {
+            "name": "unpinned",
+            "pinned": false
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        },
+        {
+          "attachment_display": null,
+          "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+          "path": "after-pinned-hover.png",
+          "service_requests": [
+            "/memos.api.v1.InstanceService/GetInstanceProfile",
+            "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+            "/memos.api.v1.AuthService/GetCurrentUser",
+            "/memos.api.v1.InstanceService/GetInstanceSetting",
+            "/memos.api.v1.UserService/ListUserSettings",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.UserService/ListMemoViews",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.MemoService/ListMemoComments",
+            "/memos.api.v1.SpaceService/ListSpaces",
+            "/memos.api.v1.UserService/ListUserNotifications",
+            "/memos.api.v1.MemoService/GetMemo",
+            "/memos.api.v1.MemoService/ListMemoComments"
+          ],
+          "sha256": "c417a1a34eeeda50ecec972306be33c15476f6140bc92ee84d1c484e924a9935",
+          "source_revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+          "state": {
+            "hover": "header",
+            "name": "pinned-hover",
+            "pinned": true
+          },
+          "visible_text_sha256": "5aac047599bb76e9e9ff5ee83b51a2dcedafceeaf6fdfaa882421b8d7576164d"
+        }
+      ],
+      "media_artifact_hashes": [
+        "00cfc91ee80e2ee7b23dd76cbf3f40fed89c68365cc208d80a6078309ddd3f1a",
+        "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+        "960b0b8ce9fb4f49cfcc5e64b9ea3ccf5858d380cd3a6ef9d56210999ab0f7ce",
+        "c417a1a34eeeda50ecec972306be33c15476f6140bc92ee84d1c484e924a9935",
+        "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+        "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a"
+      ],
+      "media_review_result": "accepted",
+      "observations": [
+        "The source replaces the header's direct unpin control with a conditional corner marker.",
+        "The new marker has an image role and translated label. It is not an unpin button.",
+        "The six images show pinned and unpinned memos at both revisions, plus a pointer hover over the header.",
+        "The after pinned images show the corner marker and its larger hover state. The unpinned images show no marker.",
+        "The source includes reduced-motion classes, locale labels, and added tests. The review executes none of those tests.",
+        "The images establish no complete result for the remaining action menu or every translated label."
+      ],
+      "original_manifest_sha256": "649721793350129826de3c62c8be0155ab4b136da0ccec71f2a58e7e78609394",
+      "reference_facts_hash": "8771b8fd0c7dc2f4efbaf462b78ee6130d3f6ebc47c8dbabfe8c9ebbf4b3a47f",
+      "reference_limits_hash": "adca27f3b27a05788fd9fb15fdc35ee7fbb1924cb4682f6ffbb17577ce691853",
+      "result": "source_facts_accepted",
+      "reviewed_commit": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "reviewed_diff_sha256": "d8107ec147a81b4d9291be26ba55ab9844e1fabb786752835840e39a5cc570e4",
+      "reviewed_tree": "f18fff277703eea4753679570e1ec1e42b5fe729",
+      "role_inputs_hash": "6a94db5eebf5fd667bf546ec10a3ece330e545a77ec5b048b3b5fa06d5084b10"
+    }
+  ],
+  "image_count": 29,
+  "judge_scores_consulted": false,
+  "limits": [
+    "The review accepts source facts and frontend image evidence. It supplies no packet quality score.",
+    "The images show unchanged source frontends with fixed synthetic service responses.",
+    "The captures execute no Memos backend, database, authorization, or application test suite.",
+    "Source inspection supports conditions outside the captured states. The images do not establish those conditions.",
+    "The review supplies no measured performance benefit, universal accessibility result, or contrast ratio."
+  ],
+  "model_calls_for_review": 0,
+  "reviewed_at": "2026-10-02T22:38:43.149377+00:00",
+  "reviewer": "/root/trial_runtime",
+  "schema_version": 1,
+  "scope": "Independent review of pinned source facts, authored reports, exact image bytes, synthetic fixtures, and capture scope."
+}

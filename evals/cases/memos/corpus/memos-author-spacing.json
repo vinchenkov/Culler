@@ -1,0 +1,399 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/802/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "a8f180e9dd839201ccbba81b88899876187dbf7b6fb7483d757cdaa3f03457f1",
+      "source": {
+        "kind": "file",
+        "path": "memos-author-spacing/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/802/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "b282e0a20e5ba12571d443c0633445d5d860e403cac1ea6fee5db6c2a3e9cdf2",
+      "source": {
+        "kind": "file",
+        "path": "memos-author-spacing/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "fe23ff30537aea2f7c223a17774d090a5d8312abdf494ef6f4a2d6a1c826dea1",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "description": "Before: author. Fixed synthetic frontend state.",
+      "id": "media-before-author",
+      "kind": "media",
+      "path": "eval/802/media/before-author.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "45519accd338fa29010db6a9d31de6fe252256ae",
+      "sha256": "21ed0e1c47d10ceba1a20d65cb4691d8ad2b053cb91f11ea472aec7dac1092e1",
+      "source": {
+        "kind": "file",
+        "path": "memos-author-spacing/media/before-author.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: author. Fixed synthetic frontend state.",
+      "id": "media-after-author",
+      "kind": "media",
+      "path": "eval/802/media/after-author.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+      "sha256": "4b72309b26341cf629e2a73618aaafd4cedf094cbcb8aac6257ac14a3fbdf51a",
+      "source": {
+        "kind": "file",
+        "path": "memos-author-spacing/media/after-author.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "media-provenance",
+      "kind": "source_record",
+      "path": "eval/802/media/capture.json",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "sha256": "8512d7ce4b1c10d26af6baebdb1eadb98334f5ef2385c51c3d61168381bca141",
+      "source": {
+        "kind": "file",
+        "path": "memos-author-spacing/media/capture.json"
+      },
+      "visibility": "role"
+    }
+  ],
+  "content_hashes": {
+    "environment": "8fce17057bb62ade0e4658b821433f24bdd8cbf00b17e324467b5ca185541e60",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "3a53a689ecb5cbe84804ea296adf58daacdca77d2987e5b67542665eb2f8f95e",
+    "role_inputs": "9a8b2b7be8d3b20ef13b4cdb92dfc6f7b1c07428d2f8a249be285973a58151b1",
+    "visual_evidence": "8f6d79bd15126c0ea45a537cf2f02b79bb4dfb7c72f34f8faad1ba8d5cc72622"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": {
+      "browser_version": "145.0.7632.6",
+      "clock": "2026-09-30T12:00:00Z",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "locale": "en-US",
+      "method": "unchanged_frontend_with_synthetic_service_responses",
+      "provenance_artifact": "media-provenance",
+      "status": "captured",
+      "timezone": "UTC",
+      "tool_hashes": {
+        "capture_memos.py": "49eff933ca650fb9a036cb989e76fb7f26c8fc1d0247bc139012da924cb14d9a",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "d7622025092825c84541b63766c8fceef57c50235c2a824003c536faae6dee9f"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "3330044829fd01c625833bd7e9f538348e3c33241d3fb56f48e1ad4e3ef68e13"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-author-spacing",
+  "id": "memos-author-spacing",
+  "paths": {
+    "/mc/artifacts/eval/802/media/after-author.png": "media-after-author",
+    "/mc/artifacts/eval/802/media/before-author.png": "media-before-author",
+    "/mc/artifacts/eval/802/media/capture.json": "media-provenance",
+    "/mc/artifacts/eval/802/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/802/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The creator link can shrink below that minimum width.",
+        "before": "The creator link reserves a minimum width of four rem.",
+        "conditions": [
+          "The change affects the creator label beside the time and existing Space badge.",
+          "The change adds no new user data, API, or permission rule."
+        ],
+        "id": "behavior-1",
+        "mechanism": "MemoHeader changes the creator link from min-w-16 to min-w-0.",
+        "sources": [
+          {
+            "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+            "revision": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/2e33e7a5619f04efd9f713b0f855c6c60641ef8c/web/src/components/MemoView/components/MemoHeader.tsx"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The source declaration does not prove every browser width or every translated label fits.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+      "These captures verify the frontend display with synthetic service responses.",
+      "They execute no Memos backend, database, authorization, or application test suite."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-author-spacing",
+      "path": "reviews/memos-media.json",
+      "scope": "Pinned source facts and fixed frontend captures. Backend behavior and application tests remain unverified.",
+      "sha256": "ab254721dfe54b40707be72f6a602994c1f17c4788f8ffeb993aed06bb6bbf69"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "802"
+          },
+          {
+            "label": "Title",
+            "value": "Permit a narrow memo author label"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The creator link can shrink below that minimum width.\n\nAcceptance criteria:\n- The creator link can shrink below that minimum width.\n- The change affects the creator label beside the time and existing Space badge.\n- The change adds no new user data, API, or permission rule.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/802/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/802/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/802/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+          },
+          {
+            "label": "Base commit",
+            "value": "45519accd338fa29010db6a9d31de6fe252256ae"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 802": {
+        "acceptance_criteria": [
+          "The creator link can shrink below that minimum width.",
+          "The change affects the creator label beside the time and existing Space badge.",
+          "The change adds no new user data, API, or permission rule."
+        ],
+        "description": "The creator link can shrink below that minimum width.\n\nAcceptance criteria:\n- The creator link can shrink below that minimum width.\n- The change affects the creator label beside the time and existing Space badge.\n- The change adds no new user data, API, or permission rule.",
+        "id": 802,
+        "project_id": "memos-evaluation",
+        "purpose": "The creator link can shrink below that minimum width.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Permit a narrow memo author label"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The creator link can shrink below that minimum width.",
+            "The change affects the creator label beside the time and existing Space badge.",
+            "The change adds no new user data, API, or permission rule."
+          ],
+          "description": "The creator link can shrink below that minimum width.\n\nAcceptance criteria:\n- The creator link can shrink below that minimum width.\n- The change affects the creator label beside the time and existing Space badge.\n- The change adds no new user data, API, or permission rule.",
+          "id": 802,
+          "project_id": "memos-evaluation",
+          "purpose": "The creator link can shrink below that minimum width.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Permit a narrow memo author label"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The creator link can shrink below that minimum width.",
+        "The change affects the creator label beside the time and existing Space badge.",
+        "The change adds no new user data, API, or permission rule."
+      ],
+      "description": "The creator link can shrink below that minimum width.\n\nAcceptance criteria:\n- The creator link can shrink below that minimum width.\n- The change affects the creator label beside the time and existing Space badge.\n- The change adds no new user data, API, or permission rule.",
+      "id": 802,
+      "purpose": "The creator link can shrink below that minimum width.",
+      "requirements_version": 1,
+      "title": "Permit a narrow memo author label"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "45519accd338fa29010db6a9d31de6fe252256ae",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "2e33e7a5619f04efd9f713b0f855c6c60641ef8c",
+    "reviewed_tree": "3de7d09d87bfedab18cc77429535ff59c55d89a7",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "small_visible_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [
+      "Use the short creator label Al at the fixed desktop viewport.",
+      "Capture the same memo before and after the source change."
+    ],
+    "media_artifacts": [
+      "media-before-author",
+      "media-after-author"
+    ],
+    "required": true,
+    "status": "supplied"
+  }
+}

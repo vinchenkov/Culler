@@ -1,0 +1,62 @@
+{
+  "criteria": [
+    {
+      "criterion": "The comparison returns early for missing objects or empty keys before it compares identities.",
+      "evidence": [
+        {
+          "path": "server/api/v1/attachment_service_storage.go",
+          "revision": "a1c3061c6c531406e19d3d79c176d5de89bafbc5"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Equal nonempty keys already imply that both keys are nonempty in the old expression.",
+      "evidence": [
+        {
+          "path": "server/api/v1/attachment_service_storage.go",
+          "revision": "a1c3061c6c531406e19d3d79c176d5de89bafbc5"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The change preserves the other storage branches.",
+      "evidence": [
+        {
+          "path": "server/api/v1/attachment_service_storage.go",
+          "revision": "a1c3061c6c531406e19d3d79c176d5de89bafbc5"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "2b2192d4e153bd04f1d325b60fd880cf00d68b01",
+      "changed_paths": [
+        "server/api/v1/attachment_service_storage.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "a1c3061c6c531406e19d3d79c176d5de89bafbc5",
+      "reviewed_tree": "40077f7f16ba5b4b996fbd404dc2b0c16cbede28"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 821,
+  "unverified": [
+    "No attachment comparison test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

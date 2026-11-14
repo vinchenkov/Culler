@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:cc8affaac28b270757afad68b0ad7a50d05340962aa6a1aa596a9ac1e9020348",
+  "claims": [
+    {
+      "id": "claim_e15e571807ef4a4093ee4cf416a06313",
+      "statement": "The native executor builds a run repository with git init plus git fetch instead of a local clone, refuses an alternates file, and runs a connectivity fsck before checking out the input commit.",
+      "evidence": [
+        {
+          "resource": "repo://mc/repository/git.go#L154-L194",
+          "version": "repo-lines-v1:sha256:f07d541416cdc222e15b6475b1eabc13fb86199ed814850640300405d76ef3cb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NGY2MDIyMzA1ZTJiYmU3NDk1MDVjMWIyNzFjZGYyZGVhM2RiMjRhODliZWI0MzZjNTI4MzM4MGNlYmRkY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxMWUzNjcxNGE3NWY4MDQ5YmE3YTU1NjA4NzcxMmY1OWRmMDhmN2NkMDJlMDk1N2UyNWUwMzRhODFiZmFlMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2MTcwNmZkNDgzMDY4OTczMDM4Yjk5YzA2OTQ5MWU5YmQ2YjdjZDJkY2U4MjVkNzcxNDExOWFjOTQwOGUxZWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5421151d8a7f420391ce5eeaa3e8c2b7",
+      "statement": "Task repositories use runs/repositories while wiki repositories use runs/wiki-repositories under MC_HOME.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/repository.ts#L116-L122",
+          "version": "repo-lines-v1:sha256:bb671b80b48138fa1794e0414b2dc5e977190c7af39c830a4f3378b24a3a380f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGUwZDU4ZDk5Nzc4ODhkMjIxM2YzY2VkZjdhNzljNjQ3NTkzNzcyNjgxMmM0ZGNhYzMxMmQzNDg4NWYxN2RjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGNmNjNhMzcxZDMwNzQwNTBlZjcyNDYzOWMzMmZiNmEzZmUyNTU3NDA4YmUzNDdkNmUwODQ1YWVkMThiYWU1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmIwMWIwNTMwM2QxZTc4YTg1NDRiZDlkYzg5MGRiNzY0MTMzYjlkMjhjNDU2Yzk1MzIxZTQwZTMzMzZhYWZlOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b67d4d4b73384fdd9ef8efe50c5ee904",
+      "statement": "The spawn effect binds <run root>/repo at /workspace/source, read-only for the Scribe with only openwiki/ and .git writable.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/effects.ts#L1483-L1490",
+          "version": "repo-lines-v1:sha256:a91026a1a384f22f9f8fb2bc048caf3ec54b94d08f8b34b296c9bff34efbb0b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDVkMzQ3MDk1MTExNWVkMDcyMTQzNTZlMWQwYjFkZDJkNTc4ZGUxOTUxMWEyOTJiOTc0YzhhYTQ5MjM2NDdlOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjdlNTc4OGQ1ZDlkNzNkMjRhODFkYmMwYTVhNzRiZmE4MmM5YzNiM2FmOTllNTJhZjc5NmU5MGI0NjhhOGEzZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDRlMjJkMWU5ZDJiYjlhYjFkOGJhMTUyYTM2YjZmNDRmNjcxMGZkMTU2YjllMzZlMDYxNWM3MWI0NDMzN2JjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2I3NjI2MWU5Njc2ODNiM2NjNjlkMTc2NmIzNzkzYTY4Y2M3ZWE2YTk2YzAzNTY0ZGI5MjkzYzUxZTYwZWE3OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9a9b884219f480c803da8bd3c6c9537",
+      "statement": "A Worker submission must equal HEAD, preserve its assigned input as an ancestor, and differ from the task base; an unchanged start commit can qualify.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/decisionresolution_test.go#L106-L171",
+          "version": "repo-lines-v1:sha256:d80c626eeaa8c0797bfc5c20eb8e9df1607f610b7541dfa152a0924dac41a3fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyYTlkNTk3NzgwY2VkZWUyMTc3NTBmYmM1YzY2MTRkMjJmNzYxNzZkZTk5YTY0NzA1NTg0MjI2NWY3NDc1OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5NjAyNzBmYzZmOGMzNTA1NGQ5Zjk4NTNkNTE3N2I3Zjc0ODgyMzJjMjdlYWMwYWVhM2I3YWM3MzFlYTY0YTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkMDU4ZGU2YWVjNzg5NmNmM2YwYWQ5ZTg5NmQyNTFkZGM4ODZjNmI5N2Q4OGY0YmRhMzg3M2JjOTI3N2Q3NTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzZDA4NGE5ZTA2NGMxZTQ0NzA3OThkZmEzOGYwNGYwNzA0MTAzNmQ5N2VjYTRlZmRhZmI4ZDY5NzlmZTIwYTMifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/deliverycomplete.go#L55-L91",
+          "version": "repo-lines-v1:sha256:857944001da8d307250098400d357dd0f40b114dc464d105bb1fcbb0c8923c63:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZjhkYzI4NmJhMjk3YjQyMDQ2YWY2ZGRlZDM3OTllN2VjMTRkZmYyN2RmZDA1ZjZlNjVhODg0ODA4Zjk4NzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZGY4YjQyN2E3NjVmZmM3YmRhNjcwNjRiOWU5MDFkMDZiYjlmZGM5ZGZlYzU3NDc4NzY2N2RjZmVjNzg4MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3ZjY4MzMyYWZjNmJlN2Q2ZjNlMGYwN2I4MmE2NGI0NDM0NDc1ZWRjNGMyMmE0NDc5MzZkZTA1MWFlMDlkM2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3ZTU2Mzg5ZTBkOGYwZTVlNDEzNDA5NjQ0NTJkYTE1ZGNkZjRmZmUwZmY5ZWUwMWU0NGMyMWI5YmIyOTc5OWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_68a31959cedd4d899a75df98e367950a",
+      "statement": "Capture retains the submitted commit under refs/mc/tasks/<task>/versions/<run>, or under checkpoints/<run> for a checkpoint submission.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/repositoryexecutor.go#L262-L281",
+          "version": "repo-lines-v1:sha256:b243e2817894166ec1aa0e913110a54defcd6facf01a5bc320713047fafaa37c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNGIzN2IyN2NjNmI2YzdhMzY4YmNhM2Q2MWVkZjAzNGRjYmVmNGNkYjc0OTQ4YzdhMDJjYjg4YjZmNWZkZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5YTRlMTI0Zjg3ZjRlZmFhMjA0NTE5ZjA5YmQzNmVkYWY1NTFiOWNjMWU3ZDRjZGIxOGQyY2Q2Mzc1NDRlNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlY2JjMWUxNjgwMGNjMzliMGVjMzNmNGE4NmRjY2FkMjE4ZjY1Nzg4YThjMzRkMTI0OTNkYTA4ZDc4OWI4MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNTBmMGMxMDYxMmJmYjlhNzRlYjNiYTNiMjc0ZjNjMzkzODU4N2JmYmEwNTUzYmIxZTkxMzEzZDMyM2JhODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ed4449b70d74ed1a6928ad77eb18d40",
+      "statement": "The repository lane renews its executions in a heartbeat every 20 seconds and retries a failed registration after 5 seconds.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/repository-lane.ts#L45-L47",
+          "version": "repo-lines-v1:sha256:0bef5f04bf2ffe1e4c9ad38dc31df14d21a45ed7c61533f1d934627de4ef7a30:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzcxZDIxNzMwN2Q5NWNiMTVhMDIwN2RlMTE3ZTBjYzY4NmMzMGU4ZmE2NDljMmFlZDAxMjI5YjBmOGZiMTM1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc0M2JlZTNmN2M2NjVjZTE4NWNkNjliZDQ0NzBmZDk0OTRkNWFiNTc5ZDc1MWMzMzRmYTE0YmI5MDk5MTM0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjJjN2E5MTZlYjVkZTEwNmMyNGM0OWI5Njk4NzEwMTU4YWMwOTFjZjMwNTY3NmRhNDZlMjJhNmVhYTEyNzM1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWI3NWVjNzgyMGJjY2VhMjgyMjdjNTQ5NTExZDZlNjljZmQ0NDQwZGJjNjM5M2MzMjA0OGVhNGQ0NGMxY2YyZSJ9"
+        },
+        {
+          "resource": "repo://resident/src/repository-lane.ts#L657-L676",
+          "version": "repo-lines-v1:sha256:638dbcb3f2ad98a6841a2b3e15f564e4c39f3d4e0c06527d27572e94b223bf08:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0YjUxOWU4YTViODc1MDE5N2QwMTQ5YjhjYTkyZDFiMTFmOGUzMzdhYjYzNjI2NDliMjhiZDU1Y2MyNjkwMTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3ZDg2MzJlNTRlOTI5OGFiYjk1ODcyN2UyZDUxNDA4YWJhZjEzNjYwMzUzNzkxMDE0MGFiZjY1YjMwYWI2MTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNGRjZmM0YmNlMGFjZmRmYmNkNGIxZDM1YWM5NmM2OTYxMTM5M2Y1ODQxNWZkMjQxMTMwZWUzNDhkNjEwN2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_db42c44a9485412fb7b8abf047c461aa",
+      "statement": "mc delivery start checks the current owner, confirms stops, sweeps executions, and records each operation that dispatch.SelectStarts selects, all in one transaction.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/deliverystart.go#L119-L181",
+          "version": "repo-lines-v1:sha256:7d4057577f5e230b7a099adad54ad5ea70cd192f00f0c3fccc1305912fc73dc6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjZTYzYmNlNTJiOGVkY2ViNjE2NGU0ZWQ4MjdlNmUzZjg2NTc0NTk5YWE1N2JlYWJlNTU3ZTkwZDEyMGQ1MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlNjQ5YWNmNDBhYTllN2M5MGM1ZWZhZjI2Y2U2OGQ0MDMxYmM5NjNiNTYxMGZhN2EzNzdlMjk4NjYwZWMwOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlZjU3ZGI5ZjVlZjEwMDAwZDI4MTExODU1ZjNiOWRmNzZhODM4OGNlOGRkMmU2NGM0YzYzNWUyOGJmMDdjNjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53cd77f86f914578908b4675bb090bd8",
+      "statement": "A stale-owner refusal makes the repository lane abort its executions and exit the resident with code 1.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/repository-lane.test.ts#L664-L685",
+          "version": "repo-lines-v1:sha256:5247cc5bb8235c23fc4dd289abd71f37ce2e3b27e3148e4a669900d7487a445b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0Y2E1NzdkNjgwNTU1NTNlYjM2YmNiNjRiOTBjNGM4YzM3ZDNkNTViZDIzODI3NGNkODZiYzM1ZDdhOTQ3NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc5MjBmZmJmZWIwZWFjNDAxOWM0MjY3Njk1NWExYjU2YzJkZDI5NGM2MDE1NjAyMmFmYmEzMjg2NmMzNTJiZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0Mzg0MDA2OTcwODg1YjdlNTA2ZmE4ZmU4ZTQ3ZjQ3M2RmODYwY2Y4YjUzY2EwMTRlNDdjZWVmZWZhNDA1YTAifQ"
+        },
+        {
+          "resource": "repo://resident/src/repository-lane.ts#L247-L262",
+          "version": "repo-lines-v1:sha256:913bbfcb6b2a57be4a575c846a1d561d14c342434d7b530db98ba2e2a38e7b6f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0OWI0Y2Y5NzFmNjNlYWFhYzU1Yjc0YTg1YWNhMjVmNjIyYmIzOTQ4MTI0ZmQzMDllYmU4NjQyMTA0YmYzNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMDdjN2JmYjQwZmNlOGMzMDNmY2RlM2E2MjE0N2Y2NDhhMmEwYzg1ZjU1NDg0MDZjMjdkZGNiMWQ3YjllN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmNGY4YzQwNzlkNDE2Mzc2ZjY0MGEwNGEzYmY1MTNlNzI2MGVkNDEwMGFkZmZlZmMxYjVlN2U3ZWFlN2NjNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eb0739bf91e04a13a3eca62fdf7564c3",
+      "statement": "mc-land accepts only prepare or apply and execs mc __repository with the envelope file.",
+      "evidence": [
+        {
+          "resource": "repo://runner/image/mc-land#L1-L17",
+          "version": "repo-lines-v1:sha256:4aba74230075f63c48c11e53ada5335664a77851e9d57fd8d93ac57f371dac06:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4MDc2ZDNkMjhkMjFlMDIwMTJiMjBlYWY3ZGJmNzU0MDlhNjI3NzEzNDQzOTAyNWYyODJlMzY4ZTMzMDVhYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNjJmYjYzMmIxNTdmMjgzYjkxMzU4MDRhNTE3ZGE2NDkxZDkzOWQ4NjM1NDM1OTExYTkxZjM4OWM5ZTRhZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_200eb1e9bbfa41ff80a68151260cc099",
+      "statement": "Merge containers use no network, user 10002, dropped capabilities, a 2048-process limit, and no CPU or memory limit; prepare mounts the run folder while apply mounts the operator workspace.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/repository.ts#L381-L416",
+          "version": "repo-lines-v1:sha256:ed28829057fcf590e050902ff53edba9d8681609dcfeeb1204bd6156ad0162b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5N2U0YzQ5YWZjZjUwZjNkOWRmOGNhMzMzMWM3M2JhNzcwOTY2OWIyYzA1M2NjYzZkNGVjMjIxYmEzM2ZhMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjYzRkYjA5MTUwYTgyZDhiYWMyZmY5NmViYmJlM2QxZDllOWExMTk4MTA3ZmYzMTgxMGJkMjc2ZmU0NzFiZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ0YjQ2OGI4YjUyMTcxNmQyYzEwMmM2YWEyM2M5OTIzNWRjNzdkN2RlNjUwOWM4MTQ5OTlmY2U1YzEyZTZhNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5ODBjMjViODBlMDJjMGNkOGJjNTMwMjliNmYzZDdhNDg3YzBkMDc1NmU3N2MzMzFjYWQ4NTIyZWM5MTI2ZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_696e721a40034e84996e167c997148f3",
+      "statement": "Apply writes a durable journal before the destination update and a receipt reference refs/mc/applications/<authorization> after it.",
+      "evidence": [
+        {
+          "resource": "repo://mc/repository/apply.go#L105-L113",
+          "version": "repo-lines-v1:sha256:723a922e392b8d9a1cd16195aad3a211632623ca5bee5f05f877c69bc914e241:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdjNDkwZDM0NjNlYjdlNzVhYzZlMzFiYzhhOTYyMTcyNWEzZDVjNzM4ZTQxZTYxNjNhOTkwZDgyZWJmZTYxOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIyMzIxZjVhZTliYWNkMDFiMGNiYTg4NjBjMTEwNDVhZWYyMTBiOTRhMzUyNDRjN2YyMTI5ZjMxODhhYTMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDRhYTZhNTA3ODNmYWJhMDlhYTEzZGM2MDk5NThiYzdiMmFkZGVlMGM0MDNhYTc1ZWM4MTJmYmY2Nzk5M2U2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjVjYTg2MjM4MmM4NmJiOTQwOGY1M2FjNDZhZDYwODdlOWRiOTc1NTRkMTdmNDg5MmZmOWE3Yzg1MjQ4MzQwNyJ9"
+        },
+        {
+          "resource": "repo://mc/repository/apply.go#L207-L262",
+          "version": "repo-lines-v1:sha256:2e29c1c835f6c96d6d48298a68e2b43294018043831c61d4e09fb471f8d0d1d5:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiY2M5NzhkNjE4Y2Y1MjY0ZmEwNGIwNDNiYmI1NmM4YWRmMzM2NDgxNjNiYTM1MWUzY2U5NjM1ODA3N2UxYmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwN2U4MjM5NTBjMGMzOTRlNzI1ZTNmYWViYWVlZGQ3MTAxODVjMzg1NTljODIwYTAwOWZhZDE5OTY1NjFiY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3ODQ0NzZiMTIzMzhjZjcyYWM3YmY2ZGJiYjE5MjQyMmM3OWE0NmRhZjZlOGFlNTUwMDI1YTIyNWMyMWJhYTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e1c2c89804354fb1a21f67e8ab8c4761",
+      "statement": "configuredGitEnvironment rejects a missing, overlong, or control-character Git identity and returns GIT_AUTHOR and GIT_COMMITTER environment flags.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/git-identity.ts#L1-L25",
+          "version": "repo-lines-v1:sha256:bdb0f36e026dcc3d34c9b570296a9e86a212964549eb9513310982e8da9410d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4NGMxYTI4MDcwZjM3ZjY0ZjMyODYyZmNmZDU5ZDQ5YTJlYmQwODE3NWE4MzcyNTdmMDhkZWRiZDFhNjEzMTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c27320506a844ab93ca09df3f7e6fd0",
+      "statement": "The wiki candidate scope check compares the candidate with its destination before retention.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/repositoryexecutor.go#L75-L86",
+          "version": "repo-lines-v1:sha256:21d20269c1b17eddd50c109d16bf2e7fb055901cc27b5d5832e1c3f29aa9eb41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1ODBkNDIxNTQ2ZmJhNjI4YTNkNjFkNWE4YzY1NmEyZmNkZDVkYjBkYmRlMWIyOGYxNDY1N2EwMjZlNWFjNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlNWRmMWE4NDZiMzBmMjcyOWY5NWQyZjBkNDJjMDQ2NDM2NDc5MGM0NzFhMzRhYzMyNjg4YWYxYjNmN2Y1ZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MGNkZDJiMTFmZTQ5MjhmMGNkNTA5YWE1ZmVhOWE4OGU0NzI3N2Q1OTM1ZDM5NjY5ZmE0YjAxYzY3OTBkOTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac3a120d1748405a800012aa48003d04",
+      "statement": "The repository lane retains a merge candidate and preserves its source/environment association at acceptance.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/repository.ts#L290-L340",
+          "version": "repo-lines-v1:sha256:59dced7f1528547e71c9f8671d0b5a1dc85a62f74ee4b41473659173ee108828:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZjdmNDc0MTZmZDMzNDQwZjYwNzM5Mzg2YmUxOGQ0N2RkZTM3MTNmOGU3NDNiNDY0MDhiZjA4ZDhlNmY4YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1OWY3MmUxYTA4YmUwYzZmNmI2NjMzOGY3MGU3NmNmMzgwNmQ4YjAwNTgyYzA5MTRlMGNkODg5MmYyMDkwYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1NGEyYWU3ZjA5YmVjMTBiNjI0MzNiZWNhYmYzMWFkMTYzZGEzNzkzYjUzMDExZjk4ODdhMmRlOTYzYjI2YmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5M2E4NTEyYThmOWU0MTk5NGViOGYzNjc0ZjBiMmJhOTMyYjQ1YmYzMzM3N2E5MmFmZDUwN2Q4MWVjNjMwYzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_da326cf56d7c4c3c8beacbb33f0971a3",
+      "statement": "Tasks have the destination branch culler, and the isolated run repository reads source objects through the culler view.",
+      "evidence": [
+        {
+          "resource": "repo://GIT-DELIVERY.md#L3-L4",
+          "version": "repo-lines-v1:sha256:fb0df175f22f25e1e4d3c9f9ab36de5e5d3b12ec583fc6627486dfc6a12e53de:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlMGYzZDliZTM2ZmNiZTg2MWUwOGMxOWE5YjFhYzIwNTE1YjMzZTJiZjc1MTQ0MmFmM2NiZWQwNmZiODcxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTYwMzM3MzU4YjkxMDM4OTI2OWVlZjM1ZWZiOWEyZjBhMzNmOWRkMzUxOGNjMjNlMjQ2NDgzOWRlNDQ4MTgxMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiYzMxYjdkNmJlMGRjNzEyMDNmYzUyZjFlYTIyNWQ3ZGI2MzgwZjExMjFlMDgwOTJjOTVjNzU0YzM1N2IxOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTdkN2FmMzgwYzBkNmU2OGI3ZjRhOWFlYzVjMzA5M2QzMTc5YWQ2M2RkZDNiZDJiYTE1M2JlNmEwMTBlNjI2MyJ9"
+        },
+        {
+          "resource": "repo://mc/repository/git.go#L177-L177",
+          "version": "repo-lines-v1:sha256:8dcdf48a89adb8b2c0a614bd8fce760242873dfd9b963172fdff1c3a0a49318d:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRjZGY0OGE4OWFkYjhiMmMwYTYxNGJkOGZjZTc2MDI0Mjg3M2RmZDliOTYzMTcyZmRmZjFjM2EwYTQ5MzE4ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRjZGY0OGE4OWFkYjhiMmMwYTYxNGJkOGZjZTc2MDI0Mjg3M2RmZDliOTYzMTcyZmRmZjFjM2EwYTQ5MzE4ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQ2NDI0ZjJiNWE4MDAyYmI0NmU3N2VkZDU1ZjExZmUzMGY5NTlmODRlMzkwODAwZjFkYzZiM2RmNDgxYWE1ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTRiMGY3MGZkMzQ4M2U2NjVkMWE2NGQ4OWYxMTc4NTViNTM2ZWNmNDZmYWE1YWYzZDExYzQyM2VhMjQ5MTA2ZiJ9"
+        },
+        {
+          "resource": "repo://mc/substrate/schema.sql#L215-L215",
+          "version": "repo-lines-v1:sha256:ac3d3eaa5f28f2ea2f74e9e0a5b5dba1b2be51e4b0792088bdeea4af7071525f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWMzZDNlYWE1ZjI4ZjJlYTJmNzRlOWUwYTViNWRiYTFiMmJlNTFlNGIwNzkyMDg4YmRlZWE0YWY3MDcxNTI1ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWMzZDNlYWE1ZjI4ZjJlYTJmNzRlOWUwYTViNWRiYTFiMmJlNTFlNGIwNzkyMDg4YmRlZWE0YWY3MDcxNTI1ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc5MzRhY2JkNzA0MjkxYmFiZjBjYWFiMTNhYzU5NTU4ZjA4OWZkMjNkZTBlMzExYmUzZjAzMGM1YmJjY2RkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2M0MzRkNzI0NTU2ZGQ3YWUyMjdhMjUxOGQ5YTljNWIyOTM4ZDU2NTRiZDZhM2UxYjgzNzk5YTRmOTJmOWMzYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d0e52f71f424fb9b1987b345f69bc23",
+      "statement": "Project initialization points culler at the tip of main, refuses a culler branch with commits outside main, gives an empty repository an initial commit, and initializes a new repository on culler.",
+      "evidence": [
+        {
+          "resource": "repo://GIT-DELIVERY.md#L12-L19",
+          "version": "repo-lines-v1:sha256:abb903c068a8c366217982c4fb30b81aa06c3f6da57a016398acebb56dbde158:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjNjNjEwNGRhMzgwMmRiODEwMzc3MGZmN2MzOGU5NTEzNjQ1ZDQzYjk4MThkNWQ5MjY0MmMyZGU0OGZiOTc4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTYxNDkxOGE5ZGY0N2ViYjEyMmY4NmQ5NGZkZjljZTk5NmUyYzI2Yjk5ZTc5MGJjNjUzOTU1NjQ1ZDRlNmFhNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTk0NmI2MjVhN2E2ZmJjNzhhM2RhNzA0YjY3NDJhMWE1MTY4ODk4NjYxNTk2OWMxZGE3MmFhZGFiZGE3MmUxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmQyNDFhNjFjMzBlYThhZmUyODBkNTI0ZjU3YjY4Njc1NTc5YjFhNzlhZDE0Njc0YTA1ZTdkZmVlNzA0NWY5NSJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/onboardprojectgit.go#L277-L292",
+          "version": "repo-lines-v1:sha256:ede9993884cd69257b2825886bdf985f3197dd9b67092e4db3b6282f99ef11ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNjExOWJlZTI5YTQyMTdhM2YyMzY1Mzg2ZTQ3ZmIxNTVjOWNlMDQ4NTk0N2NhNDVkYjgwOWI5NDdjMzk0YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNDFlYTFkYjY2ODdmNjFjZTM5YzM4NzU5ZDExZGRjMDE1OTFmMTE5ODAxNTBlYjMxNzc4MTQ5NThiY2FmNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjOTAyNjc5ZjFjYjhjYzlkMjYyNjEyY2VmNGVkYzA5YTdiYWYxMjE0MmNjZGMwNGM4ZTQ0YTJkYzgyZmIyMDEifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/onboardprojectgit.go#L315-L375",
+          "version": "repo-lines-v1:sha256:6c2132eb34110bbba60643be218d623d05adf2ab147aebe02ab59e8d241cf32a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2ZWZjYmUyZWUwMGMyMzg0N2FjZWFjOTQ5OTcwMjQ2ZWY5NzA2MDQxYjFjN2JjYTJjYzliYjg1MTkxMTM3NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNDFlYTFkYjY2ODdmNjFjZTM5YzM4NzU5ZDExZGRjMDE1OTFmMTE5ODAxNTBlYjMxNzc4MTQ5NThiY2FmNWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlODg1NzJlODQxZjJlM2Q1NjVmN2JkMTA2NmJmYjk0N2NiY2NiNmNlMTFmMDNlMzRlMWU5ZDg4OGY4YzA2MTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dba9bb494a83418ca0057ef89f53aa09",
+      "statement": "Initial Project setup prepares an isolated repository at MC_HOME/environment-runs/setup-<setup_id>/source from the tip of culler and keeps an existing complete repository on a repeated call.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/setuprepository.go#L86-L128",
+          "version": "repo-lines-v1:sha256:16b35e9142065892334c6fd6a34c154047dc444cffe98c1c6345494d09627bc1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNjM2NWI1ODU4YTZlOGFhYzFiNDc1ZGU1NzhmYWJhMjNlYTE1NTNkYTA2NDAwYTg5ZTgwMjlkNjc4Mjg4MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5NDQyZjBjYTQ5Y2Q1NmVmMWI3YmFhMDZlNDAyMTFiOWU3ZTFiNDc5ZDljYWFjZGE0ZmJmYTM2ZDNlYmZmMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzOTNhYjZiZDdmYWMwZjM5NjQ1NjdlNjM4OTlhYjlkNDA1NTc4MzhhNTQ2ZTk1YTQxZWYyZGMyN2E1OGM1YmUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/setuprepository_test.go#L52-L100",
+          "version": "repo-lines-v1:sha256:00d42931caf6ba1c29b6709907872aba70f3a17682937a056fd4aeeea14705e0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwNDRkZmY3YjVmN2MzOTZiNmZjYjRiMDk5MjZiMGZmYzU5MjMxZDU4ZTcwMTgyMzcxNzAxMGZlYTM1ZjVkYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4ZjdkZjQwZDhlNTA0M2I5NzcyYjBlOTIwM2E1ZjRiYjVlOWM4NTEwZmMxNThhNzhlZTk0ODBjZTBkMGJlZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlmZGI4ZTE0YmE0OGJhZTQyYjkzZDE2NTU1ZjViOTNmMmE5ZWVjNDdhNTJlMDk3ZTU3NDIzY2I3OWNjZGY3M2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8003ea7158784a4884a2aee453e0a1ea",
+      "statement": "Setup delivery retains the setup commit under refs/mc/setup/<setup_id> and moves culler through repository.Apply, reporting a moved culler branch or a refused operator checkout.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/setuprepository.go#L130-L184",
+          "version": "repo-lines-v1:sha256:01102b3aa8e5110c7d0c7d2f695c6ae0da3a2a6e2bb1d470c390433a1dc1836c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxNDRjYWIzMmE3NzdkZmQ1ZDY1NDVjZmUxYmQwYWMxZmUyY2FmZTYwZTQ2MzA0NDIxMjc4MDdmYjNiYzcxZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiYzhlNTE5ZTk0YzAxNjMwNjVlZGNlMTVjYjM5OWYwZmViMmE1ZjY1NDAwYTEzN2ZiYjQ2MmM3ZDQxNWZmYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/setuprepository_test.go#L115-L204",
+          "version": "repo-lines-v1:sha256:e3f53754e4b0924bb8ada0464aa545c78272f43a6d4530f3278c7de5f769b9bd:eyJzZWxlY3RlZExpbmVDb3VudCI6OTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwMGI0NmNlMmE4MzlkYWViMzIxNmRiYTAwYmIwNWM3MzYxYWUxNmE0MTA5MDI4OTAzZGJlMTJlZTEwNjU4N2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5M2E5YTZiZjg3YzkwODI1NmYzMjBjNjU2NmM2NTNmNzM5YjBjZjFjZjVjNmFhM2YxMmZkZDBlNDYwMGYyMjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ede41d931b2840408d4c13805c0a3d92",
+      "statement": "The environment lane runs mc __setup-repository to prepare and deliver the temporary setup repository and fails acceptance when culler moved during setup.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/main.go#L853-L866",
+          "version": "repo-lines-v1:sha256:0d5e2c0509a67c8397bdca034c7559e77d02f0e184e862f93fdd4814af8c09a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlYzA0YzE5MTQzNGNhNGUyMWU4NDRiODdhODViODNmYzFhZjA2OTA5MGI3MTY0YTIwYjk3OTE5NTcwMzYzOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlZmUwY2E4Y2JkYzM5OWQ3OGZkZGYyNTY2YzhkODM2Zjg0NTQ1ZjEzMTdiMTI2MDJkYTJlZWNiNzdiOWUyZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2N2FkN2IxYmMyMTczZTFhMzkzNmJiOTAwN2Y0MzUxMTcyZjg0ZWRhYjBlZWY2Zjk2ZTVkYzFhZTU5OGY2OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwMDFmYjhiZGQ4ZjIyM2JkMGI0ZjliMTM3YWRhMDc2Mzc4NGMxZDhmMWU0NGQ5N2RlYTkwMzgyMTMzYTY1ODQifQ"
+        },
+        {
+          "resource": "repo://resident/src/environment-lane.ts",
+          "version": "repo-file-v1:sha256:414df23b5b90fc6f730866133290ce2b36afb19a2ab1b0ad5c779dc82d1cee25"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:23:34.077Z"
+  }
+}

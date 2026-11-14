@@ -1,0 +1,477 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/801/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "c8df6734efffa790d0a6b347a1ef143f425681a4b425e8eb2a24e4eff23a8162",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/801/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "d3a2860e45f84efe20540959bfa92837b9c133e08bc0aa2cca70c1fe75f36aff",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "d8107ec147a81b4d9291be26ba55ab9844e1fabb786752835840e39a5cc570e4",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "description": "Before: pinned. Fixed synthetic frontend state.",
+      "id": "media-before-pinned",
+      "kind": "media",
+      "path": "eval/801/media/before-pinned.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/before-pinned.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: unpinned. Fixed synthetic frontend state.",
+      "id": "media-before-unpinned",
+      "kind": "media",
+      "path": "eval/801/media/before-unpinned.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/before-unpinned.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: pinned hover. Fixed synthetic frontend state.",
+      "id": "media-before-pinned-hover",
+      "kind": "media",
+      "path": "eval/801/media/before-pinned-hover.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "sha256": "00cfc91ee80e2ee7b23dd76cbf3f40fed89c68365cc208d80a6078309ddd3f1a",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/before-pinned-hover.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: pinned. Fixed synthetic frontend state.",
+      "id": "media-after-pinned",
+      "kind": "media",
+      "path": "eval/801/media/after-pinned.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "sha256": "960b0b8ce9fb4f49cfcc5e64b9ea3ccf5858d380cd3a6ef9d56210999ab0f7ce",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/after-pinned.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: unpinned. Fixed synthetic frontend state.",
+      "id": "media-after-unpinned",
+      "kind": "media",
+      "path": "eval/801/media/after-unpinned.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "sha256": "f803bb8124dae9e061c2fc074b305c2c780cbf500c3b2e4d43a9c3c5c336345a",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/after-unpinned.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: pinned hover. Fixed synthetic frontend state.",
+      "id": "media-after-pinned-hover",
+      "kind": "media",
+      "path": "eval/801/media/after-pinned-hover.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "sha256": "c417a1a34eeeda50ecec972306be33c15476f6140bc92ee84d1c484e924a9935",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/after-pinned-hover.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "media-provenance",
+      "kind": "source_record",
+      "path": "eval/801/media/capture.json",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "sha256": "c624e0448dbe0b5db3391244c5fe96749addd2bf079ebbfa36bcbe81798353e2",
+      "source": {
+        "kind": "file",
+        "path": "memos-pinned-marker/media/capture.json"
+      },
+      "visibility": "role"
+    }
+  ],
+  "content_hashes": {
+    "environment": "6b7ffef6d84f2a9c26917c01d01f61b4a792560fc4e57d69f53a615b0f2bf971",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "d75ae7fc9a97e3fe7eb11360bc64f28de23fc7916dcf177b6825e467f1b6a7c6",
+    "role_inputs": "6a94db5eebf5fd667bf546ec10a3ece330e545a77ec5b048b3b5fa06d5084b10",
+    "visual_evidence": "7bac92b27c9d65b0da68722bea31691366b102cae451eea3493615b28876c615"
+  },
+  "corpus_status": "ready",
+  "dataset": "trainset",
+  "environment": {
+    "capture": {
+      "browser_version": "145.0.7632.6",
+      "clock": "2026-09-30T12:00:00Z",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "locale": "en-US",
+      "method": "unchanged_frontend_with_synthetic_service_responses",
+      "provenance_artifact": "media-provenance",
+      "status": "captured",
+      "timezone": "UTC",
+      "tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "1ef9e52f8b27e19738d6259740c8c67790c494a7dd428c6a2aaea73fed65c3b4"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "281674aac6b23941d9ded79a00d61107a1e10de820fb03ea176edfcec0bf0b5e"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-pinned-marker",
+  "id": "memos-pinned-marker",
+  "paths": {
+    "/mc/artifacts/eval/801/media/after-pinned-hover.png": "media-after-pinned-hover",
+    "/mc/artifacts/eval/801/media/after-pinned.png": "media-after-pinned",
+    "/mc/artifacts/eval/801/media/after-unpinned.png": "media-after-unpinned",
+    "/mc/artifacts/eval/801/media/before-pinned-hover.png": "media-before-pinned-hover",
+    "/mc/artifacts/eval/801/media/before-pinned.png": "media-before-pinned",
+    "/mc/artifacts/eval/801/media/before-unpinned.png": "media-before-unpinned",
+    "/mc/artifacts/eval/801/media/capture.json": "media-provenance",
+    "/mc/artifacts/eval/801/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/801/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "A pinned memo shows a corner marker instead of that header control.",
+        "before": "A pinned memo shows a bookmark control in its header. That control can unpin the memo.",
+        "conditions": [
+          "The marker is an image role with a translated pinned label, not an unpin button.",
+          "The marker grows on fine-pointer hover and disables its transition for reduced motion.",
+          "The change removes the now-unused useMemoActions hook and adds locale labels and marker tests."
+        ],
+        "id": "behavior-1",
+        "mechanism": "MemoView mounts MemoPinnedMark when showPinned and memo.pinned are true.",
+        "sources": [
+          {
+            "path": "web/src/components/MemoView/MemoView.tsx",
+            "revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c2b839957457e3f4998dfb1c7aff4d2eaaf05029/web/src/components/MemoView/MemoView.tsx"
+          },
+          {
+            "path": "web/src/components/MemoView/components/MemoPinnedMark.tsx",
+            "revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c2b839957457e3f4998dfb1c7aff4d2eaaf05029/web/src/components/MemoView/components/MemoPinnedMark.tsx"
+          },
+          {
+            "path": "web/src/components/MemoView/components/MemoHeader.tsx",
+            "revision": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c2b839957457e3f4998dfb1c7aff4d2eaaf05029/web/src/components/MemoView/components/MemoHeader.tsx"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The source removes direct unpin from the header. This case does not prove the remaining action menu's complete behavior.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+      "These captures verify the frontend display with synthetic service responses.",
+      "They execute no Memos backend, database, authorization, or application test suite."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-pinned-marker",
+      "path": "reviews/memos-media.json",
+      "scope": "Pinned source facts and fixed frontend captures. Backend behavior and application tests remain unverified.",
+      "sha256": "ab254721dfe54b40707be72f6a602994c1f17c4788f8ffeb993aed06bb6bbf69"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "801"
+          },
+          {
+            "label": "Title",
+            "value": "Move the pinned marker to the memo corner"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "A pinned memo shows a corner marker instead of that header control.\n\nAcceptance criteria:\n- A pinned memo shows a corner marker instead of that header control.\n- The marker is an image role with a translated pinned label, not an unpin button.\n- The marker grows on fine-pointer hover and disables its transition for reduced motion.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/801/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/801/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/801/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029"
+          },
+          {
+            "label": "Base commit",
+            "value": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 801": {
+        "acceptance_criteria": [
+          "A pinned memo shows a corner marker instead of that header control.",
+          "The marker is an image role with a translated pinned label, not an unpin button.",
+          "The marker grows on fine-pointer hover and disables its transition for reduced motion."
+        ],
+        "description": "A pinned memo shows a corner marker instead of that header control.\n\nAcceptance criteria:\n- A pinned memo shows a corner marker instead of that header control.\n- The marker is an image role with a translated pinned label, not an unpin button.\n- The marker grows on fine-pointer hover and disables its transition for reduced motion.",
+        "id": 801,
+        "project_id": "memos-evaluation",
+        "purpose": "A pinned memo shows a corner marker instead of that header control.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Move the pinned marker to the memo corner"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "A pinned memo shows a corner marker instead of that header control.",
+            "The marker is an image role with a translated pinned label, not an unpin button.",
+            "The marker grows on fine-pointer hover and disables its transition for reduced motion."
+          ],
+          "description": "A pinned memo shows a corner marker instead of that header control.\n\nAcceptance criteria:\n- A pinned memo shows a corner marker instead of that header control.\n- The marker is an image role with a translated pinned label, not an unpin button.\n- The marker grows on fine-pointer hover and disables its transition for reduced motion.",
+          "id": 801,
+          "project_id": "memos-evaluation",
+          "purpose": "A pinned memo shows a corner marker instead of that header control.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Move the pinned marker to the memo corner"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "A pinned memo shows a corner marker instead of that header control.",
+        "The marker is an image role with a translated pinned label, not an unpin button.",
+        "The marker grows on fine-pointer hover and disables its transition for reduced motion."
+      ],
+      "description": "A pinned memo shows a corner marker instead of that header control.\n\nAcceptance criteria:\n- A pinned memo shows a corner marker instead of that header control.\n- The marker is an image role with a translated pinned label, not an unpin button.\n- The marker grows on fine-pointer hover and disables its transition for reduced motion.",
+      "id": 801,
+      "purpose": "A pinned memo shows a corner marker instead of that header control.",
+      "requirements_version": 1,
+      "title": "Move the pinned marker to the memo corner"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+    "reviewed_tree": "f18fff277703eea4753679570e1ec1e42b5fe729",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "small_visible_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [
+      "A pinned memo before and after the change.",
+      "The new marker at rest and on pointer hover.",
+      "An unpinned memo with no marker."
+    ],
+    "media_artifacts": [
+      "media-before-pinned",
+      "media-before-unpinned",
+      "media-before-pinned-hover",
+      "media-after-pinned",
+      "media-after-unpinned",
+      "media-after-pinned-hover"
+    ],
+    "required": true,
+    "status": "supplied"
+  }
+}

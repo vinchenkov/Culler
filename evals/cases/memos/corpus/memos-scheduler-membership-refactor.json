@@ -1,0 +1,329 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/824/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "a64da612b11d978c9e70d380a2d41a1c37479c15ed237d247bb6e4c0eb18cc65",
+      "source": {
+        "kind": "file",
+        "path": "memos-scheduler-membership-refactor/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/824/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "acfcbf65e683626ae34ba34159c26402d9da5b5278f45c5e7ff4ad0d9d3ddeff",
+      "source": {
+        "kind": "file",
+        "path": "memos-scheduler-membership-refactor/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "4e457afec198a473fcecb51d4c31902cd9622606af24e78e33832b1d118e8c84",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "67c483af878dbedd275700fdc65e37fe6340ada346dd02290f5bb57053a2e2d7",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "39b9c42b440749bf70a4460142fb500ceb95ff68d25f5ecc7af6f8967a67eaed",
+    "role_inputs": "90bf34d872cc89212d07d0ef4855fcd93dbd0d2ec3c9e1ab7a4b4d8a275deadf",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "9d64757cad5ff120b4ee5a5ee09b7d08a223080ec60eb06eb882908f8dcd1472"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "d6734f3682c6541313d0cdfbfee205b57ac65e2497ca7dbfeebbadd737d5f474"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "028ebc669aad7af6d068e02b82ec3a92fed0e5175d7ac1858d76ff2150299fd8"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "c94e435c5b3d0c384f5e2de63695085eb7f670ce9658f1ee450fff9e791db979"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-scheduler-membership-refactor",
+  "id": "memos-scheduler-membership-refactor",
+  "paths": {
+    "/mc/artifacts/eval/824/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/824/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The list matcher uses slices.Contains for the same membership test.",
+        "before": "The scheduler list matcher loops over each value and returns on equality.",
+        "conditions": [
+          "The empty list still returns false.",
+          "The change adds no new cron field, schedule rule, or stored state.",
+          "The source does not establish a performance improvement."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The parser imports slices and replaces the manual loop with one helper call.",
+        "sources": [
+          {
+            "path": "internal/scheduler/parser.go",
+            "revision": "9fae524221f9912081b95328758bea3da5cb7acc",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/9fae524221f9912081b95328758bea3da5cb7acc/internal/scheduler/parser.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No parser test or benchmark ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-scheduler-membership-refactor",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "824"
+          },
+          {
+            "label": "Title",
+            "value": "Use the standard slice membership helper"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The list matcher uses slices.Contains for the same membership test.\n\nAcceptance criteria:\n- The list matcher uses slices.Contains for the same membership test.\n- The empty list still returns false.\n- The change adds no new cron field, schedule rule, or stored state.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/824/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/824/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/824/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "9fae524221f9912081b95328758bea3da5cb7acc"
+          },
+          {
+            "label": "Base commit",
+            "value": "14a1c9a53b75602efe515b729948fa6b8bc0038d"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "9fae524221f9912081b95328758bea3da5cb7acc"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "9fae524221f9912081b95328758bea3da5cb7acc"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "9fae524221f9912081b95328758bea3da5cb7acc"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "9fae524221f9912081b95328758bea3da5cb7acc"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 824": {
+        "acceptance_criteria": [
+          "The list matcher uses slices.Contains for the same membership test.",
+          "The empty list still returns false.",
+          "The change adds no new cron field, schedule rule, or stored state."
+        ],
+        "description": "The list matcher uses slices.Contains for the same membership test.\n\nAcceptance criteria:\n- The list matcher uses slices.Contains for the same membership test.\n- The empty list still returns false.\n- The change adds no new cron field, schedule rule, or stored state.",
+        "id": 824,
+        "project_id": "memos-evaluation",
+        "purpose": "The list matcher uses slices.Contains for the same membership test.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Use the standard slice membership helper"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The list matcher uses slices.Contains for the same membership test.",
+            "The empty list still returns false.",
+            "The change adds no new cron field, schedule rule, or stored state."
+          ],
+          "description": "The list matcher uses slices.Contains for the same membership test.\n\nAcceptance criteria:\n- The list matcher uses slices.Contains for the same membership test.\n- The empty list still returns false.\n- The change adds no new cron field, schedule rule, or stored state.",
+          "id": 824,
+          "project_id": "memos-evaluation",
+          "purpose": "The list matcher uses slices.Contains for the same membership test.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Use the standard slice membership helper"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The list matcher uses slices.Contains for the same membership test.",
+        "The empty list still returns false.",
+        "The change adds no new cron field, schedule rule, or stored state."
+      ],
+      "description": "The list matcher uses slices.Contains for the same membership test.\n\nAcceptance criteria:\n- The list matcher uses slices.Contains for the same membership test.\n- The empty list still returns false.\n- The change adds no new cron field, schedule rule, or stored state.",
+      "id": 824,
+      "purpose": "The list matcher uses slices.Contains for the same membership test.",
+      "requirements_version": 1,
+      "title": "Use the standard slice membership helper"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "14a1c9a53b75602efe515b729948fa6b8bc0038d",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/9fae524221f9912081b95328758bea3da5cb7acc",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "9fae524221f9912081b95328758bea3da5cb7acc",
+    "reviewed_tree": "72b79af5df8af2704ac5cc72feefb8abe8131fbc",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "internal_refactor"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

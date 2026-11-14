@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/case_corpus",
+  "result": "accepted",
+  "recorded_at": "2026-10-02T23:05:12.480285+00:00",
+  "model_calls": 0,
+  "scope": "Actual product source diagnostics at 80 and 40 columns, with and without color.",
+  "acceptance_source": "Independent review messages in this task.",
+  "matrices": [
+    {
+      "path": "/private/tmp/culler-eval-product-terminal-review/matrix.json",
+      "sha256": "f13e626eebaec890de9a94794a23c5230a0892026b281944d7fa53ce0b16c49b",
+      "capture_count": 24,
+      "records": [
+        {
+          "name": "missing-manifest",
+          "width": 80,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/missing-manifest-80-color-0.txt",
+          "sha256": "3fb6c0199746da48c8ddb5de90837bb63e226bdfda2a9ec0fc6524a578eea72b",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "missing-manifest"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "missing-manifest",
+          "width": 80,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/missing-manifest-80-color-1.txt",
+          "sha256": "3fb6c0199746da48c8ddb5de90837bb63e226bdfda2a9ec0fc6524a578eea72b",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "missing-manifest"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "missing-manifest",
+          "width": 40,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/missing-manifest-40-color-0.txt",
+          "sha256": "e03dfbf1a313fa123969917866ad25c90257928afa85498bf7c8b07e55941d9a",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "missing-manifest"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "missing-manifest",
+          "width": 40,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/missing-manifest-40-color-1.txt",
+          "sha256": "e03dfbf1a313fa123969917866ad25c90257928afa85498bf7c8b07e55941d9a",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "missing-manifest"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "product-identity",
+          "width": 80,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/product-identity-80-color-0.txt",
+          "sha256": "49c29cba52656b65609e697094d44ea9d65674931df8c61050f76b0791d5656e",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "product-identity"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "product-identity",
+          "width": 80,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/product-identity-80-color-1.txt",
+          "sha256": "49c29cba52656b65609e697094d44ea9d65674931df8c61050f76b0791d5656e",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "product-identity"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "product-identity",
+          "width": 40,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/product-identity-40-color-0.txt",
+          "sha256": "7f19a27ae4c3ac9622d47ad7f43366db4a2c07324afb46f8dc3ea80bc0f7111c",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "product-identity"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "product-identity",
+          "width": 40,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/product-identity-40-color-1.txt",
+          "sha256": "7f19a27ae4c3ac9622d47ad7f43366db4a2c07324afb46f8dc3ea80bc0f7111c",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "product-identity"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "changed-executable",
+          "width": 80,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/changed-executable-80-color-0.txt",
+          "sha256": "1d0a972aac8c01f2bdc2acf6c904b55e2dccea2582f95d266bb4c4d74a1de1cf",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "changed-executable"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "changed-executable",
+          "width": 80,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/changed-executable-80-color-1.txt",
+          "sha256": "1d0a972aac8c01f2bdc2acf6c904b55e2dccea2582f95d266bb4c4d74a1de1cf",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "changed-executable"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "changed-executable",
+          "width": 40,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/changed-executable-40-color-0.txt",
+          "sha256": "71cf710ed504c359dec850ca134830cd4361fb3b0f30b0127fd3761d75bb519e",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "changed-executable"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "changed-executable",
+          "width": 40,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/changed-executable-40-color-1.txt",
+          "sha256": "71cf710ed504c359dec850ca134830cd4361fb3b0f30b0127fd3761d75bb519e",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "changed-executable"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "go-version",
+          "width": 80,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/go-version-80-color-0.txt",
+          "sha256": "e7582334e1022f73ca5d40c60a1fcac77ac532aeccbffac544bf471ab1d1d109",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "go-version"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "go-version",
+          "width": 80,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/go-version-80-color-1.txt",
+          "sha256": "e7582334e1022f73ca5d40c60a1fcac77ac532aeccbffac544bf471ab1d1d109",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "go-version"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "go-version",
+          "width": 40,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/go-version-40-color-0.txt",
+          "sha256": "b443c53d03bd924108dabefa704a344e52a9a306a9aec767e3a49b57aa4bd95f",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "go-version"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "go-version",
+          "width": 40,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/go-version-40-color-1.txt",
+          "sha256": "b443c53d03bd924108dabefa704a344e52a9a306a9aec767e3a49b57aa4bd95f",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "go-version"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "module-checksums",
+          "width": 80,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/module-checksums-80-color-0.txt",
+          "sha256": "c67eefdf2a124c10f476e20be3f1de755f2680670a3308596b7b36d3d4ae35ca",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "module-checksums"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "module-checksums",
+          "width": 80,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/module-checksums-80-color-1.txt",
+          "sha256": "c67eefdf2a124c10f476e20be3f1de755f2680670a3308596b7b36d3d4ae35ca",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "module-checksums"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "module-checksums",
+          "width": 40,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/module-checksums-40-color-0.txt",
+          "sha256": "afca4971ef618a3660787912d04216370e06d56ae0ed33bef970d5dd5618cfad",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "module-checksums"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "module-checksums",
+          "width": 40,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/module-checksums-40-color-1.txt",
+          "sha256": "afca4971ef618a3660787912d04216370e06d56ae0ed33bef970d5dd5618cfad",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "module-checksums"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": true
+        },
+        {
+          "name": "final-reflection",
+          "width": 80,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/final-reflection-80-color-0.txt",
+          "sha256": "2f0bd6249025a19d15ea6c6980a76d49ed8c791541f206d16f9b212450980263",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "final-reflection"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "final-reflection",
+          "width": 80,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/final-reflection-80-color-1.txt",
+          "sha256": "2f0bd6249025a19d15ea6c6980a76d49ed8c791541f206d16f9b212450980263",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "final-reflection"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "final-reflection",
+          "width": 40,
+          "color": false,
+          "path": "/private/tmp/culler-eval-product-terminal-review/final-reflection-40-color-0.txt",
+          "sha256": "1e4204549ebcc35e1bd576f5363fe72b837e1dd7655099cf311278da1d73ded9",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "final-reflection"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        },
+        {
+          "name": "final-reflection",
+          "width": 40,
+          "color": true,
+          "path": "/private/tmp/culler-eval-product-terminal-review/final-reflection-40-color-1.txt",
+          "sha256": "1e4204549ebcc35e1bd576f5363fe72b837e1dd7655099cf311278da1d73ded9",
+          "exit_code": 1,
+          "argv": [
+            "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/.venv/bin/python",
+            "/private/tmp/culler-eval-product-diagnostics.py",
+            "final-reflection"
+          ],
+          "model_calls": 0,
+          "method": "The actual CLI formatter executes the actual guard with a controlled fixture input.",
+          "compile_fault": false
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/culler-eval-product-drift-terminal-review/matrix.json",
+      "sha256": "3854d4eda73bbd6ae5a1579e3fd8be5b9ad50577cbe12d77cd60d3aa2d97303d",
+      "capture_count": 4,
+      "records": [
+        {
+          "columns": 80,
+          "color_requested": false,
+          "exit_code": 1,
+          "path": "/private/tmp/culler-eval-product-drift-terminal-review/drift-80-color-0.txt",
+          "sha256": "2c50b56542e65a567aa5e1f6cb45d59e2a5e5f1a24c677aefa3089d8aadc6831",
+          "model_calls": 0
+        },
+        {
+          "columns": 80,
+          "color_requested": true,
+          "exit_code": 1,
+          "path": "/private/tmp/culler-eval-product-drift-terminal-review/drift-80-color-1.txt",
+          "sha256": "2c50b56542e65a567aa5e1f6cb45d59e2a5e5f1a24c677aefa3089d8aadc6831",
+          "model_calls": 0
+        },
+        {
+          "columns": 40,
+          "color_requested": false,
+          "exit_code": 1,
+          "path": "/private/tmp/culler-eval-product-drift-terminal-review/drift-40-color-0.txt",
+          "sha256": "25b8dcdd09e8f2707302b56795a52c166513aa8b6a98279d514a3b77f2cbd894",
+          "model_calls": 0
+        },
+        {
+          "columns": 40,
+          "color_requested": true,
+          "exit_code": 1,
+          "path": "/private/tmp/culler-eval-product-drift-terminal-review/drift-40-color-1.txt",
+          "sha256": "25b8dcdd09e8f2707302b56795a52c166513aa8b6a98279d514a3b77f2cbd894",
+          "model_calls": 0
+        }
+      ]
+    }
+  ]
+}

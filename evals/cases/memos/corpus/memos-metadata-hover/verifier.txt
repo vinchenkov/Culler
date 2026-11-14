@@ -1,0 +1,122 @@
+{
+  "criteria": [
+    {
+      "criterion": "MetadataSection declares the full hover and focus classes as literal strings.",
+      "evidence": [
+        {
+          "path": "web/src/components/MemoMetadata/MetadataSection.tsx",
+          "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "An editable row reveals its controls on hover or focus within the row.",
+      "evidence": [
+        {
+          "path": "web/src/components/MemoMetadata/MetadataSection.tsx",
+          "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+      "evidence": [
+        {
+          "path": "web/src/components/MemoMetadata/MetadataSection.tsx",
+          "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "changed_paths": [
+        "web/src/components/MemoMetadata/MetadataSection.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "reviewed_tree": "9b2f1ed87ec1ba24ae200d3628997a120097ee91"
+    },
+    "frontend_capture": {
+      "result": "captured",
+      "provenance": "/mc/artifacts/eval/803/media/capture.json",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "images": 8
+    }
+  },
+  "media": [
+    {
+      "path": "/mc/artifacts/eval/803/media/before-owner-idle.png",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+      "description": "Before: owner idle. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/before-owner-hover.png",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "882b1fa9569ab12bcecafe4076d68139eec165fa1627c79fa5234c776c3324bc",
+      "description": "Before: owner hover. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/before-other-idle.png",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+      "description": "Before: other idle. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/before-other-hover.png",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "469baa58a207f572ac19f33fbe27ebd5e53d815dd4795f6bc067f90d28641541",
+      "description": "Before: other hover. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/after-owner-idle.png",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+      "description": "After: owner idle. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/after-owner-hover.png",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "eaca786cb22dbde7cf4218093d1e467cedecb8690ded793089d18210931b8609",
+      "description": "After: owner hover. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/after-other-idle.png",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+      "description": "After: other idle. Fixed synthetic frontend state."
+    },
+    {
+      "path": "/mc/artifacts/eval/803/media/after-other-hover.png",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "d22bd8de472cbb778c3a4677eaafc55ef915f795af45e2957b63d2289f855d90",
+      "description": "After: other hover. Fixed synthetic frontend state."
+    }
+  ],
+  "media_status": "supplied",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 803,
+  "unverified": [
+    "Class declarations alone do not prove keyboard traversal or accessibility across the whole app.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ]
+}

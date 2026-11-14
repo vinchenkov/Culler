@@ -1,0 +1,12 @@
+{
+  "name": "culler-dashboard",
+  "private": true,
+  "type": "module",
+  "description": "Culler dashboard. Bun-only, zero runtime dependencies; Playwright is the smoke lane's pinned dev dependency.",
+  "scripts": {
+    "test": "bun test src/"
+  },
+  "devDependencies": {
+    "playwright": "1.54.0"
+  }
+}

@@ -1,0 +1,9 @@
+usage: author_corpus.py [-h] --cache EXTERNAL_MIRROR
+
+Create absent corpus files from pinned Memos source. Preserve existing cases and
+reviews.
+
+options:
+  -h, --help      show this help message and exit
+  --cache EXTERNAL_MIRROR
+                  Path to the external bare Memos repository.

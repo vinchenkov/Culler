@@ -1,0 +1,329 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/705/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "09416a1c835671c13a6f1e7915f79db45672981cbd61e575d550dd61573b072b",
+      "source": {
+        "kind": "file",
+        "path": "memos-archived-owner-access/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/705/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "420fae216cc46b1d52e5c60ce6499796dca0a772e4744df4945c0b7ca5572bba",
+      "source": {
+        "kind": "file",
+        "path": "memos-archived-owner-access/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "f60d0eafe35c9b2ec87a9b31d49bd17cbe0f8e203228635fa027e332a34e8c1f",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "9fdaad90a69289632e5587fe6104e8bab5da99bfb6328af89c87bd1c56989492",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "942cd15d1b6a572e233f4b54f6179c6fc4dad983f17d9283b4bafcd0ab24db65",
+    "role_inputs": "9312755c73ef34605b3a90d410174693f2ac3a082f52dcf088b32af1061fb30f",
+    "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+  },
+  "corpus_status": "ready",
+  "dataset": "trainset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "130a10e4fbc2d9d44a2ced54a409b17564531a639d3802d6ce24d85785d9cbb9"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "96030a2bd109dd8f64b45aae10af6fc04f24ce420392952199353fbbaa8e3c1a"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "40065a572b2d50a8b4c7bb1b82d43b7c5149d6c0b236d2c54260a8b085978a5e"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "d3da45d2421c6e1505717067f41b2e76e79fba3a515c897b16fbdc8a764c16f7"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-archived-owner-access",
+  "id": "memos-archived-owner-access",
+  "paths": {
+    "/mc/artifacts/eval/705/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/705/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.",
+        "before": "The list and direct-get handlers applied visibility rules without these new archive-specific creator checks.",
+        "conditions": [
+          "An anonymous archived list returns an empty response.",
+          "A direct archived read by an anonymous user or a different creator returns not found.",
+          "The new archive-specific check contains no administrator exception.",
+          "The normal-state list retains its existing visibility behavior."
+        ],
+        "id": "behavior",
+        "mechanism": "The list handler restricts its creator filter. The direct-get handler checks archive state before its ordinary visibility checks.",
+        "sources": [
+          {
+            "path": "server/router/api/v1/memo_service.go",
+            "revision": "f4154d090be3896c8e0dd83440f24953bbeb308c",
+            "symbol": "ListMemos, GetMemo",
+            "url": "https://github.com/usememos/memos/blob/f4154d090be3896c8e0dd83440f24953bbeb308c/server/router/api/v1/memo_service.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "This preparation did not execute application requests or a permission matrix.",
+      "This reviewed range establishes changes to list and direct-get handlers. It does not prove a complete audit of every other endpoint."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-archived-owner-access",
+      "path": "reviews/memos-seed.json",
+      "scope": "Pinned source facts only. Application tests and media remain outside this review.",
+      "sha256": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685"
+    },
+    "review_requirements": [
+      "An independent reviewer must verify the before and after behavior against both commits.",
+      "The reviewer must inspect all material changes in the range, not only the cited symbols.",
+      "The reviewer must confirm the evidence limits and any supplied media."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "705"
+          },
+          {
+            "label": "Title",
+            "value": "Restrict archived memo reads to their creator"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.\n\nAcceptance criteria:\n- The archived list restricts results to the authenticated creator.\n- Anonymous archived lists return no results.\n- The direct-get handler hides archived memos from non-creators.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/705/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/705/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/705/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view of the dashboard shows these commits and the complete diff to the operator.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "f4154d090be3896c8e0dd83440f24953bbeb308c"
+          },
+          {
+            "label": "Base commit",
+            "value": "8f43e8075b62706f99da4005ab04b165b35215f6"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "f4154d090be3896c8e0dd83440f24953bbeb308c"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "f4154d090be3896c8e0dd83440f24953bbeb308c"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "f4154d090be3896c8e0dd83440f24953bbeb308c"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "f4154d090be3896c8e0dd83440f24953bbeb308c"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 705": {
+        "acceptance_criteria": [
+          "The archived list restricts results to the authenticated creator.",
+          "Anonymous archived lists return no results.",
+          "The direct-get handler hides archived memos from non-creators."
+        ],
+        "description": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.\n\nAcceptance criteria:\n- The archived list restricts results to the authenticated creator.\n- Anonymous archived lists return no results.\n- The direct-get handler hides archived memos from non-creators.",
+        "id": 705,
+        "project_id": "memos-evaluation",
+        "purpose": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Restrict archived memo reads to their creator"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The archived list restricts results to the authenticated creator.",
+            "Anonymous archived lists return no results.",
+            "The direct-get handler hides archived memos from non-creators."
+          ],
+          "description": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.\n\nAcceptance criteria:\n- The archived list restricts results to the authenticated creator.\n- Anonymous archived lists return no results.\n- The direct-get handler hides archived memos from non-creators.",
+          "id": 705,
+          "project_id": "memos-evaluation",
+          "purpose": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Restrict archived memo reads to their creator"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The archived list restricts results to the authenticated creator.",
+        "Anonymous archived lists return no results.",
+        "The direct-get handler hides archived memos from non-creators."
+      ],
+      "description": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.\n\nAcceptance criteria:\n- The archived list restricts results to the authenticated creator.\n- Anonymous archived lists return no results.\n- The direct-get handler hides archived memos from non-creators.",
+      "id": 705,
+      "purpose": "An archived list returns only the authenticated creator's archived memos. Direct reads hide an archived memo from other users.",
+      "requirements_version": 1,
+      "title": "Restrict archived memo reads to their creator"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "8f43e8075b62706f99da4005ab04b165b35215f6",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/f4154d090be3896c8e0dd83440f24953bbeb308c",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "f4154d090be3896c8e0dd83440f24953bbeb308c",
+    "reviewed_tree": "57bbc23dabd0806d3dcf3ebed0da828125158590",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "data_or_access"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "required": false,
+    "status": "not_applicable"
+  }
+}

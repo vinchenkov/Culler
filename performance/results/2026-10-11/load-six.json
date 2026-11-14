@@ -1,0 +1,123 @@
+{
+  "actualWorkers": 6,
+  "cleanupErrors": [],
+  "command": [
+    "python3",
+    "performance/compare.py",
+    "--config",
+    "/private/tmp/culler-performance/20261011-mac-command/config.json",
+    "--output",
+    "/private/tmp/culler-performance/20261011-mac-command/policy-loaded-1000",
+    "--trials",
+    "1000",
+    "--block-size",
+    "20",
+    "--seed",
+    "59"
+  ],
+  "commandPid": 67282,
+  "commandReturnCode": 0,
+  "commandStartedAt": "2026-10-11T21:19:05.863333+00:00",
+  "elapsedSeconds": 353.68763916695025,
+  "finalLoadAverage": [
+    9.03173828125,
+    7.7392578125,
+    5.69970703125
+  ],
+  "finishedAt": "2026-10-11T21:24:59.492797+00:00",
+  "generator": {
+    "algorithm": "SHA-256 over the same zero-filled byte buffer",
+    "bufferBytesPerWorker": 65536,
+    "hashesPerDeadlineCheck": 64,
+    "policy": "standard",
+    "retainedResults": 0,
+    "sourceSha256": "332ee746b2dc718d4cc763679d3b54cb770a4776d62794cfc46b19501cf5d0aa",
+    "taskPriority": 31
+  },
+  "initialLoadAverage": [
+    2.76513671875,
+    3.2734375,
+    3.57080078125
+  ],
+  "loadAverageAtCommandStart": [
+    2.76513671875,
+    3.2734375,
+    3.57080078125
+  ],
+  "logicalProcessors": 14,
+  "maxSeconds": 1800,
+  "policyLauncher": "/private/tmp/culler-policy-launcher",
+  "policyLauncherSha256": "5b78f6b56549c89e5363deb523c6a00a67036defca50ed1dd9831b1b7254ee7b",
+  "pythonExecutable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "pythonVersion": "3.14.2",
+  "requestedWorkers": 6,
+  "schemaVersion": 1,
+  "selectedWorkers": 6,
+  "startedAt": "2026-10-11T21:19:05.815781+00:00",
+  "state": "complete",
+  "workerCap": 7,
+  "workerReturnCodes": [
+    -15,
+    -15,
+    -15,
+    -15,
+    -15,
+    -15
+  ],
+  "workers": [
+    {
+      "pid": 67269,
+      "policyReport": {
+        "pid": 67269,
+        "task_priority": 31
+      },
+      "startedAt": "2026-10-11T21:19:05.847728+00:00",
+      "type": "ready"
+    },
+    {
+      "pid": 67270,
+      "policyReport": {
+        "pid": 67270,
+        "task_priority": 31
+      },
+      "startedAt": "2026-10-11T21:19:05.847648+00:00",
+      "type": "ready"
+    },
+    {
+      "pid": 67271,
+      "policyReport": {
+        "pid": 67271,
+        "task_priority": 31
+      },
+      "startedAt": "2026-10-11T21:19:05.847747+00:00",
+      "type": "ready"
+    },
+    {
+      "pid": 67272,
+      "policyReport": {
+        "pid": 67272,
+        "task_priority": 31
+      },
+      "startedAt": "2026-10-11T21:19:05.850792+00:00",
+      "type": "ready"
+    },
+    {
+      "pid": 67273,
+      "policyReport": {
+        "pid": 67273,
+        "task_priority": 31
+      },
+      "startedAt": "2026-10-11T21:19:05.851013+00:00",
+      "type": "ready"
+    },
+    {
+      "pid": 67274,
+      "policyReport": {
+        "pid": 67274,
+        "task_priority": 31
+      },
+      "startedAt": "2026-10-11T21:19:05.852416+00:00",
+      "type": "ready"
+    }
+  ]
+}

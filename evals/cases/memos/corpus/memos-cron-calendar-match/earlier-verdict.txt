@@ -1,0 +1,20 @@
+{
+  "evidence": [
+    {
+      "path": "internal/scheduler/parser.go",
+      "revision": "3227748a3018688d1d0b5f16aab82ae8319dc1e1"
+    }
+  ],
+  "finding": "The claim contradicts the pinned source conditions.",
+  "outcome": "fail",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "The parser always requires both day fields to match.",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "This is an authored source-inspection history, not an executed Culler run.",
+  "task_id": 810,
+  "unverified": [
+    "No scheduled job or calendar test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

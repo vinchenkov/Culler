@@ -1,0 +1,90 @@
+{
+  "criteria": [
+    {
+      "criterion": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+      "evidence": [
+        {
+          "path": "internal/webhook/validate.go",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        },
+        {
+          "path": "internal/linkmeta/html_meta.go",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        },
+        {
+          "path": ".github/workflows/backend-tests.yml",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The existing loopback, private, link-local, and unspecified checks remain.",
+      "evidence": [
+        {
+          "path": "internal/webhook/validate.go",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        },
+        {
+          "path": "internal/linkmeta/html_meta.go",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        },
+        {
+          "path": ".github/workflows/backend-tests.yml",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+      "evidence": [
+        {
+          "path": "internal/webhook/validate.go",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        },
+        {
+          "path": "internal/linkmeta/html_meta.go",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        },
+        {
+          "path": ".github/workflows/backend-tests.yml",
+          "revision": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "7e3d3c63156c206209fdc8e75a4fb117b1aaf1fb",
+      "changed_paths": [
+        ".github/workflows/backend-tests.yml",
+        "internal/linkmeta/html_meta.go",
+        "internal/linkmeta/html_meta_test.go",
+        "internal/webhook/validate.go",
+        "internal/webhook/webhook_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+      "reviewed_tree": "ee516a870dcc1d7fd7e253b058fb91c8e22f716e"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 818,
+  "unverified": [
+    "No network guard test or continuous integration job ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

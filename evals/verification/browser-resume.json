@@ -1,0 +1,53 @@
+{
+  "check": "browser_resume",
+  "passed": true,
+  "experiment_resumed": false,
+  "model_calls": 0,
+  "regression_tests": {
+    "count": 382,
+    "passed": 382,
+    "duration_seconds": 152.84
+  },
+  "final_interface_tests": {
+    "passed": 5
+  },
+  "terminal_and_cli_tests": {
+    "passed": 10
+  },
+  "copied_experiment": {
+    "model_calls": 0,
+    "original_experiment_intact": true,
+    "protocol_verified": true,
+    "original_sample_slot_reused": true,
+    "packet_hash_preserved": true,
+    "judge_fixture_calls": 1,
+    "generation_protocol_preserved": true,
+    "original_product_source_preserved": true,
+    "same_trial_id_preserved": true
+  },
+  "terminal_review": {
+    "accepted": true,
+    "reviewer": "resume_terminal_review",
+    "widths": [
+      80,
+      40
+    ],
+    "color_settings": [
+      "enabled",
+      "disabled"
+    ],
+    "captures": {
+      "terminal-40-color.txt": "4202312a4d947bbae97a7aca6661640e39087f43c366a71e76cc8e6c188717ac",
+      "terminal-40-plain.txt": "b511fc3625f873748990b76427f11c2dc61a88f0327a594cf1b216a96311d839",
+      "terminal-80-color.txt": "c7f960adc1f14f45fafa03cafc589c474ff1ad1ebc38195a0093ed8ac0379a13",
+      "terminal-80-plain.txt": "5dda3965cfb987cd7a7518995f2915273e745205b827a824552805b0da081c65"
+    }
+  },
+  "checks": [
+    "The browser restores saved experiments and resumes the same experiment directory.",
+    "The browser displays new events in the same experiment tree.",
+    "The runtime update preserves the original directive, cases, rubric, models, effort levels, and product source.",
+    "The Judge scores retained packets again. Earlier scores remain in the experiment records.",
+    "The resume process requests fast mode for each role. Actual Claude Code fast service remains unconfirmed."
+  ]
+}

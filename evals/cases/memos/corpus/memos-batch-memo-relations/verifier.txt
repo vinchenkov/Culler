@@ -1,0 +1,160 @@
+{
+  "criteria": [
+    {
+      "criterion": "Memo and comment lists resolve relations in a batch before conversion.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "server/router/api/v1/memo_relation_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/sqlite/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/mysql/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/postgres/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The three database drivers accept a memo identifier list across both relation endpoints.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "server/router/api/v1/memo_relation_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/sqlite/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/mysql/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/postgres/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "An empty memo list returns an empty map without that relation query.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "server/router/api/v1/memo_relation_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/sqlite/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/mysql/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/postgres/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "server/router/api/v1/memo_relation_service.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/sqlite/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/mysql/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        },
+        {
+          "path": "store/db/postgres/memo_relation.go",
+          "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "3d4f793f97b567bda823a60b7fe10e09e14499ce",
+      "changed_paths": [
+        "server/router/api/v1/memo_service.go",
+        "server/router/api/v1/memo_service_converter.go",
+        "server/router/api/v1/test/test_helper.go",
+        "store/db/mysql/memo_relation.go",
+        "store/db/postgres/memo_relation.go",
+        "store/db/sqlite/memo_relation.go",
+        "store/memo_relation.go",
+        "store/test/memo_relation_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+      "reviewed_tree": "7eed498ec3b38ae6209dbba1673abf8764669497"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 825,
+  "unverified": [
+    "No list request, database query, or performance benchmark ran.",
+    "The source reduces lookup structure; it does not establish a numerical latency improvement.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

@@ -1,0 +1,366 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/828/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "f8af665eb84a2008a40177d3a71a7b5efb4016ad341e4b770dcc12d3f9ce3a36",
+      "source": {
+        "kind": "file",
+        "path": "memos-sse-connection-fanout/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/828/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "68dd749ecb5eef02f51952ae63e4138a0a4d5b2902e1943e3cd0087c8e3292c3",
+      "source": {
+        "kind": "file",
+        "path": "memos-sse-connection-fanout/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "14de955a90782a975bc55abc08d522e22f460f333711451b91175a52d13f7afa",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "0b4c10c63fedcadc00e0fa79b3217aa16600fad3ecf7f990ed035a2353f665f2",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "d02141d61d9ce7effa0e18f56ff88588b1002885410b11848e502bc29a42cb19",
+    "role_inputs": "989b1dd2d9b6b67cd0ac94f3ab4df41bf1391f52aeaa0ef32923874dc963ee4e",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "final",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "9d64757cad5ff120b4ee5a5ee09b7d08a223080ec60eb06eb882908f8dcd1472"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "d6734f3682c6541313d0cdfbfee205b57ac65e2497ca7dbfeebbadd737d5f474"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "b736679a56dc296a13df2efd829d70885f29321e3d0113229802cf2df055bdb6"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "dc6af56b66ef74d3fb6e4ebfa76117166fc52ad1e74f064534ecaffe3c2b11e8"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-sse-connection-fanout",
+  "id": "memos-sse-connection-fanout",
+  "paths": {
+    "/mc/artifacts/eval/828/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/828/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+        "before": "Tabs can create redundant event connections and the server drops events when a client buffer fills.",
+        "conditions": [
+          "If either cross-tab primitive is unavailable, each visible tab keeps its own connection.",
+          "A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+          "The server buffer holds 32 events.",
+          "Unknown visibility rejects the broadcast, while private delivery retains its owner or administrator boundary."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The browser combines Web Locks and BroadcastChannel; the hub frames one event and distributes its bytes.",
+        "sources": [
+          {
+            "path": "web/src/hooks/useLiveMemoRefresh.ts",
+            "revision": "dd18002b12b8632d11b57fa3d33de244bba91476",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/dd18002b12b8632d11b57fa3d33de244bba91476/web/src/hooks/useLiveMemoRefresh.ts"
+          },
+          {
+            "path": "server/router/api/v1/sse_hub.go",
+            "revision": "dd18002b12b8632d11b57fa3d33de244bba91476",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/dd18002b12b8632d11b57fa3d33de244bba91476/server/router/api/v1/sse_hub.go"
+          }
+        ]
+      },
+      {
+        "after": "The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.",
+        "before": "The previous handler emits periodic heartbeats and lacks the revised disconnect signal.",
+        "conditions": [
+          "Retry uses full jitter with a cap that grows from 1 second to 30 seconds.",
+          "A connection that survives 60 seconds resets the retry delay.",
+          "A 401 response tries token refresh once before the general retry path.",
+          "Cross-tab sharing is an optimization, not guaranteed delivery or a durable event log.",
+          "The change adds cross-tab, concurrency, race, and benchmark source files without a new rendered control."
+        ],
+        "id": "behavior-2",
+        "mechanism": "Event delivery resets the timer; reconnect invalidates active memo queries and user statistics.",
+        "sources": [
+          {
+            "path": "server/router/api/v1/sse_handler.go",
+            "revision": "dd18002b12b8632d11b57fa3d33de244bba91476",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/dd18002b12b8632d11b57fa3d33de244bba91476/server/router/api/v1/sse_handler.go"
+          },
+          {
+            "path": "web/src/hooks/useLiveMemoRefresh.ts",
+            "revision": "dd18002b12b8632d11b57fa3d33de244bba91476",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/dd18002b12b8632d11b57fa3d33de244bba91476/web/src/hooks/useLiveMemoRefresh.ts"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No cross-tab browser session, network recovery, race test, or benchmark ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-sse-connection-fanout",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "828"
+          },
+          {
+            "label": "Title",
+            "value": "Share visible-tab event connections and bound slow clients"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n\nAcceptance criteria:\n- Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n- The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.\n- If either cross-tab primitive is unavailable, each visible tab keeps its own connection.\n- A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/828/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/828/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/828/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "dd18002b12b8632d11b57fa3d33de244bba91476"
+          },
+          {
+            "label": "Base commit",
+            "value": "c4221c6dfe51902d0c5f482802e670fda1b72751"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "dd18002b12b8632d11b57fa3d33de244bba91476"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "dd18002b12b8632d11b57fa3d33de244bba91476"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "dd18002b12b8632d11b57fa3d33de244bba91476"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "dd18002b12b8632d11b57fa3d33de244bba91476"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 828": {
+        "acceptance_criteria": [
+          "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+          "The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.",
+          "If either cross-tab primitive is unavailable, each visible tab keeps its own connection.",
+          "A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner."
+        ],
+        "description": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n\nAcceptance criteria:\n- Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n- The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.\n- If either cross-tab primitive is unavailable, each visible tab keeps its own connection.\n- A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+        "id": 828,
+        "project_id": "memos-evaluation",
+        "purpose": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Share visible-tab event connections and bound slow clients"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+            "The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.",
+            "If either cross-tab primitive is unavailable, each visible tab keeps its own connection.",
+            "A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner."
+          ],
+          "description": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n\nAcceptance criteria:\n- Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n- The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.\n- If either cross-tab primitive is unavailable, each visible tab keeps its own connection.\n- A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+          "id": 828,
+          "project_id": "memos-evaluation",
+          "purpose": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Share visible-tab event connections and bound slow clients"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+        "The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.",
+        "If either cross-tab primitive is unavailable, each visible tab keeps its own connection.",
+        "A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner."
+      ],
+      "description": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n\nAcceptance criteria:\n- Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.\n- The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.\n- If either cross-tab primitive is unavailable, each visible tab keeps its own connection.\n- A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+      "id": 828,
+      "purpose": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+      "requirements_version": 1,
+      "title": "Share visible-tab event connections and bound slow clients"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "c4221c6dfe51902d0c5f482802e670fda1b72751",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/dd18002b12b8632d11b57fa3d33de244bba91476",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "dd18002b12b8632d11b57fa3d33de244bba91476",
+    "reviewed_tree": "b7178ded2453af778c8145c6280eaf30eceb8c19",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "performance_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

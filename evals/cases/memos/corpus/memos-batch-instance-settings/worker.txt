@@ -1,0 +1,67 @@
+{
+  "checks": [
+    {
+      "base_commit": "21303e879d2c7a857306206d2cbdae83f61983e6",
+      "changed_paths": [
+        "proto/api/v1/instance_service.proto",
+        "proto/gen/api/v1/apiv1connect/instance_service.connect.go",
+        "proto/gen/api/v1/instance_service.pb.go",
+        "proto/gen/api/v1/instance_service.pb.gw.go",
+        "proto/gen/api/v1/instance_service_grpc.pb.go",
+        "proto/gen/openapi.yaml",
+        "server/router/api/v1/acl_config.go",
+        "server/router/api/v1/acl_config_test.go",
+        "server/router/api/v1/connect_services.go",
+        "server/router/api/v1/instance_service.go",
+        "server/router/api/v1/test/instance_service_test.go",
+        "web/src/contexts/InstanceContext.tsx",
+        "web/src/hooks/useInstanceQueries.ts",
+        "web/src/pages/Setting.tsx",
+        "web/src/types/proto/api/v1/instance_service_pb.ts",
+        "web/tests/filtered-memo-stats.test.ts"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "f3f059b2f78666e3532c2f7639f7307f1756bcf8",
+      "reviewed_tree": "2e2809f62f7a4afe03947f9dbe4fd382368ca352"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The frontend can fetch initial groups through BatchGetInstanceSettings.",
+      "conditions": [
+        "The API rejects more than 100 names.",
+        "A failed setting lookup aborts the response; this is not a partial-success API.",
+        "The public method preserves the setting getter's admin restrictions and secret redaction.",
+        "The current-user helper caches a successful resolution for the request."
+      ],
+      "mechanism": "The new API processes setting names through the shared setting getter and returns results in request order."
+    },
+    {
+      "after": "The initialization and settings page use the batch client method.",
+      "conditions": [
+        "Generated protocol, gateway, OpenAPI, and TypeScript client files change with the API.",
+        "The change adds no new visible setting control or layout."
+      ],
+      "mechanism": "The frontend skips fetched names and removes their marks if the request fails."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The frontend can fetch initial groups through BatchGetInstanceSettings.",
+  "task_id": 805,
+  "unverified": [
+    "This preparation executes no server or frontend request.",
+    "One request does not prove one database query or a measured latency improvement.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+}

@@ -1,0 +1,94 @@
+{
+  "criteria": [
+    {
+      "criterion": "The shared authenticator supplies AuthenticateToUser and shared context application.",
+      "evidence": [
+        {
+          "path": "server/auth/authenticator.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        },
+        {
+          "path": "server/router/mcp/auth_middleware.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Bearer access tokens or personal tokens precede refresh-cookie fallback.",
+      "evidence": [
+        {
+          "path": "server/auth/authenticator.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        },
+        {
+          "path": "server/router/mcp/auth_middleware.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A valid access-token claim returns the user lookup result immediately, including a nil result or error.",
+      "evidence": [
+        {
+          "path": "server/auth/authenticator.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        },
+        {
+          "path": "server/router/mcp/auth_middleware.go",
+          "revision": "26d10212c6e854987a235a790220cd8540cc158c"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "47d9414702dc18966af385352b960bfe451511b7",
+      "changed_paths": [
+        "server/auth/authenticator.go",
+        "server/auth/context.go",
+        "server/router/api/v1/connect_interceptors.go",
+        "server/router/api/v1/v1.go",
+        "server/router/fileserver/fileserver.go",
+        "server/router/mcp/auth_middleware.go",
+        "server/router/mcp/mcp.go",
+        "server/server.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "26d10212c6e854987a235a790220cd8540cc158c",
+      "reviewed_tree": "c7d1d05162624c77f34d5f298b07617af3b03579"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 822,
+  "unverified": [
+    "No authentication request or integration test ran for this preparation.",
+    "This range contains error-path differences. The packet cannot claim all runtime behavior remains identical.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}
