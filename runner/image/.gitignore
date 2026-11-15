@@ -1,0 +1,7 @@
+# build.sh's compiled linux/arm64 mc binary (baked into the image, never
+# committed).
+/mc
+/mc-fake-e2e-bin
+/mc-real-e2e-bin
+/mc-complete
+/mc-dispatch

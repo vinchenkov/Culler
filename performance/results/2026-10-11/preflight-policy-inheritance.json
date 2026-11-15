@@ -1,0 +1,57 @@
+{
+  "observedAt": "2026-10-11T20:51:29.017567+00:00",
+  "boundary": "policy launcher -> Bun 1.3.9 -> Bun.spawn of policy launcher --report-self",
+  "reports": [
+    {
+      "bunVersion": "1.3.9",
+      "bunPid": 61565,
+      "parentReport": {
+        "value": {
+          "pid": 61565,
+          "task_priority": 31
+        },
+        "code": 0
+      },
+      "childReport": {
+        "value": {
+          "pid": 61567,
+          "parent_pid": 61565,
+          "task_priority": 31,
+          "task_role": 0
+        },
+        "code": 0
+      },
+      "policy": "standard",
+      "expectedPriority": 31,
+      "parentMatches": true,
+      "childMatches": true,
+      "exitCode": 0
+    },
+    {
+      "bunVersion": "1.3.9",
+      "bunPid": 61568,
+      "parentReport": {
+        "value": {
+          "pid": 61568,
+          "task_priority": 4
+        },
+        "code": 0
+      },
+      "childReport": {
+        "value": {
+          "pid": 61570,
+          "parent_pid": 61568,
+          "task_priority": 31,
+          "task_role": 0
+        },
+        "code": 0
+      },
+      "policy": "background",
+      "expectedPriority": 4,
+      "parentMatches": true,
+      "childMatches": false,
+      "exitCode": 0
+    }
+  ],
+  "limitation": "The background Bun parent does not confer task priority 4 on this spawned child."
+}

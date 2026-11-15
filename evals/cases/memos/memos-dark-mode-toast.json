@@ -1,0 +1,429 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/701/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "f3b3848c6951f6acc124b49aa20274c00328f0a02b9198e1cfa00c8194e29548",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/701/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "597b91aabd8685aa7781ef75ad89aecea62dd1c02c1eb66565212db0f9eb8445",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "4712377231aaee2c8bdecbe4ccd8146832a02c58216269ab44bdfad8b9526901",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "description": "Before: light. Fixed synthetic frontend state.",
+      "id": "media-before-light",
+      "kind": "media",
+      "path": "eval/701/media/before-light.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "sha256": "9e8191ac86e57136475bc5467a0b1c041aff77877c6f12d64b41abd8bb538c63",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/media/before-light.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: dark. Fixed synthetic frontend state.",
+      "id": "media-before-dark",
+      "kind": "media",
+      "path": "eval/701/media/before-dark.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "sha256": "c5229ea93f6ae6a5724523861622b953ee4dca3ee423bc4e7bfd420e19d15e61",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/media/before-dark.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: light. Fixed synthetic frontend state.",
+      "id": "media-after-light",
+      "kind": "media",
+      "path": "eval/701/media/after-light.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "sha256": "b2192d65f12a79550cf750c75edbf8db69df738027bc4041feee347069e9b4f0",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/media/after-light.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: dark. Fixed synthetic frontend state.",
+      "id": "media-after-dark",
+      "kind": "media",
+      "path": "eval/701/media/after-dark.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "sha256": "25a8857f44eda7152c0cbaf93d11f83d047a729e9be3aa2344c8b5f2cafe2111",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/media/after-dark.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "media-provenance",
+      "kind": "source_record",
+      "path": "eval/701/media/capture.json",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "sha256": "2bc99ae7ca3e64de1b42bc7dea182b457fd4ce6e40bbfe373df7b1d2d2e5e0a7",
+      "source": {
+        "kind": "file",
+        "path": "memos-dark-mode-toast/media/capture.json"
+      },
+      "visibility": "role"
+    }
+  ],
+  "content_hashes": {
+    "environment": "f3390ba98bc60c39987a3211d73d6fc78e9d81e0cbd1644a87d4e51ab00753a1",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "0c8540602f3f00ef95ba109fcd1cd1bc8a0c3b58e9eb3c05ebf342e059835c48",
+    "role_inputs": "0256a5646446330d898b1beede4534b0527fd8934d84b9943fa3ec64e310fa30",
+    "visual_evidence": "a7676678267b824b4130d75cb3a77847cf27c851e16a1b36cd72f980f7c6c01c"
+  },
+  "corpus_status": "ready",
+  "dataset": "trainset",
+  "environment": {
+    "capture": {
+      "browser_version": "145.0.7632.6",
+      "clock": "2026-09-30T12:00:00Z",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite.",
+        "The capture triggers the unchanged toast library directly. It verifies notification appearance, not a completed save."
+      ],
+      "locale": "en-US",
+      "method": "unchanged_frontend_with_synthetic_service_responses",
+      "provenance_artifact": "media-provenance",
+      "status": "captured",
+      "timezone": "UTC",
+      "tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "1ef9e52f8b27e19738d6259740c8c67790c494a7dd428c6a2aaea73fed65c3b4"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "281674aac6b23941d9ded79a00d61107a1e10de820fb03ea176edfcec0bf0b5e"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-dark-mode-toast",
+  "id": "memos-dark-mode-toast",
+  "paths": {
+    "/mc/artifacts/eval/701/media/after-dark.png": "media-after-dark",
+    "/mc/artifacts/eval/701/media/after-light.png": "media-after-light",
+    "/mc/artifacts/eval/701/media/before-dark.png": "media-before-dark",
+    "/mc/artifacts/eval/701/media/before-light.png": "media-before-light",
+    "/mc/artifacts/eval/701/media/capture.json": "media-provenance",
+    "/mc/artifacts/eval/701/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/701/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The toast host uses the application popover colors for the background and text.",
+        "before": "The toast host used the library default colors.",
+        "conditions": [
+          "The active theme defines the popover color variables.",
+          "The top-right position remains unchanged."
+        ],
+        "id": "behavior",
+        "mechanism": "The shared toast host receives Cascading Style Sheets (CSS) variables through its default style options.",
+        "sources": [
+          {
+            "path": "web/src/main.tsx",
+            "revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+            "symbol": "Main",
+            "url": "https://github.com/usememos/memos/blob/6ff88e36a22fae6fd225579777e77430b5f85a94/web/src/main.tsx"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The source change does not establish a measured contrast ratio.",
+      "These captures verify the frontend display with synthetic service responses.",
+      "They execute no Memos backend, database, authorization, or application test suite.",
+      "The capture triggers the unchanged toast library directly. It verifies notification appearance, not a completed save."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-dark-mode-toast",
+      "path": "reviews/memos-media.json",
+      "scope": "Pinned source facts and fixed frontend captures. Backend behavior and application tests remain unverified.",
+      "sha256": "ab254721dfe54b40707be72f6a602994c1f17c4788f8ffeb993aed06bb6bbf69"
+    },
+    "review_requirements": [
+      "An independent reviewer must verify the before and after behavior against both commits.",
+      "The reviewer must inspect all material changes in the range, not only the cited symbols.",
+      "The reviewer must confirm the evidence limits and any supplied media."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "701"
+          },
+          {
+            "label": "Title",
+            "value": "Use the application theme for toast colors"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The toast host uses the application popover colors for the background and text.\n\nAcceptance criteria:\n- The shared toast host uses popover background and foreground variables.\n- The toast position remains top-right.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/701/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/701/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/701/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view of the dashboard shows these commits and the complete diff to the operator.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "6ff88e36a22fae6fd225579777e77430b5f85a94"
+          },
+          {
+            "label": "Base commit",
+            "value": "05a2c6db7a3e926c9142a635f42f7af0f078c81d"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "6ff88e36a22fae6fd225579777e77430b5f85a94"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "6ff88e36a22fae6fd225579777e77430b5f85a94"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "6ff88e36a22fae6fd225579777e77430b5f85a94"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "6ff88e36a22fae6fd225579777e77430b5f85a94"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 701": {
+        "acceptance_criteria": [
+          "The shared toast host uses popover background and foreground variables.",
+          "The toast position remains top-right."
+        ],
+        "description": "The toast host uses the application popover colors for the background and text.\n\nAcceptance criteria:\n- The shared toast host uses popover background and foreground variables.\n- The toast position remains top-right.",
+        "id": 701,
+        "project_id": "memos-evaluation",
+        "purpose": "The toast host uses the application popover colors for the background and text.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Use the application theme for toast colors"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The shared toast host uses popover background and foreground variables.",
+            "The toast position remains top-right."
+          ],
+          "description": "The toast host uses the application popover colors for the background and text.\n\nAcceptance criteria:\n- The shared toast host uses popover background and foreground variables.\n- The toast position remains top-right.",
+          "id": 701,
+          "project_id": "memos-evaluation",
+          "purpose": "The toast host uses the application popover colors for the background and text.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Use the application theme for toast colors"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The shared toast host uses popover background and foreground variables.",
+        "The toast position remains top-right."
+      ],
+      "description": "The toast host uses the application popover colors for the background and text.\n\nAcceptance criteria:\n- The shared toast host uses popover background and foreground variables.\n- The toast position remains top-right.",
+      "id": 701,
+      "purpose": "The toast host uses the application popover colors for the background and text.",
+      "requirements_version": 1,
+      "title": "Use the application theme for toast colors"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/6ff88e36a22fae6fd225579777e77430b5f85a94",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+    "reviewed_tree": "2f6f2efc0c197f8934d0190fe08f7dd2a1a3130f",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "small_visible_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [
+      "Capture the same notification in light and dark themes at both recorded source revisions.",
+      "Record the theme, viewport, notification text, and represented source revision for each image."
+    ],
+    "media_artifacts": [
+      "media-before-light",
+      "media-before-dark",
+      "media-after-light",
+      "media-after-dark"
+    ],
+    "required": true,
+    "status": "supplied"
+  }
+}

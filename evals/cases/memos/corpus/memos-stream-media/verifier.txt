@@ -1,0 +1,89 @@
+{
+  "criteria": [
+    {
+      "criterion": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The revision consolidates storage clients, content headers, type maps, and authentication helpers.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Local files use http.ServeFile and its range behavior.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "S3 media uses a temporary redirect to a presigned object address.",
+      "evidence": [
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        },
+        {
+          "path": "server/router/fileserver/fileserver.go",
+          "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "27de96d440d7779e8a6a5c4566540297edfd36d2",
+      "changed_paths": [
+        "server/router/fileserver/fileserver.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+      "reviewed_tree": "7d3e307f7b1d65f868181bef801b0f802f66c4ea"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 827,
+  "unverified": [
+    "No media request, range request, S3 redirect, memory test, or benchmark ran.",
+    "The source does not make every storage mode independent of the complete file size.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

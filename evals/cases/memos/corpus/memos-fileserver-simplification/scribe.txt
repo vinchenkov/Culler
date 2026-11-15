@@ -1,0 +1,16 @@
+{
+  "changed_documentation": [
+    "server/router/fileserver/README.md"
+  ],
+  "evidence_scope": "Documentation source inspection only.",
+  "provenance": "authored_for_experiment",
+  "result_commit": "cf1be15f3ec0eeca30419e93c6f019d07ea41919",
+  "role": "Scribe",
+  "scope": "The case author inspected the upstream documentation in the reviewed commit. No separate Scribe run or commit occurred.",
+  "source_commit": "cf1be15f3ec0eeca30419e93c6f019d07ea41919",
+  "unverified": [
+    "No file, image, motion, or storage request ran for this preparation.",
+    "The source checks establish structure, not a universal claim of identical image behavior.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

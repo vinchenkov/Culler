@@ -1,0 +1,17 @@
+{
+  "changed_documentation": [
+    "plugin/scheduler/README.md",
+    "plugin/scheduler/doc.go"
+  ],
+  "evidence_scope": "Documentation source inspection only.",
+  "provenance": "authored_for_experiment",
+  "result_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+  "role": "Scribe",
+  "scope": "The case author created an actual documentation-only fixture commit. No Culler Scribe executed this task.",
+  "source_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f",
+  "unverified": [
+    "The preparation executes no scheduler or added test.",
+    "The package cannot establish exactly-once execution or restart safety from these source checks.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

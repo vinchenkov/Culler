@@ -1,0 +1,71 @@
+{
+  "afterDisconnect": {
+    "alive": 1791756933149,
+    "command": "/opt/culler-runtime/libexec/mc-real __system-state status ",
+    "identity": [
+      41872,
+      45972888,
+      1791756932987,
+      1791756934987
+    ],
+    "uids": [
+      10002,
+      10001,
+      10001,
+      10001
+    ]
+  },
+  "beforeDisconnect": {
+    "alive": 1791756933093,
+    "command": "/opt/culler-runtime/libexec/mc-real __system-state status ",
+    "identity": [
+      41872,
+      45972888,
+      1791756932987,
+      1791756934987
+    ],
+    "uids": [
+      10002,
+      10001,
+      10001,
+      10001
+    ]
+  },
+  "cleanupAction": "killed",
+  "cleanupConfirmed": true,
+  "completedAt": "2026-10-11T22:15:35.475124+00:00",
+  "deadlineClock": "Linux",
+  "deadlineMs": 2000,
+  "directory": "/tmp/culler-read-deadline-7123f2f6f8174c81b9e75c58341a6442",
+  "disconnectedAt": "2026-10-11T22:15:33.105153+00:00",
+  "dockerClientExit": -9,
+  "dockerClientPID": 39302,
+  "finalProcessResult": [
+    137,
+    1791756935413
+  ],
+  "linuxDeadlineMs": 1791756934987,
+  "linuxPID": 41872,
+  "linuxStartTicks": 45972888,
+  "linuxStartedMs": 1791756932987,
+  "mode": "plain",
+  "passed": true,
+  "pastDeadline": {
+    "alive": 1791756935321,
+    "command": "/opt/culler-runtime/libexec/mc-real __system-state status ",
+    "identity": [
+      41872,
+      45972888,
+      1791756932987,
+      1791756934987
+    ],
+    "uids": [
+      10002,
+      10001,
+      10001,
+      10001
+    ]
+  },
+  "startedAt": "2026-10-11T22:15:32.930061+00:00",
+  "trial": 1
+}

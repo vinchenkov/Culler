@@ -1,0 +1,326 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/706/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "3c7220ed09a77821b7fa6fc08c86e66465c79f70c863d068cf22d09214c5cac9",
+      "source": {
+        "kind": "file",
+        "path": "memos-webhook-label-refactor/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/706/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "29c91ce682d785bff0499cb1173d4e29751ecf03214493fe5b00212dc990883b",
+      "source": {
+        "kind": "file",
+        "path": "memos-webhook-label-refactor/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "329871b40feb278e8bb36311df31105c879265e31fc14d5db078372d10e5c11a",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "40d0cbf3afe239b023b9486284f85c43c921ffa069cc6663eb9918d01e301e2a",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "7496495ac39f2c4fc15aa817741c20b2acf877686a73e4a0323fbdf88ef8e589",
+    "role_inputs": "cea87ec4d03886976d8e3e4a852b3eacac32d2980e0e92172db078934479cb87",
+    "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+  },
+  "corpus_status": "ready",
+  "dataset": "trainset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "e74d32313b7f36c0ce2a7da170e08d5457cf958033b09a6dab63e46c388c9b27"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c6b4d4483e54df94c40cacd9ad0e08d2d0cd0aa696edd9f78168e8e7b37ef8df"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "da98b7c67d8252fc79b767acdc11400a9280fd2e93adba75ed80d6b1c5c5846f"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "c2cee5020b6a52a83241a11892d4ad59dbc3086a4f15573bef2d8a75b6158f7d"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-webhook-label-refactor",
+  "id": "memos-webhook-label-refactor",
+  "paths": {
+    "/mc/artifacts/eval/706/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/706/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The hostname validator iterates labels through the standard library sequence interface.",
+        "before": "The hostname validator split the hostname into a string slice before it checked each label.",
+        "conditions": [
+          "The hostname normalization and validation rules remain in the same function.",
+          "The change adds no new permission rule or configuration setting.",
+          "The recorded Go dependency file fixes the language requirements."
+        ],
+        "id": "behavior",
+        "mechanism": "The loop uses strings.SplitSeq instead of strings.Split.",
+        "sources": [
+          {
+            "path": "internal/webhook/validate.go",
+            "revision": "59541ea438b4531ca50f9e25f110989713b987d2",
+            "symbol": "normalizeHostname",
+            "url": "https://github.com/usememos/memos/blob/59541ea438b4531ca50f9e25f110989713b987d2/internal/webhook/validate.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The exact reviewed diff changes one loop declaration.",
+      "This preparation did not execute the webhook tests or a benchmark.",
+      "The source does not support a numerical speed or memory claim."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-webhook-label-refactor",
+      "path": "reviews/memos-seed.json",
+      "scope": "Pinned source facts only. Application tests and media remain outside this review.",
+      "sha256": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685"
+    },
+    "review_requirements": [
+      "An independent reviewer must verify the before and after behavior against both commits.",
+      "The reviewer must inspect all material changes in the range, not only the cited symbols.",
+      "The reviewer must confirm the evidence limits and any supplied media."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "706"
+          },
+          {
+            "label": "Title",
+            "value": "Iterate webhook hostname labels directly"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The hostname validator iterates labels through the standard library sequence interface.\n\nAcceptance criteria:\n- The validator uses the sequence iterator.\n- The reviewed diff preserves the validation body.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/706/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/706/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/706/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view of the dashboard shows these commits and the complete diff to the operator.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "59541ea438b4531ca50f9e25f110989713b987d2"
+          },
+          {
+            "label": "Base commit",
+            "value": "dcef4188dbfba767ea570dc0ecdeb258d17f3c25"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "59541ea438b4531ca50f9e25f110989713b987d2"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "59541ea438b4531ca50f9e25f110989713b987d2"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "59541ea438b4531ca50f9e25f110989713b987d2"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "59541ea438b4531ca50f9e25f110989713b987d2"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 706": {
+        "acceptance_criteria": [
+          "The validator uses the sequence iterator.",
+          "The reviewed diff preserves the validation body."
+        ],
+        "description": "The hostname validator iterates labels through the standard library sequence interface.\n\nAcceptance criteria:\n- The validator uses the sequence iterator.\n- The reviewed diff preserves the validation body.",
+        "id": 706,
+        "project_id": "memos-evaluation",
+        "purpose": "The hostname validator iterates labels through the standard library sequence interface.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Iterate webhook hostname labels directly"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The validator uses the sequence iterator.",
+            "The reviewed diff preserves the validation body."
+          ],
+          "description": "The hostname validator iterates labels through the standard library sequence interface.\n\nAcceptance criteria:\n- The validator uses the sequence iterator.\n- The reviewed diff preserves the validation body.",
+          "id": 706,
+          "project_id": "memos-evaluation",
+          "purpose": "The hostname validator iterates labels through the standard library sequence interface.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Iterate webhook hostname labels directly"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The validator uses the sequence iterator.",
+        "The reviewed diff preserves the validation body."
+      ],
+      "description": "The hostname validator iterates labels through the standard library sequence interface.\n\nAcceptance criteria:\n- The validator uses the sequence iterator.\n- The reviewed diff preserves the validation body.",
+      "id": 706,
+      "purpose": "The hostname validator iterates labels through the standard library sequence interface.",
+      "requirements_version": 1,
+      "title": "Iterate webhook hostname labels directly"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "dcef4188dbfba767ea570dc0ecdeb258d17f3c25",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/59541ea438b4531ca50f9e25f110989713b987d2",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "59541ea438b4531ca50f9e25f110989713b987d2",
+    "reviewed_tree": "158f69ce9a69742651c70909d9bd45a662413a69",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "internal_refactor"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "required": false,
+    "status": "not_applicable"
+  }
+}

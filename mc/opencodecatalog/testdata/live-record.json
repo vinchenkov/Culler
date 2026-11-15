@@ -1,0 +1,1413 @@
+{
+ "moonshotai": {
+  "id": "moonshotai",
+  "name": "Moonshot AI",
+  "doc": "https://platform.moonshot.ai/docs/api/chat",
+  "env": [
+   "MOONSHOT_API_KEY"
+  ],
+  "models": {
+   "kimi-k3": {
+    "id": "kimi-k3",
+    "type": "chat",
+    "name": "Kimi K3",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "modalities": {
+     "input": [
+      "text",
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/bmp",
+      "image/heic",
+      "image/heif",
+      "video/mp4",
+      "video/mpeg",
+      "video/mov",
+      "video/avi",
+      "video/x-flv",
+      "video/mpg",
+      "video/webm",
+      "video/wmv",
+      "video/3gpp"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 2097152,
+     "output": 131072
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 2.5,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     },
+     "responses": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai",
+       "opencodeai": "@opencode/ai/providers/moonshot/responses"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto"
+        ],
+        "updates": true
+       }
+      }
+     },
+     "messages": {
+      "base_url": "https://api.moonshot.ai/anthropic/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/anthropic",
+       "opencodeai": "@opencode/ai/providers/moonshot/messages"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": false
+       }
+      }
+     }
+    }
+   },
+   "kimi-k2.6": {
+    "id": "kimi-k2.6",
+    "type": "chat",
+    "name": "Kimi K2.6",
+    "family": "kimi-k2",
+    "release_date": "2026-04-20",
+    "modalities": {
+     "input": [
+      "text",
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/bmp",
+      "image/heic",
+      "image/heif",
+      "video/mp4",
+      "video/mpeg",
+      "video/mov",
+      "video/avi",
+      "video/x-flv",
+      "video/mpg",
+      "video/webm",
+      "video/wmv",
+      "video/3gpp"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "toggle",
+       "value": true
+      },
+      "toggle": true
+     },
+     "cache": {
+      "implicit": true
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 262144,
+     "output": 262144
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 0.95,
+       "cache": {
+        "read": 0.16
+       }
+      },
+      "output": {
+       "price": 4
+      }
+     }
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required",
+         "tool"
+        ],
+        "updates": false
+       }
+      }
+     },
+     "responses": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai",
+       "opencodeai": "@opencode/ai/providers/moonshot/responses"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto"
+        ],
+        "updates": false
+       }
+      }
+     },
+     "messages": {
+      "base_url": "https://api.moonshot.ai/anthropic/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/anthropic",
+       "opencodeai": "@opencode/ai/providers/moonshot/messages"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required",
+         "tool"
+        ],
+        "updates": false
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-pair-fast": {
+    "id": "kimi-fixture-pair-fast",
+    "type": "chat",
+    "name": "Kimi Fixture Pair (Fast)",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-pair": {
+    "id": "kimi-fixture-pair",
+    "type": "chat",
+    "name": "Kimi Fixture Pair",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    },
+    "experimental": {
+     "modes": {
+      "fast": {
+       "service_tier": "priority",
+       "body": {
+        "service_tier": "priority"
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-new": {
+    "id": "kimi-fixture-new",
+    "type": "chat",
+    "name": "Kimi Fixture New",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 524288,
+     "output": 65536
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 1.25
+      },
+      "output": {
+       "price": 6.5
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    },
+    "experimental": {
+     "modes": {
+      "fast": {
+       "service_tier": "priority",
+       "body": {
+        "service_tier": "priority"
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-path": {
+    "id": "kimi-fixture-path",
+    "type": "chat",
+    "name": "Kimi Fixture Path",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v2",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-origin": {
+    "id": "kimi-fixture-origin",
+    "type": "chat",
+    "name": "Kimi Fixture Origin",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://live-model.invalid/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-deprecated": {
+    "id": "kimi-fixture-deprecated",
+    "type": "chat",
+    "name": "Kimi Fixture Deprecated",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    },
+    "status": "deprecated"
+   },
+   "kimi-fixture-no-tools": {
+    "id": "kimi-fixture-no-tools",
+    "type": "chat",
+    "name": "Kimi Fixture No Tools",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": false
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-insecure": {
+    "id": "kimi-fixture-insecure",
+    "type": "chat",
+    "name": "Kimi Fixture Insecure",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "http://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-query": {
+    "id": "kimi-fixture-query",
+    "type": "chat",
+    "name": "Kimi Fixture Query",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1?version=2",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-placeholder": {
+    "id": "kimi-fixture-placeholder",
+    "type": "chat",
+    "name": "Kimi Fixture Placeholder",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/{region}/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   },
+   "kimi-fixture-embedding": {
+    "id": "kimi-fixture-embedding",
+    "type": "embedding",
+    "name": "Kimi Fixture Embedding",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://api.moonshot.ai/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "fixture-provider": {
+  "id": "fixture-provider",
+  "name": "Fixture Provider",
+  "doc": "https://fixture-provider.invalid/docs",
+  "env": [
+   "FIXTURE_PROVIDER_API_KEY"
+  ],
+  "models": {
+   "fixture-model": {
+    "id": "fixture-model",
+    "type": "chat",
+    "name": "Fixture Model",
+    "family": "kimi-k3",
+    "release_date": "2026-07-16",
+    "capabilities": {
+     "tools": {
+      "supported": true
+     },
+     "reasoning": {
+      "supported": true,
+      "default": {
+       "type": "effort",
+       "value": "max"
+      },
+      "effort": [
+       "low",
+       "high",
+       "max"
+      ]
+     },
+     "cache": {
+      "implicit": {
+       "ttl": [
+        "5m",
+        "1h"
+       ]
+      }
+     },
+     "structured_output": true,
+     "temperature": false,
+     "top_p": false,
+     "top_k": false,
+     "system_updates": true,
+     "effort_updates": false,
+     "stream_usage": true,
+     "prompt_cache_key": true
+    },
+    "limit": {
+     "context": 1048576,
+     "output": 1048576
+    },
+    "cost": {
+     "text": {
+      "input": {
+       "price": 3,
+       "cache": {
+        "read": 0.3,
+        "write": {
+         "5m": 3,
+         "1h": 6
+        }
+       }
+      },
+      "output": {
+       "price": 15
+      }
+     }
+    },
+    "modalities": {
+     "input": [
+      "text"
+     ],
+     "output": [
+      "text"
+     ]
+    },
+    "api": {
+     "chat-completions": {
+      "base_url": "https://fixture-provider.invalid/v1",
+      "sdk": {
+       "aisdk": "@ai-sdk/openai-compatible",
+       "opencodeai": "@opencode/ai/providers/moonshot/chat"
+      },
+      "compatibility": {
+       "reasoning_field": "reasoning_content"
+      },
+      "capabilities": {
+       "tools": {
+        "strict": true,
+        "choice": [
+         "auto",
+         "none",
+         "required"
+        ],
+        "updates": true
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

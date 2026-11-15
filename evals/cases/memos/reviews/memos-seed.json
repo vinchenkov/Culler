@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "reviewer": "independent gepa_engine agent",
+  "review_type": "pinned source inspection",
+  "source": "https://github.com/usememos/memos",
+  "scope": "The review verifies reference facts against the pinned Git ranges. It provides no application execution or media evidence.",
+  "application_tests_executed": false,
+  "application_media_inspected": false,
+  "cases": [
+    {
+      "id": "memos-account-attachment-usage",
+      "base_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "reviewed_commit": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "reviewed_tree": "6e36e10908cc7fec638d328038a357b2438b0263",
+      "diff_sha256": "8b874e006b862fca52301ce5a59d526b737cc863f14c09db013f9e0050efc229",
+      "changed_files": [
+        "proto/api/v1/user_service.proto",
+        "proto/gen/api/v1/user_service.pb.go",
+        "proto/gen/openapi.yaml",
+        "server/api/v1/test/user_service_stats_test.go",
+        "server/api/v1/user_service_stats.go",
+        "store/attachment.go",
+        "store/db/mysql/attachment.go",
+        "store/db/postgres/attachment.go",
+        "store/db/sqlite/attachment.go",
+        "store/driver.go",
+        "store/test/attachment_test.go",
+        "web/src/components/Settings/MyAccountSection.tsx",
+        "web/src/components/Settings/ResourceStatsSection.tsx",
+        "web/src/components/Settings/SettingList.tsx",
+        "web/src/components/Settings/UserStatsSection.tsx",
+        "web/src/hooks/useAttachmentQueries.ts",
+        "web/src/locales/az.json",
+        "web/src/locales/en.json",
+        "web/src/locales/zh-Hans.json",
+        "web/src/locales/zh-Hant.json",
+        "web/src/types/proto/api/v1/user_service_pb.ts",
+        "web/tests/attachment-storage-usage.test.tsx"
+      ],
+      "reference_facts_hash": "b6bf66ebd7719259d092dd5a9587572e083435cf2c9389f4648d12de981883b6",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution.",
+        "The review added the pending, zero, and error display states and the related component refactor.",
+        "Required application media remains absent. This case remains unavailable for a live trial."
+      ],
+      "reference_limits_hash": "29b23b66cbcc444728ad91ff4734588ce3915c9316b7a48a38174d18884a8e20"
+    },
+    {
+      "id": "memos-archived-owner-access",
+      "base_commit": "8f43e8075b62706f99da4005ab04b165b35215f6",
+      "reviewed_commit": "f4154d090be3896c8e0dd83440f24953bbeb308c",
+      "reviewed_tree": "57bbc23dabd0806d3dcf3ebed0da828125158590",
+      "diff_sha256": "f60d0eafe35c9b2ec87a9b31d49bd17cbe0f8e203228635fa027e332a34e8c1f",
+      "changed_files": [
+        "server/router/api/v1/memo_service.go"
+      ],
+      "reference_facts_hash": "850bf20431413cc59a915ddb0c4b776e34f68a460dd7f3ae37bbd694b090c40d",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution."
+      ],
+      "reference_limits_hash": "229ecac0bbab0805414e3ead9197efded41d595aff772b214ab412d18bc285e2"
+    },
+    {
+      "id": "memos-dark-mode-toast",
+      "base_commit": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "reviewed_commit": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "reviewed_tree": "2f6f2efc0c197f8934d0190fe08f7dd2a1a3130f",
+      "diff_sha256": "4712377231aaee2c8bdecbe4ccd8146832a02c58216269ab44bdfad8b9526901",
+      "changed_files": [
+        "web/src/main.tsx"
+      ],
+      "reference_facts_hash": "5443faba773940ace300a21dfe0634066bf873b597038237bd49a8461e9188eb",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution.",
+        "Required application media remains absent. This case remains unavailable for a live trial."
+      ],
+      "reference_limits_hash": "5036b6133343de3f8a0eeb10b2b71f2435d5d9d2234b34ea6707d498a36f410e"
+    },
+    {
+      "id": "memos-link-cover-retry",
+      "base_commit": "969da8128e9bfc948632b1f601106f859d198be3",
+      "reviewed_commit": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+      "reviewed_tree": "e048736fb185739b3e60a7c495197215178c6a61",
+      "diff_sha256": "10327af5e27934bcbfb4e620d474b910f6c335c3701f4ef38da09da430263cd4",
+      "changed_files": [
+        "docs/link-cover-retry-plan.md",
+        "go.mod",
+        "proto/gen/store/memo.pb.go",
+        "proto/store/memo.proto",
+        "server/router/api/v1/memo_service_link_enrichment.go",
+        "server/router/api/v1/memo_service_link_enrichment_test.go",
+        "server/runner/memopayload/runner.go",
+        "server/server.go"
+      ],
+      "reference_facts_hash": "df7ee3d8370f6eff4fb375bd84c340a68caa609b43ed0767fac22eab6b1633b0",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution.",
+        "The review added the successful empty-metadata exception to the 24-hour failure window."
+      ],
+      "reference_limits_hash": "f07253cf8ff3328dece59d013d442a60f5667b266b1c765edf0fae68966e7fab"
+    },
+    {
+      "id": "memos-log-level",
+      "base_commit": "a6024eebf129c4b8fb65ee0cba09c6657274bfde",
+      "reviewed_commit": "f1e2a06b46c7f45ba6562c308d2703fdfb4067b0",
+      "reviewed_tree": "360e4dd207200168fa53aa120310931269f45e0c",
+      "diff_sha256": "10607c1fc42bdfc5182b131a4654493f2c68e54f96f5fcd95e6d6e52d93f6744",
+      "changed_files": [
+        "cmd/memos/log.go",
+        "cmd/memos/log_test.go",
+        "cmd/memos/main.go"
+      ],
+      "reference_facts_hash": "7d08b6faf75d5019c568b65328b82a9be087efc0f9df7e6393a4347b7b5b0dc6",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution."
+      ],
+      "reference_limits_hash": "4cb2c0a6fc34264c9ad9603d800f2eff60f8d0ee595000a1ae298249cf1ec8da"
+    },
+    {
+      "id": "memos-reuse-list-settings",
+      "base_commit": "bacb02456b3e4392a2b14c77d8675b8a427b50e2",
+      "reviewed_commit": "f133abc8c0419b82c98fb98a4e670328d5f96ab1",
+      "reviewed_tree": "6c8b869a13711ee3d3e559e8407ffce8380727ed",
+      "diff_sha256": "6381ce69767198f42952911fd068bb20c402d36200881fe3b382cffa24e0d4c9",
+      "changed_files": [
+        "server/router/api/v1/memo_service.go"
+      ],
+      "reference_facts_hash": "e62e3ba98fb2e02f7c066047fd3d5c58271088fc12d0fd00585c5477c3f99e99",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution."
+      ],
+      "reference_limits_hash": "49618e6504fbef86d1467f1e20302db7247f39eea4806a0f870f02ccd1d6e1ac"
+    },
+    {
+      "id": "memos-webhook-label-refactor",
+      "base_commit": "dcef4188dbfba767ea570dc0ecdeb258d17f3c25",
+      "reviewed_commit": "59541ea438b4531ca50f9e25f110989713b987d2",
+      "reviewed_tree": "158f69ce9a69742651c70909d9bd45a662413a69",
+      "diff_sha256": "329871b40feb278e8bb36311df31105c879265e31fc14d5db078372d10e5c11a",
+      "changed_files": [
+        "internal/webhook/validate.go"
+      ],
+      "reference_facts_hash": "96e90b983c5e476e46198fadc0064500301ded016c087ca79a0faaa45f5916f9",
+      "result": "source_facts_accepted",
+      "observations": [
+        "The reference facts agree with the changed source. The evidence limits preserve the distinction between source inspection and application execution."
+      ],
+      "reference_limits_hash": "17d63acc5689444a2d8dbbc21f5a7a6212611f916f769fb75486ea8e386545d1"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "criteria": [
+    {
+      "criterion": "The frontend can fetch initial groups through BatchGetInstanceSettings.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/instance_service.proto",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "web/src/contexts/InstanceContext.tsx",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The initialization and settings page use the batch client method.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/instance_service.proto",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "web/src/contexts/InstanceContext.tsx",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The API rejects more than 100 names.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/instance_service.proto",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "web/src/contexts/InstanceContext.tsx",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A failed setting lookup aborts the response; this is not a partial-success API.",
+      "evidence": [
+        {
+          "path": "proto/api/v1/instance_service.proto",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "server/router/api/v1/instance_service.go",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        },
+        {
+          "path": "web/src/contexts/InstanceContext.tsx",
+          "revision": "f3f059b2f78666e3532c2f7639f7307f1756bcf8"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "21303e879d2c7a857306206d2cbdae83f61983e6",
+      "changed_paths": [
+        "proto/api/v1/instance_service.proto",
+        "proto/gen/api/v1/apiv1connect/instance_service.connect.go",
+        "proto/gen/api/v1/instance_service.pb.go",
+        "proto/gen/api/v1/instance_service.pb.gw.go",
+        "proto/gen/api/v1/instance_service_grpc.pb.go",
+        "proto/gen/openapi.yaml",
+        "server/router/api/v1/acl_config.go",
+        "server/router/api/v1/acl_config_test.go",
+        "server/router/api/v1/connect_services.go",
+        "server/router/api/v1/instance_service.go",
+        "server/router/api/v1/test/instance_service_test.go",
+        "web/src/contexts/InstanceContext.tsx",
+        "web/src/hooks/useInstanceQueries.ts",
+        "web/src/pages/Setting.tsx",
+        "web/src/types/proto/api/v1/instance_service_pb.ts",
+        "web/tests/filtered-memo-stats.test.ts"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "f3f059b2f78666e3532c2f7639f7307f1756bcf8",
+      "reviewed_tree": "2e2809f62f7a4afe03947f9dbe4fd382368ca352"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 805,
+  "unverified": [
+    "This preparation executes no server or frontend request.",
+    "One request does not prove one database query or a measured latency improvement.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

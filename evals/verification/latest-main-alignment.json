@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "accepted",
+  "reviewer": "/root/case_corpus",
+  "source_revision": "7677b7acef0319ef44807dae21c24b0c32ead0d8",
+  "model_calls": 0,
+  "case_manifests_unchanged": 35,
+  "ready_case_counts": {
+    "trainset": 14,
+    "valset": 7,
+    "final": 14
+  },
+  "independent_checks": {
+    "compiled_brief_checks": 3,
+    "case_assessment_protocol_tests": 91,
+    "subtests": 4
+  },
+  "runtime_focused_tests": 75,
+  "source_files": [
+    {
+      "path": "evals/bridge/contracts.go",
+      "sha256": "ca6a4cde7b5b79e1fbfe15c5a8a31c8833108f6432bf3a76b4a73af7cbfd9174"
+    },
+    {
+      "path": "evals/bridge/spine-parity_test.go",
+      "sha256": "dc61b75d4e89c81d3146076403a2712c5496728d7ea50499f1891d8d83e7d103"
+    },
+    {
+      "path": "evals/culler_evals/runtime.py",
+      "sha256": "39dd327510ba3d3b72be513fe0904dc8f1a5f7009378b3d4cd3689bd238a0af0"
+    },
+    {
+      "path": "evals/culler_evals/evaluator.py",
+      "sha256": "dd35858e370c6c1e7f90e131fe44beab963da929952451ad7d6c88573c887a40"
+    },
+    {
+      "path": "evals/culler_evals/assessment.py",
+      "sha256": "d186b2282c137a6e2e6cc99261e909b2f2586b3654eeae7f2413902336b1eee9"
+    },
+    {
+      "path": "evals/tests/test_runtime.py",
+      "sha256": "281d14a49b8e82c636bc7199b537bd461046375b8dbf5fbf07b09202d46313c9"
+    },
+    {
+      "path": "evals/tests/test_assessment.py",
+      "sha256": "4744faa26b2f252028646b38c70fb44ae3c0e7f8b8d9b8498783bcc9db464733"
+    }
+  ],
+  "observations": [
+    "The bridge omits obsolete Verdict history, Scribe report, and Earlier requirements parts.",
+    "The runtime records each omitted part and retains the fixed case manifest hash.",
+    "The current conditional task brief parts remain available.",
+    "The packet contract follows the current eight-section directive and operator context.",
+    "The Judge retains historical facts as authority without a packet-history requirement.",
+    "The previous repository disposal review retains its original source identities."
+  ],
+  "limits": [
+    "The source alignment checks invoke no model.",
+    "The native model integration predates the current directive and brief."
+  ]
+}

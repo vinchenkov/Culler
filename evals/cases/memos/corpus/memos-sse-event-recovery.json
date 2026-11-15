@@ -1,0 +1,364 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/811/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "060233d11a7e823054fef459dd4b919293e0cd6be2b5a933652f4b54b446324d",
+      "source": {
+        "kind": "file",
+        "path": "memos-sse-event-recovery/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/811/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "799d87f0af17b519ad5687246f6889665196f6c4cd09b593a38419f8740bd471",
+      "source": {
+        "kind": "file",
+        "path": "memos-sse-event-recovery/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "1a453c808fd68345df3137d6128c6c42424c7e95b8e4bd6fd4f7e1df552cb026",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "670c869e89e8f35517728b2982f8cf31432bddef96b9de151e178897c9030c30",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "807e1b8d25066a7820587d38a140c9ebf2b7f3d004fe41a9159fac04b6df90c3",
+    "role_inputs": "4649d4cb2a4e4cd7ca6c2ba504d76777f1eb9d1634b19175f43d7de3d79b0cf9",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "final",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "c4c9e353848d0b5fec43f4dd15994aa7a38de3c5c9efffc365757c1bd7bb185a"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "883981f19e00d15222a836d8db7f1ff217f19971a9506be0f108e3ef1641d2ef"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "bb4b6fd9d4be6b17cc878c4264067f355b0d462d80a96a2991e78dff6c1232ee"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "5fad1d22bb40f33646b05450760108dbb0c309b6cc00be7a0842a9f93058c15a"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-sse-event-recovery",
+  "id": "memos-sse-event-recovery",
+  "paths": {
+    "/mc/artifacts/eval/811/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/811/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "A comment emits the parent-oriented comment event without that generic duplicate.",
+        "before": "A comment can emit the generic memo-created event in addition to its comment event.",
+        "conditions": [
+          "Events contain parent identity and server-only visibility and creator information.",
+          "A private event reaches the owner or an administrator.",
+          "Public, protected, or empty visibility reaches authenticated subscribers; unknown visibility rejects delivery.",
+          "A subscriber must have a nonzero authenticated user identifier."
+        ],
+        "id": "behavior-1",
+        "mechanism": "CreateMemoComment suppresses CreateMemo's generic event and supplies the parent memo identity.",
+        "sources": [
+          {
+            "path": "server/router/api/v1/memo_service.go",
+            "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c53677fcba202a8eed35c8ecdfaacea5152b8691/server/router/api/v1/memo_service.go"
+          },
+          {
+            "path": "server/router/api/v1/sse_hub.go",
+            "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c53677fcba202a8eed35c8ecdfaacea5152b8691/server/router/api/v1/sse_hub.go"
+          },
+          {
+            "path": "server/router/api/v1/sse_handler.go",
+            "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c53677fcba202a8eed35c8ecdfaacea5152b8691/server/router/api/v1/sse_handler.go"
+          }
+        ]
+      },
+      {
+        "after": "A connection after the first successful connection invalidates active memo queries and user statistics.",
+        "before": "The previous reconnect path lacks the new active-view resynchronization.",
+        "conditions": [
+          "Inline comment edits receive parentMemoName.",
+          "The server endpoint still requires authentication; a public event does not imply anonymous subscription.",
+          "The change adds event and reconnect tests without a new rendered interface control."
+        ],
+        "id": "behavior-2",
+        "mechanism": "The browser routes comment and reaction updates into the parent comment cache.",
+        "sources": [
+          {
+            "path": "web/src/hooks/useLiveMemoRefresh.ts",
+            "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/c53677fcba202a8eed35c8ecdfaacea5152b8691/web/src/hooks/useLiveMemoRefresh.ts"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No network reconnect or permission test ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-sse-event-recovery",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "811"
+          },
+          {
+            "label": "Title",
+            "value": "Route memo events and refresh active views after reconnect"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "A comment emits the parent-oriented comment event without that generic duplicate.\n\nAcceptance criteria:\n- A comment emits the parent-oriented comment event without that generic duplicate.\n- A connection after the first successful connection invalidates active memo queries and user statistics.\n- Events contain parent identity and server-only visibility and creator information.\n- A private event reaches the owner or an administrator.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/811/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/811/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/811/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+          },
+          {
+            "label": "Base commit",
+            "value": "d720efb6e622c7062e02f3eba8c2f81bc42f0f36"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 811": {
+        "acceptance_criteria": [
+          "A comment emits the parent-oriented comment event without that generic duplicate.",
+          "A connection after the first successful connection invalidates active memo queries and user statistics.",
+          "Events contain parent identity and server-only visibility and creator information.",
+          "A private event reaches the owner or an administrator."
+        ],
+        "description": "A comment emits the parent-oriented comment event without that generic duplicate.\n\nAcceptance criteria:\n- A comment emits the parent-oriented comment event without that generic duplicate.\n- A connection after the first successful connection invalidates active memo queries and user statistics.\n- Events contain parent identity and server-only visibility and creator information.\n- A private event reaches the owner or an administrator.",
+        "id": 811,
+        "project_id": "memos-evaluation",
+        "purpose": "A comment emits the parent-oriented comment event without that generic duplicate.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Route memo events and refresh active views after reconnect"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "A comment emits the parent-oriented comment event without that generic duplicate.",
+            "A connection after the first successful connection invalidates active memo queries and user statistics.",
+            "Events contain parent identity and server-only visibility and creator information.",
+            "A private event reaches the owner or an administrator."
+          ],
+          "description": "A comment emits the parent-oriented comment event without that generic duplicate.\n\nAcceptance criteria:\n- A comment emits the parent-oriented comment event without that generic duplicate.\n- A connection after the first successful connection invalidates active memo queries and user statistics.\n- Events contain parent identity and server-only visibility and creator information.\n- A private event reaches the owner or an administrator.",
+          "id": 811,
+          "project_id": "memos-evaluation",
+          "purpose": "A comment emits the parent-oriented comment event without that generic duplicate.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Route memo events and refresh active views after reconnect"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "A comment emits the parent-oriented comment event without that generic duplicate.",
+        "A connection after the first successful connection invalidates active memo queries and user statistics.",
+        "Events contain parent identity and server-only visibility and creator information.",
+        "A private event reaches the owner or an administrator."
+      ],
+      "description": "A comment emits the parent-oriented comment event without that generic duplicate.\n\nAcceptance criteria:\n- A comment emits the parent-oriented comment event without that generic duplicate.\n- A connection after the first successful connection invalidates active memo queries and user statistics.\n- Events contain parent identity and server-only visibility and creator information.\n- A private event reaches the owner or an administrator.",
+      "id": 811,
+      "purpose": "A comment emits the parent-oriented comment event without that generic duplicate.",
+      "requirements_version": 1,
+      "title": "Route memo events and refresh active views after reconnect"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "d720efb6e622c7062e02f3eba8c2f81bc42f0f36",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/c53677fcba202a8eed35c8ecdfaacea5152b8691",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+    "reviewed_tree": "918a5dfffe36b2b5e9a7a90c7c069a56eab94e6f",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "state_transition_or_recovery"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

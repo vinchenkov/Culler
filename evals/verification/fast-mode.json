@@ -1,0 +1,55 @@
+{
+  "check": "codex_fast_mode",
+  "passed": true,
+  "model_calls": 0,
+  "presets": {
+    "production": {
+      "packager": true,
+      "optimizer": true,
+      "judge": false
+    },
+    "test": {
+      "packager": true,
+      "optimizer": true,
+      "judge": false
+    }
+  },
+  "effort": "high",
+  "checks": {
+    "protocol_runtime_bridge": 154,
+    "control_server": 53,
+    "control_browser": 13,
+    "experiment_viewer_browser": 20
+  },
+  "native_feature": {
+    "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+    "feature": "fast_mode",
+    "status": "stable",
+    "enabled": true,
+    "network": "none"
+  },
+  "container": {
+    "terminal": "packaged",
+    "requested_fast_mode": true,
+    "configured_fast_mode": true,
+    "configured_service_tier": "fast",
+    "requested_effort": "high",
+    "configured_effort": "high",
+    "observed_efforts": [
+      "high"
+    ]
+  },
+  "service_tier_evidence": "The configuration record identifies the request. It does not prove the server supplied fast service.",
+  "official_documentation": "https://learn.chatgpt.com/docs/agent-configuration/speed",
+  "files": {
+    "evals/bridge/fast-mode.ts": "7fe3d47d5df5d05f154f835a9a8aef7a7f78899b590389cc00b8a3e5d8c43749",
+    "evals/bridge/launch.ts": "d27c4345fde037a6ec4a6b5df411679b120f38339012e35df9d31639287d2d22",
+    "evals/config/packager.json": "20edb96544c8fc2b75168c87308723abd99cebaa6775e9991d9b0d96913b00d9",
+    "evals/config/packager.test.json": "829c3034c656de710197f577dcdc1e99314949fbb655e511d2bd89d7e1a48ad4",
+    "evals/culler_evals/protocol.py": "5955f4614f0ad39e982a0109146e78df7ce72b7283d93d8c4e69de495c5f1113",
+    "evals/culler_evals/runtime.py": "83935bd3dbb8f4e99598045c57755cee9a681c1288d91b5708ec56a4c47c1e01",
+    "evals/culler_evals/control_server.py": "e5862b449cfc2600fd35865f5500bfac7f7db9976aed756bc3314c2a03e3c238",
+    "evals/web/control.html": "56f8c24bcc3d607046a89f5b1a10508d45e0b95f2c15402a1443671bb517b9db",
+    "evals/web/experiment.html": "8fe97996bcae194abe744add0efa0519d45a5051493adcdda009018101d16ad6"
+  }
+}

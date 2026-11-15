@@ -1,0 +1,56 @@
+[
+  {
+    "case": "success",
+    "expectedExit": 0,
+    "actualExit": 0,
+    "state": "complete",
+    "elapsedSeconds": 0.039705167000647634,
+    "remainingGroups": [],
+    "cleanupErrors": [],
+    "stdout": "{\"maxSeconds\": 2, \"policy\": \"standard\", \"type\": \"cpu-load-start\", \"workers\": 1}\n{\"elapsedSeconds\": 0.039705167000647634, \"exitCode\": 0, \"state\": \"complete\", \"type\": \"cpu-load-end\", \"workers\": 1}",
+    "stderr": ""
+  },
+  {
+    "case": "command-failure",
+    "expectedExit": 1,
+    "actualExit": 1,
+    "state": "command_failed",
+    "elapsedSeconds": 0.037589791987556964,
+    "remainingGroups": [],
+    "cleanupErrors": [],
+    "stdout": "{\"maxSeconds\": 2, \"policy\": \"standard\", \"type\": \"cpu-load-start\", \"workers\": 1}\n{\"elapsedSeconds\": 0.037589791987556964, \"exitCode\": 1, \"state\": \"command_failed\", \"type\": \"cpu-load-end\", \"workers\": 1}",
+    "stderr": ""
+  },
+  {
+    "case": "timeout",
+    "expectedExit": 124,
+    "actualExit": 124,
+    "state": "deadline",
+    "elapsedSeconds": 2.0050984590197913,
+    "remainingGroups": [],
+    "cleanupErrors": [],
+    "stdout": "{\"maxSeconds\": 2, \"policy\": \"standard\", \"type\": \"cpu-load-start\", \"workers\": 1}\n{\"elapsedSeconds\": 2.0050984590197913, \"exitCode\": 124, \"state\": \"deadline\", \"type\": \"cpu-load-end\", \"workers\": 1}",
+    "stderr": "{\"error\": \"The workload reached its maximum duration.\", \"type\": \"error\"}"
+  },
+  {
+    "case": "existing-record",
+    "actualExit": 1,
+    "preserved": true,
+    "stderr": "{\"error\": \"[Errno 17] File exists: '/private/tmp/culler-performance/20261011-mac-command/preflight-load-success.json'\", \"type\": \"error\"}"
+  },
+  {
+    "case": "invalid-workers",
+    "actualExit": 1,
+    "recordAbsent": true,
+    "stderr": "{\"error\": \"The worker count must be positive.\", \"type\": \"error\"}"
+  },
+  {
+    "case": "interrupt",
+    "actualExit": 130,
+    "state": "interrupted",
+    "remainingGroups": [],
+    "cleanupErrors": [],
+    "stdout": "{\"maxSeconds\": 5, \"policy\": \"standard\", \"type\": \"cpu-load-start\", \"workers\": 1}\n{\"elapsedSeconds\": 0.2878950000158511, \"exitCode\": 130, \"state\": \"interrupted\", \"type\": \"cpu-load-end\", \"workers\": 1}\n",
+    "stderr": "{\"error\": \"The workload received an interruption.\", \"type\": \"error\"}\n"
+  }
+]

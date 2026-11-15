@@ -1,0 +1,59 @@
+{
+  "checks": [
+    {
+      "base_commit": "c4221c6dfe51902d0c5f482802e670fda1b72751",
+      "changed_paths": [
+        "server/router/api/v1/sse_handler.go",
+        "server/router/api/v1/sse_hub.go",
+        "server/router/api/v1/sse_hub_test.go",
+        "server/router/api/v1/test/sse_handler_test.go",
+        "web/src/hooks/useLiveMemoRefresh.ts",
+        "web/tests/live-memo-refresh.test.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "dd18002b12b8632d11b57fa3d33de244bba91476",
+      "reviewed_tree": "b7178ded2453af778c8145c6280eaf30eceb8c19"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+      "conditions": [
+        "If either cross-tab primitive is unavailable, each visible tab keeps its own connection.",
+        "A hidden tab releases its connection after 30 seconds; offline and page-hide events stop it sooner.",
+        "The server buffer holds 32 events.",
+        "Unknown visibility rejects the broadcast, while private delivery retains its owner or administrator boundary."
+      ],
+      "mechanism": "The browser combines Web Locks and BroadcastChannel; the hub frames one event and distributes its bytes."
+    },
+    {
+      "after": "The handler sends a heartbeat only after 30 seconds without event data and exits on the hub disconnect signal.",
+      "conditions": [
+        "Retry uses full jitter with a cap that grows from 1 second to 30 seconds.",
+        "A connection that survives 60 seconds resets the retry delay.",
+        "A 401 response tries token refresh once before the general retry path.",
+        "Cross-tab sharing is an optimization, not guaranteed delivery or a durable event log.",
+        "The change adds cross-tab, concurrency, race, and benchmark source files without a new rendered control."
+      ],
+      "mechanism": "Event delivery resets the timer; reconnect invalidates active memo queries and user statistics."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "Compatible tabs share one leader connection, and a full server buffer disconnects the slow client.",
+  "task_id": 828,
+  "unverified": [
+    "No cross-tab browser session, network recovery, race test, or benchmark ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "dd18002b12b8632d11b57fa3d33de244bba91476"
+}

@@ -1,0 +1,25 @@
+{
+  "evidence": [
+    {
+      "path": "server/router/fileserver/fileserver.go",
+      "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+    },
+    {
+      "path": "server/router/fileserver/fileserver.go",
+      "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+    }
+  ],
+  "finding": "The claim contradicts the pinned source conditions.",
+  "outcome": "fail",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "All media storage modes now use constant memory without loading the complete file.",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "This is an authored source-inspection history, not an executed Culler run.",
+  "task_id": 827,
+  "unverified": [
+    "No media request, range request, S3 redirect, memory test, or benchmark ran.",
+    "The source does not make every storage mode independent of the complete file size.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "criteria": [
+    {
+      "criterion": "The mutation acquires one connection and executes BEGIN IMMEDIATE before its reads and writes.",
+      "evidence": [
+        {
+          "path": "store/db/sqlite/memo_attachment.go",
+          "revision": "f9544349202d931b90e38c01982e42245ca1c605"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A deferred rollback uses context.WithoutCancel if the transaction does not commit.",
+      "evidence": [
+        {
+          "path": "store/db/sqlite/memo_attachment.go",
+          "revision": "f9544349202d931b90e38c01982e42245ca1c605"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The mutation retains missing-record, binding-conflict, and creator checks.",
+      "evidence": [
+        {
+          "path": "store/db/sqlite/memo_attachment.go",
+          "revision": "f9544349202d931b90e38c01982e42245ca1c605"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "bbb23958b22063b7e663b51812e7775eca3f23ae",
+      "changed_paths": [
+        "store/db/sqlite/memo_attachment.go",
+        "store/test/attachment_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "f9544349202d931b90e38c01982e42245ca1c605",
+      "reviewed_tree": "762d420f8c0d4063d71b83a6a50fdeca1f089b0a"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 809,
+  "unverified": [
+    "No concurrent write workload or application test ran.",
+    "The source does not prove that SQLITE_BUSY becomes impossible.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

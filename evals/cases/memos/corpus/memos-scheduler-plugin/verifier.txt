@@ -1,0 +1,165 @@
+{
+  "criteria": [
+    {
+      "criterion": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+      "evidence": [
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/parser.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/job.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/middleware.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/README.md",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The package adds middleware composition and a stop operation that waits with a caller context.",
+      "evidence": [
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/parser.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/job.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/middleware.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/README.md",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The parser supports five-field and six-field expressions.",
+      "evidence": [
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/parser.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/job.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/middleware.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/README.md",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+      "evidence": [
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/parser.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/job.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/middleware.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/scheduler.go",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        },
+        {
+          "path": "plugin/scheduler/README.md",
+          "revision": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "changed_paths": [
+        "plugin/scheduler/README.md",
+        "plugin/scheduler/doc.go",
+        "plugin/scheduler/example_test.go",
+        "plugin/scheduler/integration_test.go",
+        "plugin/scheduler/job.go",
+        "plugin/scheduler/job_test.go",
+        "plugin/scheduler/middleware.go",
+        "plugin/scheduler/middleware_test.go",
+        "plugin/scheduler/parser.go",
+        "plugin/scheduler/parser_test.go",
+        "plugin/scheduler/scheduler.go",
+        "plugin/scheduler/scheduler_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+      "reviewed_tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author inspected the implementation commits and final tree. This is an authored task verdict. No Culler run produced this verdict.",
+  "task_id": 808,
+  "unverified": [
+    "The preparation executes no scheduler or added test.",
+    "The package cannot establish exactly-once execution or restart safety from these source checks.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f"
+}

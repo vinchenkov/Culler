@@ -1,0 +1,63 @@
+{
+  "criteria": [
+    {
+      "criterion": "The middleware uses the actual request path and separates HTML from static assets.",
+      "evidence": [
+        {
+          "path": "server/router/frontend/frontend.go",
+          "revision": "084f40bc9e5922ff2d41c08dce837b96696437aa"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The root, index.html, and extensionless frontend paths use no-cache, no-store, and must-revalidate.",
+      "evidence": [
+        {
+          "path": "server/router/frontend/frontend.go",
+          "revision": "084f40bc9e5922ff2d41c08dce837b96696437aa"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The assets prefix uses public, max-age=3600, and immutable.",
+      "evidence": [
+        {
+          "path": "server/router/frontend/frontend.go",
+          "revision": "084f40bc9e5922ff2d41c08dce837b96696437aa"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "4f0556e23f8863027f2b3b57d64acc2207f040a8",
+      "changed_paths": [
+        "server/router/frontend/frontend.go",
+        "server/router/frontend/frontend_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "084f40bc9e5922ff2d41c08dce837b96696437aa",
+      "reviewed_tree": "0901ba6db31a5916e6aafb951116d339561d29f6"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 815,
+  "unverified": [
+    "No browser-cache or HTTP request test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "case_id": "memos-dark-mode-toast",
+  "method": "unchanged_frontend_with_synthetic_service_responses",
+  "limits": [
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite.",
+    "The capture triggers the unchanged toast library directly. It verifies notification appearance, not a completed save."
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "clock": "2026-09-30T12:00:00Z",
+  "timezone": "UTC",
+  "locale": "en-US",
+  "images": [
+    {
+      "path": "before-light.png",
+      "sha256": "9e8191ac86e57136475bc5467a0b1c041aff77877c6f12d64b41abd8bb538c63",
+      "source_revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "side": "before",
+      "state": {
+        "name": "light",
+        "theme": "default",
+        "toast": true
+      },
+      "fixture": "before-light-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "before-dark.png",
+      "sha256": "c5229ea93f6ae6a5724523861622b953ee4dca3ee423bc4e7bfd420e19d15e61",
+      "source_revision": "05a2c6db7a3e926c9142a635f42f7af0f078c81d",
+      "side": "before",
+      "state": {
+        "name": "dark",
+        "theme": "default-dark",
+        "toast": true
+      },
+      "fixture": "before-dark-fixture.json",
+      "fixture_sha256": "05f4bc36e4ef1411ec94675da0c096fa0fbf451d1e2c6c5c53c9d88d7f533be5",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-light.png",
+      "sha256": "b2192d65f12a79550cf750c75edbf8db69df738027bc4041feee347069e9b4f0",
+      "source_revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "side": "after",
+      "state": {
+        "name": "light",
+        "theme": "default",
+        "toast": true
+      },
+      "fixture": "after-light-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-dark.png",
+      "sha256": "25a8857f44eda7152c0cbaf93d11f83d047a729e9be3aa2344c8b5f2cafe2111",
+      "source_revision": "6ff88e36a22fae6fd225579777e77430b5f85a94",
+      "side": "after",
+      "state": {
+        "name": "dark",
+        "theme": "default-dark",
+        "toast": true
+      },
+      "fixture": "after-dark-fixture.json",
+      "fixture_sha256": "05f4bc36e4ef1411ec94675da0c096fa0fbf451d1e2c6c5c53c9d88d7f533be5",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.MemoService/ListMemoComments",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.MemoService/GetMemo",
+        "/memos.api.v1.MemoService/ListMemoComments"
+      ],
+      "attachment_display": null
+    }
+  ],
+  "tools": {
+    "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+    "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+  },
+  "browser_version": "145.0.7632.6"
+}

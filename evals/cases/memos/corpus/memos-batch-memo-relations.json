@@ -1,0 +1,377 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/825/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "a74ebf153170378ed70abc15c5de6ab76dc0a31f84bcd5335e6d5eb387caa857",
+      "source": {
+        "kind": "file",
+        "path": "memos-batch-memo-relations/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/825/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "2fca1ba4080d23d246fce803f60296f072ba9b85c5c2681c3ca077b32c6bc45a",
+      "source": {
+        "kind": "file",
+        "path": "memos-batch-memo-relations/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "a26b38351124497e4704994a08b34957f99be4db4c837470e6fbf8355cd0e79c",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "9fdaad90a69289632e5587fe6104e8bab5da99bfb6328af89c87bd1c56989492",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "e6df450960af327bee9a1140fc8565e769d5d6d70a41dc068f5b8e83595b1530",
+    "role_inputs": "c0c30607f91ae33b6220fe8c124f4c08e94de822368e4bb2c8969f87e0c6d1fb",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "trainset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "130a10e4fbc2d9d44a2ced54a409b17564531a639d3802d6ce24d85785d9cbb9"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "96030a2bd109dd8f64b45aae10af6fc04f24ce420392952199353fbbaa8e3c1a"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "40065a572b2d50a8b4c7bb1b82d43b7c5149d6c0b236d2c54260a8b085978a5e"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "d3da45d2421c6e1505717067f41b2e76e79fba3a515c897b16fbdc8a764c16f7"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-batch-memo-relations",
+  "id": "memos-batch-memo-relations",
+  "paths": {
+    "/mc/artifacts/eval/825/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/825/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "Memo and comment lists resolve relations in a batch before conversion.",
+        "before": "A list converts each memo through its own relation lookup.",
+        "conditions": [
+          "An empty memo list returns an empty map without that relation query.",
+          "The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+          "The converter maps both relation directions and skips unresolved endpoints.",
+          "A relation load failure can abort a list response."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The service queries relation endpoints for the memo identifier list and loads missing endpoint memos together.",
+        "sources": [
+          {
+            "path": "server/router/api/v1/memo_service.go",
+            "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/1e82714a52c72455a6ba02605cc641d7ad4fbf1a/server/router/api/v1/memo_service.go"
+          },
+          {
+            "path": "server/router/api/v1/memo_relation_service.go",
+            "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/1e82714a52c72455a6ba02605cc641d7ad4fbf1a/server/router/api/v1/memo_relation_service.go"
+          }
+        ]
+      },
+      {
+        "after": "The three database drivers accept a memo identifier list across both relation endpoints.",
+        "before": "The store query accepts only its earlier individual memo filters.",
+        "conditions": [
+          "Create, get, and update use a single-memo wrapper around the batch helper.",
+          "Delete retains a best-effort relation lookup for webhook conversion.",
+          "The change adds source tests and isolates the test data directory."
+        ],
+        "id": "behavior-2",
+        "mechanism": "The drivers render identifier-list filters for the batched relation lookup.",
+        "sources": [
+          {
+            "path": "store/memo_relation.go",
+            "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/1e82714a52c72455a6ba02605cc641d7ad4fbf1a/store/memo_relation.go"
+          },
+          {
+            "path": "store/db/sqlite/memo_relation.go",
+            "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/1e82714a52c72455a6ba02605cc641d7ad4fbf1a/store/db/sqlite/memo_relation.go"
+          },
+          {
+            "path": "store/db/mysql/memo_relation.go",
+            "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/1e82714a52c72455a6ba02605cc641d7ad4fbf1a/store/db/mysql/memo_relation.go"
+          },
+          {
+            "path": "store/db/postgres/memo_relation.go",
+            "revision": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/1e82714a52c72455a6ba02605cc641d7ad4fbf1a/store/db/postgres/memo_relation.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No list request, database query, or performance benchmark ran.",
+      "The source reduces lookup structure; it does not establish a numerical latency improvement.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-batch-memo-relations",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "825"
+          },
+          {
+            "label": "Title",
+            "value": "Resolve memo relations for a whole response"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "Memo and comment lists resolve relations in a batch before conversion.\n\nAcceptance criteria:\n- Memo and comment lists resolve relations in a batch before conversion.\n- The three database drivers accept a memo identifier list across both relation endpoints.\n- An empty memo list returns an empty map without that relation query.\n- The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/825/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/825/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/825/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+          },
+          {
+            "label": "Base commit",
+            "value": "3d4f793f97b567bda823a60b7fe10e09e14499ce"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 825": {
+        "acceptance_criteria": [
+          "Memo and comment lists resolve relations in a batch before conversion.",
+          "The three database drivers accept a memo identifier list across both relation endpoints.",
+          "An empty memo list returns an empty map without that relation query.",
+          "The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos."
+        ],
+        "description": "Memo and comment lists resolve relations in a batch before conversion.\n\nAcceptance criteria:\n- Memo and comment lists resolve relations in a batch before conversion.\n- The three database drivers accept a memo identifier list across both relation endpoints.\n- An empty memo list returns an empty map without that relation query.\n- The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+        "id": 825,
+        "project_id": "memos-evaluation",
+        "purpose": "Memo and comment lists resolve relations in a batch before conversion.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Resolve memo relations for a whole response"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "Memo and comment lists resolve relations in a batch before conversion.",
+            "The three database drivers accept a memo identifier list across both relation endpoints.",
+            "An empty memo list returns an empty map without that relation query.",
+            "The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos."
+          ],
+          "description": "Memo and comment lists resolve relations in a batch before conversion.\n\nAcceptance criteria:\n- Memo and comment lists resolve relations in a batch before conversion.\n- The three database drivers accept a memo identifier list across both relation endpoints.\n- An empty memo list returns an empty map without that relation query.\n- The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+          "id": 825,
+          "project_id": "memos-evaluation",
+          "purpose": "Memo and comment lists resolve relations in a batch before conversion.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Resolve memo relations for a whole response"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "Memo and comment lists resolve relations in a batch before conversion.",
+        "The three database drivers accept a memo identifier list across both relation endpoints.",
+        "An empty memo list returns an empty map without that relation query.",
+        "The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos."
+      ],
+      "description": "Memo and comment lists resolve relations in a batch before conversion.\n\nAcceptance criteria:\n- Memo and comment lists resolve relations in a batch before conversion.\n- The three database drivers accept a memo identifier list across both relation endpoints.\n- An empty memo list returns an empty map without that relation query.\n- The visibility rule limits anonymous readers to public memos and authenticated readers to their own or public and protected memos.",
+      "id": 825,
+      "purpose": "Memo and comment lists resolve relations in a batch before conversion.",
+      "requirements_version": 1,
+      "title": "Resolve memo relations for a whole response"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "3d4f793f97b567bda823a60b7fe10e09e14499ce",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "1e82714a52c72455a6ba02605cc641d7ad4fbf1a",
+    "reviewed_tree": "7eed498ec3b38ae6209dbba1673abf8764669497",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "performance_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-02T23:22:14.256211+00:00",
+  "reviewer": "/root/case_corpus",
+  "result": "accepted",
+  "terminal_matrix": {
+    "path": "/private/tmp/culler-eval-disposal-terminal-review/matrix.json",
+    "sha256": "2e7a32c1b0d2c465bf64406a71078f4832a7a4a1e6fa3ad70fb8c6b8e572d8c6"
+  },
+  "terminal_records": [
+    {
+      "name": "unsafe-directory",
+      "width": 80,
+      "color": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/unsafe-directory-80-color-0.txt",
+      "sha256": "c8702ad764c617df06b6f6ae6f28ecb74aa8317bc46d536af55acbc515e89618",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "unsafe-directory",
+      "width": 80,
+      "color": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/unsafe-directory-80-color-1.txt",
+      "sha256": "c8702ad764c617df06b6f6ae6f28ecb74aa8317bc46d536af55acbc515e89618",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "unsafe-directory",
+      "width": 40,
+      "color": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/unsafe-directory-40-color-0.txt",
+      "sha256": "30f51b3e29a6ebf105e7f17edb2850bc01148b8197afa8f54e2c63f950b42d20",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "unsafe-directory",
+      "width": 40,
+      "color": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/unsafe-directory-40-color-1.txt",
+      "sha256": "30f51b3e29a6ebf105e7f17edb2850bc01148b8197afa8f54e2c63f950b42d20",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "score-evidence",
+      "width": 80,
+      "color": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/score-evidence-80-color-0.txt",
+      "sha256": "9b867cae0cc0ae63665a4cc63647a537f6ca8ec1be08fef9b59e7ceac7ee71db",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "score-evidence",
+      "width": 80,
+      "color": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/score-evidence-80-color-1.txt",
+      "sha256": "9b867cae0cc0ae63665a4cc63647a537f6ca8ec1be08fef9b59e7ceac7ee71db",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "score-evidence",
+      "width": 40,
+      "color": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/score-evidence-40-color-0.txt",
+      "sha256": "efdd7594b17639531ff00f23ad89aff60b51377c2e7f6a8c9f6abf8beb4a8ae3",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "score-evidence",
+      "width": 40,
+      "color": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/score-evidence-40-color-1.txt",
+      "sha256": "efdd7594b17639531ff00f23ad89aff60b51377c2e7f6a8c9f6abf8beb4a8ae3",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "source-attestation",
+      "width": 80,
+      "color": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/source-attestation-80-color-0.txt",
+      "sha256": "6ef453603e3f1d31969074cec4de468ba43e6d45f989b61b9bc435729bf86bd6",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "source-attestation",
+      "width": 80,
+      "color": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/source-attestation-80-color-1.txt",
+      "sha256": "6ef453603e3f1d31969074cec4de468ba43e6d45f989b61b9bc435729bf86bd6",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "source-attestation",
+      "width": 40,
+      "color": false,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/source-attestation-40-color-0.txt",
+      "sha256": "9824a52392f38b6c2ba5546bba19f1e655ddc72c6e6b452747438c7edecafd4f",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    },
+    {
+      "name": "source-attestation",
+      "width": 40,
+      "color": true,
+      "exit_code": 1,
+      "path": "/private/tmp/culler-eval-disposal-terminal-review/source-attestation-40-color-1.txt",
+      "sha256": "9824a52392f38b6c2ba5546bba19f1e655ddc72c6e6b452747438c7edecafd4f",
+      "model_calls": 0,
+      "method": "The actual CLI formatter executes the actual disposal guard with controlled fixture files."
+    }
+  ],
+  "actual_container_probe": {
+    "path": "/private/tmp/culler-eval-disposal-probe-20261002-01/result.json",
+    "sha256": "c9c88760cfde504e4f06d7aa56ba08ba66d714b7896a2c4ab38878bf188322c5",
+    "model_calls": 0
+  },
+  "source_files": [
+    {
+      "path": "evals/culler_evals/trial_resources.py",
+      "sha256": "52c4d97b3835c0008f218fd12d739c6d06936860a7b130e29bf9759aa10c2e17"
+    },
+    {
+      "path": "evals/culler_evals/evaluator.py",
+      "sha256": "524619c2bb5e8afd79747e62afd9a410f0e1b9c4c34dd8ec8bbc3ef20c1015ea"
+    },
+    {
+      "path": "evals/culler_evals/runtime.py",
+      "sha256": "2724de09b9ac692d9816f078d0ffca701059e7e0838fb99296227acc5aaa978e"
+    },
+    {
+      "path": "evals/bridge/repository-state.ts",
+      "sha256": "7b9012e83d27701e9d90166a654025b957d7358f66b6c2d0b83f3d41656f7a5a"
+    },
+    {
+      "path": "evals/tests/test_trial_resources.py",
+      "sha256": "960759fe1c225b62052a6f30c0bbee8b710f2c57a592a337c7497248d1cf1cc8"
+    },
+    {
+      "path": "evals/tests/test_runtime.py",
+      "sha256": "e0ef744754ab485a3225f4db8b4e59b004d548a2f6368c547cb5332c04cca323"
+    }
+  ],
+  "verification": {
+    "resource_tests_passed": 25,
+    "combined_focused_tests_passed": 68,
+    "model_calls": 0
+  },
+  "observations": [
+    "Disposal follows durable score, packet, trace, assessment, and reconstruction records.",
+    "The saved score and runtime attestation must agree before disposal.",
+    "Path, owner, device, inode, and symbolic-link checks protect the two private trial copies.",
+    "Current file and Git metadata fingerprints detect later edits, ignored files, and configuration changes.",
+    "The immutable-image probe checks commits, branch states, and clean worktrees with read-only mounts and no network or credentials.",
+    "Incomplete, changed, unattested, and unverifiable copies remain intact.",
+    "Descriptor-relative removal preserves the source cache and external files.",
+    "Continuation retains completed scores and exact disposal proofs without new model work.",
+    "All twelve actual diagnostic captures give specific recovery actions at both widths and color modes."
+  ],
+  "limits": [
+    "The Docker probe uses a disposable Git fixture and invokes no model.",
+    "The focused lifecycle checks use controlled runtime fixtures.",
+    "The independent sandbox cannot execute the separate command-server socket check; the parent host suite covers it.",
+    "The historical live model integration predates this disposal change."
+  ],
+  "model_calls": 0
+}

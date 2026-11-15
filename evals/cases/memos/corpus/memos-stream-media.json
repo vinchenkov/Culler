@@ -1,0 +1,413 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/827/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "f058f697bbc79dcea04b25928e65133dfab22a2c31d31121433301b9d87e1d5e",
+      "source": {
+        "kind": "file",
+        "path": "memos-stream-media/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/827/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "fa094d844711c88f507e5bfd051188335111bdbe0bf0c88bfc33f8aea8bd4e69",
+      "source": {
+        "kind": "file",
+        "path": "memos-stream-media/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "earlier-verdict",
+      "kind": "report",
+      "path": "eval/827/earlier-verdict.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "fdb524245dfff5c5b03037d24593153dc38d67d9f90c694fd013bb0a0087fd7d",
+      "source": {
+        "kind": "file",
+        "path": "memos-stream-media/earlier-verdict.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "correction",
+      "kind": "report",
+      "path": "eval/827/correction.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "813d42784e68ff036a0e6f07a3f1ad644b0d1b44dff0c0d8f43e998c502847f2",
+      "source": {
+        "kind": "file",
+        "path": "memos-stream-media/correction.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "63558ee933cbfc7a725af174cc5d1344bff5f493a905af59c54b26b614d23b3d",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "395e750e5852cf4e6251d501b6a7afc26a2147fe6fca5cf67121f2df68f0206c",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "6c30b5401184f14e6b198a20495a590357f3711a145d5174053c0da00d42f3cd",
+    "role_inputs": "f79ccd6c00fb38a804d7f6853236cb55afba34b1899439c90e8a29d5280de4c4",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "final",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "cd71af24e7525741b07551dbea690cc3e3de4ad28f606b66751164a70419a584"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "d9fd09cba410ad8e847ad31ba793dc9945fac648a18843166e8b168125690547"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "40065a572b2d50a8b4c7bb1b82d43b7c5149d6c0b236d2c54260a8b085978a5e"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "d3da45d2421c6e1505717067f41b2e76e79fba3a515c897b16fbdc8a764c16f7"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-stream-media",
+  "id": "memos-stream-media",
+  "paths": {
+    "/mc/artifacts/eval/827/correction.txt": "correction",
+    "/mc/artifacts/eval/827/earlier-verdict.txt": "earlier-verdict",
+    "/mc/artifacts/eval/827/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/827/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+        "before": "The file server can read external video or audio content into a complete byte slice before its response.",
+        "conditions": [
+          "Local files use http.ServeFile and its range behavior.",
+          "S3 media uses a temporary redirect to a presigned object address.",
+          "Database media still resides in the loaded attachment Blob and uses http.ServeContent.",
+          "Non-media files retain a complete blob path."
+        ],
+        "id": "behavior-1",
+        "mechanism": "serveMediaStream branches by attachment storage after the permission check.",
+        "sources": [
+          {
+            "path": "server/router/fileserver/fileserver.go",
+            "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/86fab0cf4ceb195a58a0a6addb46f6929c8902b0/server/router/fileserver/fileserver.go"
+          }
+        ]
+      },
+      {
+        "after": "The revision consolidates storage clients, content headers, type maps, and authentication helpers.",
+        "before": "The file server contains duplicate storage and authentication branches.",
+        "conditions": [
+          "Unlinked or public attachments can bypass the authenticated-user requirement under the existing rules.",
+          "A private linked attachment checks the attachment creator identifier.",
+          "Thumbnail generation retains the semaphore and cache path.",
+          "The change does not prove lower memory use for database blobs."
+        ],
+        "id": "behavior-2",
+        "mechanism": "The helpers preserve the permission gate before the storage branch.",
+        "sources": [
+          {
+            "path": "server/router/fileserver/fileserver.go",
+            "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/86fab0cf4ceb195a58a0a6addb46f6929c8902b0/server/router/fileserver/fileserver.go"
+          }
+        ]
+      },
+      {
+        "after": "The authored correction rejects that claim; the latest source-inspection verdict passes the narrower claim.",
+        "before": "The authored earlier report includes an overbroad source claim.",
+        "conditions": [
+          "The records describe source inspection, not application execution.",
+          "Both verdicts use the actual reviewed source; this fixture records a report correction, not an extra implementation commit."
+        ],
+        "id": "authored-correction-history",
+        "mechanism": "The fixture supplies both verdicts and the correction so the packet can show their order.",
+        "sources": [
+          {
+            "path": "server/router/fileserver/fileserver.go",
+            "revision": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/86fab0cf4ceb195a58a0a6addb46f6929c8902b0/server/router/fileserver/fileserver.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No media request, range request, S3 redirect, memory test, or benchmark ran.",
+      "The source does not make every storage mode independent of the complete file size.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-stream-media",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "827"
+          },
+          {
+            "label": "Title",
+            "value": "Serve audio and video through storage-specific paths"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n\nAcceptance criteria:\n- The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n- The revision consolidates storage clients, content headers, type maps, and authentication helpers.\n- Local files use http.ServeFile and its range behavior.\n- S3 media uses a temporary redirect to a presigned object address.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/827/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "/mc/artifacts/eval/827/correction.txt",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/827/earlier-verdict.txt",
+            "outcome": "fail",
+            "requirements_version": 1
+          },
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/827/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/827/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+          },
+          {
+            "label": "Base commit",
+            "value": "27de96d440d7779e8a6a5c4566540297edfd36d2"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 827": {
+        "acceptance_criteria": [
+          "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+          "The revision consolidates storage clients, content headers, type maps, and authentication helpers.",
+          "Local files use http.ServeFile and its range behavior.",
+          "S3 media uses a temporary redirect to a presigned object address."
+        ],
+        "description": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n\nAcceptance criteria:\n- The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n- The revision consolidates storage clients, content headers, type maps, and authentication helpers.\n- Local files use http.ServeFile and its range behavior.\n- S3 media uses a temporary redirect to a presigned object address.",
+        "id": 827,
+        "project_id": "memos-evaluation",
+        "purpose": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Serve audio and video through storage-specific paths"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+            "The revision consolidates storage clients, content headers, type maps, and authentication helpers.",
+            "Local files use http.ServeFile and its range behavior.",
+            "S3 media uses a temporary redirect to a presigned object address."
+          ],
+          "description": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n\nAcceptance criteria:\n- The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n- The revision consolidates storage clients, content headers, type maps, and authentication helpers.\n- Local files use http.ServeFile and its range behavior.\n- S3 media uses a temporary redirect to a presigned object address.",
+          "id": 827,
+          "project_id": "memos-evaluation",
+          "purpose": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Serve audio and video through storage-specific paths"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+        "The revision consolidates storage clients, content headers, type maps, and authentication helpers.",
+        "Local files use http.ServeFile and its range behavior.",
+        "S3 media uses a temporary redirect to a presigned object address."
+      ],
+      "description": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n\nAcceptance criteria:\n- The video and audio path uses local file service, an S3 redirect, or the database byte reader.\n- The revision consolidates storage clients, content headers, type maps, and authentication helpers.\n- Local files use http.ServeFile and its range behavior.\n- S3 media uses a temporary redirect to a presigned object address.",
+      "id": 827,
+      "purpose": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+      "requirements_version": 1,
+      "title": "Serve audio and video through storage-specific paths"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "earlier-verdict",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "correction",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "27de96d440d7779e8a6a5c4566540297edfd36d2",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "86fab0cf4ceb195a58a0a6addb46f6929c8902b0",
+    "reviewed_tree": "7d3e307f7b1d65f868181bef801b0f802f66c4ea",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "performance_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

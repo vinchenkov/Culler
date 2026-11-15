@@ -1,0 +1,52 @@
+{
+  "checks": [
+    {
+      "base_commit": "47d9414702dc18966af385352b960bfe451511b7",
+      "changed_paths": [
+        "server/auth/authenticator.go",
+        "server/auth/context.go",
+        "server/router/api/v1/connect_interceptors.go",
+        "server/router/api/v1/v1.go",
+        "server/router/fileserver/fileserver.go",
+        "server/router/mcp/auth_middleware.go",
+        "server/router/mcp/mcp.go",
+        "server/server.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "26d10212c6e854987a235a790220cd8540cc158c",
+      "reviewed_tree": "c7d1d05162624c77f34d5f298b07617af3b03579"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The shared authenticator supplies AuthenticateToUser and shared context application.",
+      "conditions": [
+        "Bearer access tokens or personal tokens precede refresh-cookie fallback.",
+        "A valid access-token claim returns the user lookup result immediately, including a nil result or error.",
+        "A refresh-cookie error can now reach the caller where the old file-server helper swallowed it.",
+        "ApplyToContext stores claims and user identity, or the resolved user; a nil result changes no context.",
+        "The API interceptor and gateway reuse the shared context helper."
+      ],
+      "mechanism": "The file server delegates token and refresh-cookie resolution; MCP uses the existing personal token helper."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The shared authenticator supplies AuthenticateToUser and shared context application.",
+  "task_id": 822,
+  "unverified": [
+    "No authentication request or integration test ran for this preparation.",
+    "This range contains error-path differences. The packet cannot claim all runtime behavior remains identical.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "26d10212c6e854987a235a790220cd8540cc158c"
+}

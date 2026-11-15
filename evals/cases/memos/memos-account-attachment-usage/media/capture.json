@@ -1,0 +1,176 @@
+{
+  "case_id": "memos-account-attachment-usage",
+  "method": "unchanged_frontend_with_synthetic_service_responses",
+  "limits": [
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "clock": "2026-09-30T12:00:00Z",
+  "timezone": "UTC",
+  "locale": "en-US",
+  "images": [
+    {
+      "path": "before-total.png",
+      "sha256": "90bef5cec0595f2e0906da3b78dc996b97246ab5097d6adf1fbc61618f472d01",
+      "source_revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "side": "before",
+      "state": {
+        "name": "total"
+      },
+      "fixture": "before-total-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+        "/memos.api.v1.UserService/ListLinkedIdentities",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-total.png",
+      "sha256": "73bf05ba6a04469f9042e529f1ea54920a67195bc0072174fa5c8eccfc09d0ed",
+      "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "side": "after",
+      "state": {
+        "name": "total"
+      },
+      "fixture": "after-total-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+        "/memos.api.v1.UserService/ListLinkedIdentities",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-zero.png",
+      "sha256": "05f76a2fbf39ed4bf0c6dd8e098fa5813ff93c797b431c3385478e0bbfe1ae55",
+      "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "side": "after",
+      "state": {
+        "name": "zero",
+        "storage_bytes": "0"
+      },
+      "fixture": "after-zero-fixture.json",
+      "fixture_sha256": "fa68d7ebf3dbf061315e6f8a99bc8a5529bb9cc7dbb264704f3a0a07ccc539f3",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+        "/memos.api.v1.UserService/ListLinkedIdentities",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-pending.png",
+      "sha256": "58b43b4f9ecb415648f752172f3610048df79fa9ad48f9d8060319a546467a25",
+      "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "side": "after",
+      "state": {
+        "name": "pending",
+        "stats_pending": true
+      },
+      "fixture": "after-pending-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+        "/memos.api.v1.UserService/ListLinkedIdentities",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications"
+      ],
+      "attachment_display": null
+    },
+    {
+      "path": "after-unavailable.png",
+      "sha256": "0bd4c457074aa1b716c2082ab9ebfcd874aeff8f2e5722d61de8dd9dbc268039",
+      "source_revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "side": "after",
+      "state": {
+        "name": "unavailable",
+        "stats_error": true
+      },
+      "fixture": "after-unavailable-fixture.json",
+      "fixture_sha256": "49dbf1d4b2c8217c089ff8122b441d331674eeaaf85d69f46dd56c9c80416bfe",
+      "requests": [
+        "/memos.api.v1.InstanceService/GetInstanceProfile",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.AuthService/GetCurrentUser",
+        "/memos.api.v1.InstanceService/GetInstanceSetting",
+        "/memos.api.v1.UserService/ListUserSettings",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/ListMemoViews",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.IdentityProviderService/ListIdentityProviders",
+        "/memos.api.v1.UserService/ListLinkedIdentities",
+        "/memos.api.v1.InstanceService/BatchGetInstanceSettings",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.SpaceService/ListSpaces",
+        "/memos.api.v1.UserService/ListUserNotifications",
+        "/memos.api.v1.UserService/GetUserStats",
+        "/memos.api.v1.UserService/GetUserStats"
+      ],
+      "attachment_display": null
+    }
+  ],
+  "tools": {
+    "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+    "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+  },
+  "browser_version": "145.0.7632.6"
+}

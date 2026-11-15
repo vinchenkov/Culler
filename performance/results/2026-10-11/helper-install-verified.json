@@ -1,0 +1,29 @@
+{
+  "after": {
+    "gid": 10001,
+    "mode": "4755",
+    "sha256": "749be0b65d4895e9518c8c9c3f59d4dd3f04453ce0f091b6426f18b8f3360074",
+    "size": 21655514,
+    "uid": 10001
+  },
+  "backup": "/private/tmp/culler-performance/20261011-mac-command/helper-install-verified.json.original",
+  "before": {
+    "gid": 10001,
+    "mode": "4755",
+    "sha256": "749be0b65d4895e9518c8c9c3f59d4dd3f04453ce0f091b6426f18b8f3360074",
+    "size": 21655514,
+    "uid": 10001
+  },
+  "config": "/private/tmp/culler-performance/20261011-mac-command/candidate-config.json",
+  "helperID": "08e30b25edd45f42769d496de634191c21b8680f08c2430752077e9cd853e000",
+  "resources": {
+    "helperID": "08e30b25edd45f42769d496de634191c21b8680f08c2430752077e9cd853e000",
+    "imageID": "sha256:d7b4cdeab95d80f618587ece3484d9a3e42122caeca3aa1e3a977e23cf9ef0a9",
+    "volumeCreatedAt": "2026-10-11T20:28:06Z"
+  },
+  "source": "/private/tmp/culler-performance/20261011-mac-command/bin/mc-linux-control",
+  "sourceSha256": "749be0b65d4895e9518c8c9c3f59d4dd3f04453ce0f091b6426f18b8f3360074",
+  "status": "verified",
+  "target": "/opt/culler-runtime/libexec/mc-real",
+  "type": "helper-install"
+}

@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-02T22:24:49.013997+00:00",
+  "records": [
+    {
+      "tool": "author_corpus.py",
+      "width": 80,
+      "color": true,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-80-color-help.txt",
+      "sha256": "c9ca0adee3822ce0cc5ef3791ff760fd556980d6c06b20b083122cf3506ee40f",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 80,
+      "color": true,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py"
+      ],
+      "exit_code": 2,
+      "path": "author_corpus-80-color-error.txt",
+      "sha256": "6b973b62d7bdaa28890d4918822852b66295a657e8f1049ebde2d355f8eb92c1",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 80,
+      "color": true,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-80-color-success.txt",
+      "sha256": "b58330604f595917c92919915c20ed64f356598bc40595ed826106e01a5dfce6",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 80,
+      "color": false,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-80-plain-help.txt",
+      "sha256": "c9ca0adee3822ce0cc5ef3791ff760fd556980d6c06b20b083122cf3506ee40f",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 80,
+      "color": false,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py"
+      ],
+      "exit_code": 2,
+      "path": "author_corpus-80-plain-error.txt",
+      "sha256": "6b973b62d7bdaa28890d4918822852b66295a657e8f1049ebde2d355f8eb92c1",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 80,
+      "color": false,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-80-plain-success.txt",
+      "sha256": "b58330604f595917c92919915c20ed64f356598bc40595ed826106e01a5dfce6",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 40,
+      "color": true,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-40-color-help.txt",
+      "sha256": "fb4e1a91601d482403ac31ed680de3dca6f0a819713228865183a48a29e80335",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 40,
+      "color": true,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py"
+      ],
+      "exit_code": 2,
+      "path": "author_corpus-40-color-error.txt",
+      "sha256": "abb6bf5fbdb5abb3acb9f0c0e8581b605d663e3355e7c74a67ab56c15364ce2c",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 40,
+      "color": true,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-40-color-success.txt",
+      "sha256": "b58330604f595917c92919915c20ed64f356598bc40595ed826106e01a5dfce6",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 40,
+      "color": false,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-40-plain-help.txt",
+      "sha256": "fb4e1a91601d482403ac31ed680de3dca6f0a819713228865183a48a29e80335",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 40,
+      "color": false,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py"
+      ],
+      "exit_code": 2,
+      "path": "author_corpus-40-plain-error.txt",
+      "sha256": "abb6bf5fbdb5abb3acb9f0c0e8581b605d663e3355e7c74a67ab56c15364ce2c",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_corpus.py",
+      "width": 40,
+      "color": false,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_corpus.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_corpus-40-plain-success.txt",
+      "sha256": "b58330604f595917c92919915c20ed64f356598bc40595ed826106e01a5dfce6",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 80,
+      "color": true,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-80-color-help.txt",
+      "sha256": "2b0c6c59784a7ace420c3d5c0adba153e2cbbcd0f2518cf7ef3ec349893df932",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 80,
+      "color": true,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py"
+      ],
+      "exit_code": 2,
+      "path": "author_scheduler_fixture-80-color-error.txt",
+      "sha256": "f603bd54845bc16357c615c76695bb08f558defd2ab9de4b2d1d88ae8317519c",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 80,
+      "color": true,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-80-color-success.txt",
+      "sha256": "ecbb9c384b377b48f1af1f643d95cfaafda31d9a4c6df6bab8e3eb7961f0e430",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 80,
+      "color": false,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-80-plain-help.txt",
+      "sha256": "2b0c6c59784a7ace420c3d5c0adba153e2cbbcd0f2518cf7ef3ec349893df932",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 80,
+      "color": false,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py"
+      ],
+      "exit_code": 2,
+      "path": "author_scheduler_fixture-80-plain-error.txt",
+      "sha256": "f603bd54845bc16357c615c76695bb08f558defd2ab9de4b2d1d88ae8317519c",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 80,
+      "color": false,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-80-plain-success.txt",
+      "sha256": "ecbb9c384b377b48f1af1f643d95cfaafda31d9a4c6df6bab8e3eb7961f0e430",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 40,
+      "color": true,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-40-color-help.txt",
+      "sha256": "65ccf4f1828c4dadbbacb04523bc0e29620f54903afc9a2fd448bb172debe178",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 40,
+      "color": true,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py"
+      ],
+      "exit_code": 2,
+      "path": "author_scheduler_fixture-40-color-error.txt",
+      "sha256": "1fe57d4081032914076dcbc3637efe979cc75502b31bdbef83dc0e17ba10bdb6",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 40,
+      "color": true,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-40-color-success.txt",
+      "sha256": "ecbb9c384b377b48f1af1f643d95cfaafda31d9a4c6df6bab8e3eb7961f0e430",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 40,
+      "color": false,
+      "state": "help",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-40-plain-help.txt",
+      "sha256": "65ccf4f1828c4dadbbacb04523bc0e29620f54903afc9a2fd448bb172debe178",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 40,
+      "color": false,
+      "state": "error",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py"
+      ],
+      "exit_code": 2,
+      "path": "author_scheduler_fixture-40-plain-error.txt",
+      "sha256": "1fe57d4081032914076dcbc3637efe979cc75502b31bdbef83dc0e17ba10bdb6",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    },
+    {
+      "tool": "author_scheduler_fixture.py",
+      "width": 40,
+      "color": false,
+      "state": "success",
+      "argv": [
+        "evals/.venv/bin/python",
+        "evals/cases/author_scheduler_fixture.py",
+        "--cache",
+        "/private/tmp/culler-eval-source-cache/memos.git"
+      ],
+      "exit_code": 0,
+      "path": "author_scheduler_fixture-40-plain-success.txt",
+      "sha256": "ecbb9c384b377b48f1af1f643d95cfaafda31d9a4c6df6bab8e3eb7961f0e430",
+      "method": "Actual subprocess attached to a PTY with its recorded width."
+    }
+  ],
+  "model_calls": 0,
+  "application_tests_executed": false
+}

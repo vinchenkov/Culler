@@ -1,0 +1,47 @@
+{
+  "checks": [
+    {
+      "base_commit": "0db0025d320758079e6acf7f69038b3a96755161",
+      "changed_paths": [
+        "filter/README.md",
+        "filter/engine_test.go",
+        "filter/render.go",
+        "store/test/memo_filter_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+      "reviewed_tree": "d1606a9ad9f1d2422ffc8115027060e711cd3bf1"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "A missing flag follows the false branch in the shared boolean predicate.",
+      "conditions": [
+        "The change covers SQLite, MySQL, and PostgreSQL renderers.",
+        "SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+        "JSON presence conditions retain their distinct predicate behavior.",
+        "The change adds filter documentation, renderer tests, and store tests."
+      ],
+      "mechanism": "The renderer shares a positive JSON boolean predicate and negates it for false equality or true inequality."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "A missing flag follows the false branch in the shared boolean predicate.",
+  "task_id": 820,
+  "unverified": [
+    "No renderer or database query test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "Unexpected nonboolean JSON values can follow different conversion rules across database dialects."
+  ],
+  "verified_source_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+}

@@ -1,0 +1,115 @@
+{
+  "criteria": [
+    {
+      "criterion": "The feed collects distinct creator identifiers and requests those users through one list call.",
+      "evidence": [
+        {
+          "path": "server/router/rss/rss.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/sqlite/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/mysql/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/postgres/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The multi-user feed returns an error if the batch user query fails.",
+      "evidence": [
+        {
+          "path": "server/router/rss/rss.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/sqlite/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/mysql/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/postgres/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The single-user feed path remains separate.",
+      "evidence": [
+        {
+          "path": "server/router/rss/rss.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/sqlite/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/mysql/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        },
+        {
+          "path": "store/db/postgres/user.go",
+          "revision": "e0cc24782362d65befce885f2ecf3a14b5bac7d8"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "23a7e99a21e3f6d7feed34d807c3acd0c74a71f9",
+      "changed_paths": [
+        "server/router/rss/rss.go",
+        "store/db/mysql/user.go",
+        "store/db/postgres/user.go",
+        "store/db/sqlite/user.go",
+        "store/test/user_test.go",
+        "store/user.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "e0cc24782362d65befce885f2ecf3a14b5bac7d8",
+      "reviewed_tree": "d7614179b7bac13953bd75b76d50d2930d0372c0"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 826,
+  "unverified": [
+    "No feed request or benchmark ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

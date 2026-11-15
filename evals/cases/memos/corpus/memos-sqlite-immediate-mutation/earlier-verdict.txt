@@ -1,0 +1,21 @@
+{
+  "evidence": [
+    {
+      "path": "store/db/sqlite/memo_attachment.go",
+      "revision": "f9544349202d931b90e38c01982e42245ca1c605"
+    }
+  ],
+  "finding": "The claim contradicts the pinned source conditions.",
+  "outcome": "fail",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "This change makes every database mutation free of lock errors.",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "This is an authored source-inspection history, not an executed Culler run.",
+  "task_id": 809,
+  "unverified": [
+    "No concurrent write workload or application test ran.",
+    "The source does not prove that SQLITE_BUSY becomes impossible.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

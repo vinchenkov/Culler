@@ -1,0 +1,219 @@
+{
+  "assessment_status": "uncalibrated",
+  "candidate_count": 2,
+  "counts": {
+    "completed_packager_trials": 3,
+    "completed_packet_assessments": 3,
+    "final_cases": 0,
+    "optimizer_proposals": 1,
+    "parent_child_comparisons": 1,
+    "preserved_packet_reuses": 1,
+    "scope_assessments": 1
+  },
+  "datasets": {
+    "final": [],
+    "trainset": [
+      "memos-log-level"
+    ],
+    "valset": [
+      "memos-webhook-label-refactor"
+    ]
+  },
+  "evidence": {
+    "completeness": {
+      "artifact_errors": [],
+      "complete": true,
+      "record_failure": null,
+      "unfinished_operations": []
+    },
+    "content_addressed_artifact_count": 91,
+    "event_count": 98,
+    "journal_final_hash": "c59ae8fd343668a4e8d5c1fa31528d9ebaa051734780d4488a413095564cc241",
+    "journal_sha256": "e6a8ee3b63cfb33b1b9775fdf36cd7e5ec8f5c0d1343913b180874964d165507",
+    "prepared_protocol_sha256": "c9dce6f3f4fdc6f8445a6bdcb5604201b27866e3eb331f61286de2f7155e577c",
+    "private_run_directory": "/private/tmp/culler-eval-native-integration-20261002-01",
+    "viewer": "/private/tmp/culler-eval-native-integration-20261002-01/viewer/index.html"
+  },
+  "gepa_version": "0.1.4",
+  "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+  "iterations": 1,
+  "limits": [
+    "The Judge remains uncalibrated. The scores establish no directive improvement.",
+    "The child tied its parent and did not enter the native candidate pool. The run executed no child validation.",
+    "The development check used two seed cases. It executed no final comparison or unseen-repository test.",
+    "Controlled tests cover candidate acceptance, confirmation, and final comparisons. This live check establishes their shared runtime path only."
+  ],
+  "model_substitution": false,
+  "outcome": {
+    "child_score": 0.9166666666666667,
+    "completion_reason": "max_iterations",
+    "minibatch": "minibatch_rejected",
+    "parent_score": 0.9166666666666667,
+    "rule": "strict_improvement",
+    "selected_candidate": "D0"
+  },
+  "production_changes": false,
+  "protocol_hash": "092fd81a4d50e2d20311c72462d7506c360ac60ef6ef1e0c322dc65fa5a53389",
+  "purpose": "Real native GEPA mechanics with one development mutation. No directive improvement claim.",
+  "recorded_at": "2026-10-02T22:41:28.553678+00:00",
+  "recovery": [
+    {
+      "action": "The continuation supplied the existing browser-cache path and reassessed the exact preserved packet.",
+      "condition": "The process lacked the configured browser-cache environment. Chromium existed in the external cache.",
+      "packet_sha256": "07370a94e4495702f21429785c12b5351d00de68203a62f1e9de9659db036ed8",
+      "sample_slot": "3729f63157e5685996a8dc4f84ffa8481d0ffdd6d7d9f86f123c13b5491b87a3",
+      "source_operation_id": "operation-d186c20de2f04c468fd213d619c56ab9",
+      "source_trial_id": "trial-edabf8fb5b464b74ba60067af316ee0e"
+    },
+    {
+      "action": "A genuine second Judge attempt assessed the same produced packet. The record retains the malformed result.",
+      "condition": "The first actual Judge attempt returned no complete JSON object."
+    }
+  ],
+  "reviewer": "/root/trial_runtime",
+  "roles": {
+    "optimizer": {
+      "base_url": "",
+      "channel": "codex",
+      "effective_models": [
+        "gpt-6.1-sol"
+      ],
+      "harness": "codex",
+      "harness_versions": [
+        "codex-cli 0.159.2"
+      ],
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "requested_model": "gpt-6.1-sol",
+      "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+    },
+    "scope_judge": {
+      "base_url": "",
+      "channel": "claude",
+      "effective_models": [
+        "claude-opus-5-5"
+      ],
+      "harness": "claude",
+      "harness_versions": [
+        "2.1.280 (Claude Code)"
+      ],
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "requested_model": "claude-opus-5-5",
+      "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+    }
+  },
+  "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128",
+  "schema_version": 1,
+  "scope_permitted": true,
+  "source_revision": "8cd10800939b002509b7b7f06b3bfbb6ce2de47e",
+  "status": "completed",
+  "trials": [
+    {
+      "case_id": "memos-webhook-label-refactor",
+      "generation_external_attempt": 1,
+      "judge": {
+        "base_url": "",
+        "channel": "claude",
+        "effective_models": [
+          "claude-opus-5-5"
+        ],
+        "harness": "claude",
+        "harness_versions": [
+          "2.1.280 (Claude Code)"
+        ],
+        "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+        "requested_model": "claude-opus-5-5",
+        "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+      },
+      "judge_external_attempt": 1,
+      "packager": {
+        "base_url": "",
+        "channel": "codex",
+        "effective_models": [
+          "gpt-6.1-sol"
+        ],
+        "harness": "codex",
+        "harness_versions": [
+          "codex-cli 0.159.2"
+        ],
+        "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+        "requested_model": "gpt-6.1-sol",
+        "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+      },
+      "packet_sha256": "07370a94e4495702f21429785c12b5351d00de68203a62f1e9de9659db036ed8",
+      "stage": "validation",
+      "trial_id": "trial-edabf8fb5b464b74ba60067af316ee0e"
+    },
+    {
+      "case_id": "memos-log-level",
+      "generation_external_attempt": 1,
+      "judge": {
+        "base_url": "",
+        "channel": "claude",
+        "effective_models": [
+          "claude-opus-5-5"
+        ],
+        "harness": "claude",
+        "harness_versions": [
+          "2.1.280 (Claude Code)"
+        ],
+        "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+        "requested_model": "claude-opus-5-5",
+        "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+      },
+      "judge_external_attempt": 1,
+      "packager": {
+        "base_url": "",
+        "channel": "codex",
+        "effective_models": [
+          "gpt-6.1-sol"
+        ],
+        "harness": "codex",
+        "harness_versions": [
+          "codex-cli 0.159.2"
+        ],
+        "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+        "requested_model": "gpt-6.1-sol",
+        "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+      },
+      "packet_sha256": "58e5565303a25a81dad4e13478bf5ee9ac4df23d01cf12cce3d77fb713073bd9",
+      "stage": "training_parent",
+      "trial_id": "trial-2d9ff16ecfc948aeb0dc0c23ab6e430b"
+    },
+    {
+      "case_id": "memos-log-level",
+      "generation_external_attempt": 1,
+      "judge": {
+        "base_url": "",
+        "channel": "claude",
+        "effective_models": [
+          "claude-opus-5-5"
+        ],
+        "harness": "claude",
+        "harness_versions": [
+          "2.1.280 (Claude Code)"
+        ],
+        "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+        "requested_model": "claude-opus-5-5",
+        "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+      },
+      "judge_external_attempt": 1,
+      "packager": {
+        "base_url": "",
+        "channel": "codex",
+        "effective_models": [
+          "gpt-6.1-sol"
+        ],
+        "harness": "codex",
+        "harness_versions": [
+          "codex-cli 0.159.2"
+        ],
+        "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+        "requested_model": "gpt-6.1-sol",
+        "runtime_source_hash": "06e0a5648dd0f38a93b066f04033c9fc5cf36e88f2bc0c8784b3bc6189c44128"
+      },
+      "packet_sha256": "dcc10b38f9cb6fc81d8f2236b8c37a808859b7ebc257979fcbcfa7e0da91ada2",
+      "stage": "training_child",
+      "trial_id": "trial-173c628e74e14852822ce5783fcf0656"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "culler-resident",
+  "private": true,
+  "type": "module",
+  "description": "Culler resident: the tick loop. Bun-only, zero dependencies.",
+  "scripts": {
+    "test": "bun test"
+  }
+}

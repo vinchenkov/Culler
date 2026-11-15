@@ -1,0 +1,17 @@
+{
+  "changed_documentation": [
+    "docs/configuration-provisioning.md",
+    "docs/identity-provider-bootstrap.md"
+  ],
+  "evidence_scope": "Documentation source inspection only.",
+  "provenance": "authored_for_experiment",
+  "result_commit": "0038295bbc772b38425b6c7f9ca814e4d1e44260",
+  "role": "Scribe",
+  "scope": "The case author inspected the upstream documentation in the reviewed commit. No separate Scribe run or commit occurred.",
+  "source_commit": "0038295bbc772b38425b6c7f9ca814e4d1e44260",
+  "unverified": [
+    "No deployment, mounted-secret load, API mutation, or database concurrency test ran.",
+    "The new no-persistence policy does not remove provider secrets that an earlier bootstrap stored.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

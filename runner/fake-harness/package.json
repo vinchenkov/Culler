@@ -1,0 +1,5 @@
+{
+  "name": "fake-harness",
+  "private": true,
+  "type": "module"
+}

@@ -1,0 +1,146 @@
+{
+  "criteria": [
+    {
+      "criterion": "The email package validates configuration and messages, then sends them through SMTP.",
+      "evidence": [
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/config.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/message.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/README.md",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Send returns a delivery error; SendAsync starts a goroutine and logs its error.",
+      "evidence": [
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/config.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/message.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/README.md",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The configuration needs a host, a port from 1 through 65535, and a sender address.",
+      "evidence": [
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/config.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/message.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/README.md",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A message needs at least one To recipient, a subject, and a body.",
+      "evidence": [
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/config.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/message.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/client.go",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        },
+        {
+          "path": "plugin/email/README.md",
+          "revision": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "319a7cac949590e171ee4c1980416ecbfd51ee8a",
+      "changed_paths": [
+        "plugin/email/README.md",
+        "plugin/email/client.go",
+        "plugin/email/client_test.go",
+        "plugin/email/config.go",
+        "plugin/email/config_test.go",
+        "plugin/email/doc.go",
+        "plugin/email/email.go",
+        "plugin/email/email_test.go",
+        "plugin/email/message.go",
+        "plugin/email/message_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "reviewed_tree": "4ab6732179eb447f874efc1e8aeb109dceb25601"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 806,
+  "unverified": [
+    "No SMTP server or email delivery ran for this preparation.",
+    "The UseTLS flag alone does not establish plaintext or forced STARTTLS behavior.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

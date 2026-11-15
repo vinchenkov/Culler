@@ -1,0 +1,63 @@
+{
+  "criteria": [
+    {
+      "criterion": "Initialization attempts refresh when getAccessToken returns no token.",
+      "evidence": [
+        {
+          "path": "web/src/contexts/AuthContext.tsx",
+          "revision": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A refresh failure is caught.",
+      "evidence": [
+        {
+          "path": "web/src/contexts/AuthContext.tsx",
+          "revision": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "If the token remains absent, initialization clears authentication state and skips the current-user request.",
+      "evidence": [
+        {
+          "path": "web/src/contexts/AuthContext.tsx",
+          "revision": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "be00abe852479820b7c574e15e276d70961ab7bd",
+      "changed_paths": [
+        "web/src/auth-state.ts",
+        "web/src/contexts/AuthContext.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2",
+      "reviewed_tree": "d8b4213a905465468e937e7c8517db7d6ff02da9"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 812,
+  "unverified": [
+    "No browser session or authentication request ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

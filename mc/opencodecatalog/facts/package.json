@@ -1,0 +1,6 @@
+{
+  "name": "culler-model-facts",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": { "./server": "./server.mjs" }
+}

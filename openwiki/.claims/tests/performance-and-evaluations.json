@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c600fff933c5dab8b8431dba63c6cc100167524cb4e2e9502cbc45d7237f48d0",
+  "claims": [
+    {
+      "id": "claim_7e701e9fbdc84e238f485a2bc67b0108",
+      "statement": "The performance controller rejects command clock differences above 1000 milliseconds.",
+      "evidence": [
+        {
+          "resource": "repo://performance/compare.py#L22-L49",
+          "version": "repo-lines-v1:sha256:994899f018090c65e1226b5bdc74c5accb3240e110d2d01242b533ee61365411:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzYzdhZmIzZjlkYzBhOTFhOTZjZWIzMzU1OWQzZDMxMmIwYzFkNjQxZDIxZTBkY2YzMWFiZmQ0NTI2NmQ2MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MDRkODU3ZWExNWU1YjY2ZmNjYTU1ZjA3ZTY2ZmI1MmI3NzA3ZGQwODk3MTkyMTdjOTUxOTNjNjhmNGNjYWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiYWUzZGU3ZDU0YjI4NmQzMmNhM2YzMmM0NDVlYzMwOWQ1YTk0ZDM0YzNhYThiMGYxMWM1YzQ5ZTRmYmZlZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhjYzRhN2QxY2M3OTZhYmEzZTQ2NzIzMzI3ZjUxN2U5ZjgxMTk4MmQyNTBmMDcwMjk4NmU0YjU3NjRhZDk1ODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5897c840c8e4e79af2fb3328ce546db",
+      "statement": "Evaluation case assessments preserve original inputs and publish revisions with verified hashes and receipts.",
+      "evidence": [
+        {
+          "resource": "repo://mc/evalcase/README.md#L16-L40",
+          "version": "repo-lines-v1:sha256:84d0a69d2ccf7e10c5e362ef058bc809a411dd98cb48458696bfd76508db8755:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyYzQ1M2UyMjY1Y2RkZDY0ZWJjODVkNTUxMjNlODdiNDc5NDRhMTE4MjAzZDJkODgxZjI2NjJiMGI4MTg3YzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5N2EwMjM2ZDM3MmNjZTQ5YTk3NTQyMGU2ODYxODk2NDk0ZGFkYmQyOTI5OTg0NWE3MTcxYjk3OThkMGJhZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_29e38197b9ac4558bfa51ec4821f31ab",
+      "statement": "The evaluation contract parity check invokes test.sh in its disposable module copy.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/runtime.py#L119-L126",
+          "version": "repo-lines-v1:sha256:a4e1ef35b0e7f00568fdc6f72d8eec552a92f6e5da1491aa1329ff678c213ee4:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjFlZjc2MTQ3MjNjYTM3MjRiNGM3ZmU2YmUyOTIzMGViZGI1MzRlZmFhMzBkNzE2NzliZjU5NTQ3ZmY2YTRlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ1YWY5Mzc1OTg2MmY3NTRmNmNhNzhjYjUxMDA2Yzg3ODY3ZjQ0OWMyODQzZGQ4ZTIzOGVjM2NmOTI5NTdhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGRhZGJmN2I3NDZmODJlMmE3ZDI2NTNmMjEyZjMzZTVlMGMzY2I5ZTE2YjExM2UwOTExZmVhMDA5OGJlNGExZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a368bfa10634199a79a852b01859dcb",
+      "statement": "The corpus amendment record binds current manifests to retained assignment and source-review evidence without new application test evidence.",
+      "evidence": [
+        {
+          "resource": "repo://evals/cases/verification/corpus-amendments.json#L1-L36",
+          "version": "repo-lines-v1:sha256:b962bda1eb862568d122f9b2d7769debbf97961243b76485fa5d1244f6852939:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NDM3MWZlOGY0NjU0OWVjZjE1ZTA1ODQ3MmQ0ZjRkY2ViYjdkNzdhMDFmNmI1NWQ0OTVhMGJmMjE3NmFkNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0NDNjZWJhMzNjN2NkMmZmNWIzMWEzNjJkMDhmMzBlNjIyYjcxYzk3ZDM5YzJiY2Y2YWE1ZjM5YzQ1MTZhNzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_121efeb8eab849de8a8ab6f32b0d3939",
+      "statement": "Evaluation cases select Strategic rationale or Summary as their first packet section from their brief parts.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/assessment.py#L77-L97",
+          "version": "repo-lines-v1:sha256:9270e925ab01c7a34513dc696939f44ae67b649c7b9453530f7be414fb0b6351:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MWZiYjJhOGE1ODI4NDA4ZjVkN2RiZjA4NTFkNmM0NWQ1Y2JmMzRkODY5M2Q1YTJjMDQwZGY2ZmEzMWRiZTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlNzI2OGQ5OTg2ZjdjMDg5ZDhjMzhkYzM4NTJjYjY4NTg3ZmM2ZWVkYTk2OWM1N2JhODIxODM1NWEzZTIzOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyMzFkYTc0ZWY2ZmVlNjQzNzJkYzU0MmViZTZlNTdmNTU1YjcyNTc2NWY5MzViOTU4MGZhOTVlZmRkMmE1ZTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd9fe6902a2942b2b39e6a92520ae9da",
+      "statement": "The packet checker rejects a packet that contains both first sections.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/assessment.py#L212-L222",
+          "version": "repo-lines-v1:sha256:f372dc8218b0a49291d4dcb66177dd1e8e755484a0df94e8033b8132b5307afd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMGUxYTFhMTg3NjVmNmY0ZjY4ZjQ2N2RkNzVjM2FiNjUyZDU5ZWMyYTM4NzJiOTdjYmQ3ZTBjN2E4MDQ5OWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MjNmODRiYzEwYzc0YWI5MDM3MDZmZjIxYjRhMTE3MmVjMjNlYWJkZDUyN2VkNTY4MmZiZDI0OWYyNTUxYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgxMTVmMDExNDlkYTU2Y2NjMDEyM2E4MjM2ODU0YWI0ZGVjNTExMzY4ZWJjMGZkM2MyNTNmMTRlZDI1OTM1NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI2MjA2MWUzYTAxNzdmYmY2NGJlMTc3MDIwNDU2MTExMjMzZmM2YmUyNzZiZGUyYmQ3ZjRlNDk3Y2I5MjczMzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53d340761c314d5e8c48fceb28b61dda",
+      "statement": "OpenCode evaluation traces use execution/trace.db with the SQLite media type.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/evaluation.go#L750-L770",
+          "version": "repo-lines-v1:sha256:1e60e37dae7d0719382085224b5cd03d9e992a73e4cd9dd5674fc29731c1a1af:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1NjE1OTFjYWRiOTA0NDAyNjJjZGFjMWVkNWFlMWQ2NDY0NDE3ZGE0ODg1M2M3MGU1OTg1MDJkZTBjYzc5N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NjhmOWQ1YjJiYjNmMTNhYmIzOWEzOTgxOWMxMWEzNmVlMDQxMDY3NmI4ODE0OGMwNDY4YTczY2VhODgwNzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjNjNlNTE1NjI1NDk3ZmQwOTJlY2M2NzI3MzUxNzRiNjE0NDkxNTEzMGQxN2E5YTkwOTY1MzFiMjQ5MGRiZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2ODU4ZjJhMWUxN2M5NzIwNWJhZGVmNWEzYWJjZTkxYWQzN2U2NmJlMzU1ZGNiNTEwMDViYjk1M2I0M2FmMmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2dab5fcb09ab4d60926b1c27fc0aa8a0",
+      "statement": "The evaluation section contract selects Strategic rationale or Summary first, whereas the current shipped Packager directive requires Intuition first.",
+      "evidence": [
+        {
+          "resource": "repo://evals/culler_evals/assessment.py#L13-L20",
+          "version": "repo-lines-v1:sha256:fa5ab9f5492e35822f1a0720cd3102720e4e74f42100f80b15c14d5b93e402d0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDc5YzgwM2I3MjZmYzNmNDI3N2ZiMjU3OGY0Njc4YzJmODZmMGZkNjk3ZTY3MmJiMjkyZDgzYzc1MDg1YjhmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODZlNTEzMDk2ZjJiNmIwN2IxNjYzOWVkMmI1MjU0MDZlZjFhNTFmNzQ0YmZlYzE1ODkxZmRlYTM2MzFkZDQ3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWZkYzYwOWQyY2I5YjQwNDI1NWJkYmVkYzhhMGRmNTA1ZTAyNDkxNzkwZWYxZmZiMzIyYTk1MzY5NjFiMWJmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTM3NTQ2ZGFiZjA0YjhiMWU3NWYxYzdmNTIwYjJkNjg3Y2M3Yzc2ZWY0MjZjNTMwYjZlMTkxN2U1ZmFmYzFhMCJ9"
+        },
+        {
+          "resource": "repo://evals/culler_evals/assessment.py#L77-L84",
+          "version": "repo-lines-v1:sha256:8d65333850f8f9725cc57f07c084a3e7b6f1123bcebdd079072faa6e7938a9f7:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQxZmJiMmE4YTU4Mjg0MDhmNWQ3ZGJmMDg1MWQ2YzQ1ZDVjYmYzNGQ4NjkzZDVhMmMwNDBkZjZmYTMxZGJlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJhNWU1NTc5NzZlNWYwNWQ5ODVmNzhhMmYxOTc3MjYxNTc2ZWE2MWIwMWIyNjc5YmFkNWQ1Zjk3Yzk3ZTA1NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU3MjY4ZDk5ODZmN2MwODlkOGMzOGRjMzg1MmNiNjg1ODdmYzZlZWRhOTY5YzU3YmE4MjE4MzU1YTNlMjM5ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2M5OWJmZWJiYjcxMWE5YzZlYzJiOWIyNDY1YmU2ZjI0NGNmOTU2ZmYzY2YyZTJhZWM5ODI5YWIxNzA1YWE5YyJ9"
+        },
+        {
+          "resource": "repo://mc/verbs/directives/packager.md#L46-L65",
+          "version": "repo-lines-v1:sha256:d5a73d7ca84fdb4068bb5040c24274e997e428056cad045c1628fc8c9a36c90f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDNmY2ZjNTdiMWJkZmRlNTIxZTEwNGE0MzdkN2YzZWEyM2Q0ZmYxNzdhMzg4Nzk5Y2QwMDk0ODY0ZWIwYTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljZjUyODVmNjAyMzI5N2M1MDFlNDY1YTZlNmU0ZTBiZjlhNDAzNGJkODc1NzA0MGE4ZDA5ZGQyNDA3Yjk3MGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyODA2NjBhNTU1ZDAzMWFjODBmYzMyZWM3MTE4NTdiZDA1MjcwMTgwOTE4ODVkODk2OTNkMzRjYTk1OGYzN2YifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-15T00:00:47.356Z"
+  }
+}

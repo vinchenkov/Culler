@@ -1,0 +1,96 @@
+{
+  "checks": [
+    {
+      "base_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "changed_paths": [
+        "web/src/components/MemoView/MemoView.tsx",
+        "web/src/components/MemoView/components/MemoHeader.tsx",
+        "web/src/components/MemoView/components/MemoPinnedMark.tsx",
+        "web/src/components/MemoView/hooks/index.ts",
+        "web/src/components/MemoView/hooks/useMemoActions.ts",
+        "web/src/components/MemoView/types.ts",
+        "web/src/locales/ar.json",
+        "web/src/locales/az.json",
+        "web/src/locales/bg.json",
+        "web/src/locales/ca.json",
+        "web/src/locales/cs.json",
+        "web/src/locales/da.json",
+        "web/src/locales/de.json",
+        "web/src/locales/el.json",
+        "web/src/locales/en-GB.json",
+        "web/src/locales/en.json",
+        "web/src/locales/es.json",
+        "web/src/locales/et.json",
+        "web/src/locales/fa.json",
+        "web/src/locales/fi.json",
+        "web/src/locales/fr.json",
+        "web/src/locales/gl.json",
+        "web/src/locales/he.json",
+        "web/src/locales/hi.json",
+        "web/src/locales/hr.json",
+        "web/src/locales/hu.json",
+        "web/src/locales/id.json",
+        "web/src/locales/it.json",
+        "web/src/locales/ja.json",
+        "web/src/locales/ka-GE.json",
+        "web/src/locales/ko.json",
+        "web/src/locales/lt.json",
+        "web/src/locales/lv.json",
+        "web/src/locales/mr.json",
+        "web/src/locales/nb.json",
+        "web/src/locales/nl.json",
+        "web/src/locales/pl.json",
+        "web/src/locales/pt-BR.json",
+        "web/src/locales/pt-PT.json",
+        "web/src/locales/ro.json",
+        "web/src/locales/ru.json",
+        "web/src/locales/sk.json",
+        "web/src/locales/sl.json",
+        "web/src/locales/sr.json",
+        "web/src/locales/sv.json",
+        "web/src/locales/th.json",
+        "web/src/locales/tr.json",
+        "web/src/locales/uk.json",
+        "web/src/locales/vi.json",
+        "web/src/locales/zh-Hans.json",
+        "web/src/locales/zh-Hant.json",
+        "web/tests/memo-header-navigation.test.tsx",
+        "web/tests/memo-pinned-mark.test.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029",
+      "reviewed_tree": "f18fff277703eea4753679570e1ec1e42b5fe729"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "A pinned memo shows a corner marker instead of that header control.",
+      "conditions": [
+        "The marker is an image role with a translated pinned label, not an unpin button.",
+        "The marker grows on fine-pointer hover and disables its transition for reduced motion.",
+        "The change removes the now-unused useMemoActions hook and adds locale labels and marker tests."
+      ],
+      "mechanism": "MemoView mounts MemoPinnedMark when showPinned and memo.pinned are true."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "A pinned memo shows a corner marker instead of that header control.",
+  "task_id": 801,
+  "unverified": [
+    "The source removes direct unpin from the header. This case does not prove the remaining action menu's complete behavior.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "verified_source_commit": "c2b839957457e3f4998dfb1c7aff4d2eaaf05029"
+}

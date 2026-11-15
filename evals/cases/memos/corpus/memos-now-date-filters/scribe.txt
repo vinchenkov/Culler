@@ -1,0 +1,15 @@
+{
+  "changed_documentation": [
+    "internal/filter/README.md"
+  ],
+  "evidence_scope": "Documentation source inspection only.",
+  "provenance": "authored_for_experiment",
+  "result_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+  "role": "Scribe",
+  "scope": "The case author inspected the upstream documentation in the reviewed commit. No separate Scribe run or commit occurred.",
+  "source_commit": "41ff22b0cc432543594992fc3ee390179e2b47b0",
+  "unverified": [
+    "The preparation executes no filter test or database query.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

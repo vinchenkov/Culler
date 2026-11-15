@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T20:50:45.586Z",
+  "inputPath": "/private/tmp/culler-performance/20261011-mac-command/baseline-1000/trials.jsonl",
+  "inputSHA256": "02e56c02aefce1723ad66bb425144b78fe11a8f9f519e1cdb44450056c84417a",
+  "totalTrials": 1000,
+  "measuredTrials": 1000,
+  "excludedWarmups": 0,
+  "metadataRecords": 0,
+  "runStatus": {
+    "state": "complete",
+    "controllerRun": true,
+    "completionPath": "/private/tmp/culler-performance/20261011-mac-command/baseline-1000/completion.json",
+    "metadataPath": "/private/tmp/culler-performance/20261011-mac-command/baseline-1000/metadata.json",
+    "outcome": "complete",
+    "completedTrials": 1000,
+    "expectedTrials": 1000,
+    "allowIncomplete": false,
+    "reasons": []
+  },
+  "byVariant": [
+    {
+      "variant": "background",
+      "summary": {
+        "count": 1000,
+        "timedCount": 1000,
+        "successes": 1000,
+        "errors": 0,
+        "timedOut": 0,
+        "missingDurationCount": 0,
+        "medianMs": 245.92193750000297,
+        "p95Ms": 286.36953719998854,
+        "p99Ms": 317.13323667000435,
+        "maxMs": 1125.0655839999963,
+        "overDeadline": 0,
+        "deadlineMs": 15000,
+        "quantileMethod": "linear interpolation"
+      },
+      "commands": [
+        {
+          "argv": [
+            "task",
+            "list",
+            "--project",
+            "benchmark"
+          ],
+          "summary": {
+            "count": 1000,
+            "timedCount": 1000,
+            "successes": 1000,
+            "errors": 0,
+            "timedOut": 0,
+            "missingDurationCount": 0,
+            "medianMs": 245.92193750000297,
+            "p95Ms": 286.36953719998854,
+            "p99Ms": 317.13323667000435,
+            "maxMs": 1125.0655839999963,
+            "overDeadline": 0,
+            "deadlineMs": 15000,
+            "quantileMethod": "linear interpolation"
+          }
+        }
+      ]
+    }
+  ],
+  "comparisons": [],
+  "notes": [
+    "Only trials explicitly marked as warmups are excluded from duration summaries.",
+    "Failed trials with measured durations remain in every duration summary.",
+    "Trials without durations count as errors when their valid field is false; they do not enter duration quantiles.",
+    "Timeout durations are lower bounds when the controller stops a command before completion.",
+    "Paired ratios require valid, positive durations and matching output digests when both digests exist.",
+    "The comparison reports missing, invalid, and different-output pairs separately.",
+    "The bootstrap resamples blocks and needs at least two blocks with valid pairs for a confidence interval.",
+    "The completeBlocks field counts blocks with at least one valid pair.",
+    "A ratio below one means the treatment has a lower geometric mean duration.",
+    "Confidence intervals do not remove bias from different host conditions between variants."
+  ]
+}

@@ -1,0 +1,3 @@
+Scheduler fixture preserved.
+The manifest, local artifacts, and bundle content hashes match.
+This check executes no application test.

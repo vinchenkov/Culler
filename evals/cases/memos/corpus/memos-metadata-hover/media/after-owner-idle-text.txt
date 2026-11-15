@@ -1,0 +1,36 @@
+Memos
+Home
+Calendar
+Map
+Attachments
+Go to Home
+ACTIONS
+Edit
+Write a comment
+Share
+Case owner
+2026-09-01 12:00:00
+A note for the evaluation case.
+
+
+<details><summary>Details</summary>
+
+
+Additional explanation.
+
+
+</details>
+
+
+Ordinary text follows.
+ATTACHMENTS
+example.txt
+TXT
+·
+2.0 KB
+Public
+Cancel
+Update
+⌘
+Comments
+Write a comment

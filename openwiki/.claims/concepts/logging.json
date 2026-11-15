@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7bf9da3724289b552ba66c7eb1096b8a33edd528054f3121fc792c33190eb924",
+  "claims": [
+    {
+      "id": "claim_c6e25cc807834d7d99ccddf38b762076",
+      "statement": "OpenComponent validates the component name, returns (nil, nil) without creating the directory when the log root is absent, and opens <dir>/<comp>.ndjson with O_APPEND and mode 0600.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/mclog.go#L71-L93",
+          "version": "repo-lines-v1:sha256:d3ca9338392830cb92ac611a9b20a0068600c372e1b0431ee78c78a6c4899c6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3Mjk4YTA4NTBjYTgwZTFhZmFmOTNhMDc5ZTFiZmE3YTg2ZjgwNDYzOWMyYmU1NTllYWVmY2FjZGM2ZDg1YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzNWQ3ZGIzMGRkYjQ0OWU5ZGUxODFiZjI0MGYxZDdhYWE5MGYzMTFhNDE3MmY3Y2EwNTVlYTZlNGMyNTcyODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1ZTk4Yzg0NGY0NWZhMGMyM2E2ZGRlM2FkODA2OTgyZDdkMzhiYjk1MmM5M2ExYTQwZGM2ZjI0NjJmNmZjZWYifQ"
+        },
+        {
+          "resource": "repo://mc/mclog/mclog_test.go#L78-L93",
+          "version": "repo-lines-v1:sha256:fda2e7dec43f25609577eb2d00491036531d3318191cdc8effe41d9c3299cfde:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkNjM2YjFjYWUwNTRjODc3NTI2NzI5NmMwYzgwNzMxZDBlYzM4MGUzYzAxODljMWQ1ZDRmYjVmNTQyYmE5ZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1N2Q4NDc3NzRjMTQyMmIzZDFkNzI0MzZmMjI0NzhkMzkzYWExNTk0ZTU5NGY5NTEzODBkMDA0NDU2MGUxMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_59eabf8a09374d23b3de68082be056e2",
+      "statement": "A nil *Logger is a no-op: At returns on a nil receiver, With on nil returns nil, and Close on nil returns nil.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/mclog.go#L118-L121",
+          "version": "repo-lines-v1:sha256:129503fb350362aebb2772487204532cd41963cd20bd524376f4b342c136aae0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWIyNDczMGZhMmRlZDNmYTU3ZWFjYjliZmM2YzA3YWU5NDM2MzZjZDViMmFhZTJlZDZhOGFjYjhjZmU4MzhmNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg0NzkxY2YyYzQzNTRlMzE0MmZkOThmNWU1MWMyMjA3OTMyNDgxZTljNWY5NmQ4YzkzY2JkZWUzMDA5OTEyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmNhZTFjYTYxM2VkOTY0YTU1MjlkZmMwOGI4YmI3N2M1ZTU5NjEzMTZiNzQ1ZDY2YjllOGI3ZWNlYjI2NjQ4ZiJ9"
+        },
+        {
+          "resource": "repo://mc/mclog/mclog.go#L63-L69",
+          "version": "repo-lines-v1:sha256:756e32951595fa26920135739da7b107973b3e0025b38b9bf55bbcc5719d57c9:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQyNjBkMmJjZDI1ZjEzNGFjZjJlMjcyYWY4NTcwYTQ3YjBjZTIzOTljZmE0NGQzNzdkNzFjYjc0MDc4MDg0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzFjYThiY2Y3M2NiOTYwMTExZjE3OTEyOTk1YTRlM2M3M2Y3OGQzYjhmNTMwYmQ4ZDQ4MzY2OTkzZWU4YWJmMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTkzN2Y1MjJhOGVlOTBmNjVlZDQxMmY1YTkwZjk1ZTM0YjA0ZDMzODA5Njk0OGVmYmRkZWJiYzYzZjBhMDM4YyJ9"
+        },
+        {
+          "resource": "repo://mc/mclog/mclog_test.go#L95-L110",
+          "version": "repo-lines-v1:sha256:743450678c698301659db0462e14e0a292391e7b26db4112e816a32aa64dbbae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE4ZTNhZTdiODFlMGM0OWVmOTg5ODlkOTc0M2U1ZmFjMzExMmEyNWZlNWM5ODRiNTgyY2E1YzIxZTU5MGYwYmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzM2E3ZjRiZTllNjAwNGI3Y2Y4MmI0YzRhNTFhNTc4YzgzOWNiYzI0ZDFiM2E2NTkwMGFjNDZhMTMwNmIzMjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_57c50fc6078a4817b6013a378e1607a9",
+      "statement": "A component name must be non-empty, must not begin with a dot, and may contain only [A-Za-z0-9._-].",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/mclog.go#L95-L111",
+          "version": "repo-lines-v1:sha256:747c78ef980b31b4287fe553eff20e0b08f72283106ab4c1da56aa772a0df60b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxMTE5YmVmOTY5Y2U2NjMwMThmYTZjYjVkYjJhMTdmOWQ1OGNjZmJjOWZkY2MyYmQ2ODQ5MjliNTRhMzkwMDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxZWMwN2IxY2MyZDNjMTMzNDE5ZGJjOWNiMWUyNGY4MWJhNGVlMGY4NjA5Yjc0OGZkMDJjODk0NTkwN2U5NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwZjYwYWNhYTkzMmFlNjljMWNiODFlZWVhYmJhZTA0Yzc1MGRhMTRlYzMxY2ZjZmI0Y2ZiNjc1ZWUzMWEzZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cc9490a781844f7c9884a89349b91eb0",
+      "statement": "ParseLevel trims and lower-cases its input and returns the fallback for any unknown string instead of failing.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/mclog.go#L24-L36",
+          "version": "repo-lines-v1:sha256:b75577e53018387b5a6ce51048abf2d853acb02ed079c2c40e108023e7ebdf88:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYzc2YTQyOTJlMTQ1NGU5ZWI2ZmZiMmM2N2RmYzliZTI2Yzg2NmU4YjgzNWVjNjg5ZTRiOGU3YmRhZTUyMTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MzZjMDE5ZmViMmUwOWU5ZGQ5ZDRkYmRmNDhmNzRlNzM3NjQ3ZWU4ODRlNzlmNzkyZDE5NmQzNzJhYTcxYTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlMDExMTRjNjc4ZDA3YmMzMmZmMDlmZTI5ZWNhMTI1NzUxZDMxYjEzNTUxZmE1YTVjYTQ5Y2FjYTEzMDJhN2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_17646813d85749ac98461b008103e8bb",
+      "statement": "The record head keys ts, level, comp, event, msg are reserved; msg is capped at 2048 bytes and the line at 8192 bytes, and an oversized line gains truncated: true while the largest context fields are shed.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/record.go#L16-L26",
+          "version": "repo-lines-v1:sha256:29a7afa1c4700bd1012b1dcdcdea65ca2116044593891382cf013e6a3b8472c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MWNjOWNhYjM4NGRkNjFjMTI1OWQwZjEzYzE0MDQzZmU5MTFjNWM1MmY0YTViYjE5MDA5ZmEyZDllODg5MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmNmIwMmZjMWJhZTUzN2VjOWI2Y2Q5MGY2NzZjNTQ1MDMxZTEyY2RkMTY5ZTI5MzY3YTlmZDQzYmNhZDAzMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAwMDBiYWVjY2FiZTQ1ODdhNTVhMDhjMzdjNDU4NTNmNWM0MjU3MWY0NmIxYzFlMTRkZjQ1ODE0NDcyODBlNDUifQ"
+        },
+        {
+          "resource": "repo://mc/mclog/record.go#L33-L61",
+          "version": "repo-lines-v1:sha256:3747250e32b2b5d166bfa7095005010463ef51e2040cf441c6cd2cb7cf2dc7dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1ZDkwMGNmMTZlYjhmNTA2MjdkYzI1ZmFhMzcxMDQxZWRmZTQ2YzBlOGQ5OTlmM2FhYTFjNjY5ODU2ZjIzMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyNWI2YzBlODFkM2NkMjU4Y2MzOTIxNzVjZjE5NDk2ZjdkOGY4ZmVhMGFhYTBkYzJkYTk5MzIyYjY3Y2Y2NGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2YTA4MDc0ZTU2OTk4YmE3MGFlYWUyNjJmMmQ2ZDA2NDlhZDMzNWJlNWY4NDk3NzU1NTZmMjk1MWRhNDRiYWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_405a62464a9f41fa829942d8eee2c896",
+      "statement": "The Go encoder disables HTML escaping so its output matches JSON.stringify byte for byte.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/record.go#L174-L182",
+          "version": "repo-lines-v1:sha256:a57833a0738ea3532171158b1530467ddf785621426e93ad8ac0e0e9863c5c2b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWUzYzYxYWUwYTQ0MTliYjViZmY5YjBmMDcyNzIxMTdjYjZmMzMyNjUwNGZmMTU5NzM1YmYwOWE5OGJlMTkwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDM2YTAxMGQyM2ZiYTBjZmE3NWVlN2VlMDZlODA3MWZiYTJlMWJmZWFmNTkzNTQxZWU4MWZiMDhmMjM2MzRmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWRjODM1OTEzYzZkNDZjODJkYjYzMDE5Y2FhNzU2ZDE3MDhiYjFjN2UwYjEwOGZkZGZhZmJlNzU0YjY0ZmFmMiJ9"
+        },
+        {
+          "resource": "repo://mc/mclog/record_test.go#L246-L268",
+          "version": "repo-lines-v1:sha256:b1b23a3f52d2e4f6de078f758f456423ef588362202bccd766be8ee7bba4c11f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5OGE4MDNmYjc5MTRlMWU4YzBjNDU0MjVlNDFlNjJhYzE3Y2NkOTAxZjc4OWRmN2MzMDc2YjJiZmRkZjI0NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1MjE5MTU3MmRmYTcxZDlmYmNiZWE4M2VjOTM3NDgxNTlmNTMxMjEwNzgyMThlZjVhNTM3NTgyNjkyYjExNjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d96b7637dac482093d211990f6decf4",
+      "statement": "Go rotation uses ROTATE_MAX_BYTES of 16 MiB, ROTATE_KEEP of 4, and treats a rotate lock older than 60 seconds as stale.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/rotate.go#L12-L17",
+          "version": "repo-lines-v1:sha256:487491679f1693883fdd4ad7f38cf368c2ab62aae5fcce04bc1147ce2b6809d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBkOTg2YjBkZjdlOWM0N2FhNzgyYjA2NjA5NDY5YmM4ZWVjYTQ3NjEyYjgzOGNmODI5ZGRhNGJjZGRkMzMyOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFmYmEwNTI3YzM5NTNjNGI2ZTBlNWI1NzM5YmE4MzYxMmY4MDUzYmNkYzk0NjY3MzAxOTNjZDFkNTkwYjQwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzllZGQ3MmJhNmI0MDA4M2NlOTUyNjlmYTU2ZmNmM2FjMWJkOTgyMjFhYTY2MjFhNjgzZjdkNTYzMmJiMjFkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWRkMGM5Mzk1ODY0Nzc0Y2NkNzEwNzEwMWExNDU3ZTFjZjcyZjYzMmJiMTRiYzEyMjY5ZmEwNDdlODgyMTk1OCJ9"
+        },
+        {
+          "resource": "repo://mc/mclog/rotate.go#L49-L72",
+          "version": "repo-lines-v1:sha256:5ceca0d2ff6e84164ec6a654e939b30846135422f2b570c03e9a59945736325f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMDliMGRmNTI1YTczNDljMWEzZjBmZjVjOWY5M2I5YzJiN2E3MWY2MzdkZTJmZjdjYWU4Y2ViMjZiYjViYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdmMzhkNTNmYzhhOWZiMGUwYTM2OWMzZGRiM2RiMjI0MGU3ZmIwMjEzZWI3MWYxY2U5NzIwOTMwMjI2M2YzZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhNmIzNDJmMjE1NzY4ZTU3MWE4NzgzMzM1MGM2MzU2NmQ5MzI4YTBlNTQwMjMyOTM2MWE2ZGEyNWUwOTFmYTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9947ff8242a24547b7ad935ec00e74f5",
+      "statement": "When another appender holds a live rotate lock, writes continue past the cap rather than stalling, and no records are lost.",
+      "evidence": [
+        {
+          "resource": "repo://mc/mclog/rotate_test.go#L135-L162",
+          "version": "repo-lines-v1:sha256:028755f5015d305626f270b6e08f595b7b60ae993df9a295dd5a682f21c85890:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYjBjMDc2ZmFhMzYxZDljYWYwYWU2OGQ0MmJlMTAxZmQxMDQwNGE3MjIwYzVlOWY3ZWEwZjI0YmMxNjFmNzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhiYzJlMmNhN2IzYmQ3NDc1ZDU2MjdlZTI4MzI1YzI1MTlkY2VhYmQ2MzIxZGRjYTRmNDc4OTYxNTFkNDNjMzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2378fb9aede5451b8eff6ce417ec7681",
+      "statement": "The mc CLI opens $MC_HOME/logs/mc.ndjson with a level from MC_LOG_LEVEL defaulting to info, and uses a nil logger when MC_HOME or the log directory is unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/cli_log.go#L46-L61",
+          "version": "repo-lines-v1:sha256:bd9a8fe1244ce700dc0e9d38cf6743b2733ba6999188ca4566736276038a23cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YjM3ZmFiYzhiNDUyMThhZGIzODdjOTdhMGEwZjg2MTYzNDFiOTBmNDcwN2IxMzQ3YmE5OGEyMDVlMTE5NWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5YmE5YTE4NmIwZmExZDdkNjA4MzZiZDA2YzY4ZWIwMDk4MzQ0NzdkYmYxYzZhNTk5NTAwYTk3YzM3ODE1ZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NjZjNWJmNjA3M2Q3NzBlYTJhMTQ4NTI4ZTNiZWY4ZTFhMGU0ZDdmZjEzN2M0OTc0MjFjN2ZhMjA4YTJlNWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_293903b3646c4848bce3521edfc5b434",
+      "statement": "The TypeScript sink uses the same rotation constants as Go (16 MiB, 4 generations) and the per-run sink has a 4 MiB hard cap.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/log_event_registry_test.go#L194-L230",
+          "version": "repo-lines-v1:sha256:9f7f8c7764ad38a31caa3cf27b5afede849bd7bc05b2a92056d76e66961a8a8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0MzE1MWIzM2VkZmIzNDI5ODQ3NWRhZGUwOTU4OTQ1MzBiZmUyYTM5NGRjY2Y5YTFlODI5YzA3YzMxNjM0ZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkY2ZmNzFlNjZiZTJlNTYxOTIyMWY3YmVmMmNlYTE1MTg4Y2E4Zjk1NWZhYTYxOTg1N2VlNDBhNDE3NTI5YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://runner/shared/log-sink.ts#L31-L33",
+          "version": "repo-lines-v1:sha256:5c4ca50d0e7b27edb04470569488e9b4293a6466791934aa8f4c9a100d145ad4:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU0MDYzMWNiNGE5NWI1OWQ1OTk2OTE4MDkxYzBhOWFlZTBkNDU4ZTFhNTM0NjJmODYzZDg1MzNhMTM4Y2ZhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTIxMzgzMjBlNzBlODU1ODUxMDQzMjhkZDFhMWRiNjk0YmJhYTE2ZTgxNWRjODUwYTMyNWE0MmI3ZDBkZGI2NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWY2MWZlYTVmMDg2YzYwNjk3MzBiOGQ2ZjUwYjlhMDFhZjM4MmE3YjI2MDI0ZGY1MzliYThiYzQwODZlYzFkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDA4MzYyMTY1MzNiOTA0ZDEwMzc0YjBiYThjMmY0ZDgxNTI0YzZlOGE1MWQ4NzU0NDM4MzMzYjA2NTM4MWFkMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7af7713982c945bfb76a429ac70c7d95",
+      "statement": "The shared fixture runner/shared/testdata/render-golden.json is read by both golden.test.ts and mc/deployment/log_parity_test.go; the TypeScript test also requires serialize to reproduce each golden line byte for byte.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/log_parity_test.go#L34-L65",
+          "version": "repo-lines-v1:sha256:21188862babd4e8ae63e0af8f0b359e89e733f48854486d32fe7bee752b01a9e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MTc3NTBiZGE4Mjg4ZGFlMzE0NTIzNzJjYTgyYmQ4N2U2ZTUxNGMyYjA3YmJjN2E2OTNiNjkxNDIyYThiODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1ZjRiYWMxYWNjNjgxMzFhZWRlMDBlNDU2ODkwNTk3OWEyNjVhNzI2NmViNjI2MTdkMWQ5N2IzMTFmNTNiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViZTlhODU2YzFkNGMyMTBjZDRlM2E3MTFiZDgwYTk4MTA4OTlhNTExZWY2OWNkY2E2MzBmYzliNWY5YTMxZGUifQ"
+        },
+        {
+          "resource": "repo://runner/shared/golden.test.ts#L29-L53",
+          "version": "repo-lines-v1:sha256:ee4eb5bc3c73873ebd3c2832fe031f3f0e13c07a812dd31dc4fb32152842b43a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzZGQxMDRiNTM1NTg1MTg5NGRhZTdiMzlkMTcxNTRmYTY1YzEzMDI2YTUzMTI0MjU3MDljMzRiM2E3YTkxYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkMDNiYzU1YTg5YzU0ODNiMTU5MTEzODczMDQzZGIwMWFlYzk2ODc0YTA1ZmU3MTk2ODU4NTUyZjljMTFjZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZmNTU2MTk5NDdiNWE0MDE4Mzg3NWE0ZDhlNGRjNGRmMzc2NDM0NmM2MDkyMjkwOThmNzFjYWYzMjRiZGJiZDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd3abe8466e0471f8f1b6d4f5c5205cb",
+      "statement": "log_event_registry_test.go parses the EVENTS array from runner/shared/log.ts and fails when a non-test TypeScript log call names an unregistered event.",
+      "evidence": [
+        {
+          "resource": "repo://mc/deployment/log_event_registry_test.go#L32-L110",
+          "version": "repo-lines-v1:sha256:dc939c8f9e8d88e4c2ef66a361d9028ddfd8d2d8b2b402799f459f85bb74af16:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiZGJjYTNlM2YwY2RjNzQ4ZjY2OTg2YmZjMGM3ZjUyYmVkYmY2MGEzZTIyZWE2MzdmMGZlNTExMDZkMzRiMDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4YzdhZGZhNzEwYTU5MjJmNjc5NzBmMTdkNDU5MDBlMDIxZmI4NDRkNzE5NDczMDI4ZGRmNGUxYmIyODViNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2ZmRiNjE5MTAwZmUyNmQzNTZjMDI3OTc2NTc3OTBiOThiNTQ1OGFiMjI4YjBjOThhNTdhNWMyNjY4NGUwYWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_adf5ce505a524d35944a7e261f350274",
+      "statement": "mc/check.sh runs the deployment tests with -count=1 because they read files outside the Go module.",
+      "evidence": [
+        {
+          "resource": "repo://mc/check.sh#L34-L35",
+          "version": "repo-lines-v1:sha256:4bb6879c3a770ef4642759da7258e9ea732afbb8c9a50d74db4adadc11eb3a82:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWFlZjExNDg1YzY1ODdkNmVjZTgzNzU5ZDk0NmFhZWYyMjIwMWM3MDJlODllMGFkYzdiMjZiMWE5OTBmNDczOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODY3ZTNlM2QwNjA0ZDhkYzBjYjA1NDAyNTM2MWZhNDk4MTFhYTUxNTk2Yjg5MzZjZGNkOWI1NGYwZDMyOWI0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmY0MDExZDU3ZDAyOGMzMDQ3NzYyOTE5YTI0ZDMwMDllZmUxYmNlZjBkZTAyMDA0YTkzOGYyMGQwZmE3OTA5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmI3ZTZiYWU4NWYzMmJiNDIyODlkMTUzNTgyNDJjODMxMWJiZjczODViYzQ1ZDk5ZDBkNzk5NDQ1MjI3N2RiMiJ9"
+        },
+        {
+          "resource": "repo://mc/deployment/log_parity_test.go#L25-L28",
+          "version": "repo-lines-v1:sha256:1d61159c6b23c89dc12853cc54278d827ac061d66d0cddfcfec1961b97044b8a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRkNWU1NzU4ZjZiNzE0YjczZjMwMmQ3YmVjMTdmOTQxNDAxZmYxMmQ3ODViMjQ4ZmE4ZjJkMzFmMDBkNWJjMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNkMTRjMWM1MGIxNDAwMWY1MWJlYWIwNjc5MmQ4NTkyYzk3YTYwMDI0YzRhYWJjMDA1MGJkOTg2YWJhNmU3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWE5NzVkY2UzMmUzNWZmZjEzMThjMzRkMGIxZWZiOTM0M2JmOTExMjkxZGVjZDRiNTlhNjYwYzM1YjI3OTFiZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzJiYzcwMDI2ZTAwZTI3Yzk0YWUzMTE3NmZmOGJjMzc3MzRlM2NlNzUxMTUxNDliYmY0ODRjMzA3MjVkMjRiNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e5acdce18b8420cb9565f9d5989600f",
+      "statement": "The CLI invocation record includes process identifier and whole-command duration.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/cli_log.go#L182-L194",
+          "version": "repo-lines-v1:sha256:bfb2dad4f1937e69338fc58593a115eb4b9310fbe7f46632eae386e04d60857d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0MTUxNjVhZGEyMGY4NjNjZjlhNWNlMTc0ZjQ4OWY2N2QzODI2ZjE3Mzg1YWJmYWI0NzVlY2RiNzMzYjg0ZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5OTE4ZTc0MWRkNzA1OWRlNzY4OGQ2ZWM0OGJmNmRkNjkyN2UyYzVlN2E4MDQxZDEyMGFiNzJmYTU4NzUzZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhZTA4ZWM2YTg5ZjU0NTNiODZjZTRkNDExOWFhNzA4ODMyMzcxN2E0NjYyYTc4NjhhYWQ2ZGNhOWJlNTk5YWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b07e3ac3592fdf8c105c7024ec74227",
+      "statement": "runLogSink writes the per-run log in the directory that MC_RUN_LOG_DIR names, with /mc/logs as the default, and uses stderr when that directory is absent.",
+      "evidence": [
+        {
+          "resource": "repo://runner/shared/log-sink.ts#L300-L307",
+          "version": "repo-lines-v1:sha256:1d2cb410309eb08c75bcfc0a5038ae7b6578c409f566e1977df063d0ac8dce6b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMxOWFhNGU5NzQ1MTNhMGYzN2Y0NTVjZTc5ZTA1OTg5ZjY5NmEyZTMwNjU4MGZmZDM3NGVlY2UzYmZkMDI2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTIwNDBlMDk1YTk0ZTJhZGE3NGU0MjFmMzcxODc1MWE5MWE4MTBiZmQ2NmY0OGY0ZTkzOWM3Yjc0ODBlYjY3MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjRhNmNhZDk4Y2M5MzYyYWM3YmU2ZTk3MzI5MDM4MTE5ZTdiNDUzMDAxYWVkYWFlZTRjZTczYjc4OTc0ZmJmZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:23:34.077Z"
+  }
+}

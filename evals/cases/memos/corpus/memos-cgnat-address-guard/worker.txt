@@ -1,0 +1,47 @@
+{
+  "checks": [
+    {
+      "base_commit": "7e3d3c63156c206209fdc8e75a4fb117b1aaf1fb",
+      "changed_paths": [
+        ".github/workflows/backend-tests.yml",
+        "internal/linkmeta/html_meta.go",
+        "internal/linkmeta/html_meta_test.go",
+        "internal/webhook/validate.go",
+        "internal/webhook/webhook_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33",
+      "reviewed_tree": "ee516a870dcc1d7fd7e253b058fb91c8e22f716e"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+      "conditions": [
+        "The existing loopback, private, link-local, and unspecified checks remain.",
+        "Existing webhook override and allowlist rules remain distinct from the link metadata guard.",
+        "The workflow defaults DRIVER to sqlite, then clears DRIVER for the store job so that job keeps all-driver coverage.",
+        "The change adds source tests for the address branches."
+      ],
+      "mechanism": "The webhook adds a reserved network; link metadata checks IPv4 and mapped IPv4 values from 100.64 through 100.127."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+  "task_id": 818,
+  "unverified": [
+    "No network guard test or continuous integration job ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "f4d97fafcdab534e7e01c376d2b06a3c6aa98a33"
+}

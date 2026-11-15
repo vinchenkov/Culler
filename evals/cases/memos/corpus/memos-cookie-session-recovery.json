@@ -1,0 +1,330 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/812/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "54ac629abd2f0a434add3ee16cb0460866dfbeb9dbec6078e7e0d5b0f889a60a",
+      "source": {
+        "kind": "file",
+        "path": "memos-cookie-session-recovery/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/812/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "8fbef635226692d527222ec570384b6944fbe6008c8f6ecf04fcf83b0a95b0b9",
+      "source": {
+        "kind": "file",
+        "path": "memos-cookie-session-recovery/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "ecbb8a1d468fc92731db08056bfcad75bad98644bf2b4ac54f8b4a4f43bcfd3d",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "a5109b3ac3c9167d7eab26667279f86c3e9cb707c280a5cbe414b1a9b6dcc10a",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "d45271df0f4ef541b7d451bd2f03ac2584245f1f2b6bc7bd96d59f880badcf54",
+    "role_inputs": "80b4b3d4d50e92d03c763c57c403772be4fed001ce25926a3a36f4ce1a14aa0e",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "c4c9e353848d0b5fec43f4dd15994aa7a38de3c5c9efffc365757c1bd7bb185a"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "883981f19e00d15222a836d8db7f1ff217f19971a9506be0f108e3ef1641d2ef"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "75ade1d21cb8e6655da22dadddfc5dd7843546f2ff7d2a914dd784e1dbe765f1"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "cc1f3ac3c11a220e264347f0c28207850063f78610e77a0f77028adf8a082d95"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-cookie-session-recovery",
+  "id": "memos-cookie-session-recovery",
+  "paths": {
+    "/mc/artifacts/eval/812/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/812/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "Initialization attempts refresh when getAccessToken returns no token.",
+        "before": "Initialization can skip session recovery when it sees no stored access token.",
+        "conditions": [
+          "A refresh failure is caught.",
+          "If the token remains absent, initialization clears authentication state and skips the current-user request.",
+          "A valid refresh cookie can restore the session when local token storage is empty.",
+          "The change adds no new rendered control and does not guarantee every empty-token session authenticates."
+        ],
+        "id": "behavior-1",
+        "mechanism": "AuthContext calls refreshAccessToken, then rechecks the access token before it requests the current user.",
+        "sources": [
+          {
+            "path": "web/src/contexts/AuthContext.tsx",
+            "revision": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/551ee1d81f398abdcaf73a0c2b782c8379b0e3f2/web/src/contexts/AuthContext.tsx"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No browser session or authentication request ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-cookie-session-recovery",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "812"
+          },
+          {
+            "label": "Title",
+            "value": "Recover an empty local token state through the refresh cookie"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "Initialization attempts refresh when getAccessToken returns no token.\n\nAcceptance criteria:\n- Initialization attempts refresh when getAccessToken returns no token.\n- A refresh failure is caught.\n- If the token remains absent, initialization clears authentication state and skips the current-user request.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/812/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/812/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/812/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+          },
+          {
+            "label": "Base commit",
+            "value": "be00abe852479820b7c574e15e276d70961ab7bd"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 812": {
+        "acceptance_criteria": [
+          "Initialization attempts refresh when getAccessToken returns no token.",
+          "A refresh failure is caught.",
+          "If the token remains absent, initialization clears authentication state and skips the current-user request."
+        ],
+        "description": "Initialization attempts refresh when getAccessToken returns no token.\n\nAcceptance criteria:\n- Initialization attempts refresh when getAccessToken returns no token.\n- A refresh failure is caught.\n- If the token remains absent, initialization clears authentication state and skips the current-user request.",
+        "id": 812,
+        "project_id": "memos-evaluation",
+        "purpose": "Initialization attempts refresh when getAccessToken returns no token.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Recover an empty local token state through the refresh cookie"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "Initialization attempts refresh when getAccessToken returns no token.",
+            "A refresh failure is caught.",
+            "If the token remains absent, initialization clears authentication state and skips the current-user request."
+          ],
+          "description": "Initialization attempts refresh when getAccessToken returns no token.\n\nAcceptance criteria:\n- Initialization attempts refresh when getAccessToken returns no token.\n- A refresh failure is caught.\n- If the token remains absent, initialization clears authentication state and skips the current-user request.",
+          "id": 812,
+          "project_id": "memos-evaluation",
+          "purpose": "Initialization attempts refresh when getAccessToken returns no token.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Recover an empty local token state through the refresh cookie"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "Initialization attempts refresh when getAccessToken returns no token.",
+        "A refresh failure is caught.",
+        "If the token remains absent, initialization clears authentication state and skips the current-user request."
+      ],
+      "description": "Initialization attempts refresh when getAccessToken returns no token.\n\nAcceptance criteria:\n- Initialization attempts refresh when getAccessToken returns no token.\n- A refresh failure is caught.\n- If the token remains absent, initialization clears authentication state and skips the current-user request.",
+      "id": 812,
+      "purpose": "Initialization attempts refresh when getAccessToken returns no token.",
+      "requirements_version": 1,
+      "title": "Recover an empty local token state through the refresh cookie"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "be00abe852479820b7c574e15e276d70961ab7bd",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/551ee1d81f398abdcaf73a0c2b782c8379b0e3f2",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "551ee1d81f398abdcaf73a0c2b782c8379b0e3f2",
+    "reviewed_tree": "d8b4213a905465468e937e7c8517db7d6ff02da9",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "state_transition_or_recovery"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

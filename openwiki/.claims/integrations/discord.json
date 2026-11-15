@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:964d63b27381d16ed74d15fa7f9597bc3389759072af3f046f2ea510ace3d052",
+  "claims": [
+    {
+      "id": "claim_5c6436ecf1274a14833c50e97ecfbf57",
+      "statement": "Discord availability persists in settings and recognizes accepted initial setup or an enabled connection.",
+      "evidence": [
+        {
+          "resource": "repo://mc/verbs/discord.go#L18-L30",
+          "version": "repo-lines-v1:sha256:e6240ff38e0c898bcab0d4d06ccf922a33bc18d9492bdefb1c61ad7de8dc7fff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkM2YyMDhhZWVlNzQ1ZDYzZGRkNDg1MzQwOTBkMDAzNTYyMzYwZjg0OTMyZWMxZTNmMGU5MzE2ZmRmZGE1MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTliNWU5MDE5YzhkYjg3ODNlYzljM2ZlYmIwYTJjOTg2MmY2MWEwNWMzMDhmZTg5NWU0YTliZWQwM2VkYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmY2Y5MTJmMTc0YjE4YjAxOTYwMzc4ODcxYzM5N2ViOTE3YTc3YjI0ZjA1NzgxYmJiOWU4M2JiY2E3MjEwZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFlOGEwZjk3NDA3Yjk4ZDUyMTJlOTU1OGM5NGMwMjE5MWFkYjVkNmMxODU4OTIxMGE0NWFiZTk4MGMwZTAxMzcifQ"
+        },
+        {
+          "resource": "repo://mc/verbs/environment_execution.go#L577-L586",
+          "version": "repo-lines-v1:sha256:66789616298303e74cf20a0039f9f9ef632fe360d19141888ce1836efc6fff08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjYzA2ODY1OTA2ODAwYTRkOTY5NzI1ZDdlYmVhMWQwMjU2MGNkNTY4OWE3ZjM5YzYyYTk5MTI3M2ExZThjM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjNGMzODg4M2EyN2NjY2M2ZTk3OGViM2RkNmRlOTFiNDE5Y2U1YjliM2ZjMjQyYzJiYWM1ZDA5NGMyZmM1MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_361360036bf14a5880973a477aa37510",
+      "statement": "Discord drafts last fifteen minutes, account codes last five minutes, and staged connections last one minute.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord-config.ts#L140-L145",
+          "version": "repo-lines-v1:sha256:ab10c5a710b355ed70d61aa0d3a33ad8f6c8f95ad246ce87aa61d75a82e96458:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjA2MTU5ZjU1ZjcyMjY3ZThlNWZjZGU1YTVhZTZlNDIzYTFmZGI4ZjEyYjM3NWI1YmIxOTE5YTk0NmJlMGJjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTJjYTVhYjdmYzAyMzY5ZjkxYjQ5Y2QzMDg3MWEwNTM5MzY0YWIxOGJlZmIxODBhMjZjZDFhMDU0NzRkYTRhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAzYzYwZjZjYmJjNDBkZGQ1MWQ0YzE0MjNhY2YyMzMzMGRkYjM1YTVjMDAxYjhlMWZhZTVlMWM4Njg4MGI2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTgzZDQzN2ZmY2JkODY4YjJmNzZmZjkyMzg0NjMxNGVhMmI2Yzc0YjNiYzA0NGIyZGJjNGYyM2Y4YjM0Nzg2MyJ9"
+        },
+        {
+          "resource": "repo://resident/src/discord-config.ts#L190-L207",
+          "version": "repo-lines-v1:sha256:3fa0dc280fb725504b4e97363311dc4136b768f34faad3944b24247673d647ee:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmYjA3YWY2NmZlZWYwZDMxMzhkNTU0ZWE2OGU4MTQ0YjFlNjNlZThkYjYzZmNhMGJhN2FkNzhkMTE1ZDViYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjYTc2NzE0OTgzYmNiN2ZlMDU2ODE4MTY5ODUzMjVlZDFlMzRiYTMzMTVkZTg2MzU1OTRiNTgxNTdmOWVmNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2ZDRlZjAwYzNlMjAxZDExMTQzMDU2NGNlNTVkMjAwOGZjNmVlMDI3MzE0YTM3NWFhZWM0ZGVjZmQwN2ZhNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhN2Y4MDI1NTU4MmU4ZTFkZTVlZmIyMmE0ZjFiODU0ZTI2NjUyODU3ZjhmMDU3YzBiYzdlZjRiYWYyYTU1ZTAifQ"
+        },
+        {
+          "resource": "repo://resident/src/discord-config.ts#L248-L265",
+          "version": "repo-lines-v1:sha256:eec968b2b7aa8954e76da5f2ebcb96ed8fed630fd77343c6804df1d6f5419d25:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhNDA3MjhmYjgzZWZmYjgzNGU4OTI5YjI0MDk1YjA1ODlmZWU5ZjhjMzg3NzY1YjY2ZGI5OTUzODY5NjE3NGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NGZlZjYxNzNhNzkwOTA3NmI0NjlhOTgxODJjZWExOTNkYmE2MWYyNjQyZjI0Njc5ZWRiZDQxMWMwNjdjMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlN2VjYjkyMTY0ODkwOGM1M2UwOGVkMmU5ZTQyMGI5MTMyNjhlMDExYjM1NzhjZDZmZTAzZGQyNTA1N2U3MmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4MjE1Mzg4ZDI1ZmI5ZWIwZTAyMWNjZDY3Njg5ODIwY2I1ODcxN2M4NjJmYWRjMmQwMzY4ZjQxMWI0MWNhZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_78ebfaa70c134a96a12b7accdc4b4c02",
+      "statement": "The host stages replacements, stops old delivery, updates the spine projection, and applies the checked Discord policy under configuration recovery.",
+      "evidence": [
+        {
+          "resource": "repo://mc/cmd/mc/discord.go#L227-L311",
+          "version": "repo-lines-v1:sha256:ea932d34aeb49b112c38ca5d48e9a26ab353980d3065d1127c445b35f9afde26:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2NTA4M2Y4Njc5Mjk3NWZhNmRlZjQ3MzQ3NDZjZmIxOWIxODJlMDE3OGQ4Y2RiMWQ0ZGU2OGE1NTI2ZjMxYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwZGY1Mjk5YzE3ZWRhNzAwMjU5MDBmMzZjMDQzZDNiYjg0NGRjODhjM2JlNDdjMzYyMjZjMTc3MTQwMGFmOTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1ZWViZTgzOTI0YmJhNWU1MzM3MTM4YWQwODVlYWM0YjkwZTIwYjFkZWMwZTRhZWRkZGExZjFlZGY1YjA3YzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3MGE2NjM3YzVkYzViMTg3NDQzYTk4NmMwZWJlZWE3ZjliMTVlODExYWVmODk4NzJkMTQ1ZDE3MTU4ZDQzM2QifQ"
+        },
+        {
+          "resource": "repo://mc/config/config.go#L805-L836",
+          "version": "repo-lines-v1:sha256:c9e148cf961ee1dc2b6a98beff50a57d63b03d85d1902d6109e0a1a54c55be3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhN2U3ZTlmODhkMjQ4NDc3OTIwM2U3ODc2N2I5Y2Y2OWU0YmZmMjFjYThlZDUzM2RlYmE1MjA1ZjdkY2ZiMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiZTMyZDRkZTNlMzBhZjdmMjRiOTdlZTJiZWM2MjJmNTZiMWJkM2Q0NmQ3MTJmNDg5N2Y2Y2Y0OTg0YWFkMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2ZGQzYzc1MmFjNjNhZGI1YTRmYzIxMTZlYmI3ZTY5ZjBkZTMyMjcwNmIwMmU3OGYyNzNkOTEwNWIwMGEyMzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c71afa3ba83c4c249ae03f7f49c1952c",
+      "statement": "Ordinary Discord messages require an allowed human account in the configured server and channel or a recognized child thread.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord.ts#L192-L200",
+          "version": "repo-lines-v1:sha256:b7cfe4b404d21c6515e32a02043bb9b649654d59ca00a001b74b45238d86a414:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmVjMjc1OTFlN2U2M2I3MDY4OTVkNDhhOGI3NzliZWM1OTZjZTA3MDkzNTZlY2RiOGUzMmVhZWZmZTI0MjZiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ3ZjNlM2M5NWU1OTJhZDIyOGY3YTJjNjU4YTk4NDkxNTY1NjM3NTM0MWRmOTQ0YjJjNTkwMzBhODYxNjk4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWYzZDNiZGYzNjI3YjA4MTA2YjczNTdjZDhmMWNlODFmMWQ1NzQyNzU4Y2ZlMmYzOTdiNzJiODMyNzc3YzI1MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b96ecdfdabc44bb9f0f7687650368c7",
+      "statement": "The Discord setup refresh control reloads servers and channels and retains an available selected channel.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/discord.js#L91-L102",
+          "version": "repo-lines-v1:sha256:0a7185f62157f1cea0f9ba4cfdc86eb8bd7e141ec1cc41c86ddb92b32c3584d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwYWQ2YjcwM2UxZDc0MmU1YTBkOWNjNDg0NjM4OGE3MDg0YjViZWRjNjBkZDM3ZDdmMjg1MjUyNTExN2YzYzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0OTU3ZTQ1OWNmOWIxZmFmZWEwZmIxOTY4YTYxMDliNzQ0ZWJiNTQ1ZDM5NjFmN2FlMjFjMTMwMGNmOGU5OGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkMzI3ZDMzOTM3NWI5NDg2OTIyMGE0N2Y1NDM3Yjc0ZjdjNzdjMTQ1YTA2MjljMTVmYjAxOTUwODBiMmZiNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3OWE0M2QyMzI5N2NjMDlmZmQxOTY4N2IzMDIyYWJkN2ZmZjI3MTc5YmI4MDE0MmQxZDc2NjY0NmM2OTAyNmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5bf1a9992c5640c982e965351a38d070",
+      "statement": "The resident accepts a bare 16-digit hexadecimal confirmation code from one human account in the draft channel, regardless of letter case.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord-config.ts#L125-L136",
+          "version": "repo-lines-v1:sha256:b654d7e85ee3fc92dce0434da7c61d2f28b1a965e3267927d6fc1214ee123e6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYWZmZmJmZTJmN2E1MmM5MjI0ODgzYmM4ODUyNjRiZmM2NDZmNGNjNzZhM2I4MjA5ZjljOWQ4YzlkZjAxY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwNzEwMjExZTA4YjBiNmMzYzU4ZjNiNGYzMTdjM2Y5YTFkNjYwYTQyNWRkODBiODcyYjkxY2E0OWEyZGJlNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2ZjJkY2Y2NWY5NjI3OTNmOWM5YTZhMjkzOTgyMzQ4YTY0YTRlYjQ0MzdkZmJlZDU3NmM1ZmI3MGFlZTI3NTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwM2M2MGY2Y2JiYzQwZGRkNTFkNGMxNDIzYWNmMjMzMzBkZGIzNWE1YzAwMWI4ZTFmYWU1ZTFjODY4ODBiNjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_da4a6d937aff469ba2614319120c6feb",
+      "statement": "The dashboard displays the bare confirmation code and copies only that code.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/src/ui/discord.js#L112-L124",
+          "version": "repo-lines-v1:sha256:17d1f3ec96c096c3c5284d6b2a03819b5c316cf9e42f86ebccc5b49392ec8e04:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5MzdlNDUxZTZlNjRiMTEwZmQ3ZmNiNjEzNDcxNWY1NWFiZTViZmJkMDk1YTgzYjE1YjRkYzgxMjgzY2ZhYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYTczODRiYmM0MTJmYWVkMGMxMmYyMzgxM2IwNjMxYTBkOTQzMDQ0MzlkY2M0ZGM1ZmRjOTVjYWJmMTRlYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmODIwOGNiOTY3NzI0ZDg2NWUxMzk2M2Y1ODc0ZjAxZTlkNjEwYjI3NGNmOTc1YmUzMzM4NGRiNWQ4ZTRjYTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhMmVjNWM5ZTVmNmYyOTAyYjg1ZWI0ODhhZmMzMjFiZGUxZWQ4MTJjYTIzZGQyMWQzYWMzNTUxMjM2OWNjNGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_21541735964b4b07ab630d32270336c6",
+      "statement": "The resident verifies or creates a Discord thread before it starts and sends a channel message to Collie.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord.ts#L270-L319",
+          "version": "repo-lines-v1:sha256:3866f57633d53d4a7d83785cf1e6457769524f79d13bb15b63fa67e30aab2f32:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyOWM3ZWEzYzZkOTdjNTU4MTFhZGIzNjg3ZmRhYmZlYjk5Njc5MDMwMzFiOGM4YzE3NDE2MzY1ODJhNjQ0YzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3NzUwMTI5OGM2MzI2YjBkNThkZTU1NjQyZTdjNWE4ZTE1NzFjYmQzNTljMzA5Y2Y0YzIxZGNkOTVhY2JlNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4NTJiNWU3MTJjMjQzMzllYTI3OTI2Y2QzOGY5NmEzZTYwZGZjZjE2ZDFmZGY1NWIwMzAxZTk5MzdiZjVjNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f413d774c8f4784a9ed64e43314492a",
+      "statement": "The Discord outbox drain sends each row to its recorded destination and separates long text into parts of at most 2,000 characters.",
+      "evidence": [
+        {
+          "resource": "repo://resident/src/discord.ts#L447-L499",
+          "version": "repo-lines-v1:sha256:9e719dde8353c2d90038fec584f2de85776f19fe70babbdefa52fbb413454557:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyNTg1YmYyZGY4MTFjNTk4M2NiODJkMWJhMWNkMGQ5ZmEzMjBiZWViNGEwZTQwYjJlYzljYjA4NGZhYzAxNTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNWQyZTg0MDJhY2I4NGNiMzhjNGU4MjQxNDQxYmU4MWRmYWY4OTY1MmIzMmQ0ODcyNzQ3N2U4YTFhNWI4YjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxMTJkMGEwOWM3OWU3ZTI3NzIxNDEzYmM2NmFjYTZmMDAxZDgyNTE5YjMyMjliNjI0N2VhZTgzNWQ5NmVhOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkNTBkMGZiMmM1NmU1MGNmMDIwY2JlNTAzNTMxMTdlZWE0YjMzNmQ0NjliZTUzMmZiNDU3MmJjMDNmYWU4MzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7873894ac6542d18f9d1926d97c0562",
+      "statement": "The Discord browser smoke harness rejects a scratch socket path above 103 bytes before it creates the home.",
+      "evidence": [
+        {
+          "resource": "repo://dashboard/smoke/harness.ts#L246-L256",
+          "version": "repo-lines-v1:sha256:50d4adcc57a3d9b6d9e356ede301225acf5907df87b486d792305963280a7af3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ZDJmNjFhMWQ3NDRlZDYxYmIwNGJhZjJkZTQyMjg2NGU1NDhkZDMwOGQ0OTRhNmI3ZmU2NWIzZTZhNWI3NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MDU3MzU0M2IxNTdmMGNhNTk3YjM4NmVmYzkzZGNlZDNkZjIyM2Y1Y2EwMDYwYjEyMzg0MWMyMTJlNjkzOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyZGFjNTA3YzNlODViZWE3YTlkMWYyODg4OTE1YzYzZDc0NmE5MTQ3OGI0ZjEzZmI2NjBjYmJmM2NmMDMwMDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a88404b289f49f391777a6e61093d0b",
+      "statement": "The CI browser job sets MC_SMOKE_ROOT below RUNNER_TEMP/smoke.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/release.yml#L281-L289",
+          "version": "repo-lines-v1:sha256:7ec0624a5b17a1b9dbdbcd9d051bb60e68c2d0724083bc74523b42d6fbfe0f91:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjYwZGRjMDQzOWMxYzE5NjRmODBjMzIzYTRkMzViZjVkZDAwYjg0MzU5N2I5MTM0MTRmNjFiM2Y5NmIwZDhkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIxNGQxZDA1MjA2NTBjM2ViYjY5Mzg1YjhlMWNmNDljNzM2MmUyMTVhNWZiZTU4YWVlMmQ4Y2ViYTIwYWE3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE1OGJlNGNjYzUzYzE0YmVlMGJhZWVjOGUzN2UyOGJjY2FjNzFlMjYxZDdhOTljMjRmNjVjNTNiNzUyNDhmMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNiOWYzMGY4NWIyYzU3ZGVhOTRlMjhkNGFkMzVkODIxMjVhYjljZDA3MGZkNjA4ZTU5MWEyYjA3ODA0NmYwZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-13T23:23:34.077Z"
+  }
+}

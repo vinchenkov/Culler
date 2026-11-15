@@ -1,0 +1,63 @@
+{
+  "criteria": [
+    {
+      "criterion": "The middleware permits token requests from non-null origins but enables credentials only for trusted origins.",
+      "evidence": [
+        {
+          "path": "server/cors.go",
+          "revision": "385fa22056c51a42a0eb99fd08a8876009c2c52d"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The trusted branch checks the instance origin or the configured instance URL.",
+      "evidence": [
+        {
+          "path": "server/cors.go",
+          "revision": "385fa22056c51a42a0eb99fd08a8876009c2c52d"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The opaque null origin rejects.",
+      "evidence": [
+        {
+          "path": "server/cors.go",
+          "revision": "385fa22056c51a42a0eb99fd08a8876009c2c52d"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "00225db922fb1675e21f0b5181c31f0bd4e3e6d3",
+      "changed_paths": [
+        "server/cors.go",
+        "server/cors_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "385fa22056c51a42a0eb99fd08a8876009c2c52d",
+      "reviewed_tree": "eecb444898d42745d99c115129db945e3dd0b8cc"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 819,
+  "unverified": [
+    "No cross-origin request or cookie test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

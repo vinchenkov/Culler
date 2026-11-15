@@ -1,0 +1,8 @@
+{
+  "correction": "Preserve the source conditions and evidence limits in the report and packet.",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "The new range guard makes every internal address request impossible under all configurations.",
+  "replacement_claim": "The webhook guard and link metadata guard reject that range through their internal-address rules.",
+  "requirements_version": 1,
+  "task_id": 818
+}

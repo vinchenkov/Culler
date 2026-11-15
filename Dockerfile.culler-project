@@ -1,0 +1,6 @@
+FROM culler-project-base:0804b3c0687d3bcc026ff93c9f0be3b2f2aee41e055c45c424b2aa515107a238
+RUN install -d -m 0755 /private \
+ && install -d -m 1777 /private/tmp \
+ && test -x /usr/local/bin/git \
+ && test ! -e /usr/bin/git \
+ && ln -s /usr/local/bin/git /usr/bin/git

@@ -1,0 +1,26 @@
+[
+  {
+    "ndjson": "{\"ts\":\"2026-08-18T09:12:33.412Z\",\"level\":\"warn\",\"comp\":\"resident\",\"event\":\"reap.stop_failed\",\"msg\":\"docker stop refused\",\"container\":\"mc-run-ab12\",\"exit\":1,\"run_id\":\"ab12\"}",
+    "text": "2026-08-18T09:12:33.412Z WARN  resident reap.stop_failed container=mc-run-ab12 exit=1 run_id=ab12 — docker stop refused"
+  },
+  {
+    "ndjson": "{\"ts\":\"2026-08-18T09:12:33.000Z\",\"level\":\"info\",\"comp\":\"resident\",\"event\":\"tick.idle\",\"msg\":\"lease-held\"}",
+    "text": "2026-08-18T09:12:33.000Z INFO  resident tick.idle — lease-held"
+  },
+  {
+    "ndjson": "{\"ts\":\"2026-01-01T00:00:00.001Z\",\"level\":\"error\",\"comp\":\"mc\",\"event\":\"cli.verb_refused\",\"msg\":\"spine is unreachable\",\"error_code\":\"domain-rejection\",\"exit\":1}",
+    "text": "2026-01-01T00:00:00.001Z ERROR mc cli.verb_refused error_code=domain-rejection exit=1 — spine is unreachable"
+  },
+  {
+    "ndjson": "{\"ts\":\"2026-08-18T20:13:06.576Z\",\"level\":\"debug\",\"comp\":\"dashboard\",\"event\":\"cli.invoked\",\"msg\":\"mc verb completed\",\"argc\":2,\"dur_ms\":37,\"note\":null,\"ok\":true,\"scope\":\"host\",\"verb\":\"task\"}",
+    "text": "2026-08-18T20:13:06.576Z DEBUG dashboard cli.invoked argc=2 dur_ms=37 note=null ok=true scope=host verb=task — mc verb completed"
+  },
+  {
+    "ndjson": "{\"ts\":\"2026-08-18T09:12:33.412Z\",\"level\":\"warn\",\"comp\":\"runner\",\"event\":\"adapter.launch_failed\",\"msg\":\"harness exited before the first turn — stderr: EACCES /mc/logs\",\"dropped_fields\":2,\"truncated\":true}",
+    "text": "2026-08-18T09:12:33.412Z WARN  runner adapter.launch_failed dropped_fields=2 truncated=true — harness exited before the first turn — stderr: EACCES /mc/logs"
+  },
+  {
+    "ndjson": "{\"ts\":\"2026-08-18T09:12:33.412Z\",\"level\":\"info\",\"comp\":\"resident\",\"event\":\"legacy.line\",\"msg\":\"\"}",
+    "text": "2026-08-18T09:12:33.412Z INFO  resident legacy.line — "
+  }
+]

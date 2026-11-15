@@ -1,0 +1,496 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/803/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "45eb26eaeea693cf72698e14cf0ca69e7946834c318f423c0ad48061db7ad012",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/803/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "df86777891d7c0e7a1ec1f0088fc9fdcc9fd924252f5ab07f20e2c651150a6e8",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "535192e5d1ce06d1c88d433a8fad18a1a48d188d8412fcaf7e3cb2f6111fb313",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "description": "Before: owner idle. Fixed synthetic frontend state.",
+      "id": "media-before-owner-idle",
+      "kind": "media",
+      "path": "eval/803/media/before-owner-idle.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/before-owner-idle.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: owner hover. Fixed synthetic frontend state.",
+      "id": "media-before-owner-hover",
+      "kind": "media",
+      "path": "eval/803/media/before-owner-hover.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "882b1fa9569ab12bcecafe4076d68139eec165fa1627c79fa5234c776c3324bc",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/before-owner-hover.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: other idle. Fixed synthetic frontend state.",
+      "id": "media-before-other-idle",
+      "kind": "media",
+      "path": "eval/803/media/before-other-idle.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/before-other-idle.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: other hover. Fixed synthetic frontend state.",
+      "id": "media-before-other-hover",
+      "kind": "media",
+      "path": "eval/803/media/before-other-hover.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "sha256": "469baa58a207f572ac19f33fbe27ebd5e53d815dd4795f6bc067f90d28641541",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/before-other-hover.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: owner idle. Fixed synthetic frontend state.",
+      "id": "media-after-owner-idle",
+      "kind": "media",
+      "path": "eval/803/media/after-owner-idle.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "71b7411ec8a6ae6f8e52947a587efbfe500a68a83117d36fd8eb669ef582fb50",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/after-owner-idle.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: owner hover. Fixed synthetic frontend state.",
+      "id": "media-after-owner-hover",
+      "kind": "media",
+      "path": "eval/803/media/after-owner-hover.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "eaca786cb22dbde7cf4218093d1e467cedecb8690ded793089d18210931b8609",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/after-owner-hover.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: other idle. Fixed synthetic frontend state.",
+      "id": "media-after-other-idle",
+      "kind": "media",
+      "path": "eval/803/media/after-other-idle.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "82b4eec60bf437654d9b3b8f1ddc40dc01e1caca38dbccec6ecd6d763977c861",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/after-other-idle.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: other hover. Fixed synthetic frontend state.",
+      "id": "media-after-other-hover",
+      "kind": "media",
+      "path": "eval/803/media/after-other-hover.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "d22bd8de472cbb778c3a4677eaafc55ef915f795af45e2957b63d2289f855d90",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/after-other-hover.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "media-provenance",
+      "kind": "source_record",
+      "path": "eval/803/media/capture.json",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "sha256": "00ad36758aab4f00fce5bba73dd98ebac2417dd4add1455d83c164d5629d672e",
+      "source": {
+        "kind": "file",
+        "path": "memos-metadata-hover/media/capture.json"
+      },
+      "visibility": "role"
+    }
+  ],
+  "content_hashes": {
+    "environment": "f1b6c70e32567ec1c09156e92b1f0247489774d9146da731fbddf4d699155c9c",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "838548b0a52304c40b82ec691755c0474cec2dce097e19285020510ce79546bd",
+    "role_inputs": "fbaa0c5653ad7167db0a84f7652a127eb4a555180f20f52e72dc442c7903b754",
+    "visual_evidence": "8fe5d926c5006fcfc136f17f1e543a9a074caf4e00267824601c88769970b307"
+  },
+  "corpus_status": "ready",
+  "dataset": "final",
+  "environment": {
+    "capture": {
+      "browser_version": "145.0.7632.6",
+      "clock": "2026-09-30T12:00:00Z",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "locale": "en-US",
+      "method": "unchanged_frontend_with_synthetic_service_responses",
+      "provenance_artifact": "media-provenance",
+      "status": "captured",
+      "timezone": "UTC",
+      "tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "d7622025092825c84541b63766c8fceef57c50235c2a824003c536faae6dee9f"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "3330044829fd01c625833bd7e9f538348e3c33241d3fb56f48e1ad4e3ef68e13"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-metadata-hover",
+  "id": "memos-metadata-hover",
+  "paths": {
+    "/mc/artifacts/eval/803/media/after-other-hover.png": "media-after-other-hover",
+    "/mc/artifacts/eval/803/media/after-other-idle.png": "media-after-other-idle",
+    "/mc/artifacts/eval/803/media/after-owner-hover.png": "media-after-owner-hover",
+    "/mc/artifacts/eval/803/media/after-owner-idle.png": "media-after-owner-idle",
+    "/mc/artifacts/eval/803/media/before-other-hover.png": "media-before-other-hover",
+    "/mc/artifacts/eval/803/media/before-other-idle.png": "media-before-other-idle",
+    "/mc/artifacts/eval/803/media/before-owner-hover.png": "media-before-owner-hover",
+    "/mc/artifacts/eval/803/media/before-owner-idle.png": "media-before-owner-idle",
+    "/mc/artifacts/eval/803/media/capture.json": "media-provenance",
+    "/mc/artifacts/eval/803/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/803/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "MetadataSection declares the full hover and focus classes as literal strings.",
+        "before": "MetadataSection builds some Tailwind classes through a value-dependent helper.",
+        "conditions": [
+          "An editable row reveals its controls on hover or focus within the row.",
+          "The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+          "The change preserves the existing mobile classes and readonly conditions."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The literal declarations let Tailwind discover the desktop engagement classes.",
+        "sources": [
+          {
+            "path": "web/src/components/MemoMetadata/MetadataSection.tsx",
+            "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/a69d286735d3c649c915189c6233f8e7d0eeab3a/web/src/components/MemoMetadata/MetadataSection.tsx"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "Class declarations alone do not prove keyboard traversal or accessibility across the whole app.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+      "These captures verify the frontend display with synthetic service responses.",
+      "They execute no Memos backend, database, authorization, or application test suite."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-metadata-hover",
+      "path": "reviews/memos-media.json",
+      "scope": "Pinned source facts and fixed frontend captures. Backend behavior and application tests remain unverified.",
+      "sha256": "ab254721dfe54b40707be72f6a602994c1f17c4788f8ffeb993aed06bb6bbf69"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "803"
+          },
+          {
+            "label": "Title",
+            "value": "Make metadata hover and focus classes explicit"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "MetadataSection declares the full hover and focus classes as literal strings.\n\nAcceptance criteria:\n- MetadataSection declares the full hover and focus classes as literal strings.\n- An editable row reveals its controls on hover or focus within the row.\n- The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/803/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/803/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/803/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+          },
+          {
+            "label": "Base commit",
+            "value": "49b7ecc5834112e4732c864d753cdec9bdc5696c"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 803": {
+        "acceptance_criteria": [
+          "MetadataSection declares the full hover and focus classes as literal strings.",
+          "An editable row reveals its controls on hover or focus within the row.",
+          "The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement."
+        ],
+        "description": "MetadataSection declares the full hover and focus classes as literal strings.\n\nAcceptance criteria:\n- MetadataSection declares the full hover and focus classes as literal strings.\n- An editable row reveals its controls on hover or focus within the row.\n- The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+        "id": 803,
+        "project_id": "memos-evaluation",
+        "purpose": "MetadataSection declares the full hover and focus classes as literal strings.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Make metadata hover and focus classes explicit"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "MetadataSection declares the full hover and focus classes as literal strings.",
+            "An editable row reveals its controls on hover or focus within the row.",
+            "The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement."
+          ],
+          "description": "MetadataSection declares the full hover and focus classes as literal strings.\n\nAcceptance criteria:\n- MetadataSection declares the full hover and focus classes as literal strings.\n- An editable row reveals its controls on hover or focus within the row.\n- The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+          "id": 803,
+          "project_id": "memos-evaluation",
+          "purpose": "MetadataSection declares the full hover and focus classes as literal strings.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Make metadata hover and focus classes explicit"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "MetadataSection declares the full hover and focus classes as literal strings.",
+        "An editable row reveals its controls on hover or focus within the row.",
+        "The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement."
+      ],
+      "description": "MetadataSection declares the full hover and focus classes as literal strings.\n\nAcceptance criteria:\n- MetadataSection declares the full hover and focus classes as literal strings.\n- An editable row reveals its controls on hover or focus within the row.\n- The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+      "id": 803,
+      "purpose": "MetadataSection declares the full hover and focus classes as literal strings.",
+      "requirements_version": 1,
+      "title": "Make metadata hover and focus classes explicit"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/a69d286735d3c649c915189c6233f8e7d0eeab3a",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+    "reviewed_tree": "9b2f1ed87ec1ba24ae200d3628997a120097ee91",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "small_visible_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [
+      "Capture the editable owner attachment row at desktop width, idle and on hover.",
+      "Capture the read-only attachment row for another user at desktop width, idle and on hover."
+    ],
+    "media_artifacts": [
+      "media-before-owner-idle",
+      "media-before-owner-hover",
+      "media-before-other-idle",
+      "media-before-other-hover",
+      "media-after-owner-idle",
+      "media-after-owner-hover",
+      "media-after-other-idle",
+      "media-after-other-hover"
+    ],
+    "required": true,
+    "status": "supplied"
+  }
+}

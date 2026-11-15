@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "check": "completed_trial_repository_disposal",
+  "status": "verified_token_free",
+  "model_calls": 0,
+  "actual_probe": {
+    "record_sha256": "c9c88760cfde504e4f06d7aa56ba08ba66d714b7896a2c4ab38878bf188322c5",
+    "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+    "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+    "observations": [
+      {
+        "state": "unchanged",
+        "result": {
+          "states": {
+            "authority": {
+              "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+              "branch": "refs/heads/main",
+              "clean": true
+            },
+            "packager": {
+              "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+              "branch": "refs/heads/main",
+              "clean": true
+            }
+          },
+          "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+          "runtime_source_hash": "14c30767d743155927a9a01210e0931c7488712385c47261ab0630e8803c6bf2"
+        }
+      },
+      {
+        "state": "ignored-file",
+        "result": {
+          "states": {
+            "authority": {
+              "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+              "branch": "refs/heads/main",
+              "clean": true
+            },
+            "packager": {
+              "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+              "branch": "refs/heads/main",
+              "clean": false
+            }
+          },
+          "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+          "runtime_source_hash": "14c30767d743155927a9a01210e0931c7488712385c47261ab0630e8803c6bf2"
+        }
+      },
+      {
+        "state": "branch-change",
+        "result": {
+          "states": {
+            "authority": {
+              "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+              "branch": "refs/heads/main",
+              "clean": true
+            },
+            "packager": {
+              "commit": "6d93f30fd24681e089e48f76cd62f0a7a92755d8",
+              "branch": "refs/heads/later-branch",
+              "clean": true
+            }
+          },
+          "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+          "runtime_source_hash": "14c30767d743155927a9a01210e0931c7488712385c47261ab0630e8803c6bf2"
+        }
+      }
+    ],
+    "mounts": "Read-only private repository copies.",
+    "network": "Disabled.",
+    "credentials": "Absent.",
+    "command": "mise exec -- bun /app/eval/repository-state.ts"
+  },
+  "focused_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_trial_resources.py tests/test_evaluator.py",
+    "passed": 60
+  },
+  "retained_records": [
+    "Completed scores and sample identities.",
+    "Packets, commands, traces, and screenshots.",
+    "The complete case manifest and pinned source inputs.",
+    "The exact verification record for each disposal start."
+  ],
+  "retained_directories": [
+    "Incomplete trials.",
+    "Changed or unverifiable repository copies.",
+    "The source cache and source checkout.",
+    "All worktrees and fixed evidence files."
+  ],
+  "limits": [
+    "The Docker observations use controlled Git repositories.",
+    "The disposal tests use actual filesystem operations and token-free model doubles.",
+    "No new model trial exercises repository disposal.",
+    "The earlier native model integration retains its original files and identities."
+  ]
+}

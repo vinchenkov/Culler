@@ -1,0 +1,432 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/804/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "8cb6f09d1adff715958dffcaa9aaea88d06d94bacb5fda963774b106c15a023a",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/804/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "6b4a7a0a95051211a257146f5d91b676e8933e17bcccb09148fce875d7caffff",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "5250b88a9c4cbb06cf496b49eaab82d5992a0bbb928ea909535369232de95d05",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "description": "Before: collapsed. Fixed synthetic frontend state.",
+      "id": "media-before-collapsed",
+      "kind": "media",
+      "path": "eval/804/media/before-collapsed.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "80bab62c723d2c016753679d61468aefd987201d",
+      "sha256": "18a3e824bdaf050bdc0c1bc0b6fb9663cfee5b3c8bbeb9aa8860dc3458ca1491",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/media/before-collapsed.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "Before: expanded. Fixed synthetic frontend state.",
+      "id": "media-before-expanded",
+      "kind": "media",
+      "path": "eval/804/media/before-expanded.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "80bab62c723d2c016753679d61468aefd987201d",
+      "sha256": "821cde38b415cdb301c576bafea33b60927cbe188ac4747d269668b1a7e29ce3",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/media/before-expanded.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: collapsed. Fixed synthetic frontend state.",
+      "id": "media-after-collapsed",
+      "kind": "media",
+      "path": "eval/804/media/after-collapsed.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "sha256": "02726c674bd7fa3fda78fac87e0480d8b8d9fbd6fab528fd487dc3ebacf2b6c9",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/media/after-collapsed.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: expanded. Fixed synthetic frontend state.",
+      "id": "media-after-expanded",
+      "kind": "media",
+      "path": "eval/804/media/after-expanded.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+      "sha256": "267103ffe6b078daca49dea63ae10e2b81aca858f15ab99633c474c3c65f6f73",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/media/after-expanded.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "media-provenance",
+      "kind": "source_record",
+      "path": "eval/804/media/capture.json",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "sha256": "7e54afec71ed6b3d1a6117d58b419064d1c0726e51ac9382a69e505fa8ab6165",
+      "source": {
+        "kind": "file",
+        "path": "memos-disclosure-spacing/media/capture.json"
+      },
+      "visibility": "role"
+    }
+  ],
+  "content_hashes": {
+    "environment": "6b7ffef6d84f2a9c26917c01d01f61b4a792560fc4e57d69f53a615b0f2bf971",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "d0e5446e7b831aa085a7538c03f2219bd57e3039036489a1cef0a7c2d8142ef8",
+    "role_inputs": "d5f1ba6e0d0a9841e79a6aad8c265dbcd2c3c2eb898a6a6bc078307a14be83a4",
+    "visual_evidence": "f6eb5bcde405657b907a65e2567612e5f26d0294f9ff25cd92c0606a7800ab35"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": {
+      "browser_version": "145.0.7632.6",
+      "clock": "2026-09-30T12:00:00Z",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "locale": "en-US",
+      "method": "unchanged_frontend_with_synthetic_service_responses",
+      "provenance_artifact": "media-provenance",
+      "status": "captured",
+      "timezone": "UTC",
+      "tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "1ef9e52f8b27e19738d6259740c8c67790c494a7dd428c6a2aaea73fed65c3b4"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "281674aac6b23941d9ded79a00d61107a1e10de820fb03ea176edfcec0bf0b5e"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-disclosure-spacing",
+  "id": "memos-disclosure-spacing",
+  "paths": {
+    "/mc/artifacts/eval/804/media/after-collapsed.png": "media-after-collapsed",
+    "/mc/artifacts/eval/804/media/after-expanded.png": "media-after-expanded",
+    "/mc/artifacts/eval/804/media/before-collapsed.png": "media-before-collapsed",
+    "/mc/artifacts/eval/804/media/before-expanded.png": "media-before-expanded",
+    "/mc/artifacts/eval/804/media/capture.json": "media-provenance",
+    "/mc/artifacts/eval/804/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/804/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+        "before": "Markdown disclosures use larger indentation, icon size, and summary spacing.",
+        "conditions": [
+          "The summary uses normal font weight instead of medium font weight.",
+          "The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior.",
+          "The change adds no new disclosure state or content transformation."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The shared details and summary style declarations reduce padding, margins, and icon dimensions.",
+        "sources": [
+          {
+            "path": "web/src/lib/markdownStyles.ts",
+            "revision": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/61ea0711f8844c1b073d51dcc6e622d1cfe02f0a/web/src/lib/markdownStyles.ts"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "This case covers shared style declarations, not every Markdown renderer combination.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+      "These captures verify the frontend display with synthetic service responses.",
+      "They execute no Memos backend, database, authorization, or application test suite."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-disclosure-spacing",
+      "path": "reviews/memos-media.json",
+      "scope": "Pinned source facts and fixed frontend captures. Backend behavior and application tests remain unverified.",
+      "sha256": "ab254721dfe54b40707be72f6a602994c1f17c4788f8ffeb993aed06bb6bbf69"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "804"
+          },
+          {
+            "label": "Title",
+            "value": "Reduce Markdown disclosure spacing"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "Markdown disclosures use smaller indentation, icon size, and summary spacing.\n\nAcceptance criteria:\n- Markdown disclosures use smaller indentation, icon size, and summary spacing.\n- The summary uses normal font weight instead of medium font weight.\n- The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/804/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/804/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/804/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+          },
+          {
+            "label": "Base commit",
+            "value": "80bab62c723d2c016753679d61468aefd987201d"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 804": {
+        "acceptance_criteria": [
+          "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+          "The summary uses normal font weight instead of medium font weight.",
+          "The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior."
+        ],
+        "description": "Markdown disclosures use smaller indentation, icon size, and summary spacing.\n\nAcceptance criteria:\n- Markdown disclosures use smaller indentation, icon size, and summary spacing.\n- The summary uses normal font weight instead of medium font weight.\n- The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior.",
+        "id": 804,
+        "project_id": "memos-evaluation",
+        "purpose": "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Reduce Markdown disclosure spacing"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+            "The summary uses normal font weight instead of medium font weight.",
+            "The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior."
+          ],
+          "description": "Markdown disclosures use smaller indentation, icon size, and summary spacing.\n\nAcceptance criteria:\n- Markdown disclosures use smaller indentation, icon size, and summary spacing.\n- The summary uses normal font weight instead of medium font weight.\n- The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior.",
+          "id": 804,
+          "project_id": "memos-evaluation",
+          "purpose": "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Reduce Markdown disclosure spacing"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+        "The summary uses normal font weight instead of medium font weight.",
+        "The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior."
+      ],
+      "description": "Markdown disclosures use smaller indentation, icon size, and summary spacing.\n\nAcceptance criteria:\n- Markdown disclosures use smaller indentation, icon size, and summary spacing.\n- The summary uses normal font weight instead of medium font weight.\n- The change preserves open-state rotation, direct-child selectors, focus outlines, and reduced-motion behavior.",
+      "id": 804,
+      "purpose": "Markdown disclosures use smaller indentation, icon size, and summary spacing.",
+      "requirements_version": 1,
+      "title": "Reduce Markdown disclosure spacing"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "80bab62c723d2c016753679d61468aefd987201d",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "61ea0711f8844c1b073d51dcc6e622d1cfe02f0a",
+    "reviewed_tree": "a18bb9c691b59da12c9bce1b4c45c499e020f906",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "small_visible_change"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [
+      "A collapsed Markdown disclosure beside normal body text.",
+      "The same disclosure expanded before and after the change."
+    ],
+    "media_artifacts": [
+      "media-before-collapsed",
+      "media-before-expanded",
+      "media-after-collapsed",
+      "media-after-expanded"
+    ],
+    "required": true,
+    "status": "supplied"
+  }
+}

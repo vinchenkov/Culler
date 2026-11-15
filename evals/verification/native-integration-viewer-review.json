@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-02T22:59:02.897915+00:00",
+  "reviewer": "/root/gepa_engine",
+  "review_type": "Author inspection of real model integration records and the actual browser.",
+  "experiment_directory": "/private/tmp/culler-eval-native-integration-20261002-01",
+  "experiment_id": "e12e2cc0-f3a5-4319-85e1-29bdc0124bb9",
+  "original_journal_hash": "c59ae8fd343668a4e8d5c1fa31528d9ebaa051734780d4488a413095564cc241",
+  "protocol_content_hash": "c1a2196c785ec97079682d8f168255be9b9edc23fa153a001e37a79e7b77c475",
+  "source_revision": "8cd10800939b002509b7b7f06b3bfbb6ce2de47e",
+  "browser_version": "145.0.7632.6",
+  "assessment_status": "uncalibrated",
+  "actual_role_trials": 3,
+  "new_model_calls": 0,
+  "returned_candidate": "D0",
+  "rejected_candidate": "D7a70bd82b23e",
+  "rejection": "minibatch_rejected",
+  "parent_training_score": 91.66666666666667,
+  "child_training_score": 91.66666666666667,
+  "final_comparison_executed": false,
+  "directive_improvement_claim": false,
+  "case_display": {
+    "cases": {
+      "trainset": [
+        {
+          "id": "memos-log-level",
+          "manifest_hash": "1cb023a25a5f161137fece294a5f689ed22871108fc0b5fccda8ba90c5167efa",
+          "prepared": {
+            "path": "blobs/6333548180f930da41a6993391aaebe9af888ffe9c6553d8479c5285d13e224a",
+            "sha256": "6333548180f930da41a6993391aaebe9af888ffe9c6553d8479c5285d13e224a",
+            "size": 7562
+          },
+          "title": "Configure the server log level"
+        }
+      ],
+      "valset": [
+        {
+          "id": "memos-webhook-label-refactor",
+          "manifest_hash": "0ccbfa060476aeb8f00e2c2a01e70120229f452d81f34a5983dc179f0777eba1",
+          "prepared": {
+            "path": "blobs/1c480cd7dea10e32900368a13d56293ed4f8d3533c6b77561a286f1352495f4b",
+            "sha256": "1c480cd7dea10e32900368a13d56293ed4f8d3533c6b77561a286f1352495f4b",
+            "size": 6787
+          },
+          "title": "Iterate webhook hostname labels directly"
+        }
+      ]
+    },
+    "original_journal_hash": "c59ae8fd343668a4e8d5c1fa31528d9ebaa051734780d4488a413095564cc241",
+    "purpose": "Display-only case titles from the preserved trial input. The frozen inputs and original journal remain unchanged.",
+    "version": 1
+  },
+  "screenshots": [
+    {
+      "path": "/private/tmp/culler-eval-native-viewer-review/before-child-trials.png",
+      "sha256": "c4a719c0d66cbaadb61b62ce87c54a724910a5ddb3acc60d7f623af6abc59843"
+    },
+    {
+      "path": "/private/tmp/culler-eval-native-viewer-review/directive-diff.png",
+      "sha256": "0bd23f665f08d565dfd307af08e17e23320381e3280a52443ee18df5af1c9a72"
+    },
+    {
+      "path": "/private/tmp/culler-eval-native-viewer-review/latest.png",
+      "sha256": "3fc456dfc1b8964002c84711361f091159a5fb2ca4142ec73412622369160f0b"
+    },
+    {
+      "path": "/private/tmp/culler-eval-native-viewer-review/parent-batch.png",
+      "sha256": "a888d406a2f6be7b869ce0fc026512fe69eb197c3b457ed7baaeead2b92b08db"
+    },
+    {
+      "path": "/private/tmp/culler-eval-native-viewer-review/parent-trial.png",
+      "sha256": "a5a8b45043d4f9247168187de7cf720d181756e5642e38a54385cca81697e7ff"
+    },
+    {
+      "path": "/private/tmp/culler-eval-native-viewer-review/rejected-candidate.png",
+      "sha256": "97b28119ead4ff5b5f66bcb0d176bf045e7c9e8a6c8d2eecc6f05a8e27c841d0"
+    }
+  ],
+  "page_errors": [],
+  "observations": [
+    "The returned original has a stored validation score of 87.5.",
+    "The child has no validation score because its training minibatch tied.",
+    "The rejected child links to its actual directive, diff, parent, feedback, batch scores, and trials.",
+    "Historical candidate inspection excludes its future trial comparison.",
+    "The page states that the Judge remains uncalibrated.",
+    "The actual integration displays the actual model execution label in all six captures."
+  ],
+  "limits": [
+    "One iteration and three role trials establish an integration proof.",
+    "The run establishes no directive improvement or calibrated score."
+  ],
+  "portable_viewer": {
+    "path": "/private/tmp/culler-eval-native-integration-20261002-01/viewer/index.html",
+    "sha256": "e1d93ab96ecd4b6c08c3d0113ccbee4684aa8cd9bc71e11bdca9c8fa687c31a9"
+  },
+  "source_files": [
+    {
+      "path": "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/culler_evals/viewer.py",
+      "sha256": "a967e72b3ab2627c6e769b8138318bcbe8e3745305613a62cea08268d4991d18"
+    },
+    {
+      "path": "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/web/experiment.html",
+      "sha256": "5ea8a29bdcf9cfd6fa20d3cab8ee07659a4a1dc04bf481b61ac1f3c3e8ae63d3"
+    },
+    {
+      "path": "/private/tmp/culler-worktrees/directive-evaluation-implementation/evals/culler_evals/view_server.py",
+      "sha256": "5b30b03360c6d6a9af33145ba51bf9955e8951f6d2418e35be79cda97798e67e"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root",
+    "result": "accepted",
+    "recorded_at": "2026-10-02T23:01:21.171936+00:00",
+    "acceptance_source": "Independent review message in this task.",
+    "observations": [
+      "The final captures identify actual model execution truthfully.",
+      "The candidate inspector shows the actual rejected directive and batch evidence."
+    ],
+    "reviewed_screenshot_hashes": [
+      "c4a719c0d66cbaadb61b62ce87c54a724910a5ddb3acc60d7f623af6abc59843",
+      "0bd23f665f08d565dfd307af08e17e23320381e3280a52443ee18df5af1c9a72",
+      "3fc456dfc1b8964002c84711361f091159a5fb2ca4142ec73412622369160f0b",
+      "a888d406a2f6be7b869ce0fc026512fe69eb197c3b457ed7baaeead2b92b08db",
+      "a5a8b45043d4f9247168187de7cf720d181756e5642e38a54385cca81697e7ff",
+      "97b28119ead4ff5b5f66bcb0d176bf045e7c9e8a6c8d2eecc6f05a8e27c841d0"
+    ]
+  }
+}

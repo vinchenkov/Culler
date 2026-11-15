@@ -1,0 +1,420 @@
+{
+  "assignments": [
+    {
+      "dataset": "valset",
+      "group": "memos-account-attachment-usage",
+      "id": "memos-account-attachment-usage",
+      "manifest": "memos/memos-account-attachment-usage.json",
+      "origin": "development_seed",
+      "types": [
+        "feature_across_components"
+      ]
+    },
+    {
+      "dataset": "trainset",
+      "group": "memos-archived-owner-access",
+      "id": "memos-archived-owner-access",
+      "manifest": "memos/memos-archived-owner-access.json",
+      "origin": "development_seed",
+      "types": [
+        "data_or_access"
+      ]
+    },
+    {
+      "dataset": "trainset",
+      "group": "memos-dark-mode-toast",
+      "id": "memos-dark-mode-toast",
+      "manifest": "memos/memos-dark-mode-toast.json",
+      "origin": "development_seed",
+      "types": [
+        "small_visible_change"
+      ]
+    },
+    {
+      "dataset": "trainset",
+      "group": "memos-link-cover-retry",
+      "id": "memos-link-cover-retry",
+      "manifest": "memos/memos-link-cover-retry.json",
+      "origin": "development_seed",
+      "types": [
+        "state_transition_or_recovery"
+      ]
+    },
+    {
+      "dataset": "trainset",
+      "group": "memos-log-level",
+      "id": "memos-log-level",
+      "manifest": "memos/memos-log-level.json",
+      "origin": "development_seed",
+      "types": [
+        "configuration_or_compatibility"
+      ]
+    },
+    {
+      "dataset": "trainset",
+      "group": "memos-reuse-list-settings",
+      "id": "memos-reuse-list-settings",
+      "manifest": "memos/memos-reuse-list-settings.json",
+      "origin": "development_seed",
+      "types": [
+        "performance_change"
+      ]
+    },
+    {
+      "dataset": "trainset",
+      "group": "memos-webhook-label-refactor",
+      "id": "memos-webhook-label-refactor",
+      "manifest": "memos/memos-webhook-label-refactor.json",
+      "origin": "development_seed",
+      "types": [
+        "internal_refactor"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "trainset",
+      "group": "memos-pinned-marker",
+      "id": "memos-pinned-marker",
+      "manifest": "memos/corpus/memos-pinned-marker.json",
+      "origin": "upstream",
+      "types": [
+        "small_visible_change"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "valset",
+      "group": "memos-author-spacing",
+      "id": "memos-author-spacing",
+      "manifest": "memos/corpus/memos-author-spacing.json",
+      "origin": "upstream",
+      "types": [
+        "small_visible_change"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "final",
+      "group": "memos-metadata-hover",
+      "id": "memos-metadata-hover",
+      "manifest": "memos/corpus/memos-metadata-hover.json",
+      "origin": "upstream",
+      "types": [
+        "small_visible_change"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "valset",
+      "group": "memos-disclosure-spacing",
+      "id": "memos-disclosure-spacing",
+      "manifest": "memos/corpus/memos-disclosure-spacing.json",
+      "origin": "upstream",
+      "types": [
+        "small_visible_change"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "trainset",
+      "group": "memos-batch-instance-settings",
+      "id": "memos-batch-instance-settings",
+      "manifest": "memos/corpus/memos-batch-instance-settings.json",
+      "origin": "upstream",
+      "types": [
+        "feature_across_components"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "valset",
+      "group": "memos-smtp-plugin",
+      "id": "memos-smtp-plugin",
+      "manifest": "memos/corpus/memos-smtp-plugin.json",
+      "origin": "upstream",
+      "types": [
+        "feature_across_components"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "final",
+      "group": "memos-now-date-filters",
+      "id": "memos-now-date-filters",
+      "manifest": "memos/corpus/memos-now-date-filters.json",
+      "origin": "upstream",
+      "types": [
+        "feature_across_components"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "final",
+      "group": "memos-scheduler-plugin",
+      "id": "memos-scheduler-plugin",
+      "manifest": "memos/corpus/memos-scheduler-plugin.json",
+      "origin": "authored",
+      "types": [
+        "feature_across_components"
+      ],
+      "upstream_change": "5828f34aae3bd91cc60c420ee4ce9760f7239ff8"
+    },
+    {
+      "complexity": "medium",
+      "dataset": "trainset",
+      "group": "memos-sqlite-immediate-mutation",
+      "id": "memos-sqlite-immediate-mutation",
+      "manifest": "memos/corpus/memos-sqlite-immediate-mutation.json",
+      "origin": "upstream",
+      "types": [
+        "state_transition_or_recovery"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "valset",
+      "group": "memos-cron-calendar-match",
+      "id": "memos-cron-calendar-match",
+      "manifest": "memos/corpus/memos-cron-calendar-match.json",
+      "origin": "upstream",
+      "types": [
+        "state_transition_or_recovery"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "final",
+      "group": "memos-sse-event-recovery",
+      "id": "memos-sse-event-recovery",
+      "manifest": "memos/corpus/memos-sse-event-recovery.json",
+      "origin": "upstream",
+      "types": [
+        "state_transition_or_recovery"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "valset",
+      "group": "memos-cookie-session-recovery",
+      "id": "memos-cookie-session-recovery",
+      "manifest": "memos/corpus/memos-cookie-session-recovery.json",
+      "origin": "upstream",
+      "types": [
+        "state_transition_or_recovery"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "trainset",
+      "group": "memos-secret-file-config",
+      "id": "memos-secret-file-config",
+      "manifest": "memos/corpus/memos-secret-file-config.json",
+      "origin": "upstream",
+      "types": [
+        "configuration_or_compatibility"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "valset",
+      "group": "memos-local-storage-default",
+      "id": "memos-local-storage-default",
+      "manifest": "memos/corpus/memos-local-storage-default.json",
+      "origin": "upstream",
+      "types": [
+        "configuration_or_compatibility"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "final",
+      "group": "memos-frontend-cache-policy",
+      "id": "memos-frontend-cache-policy",
+      "manifest": "memos/corpus/memos-frontend-cache-policy.json",
+      "origin": "upstream",
+      "types": [
+        "configuration_or_compatibility"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "valset",
+      "group": "memos-version-flag",
+      "id": "memos-version-flag",
+      "manifest": "memos/corpus/memos-version-flag.json",
+      "origin": "upstream",
+      "types": [
+        "configuration_or_compatibility"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "trainset",
+      "group": "memos-unspecified-webhook-address",
+      "id": "memos-unspecified-webhook-address",
+      "manifest": "memos/corpus/memos-unspecified-webhook-address.json",
+      "origin": "upstream",
+      "types": [
+        "data_or_access"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "valset",
+      "group": "memos-cgnat-address-guard",
+      "id": "memos-cgnat-address-guard",
+      "manifest": "memos/corpus/memos-cgnat-address-guard.json",
+      "origin": "upstream",
+      "types": [
+        "data_or_access"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "final",
+      "group": "memos-cors-credential-boundary",
+      "id": "memos-cors-credential-boundary",
+      "manifest": "memos/corpus/memos-cors-credential-boundary.json",
+      "origin": "upstream",
+      "types": [
+        "data_or_access"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "valset",
+      "group": "memos-missing-json-flags",
+      "id": "memos-missing-json-flags",
+      "manifest": "memos/corpus/memos-missing-json-flags.json",
+      "origin": "upstream",
+      "types": [
+        "data_or_access"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "trainset",
+      "group": "memos-managed-s3-comparison",
+      "id": "memos-managed-s3-comparison",
+      "manifest": "memos/corpus/memos-managed-s3-comparison.json",
+      "origin": "upstream",
+      "types": [
+        "internal_refactor"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "valset",
+      "group": "memos-auth-helper-consolidation",
+      "id": "memos-auth-helper-consolidation",
+      "manifest": "memos/corpus/memos-auth-helper-consolidation.json",
+      "origin": "upstream",
+      "types": [
+        "internal_refactor"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "final",
+      "group": "memos-fileserver-simplification",
+      "id": "memos-fileserver-simplification",
+      "manifest": "memos/corpus/memos-fileserver-simplification.json",
+      "origin": "upstream",
+      "types": [
+        "internal_refactor"
+      ]
+    },
+    {
+      "complexity": "small",
+      "dataset": "valset",
+      "group": "memos-scheduler-membership-refactor",
+      "id": "memos-scheduler-membership-refactor",
+      "manifest": "memos/corpus/memos-scheduler-membership-refactor.json",
+      "origin": "upstream",
+      "types": [
+        "internal_refactor"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "trainset",
+      "group": "memos-batch-memo-relations",
+      "id": "memos-batch-memo-relations",
+      "manifest": "memos/corpus/memos-batch-memo-relations.json",
+      "origin": "upstream",
+      "types": [
+        "performance_change"
+      ]
+    },
+    {
+      "complexity": "medium",
+      "dataset": "valset",
+      "group": "memos-batch-rss-authors",
+      "id": "memos-batch-rss-authors",
+      "manifest": "memos/corpus/memos-batch-rss-authors.json",
+      "origin": "upstream",
+      "types": [
+        "performance_change"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "final",
+      "group": "memos-stream-media",
+      "id": "memos-stream-media",
+      "manifest": "memos/corpus/memos-stream-media.json",
+      "origin": "upstream",
+      "types": [
+        "performance_change"
+      ]
+    },
+    {
+      "complexity": "large",
+      "dataset": "final",
+      "group": "memos-sse-connection-fanout",
+      "id": "memos-sse-connection-fanout",
+      "manifest": "memos/corpus/memos-sse-connection-fanout.json",
+      "origin": "upstream",
+      "types": [
+        "performance_change"
+      ]
+    }
+  ],
+  "counts": {
+    "final": {
+      "configuration_or_compatibility": 1,
+      "data_or_access": 1,
+      "feature_across_components": 2,
+      "internal_refactor": 1,
+      "performance_change": 2,
+      "small_visible_change": 1,
+      "state_transition_or_recovery": 1
+    },
+    "trainset": {
+      "configuration_or_compatibility": 2,
+      "data_or_access": 2,
+      "feature_across_components": 1,
+      "internal_refactor": 2,
+      "performance_change": 2,
+      "small_visible_change": 2,
+      "state_transition_or_recovery": 2
+    },
+    "valset": {
+      "configuration_or_compatibility": 2,
+      "data_or_access": 2,
+      "feature_across_components": 2,
+      "internal_refactor": 2,
+      "performance_change": 1,
+      "small_visible_change": 2,
+      "state_transition_or_recovery": 2
+    }
+  },
+  "limits": [
+    "A dataset assignment does not establish case readiness.",
+    "The five pilot groups remain in the trainset and outside the final set.",
+    "No application test execution follows from an authored report."
+  ],
+  "schema_version": 1,
+  "source": "https://github.com/usememos/memos.git",
+  "status": "ready"
+}

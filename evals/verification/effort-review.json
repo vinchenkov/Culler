@@ -1,0 +1,599 @@
+{
+  "version": 1,
+  "reviewer": "Independent browser control backend agent",
+  "status": "accepted",
+  "source_revision": "6a242da318387deae1c42e0b65bc08346fefc3d2",
+  "source_hashes": {
+    "evals/bridge/effort.ts": "1e5c680ac1c04b7d391b14f4a5bbde20192b69689f071f84e1a8ce75ba473e82",
+    "evals/bridge/launch.ts": "f0280a03b22a4b72635ad6166f666a3177d6aa99518ffc19ebbe5c53b68b2ce1",
+    "evals/culler_evals/runtime.py": "d49ec5bc047049d45b3587fb64d821116f2d3840ecb7c493c1c4b2ae6d02a2d8",
+    "evals/culler_evals/protocol.py": "aaf5031b55344806a4c3c929bfc4f07de8d1ed1215fe6470a78ef52dbd59d5b5",
+    "evals/culler_evals/control_server.py": "75c300201b316c02e46713971448ae720297b1bbb4a7f38de60da8cc9446e73a",
+    "evals/culler_evals/evaluator.py": "9cdb888cb4e37bd31e80156f349f995e49594e883949bfb409e2f4c8a61e38e3",
+    "evals/culler_evals/calibration.py": "e3d2c250a8e0cb3112c7bd467c4b16b570e03fd82519033b11591e32f74a748e",
+    "evals/web/control.html": "77a1de8ebb7ef1856c9b1a26085d57ff1ee23f3f0385c62ff5ec1180e147f4fe",
+    "evals/web/experiment.html": "28595b7d0c749a0922950ee4cdf55e9b5b9ed978dddf3c0ba159f5290d3df537",
+    "evals/config/packager.json": "d0622306a6f1b654c847219edf410a0e4bb031ce64590e01fe81c23e56e048de",
+    "evals/config/packager.pilot.json": "6ac1481002ce305d248c922e0e05036a7681234a08e17b85d89b603e3a9bd003"
+  },
+  "model_calls": 0,
+  "terminal": {
+    "matrix_path": "/private/tmp/culler-eval-effort-terminal-review/revision-3/matrix.json",
+    "matrix_sha256": "de9fdc79ff10470c5112bb8b5727f193bb9c7212bd676ef094971cd880399b92",
+    "captures": [
+      {
+        "file": "validate-80-plain.txt",
+        "scenario": "validate",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "49b5445eae4bdf787958d04c9615ea228941709725be5c48fbed9ea79bf4504d",
+        "max_line_width": 79,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "contract-80-plain.txt",
+        "scenario": "contract",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "8014ec13fc66d07f77b294d5eac9ccbd5ef38af46eb820bbad2bf825b2b7027d",
+        "max_line_width": 76,
+        "capture_source": "revision-3; fixed source revision"
+      },
+      {
+        "file": "runtime-missing-80-plain.txt",
+        "scenario": "runtime-missing",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "9e5e81cfac891917162155fbedc7ca419436d60e2fb60557904af87b5b22db05",
+        "max_line_width": 78,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-request-mismatch-80-plain.txt",
+        "scenario": "runtime-request-mismatch",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "60fb0605ddf51a04883ed2a6760e0df4e04a88dfacc61dab673f8d72ce92b9e6",
+        "max_line_width": 74,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-config-missing-80-plain.txt",
+        "scenario": "runtime-config-missing",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "1d3ec90cd2de180e5e7801ef539c6be07d057b2ad930ab78bfdb859c1d93a7be",
+        "max_line_width": 76,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-observed-mismatch-80-plain.txt",
+        "scenario": "runtime-observed-mismatch",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "346d6b60259a5878ff3023240ad0fca863345ce3314aa5c17d9e6d385df4c8bc",
+        "max_line_width": 77,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-config-mismatch-80-plain.txt",
+        "scenario": "evaluator-config-mismatch",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "6b29479a91de42f531ca6709a876598706fbbb564217170b882d39960c1998e1",
+        "max_line_width": 76,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-observed-mismatch-80-plain.txt",
+        "scenario": "evaluator-observed-mismatch",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "a295dbda06495f134be73ab192b0a98302bbed2efcadb62890c3a09c54376dd7",
+        "max_line_width": 70,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-config-mismatch-80-plain.txt",
+        "scenario": "calibration-config-mismatch",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "096cee6453747ac23357234264bea89a51d3b62c630638f2e9728d5958028c76",
+        "max_line_width": 80,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-observed-mismatch-80-plain.txt",
+        "scenario": "calibration-observed-mismatch",
+        "columns": 80,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "aad0747a6b5dd31bb0d6f2cfbb3b820d550b03b1fcf096ef9b0f245656ba3d3a",
+        "max_line_width": 73,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "validate-80-color.txt",
+        "scenario": "validate",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "49b5445eae4bdf787958d04c9615ea228941709725be5c48fbed9ea79bf4504d",
+        "max_line_width": 79,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "contract-80-color.txt",
+        "scenario": "contract",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "8014ec13fc66d07f77b294d5eac9ccbd5ef38af46eb820bbad2bf825b2b7027d",
+        "max_line_width": 76,
+        "capture_source": "revision-3; fixed source revision"
+      },
+      {
+        "file": "runtime-missing-80-color.txt",
+        "scenario": "runtime-missing",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "9e5e81cfac891917162155fbedc7ca419436d60e2fb60557904af87b5b22db05",
+        "max_line_width": 78,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-request-mismatch-80-color.txt",
+        "scenario": "runtime-request-mismatch",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "60fb0605ddf51a04883ed2a6760e0df4e04a88dfacc61dab673f8d72ce92b9e6",
+        "max_line_width": 74,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-config-missing-80-color.txt",
+        "scenario": "runtime-config-missing",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "1d3ec90cd2de180e5e7801ef539c6be07d057b2ad930ab78bfdb859c1d93a7be",
+        "max_line_width": 76,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-observed-mismatch-80-color.txt",
+        "scenario": "runtime-observed-mismatch",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "346d6b60259a5878ff3023240ad0fca863345ce3314aa5c17d9e6d385df4c8bc",
+        "max_line_width": 77,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-config-mismatch-80-color.txt",
+        "scenario": "evaluator-config-mismatch",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "6b29479a91de42f531ca6709a876598706fbbb564217170b882d39960c1998e1",
+        "max_line_width": 76,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-observed-mismatch-80-color.txt",
+        "scenario": "evaluator-observed-mismatch",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "a295dbda06495f134be73ab192b0a98302bbed2efcadb62890c3a09c54376dd7",
+        "max_line_width": 70,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-config-mismatch-80-color.txt",
+        "scenario": "calibration-config-mismatch",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "096cee6453747ac23357234264bea89a51d3b62c630638f2e9728d5958028c76",
+        "max_line_width": 80,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-observed-mismatch-80-color.txt",
+        "scenario": "calibration-observed-mismatch",
+        "columns": 80,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "aad0747a6b5dd31bb0d6f2cfbb3b820d550b03b1fcf096ef9b0f245656ba3d3a",
+        "max_line_width": 73,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "validate-40-plain.txt",
+        "scenario": "validate",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "e17f8563b4970bc508d61ab31d6f06566d5246e94e6a779aded285365ffdb854",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "contract-40-plain.txt",
+        "scenario": "contract",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "638145f358fdb31b154dec8235ccb9136b67bd5d088cfb21bc89e1483c02620b",
+        "max_line_width": 38,
+        "capture_source": "revision-3; fixed source revision"
+      },
+      {
+        "file": "runtime-missing-40-plain.txt",
+        "scenario": "runtime-missing",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "f9beb455e3dbb4420be40e11c84387dea528c19d4abad47df43c642b350b1c57",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-request-mismatch-40-plain.txt",
+        "scenario": "runtime-request-mismatch",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "8d7a8f9b98df04b6c4cd0e1beefcc657a458d4c202cedae5c77fb7f12f33ff9d",
+        "max_line_width": 37,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-config-missing-40-plain.txt",
+        "scenario": "runtime-config-missing",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "379c33a4f6f5ae869ab5bf9606ed09e3b68d49270e4baefecb03bde16d0b08fb",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-observed-mismatch-40-plain.txt",
+        "scenario": "runtime-observed-mismatch",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "179e44e1132fd53a99d5181c648e472c1a391bd7a344d981755555a4223e7773",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-config-mismatch-40-plain.txt",
+        "scenario": "evaluator-config-mismatch",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "e4e399bf722454cc7d73b8367a0d8b6e37807a0f8e726457e1d4817917935a8c",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-observed-mismatch-40-plain.txt",
+        "scenario": "evaluator-observed-mismatch",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "2086d6a2453300c483d338a0281d90921cac78ed081f5cfab15885a008e5a605",
+        "max_line_width": 39,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-config-mismatch-40-plain.txt",
+        "scenario": "calibration-config-mismatch",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "c0c32efb0ceacbeb333f6a5a7af305da5c5693307977b91c3ce18801dfda8ac2",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-observed-mismatch-40-plain.txt",
+        "scenario": "calibration-observed-mismatch",
+        "columns": 40,
+        "color_requested": false,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "f2a9a3e3562a8b81b5293c91f5cbfab3eb8e2ed01bc8831ee807d5b8d5960dcc",
+        "max_line_width": 37,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "validate-40-color.txt",
+        "scenario": "validate",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "e17f8563b4970bc508d61ab31d6f06566d5246e94e6a779aded285365ffdb854",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "contract-40-color.txt",
+        "scenario": "contract",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "638145f358fdb31b154dec8235ccb9136b67bd5d088cfb21bc89e1483c02620b",
+        "max_line_width": 38,
+        "capture_source": "revision-3; fixed source revision"
+      },
+      {
+        "file": "runtime-missing-40-color.txt",
+        "scenario": "runtime-missing",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "f9beb455e3dbb4420be40e11c84387dea528c19d4abad47df43c642b350b1c57",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-request-mismatch-40-color.txt",
+        "scenario": "runtime-request-mismatch",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "8d7a8f9b98df04b6c4cd0e1beefcc657a458d4c202cedae5c77fb7f12f33ff9d",
+        "max_line_width": 37,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-config-missing-40-color.txt",
+        "scenario": "runtime-config-missing",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "379c33a4f6f5ae869ab5bf9606ed09e3b68d49270e4baefecb03bde16d0b08fb",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "runtime-observed-mismatch-40-color.txt",
+        "scenario": "runtime-observed-mismatch",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "179e44e1132fd53a99d5181c648e472c1a391bd7a344d981755555a4223e7773",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-config-mismatch-40-color.txt",
+        "scenario": "evaluator-config-mismatch",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "e4e399bf722454cc7d73b8367a0d8b6e37807a0f8e726457e1d4817917935a8c",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "evaluator-observed-mismatch-40-color.txt",
+        "scenario": "evaluator-observed-mismatch",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "2086d6a2453300c483d338a0281d90921cac78ed081f5cfab15885a008e5a605",
+        "max_line_width": 39,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-config-mismatch-40-color.txt",
+        "scenario": "calibration-config-mismatch",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "c0c32efb0ceacbeb333f6a5a7af305da5c5693307977b91c3ce18801dfda8ac2",
+        "max_line_width": 40,
+        "capture_source": "revision-2; source bytes unchanged"
+      },
+      {
+        "file": "calibration-observed-mismatch-40-color.txt",
+        "scenario": "calibration-observed-mismatch",
+        "columns": 40,
+        "color_requested": true,
+        "contains_ansi": false,
+        "exit_code": 1,
+        "sha256": "f2a9a3e3562a8b81b5293c91f5cbfab3eb8e2ed01bc8831ee807d5b8d5960dcc",
+        "max_line_width": 37,
+        "capture_source": "revision-2; source bytes unchanged"
+      }
+    ],
+    "checks": [
+      "The actual command-line interface returns failure for every invalid fixture.",
+      "Every diagnostic fits 80 and 40 columns.",
+      "Color and plain modes preserve the same meaning.",
+      "These diagnostics emit no terminal color codes.",
+      "Each diagnostic states a required input or a specific corrective action.",
+      "The fixtures create no experiment."
+    ],
+    "fixture_method": "Actual CLI readiness and guard diagnostics. Runtime guards use a synthetic container process; calibration and evaluator guards receive fixed metadata.",
+    "actual_model_calls": 0,
+    "actual_docker_calls": 0
+  },
+  "control_browser": {
+    "matrix_path": "/private/tmp/culler-eval-effort-browser-review/matrix.json",
+    "matrix_sha256": "0f11355a395d577eae3a37a1a1cd88b1633b5b5fbc8dd2a946a731482bb41777",
+    "captured_source_hashes": {
+      "evals/culler_evals/protocol.py": "aaf5031b55344806a4c3c929bfc4f07de8d1ed1215fe6470a78ef52dbd59d5b5",
+      "evals/culler_evals/control_server.py": "75c300201b316c02e46713971448ae720297b1bbb4a7f38de60da8cc9446e73a",
+      "evals/web/control.html": "77a1de8ebb7ef1856c9b1a26085d57ff1ee23f3f0385c62ff5ec1180e147f4fe",
+      "evals/web/experiment.html": "87b196d780fadd10827ccc4834105454d6b2360fb6a5e7ed4c95e519d8729f4c",
+      "evals/config/packager.json": "d0622306a6f1b654c847219edf410a0e4bb031ce64590e01fe81c23e56e048de",
+      "evals/config/packager.pilot.json": "6ac1481002ce305d248c922e0e05036a7681234a08e17b85d89b603e3a9bd003",
+      "evals/tests/test_control_browser.py": "602e613929b1b56ad5b74cafa8ff0c1f56dedc22df538e703ffccc0cb4dd5287"
+    },
+    "captures": [
+      {
+        "path": "/private/tmp/culler-eval-effort-browser-review/setup-desktop.png",
+        "sha256": "1014b283853c18a70846623e7ef38b6f0450fdc528f28be75cee90f57f183e58",
+        "state": "Defaults: three high effort roles; zero model calls."
+      },
+      {
+        "path": "/private/tmp/culler-eval-effort-browser-review/effort-controls.png",
+        "sha256": "88fc66a08dd8eb3d09973418c6e9b38306293e7b27c99fa07b6eec689d8c0e32",
+        "state": "Three explicit effort controls."
+      },
+      {
+        "path": "/private/tmp/culler-eval-effort-browser-review/invalid-harness-effort.png",
+        "sha256": "2193b147b100260c878f0608813037a63169b963d8ead2b82bf5f182a52eb5ce",
+        "state": "An invalid effort remains visible. The server blocks launch."
+      },
+      {
+        "path": "/private/tmp/culler-eval-effort-browser-review/active-experiment.png",
+        "sha256": "993dae28a7487338153a840726ed6712aa798406553425e6b3a610a0d6e49b89",
+        "state": "A delayed fixture child writes actual durable records. It calls no models."
+      },
+      {
+        "path": "/private/tmp/culler-eval-effort-browser-review/fixed-effort-controls.png",
+        "sha256": "93605d5939f16edc658fad29970e384b2a881213dde736348b6d8aa434507618",
+        "state": "The accepted high effort settings stay fixed."
+      },
+      {
+        "path": "/private/tmp/culler-eval-effort-browser-review/fixed-configuration-narrow.png",
+        "sha256": "c8e3e7bf8bb984ae31a300d372a43544960766f1561b7c8738745ab46a461c65",
+        "state": "The fixed high effort settings remain legible at 560 pixels."
+      }
+    ],
+    "later_source_difference": [
+      "The final experiment viewer uses Effort as its column label. The control captures retain their original source identity."
+    ],
+    "checks": [
+      "The three roles display high effort.",
+      "The browser exposes three effort controls.",
+      "An invalid effort stays visible after a harness change. The server rejects it.",
+      "The accepted effort stays fixed during the experiment.",
+      "The active fixture displays zero model calls and provisional completeness.",
+      "The narrow page keeps the selected effort readable."
+    ]
+  },
+  "final_viewer": {
+    "reviewed_source_sha256": "28595b7d0c749a0922950ee4cdf55e9b5b9ed978dddf3c0ba159f5290d3df537",
+    "captures": [
+      {
+        "path": "/private/tmp/culler-eval-effort-viewer-e2a603/test_setup_shows_each_selected0/effort-setup-desktop.png",
+        "sha256": "9af6e9f75f3e21e4f3c79ad88ffad40b6a3013f84a002cd5347eb6e54142b044"
+      },
+      {
+        "path": "/private/tmp/culler-eval-effort-viewer-e2a603/test_setup_shows_each_selected0/effort-setup-narrow.png",
+        "sha256": "84db451531e24ecc0bb352be394de1582749cb984a52966a905bccc0c709d2a7"
+      }
+    ],
+    "checks": [
+      "The final viewer uses the same Effort term.",
+      "The viewer displays each recorded effort.",
+      "The viewer displays Effort unrecorded for an absent historical value.",
+      "The narrow display preserves complete role names and readable effort values."
+    ]
+  },
+  "runtime_review": {
+    "checks": [
+      "The runtime requires an explicit effort before source or model access.",
+      "The request effort must match the fixed runtime configuration.",
+      "The Codex arguments set the parent effort and the default subagent effort.",
+      "The Claude SDK options set effort and adaptive thinking. Its environment sets the same effort.",
+      "The runtime requires a matching configuration record.",
+      "The runtime rejects a different native effort observation.",
+      "The runtime reads the Claude initialization effort field and the Codex turn context effort field.",
+      "Null native effort remains unobserved.",
+      "The evaluator and calibration records enforce the fixed effort."
+    ],
+    "limits": [
+      "A harness effort choice validates syntax. Model support remains specific to the selected model.",
+      "An explicit Codex subagent request or custom agent can override its default effort.",
+      "An absent native effort observation does not establish an observed value."
+    ]
+  },
+  "local_harness_evidence": {
+    "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+    "codex_version": "0.159.2",
+    "claude_code_version": "2.1.280",
+    "claude_sdk_version": "0.3.280",
+    "sdk_effort_values": [
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ],
+    "sdk_effort_option": "effort",
+    "sdk_thinking_option": {
+      "type": "adaptive"
+    },
+    "sdk_cli_mapping": [
+      "--effort",
+      "--thinking adaptive"
+    ],
+    "method": "Version, help, type, and implementation reads used network-disabled containers without credentials."
+  },
+  "official_sources": [
+    "https://learn.chatgpt.com/docs/config-file/config-reference",
+    "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+    "https://code.claude.com/docs/en/model-config",
+    "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "history_preserved": true
+}

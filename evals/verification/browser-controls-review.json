@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "status": "accepted",
+  "reviewer": "/root/case_corpus",
+  "reviewed_at": "2026-10-03T02:33:08.943408+00:00",
+  "source_revision": "8d7fff83386abb4ddfb344f881a59b8f9b015b94",
+  "model_calls": 0,
+  "source_files": [
+    {
+      "path": "evals/culler_evals/control_server.py",
+      "sha256": "456fd83b522a26b8d8d2cf47304c8a227dfbb6dcf23d479941a6b41aedec6c3d"
+    },
+    {
+      "path": "evals/web/control.html",
+      "sha256": "28dc3732b069f055d0d7c19935fab2128718f7245d8b2c6b838561f724ef1068"
+    },
+    {
+      "path": "evals/culler_evals/cli.py",
+      "sha256": "c48e890e57816f99bc5a8531bc2fc69c9434b03ff2201d6965731c46629c45a4"
+    },
+    {
+      "path": "evals/culler_evals/runtime.py",
+      "sha256": "c9fbf309ea78311098f556195532e48691122d7fc0599ee745e8159b2dfff198"
+    },
+    {
+      "path": "evals/tests/test_control_server.py",
+      "sha256": "40ad7c6e14077b6984002fd974369a124ed79d10f19c09504190305fdf73c3a5"
+    },
+    {
+      "path": "evals/tests/test_control_browser.py",
+      "sha256": "639ad35667595a1c44ad2217b270d416c1f644568cb52bbd099242ac512f38d1"
+    },
+    {
+      "path": "evals/tests/test_runtime_control_cancel.py",
+      "sha256": "b79095002e5fbe06cbf95d01af39fcc23aa62b7f62570dd4702f46c423c69555"
+    },
+    {
+      "path": "evals/tests/test_cli_run.py",
+      "sha256": "2b12e7cb6a560b19544ce3146ae3b5001d980392c330624cef0b165e5bf23f01"
+    },
+    {
+      "path": "evals/tests/test_cli_serve.py",
+      "sha256": "c8f2daf010c74602e39757801ee56eee413ed60200426b5d7452ec4bc0b59993"
+    }
+  ],
+  "independent_checks": [
+    {
+      "command": "python -m pytest tests/test_control_server.py tests/test_runtime_control_cancel.py tests/test_cli_run.py tests/test_cli_serve.py -q",
+      "result": "62 passed in 29.43 seconds",
+      "model_calls": 0
+    },
+    {
+      "command": "PLAYWRIGHT_BROWSERS_PATH=<private cache> python -m pytest tests/test_control_browser.py -q",
+      "result": "6 passed in 30.47 seconds",
+      "model_calls": 0
+    }
+  ],
+  "browser_review": {
+    "matrix_sha256": "154f17d4f029f7b66221441447f437f7cd06520e53d786f87608d98963cfcfe9",
+    "revision": 2,
+    "chromium_version": "145.0.7632.6",
+    "method": "Actual Chromium uses the ControlServer API. A delayed child writes durable fixture events. No model calls occur. Docker and group signals use explicit test doubles.",
+    "captures": [
+      {
+        "path": "active-experiment.png",
+        "sha256": "f65e634681de131756512ec5b5ff3d212311a969d31a60c7695af11c4b3675b3"
+      },
+      {
+        "path": "complete.png",
+        "sha256": "0114c55d05fa053824b896ef0be1dfc637af4cd5b83d026e6874cc3b544e9fed"
+      },
+      {
+        "path": "failed.png",
+        "sha256": "6baa959da8537fba09efdcb2b0f2a921204fd1d5d54e0be11f8c020dbea8a4e8"
+      },
+      {
+        "path": "fixed-configuration-narrow.png",
+        "sha256": "fc0c9a3d484e4a8a1739d6e4e223a8124fb18780b09f19b1dbd0d62db1c19d8a"
+      },
+      {
+        "path": "fixed-configuration.png",
+        "sha256": "a591072d555f63f8730d3f189abce111412d47d337f2d87d44fcf71b7e3d2188"
+      },
+      {
+        "path": "setup-desktop.png",
+        "sha256": "358f11acd6760f6bb2b9279a8f694e05eaf5882e01da9b64aaeaa3cd7389c8e7"
+      },
+      {
+        "path": "start-in-progress.png",
+        "sha256": "d97b1e21cdfe632e62f85ad85242a5f626326f599fefb907d5c8a2544fb33f53"
+      },
+      {
+        "path": "validation-error.png",
+        "sha256": "fd1b21c7a1a22a6b3e85d82e008d34a6c9f628d02b991666278e4e2620d6de8b"
+      }
+    ],
+    "observations": [
+      "The setup separates training cases, validation cases, and final holdout cases.",
+      "The page explains the trial count, proposal count, completion rules, and packet maximum.",
+      "The Experiment tab gives the nested viewer most of the desktop window.",
+      "The active experiment retains a read-only copy of its accepted parameters.",
+      "The page distinguishes startup, active execution, completion, and failure.",
+      "Failure preserves the experiment directory identifier and access to its records.",
+      "The public page excludes private credential values and host paths."
+    ]
+  },
+  "terminal_review": {
+    "matrix_sha256": "b39ef956b3245d3300611c50400544be546344f817541833b4cbe198126c564d",
+    "capture_count": 28,
+    "captures": [
+      {
+        "name": "all-help-80-color-0.txt",
+        "command": "all-help",
+        "columns": 80,
+        "color": false,
+        "sha256": "56a5821534305e2f3da649e7137415531dcf1eabbe94553df62d55a091881951",
+        "exit_code": 0
+      },
+      {
+        "name": "help-80-color-0.txt",
+        "command": "help",
+        "columns": 80,
+        "color": false,
+        "sha256": "0a0ca9a57e5bbb80c0c31f97834e268992f8d046918b41a1afdf164011fac207",
+        "exit_code": 0
+      },
+      {
+        "name": "required-80-color-0.txt",
+        "command": "required",
+        "columns": 80,
+        "color": false,
+        "sha256": "fa73330e2cbada6b5220b2ba01870be620068f84047a58df995102cb495a58de",
+        "exit_code": 2
+      },
+      {
+        "name": "ready-80-color-0.txt",
+        "command": "ready",
+        "columns": 80,
+        "color": false,
+        "sha256": "d5e4666a353228a20f642b78aa0cf94f354e9b51c4e51c21a4e7511cba98722a",
+        "exit_code": 0
+      },
+      {
+        "name": "owner-without-stop-80-color-0.txt",
+        "command": "owner-without-stop",
+        "columns": 80,
+        "color": false,
+        "sha256": "687c1c9a10fa58521d5c236cb19261f0c55e491c37e3de3c2e4cbad70f24df2b",
+        "exit_code": 1
+      },
+      {
+        "name": "stop-without-owner-80-color-0.txt",
+        "command": "stop-without-owner",
+        "columns": 80,
+        "color": false,
+        "sha256": "8b019c40f5849422456a41182a350bbd401d6e3febc876d7ace4d26692250a57",
+        "exit_code": 1
+      },
+      {
+        "name": "invalid-owner-80-color-0.txt",
+        "command": "invalid-owner",
+        "columns": 80,
+        "color": false,
+        "sha256": "ba4c031462a981475ae3565f37f962b649bbcc6c698e7177439b59e7589956df",
+        "exit_code": 1
+      },
+      {
+        "name": "all-help-80-color-1.txt",
+        "command": "all-help",
+        "columns": 80,
+        "color": true,
+        "sha256": "56a5821534305e2f3da649e7137415531dcf1eabbe94553df62d55a091881951",
+        "exit_code": 0
+      },
+      {
+        "name": "help-80-color-1.txt",
+        "command": "help",
+        "columns": 80,
+        "color": true,
+        "sha256": "0a0ca9a57e5bbb80c0c31f97834e268992f8d046918b41a1afdf164011fac207",
+        "exit_code": 0
+      },
+      {
+        "name": "required-80-color-1.txt",
+        "command": "required",
+        "columns": 80,
+        "color": true,
+        "sha256": "fa73330e2cbada6b5220b2ba01870be620068f84047a58df995102cb495a58de",
+        "exit_code": 2
+      },
+      {
+        "name": "ready-80-color-1.txt",
+        "command": "ready",
+        "columns": 80,
+        "color": true,
+        "sha256": "38f100baaadcf922c2553edcca7be753bdaf21719db1e5d4bda932d82af57f97",
+        "exit_code": 0
+      },
+      {
+        "name": "owner-without-stop-80-color-1.txt",
+        "command": "owner-without-stop",
+        "columns": 80,
+        "color": true,
+        "sha256": "2bb8aaae716ff42e0325238b7d6d69d7ff9ca21c0b8dc793cb08971e08959246",
+        "exit_code": 1
+      },
+      {
+        "name": "stop-without-owner-80-color-1.txt",
+        "command": "stop-without-owner",
+        "columns": 80,
+        "color": true,
+        "sha256": "8749812faf7ff6bfe16ec61572821863a5099d8368878ceaa3fcd0248cf610de",
+        "exit_code": 1
+      },
+      {
+        "name": "invalid-owner-80-color-1.txt",
+        "command": "invalid-owner",
+        "columns": 80,
+        "color": true,
+        "sha256": "1849de75ece9f043b50b967f360663458735ab63597e4d6965a10923e14cb665",
+        "exit_code": 1
+      },
+      {
+        "name": "all-help-40-color-0.txt",
+        "command": "all-help",
+        "columns": 40,
+        "color": false,
+        "sha256": "fe5c4b5de00060130a5618b1f36159af6ca9a85fb924fefcfa351805648291bd",
+        "exit_code": 0
+      },
+      {
+        "name": "help-40-color-0.txt",
+        "command": "help",
+        "columns": 40,
+        "color": false,
+        "sha256": "e80227775af9d3807c55a897c3503e415307f6ae4415efe2fdf07a1854240e4c",
+        "exit_code": 0
+      },
+      {
+        "name": "required-40-color-0.txt",
+        "command": "required",
+        "columns": 40,
+        "color": false,
+        "sha256": "11964e814f3599b59ba039f29cd1f9ea935ab17524266093299d134022e73976",
+        "exit_code": 2
+      },
+      {
+        "name": "ready-40-color-0.txt",
+        "command": "ready",
+        "columns": 40,
+        "color": false,
+        "sha256": "3fd73d197cda9ef8b1d6935d99089568ce5bfdb81692eb32ce7b589836584826",
+        "exit_code": 0
+      },
+      {
+        "name": "owner-without-stop-40-color-0.txt",
+        "command": "owner-without-stop",
+        "columns": 40,
+        "color": false,
+        "sha256": "274a6827d1d32dcbb60704852663850b5123facd9a232a3c608b90086fc76e0b",
+        "exit_code": 1
+      },
+      {
+        "name": "stop-without-owner-40-color-0.txt",
+        "command": "stop-without-owner",
+        "columns": 40,
+        "color": false,
+        "sha256": "e4c07599f67eb31441d69bc12bb69487d5ec5ba05594e6feea9f4177157e6260",
+        "exit_code": 1
+      },
+      {
+        "name": "invalid-owner-40-color-0.txt",
+        "command": "invalid-owner",
+        "columns": 40,
+        "color": false,
+        "sha256": "5d4bbb7c352edf60da590fa5bf134759114ff269b0211f1b646e73eb5a148f28",
+        "exit_code": 1
+      },
+      {
+        "name": "all-help-40-color-1.txt",
+        "command": "all-help",
+        "columns": 40,
+        "color": true,
+        "sha256": "fe5c4b5de00060130a5618b1f36159af6ca9a85fb924fefcfa351805648291bd",
+        "exit_code": 0
+      },
+      {
+        "name": "help-40-color-1.txt",
+        "command": "help",
+        "columns": 40,
+        "color": true,
+        "sha256": "e80227775af9d3807c55a897c3503e415307f6ae4415efe2fdf07a1854240e4c",
+        "exit_code": 0
+      },
+      {
+        "name": "required-40-color-1.txt",
+        "command": "required",
+        "columns": 40,
+        "color": true,
+        "sha256": "11964e814f3599b59ba039f29cd1f9ea935ab17524266093299d134022e73976",
+        "exit_code": 2
+      },
+      {
+        "name": "ready-40-color-1.txt",
+        "command": "ready",
+        "columns": 40,
+        "color": true,
+        "sha256": "5bc825a9f98f92583f8ac55d1b8a320eaf625c2b3a5b9e91ef817754686e5f4e",
+        "exit_code": 0
+      },
+      {
+        "name": "owner-without-stop-40-color-1.txt",
+        "command": "owner-without-stop",
+        "columns": 40,
+        "color": true,
+        "sha256": "9767f1458770afe1999ca9d6f508873bb9e12e32137619dbd5db4815697a5b28",
+        "exit_code": 1
+      },
+      {
+        "name": "stop-without-owner-40-color-1.txt",
+        "command": "stop-without-owner",
+        "columns": 40,
+        "color": true,
+        "sha256": "56d2f35f8e066464b39680b51edf0e4e0b6d17ff77a36c184946bc14f443f06b",
+        "exit_code": 1
+      },
+      {
+        "name": "invalid-owner-40-color-1.txt",
+        "command": "invalid-owner",
+        "columns": 40,
+        "color": true,
+        "sha256": "0b9ea170f9df31af41df183c119056e6b890acf09f4560217a21bde345d365ff",
+        "exit_code": 1
+      }
+    ],
+    "observations": [
+      "All seven command displays pass at 80 and 40 columns, with color and without color.",
+      "The help introduces Genetic-Pareto (GEPA) before its abbreviated name.",
+      "The startup explains the Start experiment action and invokes no model before that action.",
+      "The startup explains interruption and record preservation.",
+      "Control identity errors name the exact environment variables and give a recovery action.",
+      "Each error retains a truthful failure state and its portable viewer path."
+    ],
+    "revisions": [
+      "The first help display omitted the full algorithm name. The accepted display defines it.",
+      "The first control identity errors omitted a recovery action. The accepted displays give that action."
+    ]
+  },
+  "docker_probe": {
+    "result_sha256": "273a98ca7e1a590bdf8d885a3653b423993ff1761e25528fa62cb1867938a965",
+    "method": "The real ControlServer shuts down a test child and real containers from the fixed evaluation image.",
+    "model_calls": 0,
+    "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+    "protocol_hash": "09a462902c491116675efa760c99ca52d089228e16e7bdebba9321796bc64ce7",
+    "source_revision": "8d7fff83386abb4ddfb344f881a59b8f9b015b94",
+    "runtime_source_hash": "455aed7b69a8feddb67e2ef35fedf4125e6c75e7af23b6a3ece6df587398639f",
+    "source_files": [
+      {
+        "path": "evals/culler_evals/control_server.py",
+        "sha256": "456fd83b522a26b8d8d2cf47304c8a227dfbb6dcf23d479941a6b41aedec6c3d"
+      },
+      {
+        "path": "evals/culler_evals/runtime.py",
+        "sha256": "c9fbf309ea78311098f556195532e48691122d7fc0599ee745e8159b2dfff198"
+      },
+      {
+        "path": "evals/culler_evals/cli.py",
+        "sha256": "c48e890e57816f99bc5a8531bc2fc69c9434b03ff2201d6965731c46629c45a4"
+      }
+    ],
+    "result": "passed",
+    "owned_container_removed": true,
+    "separate_container_preserved": true,
+    "child_exited": true,
+    "status": "interrupted"
+  },
+  "source_review": [
+    "The server binds only to the host loopback address and requires its private address.",
+    "State changes require the exact local origin and a bounded configuration object.",
+    "The server rejects unsupported fields and retains each case in its fixed dataset.",
+    "The server verifies the original directive and case hashes before it starts a process.",
+    "The server saves the fixed protocol and launch record before it starts a process.",
+    "The server permits one active process and creates a separate directory for each experiment.",
+    "The child stop guards block later model operations and retries after interruption.",
+    "Container cleanup checks full identifiers and the exact experiment label before removal.",
+    "Repeated cleanup and a final cleanup check cover containers that appear during shutdown.",
+    "A shutdown timeout reports an active process instead of a successful interruption.",
+    "The nested packet preview retains an isolated frame and blocks external requests."
+  ],
+  "limits": [
+    "The browser checks use a test child process. They establish no model quality result.",
+    "The actual Docker check uses real containers and a test child process with zero model calls.",
+    "The review proves browser controls and interruption boundaries. It does not complete an experiment with the selected models.",
+    "The original case facts, reports, media, and corpus assignments remain unchanged."
+  ]
+}

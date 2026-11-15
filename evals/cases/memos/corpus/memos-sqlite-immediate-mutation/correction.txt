@@ -1,0 +1,8 @@
+{
+  "correction": "Preserve the source conditions and evidence limits in the report and packet.",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "This change makes every database mutation free of lock errors.",
+  "replacement_claim": "The mutation acquires one connection and executes BEGIN IMMEDIATE before its reads and writes.",
+  "requirements_version": 1,
+  "task_id": 809
+}

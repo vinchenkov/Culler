@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "base_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "changed_paths": [
+        "plugin/scheduler/README.md",
+        "plugin/scheduler/doc.go",
+        "plugin/scheduler/example_test.go",
+        "plugin/scheduler/integration_test.go",
+        "plugin/scheduler/job.go",
+        "plugin/scheduler/job_test.go",
+        "plugin/scheduler/middleware.go",
+        "plugin/scheduler/middleware_test.go",
+        "plugin/scheduler/parser.go",
+        "plugin/scheduler/parser_test.go",
+        "plugin/scheduler/scheduler.go",
+        "plugin/scheduler/scheduler_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "76c850b035ef84eaf151b05981a120cc5c58286c",
+      "reviewed_tree": "f160b42b000b0be45e073d2f1fc25b7dc9bd97fb"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+      "conditions": [
+        "The parser supports five-field and six-field expressions.",
+        "The default timezone is UTC; an invalid scheduler timezone falls back to UTC.",
+        "Each job loop runs its handler synchronously before it calculates the next run.",
+        "Duplicate names and invalid jobs fail registration."
+      ],
+      "mechanism": "Start parses each schedule and launches a goroutine with a cancellation context."
+    },
+    {
+      "after": "The package adds middleware composition and a stop operation that waits with a caller context.",
+      "conditions": [
+        "A timed-out handler can continue if it ignores cancellation.",
+        "Start can launch an earlier job before a later schedule parse fails.",
+        "Stop closes stopCh; this revision does not implement safe restart on the same Scheduler instance.",
+        "The plugin adds examples and tests but no durable job storage or application registration."
+      ],
+      "mechanism": "Recovery converts panics to errors; logging records results; timeout returns when its context expires."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author composed this task report from actual source commits. No Culler Worker executed this task.",
+  "summary": "The new scheduler package registers named jobs and runs each job against a cron schedule.",
+  "task_id": 808,
+  "unverified": [
+    "The preparation executes no scheduler or added test.",
+    "The package cannot establish exactly-once execution or restart safety from these source checks.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "6d25d6711aa2c4f3a978eaf231e7cd50a5ec200f"
+}

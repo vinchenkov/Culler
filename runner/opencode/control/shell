@@ -1,0 +1,8 @@
+#!/opt/culler-runtime/bin/bun
+import { cleanShellEnvironment } from "./server.mjs";
+const proc = Bun.spawn(["/bin/bash", ...process.argv.slice(2)], {
+  env: cleanShellEnvironment({ ...process.env }),
+  stdin: "inherit", stdout: "inherit", stderr: "inherit",
+});
+for (const signal of ["SIGTERM", "SIGINT"]) process.on(signal, () => proc.kill(signal));
+process.exit(await proc.exited);

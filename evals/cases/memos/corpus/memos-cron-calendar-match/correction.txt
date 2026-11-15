@@ -1,0 +1,8 @@
+{
+  "correction": "Preserve the source conditions and evidence limits in the report and packet.",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "The parser always requires both day fields to match.",
+  "replacement_claim": "The parser uses OR for two restricted day fields and AND when either field begins with an asterisk.",
+  "requirements_version": 1,
+  "task_id": 810
+}

@@ -1,0 +1,2 @@
+# Preserve the fixed browser libraries without text normalization.
+dashboard/src/openwiki/*.min.js -text -whitespace linguist-vendored

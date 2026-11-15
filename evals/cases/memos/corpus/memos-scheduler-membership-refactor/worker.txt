@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "base_commit": "14a1c9a53b75602efe515b729948fa6b8bc0038d",
+      "changed_paths": [
+        "internal/scheduler/parser.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "9fae524221f9912081b95328758bea3da5cb7acc",
+      "reviewed_tree": "72b79af5df8af2704ac5cc72feefb8abe8131fbc"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The list matcher uses slices.Contains for the same membership test.",
+      "conditions": [
+        "The empty list still returns false.",
+        "The change adds no new cron field, schedule rule, or stored state.",
+        "The source does not establish a performance improvement."
+      ],
+      "mechanism": "The parser imports slices and replaces the manual loop with one helper call."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The list matcher uses slices.Contains for the same membership test.",
+  "task_id": 824,
+  "unverified": [
+    "No parser test or benchmark ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "9fae524221f9912081b95328758bea3da5cb7acc"
+}

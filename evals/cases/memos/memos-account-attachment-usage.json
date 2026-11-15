@@ -1,0 +1,492 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/702/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "982ea5790788dacd2491bf6f98d5d5d1736d5c8fcffca2610072f323f06ee467",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/702/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "256301892d844e17cdd67c1b1aa3524a019ba1a0014a2c3775f428d9b1c01cc3",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "8b874e006b862fca52301ce5a59d526b737cc863f14c09db013f9e0050efc229",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    },
+    {
+      "description": "Before: total. Fixed synthetic frontend state.",
+      "id": "media-before-total",
+      "kind": "media",
+      "path": "eval/702/media/before-total.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "sha256": "90bef5cec0595f2e0906da3b78dc996b97246ab5097d6adf1fbc61618f472d01",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/media/before-total.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: total. Fixed synthetic frontend state.",
+      "id": "media-after-total",
+      "kind": "media",
+      "path": "eval/702/media/after-total.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "73bf05ba6a04469f9042e529f1ea54920a67195bc0072174fa5c8eccfc09d0ed",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/media/after-total.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: zero. Fixed synthetic frontend state.",
+      "id": "media-after-zero",
+      "kind": "media",
+      "path": "eval/702/media/after-zero.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "05f76a2fbf39ed4bf0c6dd8e098fa5813ff93c797b431c3385478e0bbfe1ae55",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/media/after-zero.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: pending. Fixed synthetic frontend state.",
+      "id": "media-after-pending",
+      "kind": "media",
+      "path": "eval/702/media/after-pending.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "58b43b4f9ecb415648f752172f3610048df79fa9ad48f9d8060319a546467a25",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/media/after-pending.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "description": "After: unavailable. Fixed synthetic frontend state.",
+      "id": "media-after-unavailable",
+      "kind": "media",
+      "path": "eval/702/media/after-unavailable.png",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+      "sha256": "0bd4c457074aa1b716c2082ab9ebfcd874aeff8f2e5722d61de8dd9dbc268039",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/media/after-unavailable.png"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "media-provenance",
+      "kind": "source_record",
+      "path": "eval/702/media/capture.json",
+      "provenance": "captured_frontend_with_synthetic_service_responses",
+      "sha256": "02956daa4dda0368f3a2cac325a6d5c57a459f5a2bf36e36414be33218f3e38f",
+      "source": {
+        "kind": "file",
+        "path": "memos-account-attachment-usage/media/capture.json"
+      },
+      "visibility": "role"
+    }
+  ],
+  "content_hashes": {
+    "environment": "f1b6c70e32567ec1c09156e92b1f0247489774d9146da731fbddf4d699155c9c",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "f0e6d065ac7c41bf74b9e7556b94506e23ac2702202d3659485eb6c3557ebf17",
+    "role_inputs": "e6c1f051eb5abab9371e08fae42f6a4b786d31002b76834ffcd8a85f3ba3a033",
+    "visual_evidence": "3a529a2f3c550813710a71a3c4a6bbac3fde65739d5de62cb02a1853e917c4bf"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": {
+      "browser_version": "145.0.7632.6",
+      "clock": "2026-09-30T12:00:00Z",
+      "limits": [
+        "These captures verify the frontend display with synthetic service responses.",
+        "They execute no Memos backend, database, authorization, or application test suite."
+      ],
+      "locale": "en-US",
+      "method": "unchanged_frontend_with_synthetic_service_responses",
+      "provenance_artifact": "media-provenance",
+      "status": "captured",
+      "timezone": "UTC",
+      "tool_hashes": {
+        "capture_memos.py": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674",
+        "memos-fixture.ts": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+      },
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "d7622025092825c84541b63766c8fceef57c50235c2a824003c536faae6dee9f"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "3330044829fd01c625833bd7e9f538348e3c33241d3fb56f48e1ad4e3ef68e13"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "ec6abb76b4be6c415aab10d1d3aa83c929a61eb11c48cf2dea87ef8c6522425b"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "6ddc14634290e7fb3f97081e172ca0a37b7cef95809002f9af9a27201b4e02df"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-account-attachment-usage",
+  "id": "memos-account-attachment-usage",
+  "paths": {
+    "/mc/artifacts/eval/702/media/after-pending.png": "media-after-pending",
+    "/mc/artifacts/eval/702/media/after-total.png": "media-after-total",
+    "/mc/artifacts/eval/702/media/after-unavailable.png": "media-after-unavailable",
+    "/mc/artifacts/eval/702/media/after-zero.png": "media-after-zero",
+    "/mc/artifacts/eval/702/media/before-total.png": "media-before-total",
+    "/mc/artifacts/eval/702/media/capture.json": "media-provenance",
+    "/mc/artifacts/eval/702/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/702/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "The account page can display the authenticated account owner's persisted attachment total.",
+        "before": "The account statistics response did not include the new attachment storage field.",
+        "conditions": [
+          "The total includes unlinked uploads and attachments across spaces.",
+          "The total excludes temporary uploads and derived files.",
+          "A memo filter does not restrict the account storage total.",
+          "Other users and anonymous users do not receive the private storage field.",
+          "Attachment deletion refreshes statistics after success or failure because the server can delete rows before a cleanup failure.",
+          "The account page shows an ellipsis before the statistic arrives. A zero total shows zero bytes.",
+          "A failed statistics request shows an unavailable message instead of a zero total.",
+          "The change also shares the statistic row component and removes two unused attachment mutation hooks."
+        ],
+        "id": "behavior",
+        "mechanism": "The account page requests user statistics. The service checks ownership and sums attachment sizes through the database driver.",
+        "sources": [
+          {
+            "path": "proto/api/v1/user_service.proto",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "UserStats",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/proto/api/v1/user_service.proto"
+          },
+          {
+            "path": "server/api/v1/user_service_stats.go",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "GetUserStats",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/server/api/v1/user_service_stats.go"
+          },
+          {
+            "path": "store/db/sqlite/attachment.go",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "GetAttachmentStorageUsage",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/store/db/sqlite/attachment.go"
+          },
+          {
+            "path": "store/db/mysql/attachment.go",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "GetAttachmentStorageUsage",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/store/db/mysql/attachment.go"
+          },
+          {
+            "path": "store/db/postgres/attachment.go",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "GetAttachmentStorageUsage",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/store/db/postgres/attachment.go"
+          },
+          {
+            "path": "web/src/components/Settings/UserStatsSection.tsx",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "UserStatsSection",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/web/src/components/Settings/UserStatsSection.tsx"
+          },
+          {
+            "path": "web/src/hooks/useAttachmentQueries.ts",
+            "revision": "ba44a669116fbf3d762f98d098ff6473df005311",
+            "symbol": "useBatchDeleteAttachments",
+            "url": "https://github.com/usememos/memos/blob/ba44a669116fbf3d762f98d098ff6473df005311/web/src/hooks/useAttachmentQueries.ts"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "The added tests exist in the reviewed source, but this case preparation did not execute them.",
+      "The total describes database attachment sizes rather than measured filesystem consumption.",
+      "These captures verify the frontend display with synthetic service responses.",
+      "They execute no Memos backend, database, authorization, or application test suite."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-account-attachment-usage",
+      "path": "reviews/memos-media.json",
+      "scope": "Pinned source facts and fixed frontend captures. Backend behavior and application tests remain unverified.",
+      "sha256": "ab254721dfe54b40707be72f6a602994c1f17c4788f8ffeb993aed06bb6bbf69"
+    },
+    "review_requirements": [
+      "An independent reviewer must verify the before and after behavior against both commits.",
+      "The reviewer must inspect all material changes in the range, not only the cited symbols.",
+      "The reviewer must confirm the evidence limits and any supplied media."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "702"
+          },
+          {
+            "label": "Title",
+            "value": "Show private account attachment storage totals"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "The account page can display the authenticated account owner's persisted attachment total.\n\nAcceptance criteria:\n- The account page displays the owner's attachment storage statistic.\n- The service includes the statistic only for the authenticated owner.\n- All three database drivers sum persisted sizes by creator.\n- A deletion outcome invalidates account statistics.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/702/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/702/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/702/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view of the dashboard shows these commits and the complete diff to the operator.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "ba44a669116fbf3d762f98d098ff6473df005311"
+          },
+          {
+            "label": "Base commit",
+            "value": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "ba44a669116fbf3d762f98d098ff6473df005311"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "ba44a669116fbf3d762f98d098ff6473df005311"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "ba44a669116fbf3d762f98d098ff6473df005311"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "ba44a669116fbf3d762f98d098ff6473df005311"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 702": {
+        "acceptance_criteria": [
+          "The account page displays the owner's attachment storage statistic.",
+          "The service includes the statistic only for the authenticated owner.",
+          "All three database drivers sum persisted sizes by creator.",
+          "A deletion outcome invalidates account statistics."
+        ],
+        "description": "The account page can display the authenticated account owner's persisted attachment total.\n\nAcceptance criteria:\n- The account page displays the owner's attachment storage statistic.\n- The service includes the statistic only for the authenticated owner.\n- All three database drivers sum persisted sizes by creator.\n- A deletion outcome invalidates account statistics.",
+        "id": 702,
+        "project_id": "memos-evaluation",
+        "purpose": "The account page can display the authenticated account owner's persisted attachment total.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Show private account attachment storage totals"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "The account page displays the owner's attachment storage statistic.",
+            "The service includes the statistic only for the authenticated owner.",
+            "All three database drivers sum persisted sizes by creator.",
+            "A deletion outcome invalidates account statistics."
+          ],
+          "description": "The account page can display the authenticated account owner's persisted attachment total.\n\nAcceptance criteria:\n- The account page displays the owner's attachment storage statistic.\n- The service includes the statistic only for the authenticated owner.\n- All three database drivers sum persisted sizes by creator.\n- A deletion outcome invalidates account statistics.",
+          "id": 702,
+          "project_id": "memos-evaluation",
+          "purpose": "The account page can display the authenticated account owner's persisted attachment total.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Show private account attachment storage totals"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "The account page displays the owner's attachment storage statistic.",
+        "The service includes the statistic only for the authenticated owner.",
+        "All three database drivers sum persisted sizes by creator.",
+        "A deletion outcome invalidates account statistics."
+      ],
+      "description": "The account page can display the authenticated account owner's persisted attachment total.\n\nAcceptance criteria:\n- The account page displays the owner's attachment storage statistic.\n- The service includes the statistic only for the authenticated owner.\n- All three database drivers sum persisted sizes by creator.\n- A deletion outcome invalidates account statistics.",
+      "id": 702,
+      "purpose": "The account page can display the authenticated account owner's persisted attachment total.",
+      "requirements_version": 1,
+      "title": "Show private account attachment storage totals"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/ba44a669116fbf3d762f98d098ff6473df005311",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "ba44a669116fbf3d762f98d098ff6473df005311",
+    "reviewed_tree": "6e36e10908cc7fec638d328038a357b2438b0263",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "feature_across_components"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [
+      "Capture the owner account page before and after the change.",
+      "Capture the owner total, zero total, pending response, and unavailable response with fixed synthetic values."
+    ],
+    "media_artifacts": [
+      "media-before-total",
+      "media-after-total",
+      "media-after-zero",
+      "media-after-pending",
+      "media-after-unavailable"
+    ],
+    "required": true,
+    "status": "supplied"
+  }
+}

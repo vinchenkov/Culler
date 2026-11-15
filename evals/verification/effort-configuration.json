@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "status": "accepted",
+  "base_revision": "6a242da318387deae1c42e0b65bc08346fefc3d2",
+  "model_calls": 0,
+  "experiments_started": 0,
+  "role_efforts": {
+    "packager": "high",
+    "judge": "high",
+    "optimizer": "high"
+  },
+  "runtime_configuration_hash": "3454f7df7776b3bdc1dc9474232d6d35613538965090de4e0c90954d4f959f26",
+  "judge_assessment_context_hash": "f5f44e58913e633602f28598a6fe664c92c31ea89811e54531a16c7af11a7e7a",
+  "case_counts": {
+    "trainset": 13,
+    "valset": 13,
+    "final": 9
+  },
+  "checks": {
+    "full_framework": {
+      "command": "PLAYWRIGHT_BROWSERS_PATH=/private/tmp/culler-eval-browser-cache ./check.sh",
+      "passed": 531,
+      "duration_seconds": 148.76
+    },
+    "final_controls_and_viewer": {
+      "command": "PLAYWRIGHT_BROWSERS_PATH=/private/tmp/culler-eval-browser-cache .venv/bin/python -m pytest tests/test_control_server.py tests/test_viewer.py",
+      "passed": 61,
+      "duration_seconds": 38.55
+    },
+    "pinned_image_bridge": {
+      "passed": true,
+      "model_calls": 0,
+      "harness_versions": {
+        "codex": "0.159.2",
+        "claude": "2.1.280"
+      }
+    },
+    "container_runtime": {
+      "passed": true,
+      "model_calls": 0,
+      "harness": "test_double",
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "runtime_source_hash": "d0087dca8fd28cb274c99b25f5d1ef17f48bcb6dbcd087e15fc9aa8d9bf62f4d",
+      "product_source_hash": "889b5a7f0c1bf0b29db7a38ecfca94a52a1aa5a61bb519b4fbb0d4a987bfbc85",
+      "requested_effort": "high",
+      "configured_effort": "high",
+      "observed_efforts": [
+        "high"
+      ],
+      "evidence": {
+        "path": "/private/tmp/culler-eval-effort-container-check-20261002-02/result.json",
+        "sha256": "ebff156411491d75a32d73baa29b7b3bc5dadf4433b7df6ff365125874d60d90"
+      }
+    }
+  },
+  "review": {
+    "path": "evals/verification/effort-review.json",
+    "sha256": "725aa4119907eaae6486aadc177b81d556e166eb23c09d70ab349e4c84d63314"
+  },
+  "source_files": [
+    {
+      "path": "evals/config/packager.json",
+      "sha256": "d0622306a6f1b654c847219edf410a0e4bb031ce64590e01fe81c23e56e048de"
+    },
+    {
+      "path": "evals/config/packager.pilot.json",
+      "sha256": "6ac1481002ce305d248c922e0e05036a7681234a08e17b85d89b603e3a9bd003"
+    },
+    {
+      "path": "evals/culler_evals/protocol.py",
+      "sha256": "aaf5031b55344806a4c3c929bfc4f07de8d1ed1215fe6470a78ef52dbd59d5b5"
+    },
+    {
+      "path": "evals/culler_evals/runtime.py",
+      "sha256": "d49ec5bc047049d45b3587fb64d821116f2d3840ecb7c493c1c4b2ae6d02a2d8"
+    },
+    {
+      "path": "evals/culler_evals/evaluator.py",
+      "sha256": "9cdb888cb4e37bd31e80156f349f995e49594e883949bfb409e2f4c8a61e38e3"
+    },
+    {
+      "path": "evals/culler_evals/calibration.py",
+      "sha256": "e3d2c250a8e0cb3112c7bd467c4b16b570e03fd82519033b11591e32f74a748e"
+    },
+    {
+      "path": "evals/culler_evals/control_server.py",
+      "sha256": "75c300201b316c02e46713971448ae720297b1bbb4a7f38de60da8cc9446e73a"
+    },
+    {
+      "path": "evals/bridge/effort.ts",
+      "sha256": "1e5c680ac1c04b7d391b14f4a5bbde20192b69689f071f84e1a8ce75ba473e82"
+    },
+    {
+      "path": "evals/bridge/launch.ts",
+      "sha256": "f0280a03b22a4b72635ad6166f666a3177d6aa99518ffc19ebbe5c53b68b2ce1"
+    },
+    {
+      "path": "evals/bridge/container-smoke.py",
+      "sha256": "53d6e87d2ba77d5b46939d9862ccf62353379244f81923c851092e55f30be207"
+    },
+    {
+      "path": "evals/bridge/smoke.ts",
+      "sha256": "d282b4e816c78ab08f5a0c7ccbb87da74161e4af637ed21f967c4bb75cd7328c"
+    },
+    {
+      "path": "evals/bridge/test-double-codex.ts",
+      "sha256": "2666004ab755a82dab4cc5e8415870222d825ce99e4b13d73ef5c63a94fadbf5"
+    },
+    {
+      "path": "evals/web/control.html",
+      "sha256": "77a1de8ebb7ef1856c9b1a26085d57ff1ee23f3f0385c62ff5ec1180e147f4fe"
+    },
+    {
+      "path": "evals/web/experiment.html",
+      "sha256": "28595b7d0c749a0922950ee4cdf55e9b5b9ed978dddf3c0ba159f5290d3df537"
+    },
+    {
+      "path": "evals/README.md",
+      "sha256": "63631a4b2ad241c1b39e37c52051c9adc94b90db5a37ed4d4e433e5d12b6533e"
+    },
+    {
+      "path": "evals/SPEC.md",
+      "sha256": "2c89031247e9b88d47dcd39babe228d3c7db3e82c394be2aa97278a1a3787421"
+    }
+  ],
+  "packager_seed": {
+    "directive_hash": "b881f7f22d6c85989fdff9e2400d2f12d32a681e4d7cd0de5e94f0e65591b408",
+    "writing_body_hash": "5ddd6ff9feec81d9a395f97981d72e6f8823e425ec6372d8bb2a5d62714e271f",
+    "merged_hash": "9de9e89192aeec63993e2624e2293c195432541978c34a98b68edc8890093723",
+    "separate_writing_skill": false,
+    "bytes": 20373,
+    "sha256": "5614e4d994c19b548535c42bca164cc81dd0b1baf0e7a04c39e319ef858b0024"
+  },
+  "limits": [
+    "The native observation in the container check comes from a test harness, not a model.",
+    "The SDK and argument checks establish configured effort; native observation remains separate.",
+    "These checks establish no new model execution or directive improvement.",
+    "Historical records without effort retain that absence."
+  ]
+}

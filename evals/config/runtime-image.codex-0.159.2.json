@@ -1,0 +1,21 @@
+{
+  "base_image": "sha256:8fd68cf6b75a9196e1853db613ecd8012e9df0203ad36fc6ad10652d85e22266",
+  "platform": "linux/arm64",
+  "tag": "culler-eval:codex-0.159.2",
+  "packages": [
+    {
+      "name": "@openai/codex",
+      "version": "0.159.2",
+      "directory": "cli",
+      "url": "https://registry.npmjs.org/@openai/codex/-/codex-0.159.2.tgz",
+      "sha256": "cf1e5d7b6e317a4a1d36dbff2ebd9b3cf048ac98d06fcb6682c57248e023cad2"
+    },
+    {
+      "name": "@openai/codex",
+      "version": "0.159.2-linux-arm64",
+      "directory": "native",
+      "url": "https://registry.npmjs.org/@openai/codex/-/codex-0.159.2-linux-arm64.tgz",
+      "sha256": "1c4756c2f67f1310ffb03234d61d540ad85916cef5383e46e0e7851f1721c142"
+    }
+  ]
+}

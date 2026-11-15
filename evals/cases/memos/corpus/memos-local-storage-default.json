@@ -1,0 +1,401 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/814/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "b1e0a02373ed1de3083fb275cb7d7ee0301ff76e9c679f5e92e886bca25f3cb6",
+      "source": {
+        "kind": "file",
+        "path": "memos-local-storage-default/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/814/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "c18e21706e06c6d596ddb2348e8c4276cb6320e7a2650f6f37edd42d5f123ec9",
+      "source": {
+        "kind": "file",
+        "path": "memos-local-storage-default/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "earlier-verdict",
+      "kind": "report",
+      "path": "eval/814/earlier-verdict.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "b6316d1a632da222b2594b1644d3af754240ee434068d481a46959b6cae9718f",
+      "source": {
+        "kind": "file",
+        "path": "memos-local-storage-default/earlier-verdict.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "correction",
+      "kind": "report",
+      "path": "eval/814/correction.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "4f65e3bd765653f19bb19d03e698a9b756d3cb58033025349273af21776b6dc9",
+      "source": {
+        "kind": "file",
+        "path": "memos-local-storage-default/correction.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "b2c83226bf3a94949adfe916fc907bd365f5319e9545cabf4aab978123c7c57c",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "9fdaad90a69289632e5587fe6104e8bab5da99bfb6328af89c87bd1c56989492",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "9a8f0f3172e7c4d3621a0d95259fcfeaacb48aed1acfc11d68abb2d8e693d742",
+    "role_inputs": "b1f4f5545b2b535aaec38ab9a84a0abfef528c8a5882dccc53f4a095f7564b0b",
+    "visual_evidence": "7c36f65170f500527ac3a32a0aa209fefe12bd6f612f76391206bb539b7ffc58"
+  },
+  "corpus_status": "ready",
+  "dataset": "valset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "130a10e4fbc2d9d44a2ced54a409b17564531a639d3802d6ce24d85785d9cbb9"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "96030a2bd109dd8f64b45aae10af6fc04f24ce420392952199353fbbaa8e3c1a"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "40065a572b2d50a8b4c7bb1b82d43b7c5149d6c0b236d2c54260a8b085978a5e"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "d3da45d2421c6e1505717067f41b2e76e79fba3a515c897b16fbdc8a764c16f7"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-local-storage-default",
+  "id": "memos-local-storage-default",
+  "paths": {
+    "/mc/artifacts/eval/814/correction.txt": "correction",
+    "/mc/artifacts/eval/814/earlier-verdict.txt": "earlier-verdict",
+    "/mc/artifacts/eval/814/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/814/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "Fresh instances without an explicit storage value default to LOCAL.",
+        "before": "The default attachment storage type is DATABASE.",
+        "conditions": [
+          "The migration covers MySQL, PostgreSQL, and SQLite.",
+          "An existing explicit storage setting remains in place.",
+          "An upgraded instance without a storage setting retains its former DATABASE default.",
+          "The change does not move existing attachment files or blobs."
+        ],
+        "id": "behavior-1",
+        "mechanism": "The default getter changes while upgrade migrations insert DATABASE only when the existing setting is absent.",
+        "sources": [
+          {
+            "path": "store/instance_setting.go",
+            "revision": "78efa6802e2fd96c981e86c5b658fb4b5c05091f",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/78efa6802e2fd96c981e86c5b658fb4b5c05091f/store/instance_setting.go"
+          }
+        ]
+      },
+      {
+        "after": "The authored correction rejects that claim; the latest source-inspection verdict passes the narrower claim.",
+        "before": "The authored earlier report includes an overbroad source claim.",
+        "conditions": [
+          "The records describe source inspection, not application execution.",
+          "Both verdicts use the actual reviewed source; this fixture records a report correction, not an extra implementation commit."
+        ],
+        "id": "authored-correction-history",
+        "mechanism": "The fixture supplies both verdicts and the correction so the packet can show their order.",
+        "sources": [
+          {
+            "path": "store/instance_setting.go",
+            "revision": "78efa6802e2fd96c981e86c5b658fb4b5c05091f",
+            "symbol": "The cited source file",
+            "url": "https://github.com/usememos/memos/blob/78efa6802e2fd96c981e86c5b658fb4b5c05091f/store/instance_setting.go"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "No migration or attachment operation ran for this preparation.",
+      "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-local-storage-default",
+      "path": "reviews/independent-source.json",
+      "scope": "Pinned source facts and authored report limits. Application execution remains unverified.",
+      "sha256": "4eb08a554ae04d70bed867351aa21d155f83de8dc017bb9033082bc4c0da767a"
+    },
+    "review_requirements": [
+      "An independent reviewer must inspect the complete pinned change range.",
+      "The reviewer must verify every material claim, condition, and evidence limit.",
+      "The reviewer must inspect authored history and supplied media before acceptance."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "814"
+          },
+          {
+            "label": "Title",
+            "value": "Use local storage by default without changing existing defaults"
+          },
+          {
+            "label": "Requirements version",
+            "value": "2"
+          }
+        ],
+        "heading": "Task",
+        "text": "Fresh instances without an explicit storage value default to LOCAL.\n\nAcceptance criteria:\n- Fresh instances without an explicit storage value default to LOCAL.\n- The migration covers MySQL, PostgreSQL, and SQLite.\n- An existing explicit storage setting remains in place.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "2"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/814/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "/mc/artifacts/eval/814/correction.txt",
+            "current_requirements": false,
+            "evidence_path": "/mc/artifacts/eval/814/earlier-verdict.txt",
+            "outcome": "fail",
+            "requirements_version": 1
+          },
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/814/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 2
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/814/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "2"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view shows the reviewed commits and complete diff.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+          },
+          {
+            "label": "Base commit",
+            "value": "026ea92f7b4005c30ca84340c22018740659ab51"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+          },
+          {
+            "label": "Submitted version",
+            "value": "2"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      },
+      {
+        "explanation": "These are the earlier requirements of this work. The current requirements supersede this version.",
+        "facts": [
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Earlier requirements",
+        "text": "Use local storage for fresh instances. Version 2 also requires the upgrade path to preserve existing defaults.",
+        "text_tag": "description"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 814": {
+        "acceptance_criteria": [
+          "Fresh instances without an explicit storage value default to LOCAL.",
+          "The migration covers MySQL, PostgreSQL, and SQLite.",
+          "An existing explicit storage setting remains in place."
+        ],
+        "description": "Fresh instances without an explicit storage value default to LOCAL.\n\nAcceptance criteria:\n- Fresh instances without an explicit storage value default to LOCAL.\n- The migration covers MySQL, PostgreSQL, and SQLite.\n- An existing explicit storage setting remains in place.",
+        "id": 814,
+        "project_id": "memos-evaluation",
+        "purpose": "Fresh instances without an explicit storage value default to LOCAL.",
+        "requirements_version": 2,
+        "status": "packaging",
+        "title": "Use local storage by default without changing existing defaults"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "Fresh instances without an explicit storage value default to LOCAL.",
+            "The migration covers MySQL, PostgreSQL, and SQLite.",
+            "An existing explicit storage setting remains in place."
+          ],
+          "description": "Fresh instances without an explicit storage value default to LOCAL.\n\nAcceptance criteria:\n- Fresh instances without an explicit storage value default to LOCAL.\n- The migration covers MySQL, PostgreSQL, and SQLite.\n- An existing explicit storage setting remains in place.",
+          "id": 814,
+          "project_id": "memos-evaluation",
+          "purpose": "Fresh instances without an explicit storage value default to LOCAL.",
+          "requirements_version": 2,
+          "status": "packaging",
+          "title": "Use local storage by default without changing existing defaults"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "Fresh instances without an explicit storage value default to LOCAL.",
+        "The migration covers MySQL, PostgreSQL, and SQLite.",
+        "An existing explicit storage setting remains in place."
+      ],
+      "description": "Fresh instances without an explicit storage value default to LOCAL.\n\nAcceptance criteria:\n- Fresh instances without an explicit storage value default to LOCAL.\n- The migration covers MySQL, PostgreSQL, and SQLite.\n- An existing explicit storage setting remains in place.",
+      "id": 814,
+      "purpose": "Fresh instances without an explicit storage value default to LOCAL.",
+      "requirements_version": 2,
+      "title": "Use local storage by default without changing existing defaults"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "earlier-verdict",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "correction",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "026ea92f7b4005c30ca84340c22018740659ab51",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/78efa6802e2fd96c981e86c5b658fb4b5c05091f",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "78efa6802e2fd96c981e86c5b658fb4b5c05091f",
+    "reviewed_tree": "7ca9af6690df9be0e2f7abc141a585344a2254d6",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "configuration_or_compatibility"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "reason": "The change adds no new rendered interface element or layout. Its source behavior and evidence limits define this case.",
+    "required": false,
+    "status": "not_applicable"
+  }
+}

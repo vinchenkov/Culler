@@ -1,0 +1,78 @@
+{
+  "criteria": [
+    {
+      "criterion": "A missing flag follows the false branch in the shared boolean predicate.",
+      "evidence": [
+        {
+          "path": "filter/render.go",
+          "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+        },
+        {
+          "path": "filter/README.md",
+          "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The change covers SQLite, MySQL, and PostgreSQL renderers.",
+      "evidence": [
+        {
+          "path": "filter/render.go",
+          "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+        },
+        {
+          "path": "filter/README.md",
+          "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "SQLite uses IS TRUE. MySQL compares JSON true. PostgreSQL casts the value to boolean before IS TRUE.",
+      "evidence": [
+        {
+          "path": "filter/render.go",
+          "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+        },
+        {
+          "path": "filter/README.md",
+          "revision": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "0db0025d320758079e6acf7f69038b3a96755161",
+      "changed_paths": [
+        "filter/README.md",
+        "filter/engine_test.go",
+        "filter/render.go",
+        "store/test/memo_filter_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "0c53b775ce9a56a9fd2e67f03e364cbcd7ab017e",
+      "reviewed_tree": "d1606a9ad9f1d2422ffc8115027060e711cd3bf1"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 820,
+  "unverified": [
+    "No renderer or database query test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "Unexpected nonboolean JSON values can follow different conversion rules across database dialects."
+  ]
+}

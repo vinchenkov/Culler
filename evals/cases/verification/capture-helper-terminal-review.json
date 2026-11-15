@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-02T22:30:08.105883+00:00",
+  "reviewer": "/root/gepa_engine",
+  "result": "accepted",
+  "matrix": {
+    "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/matrix.json",
+    "sha256": "6fe2dcb03e677a9c4213e34f68f097d14c51d2ffb6ed8cabb35f82514af3eeb6"
+  },
+  "records": [
+    {
+      "state": "help",
+      "columns": 80,
+      "color_requested": false,
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-help-80-color-0.txt",
+      "sha256": "3d75bfd4d1c54e1c9a36022aec9349f08030a9c674e93b4db39b8b1ecb9949e3",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "error",
+      "columns": 80,
+      "color_requested": false,
+      "exit_code": 2,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-error-80-color-0.txt",
+      "sha256": "1d234b015d6caea806abb64088c5ca12ce47e98a63636603c08dd83c6c2229c2",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "help",
+      "columns": 80,
+      "color_requested": true,
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-help-80-color-1.txt",
+      "sha256": "3d75bfd4d1c54e1c9a36022aec9349f08030a9c674e93b4db39b8b1ecb9949e3",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "error",
+      "columns": 80,
+      "color_requested": true,
+      "exit_code": 2,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-error-80-color-1.txt",
+      "sha256": "1d234b015d6caea806abb64088c5ca12ce47e98a63636603c08dd83c6c2229c2",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "help",
+      "columns": 40,
+      "color_requested": false,
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-help-40-color-0.txt",
+      "sha256": "99f51f7bb51ef1d2b188f696d502291883794670872f7c7f4e8e18d3c6593297",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "error",
+      "columns": 40,
+      "color_requested": false,
+      "exit_code": 2,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-error-40-color-0.txt",
+      "sha256": "97f4e71fc4bece6d34229b1d2df3f8b6b1f3f9a5d9e96e731938676c60d8cec9",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "help",
+      "columns": 40,
+      "color_requested": true,
+      "exit_code": 0,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-help-40-color-1.txt",
+      "sha256": "99f51f7bb51ef1d2b188f696d502291883794670872f7c7f4e8e18d3c6593297",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    },
+    {
+      "state": "error",
+      "columns": 40,
+      "color_requested": true,
+      "exit_code": 2,
+      "path": "/private/tmp/culler-eval-capture-helper-terminal-review-final/capture-error-40-color-1.txt",
+      "sha256": "97f4e71fc4bece6d34229b1d2df3f8b6b1f3f9a5d9e96e731938676c60d8cec9",
+      "method": "Actual subprocess with a terminal of the recorded width."
+    }
+  ],
+  "source_files": [
+    {
+      "path": "evals/cases/tools/capture_memos.py",
+      "sha256": "440fd8e4d34e344032ba57a89fc7141345d8e3fa55fcaeb0fad642ab07756674"
+    },
+    {
+      "path": "evals/cases/tools/memos-fixture.ts",
+      "sha256": "a1c36340a279065dbf84c6d1596fb83648650c61de86bf58357eba6de809280d"
+    }
+  ],
+  "observations": [
+    "The help states the capture purpose and its display-only scope.",
+    "Each argument identifies its input, output, or loopback port.",
+    "The output description requires an absent directory.",
+    "The error identifies each required argument.",
+    "Both widths preserve the scope and the specific actions.",
+    "Color and plain output state the same result.",
+    "The response helper contains an explicit allowlist for empty responses.",
+    "The capture record identifies the direct toast trigger and excludes a completed save claim.",
+    "The capture record binds the helper bytes, timezone, and locale."
+  ],
+  "limits": [
+    "This review approves help and error output, plus the stated capture method.",
+    "The separate media reviewer must inspect the actual captures.",
+    "The method establishes no backend, database, authorization, or application test result."
+  ],
+  "model_calls": 0,
+  "application_tests_executed": false
+}

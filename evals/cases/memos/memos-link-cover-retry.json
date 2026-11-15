@@ -1,0 +1,357 @@
+{
+  "artifacts": [
+    {
+      "id": "worker-report",
+      "kind": "report",
+      "path": "eval/703/worker.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "abce69b9f6f24689c393ee03dedbde69fe978efbc9b137fec2cc19b4373658e9",
+      "source": {
+        "kind": "file",
+        "path": "memos-link-cover-retry/worker.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "verifier-evidence",
+      "kind": "report",
+      "path": "eval/703/verifier.txt",
+      "provenance": "authored_for_experiment",
+      "sha256": "a49733b0e9d996664f0f66a2fc74bc9addcd7bd5b9ca018df811b2b13ac8d54a",
+      "source": {
+        "kind": "file",
+        "path": "memos-link-cover-retry/verifier.txt"
+      },
+      "visibility": "role"
+    },
+    {
+      "id": "reviewed-diff",
+      "kind": "source_diff",
+      "path": "reviewed.diff",
+      "provenance": "captured_git_command",
+      "sha256": "10327af5e27934bcbfb4e620d474b910f6c335c3701f4ef38da09da430263cd4",
+      "source": {
+        "kind": "git_diff"
+      },
+      "visibility": "judge"
+    }
+  ],
+  "content_hashes": {
+    "environment": "bf4e64db8ee5b1a2d220d6a749420ad59cd7646f964a54c736c79b21b371b576",
+    "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "references": "8c873cbf4c1a045a82527e87b48c30a0aed16618e98e0b130a8323a55991a372",
+    "role_inputs": "b4492379b2fe61d8402ff01050a771a076f3a1163b35f2c93278c54b90d1930d",
+    "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+  },
+  "corpus_status": "ready",
+  "dataset": "trainset",
+  "environment": {
+    "capture": null,
+    "dependency_locks": [
+      {
+        "path": "go.mod",
+        "sha256": "19facecf407dddfb963690a4fffa89b3d1535aa123df1cb2e91fce3e2a5575d5"
+      },
+      {
+        "path": "go.sum",
+        "sha256": "c6b4d4483e54df94c40cacd9ad0e08d2d0cd0aa696edd9f78168e8e7b37ef8df"
+      },
+      {
+        "path": "web/package.json",
+        "sha256": "da98b7c67d8252fc79b767acdc11400a9280fd2e93adba75ed80d6b1c5c5846f"
+      },
+      {
+        "path": "web/pnpm-lock.yaml",
+        "sha256": "c2cee5020b6a52a83241a11892d4ad59dbc3086a4f15573bef2d8a75b6158f7d"
+      }
+    ],
+    "trial": {
+      "application_build_required": false,
+      "application_instance_required": false,
+      "platform": "configured isolated harness container",
+      "source_access": "read_only",
+      "source_tools": [
+        "git"
+      ]
+    }
+  },
+  "expected_terminal": "packaged",
+  "group": "memos-link-cover-retry",
+  "id": "memos-link-cover-retry",
+  "paths": {
+    "/mc/artifacts/eval/703/verifier.txt": "verifier-evidence",
+    "/mc/artifacts/eval/703/worker.txt": "worker-report",
+    "/workspace/source": "repository"
+  },
+  "project_skills": [],
+  "references": {
+    "facts": [
+      {
+        "after": "Failed link fetches retain retry state. The service retries them when the backoff gate permits another attempt within the active failure window.",
+        "before": "An existing entry with a failed cover fetch did not retry. Metadata failures left no entry and could retry without a backoff gate.",
+        "conditions": [
+          "The delay sequence is 5 minutes, 15 minutes, 30 minutes, 1 hour, 2 hours, 4 hours, then 8 hours.",
+          "The retry window ends 24 hours after its first failure timestamp.",
+          "The periodic runner checks every 15 minutes, so the 5-minute gate does not guarantee a retry at exactly 5 minutes.",
+          "A legacy pending entry with no first timestamp receives a fresh window and an immediate permitted attempt.",
+          "A cover-only retry preserves successful metadata. A successful retry clears its retry fields.",
+          "The existing limit of five links per memo and ten-second enrichment deadline still applies.",
+          "The runner still scans all memos. The change also records and backfills cover dimensions.",
+          "A successful response with empty metadata remains pending. Success clears its retry timestamps, so a later pass can start a fresh window."
+        ],
+        "id": "behavior",
+        "mechanism": "The enrichment service stores attempt count and timestamps. A payload runner executes at startup and every 15 minutes.",
+        "sources": [
+          {
+            "path": "server/router/api/v1/memo_service_link_enrichment.go",
+            "revision": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+            "symbol": "prepareRetry, retryLink, EnrichMemoLinks",
+            "url": "https://github.com/usememos/memos/blob/db52a16788fce4297c998b7efb2ba3e18de869fc/server/router/api/v1/memo_service_link_enrichment.go"
+          },
+          {
+            "path": "server/runner/memopayload/runner.go",
+            "revision": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+            "symbol": "RunLoop",
+            "url": "https://github.com/usememos/memos/blob/db52a16788fce4297c998b7efb2ba3e18de869fc/server/runner/memopayload/runner.go"
+          },
+          {
+            "path": "server/server.go",
+            "revision": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+            "symbol": "NewServer",
+            "url": "https://github.com/usememos/memos/blob/db52a16788fce4297c998b7efb2ba3e18de869fc/server/server.go"
+          },
+          {
+            "path": "proto/store/memo.proto",
+            "revision": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+            "symbol": "MemoPayload.LinkMetadata",
+            "url": "https://github.com/usememos/memos/blob/db52a16788fce4297c998b7efb2ba3e18de869fc/proto/store/memo.proto"
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "This preparation did not execute the added retry tests or an application instance.",
+      "The source establishes permitted retry gates rather than exact wall-clock execution times.",
+      "The upstream plan describes legacy initialization differently from the code. The code initializes the last timestamp to zero for an immediate attempt.",
+      "No evidence establishes a success rate or operational load at scale.",
+      "The 24-hour limit applies to an active failure window. It does not bound repeated successful empty metadata responses across fresh windows."
+    ],
+    "provenance": "authored_from_pinned_source",
+    "review_evidence": {
+      "case_id": "memos-link-cover-retry",
+      "path": "reviews/memos-seed.json",
+      "scope": "Pinned source facts only. Application tests and media remain outside this review.",
+      "sha256": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685"
+    },
+    "review_requirements": [
+      "An independent reviewer must verify the before and after behavior against both commits.",
+      "The reviewer must inspect all material changes in the range, not only the cited symbols.",
+      "The reviewer must confirm the evidence limits and any supplied media."
+    ],
+    "review_status": "reviewed"
+  },
+  "role_inputs": {
+    "brief_parts": [
+      {
+        "explanation": "This value identifies this run. It is the `<run_id>` value of each `mc` command.",
+        "facts": [
+          {
+            "label": "Run identifier",
+            "value": "{{run_id}}"
+          }
+        ],
+        "heading": "Run"
+      },
+      {
+        "explanation": "This is the subject of your review packet. The packet covers each criterion in the description.",
+        "facts": [
+          {
+            "label": "Identifier",
+            "value": "703"
+          },
+          {
+            "label": "Title",
+            "value": "Retry failed link metadata and cover fetches"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Task",
+        "text": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.\n\nAcceptance criteria:\n- Failed fetches retain durable retry state.\n- The gate applies backoff and the 24-hour window.\n- Legacy pending entries can retry.\n- The periodic runner supplies later retry opportunities.",
+        "text_tag": "description"
+      },
+      {
+        "explanation": "This is the most recent Verifier verdict on the current requirements of this work.",
+        "facts": [
+          {
+            "label": "Outcome",
+            "value": "pass"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          },
+          {
+            "label": "Evidence file",
+            "value": "/mc/artifacts/eval/703/verifier.txt"
+          }
+        ],
+        "heading": "Latest verdict"
+      },
+      {
+        "explanation": "Each Verifier verdict on this work, oldest first. The revision history of the packet cites each one.",
+        "heading": "Verdict history",
+        "rows": [
+          {
+            "correction_path": "",
+            "current_requirements": true,
+            "evidence_path": "/mc/artifacts/eval/703/verifier.txt",
+            "outcome": "pass",
+            "requirements_version": 1
+          }
+        ]
+      },
+      {
+        "explanation": "The producer of this work wrote this report in its last run. It is a claim that you must check, not evidence.",
+        "facts": [
+          {
+            "label": "File",
+            "value": "/mc/artifacts/eval/703/worker.txt"
+          },
+          {
+            "label": "Requirements version",
+            "value": "1"
+          }
+        ],
+        "heading": "Last completion report"
+      },
+      {
+        "explanation": "These are the Git facts of this work. The Files changed view of the dashboard shows these commits and the complete diff to the operator.",
+        "facts": [
+          {
+            "label": "Start commit",
+            "value": "db52a16788fce4297c998b7efb2ba3e18de869fc"
+          },
+          {
+            "label": "Base commit",
+            "value": "969da8128e9bfc948632b1f601106f859d198be3"
+          },
+          {
+            "label": "Submitted commit",
+            "value": "db52a16788fce4297c998b7efb2ba3e18de869fc"
+          },
+          {
+            "label": "Submitted version",
+            "value": "1"
+          },
+          {
+            "label": "Verified source commit",
+            "value": "db52a16788fce4297c998b7efb2ba3e18de869fc"
+          },
+          {
+            "label": "Scribe input commit",
+            "value": "db52a16788fce4297c998b7efb2ba3e18de869fc"
+          },
+          {
+            "label": "Scribe result commit",
+            "value": "db52a16788fce4297c998b7efb2ba3e18de869fc"
+          },
+          {
+            "label": "Scribe state",
+            "value": "complete"
+          }
+        ],
+        "heading": "Git state"
+      }
+    ],
+    "command_responses": {
+      "packet list": [],
+      "project list": [
+        {
+          "id": "memos-evaluation",
+          "name": "Memos",
+          "repo_path": "/workspace/source"
+        }
+      ],
+      "task get 703": {
+        "acceptance_criteria": [
+          "Failed fetches retain durable retry state.",
+          "The gate applies backoff and the 24-hour window.",
+          "Legacy pending entries can retry.",
+          "The periodic runner supplies later retry opportunities."
+        ],
+        "description": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.\n\nAcceptance criteria:\n- Failed fetches retain durable retry state.\n- The gate applies backoff and the 24-hour window.\n- Legacy pending entries can retry.\n- The periodic runner supplies later retry opportunities.",
+        "id": 703,
+        "project_id": "memos-evaluation",
+        "purpose": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.",
+        "requirements_version": 1,
+        "status": "packaging",
+        "title": "Retry failed link metadata and cover fetches"
+      },
+      "task list": [
+        {
+          "acceptance_criteria": [
+            "Failed fetches retain durable retry state.",
+            "The gate applies backoff and the 24-hour window.",
+            "Legacy pending entries can retry.",
+            "The periodic runner supplies later retry opportunities."
+          ],
+          "description": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.\n\nAcceptance criteria:\n- Failed fetches retain durable retry state.\n- The gate applies backoff and the 24-hour window.\n- Legacy pending entries can retry.\n- The periodic runner supplies later retry opportunities.",
+          "id": 703,
+          "project_id": "memos-evaluation",
+          "purpose": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.",
+          "requirements_version": 1,
+          "status": "packaging",
+          "title": "Retry failed link metadata and cover fetches"
+        }
+      ]
+    },
+    "task": {
+      "acceptance_criteria": [
+        "Failed fetches retain durable retry state.",
+        "The gate applies backoff and the 24-hour window.",
+        "Legacy pending entries can retry.",
+        "The periodic runner supplies later retry opportunities."
+      ],
+      "description": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.\n\nAcceptance criteria:\n- Failed fetches retain durable retry state.\n- The gate applies backoff and the 24-hour window.\n- Legacy pending entries can retry.\n- The periodic runner supplies later retry opportunities.",
+      "id": 703,
+      "purpose": "Pending link entries retain retry state and retry when their gate permits another attempt within a bounded window.",
+      "requirements_version": 1,
+      "title": "Retry failed link metadata and cover fetches"
+    },
+    "upstream_reports": [
+      {
+        "artifact": "worker-report",
+        "provenance": "authored_for_experiment"
+      },
+      {
+        "artifact": "verifier-evidence",
+        "provenance": "authored_for_experiment"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "base_commit": "969da8128e9bfc948632b1f601106f859d198be3",
+    "change_origin": "upstream",
+    "commit_url": "https://github.com/usememos/memos/commit/db52a16788fce4297c998b7efb2ba3e18de869fc",
+    "license": {
+      "path": "LICENSE",
+      "sha256": "dadc85262cec40d1344736b57da50814194ff721ab98012c09cd9d35c4b8582a",
+      "spdx": "MIT"
+    },
+    "reviewed_commit": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+    "reviewed_tree": "e048736fb185739b3e60a7c495197215178c6a61",
+    "url": "https://github.com/usememos/memos.git"
+  },
+  "types": [
+    "state_transition_or_recovery"
+  ],
+  "visual_evidence": {
+    "capture_instructions": [],
+    "required": false,
+    "status": "not_applicable"
+  }
+}

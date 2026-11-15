@@ -1,0 +1,10 @@
+{
+  "helperID": "08e30b25edd45f42769d496de634191c21b8680f08c2430752077e9cd853e000",
+  "imageID": "sha256:d7b4cdeab95d80f618587ece3484d9a3e42122caeca3aa1e3a977e23cf9ef0a9",
+  "volume": "mc-spine-bcb8b1b9b872",
+  "path": "/opt/culler-runtime/libexec/mc-real",
+  "mode": "10001 10001 4755",
+  "originalSha256": "b987ddf0db1a26d0f599b5ec4698e56f1262333effa01723b13e463ac61d69c7",
+  "candidateSha256": "749be0b65d4895e9518c8c9c3f59d4dd3f04453ce0f091b6426f18b8f3360074",
+  "scope": "Only the scratch helper writable layer changed."
+}

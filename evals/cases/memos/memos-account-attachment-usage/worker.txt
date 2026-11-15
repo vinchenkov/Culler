@@ -1,0 +1,47 @@
+{
+  "checks": [
+    {
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    },
+    {
+      "expected_text": "currentUser != nil && currentUser.ID == userID",
+      "method": "source-text-presence",
+      "path": "server/api/v1/user_service_stats.go",
+      "result": "pass"
+    },
+    {
+      "expected_text": "SELECT COALESCE(SUM(size), 0) FROM attachment WHERE creator_id = ?",
+      "method": "source-text-presence",
+      "path": "store/db/sqlite/attachment.go",
+      "result": "pass"
+    },
+    {
+      "expected_text": "attachmentStorageBytes",
+      "method": "source-text-presence",
+      "path": "web/src/components/Settings/UserStatsSection.tsx",
+      "result": "pass"
+    },
+    {
+      "expected_text": "onSettled:",
+      "method": "source-text-presence",
+      "path": "web/src/hooks/useAttachmentQueries.ts",
+      "result": "pass"
+    }
+  ],
+  "mechanism": "The account page requests user statistics. The service checks ownership and sums attachment sizes through the database driver.",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "An evaluation case author wrote this report from the actual pinned upstream source. No Culler Worker executed this task.",
+  "summary": "The account page can display the authenticated account owner's persisted attachment total.",
+  "task_id": 702,
+  "unverified": [
+    "The added tests exist in the reviewed source, but this case preparation did not execute them.",
+    "The total describes database attachment sizes rather than measured filesystem consumption.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "verified_source_commit": "ba44a669116fbf3d762f98d098ff6473df005311"
+}

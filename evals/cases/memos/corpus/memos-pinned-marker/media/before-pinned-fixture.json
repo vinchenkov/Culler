@@ -1,0 +1,33 @@
+{
+  "owner": {
+    "name": "users/1",
+    "username": "case-owner",
+    "displayName": "Case owner",
+    "role": "ADMIN",
+    "state": "NORMAL",
+    "createTime": "2026-09-01T12:00:00Z"
+  },
+  "current_user": {
+    "name": "users/1",
+    "username": "case-owner",
+    "displayName": "Case owner",
+    "role": "ADMIN",
+    "state": "NORMAL",
+    "createTime": "2026-09-01T12:00:00Z"
+  },
+  "memo": {
+    "name": "memos/case-note",
+    "state": "NORMAL",
+    "creator": "users/1",
+    "visibility": "PUBLIC",
+    "pinned": true,
+    "createTime": "2026-09-01T12:00:00Z",
+    "updateTime": "2026-09-01T12:00:00Z",
+    "content": "A note for the evaluation case.\n\n<details><summary>Details</summary>\n\nAdditional explanation.\n\n</details>\n\nOrdinary text follows.",
+    "snippet": "A note for the evaluation case.",
+    "attachments": []
+  },
+  "origin": "http://127.0.0.1:4181",
+  "theme": "default",
+  "storage_bytes": "2048"
+}

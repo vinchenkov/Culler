@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "base_commit": "49b7ecc5834112e4732c864d753cdec9bdc5696c",
+      "changed_paths": [
+        "web/src/components/MemoMetadata/MetadataSection.tsx"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a",
+      "reviewed_tree": "9b2f1ed87ec1ba24ae200d3628997a120097ee91"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "MetadataSection declares the full hover and focus classes as literal strings.",
+      "conditions": [
+        "An editable row reveals its controls on hover or focus within the row.",
+        "The controls use full opacity, the hint uses 75 percent opacity, and the detail rail hides on engagement.",
+        "The change preserves the existing mobile classes and readonly conditions."
+      ],
+      "mechanism": "The literal declarations let Tailwind discover the desktop engagement classes."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "MetadataSection declares the full hover and focus classes as literal strings.",
+  "task_id": 803,
+  "unverified": [
+    "Class declarations alone do not prove keyboard traversal or accessibility across the whole app.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite."
+  ],
+  "verified_source_commit": "a69d286735d3c649c915189c6233f8e7d0eeab3a"
+}

@@ -1,0 +1,106 @@
+{
+ "moonshotai": [
+  {
+   "id": "kimi-k3",
+   "name": "Kimi K3",
+   "context": 2097152,
+   "input_price": 2.5,
+   "output_price": 15,
+   "address": "https://api.moonshot.ai/v1",
+   "package": "@opencode/ai/providers/moonshot/chat",
+   "key_placement": "bearer",
+   "model_location": "body",
+   "variants": [
+    "low",
+    "high",
+    "max"
+   ],
+   "record": "{\"moonshotai\":{\"id\":\"moonshotai\",\"name\":\"Moonshot AI\",\"env\":[\"MOONSHOT_API_KEY\"],\"doc\":\"https://platform.moonshot.ai/docs/api/chat\",\"models\":{\"kimi-k3\":{\"id\":\"kimi-k3\",\"type\":\"chat\",\"name\":\"Kimi K3\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"modalities\":{\"input\":[\"text\",\"image/jpeg\",\"image/png\",\"image/gif\",\"image/webp\",\"image/bmp\",\"image/heic\",\"image/heif\",\"video/mp4\",\"video/mpeg\",\"video/mov\",\"video/avi\",\"video/x-flv\",\"video/mpg\",\"video/webm\",\"video/wmv\",\"video/3gpp\"],\"output\":[\"text\"]},\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":2097152,\"output\":131072},\"cost\":{\"text\":{\"input\":{\"price\":2.5,\"cache\":{\"read\":0.3,\"write\":{\"5m\":3,\"1h\":6}}},\"output\":{\"price\":15}}},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}},\"responses\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai\",\"opencodeai\":\"@opencode/ai/providers/moonshot/responses\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\"],\"updates\":true}}},\"messages\":{\"base_url\":\"https://api.moonshot.ai/anthropic/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/anthropic\",\"opencodeai\":\"@opencode/ai/providers/moonshot/messages\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":false}}}}}}}}"
+  },
+  {
+   "id": "kimi-fixture-pair-fast",
+   "name": "Kimi Fixture Pair Fast",
+   "context": 1048576,
+   "input_price": 3,
+   "output_price": 15,
+   "address": "https://api.moonshot.ai/v1",
+   "package": "@opencode/ai/providers/moonshot/chat",
+   "key_placement": "bearer",
+   "model_location": "body",
+   "variants": [
+    "low",
+    "high",
+    "max"
+   ],
+   "record": "{\"moonshotai\":{\"id\":\"moonshotai\",\"name\":\"Moonshot AI\",\"env\":[\"MOONSHOT_API_KEY\"],\"doc\":\"https://platform.moonshot.ai/docs/api/chat\",\"models\":{\"kimi-fixture-pair-fast\":{\"id\":\"kimi-fixture-pair-fast\",\"type\":\"chat\",\"name\":\"Kimi Fixture Pair (Fast)\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":1048576,\"output\":1048576},\"cost\":{\"text\":{\"input\":{\"price\":3,\"cache\":{\"read\":0.3,\"write\":{\"5m\":3,\"1h\":6}}},\"output\":{\"price\":15}}},\"modalities\":{\"input\":[\"text\"],\"output\":[\"text\"]},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}}}},\"kimi-fixture-pair\":{\"id\":\"kimi-fixture-pair\",\"type\":\"chat\",\"name\":\"Kimi Fixture Pair\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":1048576,\"output\":1048576},\"cost\":{\"text\":{\"input\":{\"price\":3,\"cache\":{\"read\":0.3,\"write\":{\"5m\":3,\"1h\":6}}},\"output\":{\"price\":15}}},\"modalities\":{\"input\":[\"text\"],\"output\":[\"text\"]},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}}},\"experimental\":{\"modes\":{\"fast\":{\"service_tier\":\"priority\",\"body\":{\"service_tier\":\"priority\"}}}}}}}}"
+  },
+  {
+   "id": "kimi-fixture-pair",
+   "name": "Kimi Fixture Pair",
+   "context": 1048576,
+   "input_price": 3,
+   "output_price": 15,
+   "address": "https://api.moonshot.ai/v1",
+   "package": "@opencode/ai/providers/moonshot/chat",
+   "key_placement": "bearer",
+   "model_location": "body",
+   "variants": [
+    "low",
+    "high",
+    "max"
+   ],
+   "record": "{\"moonshotai\":{\"id\":\"moonshotai\",\"name\":\"Moonshot AI\",\"env\":[\"MOONSHOT_API_KEY\"],\"doc\":\"https://platform.moonshot.ai/docs/api/chat\",\"models\":{\"kimi-fixture-pair\":{\"id\":\"kimi-fixture-pair\",\"type\":\"chat\",\"name\":\"Kimi Fixture Pair\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":1048576,\"output\":1048576},\"cost\":{\"text\":{\"input\":{\"price\":3,\"cache\":{\"read\":0.3,\"write\":{\"5m\":3,\"1h\":6}}},\"output\":{\"price\":15}}},\"modalities\":{\"input\":[\"text\"],\"output\":[\"text\"]},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}}},\"experimental\":{\"modes\":{\"fast\":{\"service_tier\":\"priority\",\"body\":{\"service_tier\":\"priority\"}}}}}}}}"
+  },
+  {
+   "id": "kimi-fixture-new",
+   "name": "Kimi Fixture New",
+   "context": 524288,
+   "input_price": 1.25,
+   "output_price": 6.5,
+   "address": "https://api.moonshot.ai/v1",
+   "package": "@opencode/ai/providers/moonshot/chat",
+   "key_placement": "bearer",
+   "model_location": "body",
+   "variants": [
+    "low",
+    "high",
+    "max"
+   ],
+   "record": "{\"moonshotai\":{\"id\":\"moonshotai\",\"name\":\"Moonshot AI\",\"env\":[\"MOONSHOT_API_KEY\"],\"doc\":\"https://platform.moonshot.ai/docs/api/chat\",\"models\":{\"kimi-fixture-new\":{\"id\":\"kimi-fixture-new\",\"type\":\"chat\",\"name\":\"Kimi Fixture New\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":524288,\"output\":65536},\"cost\":{\"text\":{\"input\":{\"price\":1.25},\"output\":{\"price\":6.5}}},\"modalities\":{\"input\":[\"text\"],\"output\":[\"text\"]},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}}},\"experimental\":{\"modes\":{\"fast\":{\"service_tier\":\"priority\",\"body\":{\"service_tier\":\"priority\"}}}}}}}}"
+  },
+  {
+   "id": "kimi-fixture-new-fast",
+   "name": "Kimi Fixture New Fast",
+   "context": 524288,
+   "input_price": 1.25,
+   "output_price": 6.5,
+   "address": "https://api.moonshot.ai/v1",
+   "package": "@opencode/ai/providers/moonshot/chat",
+   "key_placement": "bearer",
+   "model_location": "body",
+   "variants": [
+    "low",
+    "high",
+    "max"
+   ],
+   "record": "{\"moonshotai\":{\"id\":\"moonshotai\",\"name\":\"Moonshot AI\",\"env\":[\"MOONSHOT_API_KEY\"],\"doc\":\"https://platform.moonshot.ai/docs/api/chat\",\"models\":{\"kimi-fixture-new\":{\"id\":\"kimi-fixture-new\",\"type\":\"chat\",\"name\":\"Kimi Fixture New\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":524288,\"output\":65536},\"cost\":{\"text\":{\"input\":{\"price\":1.25},\"output\":{\"price\":6.5}}},\"modalities\":{\"input\":[\"text\"],\"output\":[\"text\"]},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v1\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}}},\"experimental\":{\"modes\":{\"fast\":{\"service_tier\":\"priority\",\"body\":{\"service_tier\":\"priority\"}}}}}}}}"
+  },
+  {
+   "id": "kimi-fixture-path",
+   "name": "Kimi Fixture Path",
+   "context": 1048576,
+   "input_price": 3,
+   "output_price": 15,
+   "address": "https://api.moonshot.ai/v2",
+   "package": "@opencode/ai/providers/moonshot/chat",
+   "key_placement": "bearer",
+   "model_location": "body",
+   "variants": [
+    "low",
+    "high",
+    "max"
+   ],
+   "record": "{\"moonshotai\":{\"id\":\"moonshotai\",\"name\":\"Moonshot AI\",\"env\":[\"MOONSHOT_API_KEY\"],\"doc\":\"https://platform.moonshot.ai/docs/api/chat\",\"models\":{\"kimi-fixture-path\":{\"id\":\"kimi-fixture-path\",\"type\":\"chat\",\"name\":\"Kimi Fixture Path\",\"family\":\"kimi-k3\",\"release_date\":\"2026-07-16\",\"capabilities\":{\"tools\":{\"supported\":true},\"reasoning\":{\"supported\":true,\"default\":{\"type\":\"effort\",\"value\":\"max\"},\"effort\":[\"low\",\"high\",\"max\"]},\"cache\":{\"implicit\":{\"ttl\":[\"5m\",\"1h\"]}},\"structured_output\":true,\"temperature\":false,\"top_p\":false,\"top_k\":false,\"system_updates\":true,\"effort_updates\":false,\"stream_usage\":true,\"prompt_cache_key\":true},\"limit\":{\"context\":1048576,\"output\":1048576},\"cost\":{\"text\":{\"input\":{\"price\":3,\"cache\":{\"read\":0.3,\"write\":{\"5m\":3,\"1h\":6}}},\"output\":{\"price\":15}}},\"modalities\":{\"input\":[\"text\"],\"output\":[\"text\"]},\"api\":{\"chat-completions\":{\"base_url\":\"https://api.moonshot.ai/v2\",\"sdk\":{\"aisdk\":\"@ai-sdk/openai-compatible\",\"opencodeai\":\"@opencode/ai/providers/moonshot/chat\"},\"compatibility\":{\"reasoning_field\":\"reasoning_content\"},\"capabilities\":{\"tools\":{\"strict\":true,\"choice\":[\"auto\",\"none\",\"required\"],\"updates\":true}}}}}}}}"
+  }
+ ]
+}

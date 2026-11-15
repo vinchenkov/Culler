@@ -1,0 +1,30 @@
+{
+  "source": "pmset -g log and the retained concurrent-1000 records",
+  "localOffset": "-07:00",
+  "sleepStartedLocal": "2026-10-11T14:47:46-07:00",
+  "sleepDurationSeconds": 1047,
+  "darkWakeLocal": "2026-10-11T15:05:13-07:00",
+  "trial": {
+    "id": "trial-269-deadline",
+    "blockId": 13,
+    "pairId": 269,
+    "startedAt": "2026-10-11T21:47:48.061Z",
+    "elapsedMs": 526.3643749999974,
+    "code": 2,
+    "valid": false,
+    "stderrBytes": 31,
+    "stderrDigest": "9b5e8f116c87721dcbb0701259c20b4b3c2b583fea268acb55d56f0b1886ff02"
+  },
+  "expectedDeadlineMessage": "The read exceeded its deadline.",
+  "deadlineMessageSha256": "9b5e8f116c87721dcbb0701259c20b4b3c2b583fea268acb55d56f0b1886ff02",
+  "deadlineMessageDigestMatches": true,
+  "completion": {
+    "cleanupErrors": [],
+    "completedTrials": 541,
+    "error": "A read command failed its correctness check.",
+    "finishedAt": "2026-10-11T22:05:13.486134+00:00",
+    "fixtureCleanup": "The caller owns the scratch helper and volume.",
+    "outcome": "failed"
+  },
+  "conclusion": "Mac sleep crossed the absolute deadline. The monotonic duration did not include the sleep interval. This incomplete run cannot support a performance comparison."
+}

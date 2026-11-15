@@ -1,0 +1,11 @@
+{
+  "background": {
+    "trials": 1000,
+    "rssMiBFirst": 62.84375,
+    "rssMiBLast": 76.046875,
+    "rssMiBMin": 62.84375,
+    "rssMiBMax": 87.515625,
+    "first100MedianMiB": 85.71875,
+    "last100MedianMiB": 75.96875
+  }
+}

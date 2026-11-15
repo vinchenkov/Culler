@@ -1,0 +1,34 @@
+[
+  {
+    "policyReport": {
+      "pid": 40864,
+      "task_priority": 31
+    },
+    "ready": {
+      "boundary": "before runner.run through process exit, both output streams, and JSON parse",
+      "bunVersion": "1.3.9",
+      "maxConcurrency": 16,
+      "mcBin": "/private/tmp/culler-performance/20261011-mac-command/bin/mc-control",
+      "pid": 40864,
+      "runnerModule": "/private/tmp/culler-worktrees/mac-command-latency/dashboard/src/mc.ts",
+      "type": "ready"
+    },
+    "variant": "control"
+  },
+  {
+    "policyReport": {
+      "pid": 40865,
+      "task_priority": 31
+    },
+    "ready": {
+      "boundary": "before runner.run through process exit, both output streams, and JSON parse",
+      "bunVersion": "1.3.9",
+      "maxConcurrency": 16,
+      "mcBin": "/private/tmp/culler-performance/20261011-mac-command/bin/mc-control",
+      "pid": 40865,
+      "runnerModule": "/private/tmp/culler-worktrees/mac-command-latency/performance/read-deadline.ts",
+      "type": "ready"
+    },
+    "variant": "deadline"
+  }
+]

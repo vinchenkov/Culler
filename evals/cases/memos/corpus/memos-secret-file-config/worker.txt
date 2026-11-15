@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "base_commit": "564da949cb87491ca8e493d2f7aedcd2ef9545a1",
+      "changed_paths": [
+        "cmd/memos/main.go",
+        "docs/configuration-provisioning.md",
+        "docs/identity-provider-bootstrap.md",
+        "server/router/api/v1/idp_service.go",
+        "server/router/api/v1/instance_service.go",
+        "server/router/api/v1/test/configuration_provisioning_test.go",
+        "store/auth_config.go",
+        "store/db/mysql/auth_config.go",
+        "store/db/mysql/auth_config_test.go",
+        "store/db/postgres/auth_config.go",
+        "store/db/postgres/auth_config_test.go",
+        "store/db/sqlite/auth_config.go",
+        "store/demo_seed_test.go",
+        "store/deployment_config.go",
+        "store/deployment_config_test.go",
+        "store/driver.go",
+        "store/idp.go",
+        "store/idp_bootstrap.go",
+        "store/idp_bootstrap_test.go",
+        "store/instance_setting.go",
+        "store/migrator.go",
+        "store/seed/sqlite/01__dump.sql",
+        "store/store.go",
+        "store/test/auth_config_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "0038295bbc772b38425b6c7f9ca814e4d1e44260",
+      "reviewed_tree": "3fc565e709d080f4f27cf057b9e9dd6bd3663057"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The new loader creates one process-local configuration snapshot after migration and demo seed.",
+      "conditions": [
+        "The default directory is /etc/secrets; only supported direct-child file patterns load.",
+        "Files changed after startup require a process restart.",
+        "A setting file replaces the complete group, not selected fields from its stored value.",
+        "The new loader does not delete stored resources or erase secrets from the former bootstrap."
+      ],
+      "mechanism": "Effective getters resolve file-backed groups and providers before stored values and return cloned messages."
+    },
+    {
+      "after": "The API rejects writes to file-backed resources and validates authentication changes within driver transactions.",
+      "conditions": [
+        "Supported groups are GENERAL, STORAGE, MEMO_RELATED, NOTIFICATION, and AI; BASIC and TAGS reject.",
+        "Unknown fields, oversized files, duplicate keys, and invalid resources fail validation.",
+        "A relevant authentication change cannot disable regular-user password access without an effective identity provider.",
+        "The administrator password path remains available.",
+        "Unrelated files can preserve a legacy authentication violation with a warning.",
+        "The change supplies MySQL, PostgreSQL, and SQLite transaction implementations and removes the old bootstrap."
+      ],
+      "mechanism": "The store combines the immutable snapshot with stored values and the proposed mutation before it commits."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The new loader creates one process-local configuration snapshot after migration and demo seed.",
+  "task_id": 813,
+  "unverified": [
+    "No deployment, mounted-secret load, API mutation, or database concurrency test ran.",
+    "The new no-persistence policy does not remove provider secrets that an earlier bootstrap stored.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "0038295bbc772b38425b6c7f9ca814e4d1e44260"
+}

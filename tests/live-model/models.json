@@ -1,0 +1,47 @@
+{
+  "checked_at": "2026-11-02",
+  "sources": [
+    "https://developers.openai.com/api/docs/models/gpt-5-nano",
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/models/gpt-5.6-luna",
+    "https://platform.claude.com/docs/en/about-claude/pricing"
+  ],
+  "codex": [
+    {
+      "id": "gpt-5-nano",
+      "input_per_million": 0.05,
+      "output_per_million": 0.4,
+      "test_effort": "low",
+      "test_exclusions": [
+        "scribe"
+      ],
+      "exclusion_reason": "Two bounded Scribe attempts failed native lifecycle acceptance. The latest retained events confirmed that the required calls were absent. The proxy test still uses this model."
+    },
+    {
+      "id": "gpt-6-luna",
+      "input_per_million": 0.1,
+      "output_per_million": 0.5,
+      "test_effort": "low"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "input_per_million": 0.2,
+      "output_per_million": 1.2,
+      "test_effort": "low"
+    }
+  ],
+  "claude-sdk": [
+    {
+      "id": "claude-haiku-5-5",
+      "input_per_million": 0.1,
+      "output_per_million": 0.5,
+      "test_effort": "low"
+    },
+    {
+      "id": "claude-haiku-4-5-20251001",
+      "input_per_million": 1,
+      "output_per_million": 5,
+      "test_effort": "low"
+    }
+  ]
+}

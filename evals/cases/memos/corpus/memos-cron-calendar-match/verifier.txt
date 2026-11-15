@@ -1,0 +1,63 @@
+{
+  "criteria": [
+    {
+      "criterion": "The parser uses OR for two restricted day fields and AND when either field begins with an asterisk.",
+      "evidence": [
+        {
+          "path": "internal/scheduler/parser.go",
+          "revision": "3227748a3018688d1d0b5f16aab82ae8319dc1e1"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "An asterisk prefix includes a step expression such as */2.",
+      "evidence": [
+        {
+          "path": "internal/scheduler/parser.go",
+          "revision": "3227748a3018688d1d0b5f16aab82ae8319dc1e1"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Seconds, minutes, hours, and month must match before the day combination matters.",
+      "evidence": [
+        {
+          "path": "internal/scheduler/parser.go",
+          "revision": "3227748a3018688d1d0b5f16aab82ae8319dc1e1"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "88f150502c9a1ec6050ff4bdd8f439f646829ab3",
+      "changed_paths": [
+        "internal/scheduler/parser.go",
+        "internal/scheduler/parser_calendar_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "3227748a3018688d1d0b5f16aab82ae8319dc1e1",
+      "reviewed_tree": "cd7b82ae2b7788cfc9a5b713de219f6104383c46"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 810,
+  "unverified": [
+    "No scheduled job or calendar test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

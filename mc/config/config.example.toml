@@ -1,0 +1,117 @@
+# Culler operator configuration.
+# Onboarding copies this into MC_HOME/config.toml. Edit the MC_HOME copy only.
+
+config_version = 4
+
+# A reference binding is enabled only when the operator selects it and
+# imports its credential. Onboarding writes the list. One enabled binding
+# is enough for a complete deployment.
+[runtimes]
+enabled_bindings = []
+forbidden_env = ["CODEX_API_KEY", "ANTHROPIC_API_KEY"]
+
+# A credential source selects a supported sign-in integration.
+# The host retains refresh tokens and projects access tokens to each agent.
+# The release defines the permitted provider addresses and client identifiers.
+[runtimes.credentials.chatgpt]
+kind = "codex-oauth"
+inference_url = "https://chatgpt.com/backend-api/codex"
+token_url = "https://auth.openai.com/oauth/token"
+client_id = "app_EMoamEEZ73f0CkXaXp7hrann"
+
+[runtimes.credentials.claude]
+kind = "claude-oauth"
+inference_url = "https://api.anthropic.com"
+token_url = "https://platform.claude.com/v1/oauth/token"
+client_id = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
+
+[runtimes.credentials.codex-api-key]
+name = "openai_api_key"
+kind = "codex-api-key"
+inference_url = "https://api.openai.com/v1"
+
+[runtimes.credentials.claude-api-key]
+name = "anthropic_api_key"
+kind = "claude-api-key"
+inference_url = "https://api.anthropic.com"
+
+# A binding selects one harness family, one model, and one sign-in connection.
+# Several bindings can select the same connection with different models or effort levels.
+[runtimes.bindings.chatgpt]
+harness = "codex"
+# Setup lets Codex choose, then saves the verified model name.
+model = ""
+credential = "chatgpt"
+
+# An absent effort uses the harness default. Model support controls available levels.
+# effort = "high" selects an explicit level after a successful profile test.
+[runtimes.bindings.claude]
+harness = "claude-sdk"
+model = "claude-opus-4-8"
+credential = "claude"
+
+[budgets]
+review_wip_cap = 3
+max_correction_count = 3
+dispatch_retries = 3
+
+[timing]
+timeout_minutes = 60
+grace_minutes = 15
+heartbeat_interval_s = 60
+spawn_grace_s = 60
+hard_deadline_minutes = 240
+tick_interval_s = 60
+collie_idle_timeout_s = 1800
+# The minimum time in seconds between the starts of two wiki updates of one Project.
+wiki_update_interval_s = 3600
+backup_interval_s = 3600
+backup_retain = 12
+
+[container]
+runtime = "docker"
+base_image = "mc-prod"
+package_cache_root = "cache"
+mount_allowlist = "mount-allowlist"
+# Additive only over the shipped floor; there is no replace, delete, or
+# negate form. `component` is one literal ASCII component with no
+# separator or wildcard; `basename-glob` is lowercase ASCII with literals and
+# `*` only. Example:
+#   additional_blocked_patterns = [
+#     { kind = "component", pattern = ".terraform.d" },
+#     { kind = "basename-glob", pattern = "*.agekey" },
+#   ]
+additional_blocked_patterns = []
+# Optional limits for each new agent container. 0 means no limit.
+cpu_limit = 0
+memory_limit_mb = 0
+
+[surfaces.dashboard]
+bind = "127.0.0.1:7333"
+auth_token = ""
+
+# AgentsView and the wiki viewer accept only a loopback host. The dashboard,
+# AgentsView, and wiki addresses must use three different ports.
+[surfaces.agentsview]
+bind = "127.0.0.1:7334"
+
+[surfaces.wiki]
+bind = "127.0.0.1:7335"
+
+[surfaces.discord]
+enabled = false
+bot_token = ""
+guild_id = ""
+channel_id = ""
+operator_ids = []
+
+[surfaces.alerts]
+blocked = ["dashboard"]
+health = ["dashboard"]
+
+[git]
+author_name = "Culler"
+author_email = "mc@localhost"
+
+[development]
+capture_evaluation_cases = false

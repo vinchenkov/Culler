@@ -1,0 +1,4 @@
+{"type": "fixture-progress", "stage": "verify-resources"}
+{"type": "fixture-progress", "stage": "remove-helper"}
+{"type": "fixture-progress", "stage": "remove-volume"}
+{"type": "fixture-removed", "helper": "mc-helper-bcb8b1b9b872", "volume": "mc-spine-bcb8b1b9b872", "evidenceRetained": "/private/tmp/culler-performance/20261011-mac-command"}

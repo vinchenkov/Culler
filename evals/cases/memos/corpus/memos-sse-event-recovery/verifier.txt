@@ -1,0 +1,130 @@
+{
+  "criteria": [
+    {
+      "criterion": "A comment emits the parent-oriented comment event without that generic duplicate.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A connection after the first successful connection invalidates active memo queries and user statistics.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "Events contain parent identity and server-only visibility and creator information.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "A private event reaches the owner or an administrator.",
+      "evidence": [
+        {
+          "path": "server/router/api/v1/memo_service.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_hub.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "server/router/api/v1/sse_handler.go",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        },
+        {
+          "path": "web/src/hooks/useLiveMemoRefresh.ts",
+          "revision": "c53677fcba202a8eed35c8ecdfaacea5152b8691"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "d720efb6e622c7062e02f3eba8c2f81bc42f0f36",
+      "changed_paths": [
+        "server/router/api/v1/memo_service.go",
+        "server/router/api/v1/reaction_service.go",
+        "server/router/api/v1/sse_event_helpers.go",
+        "server/router/api/v1/sse_handler.go",
+        "server/router/api/v1/sse_hub.go",
+        "server/router/api/v1/sse_hub_test.go",
+        "server/router/api/v1/sse_service_test.go",
+        "server/router/api/v1/v1.go",
+        "web/src/components/MemoView/MemoView.tsx",
+        "web/src/hooks/useLiveMemoRefresh.ts",
+        "web/src/hooks/useMemoQueries.ts"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "c53677fcba202a8eed35c8ecdfaacea5152b8691",
+      "reviewed_tree": "918a5dfffe36b2b5e9a7a90c7c069a56eab94e6f"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 811,
+  "unverified": [
+    "No network reconnect or permission test ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

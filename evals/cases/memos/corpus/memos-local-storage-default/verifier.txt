@@ -1,0 +1,66 @@
+{
+  "criteria": [
+    {
+      "criterion": "Fresh instances without an explicit storage value default to LOCAL.",
+      "evidence": [
+        {
+          "path": "store/instance_setting.go",
+          "revision": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "The migration covers MySQL, PostgreSQL, and SQLite.",
+      "evidence": [
+        {
+          "path": "store/instance_setting.go",
+          "revision": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+        }
+      ],
+      "result": "source_inspection"
+    },
+    {
+      "criterion": "An existing explicit storage setting remains in place.",
+      "evidence": [
+        {
+          "path": "store/instance_setting.go",
+          "revision": "78efa6802e2fd96c981e86c5b658fb4b5c05091f"
+        }
+      ],
+      "result": "source_inspection"
+    }
+  ],
+  "execution_evidence": {
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "source_observation": {
+      "base_commit": "026ea92f7b4005c30ca84340c22018740659ab51",
+      "changed_paths": [
+        "store/instance_setting.go",
+        "store/migration/mysql/0.26/03__migrate_storage_setting.sql",
+        "store/migration/postgres/0.26/03__migrate_storage_setting.sql",
+        "store/migration/sqlite/0.26/05__migrate_storage_setting.sql",
+        "store/test/instance_setting_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "78efa6802e2fd96c981e86c5b658fb4b5c05091f",
+      "reviewed_tree": "7ca9af6690df9be0e2f7abc141a585344a2254d6"
+    }
+  },
+  "media": [],
+  "media_status": "not_applicable",
+  "outcome": "pass",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 2,
+  "role": "Verifier",
+  "scope": "The case author reconstructed the source range and inspected it. This record is not a captured Culler Verifier run.",
+  "task_id": 814,
+  "unverified": [
+    "No migration or attachment operation ran for this preparation.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ]
+}

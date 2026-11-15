@@ -1,0 +1,8 @@
+{
+  "correction": "Preserve the source conditions and evidence limits in the report and packet.",
+  "provenance": "authored_for_experiment",
+  "rejected_claim": "All media storage modes now use constant memory without loading the complete file.",
+  "replacement_claim": "The video and audio path uses local file service, an S3 redirect, or the database byte reader.",
+  "requirements_version": 1,
+  "task_id": 827
+}

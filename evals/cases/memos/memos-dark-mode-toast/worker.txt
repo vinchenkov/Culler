@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    },
+    {
+      "expected_text": "background: \"var(--popover)\"",
+      "method": "source-text-presence",
+      "path": "web/src/main.tsx",
+      "result": "pass"
+    },
+    {
+      "expected_text": "color: \"var(--popover-foreground)\"",
+      "method": "source-text-presence",
+      "path": "web/src/main.tsx",
+      "result": "pass"
+    }
+  ],
+  "mechanism": "The shared toast host receives Cascading Style Sheets (CSS) variables through its default style options.",
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "An evaluation case author wrote this report from the actual pinned upstream source. No Culler Worker executed this task.",
+  "summary": "The toast host uses the application popover colors for the background and text.",
+  "task_id": 701,
+  "unverified": [
+    "The source change does not establish a measured contrast ratio.",
+    "These captures verify the frontend display with synthetic service responses.",
+    "They execute no Memos backend, database, authorization, or application test suite.",
+    "The capture triggers the unchanged toast library directly. It verifies notification appearance, not a completed save."
+  ],
+  "verified_source_commit": "6ff88e36a22fae6fd225579777e77430b5f85a94"
+}

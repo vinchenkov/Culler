@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a problem with an installed Culler release.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report a security vulnerability in private through the **Security** tab. Do not use this form for a vulnerability.
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      description: Open the Apple menu, select **About This Mac**, and copy the macOS version.
+      placeholder: macOS 15.5
+    validations:
+      required: true
+  - type: input
+    id: processor
+    attributes:
+      label: Mac processor
+      description: Copy the chip name from **About This Mac**.
+      placeholder: Apple M2
+    validations:
+      required: true
+  - type: textarea
+    id: version
+    attributes:
+      label: culler version output
+      description: Run `culler version` in Terminal and paste all of its output. If the `culler` command is absent, write the setup step where installation stopped.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps
+      description: List the steps that show the problem.
+      placeholder: |
+        1. Open the dashboard.
+        2. Select Check for updates.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: Describe the result that you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Describe the result that occurred. Include the complete message text.
+    validations:
+      required: true

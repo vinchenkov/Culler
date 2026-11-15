@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-02T22:50:32.957051+00:00",
+  "reviewer": "/root/case_corpus",
+  "recorder": "/root/gepa_engine",
+  "result": "accepted",
+  "acceptance_source": "Independent code review and token-free regression execution in this task.",
+  "source_files": [
+    {
+      "path": "evals/culler_evals/cli.py",
+      "sha256": "c9437e8de441b0991bb725f30cb22579ee90512bb0c6767664213d2023a3c3e9"
+    },
+    {
+      "path": "evals/tests/test_cli_run.py",
+      "sha256": "bffb6af97c5f1555f6921e612e4972f82a6a4af3a6e5538ee7bfecb8afdfbaab"
+    }
+  ],
+  "test": "test_final_continuation_reconciles_hard_interruption_and_retains_samples",
+  "observations": [
+    "Exact protocol checks precede reconciliation.",
+    "Completed sample manifests and packets remain intact.",
+    "All four orphan operations receive interrupted outcomes.",
+    "The continued final report excludes the stale incomplete-record reason."
+  ],
+  "limits": [
+    "The independent regression uses a dummy viewer because its sandbox blocks sockets.",
+    "The final-stage check uses token-free models."
+  ],
+  "model_calls": 0
+}

@@ -1,0 +1,1062 @@
+{
+  "version": 1,
+  "format": "JavaScript Object Notation (JSON)",
+  "hash_algorithm": "Secure Hash Algorithm 256-bit (SHA-256)",
+  "status": "exploratory_uncalibrated",
+  "purpose": "The pilot checks case readiness, trial execution, packet variation, and Judge behavior.",
+  "claims": {
+    "evolution_performed": false,
+    "improvement_established": false,
+    "adoption_recommended": false,
+    "judge_calibrated": false,
+    "directives_evaluated": 1
+  },
+  "identity": {
+    "experiment_id": "494d1935-fb4a-460a-b216-81c2529bc544",
+    "pilot_attempt": "04",
+    "source_revision": "02a33e61a012fdf4ee59291dc645b15abb81d218",
+    "recorded_protocol_hash": "34b9da8902abb81d439acc4c492866e2e3cd65ecdf57c2431ea084f644724329",
+    "complete_protocol_content_hash": "818d6741adab8a4f1211706d3394262a91a87a3bf927fcea340fbd2123e9132e",
+    "source_input": {
+      "directive_hash": "c73da71c485b81752e4810e5b1adbc35247bae33183119f1beac7528844f38bb",
+      "merged_hash": "3db1a82e903e39cc2128aa6ca00d778cb4ce328e965163af34b2eae10ff28007",
+      "separate_writing_skill": false,
+      "writing_body_hash": "5ddd6ff9feec81d9a395f97981d72e6f8823e425ec6372d8bb2a5d62714e271f"
+    },
+    "source_input_content_hash": "cce7ebb64805d7f09c8ffac0710e315bc9c8ce37147e1e29f495cd90cedcd99a",
+    "case_corpus_content_hash": "565c84ac0a96174f27d5c029fc1fbc49606c0ab90d3038a158248eab3f0af682",
+    "pilot_manifest_content_hash": "4bbf8c94dce0aa45029a5b4eb52a81e59eaf8884d49599387f7948c46c2fd60c",
+    "rubric_hash": "b352e5246890e1680826a654554988765a5bc284c42c3a0b6e9ae9ac6de178fd",
+    "evaluated_candidate_hash": "ed7168cc4f598ab310d79e0050bfc30b041a7057540e2838acbee1982ae5193b",
+    "operator_context_hash": "113f5f68ff23db96e3e11836c9557b4d5e97318ffdb5845cf614aa8761561518",
+    "journal_pilot_end_sequence": 114,
+    "journal_pilot_end_hash": "2d274302a5e306376d35e9776c9950bab84039981a7053a31a4cc93e7c8a87e6",
+    "hash_rules": "Protocol and source input hashes cover canonical JSON values. Packet and assessment hashes cover artifact bytes."
+  },
+  "design": {
+    "cases": 5,
+    "trials_per_case": 3,
+    "completed_trials": 15,
+    "directive_edits": 0,
+    "training_cases": 0,
+    "validation_cases": 0,
+    "final_cases": 0,
+    "rubric_dimension_scale": [
+      0,
+      4
+    ],
+    "raw_quality_scale": [
+      0,
+      100
+    ],
+    "effective_contribution_scale": [
+      0,
+      100
+    ],
+    "dimension_weights": {
+      "causal_explanation": 1,
+      "clarity": 1,
+      "comprehension": 1,
+      "decision_support": 1,
+      "packet_length": 1,
+      "visual_explanation": 1
+    },
+    "score_rule": "The six equal dimension weights produce raw quality. A contract failure or critical failure sets the effective contribution to zero.",
+    "trial_environment": "Each trial restores one pinned repository and fixed authored evidence. The command adapter supplies no production spine or dispatch lifecycle.",
+    "application_execution": false,
+    "application_media_required": false
+  },
+  "runtime": {
+    "packager": {
+      "harness": "codex",
+      "requested_model": "gpt-6.1-sol",
+      "observed_effective_models": [
+        "gpt-6.1-sol"
+      ],
+      "observed_harness_versions": [
+        "codex-cli 0.159.2"
+      ],
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b"
+    },
+    "judge": {
+      "harness": "claude",
+      "requested_model": "claude-opus-5-5",
+      "observed_effective_models": [
+        "claude-opus-5-5"
+      ],
+      "observed_harness_versions": [
+        "2.1.280 (Claude Code)"
+      ],
+      "image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      },
+      "browser_versions": [
+        "145.0.7632.6"
+      ]
+    },
+    "optimizer": {
+      "invoked": false
+    }
+  },
+  "aggregate": {
+    "raw_quality_mean": 83.88888888888889,
+    "raw_quality_sample_standard_deviation": 8.313468386525363,
+    "effective_contribution_mean": 63.888888888888886,
+    "dimension_means": {
+      "comprehension": 3.2,
+      "causal_explanation": 3.6,
+      "decision_support": 3.3333333333333335,
+      "visual_explanation": 3.4,
+      "clarity": 3.066666666666667,
+      "packet_length": 3.533333333333333
+    },
+    "failure_counts": {
+      "deterministic_failed_trials": 0,
+      "deterministic_failure_instances": 0,
+      "semantic_failed_trials": 4,
+      "semantic_failure_instances": 6,
+      "semantic_failures_by_check": {
+        "risk_and_rollback": 2,
+        "evidence_authority": 3,
+        "glossary": 1
+      },
+      "critical_failed_trials": 3,
+      "critical_failure_instances": 3,
+      "critical_failures_by_category": {
+        "material_condition_omitted": 3
+      },
+      "zero_contribution_trials": 4,
+      "uninspected_trials": 0,
+      "render_failure_trials": 0
+    }
+  },
+  "timing": {
+    "started_at": "2026-09-30T10:00:23.525689+00:00",
+    "completed_at": "2026-09-30T11:07:03.689376+00:00",
+    "wall_seconds": 4000.163687,
+    "trial_seconds_total": 4000.1530549999998,
+    "judge_seconds_with_retries_total": 968.9647749999999,
+    "method": "Durations subtract journal event timestamps. Preparation and Packager duration includes repository preparation and runtime overhead."
+  },
+  "model_usage": {
+    "scope": "The totals include recorded usage from the 15 completed Packager results and 15 successful Judge results.",
+    "packager": {
+      "completed_role_results": 15,
+      "usage_records": 15,
+      "tokens": {
+        "input_tokens": 4653945,
+        "cached_input_tokens": 4232576,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 50339,
+        "reasoning_output_tokens": 1767
+      }
+    },
+    "judge": {
+      "completed_role_results": 15,
+      "usage_records": 15,
+      "tokens": {
+        "input_tokens": 212,
+        "output_tokens": 76655,
+        "cache_creation_input_tokens": 285338,
+        "cache_read_input_tokens": 1538241,
+        "thinking_tokens": 20191
+      }
+    },
+    "judge_attempts": 17,
+    "judge_successful_attempts": 15,
+    "judge_failed_attempts": 2,
+    "failed_attempt_usage_recorded": false,
+    "failed_attempts": [
+      {
+        "case_id": "memos-log-level",
+        "trial_id": "trial-b15b94ae726a447386b09df42fe462e0",
+        "event_id": "event-33",
+        "seconds": 52.040619,
+        "reason": "The harness returned no complete JSON result."
+      },
+      {
+        "case_id": "memos-webhook-label-refactor",
+        "trial_id": "trial-a489a552f1394568a5ec0ff98463bed4",
+        "event_id": "event-79",
+        "seconds": 58.588782,
+        "reason": "The harness returned no complete JSON result."
+      }
+    ],
+    "accounting_notes": [
+      "Codex cached input tokens form part of its input token count. Reasoning output tokens form part of its output count.",
+      "Claude reports ordinary input, cache creation, and cache reads separately. Its nested iterations are not additional usage.",
+      "Claude thinking tokens form part of its output count. The report makes no price or total expenditure claim.",
+      "Failed Judge attempts lack preserved usage metadata. Earlier failed or invalidated attempts and later calibration calls are excluded."
+    ]
+  },
+  "record_integrity": {
+    "pilot_operations_started": 47,
+    "pilot_operations_completed": 47,
+    "pilot_operation_outcomes": {
+      "success": 45,
+      "failed": 2
+    },
+    "pilot_scope_complete": true,
+    "artifact_hashes_verified": true,
+    "trial_manifest_and_journal_match": true,
+    "later_calibration_events_excluded": true
+  },
+  "limitations": [
+    "The Judge remains uncalibrated. All scores describe exploratory observations.",
+    "Five reviewed cases come from one repository. Two UI seed cases lack supplied media and did not enter this pilot.",
+    "The Worker and Verifier reports are authored case evidence. They are not captured production runs.",
+    "The pilot did not execute the Memos application or its tests. It tests the Packager explanation of fixed evidence.",
+    "The pilot changes no directive and runs no Genetic-Pareto (GEPA) evolution or independent final comparison.",
+    "The original Judge records lack assessment context and exact product wrapper hashes. Current hashes cannot establish the original served bytes.",
+    "The recorded protocol hash predates the actual input additions. The complete protocol content hash identifies the stored full manifest separately.",
+    "A confirmed risk contract defect affects recorded assessments. Preserve these scores as observations; corrected assessment requires new Judge results.",
+    "The original protocol records no snapshot of the semantic packet contract or fixed Judge instructions."
+  ],
+  "assessment_contract_defect": {
+    "confirmed": true,
+    "defect": "The semantic risk check required inferred risks and rollback conditions beyond durable Verifier evidence.",
+    "affected_observations": [
+      {
+        "trial_id": "trial-a93fb79448aa47959cae422f55694ac8",
+        "recorded_effective_contribution": 0.0,
+        "effect": "The invalid risk requirement alone caused the zero contribution. The aggregate preserves that recorded value."
+      },
+      {
+        "trial_id": "trial-3fa1f56eab514688a0f69fd2a8465911",
+        "effect": "Decision support feedback penalized absence of an unreported logger-format risk."
+      },
+      {
+        "trial_id": "trial-652b98ec7bb54516a5fe306c6ca209e4",
+        "recorded_effective_contribution": 0.0,
+        "effect": "The invalid risk requirement also failed. An independent material-condition omission still caused zero contribution."
+      }
+    ],
+    "corrected_scores_available": false,
+    "adoption_use": "The recorded aggregate cannot establish a calibrated baseline or support directive adoption."
+  },
+  "cases": [
+    {
+      "case_id": "memos-link-cover-retry",
+      "case_types": [
+        "state_transition_or_recovery"
+      ],
+      "group": "memos-link-cover-retry",
+      "source": {
+        "url": "https://github.com/usememos/memos.git",
+        "base_commit": "969da8128e9bfc948632b1f601106f859d198be3",
+        "reviewed_commit": "db52a16788fce4297c998b7efb2ba3e18de869fc",
+        "reviewed_tree": "e048736fb185739b3e60a7c495197215178c6a61"
+      },
+      "case_hash": "1f131b0a3d917926f9a262ca3c3c15b0bfe3d49af5f91568c8263a26058e53ee",
+      "fixed_input_hashes": {
+        "environment": "bf4e64db8ee5b1a2d220d6a749420ad59cd7646f964a54c736c79b21b371b576",
+        "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "references": "8c873cbf4c1a045a82527e87b48c30a0aed16618e98e0b130a8323a55991a372",
+        "role_inputs": "b4492379b2fe61d8402ff01050a771a076f3a1163b35f2c93278c54b90d1930d",
+        "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+      },
+      "artifact_hashes": {
+        "worker-report": "abce69b9f6f24689c393ee03dedbde69fe978efbc9b137fec2cc19b4373658e9",
+        "verifier-evidence": "a49733b0e9d996664f0f66a2fc74bc9addcd7bd5b9ca018df811b2b13ac8d54a",
+        "reviewed-diff": "10327af5e27934bcbfb4e620d474b910f6c335c3701f4ef38da09da430263cd4"
+      },
+      "reference_review_hash": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685",
+      "raw_quality_values": [
+        87.5,
+        75.0,
+        87.5
+      ],
+      "raw_quality_mean": 83.33333333333333,
+      "raw_quality_sample_standard_deviation": 7.216878364870322,
+      "effective_contributions": [
+        87.5,
+        75.0,
+        87.5
+      ],
+      "effective_contribution_mean": 83.33333333333333,
+      "dimension_means": {
+        "causal_explanation": 3.6666666666666665,
+        "clarity": 3,
+        "comprehension": 3.6666666666666665,
+        "decision_support": 3.6666666666666665,
+        "packet_length": 3,
+        "visual_explanation": 3
+      },
+      "trial_records": [
+        {
+          "trial_id": "trial-7e938d29fce147bfb2e232bd95745545",
+          "trial_number": 1,
+          "trial_event_id": "event-6",
+          "trial_event_hash": "d7dbf50c268b3be0842e5ad03034e5a5dde659002c58e5858320d71c7f695a58",
+          "raw_quality": 87.5,
+          "effective_contribution": 87.5,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 4,
+            "decision_support": 4,
+            "packet_length": 3,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "de4a77b0588adc4e66004b704f972e339a4bdf9249cb5adbfa5ff62b2df73556",
+          "packet_bytes": 11245,
+          "assessment_sha256": "34d1326c38079de4806debead35ab593ed62073e6146e9f3b38bd126fad4e3db",
+          "assessment_id": "operation-481d713031c64761bfc08797957665a1",
+          "case_manifest_hash": "9e63c6802f772d8447089b06335c173150ac9ba2ae12ed10455a1c4eb391e002",
+          "reference_hash": "8c873cbf4c1a045a82527e87b48c30a0aed16618e98e0b130a8323a55991a372",
+          "timing_seconds": {
+            "trial": 287.3313,
+            "preparation_and_packager": 229.631822,
+            "judge_with_retries": 57.698762
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-1015393f627340429e7aec9d9c7b703e",
+          "trial_number": 2,
+          "trial_event_id": "event-13",
+          "trial_event_hash": "3cba06fe2580933860fe4e7b6befd31826c4b638f3cde2307660bfd1b2380c85",
+          "raw_quality": 75.0,
+          "effective_contribution": 75.0,
+          "dimensions": {
+            "causal_explanation": 3,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 3,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "387bab6d580ff67093deb89ab1e5006fe2897fa56078319ead6395a75e6352e4",
+          "packet_bytes": 11965,
+          "assessment_sha256": "2c481a01cdf87f4022cd0ed2d5a5dbf033aaef6fb63146eba00994899e4f2e74",
+          "assessment_id": "operation-5969759624e0498a9de07c3afcf9e180",
+          "case_manifest_hash": "9e63c6802f772d8447089b06335c173150ac9ba2ae12ed10455a1c4eb391e002",
+          "reference_hash": "8c873cbf4c1a045a82527e87b48c30a0aed16618e98e0b130a8323a55991a372",
+          "timing_seconds": {
+            "trial": 446.000607,
+            "preparation_and_packager": 375.467691,
+            "judge_with_retries": 70.532043
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-70439981ca6c43f489fef2d70f99ef31",
+          "trial_number": 3,
+          "trial_event_id": "event-20",
+          "trial_event_hash": "c8e35fa78c31298642fdaa75a0cf835963952337b3dff69ef570c9ab7a07b914",
+          "raw_quality": 87.5,
+          "effective_contribution": 87.5,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 4,
+            "decision_support": 4,
+            "packet_length": 3,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "266bb4546bf46c861be02058425e36ed3993bf72064fe009804695c451542eb4",
+          "packet_bytes": 11404,
+          "assessment_sha256": "602c2332e021e5e00e65e720ec4124b1f8216856d9638afa09c83d90f68777aa",
+          "assessment_id": "operation-7bdee0363da144449ac851628249ec53",
+          "case_manifest_hash": "9e63c6802f772d8447089b06335c173150ac9ba2ae12ed10455a1c4eb391e002",
+          "reference_hash": "8c873cbf4c1a045a82527e87b48c30a0aed16618e98e0b130a8323a55991a372",
+          "timing_seconds": {
+            "trial": 289.263779,
+            "preparation_and_packager": 224.778061,
+            "judge_with_retries": 64.484864
+          },
+          "judge_attempts": 1
+        }
+      ]
+    },
+    {
+      "case_id": "memos-log-level",
+      "case_types": [
+        "configuration_or_compatibility"
+      ],
+      "group": "memos-log-level",
+      "source": {
+        "url": "https://github.com/usememos/memos.git",
+        "base_commit": "a6024eebf129c4b8fb65ee0cba09c6657274bfde",
+        "reviewed_commit": "f1e2a06b46c7f45ba6562c308d2703fdfb4067b0",
+        "reviewed_tree": "360e4dd207200168fa53aa120310931269f45e0c"
+      },
+      "case_hash": "34469cdcb2f2576d04b05ef6b461417550458798f36df364d6c748f4054f969b",
+      "fixed_input_hashes": {
+        "environment": "32db30e21fc8e83c86a582bb6ffebcc44b0d9529c9db426db097921b21a8cb52",
+        "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "references": "1d67410755a75ddd55a34ed3f93a8ee3f8c35cad5c8708d568883214fdf8f3a1",
+        "role_inputs": "c68917813ae14537df00b20718a4c7a4b4a82cd5cf5f5a0543a8341159c5e578",
+        "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+      },
+      "artifact_hashes": {
+        "worker-report": "a2aaeb57e74d4c667a4463319bd22e326ed59e70a74784385983a25f365f34ba",
+        "verifier-evidence": "11a03aeacd8b02895da95d8c3c2582b806f7eee0c1481981f8a8779ade477bcd",
+        "reviewed-diff": "10607c1fc42bdfc5182b131a4654493f2c68e54f96f5fcd95e6d6e52d93f6744"
+      },
+      "reference_review_hash": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685",
+      "raw_quality_values": [
+        87.5,
+        100.0,
+        95.83333333333333
+      ],
+      "raw_quality_mean": 94.44444444444444,
+      "raw_quality_sample_standard_deviation": 6.364688465216444,
+      "effective_contributions": [
+        87.5,
+        100.0,
+        95.83333333333333
+      ],
+      "effective_contribution_mean": 94.44444444444444,
+      "dimension_means": {
+        "causal_explanation": 4,
+        "clarity": 3.3333333333333335,
+        "comprehension": 4,
+        "decision_support": 3.6666666666666665,
+        "packet_length": 4,
+        "visual_explanation": 3.6666666666666665
+      },
+      "trial_records": [
+        {
+          "trial_id": "trial-3fa1f56eab514688a0f69fd2a8465911",
+          "trial_number": 1,
+          "trial_event_id": "event-28",
+          "trial_event_hash": "3a275b8ce94992e7d7852c5ab174ef179b118a3dc67406e5bfc2b12f0c1194ca",
+          "raw_quality": 87.5,
+          "effective_contribution": 87.5,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 4,
+            "decision_support": 3,
+            "packet_length": 4,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "a8ec4365d77b6b4d30af5b6fd68acf0eb05e3f12e11a9dcfff8a37a14202f027",
+          "packet_bytes": 10007,
+          "assessment_sha256": "705a996f10e68bf85811d9f0011c6eb8c6d2eeb1a9ff3850628fa6facd683ba2",
+          "assessment_id": "operation-3fc0773667b842bf9ffea02eaf42569a",
+          "case_manifest_hash": "1cb023a25a5f161137fece294a5f689ed22871108fc0b5fccda8ba90c5167efa",
+          "reference_hash": "1d67410755a75ddd55a34ed3f93a8ee3f8c35cad5c8708d568883214fdf8f3a1",
+          "timing_seconds": {
+            "trial": 258.89353,
+            "preparation_and_packager": 208.739372,
+            "judge_with_retries": 50.153405
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-b15b94ae726a447386b09df42fe462e0",
+          "trial_number": 2,
+          "trial_event_id": "event-37",
+          "trial_event_hash": "71fe352483e05debbb40847fa21d3980fea8aad246e278a55b20b749eebf39ac",
+          "raw_quality": 100.0,
+          "effective_contribution": 100.0,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 4,
+            "comprehension": 4,
+            "decision_support": 4,
+            "packet_length": 4,
+            "visual_explanation": 4
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "0a55b82707e85d099f3d725762cd431cacf00cb0c2617548d16584c6b9f4b0d2",
+          "packet_bytes": 8743,
+          "assessment_sha256": "78e95bdbd64d136d957becea60c359e8ee4d6bb0c91c3582c4d7afcbf4b24328",
+          "assessment_id": "operation-3129e0b5296240ce9708b0738da04646",
+          "case_manifest_hash": "1cb023a25a5f161137fece294a5f689ed22871108fc0b5fccda8ba90c5167efa",
+          "reference_hash": "1d67410755a75ddd55a34ed3f93a8ee3f8c35cad5c8708d568883214fdf8f3a1",
+          "timing_seconds": {
+            "trial": 288.252318,
+            "preparation_and_packager": 187.847407,
+            "judge_with_retries": 100.404185
+          },
+          "judge_attempts": 2
+        },
+        {
+          "trial_id": "trial-96c87b734ca249769b94256b49b577b4",
+          "trial_number": 3,
+          "trial_event_id": "event-44",
+          "trial_event_hash": "42445de18001c3e546d79bd8fd21986161192e4f8226f87c15b59dee0aee6039",
+          "raw_quality": 95.83333333333333,
+          "effective_contribution": 95.83333333333333,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 4,
+            "decision_support": 4,
+            "packet_length": 4,
+            "visual_explanation": 4
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "f20a3f546eab4b688920464c0a28a70e2768f2a52d25a13c7ea7c4e2c8992d70",
+          "packet_bytes": 8949,
+          "assessment_sha256": "9aed831b961a8fcadf8446a66b27234f0ec91e7050ec84e16722f8c947891951",
+          "assessment_id": "operation-ed34b9d1976b4bbd92d72f070e372104",
+          "case_manifest_hash": "1cb023a25a5f161137fece294a5f689ed22871108fc0b5fccda8ba90c5167efa",
+          "reference_hash": "1d67410755a75ddd55a34ed3f93a8ee3f8c35cad5c8708d568883214fdf8f3a1",
+          "timing_seconds": {
+            "trial": 260.771772,
+            "preparation_and_packager": 213.989085,
+            "judge_with_retries": 46.781759
+          },
+          "judge_attempts": 1
+        }
+      ]
+    },
+    {
+      "case_id": "memos-archived-owner-access",
+      "case_types": [
+        "data_or_access"
+      ],
+      "group": "memos-archived-owner-access",
+      "source": {
+        "url": "https://github.com/usememos/memos.git",
+        "base_commit": "8f43e8075b62706f99da4005ab04b165b35215f6",
+        "reviewed_commit": "f4154d090be3896c8e0dd83440f24953bbeb308c",
+        "reviewed_tree": "57bbc23dabd0806d3dcf3ebed0da828125158590"
+      },
+      "case_hash": "9a34b8ce6bd7e18dbf28d0457a8d9af17c29cf0b32265dd7f0722d1a0a65e1c4",
+      "fixed_input_hashes": {
+        "environment": "9fdaad90a69289632e5587fe6104e8bab5da99bfb6328af89c87bd1c56989492",
+        "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "references": "942cd15d1b6a572e233f4b54f6179c6fc4dad983f17d9283b4bafcd0ab24db65",
+        "role_inputs": "9312755c73ef34605b3a90d410174693f2ac3a082f52dcf088b32af1061fb30f",
+        "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+      },
+      "artifact_hashes": {
+        "worker-report": "09416a1c835671c13a6f1e7915f79db45672981cbd61e575d550dd61573b072b",
+        "verifier-evidence": "420fae216cc46b1d52e5c60ce6499796dca0a772e4744df4945c0b7ca5572bba",
+        "reviewed-diff": "f60d0eafe35c9b2ec87a9b31d49bd17cbe0f8e203228635fa027e332a34e8c1f"
+      },
+      "reference_review_hash": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685",
+      "raw_quality_values": [
+        83.33333333333333,
+        91.66666666666667,
+        79.16666666666667
+      ],
+      "raw_quality_mean": 84.72222222222223,
+      "raw_quality_sample_standard_deviation": 6.364688465216445,
+      "effective_contributions": [
+        83.33333333333333,
+        91.66666666666667,
+        0.0
+      ],
+      "effective_contribution_mean": 58.333333333333336,
+      "dimension_means": {
+        "causal_explanation": 4,
+        "clarity": 3,
+        "comprehension": 3,
+        "decision_support": 3.3333333333333335,
+        "packet_length": 3.6666666666666665,
+        "visual_explanation": 3.3333333333333335
+      },
+      "trial_records": [
+        {
+          "trial_id": "trial-2ab4ac7951394bea9674cc353b531573",
+          "trial_number": 1,
+          "trial_event_id": "event-52",
+          "trial_event_hash": "c48389c3dc2cfc2901d70f76a6b4eb8f45ae9ce7d6d252d54a5205b85aff2fec",
+          "raw_quality": 83.33333333333333,
+          "effective_contribution": 83.33333333333333,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 4,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "b55d1375a3bb3a0b07fa6d787225740bc59cb41477f0ee341aa967f4e0b691a7",
+          "packet_bytes": 8839,
+          "assessment_sha256": "b1df8194e5d3d59ca2e47f1cc4670929221468bd50104878290f7f7ec943a955",
+          "assessment_id": "operation-5e02871fae5f4958b5208d82d17fb484",
+          "case_manifest_hash": "c74b8caef86eb52ffee4c40c3d2702dc62e73613b102399034acb2a7b4aef631",
+          "reference_hash": "942cd15d1b6a572e233f4b54f6179c6fc4dad983f17d9283b4bafcd0ab24db65",
+          "timing_seconds": {
+            "trial": 265.919635,
+            "preparation_and_packager": 210.958069,
+            "judge_with_retries": 54.960808
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-ef0755c96ea04e1c86b25d03f452f993",
+          "trial_number": 2,
+          "trial_event_id": "event-59",
+          "trial_event_hash": "ef79afa3a60aaa5f43417879b8384b251f32000f8d7e439a8bdb6484f48a1533",
+          "raw_quality": 91.66666666666667,
+          "effective_contribution": 91.66666666666667,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 4,
+            "packet_length": 4,
+            "visual_explanation": 4
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "0bf6c5c7ec9d3adf83826fa8045df2f7f334286059897a5405e3633295a56a64",
+          "packet_bytes": 8623,
+          "assessment_sha256": "24021e0fee97567b55a4f2ed806966a495d3edbb8b5eb800a665de6affd152f5",
+          "assessment_id": "operation-5fff4e5c4282418f8e341054e40ba35c",
+          "case_manifest_hash": "c74b8caef86eb52ffee4c40c3d2702dc62e73613b102399034acb2a7b4aef631",
+          "reference_hash": "942cd15d1b6a572e233f4b54f6179c6fc4dad983f17d9283b4bafcd0ab24db65",
+          "timing_seconds": {
+            "trial": 284.261282,
+            "preparation_and_packager": 218.801645,
+            "judge_with_retries": 65.458803
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-a93fb79448aa47959cae422f55694ac8",
+          "trial_number": 3,
+          "trial_event_id": "event-66",
+          "trial_event_hash": "b9f1faa425c2edc9034faf4a97a6eac3d25d6b87aa0c28e77e706b8a1d7a2e3b",
+          "raw_quality": 79.16666666666667,
+          "effective_contribution": 0.0,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 3,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [
+            "risk_and_rollback"
+          ],
+          "critical_failure_categories": [],
+          "packet_sha256": "882790bc036b1ae510ca590bb17484a0acd17fb3cdc3ef99d09798939a529157",
+          "packet_bytes": 8070,
+          "assessment_sha256": "5081e4572257b1f1163d4ee242009ec88681490516db283aa8748c5bfaccd14c",
+          "assessment_id": "operation-1995c419f7304f84ab556d16205814a1",
+          "case_manifest_hash": "c74b8caef86eb52ffee4c40c3d2702dc62e73613b102399034acb2a7b4aef631",
+          "reference_hash": "942cd15d1b6a572e233f4b54f6179c6fc4dad983f17d9283b4bafcd0ab24db65",
+          "timing_seconds": {
+            "trial": 240.490511,
+            "preparation_and_packager": 188.874175,
+            "judge_with_retries": 51.61558
+          },
+          "judge_attempts": 1
+        }
+      ]
+    },
+    {
+      "case_id": "memos-webhook-label-refactor",
+      "case_types": [
+        "internal_refactor"
+      ],
+      "group": "memos-webhook-label-refactor",
+      "source": {
+        "url": "https://github.com/usememos/memos.git",
+        "base_commit": "dcef4188dbfba767ea570dc0ecdeb258d17f3c25",
+        "reviewed_commit": "59541ea438b4531ca50f9e25f110989713b987d2",
+        "reviewed_tree": "158f69ce9a69742651c70909d9bd45a662413a69"
+      },
+      "case_hash": "60a372ec089a1d38c2e814513e5371aa476c982a87f6520e5ac6b0e9de2a3a8f",
+      "fixed_input_hashes": {
+        "environment": "40d0cbf3afe239b023b9486284f85c43c921ffa069cc6663eb9918d01e301e2a",
+        "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "references": "7496495ac39f2c4fc15aa817741c20b2acf877686a73e4a0323fbdf88ef8e589",
+        "role_inputs": "cea87ec4d03886976d8e3e4a852b3eacac32d2980e0e92172db078934479cb87",
+        "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+      },
+      "artifact_hashes": {
+        "worker-report": "3c7220ed09a77821b7fa6fc08c86e66465c79f70c863d068cf22d09214c5cac9",
+        "verifier-evidence": "29c91ce682d785bff0499cb1173d4e29751ecf03214493fe5b00212dc990883b",
+        "reviewed-diff": "329871b40feb278e8bb36311df31105c879265e31fc14d5db078372d10e5c11a"
+      },
+      "reference_review_hash": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685",
+      "raw_quality_values": [
+        79.16666666666667,
+        87.5,
+        83.33333333333333
+      ],
+      "raw_quality_mean": 83.33333333333333,
+      "raw_quality_sample_standard_deviation": 4.166666666666664,
+      "effective_contributions": [
+        79.16666666666667,
+        87.5,
+        83.33333333333333
+      ],
+      "effective_contribution_mean": 83.33333333333333,
+      "dimension_means": {
+        "causal_explanation": 3.3333333333333335,
+        "clarity": 3,
+        "comprehension": 3,
+        "decision_support": 3,
+        "packet_length": 3.6666666666666665,
+        "visual_explanation": 4
+      },
+      "trial_records": [
+        {
+          "trial_id": "trial-e1518a8ed06341b5a04020e7b16a5e7b",
+          "trial_number": 1,
+          "trial_event_id": "event-74",
+          "trial_event_hash": "4afe0effea7c73fea1318e8099ed9348837ce95fb977c68acc48a23bbce23dec",
+          "raw_quality": 79.16666666666667,
+          "effective_contribution": 79.16666666666667,
+          "dimensions": {
+            "causal_explanation": 3,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 3,
+            "visual_explanation": 4
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "4bc7d7dbe676b5f3aebb4f5832b34d1add7305651b6cb1cfc6999afdc6ac3763",
+          "packet_bytes": 6480,
+          "assessment_sha256": "2ff8bf79c78eb808c719d5e19bbe4ccfca9de8ad0bbb1da3582a3763812ae27d",
+          "assessment_id": "operation-d158313acb9a4149bcd3df772ba96d91",
+          "case_manifest_hash": "0ccbfa060476aeb8f00e2c2a01e70120229f452d81f34a5983dc179f0777eba1",
+          "reference_hash": "7496495ac39f2c4fc15aa817741c20b2acf877686a73e4a0323fbdf88ef8e589",
+          "timing_seconds": {
+            "trial": 210.020416,
+            "preparation_and_packager": 137.619411,
+            "judge_with_retries": 72.40015
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-a489a552f1394568a5ec0ff98463bed4",
+          "trial_number": 2,
+          "trial_event_id": "event-83",
+          "trial_event_hash": "dbf4f5e6550847bc98a0a4da988e05e51712507c34fdd836f9b2bae21e14a98e",
+          "raw_quality": 87.5,
+          "effective_contribution": 87.5,
+          "dimensions": {
+            "causal_explanation": 4,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 4,
+            "visual_explanation": 4
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "1f213125787d2a34266c5fc9617edcb76d7150eb99d70e8d568a69789c2c2a05",
+          "packet_bytes": 6972,
+          "assessment_sha256": "7f35efe5af7759359ef210b5bd376b22ea21fc91710cf96eec6ac6a100e4bd4c",
+          "assessment_id": "operation-c2b614e1c7934bc5928b30c05ede5bbd",
+          "case_manifest_hash": "0ccbfa060476aeb8f00e2c2a01e70120229f452d81f34a5983dc179f0777eba1",
+          "reference_hash": "7496495ac39f2c4fc15aa817741c20b2acf877686a73e4a0323fbdf88ef8e589",
+          "timing_seconds": {
+            "trial": 284.903148,
+            "preparation_and_packager": 173.263287,
+            "judge_with_retries": 111.638997
+          },
+          "judge_attempts": 2
+        },
+        {
+          "trial_id": "trial-30397e897cb1463db9625f8e903025fd",
+          "trial_number": 3,
+          "trial_event_id": "event-90",
+          "trial_event_hash": "679a7db0f513eb8d85300718fc00567dd30628424947455e7306ca4eccceda5e",
+          "raw_quality": 83.33333333333333,
+          "effective_contribution": 83.33333333333333,
+          "dimensions": {
+            "causal_explanation": 3,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 4,
+            "visual_explanation": 4
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [],
+          "critical_failure_categories": [],
+          "packet_sha256": "8401b41a24efba81c8061d5939c2355adee0175c3a0e304ff5de45249f3984fa",
+          "packet_bytes": 5232,
+          "assessment_sha256": "b1f4290d2100242875163f7f33f4dd3d6e0358450fde1cff9a9b5f04b2a8ab35",
+          "assessment_id": "operation-8fb0a60087394d55b3c7ed2a1aa94081",
+          "case_manifest_hash": "0ccbfa060476aeb8f00e2c2a01e70120229f452d81f34a5983dc179f0777eba1",
+          "reference_hash": "7496495ac39f2c4fc15aa817741c20b2acf877686a73e4a0323fbdf88ef8e589",
+          "timing_seconds": {
+            "trial": 249.209375,
+            "preparation_and_packager": 201.428634,
+            "judge_with_retries": 47.779902
+          },
+          "judge_attempts": 1
+        }
+      ]
+    },
+    {
+      "case_id": "memos-reuse-list-settings",
+      "case_types": [
+        "performance_change"
+      ],
+      "group": "memos-reuse-list-settings",
+      "source": {
+        "url": "https://github.com/usememos/memos.git",
+        "base_commit": "bacb02456b3e4392a2b14c77d8675b8a427b50e2",
+        "reviewed_commit": "f133abc8c0419b82c98fb98a4e670328d5f96ab1",
+        "reviewed_tree": "6c8b869a13711ee3d3e559e8407ffce8380727ed"
+      },
+      "case_hash": "a02e3f582f49798c71a9918bf8abb9234764464bbbf3559686f4e76565422736",
+      "fixed_input_hashes": {
+        "environment": "e55c78d0ec0357cef6f1388ff3bb9fec391733d7cd6584d59fd334febc3734fe",
+        "project_skills": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "references": "1604331e92207218929968b02f1cefb3a5d398a668adc5e8fb4ba08a2c3c9e0b",
+        "role_inputs": "20df9bd9c465afb6213323305d66cc7b18abb8f177b4d0a00628e7a1897d8014",
+        "visual_evidence": "f9fbca1493d3b4d9f0df20d87e04027029f8f0494a186b43b22e22d141cefc61"
+      },
+      "artifact_hashes": {
+        "worker-report": "3e155a1035d03a0baaa5da107d166e4456fea5ba4e01a8a7d7084ea5535dddf3",
+        "verifier-evidence": "be06d4656aafecb102bf6ea6c37a525700578d36abe7cfd5ed81e8beaeefd69f",
+        "reviewed-diff": "6381ce69767198f42952911fd068bb20c402d36200881fe3b382cffa24e0d4c9"
+      },
+      "reference_review_hash": "0bca5d85074573d1b53708160cd123cf510dca7d459e902ee05944327c7f2685",
+      "raw_quality_values": [
+        70.83333333333333,
+        75.0,
+        75.0
+      ],
+      "raw_quality_mean": 73.61111111111111,
+      "raw_quality_sample_standard_deviation": 2.4056261216234436,
+      "effective_contributions": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "effective_contribution_mean": 0.0,
+      "dimension_means": {
+        "causal_explanation": 3,
+        "clarity": 3,
+        "comprehension": 2.3333333333333335,
+        "decision_support": 3,
+        "packet_length": 3.3333333333333335,
+        "visual_explanation": 3
+      },
+      "trial_records": [
+        {
+          "trial_id": "trial-61a042b2b36e400ab298649ee5140b2d",
+          "trial_number": 1,
+          "trial_event_id": "event-98",
+          "trial_event_hash": "dc69882ccdf72efd407520ab7acf564a05d7c151998365fed131c2a1d4fa41b7",
+          "raw_quality": 70.83333333333333,
+          "effective_contribution": 0.0,
+          "dimensions": {
+            "causal_explanation": 3,
+            "clarity": 3,
+            "comprehension": 2,
+            "decision_support": 3,
+            "packet_length": 3,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [
+            "evidence_authority"
+          ],
+          "critical_failure_categories": [
+            "material_condition_omitted"
+          ],
+          "packet_sha256": "9ba22c27ae49eb11308dc39d85b75ef57558745d670008c215598902759bc6ed",
+          "packet_bytes": 5902,
+          "assessment_sha256": "9727cbc9255b334b62dcfec7c0de995a9bc6cdb9b988d61e341437268011dd44",
+          "assessment_id": "operation-3e359d318cd14f88b29be0b29fc6e5fe",
+          "case_manifest_hash": "10b070f1deeef82b995a9f73682b15ceb0f381b379b118904d1c8e033ea93d58",
+          "reference_hash": "1604331e92207218929968b02f1cefb3a5d398a668adc5e8fb4ba08a2c3c9e0b",
+          "timing_seconds": {
+            "trial": 192.441636,
+            "preparation_and_packager": 127.806944,
+            "judge_with_retries": 64.633876
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-652b98ec7bb54516a5fe306c6ca209e4",
+          "trial_number": 2,
+          "trial_event_id": "event-105",
+          "trial_event_hash": "117496b36ce1fbd58af6537bc42a85b72e42fae26149b0a13dc3f1a262ae8673",
+          "raw_quality": 75.0,
+          "effective_contribution": 0.0,
+          "dimensions": {
+            "causal_explanation": 3,
+            "clarity": 3,
+            "comprehension": 2,
+            "decision_support": 3,
+            "packet_length": 4,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [
+            "evidence_authority",
+            "glossary",
+            "risk_and_rollback"
+          ],
+          "critical_failure_categories": [
+            "material_condition_omitted"
+          ],
+          "packet_sha256": "f107518bc5f2fefec5aa16d50fe67eb47131edd63e250ee41c675c060dab6d5f",
+          "packet_bytes": 6645,
+          "assessment_sha256": "671457b0b308887dc6eeaad92a0fbb405527692f222f78f3d8d0d1996a5f6059",
+          "assessment_id": "operation-e2f79dc1cefb4f57a2404359e03e193c",
+          "case_manifest_hash": "10b070f1deeef82b995a9f73682b15ceb0f381b379b118904d1c8e033ea93d58",
+          "reference_hash": "1604331e92207218929968b02f1cefb3a5d398a668adc5e8fb4ba08a2c3c9e0b",
+          "timing_seconds": {
+            "trial": 211.819947,
+            "preparation_and_packager": 168.291296,
+            "judge_with_retries": 43.527899
+          },
+          "judge_attempts": 1
+        },
+        {
+          "trial_id": "trial-219620bece9c4798a2de587f85183533",
+          "trial_number": 3,
+          "trial_event_id": "event-112",
+          "trial_event_hash": "8915c76e35c9df8ef46aba4235f5bcd40e421959d83fad20bfbfd2071126815b",
+          "raw_quality": 75.0,
+          "effective_contribution": 0.0,
+          "dimensions": {
+            "causal_explanation": 3,
+            "clarity": 3,
+            "comprehension": 3,
+            "decision_support": 3,
+            "packet_length": 3,
+            "visual_explanation": 3
+          },
+          "deterministic_failures": [],
+          "semantic_failures": [
+            "evidence_authority"
+          ],
+          "critical_failure_categories": [
+            "material_condition_omitted"
+          ],
+          "packet_sha256": "0a3a2de1bc30729b5e387048e118a709dbd5f7eba8146bcc6090356661562914",
+          "packet_bytes": 7377,
+          "assessment_sha256": "2859914740d367cdf536bdfc34d79fddc38f0ee08507b85795bef8892facc30a",
+          "assessment_id": "operation-f6c48c240d5e4fb0aed9909594573056",
+          "case_manifest_hash": "10b070f1deeef82b995a9f73682b15ceb0f381b379b118904d1c8e033ea93d58",
+          "reference_hash": "1604331e92207218929968b02f1cefb3a5d398a668adc5e8fb4ba08a2c3c9e0b",
+          "timing_seconds": {
+            "trial": 230.573799,
+            "preparation_and_packager": 163.679202,
+            "judge_with_retries": 66.893742
+          },
+          "judge_attempts": 1
+        }
+      ]
+    }
+  ],
+  "earlier_attempts": [
+    {
+      "attempt": "01",
+      "experiment_id": "d5becf25-2590-4ffa-878e-33c0163d5048",
+      "status": "failed",
+      "first_event_at": "2026-09-30T09:25:42.200517+00:00",
+      "last_event_at": "2026-09-30T09:25:58.528769+00:00",
+      "journal_end_hash": "50c35a0fb4b9689fbb44707c48342179cda9372add8e331042457ef7b135b6b4",
+      "operation_outcomes": {
+        "failed": 2
+      },
+      "usable_quality_trials": 0,
+      "packager_image": "sha256:8fd68cf6b75a9196e1853db613ecd8012e9df0203ad36fc6ad10652d85e22266",
+      "requested_packager_model": "gpt-6.1-sol",
+      "reason": "The container did not forward the prompt through standard input. Codex reported no prompt.",
+      "supporting_records": [
+        {
+          "event_id": "event-2",
+          "artifact_sha256": "33fd1fbc480745ccb3b12fb961e347ea81439d15998ae6be034a842c11e070ff"
+        },
+        {
+          "event_id": "event-4",
+          "artifact_sha256": "33fd1fbc480745ccb3b12fb961e347ea81439d15998ae6be034a842c11e070ff"
+        }
+      ],
+      "included_in_successful_pilot_aggregate": false
+    },
+    {
+      "attempt": "02",
+      "experiment_id": "8ae595f0-05ae-4bb8-80d0-f5ee665dc122",
+      "status": "failed",
+      "first_event_at": "2026-09-30T09:29:26.116663+00:00",
+      "last_event_at": "2026-09-30T09:29:46.360436+00:00",
+      "journal_end_hash": "43212e338a4918a5e97b34c08636d5cfb1d3df691796f45ba64309e75b559be5",
+      "operation_outcomes": {
+        "failed": 2
+      },
+      "usable_quality_trials": 0,
+      "packager_image": "sha256:8fd68cf6b75a9196e1853db613ecd8012e9df0203ad36fc6ad10652d85e22266",
+      "requested_packager_model": "gpt-6.1-sol",
+      "reason": "Codex 0.156.1 rejected the requested model for the configured account.",
+      "supporting_records": [
+        {
+          "event_id": "event-2",
+          "artifact_sha256": "d686d0c73a25c0deb3e20a62099623ec7cdb26553e34303d7039c98734411e40"
+        },
+        {
+          "event_id": "event-2",
+          "artifact_sha256": "ae487d334d7493af00e0d4532fbfbc103f4cc8608b68f2aa15a6ea13673cf6b1"
+        },
+        {
+          "event_id": "event-4",
+          "artifact_sha256": "4b0a519905d72b1eeda6928f358010df940f5ba440ca36e4ed9cb2eee6e5d9b9"
+        },
+        {
+          "event_id": "event-4",
+          "artifact_sha256": "b070fbbb2455a12fd4e844c06d5bf2ab21df5aed042ceef72529ca6dd2cd58b6"
+        }
+      ],
+      "included_in_successful_pilot_aggregate": false
+    },
+    {
+      "attempt": "03",
+      "experiment_id": "56a4e9e7-783e-40db-87a7-051d16d9c223",
+      "status": "invalidated",
+      "first_event_at": "2026-09-30T09:44:16.895077+00:00",
+      "last_event_at": "2026-09-30T09:54:35.044493+00:00",
+      "journal_end_hash": "61e976eacf2b8bb23fea483472d74c088ff5b0acbafb1fd3a91d737fbef865ab",
+      "operation_outcomes": {
+        "success": 2,
+        "interrupted": 1
+      },
+      "usable_quality_trials": 0,
+      "packager_image": "sha256:77883aaedd8f96bd9fa72650852583e223e8d0692a9128bc872bd05ee78ddd3b",
+      "requested_packager_model": "gpt-6.1-sol",
+      "reason": "The command adapter lost its shell token. The private command connection could not submit packets.",
+      "supporting_records": [
+        {
+          "event_id": "event-9",
+          "event_hash": "61e976eacf2b8bb23fea483472d74c088ff5b0acbafb1fd3a91d737fbef865ab"
+        }
+      ],
+      "included_in_successful_pilot_aggregate": false
+    }
+  ],
+  "sanitization": {
+    "credential_values_included": false,
+    "raw_traces_included": false,
+    "private_calibration_labels_included": false
+  }
+}

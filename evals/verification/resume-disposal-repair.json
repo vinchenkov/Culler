@@ -1,0 +1,34 @@
+{
+  "check": "resume_repository_disposal_repair",
+  "passed": true,
+  "experiment_resumed": false,
+  "regression_tests": {
+    "passed": 396,
+    "duration_seconds": 163.42
+  },
+  "final_resource_tests": {
+    "passed": 45
+  },
+  "copied_experiment": {
+    "model_calls": 0,
+    "judge_calls": 0,
+    "real_score_reused": 92.5,
+    "original_cleanup_record_preserved": true,
+    "additional_reassessment_cleanup_checks": 5,
+    "copied_directory_identities": true,
+    "source_protocol_verified": true,
+    "search_identity_updated": true,
+    "original_experiment_intact": true
+  },
+  "browser_resume": {
+    "saved_experiment_restored": true,
+    "repair_offered": true,
+    "completed_scores_repeated": 0
+  },
+  "checks": [
+    "The cleanup record retains its original completed score reference.",
+    "A recorded reassessment can reuse cleanup only for the same preserved packet and source evidence.",
+    "The repair preserves completed scores and every experiment setting.",
+    "The repair records both source protocols and supports recovery after a manifest write fails."
+  ]
+}

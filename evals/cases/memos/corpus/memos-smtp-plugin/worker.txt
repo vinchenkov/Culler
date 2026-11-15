@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "base_commit": "319a7cac949590e171ee4c1980416ecbfd51ee8a",
+      "changed_paths": [
+        "plugin/email/README.md",
+        "plugin/email/client.go",
+        "plugin/email/client_test.go",
+        "plugin/email/config.go",
+        "plugin/email/config_test.go",
+        "plugin/email/doc.go",
+        "plugin/email/email.go",
+        "plugin/email/email_test.go",
+        "plugin/email/message.go",
+        "plugin/email/message_test.go"
+      ],
+      "method": "git-source-range",
+      "result": "reconstructed",
+      "reviewed_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6",
+      "reviewed_tree": "4ab6732179eb447f874efc1e8aeb109dceb25601"
+    },
+    {
+      "exit_code": 0,
+      "name": "git diff --check",
+      "output": "",
+      "result": "pass"
+    }
+  ],
+  "explanation": [
+    {
+      "after": "The email package validates configuration and messages, then sends them through SMTP.",
+      "conditions": [
+        "The configuration needs a host, a port from 1 through 65535, and a sender address.",
+        "A message needs at least one To recipient, a subject, and a body.",
+        "Bcc recipients enter the recipient list but not the visible headers.",
+        "HTML messages use an HTML content type; other messages use plain text."
+      ],
+      "mechanism": "The client formats message headers and dispatches recipients through the SMTP library."
+    },
+    {
+      "after": "Send returns a delivery error; SendAsync starts a goroutine and logs its error.",
+      "conditions": [
+        "UseTLS true and false both call smtp.SendMail in this revision.",
+        "The package adds no durable queue, application integration, or retry protocol."
+      ],
+      "mechanism": "The SSL branch uses a TLS connection with a minimum TLS version of 1.2."
+    }
+  ],
+  "provenance": "authored_for_experiment",
+  "requirements_version": 1,
+  "role": "Worker",
+  "scope": "The case author inspected actual pinned source. No Culler Worker executed this task.",
+  "summary": "The email package validates configuration and messages, then sends them through SMTP.",
+  "task_id": 806,
+  "unverified": [
+    "No SMTP server or email delivery ran for this preparation.",
+    "The UseTLS flag alone does not establish plaintext or forced STARTTLS behavior.",
+    "The reports are authored experiment fixtures. No Culler Worker, Verifier, or Scribe executed this task."
+  ],
+  "verified_source_commit": "b55a0314f815497828eb8070ecb727f7d3fa84a6"
+}
