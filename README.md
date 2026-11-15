@@ -165,6 +165,6 @@ Just make Culler more pleasant and reliable.
 
 ## License
 
-MIT
+[MIT](LICENSE)
 
 ---
