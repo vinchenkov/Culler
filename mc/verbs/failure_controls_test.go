@@ -201,3 +201,47 @@ func TestCheckpointPreservesProjectInfrastructureAllowance(t *testing.T) {
 		t.Fatal("The checkpoint restored the task allowance before stage progress")
 	}
 }
+
+func TestOperatorClearsProjectInfrastructureFailuresBeforeTheStop(t *testing.T) {
+	db := dvSpine(t)
+	condition := func() *SystemCondition {
+		t.Helper()
+		status, err := SystemStatus(db, nil, SystemStatusRequest{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, c := range status.(SystemStatusResult).Conditions {
+			if c.ID == "infrastructure:ws-test" {
+				return &c
+			}
+		}
+		return nil
+	}
+	dvExec(t, db, `UPDATE projects SET infrastructure_failure_count=3 WHERE id='ws-test'`)
+	if c := condition(); c == nil || c.State != "stopped" || c.Action != "Resume Project infrastructure" {
+		t.Fatalf("The exhausted allowance has the wrong control: %+v", c)
+	}
+	for _, retry := range []string{"2099-01-01T00:00:00Z", "2000-01-01T00:00:00Z"} {
+		dvExec(t, db, `UPDATE projects SET infrastructure_failure_count=2,infrastructure_next_retry_at=?,infrastructure_condition='Selected model is at capacity.' WHERE id='ws-test'`, retry)
+		if c := condition(); c == nil || c.Action != "Clear failures" {
+			t.Fatalf("The counted failures have no clear control at retry time %s: %+v", retry, c)
+		}
+	}
+	before := dfInt(t, db, `SELECT COUNT(*) FROM diagnostic_events`)
+	check := ConnectionCheck{CheckID: "33333333333333333333333333333333"}
+	for range 2 {
+		if _, err := ProjectInfrastructureResume(db, nil, "ws-test", "", "", check); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if c := condition(); c != nil {
+		t.Fatalf("The cleared failures remain a condition: %+v", c)
+	}
+	if dfInt(t, db, `SELECT infrastructure_failure_count=0 AND infrastructure_next_retry_at IS NULL AND infrastructure_condition='' FROM projects WHERE id='ws-test'`) != 1 {
+		t.Fatal("The clear did not restore the Project allowance")
+	}
+	if dfInt(t, db, `SELECT COUNT(*) FROM diagnostic_events`) != before+1 ||
+		dfInt(t, db, `SELECT count_before FROM diagnostic_events WHERE event_id=? AND source='operator' AND operation='infrastructure' AND outcome='resumed'`, check.CheckID) != 2 {
+		t.Fatal("The repeated clear did not record exactly one operator event with the earlier count")
+	}
+}

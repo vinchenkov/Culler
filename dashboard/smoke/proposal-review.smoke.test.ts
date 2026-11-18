@@ -241,3 +241,37 @@ test("separate Project infrastructure resumes preserve independent task controls
   }
   expect(requests[0]).not.toBe(requests[1]);
 }, 60000);
+
+test("Clear failures removes a Project infrastructure notice before the stop", async () => {
+  const { page } = smoke;
+  const infrastructure = (result: { conditions?: Array<{ id: string; action: string }> }) =>
+    result.conditions?.find(condition => condition.id === "infrastructure:proposal-review");
+  const shown = page.waitForResponse(async response =>
+    response.url().endsWith("/api/system/status") && response.ok() && infrastructure(await response.json())?.action === "Clear failures");
+  const db = openSpine(smoke);
+  try {
+    // The retry time passed, so the condition is ready but still counts two failures.
+    db.run("UPDATE projects SET infrastructure_failure_count=2,infrastructure_next_retry_at='2000-01-01T00:00:00Z',infrastructure_last_failed_run_id=NULL,infrastructure_condition='Selected model is at capacity.' WHERE id='proposal-review'");
+  } finally { db.close(); }
+  await shown;
+  const notices = page.getByTestId("system-notices");
+  const review = notices.getByRole("button", { name: "Review issues" });
+  const scope = await review.isVisible() ? (await review.click(), page.getByRole("dialog", { name: "System issues" })) : notices;
+  const row = scope.locator('[data-condition-id="infrastructure:proposal-review"]').first();
+  expect(await row.innerText()).toContain("2 consecutive failures.");
+  expect(await row.innerText()).not.toContain("wait for the retry time");
+  await page.screenshot({ path: evidencePath("proposal-review/clear-infrastructure-failures.png") });
+  const cleared = page.waitForResponse(async response =>
+    response.url().endsWith("/api/system/status") && response.ok() && !infrastructure(await response.json()));
+  const request = page.waitForResponse("**/api/system/resume-infrastructure");
+  await row.getByRole("button", { name: "Clear failures", exact: true }).click();
+  expect((await request).ok()).toBe(true);
+  await cleared;
+  const current = openSpine(smoke);
+  try {
+    expect(current.query("SELECT infrastructure_failure_count,infrastructure_next_retry_at FROM projects WHERE id='proposal-review'").get())
+      .toEqual({ infrastructure_failure_count: 0, infrastructure_next_retry_at: null });
+  } finally { current.close(); }
+  await page.waitForFunction(() => !document.querySelector('[data-testid="system-notices"] [data-condition-id="infrastructure:proposal-review"]'));
+  expect(smoke.browserLog.filter(line => line.startsWith("pageerror:"))).toEqual([]);
+}, 60000);

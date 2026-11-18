@@ -3,7 +3,7 @@ import { taskRuns } from "./board.js";
 import { createRoleCustomization, customizationRole } from "./customization.js";
 import { createEvaluationControl } from "./evaluation.js";
 import { createRequests, isReadRequest } from "./requests.js";
-import { systemIssues, affectedProposalNodes, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, systemActionButton, systemConditionNodes, systemNoticeNode, actionControl, repairText, conditionSummary, conditionImpact, conditionFacts, profileName, conditionExplanation, conditionRetry, diagnosticResults, refreshSummary, releaseView } from "./systemhealth.js";
+import { systemIssues, affectedProposalNodes, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, systemActionButton, systemConditionNodes, systemNoticeNode, actionControl, needsAttention, repairText, conditionSummary, conditionImpact, conditionFacts, profileName, conditionExplanation, conditionRetry, diagnosticResults, refreshSummary, releaseView } from "./systemhealth.js";
 // The dashboard shell reads command results and renders the visible page.
 // Each project page uses the selected Project.
 
@@ -3032,7 +3032,7 @@ async function systemAction(condition) {
     }
     if (condition.action === "Retry connection") await api("/api/connection/retry", { method: "POST", body: JSON.stringify({connection_id:condition.connection_id,check_id:requestID}) });
     else if (condition.connection_id) await agentProfiles.repair(condition.connection_id, condition.action, condition.profile_id, condition.provider_error_code);
-    else if (condition.action === "Resume Project infrastructure") {
+    else if (condition.action === "Resume Project infrastructure" || condition.action === "Clear failures") {
       await api("/api/system/resume-infrastructure", {
         method: "POST", body: JSON.stringify({ project_id: condition.project_id, request_id: requestID }),
       });
@@ -3122,9 +3122,9 @@ function renderDiagnosticState() {
     lastKnown && affectedProposalNodes(lastKnown, condition => {
       diagnosticDialog.dialog.close(); return systemAction(condition);
     }),
-    lastKnown && lastKnown.state !== "ready" && repairText(lastKnown) && el("p", { class: "system-repair-text", text: repairText(lastKnown) }),
+    lastKnown && needsAttention(lastKnown) && repairText(lastKnown) && el("p", { class: "system-repair-text", text: repairText(lastKnown) }),
     el("div", { class: "system-repair" },
-      lastKnown && lastKnown.state !== "ready" && actionControl(lastKnown) && systemActionButton(lastKnown,
+      lastKnown && needsAttention(lastKnown) && actionControl(lastKnown) && systemActionButton(lastKnown,
         condition => { diagnosticDialog.dialog.close(); return systemAction(condition); }),
       diagnosticButton({ ...conditionDiagnostic(detail, systemView.unavailable),
         ...(!known && !systemView.unavailable ? { state: "Issue cleared" } : {}) }, askDiagnostic),

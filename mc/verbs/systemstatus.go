@@ -261,7 +261,7 @@ func SystemStatus(db *sql.DB, id *RunIdentity, a SystemStatusRequest) (any, erro
 		return nil, err
 	}
 	for rows.Next() {
-		c := SystemCondition{Group: "execution", Action: "View details", State: "retry_wait"}
+		c := SystemCondition{Group: "execution", Action: "Clear failures", State: "retry_wait"}
 		var reason string
 		if err := rows.Scan(&c.ProjectID, &c.Name, &c.FailureCount, &c.NextRetryAt, &c.RunID, &c.DiagnosticID, &reason, &c.LatestFailureAt); err != nil {
 			rows.Close()

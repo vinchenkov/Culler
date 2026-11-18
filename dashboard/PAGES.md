@@ -355,6 +355,8 @@ The resident availability display separates current availability from historical
 The Board shows the selected Project's consecutive Strategist failures.
 The third consecutive failure stops proposal runs for that Project.
 **Resume Project infrastructure** requires a usable connection and preserves pipeline pauses.
+A Project infrastructure notice with one or two counted failures offers **Clear failures**, also after its retry time.
+**Clear failures** resets the count and the retry time of that Project and preserves pipeline pauses.
 The failed Collie reply retains its partial text and offers **Retry reply**.
 An old or unavailable reply state displays an explicit status instead of an indefinite activity indicator.
 

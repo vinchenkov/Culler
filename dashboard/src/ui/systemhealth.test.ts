@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { systemIssues, acceptSystemStatus, actionControl, conditionTitle, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, DEPLOYMENT_CHECK_MS, diagnosticResults, refreshSummary, conditionExplanation, conditionRetry, conditionSummary, conditionImpact, recoveryText, releaseLabel, releaseView, repairText } from "./systemhealth.js";
+import { systemIssues, acceptSystemStatus, actionControl, conditionTitle, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, DEPLOYMENT_CHECK_MS, diagnosticResults, refreshSummary, conditionExplanation, conditionRetry, conditionSummary, conditionImpact, needsAttention, recoveryText, releaseLabel, releaseView, repairText } from "./systemhealth.js";
 
 test("one shared decision represents its task blocks and preserves the full question", () => {
   const decision = { id: "proposal-decision:4", project_id: "project", proposal_decision_id: 4,
@@ -396,6 +396,20 @@ test("A condition without a dashboard control shows its repair action as text", 
   expect(actionControl({ ...agentsview, action: "" })).toBe(false);
 });
 
+test("Project infrastructure failures before the stop offer Clear failures after the retry time", () => {
+  const failures = { id: "infrastructure:alpha", group: "execution", state: "retry_wait", name: "Alpha", failure_count: 2, action: "Clear failures",
+    condition: "Project infrastructure: 2 counted failures. Selected model is at capacity." };
+  for (const condition of [failures, { ...failures, state: "ready" }]) {
+    expect(actionControl(condition)).toBe(true);
+    expect(repairText(condition)).toBe("");
+    expect(needsAttention(condition)).toBe(true);
+    expect(conditionExplanation(condition)).toBe(failures.condition);
+    expect(systemIssues([condition])).toEqual([condition]);
+  }
+  expect(conditionImpact(failures)).toBe("2 consecutive failures. New agent runs wait for the retry time.");
+  expect(conditionImpact({ ...failures, state: "ready" })).toBe("2 consecutive failures.");
+  expect(needsAttention({ id: "connection:c:token_refresh:", group: "connections", state: "ready" })).toBe(false);
+});
 
 test("network notices distinguish delay, eligibility, and an active attempt", () => {
   const base = { group: "connections", state: "retry_wait", profile_id: "review", retry_phase: "delay" };

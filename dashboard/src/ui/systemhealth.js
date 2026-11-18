@@ -251,7 +251,7 @@ export function conditionSummary(condition) {
 
 /** The actions that a dashboard control carries out. Each other action is an
  * instruction for the operator, and the page shows it as text. */
-const CONTROL_ACTIONS = new Set(["Retry connection", "Reconnect", "Update credential", "Replace API key", "Review connection", "Resume Project infrastructure", "Resolve proposal decision", "Retry reply", "Open task"]);
+const CONTROL_ACTIONS = new Set(["Retry connection", "Reconnect", "Update credential", "Replace API key", "Review connection", "Resume Project infrastructure", "Clear failures", "Resolve proposal decision", "Retry reply", "Open task"]);
 
 export function connectionTestAvailable(condition) {
   return condition?.group === "connections" && Boolean(condition.connection_id && condition.profile_id) &&
@@ -305,7 +305,8 @@ export function conditionImpact(condition) {
   }
   if (condition.proposal_decision_id) return "Project proposal work waits for this decision. Assigned task work follows the other Project controls.";
   if (condition.id?.startsWith("infrastructure:")) {
-    return `${condition.failure_count} consecutive failures.${condition.state === "stopped" ? " New agent runs require your attention." : " New agent runs wait for the retry time."}`;
+    const next = { stopped: " New agent runs require your attention.", retry_wait: " New agent runs wait for the retry time." }[condition.state] ?? "";
+    return `${condition.failure_count} consecutive failures.${next}`;
   }
   if (condition.attempt_id) return "Your message remains in the conversation.";
   if (condition.task_id && condition.project_priority) return `Task #${condition.task_id} prevents new work in Project ${condition.project_id}. You must address this task before unrelated Project work can continue. This priority hold is independent of an explicit pause or the three-task attention threshold.`;
@@ -335,8 +336,13 @@ export function affectedProposalNodes(condition, action) {
         onclick: () => action({ action: "Open task", id: `task:${task.task_id}`, task_id: task.task_id, project_id: condition.project_id }) })))));
 }
 
+/** A ready connection works. A Project infrastructure condition remains an issue while it has counted failures. */
+export function needsAttention(condition) {
+  return condition.state !== "ready" || Boolean(condition.id?.startsWith("infrastructure:"));
+}
+
 export function systemConditionNode(condition, action, details, discuss = null) {
-  const ready = condition.state === "ready";
+  const ready = !needsAttention(condition);
   const unused = condition.group === "connections" && condition.state === "unknown" && !condition.roles?.length && !condition.diagnostic_id;
   return el("article", { class: `system-condition${ready ? " is-ready" : unused ? " is-unused" : " needs-attention"}`, "data-condition-id": condition.id },
     el("div", { class: "system-condition-copy" },
@@ -355,7 +361,7 @@ export function systemConditionNode(condition, action, details, discuss = null) 
 }
 
 export function systemConditionNodes(conditions, action, details, discuss = null) {
-  return [...conditions].sort((a, b) => Number(a.state === "ready") - Number(b.state === "ready"))
+  return [...conditions].sort((a, b) => Number(!needsAttention(a)) - Number(!needsAttention(b)))
     .map(condition => systemConditionNode(condition, action, details, discuss));
 }
 
@@ -400,7 +406,7 @@ const NETWORK_ERRORS = {
 };
 
 export function conditionExplanation(condition) {
-  if (condition.state === "ready") return "";
+  if (!needsAttention(condition)) return "";
   if (condition.provider_error_code === "invalid_grant") return "The provider rejected the credential refresh.";
   if (condition.network_error) return `${NETWORK_ERRORS[condition.network_error] || "The request failed"}. ${condition.profile_id ? "The earlier model request did not complete." : "The connection check did not complete."}`;
   if (condition.group === "connections") {
