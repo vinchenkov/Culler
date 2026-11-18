@@ -62,6 +62,8 @@ One packet for each decision.
 
 **Discord Integration.** Keep in tandem when you're away from your work device. Talk with Collie from Discord and get alerts about blocked tasks. Optional.
 
+![A walkthrough of the Culler dashboard: the Board, a review packet, Collie, the Pipeline page, AgentsView, and OpenWiki](docs/dashboard-light.gif)
+
 ---
 
 ## Quick Install
@@ -136,21 +138,19 @@ Culler allows for the following at the moment:
 
 For v1 the targets are:
 
+#### Worksources and MCPs
+
+Give agents the ability to query data from additional services.
+
+Instead of seeding work only from your Vision, also use connected data sources such as Github Issues, Linear, Gmail etc. that act as *Worksources*.
+
+Have Scribe use these supplemental data sources to help curate the project's OpenWiki knowledgebase over time to better develop strategy.
+
 #### More effective agents
 
 Particularly Strategist/Arbiter and Packager provide most of Culler's distinct agent value.
 
 Benchmark and run GEPA ([https://github.com/gepa-ai/gepa](https://github.com/gepa-ai/gepa)) optimization against each agent's directive.
-
-#### Connectors and MCPs
-
-Give agents the ability to query data and leverage capabilities from additional services.
-
-#### Worksources
-
-Allow Strategist to seed work from said connected data sources, such as Gmail, Slack, Linear, etc.
-
-Have Scribe use supplemental data sources to help curate the project's OpenWiki knowledgebase over time to better develop strategy.
 
 #### Pluggable custom agent roles
 
@@ -168,3 +168,7 @@ Just make Culler more pleasant and reliable.
 [MIT](LICENSE)
 
 ---
+
+
+
+Have Scribe use these supplemental data sources to help curate the project's OpenWiki knowledgebase over time to better develop strategy.
