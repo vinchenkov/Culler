@@ -166,7 +166,7 @@ Each reference stays after a failed wiki update.
 The temporary repositories of tasks and the temporary repositories of wiki updates use separate folders.
 The temporary disk limit applies to each folder.
 
-Culler merges each accepted wiki commit into `culler` with no review packet and no operator decision.
+S-Horizon merges each accepted wiki commit into `culler` with no review packet and no operator decision.
 The merge uses capture, the merge candidate step, the merge, and receipt recovery, as the merge of a task does.
 One merge lane serves each Project, so a merge step of a task and a merge step of a wiki commit run at different times.
 A due merge step of a task starts before a merge step of a wiki commit.
@@ -177,14 +177,14 @@ The merge candidate step applies the scope check to the merge candidate of a wik
 The scope check compares the merge candidate with its destination commit in the temporary repository of that step.
 No agent writes that repository.
 The [OpenWiki integration guide](runner/openwiki/README.md) states the rules of the scope check.
-Culler retains a merge candidate only after it passes the scope check.
+S-Horizon retains a merge candidate only after it passes the scope check.
 The merge of a wiki commit thus changes no path of `culler` outside `openwiki/`.
 
 These conditions end a wiki update as failed, and `culler` stays unchanged:
 
-- A conflict in the merge candidate step. Culler discards the wiki commit.
-- A `culler` branch that does not hold the start commit. Culler discards the wiki commit.
-- A merge candidate that fails the scope check. Culler discards the wiki commit.
+- A conflict in the merge candidate step. S-Horizon discards the wiki commit.
+- A `culler` branch that does not hold the start commit. S-Horizon discards the wiki commit.
+- A merge candidate that fails the scope check. S-Horizon discards the wiki commit.
 - A Git refusal in the operator checkout.
 
 While receipt recovery cannot prove the result of the merge of a wiki commit, the wiki update stays active.

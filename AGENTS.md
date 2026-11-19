@@ -2,16 +2,17 @@
 
 Rules for the coding agents that work in this repository.
 
-- A **host agent** runs on the operator's Mac, outside Culler.
-- A **pipeline agent** is a Culler role that develops this repository as a Culler Project, in an agent container.
+- A **host agent** runs on the operator's Mac, outside S-Horizon.
+- A **pipeline agent** is an S-Horizon role that develops this repository as an S-Horizon Project, in an agent container.
 
 Each rule applies to both kinds of agent unless its section names one.
 
-## Culler
+## S-Horizon
 
-Culler is a local-first orchestration system for AI coding agents with one human operator.
+S-Horizon is a local-first orchestration system for AI coding agents with one human operator.
 It deploys onto one Mac and runs unattended.
 The **spine** is the one SQLite database of a deployment. It is the message bus and the ground truth.
+`mc`, `spine`, and the `MC_*` environment names are internal engineering codenames and do not change. Brand identifiers that still read `culler` (the CLI command, `~/.culler`, `com.culler.*`, the worktree path) are the current reality until the R2 identifier migration lands.
 
 - `mc/`: the Go command-line interface (CLI) `mc`. It owns dispatch, control, and the spine.
 - `resident/`: the Bun host daemon. It runs the dispatch tick and starts agent containers.
@@ -23,7 +24,7 @@ The **spine** is the one SQLite database of a deployment. It is the message bus 
 The Strategist proposes tasks, and the Arbiter promotes one proposal.
 The Worker, the Verifier, and the Packager then take the task to a review packet for the operator.
 The Scribe updates `openwiki/`. Collie is the conversational agent of the operator. The setup agent prepares a Project environment.
-`VISION.md` is the North Star of this repository as a Culler Project.
+`VISION.md` is the North Star of this repository as an S-Horizon Project.
 
 ## Read the wiki for architecture
 
@@ -39,7 +40,7 @@ Start at `openwiki/quickstart.md` for the components and the vocabulary. Then re
 | Checks, test lanes, CI jobs | `openwiki/tests/checks-and-test-lanes.md` |
 
 The Scribe writes the wiki from the accepted commit, so a page can lag the code. When they disagree, the code is correct.
-Only the Scribe maintains `openwiki/`. Culler rejects a task submission that changes it.
+Only the Scribe maintains `openwiki/`. S-Horizon rejects a task submission that changes it.
 
 These guides hold the subsystem contracts:
 
@@ -105,7 +106,7 @@ Run an opt-in lane when your change touches what the lane proves:
 
 ## Deployments
 
-`MC_HOME` names the deployment home. When `MC_HOME` is unset, Culler uses `~/.culler`, the production home.
+`MC_HOME` names the deployment home. When `MC_HOME` is unset, S-Horizon uses `~/.culler`, the production home.
 
 | Tier | Install | Update |
 |---|---|---|
@@ -117,7 +118,7 @@ Run an opt-in lane when your change touches what the lane proves:
 - `./redeploy.sh` builds the working tree, with uncommitted edits, and labels the release with the `HEAD` commit. It activates launchd. When the deployed spine has a different schema, it stops and keeps the spine. `--reset-database` replaces the spine with an empty spine after the operator types a confirmation.
 - `./redeploy-dashboard.sh` moves only the live dashboard to the files committed at `HEAD`. A change that needs a new `mc` verb or a new manifest file needs `./redeploy.sh`.
 - `MC_HOME=<home> ./dev-reset.sh --confirm` destroys the spine and the run data of that production-tier deployment, keeps the credentials and the configuration, and activates launchd again. It refuses to run without `MC_HOME`. `--rebuild` rebuilds the host `mc` and the image at `HEAD` as a matched pair. After a schema change, it cannot reset the spine; use `./redeploy.sh --reset-database`.
-- `./uninstall.sh` removes every Culler installation that it finds, production included, and every `mc-managed` container. `--keep-data` keeps the deployment and Project data. `--dry-run` shows the plan.
+- `./uninstall.sh` removes every S-Horizon installation that it finds, production included, and every `mc-managed` container. `--keep-data` keeps the deployment and Project data. `--dry-run` shows the plan.
 - Never load launchd during development. Run `redeploy.sh`, `dev-reset.sh`, and `uninstall.sh` only when the operator asks and is present.
 
 ## Invariants
@@ -152,7 +153,7 @@ Run an opt-in lane when your change touches what the lane proves:
 
 ## Pipeline agents in this repository
 
-- The `mc` on `PATH` belongs to the deployed Culler. Use it only for your role commands. Build and test the `mc` and the dashboard of the checkout.
+- The `mc` on `PATH` belongs to the deployed S-Horizon. Use it only for your role commands. Build and test the `mc` and the dashboard of the checkout.
 - The checks above run unchanged in an agent container. A test that needs a host resource skips there, and `mc/test.sh` names it `UNVERIFIED`. The `*_darwin_test.go` files need macOS.
 - A check passes when its command exits zero. Its skipped tests remain unverified.
 - The Verifier preserves each `UNVERIFIED` entry in the evidence file for the operator.

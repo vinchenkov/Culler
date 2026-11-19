@@ -1,8 +1,10 @@
 # Changelog
 
-This file holds one section for each Culler version, from the newest version to the oldest version.
+This file holds one section for each S-Horizon version, from the newest version to the oldest version.
 The release workflow copies the section of a new version into the description of its GitHub release.
 The [installation guide](INSTALL.md#versions) gives the version rules.
+
+**Fork identity.** S-Horizon is a fork of Culler (MIT, Vincent Santos). The 0.1.0 section below is the upstream origin, kept as historical record. Per the fork's version-lineage decision (O8), S-Horizon restarts its own version series at v0.1.0 with no compatibility layer to upstream releases.
 
 ## 0.1.0
 

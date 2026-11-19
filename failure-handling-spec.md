@@ -1,4 +1,4 @@
-# Culler failure specification
+# S-Horizon failure specification
 
 ## Purpose and scope
 
@@ -232,7 +232,7 @@ A wiki update run and each other run share the connection state of their agent p
 The diagnostic history retains each reported failure of a wiki update run.
 The Scribe role detail on the Pipeline page of the dashboard shows the result and the cause of the last wiki update.
 
-While Culler cannot prove the result of the merge of a wiki commit, the wiki update stays active.
+While S-Horizon cannot prove the result of the merge of a wiki commit, the wiki update stays active.
 Each merge step of the Project then waits for the repair of the operator checkout.
 A merge step of a task that waits holds no new agent run.
 System health of the dashboard states the condition and the repair.
