@@ -92,6 +92,8 @@ func RequestFields(name string) []Field {
 		return []Field{changes}
 	case "agent-profile models":
 		return []Field{textField("connection_id", "The configured connection identifier.", true)}
+	case "agent-profile delete":
+		return []Field{textField("id", "The agent profile identifier.", true), revision, field("confirm", "boolean", "Confirm deletion of this agent profile.", true)}
 	case "agent-profile save":
 		return profileFields(true)
 	case "agent-profile operation-start":
@@ -202,6 +204,9 @@ func validateRequest(args []string, body []byte, host bool) error {
 		if value["confirm_spend"] != true || value["profile"] == nil {
 			return fmt.Errorf("A model test requires a profile and explicit expenditure authorization.")
 		}
+	}
+	if d.Name() == "agent-profile delete" && value["confirm"] != true {
+		return fmt.Errorf("Confirm deletion of the agent profile.")
 	}
 	if d.Name() == "project setup-save" && value["confirm_access"] != true {
 		return fmt.Errorf("Project registration requires explicit access confirmation.")

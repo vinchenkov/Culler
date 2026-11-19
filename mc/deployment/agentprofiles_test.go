@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strings"
 	"testing"
@@ -374,5 +375,52 @@ func TestAgentProfileCatalogOffersBothSubscriptionIntegrations(t *testing.T) {
 	}
 	if _, err := AgentConnectionSave(home, AgentConnectionRequest{SubmissionID: "copy", Revision: claude.Revision, Name: "Copy", TemplateID: codex.ConnectionID}); err == nil || !strings.Contains(err.Error(), "supported connection") {
 		t.Fatalf("An operator connection became a subscription integration: %v", err)
+	}
+}
+
+func TestAgentProfileDeleteChecksRevisionAndAssignments(t *testing.T) {
+	home := agentProfileTestHome(t)
+	cfg := readDeleteConfig(t, home)
+	cfg.Runtimes.EnabledBindings = []string{"claude", "spare"}
+	cfg.Runtimes.Bindings["spare"] = cfg.Runtimes.Bindings["claude"]
+	if _, err := operatorconfig.WriteAtomic(filepath.Join(home, "config.toml"), cfg); err != nil {
+		t.Fatal(err)
+	}
+	table, err := routing.UniformTable("claude", routing.RegistryFromRuntimes(cfg.Runtimes))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct {
+		id, revision, routes, message string
+		confirm                       bool
+	}{
+		{"spare", agentProfileRevision(cfg), table.Markdown(), "Confirm deletion", false},
+		{"spare", "old", table.Markdown(), "configuration changed", true},
+		{"missing", agentProfileRevision(cfg), table.Markdown(), "unavailable", true},
+		{"claude", agentProfileRevision(cfg), table.Markdown(), "Collie", true},
+		{"spare", agentProfileRevision(cfg), "invalid routes", "cannot read", true},
+	} {
+		if err := os.WriteFile(filepath.Join(home, "routing.md"), []byte(tc.routes), 0600); err != nil {
+			t.Fatal(err)
+		}
+		_, err := AgentProfileDelete(home, AgentProfileDeleteRequest{ID: tc.id, Revision: tc.revision, Confirm: tc.confirm})
+		if err == nil || !strings.Contains(err.Error(), tc.message) {
+			t.Fatalf("Delete %q returned %v, want %q.", tc.id, err, tc.message)
+		}
+		if !reflect.DeepEqual(readDeleteConfig(t, home), cfg) {
+			t.Fatal("The refused deletion changed the configuration.")
+		}
+	}
+	if err := os.WriteFile(filepath.Join(home, "routing.md"), []byte(table.Markdown()), 0600); err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := AgentProfileDelete(home, AgentProfileDeleteRequest{ID: "spare", Revision: agentProfileRevision(cfg), Confirm: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	delete(cfg.Runtimes.Bindings, "spare")
+	cfg.Runtimes.EnabledBindings = []string{"claude"}
+	if catalog.Revision != agentProfileRevision(cfg) || !reflect.DeepEqual(readDeleteConfig(t, home), cfg) {
+		t.Fatal("A profile deletion must remove only the selected profile.")
 	}
 }

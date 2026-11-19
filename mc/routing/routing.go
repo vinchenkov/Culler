@@ -4,13 +4,29 @@ package routing
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
+	"syscall"
 
 	operatorconfig "mc/config"
 )
 
 var requiredRoles = []string{
 	"strategist", "arbiter", "worker", "verifier", "scribe", "packager", "collie",
+}
+
+// LockAssignments serializes role assignments with profile deletion. Close the file to release the lock.
+func LockAssignments(home string) (*os.File, error) {
+	lock, err := os.OpenFile(filepath.Join(home, "routing.lock"), os.O_CREATE|os.O_RDWR|syscall.O_NOFOLLOW, 0600)
+	if err != nil {
+		return nil, err
+	}
+	if err := syscall.Flock(int(lock.Fd()), syscall.LOCK_EX); err != nil {
+		lock.Close()
+		return nil, err
+	}
+	return lock, nil
 }
 
 // Roles returns the routed roles in table order.

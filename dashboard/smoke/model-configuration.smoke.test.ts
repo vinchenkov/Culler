@@ -415,3 +415,36 @@ test("effort survives edit and save and each change requires a new model test", 
   await page.waitForFunction(() => !(document.querySelector('[data-testid="profile-save"]') as HTMLButtonElement)?.disabled);
   expect(tests[2]).not.toHaveProperty("effort");
 }, 30000);
+
+test("the operator can keep or delete an unassigned agent profile", async () => {
+  const { page } = smoke;
+  const before = await mc(["agent-profile", "list"]);
+  const profile = before.profiles.find((row: any) => row.id === "claude");
+  await page.getByTestId("tab-pipeline").click();
+  await page.getByTestId("pipeline-profiles").click();
+  const remove = page.getByRole("button", { name: `Delete agent profile ${profile.name}`, exact: true });
+  await remove.click();
+  await page.getByRole("button", { name: "Keep agent profile" }).click();
+  expect((await mc(["agent-profile", "list"])).revision).toBe(before.revision);
+  await remove.click();
+  const confirm = page.getByRole("button", { name: "Delete agent profile", exact: true });
+  await mc(["routing", "set", "--role", "worker", "--binding", profile.id, "--expected", "fake"]);
+  await confirm.click();
+  await page.getByText("Assign Worker to another agent profile first.", { exact: true }).waitFor();
+  expect((await mc(["agent-profile", "list"])).revision).toBe(before.revision);
+  await page.getByTestId("profile-close").click();
+  await page.getByTestId("pipeline-profiles").click();
+  await remove.click();
+  await page.getByText("Assign Worker to another agent profile first.", { exact: true }).waitFor();
+  expect(await confirm.count()).toBe(0);
+  await mc(["routing", "set", "--role", "worker", "--binding", "fake", "--expected", profile.id]);
+  await page.getByTestId("profile-close").click();
+  await page.getByTestId("pipeline-profiles").click();
+  await remove.click();
+  await confirm.click();
+  await page.getByTestId("profile-notice").filter({ hasText: `Culler deleted the agent profile ${profile.name}.` }).waitFor();
+  expect(await remove.count()).toBe(0);
+  const after = await mc(["agent-profile", "list"]);
+  expect(after.profiles.filter((row: any) => row.enabled)).toEqual(before.profiles.filter((row: any) => row.enabled && row.id !== profile.id));
+  expect(after.connections).toEqual(before.connections);
+}, 30000);

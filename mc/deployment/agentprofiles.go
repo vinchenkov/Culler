@@ -35,6 +35,12 @@ type AgentProfileRequest struct {
 	TestID       string `json:"test_id"`
 }
 
+type AgentProfileDeleteRequest struct {
+	ID       string `json:"id"`
+	Revision string `json:"revision"`
+	Confirm  bool   `json:"confirm"`
+}
+
 type AgentConnectionRequest struct {
 	SubmissionID    string `json:"submission_id"`
 	Revision        string `json:"revision"`
@@ -349,6 +355,52 @@ func ResolveAgentProfile(home string, req AgentProfileRequest) (RuntimeCatalog, 
 	}
 	cfg.Runtimes.Bindings[id] = b
 	return CatalogFromRuntimes(cfg.Runtimes), id, nil
+}
+
+func AgentProfileDelete(home string, request AgentProfileDeleteRequest) (AgentProfileCatalog, error) {
+	if !request.Confirm {
+		return AgentProfileCatalog{}, fmt.Errorf("Confirm deletion of the agent profile.")
+	}
+	lock, err := routing.LockAssignments(home)
+	if err != nil {
+		return AgentProfileCatalog{}, err
+	}
+	defer lock.Close()
+	_, err = operatorconfig.UpdateAtomic(filepath.Join(home, "config.toml"), func(cfg *operatorconfig.Config) error {
+		if request.Revision != agentProfileRevision(*cfg) {
+			return fmt.Errorf("The configuration changed. Refresh the agent profiles and retry.")
+		}
+		if _, ok := cfg.Runtimes.Bindings[request.ID]; !ok {
+			return fmt.Errorf("The agent profile is unavailable. Refresh the agent profiles.")
+		}
+		roles, err := agentProfileRoles(home, *cfg)
+		if err != nil {
+			return fmt.Errorf("Culler cannot read the role assignments. Check the assignments before you delete the agent profile.")
+		}
+		if assigned := roles[request.ID]; len(assigned) != 0 {
+			for i, role := range assigned {
+				assigned[i] = strings.ToUpper(role[:1]) + role[1:]
+			}
+			return fmt.Errorf("Assign %s to another agent profile first.", strings.Join(assigned, ", "))
+		}
+		removeAgentProfile(cfg, request.ID, operatorconfig.Default().Runtimes)
+		return cfg.Validate()
+	})
+	if err != nil {
+		return AgentProfileCatalog{}, err
+	}
+	return AgentProfileList(home)
+}
+
+// Setup uses the disabled template after the operator deletes a profile that used its identifier.
+func removeAgentProfile(cfg *operatorconfig.Config, id string, template operatorconfig.Runtimes) {
+	cfg.Runtimes.EnabledBindings = slices.DeleteFunc(cfg.Runtimes.EnabledBindings, func(enabled string) bool { return enabled == id })
+	reference, ok := template.Bindings[id]
+	if _, defined := cfg.Runtimes.Credentials[reference.Credential]; ok && defined {
+		cfg.Runtimes.Bindings[id] = reference
+	} else {
+		delete(cfg.Runtimes.Bindings, id)
+	}
 }
 
 func saveAgentProfile(home string, req AgentProfileRequest) (AgentProfileCatalog, error) {

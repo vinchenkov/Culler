@@ -2015,7 +2015,10 @@ The panel lists only enabled agent profiles.
 The profile count counts only the listed agent profiles.
 The panel shows compact rows with the model identifier as the main label.
 Each row shows its connection access and role use.
-Each row offers **Edit**.
+Each row offers **Edit** and **Delete**.
+**Delete** names the agent profile and asks for confirmation.
+If a role uses the profile, the panel lists the roles to reassign first.
+Deletion preserves the connection and the other profiles that use it.
 **Details** reveals the connection, its current access, and the effort.
 Each profile row and assignment choice shows its effort.
 

@@ -169,6 +169,9 @@ func definitions() []Definition {
 	d = request(result(add("config save", "Replace selected settings with expected-value checks.", true, true, nil), "settings"), 64*1024)
 	d.Requirements = []string{"Each change supplies key, value, and expected. The current value matches expected or value."}
 	result(add("agent-profile list", "Read profiles, connections, live model availability, and the configuration revision.", false, true, nil), "revision", "profiles", "connections", "providers", "integrations", "opencode")
+	d = request(result(add("agent-profile delete", "Delete an unassigned agent profile and keep its connection.", true, true, nil), "revision", "profiles", "connections"), 64*1024)
+	d.Requirements = []string{"The operator confirms the profile identifier and the current catalog revision. Reassign each role that uses the profile before deletion.", "Setup templates return to their disabled defaults."}
+	d.StatusRead = "mc agent-profile list"
 	for _, action := range []string{"models", "save", "operation-start", "operation-status", "operation-cancel"} {
 		d = request(result(add("agent-profile "+action, profilePurpose(action), action == "save" || action == "operation-start" || action == "operation-cancel", true, nil), "operation_id", "status"), 64*1024)
 		if action == "operation-start" {

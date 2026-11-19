@@ -1472,7 +1472,7 @@ describe("packet change data", () => {
 });
 
 test("only the connection form accepts an API key", async () => {
-  for (const action of ["models", "save", "connection-delete", "operation-start", "operation-status", "operation-cancel"]) {
+  for (const action of ["models", "save", "delete", "connection-delete", "operation-start", "operation-status", "operation-cancel"]) {
     const mc = new FakeMc();
     const response = await handleApi(...apiReq("POST", `/api/agent-profiles/${action}`, { api_key:"synthetic-private-key" }), deps({mc}));
     expect(response?.status).toBe(400);

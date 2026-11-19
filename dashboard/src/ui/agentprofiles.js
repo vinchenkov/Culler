@@ -551,10 +551,40 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
         catalog.connections.filter(source => source.authorization_id).map(source => el("section", { class: "profile-card", testid: `profile-connection-${source.id}` },
           el("h3", { text: source.name || source.id }),
           note(accessLabel(source.access_status)),
-          button("Delete", () => { deleteID = source.id; view = "delete"; notice = ""; error = ""; render(); }, `profile-delete-${source.id}`)))),
+          button("Delete", () => startDelete("delete-connection", source.id), `profile-delete-${source.id}`)))),
     );
   }
-  function deleteNode() {
+  function startDelete(nextView, id) {
+    deleteID = id;
+    view = nextView;
+    notice = "";
+    error = "";
+    render();
+  }
+  function deleteProfileNode() {
+    const profile = catalog.profiles.find(row => row.id === deleteID);
+    if (!profile) return button("All agent profiles", showList, "profile-list");
+    const name = profile.name || profile.id;
+    const roles = (profile.roles || []).map(title);
+    const revision = catalog.revision;
+    return el("section", {},
+      el("h3", { text: `Delete agent profile ${name}?` }),
+      note(roles.length
+        ? `Assign ${roles.join(", ")} to another agent profile first.`
+        : `Culler keeps the connection ${profile.connection_name || profile.connection_id} and its other agent profiles.`),
+      actionsNode(button(roles.length ? "Back" : "Keep agent profile", showList, "profile-keep"),
+        !roles.length && button("Delete agent profile", () => perform(async () => {
+          const serial = generation;
+          const result = await post("delete", { id: profile.id, revision, confirm: true });
+          onConnectionChanged?.();
+          if (serial !== generation) return;
+          catalog = result;
+          expandedProfiles.delete(profile.id);
+          notice = `Culler deleted the agent profile ${name}.`;
+          showList();
+        }), "profile-delete-submit", false, PRIMARY)));
+  }
+  function deleteConnectionNode() {
     const source = catalog.connections.find(row => row.id === deleteID);
     if (!source) return button("All agent profiles", showList, "profile-list");
     const profiles = (catalog.profiles || []).filter(profile => profile.connection_id === source.id);
@@ -619,7 +649,8 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
           onclick: () => { if (expanded) expandedProfiles.delete(profile.id); else expandedProfiles.add(profile.id); render(); },
         }, "Details", svg("svg", { viewBox: "0 0 16 16", "aria-hidden": "true", width: 14, height: 14 },
           svg("path", { d: "m4 6 4 4 4-4", fill: "none", stroke: "currentColor", "stroke-width": 1.5, "stroke-linecap": "round", "stroke-linejoin": "round" }))),
-        el("div", { class: "profile-edit-actions" }, edit, reconnectButton)),
+        el("div", { class: "profile-edit-actions" }, edit, reconnectButton,
+          button("Delete", () => startDelete("delete-profile", profile.id), `profile-remove-${profile.id}`, false, { "aria-label": `Delete agent profile ${profileName}` }))),
       el("dl", { class: "profile-details", id: detailsID, hidden: !expanded },
         el("dt", { text: "Connection" }), el("dd", { text: connectionName }),
         el("dt", { text: "Connection access" }), el("dd", { text: status.label }),
@@ -1088,7 +1119,11 @@ export function createAgentProfiles({ api, onAssigned, systemState, onConnection
       repairNode(),
       view === "test" ? el("section", {}, el("h3", { text: draft.name }),
         actionsNode(button("Test model", () => perform(() => startOperation("model_test", draft.connection_id)), "profile-test", operationActive())))
-        : view === "repair" ? null : view === "delete" ? deleteNode() : view === "create" ? createNode() : view === "assign" ? assignmentNode() : listNode(),
+        : view === "repair" ? null
+        : view === "delete-profile" ? deleteProfileNode()
+        : view === "delete-connection" ? deleteConnectionNode()
+        : view === "create" ? createNode()
+        : view === "assign" ? assignmentNode() : listNode(),
       view === "repair" ? button("All agent profiles", showList, "profile-list") : null,
     );
     const actions = body.querySelector(".profile-step-actions");

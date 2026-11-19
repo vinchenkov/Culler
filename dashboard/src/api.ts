@@ -663,7 +663,7 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
   if (path === "/api/agent-profiles" && req.method === "GET") {
     return verbResponse(await deps.mc.run(["agent-profile", "list"]));
   }
-  const profileAction = path.match(/^\/api\/agent-profiles\/(models|save|connection-save|connection-delete|operation-start|operation-status|operation-cancel)$/);
+  const profileAction = path.match(/^\/api\/agent-profiles\/(models|save|delete|connection-save|connection-delete|operation-start|operation-status|operation-cancel)$/);
   if (profileAction && req.method === "POST") {
     const body = await readBody(req);
     if (body instanceof Response) return body;
