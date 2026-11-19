@@ -25,6 +25,7 @@ R1 品牌文档层的验收基线：`grep -ri culler` 的全仓残留必须**逐
 | token 前缀 | `culler_proxy_*`（掩码正则 trace-mask.ts） | `shz_proxy_*` 类（R2，与 P2b 交集） |
 | 交付分支与容器/refs | `culler` 分支（GIT-DELIVERY.md、failure-handling-spec.md、schema.sql RAISE 消息、README hero alt）、`culler-worktrees`、`Dockerfile.culler-project`、`.culler/` 目录 | schema 文本**必须蹭 v1 基线冻结一并改**（R2 原则：过 v1 再改=付费迁移）；其余随 A09 |
 | 发布通道 | 发布名 `Culler <version>`（INSTALL 发布段）、install.sh 与 README/SECURITY 指向 `github.com/warlockedward/Culler` | 资产名与源指向按 A04/O8；**GitHub 仓库更名是所有者操作，更名后同步 URL 与本文档** |
+| `config.example.toml` **整文件**（含首行注释与 `author_name = "Culler"`） | `mc/config` 的 `TestTrackedAndEmbeddedExamplesAreIdenticalAndValid` 要求该文件与 Go 内嵌副本逐字节一致——代码配对面，非纯文档。**ROADMAP R1 名义清单含此文件，与本仓测试冲突，以测试为准**：R1 不动它（A08 首改已回退，过程留证据 mc-check 记录） | 随 A09 与内嵌副本同批改 |
 | 代码内全部 `Culler` 字符串 | `mc/` `resident/` `dashboard/` `runner/` `release/` `scripts/` `tests/` `evals/` `acceptance/` `.github/workflows/`（数千处） | A09 按 R2 表逐面迁移；`openwiki/` 由 Scribe 重写（AGENTS.md 规则，人工不改） |
 | dashboard 用户面标题/主题命名/logo/hero 资产 | 现值含 Culler 品牌 | R1 的资产替换需设计输入——**本批未做，挂 A09 或后续 R1 资产单**（不静默丢弃，此行为已知余项） |
 

@@ -1,4 +1,4 @@
-# S-Horizon operator configuration.
+# Culler operator configuration.
 # Onboarding copies this into MC_HOME/config.toml. Edit the MC_HOME copy only.
 
 config_version = 4
