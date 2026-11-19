@@ -168,7 +168,3 @@ Just make Culler more pleasant and reliable.
 [MIT](LICENSE)
 
 ---
-
-
-
-Have Scribe use these supplemental data sources to help curate the project's OpenWiki knowledgebase over time to better develop strategy.
