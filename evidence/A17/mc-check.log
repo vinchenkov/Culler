@@ -1,0 +1,34 @@
+ok  	mc/deployment	41.161s
+ok  	mc/testenv	0.006s
+ok  	mc/cmd/mc	169.273s
+install.sh fail-closed preflight: ok
+Published installer contracts: ok
+redeploy.sh front door: ok
+source-update-guard_test.sh: passed
+uninstall_test.sh: all contracts passed
+dev-reset_test.sh: ok
+ok  	mc/boundary	0.232s
+ok  	mc/cmd/culler-package	1.641s
+ok  	mc/cmd/mc	591.934s
+?   	mc/cmd/probe-resolve	[no test files]
+ok  	mc/config	0.379s
+ok  	mc/deployment	66.067s
+ok  	mc/dispatch	0.583s
+ok  	mc/distribution	0.200s
+ok  	mc/domain	30.072s
+?   	mc/e2e	[no test files]
+ok  	mc/evalcase	13.922s
+ok  	mc/mclog	5.403s
+ok  	mc/onboarding	3.116s
+ok  	mc/opencodecatalog	0.498s
+ok  	mc/operatorcmd	0.020s
+ok  	mc/property	2.691s
+ok  	mc/refusal	0.012s
+ok  	mc/repository	55.399s
+ok  	mc/routing	0.017s
+ok  	mc/substrate	19.490s
+ok  	mc/testenv	0.020s
+ok  	mc/trace	0.009s
+ok  	mc/verbs	514.461s
+ok  	mc/wiki	54.779s
+ok  	mc/wikitest	0.126s
