@@ -320,6 +320,22 @@ func (c Config) ProviderProxyDialHost() string {
 	return bind
 }
 
+// BindHost reads the provider proxy dial host from a deployment home. A home
+// without a config file is a not-yet-provisioned install and gets the loopback
+// default; a present but invalid config fails — absence is a legal early
+// state, corruption is not.
+func BindHost(home string) (string, error) {
+	path := filepath.Join(home, "config.toml")
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return "127.0.0.1", nil
+	}
+	cfg, err := Load(path)
+	if err != nil {
+		return "", err
+	}
+	return cfg.ProviderProxyDialHost(), nil
+}
+
 type Discord struct {
 	Enabled     bool     `toml:"enabled"`
 	BotToken    string   `toml:"bot_token"`

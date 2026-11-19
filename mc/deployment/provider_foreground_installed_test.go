@@ -48,6 +48,7 @@ printf '%s %s\n' "${1-}" "${2-}" >> "$fixture_dir/requests"
 case "$1 $2" in
   "agent-profile runtime-catalog") printf '%s\n' '{"bindings":{},"connections":{}}' ;;
   "agent-profile proxy-tls") cat "$fixture_dir/certificate.json" ;;
+  "agent-profile proxy-bind") printf '%s\n' '{"bind":"127.0.0.1"}' ;;
   *) exit 22 ;;
 esac
 `
@@ -125,8 +126,8 @@ esac
 		t.Fatal("The installed proxy retained its registration after stop.")
 	}
 	requests, err := os.ReadFile(filepath.Join(fixture, "requests"))
-	if err != nil || string(requests) != "agent-profile runtime-catalog\nagent-profile proxy-tls\n" {
-		t.Fatal("The empty installed proxy requested credentials or another host operation.")
+	if err != nil || string(requests) != "agent-profile runtime-catalog\nagent-profile proxy-tls\nagent-profile proxy-bind\n" {
+		t.Fatal("The empty installed proxy requested a credential read or another host operation.")
 	}
 	for _, path := range []string{"provider-proxy", "refresh-grants", "supervision"} {
 		if _, err := os.Lstat(filepath.Join(home, path)); !os.IsNotExist(err) {
