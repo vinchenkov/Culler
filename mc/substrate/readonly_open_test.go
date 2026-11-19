@@ -1,11 +1,11 @@
-// The shared read-only open path. The defect these
-// tests pin: a WAL-mode spine is ordinarily read through its -wal/-shm
-// sidecars, and SQLite creates them even for a mode=ro connection when they
-// are absent — so on a read-only mount every open in mc failed
-// (SQLITE_CANTOPEN / SQLITE_READONLY_DIRECTORY) exactly when no writer's
-// sidecars happened to exist, and succeeded minutes later when they did.
-// OpenReadOnly must read in BOTH states, and must never create the database
-// or a sidecar.
+// The shared read-only open paths. The contract these tests pin: the ACTIVE
+// entry (OpenReadOnly) reads a live spine through its -wal/-shm sidecars and,
+// where sidecars cannot be created (read-only mount, none present), FAILS
+// honestly — it never degrades to an immutable read, because the absence of
+// a -wal at open time proves nothing about writers during the read. The
+// explicit SNAPSHOT entry (OpenSnapshotReadOnly) is the only immutable path,
+// for copies whose writer finished. Neither creates the database or a
+// sidecar.
 package substrate_test
 
 import (
@@ -54,35 +54,41 @@ func readOnlySpine(t *testing.T) (dir, path string) {
 	return dir, path
 }
 
-func TestOpenReadOnlyReadsASidecarlessReadOnlySpine(t *testing.T) {
+func TestOpenReadOnlyRefusesSidecarlessSpineWhileSnapshotPathReadsIt(t *testing.T) {
 	_, path := readOnlySpine(t)
 
-	// The write path CANNOT open this state — that asymmetry is the defect,
-	// and this assertion is what makes the success below meaningful. If this
-	// ever starts passing, the WAL discipline changed and the read path's
-	// fallback should be revisited.
+	// The write path CANNOT open this state — the fixture's premise.
 	if db, err := substrate.Open(path); err == nil {
 		db.Close()
-		t.Fatal("substrate.Open opened a sidecar-less read-only spine; the read-path fallback exists because it could not")
+		t.Fatal("substrate.Open opened a sidecar-less read-only spine; the fixture premise broke")
 	}
 
-	db, err := substrate.OpenReadOnly(path)
+	// C1: the ACTIVE entry must fail honestly, never silently become an
+	// immutable read. This is the expected-failure half of the container
+	// read-only-mount window that the mount layout (not a driver flag) owns.
+	if db, err := substrate.OpenReadOnly(path); err == nil {
+		db.Close()
+		t.Fatal("the active read path degraded to a sidecar-less open; immutable must only come from an explicit snapshot call")
+	}
+
+	// The named snapshot path reads the same file, with the caller owning the
+	// stability precondition.
+	db, err := substrate.OpenSnapshotReadOnly(path)
 	if err != nil {
-		t.Fatalf("OpenReadOnly(read-only spine) = %v, want a working read", err)
+		t.Fatalf("OpenSnapshotReadOnly(read-only snapshot) = %v, want a working read", err)
 	}
 	defer db.Close()
 	if n := oneInt(t, db, `SELECT COUNT(*) FROM projects WHERE id = 'ws'`); n != 1 {
-		t.Fatalf("read %d seeded projects through the read-only path, want 1", n)
+		t.Fatalf("read %d seeded projects through the snapshot path, want 1", n)
 	}
 
-	// Read-only means read-only: the connection carries query_only, so a
-	// write verb routed through the read path fails loudly.
+	// Read-only means read-only on both entries: query_only is carried.
 	wantSQLiteError(t, db, sqlite3.SQLITE_READONLY, "readonly database", `INSERT INTO projects (id, title) VALUES ('ws2', 'W2')`)
 
-	// And the open created no sidecar — the property the flags exist for.
+	// Neither open created a sidecar.
 	for _, sidecar := range []string{path + "-wal", path + "-shm"} {
 		if _, err := os.Stat(sidecar); !os.IsNotExist(err) {
-			t.Fatalf("the read-only open left %s behind (stat err %v)", sidecar, err)
+			t.Fatalf("the read-only opens left %s behind (stat err %v)", sidecar, err)
 		}
 	}
 }
