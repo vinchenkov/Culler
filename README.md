@@ -1,24 +1,21 @@
-![The Culler logo: a chick and two eggs in a nest, next to the word Culler, on a navy tile](docs/logo-full.svg)
+<p align="center">
+  <img src="docs/logo-full.svg" alt="The Culler logo: a chick and two eggs in a nest, next to the word Culler, on a navy tile">
+</p>
 
-**Software factory at home**
+<p align="center"><strong>Software factory at home</strong></p>
 
-Culler is a project factory that runs on your own Mac. You own the factory, the code, and the final say. Its agents work toward your vision, on your repositories, through any AI provider.
+Attention is sacred they say.
+
+Culler is a local software factory designed with that in mind. It runs containerized agents on your Mac, finds work worth doing, and presents you a queue of comprehensible review packets with their rationale.
+
+You define a **vision** that states your project's open-ended goal and Culler proactively proposes and submits high-leverage work toward your stated intents. Additionally, define new work yourself or with the help of Collie, your Culler assistant.
+
+You can review, propose, reject, and otherwise **cull** work as agents move tasks along the project development line.
 
 ![The factory line. One task moves from VISION.md through five numbered roles: 01 Strategist, 02 Arbiter, 03 Worker, 04 Verifier, and 05 Packager. Below each role, the db records the new stage of the task: Proposed, Seeded, Worked, Verified, and Packaged. At the end, you approve the packet, the db records Approved, and the commit goes to the culler branch of your repository.](docs/hero-dark.svg)
 
 [Features](#features)  ·  [Install](#quick-install)  ·  [The factory line](#the-factory-line)  ·  [Architecture](#architecture)  ·  [Security](#security)
 
----
-
-## Philosophy
-
-Attention is sacred they say. Culler helps build projects with that in mind.
-
-You define a **vision** that states your project's open-ended, high-level goal and Culler proactively proposes and submits high-leverage work toward your stated intents.
-
-Additionally, you can define new work yourself or with the help of Collie, your Culler assistant.
-
-You can review, propose, reject, and otherwise **cull** work as agents move tasks along the factory line.
 
 ---
 
@@ -30,13 +27,15 @@ You can import an existing project or start one from scratch.
 
 Five roles run in order, with one agent run at a time for each Project.
 
-1. **Strategist** proposes high-leverage task candidates to advance your vision.
+1. **Strategist** proactively proposes high-leverage work based on your open-ended **Vision**.
 2. **Arbiter** judges each proposal and promotes the most effective one.
-3. **Worker** works the task in its own repository copy and submits one commit.
-4. **Verifier** checks the work against acceptance criteria and asks Worker to correct any gaps.
-5. **Packager** creates a *review packet meant for a human mind.*
+3. **Worker** works the task in its own repository copy.
+4. **Verifier** checks the work against acceptance criteria, asks Worker to correct any gaps, and converges.
+5. **Packager** creates an illustrative review packet meant for a human mind, with evidence media attached.
 
 One packet for each decision.
+
+Configure each agent role with your AI model of choice. Set Strategist to your smartest model and Worker to your workhose.
 
 ---
 
@@ -48,7 +47,7 @@ One packet for each decision.
 
 **Openwiki.** Culler creates and maintains a wiki for each project, maintained by a scheduled agent named **Scribe**. It serves three purposes:
 
-1. Acts as index into the repository's ground truth for agents to enable more efficient search.
+1. Acts as index into the repository's ground truth to enable more efficient search for agents.
 2. Acts as a knowledgebase to help the Strategist prioritize work.
 3. Provides a viewer so you can re-familiarize yourself with your project as it continually develops.
 
