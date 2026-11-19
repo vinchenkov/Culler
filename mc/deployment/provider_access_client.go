@@ -201,9 +201,15 @@ func (lease *providerAccessLease) requestsContext(ctx context.Context) (int, err
 	return response.Requests, nil
 }
 
-func providerAccessHTTPClient(access ProviderContainerAccess) (*http.Client, error) {
+func providerAccessHTTPClient(access ProviderContainerAccess, dialHost string) (*http.Client, error) {
 	if err := validateProviderContainerAccess(access); err != nil {
 		return nil, err
+	}
+	if dialHost == "" {
+		dialHost = "127.0.0.1"
+	}
+	if net.ParseIP(dialHost) == nil {
+		return nil, fmt.Errorf("The provider proxy dial host is not an IP literal.")
 	}
 	pool := x509.NewCertPool()
 	pool.AppendCertsFromPEM([]byte(access.CA))
@@ -214,7 +220,7 @@ func providerAccessHTTPClient(access ProviderContainerAccess) (*http.Client, err
 			if address != target.Host {
 				return nil, fmt.Errorf("The provider access destination changed.")
 			}
-			return dialer.DialContext(ctx, network, net.JoinHostPort("127.0.0.1", target.Port()))
+			return dialer.DialContext(ctx, network, net.JoinHostPort(dialHost, target.Port()))
 		}}
 	return &http.Client{Transport: transport, Timeout: 10 * time.Second,
 		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}, nil

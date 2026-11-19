@@ -20,6 +20,9 @@ export async function startForegroundProviderAccess(config: ForegroundConfig, de
   const certificate = await deps.runMc(["agent-profile", "proxy-tls"]);
   if (certificate.exitCode !== 0) throw new Error("The host proxy certificate is unavailable.");
   const tls = JSON.parse(certificate.stdout);
+  const bindResponse = await deps.runMc(["agent-profile", "proxy-bind"]);
+  if (bindResponse.exitCode !== 0) throw new Error("The host proxy bind address is unavailable.");
+  const proxyHost = String(JSON.parse(bindResponse.stdout).bind);
   const observe = async (value: Record<string, unknown>) => {
     const saved = await deps.runMc(["connection", "proxy-observe"], new TextEncoder().encode(JSON.stringify(value)));
     if (saved.exitCode !== 0) throw new Error("The host could not retain the connection diagnostic.");
@@ -54,7 +57,7 @@ export async function startForegroundProviderAccess(config: ForegroundConfig, de
     })));
     if (saved.exitCode !== 0 || failure) throw new Error("The connection access check failed.");
   };
-  const handle = startCredentialProjector({ credentials, tls, observe, refreshConnection: check }, catalog);
+  const handle = startCredentialProjector({ credentials, tls, hostname: proxyHost, observe, refreshConnection: check }, catalog);
   let registration: string | undefined;
   try {
     const health = join(config.mcHome, "health");

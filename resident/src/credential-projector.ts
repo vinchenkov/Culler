@@ -120,6 +120,7 @@ export interface CredentialProjectorHandle {
 export interface CredentialProjectorDeps {
   credentials: ReturnType<typeof createProviderCredentials>;
   tls: { ca: string; cert: string; key: string };
+  hostname?: string;
   observe?(observation: ProviderRequestObservation): Promise<void>;
   refreshConnection?(connection: string): Promise<void>;
   isLaunchCurrent?(runId: string, launchId: string, signal: AbortSignal): Promise<boolean | { allowed: boolean; attemptId?: string }>;
@@ -130,7 +131,7 @@ export function startCredentialProjector(deps: CredentialProjectorDeps, configur
   let catalog = parseRuntimeCatalog(configured);
   let tls = deps.tls;
   const grants = new Map<string, { runId: string; launchId: string; authorizationId: string; managed: boolean }>();
-  const proxy = startProviderProxy({ tls: { cert: deps.tls.cert, key: deps.tls.key }, routes: routes(catalog) }, {
+  const proxy = startProviderProxy({ tls: { cert: deps.tls.cert, key: deps.tls.key }, hostname: deps.hostname, routes: routes(catalog) }, {
     credential: deps.credentials.credential,
     fetch: deps.fetch,
     isLaunchCurrent: (spec, signal) => deps.isLaunchCurrent ? deps.isLaunchCurrent(spec.runId, spec.launchId, signal) : Promise.resolve(false),

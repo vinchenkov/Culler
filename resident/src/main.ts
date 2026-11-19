@@ -307,12 +307,15 @@ async function startProjector(mcPath: string, mcHome: string, log: Logger,
   const certificate = await runMc(["agent-profile", "proxy-tls"]);
   if (certificate.exitCode !== 0) throw new Error("The host proxy certificate is unavailable.");
   const tls = JSON.parse(certificate.stdout);
+  const bindResponse = await runMc(["agent-profile", "proxy-bind"]);
+  if (bindResponse.exitCode !== 0) throw new Error("The host proxy bind address is unavailable.");
+  const proxyHost = String(JSON.parse(bindResponse.stdout).bind);
   const observe = (observation: Record<string, unknown>) => observeProviderAccess(runMc, log, observation);
   const credentials = createProviderCredentials({
     observe, runMc, acquireOwner: connection => acquireConnectionOwner(mcPath, mcHome, connection),
   });
   const refreshConnection = (connection: string) => refreshConnectionCheck(runMc, credentials.renew, connection);
-  const handle = startCredentialProjector({ credentials, tls, refreshConnection, observe,
+  const handle = startCredentialProjector({ credentials, tls, hostname: proxyHost, refreshConnection, observe,
     isLaunchCurrent: (run, launch, signal) => providerLaunchState(runMc, run, launch, signal) }, catalog);
   try {
     await observe({ request_id: crypto.randomUUID(), operation: "service", origin: "proxy", outcome: "ready",

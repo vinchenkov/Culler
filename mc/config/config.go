@@ -278,11 +278,12 @@ func (c Container) BoundaryPatterns() []boundary.BlockPattern {
 }
 
 type Surfaces struct {
-	Dashboard  Dashboard  `toml:"dashboard"`
-	AgentsView AgentsView `toml:"agentsview"`
-	Wiki       Wiki       `toml:"wiki"`
-	Discord    Discord    `toml:"discord"`
-	Alerts     Alerts     `toml:"alerts"`
+	Dashboard     Dashboard     `toml:"dashboard"`
+	AgentsView    AgentsView    `toml:"agentsview"`
+	Wiki          Wiki          `toml:"wiki"`
+	ProviderProxy ProviderProxy `toml:"provider_proxy"`
+	Discord       Discord       `toml:"discord"`
+	Alerts        Alerts        `toml:"alerts"`
 }
 
 type Dashboard struct {
@@ -299,6 +300,24 @@ type AgentsView struct {
 // exports.
 type Wiki struct {
 	Bind string `toml:"bind"`
+}
+
+// ProviderProxy is the listen address of the provider proxy. Empty binds the
+// proxy to loopback; an explicit IP literal lets agent containers reach it
+// through a host gateway address on Linux. Hostnames and port suffixes are
+// refused — the proxy port stays ephemeral.
+type ProviderProxy struct {
+	Bind string `toml:"bind"`
+}
+
+// ProviderProxyDialHost resolves the bind setting to the address the host
+// itself dials: empty means loopback, never a fallback from a bad value.
+func (c Config) ProviderProxyDialHost() string {
+	bind := strings.TrimSpace(c.Surfaces.ProviderProxy.Bind)
+	if bind == "" {
+		return "127.0.0.1"
+	}
+	return bind
 }
 
 type Discord struct {
@@ -651,6 +670,9 @@ func (c Config) Validate() error {
 			return fmt.Errorf("container.additional_blocked_patterns contains a duplicate entry")
 		}
 		seenPattern[addition] = true
+	}
+	if bind := strings.TrimSpace(c.Surfaces.ProviderProxy.Bind); bind != "" && net.ParseIP(bind) == nil {
+		return fmt.Errorf("surfaces.provider_proxy.bind must be empty or an IP literal")
 	}
 	host, port, err := splitBind("surfaces.dashboard.bind", c.Surfaces.Dashboard.Bind)
 	if err != nil {
