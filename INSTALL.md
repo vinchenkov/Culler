@@ -1,20 +1,20 @@
-# Install and update Culler
+# Install and update S-Horizon
 
-Culler supports Macs with Apple silicon.
-Culler is in early access. The [version rules](#versions) describe what a 0.x version means.
+S-Horizon supports Macs with Apple silicon.
+S-Horizon is in early access. The [version rules](#versions) describe what a 0.x version means.
 A published release supplies the executable, runtime files, and container image.
 The release also supplies AgentsView, the trace viewer of the `kenn-io/agentsview` project.
-The Mac requires no Culler checkout or Go compiler.
+The Mac requires no S-Horizon checkout or Go compiler.
 
 ## Install the public release
 
 Run this command in Terminal on a Mac with Apple silicon:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/warlockedward/Culler/main/install.sh | bash
 ```
 
-The Culler repository and its release downloads are public.
+The S-Horizon repository and its release downloads are public.
 Public installation requires no GitHub account or GitHub token.
 The launcher selects the latest complete GitHub release.
 It downloads and verifies the installer for that release.
@@ -23,7 +23,7 @@ The command installs the published release, even when you run it from a source c
 To save the launcher for later use, run these commands:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/vinchenkov/Culler/main/install.sh -o /tmp/culler-install.sh &&
+curl -fsSL https://raw.githubusercontent.com/warlockedward/Culler/main/install.sh -o /tmp/culler-install.sh &&
 sh /tmp/culler-install.sh
 ```
 
@@ -35,13 +35,13 @@ An invalid configured credential can stop installation even when the release is 
 
 ## Use an external agent
 
-The release includes the same Culler skill that Collie uses.
+The release includes the same S-Horizon skill that Collie uses.
 Setup links the skill at `~/.agents/skills/culler`.
 When you select Claude Code, setup also links it at `~/.claude/skills/culler`.
 When you select Codex, setup also links it at `~/.codex/skills/culler`.
-Setup preserves an existing skill that Culler does not own.
+Setup preserves an existing skill that S-Horizon does not own.
 An update preserves the links and your custom skills.
-Uninstall removes only the links that Culler owns.
+Uninstall removes only the links that S-Horizon owns.
 
 You can also give any agent with file and command access this skill path:
 
@@ -52,7 +52,7 @@ You can also give any agent with file and command access this skill path:
 For a custom deployment home, replace `~/.culler` with that home.
 The skill identifies the actual executable and deployment through its `installation.json` file.
 The agent discovers commands through command help and reads procedure files as needed.
-It needs no Culler source checkout or development tools.
+It needs no S-Horizon source checkout or development tools.
 The same operator decisions and domain checks apply to Collie and the external agent.
 
 ## Setup and updates
@@ -77,7 +77,7 @@ The installer places the host Bun at `MC_HOME/bun/<version>/bin/bun`.
 The resident and the dashboard run the host Bun.
 The installer requires no mise and leaves a mise installation of the operator unchanged.
 An update to another Bun version removes the previous host Bun after the activation completes.
-Both uninstall modes remove the host Bun with the other Culler software.
+Both uninstall modes remove the host Bun with the other S-Horizon software.
 
 Apple tool installation and Docker Desktop can require operator actions.
 The installer names each action and the command to resume.
@@ -85,21 +85,21 @@ The operator authorizes service activation in the terminal.
 
 Setup offers native ChatGPT and Claude account sign-in.
 Setup also accepts an OpenAI or Anthropic application programming interface (API) key.
-Setup also offers healthy connections that Culler already holds.
-Culler keeps each login separate from the native login of the operator.
+Setup also offers healthy connections that S-Horizon already holds.
+S-Horizon keeps each login separate from the native login of the operator.
 Sign-in completion and model verification remain separate results.
 A failed model test keeps the saved connection available.
 The retry uses that connection without another sign-in or key entry.
 The dashboard keeps connection, model selection, and model verification in three steps.
 
-Culler stores provider credentials in the macOS Keychain.
-Each container receives a temporary Culler token and the public proxy certificate.
+S-Horizon stores provider credentials in the macOS Keychain.
+Each container receives a temporary platform token and the public proxy certificate.
 The host proxy attaches provider credentials to permitted model requests.
 The host renews account tokens and saves each replacement in the Keychain.
 Both request connections use HTTPS.
 A locked Keychain requires host recovery; it does not require another account sign-in.
 Unattended operation requires the operator's macOS user session and an unlocked login Keychain.
-After a computer restart, macOS must restore those conditions before Culler can use provider connections.
+After a computer restart, macOS must restore those conditions before S-Horizon can use provider connections.
 
 For a new Codex profile, setup lets Codex choose its default model.
 After the connection test succeeds, setup saves the selected model name.
@@ -163,8 +163,8 @@ The [update procedure](release/UPDATES.md) describes the public contract and rec
 
 ## Lifecycle commands
 
-The command-line interface (CLI) controls the local Culler lifecycle.
-Configure Culler in the dashboard or through Collie.
+The command-line interface (CLI) controls the local S-Horizon lifecycle.
+Configure S-Horizon in the dashboard or through Collie.
 Help, status, and version repeat this boundary.
 
 | Command | Result |
@@ -178,8 +178,8 @@ Help, status, and version repeat this boundary.
 | `culler update --check` | Check release availability. |
 | `culler update` | Open the same installer in this terminal. |
 | `culler update --restore` | Restore an incomplete update before its commit. |
-| `culler uninstall` | Preview removal of all Culler installations, then ask for confirmation. |
-| `culler uninstall --keep-data` | Remove software and preserve Culler data after confirmation. |
+| `culler uninstall` | Preview removal of all S-Horizon installations, then ask for confirmation. |
+| `culler uninstall --keep-data` | Remove software and preserve S-Horizon data after confirmation. |
 | `culler uninstall --dry-run` | Show the removal plan without a change. |
 | `culler logs [service] --tail 100` | Show recent service diagnostics and exit. |
 
@@ -211,18 +211,18 @@ The exit codes are:
 - `2`: The command, service, or environment is invalid.
 - `130`: The operator cancelled the command.
 
-## Uninstall Culler
+## Uninstall S-Horizon
 
 `culler uninstall` uses the installed executable and requires no checkout or Go compiler.
-The command removes all detected Culler installations, including old Mission Control installations.
+The command removes all detected S-Horizon installations, including old Mission Control installations.
 It shows the removal plan before confirmation.
 
 The default mode is `--full-wipe`.
 This mode removes these resources:
 
-- Culler software and its commands.
-- Culler data and credentials.
-- Culler task branches and review files.
+- S-Horizon software and its commands.
+- S-Horizon data and credentials.
+- S-Horizon task branches and review files.
 
 Type `wipe` to confirm this mode.
 Use `--keep-data` to preserve configuration, credentials, and history for reinstallation.
@@ -232,7 +232,7 @@ Reinstall at the same deployment paths to reuse retained data.
 Both modes stop active agents.
 Removal can discard unfinished work.
 Both modes preserve Project repositories and shared host tools.
-Culler removes only its own command files and shell entries.
+S-Horizon removes only its own command files and shell entries.
 
 Use `--dry-run` to inspect the plan without removal.
 Press Enter without text or press Ctrl-C to cancel the confirmation.
@@ -251,7 +251,7 @@ The command reports each failure and returns a nonzero exit code after incomplet
 
 ## Versions
 
-Culler is in early access, and the major version 0 states this.
+S-Horizon is in early access, and the major version 0 states this.
 Each release has a version in the form MAJOR.MINOR.PATCH, for example `0.1.0`.
 `culler version`, `culler update --check`, setup, and the dashboard show the version first and the short commit second.
 For example, they show `0.1.0 (1a2b3c4d5e6f)`.
@@ -326,7 +326,7 @@ The workflow also scans both images for known dependency vulnerabilities.
 GitHub secret scanning checks the repository for secrets.
 These scans report their results and never prevent a release.
 
-The checks exercise the product image without a mounted Culler checkout.
+The checks exercise the product image without a mounted S-Horizon checkout.
 Each release uses one version, one full commit identifier, and an immutable image digest.
 The `VERSION` file supplies the public version.
 The minimum source version and accepted source formats reside in `mc/distribution/update_policy.json`.
@@ -346,7 +346,7 @@ With the same version, the workflow runs the checks and publishes no release.
 A lower version fails the `release-version` job, and the workflow publishes no release.
 The release name is `Culler <version>`.
 The release description is the `CHANGELOG.md` section of that version.
-The workflow never marks a release as a prerelease, because Culler installs only releases that are not prereleases.
+The workflow never marks a release as a prerelease, because S-Horizon installs only releases that are not prereleases.
 
 To publish a release, make one change with these edits:
 
@@ -410,7 +410,7 @@ Run the source installer from the repository root:
 sh scripts/install-source.sh
 ```
 
-The source installer builds Culler from the checkout and opens the same setup wizard as the published installer.
+The source installer builds S-Horizon from the checkout and opens the same setup wizard as the published installer.
 Both paths check prerequisites, configure agent connections, request service activation, and verify dashboard access.
 The source installer uses the Go and Bun versions from `.mise.toml` through mise.
 It builds the agent image locally and downloads the pinned AgentsView executable.
@@ -425,10 +425,10 @@ The installer verifies the installed files before package reuse.
 Reuse requires equal inputs:
 
 - The package declarations and locked dependencies must match.
-- Culler's OpenCode plugin and shell launcher must match.
+- S-Horizon's OpenCode plugin and shell launcher must match.
 - The archive preparation rules and package tools must match.
 
-An unrelated Culler commit or checkout path change preserves reuse.
+An unrelated S-Horizon commit or checkout path change preserves reuse.
 A package change requires preparation again.
 A preparation failure stops deployment and reports its cause.
 
@@ -463,7 +463,7 @@ The provider search accepts a name, identifier, or full model address.
 The search lists the providers that OpenCode runs, and an empty search lists each of them.
 The list of matching providers updates after each key, as in the dashboard.
 Name matches come before identifier and address matches.
-Culler sends keys only to providers in its release catalog.
+S-Horizon sends keys only to providers in its release catalog.
 The selected provider row shows the address and website before the concealed key prompt.
 
 In a published installation, the first OpenCode connection starts a separate download of the pinned harness and web search plugin.
@@ -475,31 +475,31 @@ The model list shows the context limit and prices for each million input and out
 The page states whether agents can search the web.
 
 The model list of an OpenCode connection holds the release catalog models of its provider and the live models.
-A live model is a model that Culler takes from the live model list of the OpenCode project.
+A live model is a model that S-Horizon takes from the live model list of the OpenCode project.
 A live model replaces the release catalog model with the same identifier.
-Culler accepts a live model only for a provider in its release catalog.
+S-Horizon accepts a live model only for a provider in its release catalog.
 The address of a live model must have the network origin of a release catalog address of that provider.
 The live model list adds no provider, and a provider key goes only to those origins.
 The model choice states the source of its list.
 
 A refresh is one request for the live model list and the derivation of its live models.
-Culler requests the live model list from `https://models.opencode.ai/experimental/v2.0/api.json` over HTTPS.
-The request holds the client name `culler` and the response format that Culler accepts.
+S-Horizon requests the live model list from `https://models.opencode.ai/experimental/v2.0/api.json` over HTTPS.
+The request holds the client name `culler` and the response format that S-Horizon accepts.
 It holds no provider key and no data about the operator, a Project, or the deployment.
 The installed OpenCode derives the model facts in a container without network access, provider keys, or Project data.
-Culler starts a refresh after the OpenCode installation and after a Culler update that installs OpenCode.
+S-Horizon starts a refresh after the OpenCode installation and after an S-Horizon update that installs OpenCode.
 A model choice starts a refresh when no refresh started during the previous hour.
 The model choice shows the available models at once.
-Culler keeps the live models of the latest successful refresh.
-A failed refresh changes no model list, and the Culler log records its cause.
+S-Horizon keeps the live models of the latest successful refresh.
+A failed refresh changes no model list, and the S-Horizon log records its cause.
 An agent container makes no request for the live model list.
 
-A Culler update can change the release catalog or the OpenCode version.
+An S-Horizon update can change the release catalog or the OpenCode version.
 The model list then holds only release catalog models until the next successful refresh.
 The update starts that refresh.
 The update confirmation names each enabled agent profile whose model or effort level only a live model supplies.
 When the refresh fails or the live model list lacks the model, work that uses such a profile stays stopped until repair in the dashboard.
-Culler starts a failed refresh again after one hour while such a profile needs its live model.
+S-Horizon starts a failed refresh again after one hour while such a profile needs its live model.
 
 A published installation without an OpenCode connection downloads no OpenCode program.
 A published update replaces an existing OpenCode volume with the archive of that release.
