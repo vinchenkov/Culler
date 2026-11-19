@@ -368,6 +368,37 @@ cp "$TMP/valid-installer" "$TMP/fixtures/installer.sh"
 printf 'corrupt archive\n' >"$TMP/fixtures/package.tar.gz"
 if sh "$TMP/outside/install.sh" >"$TMP/package-hash.out" 2>&1; then fail 'corrupt package succeeded'; fi
 [ ! -e "$TMP/args" ] || fail 'corrupt package executed code'
+# A07 verifier self-test: malformed digest expectations fail at the guard
+# before the named program could run; a valid digest does not forgive a
+# wrong claimed size, so neither guard is dead code.
+for bad in '1FA0421ACB123068048B3E08B0222C61B5FCC404C576BCCA8F9AA43E7141A6EC' \
+           '1fa0421acb123068048b3e08b0222c61b5fcc404c576bcca8f9aa43e7141a6' \
+           'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'; do
+  python3 - "$TMP/fixtures" "$bad" <<'PYFIXTURE'
+import json,sys
+from pathlib import Path
+root=Path(sys.argv[1]);record=json.loads((root/'release.json').read_text())
+record['installer']['sha256']=sys.argv[2]
+(root/'release.json').write_text(json.dumps(record))
+PYFIXTURE
+  rm -f "$TMP/args"
+  if sh "$TMP/outside/install.sh" >"$TMP/selftest.out" 2>&1; then fail "a malformed installer digest was accepted: $bad"; fi
+  [ ! -e "$TMP/args" ] || fail "a malformed installer digest executed code: $bad"
+  contains "$TMP/selftest.out" 'checksum is invalid' || fail "a malformed installer digest gave another failure: $bad"
+  cp "$TMP/release.json.original" "$TMP/fixtures/release.json"
+done
+python3 - "$TMP/fixtures" <<'PYFIXTURE'
+import json,sys
+from pathlib import Path
+root=Path(sys.argv[1]);record=json.loads((root/'release.json').read_text())
+record['installer']['size']=int(record['installer']['size'])+1
+(root/'release.json').write_text(json.dumps(record))
+PYFIXTURE
+rm -f "$TMP/args"
+if sh "$TMP/outside/install.sh" >"$TMP/selftest-size.out" 2>&1; then fail 'a valid digest with a wrong claimed size was accepted'; fi
+[ ! -e "$TMP/args" ] || fail 'a wrong claimed size executed code'
+contains "$TMP/selftest-size.out" 'failed verification' || fail 'the wrong-size refusal was unclear'
+cp "$TMP/release.json.original" "$TMP/fixtures/release.json"
 # A trusted checksum does not permit archive paths or symbolic links.
 printf 'extra\n' >"$TMP/package/bin/extra"
 tar -czf "$TMP/fixtures/package.tar.gz" -C "$TMP/package" bin/mc bin/install.sh bin/agentsview bin/extra host/file runner/file
