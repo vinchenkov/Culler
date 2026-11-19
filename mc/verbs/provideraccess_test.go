@@ -578,3 +578,81 @@ func TestSystemStatusShowsCredentialAccessOnlyForSavedConnections(t *testing.T) 
 		t.Fatalf("Provider access notices: %v", shown)
 	}
 }
+
+func TestProviderAllowanceStopEndsOnRetryConnectionOrAtTheResetTime(t *testing.T) {
+	for _, kind := range []string{"api_key", "codex-oauth"} {
+		operation, credential, lifted := "connection_access", "api_key", "ready"
+		if kind == "codex-oauth" {
+			operation, credential, lifted = "token_refresh", "account", "unknown"
+		}
+		stop := func(t *testing.T, db *sql.DB, reset time.Time) {
+			t.Helper()
+			a := proxyObservation("provider", 429)
+			a.ProviderErrorCode, a.CurrentCredentialType = "usage_limit_reached", credential
+			if !reset.IsZero() {
+				a.RetryAfter = reset.UTC().Format(time.RFC3339Nano)
+			}
+			if !observeProxy(t, db, a).Applied || proxyState(t, db, "") != "stopped" {
+				t.Fatal("The allowance failure did not stop the connection.")
+			}
+		}
+		condition := func(t *testing.T, db *sql.DB) SystemCondition {
+			t.Helper()
+			status, err := SystemStatus(db, nil, SystemStatusRequest{Connections: []ConnectionRequirement{{ID: "proxy-test", Kind: kind, Operation: operation, AuthorizationID: "authorization-1"}}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, c := range status.(SystemStatusResult).Conditions {
+				if c.ID == "connection:proxy-test:"+operation+":" {
+					return c
+				}
+			}
+			t.Fatal("The allowance stop has no notice.")
+			return SystemCondition{}
+		}
+		request := func(automatic bool) ConnectionRetryRequest {
+			return ConnectionRetryRequest{ConnectionCheck: ConnectionCheck{ConnectionID: "proxy-test", AuthorizationID: "authorization-1", Operation: operation, CheckID: domain.DiagnosticID()}, Automatic: automatic}
+		}
+		resumed := func(t *testing.T, db *sql.DB, source string) int {
+			t.Helper()
+			var count int
+			if err := db.QueryRow(`SELECT COUNT(*) FROM diagnostic_events WHERE connection_id='proxy-test' AND operation=? AND outcome='resumed' AND source=?`, operation, source).Scan(&count); err != nil {
+				t.Fatal(err)
+			}
+			return count
+		}
+		t.Run(kind+"/operator", func(t *testing.T) {
+			db := proxyHealth(t, operation)
+			stop(t, db, time.Time{})
+			if c := condition(t, db); c.Action != "Retry connection" || c.NextRetryAt != "" {
+				t.Fatalf("The allowance stop has the wrong control: %+v", c)
+			}
+			if _, err := ConnectionRetry(db, nil, request(true)); err == nil || proxyState(t, db, "") != "stopped" {
+				t.Fatal("An automatic retry lifted an allowance stop without a reset time.")
+			}
+			retry := request(false)
+			for range 2 {
+				if _, err := ConnectionRetry(db, nil, retry); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if proxyState(t, db, "") != lifted || resumed(t, db, "operator") != 1 {
+				t.Fatalf("Retry connection did not lift the allowance stop once: state=%s", proxyState(t, db, ""))
+			}
+		})
+		t.Run(kind+"/reset time", func(t *testing.T) {
+			db := proxyHealth(t, operation)
+			stop(t, db, time.Now().Add(time.Hour))
+			if c := condition(t, db); c.Action != "Retry connection" || c.NextRetryAt == "" {
+				t.Fatalf("The allowance stop lost the provider reset time: %+v", c)
+			}
+			if _, err := ConnectionRetry(db, nil, request(true)); err == nil || proxyState(t, db, "") != "stopped" {
+				t.Fatal("An automatic retry lifted the allowance stop before the reset time.")
+			}
+			dvExec(t, db, `UPDATE connection_health SET next_retry_at=? WHERE connection_id='proxy-test' AND profile_id=''`, time.Now().Add(-time.Second).UTC().Format(time.RFC3339Nano))
+			if _, err := ConnectionRetry(db, nil, request(true)); err != nil || proxyState(t, db, "") != lifted || resumed(t, db, "resident") != 1 {
+				t.Fatalf("The allowance stop did not end at the reset time: %v", err)
+			}
+		})
+	}
+}

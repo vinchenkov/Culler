@@ -2237,6 +2237,22 @@ func cmdCollie(args []string) (any, error) {
 			return nil, err
 		}
 		return withSpine(func(db *sql.DB) (any, error) { return verbs.CollieReplyRetry(db, id, session, *message, *key) })
+	case "reply-dismiss":
+		session, rest, err := positional("reply dismiss", args[1:])
+		if err != nil {
+			return nil, err
+		}
+		fs := newFlags("reply dismiss")
+		message := fs.Int64("message", 0, "message")
+		key := fs.String("request", "", "request identity")
+		if err := parse(fs, rest); err != nil {
+			return nil, err
+		}
+		id, err := verbs.LoadIdentity()
+		if err != nil {
+			return nil, err
+		}
+		return withSpine(func(db *sql.DB) (any, error) { return verbs.CollieReplyDismiss(db, id, session, *message, *key) })
 
 	case "claim":
 		sessionID, rest, err := positional("mc collie claim", args[1:])

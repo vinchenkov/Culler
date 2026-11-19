@@ -358,6 +358,8 @@ The third consecutive failure stops proposal runs for that Project.
 A Project infrastructure notice with one or two counted failures offers **Clear failures**, also after its retry time.
 **Clear failures** resets the count and the retry time of that Project and preserves pipeline pauses.
 The failed Collie reply retains its partial text and offers **Retry reply**.
+The notice of a failed Collie reply also offers **Dismiss**.
+**Dismiss** ends that notice. The reply stays in the conversation and keeps **Retry reply**.
 An old or unavailable reply state displays an explicit status instead of an indefinite activity indicator.
 
 Connection notices offer an applicable repair action:
@@ -365,6 +367,9 @@ Connection notices offer an applicable repair action:
 - **Reconnect** opens the authorization flow for the affected connection.
 - **Review connection** opens the affected agent profile and its connection.
 - **Retry connection** authorizes another allowance for a safe transient failure.
+- **Retry connection** also ends a provider account allowance stop. The next provider request checks the account again.
+
+An allowance stop with a provider reset time shows that time. The resident ends the stop after that time.
 
 A repair action without a dashboard control appears as text in the notice and in the issue dialog.
 

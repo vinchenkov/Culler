@@ -224,6 +224,47 @@ func CollieReplyRetry(db *sql.DB, id *RunIdentity, session string, message int64
 	return map[string]any{"attempt_id": attempt, "session_id": session}, err
 }
 
+// CollieReplyDismiss ends the failure notice of a failed reply. The failed
+// reply stays in the conversation and can still retry.
+func CollieReplyDismiss(db *sql.DB, id *RunIdentity, session string, message int64, key string) (any, error) {
+	if err := RequireHostScope(id, "dismiss reply"); err != nil {
+		return nil, err
+	}
+	if !diagnosticIDPattern.MatchString(key) {
+		return nil, Usagef("The reply dismissal identity is invalid.")
+	}
+	var attempt string
+	err := inTx(db, func(ctx context.Context, q Q) error {
+		var recordedSession string
+		var recordedMessage int64
+		err := q.QueryRowContext(ctx, `SELECT a.attempt_id,a.session_id,a.message_id FROM diagnostic_events d JOIN collie_reply_attempts a ON a.attempt_id=d.reply_attempt_id WHERE d.event_id=?`, key).Scan(&attempt, &recordedSession, &recordedMessage)
+		if err == nil {
+			if recordedSession != session || recordedMessage != message {
+				return Domainf("The dismissal identity belongs to another message.")
+			}
+			return nil
+		}
+		if err != sql.ErrNoRows {
+			return err
+		}
+		var state string
+		err = q.QueryRowContext(ctx, `SELECT attempt_id,state FROM collie_reply_attempts WHERE session_id=? AND message_id=? ORDER BY rowid DESC LIMIT 1`, session, message).Scan(&attempt, &state)
+		if err == sql.ErrNoRows || err == nil && state != "failed" {
+			return Domainf("This reply has no failure notice.")
+		}
+		if err != nil {
+			return err
+		}
+		var dismissed bool
+		if err := q.QueryRowContext(ctx, `SELECT EXISTS(SELECT 1 FROM diagnostic_events WHERE reply_attempt_id=? AND source='operator' AND outcome='cancelled')`, attempt).Scan(&dismissed); err != nil || dismissed {
+			return err
+		}
+		_, err = domain.AppendDiagnostic(ctx, q, domain.Diagnostic{EventID: key, Source: "operator", Operation: "collie_reply", Outcome: "cancelled", ReplyAttemptID: attempt, Condition: "The operator dismissed the failed reply notice.", StateBefore: "failed", StateAfter: "failed"}, "")
+		return err
+	})
+	return map[string]any{"attempt_id": attempt, "session_id": session, "dismissed": err == nil}, err
+}
+
 func failSessionReplies(ctx context.Context, q Q, session, condition string, terminal ...string) error {
 	rows, err := q.QueryContext(ctx, `SELECT attempt_id FROM collie_reply_attempts WHERE session_id=? AND ended_at IS NULL`, session)
 	if err != nil {

@@ -102,6 +102,15 @@ func providerCondition(a ProviderAccessObservation) (string, string) {
 	return "The provider refused the request.", "Review connection"
 }
 
+// AllowanceFailure reports a provider error code that stops a connection until its account allowance returns.
+func AllowanceFailure(code string) bool {
+	switch code {
+	case "insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached":
+		return true
+	}
+	return false
+}
+
 func providerTransient(a ProviderAccessObservation) bool {
 	if a.Origin == "provider_network" {
 		return true
@@ -249,7 +258,7 @@ func RecordProviderAccess(ctx context.Context, q Q, a ProviderAccessObservation)
 		return result, err
 	}
 	credentialFailure := a.HTTPStatus != nil && *a.HTTPStatus == 401 || a.ProviderErrorCode == "invalid_api_key" || a.ProviderErrorCode == "authentication_error" || a.ProviderErrorCode == "authentication_failed"
-	quotaFailure := a.ProviderErrorCode == "insufficient_quota" || a.ProviderErrorCode == "billing_error" || a.ProviderErrorCode == "credit_balance_exhausted" || a.ProviderErrorCode == "usage_limit_reached"
+	quotaFailure := AllowanceFailure(a.ProviderErrorCode)
 	if credentialFailure || quotaFailure {
 		if current, err := currentProviderObservation(ctx, q, a, connectionOperation, ""); err != nil || !current {
 			return result, err
@@ -258,10 +267,17 @@ func RecordProviderAccess(ctx context.Context, q Q, a ProviderAccessObservation)
 		if credentialFailure && connectionOperation == "token_refresh" {
 			state = "unknown"
 		}
-		_, err = q.ExecContext(ctx, `UPDATE connection_health SET state=?,revision=revision+1,latest_diagnostic_id=?,next_retry_at=NULL,request_deadline=NULL,
+		// An allowance stop retains the provider's reset time. The resident lifts the stop after that time.
+		reset := ""
+		if quotaFailure && !credentialFailure {
+			if at, err := time.Parse(time.RFC3339Nano, a.RetryAfter); err == nil && at.After(time.Now()) {
+				reset = at.UTC().Format(time.RFC3339Nano)
+			}
+		}
+		_, err = q.ExecContext(ctx, `UPDATE connection_health SET state=?,revision=revision+1,latest_diagnostic_id=?,next_retry_at=NULLIF(?,''),request_deadline=NULL,
  failure_count=CASE WHEN ?='unknown' THEN 0 ELSE MIN(failure_count+1,3) END,
  first_failure_at=COALESCE(first_failure_at,?),latest_failure_at=? WHERE connection_id=? AND profile_id='' AND authorization_id=?`,
-			state, result.DiagnosticID, state, a.ObservedAt, a.ObservedAt, a.Connection, a.AuthorizationRevision)
+			state, result.DiagnosticID, reset, state, a.ObservedAt, a.ObservedAt, a.Connection, a.AuthorizationRevision)
 		result.Applied = err == nil
 		return result, err
 	}
@@ -315,11 +331,8 @@ func applyProviderRenewal(ctx context.Context, q Q, a ProviderAccessObservation,
 		return result, err
 	}
 	var old ProviderAccessObservation
-	if json.Unmarshal([]byte(previous), &old) == nil && old.Origin == "provider" {
-		switch old.ProviderErrorCode {
-		case "insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached":
-			return result, nil
-		}
+	if json.Unmarshal([]byte(previous), &old) == nil && old.Origin == "provider" && AllowanceFailure(old.ProviderErrorCode) {
+		return result, nil
 	}
 	state, retry := "ready", ""
 	if providerObservationFailed(a) {
@@ -508,6 +521,9 @@ func ProviderRepairAction(submission, kind string) string {
 		return ""
 	}
 	_, action := providerCondition(a)
+	if a.Origin == "provider" && AllowanceFailure(a.ProviderErrorCode) && (a.HTTPStatus == nil || *a.HTTPStatus != 401) {
+		return "Retry connection"
+	}
 	if a.Origin == "provider" && (a.HTTPStatus != nil && *a.HTTPStatus == 401 || a.ProviderErrorCode == "invalid_api_key" || strings.HasPrefix(a.ProviderErrorCode, "authentication")) {
 		if strings.HasSuffix(kind, "oauth") {
 			return "Retry connection"

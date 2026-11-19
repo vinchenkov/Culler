@@ -812,6 +812,11 @@ export async function handleApi(req: Request, url: URL, deps: ApiDeps): Promise<
     if (typeof body.session_id !== "string" || !Number.isSafeInteger(body.message_id) || typeof body.request_id !== "string") return usageError("The reply retry identity is invalid.");
     return verbResponse(await deps.mc.run(["collie", "reply-retry", body.session_id, "--message", String(body.message_id), "--request", body.request_id]));
   }
+  if (path === "/api/collie/reply-dismiss" && req.method === "POST") {
+    const body = await readBody(req);
+    if (typeof body.session_id !== "string" || !Number.isSafeInteger(body.message_id) || typeof body.request_id !== "string") return usageError("The reply dismissal identity is invalid.");
+    return verbResponse(await deps.mc.run(["collie", "reply-dismiss", body.session_id, "--message", String(body.message_id), "--request", body.request_id]));
+  }
 
   if (path === "/api/doctor" && req.method === "GET") {
     return verbResponse(await deps.mc.run(["doctor"]));

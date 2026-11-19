@@ -484,3 +484,13 @@ test("a conversation rejection presents the reply action", () => {
     expect(repairText(reply)).not.toContain("connection");
   }
 });
+
+test("an allowance stop offers Retry connection and states the provider's reset time", () => {
+  const stop = { id: "connection:account:token_refresh:", group: "connections", state: "stopped", action: "Retry connection",
+    connection_id: "account", roles: ["worker"], provider_error_code: "usage_limit_reached", next_retry_at: "2026-11-18T20:00:00Z" };
+  expect(actionControl(stop)).toBe(true);
+  expect(repairText(stop)).toBe("");
+  expect(conditionRetry(stop)).toStartWith("Automatic retry at the provider's reset time: ");
+  expect(conditionRetry({ ...stop, next_retry_at: undefined })).toBe("Automatic retries stopped.");
+  expect(conditionExplanation({ ...stop, http_status: 429 })).toBe("The provider account has no available allowance.");
+});

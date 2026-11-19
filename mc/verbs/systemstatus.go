@@ -371,7 +371,8 @@ func SystemStatus(db *sql.DB, id *RunIdentity, a SystemStatusRequest) (any, erro
 	out.Conditions = append(out.Conditions, wikiMerges...)
 	rows, err = tx.QueryContext(ctx, `SELECT a.attempt_id,a.session_id,a.message_id,COALESCE(d.condition,'The reply attempt failed.'),COALESCE(a.latest_diagnostic_id,0)
  FROM collie_reply_attempts a LEFT JOIN diagnostic_events d ON d.id=a.latest_diagnostic_id JOIN collie_sessions s ON s.id=a.session_id
- WHERE s.deleted_at IS NULL AND a.state='failed' AND a.rowid=(SELECT MAX(b.rowid) FROM collie_reply_attempts b WHERE b.message_id=a.message_id) ORDER BY a.rowid`)
+ WHERE s.deleted_at IS NULL AND a.state='failed' AND a.rowid=(SELECT MAX(b.rowid) FROM collie_reply_attempts b WHERE b.message_id=a.message_id)
+ AND NOT EXISTS(SELECT 1 FROM diagnostic_events x WHERE x.reply_attempt_id=a.attempt_id AND x.source='operator' AND x.outcome='cancelled') ORDER BY a.rowid`)
 	if err != nil {
 		return nil, err
 	}

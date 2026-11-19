@@ -341,6 +341,12 @@ export function needsAttention(condition) {
   return condition.state !== "ready" || Boolean(condition.id?.startsWith("infrastructure:"));
 }
 
+/** A failed Collie reply also offers Dismiss. Dismiss ends the notice, and the reply stays in the conversation. */
+export function dismissButton(condition, action) {
+  return Boolean(condition.id?.startsWith("reply:")) &&
+    el("button", { class: "btn ghost", type: "button", text: "Dismiss", onclick: () => action({ ...condition, action: "Dismiss" }) });
+}
+
 export function systemConditionNode(condition, action, details, discuss = null) {
   const ready = !needsAttention(condition);
   const unused = condition.group === "connections" && condition.state === "unknown" && !condition.roles?.length && !condition.diagnostic_id;
@@ -356,6 +362,7 @@ export function systemConditionNode(condition, action, details, discuss = null) 
       !ready && repairText(condition) && el("p", { class: "system-repair-text", text: repairText(condition) })),
     el("div", { class: "system-actions" },
       !ready && !unused && actionControl(condition) && systemActionButton(condition, action),
+      !ready && !unused && dismissButton(condition, action),
       !ready && !unused && discuss?.(condition),
       el("button", { class: "btn ghost", type: "button", text: "View details", "aria-label": `View details for ${condition.name}${condition.profile_id ? " / " + profileName(condition) : ""}`, onclick: () => details(condition) })));
 }
@@ -393,6 +400,7 @@ function systemFailureNoticeNode(view, action, review, discuss) {
       single && !view.unavailable && repairText(single) && el("p", { class: "system-repair-text", text: repairText(single) })),
     el("div", { class: "system-actions" },
       single && !view.unavailable && actionControl(single) && systemActionButton(single, action),
+      single && !view.unavailable && dismissButton(single, action),
       single && discuss?.(single),
       el("button", { type: "button", class: `btn ${single && !view.unavailable ? "ghost" : "rust"}`, text: single && !view.unavailable ? "View details" : conditions.length ? "Review issues" : "System health", onclick: review })));
 }
@@ -405,11 +413,14 @@ const NETWORK_ERRORS = {
   other: "Request failed",
 };
 
+const ALLOWANCE_FAILURES = new Set(["insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached"]);
+
 export function conditionExplanation(condition) {
   if (!needsAttention(condition)) return "";
   if (condition.provider_error_code === "invalid_grant") return "The provider rejected the credential refresh.";
   if (condition.network_error) return `${NETWORK_ERRORS[condition.network_error] || "The request failed"}. ${condition.profile_id ? "The earlier model request did not complete." : "The connection check did not complete."}`;
   if (condition.group === "connections") {
+    if (ALLOWANCE_FAILURES.has(condition.provider_error_code)) return "The provider account has no available allowance.";
     if (condition.http_status >= 400) return condition.profile_id
       ? "The provider rejected access to this model." : "The provider rejected the connection check.";
     return "Culler cannot confirm the cause of this access issue.";
@@ -422,6 +433,7 @@ export function conditionRetry(condition) {
     if (condition.attempts?.length) return "";
     return `${condition.retry_phase === "pending" || Date.parse(condition.next_retry_at) <= Date.now() ? "Retry delay ended" : "Earliest retry"}: ${stampLabel(condition.next_retry_at)}.`;
   }
+  if (condition.state === "stopped" && condition.group === "connections" && condition.next_retry_at) return `Automatic retry at the provider's reset time: ${stampLabel(condition.next_retry_at)}.`;
   if (condition.state === "stopped" && (condition.group === "connections" || condition.id?.startsWith("infrastructure:"))) return "Automatic retries stopped.";
   return "";
 }

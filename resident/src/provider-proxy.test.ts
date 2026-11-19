@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import {
   ProviderCredentialError,
+  providerResetTime,
   startProviderProxy,
   type ProviderCredential,
   type ProviderProxyDependencies,
@@ -660,6 +661,25 @@ describe("provider proxy response delivery", () => {
     expect(observations[0]!.retry_after).toBeDefined();
     const evidence = JSON.stringify(observations);
     for (const secret of [token, providerSecret, renewalSecret]) expect(evidence).not.toContain(secret);
+  });
+
+  test("reads a usage limit reset time only from a future time within 31 days", () => {
+    const now = Date.parse("2026-11-18T12:00:00Z");
+    expect(providerResetTime({ error: { resets_in_seconds: 90 } }, now)).toBe("2026-11-18T12:01:30.000Z");
+    expect(providerResetTime({ error: { resets_at: now / 1000 + 60 } }, now)).toBe("2026-11-18T12:01:00.000Z");
+    for (const error of [{ resets_at: now / 1000 }, { resets_in_seconds: 32 * 86_400 }, { resets_at: "soon" }, {}]) {
+      expect(providerResetTime({ error }, now)).toBeUndefined();
+    }
+  });
+
+  test("records a usage limit reset time from the provider error body", async () => {
+    const resets = Math.floor(Date.now() / 1000) + 3600;
+    const { handle, observations } = proxy({ fetch: (async () => Response.json({
+      error: { type: "usage_limit_reached", message: "The usage limit has been reached", resets_at: resets },
+    }, { status: 429 })) as typeof fetch });
+    const { token } = handle.issue(authorization());
+    expect((await call(handle, token)).status).toBe(429);
+    expect(observations[0]).toMatchObject({ origin: "provider", provider_error_code: "usage_limit_reached", retry_after: new Date(resets * 1000).toISOString() });
   });
 
   test("bounds an oversized error and preserves its provider status", async () => {

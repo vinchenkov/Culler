@@ -275,3 +275,78 @@ test("Clear failures removes a Project infrastructure notice before the stop", a
   await page.waitForFunction(() => !document.querySelector('[data-testid="system-notices"] [data-condition-id="infrastructure:proposal-review"]'));
   expect(smoke.browserLog.filter(line => line.startsWith("pageerror:"))).toEqual([]);
 }, 60000);
+
+test("Dismiss ends a failed Collie reply notice and keeps the reply in the conversation", async () => {
+  const { page } = smoke;
+  const started = await mc(["collie", "start", "--from", "discord:dismiss-reply"]);
+  const session = started["session_id"] as string;
+  const sent = await mc(["collie", "send", session, "--from", "discord:dismiss-reply", "--body", "Why did the reply stop?"]);
+  const message = sent["message_id"] as number;
+  const attempt = "d".repeat(32);
+  const reply = (result: { conditions?: Array<{ id: string }> }) => result.conditions?.find(condition => condition.id === `reply:${message}`);
+  const shown = page.waitForResponse(async response =>
+    response.url().endsWith("/api/system/status") && response.ok() && Boolean(reply(await response.json())));
+  const db = openSpine(smoke);
+  try {
+    db.run("INSERT INTO collie_reply_attempts(attempt_id,session_id,message_id,state,ended_at) VALUES(?,?,?,'failed',datetime('now'))", [attempt, session, message]);
+  } finally { db.close(); }
+  await shown;
+  const notices = page.getByTestId("system-notices");
+  const review = notices.getByRole("button", { name: "Review issues" });
+  const scope = await review.isVisible() ? (await review.click(), page.getByRole("dialog", { name: "System issues" })) : notices;
+  const row = scope.locator(`[data-condition-id="reply:${message}"]`).first();
+  await row.getByRole("button", { name: "Retry reply", exact: true }).waitFor();
+  await page.screenshot({ path: evidencePath("proposal-review/dismiss-failed-reply.png") });
+  const cleared = page.waitForResponse(async response =>
+    response.url().endsWith("/api/system/status") && response.ok() && !reply(await response.json()));
+  const request = page.waitForResponse("**/api/collie/reply-dismiss");
+  await row.getByRole("button", { name: "Dismiss", exact: true }).click();
+  expect((await request).ok()).toBe(true);
+  await cleared;
+  const current = openSpine(smoke);
+  try {
+    expect(current.query("SELECT state FROM collie_reply_attempts WHERE attempt_id=?").get(attempt)).toEqual({ state: "failed" });
+    expect(current.query("SELECT COUNT(*) AS count FROM diagnostic_events WHERE reply_attempt_id=? AND source='operator' AND outcome='cancelled'").get(attempt)).toEqual({ count: 1 });
+  } finally { current.close(); }
+  await page.waitForFunction(id => !document.querySelector(`[data-testid="system-notices"] [data-condition-id="${id}"]`), `reply:${message}`);
+  const history = (await mc(["collie", "history", session])) as { messages: Array<{ body: string }> };
+  expect(history.messages.map(row => row.body)).toContain("Why did the reply stop?");
+  expect(smoke.browserLog.filter(line => line.startsWith("pageerror:"))).toEqual([]);
+}, 60000);
+
+test("an account allowance stop offers Retry connection and states the provider's reset time", async () => {
+  const { page } = smoke;
+  const reset = new Date(Date.now() + 3 * 3600_000).toISOString();
+  const condition = { id: "connection:subscription:token_refresh:", group: "connections", name: "Subscription account", connection_id: "subscription",
+    state: "stopped", roles: ["worker"], condition: "The provider account has no available allowance.", http_status: 429,
+    provider_error_code: "usage_limit_reached", action: "Retry connection", next_retry_at: reset, diagnostic_id: 9, failure_count: 1 };
+  let stopped = true;
+  const retries: Array<Record<string, unknown>> = [];
+  await page.route("**/api/system/status", route => route.fulfill({ json: {
+    complete: true, observed_at: new Date().toISOString(), connections: [], conditions: stopped ? [condition] : [],
+  } }));
+  await page.route("**/api/connection/retry", async route => {
+    retries.push(route.request().postDataJSON());
+    stopped = false;
+    await route.fulfill({ json: { resumed: true } });
+  });
+  try {
+    await page.reload();
+    await page.waitForSelector("body[data-ready]");
+    const notices = page.getByTestId("system-notices");
+    await notices.getByRole("button", { name: "View details" }).click();
+    const details = page.locator("dialog.system-details[open]");
+    await details.getByText("Automatic retry at the provider's reset time:", { exact: false }).waitFor();
+    await details.getByText("The provider account has no available allowance.", { exact: true }).waitFor();
+    await page.screenshot({ path: evidencePath("proposal-review/allowance-stop-details.png") });
+    await details.getByRole("button", { name: "Retry connection", exact: true }).click();
+    await page.waitForFunction(() => !document.querySelector('[data-testid="system-notices"] [data-condition-id="connection:subscription:token_refresh:"]'));
+    expect(retries).toHaveLength(1);
+    expect(retries[0]).toMatchObject({ connection_id: "subscription" });
+    expect(String(retries[0]!["check_id"])).toMatch(/^[0-9a-f]{32}$/);
+  } finally {
+    await page.unroute("**/api/system/status");
+    await page.unroute("**/api/connection/retry");
+  }
+  expect(smoke.browserLog.filter(line => line.startsWith("pageerror:"))).toEqual([]);
+}, 60000);

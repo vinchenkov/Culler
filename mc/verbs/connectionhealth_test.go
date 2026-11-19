@@ -478,7 +478,7 @@ func TestConnectionReconnectOnlyForAGrantRejection(t *testing.T) {
 			t.Fatalf("%s %d: state=%s action=%q", tc.code, tc.status, condition.State, condition.Action)
 		}
 		check.CheckID = domain.DiagnosticID()
-		_, err = ConnectionRetry(db, nil, check)
+		_, err = ConnectionRetry(db, nil, ConnectionRetryRequest{ConnectionCheck: check})
 		if (err == nil) != (tc.action == "Retry connection") {
 			t.Fatalf("%s %d: retry error=%v", tc.code, tc.status, err)
 		}

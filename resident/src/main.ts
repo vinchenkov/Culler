@@ -278,7 +278,7 @@ export async function refreshConnectionCheck(runMc: Exec, renew: (connection: st
   if (result.exitCode !== 0) throw new Error("The connection status could not become durable.");
 }
 
-export async function refreshConnectionsBeforeTick(runMc: Exec, refreshConnection: (connection: string) => Promise<void>, log: Logger): Promise<void> {
+export async function refreshConnectionsBeforeTick(runMc: Exec, refreshConnection: (connection: string) => Promise<void>, log: Logger, now = Date.now()): Promise<void> {
   const status = await runMc(["system", "status"]);
   if (status.exitCode !== 0) return;
   const current = JSON.parse(status.stdout);
@@ -286,6 +286,14 @@ export async function refreshConnectionsBeforeTick(runMc: Exec, refreshConnectio
     if ((condition.state === "unknown" || condition.state === "retry_wait") &&
         condition.id === `connection:${condition.connection_id}:token_refresh:`) {
       void refreshConnection(condition.connection_id).catch(() => log.warn("credential.refresh_failed", "The connection refresh could not complete."));
+    }
+    // A stopped connection with a retry time is an allowance stop. It ends at the provider's reset time.
+    if (condition.state === "stopped" && condition.group === "connections" && !condition.profile_id &&
+        typeof condition.next_retry_at === "string" && Date.parse(condition.next_retry_at) <= now) {
+      const retried = await runMc(["connection", "retry"], new TextEncoder().encode(JSON.stringify({
+        connection_id: condition.connection_id, check_id: crypto.randomUUID().replaceAll("-", ""), automatic: true,
+      })));
+      if (retried.exitCode !== 0) log.warn("credential.refresh_failed", "The connection allowance retry could not complete.");
     }
   }
 }

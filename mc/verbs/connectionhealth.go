@@ -480,14 +480,21 @@ func RunLaunchCheck(db *sql.DB, id *RunIdentity, run string, requirements ...Sys
 	return map[string]any{"allowed": true, "expires_at": expires.Format(time.RFC3339Nano)}, nil
 }
 
-func ConnectionRetry(db *sql.DB, id *RunIdentity, a ConnectionCheck) (any, error) {
+// ConnectionRetryRequest lifts a stopped connection. An automatic request lifts
+// only an allowance stop whose provider reset time has passed.
+type ConnectionRetryRequest struct {
+	ConnectionCheck
+	Automatic bool `json:"automatic,omitempty"`
+}
+
+func ConnectionRetry(db *sql.DB, id *RunIdentity, a ConnectionRetryRequest) (any, error) {
 	if err := RequireHostScope(id, "retry connection"); err != nil {
 		return nil, err
 	}
-	if err := validateConnectionCheck(a); err != nil {
+	if err := validateConnectionCheck(a.ConnectionCheck); err != nil {
 		return nil, err
 	}
-	if a.Operation != "token_refresh" {
+	if a.Operation != "token_refresh" && a.Operation != "connection_access" {
 		return nil, Domainf("This connection requires a model test.")
 	}
 	err := inTx(db, func(ctx context.Context, q Q) error {
@@ -502,10 +509,10 @@ func ConnectionRetry(db *sql.DB, id *RunIdentity, a ConnectionCheck) (any, error
 		if err != sql.ErrNoRows {
 			return err
 		}
-		var state, auth, code string
+		var state, auth, code, reset, verified string
 		var status sql.NullInt64
 		var count int
-		if err := q.QueryRowContext(ctx, `SELECT h.state,h.authorization_id,h.failure_count,COALESCE(d.provider_error_code,''),d.http_status FROM connection_health h LEFT JOIN diagnostic_events d ON d.id=h.latest_diagnostic_id WHERE h.connection_id=? AND h.operation=? AND h.profile_id=''`, a.ConnectionID, a.Operation).Scan(&state, &auth, &count, &code, &status); err != nil {
+		if err := q.QueryRowContext(ctx, `SELECT h.state,h.authorization_id,h.failure_count,COALESCE(h.next_retry_at,''),COALESCE(h.verified_at,''),COALESCE(d.provider_error_code,''),d.http_status FROM connection_health h LEFT JOIN diagnostic_events d ON d.id=h.latest_diagnostic_id WHERE h.connection_id=? AND h.operation=? AND h.profile_id=''`, a.ConnectionID, a.Operation).Scan(&state, &auth, &count, &reset, &verified, &code, &status); err != nil {
 			return err
 		}
 		if auth != a.AuthorizationID {
@@ -516,13 +523,27 @@ func ConnectionRetry(db *sql.DB, id *RunIdentity, a ConnectionCheck) (any, error
 			value := int(status.Int64)
 			httpStatus = &value
 		}
-		if state != "stopped" || tokenRefreshAction(httpStatus, code) != "Retry connection" {
+		allowance := domain.AllowanceFailure(code) && (httpStatus == nil || *httpStatus != 401)
+		source, condition := "operator", "The operator authorized a new connection allowance."
+		// Only an allowance stop retains a retry time on a stopped connection.
+		if a.Automatic {
+			at, err := time.Parse(time.RFC3339Nano, reset)
+			if state != "stopped" || err != nil || time.Now().Before(at) {
+				return Domainf("The provider reset time has not passed.")
+			}
+			source, condition = "resident", "The provider reset time passed."
+		} else if state != "stopped" || !allowance && (a.Operation != "token_refresh" || tokenRefreshAction(httpStatus, code) != "Retry connection") {
 			return Domainf("This failure requires connection repair.")
 		}
-		if _, err := domain.AppendDiagnostic(ctx, q, domain.Diagnostic{EventID: a.CheckID, Source: "operator", Operation: a.Operation, Outcome: "resumed", ConnectionID: a.ConnectionID, AuthorizationID: auth, Condition: "The operator authorized a new connection allowance.", StateBefore: state, StateAfter: "unknown", CountBefore: count}, ""); err != nil {
+		// A token refresh verifies the connection again. A verified API key needs no new check before the next request.
+		next := "unknown"
+		if a.Operation == "connection_access" && verified != "" {
+			next = "ready"
+		}
+		if _, err := domain.AppendDiagnostic(ctx, q, domain.Diagnostic{EventID: a.CheckID, Source: source, Operation: a.Operation, Outcome: "resumed", ConnectionID: a.ConnectionID, AuthorizationID: auth, Condition: condition, StateBefore: state, StateAfter: next, CountBefore: count}, ""); err != nil {
 			return err
 		}
-		_, err = q.ExecContext(ctx, `UPDATE connection_health SET state='unknown',failure_count=0,revision=revision+1,next_retry_at=NULL,request_deadline=NULL WHERE connection_id=? AND operation=? AND profile_id=''`, a.ConnectionID, a.Operation)
+		_, err = q.ExecContext(ctx, `UPDATE connection_health SET state=?,failure_count=0,revision=revision+1,next_retry_at=NULL,request_deadline=NULL WHERE connection_id=? AND operation=? AND profile_id=''`, next, a.ConnectionID, a.Operation)
 		return err
 	})
 	return map[string]any{"resumed": err == nil}, err

@@ -3,7 +3,7 @@ import { taskRuns } from "./board.js";
 import { createRoleCustomization, customizationRole } from "./customization.js";
 import { createEvaluationControl } from "./evaluation.js";
 import { createRequests, isReadRequest } from "./requests.js";
-import { systemIssues, affectedProposalNodes, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, systemActionButton, systemConditionNodes, systemNoticeNode, actionControl, needsAttention, repairText, conditionSummary, conditionImpact, conditionFacts, profileName, conditionExplanation, conditionRetry, diagnosticResults, refreshSummary, releaseView } from "./systemhealth.js";
+import { systemIssues, affectedProposalNodes, createSystemStatus, createDeploymentCheck, connectionGroups, connectionDisclosureLabel, systemActionButton, dismissButton, systemConditionNodes, systemNoticeNode, actionControl, needsAttention, repairText, conditionSummary, conditionImpact, conditionFacts, profileName, conditionExplanation, conditionRetry, diagnosticResults, refreshSummary, releaseView } from "./systemhealth.js";
 // The dashboard shell reads command results and renders the visible page.
 // Each project page uses the selected Project.
 
@@ -3008,7 +3008,7 @@ window.addEventListener("focus", () => {
 
 const systemActionRequests = new Map();
 async function systemAction(condition) {
-  const key = `${condition.id}:${condition.diagnostic_id ?? condition.attempt_id ?? condition.run_id ?? ""}`;
+  const key = `${condition.id}:${condition.action}:${condition.diagnostic_id ?? condition.attempt_id ?? condition.run_id ?? ""}`;
   if (!systemActionRequests.has(key)) systemActionRequests.set(key, crypto.randomUUID().replaceAll("-", ""));
   const requestID = systemActionRequests.get(key);
   try {
@@ -3031,6 +3031,12 @@ async function systemAction(condition) {
       body.append(form);reason.focus();return;
     }
     if (condition.action === "Retry connection") await api("/api/connection/retry", { method: "POST", body: JSON.stringify({connection_id:condition.connection_id,check_id:requestID}) });
+    else if (condition.action === "Dismiss") {
+      await api("/api/collie/reply-dismiss", { method: "POST", body: JSON.stringify({
+        session_id: condition.session_id, message_id: condition.message_id, request_id: requestID,
+      }) });
+      systemActionRequests.delete(key);
+    }
     else if (condition.connection_id) await agentProfiles.repair(condition.connection_id, condition.action, condition.profile_id, condition.provider_error_code);
     else if (condition.action === "Resume Project infrastructure" || condition.action === "Clear failures") {
       await api("/api/system/resume-infrastructure", {
@@ -3126,6 +3132,8 @@ function renderDiagnosticState() {
     el("div", { class: "system-repair" },
       lastKnown && needsAttention(lastKnown) && actionControl(lastKnown) && systemActionButton(lastKnown,
         condition => { diagnosticDialog.dialog.close(); return systemAction(condition); }),
+      !systemView.unavailable && known && dismissButton(known,
+        condition => { diagnosticDialog.dialog.close(); return systemAction(condition); }),
       diagnosticButton({ ...conditionDiagnostic(detail, systemView.unavailable),
         ...(!known && !systemView.unavailable ? { state: "Issue cleared" } : {}) }, askDiagnostic),
       !systemView.unavailable && known && conditionRetry(known) && el("span", { class: "system-helper", text: conditionRetry(known) })));
@@ -3189,7 +3197,7 @@ async function systemHistory(condition) {
         outcomes = result.refresh_outcomes ?? {};
         renderTotals();
         const operations = { token_refresh: "Credential refresh", model_access: "Model access", connection_access: "Connection check", strategist: "Strategist", collie_reply: "Collie reply" };
-        const outcomesText = { ready: "Verified", failed: "Failed", succeeded: "Succeeded", resumed: "Resumed" };
+        const outcomesText = { ready: "Verified", failed: "Failed", succeeded: "Succeeded", resumed: "Resumed", cancelled: "Cancelled" };
         for (const event of diagnosticResults(result.events ?? [])) events.append(el("li", { class: "system-history-event" },
           el("div", { class: "system-history-heading" },
             el("strong", { text: operations[event.operation] ?? event.operation.replaceAll("_", " ") }),

@@ -240,6 +240,32 @@ test("the resident selects account retries and leaves model retries to agent run
   expect(rig.mc.calls).toEqual([["system", "status"]]);
 });
 
+test("the resident lifts an allowance stop after the provider's reset time", async () => {
+  const rig = makeRig();
+  const now = Date.parse("2026-11-18T12:00:00Z");
+  const conditions = [
+    { connection_id: "due", group: "connections", state: "stopped", next_retry_at: "2026-11-18T11:59:59Z", id: "connection:due:token_refresh:" },
+    { connection_id: "key", group: "connections", state: "stopped", next_retry_at: "2026-11-18T12:00:00Z", id: "connection:key:connection_access:" },
+    { connection_id: "later", group: "connections", state: "stopped", next_retry_at: "2026-11-18T12:00:01Z", id: "connection:later:token_refresh:" },
+    { connection_id: "repair", group: "connections", state: "stopped", id: "connection:repair:token_refresh:" },
+    { connection_id: "model", group: "connections", profile_id: "profile", state: "stopped", next_retry_at: "2026-11-18T11:00:00Z", id: "connection:model:model_access:profile" },
+  ];
+  const calls: { args: string[]; body: any }[] = [];
+  const runMc = async (args: string[], input?: Uint8Array) => {
+    calls.push({ args, body: input && JSON.parse(new TextDecoder().decode(input)) });
+    return { exitCode: 0, stderr: "", stdout: JSON.stringify(args[0] === "system" ? { conditions } : { resumed: true }) };
+  };
+  const refreshed: string[] = [];
+  await refreshConnectionsBeforeTick(runMc, async connection => { refreshed.push(connection); }, rig.deps.log, now);
+  expect(refreshed).toEqual([]);
+  const retries = calls.filter(call => call.args.join(" ") === "connection retry");
+  expect(retries.map(call => call.body.connection_id)).toEqual(["due", "key"]);
+  for (const call of retries) {
+    expect(call.body.automatic).toBe(true);
+    expect(call.body.check_id).toMatch(/^[0-9a-f]{32}$/);
+  }
+});
+
 test("the resident can dispatch while account renewal awaits a response", async () => {
   const rig = makeRig();
   rig.mc.enqueue({ exitCode: 0, stdout: JSON.stringify({ conditions: [

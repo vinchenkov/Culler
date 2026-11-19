@@ -198,6 +198,16 @@ function providerErrorCode(body: unknown, secrets: string[]): string | undefined
   return knownProviderError(error, secrets) ?? knownProviderError(value.code, secrets);
 }
 
+/** The usage limit reset time in a provider error body, in seconds since the epoch or seconds from now. */
+export function providerResetTime(body: unknown, now: number): string | undefined {
+  const error = body && typeof body === "object" ? (body as Record<string, unknown>).error : undefined;
+  if (!error || typeof error !== "object") return undefined;
+  const fields = error as Record<string, unknown>;
+  const at = typeof fields.resets_at === "number" ? fields.resets_at * 1000
+    : typeof fields.resets_in_seconds === "number" ? now + fields.resets_in_seconds * 1000 : NaN;
+  return Number.isFinite(at) && at > now && at < now + 31 * 86_400_000 ? new Date(at).toISOString() : undefined;
+}
+
 const providerErrorCodes = new Set([
   "invalid_api_key", "authentication_error", "authentication_failed", "invalid_grant", "access_denied",
   "insufficient_quota", "billing_error", "credit_balance_exhausted", "usage_limit_reached",
@@ -692,6 +702,7 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
             const parsed = JSON.parse(Buffer.from(responseBody).toString());
             decoded = true;
             facts.provider_error_code = providerErrorCode(parsed, secrets);
+            facts.retry_after ??= providerResetTime(parsed, now());
             responseBody = Buffer.from(JSON.stringify(redactJSON(parsed, secrets)));
           }
           catch {

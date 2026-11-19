@@ -274,7 +274,7 @@ func commandConnection(args []string, stdin io.Reader) (any, error) {
 		return nil, verbs.Usagef("A connection action is required.")
 	}
 	if args[0] == "retry" {
-		var a verbs.ConnectionCheck
+		var a verbs.ConnectionRetryRequest
 		if err := decodeDiagnosticRequest(stdin, &a); err != nil {
 			return nil, err
 		}
@@ -446,7 +446,7 @@ func commandSystemSpine(action string, stdin io.Reader) (any, error) {
 		}
 		return withSpineRead(func(db *sql.DB) (any, error) { return verbs.SystemStatus(db, id, a) })
 	case "retry":
-		var a verbs.ConnectionCheck
+		var a verbs.ConnectionRetryRequest
 		if err := decodeDiagnosticRequest(stdin, &a); err != nil {
 			return nil, err
 		}

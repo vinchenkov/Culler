@@ -1,8 +1,11 @@
 package verbs
 
 import (
+	"fmt"
 	"sync"
 	"testing"
+
+	"mc/domain"
 )
 
 func TestCollieEnsureSharesOneConversation(t *testing.T) {
@@ -147,5 +150,77 @@ func TestCollieDeleteHidesTheReplyConditionAndRetainsItsHistory(t *testing.T) {
 	var diagnostics int
 	if err := db.QueryRow(`SELECT a.state,COUNT(d.id) FROM collie_reply_attempts a JOIN diagnostic_events d ON d.id=a.latest_diagnostic_id WHERE a.attempt_id=?`, attempt).Scan(&state, &diagnostics); err != nil || state != "failed" || diagnostics != 1 {
 		t.Fatalf("The reply history changed after deletion: state=%s diagnostics=%d error=%v", state, diagnostics, err)
+	}
+}
+
+func TestOperatorDismissesAFailedCollieReplyNotice(t *testing.T) {
+	db := dvSpine(t)
+	dvExec(t, db, `DELETE FROM connection_health`)
+	session := startedSession(t, db, "dashboard:dismiss-failed")
+	if _, err := CollieSend(db, nil, CollieSendArgs{Session: session, From: "dashboard:dismiss-failed", Body: "A question."}); err != nil {
+		t.Fatal(err)
+	}
+	id := &RunIdentity{Tier: "collie", RunID: session}
+	claimed, err := CollieClaim(db, id, session)
+	if err != nil {
+		t.Fatal(err)
+	}
+	attempt := claimed.(map[string]any)["message"].(map[string]any)["attempt_id"].(string)
+	var message int64
+	if err := db.QueryRow(`SELECT message_id FROM collie_reply_attempts WHERE attempt_id=?`, attempt).Scan(&message); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := CollieReplyDismiss(db, nil, session, message, domain.DiagnosticID()); err == nil {
+		t.Fatal("Dismiss accepted a reply without a failure.")
+	}
+	if _, err := CollieReplyFailure(db, id, attempt, "The harness ended without a reply."); err != nil {
+		t.Fatal(err)
+	}
+	notice := func() bool {
+		t.Helper()
+		status, err := SystemStatus(db, nil, SystemStatusRequest{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, condition := range status.(SystemStatusResult).Conditions {
+			if condition.ID == fmt.Sprintf("reply:%d", message) {
+				return true
+			}
+		}
+		return false
+	}
+	if !notice() {
+		t.Fatal("The failed reply has no notice.")
+	}
+	key := domain.DiagnosticID()
+	for range 2 {
+		if _, err := CollieReplyDismiss(db, nil, session, message, key); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, err := CollieReplyDismiss(db, nil, session, message, domain.DiagnosticID()); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := CollieReplyDismiss(db, nil, session, message+1, key); err == nil {
+		t.Fatal("A dismissal identity applied to another message.")
+	}
+	if notice() {
+		t.Fatal("Dismiss did not end the failed reply notice.")
+	}
+	var state string
+	var dismissals int
+	if err := db.QueryRow(`SELECT a.state,(SELECT COUNT(*) FROM diagnostic_events WHERE reply_attempt_id=a.attempt_id AND source='operator' AND outcome='cancelled') FROM collie_reply_attempts a WHERE a.attempt_id=?`, attempt).Scan(&state, &dismissals); err != nil || state != "failed" || dismissals != 1 {
+		t.Fatalf("Dismiss changed the reply history: state=%s dismissals=%d error=%v", state, dismissals, err)
+	}
+	// The failed reply can still retry, and a new failure has its own notice.
+	retried, err := CollieReplyRetry(db, nil, session, message, domain.DiagnosticID())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := CollieReplyFailure(db, nil, retried.(map[string]any)["attempt_id"].(string), "The harness ended without a reply."); err != nil {
+		t.Fatal(err)
+	}
+	if !notice() {
+		t.Fatal("A new reply failure after a dismissal has no notice.")
 	}
 }
