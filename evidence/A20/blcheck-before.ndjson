@@ -1,0 +1,54 @@
+{"level":"VIOLATION","rule":"parse","detail":"table header has 5 columns, want 6 (ID|标题|depends|契约锚|验收映射|备注)","line":26}
+{"level":"VIOLATION","rule":"parse","ticket":"A01","detail":"row has 5 columns, want 6","line":28}
+{"level":"VIOLATION","rule":"parse","ticket":"A02","detail":"row has 5 columns, want 6","line":29}
+{"level":"VIOLATION","rule":"parse","ticket":"A03","detail":"row has 5 columns, want 6","line":30}
+{"level":"VIOLATION","rule":"parse","ticket":"A04","detail":"row has 5 columns, want 6","line":31}
+{"level":"VIOLATION","rule":"parse","ticket":"A05","detail":"row has 5 columns, want 6","line":32}
+{"level":"VIOLATION","rule":"parse","ticket":"A06","detail":"row has 5 columns, want 6","line":33}
+{"level":"VIOLATION","rule":"parse","ticket":"A07","detail":"row has 5 columns, want 6","line":34}
+{"level":"VIOLATION","rule":"parse","ticket":"A08","detail":"row has 5 columns, want 6","line":35}
+{"level":"VIOLATION","rule":"parse","ticket":"A09","detail":"row has 5 columns, want 6","line":36}
+{"level":"VIOLATION","rule":"parse","ticket":"A10","detail":"row has 5 columns, want 6","line":37}
+{"level":"VIOLATION","rule":"parse","ticket":"A11","detail":"row has 5 columns, want 6","line":38}
+{"level":"VIOLATION","rule":"parse","ticket":"A12","detail":"row has 5 columns, want 6","line":39}
+{"level":"VIOLATION","rule":"parse","ticket":"A13","detail":"row has 5 columns, want 6","line":40}
+{"level":"VIOLATION","rule":"parse","ticket":"A14","detail":"row has 5 columns, want 6","line":41}
+{"level":"VIOLATION","rule":"parse","ticket":"A15","detail":"row has 5 columns, want 6","line":42}
+{"level":"VIOLATION","rule":"parse","ticket":"A16","detail":"row has 5 columns, want 6","line":43}
+{"level":"VIOLATION","rule":"parse","ticket":"A17","detail":"row has 5 columns, want 6","line":44}
+{"level":"VIOLATION","rule":"parse","ticket":"A18","detail":"row has 5 columns, want 6","line":45}
+{"level":"VIOLATION","rule":"parse","ticket":"A19","detail":"row has 5 columns, want 6","line":46}
+{"level":"VIOLATION","rule":"parse","ticket":"A20","detail":"row has 5 columns, want 6","line":47}
+{"level":"VIOLATION","rule":"parse","detail":"table header has 5 columns, want 6 (ID|标题|depends|契约锚|验收映射|备注)","line":50}
+{"level":"VIOLATION","rule":"parse","ticket":"B01","detail":"row has 5 columns, want 6","line":52}
+{"level":"VIOLATION","rule":"parse","ticket":"B02","detail":"row has 5 columns, want 6","line":53}
+{"level":"VIOLATION","rule":"parse","ticket":"B03","detail":"row has 5 columns, want 6","line":54}
+{"level":"VIOLATION","rule":"parse","ticket":"B04","detail":"row has 5 columns, want 6","line":55}
+{"level":"VIOLATION","rule":"parse","ticket":"B05","detail":"row has 5 columns, want 6","line":56}
+{"level":"VIOLATION","rule":"parse","ticket":"B06","detail":"row has 5 columns, want 6","line":57}
+{"level":"VIOLATION","rule":"parse","ticket":"B07","detail":"row has 5 columns, want 6","line":58}
+{"level":"VIOLATION","rule":"parse","ticket":"B08","detail":"row has 5 columns, want 6","line":59}
+{"level":"VIOLATION","rule":"parse","ticket":"B09","detail":"row has 5 columns, want 6","line":60}
+{"level":"VIOLATION","rule":"parse","detail":"table header has 5 columns, want 6 (ID|标题|depends|契约锚|验收映射|备注)","line":63}
+{"level":"VIOLATION","rule":"parse","ticket":"C01","detail":"row has 5 columns, want 6","line":65}
+{"level":"VIOLATION","rule":"parse","ticket":"C02","detail":"row has 5 columns, want 6","line":66}
+{"level":"VIOLATION","rule":"parse","ticket":"C03","detail":"row has 5 columns, want 6","line":67}
+{"level":"VIOLATION","rule":"parse","ticket":"C04","detail":"row has 5 columns, want 6","line":68}
+{"level":"VIOLATION","rule":"parse","ticket":"C05","detail":"row has 5 columns, want 6","line":69}
+{"level":"VIOLATION","rule":"parse","ticket":"C06","detail":"row has 5 columns, want 6","line":70}
+{"level":"VIOLATION","rule":"parse","ticket":"C07","detail":"row has 5 columns, want 6","line":71}
+{"level":"VIOLATION","rule":"parse","ticket":"C08","detail":"row has 5 columns, want 6","line":72}
+{"level":"VIOLATION","rule":"parse","ticket":"C09","detail":"row has 5 columns, want 6","line":73}
+{"level":"VIOLATION","rule":"parse","ticket":"C10","detail":"row has 5 columns, want 6","line":74}
+{"level":"VIOLATION","rule":"parse","detail":"table header has 5 columns, want 6 (ID|标题|depends|契约锚|验收映射|备注)","line":77}
+{"level":"VIOLATION","rule":"parse","ticket":"D01","detail":"row has 5 columns, want 6","line":79}
+{"level":"VIOLATION","rule":"parse","ticket":"D02","detail":"row has 5 columns, want 6","line":80}
+{"level":"VIOLATION","rule":"parse","ticket":"D03","detail":"row has 5 columns, want 6","line":81}
+{"level":"VIOLATION","rule":"parse","ticket":"D04","detail":"row has 5 columns, want 6","line":82}
+{"level":"VIOLATION","rule":"parse","ticket":"D05","detail":"row has 5 columns, want 6","line":83}
+{"level":"VIOLATION","rule":"parse","ticket":"D06","detail":"row has 5 columns, want 6","line":84}
+{"level":"VIOLATION","rule":"parse","ticket":"D07","detail":"row has 5 columns, want 6","line":85}
+{"level":"VIOLATION","rule":"parse","ticket":"D08","detail":"row has 5 columns, want 6","line":86}
+{"level":"VIOLATION","rule":"parse","ticket":"D09","detail":"row has 5 columns, want 6","line":87}
+{"level":"VIOLATION","rule":"parse","ticket":"D10","detail":"row has 5 columns, want 6","line":88}
+{"level":"VIOLATION","rule":"unrecognized","detail":"ticket declaration outside table format: [E01 D11 E02 E03 E04 E05]","line":91}

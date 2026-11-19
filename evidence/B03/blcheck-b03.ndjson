@@ -1,0 +1,3 @@
+{"level":"WARN","rule":"unrecognized","ticket":"A06","detail":"depends annotation on A01: \"(密钥面)\" kept as note on edge A01 (treated as real dependency)","line":34}
+{"level":"WARN","rule":"unrecognized","ticket":"A13","detail":"depends annotation on A12: \"同域\" kept as note on edge A12 (treated as real dependency)","line":41}
+{"level":"INFO","rule":"status-default","detail":"46 tickets absent from status ledger, treated as BACKLOG"}

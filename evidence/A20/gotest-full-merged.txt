@@ -1,0 +1,16 @@
+=== RUN   TestParseClean
+--- PASS: TestParseClean (0.00s)
+=== RUN   TestUnknownDep
+--- PASS: TestUnknownDep (0.00s)
+=== RUN   TestCycle
+--- PASS: TestCycle (0.00s)
+=== RUN   TestReadyUnmet
+--- PASS: TestReadyUnmet (0.00s)
+=== RUN   TestAnchorMappingMissing
+--- PASS: TestAnchorMappingMissing (0.00s)
+=== RUN   TestRebindRequired
+--- PASS: TestRebindRequired (0.00s)
+=== RUN   TestMalformedInputNotSilent
+--- PASS: TestMalformedInputNotSilent (0.00s)
+PASS
+ok  	blcheck	0.011s

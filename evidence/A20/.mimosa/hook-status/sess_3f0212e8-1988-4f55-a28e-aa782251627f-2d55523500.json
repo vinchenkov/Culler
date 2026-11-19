@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "mimosa-hook-status/v1",
+  "recordedAt": "2026-11-19T11:38:15.578Z",
+  "sessionId": "sess_3f0212e8-1988-4f55-a28e-aa782251627f",
+  "event": "PostToolUse",
+  "toolName": "Edit",
+  "file": "/private/tmp/culler-worktrees/A20/tools/blcheck/status.json",
+  "outcome": "clear",
+  "coverage": "complete",
+  "findingCount": 0,
+  "durationMs": 4,
+  "hostState": "hook_complete",
+  "reportHint": ".mimosa/reports/"
+}

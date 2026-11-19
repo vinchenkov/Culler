@@ -1,0 +1,27 @@
+=== A08 后根文档命中终态计数（逐文件，全部应∈白名单 B/C 类或 A 类致谢/历史）===
+5 README.md
+7 AGENTS.md
+2 SECURITY.md
+38 INSTALL.md
+21 GIT-DELIVERY.md
+10 CHANGELOG.md
+1 config.example.toml
+1 failure-handling-spec.md
+
+=== docs/contracts(语料A类) 与代码目录(类B R2清除) ===
+14 docs/contracts
+2067 mc
+311 resident
+400 dashboard
+395 runner
+153 release
+73 scripts
+161 tests
+860 evals
+3 acceptance
+75 .github
+477 openwiki
+
+ failure-handling-spec.md  |  4 +--
+ tools/blcheck/status.json |  1 +
+ 10 files changed, 102 insertions(+), 89 deletions(-)

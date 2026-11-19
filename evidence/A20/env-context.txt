@@ -1,0 +1,4 @@
+2026-11-19 19:38:04 +0800
+host=MacBookPro os=darwin-24.6.0 arm64 toolchain=go version go1.25.12 darwin/arm64
+commit-under-test=a287c2169254d84ccf68bfe88123315dcf6910ae (shz/TA20)
+scan=scan-2026-11-19T11-37-36.249Z-94d7b4119317 seal=sha256:bb42e843881115176b5b12d053af0c1f23e0abfaf25d008201913ff19f0a3988 completeness=partial runStatus=inconclusive blcheck-files-not-in-coverage-or-findings

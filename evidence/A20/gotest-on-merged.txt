@@ -1,0 +1,2 @@
+ok  	blcheck	(cached)
+go version go1.25.12 darwin/arm64

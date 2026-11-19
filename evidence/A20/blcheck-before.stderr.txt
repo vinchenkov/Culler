@@ -1,0 +1,1 @@
+blcheck: no tickets parsed from docs/contracts/DEV-BASELINE.md — empty or unparseable graph
