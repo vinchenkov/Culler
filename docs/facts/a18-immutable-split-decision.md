@@ -5,5 +5,6 @@
 - 调用方分类（亲读）：ACTIVE=onboard.go inspectSpine、release_database.go（宿主可写挂载，不触回退）、init.go OpenSpineRead（全部读动词）；SNAPSHOT=spine_transfer.go snapshotInspection（已迁显式入口，三处 stage 调用均为复制件）。
 - 测试矩阵（双向串线反证，含 owner 补的"可观察行为"检查）：ACTIVE 面对无 sidecar 只读脊→拒绝（substrate+verbs 两层，容器读动词 ActivityList/TaskList 亲测）；SNAPSHOT 面对同一文件→读成功+query_only 仍立；**ACTIVE 见活 WAL 提交**（原反陈旧测试原样保留——若 ACTIVE 再被路由到 immutable 即红）；两侧均不产生 sidecar；结构守卫更新为"两个具名共享入口"，手写 DSN/mode=ro 封禁不变。
 - 波及面（快线实测）：3 处耦合（2 行为断言 + 1 源码守卫），分支全链 exit 0。
-- **显式窗口（不隐藏）**：A16 未落地前，agent 容器在只读挂载无 sidecar 状态下的 spine 读为**预期失败**——测试以断言承载，非排除项；容器边界真实验证（docker_boundary/e2e）因 Docker 环境断连为 **UNVERIFIED**，恢复后必须补跑，A18 在补跑前不得称容器面已验证。
-- 合并排序：待部署所有者于 (a) 现在合入 dev / (b) 与 A16 同批合（host 推荐：修复与移除一起落地，主干任何时刻不携带裸回归）/ (c) 等 Docker 验证后合 之间点名。
+- **显式窗口（不隐藏）**：容器 spine 挂载的 sidecar 可写布局落地前，agent 容器在只读挂载无 sidecar 状态下的 spine 读为**预期失败**——测试以断言承载，非排除项；容器边界真实验证（docker_boundary/e2e）因 Docker 环境断连为 **UNVERIFIED**，恢复后必须补跑，A18 在补跑前不得称容器面已验证。
+- **引用勘误（本分支内自查）**：本文早期草稿及会话记录中"挂载布局义务=A16"为**错标**——A16 真实票面是资源限制（disk/fd/log + T1/T2 参数表）。sidecar 可写挂载义务当前**无工单承载**；承载裁决（新开工单或并入 A03/A04 Linux 移植面/G-B launch envelope 线）与相应授权归部署所有者。
+- 合并排序：待部署所有者点名——架构侧建议为**移除与替代同批合并**（不单独让 dev 携带读可用性回归）；联合复核点=替代挂载布局有实际设计与测试证据，而非仅设计文档完成。

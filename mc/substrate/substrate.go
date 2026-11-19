@@ -75,7 +75,8 @@ func Open(path string) (*sql.DB, error) {
 // the database stays unwritten during the read, and an immutable handle over
 // a live database ignores WAL-committed frames and can tear against a
 // concurrent checkpoint. Container read availability on read-only mounts is
-// a mount-layout obligation, not a driver flag.
+// a mount-layout obligation (its ticket carrier is an open owner decision),
+// not a driver flag.
 //
 // Reading a completed snapshot copy is a different operation and must be
 // named by the caller: see OpenSnapshotReadOnly.
