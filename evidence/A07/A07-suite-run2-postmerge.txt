@@ -1,0 +1,2 @@
+install.sh fail-closed preflight: ok
+Published installer contracts: ok
