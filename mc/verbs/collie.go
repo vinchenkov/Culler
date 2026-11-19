@@ -449,6 +449,9 @@ func collieStartWithBinding(db *sql.DB, from SurfaceRef, allowJSON, rawFrom, bin
 				return err
 			}
 		}
+		if err := faultPoint("collie_binding"); err != nil {
+			return err
+		}
 		_, err = q.ExecContext(ctx, `
 			INSERT INTO collie_bindings (session_id, surface, channel_ref)
 			VALUES (?, ?, ?)`, sessionID, from.Surface, from.ChannelRef)
@@ -943,6 +946,9 @@ func CollieSend(db *sql.DB, id *RunIdentity, a CollieSendArgs) (any, error) {
 			return err
 		}
 		for _, destination := range destinations {
+			if err := faultPoint("collie_echo"); err != nil {
+				return err
+			}
 			if _, err := insertFanoutOutboxRow(ctx, q, "collie_echo",
 				a.Session, destination.Surface, destination.ChannelRef, string(payload)); err != nil {
 				return err
@@ -1382,6 +1388,9 @@ func CollieReply(db *sql.DB, id *RunIdentity, a CollieReplyArgs) (any, error) {
 		}
 		deliveries := 0
 		for _, destination := range destinations {
+			if err := faultPoint("collie_reply"); err != nil {
+				return err
+			}
 			if _, err := insertFanoutOutboxRow(ctx, q, "collie_reply",
 				a.Session, destination.Surface, destination.ChannelRef, string(payload)); err != nil {
 				return err
@@ -2004,6 +2013,9 @@ func collieEndTx(ctx context.Context, q Q, actor, sessionID, reason string) (boo
 	if _, err := q.ExecContext(ctx,
 		`UPDATE collie_sessions SET status = 'ended' WHERE id = ? AND status = 'active'`,
 		sessionID); err != nil {
+		return false, "", err
+	}
+	if err := faultPoint("collie_end_activity"); err != nil {
 		return false, "", err
 	}
 	if _, err := q.ExecContext(ctx, `
