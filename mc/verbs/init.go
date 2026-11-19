@@ -162,6 +162,14 @@ func applyTunables(ctx context.Context, q Q, a InitArgs) error {
 }
 
 // OpenSpine opens an existing spine for the non-init verbs.
+//
+// G-A live-schema gate: every normal write path (withSpine verbs,
+// __system-state writes, the attachment spine RPC) opens here, so the
+// binary's compiled schema identity and the database's actual runtime
+// structure are reconciled once at open before any statement runs. A schema
+// match proves structure equality only — it does not establish that the
+// caller shares this binary's build identity, that a helper speaks a matching
+// protocol, or that versions were paired at deploy time.
 func OpenSpine(path string) (*sql.DB, error) {
 	if path == "" {
 		return nil, Usagef("no spine: set MC_SPINE (or MC_HELPER to delegate)")
@@ -169,6 +177,10 @@ func OpenSpine(path string) (*sql.DB, error) {
 	db, err := substrate.Open(path)
 	if err != nil {
 		return nil, Usagef("%v", err)
+	}
+	if err := substrate.CheckSchema(db); err != nil {
+		db.Close()
+		return nil, Domainf("The database schema differs from this release. No write ran: %v", err)
 	}
 	return db, nil
 }

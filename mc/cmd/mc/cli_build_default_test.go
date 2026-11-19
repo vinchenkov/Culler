@@ -2,4 +2,4 @@
 
 package main_test
 
-const cliTestBuildTags = "test_fake_routing"
+const cliTestBuildTags = "test_fake_routing,test_cli_faults"

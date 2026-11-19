@@ -3098,12 +3098,7 @@ func TestCollieStartBindList(t *testing.T) {
 		t.Run("binding_insert_failure_rolls_back_registry", func(t *testing.T) {
 			spine := initSpine(t)
 			db := openDB(t, spine)
-			if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_binding
-				BEFORE INSERT ON collie_bindings
-				BEGIN SELECT RAISE(ABORT, 'injected binding failure'); END`); err != nil {
-				t.Fatal(err)
-			}
-			got := runMC(t, spineEnv(spine), "", "collie", "start", "--from", "dashboard:x")
+			got := runMC(t, append(spineEnv(spine), "MC_TEST_FAULT=collie_binding"), "", "collie", "start", "--from", "dashboard:x")
 			if got.code != 1 || !strings.Contains(got.stderr, "injected binding failure") {
 				t.Fatalf("atomic start = code %d stderr %q", got.code, got.stderr)
 			}
@@ -3111,6 +3106,7 @@ func TestCollieStartBindList(t *testing.T) {
 				queryInt(t, db, `SELECT COUNT(*) FROM collie_bindings`) != 0 {
 				t.Fatal("failed initial binding left an orphan Collie session")
 			}
+			start(t, spine, "dashboard:x")
 		})
 
 		t.Run("already_bound_origin_does_not_start_another_session", func(t *testing.T) {
@@ -3234,12 +3230,7 @@ func TestCollieSendHistoryEnd(t *testing.T) {
 		bind(t, spine, session, "discord:disc")
 		db := openDB(t, spine)
 		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
-		if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_echo
-			BEFORE INSERT ON outbox WHEN NEW.kind = 'collie_echo'
-			BEGIN SELECT RAISE(ABORT, 'injected echo failure'); END`); err != nil {
-			t.Fatal(err)
-		}
-		res := runMC(t, spineEnv(spine), "", "collie", "send", session,
+		res := runMC(t, append(spineEnv(spine), "MC_TEST_FAULT=collie_echo"), "", "collie", "send", session,
 			"--from", "cli:new-origin", "--body", "must roll back")
 		if res.code != 1 || !strings.Contains(res.stderr, "injected echo failure") {
 			t.Fatalf("send atomic failure = code %d stderr %q", res.code, res.stderr)
@@ -3254,18 +3245,17 @@ func TestCollieSendHistoryEnd(t *testing.T) {
 		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got != beforeActivity {
 			t.Fatalf("failed send changed last_activity_at: before %q after %q", beforeActivity, got)
 		}
+		if clean := runMC(t, spineEnv(spine), "", "collie", "send", session,
+			"--from", "cli:new-origin", "--body", "works now"); clean.code != 0 {
+			t.Fatalf("send after the refused write = code %d stderr %q", clean.code, clean.stderr)
+		}
 	})
 
 	t.Run("end_activity_failure_rolls_back_status_and_binding_deactivation", func(t *testing.T) {
 		spine := initSpine(t)
 		session := start(t, spine, "dashboard:dash")
 		db := openDB(t, spine)
-		if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_end_activity
-			BEFORE INSERT ON activity WHEN NEW.kind = 'collie.ended'
-			BEGIN SELECT RAISE(ABORT, 'injected end activity failure'); END`); err != nil {
-			t.Fatal(err)
-		}
-		res := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "must roll back")
+		res := runMC(t, append(spineEnv(spine), "MC_TEST_FAULT=collie_end_activity"), "", "collie", "end", session, "--reason", "must roll back")
 		if res.code != 1 || !strings.Contains(res.stderr, "injected end activity failure") {
 			t.Fatalf("end atomic failure = code %d stderr %q", res.code, res.stderr)
 		}
@@ -3277,6 +3267,9 @@ func TestCollieSendHistoryEnd(t *testing.T) {
 		}
 		if n := queryInt(t, db, `SELECT COUNT(*) FROM activity WHERE kind = 'collie.ended'`); n != 0 {
 			t.Fatalf("failed end left %d activity rows", n)
+		}
+		if clean := runMC(t, spineEnv(spine), "", "collie", "end", session, "--reason", "works now"); clean.code != 0 {
+			t.Fatalf("end after the refused write = code %d stderr %q", clean.code, clean.stderr)
 		}
 	})
 
@@ -3940,12 +3933,7 @@ func TestCollieClaimReply(t *testing.T) {
 		}
 		db := openDB(t, spine)
 		beforeActivity := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session)
-		if _, err := db.Exec(`CREATE TRIGGER test_fail_collie_reply
-			BEFORE INSERT ON outbox WHEN NEW.kind = 'collie_reply'
-			BEGIN SELECT RAISE(ABORT, 'injected reply failure'); END`); err != nil {
-			t.Fatal(err)
-		}
-		res := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
+		res := runMC(t, append(runner(t, spine, session), "MC_TEST_FAULT=collie_reply"), "", "collie", "reply", session,
 			"--to", strconv.FormatInt(m1, 10), "--body", "must roll back")
 		if res.code != 1 || !strings.Contains(res.stderr, "injected reply failure") {
 			t.Fatalf("reply atomic failure = code %d stderr %q", res.code, res.stderr)
@@ -3959,6 +3947,10 @@ func TestCollieClaimReply(t *testing.T) {
 		}
 		if got := queryStr(t, db, `SELECT last_activity_at FROM collie_sessions WHERE id = ?`, session); got != beforeActivity {
 			t.Fatalf("failed reply changed last_activity_at: before %q after %q", beforeActivity, got)
+		}
+		if clean := runMC(t, runner(t, spine, session), "", "collie", "reply", session,
+			"--to", strconv.FormatInt(m1, 10), "--body", "works now"); clean.code != 0 {
+			t.Fatalf("reply after the refused write = code %d stderr %q", clean.code, clean.stderr)
 		}
 	})
 
