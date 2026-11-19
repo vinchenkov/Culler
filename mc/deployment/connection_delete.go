@@ -120,13 +120,7 @@ func removeConnectionConfiguration(cfg *operatorconfig.Config, id string) {
 		if binding.Credential != id {
 			continue
 		}
-		cfg.Runtimes.EnabledBindings = slices.DeleteFunc(cfg.Runtimes.EnabledBindings, func(enabled string) bool { return enabled == profile })
-		reference, ok := template.Bindings[profile]
-		if _, defined := cfg.Runtimes.Credentials[reference.Credential]; ok && (defined || reference.Credential == id) {
-			cfg.Runtimes.Bindings[profile] = reference
-		} else {
-			delete(cfg.Runtimes.Bindings, profile)
-		}
+		removeAgentProfile(cfg, profile, template)
 	}
 	if reference, ok := template.Credentials[id]; ok {
 		cfg.Runtimes.Credentials[id] = reference

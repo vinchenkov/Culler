@@ -199,6 +199,8 @@ func operatorRequestTarget(name string) any {
 		return new(verbs.ConfigSaveRequest)
 	case "agent-profile models":
 		return new(deployment.AgentModelListRequest)
+	case "agent-profile delete":
+		return new(deployment.AgentProfileDeleteRequest)
 	case "agent-profile save":
 		return new(deployment.AgentProfileRequest)
 	case "agent-profile operation-start":
@@ -229,7 +231,7 @@ func describeOperatorCommand(d operatorcmd.Definition) operatorcmd.Definition {
 		d.Examples[0].Request = requestExample(d.Name())
 	}
 	switch d.Name() {
-	case "agent-profile list", "agent-profile save":
+	case "agent-profile list", "agent-profile save", "agent-profile delete":
 		d.Result = commandFields(reflect.TypeOf(deployment.AgentProfileCatalog{}), 0)
 	case "agent-profile models":
 		d.Result = commandFields(reflect.TypeOf(deployment.AgentModelList{}), 0)
@@ -385,7 +387,7 @@ func familyPurpose(name string) string {
 		"project": "Register Projects and manage their state, Vision, and role instructions.", "run": "Inspect pipeline runs and their role instructions.", "activity": "Read retained system activity.",
 		"pause": "Inspect or pause Project pipelines.", "resume": "Resume initialized Project pipelines.", "environment": "Manage Project dependencies, image decisions, and setup operations.",
 		"system": "Inspect deployment state and resolve supported system conditions.", "connection": "Request or cancel connection checks.", "config": "Read and replace supported system settings.",
-		"agent-profile": "Inspect models, test profiles, and save verified profiles.", "routing": "Read and select role profiles.", "logs": "Read bounded diagnostic logs.",
+		"agent-profile": "Inspect models and manage agent profiles.", "routing": "Read and select role profiles.", "logs": "Read bounded diagnostic logs.",
 		"health": "Read host component health.", "collie": "Manage the authorized conversation.", "operation": "Inspect retained operator requests and their results.",
 	}[name]
 }

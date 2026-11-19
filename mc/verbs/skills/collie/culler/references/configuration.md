@@ -18,8 +18,8 @@ A pending test is not a verified profile.
 
 A profile save requires evidence for the same execution configuration and credential authorization.
 A changed execution configuration needs matching test evidence before activation.
-Role assignment changes retain the profile validation rules.
-Read the current assignments before a role assignment change.
+Read the current assignments before you assign or delete a profile.
+Only unassigned profiles permit deletion.
 A profile test and provider authorization are separate operations.
 
 ## Connection recovery

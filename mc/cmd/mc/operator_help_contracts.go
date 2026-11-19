@@ -219,6 +219,8 @@ func completeRequestExample(name string) any {
 		return map[string]any{"project_id": "example", "instruction": "Prepare the declared Project dependencies."}
 	case "environment save":
 		return map[string]any{"project_id": "example", "expected_revision_id": "current-draft-revision", "configuration": map[string]any{"base_digest": "sha256:" + strings.Repeat("a", 64), "dockerfile": nil, "build_files": []any{}, "build_args": map[string]string{}, "setup": map[string]string{"command": "npm ci", "directory": "."}, "services": []any{}, "variables": []any{}, "secrets": []any{}, "declarations": []string{"package-lock.json"}}, "explanation": "Prepare the declared dependencies."}
+	case "agent-profile delete":
+		return map[string]any{"id": "example", "revision": "current-catalog-revision", "confirm": true}
 	case "agent-profile save":
 		return map[string]any{"submission_id": "example-save-1", "revision": "current-catalog-revision", "id": "example", "name": "Example", "connection_id": "example", "model": "model-from-live-catalog", "enabled": true, "test_id": "successful-matching-test"}
 	default:

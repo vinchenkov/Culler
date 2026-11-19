@@ -223,6 +223,12 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 			return nil, err
 		}
 		return deployment.AgentConnectionSave(home, request)
+	case "delete":
+		var request deployment.AgentProfileDeleteRequest
+		if err := decode(&request); err != nil {
+			return nil, err
+		}
+		return deployment.AgentProfileDelete(home, request)
 	case "connection-delete":
 		var request deployment.AgentConnectionDeleteRequest
 		if err := decode(&request); err != nil {

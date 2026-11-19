@@ -78,7 +78,7 @@ func operatorRequestTargets(r OperatorRequest) []OperatorTarget {
 		add("run", body.Run)
 		add("vision_submission", body.SubmissionID)
 	case "agent-profile":
-		if action == "save" {
+		if action == "delete" || action == "save" {
 			add("profile", body.ID)
 			add("profile_submission", body.SubmissionID)
 		}

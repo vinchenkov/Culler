@@ -4,7 +4,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"syscall"
 
 	"mc/routing"
 )
@@ -41,15 +40,11 @@ func RoutingSet(role, binding, expected string) (any, error) {
 	if expected == "" {
 		return nil, Usagef("The role assignment requires its previous binding.")
 	}
-	lock, err := os.OpenFile(filepath.Join(home, "routing.lock"), os.O_CREATE|os.O_RDWR|syscall.O_NOFOLLOW, 0600)
+	lock, err := routing.LockAssignments(home)
 	if err != nil {
 		return nil, err
 	}
 	defer lock.Close()
-	if err := syscall.Flock(int(lock.Fd()), syscall.LOCK_EX); err != nil {
-		return nil, err
-	}
-	defer syscall.Flock(int(lock.Fd()), syscall.LOCK_UN)
 	authority, err := loadRuntimeAuthority(home)
 	if err != nil {
 		return nil, Domainf("load runtime authority: %v", err)

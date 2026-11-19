@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -262,5 +263,46 @@ func TestOperatorDueListingDoesNotWaitForItsInput(t *testing.T) {
 	}
 	if err := json.Unmarshal(stdout.Bytes(), &listed); err != nil || listed.Operations == nil && !strings.Contains(stdout.String(), `"operations"`) {
 		t.Fatalf("stdout is not a listing: %q (%v)", stdout.String(), err)
+	}
+}
+
+func TestCollieDeletesAnUnassignedAgentProfile(t *testing.T) {
+	spine := initSpine(t)
+	host := spineEnv(spine)
+	started := runMC(t, host, "", "collie", "start", "--from", "cli:profile-delete")
+	if started.code != 0 {
+		t.Fatal(started.stderr)
+	}
+	env := collieJSONEnv(t, spine, started.json["session_id"].(string), defaultCollieAllowlist)
+	before := runMC(t, host, "", "agent-profile", "list")
+	if before.code != 0 {
+		t.Fatal(before.stderr)
+	}
+	body, _ := json.Marshal(map[string]any{"id": "spare", "name": "Spare", "connection_id": "claude", "model": "example", "submission_id": "create-spare", "revision": before.json["revision"]})
+	saved := runMC(t, host, string(body), "agent-profile", "save")
+	if saved.code != 0 {
+		t.Fatal(saved.stderr)
+	}
+	body, _ = json.Marshal(map[string]any{"id": "spare", "revision": saved.json["revision"], "confirm": true})
+	request := operatorTransportBody(t, "delete-spare", []string{"agent-profile", "delete"}, string(body))
+	submitted := runMC(t, env, request, "__operator-submit")
+	if submitted.code != 0 || submitted.json["origin"] != "collie" {
+		t.Fatalf("Collie could not submit the deletion: %s %s", submitted.stdout, submitted.stderr)
+	}
+	executed := runMC(t, host, "", "__operator-execute", "delete-spare")
+	if executed.code != 0 {
+		t.Fatal(executed.stderr)
+	}
+	receipt := runMC(t, env, "", "operation", "get", "delete-spare")
+	if receipt.code != 0 {
+		t.Fatal(receipt.stderr)
+	}
+	op := receipt.json["operation"].(map[string]any)
+	if op["state"] != "complete" || op["exit_code"] != float64(0) || !reflect.DeepEqual(op["targets"], []any{map[string]any{"kind": "profile", "id": "spare"}}) {
+		t.Fatalf("Unexpected deletion receipt: %v", op)
+	}
+	after := runMC(t, host, "", "agent-profile", "list")
+	if after.code != 0 || !reflect.DeepEqual(before.json["profiles"], after.json["profiles"]) || !reflect.DeepEqual(before.json["connections"], after.json["connections"]) {
+		t.Fatalf("The catalog differs after deletion: %s %s", after.stdout, after.stderr)
 	}
 }
