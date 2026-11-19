@@ -98,6 +98,13 @@ bind = "127.0.0.1:7334"
 [surfaces.wiki]
 bind = "127.0.0.1:7335"
 
+[surfaces.provider_proxy]
+# Listen address of the provider proxy. Empty binds to 127.0.0.1 (loopback).
+# On Linux an agent container reaches the host through a gateway address; set
+# that IP literal here to listen on it. 0.0.0.0 listens on every interface —
+# prefer one specific address. The proxy port stays automatic.
+bind = ""
+
 [surfaces.discord]
 enabled = false
 bot_token = ""

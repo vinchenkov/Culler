@@ -166,6 +166,17 @@ describe("provider proxy authorization", () => {
     }
   });
 
+  test("binds the configured host and reports the real listen address", async () => {
+    const deps = { credential: async () => credential(), fetch: (async () => Response.json({ output: "ok" })) as typeof fetch };
+    const wildcard = startProviderProxy({ tls: { cert: certificates.cert, key: certificates.key }, hostname: "0.0.0.0", routes: { official: route } }, deps);
+    cleanup.push(() => wildcard.stop());
+    expect(wildcard.listenHost).toBe("0.0.0.0");
+    expect(wildcard.url).toMatch(/^https:\/\/host\.docker\.internal:/);
+    const fallback = startProviderProxy({ tls: { cert: certificates.cert, key: certificates.key }, hostname: "", routes: { official: route } }, deps);
+    cleanup.push(() => fallback.stop());
+    expect(fallback.listenHost).toBe("127.0.0.1");
+  });
+
   test("uses an HTTPS loopback listener and opaque authority for one launch", async () => {
     const { handle, sent, observations } = proxy();
     const issued = handle.issue(authorization());

@@ -143,6 +143,12 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 		return map[string]any{"updated": true}, nil
 	case "proxy-tls":
 		return deployment.EnsureProviderProxyTLS(home, time.Now())
+	case "proxy-bind":
+		cfg, err := config.Load(filepath.Join(home, "config.toml"))
+		if err != nil {
+			return nil, err
+		}
+		return map[string]any{"bind": cfg.ProviderProxyDialHost()}, nil
 	case "test-runtime-authorities":
 		_, enabled := routing.ActiveRegistry()
 		return map[string]any{"enabled": enabled}, nil

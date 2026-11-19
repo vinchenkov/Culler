@@ -87,7 +87,12 @@ var agentModelAccess = func(home, connection string) (modelCatalogAccess, error)
 	if err != nil {
 		return modelCatalogAccess{}, err
 	}
-	client, err := providerAccessHTTPClient(lease.Config)
+	cfg, err := operatorconfig.Load(filepath.Join(home, "config.toml"))
+	if err != nil {
+		_ = lease.close()
+		return modelCatalogAccess{}, err
+	}
+	client, err := providerAccessHTTPClient(lease.Config, cfg.ProviderProxyDialHost())
 	if err != nil {
 		_ = lease.close()
 		return modelCatalogAccess{}, err

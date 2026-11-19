@@ -248,10 +248,23 @@ func TestProviderAccessConfigurationRejectsUnsafeDestinationsAndTrust(t *testing
 		t.Run(name, func(t *testing.T) {
 			access := fixture.Config
 			change(&access)
-			if _, err := providerAccessHTTPClient(access); err == nil {
+			if _, err := providerAccessHTTPClient(access, "127.0.0.1"); err == nil {
 				t.Fatal("The client accepted unsafe provider access.")
 			}
 		})
+	}
+}
+
+func TestProviderAccessHTTPClientRefusesNonIPLiteralDialHost(t *testing.T) {
+	bundle, err := newProviderTLS(time.Now())
+	if err != nil {
+		t.Fatal(err)
+	}
+	access := ProviderContainerAccess{Version: 1, URL: "https://host.docker.internal:1", Token: "culler_proxy_" + strings.Repeat("t", 43), CA: bundle.CA, Harness: "codex", AuthMode: "api-key"}
+	for _, host := range []string{"evil.example", "localhost", "127.0.0.1:9", "not-an-ip"} {
+		if _, err := providerAccessHTTPClient(access, host); err == nil || err.Error() != "The provider proxy dial host is not an IP literal." {
+			t.Errorf("dial host %q error = %v, want the IP literal refusal", host, err)
+		}
 	}
 }
 
@@ -278,7 +291,7 @@ func TestProviderAccessHTTPClientRequiresInstallationTrustAndFixedHost(t *testin
 		t.Fatal(err)
 	}
 	access := ProviderContainerAccess{Version: 1, URL: "https://host.docker.internal:" + port, Token: "culler_proxy_" + strings.Repeat("t", 43), CA: bundle.CA, Harness: "codex", AuthMode: "api-key"}
-	client, err := providerAccessHTTPClient(access)
+	client, err := providerAccessHTTPClient(access, "127.0.0.1")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -298,7 +311,7 @@ func TestProviderAccessHTTPClientRequiresInstallationTrustAndFixedHost(t *testin
 		t.Fatal(err)
 	}
 	access.CA = other.CA
-	client, err = providerAccessHTTPClient(access)
+	client, err = providerAccessHTTPClient(access, "127.0.0.1")
 	if err != nil {
 		t.Fatal(err)
 	}

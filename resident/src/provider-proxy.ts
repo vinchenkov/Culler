@@ -87,6 +87,9 @@ export interface ProviderRunAuthorization {
 export interface ProviderProxyOptions {
   tls: { cert: string; key: string };
   port?: number;
+  /** Listen address; defaults to loopback. An IP literal lets a Linux host
+   *  gateway reach the proxy. The advertised URL stays host.docker.internal. */
+  hostname?: string;
   /** Routes come from trusted host configuration, never the request or run envelope. */
   routes: Record<string, ProviderRoute>;
 }
@@ -102,6 +105,8 @@ export interface ProviderProxyDependencies {
 
 export interface ProviderProxyHandle {
   url: string;
+  /** The address the listener is actually bound to, resolved from the option. */
+  readonly listenHost: string;
   setRoutes(routes: Record<string, ProviderRoute>): void;
   replaceTLS(tls: { cert: string; key: string }): void;
   status(authorizationId: string): { requests: number; modelRequests: number; active: number } | null;
@@ -446,8 +451,9 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
     held.timer.unref();
   }
 
+  const listenHost = options.hostname && options.hostname.length > 0 ? options.hostname : "127.0.0.1";
   const serverOptions = {
-    hostname: "127.0.0.1",
+    hostname: listenHost,
     port: options.port ?? 0,
     tls: options.tls,
     idleTimeout: 0,
@@ -772,6 +778,7 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
 
   return {
     url: `https://host.docker.internal:${server.port}`,
+    get listenHost() { return server.hostname; },
     replaceTLS(tls) {
       if (stopped) throw new Error("The provider proxy is stopped.");
       if (tls.cert === serverOptions.tls.cert && tls.key === serverOptions.tls.key) return;

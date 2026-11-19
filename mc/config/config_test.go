@@ -640,6 +640,41 @@ func TestDashboardBindErrorsNameTheDashboardKey(t *testing.T) {
 	}
 }
 
+func TestProviderProxyBindIsLoopbackEmptyOrIPLiteral(t *testing.T) {
+	for name, tc := range map[string]struct {
+		body     string
+		wantErr  bool
+		wantHost string
+	}{
+		"default":        {"", false, "127.0.0.1"},
+		"empty":          {"[surfaces.provider_proxy]\nbind = \"\"\n", false, "127.0.0.1"},
+		"loopback":       {"[surfaces.provider_proxy]\nbind = \"127.0.0.1\"\n", false, "127.0.0.1"},
+		"gateway":        {"[surfaces.provider_proxy]\nbind = \"192.168.5.1\"\n", false, "192.168.5.1"},
+		"v6":             {"[surfaces.provider_proxy]\nbind = \"::1\"\n", false, "::1"},
+		"wildcard":       {"[surfaces.provider_proxy]\nbind = \"0.0.0.0\"\n", false, "0.0.0.0"},
+		"hostname":       {"[surfaces.provider_proxy]\nbind = \"host.docker.internal\"\n", true, ""},
+		"with-port":      {"[surfaces.provider_proxy]\nbind = \"192.168.5.1:8443\"\n", true, ""},
+		"garbage":        {"[surfaces.provider_proxy]\nbind = \"127.0.0.999\"\n", true, ""},
+		"localhost-word": {"[surfaces.provider_proxy]\nbind = \"localhost\"\n", true, ""},
+	} {
+		t.Run(name, func(t *testing.T) {
+			cfg, err := Parse([]byte(tc.body))
+			if tc.wantErr {
+				if err == nil || !strings.Contains(err.Error(), "surfaces.provider_proxy.bind") {
+					t.Fatalf("bind %q error = %v, want a provider_proxy.bind refusal", tc.body, err)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("bind %q rejected: %v", tc.body, err)
+			}
+			if got := cfg.ProviderProxyDialHost(); got != tc.wantHost {
+				t.Fatalf("bind %q resolved dial host = %q, want %q", tc.body, got, tc.wantHost)
+			}
+		})
+	}
+}
+
 func TestDashboardAndViewerBindsUseThreeDifferentPorts(t *testing.T) {
 	for name, tc := range map[string]struct {
 		body string

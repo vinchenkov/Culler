@@ -41,6 +41,7 @@ test("a temporary host provides isolated Culler authority and checks a saved key
         credential: "account", kind: "codex-api-key", harness: "codex", channel: "codex", inference_url: "https://example.invalid/v1",
       } } }; break;
       case "agent-profile proxy-tls": value = tls; break;
+      case "agent-profile proxy-bind": value = { bind: "127.0.0.1" }; break;
       case "agent-profile credential-read": value = { record: { version: 1, type: "api_key", credential: "account", channel: "codex", api_key: "synthetic-provider-secret" }, authorization_id: "auth", credential_ref: "ref" }; break;
       case "connection check-start": value = { allowed: true, authorization_id: "auth", operation: "connection_access" }; break;
       case "connection observe":
