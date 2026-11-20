@@ -1,0 +1,6 @@
+AM v0.1.55 双面哈希登记（A04 EVIDENCED 轮）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree @shz/dev 登记轮工作态) = 4a8a9e915022125fe677283b9e238a2584488b52f823f1b4f581304f3d9bd5a5
+- sha256(主工作树未跟踪副本 /Users/raistlin/Downloads/git/Ai/Culler/docs/contracts/ACCEPTANCE-MATRIX.md) = 同上（cmp BYTE-EXACT，DUAL-SURFACE-EQUAL，2026-11-20 19:56 +0800 实测）
+- 语义: 本行为 v0.1.55 登记提交前的文件工作态哈希；提交后 blob 与此字节一致（git 对象可独立复算）。
+- 前轮参照: v0.1.54 = f36e1162…fe5e（evidence/A03/am-v0.1.54-hash.txt）。
