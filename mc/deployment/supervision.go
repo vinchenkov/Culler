@@ -3,7 +3,6 @@ package deployment
 import (
 	"bytes"
 	"encoding/json"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -169,13 +168,39 @@ func SupervisionPolicyMatches(home string, policy SupervisionPolicy) (bool, erro
 
 type LaunchdLoadedProbe func(label string) (bool, error)
 
-var supervisionFiles = []string{
-	"LaunchAgents/agentsview.plist",
-	"LaunchAgents/dashboard.plist",
-	"LaunchAgents/resident.plist",
-	"agentsview.toml",
-	"dashboard.json",
-	"resident.json",
+// supervisionFiles is declared per platform (supervision_darwin.go,
+// supervision_linux.go): the bundle layout IS the platform seam. Shared code
+// derives every directory it must create or validate from these relative
+// paths, so the tree walk below carries no launchd assumption.
+func supervisionDirs() []string {
+	dirs := []string{"."}
+	seen := map[string]bool{".": true}
+	for _, rel := range supervisionFiles {
+		if i := strings.LastIndex(rel, "/"); i > 0 {
+			if parent := rel[:i]; !seen[parent] {
+				seen[parent] = true
+				dirs = append(dirs, parent)
+			}
+		}
+	}
+	return dirs
+}
+
+// unitRenderInput carries everything the platform unit renderer needs that
+// the shared preparation has already validated and canonicalized.
+type unitRenderInput struct {
+	Result          SupervisionResult
+	CanonicalHome   string
+	Names           Names
+	Spec            SupervisionSpec
+	MCPath          string
+	BunPath         string
+	HostRoot        string
+	PathEnv         string
+	LogRoot         string
+	ResidentJSON    []byte
+	DashboardJSON   []byte
+	AgentsViewToken string
 }
 
 func validProductionBuildID(value string) bool {
@@ -237,65 +262,6 @@ func validateWorkspaceRoots(roots []WorkspaceRoot) ([]WorkspaceRoot, error) {
 	return out, nil
 }
 
-func xmlText(value string) string {
-	var out bytes.Buffer
-	_ = xml.EscapeText(&out, []byte(value))
-	return out.String()
-}
-
-// launchAgent writes the plist of one Bun unit, the resident or the dashboard.
-// MC_LOG_LEVEL is in the environment dict rather than in a config file because
-// config.toml holds no observability block: the level is an environment knob,
-// the same way MC_TICK_INTERVAL_MS is. Without it here the two Bun units could
-// only be moved off the default by editing a generated plist by hand.
-func launchAgent(label, bun, entry, config, working, mcHome, logLevel, pathEnv, stdout, stderr string) []byte {
-	return []byte(fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>%s</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>%s</string>
-    <string>%s</string>
-    <string>--config</string>
-    <string>%s</string>
-  </array>
-  <key>WorkingDirectory</key>
-  <string>%s</string>
-  <key>EnvironmentVariables</key>
-  <dict>
-    <key>MC_HOME</key>
-    <string>%s</string>
-    <key>MC_LOG_LEVEL</key>
-    <string>%s</string>
-    <key>PATH</key>
-    <string>%s</string>
-  </dict>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>KeepAlive</key>
-  <true/>
-  <key>ProcessType</key>
-  <string>Standard</string>
-  <key>ThrottleInterval</key>
-  <integer>10</integer>
-  <key>StandardOutPath</key>
-  <string>%s</string>
-  <key>StandardErrorPath</key>
-  <string>%s</string>
-</dict>
-</plist>
-`, xmlText(label), xmlText(bun), xmlText(entry), xmlText(config), xmlText(working),
-		xmlText(mcHome), xmlText(logLevel), xmlText(pathEnv), xmlText(stdout), xmlText(stderr)))
-}
-
-// supervisedLogLevel is what a freshly onboarded deployment runs at. An
-// operator raises it by editing the generated plist and reloading the unit;
-// this constant is what `mc __onboard supervision` puts back.
-const supervisedLogLevel = "info"
-
 func ensureOwnerDirectory(path, label string) error {
 	if err := os.Mkdir(path, 0o700); err != nil && !errors.Is(err, fs.ErrExist) {
 		return fmt.Errorf("create %s: %w", label, err)
@@ -304,7 +270,10 @@ func ensureOwnerDirectory(path, label string) error {
 }
 
 func validateSupervisionTree(root string) error {
-	expectedDirs := map[string]bool{".": true, "LaunchAgents": true}
+	expectedDirs := map[string]bool{}
+	for _, dir := range supervisionDirs() {
+		expectedDirs[dir] = true
+	}
 	expectedFiles := map[string]bool{}
 	for _, rel := range supervisionFiles {
 		expectedFiles[rel] = true
@@ -367,52 +336,10 @@ func supervisionTreesEqual(left, right string) (bool, error) {
 	return true, nil
 }
 
-func validateLaunchdTCCPath(canonicalHome string, protectedRoots []string) error {
-	if canonicalHome == "" || !filepath.IsAbs(canonicalHome) ||
-		filepath.Clean(canonicalHome) != canonicalHome {
-		return fmt.Errorf("launchd MC_HOME must be a clean absolute path")
-	}
-	for _, root := range protectedRoots {
-		if root == "" || !filepath.IsAbs(root) || filepath.Clean(root) != root {
-			return fmt.Errorf("launchd TCC root must be a clean absolute path")
-		}
-		rel, err := filepath.Rel(root, canonicalHome)
-		if err != nil {
-			return fmt.Errorf("compare MC_HOME with macOS TCC root %q: %w", root, err)
-		}
-		if rel == "." || (rel != ".." &&
-			!strings.HasPrefix(rel, ".."+string(filepath.Separator))) {
-			return fmt.Errorf(
-				"MC_HOME %q is under macOS TCC-protected %q; choose a deployment home outside Documents, Desktop, and Downloads before preparing launchd supervision",
-				canonicalHome, root)
-		}
-	}
-	return nil
-}
-
-// requireLaunchdTCCSafeHome applies the launchd execution boundary that the sleep drill observed.
-// Full Disk Access on the interactive harness does not transfer to a
-// LaunchAgent, so a deployment rooted in these user folders is unusable even
-// when onboarding itself can read it.
-func requireLaunchdTCCSafeHome(canonicalHome string) error {
-	userHome, err := os.UserHomeDir()
-	if err != nil {
-		return fmt.Errorf("resolve operator home for launchd TCC gate: %w", err)
-	}
-	userHome, err = CanonicalHome(userHome)
-	if err != nil {
-		return fmt.Errorf("resolve operator home for launchd TCC gate: %w", err)
-	}
-	roots := make([]string, 0, 3)
-	for _, name := range []string{"Documents", "Desktop", "Downloads"} {
-		root, err := CanonicalHome(filepath.Join(userHome, name))
-		if err != nil {
-			return fmt.Errorf("resolve macOS TCC root %s: %w", name, err)
-		}
-		roots = append(roots, root)
-	}
-	return validateLaunchdTCCPath(canonicalHome, roots)
-}
+// supervisedLogLevel is what a freshly onboarded deployment runs at. An
+// operator raises it by editing the generated unit and reloading it; this
+// constant is what `mc __onboard supervision` puts back.
+const supervisedLogLevel = "info"
 
 // PrepareSupervision atomically publishes the exact native configs and three
 // per-user LaunchAgent definitions. It deliberately never writes into
@@ -425,7 +352,7 @@ func PrepareSupervision(home string, spec SupervisionSpec, loaded LaunchdLoadedP
 	if err != nil {
 		return "", result, err
 	}
-	if err := requireLaunchdTCCSafeHome(canonicalHome); err != nil {
+	if err := precheckSupervisionHome(canonicalHome); err != nil {
 		return "", result, err
 	}
 	if err := requireOwnerOnlyDirectory(canonicalHome, "MC_HOME"); err != nil {
@@ -566,11 +493,14 @@ func PrepareSupervision(home string, spec SupervisionSpec, loaded LaunchdLoadedP
 		return "", result, err
 	}
 	defer os.RemoveAll(stage)
-	if err := os.Mkdir(filepath.Join(stage, "LaunchAgents"), 0o700); err != nil {
-		return "", result, err
+	for _, dir := range supervisionDirs() {
+		if dir == "." {
+			continue
+		}
+		if err := os.Mkdir(filepath.Join(stage, filepath.FromSlash(dir)), 0o700); err != nil {
+			return "", result, err
+		}
 	}
-	residentConfig := filepath.Join(result.Root, "resident.json")
-	dashboardConfig := filepath.Join(result.Root, "dashboard.json")
 	pathDirs := []string{filepath.Dir(mcPath), filepath.Dir(bunPath), filepath.Dir(dockerPath), "/usr/bin", "/bin", "/usr/sbin", "/sbin"}
 	seenPath := map[string]bool{}
 	pathEnv := []string{}
@@ -581,34 +511,30 @@ func PrepareSupervision(home string, spec SupervisionSpec, loaded LaunchdLoadedP
 		}
 	}
 	logRoot := filepath.Join(canonicalHome, "logs")
-	// The generated level, not the generating operator's. Onboarding must
-	// produce the same plist whether or not the shell that ran it happened to
-	// carry MC_LOG_LEVEL, or a debug-level install would be reproducible only
-	// by accident.
-	logLevel := supervisedLogLevel
-	residentPlist := launchAgent(result.ResidentLabel, bunPath,
-		filepath.Join(hostRoot, "resident", "src", "main.ts"), residentConfig,
-		filepath.Join(hostRoot, "resident"), canonicalHome, logLevel, strings.Join(pathEnv, ":"),
-		filepath.Join(logRoot, "resident.stdout.log"), filepath.Join(logRoot, "resident.stderr.log"))
-	dashboardPlist := launchAgent(result.DashboardLabel, bunPath,
-		filepath.Join(hostRoot, "dashboard", "src", "main.ts"), dashboardConfig,
-		filepath.Join(hostRoot, "dashboard"), canonicalHome, logLevel, strings.Join(pathEnv, ":"),
-		filepath.Join(logRoot, "dashboard.stdout.log"), filepath.Join(logRoot, "dashboard.stderr.log"))
-	agentsViewPlistBody, agentsViewConfigBody, err := agentsViewBundle(canonicalHome, names, spec.AgentsViewBind, agentsViewToken)
+	unitFiles, err := renderUnitFiles(unitRenderInput{
+		Result: result, CanonicalHome: canonicalHome, Names: names, Spec: spec,
+		MCPath: mcPath, BunPath: bunPath, HostRoot: hostRoot,
+		PathEnv: strings.Join(pathEnv, ":"), LogRoot: logRoot,
+		ResidentJSON: residentJSON, DashboardJSON: dashboardJSON,
+		AgentsViewToken: agentsViewToken,
+	})
 	if err != nil {
 		return "", result, err
 	}
-	for rel, body := range map[string][]byte{
-		"resident.json": residentJSON, "dashboard.json": dashboardJSON,
-		"LaunchAgents/resident.plist": residentPlist, "LaunchAgents/dashboard.plist": dashboardPlist,
-		agentsViewPlist: agentsViewPlistBody, agentsViewConfig: agentsViewConfigBody,
-	} {
+	unitFiles["resident.json"] = residentJSON
+	unitFiles["dashboard.json"] = dashboardJSON
+	for rel, body := range unitFiles {
 		if err := writeReleaseFile(stage, rel, body); err != nil {
 			return "", result, fmt.Errorf("stage supervision file %q: %w", rel, err)
 		}
 	}
-	if err := syncDirectory(filepath.Join(stage, "LaunchAgents")); err != nil {
-		return "", result, err
+	for _, dir := range supervisionDirs() {
+		if dir == "." {
+			continue
+		}
+		if err := syncDirectory(filepath.Join(stage, filepath.FromSlash(dir))); err != nil {
+			return "", result, err
+		}
 	}
 	if err := syncDirectory(stage); err != nil {
 		return "", result, err

@@ -216,7 +216,7 @@ func ActivateSupervision(home, launchAgentsDir, releaseBuildID string, deps Supe
 	if err != nil {
 		return "", result, err
 	}
-	if err := requireLaunchdTCCSafeHome(canonicalHome); err != nil {
+	if err := precheckSupervisionHome(canonicalHome); err != nil {
 		return "", result, err
 	}
 	if !validProductionBuildID(releaseBuildID) {
@@ -381,7 +381,7 @@ func InspectActiveSupervision(home, launchAgentsDir, releaseBuildID string, laun
 	if err != nil {
 		return result, err
 	}
-	if err := requireLaunchdTCCSafeHome(canonicalHome); err != nil {
+	if err := precheckSupervisionHome(canonicalHome); err != nil {
 		return result, err
 	}
 	if !validProductionBuildID(releaseBuildID) || launchd == nil {
@@ -464,7 +464,7 @@ func ReconfigureSupervision(
 	if err != nil {
 		return "", result, err
 	}
-	if err := requireLaunchdTCCSafeHome(canonicalHome); err != nil {
+	if err := precheckSupervisionHome(canonicalHome); err != nil {
 		return "", result, err
 	}
 	if deps.Launchd == nil || deps.Now == nil || deps.Sleep == nil {
