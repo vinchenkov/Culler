@@ -52,6 +52,15 @@ cat >"$TMP/tools/docker" <<'EOF'
 #!/bin/sh
 printf 'docker %s\n' "$*" >>"$DEV_RESET_TEST_LOG"
 EOF
+# The systemd twin: units stay listed until a disable --now, or for good under
+# STUCK. MC_OS_OVERRIDE=Linux selects the systemd branch of dev-reset.sh.
+cat >"$TMP/tools/systemctl" <<'EOF'
+#!/bin/sh
+printf 'systemctl %s\n' "$*" >>"$DEV_RESET_TEST_LOG"
+for a in "$@"; do [ "$a" = "list-units" ] && { [ -n "${DEV_RESET_TEST_STUCK:-}" ] || [ ! -e "$DEV_RESET_TEST_LOG.disabled" ] && printf 'com.culler.abc.resident.service loaded active running Culler resident\n'; exit 0; } done
+for a in "$@"; do [ "$a" = "disable" ] && : >"$DEV_RESET_TEST_LOG.disabled"; done
+exit 0
+EOF
 cat >"$TMP/tools/git" <<'EOF'
 #!/bin/sh
 echo 0123456789abcdef0123456789abcdef01234567
@@ -90,6 +99,18 @@ DEV_RESET_TEST_STUCK=1 MC_HOME="$TMP/deploy/home" "$REPO/dev-reset.sh" --confirm
 grep -F 'still loaded after the stop' "$TMP/out" >/dev/null || fail 'the stuck unit failure omits the cause'
 grep -E '^build-prod$|__reset' "$LOG" >/dev/null && fail 'a stuck unit did not stop the build and the reset'
 cmp -s "$TMP/bin/mc" "$TMP/new-mc" && fail 'a stuck unit replaced the mc on PATH'
+
+# The same guarantee on the Linux/systemd branch: a unit that stays active after
+# the stop blocks the image build and the reset, and the stop goes through
+# systemctl (never launchctl).
+: >"$LOG"; rm -f "$LOG.disabled"
+status=0
+MC_OS_OVERRIDE=Linux DEV_RESET_TEST_STUCK=1 MC_HOME="$TMP/deploy/home" "$REPO/dev-reset.sh" --confirm --rebuild >"$TMP/out" 2>&1 || status=$?
+[ "$status" -ne 0 ] || fail 'a stuck systemd unit returned success'
+grep -F 'still loaded after the stop' "$TMP/out" >/dev/null || fail 'the stuck systemd unit failure omits the cause'
+grep -E '^build-prod$|__reset' "$LOG" >/dev/null && fail 'a stuck systemd unit did not stop the build and the reset'
+grep -F 'systemctl --user disable --now com.culler.abc.resident.service' "$LOG" >/dev/null || fail 'the systemd stop was not issued'
+grep -F 'launchctl' "$LOG" >/dev/null && fail 'the Linux branch called launchctl'
 
 # The rebuild compiles first, builds the image after the stop, and installs the
 # new mc before the reset.

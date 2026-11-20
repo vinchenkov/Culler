@@ -91,6 +91,10 @@ fi
 say() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 die() { printf '\ndev-reset: %s\n' "$*" >&2; exit 1; }
 
+# The service manager of the host: launchctl on macOS, the user systemd manager
+# on Linux. MC_OS_OVERRIDE exists for the test suite only.
+os_name="${MC_OS_OVERRIDE:-$(uname -s)}"
+
 # Artifact directories cleared wholesale. Every one of these is derived state
 # that references the spine we are about to destroy, so keeping any of it would
 # leave dangling references rather than useful history. Enumerated rather than
@@ -182,29 +186,55 @@ ls -la "$SAFEHOLD"
 # mc __reset refuses while a unit is loaded, and a live resident would keep
 # ticking into a spine we are removing. AgentsView holds its archive open.
 say "STOP supervision"
-for label in resident dashboard agentsview; do
-	unit="$(launchctl list 2>/dev/null | awk -v l="$label" '$3 ~ ("com.culler..*\\." l "$") {print $3}' | head -1)"
-	if [ -n "$unit" ]; then
-		echo "  booting out $unit"
-		launchctl bootout "gui/$(id -u)/$unit" 2>/dev/null || true
-	else
-		echo "  $label not loaded"
-	fi
-done
+case "$os_name" in
+	Linux)
+		for label in resident dashboard agentsview; do
+			unit="$(systemctl --user list-units --type=service --no-legend 'com.culler.*' 2>/dev/null |
+				awk -v l="$label" '$1 ~ ("com\\.culler\\..*\\." l "\\.service$") {print $1; exit}')"
+			if [ -n "$unit" ]; then
+				echo "  stopping $unit"
+				systemctl --user disable --now "$unit" 2>/dev/null || true
+			else
+				echo "  $label not loaded"
+			fi
+		done
+		;;
+	*)
+		for label in resident dashboard agentsview; do
+			unit="$(launchctl list 2>/dev/null | awk -v l="$label" '$3 ~ ("com.culler..*\\." l "$") {print $3}' | head -1)"
+			if [ -n "$unit" ]; then
+				echo "  booting out $unit"
+				launchctl bootout "gui/$(id -u)/$unit" 2>/dev/null || true
+			else
+				echo "  $label not loaded"
+			fi
+		done
+		;;
+esac
 
-# `launchctl bootout` returns before the unit leaves `launchctl list`, and both
-# build-prod.sh and `mc __reset` refuse while a com.culler.* label is listed.
-# Wait, bounded to a few seconds, for the labels to clear.
+# The stop returns before the unit leaves the loaded list, and both build-prod.sh
+# and `mc __reset` refuse while a com.culler.* unit is listed. Wait, bounded to a
+# few seconds, for the units to clear.
 culler_units_loaded() {
-	case "$(launchctl list 2>/dev/null || true)" in
-		*com.culler.*) return 0 ;;
-		*) return 1 ;;
+	case "$os_name" in
+		Linux)
+			case "$(systemctl --user list-units --type=service --no-legend 'com.culler.*' 2>/dev/null || true)" in
+				*com.culler.*) return 0 ;;
+				*) return 1 ;;
+			esac
+			;;
+		*)
+			case "$(launchctl list 2>/dev/null || true)" in
+				*com.culler.*) return 0 ;;
+				*) return 1 ;;
+			esac
+			;;
 	esac
 }
 polls=0
 while culler_units_loaded; do
 	polls=$((polls + 1))
-	[ "$polls" -lt 50 ] || die "a com.culler.* launchd unit is still loaded after the stop. Nothing was removed."
+	[ "$polls" -lt 50 ] || die "a supervised Culler unit is still loaded after the stop. Nothing was removed."
 	sleep 0.1
 done
 

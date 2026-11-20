@@ -84,6 +84,42 @@ esac
 if printf '%s\n' "$guard_output" | grep '^setup-progress:' >/dev/null; then
   fail "The supervision refusal announced a build operation."
 fi
+
+# The Linux branch of the same guard, pinned so its verdict does not depend on
+# the host family either: a fake systemctl answers, and MC_OS_OVERRIDE selects
+# the branch. Refusal text must name the systemd remediation, never launchctl.
+cat >"$TMP/bin/systemctl" <<'EOF'
+#!/bin/sh
+if [ -n "${MC_TEST_SYSTEMCTL_EXIT:-}" ]; then
+  printf 'Failed to connect to user scope bus: 141\n' >&2
+  exit "$MC_TEST_SYSTEMCTL_EXIT"
+fi
+[ -n "${MC_TEST_SUPERVISED:-}" ] && printf 'com.culler.deadbeef.resident.service\tenabled\tstatic\tunit-file\n'
+exit 0
+EOF
+chmod 755 "$TMP/bin/systemctl"
+
+linux_guard=$(PATH="$TMP/bin:/usr/bin:/bin" MC_OS_OVERRIDE=Linux MC_TEST_SUPERVISED=1 \
+    MC_TEST_MISE_LOG="$TMP/linux-guard.log" MC_RELEASE_BUILD_ID="$release_id" \
+    "$HERE/build-prod.sh" 2>&1 || :)
+case "$linux_guard" in
+  *"a supervised Culler deployment is loaded"*) ;;
+  *) fail "the Linux guard did not refuse a live systemd deployment" ;;
+esac
+case "$linux_guard" in
+  *"systemctl --user disable --now"*) ;;
+  *) fail "the Linux guard refused with launchctl remediation text" ;;
+esac
+[ -e "$TMP/linux-guard.log" ] && fail "the Linux guard compiled before refusing"
+
+linux_check=$(PATH="$TMP/bin:/usr/bin:/bin" MC_OS_OVERRIDE=Linux MC_TEST_SYSTEMCTL_EXIT=141 \
+    MC_TEST_MISE_LOG="$TMP/linux-check.log" MC_RELEASE_BUILD_ID="$release_id" \
+    "$HERE/build-prod.sh" 2>&1 || : )
+case "$linux_check" in
+  *"systemd service check failed"*) ;;
+  *) fail "the Linux service check error did not stop the build" ;;
+esac
+[ -e "$TMP/linux-check.log" ] && fail "the Linux service check error started the compiler"
 if PATH="$TMP/bin:/usr/bin:/bin" MC_TEST_MISE_LOG="$TMP/mise.log" \
     MC_RELEASE_BUILD_ID="$release_id" "$HERE/build-prod.sh" \
     >"$TMP/output" 2>&1; then

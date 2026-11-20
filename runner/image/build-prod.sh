@@ -16,33 +16,55 @@ if [[ ! "$MC_RELEASE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9
 fi
 
 # A loaded deployment uses the shared image tag. Its image identity must stay unchanged.
+# The probe follows the service manager of the host: launchctl on macOS, the user
+# systemd manager on Linux (the deployment unit names are shared across both).
+# MC_OS_OVERRIDE exists for the test suite only; it fakes a host family by name.
+os_name="${MC_OS_OVERRIDE:-$(uname -s)}"
 units=
-if command -v launchctl >/dev/null 2>&1; then
-  if units=$(launchctl list 2>&1); then
-    :
-  else
-    status=$?
-    width=${COLUMNS:-80}
-    case "$width" in ''|*[!0-9]*|????*) width=80 ;; esac
-    [ "$width" -ge 40 ] || width=40
-    [ "$width" -le 80 ] || width=80
-    {
-      printf '%s\n\n' "build-prod.sh: Stopped. The macOS service check failed." \
-        "This attempt changed no build files or container images." \
-        "Details: launchctl list exited with $status. $units" \
-        "Open Terminal in the repository and run ./redeploy.sh." \
-        "If the error continues, give this output to your coding harness."
-    } | fold -s -w "$width" | sed 's/ *$//' >&2
-    exit 3
-  fi
-fi
+case "$os_name" in
+  Darwin)
+    if command -v launchctl >/dev/null 2>&1; then
+      if units=$(launchctl list 2>&1); then
+        :
+      else
+        status=$?
+        width=${COLUMNS:-80}
+        case "$width" in ''|*[!0-9]*|????*) width=80 ;; esac
+        [ "$width" -ge 40 ] || width=40
+        [ "$width" -le 80 ] || width=80
+        {
+          printf '%s\n\n' "build-prod.sh: Stopped. The macOS service check failed." \
+            "This attempt changed no build files or container images." \
+            "Details: launchctl list exited with $status. $units" \
+            "Open Terminal in the repository and run ./redeploy.sh." \
+            "If the error continues, give this output to your coding harness."
+        } | fold -s -w "$width" | sed 's/ *$//' >&2
+        exit 3
+      fi
+    fi
+    ;;
+  Linux)
+    if command -v systemctl >/dev/null 2>&1; then
+      if units=$(systemctl --user list-unit-files --no-legend 'com.culler.*' 2>&1); then
+        :
+      else
+        status=$?
+        printf '%s\n' "build-prod.sh: the systemd service check failed (exit $status): $units" >&2
+        exit 3
+      fi
+    fi
+    ;;
+esac
 if printf '%s\n' "$units" | grep -q 'com\.culler\.'; then
   echo "build-prod.sh: a supervised Culler deployment is loaded." >&2
   echo "  Rebuilding mc-prod would re-stamp the image its helper is recreated from," >&2
   echo "  and every tick would then fail closed with a release identity mismatch that" >&2
   echo "  appears only in logs/resident.stderr.log." >&2
   echo "  Boot the units out first:" >&2
-  printf '%s\n' "$units" | awk '/com\.culler\./ {print "    launchctl bootout gui/$(id -u)/" $3}' >&2
+  case "$os_name" in
+    Darwin) printf '%s\n' "$units" | awk -v u="$(id -u)" '/com\.culler\./ {print "    launchctl bootout gui/" u "/" $3}' >&2 ;;
+    Linux) printf '%s\n' "$units" | awk '/com\.culler\./ {gsub(/\.service$/,"",$1); print "    systemctl --user disable --now " $1 ".service"}' >&2 ;;
+  esac
   exit 3
 fi
 
