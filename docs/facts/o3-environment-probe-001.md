@@ -85,7 +85,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -m 8 https://github.com   # P-gh-https 
 | P-distro | **Ubuntu 22.04.4 LTS**（ID=ubuntu） | U-1 闭合 |
 | P-systemd | **systemd 249**(249.11-0ubuntu3.21)；系统态=**degraded** | creds 语义在 249 可用；degraded 归因见下 |
 | P-default-target | **graphical.target**（存在 uid1000 GUI 会话 + root 会话） | U-3 当刻形态 |
-| P-journald-limits | **无显式限制**：SystemMaxUse/RuntimeMaxUse/MaxFileSec 全为注释默认态，无 drop-in；实际占用 **3.9G** | A16 CODED 准入=此事实（"默认生效、需 A16 显式定"），非 UNKNOWN |
+| P-journald-limits | **无显式限制**：SystemMaxUse/RuntimeMaxUse/MaxFileSec 全为注释默认态，无 drop-in；实际占用 **3.9G**。**槽位法回填完成【签发轮】**：①解析视图=**方法不适配 249**（`journalctl --show-config` 为 systemd 251+ 选项，249 上直接报错——首测空输出系命令失败非"无值"，教训：三件套①须按版本回退到③+默认语义）；②实际占用=3.9G ✓；③来源链=主文件全注释+`/etc/systemd/journald.conf.d` 不存在+`DropInPaths=`空 ✓。①缺席无矛盾（②③一致）→ 判定=**默认策略生效、零显式配置，A16 CODED 准入事实成立** | A16 CODED 准入 ✓（其激活仍等链上 A03/A04——分组门，非事实门） |
 | P-docker | **29.4.0** | A04/A16 ✓ |
 | P-cgroup | **cgroup2fs**（v2） | A16 实现面 ✓ |
 | P-tpm | 无设备 | 按 v0.3 裁定仅当刻事实，**不 gate 任何开发** |
@@ -102,5 +102,6 @@ curl -s -o /dev/null -w '%{http_code}\n' -m 8 https://github.com   # P-gh-https 
 ## §4 修订登记
 - v0.1：首版（含 `git config --list` 值输出）。
 - v0.2：依所有者安全审查——Git 面机制性化（键名/计数/首词+双重掩码，零值输出）+脱敏契约；headless 两项降级为辅助信号并给出剩余确认路径；补 journald 上限采集（纯容量数字面）；F14b 对象①②的"不闭合"声明与对象③排除入绑定表。范围未扩大。
+- **v0.5（签发轮）**：journald 三件套按槽位正式回填（§3.5 行更新）——**关键方法事实：`journalctl --show-config` 为 systemd 251+ 选项，目标机 249 不支持**；槽①按版本回退为"来源链+默认语义"判定，②③一致无矛盾→**默认策略生效=显式零限制**，A16 CODED 准入事实成立（其 READY 仍等链上前置）。CLOSURE-MAP 未解决项 1 就此关闭。
 - v0.3：依所有者最终裁定——**P-tpm 移出必需采集**（当前机硬件不是用户环境硬件契约；TPM 不作开发准入、不阻塞 A03/A04/A14/A16/B06、其能力判定归 O1-b+部署适配层）；§2 记录"探测选择适配、不降低保证"原则行；U-9 在 O1 册中同步重定义（部署环境 TPM2 要求/覆盖范围，非当刻设备事实）。
 - **v0.4（本态）**：依 003 审查【P1-1】——P-journald-limits 升为 A16 独立 CODED 准入的采集闭环：三件套（解析配置视图①+实际占用②+主文件/drop-in 来源链③）+ 矛盾/运行时覆盖→owner-stated 裁决 + 不可确认→UNKNOWN 且仅冻结 A16（分组不受累原则）。**新增 §3.5：218.84.111.20 实地采集结果（执行侧直读 E1，经所有者定向授权）——U-1/U-3 转 KNOWN、U-5 部分 KNOWN；A03/A04/A16 的 CODED 准入事实组经此判定齐备（明细见 §3.5 注记）。**
