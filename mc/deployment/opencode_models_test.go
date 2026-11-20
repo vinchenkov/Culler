@@ -740,9 +740,17 @@ func TestOpenCodeFactsContainerHasNoNetworkKeyOrProjectData(t *testing.T) {
 		if len(files) != 4 || files["record.json"] != "the record" || files["facts/server.mjs"] != string(plugin["server.mjs"]) || files["facts/package.json"] != string(plugin["package.json"]) {
 			t.Errorf("The container input holds other files: %v", len(files))
 		}
-		marker := args[len(args)-1]
-		if args[len(args)-2] != opencodecatalog.Release().OpenCodeVersion || !strings.HasPrefix(marker, "culler-model-facts-") {
-			t.Errorf("The container does not check the pinned OpenCode: %q", args[len(args)-3:])
+		program := args[len(args)-1]
+		marker := args[len(args)-2]
+		flavor, flavorErr := HostOpenCodeFlavor()
+		if flavorErr != nil {
+			t.Fatal(flavorErr)
+		}
+		if program != "@opencode/"+flavor.Package+"/bin/opencode" {
+			t.Errorf("The container runs a program of another platform: %q", program)
+		}
+		if args[len(args)-3] != opencodecatalog.Release().OpenCodeVersion || !strings.HasPrefix(marker, "culler-model-facts-") {
+			t.Errorf("The container does not check the pinned OpenCode: %q", args[len(args)-4:])
 		}
 		switch calls {
 		case 1:

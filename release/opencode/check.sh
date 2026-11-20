@@ -9,7 +9,8 @@ platform=$(uname -s)
 case "$platform:$(uname -m)" in
   Darwin:arm64) package=cli-darwin-arm64 ;;
   Linux:aarch64|Linux:arm64) package=cli-linux-arm64 ;;
-  *) echo 'The catalog check requires an arm64 Mac or Linux host.' >&2; exit 1 ;;
+  Linux:x86_64) package=cli-linux-x64 ;;
+  *) echo 'The catalog check requires an Apple silicon Mac or an arm64/x86_64 Linux host.' >&2; exit 1 ;;
 esac
 version=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["opencode"])' "$root/release/opencode/pins.json")
 cp "$root/runner/opencode/package.json" "$root/runner/opencode/package-lock.json" "$scratch/"

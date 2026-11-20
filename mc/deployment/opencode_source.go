@@ -271,7 +271,13 @@ func snapshotOpenCodeSource(ctx context.Context, source runtimeSourceRecord, roo
 }
 
 func openCodeSourceContainer(image string, args ...string) []string {
-	base := []string{"run", "--rm", operatorconfig.PidsLimitFlag, "--pull", "never", "--platform", "linux/arm64", "--cap-drop", "ALL", "--security-opt", "no-new-privileges"}
+	arch, err := NativeArchitecture()
+	if err != nil {
+		// An unsupported architecture must never fall back to a guessed
+		// container platform; the sentinel fails the docker run loudly.
+		arch = "invalid"
+	}
+	base := []string{"run", "--rm", operatorconfig.PidsLimitFlag, "--pull", "never", "--platform", "linux/" + arch, "--cap-drop", "ALL", "--security-opt", "no-new-privileges"}
 	base = append(base, args...)
 	base = append(base, image, "/usr/bin/env", "-i")
 	base = append(base, openCodeSourceEnvironment...)
@@ -325,9 +331,13 @@ func buildOpenCodeSource(ctx context.Context, home, image string, source runtime
 		return fmt.Errorf("The OpenCode preparation tools returned an invalid identity.")
 	}
 	program := sha256.Sum256([]byte(openCodeSourceProgram + openCodeInstallScript + strings.Join(openCodeSourceEnvironment, "\x00")))
+	flavor, err := HostOpenCodeFlavor()
+	if err != nil {
+		return err
+	}
 	wanted := openCodeSourcePackage{Release: source.Release, Inputs: openCodeSourceInputs{
 		Files: files, Tools: json.RawMessage(bytes.TrimSpace(tools)), Program: hex.EncodeToString(program[:]),
-		Platform: "linux-arm64", Version: opencodecatalog.Release().OpenCodeVersion}}
+		Platform: flavor.Label, Version: opencodecatalog.Release().OpenCodeVersion}}
 	wanted.Identity = agentProfileDigest(wanted.Inputs)
 	volume, err := OpenCodeVolume(home)
 	if err != nil {
@@ -374,7 +384,7 @@ func buildOpenCodeSource(ctx context.Context, home, image string, source runtime
 		return fmt.Errorf("The OpenCode package preparation returned an invalid archive identity.")
 	}
 	progress("Install and verify the OpenCode package.")
-	archive := filepath.Join(outputRoot, "culler-opencode-linux-arm64.tar.gz")
+	archive := filepath.Join(outputRoot, "culler-opencode-"+flavor.Label+".tar.gz")
 	if err := InstallOpenCodeArchive(ctx, home, image, archive, wanted.Archive, wanted.Release, run); err != nil {
 		return openCodeSourceFailure("installation", err)
 	}

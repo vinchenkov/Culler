@@ -450,7 +450,7 @@ const openCodeFactsScript = `set -eu
 umask 077
 mkdir /tmp/work /tmp/home
 tar -xf - -C /tmp/work
-program=` + OpenCodeRoot + `/node_modules/@opencode/cli-linux-arm64/bin/opencode
+program=` + OpenCodeRoot + `/$3
 export HOME=/tmp/home XDG_DATA_HOME=/tmp/home/data XDG_CONFIG_HOME=/tmp/home/config XDG_CACHE_HOME=/tmp/home/cache XDG_STATE_HOME=/tmp/home/state
 export OPENCODE_DISABLE_MODELS_FETCH=1 OPENCODE_DISABLE_FREE_MODELS=1 OPENCODE_DISABLE_AUTOUPDATE=1 OPENCODE_DISABLE_PROJECT_CONFIG=1 OPENCODE_DISABLE_CLAUDE_CODE=1 OPENCODE_DISABLE_FILEWATCHER=1
 cd /tmp/home
@@ -528,14 +528,22 @@ func deriveOpenCodeModelFacts(ctx context.Context, home, image string, record []
 		return nil, nil, err
 	}
 	marker := "culler-model-facts-" + hex.EncodeToString(nonce)
+	arch, err := NativeArchitecture()
+	if err != nil {
+		return nil, nil, err
+	}
+	flavor, err := OpenCodeFlavorForArchitecture(arch)
+	if err != nil {
+		return nil, nil, err
+	}
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
 	defer cancel()
-	output, err := run(ctx, archive, "run", "--rm", operatorconfig.PidsLimitFlag, "-i", "--pull", "never", "--platform", "linux/arm64", "--network", "none",
+	output, err := run(ctx, archive, "run", "--rm", operatorconfig.PidsLimitFlag, "-i", "--pull", "never", "--platform", "linux/"+arch, "--network", "none",
 		"--cap-drop", "ALL", "--security-opt", "no-new-privileges", "--user", "10002:10002",
 		"--tmpfs", "/tmp:rw,nosuid,nodev,mode=1777", "--tmpfs", "/etc/opencode:ro,nosuid,nodev,noexec,mode=0555",
 		"--mount", "type=volume,src="+volume+",dst="+OpenCodeRoot+",readonly,volume-nocopy",
 		image, "/usr/bin/env", "-i", "PATH=/usr/local/bin:/usr/bin:/bin", "/bin/sh", "-ec", openCodeFactsScript, "derive",
-		opencodecatalog.Release().OpenCodeVersion, marker)
+		opencodecatalog.Release().OpenCodeVersion, marker, "@opencode/"+flavor.Package+"/bin/opencode")
 	parts := bytes.Split(output, []byte("\n"+marker+"\n"))
 	if err != nil || len(parts) != 4 {
 		cause := lastLine(parts[0])

@@ -260,7 +260,10 @@ func candidateRuntimeScript(openCode bool) string {
 	if !openCode {
 		return candidateRuntimeCheck
 	}
-	return candidateRuntimeCheck + "XDG_DATA_HOME=/tmp/data XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache XDG_STATE_HOME=/tmp/state /opt/culler-opencode/node_modules/@opencode/cli-linux-arm64/bin/opencode --version\n"
+	// The single-program invariant is proven when the archive is installed;
+	// here the path is discovered so the check follows this host's platform
+	// instead of a baked architecture.
+	return candidateRuntimeCheck + "program=$(find /opt/culler-opencode/node_modules/@opencode -mindepth 3 -maxdepth 3 -path '*/bin/opencode')\n[ -n \"$program\" ] || { printf 'The OpenCode program is absent.\\n' >&2; exit 1; }\n[ \"$(printf '%s' \"$program\" | wc -l | tr -d '[:space:]')\" = 0 ] || { printf 'The OpenCode volume holds more than one program.\\n' >&2; exit 1; }\nXDG_DATA_HOME=/tmp/data XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache XDG_STATE_HOME=/tmp/state \"$program\" --version\n"
 }
 
 func (p *publishedSetup) clearCandidateCheckVolume(ctx context.Context, volume, component, owner string) error {

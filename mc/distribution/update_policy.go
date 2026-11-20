@@ -179,10 +179,13 @@ type DependencyPin struct {
 
 func DependencyInventory(root string) ([]DependencyPin, error) {
 	paths := []string{
-		"VERSION", "mc/distribution/update_policy.json", ".mise.toml", "mc/go.mod", "mc/go.sum", "mc/deployment/hostbun.json", "mc/deployment/agentsview.json", "mc/opencodecatalog/catalog.json", "mc/opencodecatalog/facts/package.json", "mc/opencodecatalog/facts/server.mjs",
+		"VERSION", "mc/distribution/update_policy.json", ".mise.toml", "mc/go.mod", "mc/go.sum", "mc/deployment/hostbun.json", "mc/deployment/agentsview.json", "mc/deployment/agentsview.linux-amd64.json", "mc/deployment/agentsview.linux-arm64.json", "mc/opencodecatalog/catalog.json", "mc/opencodecatalog/facts/package.json", "mc/opencodecatalog/facts/server.mjs",
 		"dashboard/package.json", "dashboard/bun.lock", "dashboard/pierre/package.json", "dashboard/pierre/bun.lock", "resident/package.json",
 		"runner/collie-runner/package.json", "runner/agent-runner/package.json", "runner/agent-runner/bun.lock",
-		"runner/opencode/package.json", "runner/opencode/package-lock.json", "runner/opencode/control/package.json",
+		"runner/agent-runner/package.linux-x64.json", "runner/agent-runner/bun.linux-x64.lock",
+		"runner/opencode/package.json", "runner/opencode/package-lock.json",
+		"runner/opencode/package.linux-x64.json", "runner/opencode/package-lock.linux-x64.json",
+		"runner/opencode/control/package.json",
 		"release/opencode/pins.json", "release/opencode/build.sh",
 		"runner/openwiki/package.json", "runner/openwiki/package-lock.json", "runner/openwiki/patch-upstream.mjs", "runner/openwiki/project-documents.mjs",
 		"runner/image/project-tools/package.json", "runner/image/project-tools/package-lock.json",

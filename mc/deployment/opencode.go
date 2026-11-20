@@ -311,7 +311,10 @@ func updateOpenCodeVolume(ctx context.Context, home, image, release string, run 
 const openCodeInstallScript = `set -eu
  tar -xzf /archive.tar.gz --no-same-owner -C /output
  chmod -R a+rX /output
- version=$(XDG_DATA_HOME=/tmp/data XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache XDG_STATE_HOME=/tmp/state /output/node_modules/@opencode/cli-linux-arm64/bin/opencode --version)
+ count=$(find /output/node_modules/@opencode -mindepth 3 -maxdepth 3 -path '*/bin/opencode' | wc -l | tr -d '[:space:]')
+ [ "$count" = 1 ] || { printf 'The archive does not hold exactly one OpenCode program.\n' >&2; exit 1; }
+ program=$(find /output/node_modules/@opencode -mindepth 3 -maxdepth 3 -path '*/bin/opencode')
+ version=$(XDG_DATA_HOME=/tmp/data XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache XDG_STATE_HOME=/tmp/state "$program" --version)
  [ "$version" = "opencode v$3" ] || { printf 'The archive contains %s. This release requires OpenCode %s.\n' "$version" "$3" >&2; exit 1; }
  printf '%s\n' "$1" > /output/release-id
  printf '%s\n' "$2" > /output/archive-sha256
@@ -367,6 +370,44 @@ func InstallOpenCodeArchive(ctx context.Context, home, image, archive, checksum,
 	}
 	usable = true
 	return nil
+}
+
+// OpenCodeFlavor names the npm program directory, the asset label, and the
+// ELF machine of one supported container architecture. The image architecture
+// always equals the host architecture (the deployment gates enforce it), so
+// the host is the source of truth for every OpenCode path.
+type OpenCodeFlavor struct {
+	Package string
+	Label   string
+	Machine byte
+}
+
+func OpenCodeFlavorForArchitecture(arch string) (OpenCodeFlavor, error) {
+	switch arch {
+	case "arm64":
+		return OpenCodeFlavor{Package: "cli-linux-arm64", Label: "linux-arm64", Machine: 0xb7}, nil
+	case "amd64":
+		return OpenCodeFlavor{Package: "cli-linux-x64", Label: "linux-x64", Machine: 0x3e}, nil
+	}
+	return OpenCodeFlavor{}, fmt.Errorf("OpenCode has no Linux program for architecture %s; the supported architectures are arm64 and amd64", arch)
+}
+
+// HostOpenCodeFlavor returns the flavor of the architecture this binary runs on.
+func HostOpenCodeFlavor() (OpenCodeFlavor, error) {
+	arch, err := NativeArchitecture()
+	if err != nil {
+		return OpenCodeFlavor{}, err
+	}
+	return OpenCodeFlavorForArchitecture(arch)
+}
+
+// OpenCodeProgramPath is the archive-relative program path of this host.
+func OpenCodeProgramPath() (string, error) {
+	flavor, err := HostOpenCodeFlavor()
+	if err != nil {
+		return "", err
+	}
+	return "node_modules/@opencode/" + flavor.Package + "/bin/opencode", nil
 }
 
 func checkOpenCodeArchive(filename, checksum string) error {
@@ -428,12 +469,16 @@ func checkOpenCodeArchive(filename, checksum string) error {
 			}
 			if strings.HasSuffix(name, "/bin/opencode") {
 				programs++
-				if name != "node_modules/@opencode/cli-linux-arm64/bin/opencode" {
+				flavor, err := HostOpenCodeFlavor()
+				if err != nil {
+					return err
+				}
+				if name != "node_modules/@opencode/"+flavor.Package+"/bin/opencode" {
 					return fmt.Errorf("The OpenCode archive contains another platform.")
 				}
 				var elf [20]byte
-				if _, err := io.ReadFull(reader, elf[:]); err != nil || string(elf[:4]) != "\x7fELF" || elf[4] != 2 || elf[5] != 1 || elf[18] != 0xb7 || elf[19] != 0 {
-					return fmt.Errorf("The OpenCode program requires Linux arm64.")
+				if _, err := io.ReadFull(reader, elf[:]); err != nil || string(elf[:4]) != "\x7fELF" || elf[4] != 2 || elf[5] != 1 || elf[18] != flavor.Machine || elf[19] != 0 {
+					return fmt.Errorf("The OpenCode program does not match this host's %s platform.", flavor.Label)
 				}
 			}
 		default:

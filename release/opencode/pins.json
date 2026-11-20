@@ -1,6 +1,16 @@
 {
   "opencode": "2.2.7",
   "websearch": "0.7.1",
-  "platform": "linux-arm64",
-  "libc": "glibc"
+  "platforms": {
+    "linux-arm64": {
+      "package": "cli-linux-arm64",
+      "libc": "glibc",
+      "asset": "culler-opencode-linux-arm64.tar.gz"
+    },
+    "linux-x64": {
+      "package": "cli-linux-x64",
+      "libc": "glibc",
+      "asset": "culler-opencode-linux-x64.tar.gz"
+    }
+  }
 }

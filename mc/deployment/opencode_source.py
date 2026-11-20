@@ -78,17 +78,23 @@ def main():
     os.umask(0o022)
     action = sys.argv[1]
     if action == "tools":
-        if platform.system() != "Linux" or platform.machine() != "aarch64":
-            raise ValueError("The OpenCode package requires Linux arm64.")
+        machine = platform.machine()
+        target = {"aarch64": "linux-arm64", "arm64": "linux-arm64", "x86_64": "linux-x64"}.get(machine)
+        if platform.system() != "Linux" or target is None:
+            raise ValueError("The OpenCode package requires Linux arm64 or x86_64.")
         with open(shutil.which("node"), "rb") as stream:
             node_digest = file_digest(stream)
         npm_root = Path(shutil.which("npm")).resolve().parent.parent
-        print(json.dumps({"platform": "linux-arm64", "node": command("node", "--version"),
+        print(json.dumps({"platform": target, "node": command("node", "--version"),
                           "node_sha256": node_digest, "npm": command("npm", "--version"),
                           "npm_sha256": volume_digest(npm_root)}))
     elif action == "build":
-        archive = "/output/culler-opencode-linux-arm64.tar.gz"
-        result = subprocess.run(["/bin/sh", "/source/release/opencode/build.sh", archive],
+        machine = platform.machine()
+        target = {"aarch64": "linux-arm64", "arm64": "linux-arm64", "x86_64": "linux-x64"}.get(machine)
+        if platform.system() != "Linux" or target is None:
+            raise ValueError("The OpenCode package requires Linux arm64 or x86_64.")
+        archive = f"/output/culler-opencode-{target}.tar.gz"
+        result = subprocess.run(["/bin/sh", "/source/release/opencode/build.sh", archive, target],
                                 text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if result.returncode:
             lines = result.stdout.strip().splitlines()
@@ -115,7 +121,10 @@ def main():
             raise ValueError("The installed OpenCode release identity differs.")
         for key in ("DATA", "CONFIG", "CACHE", "STATE"):
             os.environ[f"XDG_{key}_HOME"] = f"/tmp/opencode-{key.lower()}"
-        version = command(str(root / "node_modules/@opencode/cli-linux-arm64/bin/opencode"), "--version")
+        programs = [str(found) for found in root.glob("node_modules/@opencode/cli-linux-*/bin/opencode")]
+        if len(programs) != 1:
+            raise ValueError("The OpenCode volume must hold exactly one program.")
+        version = command(programs[0], "--version")
         if version != "opencode v" + sys.argv[6]:
             raise ValueError(f"The installed program reports {version}. This release requires OpenCode {sys.argv[6]}.")
         print(version)
