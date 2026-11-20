@@ -27,9 +27,9 @@
 ## 5. 关闭剧本（V 级验证义务，随①立项进 G-F/A12 测试映射）
 
 P1（针对 U1/委托面）：**已执行（2026-11-20）→ 围栏存活，按本剧本改判分支落定。** 载体=mc/cmd/mc/operator_fence_a22_cli_test.go（live 收据正控+审计行断言、`uncertain` 收据拒绝断言+零副作用断言、伪造 id 拒绝断言）+ operator_fence_a22_test.go（委托 argv 全等交接形态双向断言）。无需修复授权：委托面不存在已证实的不生效，原"修复=新授权事项"分支未被触发。
-P2（U2）：枚举 operatorcmd 路由表 ×d.Host×Identity×args 全等，输出矩阵（A12）。
-P3：RPC profile 白名单边界用例（含 mutation-无-BEGIN 拒绝已存在路径的正反例）（A12）。
-产出=§7.1 记录 + 更新本文件 + G-F/A12 覆盖声明补丁（A12 工单文案的"逐入口"清单须含 :416 fallback 与 RPC 两入口）。
+P2（U2）：**已执行（2026-11-20，A12）→ 全表 81 条入漂移闸，分类=spine 写 24／spine 读 19／host-local 38**：委托 fallback 对 operator 写的覆盖比例闭合——spine 写全部在围栏面（guarded 路径或 forward 交接，P1 已证委托形态存活），fallback 残余仅 host-local 与读类命令（无 spine 写可漏）。载体=mc/operatorcmd/a12_dump_test.go + docs/facts/g-f-coverage-matrix.md §2。
+P3：**已执行（2026-11-20，A12）→ RPC profile 边界正反例入测**（version-mismatch、commit/rollback-无-BEGIN、begin-杂料、通用 SQL 拒[既有]、exec-require-BEGIN 源证）；载体=mc/cmd/mc/gf_build_identity_a12_test.go；矩阵行=g-f-coverage-matrix.md §1#4/§3。
+产出=§7.1 记录 + 更新本文件 + G-F/A12 覆盖声明补丁：**已随 A12 交付**（矩阵 §1 十一入口含 :416 fallback 与 RPC 两入口）。
 
 ## 6. 处置边界（复述以自缚）
 

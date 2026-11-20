@@ -59,6 +59,10 @@ func decodeDiagnosticRequest(r io.Reader, value any) error {
 	return nil
 }
 
+// ensureSystemStateHelper is the seam form of the broker's per-operation
+// helper gate, so the check is observable without a running docker host.
+var ensureSystemStateHelper = ensureRuntimeHelper
+
 func systemSpineCall(action string, request any) (any, error) {
 	body, err := json.Marshal(request)
 	if err != nil {
@@ -66,6 +70,13 @@ func systemSpineCall(action string, request any) (any, error) {
 	}
 	if !shouldDelegateToHelper() {
 		return commandSystemSpine(action, bytes.NewReader(body))
+	}
+	// G-F: the delegated state call may only run against the helper that
+	// ensure() reconciled to the current release image, never against a
+	// name resolved without that check. Same gate as the self-delegation
+	// route and the spine-transfer entries.
+	if _, err := ensureSystemStateHelper(); err != nil {
+		return nil, verbs.Usagef("ensure warm helper: %v", err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
 	defer cancel()

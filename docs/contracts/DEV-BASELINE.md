@@ -37,7 +37,7 @@
 | A09 | R2 标识符迁移（shz 二进制/home/systemd 名/`shz_proxy_*`+掩码正则/`shz migrate-home`/**schema 文本先于 v1 基线**） | A02,A03,A04 | ROADMAP §2R R2 表 | R2 验收：净机端到端无 Culler 残留 | →B01 前置 |
 | A10 | G-A 普通写事务 live-schema 门禁（范围声明贴码：SchemaMatch⇏BuildID） | — | DC §5 G-A；AM §4b | F0a/F1：逐入口拒绝测试正反例（AM §4b G-A） | |
 | A11 | G-D/G-E 收编（附 G-A 覆盖证明，禁预宣布自动闭合） | A10 | DC §5 合并规则 | F0a：reset/onboard 路径测试+覆盖证明（AM §4b） | |
-| A12 | G-F 宿主 mc→helper 构建身份（**或** Authority RR 式接受，二选一不空转） | — | DC §5 G-F；IG §5.3 四分支同构 | F0a/F1：逐入口覆盖测试**或** TM §8 RR 映射（EXEC-3：RR≠机制验证） | 出口须映射 TM §8 RR 行 |
+| A12 | G-F 逐入口覆盖测试出口（二选一取测试臂，不空转）：11 入口×强制层矩阵（E 帧等值／R ensure 对账／S schema 门，docs/facts/g-f-coverage-matrix.md）；唯一实然缺口=`__system-state` 无 ensure→已加门+seam；F1 P2 路由漂移闸（81 条=spine 写 24/读 19/host-local 38）+P3 RPC 边界正反例 | — | DC §5 G-F；IG §5.3 四分支同构；docs/facts/g-f-coverage-matrix.md | F0a/F1：SystemState 门拒绝+源守卫×2+RPC 边界四例+DoctorRuntime 五分量否定+operatorcmd 漂移闸；残余 R1-R4 声明于矩阵 §4；**非 RR 出口，无 TM §8 映射义务**（RR 臂未走） | 覆盖=机制验证层；"混合版本已排除"仍归 F0a Exit+复测包络（DC §6） |
 | A13 | G-B agent 构建身份（envelope 版本字段设计件） | A12 同域 | DC §5 G-B；IG §4 | F0a/F1：envelope 字段测试+混版拒绝证据（AM §4b G-B） | 设计件先行 |
 | A14 | V 任务组建+执行（V-1a–d/2/3/5(+X-1 三场景)/6/7） | A04,A05,A16 | TM §7.2/§7.3 绑定表 | F0a：V-list §7.1 全记录（含 X-1） | 门:O3+owner 环境事实 |
 | A15 | 存量锁域全量盘点（人工跨层持锁扫描，非 grep；K1-K4 表二候选→强制） | — | DC §1.3 表二 5 | F1 前置：盘点表闭合+表二 1-3 强制化测试 | 首批候选 |
