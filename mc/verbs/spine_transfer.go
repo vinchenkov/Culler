@@ -225,7 +225,9 @@ func snapshotInspection(path string) (spineInspection, error) {
 	if err != nil || !st.Mode().IsRegular() || st.Size() < 1 {
 		return spineInspection{}, fmt.Errorf("snapshot is not a non-empty regular file: %v", err)
 	}
-	db, err := substrate.OpenReadOnly(path)
+	// The path is a copied snapshot whose writer finished before this call —
+	// the caller-side precondition OpenSnapshotReadOnly documents.
+	db, err := substrate.OpenSnapshotReadOnly(path)
 	if err != nil {
 		return spineInspection{}, err
 	}
