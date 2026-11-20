@@ -23,10 +23,11 @@ RESF=$HERE/results.tsv
 WHO() { printf 'ts=%s host=%s uid=%s' "$(date -u +%FT%TZ)" "$(uname -n)" "$(id -u)"; }
 log() { printf '%s %s\n' "$(WHO)" "$*" >>"$RAWF"; }
 rec() { printf '%s %s%s %s\n' "$1" "$2" "${3:+ $3}" "$(WHO)" >>"$RESF"; log "RESULT $1 $2 ${3:-}"; }
-runas() { # label cmd-string — run as the acceptance account with a clean login-ish env
+runas() { # label cmd-string — run as the acceptance account; paths arrive via env
+          # (never single-quoted literals) so no remote expansion is defeated.
   local label=$1 cmd=$2 st=0
   log "RUN[$label](as $ACCT) $cmd"
-  sudo -u "$ACCT" bash -lc "$cmd" >>"$RAWF" 2>&1 || st=$?
+  sudo -u "$ACCT" -H env S2_R="$HERE" S2_REPO="${REPO_USER:-$REPO}" S2_LEG="/home/$ACCT/leg" S2_PKG="/home/$ACCT/package" S2_COMMIT="$COMMIT" bash -lc "$cmd" >>"$RAWF" 2>&1 || st=$?
   log "EXIT $label=$st"
   return "$st"
 }
@@ -62,25 +63,31 @@ getent passwd "$ACCT" >/dev/null && { fail_all B0 account-exists; exit 1; }
 rec B0 result PASS "free_gb=$AVAIL commit=${COMMIT:0:12}"
 
 echo "== B1 account provisioning"
-useradd -m -s /bin/bash "$ACCT" && usermod -aG docker "$ACCT" && loginctl enable-linger "$ACCT" || { fail_all B1 account-create; exit 1; }
+# Pin an unused uid: the auto pool collided with an existing workload owner once.
+UID_PICK=2100
+while getent passwd "$UID_PICK" >/dev/null; do UID_PICK=$((UID_PICK+1)); done
+useradd -m -u "$UID_PICK" -s /bin/bash "$ACCT" && usermod -aG docker "$ACCT" && loginctl enable-linger "$ACCT" || { fail_all B1 account-create; exit 1; }
 sleep 3
 AUID=$(id -u "$ACCT")
 [ -S "/run/user/$AUID/bus" ] || { fail_all B1 user-manager; exit 1; }
+# The work directory is root-owned 0700; hand the account its own readable copy.
+REPO_USER=/home/"$ACCT"/repo
+cp -a "$REPO" "$REPO_USER" && chown -R "$ACCT":"$ACCT" "$REPO_USER" || { fail_all B1 repo-copy; exit 1; }
 rec B1 result PASS "uid=$AUID"
 
 echo "== B2 release leg on the target (mise bootstrap + build.sh linux-amd64)"
 runas B2.mise "mkdir -p \$HOME/.local/bin && curl -fsSL https://github.com/jdx/mise/releases/download/v2026.10.0/mise-v2026.10.0-linux-x64 -o \$HOME/.local/bin/mise && printf '%s  %s\n' '57ced973f968b8fbab07aa8e32bd7077d4a357e200a22356d98963c723c6de0a' \"\$HOME/.local/bin/mise\" | sha256sum -c - && chmod 755 \$HOME/.local/bin/mise" || { fail_all B2 mise-checksum; exit 1; }
-runas B2.tools "cd $REPO && MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml mise install go@1.25.12 && MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml mise install bun@1.3.12" || { fail_all B2 mise-install; exit 1; }
-runas B2.build "cd $REPO && CULLER_COMMIT=$COMMIT CULLER_RELEASE_PLATFORM=linux-amd64 MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml PATH=\$HOME/.local/bin:\$PATH ./release/build.sh /home/$ACCT/leg" || { fail_all B2 build-leg; exit 1; }
-runas B2.verify-elf "head -c 20 /home/$ACCT/leg/image/runner/image/mc-prod-bin | od -An -tx1 | grep -q '7f 45 4c 46 02 01 01'" || { fail_all B2 elf-not-amd64; exit 1; }
+runas B2.tools "cd \$S2_REPO && MISE_TRUSTED_CONFIG_PATHS=\$S2_REPO/.mise.toml mise install go@1.25.12 && MISE_TRUSTED_CONFIG_PATHS=\$S2_REPO/.mise.toml mise install bun@1.3.12" || { fail_all B2 mise-install; exit 1; }
+runas B2.build "cd \$S2_REPO && CULLER_COMMIT=\$S2_COMMIT CULLER_RELEASE_PLATFORM=linux-amd64 MISE_TRUSTED_CONFIG_PATHS=\$S2_REPO/.mise.toml PATH=\$HOME/.local/bin:\$PATH ./release/build.sh \$S2_LEG" || { fail_all B2 build-leg; exit 1; }
+runas B2.verify-elf "head -c 20 \$S2_LEG/image/runner/image/mc-prod-bin | od -An -tx1 | grep -q '7f 45 4c 46 02 01 01'" || { fail_all B2 elf-not-amd64; exit 1; }
 rec B2 result PASS
 
 echo "== B3 validate_package on native amd64 (installer + setup handoff run for real)"
-runas B3.validate "cd $REPO && python3 release/validate_package.py --output /home/$ACCT/leg --platform linux-amd64" || { fail_all B3 validate-failed; exit 1; }
+runas B3.validate "cd \$S2_REPO && python3 release/validate_package.py --output \$S2_LEG --platform linux-amd64" || { fail_all B3 validate-failed; exit 1; }
 rec B3 result PASS
 
 echo "== B4 production image build on the host (build-prod native path)"
-runas B4.image "cd $REPO && MC_RELEASE_BUILD_ID=$COMMIT MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml PATH=\$HOME/.local/bin:\$PATH ./runner/image/build-prod.sh" || { fail_all B4 image-build; exit 1; }
+runas B4.image "cd \$S2_REPO && MC_RELEASE_BUILD_ID=\$S2_COMMIT MISE_TRUSTED_CONFIG_PATHS=\$S2_REPO/.mise.toml PATH=\$HOME/.local/bin:\$PATH ./runner/image/build-prod.sh" || { fail_all B4 image-build; exit 1; }
 runas B4.inspect "docker image inspect mc-prod --format '{{.Architecture}} {{index .Config.Labels \"org.opencontainers.image.revision\"}}' | grep -q \"amd64 $COMMIT\"" || { fail_all B4 image-identity; exit 1; }
 rec B4 result PASS
 
