@@ -69,7 +69,7 @@ AUID=$(id -u "$ACCT")
 rec B1 result PASS "uid=$AUID"
 
 echo "== B2 release leg on the target (mise bootstrap + build.sh linux-amd64)"
-runas B2.mise "mkdir -p \$HOME/.local/bin && curl -fsSL https://github.com/jdx/mise/releases/download/v2026.10.0/mise-v2026.10.0-linux-x64 -o \$HOME/.local/bin/mise && echo '57ced973f968b8fbab07aa8e32bd7077d4a357e200a22356d98963c723c6de0a  \$HOME/.local/bin/mise' | sha256sum -c - && chmod 755 \$HOME/.local/bin/mise" || { fail_all B2 mise-checksum; exit 1; }
+runas B2.mise "mkdir -p \$HOME/.local/bin && curl -fsSL https://github.com/jdx/mise/releases/download/v2026.10.0/mise-v2026.10.0-linux-x64 -o \$HOME/.local/bin/mise && printf '%s  %s\n' '57ced973f968b8fbab07aa8e32bd7077d4a357e200a22356d98963c723c6de0a' \"\$HOME/.local/bin/mise\" | sha256sum -c - && chmod 755 \$HOME/.local/bin/mise" || { fail_all B2 mise-checksum; exit 1; }
 runas B2.tools "cd $REPO && MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml mise install go@1.25.12 && MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml mise install bun@1.3.12" || { fail_all B2 mise-install; exit 1; }
 runas B2.build "cd $REPO && CULLER_COMMIT=$COMMIT CULLER_RELEASE_PLATFORM=linux-amd64 MISE_TRUSTED_CONFIG_PATHS=$REPO/.mise.toml PATH=\$HOME/.local/bin:\$PATH ./release/build.sh /home/$ACCT/leg" || { fail_all B2 build-leg; exit 1; }
 runas B2.verify-elf "head -c 20 /home/$ACCT/leg/image/runner/image/mc-prod-bin | od -An -tx1 | grep -q '7f 45 4c 46 02 01 01'" || { fail_all B2 elf-not-amd64; exit 1; }
