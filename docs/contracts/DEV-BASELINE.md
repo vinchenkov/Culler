@@ -26,7 +26,7 @@
 ### Track A · F0a 地基（Linux 服务器/品牌/门禁/验证）
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
 |---|---|---|---|---|---|
-| A01 | ADR-0 凭据后端选型（age+口令/systemd-creds/KMS 接口） | — | IG §5.1 表B〔待:O1 ADR〕；MASTER §10 O1；DC §7.4 | F0a：O1 ADR 入档+表B 引用格补源 | 门:O1 事实入场 |
+| A01 | ADR-0 凭据后端选型（age+口令/systemd-creds/KMS 接口，经 R1 拆分实为 C0/C1/C2a/C2b/C3 五候选） | — | IG §5.1 表B〔待:O1 ADR〕；MASTER §10 O1；DC §7.4 | F0a：O1 ADR 入档+表B 引用格补源 | O1-a 事实基线**已冻结**（o1-credential-facts-001.md §7，AM v0.1.46）；O1-b 比较待 U-6/U-7 要求值；ADR 决定本身仍未发——A01 保持 BLOCKED-on-decision |
 | A02 | Linux 凭据后端实现（host_secret_linux + 迁移工具） | A01 | IG §5.1 矩阵行；DC §7.4 分域 | F0a：IG §5.1 矩阵逐行测试 | |
 | A03 | systemd 监督替换 launchd（supervision/services/uninstall/redeploy/dev-reset 平台面） | — | MASTER §2 P0 清单③；DC-FACTS #5 | F0a：Linux 安装→运行→停复→卸载实测 | amd64 主目标 |
 | A04 | 安装/发布资产双架构（install.sh 矩阵+arch 闸 host-native-arch 政策+opencode x64 包链+CI 矩阵） | A03 | MASTER §2 移植清单（B4 行：`containerruntime_linux.go:115`） | F0a：CI 双架构矩阵全绿+amd64 净机安装 | |
