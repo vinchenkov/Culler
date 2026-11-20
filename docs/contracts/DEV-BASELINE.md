@@ -99,6 +99,13 @@
 | E04 | 故障矩阵八场景 | — | DT §5（S1–S8，规范源=该节） | P3 Exit 全绿（AM §2） | blocked-by DT 封闭 |
 | E05 | hook 隔离强制配置（V-3 承接） | — | DT §6 清单 1-8；TM §7.2 V-3 | P3：强制配置清单实测 | blocked-by DT 封闭 |
 
+### Track L · LoopForge 能力互补承接（2026-11-20 所有者目标校准指令立轨：逐条核对 ANALYSIS §9 采纳清单后的补缺口票；主体性=模式提取入契约/语义，零代码并入；§9-4 runner 远程执行机=所有者已裁 non-goal，不入）
+| ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
+|---|---|---|---|---|---|
+| L01 | SOP 式"脚本节点+产物契约"进 Worker/Verifier 验收语义（确定性检查不靠模型；runeval 式受控改进边界） | — | ANALYSIS-2026-11-19-LoopForge-vs-Culler.md §9-5/§8-5/§3.4 | F1：设计件（节点语义×task 验收映射×agent 输入面变更清单）+实施后确定性检查执行测试 | **设计件先行**——触任务验收/dispatch 语义=wire-adjacent，形状决定归所有者 |
+| L02 | 在线升级语义：drain/handover（补"必须 stop-the-world"短板；systemd SIGTERM/Restart 语义先行，listener fd 交接在评估内） | A03 | ANALYSIS §4-8/§9-6 | F1：升级演练绿（与 update_docker lane 合流）+ journal/停摆语义不回归断言 | Wave A 后续票；不新造更新协议权威（复用 A17/journal 面） |
+| L03 | 防内部信息回流 CI（内部域名/私网段/AKID/人名哈希扫描 + gitleaks 版本+SHA 双固定） | — | ANALYSIS §4-4 | F1：红绿样例（植入→必红；清除→绿）入 CI 门 | 低成本高收益；挂发布流程，触 workflow 面=按 003 负清单逐票正清单申请 |
+
 ### 治理指针（非工单，状态只在 AM 演进）
 AM §3 队列 1-6（Authority 指定、5×CONTRACT_FROZEN+Integrity 复核、ARCHITECTURE_FROZEN、D-IG×5+D-PS×5+D-BL×5 裁决批准、RR-1..7 逐条、F0b-3 摘要关系批准）；BL-V1 原文核对；DT 起草启动令。
 

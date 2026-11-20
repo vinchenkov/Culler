@@ -32,8 +32,8 @@ type Record struct {
 	Line   int    `json:"line,omitempty"`
 }
 
-var idRe = regexp.MustCompile(`^([A-E][0-9]{2})$`)
-var idInTextRe = regexp.MustCompile(`\b([A-E][0-9]{2})\b`)
+var idRe = regexp.MustCompile(`^([A-L][0-9]{2})$`)
+var idInTextRe = regexp.MustCompile(`\b([A-L][0-9]{2})\b`)
 
 // ParseGraph parses the §3 ticket graph tables. The graph must be table-form
 // with 6 columns: ID | 标题 | depends | 契约锚 | 验收映射 | 备注. Anything else
