@@ -5,12 +5,12 @@ import { resolve } from "node:path";
 const root = resolve(import.meta.dir, "../..");
 const workflow = Bun.YAML.parse(readFileSync(resolve(root, ".github/workflows/release.yml"), "utf8")) as any;
 const runs = (job: any) => job.steps.map((step: any) => String(step.run ?? "")).join("\n");
-const scans = ["security-acceptance", "image-vulnerabilities"];
+const scans = ["security-acceptance", "image-vulnerabilities", "image-vulnerabilities-linux"];
 
 test("the required release check rejects every failed or unverified prerequisite", () => {
   const gate = workflow.jobs["release-checks"];
   expect(gate.if).toBe("always()");
-  expect(gate.needs).toEqual(["fast-suite-macos", "application-package", "deployment-linux", "dashboard-browser", "release-images"]);
+  expect(gate.needs).toEqual(["fast-suite-macos", "application-package", "application-package-linux", "deployment-linux", "deployment-linux-amd64", "dashboard-browser", "dashboard-browser-amd64", "release-images", "release-images-linux"]);
   expect(runs(gate)).toContain('item["result"] != "success"');
   const rules = JSON.parse(readFileSync(resolve(root, ".github/release-ruleset.json"), "utf8"));
   expect(rules.enforcement).toBe("active");
@@ -26,12 +26,13 @@ test("no job waits for a security scan", () => {
   }
   expect(runs(workflow.jobs["fast-suite-macos"])).not.toContain("security_scan.py");
   expect(runs(workflow.jobs["release-images"])).not.toContain("security_scan.py");
+  expect(runs(workflow.jobs["release-images-linux"])).not.toContain("security_scan.py");
   expect(runs(workflow.jobs["release-downloads"])).not.toContain("security_tools.py");
 });
 
 test("pull request jobs hold read permissions and fixed action references", () => {
   expect(workflow.permissions).toEqual({ contents: "read" });
-  for (const name of [...scans, "fast-suite-macos", "application-package", "release-images", "release-checks"]) {
+  for (const name of [...scans, "fast-suite-macos", "application-package", "application-package-linux", "release-images", "release-images-linux", "release-checks"]) {
     const job = workflow.jobs[name];
     expect(job.if).toBe(name === "release-checks" ? "always()" : undefined);
     expect(job.permissions ?? workflow.permissions).toEqual({ contents: "read" });
@@ -45,19 +46,23 @@ test("pull request jobs hold read permissions and fixed action references", () =
 });
 
 test("the scans and the upload use the exact checked images", () => {
-  const images = workflow.jobs["release-images"];
-  expect(runs(images)).toContain("release/image_layers.py");
-  expect(runs(images)).toContain("for image in project runner");
-  const checked = "${{ needs.release-images.outputs.artifact-id }}";
-  const download = (job: any) => job.steps.find((step: any) => String(step.uses).startsWith("actions/download-artifact")).with["artifact-ids"];
-  const scan = workflow.jobs["image-vulnerabilities"];
-  expect(runs(scan)).toContain("release/security_scan.py --archive");
-  expect(download(scan)).toBe(checked);
-  const upload = workflow.jobs["product-image"];
-  expect(upload.needs).toContain("release-checks");
-  expect(runs(upload)).toContain("release/image_load.py");
-  expect(runs(upload)).not.toContain("docker build");
-  expect(download(upload)).toBe(checked);
+  for (const [imagesJob, scanJob, uploadJob, checked] of [
+    ["release-images", "image-vulnerabilities", "product-image", "${{ needs.release-images.outputs.artifact-id }}"],
+    ["release-images-linux", "image-vulnerabilities-linux", "product-image-linux", "${{ needs.release-images-linux.outputs.artifact-id }}"],
+  ] as const) {
+    const images = workflow.jobs[imagesJob];
+    expect(runs(images)).toContain("release/image_layers.py");
+    expect(runs(images)).toContain("for image in project runner");
+    const download = (job: any) => job.steps.find((step: any) => String(step.uses).startsWith("actions/download-artifact")).with["artifact-ids"];
+    const scan = workflow.jobs[scanJob];
+    expect(runs(scan)).toContain("release/security_scan.py --archive");
+    expect(download(scan)).toBe(checked);
+    const upload = workflow.jobs[uploadJob];
+    expect(upload.needs).toContain("release-checks");
+    expect(runs(upload)).toContain("release/image_load.py");
+    expect(runs(upload)).not.toContain("docker build");
+    expect(download(upload)).toBe(checked);
+  }
   expect(workflow.jobs["release-downloads"].needs).toContain("release-checks");
   expect(runs(workflow.jobs["fast-suite-macos"])).toContain("./release/check.sh");
 });
@@ -68,7 +73,7 @@ test("the release policy controls the image upload and the publication", () => {
   expect(decision.permissions).toEqual({ contents: "read" });
   expect(runs(decision)).toContain("release/publish.py --decide");
   expect(decision.outputs.publish).toBe("${{ steps.decide.outputs.publish }}");
-  for (const name of ["product-image", "release-downloads"]) {
+  for (const name of ["product-image", "product-image-linux", "release-downloads"]) {
     const job = workflow.jobs[name];
     expect(job.needs).toContain("release-version");
     expect(job.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'");

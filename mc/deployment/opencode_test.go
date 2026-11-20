@@ -69,6 +69,7 @@ func TestConfigureRuntimeSourcePackageNeedsNoStateDirectory(t *testing.T) {
 }
 
 func TestOpenCodeDownloadProgressAndRetry(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	home := agentProfileTestHome(t)
 	launches := 0
 	launch := func(string, string) error { launches++; return nil }
@@ -150,6 +151,7 @@ func openCodeArchiveFixture(t *testing.T, extra *tar.Header) (string, string) {
 }
 
 func TestOpenCodeArchiveRefusesChecksumAndUnsafePaths(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	file, checksum := openCodeArchiveFixture(t, nil)
 	if err := checkOpenCodeArchive(file, checksum); err != nil {
 		t.Fatal(err)
@@ -166,6 +168,7 @@ func TestOpenCodeArchiveRefusesChecksumAndUnsafePaths(t *testing.T) {
 }
 
 func TestOpenCodePartialUnpackRemovesVolume(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	file, checksum := openCodeArchiveFixture(t, nil)
 	home := agentProfileTestHome(t)
 	removed := false
@@ -234,6 +237,7 @@ func TestOpenCodeModelTestRequiresNativeToolAndFinalReply(t *testing.T) {
 }
 
 func TestOpenCodeInstallChecksTheNativeVersion(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	for _, version := range []string{"opencode v2.2.7", "opencode v2.2.6", "2.2.7"} {
 		t.Run(version, func(t *testing.T) {
 			root := t.TempDir()

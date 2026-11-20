@@ -135,6 +135,7 @@ func TestCandidateAssessmentChecksProviderModelAndExplicitEffort(t *testing.T) {
 }
 
 func TestCandidateOpenCodeUsesIsolatedVerifiedArchive(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	home, scratch := t.TempDir(), t.TempDir()
 	p := &publishedSetup{home: home, record: distribution.Record{Image: "candidate", Commit: strings.Repeat("a", 40), OpenCode: &distribution.Asset{Name: "opencode.tar.gz"}}, update: &deployment.UpdateJournal{ID: strings.Repeat("b", 32)}}
 	archive := filepath.Join(deployment.UpdateDirectory(home, p.update.ID), p.record.OpenCode.Name)

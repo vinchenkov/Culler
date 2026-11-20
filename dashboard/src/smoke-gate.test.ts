@@ -99,6 +99,10 @@ test("the release workflow requires the dashboard browser job before publication
   expect(workflow.permissions).toEqual({ contents: "read" });
 
   const browser = workflow.jobs["dashboard-browser"];
+  const browserAmd64 = workflow.jobs["dashboard-browser-amd64"];
+  expect(browserAmd64).toBeDefined();
+  expect(JSON.stringify(browserAmd64)).not.toMatch(/secrets\.|github\.token|login-action|GH_TOKEN|packages:/);
+  expect(browserAmd64.steps.some((step: any) => String(step.run ?? "").includes('test "$(uname -m)" = x86_64'))).toBe(true);
   expect(browser.if).toBeUndefined();
   expect(browser.needs).toBeUndefined();
   expect(browser.permissions).toEqual({ contents: "read" });
@@ -128,9 +132,12 @@ test("the release workflow requires the dashboard browser job before publication
 
   const publication = workflow.jobs["release-downloads"];
   expect(publication.needs).toContain("dashboard-browser");
+  expect(publication.needs).toContain("dashboard-browser-amd64");
   expect(publication.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release-version.outputs.publish == 'true'");
   expect(workflow.jobs["product-image"].needs).toContain("dashboard-browser");
+  expect(workflow.jobs["product-image-linux"].needs).toContain("dashboard-browser-amd64");
   expect(workflow.jobs["release-images"].needs).toEqual(["application-package"]);
+  expect(workflow.jobs["release-images-linux"].needs).toEqual(["application-package-linux"]);
 
   const fast = workflow.jobs["fast-suite-macos"].steps.map((step: any) => String(step.run ?? "")).join("\n");
   expect(fast).toContain("dashboard; do");

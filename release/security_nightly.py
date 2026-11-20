@@ -19,14 +19,14 @@ def note(text):
             stream.write(text + "\n")
 
 
-def scan(output, tools):
+def scan(output, tools, record_asset="release.json"):
     output.mkdir(parents=True, exist_ok=True)
     api = GitHub(os.environ["GITHUB_REPOSITORY"], os.environ["GH_TOKEN"])
     release = api.request("GET", "/releases/latest")
     if release is None:
         note("The repository has no current release, so the nightly scan has no images to check.")
         return 0
-    assets = [item for item in release["assets"] if item["name"] == "release.json"]
+    assets = [item for item in release["assets"] if item["name"] == record_asset]
     if len(assets) != 1:
         raise ValueError("The current release requires one release record.")
     record = json.loads(api.request("GET", "/releases/assets/" + str(assets[0]["id"]), binary=True))
@@ -65,9 +65,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--tools", required=True, type=Path)
+    parser.add_argument("--record-asset", default="release.json")
     args = parser.parse_args()
     try:
-        sys.exit(scan(args.output, args.tools))
+        sys.exit(scan(args.output, args.tools, args.record_asset))
     except (ValueError, KeyError, OSError, RuntimeError):
         args.output.mkdir(parents=True, exist_ok=True)
         (args.output / "unverified.json").write_text('{"status":"unverified","error":"The current release record is unavailable or incomplete."}\n')

@@ -36,6 +36,9 @@ func openCodeSourceCommit(t *testing.T, root string) string {
 
 func openCodeSourceFixture(t *testing.T) runtimeSourceRecord {
 	t.Helper()
+	// The fixtures describe arm64 bytes; pin the flavor so the package paths
+	// and platform arguments match on every host.
+	pinNativeArchitecture(t, "arm64")
 	root := t.TempDir()
 	for name, body := range map[string]string{
 		"runner/opencode/package.json": "{}", "runner/opencode/package-lock.json": "{}",

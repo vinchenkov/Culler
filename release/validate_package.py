@@ -21,6 +21,36 @@ PACKAGE_NAME = "culler-darwin-arm64.tar.gz"
 PIN_PATH = Path(__file__).resolve().parent.parent / "mc" / "deployment" / "agentsview.json"
 HOST_BUN_PIN_PATH = Path(__file__).resolve().parent.parent / "mc" / "deployment" / "hostbun.json"
 HOST_BUN_PLATFORM = "darwin-arm64"
+RECORD_PLATFORM = "darwin-arm64"
+META_NAME = "package.json"
+# The release platforms in check order: each selects the package asset, the
+# AgentsView pin file, the host-Bun archive key, and the build-record name.
+# The defaults above are the darwin values so an omitted selection keeps the
+# historical behavior.
+PLATFORMS = {
+    "darwin-arm64": {
+        "package": "culler-darwin-arm64.tar.gz", "pin": "agentsview.json",
+        "host_bun": "darwin-arm64", "meta": "package.json",
+    },
+    "linux-amd64": {
+        "package": "culler-linux-amd64.tar.gz", "pin": "agentsview.linux-amd64.json",
+        "host_bun": "linux-x64", "meta": "package.linux-amd64.json",
+    },
+}
+
+
+def apply_platform(name):
+    global PACKAGE_NAME, PIN_PATH, HOST_BUN_PLATFORM, RECORD_PLATFORM, META_NAME
+    if name not in PLATFORMS:
+        raise ValueError("The package platform is unsupported.")
+    settings = PLATFORMS[name]
+    PACKAGE_NAME = settings["package"]
+    PIN_PATH = Path(__file__).resolve().parent.parent / "mc" / "deployment" / settings["pin"]
+    HOST_BUN_PLATFORM = settings["host_bun"]
+    RECORD_PLATFORM = name
+    META_NAME = settings["meta"]
+
+
 EXECUTABLES = ("bin/mc", "bin/install.sh", "bin/agentsview")
 DOWNLOAD_URL = "https://api.github.com/repos/culler/package-check/releases/assets/3"
 LOCK_REFUSAL = "Another installer or service command controls this deployment. Retry after it completes."
@@ -141,7 +171,7 @@ def local_release_record(output, metadata, host_bun):
     return {
         "format": 1, "version": version, "commit": commit, "release_id": commit, "tag": "v" + version,
         "update": metadata["update"], "dependencies": metadata["dependencies"],
-        "sequence": 1, "published_at": "2000-01-01T00:00:00Z", "platform": "darwin-arm64",
+        "sequence": 1, "published_at": "2000-01-01T00:00:00Z", "platform": RECORD_PLATFORM,
         "schema": schema, "runtimes": metadata["runtimes"], "agentsview": metadata["agentsview"], "host_bun": host_bun,
         "package": {key: metadata[key] for key in ("name", "size", "sha256")},
         "installer": {"name": "installer.sh", "size": installer.stat().st_size, "sha256": digest(installer)},
@@ -259,9 +289,9 @@ def validate(output, pin_path=None, host_bun_pin_path=None):
     pin = json.loads((pin_path or PIN_PATH).read_text())
     host_bun_pin = json.loads((host_bun_pin_path or HOST_BUN_PIN_PATH).read_text())
     archive = output / "assets" / PACKAGE_NAME
-    for path in (output / "package.json", archive, output / "assets" / "installer.sh"):
+    for path in (output / META_NAME, archive, output / "assets" / "installer.sh"):
         regular_file(path)
-    metadata = json.loads((output / "package.json").read_text())
+    metadata = json.loads((output / META_NAME).read_text())
     validate_update_contract(metadata)
     checksum = digest(archive)
     if metadata.get("name") != PACKAGE_NAME or metadata.get("sha256") != checksum or metadata.get("size") != archive.stat().st_size:
@@ -285,8 +315,10 @@ def validate(output, pin_path=None, host_bun_pin_path=None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--platform", default="darwin-arm64", choices=sorted(PLATFORMS))
     args = parser.parse_args()
     try:
+        apply_platform(args.platform)
         print(json.dumps(validate(args.output)))
     except (ValueError, OSError, tarfile.TarError, subprocess.SubprocessError) as error:
         parser.exit(1, "The built package check failed: " + str(error) + "\n")

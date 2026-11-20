@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+// pinNativeArchitecture fixes the architecture answer for fixtures that
+// describe one platform, so the package checks decide the same way on the
+// arm64 and the amd64 hosts.
+func pinNativeArchitecture(t *testing.T, arch string) {
+	t.Helper()
+	prev := NativeArchitecture
+	NativeArchitecture = func() (string, error) { return arch, nil }
+	t.Cleanup(func() { NativeArchitecture = prev })
+}
+
 func TestNativeArchitectureDomain(t *testing.T) {
 	prev := NativeArchitecture
 	defer func() { NativeArchitecture = prev }()
