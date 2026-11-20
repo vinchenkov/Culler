@@ -163,6 +163,33 @@ if [ "${1:-}" = list ] && [ -n "${MC_REDEPLOY_TEST_LIST_BUSY_FILE:-}" ]; then
 fi
 exit 0
 FAKE
+  # The systemd twin: `list-units` shows the two services while the file
+  # MC_REDEPLOY_TEST_LOADED_FILE exists, and `disable --now` removes that file.
+  # The build-prod guard's `list-unit-files` answers from the same file.
+  cat >"$bin/systemctl" <<'FAKE'
+#!/bin/sh
+{ printf 'CALL\tsystemctl'; for arg do printf '\t%s' "$arg"; done; printf '\n'; } >>"${MC_REDEPLOY_TEST_LOG:?}"
+for arg in "$@"; do
+  case "$arg" in
+    disable)
+      [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ] && rm -f "$MC_REDEPLOY_TEST_LOADED_FILE"
+      exit 0 ;;
+    list-units)
+      if [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ] && [ -e "$MC_REDEPLOY_TEST_LOADED_FILE" ]; then
+        printf 'com.culler.abc.dashboard.service loaded active running Culler dashboard\n'
+        printf 'com.culler.abc.resident.service loaded active running Culler resident\n'
+      fi
+      exit 0 ;;
+    list-unit-files)
+      if [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ] && [ -e "$MC_REDEPLOY_TEST_LOADED_FILE" ]; then
+        printf 'com.culler.abc.dashboard.service\tenabled\tenabled\n'
+        printf 'com.culler.abc.resident.service\tenabled\tenabled\n'
+      fi
+      exit 0 ;;
+  esac
+done
+exit 0
+FAKE
   cat >"$bin/docker" <<'FAKE'
 #!/bin/sh
 { printf 'CALL\tdocker\t%s\n' "${1:-}"; } >>"${MC_REDEPLOY_TEST_LOG:?}"
@@ -189,7 +216,7 @@ FAKE
 [ "${1:-}" = -s ] || exit 95
 [ "${MC_REDEPLOY_TEST_TTY:-0}" = 1 ]
 FAKE
-  chmod 755 "$bin/mise" "$bin/launchctl" "$bin/docker" "$bin/uname" "$bin/tty"
+  chmod 755 "$bin/mise" "$bin/launchctl" "$bin/systemctl" "$bin/docker" "$bin/uname" "$bin/tty"
   # The case PATH holds only the stubs, /usr/bin, and /bin. An image can keep
   # git or python3 elsewhere, for example under /usr/local/bin.
   for tool in git python3; do
@@ -213,7 +240,7 @@ printf 'old release\n' >"$case_root/mc-bin/mc"
 printf 'schema=current records=5\n' >"$case_root/spine.db"
 log="$case_root/calls.log"
 : >"$log"
-env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" MC_REDEPLOY_TEST_DB="$case_root/spine.db" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "happy path did not complete"; }
 [ "$(cat "$case_root/spine.db")" = "schema=current records=5" ] || fail "a redeploy changed a database with the current schema"
@@ -229,7 +256,7 @@ grep -q 'MC_REDEPLOY_TEST_LOG' "$case_root/mc-bin/mc" || fail "the new mc was no
 
 # --- rerun: the same sequence again, nothing refuses --------------------------
 : >"$log"
-env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
   sh "$ROOT/redeploy.sh" >"$case_root/out2" 2>&1 || { cat "$case_root/out2" >&2; fail "rerun did not complete"; }
 [ "$(grep -v '^CALL	docker	info$' "$log")" = "$expected" ] || fail "rerun changed the sequence"
@@ -240,7 +267,7 @@ make_fakes "$case_root/bin"
 mkdir -p "$case_root/home"
 log="$case_root/calls.log"
 : >"$log"
-env -u MC_BIN_DIR PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+env -u MC_BIN_DIR MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_REDEPLOY_TEST_LOG="$log" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "the default executable directory did not reach the home operation"; }
 [ -x "$case_root/home/.local/bin/mc" ] || fail "the default executable directory was not used"
@@ -258,7 +285,7 @@ printf 'old release\n' >"$case_root/mc-bin/mc"
 log="$case_root/calls.log"
 : >"$log"
 printf '3\n' >"$case_root/busy"
-env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
   MC_REDEPLOY_TEST_LIST_BUSY_FILE="$case_root/busy" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "a lingering bootout was not waited out"; }
@@ -279,7 +306,7 @@ printf 'old release\n' >"$case_root/mc-bin/mc"
 log="$case_root/calls.log"
 : >"$log"
 printf '999\n' >"$case_root/busy"
-if env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+if env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
   MC_REDEPLOY_TEST_LIST_BUSY_FILE="$case_root/busy" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1; then
@@ -297,7 +324,7 @@ mkdir -p "$case_root/home" "$case_root/mc-bin"
 printf 'old release\n' >"$case_root/mc-bin/mc"
 log="$case_root/calls.log"
 : >"$log"
-if env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+if env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" MC_REDEPLOY_TEST_DOCKER_EXIT=1 \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1; then
   fail "a failed image build was reported as a deploy"
@@ -316,7 +343,7 @@ touch "$case_root/home/Library/LaunchAgents/com.culler.abc.resident.plist" \
 printf 'old release\n' >"$case_root/mc-bin/mc"
 log="$case_root/calls.log"
 : >"$log"
-if env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+if env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" MC_REDEPLOY_TEST_AGENTSVIEW_EXIT=1 \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1; then
   fail "a failed AgentsView install was reported as a deploy"
@@ -354,7 +381,7 @@ for width in 80 40; do
         absent) bootout_exit=3 print_exit=113 ;;
       esac
       status=0
-      env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+      env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
         MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
         MC_REDEPLOY_TEST_DB="$case_root/spine.db" \
         MC_REDEPLOY_TEST_LOADED_FILE="$loaded" \
@@ -420,7 +447,7 @@ run_redeploy() {
     loaded="$case_root/loaded"
     : >"$loaded"
   fi
-  env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+  env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
     MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
     MC_REDEPLOY_TEST_DB="$case_root/spine.db" MC_REDEPLOY_TEST_TTY="${TTY:-0}" \
     MC_REDEPLOY_TEST_IMAGE_RELEASE="${IMAGE_RELEASE:-}" \
@@ -685,5 +712,31 @@ printf 'schema=current records=5\n' >"$case_root/spine.db"
 run_redeploy --reset </dev/null && fail "an unknown option was accepted"
 [ ! -s "$log" ] || fail "an unknown option still ran a step"
 contains "$case_root/out" "redeploy.sh: unknown option --reset" || fail "the unknown option was not named"
+
+# --- Linux host: the same sequence through systemd, default = real host OS ---
+# No MC_OS_OVERRIDE in this run: the family must follow the host's uname, which
+# make_fakes pins to Linux. This is the end-to-end proof of the resolver's
+# default branch, and it never touches the launchd path.
+case_root="$TMP/linux-happy"
+make_fakes "$case_root/bin"
+mkdir -p "$case_root/home" "$case_root/mc-bin"
+printf 'old release\n' >"$case_root/mc-bin/mc"
+printf 'schema=current records=5\n' >"$case_root/spine.db"
+log="$case_root/calls.log"
+: >"$log"
+loaded="$case_root/loaded"
+: >"$loaded"
+env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+  MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
+  MC_REDEPLOY_TEST_DB="$case_root/spine.db" MC_REDEPLOY_TEST_LOADED_FILE="$loaded" \
+  sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "the Linux happy path did not complete"; }
+expected_linux=$(printf 'CALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tsystemctl\t--user\tdisable\t--now\tcom.culler.abc.dashboard.service\nCALL\tsystemctl\t--user\tdisable\t--now\tcom.culler.abc.resident.service\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tsystemctl\t--user\tlist-unit-files\t--no-legend\tcom.culler.*\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' "$ROOT" "$ROOT")
+actual_linux=$(grep -v '^CALL	docker	info$' "$log")
+[ "$actual_linux" = "$expected_linux" ] || {
+  printf 'expected:\n%s\nactual:\n%s\n' "$expected_linux" "$actual_linux" >&2
+  fail "the Linux redeploy sequence is not check -> agentsview-list -> disable -> wait -> guard -> build -> deploy"
+}
+grep -q 'CALL	launchctl' "$log" && fail "the Linux branch called launchctl"
+[ ! -e "$loaded" ] || fail "the Linux stop left a unit loaded"
 
 printf 'redeploy.sh front door: ok\n'

@@ -48,6 +48,8 @@
 # and MC_BIN_DIR (where mc is installed; defaults to the installed mc's
 # directory, then ~/.local/bin, the install.sh convention). COLUMNS sets the
 # width of the help and the database messages, from 40 to 80 columns.
+# MC_OS_OVERRIDE selects the service-manager family (Darwin or Linux) for the
+# tests; unset means the host's own uname, and any other value stops the script.
 set -eu
 
 REPO_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -70,6 +72,20 @@ item() {
   printf '%s\n' "$*" | fold -s -w $((WIDTH - 2)) | sed -e 's/ *$//' -e '1s/^/- /' -e '1!s/^/  /'
 }
 command_line() { printf '%s\n' "$*" | sed 's/^/    /'; }
+
+# Service-manager family. MC_OS_OVERRIDE is a test seam: it accepts only the
+# two supported families (case-insensitive) and fails closed on anything else;
+# unset means "ask the host". A stray environment variable must never silently
+# flip the host family of a release script.
+resolve_service_os() {
+  case "${MC_OS_OVERRIDE:-}" in
+    '') uname -s ;;
+    [Dd]arwin*) printf 'Darwin\n' ;;
+    [Ll]inux*) printf 'Linux\n' ;;
+    *) return 2 ;;
+  esac
+}
+os_name=$(resolve_service_os) || { printf 'redeploy.sh: MC_OS_OVERRIDE must be Darwin or Linux, or unset.\n' >&2; exit 2; }
 
 DEPLOYMENT_HOME=${MC_HOME:-$HOME/.culler}
 
@@ -152,11 +168,22 @@ service_control_stop() {
 
 read_units() {
   unit_status=0
-  UNITS=$(launchctl list 2>"$SCRATCH/launchctl.err") || unit_status=$?
-  if [ "$unit_status" -ne 0 ]; then
-    service_control_stop "The macOS service check failed." \
-      "launchctl list exited with $unit_status. $(cat "$SCRATCH/launchctl.err")"
-  fi
+  case "$os_name" in
+  Linux)
+    UNITS=$(systemctl --user list-units --type=service --no-legend 'com.culler.*' 2>"$SCRATCH/systemctl.err") || unit_status=$?
+    if [ "$unit_status" -ne 0 ]; then
+      service_control_stop "The systemd service check failed." \
+        "systemctl list-units exited with $unit_status. $(cat "$SCRATCH/systemctl.err")"
+    fi
+    ;;
+  *)
+    UNITS=$(launchctl list 2>"$SCRATCH/launchctl.err") || unit_status=$?
+    if [ "$unit_status" -ne 0 ]; then
+      service_control_stop "The macOS service check failed." \
+        "launchctl list exited with $unit_status. $(cat "$SCRATCH/launchctl.err")"
+    fi
+    ;;
+  esac
 }
 units_loaded() {
   read_units
@@ -346,6 +373,24 @@ say "== install: mc __onboard agentsview (the pinned AgentsView executable)"
 
 say "== stop: supervised units"
 stopped=0
+case "$os_name" in
+Linux)
+  # The unit list is the ground truth here, unlike the launchd branch below:
+  # a systemd unit that is loaded stops even when its unit file is gone.
+  read_units
+  for unit in $(printf '%s\n' "$UNITS" | awk '$1 ~ /^com\.culler\..*\.service$/ {print $1}'); do
+    if systemctl --user disable --now "$unit" >"$SCRATCH/disable.out" 2>&1; then
+      WIDTH=$(message_width)
+      paragraph "   Stop requested: $unit"
+    else
+      disable_status=$?
+      service_control_stop "A Culler service could not stop." \
+        "systemctl disable --now exited with $disable_status for $unit. $(cat "$SCRATCH/disable.out")"
+    fi
+    stopped=1
+  done
+  ;;
+*)
 for plist in "$HOME/Library/LaunchAgents"/com.culler.*.plist; do
   [ -e "$plist" ] || continue
   label=$(basename "$plist" .plist)
@@ -367,10 +412,14 @@ for plist in "$HOME/Library/LaunchAgents"/com.culler.*.plist; do
   fi
   stopped=1
 done
+;;
+esac
 [ "$stopped" -eq 1 ] || say "   no supervised units found"
 
-# `launchctl bootout` returns before the unit leaves `launchctl list`, and the
-# image build below refuses while any com.culler.* label is listed.
+# Stopping is asynchronous on both service managers: `launchctl bootout`
+# returns before the unit leaves `launchctl list`, and `systemctl disable --now`
+# can return while the unit still shows in `list-units`. The image build below
+# refuses while any com.culler.* label is listed.
 # Wait, bounded to a few seconds, for the labels to clear.
 polls=0
 while units_loaded; do
