@@ -32,6 +32,9 @@ HOST_ROOT="$MC_HOME/release/host"
 say() { printf '%s\n' "$*"; }
 fail() { printf 'redeploy-dashboard.sh: %s\n' "$*" >&2; exit 1; }
 
+# Service manager of the host; MC_OS_OVERRIDE is the test seam only.
+os_name="${MC_OS_OVERRIDE:-$(uname -s)}"
+
 . "$REPO_DIR/scripts/source-update-guard.sh"
 culler_require_source_update_idle "$MC_HOME" || exit 1
 
@@ -88,6 +91,15 @@ if [ "$restart" -eq 0 ]; then
   exit 0
 fi
 
+case "$os_name" in
+Linux)
+  unit=$(systemctl --user list-units --type=service --no-legend 'com.culler.*' 2>/dev/null |
+    awk '$1 ~ /^com\.culler\.[0-9a-f]*\.dashboard\.service$/ {print $1; exit}')
+  [ -n "$unit" ] || fail "server-side files changed but no com.culler.*.dashboard unit is loaded; run redeploy.sh"
+  say "== restart: $unit"
+  systemctl --user restart "$unit" || fail "could not restart $unit"
+  ;;
+*)
 row=$(launchctl list 2>/dev/null | grep 'com\.culler\.[0-9a-f]*\.dashboard$' | head -n 1) || true
 [ -n "$row" ] || fail "server-side files changed but no com.culler.*.dashboard unit is loaded; run redeploy.sh"
 label=${row##*[[:space:]]}
@@ -101,10 +113,12 @@ while [ "$pid" != "-" ] && kill -0 "$pid" 2>/dev/null; do
   [ "$polls" -lt 100 ] || fail "dashboard process $pid did not exit"
   sleep 0.1
 done
+;;
+esac
 
 bind=$(sed -n 's/.*"bind": *"\([^"]*\)".*/\1/p' "$MC_HOME/supervision/dashboard.json" 2>/dev/null | head -n 1)
 if [ -z "$bind" ] || ! command -v curl >/dev/null 2>&1; then
-  say "== done: launchd restarts the dashboard within its throttle interval"
+  say "== done: the service manager restarts the dashboard within its throttle interval"
   exit 0
 fi
 polls=0
