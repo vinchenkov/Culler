@@ -7,8 +7,8 @@
 | 普通写 verb（~90 处 withSpine） | cmd/mc/main.go:1228-1235 → verbs.OpenSpine | **GATED**（本单） |
 | `__system-state` 写动作（ProviderAccessObserve/ConnectionVerified/lifetimes 等） | systemstatus.go:382+ 各 case → withSpine | **GATED**（同上路由） |
 | attachment spine RPC 服务器 | attachment_spine_rpc.go:98 → verbs.OpenSpine | **GATED**（进程生命周期开一次；长寿服务的中途 schema 变更由部署停摆机制约束——update 窗口 K4/停摆事实，A15 在案） |
-| onboard sections / project onboard 直写 | onboard.go:1342/1690/1766 substrate.Open 直连 | **UNCOVERED** → **G-E 保持挂起**（不预宣布闭合） |
-| reset（dev-reset 写面） | 同上直连族 | **UNCOVERED** → **G-D 保持挂起** |
+| onboard sections / project onboard direct writes | onboard.go:1342/1690/1766 + onboardsmoke.go:106 via requireSpineFile | **GATED (A11)**：requireSpineFile 共同前置补 CheckSchema（与 OpenSpine 同谓词）——A10 矩阵原判 UNCOVERED 经 A11 追读证实为真缺口并已闭合 |
+| reset（dev-reset） | resetDevelopmentSpine=纯文件删除（无写事务）；重建走 Init 按构造写入 CurrentSchemaID | **结构性覆盖（A11 证明）**：无写可门；删除侧保护=K2 onboard 锁+regular-file 检查+脚本确认层——G-D 以该证明并入，非自动闭合 |
 | spine 创建/替换流 | onboard_spine.go:251（自带 inspect+CheckSchema 于流程内）、init.go:56/169 | 不适用（先于 schema 存在；其自身检查在位） |
 | doctor/update-reconcile/backup 直开 | ops.go:200/231/499/540/608、update_reconcile.go:31 | **有意不门**（诊断/恢复路径必须能在 mismatch 态工作；ops:507 已显式调用 CheckSchema 作诊断而非拦截） |
 

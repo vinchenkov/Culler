@@ -173,13 +173,24 @@ func writeSpineSnapshot(db *sql.DB, home, prefix string) (string, string, int64,
 
 // requireSpineFile refuses before creating bytes: opening a missing path
 // would materialize an empty spine, which no operational verb may do: the
-// empty file hides the loss instead of reporting it.
+// empty file hides the loss instead of reporting it. An existing spine must
+// also carry this release's schema before an onboarding write may run —
+// these paths open the database directly, so the live-schema check lives at
+// their shared precondition (the same predicate verbs.OpenSpine applies).
 func requireSpineFile(spine string) error {
 	if spine == "" {
 		return Usagef("no spine: set MC_SPINE (or MC_HELPER to delegate)")
 	}
 	if _, err := os.Stat(spine); err != nil {
 		return Domainf("no spine at %q: %v", spine, err)
+	}
+	db, err := substrate.OpenReadOnly(spine)
+	if err != nil {
+		return Domainf("open spine %q for the schema gate: %v", spine, err)
+	}
+	defer db.Close()
+	if err := substrate.CheckSchema(db); err != nil {
+		return Domainf("The database schema differs from this release. No onboarding write ran: %v", err)
 	}
 	return nil
 }
