@@ -1,0 +1,173 @@
+ACCEPT-RAW-BEGIN
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 RUN [uname] [-a]
+| Linux F1104 5.15.0-94-generic #104-Ubuntu SMP Tue Jan 9 15:25:40 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 EXIT A0.uname=0
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 RUN [systemctl] [--version]
+| systemd 249 (249.11-0ubuntu3.21)
+| +PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SECCOMP +GCRYPT +GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY -P11KIT -QRENCODE +BZIP2 +LZ4 +XZ +ZLIB +ZSTD -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 EXIT A0.systemd=0
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 RUN [docker] [version] [--format] [{{.Server.Version}}]
+| 29.4.0
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 EXIT A0.docker=0
+| ts=2026-11-20T11:30:17Z host=F1104 uid=0 RUN [/tmp/a04-s1-192845/a04-deployment.amd64] [-test.run] [TestSystemd|TestRender|TestPlatformUpdateServicesLinux|TestNativeArch|TestAgentsView|TestHostBun|TestA03RenderedUnits] [-test.v]
+| === RUN   TestAgentsViewArchiveVerificationNamesBothDigests
+| --- PASS: TestAgentsViewArchiveVerificationNamesBothDigests (0.00s)
+| === RUN   TestAgentsViewExtractionInstallsOnlyTheSingleRegularEntry
+| --- PASS: TestAgentsViewExtractionInstallsOnlyTheSingleRegularEntry (0.00s)
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/symbolic_link
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/hard_link
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/directory
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/dot_prefix
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/parent_path
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/absolute_path
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/nested_path
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/second_entry
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/repeated_entry
+| === RUN   TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/empty_archive
+| --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks (0.04s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/symbolic_link (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/hard_link (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/directory (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/dot_prefix (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/parent_path (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/absolute_path (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/nested_path (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/second_entry (0.02s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/repeated_entry (0.00s)
+|     --- PASS: TestAgentsViewExtractionRefusesLinksOtherEntriesAndPathTricks/empty_archive (0.00s)
+| === RUN   TestAgentsViewExtractionVerifiesTheExecutableDigest
+| --- PASS: TestAgentsViewExtractionVerifiesTheExecutableDigest (0.00s)
+| === RUN   TestAgentsViewExtractionVerifiesTheArchiveFirst
+| --- PASS: TestAgentsViewExtractionVerifiesTheArchiveFirst (0.00s)
+| === RUN   TestAgentsViewDownloadVerifiesTheArchive
+| --- PASS: TestAgentsViewDownloadVerifiesTheArchive (0.02s)
+| === RUN   TestAgentsViewDownloadRefusesPlainHTTPAndFailedResponses
+| --- PASS: TestAgentsViewDownloadRefusesPlainHTTPAndFailedResponses (0.01s)
+| === RUN   TestAgentsViewInstallRequiresAnOwnerOnlyHome
+| --- PASS: TestAgentsViewInstallRequiresAnOwnerOnlyHome (0.00s)
+| === RUN   TestAgentsViewConfigurationEscapesPathText
+| --- PASS: TestAgentsViewConfigurationEscapesPathText (0.00s)
+| === RUN   TestAgentsViewHomeForDataInvertsTheDataFolder
+| --- PASS: TestAgentsViewHomeForDataInvertsTheDataFolder (0.00s)
+| === RUN   TestAgentsViewPinParsesAValidFixture
+| --- PASS: TestAgentsViewPinParsesAValidFixture (0.00s)
+| === RUN   TestAgentsViewPinRejectsInvalidValues
+| === RUN   TestAgentsViewPinRejectsInvalidValues/duplicate_agent_ID
+| === RUN   TestAgentsViewPinRejectsInvalidValues/unknown_key
+| === RUN   TestAgentsViewPinRejectsInvalidValues/executable_path
+| === RUN   TestAgentsViewPinRejectsInvalidValues/zero_archive_size
+| === RUN   TestAgentsViewPinRejectsInvalidValues/uppercase_digest
+| === RUN   TestAgentsViewPinRejectsInvalidValues/non-hex_digest
+| === RUN   TestAgentsViewPinRejectsInvalidValues/http_url
+| === RUN   TestAgentsViewPinRejectsInvalidValues/agent_ID_with_a_space
+| === RUN   TestAgentsViewPinRejectsInvalidValues/disabled_Claude_reader
+| === RUN   TestAgentsViewPinRejectsInvalidValues/prefixed_version
+| === RUN   TestAgentsViewPinRejectsInvalidValues/negative_binary_size
+| === RUN   TestAgentsViewPinRejectsInvalidValues/url_with_query
+| === RUN   TestAgentsViewPinRejectsInvalidValues/url_with_credentials
+| === RUN   TestAgentsViewPinRejectsInvalidValues/no_disabled_agents
+| === RUN   TestAgentsViewPinRejectsInvalidValues/empty_agent_ID
+| === RUN   TestAgentsViewPinRejectsInvalidValues/disabled_Codex_reader
+| === RUN   TestAgentsViewPinRejectsInvalidValues/missing_version
+| === RUN   TestAgentsViewPinRejectsInvalidValues/archive_path
+| === RUN   TestAgentsViewPinRejectsInvalidValues/url_of_another_version
+| === RUN   TestAgentsViewPinRejectsInvalidValues/disabled_agents_as_text
+| === RUN   TestAgentsViewPinRejectsInvalidValues/other_platform
+| === RUN   TestAgentsViewPinRejectsInvalidValues/short_digest
+| --- PASS: TestAgentsViewPinRejectsInvalidValues (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/duplicate_agent_ID (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/unknown_key (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/executable_path (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/zero_archive_size (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/uppercase_digest (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/non-hex_digest (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/http_url (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/agent_ID_with_a_space (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/disabled_Claude_reader (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/prefixed_version (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/negative_binary_size (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/url_with_query (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/url_with_credentials (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/no_disabled_agents (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/empty_agent_ID (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/disabled_Codex_reader (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/missing_version (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/archive_path (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/url_of_another_version (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/disabled_agents_as_text (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/other_platform (0.00s)
+|     --- PASS: TestAgentsViewPinRejectsInvalidValues/short_digest (0.00s)
+| === RUN   TestAgentsViewPathsFollowTheMCHomeLayout
+| --- PASS: TestAgentsViewPathsFollowTheMCHomeLayout (0.00s)
+| === RUN   TestHostBunPinParsesAValidFixture
+| --- PASS: TestHostBunPinParsesAValidFixture (0.00s)
+| === RUN   TestHostBunPinRejectsInvalidValues
+| === RUN   TestHostBunPinRejectsInvalidValues/no_archives
+| === RUN   TestHostBunPinRejectsInvalidValues/url_of_another_version
+| === RUN   TestHostBunPinRejectsInvalidValues/other_platform_only
+| === RUN   TestHostBunPinRejectsInvalidValues/archive_tarball
+| === RUN   TestHostBunPinRejectsInvalidValues/zero_size
+| === RUN   TestHostBunPinRejectsInvalidValues/url_with_query
+| === RUN   TestHostBunPinRejectsInvalidValues/url_with_credentials
+| === RUN   TestHostBunPinRejectsInvalidValues/unknown_key
+| === RUN   TestHostBunPinRejectsInvalidValues/prefixed_version
+| === RUN   TestHostBunPinRejectsInvalidValues/invalid_platform
+| === RUN   TestHostBunPinRejectsInvalidValues/archive_path
+| === RUN   TestHostBunPinRejectsInvalidValues/short_digest
+| === RUN   TestHostBunPinRejectsInvalidValues/missing_version
+| === RUN   TestHostBunPinRejectsInvalidValues/uppercase_digest
+| === RUN   TestHostBunPinRejectsInvalidValues/http_url
+| === RUN   TestHostBunPinRejectsInvalidValues/url_of_another_name
+| --- PASS: TestHostBunPinRejectsInvalidValues (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/no_archives (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/url_of_another_version (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/other_platform_only (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/archive_tarball (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/zero_size (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/url_with_query (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/url_with_credentials (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/unknown_key (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/prefixed_version (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/invalid_platform (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/archive_path (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/short_digest (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/missing_version (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/uppercase_digest (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/http_url (0.00s)
+|     --- PASS: TestHostBunPinRejectsInvalidValues/url_of_another_name (0.00s)
+| === RUN   TestRenderTextRefusesWhatIsNotARecord
+| --- PASS: TestRenderTextRefusesWhatIsNotARecord (0.00s)
+| === RUN   TestNativeArchitectureDomain
+| --- PASS: TestNativeArchitectureDomain (0.00s)
+| === RUN   TestA03RenderedUnitsExport
+| --- PASS: TestA03RenderedUnitsExport (0.00s)
+| === RUN   TestSystemdQuoteValue
+| --- PASS: TestSystemdQuoteValue (0.00s)
+| === RUN   TestRenderSystemdUnitShape
+| --- PASS: TestRenderSystemdUnitShape (0.00s)
+| === RUN   TestSystemdBundledUnitsPathsAndSpaces
+| --- PASS: TestSystemdBundledUnitsPathsAndSpaces (0.00s)
+| === RUN   TestPlatformUpdateServicesLinuxStopSwallowsManagerErrors
+| --- PASS: TestPlatformUpdateServicesLinuxStopSwallowsManagerErrors (0.00s)
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/active
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/inactive
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/gone
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/manager_unreachable
+| --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates (0.01s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/active (0.00s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/inactive (0.00s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/gone (0.00s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/manager_unreachable (0.00s)
+| PASS
+| ts=2026-11-20T11:30:18Z host=F1104 uid=0 EXIT A1.suite=0
+| ts=2026-11-20T11:30:18Z host=F1104 uid=0 RUN [mc.amd64] [--help]
+| ts=2026-11-20T11:30:18Z host=F1104 uid=0 EXIT A2.exec=0
+ACCEPT-RAW-END
+A0.result PASS free_kb=54421412 ts=2026-11-20T11:30:17Z host=F1104 uid=0
+A1.result PASS ts=2026-11-20T11:30:18Z host=F1104 uid=0
+A2.result PASS ts=2026-11-20T11:30:18Z host=F1104 uid=0
+A3.result SKIP reason=front-door-not-shipped ts=2026-11-20T11:30:18Z host=F1104 uid=0
+NOTE: checks SKIPPED: A3.result
+ACCEPT: PASS
