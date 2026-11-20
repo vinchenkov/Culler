@@ -18,8 +18,17 @@ fi
 # A loaded deployment uses the shared image tag. Its image identity must stay unchanged.
 # The probe follows the service manager of the host: launchctl on macOS, the user
 # systemd manager on Linux (the deployment unit names are shared across both).
-# MC_OS_OVERRIDE exists for the test suite only; it fakes a host family by name.
-os_name="${MC_OS_OVERRIDE:-$(uname -s)}"
+# MC_OS_OVERRIDE is a test seam: supported families only, fail-closed otherwise;
+# unset asks the real host.
+resolve_service_os() {
+  case "${MC_OS_OVERRIDE:-}" in
+    '') uname -s ;;
+    [Dd]arwin*) printf 'Darwin\n' ;;
+    [Ll]inux*) printf 'Linux\n' ;;
+    *) return 2 ;;
+  esac
+}
+os_name=$(resolve_service_os) || { echo "build-prod.sh: MC_OS_OVERRIDE must be Darwin or Linux, or unset." >&2; exit 2; }
 units=
 case "$os_name" in
   Darwin)

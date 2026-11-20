@@ -32,8 +32,19 @@ HOST_ROOT="$MC_HOME/release/host"
 say() { printf '%s\n' "$*"; }
 fail() { printf 'redeploy-dashboard.sh: %s\n' "$*" >&2; exit 1; }
 
-# Service manager of the host; MC_OS_OVERRIDE is the test seam only.
-os_name="${MC_OS_OVERRIDE:-$(uname -s)}"
+# Service-manager family. MC_OS_OVERRIDE is a test seam: it accepts only the
+# two supported families (case-insensitive) and fails closed on anything else;
+# unset means "ask the host". A stray environment variable must never silently
+# flip the host family of a release script.
+resolve_service_os() {
+  case "${MC_OS_OVERRIDE:-}" in
+    '') uname -s ;;
+    [Dd]arwin*) printf 'Darwin\n' ;;
+    [Ll]inux*) printf 'Linux\n' ;;
+    *) return 2 ;;
+  esac
+}
+os_name=$(resolve_service_os) || { printf 'redeploy-dashboard.sh: MC_OS_OVERRIDE must be Darwin or Linux, or unset.\n' >&2; exit 2; }
 
 . "$REPO_DIR/scripts/source-update-guard.sh"
 culler_require_source_update_idle "$MC_HOME" || exit 1

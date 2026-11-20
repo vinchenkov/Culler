@@ -35,6 +35,10 @@ EOF
 chmod 755 "$TMP/bin/mise"
 
 release_id=0123456789abcdef0123456789abcdef01234567
+# The launchctl cases below pin the Darwin family explicitly: the suite must
+# give the same verdict on a Linux CI host, where the default would follow
+# uname into the systemd branch.
+MC_OS_OVERRIDE=Darwin; export MC_OS_OVERRIDE
 
 # The supervision guard, both ways. `launchctl` is STUBBED rather than read from
 # the machine on purpose: this suite must give the same verdict whether or not

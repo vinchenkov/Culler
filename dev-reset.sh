@@ -91,9 +91,19 @@ fi
 say() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 die() { printf '\ndev-reset: %s\n' "$*" >&2; exit 1; }
 
-# The service manager of the host: launchctl on macOS, the user systemd manager
-# on Linux. MC_OS_OVERRIDE exists for the test suite only.
-os_name="${MC_OS_OVERRIDE:-$(uname -s)}"
+# Service-manager family. MC_OS_OVERRIDE is a test seam: it accepts only the
+# two supported families (case-insensitive) and fails closed on anything else;
+# unset means "ask the host". A stray environment variable must never silently
+# flip the host family of a release script.
+resolve_service_os() {
+  case "${MC_OS_OVERRIDE:-}" in
+    '') uname -s ;;
+    [Dd]arwin*) printf 'Darwin\n' ;;
+    [Ll]inux*) printf 'Linux\n' ;;
+    *) return 2 ;;
+  esac
+}
+os_name=$(resolve_service_os) || die "MC_OS_OVERRIDE must be Darwin or Linux, or unset."
 
 # Artifact directories cleared wholesale. Every one of these is derived state
 # that references the spine we are about to destroy, so keeping any of it would

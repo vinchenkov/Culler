@@ -14,6 +14,10 @@ printf '0.1.0\n' >"$REPO/VERSION"
 : >"$TMP/deploy/home/config.toml"
 LOG="$TMP/calls"
 export DEV_RESET_TEST_LOG="$LOG"
+# The launchctl cases pin the Darwin family explicitly so the suite gives the
+# same verdict on a Linux CI host, where the default would follow uname into the
+# systemd branch. The Linux cases pass MC_OS_OVERRIDE=Linux per run.
+MC_OS_OVERRIDE=Darwin; export MC_OS_OVERRIDE
 
 # Each stub records its call. The mc stub records its generation, so the log
 # shows which mc ran each step.
