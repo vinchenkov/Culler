@@ -369,6 +369,7 @@ func TestSetupDiagnosticRecordsObservedCompatibilityIdentifiers(t *testing.T) {
 }
 
 func TestSetupReleaseComparesImageIdentityWithoutContainerChanges(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	home, args := setupReleaseFixture(t)
 	bin := t.TempDir()
 	script := "#!/bin/sh\n[ \"$1 $2 $3 $4 $5\" = 'image inspect --format {{json .}} mc-prod' ] || exit 93\nprintf '%s' \"$FIXTURE_IMAGE\"\n"

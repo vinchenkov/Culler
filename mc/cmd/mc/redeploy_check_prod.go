@@ -92,7 +92,7 @@ func checkRedeployDatabase(docker dockerCommandRunner, home, imageRef, linuxMC s
 		return redeployCheck{}, verbs.Domainf("The deployment database volume identity is invalid.")
 	}
 	image, exists, err := inspectJSON[helperImageInspect](docker, "image", imageRef)
-	if err != nil || !exists || image.OS != "linux" || image.Architecture != "arm64" || !validContainerID(strings.TrimPrefix(image.ID, "sha256:")) {
+	if err != nil || !exists || image.OS != "linux" || !deployment.ImageArchitectureIsNative(image.Architecture) || !validContainerID(strings.TrimPrefix(image.ID, "sha256:")) {
 		return redeployCheck{}, verbs.Usagef("The deployed image %s is unavailable for the database check.", imageRef)
 	}
 	// The mc in the image runs with the user identity that owns the database.

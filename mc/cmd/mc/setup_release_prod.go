@@ -105,7 +105,7 @@ func inspectSetupRelease(home string, args verbs.OnboardArgs, docker onboarding.
 				image.Installed = id
 			}
 			image.Status = "same"
-			if id != releaseBuildID || info.OS != "linux" || info.Architecture != "arm64" || (!strings.HasPrefix(info.ID, "sha256:") || !validContainerID(strings.TrimPrefix(info.ID, "sha256:"))) {
+			if id != releaseBuildID || info.OS != "linux" || !deployment.ImageArchitectureIsNative(info.Architecture) || (!strings.HasPrefix(info.ID, "sha256:") || !validContainerID(strings.TrimPrefix(info.ID, "sha256:"))) {
 				image.Status = "different"
 			}
 		}

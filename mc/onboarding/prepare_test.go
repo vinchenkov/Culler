@@ -296,6 +296,7 @@ func imageFixture(revision string) []byte {
 }
 
 func TestPrepareImageReusesMatchingRelease(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	release := strings.Repeat("b", 40)
 	calls := 0
 	run := func(ctx context.Context, _ string, _ []string, command string, args ...string) ([]byte, error) {
@@ -321,6 +322,7 @@ func TestPrepareImageReusesMatchingRelease(t *testing.T) {
 }
 
 func TestPrepareImageBuildsAndVerifiesChangedRelease(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	release := strings.Repeat("b", 40)
 	root := t.TempDir()
 	var calls []string
@@ -346,6 +348,7 @@ func TestPrepareImageBuildsAndVerifiesChangedRelease(t *testing.T) {
 }
 
 func TestPrepareImageFailurePreservesRedactedDiagnostic(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	release := strings.Repeat("b", 40)
 	run := func(_ context.Context, _ string, _ []string, command string, _ ...string) ([]byte, error) {
 		if command == "docker" {
@@ -373,6 +376,7 @@ func (code prepareExitError) Error() string { return "api_key=SECRET_VALUE" }
 func (code prepareExitError) ExitCode() int { return int(code) }
 
 func TestPrepareImageRecognizesActiveServiceRefusal(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	for _, code := range []int{1, 3} {
 		t.Run(fmt.Sprint(code), func(t *testing.T) {
 			run := func(_ context.Context, _ string, _ []string, command string, _ ...string) ([]byte, error) {
@@ -413,6 +417,7 @@ func TestPrepareCommandBoundsOutputAndProcessWait(t *testing.T) {
 }
 
 func TestPrepareImageRebuildsSameCommitWhenFilesDiffer(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	release := strings.Repeat("b", 40)
 	var calls []string
 	run := func(_ context.Context, _ string, _ []string, command string, _ ...string) ([]byte, error) {

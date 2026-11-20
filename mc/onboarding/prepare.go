@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"mc/deployment"
 	"net/url"
 	"os"
 	"os/exec"
@@ -335,7 +336,7 @@ func preparedImageMatches(ctx context.Context, releaseBuildID string, run prepar
 		return false, failure
 	}
 	validID := strings.HasPrefix(image.ID, "sha256:") && len(image.ID) == 71 && strings.Trim(image.ID[7:], "0123456789abcdef") == ""
-	return validID && image.OS == "linux" && image.Architecture == "arm64" && image.Config.Labels[imageRevisionLabel] == releaseBuildID, nil
+	return validID && image.OS == "linux" && deployment.ImageArchitectureIsNative(image.Architecture) && image.Config.Labels[imageRevisionLabel] == releaseBuildID, nil
 }
 
 type prepareOutput struct {

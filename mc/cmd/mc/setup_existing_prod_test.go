@@ -218,6 +218,7 @@ func TestSetupRequestedChangesExcludesInstallerContext(t *testing.T) {
 }
 
 func TestExistingHelperInspectionDoesNotCreateOrReplaceContainers(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	names, err := deployment.RuntimeNames("/fixture/deployment")
 	if err != nil {
 		t.Fatal(err)

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"mc/deployment"
 	"os"
 	"runtime"
 	"syscall"
@@ -31,8 +32,10 @@ const stNOSUID = 0x2
 // helper: the kernel refusing a spine open at the agent uid, the helper's own
 // spine read succeeding, the completion wrapper's suid bit present on a mount
 // that honors it, NoNewPrivs clear, identity uid_map (no rootless remap, no
-// Enhanced Container Isolation), and native arm64. Every leg is a capability
-// fact; no runtime name or version is consulted.
+// Enhanced Container Isolation), and native execution proven by matching the
+// image architecture against the uname machine (arm64 or amd64, never under
+// emulation). Every leg is a capability fact; no runtime name or version is
+// consulted.
 func containerRuntimeCapabilityProbe(spinePath string) (string, error) {
 	if _, err := os.Stat("/.dockerenv"); err != nil {
 		return "", fmt.Errorf("not inside the helper container")
@@ -112,10 +115,35 @@ func containerRuntimeCapabilityProbe(spinePath string) (string, error) {
 		return "", fmt.Errorf("privileged mc filesystem is mounted nosuid; the gate cannot elevate")
 	}
 
-	if runtime.GOARCH != "arm64" {
-		return "", fmt.Errorf("non-native architecture %s; the deployment target is arm64 with no emulation", runtime.GOARCH)
+	// The architecture token below names what this binary was built for. Only
+	// a kernel of the same machine proves it is running natively: an arm64
+	// binary under emulation still reports arm64, so the uname leg is the
+	// emulation detector, not the token check.
+	want, err := deployment.HostMachineForArchitecture(runtime.GOARCH)
+	if err != nil {
+		return "", fmt.Errorf("unsupported image architecture: %w", err)
+	}
+	var uts syscall.Utsname
+	if err := syscall.Uname(&uts); err != nil {
+		return "", fmt.Errorf("uname machine read failed: %v", err)
+	}
+	machine := unameMachine(uts)
+	if machine != want {
+		return "", fmt.Errorf("image architecture %s is running on an %s kernel: emulated execution", runtime.GOARCH, machine)
 	}
 	return fmt.Sprintf(
 		"helper exec round-trip proven by this crossing; agent uid %d direct spine open EACCES; helper spine read ok; general mc suid honored (owner %d); NoNewPrivs=0; identity uid_map; native %s",
 		probeUID, imageOwnerUID, runtime.GOARCH), nil
+}
+
+// unameMachine extracts the NUL-terminated machine string from a Utsname.
+func unameMachine(uts syscall.Utsname) string {
+	var out []byte
+	for _, v := range uts.Machine {
+		if v == 0 {
+			break
+		}
+		out = append(out, byte(v))
+	}
+	return string(out)
 }

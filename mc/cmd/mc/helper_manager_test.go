@@ -167,6 +167,7 @@ func exactHelperFixture(names deployment.Names, imageID string) helperContainerI
 func TestHelperDatabaseResetRequiresIdleProcesses(t *testing.T) {
 	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
 	imageID := "sha256:" + strings.Repeat("a", 64)
+	pinNativeArchitecture(t, "arm64")
 	image := helperImageInspect{ID: imageID, OS: "linux", Architecture: "arm64"}
 	volume := helperVolumeInspect{Name: names.Volume, Driver: "local"}
 	helper := exactHelperFixture(names, imageID)
@@ -208,6 +209,7 @@ func TestHelperDatabaseResetRequiresIdleProcesses(t *testing.T) {
 func TestHelperDestroySpineVolumeRechecksAndCommitsInOrder(t *testing.T) {
 	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
 	imageID := "sha256:" + strings.Repeat("a", 64)
+	pinNativeArchitecture(t, "arm64")
 	image := helperImageInspect{ID: imageID, OS: "linux", Architecture: "arm64"}
 	volume := helperVolumeInspect{Name: names.Volume, Driver: "local"}
 	helper := exactHelperFixture(names, imageID)
@@ -234,6 +236,7 @@ func TestHelperDestroySpineVolumeRechecksAndCommitsInOrder(t *testing.T) {
 func TestHelperDestroySpineVolumeRefusesMutableContainerTarget(t *testing.T) {
 	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
 	imageID := "sha256:" + strings.Repeat("a", 64)
+	pinNativeArchitecture(t, "arm64")
 	image := helperImageInspect{ID: imageID, OS: "linux", Architecture: "arm64"}
 	volume := helperVolumeInspect{Name: names.Volume, Driver: "local"}
 	helper := exactHelperFixture(names, imageID)
@@ -292,6 +295,7 @@ func TestHelperExactRejectsAuthorityWidening(t *testing.T) {
 func TestHelperEnsureCreatesAndStartsOnlyExactEnvelope(t *testing.T) {
 	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
 	imageID := "sha256:" + strings.Repeat("a", 64)
+	pinNativeArchitecture(t, "arm64")
 	image := helperImageInspect{ID: imageID, OS: "linux", Architecture: "arm64"}
 	volume := helperVolumeInspect{Name: names.Volume, Driver: "local"}
 	created := exactHelperFixture(names, imageID)
@@ -320,10 +324,11 @@ func TestHelperEnsureCreatesAndStartsOnlyExactEnvelope(t *testing.T) {
 }
 
 func TestHelperEnsureMissingOrWrongImageMutatesNothing(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
 	for name, image := range map[string]helperImageInspect{
-		"wrong architecture": {ID: "sha256:" + strings.Repeat("a", 64), OS: "linux", Architecture: "amd64"},
-		"malformed id":       {ID: "latest", OS: "linux", Architecture: "arm64"},
+		"wrong architecture on an arm64 host": {ID: "sha256:" + strings.Repeat("a", 64), OS: "linux", Architecture: "amd64"},
+		"malformed id":                        {ID: "latest", OS: "linux", Architecture: "arm64"},
 	} {
 		t.Run(name, func(t *testing.T) {
 			runner := &scriptedDocker{t: t, steps: []dockerStep{{
@@ -340,9 +345,60 @@ func TestHelperEnsureMissingOrWrongImageMutatesNothing(t *testing.T) {
 	}
 }
 
+// The amd64 target must decide on the same terms: an amd64 image on an amd64
+// host is the exact envelope, and the arm64 image that passes on the other
+// host is a foreign architecture here, refused with nothing mutated.
+func TestHelperEnsureAcceptsNativeAmd64Image(t *testing.T) {
+	pinNativeArchitecture(t, "amd64")
+	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
+	imageID := "sha256:" + strings.Repeat("a", 64)
+	image := helperImageInspect{ID: imageID, OS: "linux", Architecture: "amd64"}
+	volume := helperVolumeInspect{Name: names.Volume, Driver: "local"}
+	created := exactHelperFixture(names, imageID)
+	running := exactHelperFixture(names, imageID)
+	running.State.Running = true
+	m := helperManager{imageRef: productionImageRef, names: names}
+	runner := &scriptedDocker{t: t, steps: []dockerStep{
+		{want: []string{"image", "inspect", "--format", "{{json .}}", productionImageRef}, out: inspectBytes(t, image)},
+		{want: []string{"volume", "inspect", "--format", "{{json .}}", names.Volume}, out: "Error: No such volume", err: errors.New("exit 1")},
+		{want: []string{"volume", "create", names.Volume}, out: names.Volume},
+		{want: []string{"volume", "inspect", "--format", "{{json .}}", names.Volume}, out: inspectBytes(t, volume)},
+		{want: []string{"container", "inspect", "--format", "{{json .}}", names.Helper}, out: "Error: No such container", err: errors.New("exit 1")},
+		{want: m.createArgs(imageID), out: "container-id"},
+		{want: []string{"container", "inspect", "--format", "{{json .}}", names.Helper}, out: inspectBytes(t, created)},
+		{want: []string{"container", "start", names.Helper}, out: names.Helper},
+		{want: []string{"container", "inspect", "--format", "{{json .}}", names.Helper}, out: inspectBytes(t, running)},
+	}}
+	m.docker = runner
+	if got, err := m.ensure(); err != nil || got != names.Helper {
+		t.Fatalf("ensure on an amd64 host = %q, %v", got, err)
+	}
+	if runner.calls != len(runner.steps) {
+		t.Fatalf("docker calls = %d, want %d", runner.calls, len(runner.steps))
+	}
+}
+
+func TestHelperEnsureRefusesArm64ImageOnAmd64Host(t *testing.T) {
+	pinNativeArchitecture(t, "amd64")
+	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
+	runner := &scriptedDocker{t: t, steps: []dockerStep{{
+		want: []string{"image", "inspect", "--format", "{{json .}}", productionImageRef},
+		out:  inspectBytes(t, helperImageInspect{ID: "sha256:" + strings.Repeat("a", 64), OS: "linux", Architecture: "arm64"}),
+	}}}
+	m := helperManager{imageRef: productionImageRef, names: names}
+	m.docker = runner
+	if _, err := m.ensure(); err == nil {
+		t.Fatal("an arm64 image passed as native on an amd64 host")
+	}
+	if runner.calls != 1 {
+		t.Fatalf("the refused image still ran %d docker steps", runner.calls)
+	}
+}
+
 func TestHelperEnsurePreservesUnmanagedNameCollision(t *testing.T) {
 	names, _ := deployment.RuntimeNames("/Users/alice/.culler")
 	imageID := "sha256:" + strings.Repeat("a", 64)
+	pinNativeArchitecture(t, "arm64")
 	image := helperImageInspect{ID: imageID, OS: "linux", Architecture: "arm64"}
 	volume := helperVolumeInspect{Name: names.Volume, Driver: "local"}
 	foreign := exactHelperFixture(names, imageID)

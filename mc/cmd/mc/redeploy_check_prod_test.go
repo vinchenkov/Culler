@@ -16,6 +16,7 @@ import (
 )
 
 func TestRedeployCheckReadsTheDeployedDatabaseReadOnly(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	const uuid = "0123456789abcdef0123456789abcdef"
 	image := helperImageInspect{ID: "sha256:" + strings.Repeat("a", 64), OS: "linux", Architecture: "arm64"}
 	report := func(state, deployment string) string {

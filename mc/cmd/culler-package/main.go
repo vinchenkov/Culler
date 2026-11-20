@@ -39,6 +39,11 @@ func main() {
 	verify := flag.String("verify-binary", "", "The binary to verify without a package.")
 	platform := flag.String("platform", "darwin-arm64", "The required binary platform.")
 	flag.Parse()
+	switch *platform {
+	case "darwin-arm64", "linux-arm64", "linux-amd64":
+	default:
+		fail(errors.New("the required binary platform is unsupported"))
+	}
 	if !regexp.MustCompile(`^[0-9a-f]{40,64}$`).MatchString(*commit) {
 		fail(errors.New("the release requires a full commit identifier"))
 	}
@@ -49,11 +54,11 @@ func main() {
 	if *root == "" || *binary == "" || *agentsView == "" || *output == "" || flag.NArg() != 0 {
 		fail(errors.New("the source root, binary, AgentsView release archive, commit, and output are required"))
 	}
-	failIf(buildPackage(*root, *binary, *agentsView, *commit, *output))
+	failIf(buildPackage(*root, *binary, *agentsView, *commit, *output, *platform))
 }
 
-func buildPackage(root, binary, agentsViewArchive, commit, output string) error {
-	if err := validateBinary(binary, commit, "darwin-arm64"); err != nil {
+func buildPackage(root, binary, agentsViewArchive, commit, output, platform string) error {
+	if err := validateBinary(binary, commit, platform); err != nil {
 		return err
 	}
 	runtimes, err := runtimePins(root)
@@ -178,7 +183,7 @@ func validateDebugData(path, platform string) error {
 		if file.Segment("__DWARF") != nil {
 			return errors.New("the binary contains DWARF debug data")
 		}
-	case "linux-arm64":
+	case "linux-arm64", "linux-amd64":
 		file, err := elf.Open(path)
 		if err != nil {
 			return err
@@ -224,7 +229,7 @@ func binaryReleaseID(path, platform string) (string, error) {
 			}
 			return nil, errors.New("the release identity has an invalid address")
 		}
-	} else if platform == "linux-arm64" {
+	} else if platform == "linux-arm64" || platform == "linux-amd64" {
 		file, err := elf.Open(path)
 		if err != nil {
 			return "", err

@@ -729,7 +729,7 @@ func validatePublishedImage(body []byte, r distribution.Record) error {
 	for _, digest := range image.RepoDigests {
 		found = found || digest == r.Image
 	}
-	if !found || image.OS != "linux" || image.Architecture != "arm64" || !strings.HasPrefix(image.ID, "sha256:") || !validContainerID(strings.TrimPrefix(image.ID, "sha256:")) || image.Config.Labels["org.opencontainers.image.revision"] != r.Commit {
+	if !found || image.OS != "linux" || !deployment.ImageArchitectureIsNative(image.Architecture) || !strings.HasPrefix(image.ID, "sha256:") || !validContainerID(strings.TrimPrefix(image.ID, "sha256:")) || image.Config.Labels["org.opencontainers.image.revision"] != r.Commit {
 		return errors.New("The agent image differs from the selected release.")
 	}
 	return nil

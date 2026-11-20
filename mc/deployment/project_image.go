@@ -60,8 +60,8 @@ func exportProjectImage(ctx context.Context, image string) (map[string]projectIm
 			Env     []string
 		}
 	}
-	if json.Unmarshal(body, &config) != nil || config.OS != "linux" || config.Architecture != "arm64" || len(config.Config.Volumes) != 0 {
-		return nil, fmt.Errorf("the Project image requires Linux arm64 and no declared Docker volumes")
+	if json.Unmarshal(body, &config) != nil || config.OS != "linux" || !ImageArchitectureIsNative(config.Architecture) || len(config.Config.Volumes) != 0 {
+		return nil, fmt.Errorf("the Project image requires a native Linux architecture (arm64 or amd64) and no declared Docker volumes")
 	}
 	for _, value := range config.Config.Env {
 		key, value, _ := strings.Cut(value, "=")

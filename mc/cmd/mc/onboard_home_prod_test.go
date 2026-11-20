@@ -12,6 +12,7 @@ import (
 )
 
 func TestDatabaseResetRequiresStoppedUsersAndExactTarget(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	names, err := deployment.RuntimeNames("/Users/alice/.culler")
 	if err != nil {
 		t.Fatal(err)

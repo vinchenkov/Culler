@@ -220,27 +220,31 @@ func TestBinaryIdentityFromLinkedExecutables(t *testing.T) {
 		}
 	}
 	commit := strings.Repeat("a", 40)
-	build := func(t *testing.T, platform, path, ldflags string) {
+	build := func(t *testing.T, goos, goarch, path, ldflags string) {
 		command := exec.Command("mise", "exec", "--", "go", "-C", source, "build", "-trimpath", "-ldflags", ldflags, "-o", path, ".")
-		command.Env = append(os.Environ(), "GOENV=off", "GOFLAGS=", "CGO_ENABLED=0", "GOOS="+platform, "GOARCH=arm64")
+		command.Env = append(os.Environ(), "GOENV=off", "GOFLAGS=", "CGO_ENABLED=0", "GOOS="+goos, "GOARCH="+goarch)
 		if output, err := command.CombinedOutput(); err != nil {
 			t.Fatalf("compile the binary fixture: %v\n%s", err, output)
 		}
 	}
-	for _, platform := range []string{"darwin", "linux"} {
-		t.Run(platform, func(t *testing.T) {
-			path := filepath.Join(root, "binary-"+platform)
-			build(t, platform, path, "-w -X main.releaseBuildID="+commit)
-			if err := validateBinary(path, commit, platform+"-arm64"); err != nil {
+	for _, tc := range []struct{ goos, goarch, platform string }{
+		{"darwin", "arm64", "darwin-arm64"},
+		{"linux", "arm64", "linux-arm64"},
+		{"linux", "amd64", "linux-amd64"},
+	} {
+		t.Run(tc.platform, func(t *testing.T) {
+			path := filepath.Join(root, "binary-"+tc.platform)
+			build(t, tc.goos, tc.goarch, path, "-w -X main.releaseBuildID="+commit)
+			if err := validateBinary(path, commit, tc.platform); err != nil {
 				t.Fatal(err)
 			}
-			if err := validateBinary(path, strings.Repeat("b", 40), platform+"-arm64"); err == nil {
+			if err := validateBinary(path, strings.Repeat("b", 40), tc.platform); err == nil {
 				t.Fatal("the binary accepted a different embedded release identity")
 			}
 			// The same build without -w keeps DWARF data, which the release refuses.
-			debugPath := filepath.Join(root, "binary-"+platform+"-dwarf")
-			build(t, platform, debugPath, "-X main.releaseBuildID="+commit)
-			err := validateBinary(debugPath, commit, platform+"-arm64")
+			debugPath := filepath.Join(root, "binary-"+tc.platform+"-dwarf")
+			build(t, tc.goos, tc.goarch, debugPath, "-X main.releaseBuildID="+commit)
+			err := validateBinary(debugPath, commit, tc.platform)
 			if err == nil || !strings.Contains(err.Error(), "DWARF") {
 				t.Fatalf("the binary with DWARF data was accepted: %v", err)
 			}

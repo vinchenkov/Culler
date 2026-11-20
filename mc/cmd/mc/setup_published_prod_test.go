@@ -88,6 +88,7 @@ func TestPublishedSetupLockRejectsConcurrentAndUnsafeFiles(t *testing.T) {
 }
 
 func TestPublishedImageRequiresDigestCommitAndPlatform(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	r := distribution.Record{Commit: strings.Repeat("a", 40), Image: "ghcr.io/test/culler@sha256:" + strings.Repeat("b", 64)}
 	image := map[string]any{"Id": "sha256:" + strings.Repeat("c", 64), "Os": "linux", "Architecture": "arm64", "RepoDigests": []string{r.Image}, "Config": map[string]any{"Labels": map[string]string{"org.opencontainers.image.revision": r.Commit}}}
 	encode := func() []byte { body, _ := json.Marshal(image); return body }
@@ -438,6 +439,7 @@ func TestPublishedDockerEndpointRetainsCurrentContext(t *testing.T) {
 }
 
 func TestPublishedInspectionUsesImageRevision(t *testing.T) {
+	pinNativeArchitecture(t, "arm64")
 	home := t.TempDir()
 	prior := publishedTestRecord(strings.Repeat("a", 40), 20)
 	proposed := publishedTestRecord(strings.Repeat("b", 40), 21)

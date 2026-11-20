@@ -95,7 +95,7 @@ func validContainerID(id string) bool {
 // bytes intact and a later ordinary command can recreate the helper.
 func (m *helperManager) destroySpineVolume() error {
 	image, exists, err := inspectJSON[helperImageInspect](m.docker, "image", m.imageRef)
-	if err != nil || !exists || image.OS != "linux" || image.Architecture != "arm64" || !strings.HasPrefix(image.ID, "sha256:") || len(image.ID) != 71 {
+	if err != nil || !exists || image.OS != "linux" || !deployment.ImageArchitectureIsNative(image.Architecture) || !strings.HasPrefix(image.ID, "sha256:") || len(image.ID) != 71 {
 		return fmt.Errorf("reinspect production image before reset: %v", err)
 	}
 	volume, exists, err := inspectJSON[helperVolumeInspect](m.docker, "volume", m.names.Volume)
@@ -128,7 +128,7 @@ func (m *helperManager) destroySpineVolume() error {
 // The helper stays active so it can replace the database after this check.
 func (m *helperManager) requireDatabaseUsersStopped() error {
 	image, exists, err := inspectJSON[helperImageInspect](m.docker, "image", m.imageRef)
-	if err != nil || !exists || image.OS != "linux" || image.Architecture != "arm64" || !strings.HasPrefix(image.ID, "sha256:") || len(image.ID) != 71 {
+	if err != nil || !exists || image.OS != "linux" || !deployment.ImageArchitectureIsNative(image.Architecture) || !strings.HasPrefix(image.ID, "sha256:") || len(image.ID) != 71 {
 		return fmt.Errorf("inspect database reset image: exists=%v err=%v", exists, err)
 	}
 	volume, exists, err := inspectJSON[helperVolumeInspect](m.docker, "volume", m.names.Volume)
@@ -263,7 +263,7 @@ func (m *helperManager) ensure() (string, error) {
 	if !exists {
 		return "", fmt.Errorf("production image %q is missing; build the exact image before provisioning the helper", m.imageRef)
 	}
-	if image.OS != "linux" || image.Architecture != "arm64" || !strings.HasPrefix(image.ID, "sha256:") || len(image.ID) != 71 {
+	if image.OS != "linux" || !deployment.ImageArchitectureIsNative(image.Architecture) || !strings.HasPrefix(image.ID, "sha256:") || len(image.ID) != 71 {
 		return "", fmt.Errorf("production image %q has invalid identity/platform id=%q os=%q arch=%q", m.imageRef, image.ID, image.OS, image.Architecture)
 	}
 
