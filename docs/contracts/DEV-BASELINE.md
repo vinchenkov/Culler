@@ -46,6 +46,7 @@
 | A18 | immutable=1 处置（mode=ro 默认 或 不可变证明） | — | DC §2；AM P2-6 | F0a：代码审计项闭合（AM P2-6） | |
 | A19 | 沙箱边界实测提交（与 A14/V-5 合流：socket/API/host-gw/loopback 鉴权+X-1 三场景） | A14 | TM B4-S/RR-1 补偿取证 | F0a：边界实测记录+取证归档 | 取证≠接受（RR 归治理） |
 | A20 | 依赖图确定性检查器（EXEC-1 落地件）：检出不存在 ID／循环依赖／依赖未满足进 READY／缺契约锚或验收映射／锚变更未重绑；路径 tools/blcheck/ | — | AM §4d EXEC-1+A20-EX；IMPL-AUTH §5a | §5a 三绿：自测+五规则 fixture+真实快照零违规；完整输出 §7.1 留痕 | 首批·串行先行·已激活 19:29:17（AM v0.1.24）；三条件=持续验收；畸形输入显式 FAIL/UNKNOWN |
+| A21 | 容器 spine 挂载布局：共享 sidecar 可写 + db 文件本体非可写（sidecar 必须与写者共享——WAL 协议约束，per-container sidecar=分裂视图，禁止）；最小权限反向断言 | — | docs/facts/a18-immutable-split-decision.md；DC §1.3 表二 3；TM §5.2 | F0a/F1：docker_boundary 三挂载态矩阵（只读无 sidecar/新布局/权限异常）+容器读成功+db 本体不可写反向断言；与 A18 联合验收 | 批二·与 A18 同批合并；docker_boundary/e2e=验收硬前置；立票授权=AM v0.1.29 |
 
 ### Track B · F1 数据与一致性基座
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
