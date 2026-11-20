@@ -1,10 +1,8 @@
 package deployment
 
-import "fmt"
-
-// The systemd supervision bundle is implemented in A03 stage ②; until then
-// every Linux path through the seam refuses loudly rather than silently
-// writing launchd artifacts.
+// The systemd supervision layout renders through the shared systemd renderers
+// (supervision_systemd.go); installation and control operations arrive with
+// stage ②b (systemd controller) and refuse loudly until then.
 
 var supervisionFiles = []string{
 	"units/agentsview.service",
@@ -17,10 +15,10 @@ var supervisionFiles = []string{
 
 func precheckSupervisionHome(canonicalHome string) error { return nil }
 
-func renderUnitFiles(_ unitRenderInput) (map[string][]byte, error) {
-	return nil, fmt.Errorf("systemd supervision units are not implemented yet")
+func renderUnitFiles(in unitRenderInput) (map[string][]byte, error) {
+	return systemdBundledUnits(in)
 }
 
-func platformAgentsViewFiles(_ string, _ Names, _, _ string) (map[string][]byte, error) {
-	return nil, fmt.Errorf("systemd supervision units are not implemented yet")
+func platformAgentsViewFiles(canonicalHome string, names Names, bind, token string) (map[string][]byte, error) {
+	return agentsViewSystemdBundle(canonicalHome, names, bind, token)
 }
