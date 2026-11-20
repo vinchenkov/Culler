@@ -1,0 +1,197 @@
+{
+ "algorithm_id": "shz-merkle-v1",
+ "cases": [
+  {
+   "entries": [],
+   "expect_error": null,
+   "expected_root": "ffa51affaa9e56fc860d273f2bd83aeddef7aae90e9aaa2120d7b69f7786a2ca",
+   "id": "R1-empty",
+   "semantic": "empty set is EMPTY_ROOT (domain-derived, never null)"
+  },
+  {
+   "entries": [
+    [
+     "run/1",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "70be5965315e580720f9bff52cb72504affc9e46fe8105de16ff0fb832c65c78",
+   "id": "R2-single",
+   "semantic": "one leaf: root == that leaf (no re-hash of a lone node)"
+  },
+  {
+   "entries": [
+    [
+     "run/1",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    [
+     "run/2",
+     7,
+     "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "5b0ce8e48eabd25e6d8849f714345f07b2a02a1ae9c2f3fa15bd1edbe9a39884",
+   "id": "R3-pair",
+   "semantic": "two leaves in byte order"
+  },
+  {
+   "entries": [
+    [
+     "a",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    [
+     "b",
+     2,
+     "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ],
+    [
+     "c",
+     3,
+     "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "3992a0c8b809191092dd456d06f3d3c4a99897be6ee0c04e253928f957015475",
+   "id": "R4-odd",
+   "semantic": "three leaves exercise last-node duplication"
+  },
+  {
+   "entries": [
+    [
+     "a",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    [
+     "b",
+     2,
+     "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ],
+    [
+     "c",
+     3,
+     "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    ],
+    [
+     "d",
+     4,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "8a3a5536cab5102921284ada463fc213f5c948764874850cfa7bf92a05e09049",
+   "id": "R5-four",
+   "semantic": "balanced tree"
+  },
+  {
+   "entries": [
+    [
+     "Z",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    [
+     "a",
+     1,
+     "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "764b4a58cc88b3f26de506f55251baed91924b1db7f9088f1b667988afc55402",
+   "id": "R6-order-bytes",
+   "semantic": "uppercase byte before lowercase (raw UTF-8 order, not case-insensitive)"
+  },
+  {
+   "entries": [
+    [
+     "a",
+     1,
+     "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ],
+    [
+     "Z",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "764b4a58cc88b3f26de506f55251baed91924b1db7f9088f1b667988afc55402",
+   "id": "R6b-order-stable",
+   "semantic": "same set shuffled must equal R6"
+  },
+  {
+   "entries": [
+    [
+     "x",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    [
+     "x",
+     2,
+     "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    ]
+   ],
+   "expect_error": "duplicate aggregate_id in chain-head set: 'x'",
+   "expected_root": null,
+   "id": "R7-dup-id",
+   "semantic": "duplicate aggregate_id is malformed input"
+  },
+  {
+   "entries": [
+    [
+     "x",
+     1,
+     "deadbeef"
+    ]
+   ],
+   "expect_error": "chain_digest must be 32 bytes",
+   "expected_root": null,
+   "id": "R8-bad-digest",
+   "semantic": "non-32-byte chain_digest is malformed"
+  },
+  {
+   "entries": [
+    [
+     "café",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "20415f15eff6ae096b6f8460d80ca554fb4d763594a47dd7d514a31716f9da4b",
+   "id": "R9-nfc",
+   "semantic": "decomposed e+U+0301 must equal precomposed U+00E9 at leaf (built via chr to defeat editor normalization)"
+  },
+  {
+   "entries": [
+    [
+     "café",
+     1,
+     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ]
+   ],
+   "expect_error": null,
+   "expected_root": "20415f15eff6ae096b6f8460d80ca554fb4d763594a47dd7d514a31716f9da4b",
+   "id": "R9b-nfc",
+   "semantic": "precomposed counterpart of R9"
+  }
+ ],
+ "empty_root": "ffa51affaa9e56fc860d273f2bd83aeddef7aae90e9aaa2120d7b69f7786a2ca",
+ "rules": {
+  "empty": "EMPTY_ROOT = SHA256(UTF8('shz-root-empty-v1'))",
+  "history": "roots are interpreted under the algorithm_id they were produced with; changing rules requires a new id",
+  "leaf": "SHA256(0x00||u64be(len(idNFC))||idNFC||u64be(seq)||chain_digest32)",
+  "node": "SHA256(0x01||left||right)",
+  "odd_level": "duplicate the last node (RFC-6962)",
+  "order": "raw UTF-8 byte-lexicographic ascending on NFC(aggregate_id); duplicates rejected"
+ },
+ "status": "registered-pending-approval"
+}
