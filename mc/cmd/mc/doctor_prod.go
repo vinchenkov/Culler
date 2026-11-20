@@ -11,7 +11,6 @@ import (
 	"mc/onboarding"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -67,8 +66,8 @@ func productionDoctorWithHelper(resolveHelper func() (string, error), inspectVis
 		supervision.Detail = "not checked: operator home unresolved: " + userHomeErr.Error()
 	default:
 		active, inspectErr := deployment.InspectActiveSupervision(
-			home, filepath.Join(userHome, "Library", "LaunchAgents"), releaseBuildID,
-			launchdController{}, time.Now(),
+			home, supervisionInstallDir(userHome), releaseBuildID,
+			newActivationController(), time.Now(),
 		)
 		if inspectErr != nil {
 			supervision.Detail = inspectErr.Error()
@@ -78,7 +77,7 @@ func productionDoctorWithHelper(resolveHelper func() (string, error), inspectVis
 				active.ResidentLabel, active.DashboardLabel, active.AgentsViewLabel)
 		}
 	}
-	viewers := verbs.ViewerDoctorFindings(home, homeErr, productionViewerProbes(userHome, userHomeErr, launchdController{}))
+	viewers := verbs.ViewerDoctorFindings(home, homeErr, productionViewerProbes(userHome, userHomeErr, newActivationController()))
 	for i := range host {
 		switch host[i].Check {
 		case "supervision":
@@ -153,7 +152,7 @@ func productionViewerProbes(userHome string, userHomeErr error, launchd deployme
 			if userHomeErr != nil {
 				return "", fmt.Errorf("operator home unresolved: %w", userHomeErr)
 			}
-			return deployment.InspectAgentsViewUnit(home, filepath.Join(userHome, "Library", "LaunchAgents"), launchd)
+			return deployment.InspectAgentsViewUnit(home, supervisionInstallDir(userHome), launchd)
 		},
 		PingAgentsView: func(home, bind string) error {
 			ctx, cancel := context.WithTimeout(context.Background(), deployment.ViewerProbeTimeout)

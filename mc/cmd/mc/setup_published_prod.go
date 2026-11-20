@@ -515,7 +515,7 @@ func (p *publishedSetup) stopAndRecheck(ctx context.Context, stop func(string) e
 }
 
 func restorePublishedServices(home string, states map[string]bool) error {
-	return restorePublishedServicesWith(home, states, launchdController{})
+	return restorePublishedServicesWith(home, states, newActivationController())
 }
 
 // restorePublishedServicesWith starts each unit that ran before the update.

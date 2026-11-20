@@ -336,7 +336,7 @@ func brokerOnboardState(args []string, stdout, stderr io.Writer) int {
 			}
 			loadedUnits := 0
 			for _, label := range prepared.Labels() {
-				loaded, err := launchdLabelLoaded(label)
+				loaded, err := platformUnitLabelLoaded(label)
 				if err != nil {
 					return writeVerbError(stdout, stderr, verbs.Usagef("inspect existing native supervision: %s: %v", label, err))
 				}
@@ -382,7 +382,7 @@ func brokerOnboardState(args []string, stdout, stderr io.Writer) int {
 						return writeVerbError(stdout, stderr, verbs.Usagef("resolve operator home for LaunchAgents: %v", err))
 					}
 					reconfigureStatus, reconfigured, err := deployment.ReconfigureSupervision(
-						home, filepath.Join(userHome, "Library", "LaunchAgents"), releaseBuildID,
+						home, supervisionInstallDir(userHome), releaseBuildID,
 						deployment.SupervisionSpec{
 							ReleaseBuildID: releaseBuildID, MCPath: mcPath, BunPath: bunPath,
 							DockerPath: dockerPath, Image: image, ProjectImage: projectImage, SpineVolume: names.Volume,
@@ -390,7 +390,7 @@ func brokerOnboardState(args []string, stdout, stderr io.Writer) int {
 							SupervisionPolicy: hostConfig.SupervisionPolicy,
 						},
 						deployment.SupervisionActivationDeps{
-							Launchd: launchdController{}, Now: time.Now, Sleep: time.Sleep,
+							Launchd: newActivationController(), Now: time.Now, Sleep: time.Sleep,
 						},
 					)
 					if err != nil {
@@ -408,7 +408,7 @@ func brokerOnboardState(args []string, stdout, stderr io.Writer) int {
 				DockerPath: dockerPath, Image: image, ProjectImage: projectImage, SpineVolume: names.Volume,
 				WorkspaceRoots:    roots,
 				SupervisionPolicy: hostConfig.SupervisionPolicy,
-			}, launchdLabelLoaded)
+			}, platformUnitLabelLoaded)
 			if err != nil {
 				return writeVerbError(stdout, stderr, verbs.Domainf("prepare native supervision: %v", err))
 			}
@@ -422,9 +422,9 @@ func brokerOnboardState(args []string, stdout, stderr io.Writer) int {
 				return writeVerbError(stdout, stderr, verbs.Usagef("resolve operator home for LaunchAgents: %v", err))
 			}
 			activationStatus, active, err := deployment.ActivateSupervision(
-				home, filepath.Join(userHome, "Library", "LaunchAgents"), releaseBuildID,
+				home, supervisionInstallDir(userHome), releaseBuildID,
 				deployment.SupervisionActivationDeps{
-					Launchd: launchdController{}, Now: time.Now, Sleep: time.Sleep,
+					Launchd: newActivationController(), Now: time.Now, Sleep: time.Sleep,
 				},
 			)
 			if err != nil {
@@ -436,46 +436,4 @@ func brokerOnboardState(args []string, stdout, stderr io.Writer) int {
 		}
 	}
 	return writeOnboardSection(stdout, stderr, a.Section, status, detail)
-}
-
-type launchdController struct{}
-
-func (launchdController) Loaded(label string) (bool, error) { return launchdLabelLoaded(label) }
-
-func (launchdController) Bootstrap(plist string) error {
-	target := fmt.Sprintf("gui/%d", os.Getuid())
-	label := strings.TrimSuffix(filepath.Base(plist), ".plist")
-	if out, err := exec.Command("/bin/launchctl", "enable", target+"/"+label).CombinedOutput(); err != nil {
-		return fmt.Errorf("enable %s: %v: %s", label, err, strings.TrimSpace(string(out)))
-	}
-	out, err := exec.Command("launchctl", "bootstrap", target, plist).CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("launchctl bootstrap %s %s: %v: %s", target, plist, err, strings.TrimSpace(string(out)))
-	}
-	return nil
-}
-
-func (launchdController) Bootout(label string) error {
-	target := fmt.Sprintf("gui/%d/%s", os.Getuid(), label)
-	out, err := exec.Command("launchctl", "bootout", target).CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("launchctl bootout %s: %v: %s", target, err, strings.TrimSpace(string(out)))
-	}
-	return nil
-}
-
-func launchdLabelLoaded(label string) (bool, error) {
-	target := fmt.Sprintf("gui/%d/%s", os.Getuid(), label)
-	out, err := exec.Command("launchctl", "print", target).CombinedOutput()
-	if err == nil {
-		return true, nil
-	}
-	var exit *exec.ExitError
-	if errors.As(err, &exit) {
-		text := strings.ToLower(string(out))
-		if strings.Contains(text, "could not find service") || strings.Contains(text, "service not found") {
-			return false, nil
-		}
-	}
-	return false, fmt.Errorf("launchctl print %s: %v: %s", target, err, strings.TrimSpace(string(out)))
 }

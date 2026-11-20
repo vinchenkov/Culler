@@ -445,7 +445,7 @@ func inspectCuller(ctx context.Context, home string) cullerStatus {
 	userHome, _ := os.UserHomeDir()
 	return inspectCullerWith(ctx, home, cullerObservations{
 		loaded: func(ctx context.Context, unit string) (bool, error) {
-			return (cullerLaunchd{ctx}).Loaded(cullerLabel(home, unit))
+			return newServiceController(ctx).Loaded(cullerLabel(home, unit))
 		},
 		quiet: func(ctx context.Context, unit string) error { return cullerQuiet(ctx, home, unit) },
 		ready: func(ctx context.Context, unit, release string, r cullerRuntime) error {

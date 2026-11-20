@@ -8,9 +8,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"syscall"
 	"time"
@@ -110,7 +108,7 @@ func runUninstallWith(ctx context.Context, args []string, stdout, stderr io.Writ
 		return 0
 	}
 	docker := execDockerRunner{}
-	labels, plists, plistHomes, err := uninstallLaunchAgents()
+	labels, plists, plistHomes, err := uninstallServiceUnits()
 	report.LaunchAgents = labels
 	if err != nil {
 		problem("inspect startup units: %v", err)
@@ -157,7 +155,7 @@ func runUninstallWith(ctx context.Context, args []string, stdout, stderr io.Writ
 			locks = append(locks, lock)
 			lockedHomes[home] = true
 		}
-		labels, plists, plistHomes, err = uninstallLaunchAgents()
+		labels, plists, plistHomes, err = uninstallServiceUnits()
 		report.LaunchAgents = labels
 		if err != nil {
 			problem("inspect startup units after the deployment locks: %v", err)
@@ -346,7 +344,7 @@ func runUninstallWith(ctx context.Context, args []string, stdout, stderr io.Writ
 		return finish()
 	}
 	for _, label := range report.LaunchAgents {
-		if err := launchctlBootout(label); err != nil {
+		if err := stopRunningServiceUnit(label); err != nil {
 			problem("stop %s: %v", label, err)
 		}
 	}
@@ -598,71 +596,9 @@ func uninstallWorkspaceRoots(docker dockerCommandRunner, helper string) ([]strin
 	return payload.WorkspaceRoots, nil
 }
 
-// Inspect both on-disk units and loaded units whose plist was removed manually.
-func uninstallLaunchAgents() (labels, plists, homes []string, err error) {
-	if runtime.GOOS != "darwin" {
-		return nil, nil, nil, nil
-	}
-	userHome, err := os.UserHomeDir()
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	dir := filepath.Join(userHome, "Library", "LaunchAgents")
-	entries, err := os.ReadDir(dir)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, nil, nil, err
-	}
-	var files []string
-	for _, entry := range entries {
-		files = append(files, filepath.Join(dir, entry.Name()))
-	}
-	labels, plists = verbs.CullerLaunchAgents(files)
-	for _, plist := range plists {
-		body, err := exec.Command("plutil", "-convert", "json", "-o", "-", plist).Output()
-		if err != nil {
-			return nil, nil, nil, fmt.Errorf("read %s: %w", plist, err)
-		}
-		var config struct{ EnvironmentVariables map[string]string }
-		if err := json.Unmarshal(body, &config); err != nil {
-			return nil, nil, nil, err
-		}
-		if home := config.EnvironmentVariables["MC_HOME"]; home != "" {
-			homes = unionNames(homes, []string{home})
-		} else if home, ok := deployment.AgentsViewHomeForData(config.EnvironmentVariables["AGENTSVIEW_DATA_DIR"]); ok {
-			homes = unionNames(homes, []string{home})
-		}
-	}
-	out, err := exec.Command("launchctl", "list").Output()
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	for _, line := range strings.Split(string(out), "\n") {
-		fields := strings.Fields(line)
-		if len(fields) == 3 && verbs.CullerLaunchLabel(fields[2]) {
-			labels = unionNames(labels, []string{fields[2]})
-		}
-	}
-	return labels, plists, homes, nil
-}
-
-func launchctlBootout(label string) error {
-	loaded, err := launchdLabelLoaded(label)
-	if err != nil || !loaded {
-		return err
-	}
-	if err := (launchdController{}).Bootout(label); err != nil {
-		return err
-	}
-	deadline := time.Now().Add(10 * time.Second)
-	for time.Now().Before(deadline) {
-		loaded, err := launchdLabelLoaded(label)
-		if err != nil || !loaded {
-			return err
-		}
-		time.Sleep(100 * time.Millisecond)
-	}
-	return fmt.Errorf("service is still running after bootout")
-}
+// uninstallLaunchAgents and launchctlBootout moved to the platform files
+// (supervision_platform_darwin.go, supervision_platform_linux.go); the call
+// sites below now use uninstallServiceUnits and stopRunningServiceUnit.
 
 func unlocatedDeployments(report uninstallReport, homes []string) []string {
 	known := map[string]bool{}

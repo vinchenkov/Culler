@@ -109,7 +109,7 @@ func requireSupervisionUnloaded(home, operation string) error {
 	}
 	for _, unit := range deployment.SupervisedUnits {
 		label := deployment.UnitLabel(names, unit)
-		loaded, err := launchdLabelLoaded(label)
+		loaded, err := platformUnitLabelLoaded(label)
 		if err != nil {
 			return verbs.Usagef("inspect supervision before %s: %v", operation, err)
 		}

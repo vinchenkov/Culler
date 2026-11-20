@@ -183,7 +183,7 @@ func (state *setupDeployment) acceptExplicitStops(home string) {
 		if !state.Stops[unit] || state.Services[unit] {
 			continue
 		}
-		if err := deployment.InspectServiceDefinition(home, filepath.Join(userHome, "Library", "LaunchAgents"), unit, releaseBuildID); err != nil {
+		if err := deployment.InspectServiceDefinition(home, supervisionInstallDir(userHome), unit, releaseBuildID); err != nil {
 			continue
 		}
 		for i := range state.Checks {
@@ -221,7 +221,7 @@ func setupServiceStates(home string) (map[string]bool, error) {
 	}
 	states := map[string]bool{}
 	for _, unit := range deployment.SupervisedUnits {
-		loaded, err := launchdLabelLoaded(deployment.UnitLabel(names, unit))
+		loaded, err := platformUnitLabelLoaded(deployment.UnitLabel(names, unit))
 		if err != nil {
 			return states, err
 		}
@@ -500,7 +500,7 @@ func stopSetupServices(home string) error {
 	if err != nil {
 		return err
 	}
-	controller := launchdController{}
+	controller := newActivationController()
 	return stopSetupServicesWith(names, controller, time.Sleep)
 }
 

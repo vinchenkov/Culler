@@ -13,7 +13,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"slices"
-	"strings"
 	"syscall"
 	"time"
 
@@ -27,57 +26,9 @@ type cullerServiceControl interface {
 	SetStopped(string, bool) error
 }
 
-type cullerLaunchd struct{ ctx context.Context }
-
 func cullerLabel(home, unit string) string {
 	names, _ := deployment.RuntimeNames(home)
 	return deployment.UnitLabel(names, unit)
-}
-
-func (c cullerLaunchd) command(args ...string) ([]byte, error) {
-	ctx, cancel := context.WithTimeout(c.ctx, 5*time.Second)
-	defer cancel()
-	return exec.CommandContext(ctx, "/bin/launchctl", args...).CombinedOutput()
-}
-
-func (c cullerLaunchd) Loaded(label string) (bool, error) {
-	body, err := c.command("print", fmt.Sprintf("gui/%d/%s", os.Getuid(), label))
-	if err == nil {
-		return true, nil
-	}
-	text := strings.ToLower(string(body))
-	if strings.Contains(text, "could not find service") || strings.Contains(text, "service not found") {
-		return false, nil
-	}
-	return false, fmt.Errorf("The service state is unavailable for %s.", label)
-}
-
-func (c cullerLaunchd) Bootstrap(plist string) error {
-	_, err := c.command("bootstrap", fmt.Sprintf("gui/%d", os.Getuid()), plist)
-	if err != nil {
-		return errors.New("macOS could not start the service.")
-	}
-	return nil
-}
-
-func (c cullerLaunchd) Bootout(label string) error {
-	_, err := c.command("bootout", fmt.Sprintf("gui/%d/%s", os.Getuid(), label))
-	if err != nil {
-		return errors.New("macOS could not stop the service.")
-	}
-	return nil
-}
-
-func (c cullerLaunchd) SetStopped(label string, stopped bool) error {
-	verb := "enable"
-	if stopped {
-		verb = "disable"
-	}
-	_, err := c.command(verb, fmt.Sprintf("gui/%d/%s", os.Getuid(), label))
-	if err != nil {
-		return errors.New("macOS could not save the service start choice.")
-	}
-	return nil
 }
 
 type cullerOperation struct {
@@ -148,8 +99,8 @@ func cullerManagerForRuntime(home string, r cullerRuntime, record distribution.R
 	if err != nil {
 		return nil, err
 	}
-	m := &cullerManager{home: home, launchAgents: filepath.Join(userHome, "Library", "LaunchAgents"), runtime: r,
-		control: func(ctx context.Context) cullerServiceControl { return cullerLaunchd{ctx} }, now: time.Now,
+	m := &cullerManager{home: home, launchAgents: supervisionInstallDir(userHome), runtime: r,
+		control: newServiceController, now: time.Now,
 		sleep: func(ctx context.Context, d time.Duration) error {
 			select {
 			case <-ctx.Done():
@@ -422,7 +373,7 @@ func (m *cullerManager) transition(ctx context.Context, unit string, start bool,
 		if err := m.prepare(unit); err != nil {
 			return err
 		}
-		if err := control.Bootstrap(filepath.Join(m.launchAgents, label+".plist")); err != nil {
+		if err := control.Bootstrap(filepath.Join(m.launchAgents, installedUnitFileName(label))); err != nil {
 			return err
 		}
 	} else if loaded {

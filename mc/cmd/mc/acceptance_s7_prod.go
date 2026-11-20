@@ -115,8 +115,8 @@ func requireS7ActiveSupervision(home string) error {
 		return err
 	}
 	_, err = deployment.InspectActiveSupervision(
-		home, filepath.Join(userHome, "Library", "LaunchAgents"), releaseBuildID,
-		launchdController{}, time.Now(),
+		home, supervisionInstallDir(userHome), releaseBuildID,
+		newActivationController(), time.Now(),
 	)
 	return err
 }
