@@ -67,7 +67,7 @@
 |---|---|---|---|---|---|
 | C01 | L2 registry 配置链（config.go 双闸改 custom 路径、三 https 闸条目化、字段闭集+port_allowlist、命名空间隔离） | A02 | PS §1 | P2：配置链闭集测试（缺省拒） | O1 |
 | C02 | DestinationPolicy 执行面（canonical host 规范化/connect 钩子/v4-mapped/重定向/pooling=off 默认） | A05 | PS §2.1-2.5；MASTER §6.3(A1 比对) | P2：执行面向量集（A2 二分含覆盖证明） | 实现=resident/src/provider-transport.ts（fetch 形单点：§2.1 规范形判定+§2.2 逐尝试 connect/字面量过滤+§2.3 SNI 钉真+agent:false+永不自动跟随重定向）；provider-proxy 默认出口已替换；A2 静态半=provider-* 原始出口枚举守卫；**运行时审计半+allow_cidrs 配置面=C09/C01（§2.7③ 不继承声明）** |
-| C03 | usage 家族解析+observation 身份生成+持久序（origin=local/去重键/version） | C02 | PS §4/§4.1；PS-F1① 崩溃窗 | P2b：PS-F1① 崩溃窗恢复不双重记账 | |
+| C03 | usage 家族解析+observation 身份生成+持久序（origin=local/去重键/version） | C02,B01 | PS §4/§4.1；PS-F1① 崩溃窗 | P2b：PS-F1① 崩溃窗恢复不双重记账 | 持久序需新建 observation 表=schema.sql 变更→必须先有 B01 迁移器基线（spine 不兼容不变量）；此边为 2026-11-20 追链补登（图上原缺） |
 | C04 | breaker 状态×事件同事务+持久 lease+fencing token | B02,C02 | PS §6/§6-PS5；IG §5.3 同构 | P2：过期 token 迟到提交=必红 | |
 | C05 | BL 核心（budget/reservation/period 表、四动词+reconcile/writeoff、I2 规范式+方向性用例⑩、版本 fence） | B02,C03 | BL §1-§4/§6；A12 防回潮 | P5：I2 方向性⑩+fence 竞争+投影重算 | |
 | C06 | authorize 准入闸接线+proxy `maxTokens_effective` 授权线（域 2 按 BL-V1 结果启用/退化） | C05,C07 | BL §5(a)(b)；AM §4c BL-V1 | P5：准入矩阵测试（域 2 按 BL-V1 态声明） | BL-V1 前置核对 |

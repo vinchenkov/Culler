@@ -1,0 +1,486 @@
+{"id": "finding:fc16360a8ceec7b02f54a93b", "sev": "high", "class": "command-injection", "path": "dashboard/src/ui/pierre/pierre.js", "line": 152, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:d95a4d105450ef0c4517a819", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/attachment_canary_prod.go", "line": 744, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:34b41a490990596fa86fc6d0", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/attachment_spine_proxy.go", "line": 341, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:102efbb44c0ac9e41022d08c", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/culler_prod.go", "line": 593, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:102efbb44c0ac9e41022d08c", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/culler_prod.go", "line": 662, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:102efbb44c0ac9e41022d08c", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/culler_prod.go", "line": 685, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:99cf9295d22563c4da9eb097", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/culler_services_prod.go", "line": 40, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:99cf9295d22563c4da9eb097", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/culler_services_prod.go", "line": 173, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:4013a0ea5f16fcf73816f081", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/doctor_prod.go", "line": 109, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:3efb219850843bac1ccd35ff", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/evaluation.go", "line": 455, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:7c33104bf2d0d29711e95c6a", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/main.go", "line": 486, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:062cb0f47668e85f0a802184", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/private_dispatch.go", "line": 678, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:43066e569839312479c30ba7", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/private_release.go", "line": 138, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:a992a5fd9897ffb95580e4d1", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/project_delete.go", "line": 138, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:a992a5fd9897ffb95580e4d1", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/project_delete.go", "line": 219, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:a992a5fd9897ffb95580e4d1", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/project_delete.go", "line": 268, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:a992a5fd9897ffb95580e4d1", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/project_delete.go", "line": 279, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:a992a5fd9897ffb95580e4d1", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/project_delete.go", "line": 291, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bae4766cf048ffd544f330d4", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_prod.go", "line": 124, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bae4766cf048ffd544f330d4", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_prod.go", "line": 673, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bae4766cf048ffd544f330d4", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_prod.go", "line": 683, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bae4766cf048ffd544f330d4", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_prod.go", "line": 687, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bae4766cf048ffd544f330d4", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_prod.go", "line": 704, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bae4766cf048ffd544f330d4", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_prod.go", "line": 977, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:20f1dec558f872690f52c941", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_published_release_prod.go", "line": 72, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:1f526f780a45d62ba0914603", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_release_prod.go", "line": 89, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:1f526f780a45d62ba0914603", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_release_prod.go", "line": 119, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:1f526f780a45d62ba0914603", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_release_prod.go", "line": 128, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:1f526f780a45d62ba0914603", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_release_prod.go", "line": 144, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:1f526f780a45d62ba0914603", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_release_prod.go", "line": 147, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:5e79b084920293807063dfb3", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_source_prod.go", "line": 33, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:5e79b084920293807063dfb3", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_source_prod.go", "line": 114, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:57dcb0347e4050dd30db4131", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_terminal_prod.go", "line": 587, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8af10fac232b7f4d5c1cbcdb", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_terminal_prod.go", "line": 769, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:e095abd6cd9404d045aafae2", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_update_transaction_prod.go", "line": 31, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:e095abd6cd9404d045aafae2", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_update_transaction_prod.go", "line": 484, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:e095abd6cd9404d045aafae2", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/setup_update_transaction_prod.go", "line": 609, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:e9736ebbce5094d3c50273ae", "sev": "high", "class": "command-injection", "path": "mc/cmd/mc/systemstatus.go", "line": 72, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bff56243f65d1ce201ab590b", "sev": "high", "class": "command-injection", "path": "mc/deployment/agentprofile_auth.go", "line": 120, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bff56243f65d1ce201ab590b", "sev": "high", "class": "command-injection", "path": "mc/deployment/agentprofile_auth.go", "line": 276, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bff56243f65d1ce201ab590b", "sev": "high", "class": "command-injection", "path": "mc/deployment/agentprofile_auth.go", "line": 281, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:53befdde4f85431e845e3dac", "sev": "high", "class": "command-injection", "path": "mc/deployment/agentprofile_testop.go", "line": 203, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:733db0aaa8768fbead6d7d62", "sev": "high", "class": "command-injection", "path": "mc/deployment/cli_install.go", "line": 279, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:f1f2bb527d980d60821e00a4", "sev": "high", "class": "command-injection", "path": "mc/deployment/host_secret_darwin.go", "line": 44, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:3366100bc3fd52b5abb2d280", "sev": "high", "class": "command-injection", "path": "mc/deployment/opencode_source.go", "line": 211, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:3366100bc3fd52b5abb2d280", "sev": "high", "class": "command-injection", "path": "mc/deployment/opencode_source.go", "line": 215, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:3366100bc3fd52b5abb2d280", "sev": "high", "class": "command-injection", "path": "mc/deployment/opencode_source.go", "line": 220, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8801219f4a41b2a132ae2687", "sev": "high", "class": "command-injection", "path": "mc/deployment/project_image.go", "line": 51, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8801219f4a41b2a132ae2687", "sev": "high", "class": "command-injection", "path": "mc/deployment/project_image.go", "line": 72, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8801219f4a41b2a132ae2687", "sev": "high", "class": "command-injection", "path": "mc/deployment/project_image.go", "line": 81, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:9e85bb2937e90dc545e82d4f", "sev": "high", "class": "command-injection", "path": "mc/deployment/provider_foreground.go", "line": 48, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:aadf3ac419735e53e8439c34", "sev": "high", "class": "command-injection", "path": "mc/deployment/runtime_volume.go", "line": 27, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:88d6d38cea2925bb37454209", "sev": "high", "class": "command-injection", "path": "mc/deployment/runtimeauth_acquire.go", "line": 33, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:e2d0f58398a615b892d1f69d", "sev": "high", "class": "command-injection", "path": "mc/deployment/runtimeauth_keychain_darwin.go", "line": 46, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c66fc49a3a9967d830609364", "sev": "high", "class": "command-injection", "path": "mc/deployment/runtimeauth_verifier.go", "line": 134, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:9be6afc91eb7cb1948475ec3", "sev": "high", "class": "command-injection", "path": "mc/deployment/update_stop.go", "line": 40, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8ad8a62974c9b7229390c8b9", "sev": "high", "class": "command-injection", "path": "mc/distribution/client.go", "line": 356, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:7c5beb42f33756a6a4aa4bf2", "sev": "high", "class": "command-injection", "path": "mc/evalcase/source.go", "line": 25, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:565c2f015b11fd953e72bf4e", "sev": "high", "class": "command-injection", "path": "mc/onboarding/image_progress.go", "line": 152, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:7f5ffc850b6d31b463298fd1", "sev": "high", "class": "command-injection", "path": "mc/onboarding/prepare.go", "line": 357, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:982e95a829d197c5eec5a3e7", "sev": "high", "class": "command-injection", "path": "mc/repository/git.go", "line": 51, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:bd9aedc9a8aa8e5c81e46776", "sev": "high", "class": "command-injection", "path": "mc/verbs/seedingprojection.go", "line": 104, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c324ea27268a077bdee0226a", "sev": "high", "class": "command-injection", "path": "mc/verbs/sourcegit.go", "line": 39, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:90b0c47a9a051b2b5dce7bd0", "sev": "high", "class": "command-injection", "path": "mc/verbs/taskrevision.go", "line": 152, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8ac98cb52b4eb09095272da7", "sev": "high", "class": "command-injection", "path": "mc/wiki/export.go", "line": 574, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:8ac98cb52b4eb09095272da7", "sev": "high", "class": "command-injection", "path": "mc/wiki/export.go", "line": 585, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c7fb0765a32c5ef612a60035", "sev": "high", "class": "command-injection", "path": "runner/agent-runner/main.ts", "line": 193, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c7fb0765a32c5ef612a60035", "sev": "high", "class": "command-injection", "path": "runner/agent-runner/main.ts", "line": 197, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c7fb0765a32c5ef612a60035", "sev": "high", "class": "command-injection", "path": "runner/agent-runner/main.ts", "line": 202, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c7fb0765a32c5ef612a60035", "sev": "high", "class": "command-injection", "path": "runner/agent-runner/main.ts", "line": 205, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:c7fb0765a32c5ef612a60035", "sev": "high", "class": "command-injection", "path": "runner/agent-runner/main.ts", "line": 209, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:fecec4c8239abfccdbc1004c", "sev": "high", "class": "command-injection", "path": "runner/image/mc_dispatch.go", "line": 13, "family": "argv-idiom (exec.Command argv array, no shell)"}
+{"id": "finding:b4d1c98bfdf8e6d2794349bf", "sev": "high", "class": "hardcoded-credential", "path": "mc/config/config.go", "line": 38, "family": "CredentialKind* name constants (blame 9dbc043, proven FP in A05)"}
+{"id": "finding:b4d1c98bfdf8e6d2794349bf", "sev": "high", "class": "hardcoded-credential", "path": "mc/config/config.go", "line": 39, "family": "CredentialKind* name constants (blame 9dbc043, proven FP in A05)"}
+{"id": "finding:b4d1c98bfdf8e6d2794349bf", "sev": "high", "class": "hardcoded-credential", "path": "mc/config/config.go", "line": 42, "family": "CredentialKind* name constants (blame 9dbc043, proven FP in A05)"}
+{"id": "finding:5de4f374efc58f65c5b1e1f9", "sev": "high", "class": "hardcoded-credential", "path": "mc/deployment/authorization_failure.go", "line": 26, "family": null}
+{"id": "finding:4955820879ffac47bf6cf36b", "sev": "low", "class": "insecure-randomness", "path": "evals/culler_evals/comparison.py", "line": 191, "family": null}
+{"id": "finding:d416fe1ad8fc53ce1d89ee8c", "sev": "low", "class": "insecure-randomness", "path": "evals/culler_evals/evaluator.py", "line": 425, "family": null}
+{"id": "finding:264a0d96f94a9facc7b13ed6", "sev": "low", "class": "insecure-randomness", "path": "performance/compare.py", "line": 558, "family": null}
+{"id": "finding:91ae0227f47641f84a93f17a", "sev": "low", "class": "insecure-randomness", "path": "release/security_acceptance.py", "line": 27, "family": null}
+{"id": "finding:666911816f934841af2bc07d", "sev": "medium", "class": "other-security", "path": "dashboard/smoke-gate.ts", "line": 70, "family": null}
+{"id": "finding:f952dcf6571ca06887128e97", "sev": "medium", "class": "other-security", "path": "dashboard/smoke/harness.ts", "line": 285, "family": null}
+{"id": "finding:f952dcf6571ca06887128e97", "sev": "medium", "class": "other-security", "path": "dashboard/smoke/harness.ts", "line": 286, "family": null}
+{"id": "finding:56b829409e353be23057661f", "sev": "medium", "class": "other-security", "path": "dashboard/smoke/harness.ts", "line": 287, "family": null}
+{"id": "finding:79d9b9169632223a120c5415", "sev": "medium", "class": "other-security", "path": "dashboard/smoke/harness.ts", "line": 291, "family": null}
+{"id": "finding:cb8b150560cc2a28172611e5", "sev": "high", "class": "other-security", "path": "dashboard/smoke/harness.ts", "line": 291, "family": null}
+{"id": "finding:56b829409e353be23057661f", "sev": "medium", "class": "other-security", "path": "dashboard/smoke/harness.ts", "line": 292, "family": null}
+{"id": "finding:0a73aebd3f8edcd3899393c3", "sev": "high", "class": "other-security", "path": "dashboard/src/agentsview-proxy.ts", "line": 109, "family": null}
+{"id": "finding:847b7e821334527fe1eefa22", "sev": "high", "class": "other-security", "path": "dashboard/src/agentsview-proxy.ts", "line": 135, "family": null}
+{"id": "finding:847b7e821334527fe1eefa22", "sev": "high", "class": "other-security", "path": "dashboard/src/agentsview-proxy.ts", "line": 139, "family": null}
+{"id": "finding:847b7e821334527fe1eefa22", "sev": "high", "class": "other-security", "path": "dashboard/src/agentsview-proxy.ts", "line": 218, "family": null}
+{"id": "finding:978eb99a1187107a0ea139c9", "sev": "high", "class": "other-security", "path": "dashboard/src/agentsview-proxy.ts", "line": 258, "family": null}
+{"id": "finding:aeb06ef18f43da4c422129db", "sev": "medium", "class": "other-security", "path": "dashboard/src/main.ts", "line": 102, "family": null}
+{"id": "finding:58f66dbe6cafda42ffc0b18f", "sev": "medium", "class": "other-security", "path": "dashboard/src/main.ts", "line": 106, "family": null}
+{"id": "finding:24eb5b3e7f5754b174484976", "sev": "high", "class": "other-security", "path": "dashboard/src/main.ts", "line": 106, "family": null}
+{"id": "finding:aeb06ef18f43da4c422129db", "sev": "medium", "class": "other-security", "path": "dashboard/src/main.ts", "line": 128, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 302, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 450, "family": null}
+{"id": "finding:4cef8c453eee24ee609b6ae1", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 582, "family": null}
+{"id": "finding:afdde0cee358b45f030d42ad", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 645, "family": null}
+{"id": "finding:4cef8c453eee24ee609b6ae1", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 778, "family": null}
+{"id": "finding:d553ac83cd432cc52a9a37bf", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 797, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 811, "family": null}
+{"id": "finding:4cef8c453eee24ee609b6ae1", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 859, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1017, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1018, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1059, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1060, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1066, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1107, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1108, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1172, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1201, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1242, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1272, "family": null}
+{"id": "finding:0abd98f7c25fda485fad3ab8", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1288, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1299, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1305, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1306, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1307, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1382, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1418, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1456, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1457, "family": null}
+{"id": "finding:d553ac83cd432cc52a9a37bf", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1475, "family": null}
+{"id": "finding:5166b5a3a6bd6004354c0300", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1478, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1483, "family": null}
+{"id": "finding:1cdb48cd0138577fad2de617", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1518, "family": null}
+{"id": "finding:1cdb48cd0138577fad2de617", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1522, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1528, "family": null}
+{"id": "finding:0b803d1f6bb4f9acf7457a66", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1547, "family": null}
+{"id": "finding:abc32a12bb22950d45b5e0c1", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1547, "family": null}
+{"id": "finding:8b355cc146542b319c2d774a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1560, "family": null}
+{"id": "finding:0b96c006ad82967ff1927b0d", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1564, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1603, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1622, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1637, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1668, "family": null}
+{"id": "finding:49b35df4e7e046789efc279e", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1675, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1724, "family": null}
+{"id": "finding:0b803d1f6bb4f9acf7457a66", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1739, "family": null}
+{"id": "finding:abc32a12bb22950d45b5e0c1", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1739, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1751, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1762, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1764, "family": null}
+{"id": "finding:54cc3399f81d9d790d9269f8", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1782, "family": null}
+{"id": "finding:ba24f0d5160db5658ea43588", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1786, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1808, "family": null}
+{"id": "finding:7151202f37abe2f0c85c4195", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1901, "family": null}
+{"id": "finding:d553ac83cd432cc52a9a37bf", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1902, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 1981, "family": null}
+{"id": "finding:ab071c88abcfebcdb6250e45", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2079, "family": null}
+{"id": "finding:ccbdcd37626c97ca5464ba3c", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2224, "family": null}
+{"id": "finding:8c05e7709b929744e2fec420", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2234, "family": null}
+{"id": "finding:ccbdcd37626c97ca5464ba3c", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2235, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2247, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2255, "family": null}
+{"id": "finding:3bae22ed38bfcebce2e2f7af", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2268, "family": null}
+{"id": "finding:7defd84bbc546a452a1d73e0", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2317, "family": null}
+{"id": "finding:ab071c88abcfebcdb6250e45", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2353, "family": null}
+{"id": "finding:7defd84bbc546a452a1d73e0", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2367, "family": null}
+{"id": "finding:7defd84bbc546a452a1d73e0", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2377, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2462, "family": null}
+{"id": "finding:ab071c88abcfebcdb6250e45", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2496, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2500, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2505, "family": null}
+{"id": "finding:8c05e7709b929744e2fec420", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2517, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2638, "family": null}
+{"id": "finding:7151202f37abe2f0c85c4195", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2656, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2689, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2690, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2691, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2712, "family": null}
+{"id": "finding:ec571822bda5ce100c3dd597", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2720, "family": null}
+{"id": "finding:ec571822bda5ce100c3dd597", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2731, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2756, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2787, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2802, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2808, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2816, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2860, "family": null}
+{"id": "finding:5166b5a3a6bd6004354c0300", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2875, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2879, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2920, "family": null}
+{"id": "finding:05e8e401e7e7b06ac8940f22", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 2994, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3023, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3027, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3031, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3033, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3036, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3042, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3066, "family": null}
+{"id": "finding:49b35df4e7e046789efc279e", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3083, "family": null}
+{"id": "finding:49b35df4e7e046789efc279e", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3123, "family": null}
+{"id": "finding:49b35df4e7e046789efc279e", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3128, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3142, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3143, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3144, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3153, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3165, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3187, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3193, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3304, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3343, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3377, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3384, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3432, "family": null}
+{"id": "finding:4e5fa46f19f238ae3719c226", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3449, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3622, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3623, "family": null}
+{"id": "finding:d553ac83cd432cc52a9a37bf", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3635, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3692, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3707, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3790, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3796, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3827, "family": null}
+{"id": "finding:c0f70b139704a7da9f622c60", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3916, "family": null}
+{"id": "finding:f7cb79b1d583670a7fdaf506", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3920, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 3948, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4077, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4102, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4263, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4282, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4364, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4452, "family": null}
+{"id": "finding:ba24f0d5160db5658ea43588", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4467, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4489, "family": null}
+{"id": "finding:ba24f0d5160db5658ea43588", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4494, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4511, "family": null}
+{"id": "finding:f4f6ca5e7c06e1d2084f4f5a", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4541, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4567, "family": null}
+{"id": "finding:ba24f0d5160db5658ea43588", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4576, "family": null}
+{"id": "finding:30e1b1d22ada813bd4e354a2", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4600, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4626, "family": null}
+{"id": "finding:f429ebb2e565b64ece7a52c9", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4654, "family": null}
+{"id": "finding:d553ac83cd432cc52a9a37bf", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/app.js", "line": 4655, "family": null}
+{"id": "finding:bc161fbf19886e769b5ecc6d", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/pierre/pierre.js", "line": 2, "family": null}
+{"id": "finding:dcd0a75feb24cb675da00d38", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/requests.js", "line": 20, "family": null}
+{"id": "finding:4d4b05925cd7816c07c64892", "sev": "high", "class": "other-security", "path": "dashboard/src/ui/requests.js", "line": 20, "family": null}
+{"id": "finding:e4878b313f6c8a6673d7e51c", "sev": "medium", "class": "other-security", "path": "dashboard/src/ui/requests.js", "line": 32, "family": null}
+{"id": "finding:e1ac602475d86d735c8ac603", "sev": "high", "class": "other-security", "path": "evals/bridge/launch.ts", "line": 61, "family": null}
+{"id": "finding:e1ac602475d86d735c8ac603", "sev": "high", "class": "other-security", "path": "evals/bridge/launch.ts", "line": 74, "family": null}
+{"id": "finding:1ad979a3c215982fb3067352", "sev": "medium", "class": "other-security", "path": "evals/bridge/project-credentials.ts", "line": 30, "family": null}
+{"id": "finding:5f33924c48c181071c6c0348", "sev": "medium", "class": "other-security", "path": "mc/cmd/mc/canonical_home.go", "line": 23, "family": null}
+{"id": "finding:f3f655d52d96d24dbf600697", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/canonical_home.go", "line": 23, "family": null}
+{"id": "finding:e1349df6d226cd0c86a4ae0e", "sev": "medium", "class": "other-security", "path": "mc/cmd/mc/cli_log.go", "line": 56, "family": null}
+{"id": "finding:add034f33352c845fd68ddfa", "sev": "medium", "class": "other-security", "path": "mc/cmd/mc/culler_prod.go", "line": 665, "family": null}
+{"id": "finding:fa3f71525c14b12743cc6aac", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/main.go", "line": 42, "family": null}
+{"id": "finding:bfa4f054a769cf9a7247fe21", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 41, "family": null}
+{"id": "finding:e054d6acaf400c20443e123f", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 45, "family": null}
+{"id": "finding:0d95728781d6ee14a801d867", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 76, "family": null}
+{"id": "finding:e054d6acaf400c20443e123f", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 88, "family": null}
+{"id": "finding:e054d6acaf400c20443e123f", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 91, "family": null}
+{"id": "finding:6e0fd8419c73ee9117000d1d", "sev": "medium", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 92, "family": null}
+{"id": "finding:c0de5345f0381058a12778f3", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 92, "family": null}
+{"id": "finding:f785ead3df16f39b812d4638", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 115, "family": null}
+{"id": "finding:1af236e2540c75f0057dfa68", "sev": "high", "class": "other-security", "path": "mc/cmd/mc/setup_install_prod.go", "line": 118, "family": null}
+{"id": "finding:779a4bc1eb123d37776a9d9c", "sev": "medium", "class": "other-security", "path": "mc/deployment/cli_install.go", "line": 242, "family": null}
+{"id": "finding:779a4bc1eb123d37776a9d9c", "sev": "medium", "class": "other-security", "path": "mc/deployment/cli_install.go", "line": 268, "family": null}
+{"id": "finding:779a4bc1eb123d37776a9d9c", "sev": "medium", "class": "other-security", "path": "mc/deployment/cli_install.go", "line": 280, "family": null}
+{"id": "finding:a713ed0f406a71a8c4a3b2f6", "sev": "medium", "class": "other-security", "path": "mc/deployment/cli_update.go", "line": 39, "family": null}
+{"id": "finding:51527b9220fb2d3290ec7365", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 141, "family": null}
+{"id": "finding:a123e8702a16625c540c4486", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 142, "family": null}
+{"id": "finding:4669ba8631304c52175e3171", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 150, "family": null}
+{"id": "finding:a123e8702a16625c540c4486", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 159, "family": null}
+{"id": "finding:3d0afcd3f1f89d599503da96", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 173, "family": null}
+{"id": "finding:a123e8702a16625c540c4486", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 185, "family": null}
+{"id": "finding:ea8047ca68d022f3fd6cecda", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 216, "family": null}
+{"id": "finding:08415c656424110ed51da77e", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 218, "family": null}
+{"id": "finding:eae76bd53fc8354fd2dd222e", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 220, "family": null}
+{"id": "finding:a123e8702a16625c540c4486", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 259, "family": null}
+{"id": "finding:3d0afcd3f1f89d599503da96", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 260, "family": null}
+{"id": "finding:a123e8702a16625c540c4486", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 266, "family": null}
+{"id": "finding:4669ba8631304c52175e3171", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 267, "family": null}
+{"id": "finding:a1db1b90e17fe674e59fb74a", "sev": "medium", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 273, "family": null}
+{"id": "finding:713b91d30d4e3eab74411a92", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 275, "family": null}
+{"id": "finding:a1db1b90e17fe674e59fb74a", "sev": "medium", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 277, "family": null}
+{"id": "finding:ea28eebc4e90508e13067ae5", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 279, "family": null}
+{"id": "finding:a1db1b90e17fe674e59fb74a", "sev": "medium", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 281, "family": null}
+{"id": "finding:ea28eebc4e90508e13067ae5", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 295, "family": null}
+{"id": "finding:713b91d30d4e3eab74411a92", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 296, "family": null}
+{"id": "finding:a123e8702a16625c540c4486", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 301, "family": null}
+{"id": "finding:ea8047ca68d022f3fd6cecda", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 303, "family": null}
+{"id": "finding:b6bb76f0d6873c34b1b992c8", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 305, "family": null}
+{"id": "finding:1af6c02e45d328f628fb481d", "sev": "high", "class": "other-security", "path": "mc/deployment/runtime_install.js", "line": 308, "family": null}
+{"id": "finding:5beb5376ef8bd47a71cfce78", "sev": "high", "class": "other-security", "path": "mc/distribution/client.go", "line": 320, "family": null}
+{"id": "finding:7c49c68e5089cff670bc880b", "sev": "medium", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 58, "family": null}
+{"id": "finding:ae5c73a2c696c89da8e5948d", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 58, "family": null}
+{"id": "finding:c78ae8ec37a2cbda26d15d68", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 65, "family": null}
+{"id": "finding:b6668d239a3b1c09ad91e209", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 81, "family": null}
+{"id": "finding:b6668d239a3b1c09ad91e209", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 87, "family": null}
+{"id": "finding:0e68a580d3b844d2529f67da", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 94, "family": null}
+{"id": "finding:b6668d239a3b1c09ad91e209", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 154, "family": null}
+{"id": "finding:6fc3acfe3e47ab19a4211833", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 168, "family": null}
+{"id": "finding:7c49c68e5089cff670bc880b", "sev": "medium", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 173, "family": null}
+{"id": "finding:944f117a2c6edf340e289185", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 173, "family": null}
+{"id": "finding:a1bc70e0b8cde21c53608ff9", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 177, "family": null}
+{"id": "finding:64c51a28495b2e633bc405cc", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 926, "family": null}
+{"id": "finding:64c51a28495b2e633bc405cc", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 933, "family": null}
+{"id": "finding:d9f1246e709d5a61e0d28486", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 934, "family": null}
+{"id": "finding:d9f1246e709d5a61e0d28486", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 938, "family": null}
+{"id": "finding:7c49c68e5089cff670bc880b", "sev": "medium", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 944, "family": null}
+{"id": "finding:a90c51e9d031aa492d2e6c1d", "sev": "high", "class": "other-security", "path": "mc/verbs/dispatchverb.go", "line": 944, "family": null}
+{"id": "finding:e18058adfe948b5bd9c92e41", "sev": "medium", "class": "other-security", "path": "mc/verbs/environment_report.go", "line": 20, "family": null}
+{"id": "finding:e18058adfe948b5bd9c92e41", "sev": "medium", "class": "other-security", "path": "mc/verbs/environment_report.go", "line": 27, "family": null}
+{"id": "finding:298d864c06d08c8288882b0f", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 34, "family": null}
+{"id": "finding:ff0fdf5025bf86c9f744ec13", "sev": "medium", "class": "other-security", "path": "mc/verbs/ops.go", "line": 35, "family": null}
+{"id": "finding:1321f28bd418a2f0f5d84b16", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 35, "family": null}
+{"id": "finding:88e9003864e56118ec229c3a", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 99, "family": null}
+{"id": "finding:94f954199168966324c07cdc", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 106, "family": null}
+{"id": "finding:94f954199168966324c07cdc", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 117, "family": null}
+{"id": "finding:ff0fdf5025bf86c9f744ec13", "sev": "medium", "class": "other-security", "path": "mc/verbs/ops.go", "line": 118, "family": null}
+{"id": "finding:63efa5c76106ef289f41dc8f", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 118, "family": null}
+{"id": "finding:88e9003864e56118ec229c3a", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 205, "family": null}
+{"id": "finding:88e9003864e56118ec229c3a", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 235, "family": null}
+{"id": "finding:ff0fdf5025bf86c9f744ec13", "sev": "medium", "class": "other-security", "path": "mc/verbs/ops.go", "line": 418, "family": null}
+{"id": "finding:c6aef2bb6b37832aa01605f8", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 418, "family": null}
+{"id": "finding:298d864c06d08c8288882b0f", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 480, "family": null}
+{"id": "finding:ff0fdf5025bf86c9f744ec13", "sev": "medium", "class": "other-security", "path": "mc/verbs/ops.go", "line": 526, "family": null}
+{"id": "finding:c6aef2bb6b37832aa01605f8", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 526, "family": null}
+{"id": "finding:ff0fdf5025bf86c9f744ec13", "sev": "medium", "class": "other-security", "path": "mc/verbs/ops.go", "line": 638, "family": null}
+{"id": "finding:1ce74b9270925c9c3912c77d", "sev": "high", "class": "other-security", "path": "mc/verbs/ops.go", "line": 638, "family": null}
+{"id": "finding:c8d3099b45efec0123cf4294", "sev": "high", "class": "other-security", "path": "performance/compare.py", "line": 209, "family": null}
+{"id": "finding:989cac179a42c087767cf9de", "sev": "medium", "class": "other-security", "path": "performance/compare.py", "line": 258, "family": null}
+{"id": "finding:f745d11c69cbc63228dc434a", "sev": "medium", "class": "other-security", "path": "performance/report.ts", "line": 262, "family": null}
+{"id": "finding:2d254202e16e6f814348b149", "sev": "medium", "class": "other-security", "path": "performance/worker.ts", "line": 66, "family": null}
+{"id": "finding:ecde585c7bcb1c9743127d1c", "sev": "medium", "class": "other-security", "path": "performance/worker.ts", "line": 66, "family": null}
+{"id": "finding:ecde585c7bcb1c9743127d1c", "sev": "medium", "class": "other-security", "path": "performance/worker.ts", "line": 100, "family": null}
+{"id": "finding:f77ed6f444213de36d1499c2", "sev": "high", "class": "other-security", "path": "performance/worker.ts", "line": 145, "family": null}
+{"id": "finding:b8a43c804f7b93eff80aa19b", "sev": "medium", "class": "other-security", "path": "release/publish.py", "line": 273, "family": null}
+{"id": "finding:b8a43c804f7b93eff80aa19b", "sev": "medium", "class": "other-security", "path": "release/publish.py", "line": 276, "family": null}
+{"id": "finding:3b2bd1f0c08a17ebbb617957", "sev": "medium", "class": "other-security", "path": "release/security_nightly.py", "line": 18, "family": null}
+{"id": "finding:a8bc4473bfb4de6c9f93d94a", "sev": "medium", "class": "other-security", "path": "release/security_scan.py", "line": 241, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 53, "family": null}
+{"id": "finding:90a7834b8a59917b0106055b", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 72, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 115, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 116, "family": null}
+{"id": "finding:a90d44a5bfeb6b30aa789b56", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 191, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 198, "family": null}
+{"id": "finding:1ed1235850531e275f096a07", "sev": "medium", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 210, "family": null}
+{"id": "finding:f9d1434fd53e1fa8331b94fd", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 210, "family": null}
+{"id": "finding:16e877884faf93bc938e8765", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 210, "family": null}
+{"id": "finding:db6c2cf196f0bbf2913f0d78", "sev": "medium", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 210, "family": null}
+{"id": "finding:ffc426ae15c9875554ede765", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 231, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 236, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 238, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 242, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 299, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 309, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 311, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 312, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 317, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 331, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 338, "family": null}
+{"id": "finding:fe00f923a93d9e0a961c7904", "sev": "high", "class": "other-security", "path": "resident/src/dependency-reuse.ts", "line": 341, "family": null}
+{"id": "finding:029b943474b1cf2b28d6df94", "sev": "medium", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 516, "family": null}
+{"id": "finding:8ff6c21baa1980dc89b049ed", "sev": "medium", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 801, "family": null}
+{"id": "finding:6526adcfc845f0e9fc989c85", "sev": "high", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 807, "family": null}
+{"id": "finding:029b943474b1cf2b28d6df94", "sev": "medium", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 822, "family": null}
+{"id": "finding:8ff6c21baa1980dc89b049ed", "sev": "medium", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 826, "family": null}
+{"id": "finding:cc25860f89c2cd6ace76ca6d", "sev": "high", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 872, "family": null}
+{"id": "finding:23c68c32ce3629a590d4daef", "sev": "high", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 873, "family": null}
+{"id": "finding:7f76a4aa97f0b6bc7271a14b", "sev": "high", "class": "other-security", "path": "resident/src/environment-lane.ts", "line": 884, "family": null}
+{"id": "finding:57678d3f5392ac3ab2bb5104", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 155, "family": null}
+{"id": "finding:f3d73719b8d1420b5605ef5d", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 155, "family": null}
+{"id": "finding:b2d4da45c975c45a845b807f", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 512, "family": null}
+{"id": "finding:4916d0b34a9dfa863cad18c4", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 512, "family": null}
+{"id": "finding:90a14305d7ec22cf3895b7ac", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 536, "family": null}
+{"id": "finding:90a14305d7ec22cf3895b7ac", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 564, "family": null}
+{"id": "finding:57678d3f5392ac3ab2bb5104", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 572, "family": null}
+{"id": "finding:b1584216cea13cf793001480", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 585, "family": null}
+{"id": "finding:b2d4da45c975c45a845b807f", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 597, "family": null}
+{"id": "finding:a765d7aed1e364409a0d9db9", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 597, "family": null}
+{"id": "finding:45b3eb7b7b126b60d25fe73d", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 632, "family": null}
+{"id": "finding:9fa4a1e29ad11ccd65426b11", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 632, "family": null}
+{"id": "finding:0ff1a1959d9546a38009636a", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 689, "family": null}
+{"id": "finding:8008de21eaae41d76c163f8e", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 746, "family": null}
+{"id": "finding:d6ae42a3e5568c0229c0a2d3", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 753, "family": null}
+{"id": "finding:6bc4ad161852ad38fc0349a8", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 759, "family": null}
+{"id": "finding:039a8e9dc113bcb7563a73b9", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 759, "family": null}
+{"id": "finding:770191538436da6f8a21f3df", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 810, "family": null}
+{"id": "finding:57678d3f5392ac3ab2bb5104", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 815, "family": null}
+{"id": "finding:58a4aa286a0582f141561422", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 815, "family": null}
+{"id": "finding:6bc4ad161852ad38fc0349a8", "sev": "medium", "class": "other-security", "path": "resident/src/main.ts", "line": 837, "family": null}
+{"id": "finding:647359f0797a4985a394c130", "sev": "high", "class": "other-security", "path": "resident/src/main.ts", "line": 837, "family": null}
+{"id": "finding:436822075174f7896fede547", "sev": "high", "class": "other-security", "path": "resident/src/provider-foreground.ts", "line": 42, "family": null}
+{"id": "finding:436822075174f7896fede547", "sev": "high", "class": "other-security", "path": "resident/src/provider-foreground.ts", "line": 50, "family": null}
+{"id": "finding:6f09dddecfa1185bc2ebb63b", "sev": "high", "class": "other-security", "path": "resident/src/provider-foreground.ts", "line": 156, "family": null}
+{"id": "finding:1f90c3ea15f6a05674d20463", "sev": "medium", "class": "other-security", "path": "resident/src/provider-foreground.ts", "line": 157, "family": null}
+{"id": "finding:0dea891b0bf06dcc3a3248f8", "sev": "high", "class": "other-security", "path": "resident/src/provider-foreground.ts", "line": 157, "family": null}
+{"id": "finding:a8fc84ef3628c546894ec1fa", "sev": "high", "class": "other-security", "path": "resident/src/setup-review-attempt.ts", "line": 88, "family": null}
+{"id": "finding:31575012f868000553f09536", "sev": "medium", "class": "other-security", "path": "resident/src/setup-review-attempt.ts", "line": 104, "family": null}
+{"id": "finding:c6acd2f26d53dcd97f4a7f89", "sev": "high", "class": "other-security", "path": "resident/src/setup-review-attempt.ts", "line": 116, "family": null}
+{"id": "finding:adc2014d743d49128de64dbf", "sev": "high", "class": "other-security", "path": "resident/src/setup-review-attempt.ts", "line": 159, "family": null}
+{"id": "finding:adc2014d743d49128de64dbf", "sev": "high", "class": "other-security", "path": "resident/src/setup-review-attempt.ts", "line": 163, "family": null}
+{"id": "finding:5e72b7e145347440209f9489", "sev": "high", "class": "other-security", "path": "runner/agent-runner/adapters/claude.ts", "line": 259, "family": null}
+{"id": "finding:0d9e15f44522e6aef0113c27", "sev": "high", "class": "other-security", "path": "runner/agent-runner/adapters/codex.ts", "line": 249, "family": null}
+{"id": "finding:e671c117c08e7ef95d2af476", "sev": "medium", "class": "other-security", "path": "runner/agent-runner/diagnostics.ts", "line": 58, "family": null}
+{"id": "finding:7dc361bbd926d258ff2183ce", "sev": "high", "class": "other-security", "path": "runner/agent-runner/diagnostics.ts", "line": 58, "family": null}
+{"id": "finding:c0e4e152789353ca5e9142da", "sev": "high", "class": "other-security", "path": "runner/agent-runner/main.ts", "line": 311, "family": null}
+{"id": "finding:c04a185486ab14c5c1775d7f", "sev": "high", "class": "other-security", "path": "runner/agent-runner/main.ts", "line": 314, "family": null}
+{"id": "finding:18f20c969686432d52a8adbd", "sev": "high", "class": "other-security", "path": "runner/agent-runner/main.ts", "line": 336, "family": null}
+{"id": "finding:b58a03ce14e3bcf46f1fd69c", "sev": "high", "class": "other-security", "path": "runner/agent-runner/main.ts", "line": 463, "family": null}
+{"id": "finding:304cc9e20bda94b17087cc25", "sev": "high", "class": "other-security", "path": "runner/agent-runner/main.ts", "line": 463, "family": null}
+{"id": "finding:7e554bb8f4971c0babfe6f87", "sev": "medium", "class": "other-security", "path": "runner/collie-runner/main.ts", "line": 309, "family": null}
+{"id": "finding:7e554bb8f4971c0babfe6f87", "sev": "medium", "class": "other-security", "path": "runner/collie-runner/main.ts", "line": 341, "family": null}
+{"id": "finding:7e554bb8f4971c0babfe6f87", "sev": "medium", "class": "other-security", "path": "runner/collie-runner/main.ts", "line": 414, "family": null}
+{"id": "finding:fecf1c7b608bf067c4260f0a", "sev": "medium", "class": "other-security", "path": "runner/collie-runner/main.ts", "line": 656, "family": null}
+{"id": "finding:fe8574a862c7b9e407fe3c39", "sev": "medium", "class": "other-security", "path": "runner/image/mc_dispatch.go", "line": 12, "family": null}
+{"id": "finding:c34656afcf6b7e8e051f0cc3", "sev": "high", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 87, "family": null}
+{"id": "finding:c34656afcf6b7e8e051f0cc3", "sev": "high", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 91, "family": null}
+{"id": "finding:c8abe8b5eb10f71b5acbba7a", "sev": "medium", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 96, "family": null}
+{"id": "finding:97f2ab0f388d43a368aa6e14", "sev": "high", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 96, "family": null}
+{"id": "finding:2a996a82bfec6c0ae76644fc", "sev": "high", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 99, "family": null}
+{"id": "finding:df4073b9bf5856ddd4d882c0", "sev": "high", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 101, "family": null}
+{"id": "finding:1ff62dd45ead58b072cdc9fb", "sev": "medium", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 114, "family": null}
+{"id": "finding:3c3c893022f9d8978204e2a2", "sev": "high", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 117, "family": null}
+{"id": "finding:1ff62dd45ead58b072cdc9fb", "sev": "medium", "class": "other-security", "path": "runner/setup-runner/main.ts", "line": 127, "family": null}
+{"id": "finding:4e0ad5771ff7dc6f82927fcb", "sev": "high", "class": "other-security", "path": "runner/shared/project-evidence.ts", "line": 32, "family": null}
+{"id": "finding:4e0ad5771ff7dc6f82927fcb", "sev": "high", "class": "other-security", "path": "runner/shared/project-evidence.ts", "line": 53, "family": null}
+{"id": "finding:4e0ad5771ff7dc6f82927fcb", "sev": "high", "class": "other-security", "path": "runner/shared/project-evidence.ts", "line": 171, "family": null}
+{"id": "finding:4e0ad5771ff7dc6f82927fcb", "sev": "high", "class": "other-security", "path": "runner/shared/project-evidence.ts", "line": 190, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 99, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 111, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 129, "family": null}
+{"id": "finding:90bc81def0c0557346ed0c71", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 155, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 168, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 184, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 197, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 199, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 203, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 205, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 207, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 214, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 226, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 229, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 237, "family": null}
+{"id": "finding:90bc81def0c0557346ed0c71", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 245, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 249, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 252, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 253, "family": null}
+{"id": "finding:cecaf1a3240b45b073d92a52", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 254, "family": null}
+{"id": "finding:b7629f14f5b613a5d423f81c", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 258, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 259, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 261, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 262, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 263, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 264, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 265, "family": null}
+{"id": "finding:b7629f14f5b613a5d423f81c", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 268, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 269, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 270, "family": null}
+{"id": "finding:cecaf1a3240b45b073d92a52", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 271, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 272, "family": null}
+{"id": "finding:cecaf1a3240b45b073d92a52", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 274, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 278, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 279, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 280, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 281, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 282, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 283, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 284, "family": null}
+{"id": "finding:af65074c5b10fee9a44f6917", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 285, "family": null}
+{"id": "finding:f83effdd5afbd7f0260e2d31", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 291, "family": null}
+{"id": "finding:9898c537c57160d9dfba6813", "sev": "high", "class": "other-security", "path": "runner/shared/project-files.ts", "line": 294, "family": null}
+{"id": "finding:29426045362abb483e13dfcc", "sev": "high", "class": "other-security", "path": "runner/shared/trace-read.ts", "line": 47, "family": null}
+{"id": "finding:750cfb6ab86fbcbc09bca503", "sev": "high", "class": "other-security", "path": "runner/shared/trace-read.ts", "line": 47, "family": null}
+{"id": "finding:21872c3202b4b74b67204a31", "sev": "high", "class": "path-traversal", "path": "evals/culler_evals/control_server.py", "line": 641, "family": null}
+{"id": "finding:21872c3202b4b74b67204a31", "sev": "high", "class": "path-traversal", "path": "evals/culler_evals/control_server.py", "line": 672, "family": null}
+{"id": "finding:bd13870aae7bc64406198fd6", "sev": "high", "class": "path-traversal", "path": "mc/deployment/runtime_install.js", "line": 251, "family": null}
+{"id": "finding:6af155a8db409ce61fcb08ec", "sev": "high", "class": "path-traversal", "path": "release/size_report.py", "line": 172, "family": null}
+{"id": "finding:f7d0b0760cdd825994dcb297", "sev": "high", "class": "ssrf", "path": "evals/bridge/browser-mcp.ts", "line": 17, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:f7d0b0760cdd825994dcb297", "sev": "high", "class": "ssrf", "path": "evals/bridge/browser-mcp.ts", "line": 21, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:16a5d7712ae2d044f4d6be86", "sev": "high", "class": "ssrf", "path": "evals/bridge/build-runtime-image.py", "line": 38, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:87d6b772c7052266d5f37751", "sev": "high", "class": "ssrf", "path": "evals/bridge/mc.ts", "line": 19, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:e050c3ebd68465b58235e7f9", "sev": "high", "class": "ssrf", "path": "evals/cases/memos/corpus/memos-author-spacing/media/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:0dce8cdb0a74dfc8cace8d5d", "sev": "high", "class": "ssrf", "path": "evals/cases/memos/corpus/memos-disclosure-spacing/media/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:523c8f4604157bbe013d8209", "sev": "high", "class": "ssrf", "path": "evals/cases/memos/corpus/memos-metadata-hover/media/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:cb06772318d911a4f1712a5b", "sev": "high", "class": "ssrf", "path": "evals/cases/memos/corpus/memos-pinned-marker/media/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:71513b50f9096b10c4e63923", "sev": "high", "class": "ssrf", "path": "evals/cases/memos/memos-account-attachment-usage/media/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:155238bf6c1b42699a98dd62", "sev": "high", "class": "ssrf", "path": "evals/cases/memos/memos-dark-mode-toast/media/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:27ba4f89f2d93459b842ba4d", "sev": "high", "class": "ssrf", "path": "evals/cases/tools/capture_memos.py", "line": 80, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:48786e75351606704321d2dc", "sev": "high", "class": "ssrf", "path": "evals/culler_evals/cases.py", "line": 330, "family": "evals harness tooling (not a production file; fetch/bridge by design)"}
+{"id": "finding:791b88a0429328b12851d6c2", "sev": "high", "class": "ssrf", "path": "performance/worker.ts", "line": 32, "family": null}
+{"id": "finding:791b88a0429328b12851d6c2", "sev": "high", "class": "ssrf", "path": "performance/worker.ts", "line": 145, "family": null}
+{"id": "finding:8e8b04afcd4c9e8fd57e6f52", "sev": "high", "class": "ssrf", "path": "release/security_tools.py", "line": 29, "family": null}
