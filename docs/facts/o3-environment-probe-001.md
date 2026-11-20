@@ -1,4 +1,4 @@
-# O3-ENVIRONMENT-PROBE-001 · 当前目标机环境事实采集卡（v0.3）
+# O3-ENVIRONMENT-PROBE-001 · 当前目标机环境事实采集卡（v0.4）
 
 性质：**采集工具**。职责边界（所有者 2026-11-20 裁定）：**本卡只回答"当前开发/目标机真实具备什么"**；它**不是**未来用户部署环境的硬件契约——任何当刻硬件/配置事实（TPM、容量、KMS 在场性）不得外推为用户环境能力，也不得作为产品架构前提；用户环境能力判定归 **O1-b 适用范围评估 + 部署适配层的现场能力探测**。执行侧无法自采（O3=所有者的目标机）；两项合法回传：① 所有者运行探测块并贴回输出（证据级=owner-reported，非执行侧 E1）；② 口头给定（owner-stated）。**回传前相关票面与 U 项一律维持 UNKNOWN/等待，不预设答案。**
 
@@ -14,8 +14,11 @@ cat /etc/os-release                        # P-distro → U-1、A03 基线
 systemctl --version | head -1              # P-systemd → A03 / U-1
 systemctl get-default                      # P-default-target → U-3 辅助（graphical vs multi-user）
 loginctl list-sessions --no-legend | head  # P-sessions → U-3 辅助（仅会话列表，见边界声明）
-# —— 日志上限/保留/轮转（v0.2 补，值=容量数字无凭据风险）——
-journalctl --show-config 2>/dev/null | grep -Ei 'SystemMaxUse|SystemKeepFree|RuntimeMaxUse|MaxFileSec|Seal'  # P-journald-limits → A16 日志上限面
+# —— 日志上限/保留/轮转（v0.4 三件套【P1-1 采集闭环】；值=容量数字无凭据风险）——
+journalctl --show-config 2>/dev/null | grep -Ei 'SystemMaxUse|SystemKeepFree|RuntimeMaxUse|MaxFileSec|Seal|Config'   # ①解析后配置值与来源行
+journalctl --disk-usage 2>/dev/null                                   # ②实际磁盘占用
+ls /etc/systemd/journald.conf.d/ 2>/dev/null; grep -hE 'SystemMax|RuntimeMax|MaxFileSec|Seal' /etc/systemd/journald.conf /etc/systemd/journald.conf.d/*.conf 2>/dev/null   # ③主文件+drop-in 来源链
+# 生效值纪律：①=systemd 解析视图，③=来源链；矛盾或有运行时覆盖可能→owner-stated 补一句裁决；仍不能确认→P-journald-limits 记 UNKNOWN，A16 保持未激活（不拖他票）
 # —— 容器运行时 ——
 docker version --format '{{.Server.Version}}' 2>/dev/null   # P-docker → A04/A14/A16
 stat -fc %T /sys/fs/cgroup                 # P-cgroup → A16（v1/v2）
@@ -64,7 +67,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -m 8 https://github.com   # P-gh-https 
 |---|---|---|---|
 | P-distro/P-systemd/P-arch | A03、A04 启动前置；U-1 | 单次快照=当刻事实；升级后需重采 | 待采 |
 | P-default-target + P-sessions | U-3（headless） | **两者皆辅助信号**：get-default=开机形态，sessions=当刻会话；"服务运行主体是否依赖 GUI 登录会话"仍须由**服务 unit 的实际 User=/会话归属**确认——本卡不闭合 U-3，只收窄；剩余由 owner-stated 补 | 待采 |
-| P-journald-limits | A16 日志上限面 | 配置存在≠生效路径验证（Seal/轮转的实际行为=V-3/A16 实施验收，非本卡） | 待采 |
+| P-journald-limits | A16 日志上限面（**CODED 独立准入**，003 附二） | v0.4 三件套=解析配置①+实际占用②+来源链③；三者矛盾或运行时覆盖→owner-stated 裁决；不可确认→UNKNOWN 且 A16 不激活（分组原则） | 待采 |
 | P-docker/P-cgroup/P-capacity | A04/A14/A16/A19/B06 | 版本/形态事实；性能包络另测 | 待采 |
 | P-git-*（机制性） | U-5；F14b 对象①②的**部分** | **机制存在性≠对象闭合**：实际读取主体、运行 uid、环境变量面、目标仓库 local 全键链、helper 真实调用链仍 UNKNOWN（F14b ①②不因本卡判"已证"）；**对象③目的地约束归 DT/V-3，不由本卡代替**（所有者裁定入册） | 待采 |
 | P-gh-* | E 系环境半证 | 可达性事实；**不改变 E01-E05 BLOCKED**（解锁=DT 封闭+触发） | 待采 |
@@ -77,4 +80,5 @@ curl -s -o /dev/null -w '%{http_code}\n' -m 8 https://github.com   # P-gh-https 
 ## §4 修订登记
 - v0.1：首版（含 `git config --list` 值输出）。
 - v0.2：依所有者安全审查——Git 面机制性化（键名/计数/首词+双重掩码，零值输出）+脱敏契约；headless 两项降级为辅助信号并给出剩余确认路径；补 journald 上限采集（纯容量数字面）；F14b 对象①②的"不闭合"声明与对象③排除入绑定表。范围未扩大。
-- **v0.3（本态）**：依所有者最终裁定——**P-tpm 移出必需采集**（当前机硬件不是用户环境硬件契约；TPM 不作开发准入、不阻塞 A03/A04/A14/A16/B06、其能力判定归 O1-b+部署适配层）；§2 记录"探测选择适配、不降低保证"原则行；U-9 在 O1 册中同步重定义（部署环境 TPM2 要求/覆盖范围，非当刻设备事实）。
+- v0.3：依所有者最终裁定——**P-tpm 移出必需采集**（当前机硬件不是用户环境硬件契约；TPM 不作开发准入、不阻塞 A03/A04/A14/A16/B06、其能力判定归 O1-b+部署适配层）；§2 记录"探测选择适配、不降低保证"原则行；U-9 在 O1 册中同步重定义（部署环境 TPM2 要求/覆盖范围，非当刻设备事实）。
+- **v0.4（本态）**：依 003 审查【P1-1】——P-journald-limits 升为 A16 独立 CODED 准入的采集闭环：三件套（解析配置视图①+实际占用②+主文件/drop-in 来源链③）+ 矛盾/运行时覆盖→owner-stated 裁决 + 不可确认→UNKNOWN 且仅冻结 A16（分组不受累原则）。
