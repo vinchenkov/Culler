@@ -1,0 +1,5 @@
+AM v0.1.56 双面哈希登记（grill 五裁定 + A23 立票轮）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = a624f3dd3d848e371ade58fffab790032e27dd1be5cc08b6a1f3cac87655fdb9
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-20 20:30 +0800 实测）
+- 前轮: v0.1.55 = 4a8a9e91…d5a5（evidence/A04/am-v0.1.55-hash.txt）
