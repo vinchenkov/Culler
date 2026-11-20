@@ -10,6 +10,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from image_archive import compressed_size, read_image  # noqa: E402
+from native_arch import expected_architecture  # noqa: E402
 
 RUNTIME = "opt/culler-runtime/"
 TOOL_PREFIXES = ("opt/", "ms-playwright/", "usr/local/bin/", "usr/local/libexec/")
@@ -235,13 +236,16 @@ def runner_openwiki(runner, added):
 def runner_harness_packages(runner, added):
     root = RUNTIME + "app/node_modules/"
     view = runner.merged()
+    arch = expected_architecture()
+    claude = "@anthropic-ai/claude-agent-sdk-linux-" + arch
+    codex_dir = {"arm64": "aarch64-unknown-linux-musl", "amd64": "x86_64-unknown-linux-musl"}[arch]
     failures = present(view, root + "@anthropic-ai/claude-agent-sdk", ("dir", "symlink"), "the Claude Agent SDK")
     failures += absent(added, lambda path: "node_modules/@opencode/" in path or "node_modules/opencode-websearch/" in path or
                        under(path, "opt/culler-opencode"), "OpenCode programs in the product image")
-    failures += present(view, root + "@anthropic-ai/claude-agent-sdk-linux-arm64/claude", ("file", "link"), "the Claude program")
-    failures += present(view, root + "@openai/codex-linux-arm64/vendor/aarch64-unknown-linux-musl/bin/codex", ("file", "link"),
+    failures += present(view, root + claude + "/claude", ("file", "link"), "the Claude program")
+    failures += present(view, root + "@openai/codex-linux-" + arch + "/vendor/" + codex_dir + "/bin/codex", ("file", "link"),
                         "the Codex program")
-    for name in ("@anthropic-ai/claude-agent-sdk-linux-arm64-musl", "@anthropic-ai/sdk", "@modelcontextprotocol", "zod"):
+    for name in (claude + "-musl", "@anthropic-ai/sdk", "@modelcontextprotocol", "zod"):
         failures += absent(added, lambda path, name=name: under(path, root + name), "package {} under /{}".format(name, root))
     return failures
 

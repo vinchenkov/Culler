@@ -6,6 +6,12 @@
       "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.3.12/bun-darwin-aarch64.zip",
       "size": 22264502,
       "sha256": "6c4bb87dd013ed1a8d6a16e357a3d094959fd5530b4d7061f7f3680c3c7cea1c"
+    },
+    "linux-x64": {
+      "name": "bun-linux-x64.zip",
+      "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.3.12/bun-linux-x64.zip",
+      "size": 38613565,
+      "sha256": "11dc3ee11bc1695e149737c6ca3d5619302cf4346e6b8a6ec7988967ef01ddc5"
     }
   }
 }

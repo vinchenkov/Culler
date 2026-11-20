@@ -12,8 +12,9 @@ for tool in ('go','bun'):
     assert 'ARG '+tool.upper()+'_VERSION='+version in project
 assert 'FROM ubuntu:24.04@sha256:' in project
 for tool in ('NODE','BUN','GO','UV','MISE','PYTHON'):
-    assert re.search(r'ARG '+tool+r'_LINUX_ARM64_SHA256=[0-9a-f]{64}',project),tool
-    assert '${'+tool+'_LINUX_ARM64_SHA256}' in project,tool
+    for arm in ('ARM64','AMD64'):
+        assert re.search(r'ARG '+tool+'_LINUX_'+arm+r'_SHA256=[0-9a-f]{64}',project),tool+'_'+arm
+        assert re.search(r'\$\{?'+tool+'_LINUX_'+arm+'_SHA256',project),tool+'_'+arm
 assert 'mise link' in project
 assert 'mise-shim' not in project+runtime
 for absent in ('mc-real','runner/openwiki','agent-runner','test_fake_routing'):
@@ -70,7 +71,7 @@ assert "-name '*.pak.info' -delete" in browser_text
 # The folder mode changes alone, so the declaration files stay in their copy layer.
 assert 'chmod 755 /opt/project-tools ' in browser_text
 assert '/root/.npm' in browser_text and '/root/.cache' in browser_text and '/tmp/node-compile-cache' in browser_text
-for extracted in ('/opt/python','/opt/uv-aarch64-unknown-linux-gnu','/opt/node','/opt/go','/opt/bun','/opt/project-tools/node_modules /ms-playwright','/usr/local/share/mise'):
+for extracted in ('/opt/python','"/opt/uv-${triple}"','/opt/node','/opt/go','/opt/bun','/opt/project-tools/node_modules /ms-playwright','/usr/local/share/mise'):
     assert 'chmod -R a+rX '+extracted in project,extracted
 
 assert re.findall(r'^FROM \S+ AS (\S+)$',runtime,re.M)==['tools','runtime','product']

@@ -6,6 +6,8 @@ import json
 import tarfile
 from pathlib import PurePosixPath
 
+from native_arch import assert_product_architecture
+
 
 def forbidden_path(name):
     while name.startswith("./"):
@@ -25,8 +27,7 @@ def verify(path):
         if len(manifest) != 1:
             raise ValueError("The image archive must contain one product image.")
         config = json.load(image.extractfile(manifest[0]["Config"]))
-        if config.get("os") != "linux" or config.get("architecture") != "arm64":
-            raise ValueError("The product image requires Linux arm64.")
+        assert_product_architecture(config)
         for value in config["config"].get("Env", []):
             if value.partition("=")[0] in {"GOFLAGS", "GOCACHE", "GOMODCACHE", "GOTOOLCHAIN"}:
                 raise ValueError("The image contains a Culler build environment.")

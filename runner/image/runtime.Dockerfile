@@ -3,14 +3,22 @@
 # The runtime stage copies the finished parts. The parts that change least come first.
 ARG PROJECT_BASE=mc-project
 FROM ${PROJECT_BASE} AS tools
+ARG TARGETARCH
 
 # The private Node.js. Its npm serves only this stage.
 ARG CULLER_NODE_VERSION=24.18.0
-ARG CULLER_NODE_SHA256=58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6
+ARG CULLER_NODE_LINUX_ARM64_SHA256=58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6
+ARG CULLER_NODE_LINUX_AMD64_SHA256=55aa7153f9d88f28d765fcdad5ae6945b5c0f98a36881703817e4c450fa76742
 RUN install -d /opt/culler-runtime/node \
- && curl -fsSL "https://nodejs.org/dist/v${CULLER_NODE_VERSION}/node-v${CULLER_NODE_VERSION}-linux-arm64.tar.xz" -o /tmp/culler-node.tar.xz \
- && echo "${CULLER_NODE_SHA256}  /tmp/culler-node.tar.xz" | sha256sum -c - \
+ && case "$TARGETARCH" in \
+      arm64) name=linux-arm64; want=$CULLER_NODE_LINUX_ARM64_SHA256 ;; \
+      amd64) name=linux-x64; want=$CULLER_NODE_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://nodejs.org/dist/v${CULLER_NODE_VERSION}/node-v${CULLER_NODE_VERSION}-${name}.tar.xz" -o /tmp/culler-node.tar.xz \
+ && echo "${want}  /tmp/culler-node.tar.xz" | sha256sum -c - \
  && tar -xJf /tmp/culler-node.tar.xz -C /opt/culler-runtime/node --strip-components=1 \
+ && printf '%s\n' "$want" >/tmp/culler-node.sha \
  && rm -f /tmp/culler-node.tar.xz
 
 # The browser tools and the full browser build with ffmpeg. The runtime holds no headless shell.
@@ -40,19 +48,33 @@ RUN rm -rf /opt/culler-runtime/node/lib/node_modules /opt/culler-runtime/node/bi
 
 # The private Bun.
 ARG CULLER_BUN_VERSION=1.3.12
-ARG CULLER_BUN_SHA256=c40bc0ebca11bde7d75af497a654a874d0c7fd8d6a8d6031c173c10c9064297b
-RUN curl -fsSL "https://github.com/oven-sh/bun/releases/download/bun-v${CULLER_BUN_VERSION}/bun-linux-aarch64.zip" -o /tmp/culler-bun.zip \
- && echo "${CULLER_BUN_SHA256}  /tmp/culler-bun.zip" | sha256sum -c - \
+ARG CULLER_BUN_LINUX_ARM64_SHA256=c40bc0ebca11bde7d75af497a654a874d0c7fd8d6a8d6031c173c10c9064297b
+ARG CULLER_BUN_LINUX_AMD64_SHA256=11dc3ee11bc1695e149737c6ca3d5619302cf4346e6b8a6ec7988967ef01ddc5
+RUN case "$TARGETARCH" in \
+      arm64) name=linux-aarch64; want=$CULLER_BUN_LINUX_ARM64_SHA256 ;; \
+      amd64) name=linux-x64; want=$CULLER_BUN_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://github.com/oven-sh/bun/releases/download/bun-v${CULLER_BUN_VERSION}/bun-${name}.zip" -o /tmp/culler-bun.zip \
+ && echo "${want}  /tmp/culler-bun.zip" | sha256sum -c - \
  && unzip -q /tmp/culler-bun.zip -d /tmp/culler-bun \
- && install -D /tmp/culler-bun/bun-linux-aarch64/bun /opt/culler-runtime/bun/bin/bun \
- && printf 'node %s %s\nbun %s %s\n' "$CULLER_NODE_VERSION" "$CULLER_NODE_SHA256" "$CULLER_BUN_VERSION" "$CULLER_BUN_SHA256" >/opt/culler-runtime/artifacts.txt \
- && rm -rf /tmp/culler-bun.zip /tmp/culler-bun
+ && install -D "/tmp/culler-bun/bun-${name}/bun" /opt/culler-runtime/bun/bin/bun \
+ && printf 'node %s %s\nbun %s %s\n' "$CULLER_NODE_VERSION" "$(cat /tmp/culler-node.sha)" "$CULLER_BUN_VERSION" "$want" >/opt/culler-runtime/artifacts.txt \
+ && rm -rf /tmp/culler-bun.zip /tmp/culler-bun /tmp/culler-node.sha
 
-# The harness packages: the Claude Agent SDK with its Linux arm64 program, and Codex with its Linux arm64 program.
-# The install omits the optional packages and the peer packages that no Culler code imports.
+# The harness packages: the Claude Agent SDK and Codex with their Linux program
+# for this image's architecture, chosen by a per-architecture manifest pair.
+# The install omits the optional packages and the peer packages that no Culler
+# code imports; the platform binary rides in as a direct dependency of the
+# selected pair, and a guard test keeps the two manifests on one version set.
 ARG RUNTIME_DEPS=0
-COPY --chmod=0644 runner/agent-runner/package.json runner/agent-runner/bun.lock /opt/culler-runtime/app/
-RUN if [ "$RUNTIME_DEPS" = 1 ]; then \
+COPY --chmod=0644 runner/agent-runner/package.json runner/agent-runner/bun.lock /tmp/harness-arm64/
+COPY --chmod=0644 runner/agent-runner/package.linux-x64.json runner/agent-runner/bun.linux-x64.lock /tmp/harness-x64/
+RUN if [ "$TARGETARCH" = arm64 ]; then cp /tmp/harness-arm64/package.json /tmp/harness-arm64/bun.lock /opt/culler-runtime/app/; \
+    elif [ "$TARGETARCH" = amd64 ]; then cp /tmp/harness-x64/package.linux-x64.json /opt/culler-runtime/app/package.json && cp /tmp/harness-x64/bun.linux-x64.lock /opt/culler-runtime/app/bun.lock; \
+    else printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2; fi \
+ && rm -rf /tmp/harness-arm64 /tmp/harness-x64 \
+ && if [ "$RUNTIME_DEPS" = 1 ]; then \
       cd /opt/culler-runtime/app && /opt/culler-runtime/bun/bin/bun install --production --frozen-lockfile --omit=optional --omit=peer; \
     elif [ "$RUNTIME_DEPS" != 0 ]; then exit 2; fi
 

@@ -14,6 +14,7 @@ import tempfile
 from pathlib import Path
 
 from security_tools import PINS
+from native_arch import expected_architecture
 
 SEVERITIES = ("CRITICAL", "HIGH", "MEDIUM", "LOW", "UNKNOWN")
 
@@ -135,8 +136,8 @@ def image(args, scanners, report):
         config_body = archive.extractfile(manifest[0]["Config"]).read()
         config = json.loads(config_body)
         report["image_id"] = "sha256:" + hashlib.sha256(config_body).hexdigest()
-        if config.get("os") != "linux" or config.get("architecture") != "arm64":
-            raise ValueError("The release image requires Linux arm64.")
+        if config.get("os") != "linux" or config.get("architecture") != expected_architecture():
+            raise ValueError("The release image requires Linux " + expected_architecture() + " on this build host.")
         if report.get("commit") and config.get("config", {}).get("Labels", {}).get("org.opencontainers.image.revision") != report["commit"]:
             raise ValueError("The image revision differs from the source commit of the scan.")
         layers = manifest[0]["Layers"]

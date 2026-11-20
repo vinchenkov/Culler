@@ -39,6 +39,15 @@ release_id=0123456789abcdef0123456789abcdef01234567
 # give the same verdict on a Linux CI host, where the default would follow
 # uname into the systemd branch.
 MC_OS_OVERRIDE=Darwin; export MC_OS_OVERRIDE
+# The build cases pin the image architecture the same way: on an amd64 host
+# the default derivation would pick amd64 and break the arm64 transcript.
+MC_TARGET_ARCH=arm64; export MC_TARGET_ARCH
+
+# The target seam is fail-closed like the service seam.
+case "$(MC_TARGET_ARCH=plan9 MC_RELEASE_BUILD_ID="$release_id" "$HERE/build-prod.sh" 2>&1 || :)" in
+  *'MC_TARGET_ARCH must be arm64 or amd64'*) ;;
+  *) fail "an unsupported MC_TARGET_ARCH did not stop the build" ;;
+esac
 
 # The supervision guard, both ways. `launchctl` is STUBBED rather than read from
 # the machine on purpose: this suite must give the same verdict whether or not
@@ -138,7 +147,7 @@ grep -F -- "-trimpath -mod=readonly -ldflags -w -X main.releaseBuildID=$release_
 cat >"$TMP/bin/mise" <<'EOF'
 #!/bin/sh
 set -eu
-[ "${CGO_ENABLED:-}" = 0 ] && [ "${GOOS:-}" = linux ] && [ "${GOARCH:-}" = arm64 ] || exit 80
+[ "${CGO_ENABLED:-}" = 0 ] && [ "${GOOS:-}" = linux ] && [ "${GOARCH:-}" = "${MC_TARGET_ARCH:?}" ] || exit 80
 [ "${GOFLAGS-unset}" = "" ] && [ "${GOENV:-}" = off ] || exit 86
 case "$*" in
   'exec -- go build '*./cmd/mc)
@@ -155,6 +164,7 @@ case "${1:-}" in
   build)
     [ "${DOCKER_BUILDKIT:-}" = 1 ] || exit 82
     case " $* " in *' --progress=plain '*) ;; *) exit 83 ;; esac
+    case " $* " in *' --platform linux/'"$MC_TARGET_ARCH"' '*) ;; *) exit 88 ;; esac
     case " $* " in
       *' -f runtime.Dockerfile '*) case " $* " in *' --target product '*) ;; *) exit 87 ;; esac ;;
     esac
@@ -204,6 +214,20 @@ head -n 6 "$TMP/progress.expected" >"$TMP/build-fail.expected"
 grep -E '^(setup-progress|test-operation):' "$TMP/build-fail.stderr" >"$TMP/build-fail.actual"
 cmp "$TMP/build-fail.expected" "$TMP/build-fail.actual" >/dev/null || \
   fail "The failed container build announced a later operation."
+
+# The amd64 mirror of the full sequence: the stubs demand GOARCH=amd64 and
+# --platform linux/amd64, so an unset-name or arm64 leftover fails loudly.
+if ! PATH="$TMP/bin:/usr/bin:/bin" MC_TARGET_ARCH=amd64 \
+    MC_RELEASE_BUILD_ID="$release_id" "$HERE/build-prod.sh" \
+    >"$TMP/amd64.stdout" 2>"$TMP/amd64.stderr"; then
+  cat "$TMP/amd64.stderr" >&2
+  fail "the amd64 build sequence did not complete"
+fi
+grep -F 'compiling linux/amd64 mc' "$TMP/amd64.stderr" >/dev/null ||
+  fail "the amd64 run did not name its architecture"
+if grep '^setup-progress:' "$TMP/amd64.stdout" >/dev/null; then
+  fail "the amd64 run wrote a progress record to standard output."
+fi
 
 grep -F -- 'ARG NODE_VERSION=24.18.0' "$HERE/Dockerfile" >/dev/null ||
   fail "production image does not pin the Node LTS used by Playwright"

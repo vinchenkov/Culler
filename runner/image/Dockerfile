@@ -1,7 +1,12 @@
 # Project tools remain independent of the installed Culler runtime.
 # Each step stores its own files once: it sets their modes and removes its caches before it ends.
 # Each version pin stands before the first step that reads it, so a pin change rebuilds only the later steps.
-FROM ubuntu:24.04@sha256:08571ca13e00ca07a2a84eab83a959b4242e22cceb16486a11bef1428c9e93a7 AS project
+# The base is digest-pinned per architecture; TARGETARCH is the build's own
+# architecture, native by default, and anything outside the two targets fails.
+FROM ubuntu:24.04@sha256:08571ca13e00ca07a2a84eab83a959b4242e22cceb16486a11bef1428c9e93a7 AS base-arm64
+FROM ubuntu:24.04@sha256:9a04f13b3f80ef056361e30868593b1cfd2279fe19e4081cb93a90bf56819d6a AS base-amd64
+FROM base-${TARGETARCH} AS project
+ARG TARGETARCH
 ARG UBUNTU_SNAPSHOT=20261001T000000Z
 
 # The fixed Ubuntu snapshot selects exact system package artifacts.
@@ -31,8 +36,14 @@ RUN curl -fsSL "https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.t
 ARG PYTHON_VERSION=3.14.7
 ARG PYTHON_RELEASE=20260901
 ARG PYTHON_LINUX_ARM64_SHA256=8a0798baa8a2c27b5751d590aced543eaa85e20b3f73d93c1af049688acdc9c5
-RUN curl -fsSL "https://github.com/astral-sh/python-build-standalone/releases/download/${PYTHON_RELEASE}/cpython-${PYTHON_VERSION}%2B${PYTHON_RELEASE}-aarch64-unknown-linux-gnu-install_only_stripped.tar.gz" -o /tmp/python.tar.gz \
- && echo "${PYTHON_LINUX_ARM64_SHA256}  /tmp/python.tar.gz" | sha256sum -c - \
+ARG PYTHON_LINUX_AMD64_SHA256=3959f92825141e04adf44982d3a83ee57af0877e893b0796e04c1468749d9b04
+RUN case "$TARGETARCH" in \
+      arm64) triple=aarch64-unknown-linux-gnu; want=$PYTHON_LINUX_ARM64_SHA256 ;; \
+      amd64) triple=x86_64-unknown-linux-gnu; want=$PYTHON_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://github.com/astral-sh/python-build-standalone/releases/download/${PYTHON_RELEASE}/cpython-${PYTHON_VERSION}%2B${PYTHON_RELEASE}-${triple}-install_only_stripped.tar.gz" -o /tmp/python.tar.gz \
+ && echo "${want}  /tmp/python.tar.gz" | sha256sum -c - \
  && tar -xzf /tmp/python.tar.gz -C /opt \
  && chmod -R a+rX /opt/python \
  && ln -s /opt/python/bin/python3 /usr/local/bin/python3 \
@@ -41,18 +52,30 @@ RUN curl -fsSL "https://github.com/astral-sh/python-build-standalone/releases/do
 
 ARG UV_VERSION=0.12.3
 ARG UV_LINUX_ARM64_SHA256=bb66cb52e7b1823aed1183630d8d8e5c958840d584a4c55ec10a4cfc168dcca2
-RUN curl -fsSL "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-aarch64-unknown-linux-gnu.tar.gz" -o /tmp/uv.tar.gz \
- && echo "${UV_LINUX_ARM64_SHA256}  /tmp/uv.tar.gz" | sha256sum -c - \
+ARG UV_LINUX_AMD64_SHA256=600cf9a742aca00d292673b16b5acffaa7b8c269a364ad0c2e79498dcb1fe101
+RUN case "$TARGETARCH" in \
+      arm64) triple=aarch64-unknown-linux-gnu; want=$UV_LINUX_ARM64_SHA256 ;; \
+      amd64) triple=x86_64-unknown-linux-gnu; want=$UV_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/uv-${triple}.tar.gz" -o /tmp/uv.tar.gz \
+ && echo "${want}  /tmp/uv.tar.gz" | sha256sum -c - \
  && tar -xzf /tmp/uv.tar.gz -C /opt \
- && chmod -R a+rX /opt/uv-aarch64-unknown-linux-gnu \
- && ln -s /opt/uv-aarch64-unknown-linux-gnu/uv /usr/local/bin/uv \
- && ln -s /opt/uv-aarch64-unknown-linux-gnu/uvx /usr/local/bin/uvx \
+ && chmod -R a+rX "/opt/uv-${triple}" \
+ && ln -s "/opt/uv-${triple}/uv" /usr/local/bin/uv \
+ && ln -s "/opt/uv-${triple}/uvx" /usr/local/bin/uvx \
  && rm /tmp/uv.tar.gz
 
 ARG NODE_VERSION=24.18.0
 ARG NODE_LINUX_ARM64_SHA256=58c9520501f6ae2b52d5b210444e24b9d0c029a58c5011b797bc1fe7105886f6
-RUN curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-arm64.tar.xz" -o /tmp/node.tar.xz \
- && echo "${NODE_LINUX_ARM64_SHA256}  /tmp/node.tar.xz" | sha256sum -c - \
+ARG NODE_LINUX_AMD64_SHA256=55aa7153f9d88f28d765fcdad5ae6945b5c0f98a36881703817e4c450fa76742
+RUN case "$TARGETARCH" in \
+      arm64) name=linux-arm64; want=$NODE_LINUX_ARM64_SHA256 ;; \
+      amd64) name=linux-x64; want=$NODE_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-${name}.tar.xz" -o /tmp/node.tar.xz \
+ && echo "${want}  /tmp/node.tar.xz" | sha256sum -c - \
  && mkdir -p /opt/node \
  && tar -xJf /tmp/node.tar.xz -C /opt/node --strip-components=1 \
  && chmod -R a+rX /opt/node \
@@ -83,14 +106,26 @@ RUN cd /opt/project-tools \
 # The mise program reads only its own pin.
 ARG MISE_VERSION=2026.10.0
 ARG MISE_LINUX_ARM64_SHA256=4b8cacffac83e8493fc5d1eef25f6365edba73ccbed5a1f3987b7cb3f5079656
-RUN curl -fsSL "https://github.com/jdx/mise/releases/download/v${MISE_VERSION}/mise-v${MISE_VERSION}-linux-arm64" -o /usr/local/bin/mise \
- && echo "${MISE_LINUX_ARM64_SHA256}  /usr/local/bin/mise" | sha256sum -c - \
+ARG MISE_LINUX_AMD64_SHA256=57ced973f968b8fbab07aa8e32bd7077d4a357e200a22356d98963c723c6de0a
+RUN case "$TARGETARCH" in \
+      arm64) name=linux-arm64; want=$MISE_LINUX_ARM64_SHA256 ;; \
+      amd64) name=linux-x64; want=$MISE_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://github.com/jdx/mise/releases/download/v${MISE_VERSION}/mise-v${MISE_VERSION}-${name}" -o /usr/local/bin/mise \
+ && echo "${want}  /usr/local/bin/mise" | sha256sum -c - \
  && chmod 0755 /usr/local/bin/mise
 
 ARG GO_VERSION=1.25.12
 ARG GO_LINUX_ARM64_SHA256=8b5884aef89600aef5b0b051fb971f11f49bb996521e911f30f02a66884f7bd2
-RUN curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz" -o /tmp/go.tar.gz \
- && echo "${GO_LINUX_ARM64_SHA256}  /tmp/go.tar.gz" | sha256sum -c - \
+ARG GO_LINUX_AMD64_SHA256=234828b7a89e0e303d2556310ee549fbcf253d28de937bac3da13d6294262ac1
+RUN case "$TARGETARCH" in \
+      arm64) name=linux-arm64; want=$GO_LINUX_ARM64_SHA256 ;; \
+      amd64) name=linux-amd64; want=$GO_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://go.dev/dl/go${GO_VERSION}.${name}.tar.gz" -o /tmp/go.tar.gz \
+ && echo "${want}  /tmp/go.tar.gz" | sha256sum -c - \
  && tar -xzf /tmp/go.tar.gz -C /opt \
  && chmod -R a+rX /opt/go \
  && ln -s /opt/go/bin/go /usr/local/bin/go \
@@ -99,13 +134,19 @@ RUN curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz" -o /tmp/go
 
 ARG BUN_VERSION=1.3.12
 ARG BUN_LINUX_ARM64_SHA256=c40bc0ebca11bde7d75af497a654a874d0c7fd8d6a8d6031c173c10c9064297b
-RUN curl -fsSL "https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/bun-linux-aarch64.zip" -o /tmp/bun.zip \
- && echo "${BUN_LINUX_ARM64_SHA256}  /tmp/bun.zip" | sha256sum -c - \
+ARG BUN_LINUX_AMD64_SHA256=11dc3ee11bc1695e149737c6ca3d5619302cf4346e6b8a6ec7988967ef01ddc5
+RUN case "$TARGETARCH" in \
+      arm64) name=linux-aarch64; want=$BUN_LINUX_ARM64_SHA256 ;; \
+      amd64) name=linux-x64; want=$BUN_LINUX_AMD64_SHA256 ;; \
+      *) printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2 ;; \
+    esac \
+ && curl -fsSL "https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/bun-${name}.zip" -o /tmp/bun.zip \
+ && echo "${want}  /tmp/bun.zip" | sha256sum -c - \
  && unzip -q /tmp/bun.zip -d /tmp \
- && install -D /tmp/bun-linux-aarch64/bun /opt/bun/bin/bun \
+ && install -D "/tmp/bun-${name}/bun" /opt/bun/bin/bun \
  && chmod -R a+rX /opt/bun \
  && ln -s /opt/bun/bin/bun /usr/local/bin/bun \
- && rm -rf /tmp/bun.zip /tmp/bun-linux-aarch64
+ && rm -rf /tmp/bun.zip "/tmp/bun-${name}"
 
 # The mise links read every tool pin, so they follow every tool step.
 RUN MISE_DATA_DIR=/usr/local/share/mise mise link "go@${GO_VERSION}" /opt/go \

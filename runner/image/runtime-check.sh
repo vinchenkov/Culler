@@ -12,13 +12,19 @@ test "$(stat -c %u:%g:%a /opt/culler-runtime/libexec/mc-real)" = 10001:10001:675
   await import("/opt/culler-runtime/app/src/agent-runner/adapters/claude.ts");
   await import("/opt/culler-runtime/app/src/agent-runner/adapters/codex.ts");
 '
-# The runtime holds one Claude program, the glibc build for Linux arm64, and no unused peer package.
-test -x /opt/culler-runtime/app/node_modules/@anthropic-ai/claude-agent-sdk-linux-arm64/claude
-test ! -e /opt/culler-runtime/app/node_modules/@anthropic-ai/claude-agent-sdk-linux-arm64-musl
+# The runtime holds one Claude program for the image architecture, no musl
+# variant of it, and no unused peer package.
+case "$(uname -m)" in
+  aarch64|arm64) claude=claude-agent-sdk-linux-arm64; codex=codex-linux-arm64; codexdir=aarch64-unknown-linux-musl ;;
+  x86_64) claude=claude-agent-sdk-linux-x64; codex=codex-linux-x64; codexdir=x86_64-unknown-linux-musl ;;
+  *) printf 'unsupported machine %s\n' "$(uname -m)" >&2; exit 2 ;;
+esac
+test -x "/opt/culler-runtime/app/node_modules/@anthropic-ai/$claude/claude"
+test ! -e "/opt/culler-runtime/app/node_modules/@anthropic-ai/$claude-musl"
 test ! -e /opt/culler-runtime/app/node_modules/@anthropic-ai/sdk
 test ! -e /opt/culler-runtime/app/node_modules/@modelcontextprotocol
 test ! -e /opt/culler-runtime/app/node_modules/zod
-test -x /opt/culler-runtime/app/node_modules/@openai/codex-linux-arm64/vendor/aarch64-unknown-linux-musl/bin/codex
+test -x "/opt/culler-runtime/app/node_modules/@openai/$codex/vendor/$codexdir/bin/codex"
 /opt/culler-runtime/bin/node --input-type=module -e 'await import("/opt/culler-runtime/openwiki/node_modules/openwiki/dist/integrations/core/session-manager.js")'
 for role in agent-runner collie-runner setup-runner; do
   test -s "/opt/culler-runtime/app/src/$role/main.ts"

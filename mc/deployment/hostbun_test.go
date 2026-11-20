@@ -21,8 +21,17 @@ func TestTheEmbeddedHostBunPinIsValidAndMatchesTheTrackedFile(t *testing.T) {
 		t.Fatalf("the embedded pin differs from hostbun.json: %v", err)
 	}
 	archive := pin.Archives[HostBunPlatform]
-	if archive.Name != "bun-darwin-aarch64.zip" || len(pin.Archives) != 1 {
+	if archive.Name != "bun-darwin-aarch64.zip" {
 		t.Fatalf("pin = %+v", pin)
+	}
+	// The tracked pin carries one archive per supported host platform, and
+	// only those: the linux host installer reads linux-x64.
+	if len(pin.Archives) != 2 {
+		t.Fatalf("archives = %d entries, want one per host platform: %+v", len(pin.Archives), pin.Archives)
+	}
+	linux := pin.Archives["linux-x64"]
+	if linux.Name != "bun-linux-x64.zip" || linux.SHA256 == "" || linux.Size == 0 {
+		t.Fatalf("linux-x64 host bun archive pin = %+v", linux)
 	}
 }
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Build the production image with the real harnesses and the pinned browser.
-# The build requires native arm64 execution.
+# The build runs natively: it produces the image for the host's own
+# architecture, one of arm64 or amd64, and never under emulation.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -14,6 +15,18 @@ if [[ ! "$MC_RELEASE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9
   echo "build-prod.sh: the VERSION file must hold one version, for example 0.1.0" >&2
   exit 2
 fi
+
+# The image architecture is the host's machine, mapped to Go and Docker names.
+# MC_TARGET_ARCH is a test seam with the same fail-closed rule as MC_OS_OVERRIDE.
+case "${MC_TARGET_ARCH:-}" in
+  '') case "$(uname -m)" in
+        aarch64|arm64) TARGET_ARCH=arm64 ;;
+        x86_64) TARGET_ARCH=amd64 ;;
+        *) echo "build-prod.sh: unsupported host architecture $(uname -m); the targets are arm64 and amd64 with no emulation" >&2; exit 2 ;;
+      esac ;;
+  arm64|amd64) TARGET_ARCH=$MC_TARGET_ARCH ;;
+  *) echo "build-prod.sh: MC_TARGET_ARCH must be arm64 or amd64, or unset." >&2; exit 2 ;;
+esac
 
 # A loaded deployment uses the shared image tag. Its image identity must stay unchanged.
 # The probe follows the service manager of the host: launchctl on macOS, the user
@@ -77,21 +90,21 @@ if printf '%s\n' "$units" | grep -q 'com\.culler\.'; then
   exit 3
 fi
 
-echo "build-prod.sh: compiling linux/arm64 mc WITHOUT test_fake_routing..." >&2
+echo "build-prod.sh: compiling linux/${TARGET_ARCH} mc WITHOUT test_fake_routing..." >&2
 printf 'setup-progress: compile-linux\n' >&2
-(cd ../../mc && GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH=arm64 mise exec -- go build -trimpath -mod=readonly \
+(cd ../../mc && GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH="$TARGET_ARCH" mise exec -- go build -trimpath -mod=readonly \
   -ldflags "-w -X main.releaseBuildID=$MC_RELEASE_BUILD_ID -X main.releaseVersion=$MC_RELEASE_VERSION" \
   -o ../runner/image/mc-prod-bin ./cmd/mc)
 printf 'setup-progress: compile-dispatcher\n' >&2
-(cd ../.. && GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH=arm64 mise exec -- go build -trimpath -ldflags "-w" -o runner/image/mc-dispatch ./runner/image/mc_dispatch.go)
+(cd ../.. && GOFLAGS= GOENV=off GOTOOLCHAIN=local CGO_ENABLED=0 GOOS=linux GOARCH="$TARGET_ARCH" mise exec -- go build -trimpath -ldflags "-w" -o runner/image/mc-dispatch ./runner/image/mc_dispatch.go)
 
 echo "build-prod.sh: docker build -t mc-prod ..." >&2
 printf 'setup-progress: build-container\n' >&2
 python3 stage-runtime.py ../runtime-source
-DOCKER_BUILDKIT=1 docker build --target project --progress=plain -f Dockerfile \
+DOCKER_BUILDKIT=1 docker build --platform "linux/${TARGET_ARCH}" --target project --progress=plain -f Dockerfile \
   --label "org.opencontainers.image.revision=$MC_RELEASE_BUILD_ID" \
   --build-arg BROWSER_DEPS=1 -t mc-project ../..
-DOCKER_BUILDKIT=1 docker build --target product --progress=plain -f runtime.Dockerfile \
+DOCKER_BUILDKIT=1 docker build --platform "linux/${TARGET_ARCH}" --target product --progress=plain -f runtime.Dockerfile \
   --label "org.opencontainers.image.revision=$MC_RELEASE_BUILD_ID" \
   --build-arg MC_BIN=mc-prod-bin \
   --build-arg PROJECT_BASE=mc-project \

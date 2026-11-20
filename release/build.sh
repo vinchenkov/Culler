@@ -78,7 +78,8 @@ for name in runner/image/Dockerfile runner/image/runtime.Dockerfile runner/image
   runner/openwiki/package.json runner/openwiki/package-lock.json \
   runner/openwiki/patch-upstream.mjs runner/openwiki/project-documents.mjs \
   runner/openwiki/recovery-patches.mjs runner/openwiki/recovery.mjs \
-  runner/agent-runner/package.json runner/agent-runner/bun.lock; do
+  runner/agent-runner/package.json runner/agent-runner/bun.lock \
+  runner/agent-runner/package.linux-x64.json runner/agent-runner/bun.linux-x64.lock; do
   [ -f "$name" ] && [ ! -L "$name" ]
   cp "$name" "$output/image/$name"
 done

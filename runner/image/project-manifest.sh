@@ -15,8 +15,10 @@ const executable_sha256 = Object.fromEntries(binaries.map(name => {
   const file = realpathSync(run('/bin/sh', ['-c', 'command -v ' + name]));
   return [name, sha256(file)];
 }));
+const arch = { arm64: 'arm64', x86_64: 'amd64', aarch64: 'arm64' }[run('/bin/sh', ['-c', 'uname -m'])] || 'unknown';
 const artifacts = Object.fromEntries(['NODE', 'BUN', 'GO', 'UV', 'MISE', 'PYTHON'].map(name => [name.toLowerCase(), {
-  version: process.env[name + '_VERSION'], sha256: process.env[name + '_LINUX_ARM64_SHA256'],
+  version: process.env[name + '_VERSION'],
+  sha256: process.env[name + '_LINUX_' + (arch === 'arm64' ? 'ARM64' : 'AMD64') + '_SHA256'],
 }]));
 const browser_versions = {};
 function browsers(dir) {
@@ -29,7 +31,7 @@ function browsers(dir) {
   }
 }
 browsers('/ms-playwright');
-console.log(JSON.stringify({ format: 1, platform: 'linux/arm64', tools, executable_sha256, artifacts,
+console.log(JSON.stringify({ format: 1, platform: 'linux/' + arch, tools, executable_sha256, artifacts,
   ubuntu_snapshot: process.env.UBUNTU_SNAPSHOT,
   browser_artifacts: readdirSync('/ms-playwright').filter(name => !name.startsWith('.')), browser_versions,
   packages_sha256: sha256('/usr/share/culler-project/system-packages.tsv'),
