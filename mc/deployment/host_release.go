@@ -169,6 +169,7 @@ var hostReleaseFiles = []string{
 	"resident/src/attachment-ingress.ts",
 	"resident/src/credential-projector.ts",
 	"resident/src/provider-proxy.ts",
+	"resident/src/provider-transport.ts",
 	"resident/src/provider-credentials.ts",
 	"resident/src/provider-lifetime.ts",
 	"resident/src/provider-protocols.json",

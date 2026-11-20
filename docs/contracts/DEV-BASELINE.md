@@ -66,7 +66,7 @@
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
 |---|---|---|---|---|---|
 | C01 | L2 registry 配置链（config.go 双闸改 custom 路径、三 https 闸条目化、字段闭集+port_allowlist、命名空间隔离） | A02 | PS §1 | P2：配置链闭集测试（缺省拒） | O1 |
-| C02 | DestinationPolicy 执行面（canonical host 规范化/connect 钩子/v4-mapped/重定向/pooling=off 默认） | A05 | PS §2.1-2.5；MASTER §6.3(A1 比对) | P2：执行面向量集（A2 二分含覆盖证明） | |
+| C02 | DestinationPolicy 执行面（canonical host 规范化/connect 钩子/v4-mapped/重定向/pooling=off 默认） | A05 | PS §2.1-2.5；MASTER §6.3(A1 比对) | P2：执行面向量集（A2 二分含覆盖证明） | 实现=resident/src/provider-transport.ts（fetch 形单点：§2.1 规范形判定+§2.2 逐尝试 connect/字面量过滤+§2.3 SNI 钉真+agent:false+永不自动跟随重定向）；provider-proxy 默认出口已替换；A2 静态半=provider-* 原始出口枚举守卫；**运行时审计半+allow_cidrs 配置面=C09/C01（§2.7③ 不继承声明）** |
 | C03 | usage 家族解析+observation 身份生成+持久序（origin=local/去重键/version） | C02 | PS §4/§4.1；PS-F1① 崩溃窗 | P2b：PS-F1① 崩溃窗恢复不双重记账 | |
 | C04 | breaker 状态×事件同事务+持久 lease+fencing token | B02,C02 | PS §6/§6-PS5；IG §5.3 同构 | P2：过期 token 迟到提交=必红 | |
 | C05 | BL 核心（budget/reservation/period 表、四动词+reconcile/writeoff、I2 规范式+方向性用例⑩、版本 fence） | B02,C03 | BL §1-§4/§6；A12 防回潮 | P5：I2 方向性⑩+fence 竞争+投影重算 | |

@@ -1,5 +1,6 @@
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { networkErrorFromFetch, type NetworkErrorClass } from "../../runner/shared/network-error";
+import { providerTransport } from "./provider-transport";
 
 export interface ProviderOperation {
   id: string;
@@ -427,7 +428,11 @@ export function startProviderProxy(options: ProviderProxyOptions, dependencies: 
   if (!options.tls?.cert || !options.tls?.key) throw new Error("The provider proxy requires a TLS certificate and private key.");
   let routes = validateRoutes(options.routes);
   const now = dependencies.now ?? Date.now;
-  const requestProvider = dependencies.fetch ?? fetch;
+  // The default provider egress is the DestinationPolicy transport (PS §2.1-
+  // 2.5): canonical-destination checks, resolve-time validation per attempt,
+  // hostname-pinned TLS, no pooling, and by construction no inheritance of
+  // process or environment HTTP(S)/SOCKS proxies (§2.7①'s Proxy=nil analogue).
+  const requestProvider = dependencies.fetch ?? providerTransport({ portAllowlist: [443] });
   const byDigest = new Map<string, Authorization>();
   const byID = new Map<string, Authorization>();
   const byLaunch = new Map<string, string>();
