@@ -1,0 +1,124 @@
+ACCEPT-RAW-BEGIN
+| == C0 env
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [systemctl] [--version]
+| systemd 249 (249.11-0ubuntu3.21)
+| +PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SECCOMP +GCRYPT +GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY -P11KIT -QRENCODE +BZIP2 +LZ4 +XZ +ZLIB +ZSTD -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C0.systemctl=0
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [uname] [-a]
+| Linux F1104 5.15.0-94-generic #104-Ubuntu SMP Tue Jan 9 15:25:40 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C0.uname=0
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [systemctl] [get-default]
+| graphical.target
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C0.target=0
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUNTIME_DIR_ENV=[/run/user/0]
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 C0.bus ok=1
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [/tmp/a03-acceptance-20261120T170520Z/a03-deployment.amd64] [-test.run] [TestSystemd|TestRender|TestPlatformUpdateServicesLinux|TestA03RenderedUnits] [-test.v]
+| === RUN   TestRenderTextRefusesWhatIsNotARecord
+| --- PASS: TestRenderTextRefusesWhatIsNotARecord (0.00s)
+| === RUN   TestA03RenderedUnitsExport
+| --- PASS: TestA03RenderedUnitsExport (0.00s)
+| === RUN   TestSystemdQuoteValue
+| --- PASS: TestSystemdQuoteValue (0.00s)
+| === RUN   TestRenderSystemdUnitShape
+| --- PASS: TestRenderSystemdUnitShape (0.00s)
+| === RUN   TestSystemdBundledUnitsPathsAndSpaces
+| --- PASS: TestSystemdBundledUnitsPathsAndSpaces (0.00s)
+| === RUN   TestPlatformUpdateServicesLinuxStopSwallowsManagerErrors
+| --- PASS: TestPlatformUpdateServicesLinuxStopSwallowsManagerErrors (0.00s)
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/active
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/inactive
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/gone
+| === RUN   TestPlatformUpdateServicesLinuxConfirmMapsStates/manager_unreachable
+| --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates (0.01s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/active (0.00s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/inactive (0.00s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/gone (0.00s)
+|     --- PASS: TestPlatformUpdateServicesLinuxConfirmMapsStates/manager_unreachable (0.00s)
+| PASS
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C1.tests=0
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [env] [A03_DUMP=1] [/tmp/a03-acceptance-20261120T170520Z/a03-deployment.amd64] [-test.run] [TestA03RenderedUnitsExport] [-test.v]
+| === RUN   TestA03RenderedUnitsExport
+| A03-UNIT-BEGIN com.culler.92a163b06548.resident.service
+| [Unit]
+| Description="Culler resident (com.culler.92a163b06548.resident)"
+| 
+| [Service]
+| ExecStart="/bin/sh" "/tmp/a03-render-fixture/a03 home/release/host/resident/src/main.ts" "--config" "/tmp/a03-render-fixture/a03 home/supervision/resident.json"
+| WorkingDirectory=/tmp/a03-render-fixture/a03 home/release/host/resident
+| Environment="MC_HOME=/tmp/a03-render-fixture/a03 home"
+| Environment="MC_LOG_LEVEL=info"
+| Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+| StandardOutput=append:/tmp/a03-render-fixture/a03 home/logs/resident.stdout.log
+| StandardError=append:/tmp/a03-render-fixture/a03 home/logs/resident.stderr.log
+| Restart=always
+| RestartSec=10
+| 
+| [Install]
+| WantedBy=default.target
+| A03-UNIT-END
+| A03-UNIT-BEGIN com.culler.92a163b06548.dashboard.service
+| [Unit]
+| Description="Culler dashboard (com.culler.92a163b06548.dashboard)"
+| 
+| [Service]
+| ExecStart="/bin/sh" "/tmp/a03-render-fixture/a03 home/release/host/dashboard/src/main.ts" "--config" "/tmp/a03-render-fixture/a03 home/supervision/dashboard.json"
+| WorkingDirectory=/tmp/a03-render-fixture/a03 home/release/host/dashboard
+| Environment="MC_HOME=/tmp/a03-render-fixture/a03 home"
+| Environment="MC_LOG_LEVEL=info"
+| Environment="PATH=/usr/local/bin:/usr/bin:/bin"
+| StandardOutput=append:/tmp/a03-render-fixture/a03 home/logs/dashboard.stdout.log
+| StandardError=append:/tmp/a03-render-fixture/a03 home/logs/dashboard.stderr.log
+| Restart=always
+| RestartSec=10
+| 
+| [Install]
+| WantedBy=default.target
+| A03-UNIT-END
+| A03-UNIT-BEGIN com.culler.92a163b06548.agentsview.service
+| [Unit]
+| Description="Culler AgentsView (com.culler.92a163b06548.agentsview)"
+| 
+| [Service]
+| ExecStart="/tmp/a03-render-fixture/a03 home/bin/agentsview" "serve" "--host" "127.0.0.1" "--port" "7334" "--no-browser" "--no-update-check"
+| WorkingDirectory=/tmp/a03-render-fixture/a03 home/agentsview/home
+| Environment="AGENTSVIEW_DATA_DIR=/tmp/a03-render-fixture/a03 home/agentsview/data"
+| Environment="AGENTSVIEW_DISABLE_UPDATE_CHECK=1"
+| Environment="AGENTSVIEW_TELEMETRY_ENABLED=0"
+| Environment="HOME=/tmp/a03-render-fixture/a03 home/agentsview/home"
+| Environment="HTTPS_PROXY=http://127.0.0.1:9"
+| Environment="HTTP_PROXY=http://127.0.0.1:9"
+| Environment="PATH=/usr/bin:/bin"
+| StandardOutput=append:/tmp/a03-render-fixture/a03 home/logs/agentsview.stdout.log
+| StandardError=append:/tmp/a03-render-fixture/a03 home/logs/agentsview.stderr.log
+| Restart=always
+| RestartSec=10
+| 
+| [Install]
+| WantedBy=default.target
+| A03-UNIT-END
+| --- PASS: TestA03RenderedUnitsExport (0.00s)
+| PASS
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C1b.dump=0
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [systemd-analyze] [--user] [verify] [/tmp/a03-acceptance-20261120T170520Z/work/com.culler.92a163b06548.agentsview.service]
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C2.verify.com.culler.92a163b06548.agentsview=0
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 RUN [systemd-analyze] [--user] [verify] [/tmp/a03-acceptance-20261120T170520Z/work/com.culler.92a163b06548.dashboard.service]
+| ts=2026-11-20T09:05:27Z host=F1104 uid=0 EXIT C2.verify.com.culler.92a163b06548.dashboard=0
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 RUN [systemd-analyze] [--user] [verify] [/tmp/a03-acceptance-20261120T170520Z/work/com.culler.92a163b06548.resident.service]
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 EXIT C2.verify.com.culler.92a163b06548.resident=0
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 RUN [systemd-run] [--user] [--collect] [--unit] [a03-transient-1845215] [/bin/sleep] [30]
+| Running as unit: a03-transient-1845215.service
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 EXIT C3.start=0
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 RUN [systemctl] [--user] [disable] [--now] [a03-transient-1845215]
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 EXIT C4.stop=0
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 C4.final_state=[inactive]
+| ts=2026-11-20T09:05:28Z host=F1104 uid=0 RUN is-active-absent EXIT=3 out=[inactive]
+ACCEPT-RAW-END
+C1.result PASS ts=2026-11-20T09:05:27Z host=F1104 uid=0
+C1b.result PASS ts=2026-11-20T09:05:27Z host=F1104 uid=0
+C2.result PASS ts=2026-11-20T09:05:28Z host=F1104 uid=0
+C3.result PASS ts=2026-11-20T09:05:28Z host=F1104 uid=0
+C4.result PASS ts=2026-11-20T09:05:28Z host=F1104 uid=0
+C5.result PASS ts=2026-11-20T09:05:28Z host=F1104 uid=0
+C6.result PASS ts=2026-11-20T09:05:28Z host=F1104 uid=0
+ACCEPT: PASS

@@ -55,21 +55,21 @@ func renderSystemdUnit(u systemdUnit) ([]byte, error) {
 		return nil, fmt.Errorf("systemd unit requires a description and working directory")
 	}
 	lines := []string{"[Unit]", "Description=" + mustQuote(u.Description)}
+	lines = append(lines, "", "[Service]")
 	execParts := make([]string, 0, len(u.ExecStart))
 	for _, arg := range u.ExecStart {
 		execParts = append(execParts, mustQuote(arg))
 	}
 	lines = append(lines, "ExecStart="+strings.Join(execParts, " "))
-	lines = append(lines, "", "[Service]")
-	lines = append(lines, "WorkingDirectory="+mustQuote(u.WorkingDirectory))
+	lines = append(lines, "WorkingDirectory="+u.WorkingDirectory)
 	for _, kv := range u.Environment {
 		lines = append(lines, "Environment="+mustQuote(kv[0]+"="+kv[1]))
 	}
 	if u.StandardOutput != "" {
-		lines = append(lines, "StandardOutput=append:"+mustQuote(u.StandardOutput))
+		lines = append(lines, "StandardOutput=append:"+u.StandardOutput)
 	}
 	if u.StandardError != "" {
-		lines = append(lines, "StandardError=append:"+mustQuote(u.StandardError))
+		lines = append(lines, "StandardError=append:"+u.StandardError)
 	}
 	lines = append(lines, "Restart=always", "RestartSec=10")
 	lines = append(lines, "", "[Install]", "WantedBy=default.target", "")
@@ -92,6 +92,16 @@ func validateUnitValues(u systemdUnit) error {
 	}
 	if _, err := systemdQuoteValue(u.WorkingDirectory); err != nil {
 		return err
+	}
+	// WorkingDirectory and the append: log paths render as the raw remainder
+	// of their line: systemd 249 does not strip quotes on these settings (the
+	// acceptance run on the designated host proved it keeps the quotes as path
+	// characters and calls the unit not absolute), and no escape exists for a
+	// quote or backslash.
+	for _, raw := range []string{u.WorkingDirectory, u.StandardOutput, u.StandardError} {
+		if strings.ContainsAny(raw, "\"\\") {
+			return fmt.Errorf("systemd raw-form setting cannot be rendered: %q", raw)
+		}
 	}
 	for _, arg := range u.ExecStart {
 		if _, err := systemdQuoteValue(arg); err != nil {

@@ -41,20 +41,39 @@ func TestRenderSystemdUnitShape(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	text := string(body)
-	for _, want := range []string{
-		"[Unit]\nDescription=\"Culler resident (com.culler.resident-ab12cd34ef56)\"",
-		"ExecStart=\"/usr/local/bin/bun\" \"/mc/home/release/host/resident/src/main.ts\" \"--config\" \"/mc/home/supervision/resident.json\"",
-		"[Service]",
-		"WorkingDirectory=\"/mc/home/release/host/resident\"",
-		"Environment=\"MC_HOME=/mc/home\"",
-		"StandardOutput=append:\"/mc/home/logs/resident.stdout.log\"",
-		"Restart=always",
-		"RestartSec=10",
-		"[Install]\nWantedBy=default.target",
-	} {
-		if !strings.Contains(text, want) {
-			t.Fatalf("unit missing %q:\n%s", want, text)
+	// The whole file, byte for byte. A Contains list cannot see the section a
+	// key lands in, and the first acceptance run on the designated host proved
+	// that: an ExecStart emitted between [Unit] and [Service] passed every
+	// fragment assertion and was refused by systemd itself.
+	got := string(body)
+	want := "[Unit]\n" +
+		"Description=\"Culler resident (com.culler.resident-ab12cd34ef56)\"\n" +
+		"\n" +
+		"[Service]\n" +
+		"ExecStart=\"/usr/local/bin/bun\" \"/mc/home/release/host/resident/src/main.ts\" \"--config\" \"/mc/home/supervision/resident.json\"\n" +
+		"WorkingDirectory=/mc/home/release/host/resident\n" +
+		"Environment=\"MC_HOME=/mc/home\"\n" +
+		"Environment=\"PATH=/a:/b\"\n" +
+		"StandardOutput=append:/mc/home/logs/resident.stdout.log\n" +
+		"StandardError=append:/mc/home/logs/resident.stderr.log\n" +
+		"Restart=always\n" +
+		"RestartSec=10\n" +
+		"\n" +
+		"[Install]\n" +
+		"WantedBy=default.target\n"
+	if got != want {
+		t.Fatalf("unit bytes differ:\ngot:\n%s\nwant:\n%s", got, want)
+	}
+	// WorkingDirectory renders raw (systemd 249 keeps the quotes as path
+	// characters and rejects the unit), so a path that cannot survive raw form
+	// is a refusal, not a corrupt file.
+	for _, bad := range []string{`/mc/ho"me`, `/mc/ho\me`} {
+		u := systemdUnit{
+			Description: "d", ExecStart: []string{"/bin/x"},
+			WorkingDirectory: bad,
+		}
+		if _, err := renderSystemdUnitChecked(u); err == nil {
+			t.Fatalf("WorkingDirectory %q accepted", bad)
 		}
 	}
 }
