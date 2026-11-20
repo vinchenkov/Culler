@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
@@ -86,47 +85,7 @@ func NewUpdateStopControl(home string, docker func(context.Context, ...string) (
 			}
 			return nil
 		},
-		Services: func(ctx context.Context, stop bool) error {
-			names, err := RuntimeNames(home)
-			if err != nil {
-				return err
-			}
-			var wg sync.WaitGroup
-			var mu sync.Mutex
-			var problems []error
-			for _, unit := range SupervisedUnits {
-				unit := unit
-				wg.Add(1)
-				go func() {
-					defer wg.Done()
-					label := fmt.Sprintf("gui/%d/%s", os.Getuid(), UnitLabel(names, unit))
-					verb := "print"
-					if stop {
-						verb = "bootout"
-					}
-					body, err := updateCommand(ctx, "/bin/launchctl", verb, label)
-					if err != nil {
-						message := strings.ToLower(string(body))
-						if strings.Contains(message, "could not find service") || strings.Contains(message, "service not found") || strings.Contains(message, "no such process") {
-							return
-						}
-					}
-					if stop {
-						return
-					}
-					if err == nil {
-						err = fmt.Errorf("The %s service remains loaded.", unit)
-					} else {
-						err = fmt.Errorf("The %s service state is unknown.", unit)
-					}
-					mu.Lock()
-					problems = append(problems, err)
-					mu.Unlock()
-				}()
-			}
-			wg.Wait()
-			return errors.Join(problems...)
-		}, Docker: docker, Now: time.Now,
+		Services: platformUpdateServices(home), Docker: docker, Now: time.Now,
 		Wait: func(ctx context.Context, d time.Duration) error {
 			select {
 			case <-ctx.Done():

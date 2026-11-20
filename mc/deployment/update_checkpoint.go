@@ -53,11 +53,8 @@ func updateHostPaths(home string, j *UpdateJournal) []string {
 		paths = append(paths, filepath.Join(j.BinDir, "mc"))
 	}
 	if j.Previous != nil {
-		userHome, _ := os.UserHomeDir()
 		names, _ := RuntimeNames(home)
-		for _, unit := range SupervisedUnits {
-			paths = append(paths, filepath.Join(userHome, "Library", "LaunchAgents", UnitLabel(names, unit)+".plist"))
-		}
+		paths = append(paths, platformInstalledUnitPaths(names)...)
 	}
 	return paths
 }
