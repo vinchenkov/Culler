@@ -86,124 +86,14 @@ func matchingTickReceipt(path, releaseBuildID string, notBefore, notAfter time.T
 	return true, nil
 }
 
-// installedLaunchAgent is the rollback record of one installed plist.
-// previous holds the replaced plist, or nil when no plist was present.
-type installedLaunchAgent struct {
+// installedUnitFile is the platform-neutral rollback record of one installed
+// unit definition; install/restore/verify are platform hooks
+// (supervision_activate_darwin.go, supervision_activate_linux.go).
+type installedUnitFile struct {
 	identity     os.FileInfo
 	written      bool
 	previous     []byte
 	previousMode os.FileMode
-}
-
-// installLaunchAgent installs the prepared plist of a unit that is not
-// loaded. It replaces an installed plist that differs only when that plist is
-// an operator-owned regular file with one link.
-func installLaunchAgent(source, destination string) (installedLaunchAgent, error) {
-	var installed installedLaunchAgent
-	body, err := os.ReadFile(source)
-	if err != nil {
-		return installed, err
-	}
-	if existing, statErr := os.Lstat(destination); statErr == nil {
-		uid, links, ok := statOwner(existing)
-		current, readErr := os.ReadFile(destination)
-		if readErr != nil || !ok || int(uid) != os.Getuid() || existing.Mode()&os.ModeSymlink != 0 ||
-			!existing.Mode().IsRegular() || links != 1 {
-			return installed, fmt.Errorf("installed LaunchAgent %q is not an owner-controlled regular file", destination)
-		}
-		if existing.Mode().Perm() == 0o644 && bytes.Equal(current, body) {
-			installed.identity = existing
-			return installed, nil
-		}
-		installed.previous, installed.previousMode = current, existing.Mode().Perm()
-	} else if !errors.Is(statErr, fs.ErrNotExist) {
-		return installed, statErr
-	}
-	installed.identity, installed.written, err = writeLaunchAgent(destination, body, 0o644)
-	return installed, err
-}
-
-// writeLaunchAgent replaces destination with body through a temporary file.
-// written reports that the rename took place.
-func writeLaunchAgent(destination string, body []byte, mode os.FileMode) (identity os.FileInfo, written bool, err error) {
-	tmp, err := os.CreateTemp(filepath.Dir(destination), ".mc-launch-agent-")
-	if err != nil {
-		return nil, false, err
-	}
-	tmpPath := tmp.Name()
-	cleanup := true
-	defer func() {
-		_ = tmp.Close()
-		if cleanup {
-			_ = os.Remove(tmpPath)
-		}
-	}()
-	if err := tmp.Chmod(mode); err != nil {
-		return nil, false, err
-	}
-	if _, err := tmp.Write(body); err != nil {
-		return nil, false, err
-	}
-	if err := tmp.Sync(); err != nil {
-		return nil, false, err
-	}
-	if err := tmp.Close(); err != nil {
-		return nil, false, err
-	}
-	if err := os.Rename(tmpPath, destination); err != nil {
-		return nil, false, err
-	}
-	cleanup = false
-	if err := syncDirectory(filepath.Dir(destination)); err != nil {
-		identity, statErr := os.Lstat(destination)
-		if statErr != nil {
-			return nil, false, fmt.Errorf("sync installed LaunchAgent: %v; inspect rollback identity: %w", err, statErr)
-		}
-		return identity, true, err
-	}
-	info, err := os.Lstat(destination)
-	return info, true, err
-}
-
-// restoreLaunchAgent undoes installLaunchAgent. It removes a new plist and
-// writes back a replaced plist.
-func restoreLaunchAgent(path string, installed installedLaunchAgent) error {
-	if !installed.written {
-		return nil
-	}
-	current, err := os.Lstat(path)
-	if errors.Is(err, fs.ErrNotExist) && installed.previous == nil {
-		return nil
-	}
-	if err != nil {
-		return err
-	}
-	if !os.SameFile(installed.identity, current) {
-		return fmt.Errorf("installed LaunchAgent %q changed identity during rollback", path)
-	}
-	if installed.previous == nil {
-		return os.Remove(path)
-	}
-	_, _, err = writeLaunchAgent(path, installed.previous, installed.previousMode)
-	return err
-}
-
-func verifyInstalledLaunchAgent(source, destination string) error {
-	sourceBody, err := os.ReadFile(source)
-	if err != nil {
-		return err
-	}
-	info, err := os.Lstat(destination)
-	if err != nil {
-		return err
-	}
-	uid, links, ok := statOwner(info)
-	destinationBody, readErr := os.ReadFile(destination)
-	if readErr != nil || !ok || int(uid) != os.Getuid() || info.Mode()&os.ModeSymlink != 0 ||
-		!info.Mode().IsRegular() || info.Mode().Perm() != 0o644 || links != 1 || !bytes.Equal(sourceBody, destinationBody) {
-		return fmt.Errorf("installed LaunchAgent %q differs from its prepared definition", destination)
-	}
-	return nil
 }
 
 // ActivateSupervision is the operator-present half of supervision. The
@@ -240,14 +130,14 @@ func ActivateSupervision(home, launchAgentsDir, releaseBuildID string, deps Supe
 	if launchAgentsDir == "" || !filepath.IsAbs(launchAgentsDir) || filepath.Clean(launchAgentsDir) != launchAgentsDir {
 		return "", result, fmt.Errorf("LaunchAgents directory must be a clean absolute path")
 	}
-	units, labels, sources, destinations := supervisionStartOrder(names, result.Root, launchAgentsDir)
+	units, labels, sources, destinations := activationOrder(names, result.Root, launchAgentsDir)
 	stopped, err := ReadServiceStops(canonicalHome)
 	if err != nil {
 		return "", result, err
 	}
 	for i, source := range sources {
 		body, err := os.ReadFile(source)
-		if err != nil || !bytes.Contains(body, []byte("<string>"+labels[i]+"</string>")) {
+		if err != nil || !unitFileCarriesLabel(body, labels[i]) {
 			return "", result, fmt.Errorf("prepared LaunchAgent does not carry expected label %s", labels[i])
 		}
 	}
@@ -276,7 +166,7 @@ func ActivateSupervision(home, launchAgentsDir, releaseBuildID string, deps Supe
 	}
 	if activeCount > 0 {
 		for i := range labels {
-			if err := verifyInstalledLaunchAgent(sources[i], destinations[i]); err != nil {
+			if err := verifyInstalledUnit(sources[i], destinations[i]); err != nil {
 				return "", result, err
 			}
 		}
@@ -302,7 +192,7 @@ func ActivateSupervision(home, launchAgentsDir, releaseBuildID string, deps Supe
 	if err := requireOperatorSourceDirectory(launchAgentsDir, "LaunchAgents directory"); err != nil {
 		return "", result, err
 	}
-	installed := make([]installedLaunchAgent, len(labels))
+	installed := make([]installedUnitFile, len(labels))
 	bootstrapped := make([]bool, len(labels))
 	rollback := func(primary error) error {
 		problems := []string{primary.Error()}
@@ -314,14 +204,14 @@ func ActivateSupervision(home, launchAgentsDir, releaseBuildID string, deps Supe
 			}
 		}
 		for i := len(labels) - 1; i >= 0; i-- {
-			if err := restoreLaunchAgent(destinations[i], installed[i]); err != nil {
+			if err := restoreUnitFile(destinations[i], installed[i]); err != nil {
 				problems = append(problems, err.Error())
 			}
 		}
 		return fmt.Errorf("supervision activation rolled back: %s", strings.Join(problems, "; "))
 	}
 	for i := range labels {
-		installed[i], err = installLaunchAgent(sources[i], destinations[i])
+		installed[i], err = installUnitFile(sources[i], destinations[i])
 		if err != nil {
 			return "", result, rollback(err)
 		}
@@ -395,7 +285,7 @@ func InspectActiveSupervision(home, launchAgentsDir, releaseBuildID string, laun
 	if err := validateSupervisionTree(result.Root); err != nil {
 		return result, fmt.Errorf("prepared supervision is invalid: %w", err)
 	}
-	units, labels, sources, destinations := supervisionStartOrder(names, result.Root, launchAgentsDir)
+	units, labels, sources, destinations := activationOrder(names, result.Root, launchAgentsDir)
 	stopped, err := ReadServiceStops(canonicalHome)
 	if err != nil {
 		return result, err
@@ -408,7 +298,7 @@ func InspectActiveSupervision(home, launchAgentsDir, releaseBuildID string, laun
 		if loaded == stopped[units[i]] {
 			return result, fmt.Errorf("LaunchAgent %s is not loaded", label)
 		}
-		if err := verifyInstalledLaunchAgent(sources[i], destinations[i]); err != nil {
+		if err := verifyInstalledUnit(sources[i], destinations[i]); err != nil {
 			return result, err
 		}
 	}
@@ -505,18 +395,4 @@ func ReconfigureSupervision(
 		return "", result, fmt.Errorf("rewrite supervision for the new policy: %w", err)
 	}
 	return ActivateSupervision(canonicalHome, launchAgentsDir, releaseBuildID, deps)
-}
-
-// supervisionStartOrder returns the units, labels, prepared plists, and
-// installed plists in start order: the reverse of SupervisedUnits.
-func supervisionStartOrder(names Names, root, launchAgentsDir string) (units, labels, sources, destinations []string) {
-	for i := len(SupervisedUnits) - 1; i >= 0; i-- {
-		unit := SupervisedUnits[i]
-		label := UnitLabel(names, unit)
-		units = append(units, unit)
-		labels = append(labels, label)
-		sources = append(sources, filepath.Join(root, "LaunchAgents", unit+".plist"))
-		destinations = append(destinations, filepath.Join(launchAgentsDir, label+".plist"))
-	}
-	return units, labels, sources, destinations
 }

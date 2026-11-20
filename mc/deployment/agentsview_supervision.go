@@ -230,8 +230,8 @@ func InspectAgentsViewUnit(home, launchAgentsDir string, launchd LaunchdControll
 	if !loaded {
 		return label, fmt.Errorf("LaunchAgent %s is not loaded", label)
 	}
-	if err := verifyInstalledLaunchAgent(filepath.Join(root, filepath.FromSlash(agentsViewPlist)),
-		filepath.Join(launchAgentsDir, label+".plist")); err != nil {
+	source, destination := installedUnitPaths(names, root, launchAgentsDir, "agentsview")
+	if err := verifyInstalledUnit(source, destination); err != nil {
 		return label, err
 	}
 	return label, nil

@@ -104,7 +104,8 @@ func InspectServiceDefinition(home, launchAgentsDir, unit, release string) error
 	if err != nil {
 		return err
 	}
-	return verifyInstalledLaunchAgent(filepath.Join(root, "LaunchAgents", unit+".plist"), filepath.Join(launchAgentsDir, UnitLabel(names, unit)+".plist"))
+	source, destination := installedUnitPaths(names, root, launchAgentsDir, unit)
+	return verifyInstalledUnit(source, destination)
 }
 
 func InspectResidentReceipt(home, release string, since, now time.Time) error {
