@@ -34,3 +34,11 @@ seam 抽取若牵动 supervision_release_test/supervision_resident_contract_test
 - **① 完成判定**：deployment 包内**零未标注文件引用 darwin 专属符号**（脚本化扫描 0 命中）；darwin 全套 `./test.sh ./deployment/` 三次 ok；双平台 build+vet ok；cmd/mc 相关定向套件 ok（11.8s）。
 - **范围裁决（登记而非扩面）**：cmd/mc 的 launchctl 控制器（culler_services_prod/onboard_state_prod/uninstall_prod 等）**移入阶段②**——该面要做的是"Linux 获得真实 systemd 行为+自己的消息面"，纯 seam 搬迁不改行为却牵动未列入本计划正清单的文件；进入 ② 时按附三先补 diff 计划再动。共享层遗留的 "LaunchAgent" 文案（非行为）同并入 ② 清扫，§7.1 记录。
 - **待核问题（提取时照搬未修，红线）**：platformUpdateServices darwin 实现中 stop=true 且 bootout 返回**非** not-found 错误时被静默吞掉——既有语义原样保留，是否缺陷留待 ⑤ 真机验收数据判断。
+
+## ②c 正清单扩充（先列后改；所有者"继续推进"指令下追加）
+新增/修改文件：
+- 新 `cmd/mc/supervision_platform_darwin.go`、`cmd/mc/supervision_platform_linux.go`——承载：`supervisionInstallDir`、`installedUnitFileName`、`newServiceController`、`newActivationController`、`platformUnitLabelLoaded`、`uninstallServiceUnits`、`stopRunningServiceUnit`；darwin 侧迁入 `cullerLaunchd`/`launchdController`/`launchdLabelLoaded`/`uninstallLaunchAgents`(去 GOOS 卫)/`launchctlBootout` 逐字主体；linux 侧=new `systemctl --user` 实现（is-active/enable --now/disable --now/daemon-reload + 单元目录枚举与 MC_HOME 解析）。
+- 修改（仅调用点替换+删除已迁定义）：`culler_services_prod.go`、`onboard_state_prod.go`、`doctor_prod.go`、`culler_prod.go`、`acceptance_s7_prod.go`、`setup_existing_prod.go`、`setup_published_prod.go`、`spine_transfer_prod.go`、`uninstall_prod.go`、`culler_uninstall_prod.go`。
+- 保留不动：`report.LaunchAgents` JSON 字段名（消费面契约，A09 统一清扫）；`verbs.CullerLaunch*` 帮助函数命名（同上）。
+- 命名诚实性：跨平台符号一律新名（activationController 等），不在 Linux 文件里保留 launchd 字样的**行为**符号。
+- 验证面：双平台 build+vet、cmd/mc 定向套件（Onboard|Services|Uninstall|Doctor）+deployment 全套、darwin 行为逐字迁移自证（diff 审查+测试等价）。
