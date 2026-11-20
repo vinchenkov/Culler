@@ -42,3 +42,10 @@ seam 抽取若牵动 supervision_release_test/supervision_resident_contract_test
 - 保留不动：`report.LaunchAgents` JSON 字段名（消费面契约，A09 统一清扫）；`verbs.CullerLaunch*` 帮助函数命名（同上）。
 - 命名诚实性：跨平台符号一律新名（activationController 等），不在 Linux 文件里保留 launchd 字样的**行为**符号。
 - 验证面：双平台 build+vet、cmd/mc 定向套件（Onboard|Services|Uninstall|Doctor）+deployment 全套、darwin 行为逐字迁移自证（diff 审查+测试等价）。
+
+## 所有者三项裁决与阶段③④落地（2026-11-20）
+- **裁决①（dashboard 最小行为套件）**：新 `redeploy-dashboard_test.sh`，6 用例=Linux 正确 unit+参数、systemd 失败不回退 launchd、缺 unit 拒绝、override fail-closed、无 override 随真实主机（假 uname 驱动）、Darwin 分支仍走 launchctl。fc52d52。
+- **裁决②（redeploy.sh 选方案 A + 硬约束）**：统一 `resolve_service_os`（仅接受 Darwin/Linux、大小写不敏感、其余 exit 2、未设=uname）落 4 个发布脚本；**uname 桩未动**（其存在是为 source-update-guard 的语义，非服务面）；全部 launchctl 用例显式 `MC_OS_OVERRIDE=Darwin`（9 处）；新 Linux 用例**不传 override**——同时充当"默认=真实主机"的端到端证明。bdfe4f2。
+- **裁决③（:349 潜在缺陷只登记）**：`evidence/A03/DEFECT-REGISTER-001.md`，状态 REGISTERED-NOT-FIXED；Darwin 停止循环 plist 文件驱动 vs 等待循环 launchctl list 驱动的真相源分裂原样保留；Linux 分支为 list 驱动、不继承该缺陷（用例自证 disable 序列）。
+- **阶段③收口**：4/4（build-prod、dev-reset、redeploy-dashboard、redeploy）；各套件按"EXIT=0 且 ok 标记在场"双判据。**过程教训**：一次 systemctl 桩插入吞掉了 docker 桩首行，套件早死却返回 0——单看 exit code 不足恃，ok 标记必查。
+- **阶段④（platformUpdateServices Linux）**：`deployment/update_platform_linux.go` 实装。逐字镜像 darwin 可观察语义：stop 吞掉一切 systemctl 错误（红线原样保留，注释点名留给真机数据判断）；confirm=`systemctl --user is-active`，exit 0→"remains loaded"，stdout∈{inactive,failed,unknown}→通过，其余→"state is unknown"。`platformInstalledUnitPaths` 保持①b2 实装。新 Linux 门控测试 `update_platform_linux_test.go`（PATH 假 systemctl；argv 集合断言 disable --now ×3、四态映射）；host 不运行=UNVERIFIED，交 ⑤ 在 218 以交叉编译测试二进制执行。验证：GOOS=linux/arm64 vet ok、darwin vet ok、host `./test.sh ./deployment/ -count=1` ok(49.0s)、gofmt 干净。

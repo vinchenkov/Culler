@@ -3,13 +3,20 @@ package deployment
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
+	"sync"
 )
 
-// Linux half of the update surface. The checkpoint path binding uses the
-// systemd user-unit directory; the stop/confirm control arrives with A03
-// stage ② and refuses loudly until then.
+// Linux (user systemd) half of the update surface. The stop/confirm control
+// mirrors the launchd half observable for observable: a stop swallows every
+// service-manager error, including a unit that is already gone, and the
+// confirm pass reports a unit that is still running as "remains loaded" and a
+// manager it could not question as "state is unknown". The swallowed stop
+// errors are an open question kept for the real-machine record, not an
+// accident of this file.
 
 func platformInstalledUnitPaths(names Names) []string {
 	configHome := os.Getenv("XDG_CONFIG_HOME")
@@ -24,8 +31,41 @@ func platformInstalledUnitPaths(names Names) []string {
 	return paths
 }
 
-func platformUpdateServices(_ string) func(ctx context.Context, stop bool) error {
-	return func(context.Context, bool) error {
-		return errors.New("systemd update service control is not implemented yet")
+func platformUpdateServices(home string) func(ctx context.Context, stop bool) error {
+	return func(ctx context.Context, stop bool) error {
+		names, err := RuntimeNames(home)
+		if err != nil {
+			return err
+		}
+		var wg sync.WaitGroup
+		var mu sync.Mutex
+		var problems []error
+		for _, unit := range SupervisedUnits {
+			unit := unit
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				name := UnitLabel(names, unit) + ".service"
+				if stop {
+					updateCommand(ctx, "systemctl", "--user", "disable", "--now", name)
+					return
+				}
+				body, err := updateCommand(ctx, "systemctl", "--user", "is-active", name)
+				if err == nil {
+					err = fmt.Errorf("The %s service remains loaded.", unit)
+				} else {
+					switch strings.ToLower(strings.TrimSpace(string(body))) {
+					case "inactive", "failed", "unknown":
+						return
+					}
+					err = fmt.Errorf("The %s service state is unknown.", unit)
+				}
+				mu.Lock()
+				problems = append(problems, err)
+				mu.Unlock()
+			}()
+		}
+		wg.Wait()
+		return errors.Join(problems...)
 	}
 }
