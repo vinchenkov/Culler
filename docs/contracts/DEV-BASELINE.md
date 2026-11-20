@@ -90,14 +90,14 @@
 | D09 | OIDC 联合（issuer 精确/PKCE/JIT 拒绝策略） | D01 | IG §2；IG-T6 | P4.1：协议验证集全项（IG-T6 扩项） | 门:O9；P4.1 尾 |
 | D10 | metrics/OTel+审计导出（哈希链可验证）+retention 声明制 | B08,D02 | MASTER §4 P4.1；TM §6 行；DC §3.5 | P4.1：导出可验证+retention 缺省拒 | |
 
-### Track E · P3 交付 —— **全部 blocked-by：DT 契约封闭**（起草未授权，待单独指令）
+### Track E · P3 交付 —— **全部 blocked-by：DT 契约封闭**（v0.1 草案已提交评审 AM v0.1.36；封闭=评审+正文事件，起草本身不解除 BLOCKED）
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
 |---|---|---|---|---|---|
-| E01 | push 宿主直跑+journal/receipt+pushed_sha 自证 | — | MASTER D11 四规则；TM §4 B8 | P3：交付故障矩阵（AM §2） | blocked-by DT 封闭 |
-| E02 | PR 创建（compare 直查键） | — | DT 规范源（待起草） | P3：故障矩阵 | blocked-by DT 封闭 |
-| E03 | 远端观察器+自激环封堵（delivery.go:1059 字符串相等缺陷） | — | TM §4 B8；DT（待起草） | P3：故障矩阵 | blocked-by DT 封闭 |
-| E04 | 故障矩阵八场景 | — | DT（待起草） | P3 Exit 全绿（AM §2） | blocked-by DT 封闭 |
-| E05 | hook 隔离强制配置（V-3 承接） | — | TM §7.2 V-3 | P3：强制配置清单实测 | blocked-by DT 封闭 |
+| E01 | push 宿主直跑+journal/receipt+pushed_sha 自证 | — | DT §1 INV-D1/D3、§2 R2/R3、§3；MASTER D11；TM §4 B8 | P3：交付故障矩阵（AM §2） | blocked-by DT 封闭；实施另发授权（DT §0） |
+| E02 | PR 创建（compare 直查键） | — | DT §4 | P3：故障矩阵 | blocked-by DT 封闭；API 认证面=DT §4 Planned |
+| E03 | 远端观察器+自激环封堵（delivery.go:1059 字符串相等缺陷） | — | DT §6 修复规格、§5-S8 | P3：故障矩阵 | blocked-by DT 封闭；READY 前置=result 字段全表入 B03/F0b 注册（DT §6 末） |
+| E04 | 故障矩阵八场景 | — | DT §5（S1–S8，规范源=该节） | P3 Exit 全绿（AM §2） | blocked-by DT 封闭 |
+| E05 | hook 隔离强制配置（V-3 承接） | — | DT §6 清单 1-8；TM §7.2 V-3 | P3：强制配置清单实测 | blocked-by DT 封闭 |
 
 ### 治理指针（非工单，状态只在 AM 演进）
 AM §3 队列 1-6（Authority 指定、5×CONTRACT_FROZEN+Integrity 复核、ARCHITECTURE_FROZEN、D-IG×5+D-PS×5+D-BL×5 裁决批准、RR-1..7 逐条、F0b-3 摘要关系批准）；BL-V1 原文核对；DT 起草启动令。
