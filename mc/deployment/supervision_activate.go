@@ -13,11 +13,17 @@ import (
 	"time"
 )
 
-type LaunchdController interface {
+// UnitController drives the platform supervisor for one unit identity:
+// load-state probe, start (bootstrap), and stop (bootout). Darwin implements
+// it over launchctl, Linux over systemctl; the historical launchd name stays
+// as an alias until the cmd/mc controller surfaces are renamed with A03 ②c.
+type UnitController interface {
 	Loaded(label string) (bool, error)
 	Bootstrap(plist string) error
 	Bootout(label string) error
 }
+
+type LaunchdController = UnitController
 
 type SupervisionActivationDeps struct {
 	Launchd LaunchdController
@@ -94,6 +100,118 @@ type installedUnitFile struct {
 	written      bool
 	previous     []byte
 	previousMode os.FileMode
+}
+
+// installUnitFile installs the prepared definition of a unit that is not
+// loaded. It replaces an installed unit file that differs only when that file
+// is an operator-owned regular file with one link. The operation is pure
+// owner-controlled file work, identical for plists and systemd units.
+func installUnitFile(source, destination string) (installedUnitFile, error) {
+	var installed installedUnitFile
+	body, err := os.ReadFile(source)
+	if err != nil {
+		return installed, err
+	}
+	if existing, statErr := os.Lstat(destination); statErr == nil {
+		uid, links, ok := statOwner(existing)
+		current, readErr := os.ReadFile(destination)
+		if readErr != nil || !ok || int(uid) != os.Getuid() || existing.Mode()&os.ModeSymlink != 0 ||
+			!existing.Mode().IsRegular() || links != 1 {
+			return installed, fmt.Errorf("installed unit %q is not an owner-controlled regular file", destination)
+		}
+		if existing.Mode().Perm() == 0o644 && bytes.Equal(current, body) {
+			installed.identity = existing
+			return installed, nil
+		}
+		installed.previous, installed.previousMode = current, existing.Mode().Perm()
+	} else if !errors.Is(statErr, fs.ErrNotExist) {
+		return installed, statErr
+	}
+	installed.identity, installed.written, err = writeUnitFileAtomic(destination, body, 0o644)
+	return installed, err
+}
+
+// writeUnitFileAtomic replaces destination with body through a temporary
+// file. written reports that the rename took place.
+func writeUnitFileAtomic(destination string, body []byte, mode os.FileMode) (identity os.FileInfo, written bool, err error) {
+	tmp, err := os.CreateTemp(filepath.Dir(destination), ".mc-unit-")
+	if err != nil {
+		return nil, false, err
+	}
+	tmpPath := tmp.Name()
+	cleanup := true
+	defer func() {
+		_ = tmp.Close()
+		if cleanup {
+			_ = os.Remove(tmpPath)
+		}
+	}()
+	if err := tmp.Chmod(mode); err != nil {
+		return nil, false, err
+	}
+	if _, err := tmp.Write(body); err != nil {
+		return nil, false, err
+	}
+	if err := tmp.Sync(); err != nil {
+		return nil, false, err
+	}
+	if err := tmp.Close(); err != nil {
+		return nil, false, err
+	}
+	if err := os.Rename(tmpPath, destination); err != nil {
+		return nil, false, err
+	}
+	cleanup = false
+	if err := syncDirectory(filepath.Dir(destination)); err != nil {
+		identity, statErr := os.Lstat(destination)
+		if statErr != nil {
+			return nil, false, fmt.Errorf("sync installed unit: %v; inspect rollback identity: %w", err, statErr)
+		}
+		return identity, true, err
+	}
+	info, err := os.Lstat(destination)
+	return info, true, err
+}
+
+// restoreUnitFile undoes installUnitFile. It removes a new unit file and
+// writes back a replaced one.
+func restoreUnitFile(path string, installed installedUnitFile) error {
+	if !installed.written {
+		return nil
+	}
+	current, err := os.Lstat(path)
+	if errors.Is(err, fs.ErrNotExist) && installed.previous == nil {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	if !os.SameFile(installed.identity, current) {
+		return fmt.Errorf("installed unit %q changed identity during rollback", path)
+	}
+	if installed.previous == nil {
+		return os.Remove(path)
+	}
+	_, _, err = writeUnitFileAtomic(path, installed.previous, installed.previousMode)
+	return err
+}
+
+func verifyInstalledUnit(source, destination string) error {
+	sourceBody, err := os.ReadFile(source)
+	if err != nil {
+		return err
+	}
+	info, err := os.Lstat(destination)
+	if err != nil {
+		return err
+	}
+	uid, links, ok := statOwner(info)
+	destinationBody, readErr := os.ReadFile(destination)
+	if readErr != nil || !ok || int(uid) != os.Getuid() || info.Mode()&os.ModeSymlink != 0 ||
+		!info.Mode().IsRegular() || info.Mode().Perm() != 0o644 || links != 1 || !bytes.Equal(sourceBody, destinationBody) {
+		return fmt.Errorf("installed unit %q differs from its prepared definition", destination)
+	}
+	return nil
 }
 
 // ActivateSupervision is the operator-present half of supervision. The
