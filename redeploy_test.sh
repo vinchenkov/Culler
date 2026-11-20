@@ -208,7 +208,12 @@ exit 94
 FAKE
   cat >"$bin/uname" <<'FAKE'
 #!/bin/sh
-printf 'Linux\n'
+# Answer -m with a real machine so the production image build's architecture
+# derivation (uname -m) resolves, while -s stays Linux for the service seam.
+case "${1:-}" in
+  -m) printf 'x86_64\n' ;;
+  *) printf 'Linux\n' ;;
+esac
 FAKE
   # `tty -s` reports a terminal on stdin only when MC_REDEPLOY_TEST_TTY is 1.
   cat >"$bin/tty" <<'FAKE'
