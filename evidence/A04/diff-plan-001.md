@@ -35,3 +35,8 @@ CODED 准入事实组：A03 行终报（218=x86_64/Ubuntu 22.04.4/systemd 249/do
 - npm 原生包面若发现上游无 linux-x64 对应物（opencode 2.2.7 / claude-agent-sdk / codex 任一缺包）→ **STOP-4 型事实上报**（不得静默降级或改选版本）。
 - 14 日时效：003 签发轮起算，本票体量最大；若⑤/⑥ 越窗，按 003 §6 走进展重审而非缩判据。
 - 收口 EVIDENCED 必含逐字句：**systemd 真实监督行为 UNVERIFIED（无运行环境）**——A04 若 ⑥ 获持久安装批准，该句残余面收窄但**句随票携带直至 F0a 联合判定**，转写规则与 A03 同。
+
+## 进度登记（随阶段追加，不改写既有段）
+- **开票事实采集（执行侧 E1）**：八组架构敏感点全量清单（install/release/Dockerfile 六层下载/opencode ELF/探针/门群/CI 标签/测试钉选，file:line 级，扫描由只读子代理执行，结果按我方 diff-plan 各阶段吸收）。**新暴露事实**：① install.sh 的 release.json 解析依赖 plutil（macOS 专属）→ ③ 需双解析器；② `containerRuntimeCapabilityProbe` 运行于容器内，其 runtime.GOARCH 是**镜像**架构而非宿主——旧 `!= arm64` 检查在 qemu 仿真 arm64 二进制时**反而通过**（仿真盲区，① 已修）。
+- **阶段① 完成（fdf477a）**：`deployment/nativearch.go`（值域表 {arm64,amd64} + uname machine 映射 + `NativeArchitecture` 测试缝）；容器内探针改为 **image-arch ∧ uname-machine 一致**双臂判定（仿真实测被拒，原 arm64 原生路径逐字同结果）；9 处 docker-inspect 字面门（helper_manager×3 / redeploy_check / setup_published / setup_release / project_image / onboarding-prepare）改宿主相等判定；`culler-package` ELF 分支接受 linux-amd64 + `--platform` 值域前置校验 + buildPackage 平台贯通（host-bun/agentsview 记录的平台维度按边界**留待③**）；12 个图像门测试钉缝（arm64 fixture 与 host 解耦）+ 新镜像用例（amd64-宿主×amd64 接受 / amd64-宿主×arm64 拒绝零变更 / 三平台二进制身份矩阵）。验证：gofmt/vet 净（含 GOOS=linux **arm64 与 amd64 双跨**）；`./test.sh ./deployment/ ./onboarding/ -count=1` ok(42.3s/2.5s)、`./cmd/mc` 门群定向 ok、`./distribution ./cmd/culler-package` ok（amd64 交叉编译二进制真实验证）。**UNVERIFIED（照录）**：boundarydocker 探针实跑 SKIP（本机无 mc-prod 镜像，构建受 launchd 守卫约束）——仿真拒绝腿与 native-amd64 腿由 ⑥ 在 218（amd64 原生构建镜像后）回补正向证据；qemu 负向腿在纯 amd64 主机不可观测（无 binfmt 时 docker 层即拒），如实登记为不覆盖。
+- **边界更正登记**：① 计划中 distribution record.go 值域改动并入 ③（与 D-1 每平台记录同步落地才有一致语义；① 只动 culler-package 机械分支）。正清单文件族不变。
