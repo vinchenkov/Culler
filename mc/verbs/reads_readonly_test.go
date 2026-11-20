@@ -7,16 +7,15 @@ import (
 	"testing"
 )
 
-// The read verbs against a spine on a read-only mount. Inside an agent
-// container, a read verb that opens the spine through the writer's path
-// needs the WAL/SHM sidecars to exist or be creatable, so it fails with
-// SQLITE_CANTOPEN exactly when no writer's sidecars happen to be present.
-// The read verbs open through OpenSpineRead (substrate.OpenReadOnly), which
-// reads BOTH states.
-//
-// The fixture is the worst of the two: a spine copy with NO -wal/-shm whose
-// file and directory are both unwritable.
-func TestReadVerbsReadAReadOnlySpine(t *testing.T) {
+// The read verbs against a spine on a read-only mount. The ACTIVE read
+// entry (OpenSpineRead → substrate.OpenReadOnly) attaches through the
+// WAL/SHM sidecars and never degrades to an immutable read, so a
+// sidecar-less spine on an unwritable mount FAILS — by design: "no -wal
+// now" cannot prove "no writer during the read". Container availability in
+// exactly that state is the mount-layout obligation registered as A16;
+// until A16 lands this is the documented expected-failure window, asserted
+// here rather than hidden behind an excluded test.
+func TestReadVerbsRefuseSidecarlessReadOnlySpine(t *testing.T) {
 	t.Setenv("MC_HOME", t.TempDir())
 	dir := t.TempDir()
 	spine := filepath.Join(dir, "spine.db")
@@ -54,13 +53,46 @@ func TestReadVerbsReadAReadOnlySpine(t *testing.T) {
 		os.Chmod(spine, 0o644)
 	})
 
-	db, err := OpenSpineRead(spine)
+	if refused, err := OpenSpineRead(spine); err == nil {
+		refused.Close()
+		t.Fatal("the active read path served a sidecar-less read-only spine; the immutable degradation is back")
+	}
+	// The refused open created no sidecar either.
+	for _, sidecar := range []string{spine + "-wal", spine + "-shm"} {
+		if _, err := os.Stat(sidecar); !os.IsNotExist(err) {
+			t.Fatalf("the refused open left %s behind (stat err %v)", sidecar, err)
+		}
+	}
+
+	// The window is mount availability, not the read verbs: on a writable
+	// mount the same verbs read the same data through the same shared path.
+	live := filepath.Join(t.TempDir(), "spine.db")
+	if _, err := Init(InitArgs{Spine: live, Project: "ws-ro", WorkspaceRoot: t.TempDir()}); err != nil {
+		t.Fatalf("init spine: %v", err)
+	}
+	wseed, err := OpenSpine(live)
 	if err != nil {
-		t.Fatalf("OpenSpineRead(read-only spine) = %v, want a working read", err)
+		t.Fatalf("open spine for seeding: %v", err)
+	}
+	if _, err := wseed.Exec(`
+		INSERT INTO tasks (title, scope, priority, created_at, status, origin, project)
+		VALUES ('read me', 'task', 2, '2026-08-27 09:00:00', 'proposed', 'user', 'ws-ro')`); err != nil {
+		t.Fatalf("seed task: %v", err)
+	}
+	if _, err := wseed.Exec(`
+		INSERT INTO activity (actor, kind, subject, detail)
+		VALUES ('test', 'spine.readonly', 'ws-ro', 'seeded for the writable harness')`); err != nil {
+		t.Fatalf("seed activity: %v", err)
+	}
+	wseed.Close()
+
+	db, err := OpenSpineRead(live)
+	if err != nil {
+		t.Fatalf("OpenSpineRead(writable mount) = %v, want a working read", err)
 	}
 	defer db.Close()
 	if _, err := ProjectRoleShow(db, nil, "ws-ro", dispatch.RoleWorker); err != nil {
-		t.Fatalf("Read-only customization read: %v", err)
+		t.Fatalf("writable customization read: %v", err)
 	}
 
 	rows := func(res any, key string) []map[string]any {

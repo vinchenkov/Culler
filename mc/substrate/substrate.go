@@ -8,7 +8,6 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -64,42 +63,42 @@ func Open(path string) (*sql.DB, error) {
 	return db, nil
 }
 
-// OpenReadOnly opens an EXISTING spine — or a snapshot of one — for reading
-// only: mode=ro plus query_only, never a journal-mode change, never database
-// creation. It is the ONE place the read-only DSN is built; every mc read
-// verb and every read-only inspection opens through it.
+// OpenReadOnly opens the LIVE spine for reading only: mode=ro plus
+// query_only, never a journal-mode change, never database creation. It is the
+// one ACTIVE read entry; every mc read verb and live inspection opens here.
 //
-// The flags exist for the read-only mount case. A WAL-mode database is
-// ordinarily read through its -wal/-shm sidecars, and SQLite creates them
-// even for a mode=ro connection when they are absent. Where that creation is
-// impossible (spine file and directory both unwritable), the open fails —
-// SQLITE_READONLY_DIRECTORY / SQLITE_CANTOPEN — exactly when no writer's
-// sidecars happen to exist, and succeeds minutes later when they do: the
-// state-dependent asymmetry that intermittently killed `mc activity list`
-// inside an agent container while sibling reads worked. When that refusal
-// happens and no -wal exists beside the database, the file is one complete
-// committed snapshot, so the open retries with immutable=1, which reads
-// without sidecars or locks. A database with a live -wal never takes that
-// fallback: immutable would ignore the WAL's committed frames and could tear
-// against a concurrent checkpoint, so the honest answer there is the original
-// refusal.
+// A WAL-mode database is read through its -wal/-shm sidecars, and SQLite
+// creates them for a mode=ro connection when the directory is writable.
+// Where creation is impossible (file and directory both unwritable, as on a
+// read-only container mount), the open FAILS with the honest driver error.
+// It never degrades to an immutable read: "no -wal right now" does not prove
+// the database stays unwritten during the read, and an immutable handle over
+// a live database ignores WAL-committed frames and can tear against a
+// concurrent checkpoint. Container read availability on read-only mounts is
+// a mount-layout obligation (its ticket carrier is an open owner decision),
+// not a driver flag.
+//
+// Reading a completed snapshot copy is a different operation and must be
+// named by the caller: see OpenSnapshotReadOnly.
 func OpenReadOnly(path string) (*sql.DB, error) {
 	if err := GuardLockDomain(path); err != nil {
 		return nil, err
 	}
-	db, err := openReadOnly(path, false)
-	if err == nil {
-		return db, nil
-	}
-	if _, statErr := os.Stat(path + "-wal"); statErr == nil {
+	return openReadOnly(path, false)
+}
+
+// OpenSnapshotReadOnly reads a file the CALLER has established as a
+// completed, stable snapshot (a copied backup or staged restore file):
+// immutable=1 reads without sidecars or locks. The caller owns the
+// precondition — snapshot generation finished, and no writer touches the
+// file or its sidecars for the read's lifetime. A live spine routed through
+// here can silently miss committed frames, so this entry stays explicit:
+// no fallback ever selects it.
+func OpenSnapshotReadOnly(path string) (*sql.DB, error) {
+	if err := GuardLockDomain(path); err != nil {
 		return nil, err
 	}
-	if db, retryErr := openReadOnly(path, true); retryErr == nil {
-		return db, nil
-	}
-	// The first attempt's error names the real condition; the retry's would
-	// only restate it with a flag the caller never chose.
-	return nil, err
+	return openReadOnly(path, true)
 }
 
 // openReadOnly builds the read-only DSN — the single builder — and proves the
