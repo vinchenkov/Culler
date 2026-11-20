@@ -119,7 +119,73 @@ class PublishTest(unittest.TestCase):
                      mock.patch("sys.argv", ["publish.py", "--output", "/fixture", "--image", IMAGE, "--project-image", IMAGE]):
                     main()
                     publication.assert_called_once_with(github.return_value, Path("/fixture"), COMMIT, IMAGE, "1",
-                                                        project_image=IMAGE, test_release=enabled)
+                                                        project_image=IMAGE, test_release=enabled,
+                                                        linux_image=None, linux_project_image=None)
+
+    def test_two_platform_records_publish_from_one_release(self):
+        LINUX_IMAGE = "ghcr.io/example/culler/runner@sha256:" + "d" * 64
+        with tempfile.TemporaryDirectory() as directory:
+            output = self.fixture(Path(directory))
+            assets = output / "assets"
+            for name in ("culler-linux-amd64.tar.gz", "culler-opencode-linux-x64.tar.gz"):
+                (assets / name).write_bytes(b"verified fixture " + name.encode())
+            darwin = json.loads((output / "package.json").read_text())
+            # A build record starts from its own package file fingerprint and
+            # carries the shared release policy, exactly as culler-package emits.
+            linux = file_record(output / "assets" / "culler-linux-amd64.tar.gz")
+            for key in ("version", "schema", "runtimes", "update", "dependencies"):
+                linux[key] = darwin[key]
+            linux["agentsview"] = dict(darwin["agentsview"])
+            linux["host_bun"] = json.loads(json.dumps(darwin["host_bun"]))
+            linux["host_bun"]["archives"]["linux-x64"] = {
+                "name": "bun-linux-x64.zip",
+                "url": "https://github.com/oven-sh/bun/releases/download/bun-v1.3.9/bun-linux-x64.zip",
+                "size": 38613565, "sha256": "9" * 64,
+            }
+            (output / "package.linux-amd64.json").write_text(json.dumps(linux))
+            (output / "opencode.linux-amd64.json").write_text(
+                json.dumps(file_record(assets / "culler-opencode-linux-x64.tar.gz")))
+            api = FakeGitHub(latest=latest_release("0.1.0"))
+            self.assertTrue(publish(api, output, COMMIT, IMAGE, 1, NOW, test_release=True,
+                                    linux_image=LINUX_IMAGE, linux_project_image=LINUX_IMAGE))
+            names = [asset["name"] for asset in api.release["assets"]]
+            for name in ("release.json", "release-linux-amd64.json",
+                         "culler-linux-amd64.tar.gz", "culler-opencode-linux-x64.tar.gz"):
+                self.assertIn(name, names)
+            self.assertEqual(len(api.assets), 8)
+            record = json.loads((output / "assets/release-linux-amd64.json").read_text())
+            self.assertEqual(record["platform"], "linux-amd64")
+            self.assertEqual(record["image"], LINUX_IMAGE)
+            self.assertEqual(record["package"]["name"], "culler-linux-amd64.tar.gz")
+            self.assertEqual(record["opencode"]["name"], "culler-opencode-linux-x64.tar.gz")
+            self.assertEqual(record["version"], "0.2.0")
+
+    def test_platform_records_must_agree_on_the_release_policy(self):
+        LINUX_IMAGE = "ghcr.io/example/culler/runner@sha256:" + "d" * 64
+        with tempfile.TemporaryDirectory() as directory:
+            output = self.fixture(Path(directory))
+            (output / "assets" / "culler-linux-amd64.tar.gz").write_bytes(b"x")
+            (output / "assets" / "culler-opencode-linux-x64.tar.gz").write_bytes(b"x")
+            darwin = json.loads((output / "package.json").read_text())
+            linux = json.loads(json.dumps(darwin))
+            linux["update"] = dict(linux["update"], minimum_version="0.0.1")
+            (output / "package.linux-amd64.json").write_text(json.dumps(linux))
+            (output / "opencode.linux-amd64.json").write_text("{}")
+            api = FakeGitHub(latest=latest_release("0.1.0"))
+            with self.assertRaises(ValueError):
+                publish(api, output, COMMIT, IMAGE, 1, NOW, test_release=True,
+                        linux_image=LINUX_IMAGE, linux_project_image=LINUX_IMAGE)
+
+    def test_one_linux_image_argument_without_the_other_is_refused(self):
+        env = {"GITHUB_ACTIONS": "true", "GITHUB_EVENT_NAME": "push", "GITHUB_REF": "refs/heads/main",
+               "GITHUB_SHA": COMMIT, "GITHUB_REPOSITORY": "example/culler", "GH_TOKEN": "fixture", "GITHUB_RUN_ID": "1"}
+        with mock.patch.dict(os.environ, env), \
+             mock.patch("publish.GitHub"), \
+             mock.patch("publish.subprocess.run"), \
+             mock.patch("sys.argv", ["publish.py", "--output", "/fixture", "--image", IMAGE,
+                                     "--project-image", IMAGE, "--linux-image", IMAGE]):
+            with self.assertRaises(SystemExit):
+                main()
 
     def test_policy_switch_defaults_to_public_releases_and_requires_a_boolean(self):
         for value, expected in (({}, False), ({"test_releases": False}, False), ({"test_releases": True}, True)):

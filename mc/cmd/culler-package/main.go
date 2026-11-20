@@ -65,7 +65,7 @@ func buildPackage(root, binary, agentsViewArchive, commit, output, platform stri
 	if err != nil {
 		return err
 	}
-	pin, err := deployment.LoadAgentsViewPin()
+	pin, err := deployment.LoadAgentsViewPinForPlatform(platform)
 	if err != nil {
 		return err
 	}

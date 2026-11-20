@@ -17,6 +17,60 @@ const DefaultRepository = "vinchenkov/Culler"
 const RecordName = "release.json"
 const InstalledRecord = "state/published-release.json"
 
+// The published platforms: one record and one package per platform inside a
+// release. The darwin record keeps the historical names; a Linux record adds
+// its platform segment, so no consumer has to guess which platform a bare
+// name belongs to.
+const (
+	PlatformDarwinARM64 = "darwin-arm64"
+	PlatformLinuxAMD64  = "linux-amd64"
+)
+
+var SupportedPlatforms = []string{PlatformDarwinARM64, PlatformLinuxAMD64}
+
+// RecordAssetName names the release-record asset of a platform.
+func RecordAssetName(platform string) string {
+	switch platform {
+	case PlatformDarwinARM64:
+		return RecordName
+	case PlatformLinuxAMD64:
+		return "release-linux-amd64.json"
+	}
+	return ""
+}
+
+// PackageAssetName names the host-package asset of a platform.
+func PackageAssetName(platform string) string {
+	switch platform {
+	case PlatformDarwinARM64, PlatformLinuxAMD64:
+		return "culler-" + platform + ".tar.gz"
+	}
+	return ""
+}
+
+// OpenCodeAssetName names the OpenCode archive asset of a platform.
+func OpenCodeAssetName(platform string) string {
+	switch platform {
+	case PlatformDarwinARM64:
+		return "culler-opencode-linux-arm64.tar.gz"
+	case PlatformLinuxAMD64:
+		return "culler-opencode-linux-x64.tar.gz"
+	}
+	return ""
+}
+
+// HostBunKey names the host-Bun archive key of a published platform. The Bun
+// project spells the x86_64 target "x64".
+func HostBunKey(platform string) string {
+	switch platform {
+	case PlatformDarwinARM64:
+		return "darwin-arm64"
+	case PlatformLinuxAMD64:
+		return "linux-x64"
+	}
+	return ""
+}
+
 var RequiredChecks = []string{"fast-suite-macos", "deployment-linux", "application-package", "product-image", "release-downloads"}
 var hexDigest = regexp.MustCompile(`^[0-9a-f]{64}$`)
 var commitDigest = regexp.MustCompile(`^[0-9a-f]{40}$`)
@@ -184,8 +238,10 @@ func (r Record) Validate() error {
 	if r.Sequence <= 0 || r.PublishedAt.IsZero() {
 		return errors.New("release publication identity is absent")
 	}
-	if r.Platform != "darwin-arm64" {
-		return errors.New("this release requires a Mac with Apple silicon")
+	switch r.Platform {
+	case PlatformDarwinARM64, PlatformLinuxAMD64:
+	default:
+		return errors.New("the release record names an unsupported platform")
 	}
 	if !hexDigest.MatchString(r.Schema) {
 		return errors.New("release schema identity is invalid")
@@ -202,12 +258,12 @@ func (r Record) Validate() error {
 	for _, a := range []struct {
 		asset Asset
 		name  string
-	}{{r.Installer, "installer.sh"}, {r.Package, "culler-darwin-arm64.tar.gz"}} {
+	}{{r.Installer, "installer.sh"}, {r.Package, PackageAssetName(r.Platform)}} {
 		if a.asset.Name != a.name || !hexDigest.MatchString(a.asset.SHA256) || a.asset.Size <= 0 {
 			return fmt.Errorf("release asset %s is invalid", a.name)
 		}
 	}
-	if a := r.OpenCode; a != nil && (a.Name != "culler-opencode-linux-arm64.tar.gz" || !hexDigest.MatchString(a.SHA256) || a.Size <= 0) {
+	if a := r.OpenCode; a != nil && (a.Name != OpenCodeAssetName(r.Platform) || !hexDigest.MatchString(a.SHA256) || a.Size <= 0) {
 		return errors.New("release OpenCode archive is invalid")
 	}
 	if a := r.AgentsView; a != nil && (!runtimeVersion.MatchString(a.Version) ||
@@ -215,7 +271,7 @@ func (r Record) Validate() error {
 		return errors.New("release AgentsView identity is invalid")
 	}
 	if h := r.HostBun; h != nil {
-		if err := h.validate(); err != nil {
+		if err := h.validate(HostBunKey(r.Platform)); err != nil {
 			return err
 		}
 	}
@@ -234,12 +290,15 @@ func (r Record) Validate() error {
 	return nil
 }
 
-func (h HostBunRelease) validate() error {
+func (h HostBunRelease) validate(requiredKey string) error {
 	if !runtimeVersion.MatchString(h.Version) {
 		return errors.New("release host Bun version is invalid")
 	}
-	if _, ok := h.Archives[HostBunPlatform]; !ok {
-		return errors.New("release host Bun archive for " + HostBunPlatform + " is absent")
+	if requiredKey == "" {
+		return errors.New("release platform has no host Bun key")
+	}
+	if _, ok := h.Archives[requiredKey]; !ok {
+		return errors.New("release host Bun archive for " + requiredKey + " is absent")
 	}
 	for platform, archive := range h.Archives {
 		if platform == "" || archive.Name == "" || strings.ContainsAny(archive.Name, "/\\\x00") ||

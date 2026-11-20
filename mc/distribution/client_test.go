@@ -34,6 +34,9 @@ func fixtureClient(t *testing.T, handler http.HandlerFunc) *Client {
 	client := NewClient("owner/culler", "private-fixture-token")
 	client.BaseURL = server.URL
 	client.HTTP = server.Client()
+	// The shared fixtures describe the darwin release; tests that exercise
+	// another platform override this after the call.
+	client.Platform = PlatformDarwinARM64
 	return client
 }
 func TestLatestCompleteRelease(t *testing.T) {
@@ -61,6 +64,81 @@ func TestLatestCompleteRelease(t *testing.T) {
 	}
 	if got.Commit != record.Commit {
 		t.Fatal("wrong release")
+	}
+}
+
+func linuxFixtureRecord() Record {
+	r := fixtureRecord()
+	r.Platform = PlatformLinuxAMD64
+	r.Package.Name = PackageAssetName(PlatformLinuxAMD64)
+	r.OpenCode = &Asset{Name: OpenCodeAssetName(PlatformLinuxAMD64), SHA256: strings.Repeat("9", 64), Size: 15}
+	r.HostBun.Archives[HostBunKey(PlatformLinuxAMD64)] = HostBunArchive{Name: "bun-linux-x64.zip",
+		URL: "https://github.com/oven-sh/bun/releases/download/bun-v1.3.9/bun-linux-x64.zip", Size: 38000000, SHA256: strings.Repeat("4", 64)}
+	return r
+}
+
+func TestLatestSelectsTheRecordOfItsPlatform(t *testing.T) {
+	linux := linuxFixtureRecord()
+	for _, tc := range []struct {
+		name     string
+		platform string
+		wantErr  bool
+	}{
+		{name: "linux host reads the Linux record", platform: PlatformLinuxAMD64},
+		// A darwin client must not silently read the Linux record, and the
+		// Linux record served under the darwin name must be refused by the
+		// platform check, not by decoding.
+		{name: "darwin host finds no darwin record", platform: PlatformDarwinARM64, wantErr: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			client := fixtureClient(t, func(w http.ResponseWriter, r *http.Request) {
+				switch r.URL.Path {
+				case "/repos/owner/culler/releases/latest":
+					_ = json.NewEncoder(w).Encode(githubRelease{Tag: linux.Tag, Assets: []releaseAsset{
+						{ID: 1, Name: RecordAssetName(PlatformLinuxAMD64)},
+						{ID: 2, Name: linux.Installer.Name, Size: linux.Installer.Size},
+						{ID: 3, Name: linux.Package.Name, Size: linux.Package.Size},
+						{ID: 4, Name: linux.OpenCode.Name, Size: linux.OpenCode.Size},
+					}})
+				case "/repos/owner/culler/releases/assets/1":
+					_ = json.NewEncoder(w).Encode(linux)
+				default:
+					t.Errorf("unexpected path %s", r.URL.Path)
+					http.NotFound(w, r)
+				}
+			})
+			client.Platform = tc.platform
+			got, err := client.Latest(context.Background())
+			if tc.wantErr {
+				if err == nil {
+					t.Fatal("a release without the host's record was accepted")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got.Platform != PlatformLinuxAMD64 || got.Package.Name != linux.Package.Name {
+				t.Fatalf("record = %+v", got)
+			}
+		})
+	}
+}
+
+func TestRecordOfAnotherPlatformIsRefusedEvenUnderTheRightName(t *testing.T) {
+	linux := linuxFixtureRecord()
+	client := fixtureClient(t, func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/repos/owner/culler/releases/latest":
+			_ = json.NewEncoder(w).Encode(githubRelease{Tag: linux.Tag, Assets: []releaseAsset{{ID: 1, Name: RecordName}}})
+		case "/repos/owner/culler/releases/assets/1":
+			_ = json.NewEncoder(w).Encode(linux)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+	if _, err := client.Latest(context.Background()); err == nil || !strings.Contains(err.Error(), "not for this platform") {
+		t.Fatalf("cross-placed record error = %v", err)
 	}
 }
 func TestIncompleteReleaseRejected(t *testing.T) {

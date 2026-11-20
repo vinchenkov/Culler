@@ -14,9 +14,53 @@ fail() {
 }
 [ -n "${CULLER_BOOTSTRAP_DIR:-}" ] && [ -n "${CULLER_REPOSITORY:-}" ] || fail "Run install.sh to select a complete release."
 CULLER_BOOTSTRAP_DIR=$(CDPATH= cd -- "$CULLER_BOOTSTRAP_DIR" 2>/dev/null && pwd -P) || fail "Run install.sh to select a complete release."
-[ "$(uname -s):$(uname -m)" = Darwin:arm64 ] || fail "Culler requires a Mac with Apple silicon."
+case "$(uname -s):$(uname -m)" in
+  Darwin:arm64) CULLER_PLATFORM=darwin-arm64; host_bun_key=darwin-arm64 ;;
+  Linux:x86_64) CULLER_PLATFORM=linux-amd64; host_bun_key=linux-x64 ;;
+  *) fail "Culler runs on a Mac with Apple silicon or on Linux for x86_64." ;;
+esac
+case "$CULLER_PLATFORM" in
+  darwin-arm64)
+    command -v plutil >/dev/null 2>&1 || fail "The required tool plutil is absent from the PATH. Add /usr/bin to the PATH, then run install.sh again."
+    command -v shasum >/dev/null 2>&1 || fail "The required tool shasum is absent from the PATH. Add /usr/bin to the PATH, then run install.sh again."
+    json() { plutil -extract "$2" raw -o - "$1" 2>/dev/null; }
+    sha256_of() { shasum -a 256 "$1" | awk '{print $1}'; } ;;
+  linux-amd64)
+    for tool in python3 sha256sum; do
+      command -v "$tool" >/dev/null 2>&1 || fail "The required tool $tool is absent from the PATH. Install it, then run install.sh again."
+    done
+    json() {
+      python3 -I -c '
+import json, sys
+try:
+    doc = json.load(open(sys.argv[1]))
+    for part in sys.argv[2].split("."):
+        if isinstance(doc, list):
+            if not part.isdigit() or int(part) >= len(doc):
+                sys.exit(1)
+            doc = doc[int(part)]
+        elif isinstance(doc, dict):
+            if part not in doc:
+                sys.exit(1)
+            doc = doc[part]
+        else:
+            sys.exit(1)
+except (OSError, ValueError):
+    sys.exit(1)
+if isinstance(doc, bool):
+    print("true" if doc else "false")
+elif doc is None:
+    print("null")
+elif isinstance(doc, (int, float, str)):
+    print(doc)
+else:
+    sys.exit(1)
+' "$1" "$2"
+    }
+    sha256_of() { sha256sum "$1" | cut -d ' ' -f 1; } ;;
+esac
+package_asset=culler-$CULLER_PLATFORM.tar.gz
 record=$CULLER_BOOTSTRAP_DIR/release.json
-json() { plutil -extract "$2" raw -o - "$1" 2>/dev/null; }
 required_json() { json "$@" || fail "The release record is incomplete. Run install.sh again after publication completes."; }
 fetch() {
   status=$(curl -q --config "$CULLER_BOOTSTRAP_DIR/curl.conf" --silent --location \
@@ -30,11 +74,11 @@ fetch() {
     *) fail "GitHub returned HTTP $status. Run install.sh again to retry." ;;
   esac
 }
-[ "$(json "$record" package.name)" = culler-darwin-arm64.tar.gz ] || fail "The package name is invalid."
+[ "$(json "$record" package.name)" = "$package_asset" ] || fail "The package name is invalid."
 index=0
 package_id=
 while name=$(json "$CULLER_BOOTSTRAP_DIR/github-release.json" "assets.$index.name"); do
-  if [ "$name" = culler-darwin-arm64.tar.gz ]; then
+  if [ "$name" = "$package_asset" ]; then
     [ -z "$package_id" ] || fail "The release contains duplicate packages."
     package_id=$(required_json "$CULLER_BOOTSTRAP_DIR/github-release.json" "assets.$index.id")
   fi
@@ -47,7 +91,7 @@ fetch "https://api.github.com/repos/$CULLER_REPOSITORY/releases/assets/$package_
 checksum=$(required_json "$record" package.sha256)
 case "$checksum" in ''|*[!0-9a-f]*) fail "The package checksum is invalid." ;; esac
 [ "${#checksum}" = 64 ] && \
-  [ "$(shasum -a 256 "$archive" | awk '{print $1}')" = "$checksum" ] && \
+  [ "$(sha256_of "$archive")" = "$checksum" ] && \
   [ "$(wc -c <"$archive" | tr -d ' ')" = "$(json "$record" package.size)" ] || \
   fail "The package failed verification. Run install.sh again to retry."
 # Reject links and paths outside the package before extraction.
@@ -90,21 +134,28 @@ if [ "$check_updates" = 1 ]; then
   exit $?
 fi
 
-if ! xcode-select -p >/dev/null 2>&1; then
-  say 'Install the Apple developer tools.'
-  say 'Complete the Apple prompts, then run install.sh again.'
-  xcode-select --install >/dev/null 2>&1 || fail "Open the Apple developer downloads page to install the command tools."
-  exit 0
+if [ "$CULLER_PLATFORM" = darwin-arm64 ]; then
+  if ! xcode-select -p >/dev/null 2>&1; then
+    say 'Install the Apple developer tools.'
+    say 'Complete the Apple prompts, then run install.sh again.'
+    xcode-select --install >/dev/null 2>&1 || fail "Open the Apple developer downloads page to install the command tools."
+    exit 0
+  fi
+  command -v git >/dev/null 2>&1 && git --version >/dev/null 2>&1 || fail "Repair the Apple developer tools, then run install.sh again."
+  for tool in curl unzip; do
+    command -v "$tool" >/dev/null 2>&1 || fail "The required tool $tool is absent from the PATH. Add /usr/bin to the PATH, then run install.sh again."
+  done
+else
+  command -v git >/dev/null 2>&1 && git --version >/dev/null 2>&1 || fail "Install git, then run install.sh again."
+  for tool in curl unzip tar; do
+    command -v "$tool" >/dev/null 2>&1 || fail "The required tool $tool is absent from the PATH. Install it, then run install.sh again."
+  done
 fi
-command -v git >/dev/null 2>&1 && git --version >/dev/null 2>&1 || fail "Repair the Apple developer tools, then run install.sh again."
-for tool in curl shasum unzip; do
-  command -v "$tool" >/dev/null 2>&1 || fail "The required tool $tool is absent from the PATH. Add /usr/bin to the PATH, then run install.sh again."
-done
 export MC_HOME="$selected_home"
 # The host Bun comes from the pinned Bun release archive, never from mise.
 bun_version=$(required_json "$record" host_bun.version)
 case "$bun_version" in ''|*[!0-9.]*) fail "The release record has an invalid host Bun version. Wait for the next release, then run install.sh again." ;; esac
-bun_platform=darwin-arm64
+bun_platform=$host_bun_key
 bun_name=$(required_json "$record" "host_bun.archives.$bun_platform.name")
 bun_url=$(required_json "$record" "host_bun.archives.$bun_platform.url")
 bun_checksum=$(required_json "$record" "host_bun.archives.$bun_platform.sha256")
@@ -129,7 +180,7 @@ else
     rm -rf "$bun_temp"
     fail "The Bun download failed. Check the connection, then run install.sh again."
   fi
-  bun_actual=$(shasum -a 256 "$bun_archive" | awk '{print $1}')
+  bun_actual=$(sha256_of "$bun_archive")
   if [ "$bun_actual" != "$bun_checksum" ] || [ "$(wc -c <"$bun_archive" | tr -d ' ')" != "$bun_size" ]; then
     rm -rf "$bun_temp"
     fail "Bun $bun_version failed the download checks. Run install.sh again to retry the download."

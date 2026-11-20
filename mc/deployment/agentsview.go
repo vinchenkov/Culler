@@ -9,11 +9,28 @@ import (
 	"net/url"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 )
 
 //go:embed agentsview.json
 var agentsViewPinBody []byte
+
+//go:embed agentsview.linux-amd64.json
+var agentsViewLinuxAMD64PinBody []byte
+
+//go:embed agentsview.linux-arm64.json
+var agentsViewLinuxARM64PinBody []byte
+
+// agentsViewPinBodies maps each platform mc runs AgentsView on to its
+// embedded pin file. Every architecture of the two supported host families
+// carries a pin, so supervision renders on any host mc installs to; a
+// platform without a file fails closed at load, not at download.
+var agentsViewPinBodies = map[string][]byte{
+	"darwin-arm64": agentsViewPinBody,
+	"linux-amd64":  agentsViewLinuxAMD64PinBody,
+	"linux-arm64":  agentsViewLinuxARM64PinBody,
+}
 
 // AgentsViewPin is the one AgentsView release that each install path installs.
 // Only a change to agentsview.json changes it.
@@ -43,9 +60,27 @@ var (
 	agentsViewAgentPattern   = regexp.MustCompile(`^[a-z0-9][a-z0-9-]*$`)
 )
 
-// LoadAgentsViewPin returns the validated pin that the mc binary embeds.
+// LoadAgentsViewPin returns the validated pin of the platform this binary
+// runs on.
 func LoadAgentsViewPin() (AgentsViewPin, error) {
-	return ParseAgentsViewPin(agentsViewPinBody)
+	return LoadAgentsViewPinForPlatform(runtime.GOOS + "-" + runtime.GOARCH)
+}
+
+// LoadAgentsViewPinForPlatform returns the validated pin of a named published
+// platform, for tools that build or verify a release other than the host's.
+func LoadAgentsViewPinForPlatform(platform string) (AgentsViewPin, error) {
+	body, ok := agentsViewPinBodies[platform]
+	if !ok {
+		return AgentsViewPin{}, fmt.Errorf("no AgentsView pin is published for platform %s", platform)
+	}
+	pin, err := ParseAgentsViewPin(body)
+	if err != nil {
+		return AgentsViewPin{}, err
+	}
+	if pin.Platform != platform {
+		return AgentsViewPin{}, fmt.Errorf("the AgentsView pin of %s names platform %s", platform, pin.Platform)
+	}
+	return pin, nil
 }
 
 func ParseAgentsViewPin(body []byte) (AgentsViewPin, error) {
@@ -68,8 +103,8 @@ func (p AgentsViewPin) validate() error {
 	if !agentsViewVersionPattern.MatchString(p.Version) {
 		return fmt.Errorf("version %q must be MAJOR.MINOR.PATCH", p.Version)
 	}
-	if p.Platform != "darwin-arm64" {
-		return fmt.Errorf("platform %q must be darwin-arm64", p.Platform)
+	if p.Platform != "darwin-arm64" && p.Platform != "linux-amd64" && p.Platform != "linux-arm64" {
+		return fmt.Errorf("platform %q must be a supported platform", p.Platform)
 	}
 	for _, file := range []struct {
 		kind, name, sha256 string

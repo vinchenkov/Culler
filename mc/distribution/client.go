@@ -14,6 +14,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"syscall"
 	"time"
@@ -28,7 +29,21 @@ type Client struct {
 	Token      string
 	HTTP       *http.Client
 	BaseURL    string
+	// Platform selects which release record this client reads. Empty means
+	// the platform of the running binary.
+	Platform string
 }
+
+// NativePlatform names the published platform of the running binary.
+func NativePlatform() string { return runtime.GOOS + "-" + runtime.GOARCH }
+
+func (c *Client) platform() string {
+	if c.Platform != "" {
+		return c.Platform
+	}
+	return NativePlatform()
+}
+
 type releaseAsset struct {
 	ID   int64  `json:"id"`
 	Name string `json:"name"`
@@ -162,7 +177,7 @@ func (c *Client) Latest(ctx context.Context) (Record, error) {
 	if err != nil {
 		return Record{}, err
 	}
-	asset, err := findAsset(release, RecordName)
+	asset, err := findAsset(release, RecordAssetName(c.platform()))
 	if err != nil {
 		return Record{}, err
 	}
@@ -173,6 +188,9 @@ func (c *Client) Latest(ctx context.Context) (Record, error) {
 	record, err := Decode(data)
 	if err != nil {
 		return Record{}, err
+	}
+	if record.Platform != c.platform() {
+		return Record{}, errors.New("the release record is not for this platform")
 	}
 	if record.Tag != release.Tag {
 		return Record{}, errors.New("release record and GitHub tag disagree")

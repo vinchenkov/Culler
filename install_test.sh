@@ -35,7 +35,7 @@ printf 'host file\n' >"$TMP/package/host/file"
 printf 'runner file\n' >"$TMP/package/runner/file"
 cat >"$TMP/bin/uname" <<'CMD'
 #!/bin/sh
-case "$1" in -s) printf '%s\n' "${CULLER_FIXTURE_OS:-Darwin}" ;; -m) printf 'arm64\n' ;; esac
+case "$1" in -s) printf '%s\n' "${CULLER_FIXTURE_OS:-Darwin}" ;; -m) printf '%s\n' "${CULLER_FIXTURE_ARCH:-arm64}" ;; esac
 CMD
 cat >"$TMP/bin/xcode-select" <<'CMD'
 #!/bin/sh
@@ -49,6 +49,12 @@ CMD
 cat >"$TMP/bin/gh" <<'CMD'
 #!/bin/sh
 exit 1
+CMD
+# The faked Linux platform path uses the GNU checksum tool; the stub keeps
+# the suite host-independent without changing the darwin path, which uses shasum.
+cat >"$TMP/bin/sha256sum" <<'CMD'
+#!/bin/sh
+exec shasum -a 256 "$@"
 CMD
 # The published installer never calls mise. Any call fails the install.
 cat >"$TMP/bin/mise" <<'CMD'
@@ -83,6 +89,7 @@ case "$url" in
  */releases/assets/2) source=installer.sh ;;
  */releases/assets/3) source=package.tar.gz ;;
  */releases/download/bun-v1.3.9/bun-darwin-aarch64.zip) source=bun.zip ;;
+ */releases/download/bun-v1.3.9/bun-linux-x64.zip) source=bun-x64.zip ;;
  *) exit 93 ;;
 esac
 cp "$CULLER_FIXTURE_DIR/$source" "$output"
@@ -425,7 +432,71 @@ PYFIXTURE
 if sh "$TMP/outside/install.sh" >"$TMP/archive-link.out" 2>&1; then fail 'package symbolic link succeeded'; fi
 contains "$TMP/archive-link.out" 'file link or special file' || fail 'archive link refusal was absent'
 [ ! -e "$TMP/args" ] || fail 'archive symbolic link executed code'
-if CULLER_FIXTURE_OS=Linux sh "$TMP/outside/install.sh" >"$TMP/platform.out" 2>&1; then fail 'unsupported platform succeeded'; fi
+if CULLER_FIXTURE_OS=Linux CULLER_FIXTURE_ARCH=aarch64 sh "$TMP/outside/install.sh" >"$TMP/platform.out" 2>&1; then fail 'unsupported platform succeeded'; fi
+contains "$TMP/platform.out" 'Mac with Apple silicon or on Linux for x86_64' || fail 'the platform refusal did not name both targets'
+if CULLER_FIXTURE_OS=Darwin CULLER_FIXTURE_ARCH=x86_64 sh "$TMP/outside/install.sh" >"$TMP/platform-intel.out" 2>&1; then fail 'an Intel Mac succeeded; only Apple silicon is supported on macOS'; fi
+# A Linux production host takes the same front door with its own record,
+# package, and host Bun, parsed through the python3 reader instead of plutil.
+linux_fixtures=$TMP/fixtures-linux
+mkdir -p "$linux_fixtures" "$TMP/bun-x64-fixture/bun-linux-x64"
+cat >"$TMP/bun-x64-fixture/bun-linux-x64/bun" <<'CMD'
+#!/bin/sh
+[ "${1:-}" = --version ] || exit 91
+printf '1.3.9\n'
+CMD
+chmod 755 "$TMP/bun-x64-fixture/bun-linux-x64/bun"
+(cd "$TMP/bun-x64-fixture" && zip -q -r "$linux_fixtures/bun-x64.zip" bun-linux-x64)
+cp "$TMP/fixtures/installer.sh" "$linux_fixtures/installer.sh"
+mkdir -p "$TMP/linux-package/bin" "$TMP/linux-package/host" "$TMP/linux-package/runner"
+cp "$TMP/package/bin/mc" "$TMP/package/bin/install.sh" "$TMP/package/bin/agentsview" "$TMP/linux-package/bin/"
+printf 'host file\n' >"$TMP/linux-package/host/file"
+printf 'runner file\n' >"$TMP/linux-package/runner/file"
+tar -czf "$linux_fixtures/package.tar.gz" -C "$TMP/linux-package" bin/mc bin/install.sh bin/agentsview host/file runner/file
+python3 - "$linux_fixtures" "$TMP/fixtures" <<'PYFIXTURE'
+import hashlib,json,sys
+from pathlib import Path
+linux=Path(sys.argv[1]);darwin=Path(sys.argv[2]);commit='a'*40
+def asset(filename,id,name):
+ p=linux/filename
+ return ({'name':name,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'size':p.stat().st_size},
+         {'id':id,'name':name,'size':p.stat().st_size})
+bun=linux/'bun-x64.zip'
+installer,ai=asset('installer.sh',2,'installer.sh')
+package,ap=asset('package.tar.gz',3,'culler-linux-amd64.tar.gz')
+darwin_record=json.loads((darwin/'release.json').read_text())
+host_bun={'version':'1.3.9','archives':{
+ 'linux-x64':{'name':'bun-linux-x64.zip','url':'https://github.com/oven-sh/bun/releases/download/bun-v1.3.9/bun-linux-x64.zip',
+              'size':bun.stat().st_size,'sha256':hashlib.sha256(bun.read_bytes()).hexdigest()},
+ 'darwin-arm64':darwin_record['host_bun']['archives']['darwin-arm64']}}
+record={'format':1,'version':'0.1.0','commit':commit,'release_id':commit,'tag':'v0.1.0','sequence':7,
+ 'published_at':'2026-09-26T00:00:00Z','platform':'linux-amd64','schema':'f'*64,
+ 'runtimes':{'go':'1.25.12','bun':'1.3.9'},'host_bun':host_bun,
+ 'image':'ghcr.io/owner/culler@sha256:'+'b'*64,
+ 'checks':[{'name':n,'passed':True} for n in ['fast-suite-macos','deployment-linux','application-package','product-image','release-downloads']],
+ 'installer':installer,'package':package}
+(linux/'release-linux-amd64.json').write_text(json.dumps(record))
+# The download stub serves asset id 1 under its bootstrap name; the fixture
+# file simply carries the Linux record bytes.
+(linux/'release.json').write_text(json.dumps(record))
+assets=[{'id':1,'name':'release-linux-amd64.json','size':(linux/'release-linux-amd64.json').stat().st_size},ai,ap]
+(linux/'github-release.json').write_text(json.dumps({'tag_name':'v0.1.0','draft':False,'prerelease':False,'assets':assets}))
+PYFIXTURE
+rm -f "$TMP/args"
+CULLER_FIXTURE_OS=Linux CULLER_FIXTURE_ARCH=x86_64 CULLER_FIXTURE_DIR="$linux_fixtures" \
+  sh "$TMP/outside/install.sh" --mc-home "$TMP/linux home" --yes --activate >"$TMP/linux.out" 2>&1 || { cat "$TMP/linux.out" >&2; fail 'a Linux production host could not install'; }
+[ "$(sed -n '1p' "$TMP/args")" = __setup ] || fail 'the Linux install did not start setup'
+[ -x "$TMP/linux home/bun/1.3.9/bin/bun" ] || fail 'the Linux install did not place the host Bun'
+[ "$("$TMP/linux home/bun/1.3.9/bin/bun" --version)" = 1.3.9 ] || fail 'the Linux host Bun is a different program'
+contains "$TMP/linux.out" 'Download and verify Bun 1.3.9' || fail 'the Linux install omitted the Bun step'
+# A darwin client must not read this release, and a Linux client must not
+# read the darwin record: each record only answers for its own platform.
+if CULLER_FIXTURE_DIR="$linux_fixtures" sh "$TMP/outside/install.sh" >"$TMP/linux-as-darwin.out" 2>&1; then
+  fail 'the darwin front door read the Linux release'
+fi
+if CULLER_FIXTURE_OS=Linux CULLER_FIXTURE_ARCH=x86_64 CULLER_FIXTURE_DIR="$TMP/fixtures" \
+  sh "$TMP/outside/install.sh" >"$TMP/darwin-as-linux.out" 2>&1; then
+  fail 'the Linux front door read the darwin release'
+fi
 # An interrupted update uses the retained candidate without release discovery.
 recovery_home=$TMP/recovery
 recovery_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

@@ -173,7 +173,10 @@ exit 94
 EOF
 cat >"$case_root/bin/uname" <<'EOF'
 #!/bin/sh
-printf 'Darwin\n'
+case "${1:-}" in
+  -m) printf 'arm64\n' ;;
+  *) printf 'Darwin\n' ;;
+esac
 EOF
 cat >"$case_root/bin/xcode-select" <<'EOF'
 #!/bin/sh
@@ -331,7 +334,10 @@ exit 93
 EOF
 cat >"$case_root/bin/uname" <<'EOF'
 #!/bin/sh
-printf 'Linux\n'
+case "${1:-}" in
+  -m) printf 'x86_64\n' ;;
+  *) printf 'Linux\n' ;;
+esac
 EOF
 chmod 755 "$case_root/bin/docker" "$case_root/bin/uname"
 run_must_fail stopped-daemon "docker daemon is not responding" \
@@ -370,7 +376,12 @@ exit 94
 EOF
 cat >"$case_root/bin/uname" <<'EOF'
 #!/bin/sh
-printf 'Linux\n'
+# A complete Linux host answer: the production image build asks both the
+# kernel name and the machine, and this case describes an x86_64 machine.
+case "${1:-}" in
+  -m) printf 'x86_64\n' ;;
+  *) printf 'Linux\n' ;;
+esac
 EOF
 chmod 755 "$case_root/bin/docker" "$case_root/bin/uname"
 mkdir -p "$case_root/home"

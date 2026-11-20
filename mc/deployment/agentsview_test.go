@@ -77,7 +77,7 @@ func TestAgentsViewPinRejectsInvalidValues(t *testing.T) {
 		"unknown key":          {func(p map[string]any) { p["mirror"] = "https://example.com" }, "unknown field"},
 		"missing version":      {func(p map[string]any) { delete(p, "version") }, "version"},
 		"prefixed version":     {func(p map[string]any) { p["version"] = "v1.2.3" }, "version"},
-		"other platform":       {func(p map[string]any) { p["platform"] = "linux-arm64" }, "platform"},
+		"other platform":       {func(p map[string]any) { p["platform"] = "windows-amd64" }, "platform"},
 		"archive path":         {func(p map[string]any) { archive(p)["name"] = "../agentsview.tar.gz" }, "archive name"},
 		"executable path":      {func(p map[string]any) { executable(p)["name"] = "bin/agentsview" }, "executable name"},
 		"zero archive size":    {func(p map[string]any) { archive(p)["size"] = 0 }, "archive size"},
@@ -153,5 +153,41 @@ func TestAgentsViewPathsFollowTheMCHomeLayout(t *testing.T) {
 	}
 	if root := WikiExportRoot("/Users/alice/.culler"); root != "/Users/alice/.culler/wiki" {
 		t.Fatalf("wiki export root = %q", root)
+	}
+}
+
+func TestTheLinuxAgentsViewPinsMatchTheDarwinProductSet(t *testing.T) {
+	tracked, err := os.ReadFile("agentsview.linux-amd64.json")
+	if err != nil || !bytes.Equal(tracked, agentsViewLinuxAMD64PinBody) {
+		t.Fatalf("the embedded Linux amd64 pin differs from its file: %v", err)
+	}
+	tracked, err = os.ReadFile("agentsview.linux-arm64.json")
+	if err != nil || !bytes.Equal(tracked, agentsViewLinuxARM64PinBody) {
+		t.Fatalf("the embedded Linux arm64 pin differs from its file: %v", err)
+	}
+	darwin, err := LoadAgentsViewPinForPlatform("darwin-arm64")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, platform := range []string{"linux-amd64", "linux-arm64"} {
+		linux, err := LoadAgentsViewPinForPlatform(platform)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if linux.Version != darwin.Version {
+			t.Fatalf("%s disagrees on version: %s vs %s", platform, linux.Version, darwin.Version)
+		}
+		if strings.Join(linux.DisabledAgents, ",") != strings.Join(darwin.DisabledAgents, ",") {
+			t.Fatalf("the %s pin disables different agents: the product set must move as one", platform)
+		}
+		if linux.Archive.Name != "agentsview_"+linux.Version+"_"+strings.ReplaceAll(platform, "-", "_")+".tar.gz" ||
+			linux.Executable.Name != "agentsview" || linux.Executable.Size <= 0 {
+			t.Fatalf("%s pin = %+v", platform, linux)
+		}
+	}
+	for _, missing := range []string{"darwin-amd64", "windows-amd64", ""} {
+		if _, err := LoadAgentsViewPinForPlatform(missing); err == nil {
+			t.Fatalf("platform %q has no AgentsView pin and must fail closed", missing)
+		}
 	}
 }
