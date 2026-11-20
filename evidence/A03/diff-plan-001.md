@@ -26,3 +26,11 @@
 
 ## 风险预判（STOP 触发前科登记）
 seam 抽取若牵动 supervision_release_test/supervision_resident_contract_test 的契约句（它们测的是"发布态监督"语义而非 launchd 本身）→ 预期兼容；若断言硬编码 LaunchAgents 路径于共享层 → 属既有测试的平台假设缺陷：迁移进 _darwin_test，不改语义，§7.1 注记。
+
+## 进度与范围裁决（随阶段追加，不改写既有段）
+- **①a（e8680a3）完成**：supervision.go 平台中立化；渲染/TCC/布局入 _darwin，Linux 声明 systemd 布局+拒绝桩；树校验目录改由布局派生；两 TCC 测试整段迁 supervision_darwin_test.go（无 skip/删除）。
+- **①b1（d47e658）完成**：activate 文件操作六钩化（activationOrder/install/restore/verify/carryLabel/installedUnitPaths），launchd 实现体逐字迁移；lifecycle 与 agentsview 的 inspect 调用点改走钩子。
+- **①b2（68c860b）完成**：update_stop 控制器 + update_checkpoint 绑定路径平台化；Linux checkpoint 路径=~/.config/systemd/user/*.service（实装），Linux stop=②桩。
+- **① 完成判定**：deployment 包内**零未标注文件引用 darwin 专属符号**（脚本化扫描 0 命中）；darwin 全套 `./test.sh ./deployment/` 三次 ok；双平台 build+vet ok；cmd/mc 相关定向套件 ok（11.8s）。
+- **范围裁决（登记而非扩面）**：cmd/mc 的 launchctl 控制器（culler_services_prod/onboard_state_prod/uninstall_prod 等）**移入阶段②**——该面要做的是"Linux 获得真实 systemd 行为+自己的消息面"，纯 seam 搬迁不改行为却牵动未列入本计划正清单的文件；进入 ② 时按附三先补 diff 计划再动。共享层遗留的 "LaunchAgent" 文案（非行为）同并入 ② 清扫，§7.1 记录。
+- **待核问题（提取时照搬未修，红线）**：platformUpdateServices darwin 实现中 stop=true 且 bootout 返回**非** not-found 错误时被静默吞掉——既有语义原样保留，是否缺陷留待 ⑤ 真机验收数据判断。
