@@ -47,7 +47,7 @@
 | A19 | 沙箱边界实测提交（与 A14/V-5 合流：socket/API/host-gw/loopback 鉴权+X-1 三场景） | A14 | TM B4-S/RR-1 补偿取证 | F0a：边界实测记录+取证归档 | 取证≠接受（RR 归治理） |
 | A20 | 依赖图确定性检查器（EXEC-1 落地件）：检出不存在 ID／循环依赖／依赖未满足进 READY／缺契约锚或验收映射／锚变更未重绑；路径 tools/blcheck/ | — | AM §4d EXEC-1+A20-EX；IMPL-AUTH §5a | §5a 三绿：自测+五规则 fixture+真实快照零违规；完整输出 §7.1 留痕 | 首批·串行先行·已激活 19:29:17（AM v0.1.24）；三条件=持续验收；畸形输入显式 FAIL/UNKNOWN |
 | A21 | 容器 spine 挂载布局：共享 sidecar 可写 + db 文件本体非可写（sidecar 必须与写者共享——WAL 协议约束，per-container sidecar=分裂视图，禁止）；最小权限反向断言 | — | docs/facts/a18-immutable-split-decision.md；DC §1.3 表二 3；TM §5.2 | F0a/F1：docker_boundary 三挂载态矩阵（只读无 sidecar/新布局/权限异常）+容器读成功+db 本体不可写反向断言；与 A18 联合验收 | 批二·与 A18 同批合并；docker_boundary/e2e=验收硬前置；立票授权=AM v0.1.29 |
-| A22 | operator 会话围栏覆盖委托面（A15-F1 修复）：桥 fallback 进程内包裹+委托 env 传递+子进程校验包裹，P1 剧本入测 | — | docs/facts/f1-operator-fence-001.md；DC §1.2 不变量；TM §4 B5 | F0a：P1 断言（decide→撤销→写必拒）+正反例+非法 env fail-closed；U1 关闭 | 常驻授权 v0.1.33 下开工 |
+| A22 | operator 围栏委托面核验（A15-F1 P1 执行）：运行时实验改判"委托不生效"为初稿误读——`__operator-forward` 交接在子进程复验收据并重包裹；事实记录修订+回归用例钉死交接形态；生产代码零改动 | — | docs/facts/f1-operator-fence-001.md；DC §1.2 不变量；TM §4 B5 | F0a：live 收据正控+审计行、`uncertain` 收据拒绝+零副作用、伪造 id 拒绝、委托 argv 形态双向断言；U1 关闭（docker 往返传输面归 A21 类证明） | 常驻授权 v0.1.33；原"修复需再授权"分支未触发 |
 
 ### Track B · F1 数据与一致性基座
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |

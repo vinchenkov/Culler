@@ -8,11 +8,11 @@
 - 载体=`currentOperatorRequest` **进程内变量**（:473），唯一置入者=operator_bridge.go:389/:423/:472 三包装器。
 - 生效路径条件（operator_bridge.go:415-417 原文）：`!d.Host && !shouldDelegateToHelper() && request.Identity != nil && slices.Equal(args, request.Command)` → 才进 :423 的 WithOperatorCaller 包裹；**否则 dispatchArgs 无包裹**。
 
-## 2. 不生效面（已证实部分）
+## 2. 不生效面（2026-11-20 修订：委托面经 P1 实验改判；修订标记保留于此）
 
-- **委托 fallback**：`shouldDelegateToHelper()` 为真（Linux 生产目标形态）时，operator 批准的写命令走 :416-417 无包裹分支；写入在 helper 子进程执行，子进程变量恒空 → 三件套在提交时刻不生效。
-- **attachment spine RPC**（mc/cmd/mc/attachment_spine_rpc.go:144-259）：手写 BEGIN IMMEDIATE，不经 inTx → 不跑该函数（此即 A15 V-001 之 F1，现已归并为下列结构性事实的实例）。
-- 结构性结论（取代 A15 初稿口径）：**围栏是"宿主进程内、逐命令全等匹配"的窄面机制**，任何跨进程边界（委托/子 RPC）的 operator 写天然在其覆盖之外。
+- ~~委托 fallback~~ **改判为生效**：`__operator-execute`（operator_bridge.go:485-490）与 `__operator-forward`（:386-389）在进入 fallback 之前已置 `activeOperatorRequest` 并经 `WithOperatorRequest` 置 `currentOperatorRequest`；委托 argv 由 `operatorHelperArgs`（:50-55）全等重写为 `__operator-forward <id> -- <args>`，子进程 `runOperatorForward` 先经 `authorize` 收据复验（要求 state='active'）再行包裹。初稿把"verbs 包进程变量不跨界"误读为"围栏不跨界"，漏看了 main 包交接变量这条设计内通道。运行时证据见 §5-P1 执行结果。
+- **attachment spine RPC**（mc/cmd/mc/attachment_spine_rpc.go:144-259）：手写 BEGIN IMMEDIATE，不经 inTx → 不跑该函数（此即 A15 V-001 之 F1）。operator 命令的两个入口不经该 broker（broker 服务 attachment publisher/terminal），其围栏义务归 A12/G-F 逐入口面（P3）。
+- 结构性结论（修订）：围栏覆盖**宿主进程内全部 operator 写**与**经 `__operator-forward` 交接的委托写**（提交时刻复验在子进程事务内恢复）；不覆盖的是不经该交接的旁路写面（attachment RPC 直写），属 A12 覆盖声明范围。
 
 ## 3. 仍存防线（防扩大化声明）
 
@@ -20,15 +20,15 @@
 
 ## 4. 保留的 UNKNOWN（不以推测填补）
 
-- U1：生产宿主 withSpine 经代理驱动开事务时（变量在宿主、SQL 在 helper），:423 包裹路径的围栏是否实际存活——未追死。
-- U2：委托模式下 :416 fallback 覆盖 operator 写的**比例**（是否全部，或仅命令路由不匹配者）——路由表未全量核对。
-- U3：dashboard 组件链（MC_OPERATOR_ORIGIN=component/dashboard 路径，operator_bridge.go:190-191）是否构成第三种上下文。
+- U1：**已闭合（2026-11-20，P1 执行）**——fast-lane 以 helper 子进程同形（宿主身份 + `MC_SPINE` 直开 + `__operator-forward` 全等代码路径）执行：live 收据→写落+审计行；`uncertain` 收据→提交前拒 "no active execution" 且零副作用；伪造 id→拒。委托形态围栏存活。残余边界：真 docker exec 往返未跑（argv 交接形态已由单测钉死，docker 传输面属 A21 类证明）。
+- U2：委托模式下 :416 fallback 覆盖 operator 写的**比例**（是否全部，或仅命令路由不匹配者）——路由表未全量核对（归 A12 P2）。
+- U3：dashboard 组件链（MC_OPERATOR_ORIGIN=component/dashboard 路径，operator_bridge.go:190-191）是否构成第三种上下文（归 A12 P2 矩阵）。
 
 ## 5. 关闭剧本（V 级验证义务，随①立项进 G-F/A12 测试映射）
 
-P1（针对 U1/委托面）：委托模式启用下——submit→decide 批准命令 C→**在 C 执行前**使请求失效（expire/revoke 路径）→执行 C。断言：若见 "The operator request has no active execution." → 围栏在该形态存活（结论改判）；若命令成功 → U1 证实为不生效。
-P2（U2）：枚举 operatorcmd 路由表 ×d.Host×Identity×args 全等，输出矩阵。
-P3：RPC profile 白名单边界用例（含 mutation-无-BEGIN 拒绝已存在路径的正反例）。
+P1（针对 U1/委托面）：**已执行（2026-11-20）→ 围栏存活，按本剧本改判分支落定。** 载体=mc/cmd/mc/operator_fence_a22_cli_test.go（live 收据正控+审计行断言、`uncertain` 收据拒绝断言+零副作用断言、伪造 id 拒绝断言）+ operator_fence_a22_test.go（委托 argv 全等交接形态双向断言）。无需修复授权：委托面不存在已证实的不生效，原"修复=新授权事项"分支未被触发。
+P2（U2）：枚举 operatorcmd 路由表 ×d.Host×Identity×args 全等，输出矩阵（A12）。
+P3：RPC profile 白名单边界用例（含 mutation-无-BEGIN 拒绝已存在路径的正反例）（A12）。
 产出=§7.1 记录 + 更新本文件 + G-F/A12 覆盖声明补丁（A12 工单文案的"逐入口"清单须含 :416 fallback 与 RPC 两入口）。
 
 ## 6. 处置边界（复述以自缚）
