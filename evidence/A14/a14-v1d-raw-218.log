@@ -1,0 +1,29 @@
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 OUT[H1 exit=0] ==T1==
+/home/agent/.agents tmpfs
+/home/agent/.claude tmpfs
+/home/agent/.codex tmpfs
+==T2==
+CapEff:	0000000000000000
+NoNewPrivs:	1
+==T3==
+10002
+10002
+==T4==
+dockerenv=yes
+runjson=no
+==T5==
+ws-writable
+==T6==
+path-none
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T1.tmpfs-before-exec result PASS
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T2.caps result PASS
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T2.nnp result PASS
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T3.uid result PASS
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T4.dockerenv result PASS
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T4b.runjson-absent-pipeline result PASS
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T5.workspace result OBSERVED
+ts=2026-11-21T14:28:42Z host=F1104 uid=0 RESULT T6.no-path-cli result PASS
+ts=2026-11-21T14:28:43Z host=F1104 uid=0 OUT[H2 exit=0] runjson=yes
+1
+ts=2026-11-21T14:28:43Z host=F1104 uid=0 RESULT T7.runjson-at-exec result PASS
+ts=2026-11-21T14:28:43Z host=F1104 uid=0 TEARDOWN end

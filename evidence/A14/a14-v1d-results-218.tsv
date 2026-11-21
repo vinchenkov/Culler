@@ -1,0 +1,9 @@
+T1.tmpfs-before-exec result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T2.caps result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T2.nnp result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T3.uid result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T4.dockerenv result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T4b.runjson-absent-pipeline result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T5.workspace result OBSERVED ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T6.no-path-cli result PASS ts=2026-11-21T14:28:42Z host=F1104 uid=0
+T7.runjson-at-exec result PASS ts=2026-11-21T14:28:43Z host=F1104 uid=0
