@@ -145,7 +145,10 @@ else
   else
     rec B5 result FAIL reason=setup-unexplained
   fi
-  runas B5.onboard "export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; P=/home/$ACCT/package/bin/mc; for s in agentsview home tunables surfaces; do \$P __onboard \$s || exit 41; done; \$P __onboard supervision --activate --reconfigure" || { fail_all B5 onboard-chain; exit 1; }
+  # `__setup` normally creates the deployment home before its stages run; the
+  # platform-gate refusal happens earlier, so the drill prepares the home
+  # itself. `__onboard` inspects MC_HOME first and refuses an absent one.
+  runas B5.onboard "install -d -m 700 /home/$ACCT/.culler; export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; P=/home/$ACCT/package/bin/mc; for s in agentsview home tunables surfaces; do \$P __onboard \$s || exit 41; done; \$P __onboard supervision --activate --reconfigure" || { fail_all B5 onboard-chain; exit 1; }
 fi
 
 echo "== B6 supervision state"
