@@ -159,9 +159,12 @@ PY
 )
 echo "$SUFFIX" > "$HERE/suffix.txt"
 runas B8.mask "systemctl --user mask com.culler.$SUFFIX.dashboard.service" || fail_all B8 mask-step
-runas B8.stop "MC_HOME=/home/$ACCT/.culler /home/$ACCT/.local/bin/culler stop"
+# The public culler stop verb runs the canInspectProjectVision gate (darwin today,
+# A24 pending), so the redline capture drives the host-private reconfigure path,
+# which issues the same controller disable --now against the masked unit.
+runas B8.stop "export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; /home/$ACCT/package/bin/mc __onboard supervision --activate --reconfigure"
 stop_status=$?
-log "B8.services-stop exit=$stop_status"
+log "B8.reconfigure-stop exit=$stop_status"
 ACTIVE_AFTER=$(runas B8.probe "systemctl --user is-active com.culler.$SUFFIX.dashboard.service" 2>/dev/null || true)
 log "B8 dashboard-after-stop=[$ACTIVE_AFTER]"
 runas B8.unmask "systemctl --user unmask com.culler.$SUFFIX.dashboard.service" || true

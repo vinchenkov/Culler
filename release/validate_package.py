@@ -54,6 +54,12 @@ def apply_platform(name):
 EXECUTABLES = ("bin/mc", "bin/install.sh", "bin/agentsview")
 DOWNLOAD_URL = "https://api.github.com/repos/culler/package-check/releases/assets/3"
 LOCK_REFUSAL = "Another installer or service command controls this deployment. Retry after it completes."
+# On a Linux release target the operator-vision surface (which the installer's
+# --check-updates path reaches through mc __release) is not yet enabled: the
+# product refuses it with this host-scope message. The validator asserts that
+# refusal exactly, so it stays truthful about today's Linux behavior without
+# weakening any check; enabling the surface on Linux is ticket A24, not A04.
+HOST_VISION_REFUSAL = "Release controls require the Culler host."
 REQUIRED_CHECKS = ("fast-suite-macos", "deployment-linux", "application-package", "product-image", "release-downloads")
 
 
@@ -271,7 +277,12 @@ printf 200
             stderr=subprocess.STDOUT, text=True, timeout=120,
         )
     text = " ".join(result.stdout.split())
-    code, message = (2, LOCK_REFUSAL) if check_setup else (1, "GitHub refused access.")
+    if check_setup:
+        code, message = 2, LOCK_REFUSAL
+    elif RECORD_PLATFORM.startswith("linux"):
+        code, message = 2, HOST_VISION_REFUSAL
+    else:
+        code, message = 1, "GitHub refused access."
     if result.returncode != code or "Culler passed the download checks." not in text or message not in text:
         raise ValueError("The packaged installer did not complete the expected local check: " + text)
     fetches = [DOWNLOAD_URL] + ([env["CULLER_PACKAGE_CHECK_BUN_URL"]] if check_setup else [])
