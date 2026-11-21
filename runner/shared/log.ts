@@ -53,7 +53,7 @@ export const EVENTS = [
   "spawn.unwound", "spawn.gate_failed",
   "reap.started", "reap.stop_failed", "reap.discard_failed", "reap.completed",
   "reap.skipped", "reap.refused",
-  "sweep.reclaimed", "sweep.skipped", "sweep.failed",
+  "sweep.reclaimed", "sweep.skipped", "sweep.failed", "sweep.resource",
   "artifacts.expiry_failed",
   "evaluation.capture_failed",
   "repository.start_failed", "repository.owner_refused", "repository.heartbeat_failed",

@@ -1,5 +1,5 @@
 // The configuration response contains only supported dashboard settings.
-const EDITOR_TYPES = new Set(["integer", "patterns", "lines"]);
+const EDITOR_TYPES = new Set(["integer", "tier", "patterns", "lines"]);
 const WIKI_INTERVAL_KEY = "timing.wiki_update_interval_s";
 
 export function configInputValue(knob, value) {

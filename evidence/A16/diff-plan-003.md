@@ -12,3 +12,6 @@ TM:99 语义="写失败且 run 以资源类终态终止"；b+c 组合下工作�
 - `resident/src/environment-lane.test.ts`：看门狗用例（t0 禁用；t1/t2 超软限→stop+留痕；等于软限不动作；测量失败不动作；setup+pipeline 两标签都在作用域、collie 只读不在）。
 
 作用域依据：写工作区的只有 pipeline（/workspace/source rw）、setup（build 输入）与环境操作容器；collie 全部挂载为 :ro（effects.ts 装配可见），不入看门狗。du 失败/超时目录：保留并 warn（与 prune 的 fence 同律）。
+
+## 追加（守卫驱动，实现前登记）
+`runner/shared/log.ts` 的 **EVENTS 注册表一行**（"sweep.resource" 加入 sweep 组）：事件登记表守卫（TestEveryEmittedEventIsInTheRegistry）要求每个 emit 事件先入册——TM §10-A1 三元组语义下这正是"新留痕须有主"的正途，非绕行。渲染器与 golden 夹具零改动（mclog 无事件名单镜像，注册表为 TS 单侧）。

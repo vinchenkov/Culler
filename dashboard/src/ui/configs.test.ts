@@ -9,6 +9,15 @@ const FAMILIES = [
 ];
 
 describe("configuration editors", () => {
+  test("the tier selector is a supported editor type", () => {
+    const groups = configGroups([{ family: "container", knobs: [
+      { key: "container.trust_tier", value: "t0", type: "tier", label: "Agent container trust tier", description: "D", options: ["t0", "t1", "t2"] },
+      { key: "container.fd_soft", value: 65536, type: "integer", label: "soft", description: "D" },
+    ] }]);
+    expect(groups[0].knobs.map((k: { key: string }) => k.key)).toEqual(["container.trust_tier", "container.fd_soft"]);
+    expect(groups[0].knobs[0].options).toEqual(["t0", "t1", "t2"]);
+  });
+
   test("the editor retains typed values and server constraints", () => {
     const integer = knobView(FAMILIES[0].knobs[0]);
     expect(integer.rawValue).toBe(3);
