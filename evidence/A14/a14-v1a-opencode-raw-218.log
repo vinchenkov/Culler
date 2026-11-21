@@ -1,0 +1,109 @@
+ts=2026-11-21T13:46:58Z host=F1104 uid=0 OUT[O0 exit=0] 
+ts=2026-11-21T13:46:59Z host=F1104 uid=0 OUT[O1 exit=0] [
+  {
+    "type": "document",
+    "path": "/w/opencode/opencode.json",
+    "info": {
+      "username": "MARK-XDG"
+    }
+  },
+  {
+    "type": "directory",
+    "path": "/w/opencode"
+  }
+]
+ts=2026-11-21T13:46:59Z host=F1104 uid=0 ROW[O1.xdg-live exit=0 want=MARK-XDG seen=yes]
+ts=2026-11-21T13:47:00Z host=F1104 uid=0 OUT[O2 exit=0] [
+  {
+    "type": "directory",
+    "path": "/tmp/cf/opencode"
+  }
+]
+ts=2026-11-21T13:47:00Z host=F1104 uid=0 ROW[O2.home-source exit=0 want=MARK-HOME seen=no]
+ts=2026-11-21T13:47:02Z host=F1104 uid=0 OUT[O3 exit=0] [
+  {
+    "type": "directory",
+    "path": "/tmp/cf/opencode"
+  },
+  {
+    "type": "document",
+    "path": "/inj/opencode.json",
+    "info": {
+      "username": "MARK-XDG"
+    }
+  },
+  {
+    "type": "document",
+    "path": "/inj/proj/.opencode/opencode.json",
+    "info": {
+      "username": "MARK-PROJ"
+    }
+  },
+  {
+    "type": "directory",
+    "path": "/inj/proj/.opencode"
+  }
+]
+ts=2026-11-21T13:47:02Z host=F1104 uid=0 ROW[O3.project-live exit=0 want=MARK-PROJ seen=yes]
+ts=2026-11-21T13:47:03Z host=F1104 uid=0 OUT[O3b exit=0] [
+  {
+    "type": "directory",
+    "path": "/tmp/cf/opencode"
+  }
+]
+ts=2026-11-21T13:47:03Z host=F1104 uid=0 ROW[O3b.flag-covers exit=0 want=MARK-PROJ seen=no]
+ts=2026-11-21T13:47:04Z host=F1104 uid=0 OUT[O4 exit=0] [
+  {
+    "type": "directory",
+    "path": "/tmp/cf/opencode"
+  },
+  {
+    "type": "document",
+    "path": "/inj/opencode.json",
+    "info": {
+      "username": "MARK-XDG"
+    }
+  },
+  {
+    "type": "document",
+    "path": "/inj/proj/.opencode/opencode.json",
+    "info": {
+      "username": "MARK-PROJ"
+    }
+  },
+  {
+    "type": "directory",
+    "path": "/inj/proj/.opencode"
+  }
+]
+ts=2026-11-21T13:47:04Z host=F1104 uid=0 ROW[O4.agents-md exit=0 want=INSTR-MARK seen=no]
+ts=2026-11-21T13:47:05Z host=F1104 uid=0 OUT[O5a exit=0] [
+  {
+    "type": "directory",
+    "path": "/tmp/cf/opencode"
+  },
+  {
+    "type": "document",
+    "path": "/etc/opencode/opencode.json",
+    "info": {
+      "username": "MARK-ETC"
+    }
+  },
+  {
+    "type": "directory",
+    "path": "/etc/opencode"
+  }
+]
+ts=2026-11-21T13:47:05Z host=F1104 uid=0 ROW[O5a.global-reads exit=0 want=MARK-ETC seen=yes]
+ts=2026-11-21T13:47:06Z host=F1104 uid=0 OUT[O5b exit=0] [
+  {
+    "type": "directory",
+    "path": "/tmp/cf/opencode"
+  },
+  {
+    "type": "directory",
+    "path": "/etc/opencode"
+  }
+]
+ts=2026-11-21T13:47:06Z host=F1104 uid=0 ROW[O5b.mask-covers exit=0 want=MARK-ETC seen=no]
+ts=2026-11-21T13:47:07Z host=F1104 uid=0 TEARDOWN end

@@ -31,4 +31,15 @@
 - **C1 = clean（本轮最重要一格）**：`CLAUDE_CONFIG_DIR` 指空目录（**产品 adapter 实况：claude.ts:61 每 run 私有 tmpdir + :110 settingSources:["user"]**）时损坏 HOME 文件**不再被读**——产品的配置迁移**实测有效**，HOME 泄漏路被切断。
 - **C2 = clean（带探针限度声明）**：cwd/.claude/settings.json 损坏在该子命令下无 marker——**"该探针形状未见项目设置读取"≠"claude 全阶段不读项目设置"**（settings/hooks 的读取阶段可能仅 session 启动，属 T2 活会话门控面）；settingSources:["user"] 的 SDK 级强制=适配器单元既有事实（claude.ts 注释明言 project 源=模型自写配置 hazard，"keep it user"）。
 - **C3 = clean** 基线控制。
-- 综合（codex+claude 两轮）：两族的**活发现源均被产品机制对准**（codex=HOME tmpfs 掩码罩住唯一活源【S2 硬断言 PASS】；claude=CONFIG_DIR 迁移切断 HOME【C1】）；项目目录源=SDK 选项层（单元面在册）+V-1b/c 活会话判据（继承 A25/A02）。opencode 族=tmpfs 掩码 /etc/opencode 已在装配（V-1d 时序锚），其发现轮随 T2 会话轮。
+- 综合（codex+claude 两轮）：两族的**活发现源均被产品机制对准**（codex=HOME tmpfs 掩码罩住唯一活源【S2 硬断言 PASS】；claude=CONFIG_DIR 迁移切断 HOME【C1】）；项目目录源=SDK 选项层（单元面在册）+V-1b/c 活会话判据（继承 A25/A02）。opencode 族=tmpfs 掩码 /etc/opencode 已在装配（V-1d 时序锚），其发现轮随 T2 会话轮。**（下节把 opencode 行从"随 T2"提前完成了——发现轮不需要活会话。）**
+
+## 追加：opencode 族发现轮实测（2026-11-21，a14-v1a-opencode.sh @218，opencode-measured/raw-218 入档；种卷=产品 openCodeInstallScript 逐字复刻+版本正控 v2.2.7【diff-plan-004 撤回自我更正版】；探针=`debug config` 带 path 装载序，MARKER 值判据——损坏 JSON 不报错但合法值必显，判据先于使用经实地校准）
+| 行 | 结果 | 事实 |
+|---|---|---|
+| O1 XDG_CONFIG_HOME 迁移位 | **读** | 活源；产品 adapter 指每-run 私有目录=迁移隔离（同 claude 模式） |
+| O2 HOME/.config 形（XDG 别指） | 不读 | 无暗通道 |
+| O3 项目 `.opencode/`（cwd=模型可写工作区） | **读（CLI 原形）** | 策略级事实：opencode 默认吃 cwd 项目配置 |
+| O3b 产品旗标 OPENCODE_DISABLE_PROJECT_CONFIG=1 | **不读** | **adapter 旗标实测挡效**（adapters/opencode.ts:61；"配置了"升"生效了"，同 C1 之于 claude） |
+| O4 AGENTS.md 经 debug config | 不可见 | **仪器限度如实**：指令装载在会话阶段=仍 UNKNOWN，非"不读" |
+| O5a/O5b /etc/opencode 读性/掩码 | **读 / tmpfs 挡** | **产品掩码两侧正控齐备=实测有效**（教科书形） |
+- **三族合读**：每条活源都有产品机制且**现在全部持有真机行为证据**（codex=tmpfs 掩码 S2；claude=CONFIG_DIR 迁移 C1；opencode=XDG 迁移+disable 旗标 O3b+/etc 掩码 O5a/b 双侧）；残余=O4 指令源（会话阶段=T2 门控）+版本漂移重测纪律。另记：本轮两处探针自纠（/w 不可写≠发现结果、O2 形状错、O5 加 5a 正控才成立）+首轮 O0 位置参数序错（产品调用形 $0..$3 追读源文修正）——**仪器错误的每条都留了日志证据再修，无一洗白**。

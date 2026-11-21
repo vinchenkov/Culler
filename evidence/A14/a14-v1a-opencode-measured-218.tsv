@@ -1,0 +1,7 @@
+O1.xdg-live	0	MARK-XDG	seen-yes
+O2.home-source	0	MARK-HOME	seen-no
+O3.project-live	0	MARK-PROJ	seen-yes
+O3b.flag-covers	0	MARK-PROJ	seen-no
+O4.agents-md	0	INSTR-MARK	seen-no
+O5a.global-reads	0	MARK-ETC	seen-yes
+O5b.mask-covers	0	MARK-ETC	seen-no
