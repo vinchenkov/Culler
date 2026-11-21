@@ -36,11 +36,16 @@ teardown() {
   [ "$TEARDOWN_DONE" = 1 ] && return
   TEARDOWN_DONE=1
   log "TEARDOWN begin"
-  pkill -u "$ACCT" 2>/dev/null || true
+  pkill -9 -u "$ACCT" 2>/dev/null || true
   loginctl terminate-user "$ACCT" 2>/dev/null || true
   loginctl disable-linger "$ACCT" 2>/dev/null || true
-  sleep 2
-  userdel -r "$ACCT" 2>/dev/null || true
+  sleep 3
+  # Guard the uid: an empty AUID must never collapse the path to /run/user.
+  RT_UID=$(id -u "$ACCT" 2>/dev/null || true)
+  if [ -n "$RT_UID" ] && [ "$RT_UID" != "$(id -u)" ]; then
+    rm -rf "/run/user/$RT_UID" 2>/dev/null || true
+  fi
+  userdel -rf "$ACCT" 2>&1 | head -3 || true
   if [ -f "$HERE/suffix.txt" ]; then
     SFX=$(cat "$HERE/suffix.txt")
     docker volume rm "mc-spine-$SFX" "mc-runtime-$SFX" >/dev/null 2>&1 || true
