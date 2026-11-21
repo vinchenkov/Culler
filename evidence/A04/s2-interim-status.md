@@ -32,3 +32,10 @@
 - **B3 result PASS**：平台感知验证器在真实 linux-amd64 宿主全绿（status 腿 + setup 腿均按真实拒绝断言）。B2 亦二次复验绿（同一宿主腿稳定）。
 - **B4 FAIL reason=image-build，根因=演练环境保真缺口，非产品缺陷**：`build-prod.sh` 的 systemd 前置检查 `systemctl --user list-unit-files` 需要用户总线；`sudo -u` 不开 PAM 会话，登录 shell 无 `XDG_RUNTIME_DIR`/`DBUS_SESSION_BUS_ADDRESS` → "Failed to connect to bus"。build-prod 该检查本身**姿态正确**（连不上总线即拒建，fail-closed，未削弱）。
 - 修复=runas() 统一注入两变量（指向 B1 已验证存在的 linger socket）；同一缺陷将波及 B6/B7/B8 的 systemctl --user，一次修复全覆盖。第七轮沿用 $R 目录（bundle 增量取回），第六轮原始日志另存 raw-r6.log。
+
+# 第四轮取证（2026-11-21 01:55Z，S2 第七轮）+ B4 真根因=产品缺陷（DEFECT-REGISTER-002）
+
+- 总线保真修复生效（B4 报错从 "Failed to connect to bus" 变为空输出 exit 1）。B0–B3 三连绿（B3 连续两轮 PASS，验证器断言稳定）。
+- **定向机三态实测**（systemd 249，root 与用户管理器同语义）：`list-unit-files 'com.culler.*.nonexistentxyz'` → **exit 1、空输出**；`list-units --type=service 'com.culler.*.nonexistentxyz'` → **exit 0、空**；有匹配两者均 0。
+- **定性**：build-prod Linux 守卫取了 unit-file(enabled) 集且把 249 的"空匹配=exit 1"读成检查失败 → **全新主机必拒建**；与 A23 同族（真相源=loaded 集才是守卫语义；redeploy 支用 list-units 正确，A03 真机验收 7/7 与此一致）。登记 `evidence/A03/DEFECT-REGISTER-002.md`，修复在 A04 正清单②文件族内（build-prod.sh）：改同源 `list-units --type=service`，错误路径照拒（fail-closed 保持）；`build-prod.test.sh` 假 systemctl 转 loaded 格式+**新增干净主机正例**；`redeploy_test.sh` 全序列轨迹转写（stub 删 list-unit-files 支，回退即响亮失败）。验证：runner/image lane EXIT=0+全 ok-marker、redeploy 前门 lane ok（含四调用序列）。
+- 第八轮计划：B4 起续跑持久段（镜像构建约十分钟级，B5 平台门数据点→onboard 链→B6–B10）。

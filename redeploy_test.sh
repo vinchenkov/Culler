@@ -165,7 +165,9 @@ exit 0
 FAKE
   # The systemd twin: `list-units` shows the two services while the file
   # MC_REDEPLOY_TEST_LOADED_FILE exists, and `disable --now` removes that file.
-  # The build-prod guard's `list-unit-files` answers from the same file.
+  # The build-prod guard asks the same `list-units` truth source (loaded, not
+  # enabled: systemd 249 makes an empty `list-unit-files` pattern match exit 1,
+  # which would reject a clean host).
   cat >"$bin/systemctl" <<'FAKE'
 #!/bin/sh
 { printf 'CALL\tsystemctl'; for arg do printf '\t%s' "$arg"; done; printf '\n'; } >>"${MC_REDEPLOY_TEST_LOG:?}"
@@ -178,12 +180,6 @@ for arg in "$@"; do
       if [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ] && [ -e "$MC_REDEPLOY_TEST_LOADED_FILE" ]; then
         printf 'com.culler.abc.dashboard.service loaded active running Culler dashboard\n'
         printf 'com.culler.abc.resident.service loaded active running Culler resident\n'
-      fi
-      exit 0 ;;
-    list-unit-files)
-      if [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ] && [ -e "$MC_REDEPLOY_TEST_LOADED_FILE" ]; then
-        printf 'com.culler.abc.dashboard.service\tenabled\tenabled\n'
-        printf 'com.culler.abc.resident.service\tenabled\tenabled\n'
       fi
       exit 0 ;;
   esac
@@ -735,7 +731,7 @@ env PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
   MC_REDEPLOY_TEST_DB="$case_root/spine.db" MC_REDEPLOY_TEST_LOADED_FILE="$loaded" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "the Linux happy path did not complete"; }
-expected_linux=$(printf 'CALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tsystemctl\t--user\tdisable\t--now\tcom.culler.abc.dashboard.service\nCALL\tsystemctl\t--user\tdisable\t--now\tcom.culler.abc.resident.service\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tsystemctl\t--user\tlist-unit-files\t--no-legend\tcom.culler.*\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' "$ROOT" "$ROOT")
+expected_linux=$(printf 'CALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tsystemctl\t--user\tdisable\t--now\tcom.culler.abc.dashboard.service\nCALL\tsystemctl\t--user\tdisable\t--now\tcom.culler.abc.resident.service\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tsystemctl\t--user\tlist-units\t--type=service\t--no-legend\tcom.culler.*\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' "$ROOT" "$ROOT")
 actual_linux=$(grep -v '^CALL	docker	info$' "$log")
 [ "$actual_linux" = "$expected_linux" ] || {
   printf 'expected:\n%s\nactual:\n%s\n' "$expected_linux" "$actual_linux" >&2

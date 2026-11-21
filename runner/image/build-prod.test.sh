@@ -107,13 +107,13 @@ if [ -n "${MC_TEST_SYSTEMCTL_EXIT:-}" ]; then
   printf 'Failed to connect to user scope bus: 141\n' >&2
   exit "$MC_TEST_SYSTEMCTL_EXIT"
 fi
-[ -n "${MC_TEST_SUPERVISED:-}" ] && printf 'com.culler.deadbeef.resident.service\tenabled\tstatic\tunit-file\n'
+[ -n "${MC_TEST_SUPERVISED:-}" ] && printf 'com.culler.deadbeef.resident.service loaded active running Culler resident\n'
 exit 0
 EOF
 chmod 755 "$TMP/bin/systemctl"
 
-linux_guard=$(PATH="$TMP/bin:/usr/bin:/bin" MC_OS_OVERRIDE=Linux MC_TEST_SUPERVISED=1 \
-    MC_TEST_MISE_LOG="$TMP/linux-guard.log" MC_RELEASE_BUILD_ID="$release_id" \
+linux_guard=$(PATH="$TMP/bin:/usr/bin:/bin" MC_OS_OVERRIDE=Linux MC_TEST_SUPERVISED=1 MC_TEST_MISE_LOG="$TMP/linux-guard.log" \
+    MC_RELEASE_BUILD_ID="$release_id" \
     "$HERE/build-prod.sh" 2>&1 || :)
 case "$linux_guard" in
   *"a supervised Culler deployment is loaded"*) ;;
@@ -133,6 +133,18 @@ case "$linux_check" in
   *) fail "the Linux service check error did not stop the build" ;;
 esac
 [ -e "$TMP/linux-check.log" ] && fail "the Linux service check error started the compiler"
+# A clean host: nothing loaded, a quiet successful check, and the build proceeds
+# to the compiler. A guard that rejects an empty machine breaks every fresh
+# install (the S2 acceptor found exactly this on systemd 249 when the guard
+# asked `list-unit-files`, whose empty pattern match exits 1).
+linux_clean=$(PATH="$TMP/bin:/usr/bin:/bin" MC_OS_OVERRIDE=Linux \
+    MC_TEST_MISE_LOG="$TMP/linux-clean.log" MC_RELEASE_BUILD_ID="$release_id" \
+    "$HERE/build-prod.sh" 2>&1 || :)
+case "$linux_clean" in
+  *"supervised Culler deployment is loaded"*|*"systemd service check failed"*)
+    fail "the Linux guard rejected a clean host" ;;
+esac
+[ -e "$TMP/linux-clean.log" ] || fail "the Linux clean-host case stopped before the compiler"
 if PATH="$TMP/bin:/usr/bin:/bin" MC_TEST_MISE_LOG="$TMP/mise.log" \
     MC_RELEASE_BUILD_ID="$release_id" "$HERE/build-prod.sh" \
     >"$TMP/output" 2>&1; then

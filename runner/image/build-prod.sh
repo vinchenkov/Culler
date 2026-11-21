@@ -67,7 +67,11 @@ case "$os_name" in
     ;;
   Linux)
     if command -v systemctl >/dev/null 2>&1; then
-      if units=$(systemctl --user list-unit-files --no-legend 'com.culler.*' 2>&1); then
+      # Loaded units, not unit files: the guard means "a supervised deployment
+      # is running", the same truth source as launchctl list on the Mac and
+      # redeploy.sh's stop loop. systemd 249 makes `list-unit-files` with a
+      # pattern that matches nothing exit 1, which would reject a clean host.
+      if units=$(systemctl --user list-units --type=service --no-legend 'com.culler.*' 2>&1); then
         :
       else
         status=$?
