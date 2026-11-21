@@ -25,3 +25,10 @@
 - **自纠**：R.upscan 探针形状缺陷（注入目录未落在 /tmp/sub 的父链上）=**父目录上溯未测**，clean 不作结论；修正探针（注入挂 /work、cwd=/work/sub）随 claude 族轮一并重跑。
 - **S2 硬断言 PASS**：生产 pipeline 形（HOME bind + `.codex` tmpfs 掩码）下注入配置**读不到**——掩码恰好覆盖 codex 唯一的活读源=策略意义明确：**对 codex 族，产品掩码已闭合 HOME 源；仓库经 bind 进入的 HOME 持久目录（项目 home）由 V-2 跨 run 面接管；cwd/父链源该版本不存在**。
 - claude/opencode 族：同表待跑（claude 活源=~/.claude.json+settings——`--version` 短路、需选择读配置的离线子命令，探针形状=下一件）；V-1b/c/d 政策判定仍门控于 T2 活会话（A25/A02）。
+
+## 追加：claude 族发现轮实测（2026-11-21，a14-v1a-claude.sh @218，claude-measured/claude-raw 两 218 件入档；探针形状=`claude config get theme` 离线子命令，版本实读 2.1.322）
+- **C0 正控 read**：损坏 `~/.claude.json` 触发 `corrupted: JSON Parse error`（消息点名文件=理想发现探针）。
+- **C1 = clean（本轮最重要一格）**：`CLAUDE_CONFIG_DIR` 指空目录（**产品 adapter 实况：claude.ts:61 每 run 私有 tmpdir + :110 settingSources:["user"]**）时损坏 HOME 文件**不再被读**——产品的配置迁移**实测有效**，HOME 泄漏路被切断。
+- **C2 = clean（带探针限度声明）**：cwd/.claude/settings.json 损坏在该子命令下无 marker——**"该探针形状未见项目设置读取"≠"claude 全阶段不读项目设置"**（settings/hooks 的读取阶段可能仅 session 启动，属 T2 活会话门控面）；settingSources:["user"] 的 SDK 级强制=适配器单元既有事实（claude.ts 注释明言 project 源=模型自写配置 hazard，"keep it user"）。
+- **C3 = clean** 基线控制。
+- 综合（codex+claude 两轮）：两族的**活发现源均被产品机制对准**（codex=HOME tmpfs 掩码罩住唯一活源【S2 硬断言 PASS】；claude=CONFIG_DIR 迁移切断 HOME【C1】）；项目目录源=SDK 选项层（单元面在册）+V-1b/c 活会话判据（继承 A25/A02）。opencode 族=tmpfs 掩码 /etc/opencode 已在装配（V-1d 时序锚），其发现轮随 T2 会话轮。

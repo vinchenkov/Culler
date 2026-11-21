@@ -1,0 +1,17 @@
+ts=2026-11-21T13:16:32Z host=F1104 uid=0 OUT[C0 exit=1] 
+Claude configuration file at /c/.claude.json is corrupted: JSON Parse error: Unexpected identifier "definitely"
+The corrupted file has been backed up to: /c/.claude/backups/.claude.json.corrupted.1795266992178
+
+Configuration error in /c/.claude.json: JSON Parse error: Unexpected identifier "definitely"
+No backup of this file was found.
+Fix the JSON in /c/.claude.json, or move the file aside to start with default settings.
+ts=2026-11-21T13:16:32Z host=F1104 uid=0 TOKEN[C0]=read-config
+ts=2026-11-21T13:16:33Z host=F1104 uid=0 OUT[C1 exit=1] Not logged in · Please run /login
+ts=2026-11-21T13:16:33Z host=F1104 uid=0 TOKEN[C1]=clean
+ts=2026-11-21T13:16:34Z host=F1104 uid=0 OUT[C2 exit=1] These settings files did not load, so nothing in them is in effect, including hooks and permission rules. Each loads again once the problem listed for it is fixed:
+  /p/.claude/settings.json: Invalid or malformed JSON
+Not logged in · Please run /login
+ts=2026-11-21T13:16:34Z host=F1104 uid=0 TOKEN[C2]=clean
+ts=2026-11-21T13:16:35Z host=F1104 uid=0 OUT[C3 exit=1] Not logged in · Please run /login
+ts=2026-11-21T13:16:35Z host=F1104 uid=0 TOKEN[C3]=clean
+ts=2026-11-21T13:16:35Z host=F1104 uid=0 TEARDOWN end
