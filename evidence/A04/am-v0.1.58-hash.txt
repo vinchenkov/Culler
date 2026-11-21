@@ -1,0 +1,6 @@
+AM v0.1.58 双面哈希登记（grill 六裁全案落地 + S2 守卫缺陷 DEFECT-002 修复轮）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = e886c1fd86ecb8d6f659931e263078a715dcd4c26b8c45e1189f6ef67fdaf456
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.57 = 02e8ba64c67e532426e8dc6344478b7e10fe0e217873c6b1174621ff93057374（evidence/A04/am-v0.1.57-hash.txt）
+- 同轮事实: DEV-BASELINE 四行裁定同步 dev 59e5a95（blcheck 62/0）；守卫修复+DEFECT-REGISTER-002+取证第四轮段 shz/TA04S2 ad6a3c3；S2 第八轮运行中（R=/tmp/a04-s2-094310）
