@@ -27,7 +27,8 @@ test("the dashboard persists supported settings and applies the dispatch values"
   await openSettings();
   expect(await page.getByTestId("configs-stats").count()).toBe(0);
   const knobs = page.getByTestId("configs-knobs");
-  expect(await knobs.getByTestId("config-knob").count()).toBe(13);
+  expect(await knobs.getByTestId("config-knob").count()).toBe(28);
+  expect(await knobs.locator('[data-key="container.trust_tier"] select').count()).toBe(1);
   for (const key of ["container.runtime", "container.base_image", "budgets.dispatch_retries", "git.author_name", "runtimes.bindings", "surfaces.dashboard.auth_token", "development.capture_evaluation_cases"]) {
     expect(await knobs.locator(`[data-key="${key}"]`).count()).toBe(0);
   }
