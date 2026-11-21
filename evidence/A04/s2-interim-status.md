@@ -14,3 +14,15 @@
 **待定性质（未自裁）**：B3 是(a)validate_package 检查器对"未装主机 status 探测"的判据假设过宽（应接受 usage-usage 错误为合法"无在装发行"响应），还是(b)`__release status-terminal` 在无 host 时不该以 usage(退出码2)拒绝、该优雅返回"无发行"——二者修复面不同，**(b) 触及 `__release` 动词语义，超出 A04 diff 计划正清单**（属发行控制面），需所有者裁方向后定票。执行侧不自行扩面。
 
 **下一步取决于所有者**：S2 若要跑到 B5+（持久安装→运行→重启→红线→卸载往返），须先解 B3 且确认 `__setup` 旗标集（脚本当前旗标为推断值，可能再触多轮真机迭代）；每轮是生产机往返。是否继续、还是先转 A16 参数裁定，见本轮提问。
+
+---
+
+# 第二轮取证（2026-11-21 01:32Z，S2 第五轮，R=/tmp/a04-s2-092511）
+
+- B0–B2 复绿（B2=真机 linux-amd64 发布腿再次跑通）；B3 status 腿以 HOST_VISION_REFUSAL 断言**通过**，同一 run_installer 的 **setup 腿**新报错：
+  `Download and verify Culler... Culler passed the download checks. Download and verify Bun 1.3.12... Bun 1.3.12 is installed. Open Culler setup. Culler setup requires a Mac.`（EXIT B3.validate=1 → RESULT B3 FAIL reason=validate-failed）
+- **定性=第三道门**（与第一轮发现分列）：①安装器宿主门（已修，A04③）；②操作者视野门（→A24，安全边界，所有者裁）；③**终端设置向导平台门**——`runTerminalSetup` 对非 darwin 直接拒绝（exit 2），发生在 install.lock 与凭据段**之前**。Linux 部署的前台设置入口整体缺失。
+- **处置=断言现实，不自行翻门**：validate_package 对 setup 腿加平台感知断言（linux 记录→按真实 (2,"Culler setup requires a Mac.")；darwin lock 形状在 linux 目标上双向拒绝，新增测试 test_a_linux_setup_check_demands_the_mac_refusal；validate_package_test 18/18，release 工具单测全绿）。提交 shz/TA04S2（rebase 后 2859d30）。**向导移植本身=新立 A25**（DEV-BASELINE，depends A04,A02；与 A02 凭据段纠缠+受 AGENTS 终端文本对抗评审门约束；开工序归所有者）。
+- B5 剧本同步：平台门拒绝按 `gap=A25` 记录为数据点，持久段由宿主私有 `__onboard` 动词链驱动（agentsview/home/tunables/surfaces→supervision --activate --reconfigure）。
+- teardown 每轮已验证：本轮结束后 account=0 home=0 units=0，**主机零残留**。
+- 第六轮（重传 TA04S2@4d350f0 后启动）目标：B3 全绿 → B4 真机镜像 → B5–B10 持久段往返 + mask 红线数据 + 卸载零残留。
