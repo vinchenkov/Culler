@@ -1,0 +1,6 @@
+AM v0.1.57 双面哈希登记（S2-B3 第二轮处置 + A24/A25 立票定稿轮）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 02e8ba64c67e532426e8dc6344478b7e10fe0e217873c6b1174621ff93057374
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.56 = a624f3dd3d848e371ade58fffab790032e27dd1be5cc08b6a1f3cac87655fdb9（evidence/A04/am-v0.1.56-hash.txt）
+- 同轮事实: DEV-BASELINE A24/A25 行提交 dev 779a3ff；AM v0.1.57 提交 dev f36c313；validator setup 断言提交 shz/TA04S2 2859d30（rebase 后）；blcheck tickets=62 violations=0 warnings=2
