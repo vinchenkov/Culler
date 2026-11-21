@@ -27,10 +27,18 @@ function runList(rows: Array<{ id: string; ended_at: string | null }>): ExecResu
   return ok(JSON.stringify({ runs: rows }));
 }
 
+function configWithBudget(megabytes: number): ExecResult {
+  return ok(JSON.stringify({ families: [{ family: "container", knobs: [
+    { key: "container.run_tree_max_mb", value: megabytes },
+  ] }] }));
+}
+
 function rig(opts: {
   entries?: string[] | Error;
   runs?: ExecResult;
   containers?: ExecResult;
+  budgetMB?: number;
+  sizes?: Record<string, number> | Error;
 }): Rig {
   const discarded: string[] = [];
   const logs: string[] = [];
@@ -39,6 +47,7 @@ function rig(opts: {
     mcHome: MC_HOME,
     runMc: async (argv) => {
       mcCalls.push(argv);
+      if (argv[0] === "config") return configWithBudget(opts.budgetMB ?? 0);
       return opts.runs ?? runList([]);
     },
     docker: async () => opts.containers ?? ok(""),
@@ -46,6 +55,13 @@ function rig(opts: {
       if (path !== ROOT) throw new Error(`unexpected readdir ${path}`);
       if (opts.entries instanceof Error) throw opts.entries;
       return opts.entries ?? [];
+    },
+    du: async (path) => {
+      const id = path.slice(`${ROOT}/`.length);
+      if (opts.sizes instanceof Error) throw opts.sizes;
+      const size = opts.sizes?.[id];
+      if (size === undefined) throw new Error(`no size for ${id}`);
+      return size;
     },
     discard: async (path) => {
       discarded.push(path);
@@ -64,14 +80,58 @@ function endedRuns(count: number, offset = 0): Array<{ id: string; ended_at: str
 }
 
 describe("the run log prune", () => {
-  test("keeps everything while the tree is within its bound, and reads nothing", async () => {
+  test("keeps everything while the tree is within its bound, paying only the budget read", async () => {
     const runs = endedRuns(KEEP_RUN_LOGS);
     const r = rig({ entries: runs.map((x) => x.id), runs: runList(runs) });
     await pruneRunLogs(r.deps);
     expect(r.discarded).toEqual([]);
-    // The early return is what keeps an idle board from paying for a whole
-    // `mc run list` every sixty seconds.
-    expect(r.mcCalls).toEqual([]);
+    // With no byte budget readable (the rig's default knob value 0 means
+    // unusable) the prune returns before the whole `mc run list` and the
+    // container inventory. The zero board pays nothing at all.
+    expect(r.mcCalls).toEqual([["config", "show"]]);
+    const empty = rig({ entries: [], runs: runList([]) });
+    await pruneRunLogs(empty.deps);
+    expect(empty.mcCalls).toEqual([]);
+  });
+
+  test("the byte budget prunes the oldest ended runs under the count bound", async () => {
+    const runs = endedRuns(3);
+    const sizes: Record<string, number> = {
+      [runs[0]!.id]: 600 * 1048576,
+      [runs[1]!.id]: 500 * 1048576,
+      [runs[2]!.id]: 10 * 1048576,
+    };
+    const r = rig({ entries: runs.map((x) => x.id), runs: runList(runs), budgetMB: 1024, sizes });
+    await pruneRunLogs(r.deps);
+    // endedRuns is oldest first for a handful of runs; freeing the single
+    // oldest 600 MB brings the ended tree (1110 total) under the budget.
+    expect(r.discarded).toEqual([`${ROOT}/${runs[0]!.id}`]);
+    expect(r.logs.some((l) => l.includes("over the 1024 MB ended-run tree budget"))).toBe(true);
+  });
+
+  test("a failed size read skips the byte arm and removes nothing", async () => {
+    const runs = endedRuns(3);
+    const r = rig({ entries: runs.map((x) => x.id), runs: runList(runs),
+      budgetMB: 1, sizes: new Error("stat: EPERM") });
+    await pruneRunLogs(r.deps);
+    expect(r.discarded).toEqual([]);
+    expect(r.logs.some((l) => l.includes("the byte budget was not applied this tick"))).toBe(true);
+  });
+
+  test("the count arm's doomed runs already count against the budget", async () => {
+    const runs = endedRuns(KEEP_RUN_LOGS + 3);
+    const sizes: Record<string, number> = Object.fromEntries(
+      runs.map((run) => [run.id, 100 * 1048576]));
+    const r = rig({ entries: runs.map((x) => x.id), runs: runList(runs),
+      budgetMB: 1048576, sizes });
+    await pruneRunLogs(r.deps);
+    // 3 over the count bound, well inside the 1 TiB budget: only the count
+    // arm fires, and the message names only the count. The doomed three are
+    // the tail of the newest-first order, removed oldest-first.
+    const byDate = [...runs].sort((a, b) =>
+      a.ended_at === b.ended_at ? a.id.localeCompare(b.id) : (a.ended_at < b.ended_at ? 1 : -1));
+    expect(r.discarded).toEqual(byDate.slice(KEEP_RUN_LOGS).reverse().map((run) => `${ROOT}/${run.id}`));
+    expect(r.logs.some((l) => l.includes("beyond the newest") && !l.includes("ended-run tree budget"))).toBe(true);
   });
 
   test("drops the oldest ended runs once the tree is over its bound", async () => {

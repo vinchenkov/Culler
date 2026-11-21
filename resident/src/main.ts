@@ -631,6 +631,19 @@ async function main(): Promise<void> {
     runMc,
     docker,
     readdir: (path) => readdir(path),
+    du: async (path) => {
+      let total = 0;
+      const walk = async (dir: string): Promise<void> => {
+        for (const entry of await readdir(dir, { withFileTypes: true })) {
+          if (entry.isSymbolicLink()) continue;
+          const child = `${dir}/${entry.name}`;
+          if (entry.isDirectory()) await walk(child);
+          else total += (await stat(child)).size;
+        }
+      };
+      await walk(path);
+      return total;
+    },
     discard: (path) =>
       discarder({
         fs: { rm: (p, opts) => rm(p, { force: true, recursive: opts?.recursive ?? false }) },

@@ -6,8 +6,9 @@
 // looking for. This chore bounds the tree instead.
 //
 // It keeps the newest KEEP_RUN_LOGS ended runs, ordered by the spine's
-// `ended_at`. That is a record fact, not a clock reading, so the tick stays
-// time-invariant.
+// `ended_at`, and holds the whole ended tree under a byte budget from the
+// configuration (`container.run_tree_max_mb`). That is a record fact, not a
+// clock reading, so the tick stays time-invariant.
 //
 // Three fences bound what it removes:
 //   1. The root is the constant `logs/runs`. Entries are joined, never
@@ -46,6 +47,9 @@ export interface RunLogPruneDeps {
   /** Best-effort recursive removal — the reap arm's `discarder`, which retries
    * briefly and then logs rather than throwing. */
   discard(path: string): Promise<void>;
+  /** Recursive byte total of one run-log directory. A failure skips the byte
+   * arm for the tick: an unmeasured tree must never be pruned by guesswork. */
+  du(path: string): Promise<number>;
   log: Logger;
 }
 
@@ -80,7 +84,9 @@ export async function pruneRunLogs(deps: RunLogPruneDeps): Promise<void> {
     // No run-log root: nothing has run under the bind yet. Not an error.
     return;
   }
-  if (entries.length <= KEEP_RUN_LOGS) return;
+  if (entries.length === 0) return;
+  const budgetMB = await runTreeBudgetMB(deps);
+  if (entries.length <= KEEP_RUN_LOGS && budgetMB === null) return;
 
   const rows = await endedAtByRunID(deps);
   if (rows === null) return;
@@ -110,23 +116,65 @@ export async function pruneRunLogs(deps: RunLogPruneDeps): Promise<void> {
   candidates.sort((a, b) =>
     a.endedAt === b.endedAt ? a.id.localeCompare(b.id) : (a.endedAt < b.endedAt ? 1 : -1));
 
-  const doomed = candidates.slice(KEEP_RUN_LOGS);
+  // The two arms agree on one doomed set. The count arm keeps the newest
+  // KEEP_RUN_LOGS; the byte arm then holds the whole ended tree inside the
+  // configured budget, oldest ended runs first. Unmeasured directories never
+  // trigger removals: a failed size read skips the byte arm for the tick.
+  const doomed = new Set<string>();
+  if (entries.length > KEEP_RUN_LOGS) {
+    for (const c of candidates.slice(KEEP_RUN_LOGS)) doomed.add(c.id);
+  }
+  let arms = entries.length > KEEP_RUN_LOGS ? [`beyond the newest ${KEEP_RUN_LOGS}`] : [];
+  if (budgetMB !== null && candidates.length > 0) {
+    const bytes = new Map<string, number>();
+    let total = 0;
+    let measured = true;
+    for (const c of candidates) {
+      try {
+        const size = await deps.du(`${root}/${c.id}`);
+        if (!Number.isSafeInteger(size) || size < 0) throw new Error(`unusable size ${size}`);
+        bytes.set(c.id, size);
+        total += size;
+      } catch (err) {
+        measured = false;
+        deps.log.warn("sweep.failed",
+          `run log prune: a size read failed; the byte budget was not applied this tick: ${err instanceof Error ? err.message : String(err)}`);
+        break;
+      }
+    }
+    if (measured) {
+      const budgetBytes = budgetMB * 1048576;
+      for (const id of doomed) total -= bytes.get(id) ?? 0;
+      let engaged = false;
+      for (let i = candidates.length - 1; i >= 0 && total > budgetBytes; i--) {
+        const c = candidates[i]!;
+        if (doomed.has(c.id)) continue;
+        doomed.add(c.id);
+        total -= bytes.get(c.id) ?? 0;
+        engaged = true;
+      }
+      if (engaged) arms.push(`over the ${budgetMB} MB ended-run tree budget`);
+    }
+  }
+
   let removed = 0;
   let remaining = 0;
-  for (const { id } of doomed) {
+  for (let i = candidates.length - 1; i >= 0; i--) {
+    const c = candidates[i]!;
+    if (!doomed.has(c.id)) continue;
     if (removed >= RUN_LOG_PRUNE_PER_TICK) {
       remaining++;
       continue;
     }
-    await deps.discard(`${root}/${id}`);
+    await deps.discard(`${root}/${c.id}`);
     removed++;
   }
 
   if (removed > 0) {
     deps.log.info("sweep.reclaimed",
-      `run log prune: reclaimed ${removed} run log(s) beyond the newest ${KEEP_RUN_LOGS}` +
+      `run log prune: reclaimed ${removed} run log(s) ${arms.join(" and ")}` +
       (remaining > 0 ? `; ${remaining} left for the next tick (per-tick cap ${RUN_LOG_PRUNE_PER_TICK})` : ""),
-      { removed, remaining, keep: KEEP_RUN_LOGS, cap: RUN_LOG_PRUNE_PER_TICK },
+      { removed, remaining, keep: KEEP_RUN_LOGS, cap: RUN_LOG_PRUNE_PER_TICK, budget_mb: budgetMB ?? 0 },
     );
   }
   if (malformed.length > 0) {
@@ -145,9 +193,8 @@ export async function pruneRunLogs(deps: RunLogPruneDeps): Promise<void> {
  *
  * The read is whole on purpose. The container inventory puts a whole
  * `docker ps` on this same timer, and the backup chore a full-database
- * `VACUUM INTO`. Only a tick observed to miss its interval justifies a
- * narrower read. The read is paid only on ticks where the run-log tree is
- * already over its bound. */
+ * `VACUUM INTO`. The byte budget needs the ended tree each tick; the count
+ * arm only ever needs it past its bound. */
 async function endedAtByRunID(deps: RunLogPruneDeps): Promise<Map<string, string> | null> {
   const res = await deps.runMc(["run", "list"]);
   if (res.exitCode !== 0) {
@@ -197,4 +244,40 @@ async function liveRunIDs(deps: RunLogPruneDeps): Promise<Set<string> | null> {
     }
   }
   return live;
+}
+
+/** `container.run_tree_max_mb` in megabytes. Null when the reading is
+ * unavailable or unusable: the count arm still runs, and the budget is
+ * re-read on the next tick. The resident never opens the spine, so the
+ * budget arrives through the same `mc config show` read as the limits. */
+async function runTreeBudgetMB(deps: RunLogPruneDeps): Promise<number | null> {
+  const res = await deps.runMc(["config", "show"]);
+  if (res.exitCode !== 0) {
+    deps.log.warn("sweep.failed", `run log prune: mc config show failed (exit ${res.exitCode}): ${res.stderr.trim()}`);
+    return null;
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(res.stdout);
+  } catch {
+    deps.log.warn("sweep.failed", "run log prune: mc config show returned unparseable JSON");
+    return null;
+  }
+  const families = (parsed as { families?: unknown } | null)?.families;
+  if (!Array.isArray(families)) {
+    deps.log.warn("sweep.failed", "run log prune: mc config show returned no families");
+    return null;
+  }
+  for (const family of families) {
+    for (const knob of (family as { knobs?: unknown }).knobs ?? []) {
+      const row = knob as { key?: unknown; value?: unknown };
+      if (row.key !== "container.run_tree_max_mb") continue;
+      const value = row.value;
+      if (typeof value === "number" && Number.isSafeInteger(value) && value > 0) return value;
+      deps.log.warn("sweep.failed", "run log prune: the run-tree budget is not a usable number");
+      return null;
+    }
+  }
+  deps.log.warn("sweep.failed", "run log prune: the configuration names no run-tree budget");
+  return null;
 }
