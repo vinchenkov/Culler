@@ -245,15 +245,113 @@ type Container struct {
 	AdditionalBlockedPatterns []BlockedPattern `toml:"additional_blocked_patterns"`
 	CPULimit                  int              `toml:"cpu_limit"`
 	MemoryLimitMB             int              `toml:"memory_limit_mb"`
+	// The trust tier selects which resource table a new agent container runs
+	// under. t0 keeps the operator-set semantics above (0 means no limit).
+	TrustTier         string `toml:"trust_tier"`
+	FDSoft            int    `toml:"fd_soft"`
+	FDHard            int    `toml:"fd_hard"`
+	LogMaxMB          int    `toml:"log_max_mb"`
+	LogKeepFiles      int    `toml:"log_keep_files"`
+	RunTreeMaxMB      int    `toml:"run_tree_max_mb"`
+	T1CPULimit        int    `toml:"t1_cpu_limit"`
+	T1MemoryLimitMB   int    `toml:"t1_memory_limit_mb"`
+	T1TmpfsMB         int    `toml:"t1_tmpfs_mb"`
+	T1WorkspaceSoftMB int    `toml:"t1_workspace_soft_mb"`
+	// The T2 table has no silent defaults: an untrusted tier spawns only with
+	// every value written down by the operator.
+	T2CPULimit        int `toml:"t2_cpu_limit"`
+	T2MemoryLimitMB   int `toml:"t2_memory_limit_mb"`
+	T2TmpfsMB         int `toml:"t2_tmpfs_mb"`
+	T2WorkspaceSoftMB int `toml:"t2_workspace_soft_mb"`
 }
 
 const (
 	MaxContainerCPULimit      = 1024
 	MaxContainerMemoryLimitMB = 1048576
+	// MaxContainerMB bounds every megabyte-sized container resource knob.
+	MaxContainerMB      = MaxContainerMemoryLimitMB
+	MaxContainerFDLimit = 1048576
+	// The tiers of the trust classification. t0 is the operator's own lane;
+	// t1 is audited-external; t2 is untrusted and demands an explicit table.
+	TrustTierT0 = "t0"
+	TrustTierT1 = "t1"
+	TrustTierT2 = "t2"
+	// The file-descriptor and log budgets apply to every tier. The T1 table
+	// ships non-zero, per the owner ruling; T2 ships empty on purpose.
+	DefaultContainerFDSoft            = 65536
+	DefaultContainerFDHard            = 262144
+	DefaultContainerLogMaxMB          = 10
+	DefaultContainerLogKeepFiles      = 3
+	DefaultContainerRunTreeMaxMB      = 2048
+	DefaultContainerT1CPULimit        = 8
+	DefaultContainerT1MemoryLimitMB   = 16384
+	DefaultContainerT1TmpfsMB         = 4096
+	DefaultContainerT1WorkspaceSoftMB = 20480
 	// ContainerPidsLimit is the process limit of each container that Culler starts.
 	ContainerPidsLimit = 2048
 	PidsLimitFlag      = "--pids-limit=2048"
 )
+
+// validateResources checks the trust tier and the resource tables. The T2
+// table refuses to half-exist: selecting the untrusted tier without writing
+// every T2 value down is a refusal at save time, not a silent unlimited spawn.
+func (c Container) validateResources() error {
+	switch c.TrustTier {
+	case TrustTierT0, TrustTierT1, TrustTierT2:
+	default:
+		return fmt.Errorf("container.trust_tier must be %s, %s, or %s", TrustTierT0, TrustTierT1, TrustTierT2)
+	}
+	if c.FDSoft <= 0 || c.FDSoft > MaxContainerFDLimit ||
+		c.FDHard <= 0 || c.FDHard > MaxContainerFDLimit || c.FDSoft > c.FDHard {
+		return fmt.Errorf("container.fd_soft and container.fd_hard must satisfy 0 < fd_soft <= fd_hard <= %d", MaxContainerFDLimit)
+	}
+	for _, knob := range []struct {
+		name  string
+		value int
+	}{
+		{"container.log_max_mb", c.LogMaxMB}, {"container.log_keep_files", c.LogKeepFiles},
+		{"container.run_tree_max_mb", c.RunTreeMaxMB},
+	} {
+		if knob.value <= 0 {
+			return fmt.Errorf("%s must be positive", knob.name)
+		}
+	}
+	if c.LogMaxMB > MaxContainerMB || c.RunTreeMaxMB > MaxContainerMB {
+		return fmt.Errorf("container log sizes must not exceed %d MB", MaxContainerMB)
+	}
+	for _, knob := range []struct {
+		name  string
+		value int
+		max   int
+	}{
+		{"container.t1_cpu_limit", c.T1CPULimit, MaxContainerCPULimit},
+		{"container.t1_memory_limit_mb", c.T1MemoryLimitMB, MaxContainerMB},
+		{"container.t1_tmpfs_mb", c.T1TmpfsMB, MaxContainerMB},
+		{"container.t1_workspace_soft_mb", c.T1WorkspaceSoftMB, MaxContainerMB},
+	} {
+		if knob.value <= 0 || knob.value > knob.max {
+			return fmt.Errorf("%s must be a positive limit within its bound; the T1 table has no unlimited form", knob.name)
+		}
+	}
+	for _, knob := range []struct {
+		name  string
+		value int
+		max   int
+	}{
+		{"container.t2_cpu_limit", c.T2CPULimit, MaxContainerCPULimit},
+		{"container.t2_memory_limit_mb", c.T2MemoryLimitMB, MaxContainerMB},
+		{"container.t2_tmpfs_mb", c.T2TmpfsMB, MaxContainerMB},
+		{"container.t2_workspace_soft_mb", c.T2WorkspaceSoftMB, MaxContainerMB},
+	} {
+		if knob.value < 0 || knob.value > knob.max {
+			return fmt.Errorf("%s must be 0 (unset) or a positive limit within its bound", knob.name)
+		}
+		if c.TrustTier == TrustTierT2 && knob.value == 0 {
+			return fmt.Errorf("container.trust_tier=t2 requires an explicit %s", knob.name)
+		}
+	}
+	return nil
+}
 
 // BlockedPattern is one operator-added deny. It is a table, not a bare
 // string, because `kind` selects the pattern language: component or
@@ -397,6 +495,14 @@ func Default() Config {
 			Runtime: "docker", BaseImage: "mc-prod",
 			PackageCacheRoot: "cache", MountAllowlist: "mount-allowlist",
 			AdditionalBlockedPatterns: []BlockedPattern{},
+			TrustTier:                 TrustTierT0,
+			FDSoft:                    DefaultContainerFDSoft, FDHard: DefaultContainerFDHard,
+			LogMaxMB: DefaultContainerLogMaxMB, LogKeepFiles: DefaultContainerLogKeepFiles,
+			RunTreeMaxMB:      DefaultContainerRunTreeMaxMB,
+			T1CPULimit:        DefaultContainerT1CPULimit,
+			T1MemoryLimitMB:   DefaultContainerT1MemoryLimitMB,
+			T1TmpfsMB:         DefaultContainerT1TmpfsMB,
+			T1WorkspaceSoftMB: DefaultContainerT1WorkspaceSoftMB,
 		},
 		Surfaces: Surfaces{
 			Dashboard:  Dashboard{Bind: "127.0.0.1:7333"},
@@ -669,6 +775,9 @@ func (c Config) Validate() error {
 	}
 	if c.Container.MemoryLimitMB < 0 || c.Container.MemoryLimitMB > MaxContainerMemoryLimitMB {
 		return fmt.Errorf("container.memory_limit_mb must be an integer from 0 to %d", MaxContainerMemoryLimitMB)
+	}
+	if err := c.Container.validateResources(); err != nil {
+		return err
 	}
 	if c.Container.Runtime != "docker" || c.Container.BaseImage == "" ||
 		!safeRelative(c.Container.PackageCacheRoot) ||

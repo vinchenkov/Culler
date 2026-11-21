@@ -3756,6 +3756,13 @@ function knobNode(knob) {
         onclick: () => { patterns.push({ kind: "component", pattern: "" }); setConfigDraft(knob, patterns); redraw(); } }));
     };
     redraw();
+  } else if (knob.inputType === "tier") {
+    // The option set comes from the backend's config view; the save path
+    // re-validates the value regardless, so this select is an input aid and
+    // never an authorization surface.
+    input = el("select", { id, class: "field", disabled: configSaveBusy, "aria-label": knob.label,
+      onchange: (event) => setConfigDraft(knob, event.target.value) },
+      (knob.options ?? []).map((option) => el("option", { value: option, selected: option === value, text: option })));
   } else if (knob.inputType === "lines") {
     input = el("textarea", { id, class: "field", rows: 3, disabled: configSaveBusy, "aria-label": knob.label,
       oninput: (event) => setConfigDraft(knob, [...knob.requiredValues, ...event.target.value.split("\n").map((line) => line.trim()).filter((line) => line && !knob.requiredValues.includes(line))]) });

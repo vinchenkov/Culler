@@ -42,6 +42,9 @@ func configView(cfg operatorconfig.Config) map[string]any {
 		if setting.kind == "patterns" {
 			row["options"] = []string{"component", "basename-glob"}
 		}
+		if setting.kind == "tier" {
+			row["options"] = []string{operatorconfig.TrustTierT0, operatorconfig.TrustTierT1, operatorconfig.TrustTierT2}
+		}
 		last := families[len(families)-1]
 		last["knobs"] = append(last["knobs"].([]map[string]any), row)
 	}
@@ -57,6 +60,8 @@ func sameKnobValue(a, b any) bool {
 func settingValue(setting dashboardSetting, cfg *operatorconfig.Config) any {
 	switch value := setting.value(cfg).(type) {
 	case *int:
+		return *value
+	case *string:
 		return *value
 	case *[]string:
 		return *value

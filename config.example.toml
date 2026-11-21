@@ -85,6 +85,28 @@ additional_blocked_patterns = []
 # Optional limits for each new agent container. 0 means no limit.
 cpu_limit = 0
 memory_limit_mb = 0
+# The trust tier selects the resource table for new agent containers.
+# t0: your own limits above apply (0 = unlimited stays unlimited).
+# t1: the audited-external table below (always non-zero).
+# t2: the untrusted table; every t2_* value must be set explicitly, or the
+#     configuration is refused — untrusted work never spawns unlimited.
+trust_tier = "t0"
+# These budgets apply under every tier.
+fd_soft = 65536              # open files per container process table
+fd_hard = 262144             # the ceiling it may raise to
+log_max_mb = 10              # per rotated container log file
+log_keep_files = 3           # rotated files kept per container
+run_tree_max_mb = 2048       # whole run-history budget; oldest pruned with a record
+# The t1 table (shipped defaults shown; zero is refused under t1).
+t1_cpu_limit = 8
+t1_memory_limit_mb = 16384
+t1_tmpfs_mb = 4096           # container scratch and home filesystems
+t1_workspace_soft_mb = 20480 # a run past this ends with a resource outcome
+# The t2 table starts empty on purpose: write it fully before selecting t2.
+t2_cpu_limit = 0
+t2_memory_limit_mb = 0
+t2_tmpfs_mb = 0
+t2_workspace_soft_mb = 0
 
 [surfaces.dashboard]
 bind = "127.0.0.1:7333"

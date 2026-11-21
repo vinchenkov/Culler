@@ -94,6 +94,11 @@ func TestConfigSaveRejectsInvalidAndStaleEditsWithoutWrites(t *testing.T) {
 		configChange("timing.backup_retain", 10, 8),
 		configChange("container.additional_blocked_patterns", []string{}, []map[string]string{{"kind": "unsupported", "pattern": "private"}}),
 		configChange("runtimes.forbidden_env", operatorconfig.Default().Runtimes.ForbiddenEnv, []string{"TOKEN", "TOKEN"}),
+		configChange("container.trust_tier", operatorconfig.TrustTierT0, "t9"),
+		configChange("container.trust_tier", operatorconfig.TrustTierT0, operatorconfig.TrustTierT2),
+		configChange("container.fd_soft", 65536, 300000),
+		configChange("container.t1_cpu_limit", 8, 0),
+		configChange("container.run_tree_max_mb", 2048, 0),
 	}
 	for i, request := range cases {
 		t.Run(string(rune('a'+i)), func(t *testing.T) {
@@ -129,6 +134,37 @@ func TestConfigSaveRemovesAgentContainerLimitsWithZero(t *testing.T) {
 	show, _ := ConfigShow()
 	if knob := csKnob(t, show, "container.cpu_limit"); knob["min"] != 0 || knob["max"] != operatorconfig.MaxContainerCPULimit {
 		t.Fatalf("The CPU limit bounds differ: %v", knob)
+	}
+}
+
+func TestConfigSaveMovesTheTrustTierOnlyWithACompleteUntrustedTable(t *testing.T) {
+	writeCSConfig(t, "config_version = 4\n")
+	jsonChange := func(key string, expected, value any) ConfigChange {
+		before, _ := json.Marshal(expected)
+		after, _ := json.Marshal(value)
+		return ConfigChange{Key: key, Expected: before, Value: after}
+	}
+	if _, err := ConfigSave(ConfigSaveRequest{Changes: []ConfigChange{
+		jsonChange("container.trust_tier", operatorconfig.TrustTierT0, operatorconfig.TrustTierT1),
+	}}, func(map[string]int) error { return nil }); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ConfigSave(ConfigSaveRequest{Changes: []ConfigChange{
+		jsonChange("container.trust_tier", operatorconfig.TrustTierT1, operatorconfig.TrustTierT2),
+		jsonChange("container.t2_cpu_limit", 0, 2),
+		jsonChange("container.t2_memory_limit_mb", 0, 4096),
+		jsonChange("container.t2_tmpfs_mb", 0, 1024),
+		jsonChange("container.t2_workspace_soft_mb", 0, 8192),
+	}}, func(map[string]int) error { t.Fatal("the tier move must not project settings"); return nil }); err != nil {
+		t.Fatal(err)
+	}
+	show, _ := ConfigShow()
+	knob := csKnob(t, show, "container.trust_tier")
+	if knob["value"] != operatorconfig.TrustTierT2 || knob["type"] != "tier" {
+		t.Fatalf("The tier editor differs: %v", knob)
+	}
+	if options, ok := knob["options"].([]string); !ok || len(options) != 3 {
+		t.Fatalf("The tier options differ: %v", knob["options"])
 	}
 }
 

@@ -148,7 +148,7 @@ func TestConfigShowExposesOnlySupportedEditors(t *testing.T) {
 			}
 		}
 	}
-	want := []string{"budgets.review_wip_cap", "timing.timeout_minutes", "timing.grace_minutes", "timing.heartbeat_interval_s", "timing.spawn_grace_s", "timing.hard_deadline_minutes", "timing.collie_idle_timeout_s", "timing.wiki_update_interval_s", "timing.backup_retain", "container.additional_blocked_patterns", "container.cpu_limit", "container.memory_limit_mb", "runtimes.forbidden_env"}
+	want := []string{"budgets.review_wip_cap", "timing.timeout_minutes", "timing.grace_minutes", "timing.heartbeat_interval_s", "timing.spawn_grace_s", "timing.hard_deadline_minutes", "timing.collie_idle_timeout_s", "timing.wiki_update_interval_s", "timing.backup_retain", "container.additional_blocked_patterns", "container.cpu_limit", "container.memory_limit_mb", "container.trust_tier", "container.fd_soft", "container.fd_hard", "container.log_max_mb", "container.log_keep_files", "container.run_tree_max_mb", "container.t1_cpu_limit", "container.t1_memory_limit_mb", "container.t1_tmpfs_mb", "container.t1_workspace_soft_mb", "container.t2_cpu_limit", "container.t2_memory_limit_mb", "container.t2_tmpfs_mb", "container.t2_workspace_soft_mb", "runtimes.forbidden_env"}
 	if len(keys) != len(want) {
 		t.Fatalf("Unexpected settings: %v", keys)
 	}

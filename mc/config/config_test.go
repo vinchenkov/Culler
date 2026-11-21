@@ -1028,3 +1028,31 @@ func TestAgentContainerLimitsDefaultToNoLimitAndStayInRange(t *testing.T) {
 		t.Fatalf("The process limit flag %q differs from %d", PidsLimitFlag, ContainerPidsLimit)
 	}
 }
+
+func TestContainerResourceTablesFollowTheOwnerRuling(t *testing.T) {
+	c := Default().Container
+	if c.TrustTier != TrustTierT0 || c.FDSoft != 65536 || c.FDHard != 262144 ||
+		c.LogMaxMB != 10 || c.LogKeepFiles != 3 || c.RunTreeMaxMB != 2048 ||
+		c.T1CPULimit != 8 || c.T1MemoryLimitMB != 16384 || c.T1TmpfsMB != 4096 || c.T1WorkspaceSoftMB != 20480 ||
+		c.T2CPULimit != 0 || c.T2MemoryLimitMB != 0 || c.T2TmpfsMB != 0 || c.T2WorkspaceSoftMB != 0 {
+		t.Fatalf("the shipped resource table differs from the ruling: %+v", c)
+	}
+	for _, body := range []string{
+		"[container]\ntrust_tier = \"t9\"\n",
+		"[container]\ntrust_tier = \"t2\"\n",
+		"[container]\ntrust_tier = \"t2\"\nt2_cpu_limit = 2\nt2_memory_limit_mb = 4096\nt2_tmpfs_mb = 1024\n",
+		"[container]\nfd_soft = 300000\n",
+		"[container]\nfd_hard = 0\n",
+		"[container]\nt1_cpu_limit = 0\n",
+		"[container]\nrun_tree_max_mb = 0\n",
+		"[container]\nt2_cpu_limit = -1\n",
+		"[container]\ntrust_tier = \"t1\"\nt1_tmpfs_mb = 0\n",
+	} {
+		if _, err := Parse([]byte(body)); err == nil {
+			t.Fatalf("the configuration was accepted: %q", body)
+		}
+	}
+	if _, err := Parse([]byte("[container]\ntrust_tier = \"t2\"\nt2_cpu_limit = 2\nt2_memory_limit_mb = 4096\nt2_tmpfs_mb = 1024\nt2_workspace_soft_mb = 8192\n")); err != nil {
+		t.Fatal(err)
+	}
+}
