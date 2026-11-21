@@ -1,0 +1,12 @@
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 OUT[G1.naive-push exit=127] a14repo/evidence/A14/a14-v3-git-mechanism.sh: line 47: g1: command not found
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 RESULT G1.naive-push result OBSERVED
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 OUT[G2.global-null exit=127] a14repo/evidence/A14/a14-v3-git-mechanism.sh: line 47: g2: command not found
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 RESULT G2.global-null result OBSERVED
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 OUT[G3 exit=0] 
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 RESULT G3.product-env result PASS
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 OUT[G4 exit=1] error: src refspec http://127.0.0.1 does not match any
+error: failed to push some refs to 'file:///tmp/a16-res-203009/a14g/w/remote.git'
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 RESULT G4.credential-helper result PASS
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 AUX-include-read: credential.http://127.0.0.1:1.helper !printf PHISHING
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 RESULT G4b.include-shape result OBSERVED
+ts=2026-11-21T14:32:41Z host=F1104 uid=0 TEARDOWN end

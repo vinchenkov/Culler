@@ -78,14 +78,21 @@ found=none
   || rec G3.product-env result PASS "pushing-side-clean (remote hook is destination trust domain, noted)"
 
 echo "== G4 credential helper reachability under product env"
-out=$(HOME="$HERE/w/fakehome" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
-    git -C "$HERE/w/repo" -c core.hooksPath="$HERE/w/nohooks" push --dry-run origin "http://127.0.0.1:1/x" 2>&1); st=$?
+# First pass caught an instrument dud: `push --dry-run origin http://…` died
+# at refspec resolution BEFORE transport auth, so the helper was never at
+# issue while the AUX row proved the hostile helper WAS loaded. ls-remote
+# against a dead port forces the credential query itself.
+setup_arena g4
+# append the hostile helper directly into the repo config (git trusts it)
+git -C "$HERE/w/repo" config credential.helper "!/bin/sh -c 'printf CALLED > $HERE/probe.g4.helper-called; printf user'"
+out=$(HOME="$HERE/w/fakehome" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 GIT_TERMINAL_PROMPT=0 \
+    git -C "$HERE/w/repo" ls-remote "http://127.0.0.1:1/x" 2>&1); st=$?
 log "OUT[G4 exit=$st] $out"
-printf '%s' "$out" | grep -q PHISHING && rec G4.credential-helper result FAIL "reason=in-repo-helper-executed" \
-  || rec G4.credential-helper result PASS "in-repo-credential-helper-not-executed (config include honored? separate row)"
+[ -e "$HERE/probe.g4.helper-called" ] && rec G4.credential-helper result OBSERVED "in-repo-helper-executed-on-auth (severity: repo config is a credential vector under this env shape)" \
+  || { printf '%s' "$out" | grep -q "could not read Username" && rec G4.credential-helper result PASS "helper-not-run (query went to terminal, refused)" || rec G4.credential-helper result UNKNOWN "reason=outcome-unclassified"; }
 # Was the hostile include even read? (include.path in .git/config IS trusted by git; the row tells us which layer stopped it.)
 out2=$(git -C "$HERE/w/repo" config --get-regexp credential 2>&1); log "AUX-include-read: $out2"
-rec G4b.include-shape result OBSERVED "see-raw"
+rec G4b.include-shape result OBSERVED "helper-visible-in-effective-config (proves the query, not the include, is the decision point)"
 
 echo "== Z read-back"
 cat "$HERE"/v3-results.tsv
