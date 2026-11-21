@@ -22,3 +22,14 @@
 - reviewed_by: host-agent（执行兼任复核，显式声明；Integrity Reviewer 未做，不宣称）
 - verified_at: 2026-11-20 19:50 (+0800)
 - 边界: 工单 EVIDENCED ≠ 义务完成；F0a Exit 不因开发证据齐备而自动通过；arm64 镜像/资产钉仍全功能保留，发布域严格二平台（darwin-arm64/linux-amd64），linux-arm64 仅持 AgentsView/CI 开发钉不产发布记录；不推导任何契约冻结或 IMPLEMENTATION_VERIFIED。
+
+## S2 收口增补段（2026-11-21，grill 六裁 Q2(b)+Q8(a) 执行；登记=AM v0.1.59）
+
+**逐字句（随票携带直至 F0a 联合判定，转写规则=收窄不删）**：真实 systemd 监督行为尚未完全验证——S2 已在定向机以专用账户真实执行**原生发布腿、平台感知验证器（含打包 installer 与 setup 手递的真实运行）、完整产品镜像构建与 amd64@commit 身份核验**（B0–B4 全绿，第十二轮 02:59:02Z）；**持久化监督面（常驻 unit 安装+enable、登录驻留、Restart 故障复活、真实 installer→setup→运行→uninstall 完整往返、卸载完整性）仍未验证**——该段结构性依赖 Linux 设置向导（A25）；宿主直驱私有动词族经第十二轮证实不可行（`productionSpinePath` 为 helper 容器视角，warm-helper 编排与 config/spine 持久化=向导单权威；复刻=造第二权威，违 003 不变量，执行侧止步）。
+
+**验收器真机缺陷账（全部票内正清单修复+双向/新增测试）**：①DEFECT-002 镜像守卫空机误拒（`list-unit-files` 空匹配 exit 1；改同源 `list-units`，fail-closed 姿态不变）；②amd64 供给链日期错位（11-20 基镜 vs 10-01 快照精确依赖死锁；每架构快照参数+实效值入 manifest，218 干跑 158 项预验证）；③harness `COPY→cp` 目录缺失（**双架构回归**；docker 构建面唯一可见；同层建目录）；④演练侧两修复（用户总线、MC_SPINE 命名——产品零改动）。A04-A3 SKIP 部分回收：打包 installer 经 B3 在真机**真实执行**（install.sh 名义直传限制原样登记，随 F0a 闭合）。
+
+**残余处置（对照原清单 ①–⑤）**：①→改写为"A25 轮原样重跑剧本 evidence/A04/a04-release-acceptance-s2.sh B5–B10"（含 ⑤ mask 红线数据采集；义务显式转 A25 验收映射，不丢不吞）；②→如上部分回收；③④→不变（F0a 项）。原始件档案：evidence/A04/a04-s2-raw-round5.tgz + a04-s2-raw-rounds6-12.tgz；host 演练目录清空后终态实测 account=0 / culler volumes=0 / culler containers=0。
+- execution_id: A04-run-02（S2 轮；补充段口径=V-001 原文逐字保留，残余清单项按上节改写有效）
+- verdict: S2 段=**PASS（B0–B4 真机原生面）+ B5–B10 结构性移交（Q8(a) 在册）**；A04 票整体 EVIDENCED 状态不因此扩大或缩小
+- reviewed_by: host-agent（执行兼任复核声明同上；Integrity 未做，不宣称）；verified_at: 2026-11-21 (+0800)
