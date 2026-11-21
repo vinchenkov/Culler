@@ -26,3 +26,9 @@
 - B5 剧本同步：平台门拒绝按 `gap=A25` 记录为数据点，持久段由宿主私有 `__onboard` 动词链驱动（agentsview/home/tunables/surfaces→supervision --activate --reconfigure）。
 - teardown 每轮已验证：本轮结束后 account=0 home=0 units=0，**主机零残留**。
 - 第六轮（重传 TA04S2@4d350f0 后启动）目标：B3 全绿 → B4 真机镜像 → B5–B10 持久段往返 + mask 红线数据 + 卸载零残留。
+
+# 第三轮取证（2026-11-21 01:48Z，S2 第六轮，R=/tmp/a04-s2-094310）
+
+- **B3 result PASS**：平台感知验证器在真实 linux-amd64 宿主全绿（status 腿 + setup 腿均按真实拒绝断言）。B2 亦二次复验绿（同一宿主腿稳定）。
+- **B4 FAIL reason=image-build，根因=演练环境保真缺口，非产品缺陷**：`build-prod.sh` 的 systemd 前置检查 `systemctl --user list-unit-files` 需要用户总线；`sudo -u` 不开 PAM 会话，登录 shell 无 `XDG_RUNTIME_DIR`/`DBUS_SESSION_BUS_ADDRESS` → "Failed to connect to bus"。build-prod 该检查本身**姿态正确**（连不上总线即拒建，fail-closed，未削弱）。
+- 修复=runas() 统一注入两变量（指向 B1 已验证存在的 linger socket）；同一缺陷将波及 B6/B7/B8 的 systemctl --user，一次修复全覆盖。第七轮沿用 $R 目录（bundle 增量取回），第六轮原始日志另存 raw-r6.log。

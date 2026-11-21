@@ -25,9 +25,16 @@ log() { printf '%s %s\n' "$(WHO)" "$*" >>"$RAWF"; }
 rec() { printf '%s %s%s %s\n' "$1" "$2" "${3:+ $3}" "$(WHO)" >>"$RESF"; log "RESULT $1 $2 ${3:-}"; }
 runas() { # label cmd-string — run as the acceptance account; paths arrive via env
           # (never single-quoted literals) so no remote expansion is defeated.
+          # sudo -u does not open a PAM session, so the user bus must be named
+          # explicitly: a login shell here has no XDG_RUNTIME_DIR/DBUS address
+          # and every systemctl --user call would die on "Failed to connect to
+          # bus" (S2 round-6 B4 finding). The linger socket exists from B1.
   local label=$1 cmd=$2 st=0
+  local rtdir=/run/user/$(id -u "$ACCT")
   log "RUN[$label](as $ACCT) $cmd"
-  sudo -u "$ACCT" -H env S2_R="$HERE" S2_REPO="${REPO_USER:-$REPO}" S2_LEG="/home/$ACCT/leg" S2_PKG="/home/$ACCT/package" S2_COMMIT="$COMMIT" bash -lc "$cmd" >>"$RAWF" 2>&1 || st=$?
+  sudo -u "$ACCT" -H env S2_R="$HERE" S2_REPO="${REPO_USER:-$REPO}" S2_LEG="/home/$ACCT/leg" S2_PKG="/home/$ACCT/package" S2_COMMIT="$COMMIT" \
+    XDG_RUNTIME_DIR="$rtdir" DBUS_SESSION_BUS_ADDRESS="unix:path=$rtdir/bus" \
+    bash -lc "$cmd" >>"$RAWF" 2>&1 || st=$?
   log "EXIT $label=$st"
   return "$st"
 }
