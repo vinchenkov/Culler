@@ -13,6 +13,7 @@
 set -u
 HERE=${A14_WORK:?pass A14_WORK (absolute scratch dir)}
 LEG_ARCHIVE=${LEG_ARCHIVE:?opencode archive from the release leg}
+A14_RELEASE=${A14_RELEASE:?commit the leg was built at (becomes release-id)}
 LEG_SHA=f76b059e2062949486927c470fb329e7f85b1ef766fa5da396eedea4febf02aa
 OCV=a14-oc-probe
 case "$HERE" in /*) ;; *) exit 2;; esac
@@ -51,7 +52,7 @@ out=$(docker run --rm --pids-limit=2048 --network none --user 0:0 \
  [ "$version" = "opencode v$3" ] || { printf "The archive contains %s. This release requires OpenCode %s.\n" "$version" "$3" >&2; exit 1; }
  printf "%s\n" "$1" > /output/release-id
  printf "%s\n" "$2" > /output/archive-sha256
- chmod a+r /output/release-id /output/archive-sha256' install "$LEG_SHA" 2.2.7 2>&1); st=$?
+ chmod a+r /output/release-id /output/archive-sha256' install "$A14_RELEASE" "$LEG_SHA" 2.2.7 2>&1); st=$?
 log "OUT[O0 exit=$st] $out"
 [ "$st" = 0 ] || { echo "ACCEPT: FAIL failing=O0-seed"; exit 1; }
 
