@@ -55,3 +55,10 @@
 - 修复=该 RUN 首步 `install -d /opt/culler-runtime/app`（同层建目录再按架构拷贝，两架构同修，注释记录因果）。image/release lane 重跑 EXIT=0。
 - 覆盖缺口如实登记：**产品镜像完整构建**应列为 deployment-linux-* /孪生 CI 的必跑门（F0a 合流项，随 §7.1 呈报）。
 - 第十轮：重传后续跑 B4（x64 bun install 与运行时校验在前方，可能再暴露深层问题）。
+
+# 第七轮取证（2026-11-21 02:59Z，S2 第十一/十二轮）+ B5 持久段=**结构性止步**（范围结论，不冒充驱动成功）
+
+- 第十一/十二轮同点止步：`__onboard agentsview` 宿主直调 **done**（agentsview 0.47.0 装成）；`__onboard home` 报 `create database directory: mkdir /mc: permission denied`。
+- **根因=动词族设计而非缺陷**：`mc/cmd/mc/runtime_scope_prod.go:10 productionSpinePath="/mc/spine/spine.db"`——私有 onboard 动词族按**helper 容器内**视角写死 spine 路径；宿主侧正常路径是 mc 自我转委托进 warm helper（main.go 头部注释与 helper_manager 装配），**编排与 config/spine 持久化归向导（__setup）单权威**。演练脚本在宿主直调=绕过设计意图；自行复刻 helper+exec+持久化搬运=**造第二权威**，违 003 不变量与 reuse 纪律，执行侧不做。
+- **结论（S2 范围事实，呈所有者）**：A04 形态下 Linux 真机可闭合的面已全绿——B0 预检、B1 账户、B2 原生发布腿、B3 平台感知验证器、**B4 完整产品镜像构建+amd64@commit 身份核验（02:59:02 PASS）**；B5–B10（持久安装→监督在位→SIGKILL 复活→mask 红线→卸载零残留）**结构上需 A25 向导移植或其替代宿主驱动面**方能真实执行。mask 红线（A03 吞错问题）数据随该轮一并回收。B5 的"平台门数据点"记录本身有效。
+- 脚本处置：B5–B10 段保留为 A25 实现后的真机验收剧本（判据不变）；S2 本轮不再向生产机追加无权威依据的驱动尝试。
