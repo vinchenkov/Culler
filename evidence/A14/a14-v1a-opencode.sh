@@ -27,8 +27,10 @@ trap teardown EXIT
 
 install -d -m 777 "$HERE/ocinj"
 printf '{"username":"MARK-XDG"}' > "$HERE/ocinj/opencode.json"
-mkdir -p "$HERE/ocinj/homecfg/opencode"
-printf '{"username":"MARK-HOME"}' > "$HERE/ocinj/homecfg/opencode/opencode.json"
+mkdir -p "$HERE/ocinj/xdg/opencode"
+printf '{"username":"MARK-XDG"}' > "$HERE/ocinj/xdg/opencode/opencode.json"
+mkdir -p "$HERE/ocinj/homeshape/.config/opencode"
+printf '{"username":"MARK-HOME"}' > "$HERE/ocinj/homeshape/.config/opencode/opencode.json"
 mkdir -p "$HERE/ocinj/proj/.opencode"
 printf '{"username":"MARK-PROJ"}' > "$HERE/ocinj/proj/.opencode/opencode.json"
 printf 'INSTR-MARK\n' > "$HERE/ocinj/proj/AGENTS.md"
@@ -64,13 +66,16 @@ row() { # row-name marker exit output — MARKER visibility recorded, never gues
 }
 
 echo "== O1 XDG_CONFIG_HOME relocation (production per-run shape: adapter points XDG_* at a private dir)"
-out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HERE/ocinj:/inj:ro" -e HOME=/tmp \
-    mc-prod /bin/sh -c 'mkdir -p /w/opencode && cp /inj/opencode.json /w/opencode/ && XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/w timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
+# The private dir must be a writable bind: the container root filesystem is
+# not writable by uid 10002 (first pass proved this with a cp failure, not a
+# discovery result).
+out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HERE/ocinj/xdg:/w:rw" -e HOME=/tmp \
+    mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/w timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
 log "OUT[O1 exit=$st] $out"; row O1.xdg-live MARK-XDG "$st" "$out"
 
-echo "== O2 HOME-shaped config (no XDG relocation)"
-out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HERE/ocinj:/inj:ro" \
-    -v "$HERE/ocinj/homecfg:/h:ro" -e HOME=/h \
+echo "== O2 HOME-shaped config (~/.config/opencode under HOME)"
+out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro \
+    -v "$HERE/ocinj/homeshape:/h:ro" -e HOME=/h \
     mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
 log "OUT[O2 exit=$st] $out"; row O2.home-source MARK-HOME "$st" "$out"
 
@@ -84,11 +89,18 @@ out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HE
     mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
 log "OUT[O4 exit=$st] $out"; row O4.agents-md INSTR-MARK "$st" "$out"
 
-echo "== O5 product /etc/opencode tmpfs mask shape"
+echo "== O5 product /etc/opencode mask shape"
+# First prove the CLI would read the global /etc path at all (5a: bind the
+# poisoned dir there, no mask). Only if 5a sees the mark does the mask row
+# (5b) mean anything — an instrument check on each side of the curtain.
+out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro \
+    -v "$HERE/ocinj/etcopencode:/etc/opencode:ro" -e HOME=/tmp \
+    mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
+log "OUT[O5a exit=$st] $out"; row O5a.global-reads MARK-ETC "$st" "$out"
 out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro \
     --tmpfs /etc/opencode:ro,nosuid,nodev,noexec,mode=0555 -e HOME=/tmp \
     mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
-log "OUT[O5 exit=$st] $out"; row O5.mask-empty MARK-ETC "$st" "$out"
+log "OUT[O5b exit=$st] $out"; row O5b.mask-covers MARK-ETC "$st" "$out"
 
 echo "== TABLE"; cat "$DATA"
 echo "== RAW BEGIN"; sed 's/^/| /' "$RAWF"; echo "== RAW END"
