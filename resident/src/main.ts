@@ -23,7 +23,7 @@ import { openFileSink } from "../../runner/shared/log-sink";
 import { startTickLoop } from "./tick-loop";
 import { createInstallMaintenance, readInstallMaintenance, waitForUpdateActivation } from "./install-maintenance";
 import { createRepositoryLane, type StartEvent } from "./repository-lane";
-import { createEnvironmentLane } from "./environment-lane";
+import { createEnvironmentLane, createWorkspaceWatchdog } from "./environment-lane";
 import { createOperatorLane } from "./operator-lane";
 import { createAgentProfileRuntimeRefresh, readAgentProfileRuntimeCatalog } from "./agent-profile-runtime";
 import { hostZone } from "./host-zone";
@@ -652,6 +652,22 @@ async function main(): Promise<void> {
       }, "run log prune")(path, { recursive: true }),
     log,
   });
+  const workspaceWatchdogChore = createWorkspaceWatchdog({
+    runMc, docker, log,
+    du: async (path) => {
+      let total = 0;
+      const walk = async (dir: string): Promise<void> => {
+        for (const entry of await readdir(dir, { withFileTypes: true })) {
+          if (entry.isSymbolicLink()) continue;
+          const child = `${dir}/${entry.name}`;
+          if (entry.isDirectory()) await walk(child);
+          else total += (await stat(child)).size;
+        }
+      };
+      await walk(path);
+      return total;
+    },
+  });
   const attachmentTerminalChore = createAttachmentTerminalChore(
     runMc, attachmentConfinement,
   );
@@ -801,6 +817,7 @@ async function main(): Promise<void> {
       await refreshConnectionsBeforeTick(runMc, credentialHandle.refreshConnection, log);
       await attachmentTerminalChore.beforeTick();
       await runLogPruneChore.beforeTick();
+      await workspaceWatchdogChore.beforeTick();
       await expireArtifacts(runMc, log, () => lane.request("expiry-end"));
     },
     tickComplete: async () => {

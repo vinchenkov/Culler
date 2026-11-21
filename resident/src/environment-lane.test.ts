@@ -2,8 +2,8 @@ import { describe, expect, spyOn, test } from "bun:test";
 import { mkdtemp, mkdir, rm, symlink, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { agentContainerLimits, agentLimitArguments, commandLogFiles, createEnvironmentLane, checkRuntimeCompatibility, environmentContainerName, parseProcessList, projectCacheArguments, projectHomeArguments, projectSecretValues, safeBuildPath, type EnvironmentOperation } from "./environment-lane";
-import { agentLimitsConfig, makeRig, ok, settle } from "./test-helpers";
+import { agentContainerLimits, agentLimitArguments, commandLogFiles, createEnvironmentLane, checkRuntimeCompatibility, createWorkspaceWatchdog, environmentContainerName, parseProcessList, projectCacheArguments, projectHomeArguments, projectSecretValues, safeBuildPath, type EnvironmentOperation } from "./environment-lane";
+import { agentLimitsConfig, makeRig, msgLogger, ok, settle } from "./test-helpers";
 
 const image = "sha256:" + "a".repeat(64);
 const candidate = "sha256:" + "b".repeat(64);
@@ -1001,5 +1001,99 @@ describe("initial Project setup in a temporary repository", () => {
       expect(creates).toEqual([]);
       expect(reports[0]).toMatchObject({ status: "failed", error: "Initial Project setup requires its setup identity." });
     } finally { await lane.stop(); }
+  });
+});
+
+describe("the workspace watchdog", () => {
+  function watchdogRig(opts: {
+    tier?: "t0" | "t1" | "t2";
+    softMB?: number;
+    containers?: Array<{ id: string; tier: string; source?: string; rw?: boolean }>;
+    sizes?: Record<string, number | Error>;
+  }) {
+    const soft = opts.softMB ?? 1;
+    const table: Record<string, unknown> = opts.tier === "t2"
+      ? { "container.trust_tier": "t2", "container.t2_cpu_limit": 2, "container.t2_memory_limit_mb": 4096,
+        "container.t2_tmpfs_mb": 1024, "container.t2_workspace_soft_mb": soft }
+      : { "container.trust_tier": opts.tier ?? "t1", "container.t1_workspace_soft_mb": soft };
+    const dockerCalls: string[][] = [];
+    const stopped: string[] = [];
+    const logs: string[] = [];
+    const deps = {
+      runMc: async () => agentLimitsConfig({ cpus: 0, memory_mb: 0, knobs: table }),
+      docker: async (argv: string[]) => {
+        dockerCalls.push(argv);
+        if (argv[0] === "ps") {
+          return ok((opts.containers ?? []).map(c => `${c.id}\t${c.tier}`).join("\n") + "\n");
+        }
+        if (argv[0] === "inspect") {
+          const id = argv[argv.length - 1]!;
+          const row = (opts.containers ?? []).find(c => c.id === id)!;
+          return ok(JSON.stringify([{
+            Name: `/mc-ws-${id}`,
+            Mounts: row.source === undefined ? [] : [{
+              Type: "bind", Destination: "/workspace/source", Source: row.source, RW: row.rw !== false,
+            }],
+          }]));
+        }
+        if (argv[0] === "stop") { stopped.push(argv[argv.length - 1]!); return ok(""); }
+        return ok("");
+      },
+      du: async (path: string) => {
+        const size = opts.sizes?.[path];
+        if (size instanceof Error) throw size;
+        if (size === undefined) throw new Error(`no size for ${path}`);
+        return size;
+      },
+      log: msgLogger(logs),
+    };
+    return { chore: createWorkspaceWatchdog(deps), dockerCalls, stopped, logs };
+  }
+
+  test("t0 is the operator's domain: no inventory, no watching", async () => {
+    const r = watchdogRig({ tier: "t0", containers: [{ id: "run-1", tier: "pipeline", source: "/ws/1" }], sizes: { "/ws/1": 100 * 1048576 } });
+    await r.chore.beforeTick();
+    expect(r.dockerCalls).toEqual([]);
+    expect(r.stopped).toEqual([]);
+  });
+
+  test("a pipeline workspace over the soft budget is stopped with a record", async () => {
+    const r = watchdogRig({ containers: [{ id: "run-1", tier: "pipeline", source: "/ws/1" }],
+      sizes: { "/ws/1": 2 * 1048576 } });
+    await r.chore.beforeTick();
+    expect(r.stopped).toEqual(["run-1"]);
+    expect(r.logs.some(l => l.includes("measured 2097152 bytes over the 1048576 byte soft budget; stop requested"))).toBe(true);
+  });
+
+  test("exactly the budget, a read-only mount, and another tier's container stay untouched", async () => {
+    const r = watchdogRig({ containers: [
+      { id: "run-exact", tier: "pipeline", source: "/ws/exact" },
+      { id: "col-1", tier: "collie", source: "/ws/ro" },
+      { id: "run-other", tier: "helper" },
+    ], sizes: { "/ws/exact": 1048576, "/ws/ro": 9 * 1048576 } });
+    await r.chore.beforeTick();
+    expect(r.stopped).toEqual([]);
+  });
+
+  test("a setup container is watched, and an unmeasurable workspace is left", async () => {
+    const r = watchdogRig({ containers: [
+      { id: "set-1", tier: "setup", source: "/ws/setup" },
+      { id: "set-2", tier: "setup", source: "/ws/broken" },
+    ], sizes: { "/ws/setup": 5 * 1048576, "/ws/broken": new Error("EIO") } });
+    await r.chore.beforeTick();
+    expect(r.stopped).toEqual(["set-1"]);
+    expect(r.logs.some(l => l.includes("could not be measured and was left") && l.includes("/ws/broken"))).toBe(true);
+  });
+
+  test("a failed inventory skips the tick without stopping anything", async () => {
+    const logs: string[] = [];
+    const chore = createWorkspaceWatchdog({
+      runMc: async () => agentLimitsConfig({ cpus: 0, memory_mb: 0, knobs: { "container.trust_tier": "t1" } }),
+      docker: async () => ({ exitCode: 125, stdout: "", stderr: "daemon offline" }),
+      du: async () => 0,
+      log: msgLogger(logs),
+    });
+    await chore.beforeTick();
+    expect(logs.some(l => l.includes("container inventory failed"))).toBe(true);
   });
 });

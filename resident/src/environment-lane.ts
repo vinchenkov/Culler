@@ -210,6 +210,83 @@ export function projectHomeArguments(source: string, runState = true, tmpfsMb = 
     ]) : [])];
 }
 
+export interface WorkspaceWatchdogDeps {
+  runMc: TickDeps["runMc"];
+  docker: TickDeps["docker"];
+  log: TickDeps["log"];
+  /** Recursive byte total; a failure leaves that workspace untouched. */
+  du(path: string): Promise<number>;
+}
+
+export interface WorkspaceWatchdogChore {
+  beforeTick(): Promise<void>;
+}
+
+// The workspace watchdog of the D-1 ruling: the soft budget for the tier's
+// run workspaces. It stops the container and records the resource cause; the
+// end-of-run transition stays dispatch's alone (the container-absent reap),
+// so this chore adds no second authority and no new state word. t0 runs under
+// the operator's own settings and is never watched.
+export function createWorkspaceWatchdog(deps: WorkspaceWatchdogDeps): WorkspaceWatchdogChore {
+  return {
+    async beforeTick() {
+      try {
+        await workspaceWatchdogOnce(deps);
+      } catch (err) {
+        deps.log.warn("sweep.skipped", `workspace watchdog: skipped this tick: ${err instanceof Error ? err.message : String(err)}`);
+      }
+    },
+  };
+}
+
+async function workspaceWatchdogOnce(deps: WorkspaceWatchdogDeps): Promise<void> {
+  const limits = await agentContainerLimits(deps.runMc);
+  if (limits.workspace_soft_mb <= 0) return;
+  const budget = limits.workspace_soft_mb * 1048576;
+  const listed = await deps.docker([
+    "ps", "--no-trunc", "--filter", "label=mc-managed=true",
+    "--format", "{{.ID}}\t{{.Label \"mc-tier\"}}",
+  ]);
+  if (listed.exitCode !== 0) {
+    deps.log.warn("sweep.failed", `workspace watchdog: container inventory failed (exit ${listed.exitCode}): ${listed.stderr.trim()}`);
+    return;
+  }
+  for (const line of listed.stdout.split("\n")) {
+    const [id, tier] = line.trim().split("\t");
+    if (!id || (tier !== "pipeline" && tier !== "setup")) continue;
+    let name = id;
+    let source: string | undefined;
+    try {
+      const inspected = await deps.docker(["inspect", "--type", "container", id]);
+      if (inspected.exitCode !== 0) {
+        deps.log.warn("sweep.failed", `workspace watchdog: inspect failed (exit ${inspected.exitCode}): ${inspected.stderr.trim()}`);
+        continue;
+      }
+      const records = JSON.parse(inspected.stdout);
+      if (!Array.isArray(records) || records.length !== 1) throw new Error("inspect did not return exactly one container");
+      const record = records[0] as { Name?: unknown; Mounts?: unknown };
+      name = typeof record.Name === "string" ? record.Name : id;
+      for (const mount of Array.isArray(record.Mounts) ? record.Mounts as Array<Record<string, unknown>> : []) {
+        if (mount.Type === "bind" && mount.Destination === "/workspace/source" && mount.RW === true
+          && typeof mount.Source === "string") source = mount.Source;
+      }
+    } catch (err) {
+      deps.log.warn("sweep.failed", `workspace watchdog: ${id} could not be inspected: ${err instanceof Error ? err.message : String(err)}`);
+      continue;
+    }
+    if (source === undefined) continue;
+    try {
+      const bytes = await deps.du(source);
+      if (bytes <= budget) continue;
+      const stopped = await deps.docker(["stop", "--time", "10", id]);
+      deps.log.warn("sweep.resource", `workspace watchdog: ${name} workspace ${source} measured ${bytes} bytes over the ${budget} byte soft budget; stop ${
+        stopped.exitCode === 0 ? "requested" : `failed (exit ${stopped.exitCode}): ${stopped.stderr.trim()}`}`);
+    } catch (err) {
+      deps.log.warn("sweep.failed", `workspace watchdog: ${source} could not be measured and was left: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+}
+
 async function prepareProjectHome(project: string, deps: Dependencies): Promise<string> {
   if (!PROJECT_ID.test(project)) throw new Error("The Project home identity is invalid.");
   const result = await succeeded(deps.runMc(["__project-home", project]), "The Project home is unavailable");
