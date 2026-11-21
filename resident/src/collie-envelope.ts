@@ -10,14 +10,18 @@ export interface CollieCreateExpectation {
   container_id: string;
   env: string[];
   image: string;
+  log_driver: string;
+  log_options: Record<string, string>;
   mc_labels: Record<string, string>;
   memory: number;
   memory_swap: number;
+  nano_cpus: number;
   name: string;
   network_modes: string[];
   pids_limit: number | null;
   security_opt: string[];
   state: "created";
+  ulimits: string[];
   user: string;
 }
 
@@ -30,6 +34,13 @@ export function canonicalCollieDockerEnvelope(
   const config = object(record.Config, "Config");
   const host = object(record.HostConfig, "HostConfig");
   const restart = object(host.RestartPolicy, "HostConfig.RestartPolicy");
+  const logConfig = object(host.LogConfig, "HostConfig.LogConfig");
+  const ulimits = (host.Ulimits === null || host.Ulimits === undefined
+    ? [] : array(host.Ulimits, "HostConfig.Ulimits")).map((item, index) => {
+    const row = object(item, `HostConfig.Ulimits[${index}]`);
+    const name = string(row.Name, `HostConfig.Ulimits[${index}].Name`);
+    return `${name}=${integer(row.Soft, `HostConfig.Ulimits[${index}].Soft`)}:${integer(row.Hard, `HostConfig.Ulimits[${index}].Hard`)}`;
+  }).sort();
   const labels = stringMap(config.Labels, "Config.Labels");
   const mounts = array(record.Mounts, "Mounts").map((item, index) => {
     const mount = object(item, `Mounts[${index}]`);
@@ -77,6 +88,10 @@ export function canonicalCollieDockerEnvelope(
       dns_options: nullableStrings(host.DnsOptions, "HostConfig.DnsOptions").sort(),
       dns_search: nullableStrings(host.DnsSearch, "HostConfig.DnsSearch").sort(),
       ipc_mode: string(host.IpcMode, "HostConfig.IpcMode"),
+      log_config: {
+        driver: string(logConfig.Type, "HostConfig.LogConfig.Type"),
+        options: stringMap(logConfig.Config ?? {}, "HostConfig.LogConfig.Config"),
+      },
       memory: integer(host.Memory, "HostConfig.Memory"),
       memory_swap: integer(host.MemorySwap, "HostConfig.MemorySwap"),
       nano_cpus: integer(host.NanoCpus, "HostConfig.NanoCpus"),
@@ -93,6 +108,7 @@ export function canonicalCollieDockerEnvelope(
         name: string(restart.Name, "HostConfig.RestartPolicy.Name"),
       },
       security_opt: nullableStrings(host.SecurityOpt, "HostConfig.SecurityOpt").sort(),
+      ulimits,
       uts_mode: string(host.UTSMode, "HostConfig.UTSMode"),
     },
     id: string(record.Id, "Id"),
@@ -187,7 +203,13 @@ export function canonicalCollieDockerEnvelope(
       ["auto remove", envelope.host_config.auto_remove === true],
       ["memory", envelope.host_config.memory === expected.memory],
       ["memory swap", envelope.host_config.memory_swap === expected.memory_swap],
+      ["nano cpus", envelope.host_config.nano_cpus === expected.nano_cpus],
       ["pids limit", envelope.host_config.pids_limit === expected.pids_limit],
+      ["ulimits", JSON.stringify(envelope.host_config.ulimits) ===
+        JSON.stringify([...expected.ulimits].sort())],
+      ["log driver", envelope.host_config.log_config.driver === expected.log_driver],
+      ["log options", JSON.stringify(envelope.host_config.log_config.options) ===
+        JSON.stringify(Object.fromEntries(Object.entries(expected.log_options).sort()))],
       ["env", exactEnv],
       ["mc labels", exactMcLabels],
       ["mount destinations",

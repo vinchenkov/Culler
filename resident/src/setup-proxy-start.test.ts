@@ -6,7 +6,7 @@ import { createEnvironmentLane } from "./environment-lane";
 import { startCredentialProjector } from "./credential-projector";
 import { createProviderLifetimeCheck, providerLaunchIsCurrent } from "./provider-lifetime";
 import { parseProviderAccess } from "../../runner/agent-runner/adapters/provider-access";
-import { makeRig, ok } from "./test-helpers";
+import { agentLimitsConfig, makeRig, ok } from "./test-helpers";
 import type { Exec, ExecResult } from "./types";
 
 const image = `sha256:${"a".repeat(64)}`;
@@ -58,7 +58,7 @@ test.each(["setup", "validate"])("%s proxy access survives a lifetime sweep befo
   deps.config = { ...deps.config, mcHome: home, runtimeVolume: "test-runtime", projectImage: "test-project", releaseBuildId: "fixture-release" };
   deps.runMc = (args, input, options) => args[0] === "environment" && args[1] === "image-check"
     ? Promise.resolve(ok("{}"))
-    : args[0] === "config" && args[1] === "show" ? Promise.resolve(ok(JSON.stringify({ families: [] }))) : runMc(args, input, options);
+    : args[0] === "config" && args[1] === "show" ? Promise.resolve(agentLimitsConfig({ cpus: 0, memory_mb: 0 })) : runMc(args, input, options);
   const events: string[] = [];
   let providerRequests = 0;
   const handle = startCredentialProjector({ tls,

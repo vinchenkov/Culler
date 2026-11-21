@@ -30,14 +30,18 @@ const expected: CollieCreateExpectation = {
   container_id: id,
   env,
   image,
+  log_driver: "json-file",
+  log_options: { "max-file": "3", "max-size": "10m" },
   mc_labels: labels,
   memory: 1073741824,
   memory_swap: 1073741824,
+  nano_cpus: 0,
   name: "mc-collie-h-abc",
   network_modes: ["none"],
   pids_limit: 128,
   security_opt: [],
   state: "created",
+  ulimits: ["nofile=65536:262144"],
   user: "10002:10002",
 };
 
@@ -65,6 +69,7 @@ function inspectRecord(planBinds: string[] = binds): Record<string, unknown> {
       DnsOptions: [],
       DnsSearch: [],
       IpcMode: "private",
+      LogConfig: { Type: "json-file", Config: { "max-size": "10m", "max-file": "3" } },
       Memory: 1073741824,
       MemorySwap: 1073741824,
       NanoCpus: 0,
@@ -75,6 +80,7 @@ function inspectRecord(planBinds: string[] = binds): Record<string, unknown> {
       ReadonlyRootfs: false,
       RestartPolicy: { MaximumRetryCount: 0, Name: "no" },
       SecurityOpt: null,
+      Ulimits: [{ Name: "nofile", Soft: 65536, Hard: 262144 }],
       UTSMode: "",
     },
     Id: id,
@@ -118,6 +124,8 @@ describe("canonical Collie Docker envelope", () => {
       privileged: false,
       readonly_rootfs: false,
       security_opt: [],
+      ulimits: ["nofile=65536:262144"],
+      log_config: { driver: "json-file", options: { "max-file": "3", "max-size": "10m" } },
     }));
     expect(parsed.mounts.map((mount: { destination: string }) => mount.destination)).toEqual([
       "/mc/run.json", "/mc/session", "/mc/spine", "/mc/traces",
@@ -193,6 +201,21 @@ describe("canonical Collie Docker envelope", () => {
     record.HostConfig.PidsLimit = null;
     expect(() => canonicalCollieDockerEnvelope(record, expected))
       .toThrow("does not match the closed create plan: memory swap, pids limit");
+    // Every A16 cap is attested the same way: a dropped or widened limit is
+    // a refusal naming the field.
+    const cases: Array<[string, (row: any) => void, string]> = [
+      ["ulimits dropped", (row) => { row.HostConfig.Ulimits = null; }, "ulimits"],
+      ["ulimit widened", (row) => { row.HostConfig.Ulimits[0].Hard = 1048576; }, "ulimits"],
+      ["cpu cap drifted", (row) => { row.HostConfig.NanoCpus = 1; }, "nano cpus"],
+      ["log size widened", (row) => { row.HostConfig.LogConfig.Config["max-size"] = "100m"; }, "log options"],
+      ["log driver swapped", (row) => { row.HostConfig.LogConfig.Type = "local"; }, "log driver"],
+    ];
+    for (const [, change, field] of cases) {
+      const drifted = inspectRecord() as any;
+      change(drifted);
+      expect(() => canonicalCollieDockerEnvelope(drifted, expected))
+        .toThrow(`does not match the closed create plan: ${field}`);
+    }
   });
 
   // Real `docker inspect` emits Name and Driver ONLY for volume mounts; a bind

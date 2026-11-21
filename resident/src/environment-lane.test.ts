@@ -182,7 +182,7 @@ describe("Project environment execution", () => {
     const calls: string[][] = [];
     deps.runMc = async (argv) => ok(JSON.stringify(argv[0] === "__project-home"
       ? { canonical: `${deps.config.mcHome}/state/projects/${argv[1]}/home` }
-      : argv[1] === "work" ? { operations: [op] } : {}));
+      : argv[1] === "work" ? { operations: [op] } : argv[0] === "config" ? JSON.parse(agentLimitsConfig({ cpus: 0, memory_mb: 0 }).stdout) : {}));
     deps.docker = async (argv) => {
       calls.push(argv);
       if (argv[0] === "container") return { exitCode: 1, stdout: "", stderr: "No such container" };
@@ -323,7 +323,7 @@ describe("Project environment execution", () => {
       if (argv[0] === "__project-home") return ok(JSON.stringify({ canonical: `${deps.config.mcHome}/state/projects/${argv[1]}/home` }));
       if (argv[0] === "__setup-repository") return ok(JSON.stringify({ status: "prepared", start_commit: "e".repeat(40) }));
       events.push(`mc:${argv[1]}`);
-      return ok(JSON.stringify(argv[1] === "work" ? { operations: [op] } : {}));
+      return ok(JSON.stringify(argv[1] === "work" ? { operations: [op] } : argv[0] === "config" ? JSON.parse(agentLimitsConfig({ cpus: 0, memory_mb: 0 }).stdout) : {}));
     };
     deps.docker = async (argv, stdin) => {
       if (argv[0] === "image") return ok(JSON.stringify([{ Id: image }]));
@@ -534,6 +534,7 @@ test.each([
       if (args[0] === "__project-home") return ok(JSON.stringify({ canonical: `${deps.config.mcHome}/state/projects/${args[1]}/home` }));
     if (args[1] === "work") return ok(JSON.stringify({ operations: [op] }));
     if (args[1] === "operation-result") reports.push(JSON.parse(new TextDecoder().decode(input)));
+    if (args[0] === "config") return agentLimitsConfig({ cpus: 0, memory_mb: 0 });
     return ok("{}");
   };
   let exited = false;
@@ -564,6 +565,7 @@ test("a container creation failure reaches its operation before any start", asyn
       if (args[0] === "__project-home") return ok(JSON.stringify({ canonical: `${deps.config.mcHome}/state/projects/${args[1]}/home` }));
     if (args[1] === "work") return ok(JSON.stringify({ operations: [op] }));
     if (args[1] === "operation-result") reports.push(JSON.parse(new TextDecoder().decode(input)));
+    if (args[0] === "config") return agentLimitsConfig({ cpus: 0, memory_mb: 0 });
     return ok("{}");
   };
   deps.docker = async args => {
@@ -645,7 +647,7 @@ for (const harness of ["fake", "codex"] as const) {
     const calls: string[][] = [];
     deps.runMc = async args => ok(JSON.stringify(args[0] === "__project-home"
       ? { canonical: `${deps.config.mcHome}/state/projects/${args[1]}/home` }
-      : args[1] === "work" ? { operations: [op] } : {}));
+      : args[1] === "work" ? { operations: [op] } : args[0] === "config" ? JSON.parse(agentLimitsConfig({ cpus: 0, memory_mb: 0 }).stdout) : {}));
     deps.docker = async args => {
       calls.push(args);
       if (args[0] === "image") return ok(JSON.stringify([{ Id: image }]));
@@ -689,7 +691,7 @@ test("setup applies the configured agent container limits", async () => {
     ? agentLimitsConfig({ cpus: 4, memory_mb: 6144 })
     : ok(JSON.stringify(args[0] === "__project-home"
       ? { canonical: `${deps.config.mcHome}/state/projects/${args[1]}/home` }
-      : args[1] === "work" ? { operations: [op] } : {}));
+      : args[1] === "work" ? { operations: [op] } : args[0] === "config" ? JSON.parse(agentLimitsConfig({ cpus: 0, memory_mb: 0 }).stdout) : {}));
   deps.docker = async args => {
     calls.push(args);
     if (args[0] === "image") return ok(JSON.stringify([{ Id: image }]));
@@ -707,12 +709,31 @@ test("setup applies the configured agent container limits", async () => {
 });
 
 test("agent container limits come from the operator configuration", async () => {
-  expect(await agentContainerLimits(async () => agentLimitsConfig({ cpus: 2, memory_mb: 4096 }))).toEqual({ cpus: 2, memory_mb: 4096 });
-  expect(await agentContainerLimits(async () => ok(JSON.stringify({ families: [] })))).toEqual({ cpus: 0, memory_mb: 0 });
-  expect(agentLimitArguments({ cpus: 0, memory_mb: 0 })).toEqual([]);
-  expect(agentLimitArguments({ cpus: 2, memory_mb: 4096 })).toEqual(["--cpus", "2", "--memory", "4096m", "--memory-swap", "4096m"]);
+  const table = { tier: "t0" as const, fd_soft: 65536, fd_hard: 262144, log_max_mb: 10, log_keep_files: 3 };
+  expect(await agentContainerLimits(async () => agentLimitsConfig({ cpus: 2, memory_mb: 4096 })))
+    .toEqual({ ...table, cpus: 2, memory_mb: 4096, tmpfs_mb: 0, workspace_soft_mb: 0 });
+  expect(await agentContainerLimits(async () => agentLimitsConfig({ cpus: 0, memory_mb: 0 })))
+    .toEqual({ ...table, cpus: 0, memory_mb: 0, tmpfs_mb: 0, workspace_soft_mb: 0 });
+  // The t1 table ships non-zero; selecting it resolves the full T1 row.
+  expect(await agentContainerLimits(async () => agentLimitsConfig({ cpus: 0, memory_mb: 0,
+    knobs: { "container.trust_tier": "t1" } })))
+    .toEqual({ tier: "t1", cpus: 8, memory_mb: 16384, tmpfs_mb: 4096, workspace_soft_mb: 20480,
+      fd_soft: 65536, fd_hard: 262144, log_max_mb: 10, log_keep_files: 3 });
+  // t2 without its explicit table refuses to resolve at all (the D-5 refusal).
+  await expect(agentContainerLimits(async () => agentLimitsConfig({ cpus: 0, memory_mb: 0,
+    knobs: { "container.trust_tier": "t2" } })))
+    .rejects.toThrow("container.t2_cpu_limit is not usable");
+  expect(agentLimitArguments({ ...table, cpus: 0, memory_mb: 0, tmpfs_mb: 0, workspace_soft_mb: 0 }))
+    .toEqual(["--ulimit", "nofile=65536:262144", "--log-driver", "json-file",
+      "--log-opt", "max-size=10m", "--log-opt", "max-file=3"]);
+  expect(agentLimitArguments({ ...table, cpus: 2, memory_mb: 4096, tmpfs_mb: 0, workspace_soft_mb: 0 }))
+    .toEqual(["--cpus", "2", "--memory", "4096m", "--memory-swap", "4096m",
+      "--ulimit", "nofile=65536:262144", "--log-driver", "json-file",
+      "--log-opt", "max-size=10m", "--log-opt", "max-file=3"]);
   await expect(agentContainerLimits(async () => ({ exitCode: 2, stdout: "", stderr: "unreadable" })))
     .rejects.toThrow("The agent container limits are unavailable.");
+  await expect(agentContainerLimits(async () => ok(JSON.stringify({ families: [] }))))
+    .rejects.toThrow("The agent container limit container.fd_soft is not usable.");
   for (const value of [-1, 1.5, "4"]) {
     await expect(agentContainerLimits(async () => ok(JSON.stringify({ families: [{ knobs: [{ key: "container.cpu_limit", value }] }] }))))
       .rejects.toThrow("The agent container limits are invalid.");
@@ -728,9 +749,10 @@ describe("the history of a setup agent attempt", () => {
     const reports: any[] = [];
     deps.runMc = async (args, input) => {
       if (args[1] === "operation-result") reports.push(JSON.parse(new TextDecoder().decode(input)));
+      if (args[0] === "config") return agentLimitsConfig({ cpus: 0, memory_mb: 0 });
       return ok(JSON.stringify(args[0] === "__project-home"
         ? { canonical: `${deps.config.mcHome}/state/projects/${args[1]}/home` }
-        : args[1] === "work" ? { operations: [op] } : {}));
+        : args[1] === "work" ? { operations: [op] } : args[0] === "config" ? JSON.parse(agentLimitsConfig({ cpus: 0, memory_mb: 0 }).stdout) : {}));
     };
     deps.docker = async args => {
       calls.push(args);
@@ -898,7 +920,7 @@ describe("initial Project setup in a temporary repository", () => {
         events.push("mc:operation-result");
         reports.push(JSON.parse(new TextDecoder().decode(input)));
       }
-      return ok(JSON.stringify(argv[1] === "work" ? { operations: [op] } : {}));
+      return ok(JSON.stringify(argv[1] === "work" ? { operations: [op] } : argv[0] === "config" ? JSON.parse(agentLimitsConfig({ cpus: 0, memory_mb: 0 }).stdout) : {}));
     };
     deps.docker = async argv => {
       if (argv[0] === "image") return ok(JSON.stringify([{ Id: image }]));

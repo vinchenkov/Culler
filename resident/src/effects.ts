@@ -797,6 +797,11 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
       container_id: containerId,
       env: values("-e"),
       image: config.image,
+      log_driver: values("--log-driver")[0] ?? "",
+      log_options: Object.fromEntries(values("--log-opt").map((entry) => {
+        const split = entry.indexOf("=");
+        return [entry.slice(0, split), entry.slice(split + 1)];
+      })),
       mc_labels: {
         "mc-deployment": deploymentIdentity(config.mcHome),
         "mc-envelope-digest": envelope_digest,
@@ -808,11 +813,13 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
       },
       memory: limits.memory_mb * 1024 * 1024,
       memory_swap: limits.memory_mb * 1024 * 1024,
+      nano_cpus: Math.round(limits.cpus * 1000000000),
       name: container_name,
       network_modes: isFakeFamily ? ["none"] : ["default", "bridge"],
       pids_limit: CONTAINER_PIDS_LIMIT,
       security_opt: [],
       state: "created",
+      ulimits: values("--ulimit"),
       user: COLLIE_USER,
     });
   } catch (err) {
@@ -1513,7 +1520,7 @@ async function spawnAttempt(
     ...(!config.runtimeVolume ? ["-v", `${config.runnerSrcDir}:/app/src:ro`] : []),
     ...(effect.mount_plan.tool_home === undefined
       ? ["-e", "HOME=/home/mc-model"]
-      : projectHomeArguments(effect.mount_plan.tool_home.canonical)),
+      : projectHomeArguments(effect.mount_plan.tool_home.canonical, true, limits.tmpfs_mb)),
     ...planBinds,
     ...(providerAccessPath === undefined ? [] : [
       "-v", `${providerAccessPath}:/mc/provider-access.json:ro`,

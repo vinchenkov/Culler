@@ -1029,6 +1029,8 @@ describe("spawn effect", () => {
         "create", "--rm", "--init",
         "--user", "10002:10002", "--cap-drop", "ALL",
         "--pids-limit", "2048",
+        "--ulimit", "nofile=65536:262144",
+        "--log-driver", "json-file", "--log-opt", "max-size=10m", "--log-opt", "max-file=3",
         "--workdir", "/workspace/source",
         "--network", "none",
         "--name", "mc-ws-e2e-run-42-worker",

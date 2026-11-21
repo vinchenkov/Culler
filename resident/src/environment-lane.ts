@@ -66,12 +66,26 @@ type Dependencies = Pick<TickDeps, "runMc" | "docker" | "config" | "fs" | "log" 
 export const CONTAINER_PIDS_LIMIT = 2048;
 export const PIDS_LIMIT_ARGUMENTS = ["--pids-limit", String(CONTAINER_PIDS_LIMIT)];
 
+export type ContainerTrustTier = "t0" | "t1" | "t2";
+
 export interface AgentContainerLimits {
+  tier: ContainerTrustTier;
   cpus: number;
   memory_mb: number;
+  // tmpfs_mb is 0 only under t0: the operator's own lane keeps its existing
+  // mount semantics. t1/t2 always carry the table's size.
+  tmpfs_mb: number;
+  fd_soft: number;
+  fd_hard: number;
+  log_max_mb: number;
+  log_keep_files: number;
+  // The watchdog bound for run workspaces; 0 disables the check (t0).
+  workspace_soft_mb: number;
 }
 
-// The operator sets agent container limits in config.toml. 0 means no limit.
+// The operator sets agent container limits in config.toml. Under t0 a zero
+// cpu or memory value still means no limit; the tier tables were validated
+// non-zero when the configuration was saved.
 export async function agentContainerLimits(runMc: TickDeps["runMc"]): Promise<AgentContainerLimits> {
   const result = await runMc(["config", "show"]);
   if (result.exitCode !== 0) throw new Error("The agent container limits are unavailable.");
@@ -83,14 +97,39 @@ export async function agentContainerLimits(runMc: TickDeps["runMc"]): Promise<Ag
     const value = knobs.get(key) ?? 0;
     if (!Number.isSafeInteger(value) || (value as number) < 0) throw new Error("The agent container limits are invalid.");
     return value as number;
+  }
+  const tier = knobs.get("container.trust_tier") ?? "t0";
+  if (tier !== "t0" && tier !== "t1" && tier !== "t2") throw new Error("The agent container trust tier is invalid.");
+  const positive = (key: string): number => {
+    const value = limit(key);
+    if (value === 0) throw new Error(`The agent container limit ${key} is not usable.`);
+    return value;
   };
-  return { cpus: limit("container.cpu_limit"), memory_mb: limit("container.memory_limit_mb") };
+  const selected = tier === "t0"
+    ? { cpus: limit("container.cpu_limit"), memory_mb: limit("container.memory_limit_mb"), tmpfs_mb: 0, workspace_soft_mb: 0 }
+    : tier === "t1"
+      ? { cpus: positive("container.t1_cpu_limit"), memory_mb: positive("container.t1_memory_limit_mb"),
+        tmpfs_mb: positive("container.t1_tmpfs_mb"), workspace_soft_mb: positive("container.t1_workspace_soft_mb") }
+      : { cpus: positive("container.t2_cpu_limit"), memory_mb: positive("container.t2_memory_limit_mb"),
+        tmpfs_mb: positive("container.t2_tmpfs_mb"), workspace_soft_mb: positive("container.t2_workspace_soft_mb") };
+  return {
+    tier: tier as ContainerTrustTier, ...selected,
+    fd_soft: positive("container.fd_soft"), fd_hard: positive("container.fd_hard"),
+    log_max_mb: positive("container.log_max_mb"), log_keep_files: positive("container.log_keep_files"),
+  };
 }
 
 export function agentLimitArguments(limits: AgentContainerLimits): string[] {
   return [
     ...(limits.cpus > 0 ? ["--cpus", String(limits.cpus)] : []),
     ...(limits.memory_mb > 0 ? ["--memory", `${limits.memory_mb}m`, "--memory-swap", `${limits.memory_mb}m`] : []),
+    // The file-descriptor ceiling and the container log budget apply to every
+    // tier; the daemon-default unlimited form is what the F0a gap register said
+    // to close.
+    "--ulimit", `nofile=${limits.fd_soft}:${limits.fd_hard}`,
+    "--log-driver", "json-file",
+    "--log-opt", `max-size=${limits.log_max_mb}m`,
+    "--log-opt", `max-file=${limits.log_keep_files}`,
   ];
 }
 
@@ -160,13 +199,14 @@ export function projectCacheArguments(home: string, project: string, image: stri
     "-e", "CULLER_CACHE_LIMIT_BYTES=2147483648"];
 }
 
-export function projectHomeArguments(source: string, runState = true): string[] {
+export function projectHomeArguments(source: string, runState = true, tmpfsMb = 0): string[] {
   if (!source.startsWith("/") || posix.normalize(source) !== source || /[:,\0\r\n]/.test(source)) {
     throw new Error("The Project home path is invalid.");
   }
+  const size = tmpfsMb > 0 ? `,size=${tmpfsMb}m` : "";
   return ["--mount", `type=bind,src=${source},dst=${PROJECT_HOME}`, "-e", `HOME=${PROJECT_HOME}`,
     ...(runState ? [".agents", ".claude", ".codex"].flatMap(directory => [
-      "--tmpfs", `${PROJECT_HOME}/${directory}:rw,uid=10002,gid=10002,mode=0700`,
+      "--tmpfs", `${PROJECT_HOME}/${directory}:rw,uid=10002,gid=10002,mode=0700${size}`,
     ]) : [])];
 }
 
@@ -698,13 +738,14 @@ async function agentOperation(operation: EnvironmentOperation, deps: Dependencie
     access.push("--mount", `type=bind,src=${root}/provider-access.json,dst=/mc/provider-access.json,readonly`,
       "-e", "MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json");
   }
+  const setupLimits = await agentContainerLimits(deps.runMc);
   await succeeded(deps.docker(["create", "--interactive", "--name", name, "--label", "mc-managed=true", ...deploymentArguments(deps.config.mcHome), "--label", "mc-tier=setup",
     "--label", `mc-project=${operation.project_id}`, "--label", `com.culler.environment.operation=${operation.id}`,
     "--label", `com.culler.environment.inputs=${operation.inputs_digest}`,
-    ...projectExecutionArguments(runtime.harness === "fake", await agentContainerLimits(deps.runMc), deps.hostZone()),
+    ...projectExecutionArguments(runtime.harness === "fake", setupLimits, deps.hostZone()),
     "--entrypoint", `${CULLER_RUNTIME}/bin/bun`,
     ...runtimeArguments(deps), ...openCodeArguments(deps.config.mcHome, runtime?.harness), ...projectCacheArguments(deps.config.mcHome, operation.project_id, operation.image_digest),
-    ...projectHomeArguments(home),
+    ...projectHomeArguments(home, true, setupLimits.tmpfs_mb),
     "--mount", `type=bind,src=${workspace},dst=/workspace/source`,
     "--mount", `type=bind,src=${root}/run.json,dst=/mc/run.json,readonly`,
     "--mount", `type=bind,src=${root}/session,dst=/mc/session`,

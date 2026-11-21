@@ -247,6 +247,27 @@ export function collieInspectFromCreate(
     return Number(value.slice(0, -1)) * 1024 * 1024;
   };
   const pidsLimit = values("--pids-limit")[0];
+  // Docker mirrors `--ulimit name=soft:hard` as structured rows and the log
+  // flags as a type plus a string-valued option map. Both sides are parsed by
+  // field with a grammar check; nothing here reaches a shell.
+  const ulimits = values("--ulimit").map((value) => {
+    const separator = value.indexOf("=");
+    const colon = separator > 0 ? value.indexOf(":", separator) : -1;
+    const name = separator > 0 ? value.slice(0, separator) : "";
+    const soft = colon > separator ? value.slice(separator + 1, colon) : "";
+    const hard = colon > separator ? value.slice(colon + 1) : "";
+    if (separator < 1 || colon < 1 || !/^[a-z_]+$/.test(name) ||
+        !/^[0-9]+$/.test(soft) || !/^[0-9]+$/.test(hard)) {
+      throw new Error("fake Collie ulimit is malformed");
+    }
+    return { Name: name, Soft: Number(soft), Hard: Number(hard) };
+  });
+  const logOptions = Object.fromEntries(values("--log-opt").map((entry) => {
+    const split = entry.indexOf("=");
+    if (split < 1) throw new Error("fake Collie log option is malformed");
+    return [entry.slice(0, split), entry.slice(split + 1)];
+  }));
+  const cpus = values("--cpus")[0];
   const entrypoint = values("--entrypoint")[0];
   const actualCmd = entrypoint ? cmd.slice(1) : cmd;
   return {
@@ -276,7 +297,9 @@ export function collieInspectFromCreate(
       IpcMode: "private",
       Memory: megabytes("--memory"),
       MemorySwap: megabytes("--memory-swap"),
-      NanoCpus: 0,
+      NanoCpus: cpus === undefined ? 0 : Math.round(Number(cpus) * 1000000000),
+      LogConfig: { Type: values("--log-driver")[0] ?? "json-file", Config: logOptions },
+      Ulimits: ulimits.length === 0 ? null : ulimits,
       NetworkMode: network,
       PidMode: "",
       PidsLimit: pidsLimit === undefined ? null : Number(pidsLimit),
@@ -498,11 +521,35 @@ export interface TestRig {
   sleeps: number[];
 }
 
-/** The `mc config show` answer with the given agent container limits. */
-export function agentLimitsConfig(limits: { cpus: number; memory_mb: number }): ExecResult {
+/** The `mc config show` answer with the given agent container limits. The
+ * resource-table knobs ship at their configured defaults; a test overrides
+ * individual keys through `knobs` (for example the trust tier). */
+export function agentLimitsConfig(limits: {
+  cpus: number;
+  memory_mb: number;
+  knobs?: Record<string, unknown>;
+}): ExecResult {
+  const table: Record<string, unknown> = {
+    "container.trust_tier": "t0",
+    "container.fd_soft": 65536,
+    "container.fd_hard": 262144,
+    "container.log_max_mb": 10,
+    "container.log_keep_files": 3,
+    "container.run_tree_max_mb": 2048,
+    "container.t1_cpu_limit": 8,
+    "container.t1_memory_limit_mb": 16384,
+    "container.t1_tmpfs_mb": 4096,
+    "container.t1_workspace_soft_mb": 20480,
+    "container.t2_cpu_limit": 0,
+    "container.t2_memory_limit_mb": 0,
+    "container.t2_tmpfs_mb": 0,
+    "container.t2_workspace_soft_mb": 0,
+    ...limits.knobs,
+  };
   return ok(JSON.stringify({ families: [{ family: "container", knobs: [
     { key: "container.cpu_limit", value: limits.cpus },
     { key: "container.memory_limit_mb", value: limits.memory_mb },
+    ...Object.entries(table).map(([key, value]) => ({ key, value })),
   ] }] }));
 }
 
