@@ -8,11 +8,22 @@ FROM ubuntu:24.04@sha256:9a04f13b3f80ef056361e30868593b1cfd2279fe19e4081cb93a90b
 FROM base-${TARGETARCH} AS project
 ARG TARGETARCH
 ARG UBUNTU_SNAPSHOT=20261001T000000Z
+# The amd64 base digest is the 2026-11-20 rootfs rebuild, whose own packages
+# (for example zlib1g) are newer than the 10-01 snapshot offers: an exact
+# version dependency then fails to resolve on a pristine amd64 host. The
+# amd64 leg therefore reads a snapshot at or after its base's content date,
+# proven installable against the pinned base. arm64 keeps the 10-01 snapshot
+# byte for byte.
+ARG UBUNTU_SNAPSHOT_AMD64=20261122T000000Z
 
 # The fixed Ubuntu snapshot selects exact system package artifacts.
 # Archive signatures verify the certificate bootstrap before TLS trust exists.
-# The step also removes the setuid and setgid bits of the system programs.
-RUN printf 'Types: deb\nURIs: http://snapshot.ubuntu.com/ubuntu/%s/\nSuites: noble noble-updates noble-security\nComponents: main universe restricted multiverse\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n' "$UBUNTU_SNAPSHOT" >/etc/apt/sources.list.d/ubuntu.sources \
+# The step also removes the setuid and setgid bits of the system programs,
+# and records the effective snapshot so the manifest reports what was used.
+RUN snap="$UBUNTU_SNAPSHOT"; if [ "$TARGETARCH" = amd64 ]; then snap="$UBUNTU_SNAPSHOT_AMD64"; fi \
+ && printf 'Types: deb\nURIs: http://snapshot.ubuntu.com/ubuntu/%s/\nSuites: noble noble-updates noble-security\nComponents: main universe restricted multiverse\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n' "$snap" >/etc/apt/sources.list.d/ubuntu.sources \
+ && install -d -m 0755 /usr/share/culler-project \
+ && printf '%s' "$snap" >/usr/share/culler-project/ubuntu-snapshot \
  && apt-get -o Acquire::https::Verify-Peer=false update \
  && DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::https::Verify-Peer=false install -y --no-install-recommends ca-certificates \
  && apt-get update \

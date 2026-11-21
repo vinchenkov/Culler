@@ -31,8 +31,11 @@ function browsers(dir) {
   }
 }
 browsers('/ms-playwright');
+// The apt step recorded the snapshot it actually used (architecture-specific).
+let ubuntuSnapshot = process.env.UBUNTU_SNAPSHOT;
+try { ubuntuSnapshot = readFileSync('/usr/share/culler-project/ubuntu-snapshot', 'utf8'); } catch {}
 console.log(JSON.stringify({ format: 1, platform: 'linux/' + arch, tools, executable_sha256, artifacts,
-  ubuntu_snapshot: process.env.UBUNTU_SNAPSHOT,
+  ubuntu_snapshot: ubuntuSnapshot,
   browser_artifacts: readdirSync('/ms-playwright').filter(name => !name.startsWith('.')), browser_versions,
   packages_sha256: sha256('/usr/share/culler-project/system-packages.tsv'),
   package_lock_sha256: sha256('/opt/project-tools/package-lock.json') }, null, 2));

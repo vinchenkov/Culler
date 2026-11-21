@@ -56,7 +56,13 @@ assert previous_end<mise_link<accounts<manifest
 assert 'COPY runner/image/project-manifest.sh' not in project
 assert '--mount=type=bind,source=runner/image/project-manifest.sh' in project
 # The apt step removes the setuid and setgid bits before the tool steps add files.
-apt_start=line_of(r'^RUN printf ')
+apt_start=line_of(r'^RUN snap=')
+apt_step=lines[apt_start-1:step_end(apt_start)]
+apt_text=' '.join(apt_step)
+assert '"$snap" >/etc/apt/sources.list.d/ubuntu.sources' in apt_text, 'the derived snapshot is not what the sources line writes'
+assert '/usr/share/culler-project/ubuntu-snapshot' in apt_text, 'the effective snapshot is not recorded for the manifest'
+amd_declared=line_of(r'^ARG UBUNTU_SNAPSHOT_AMD64=')
+assert 0<amd_declared<apt_start, 'the amd64 snapshot pin is not declared before the apt step'
 setuid=line_of(r'find / -xdev -type f .* -exec chmod a-s \{\} \+')
 assert apt_start<setuid<=step_end(apt_start)<line_of(r'^ARG GIT_VERSION=')
 git_step=lines[line_of(r'software/scm/git/')-1:step_end(line_of(r'software/scm/git/'))]

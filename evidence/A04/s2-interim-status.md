@@ -39,3 +39,11 @@
 - **定向机三态实测**（systemd 249，root 与用户管理器同语义）：`list-unit-files 'com.culler.*.nonexistentxyz'` → **exit 1、空输出**；`list-units --type=service 'com.culler.*.nonexistentxyz'` → **exit 0、空**；有匹配两者均 0。
 - **定性**：build-prod Linux 守卫取了 unit-file(enabled) 集且把 249 的"空匹配=exit 1"读成检查失败 → **全新主机必拒建**；与 A23 同族（真相源=loaded 集才是守卫语义；redeploy 支用 list-units 正确，A03 真机验收 7/7 与此一致）。登记 `evidence/A03/DEFECT-REGISTER-002.md`，修复在 A04 正清单②文件族内（build-prod.sh）：改同源 `list-units --type=service`，错误路径照拒（fail-closed 保持）；`build-prod.test.sh` 假 systemctl 转 loaded 格式+**新增干净主机正例**；`redeploy_test.sh` 全序列轨迹转写（stub 删 list-unit-files 支，回退即响亮失败）。验证：runner/image lane EXIT=0+全 ok-marker、redeploy 前门 lane ok（含四调用序列）。
 - 第八轮计划：B4 起续跑持久段（镜像构建约十分钟级，B5 平台门数据点→onboard 链→B6–B10）。
+
+# 第五轮取证（2026-11-21 02:08Z，S2 第八轮）+ B4 第二根因=amd64 供给链日期错位（票内修复）
+
+- 守卫修复生效：B4 进入真实 docker build（apt 层跑到 95s）——DEFECT-002 关闭的又一真机实证。
+- **新根因（A04② 钉选面，真机首暴露）**：base-amd64 钉=**2026-11-20 重建**（hub API：tag 24.04 last_updated=2026-11-20T07:04Z，digest 与钉一致），其自带 zlib1g=…ubuntu2.3 **新于** UBUNTU_SNAPSHOT=20261001 提供的 …2.2 → `zlib1g-dev Depends: zlib1g (= …2.2)` 不可解（exit 100，held broken packages）。arm64 腿（9 月基镜≤快照）无此错位。dist-upgrade --allow-downgrades **不降级**已装包（218 实测仍拒），排除。
+- **修复=Dockerfile 每架构快照参数**：`UBUNTU_SNAPSHOT_AMD64=20261122T000000Z`（≥基镜内容日），apt 步内按 TARGETARCH 取 `$snap` 并落盘 `/usr/share/culler-project/ubuntu-snapshot`，project-manifest 读**实效值**入 manifest；arm64 路径与 20261001 逐字不变。**218 预验证**：钉基镜×20261122 快照，全工具清单 `--dry-run` 解算 **158 Inst、exit 0**。
+- 测试转写：toolchain.test.sh 锚从 `^RUN printf` 改 `^RUN snap=` 并**新增三条断言**（sources 行写 $snap、实效快照落盘、AMD64 ARG 声明次序）——钉得更紧而非放宽；runner/image lane EXIT=0、release lane EXIT=0。
+- 第九轮：重传（bundle）后续跑 B4→B10。
