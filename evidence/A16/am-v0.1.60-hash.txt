@@ -1,0 +1,6 @@
+AM v0.1.60 双面哈希登记（A16 CODED 证据轮 + A14 组建轮）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 57252b154cb268b80560c1a033c98e465399cb14cafacc838f3d9321e8a9e3f5
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.59 = bb63b2602b4f4a1c2ad28304c758b2bdf76592ee9269a103fcdfc1e2a0765d92（evidence/A04/am-v0.1.59-hash.txt）
+- 同轮事实: A16 支并入 dev（78cde95 记录头提交）；A14 组建稿并入 dev（da982d8）；扫描 seal a4377d9da5bcddc40263e7a515bc2875c8c19be2ff060a804103cbedd7fe89c6（落改动行 0 条）；blcheck 62/0；冒烟完整单遍 313/0；resident 772/0；dashboard 983/0；mc 全道 EXIT=0
