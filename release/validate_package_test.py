@@ -11,6 +11,7 @@ import zipfile
 from pathlib import Path
 from unittest.mock import patch
 
+import validate_package
 from validate_package import DOWNLOAD_URL, LOCK_REFUSAL, PACKAGE_NAME, archive_files, validate
 
 AGENTSVIEW = b"synthetic agentsview"
@@ -159,6 +160,32 @@ class PackageValidationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "application package paths differ"):
                 validate(self.output)
             self.assertEqual(run.call_count, 2)
+
+    def test_a_linux_status_check_demands_the_host_vision_refusal(self):
+        # The platform branch is real in both directions: the darwin status
+        # shape must be refused on a Linux target, and the Linux host-vision
+        # refusal must be accepted, with the setup path unchanged.
+        self.package()
+
+        def status_shape(shape):
+            def handoff(command, **kwargs):
+                result = self.handoff(command, **kwargs)
+                if kwargs["cwd"].name != "setup":
+                    code, message = shape
+                    result.returncode = code
+                    result.stdout = "Culler passed the download checks.\n" + message + "\n"
+                return result
+            return handoff
+
+        with patch.object(validate_package, "RECORD_PLATFORM", "linux-amd64"):
+            with patch("validate_package.subprocess.run",
+                       side_effect=status_shape((1, "GitHub refused access."))):
+                with self.assertRaisesRegex(ValueError, "did not complete the expected local check"):
+                    validate(self.output)
+            with patch("validate_package.subprocess.run",
+                       side_effect=status_shape((2, validate_package.HOST_VISION_REFUSAL))):
+                result = validate(self.output)
+            self.assertTrue(result["installer_handoff"])
 
     def test_missing_or_invalid_commit_fails_before_program_execution(self):
         for commit in (None, "", "short", "a" * 39, "A" * 40):
