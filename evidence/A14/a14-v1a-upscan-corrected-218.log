@@ -1,0 +1,7 @@
+# upscan corrected probe — captured 2026-11-21T14:49Z via direct run; evidence lines follow
+-rw-r--r-- 1 root root 20 Nov 21 14:49 /tmp/a16-res-203009/upscan/root/.codex/config.toml
+[[definitely-broken
+/rootchain/a/b
+Not logged in
+CONTROL:
+Not logged in
