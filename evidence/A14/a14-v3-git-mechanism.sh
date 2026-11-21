@@ -78,17 +78,20 @@ found=none
   || rec G3.product-env result PASS "pushing-side-clean (remote hook is destination trust domain, noted)"
 
 echo "== G4 credential helper reachability under product env"
-# First pass caught an instrument dud: `push --dry-run origin http://…` died
-# at refspec resolution BEFORE transport auth, so the helper was never at
-# issue while the AUX row proved the hostile helper WAS loaded. ls-remote
-# against a dead port forces the credential query itself.
+# Iteration 1 (dry-run push) died at refspec resolution; iteration 2 (dead
+# port) proved git 2.34 CONNECTS before asking for credentials — connection
+# refused never reaches the helper. So: a one-shot listener that answers 401
+# + WWW-Authenticate forces the real credential query.
 setup_arena g4
-# append the hostile helper directly into the repo config (git trusts it)
+printf 'import http.server\nclass H(http.server.BaseHTTPRequestHandler):\n    def do_GET(s):\n        s.send_response(401); s.send_header("WWW-Authenticate","Basic realm=x"); s.end_headers()\n    def log_message(s,*a): pass\nhttp.server.HTTPServer(("127.0.0.1",8814),H).handle_request()\n' > "$HERE/w/chal.py"
+python3 "$HERE/w/chal.py" & CHAL=$!
+sleep 1
 git -C "$HERE/w/repo" config credential.helper "!/bin/sh -c 'printf CALLED > $HERE/probe.g4.helper-called; printf user'"
 out=$(HOME="$HERE/w/fakehome" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 GIT_TERMINAL_PROMPT=0 \
-    git -C "$HERE/w/repo" ls-remote "http://127.0.0.1:1/x" 2>&1); st=$?
+    git -C "$HERE/w/repo" ls-remote "http://127.0.0.1:8814/x" 2>&1); st=$?
+wait "$CHAL" 2>/dev/null || true
 log "OUT[G4 exit=$st] $out"
-[ -e "$HERE/probe.g4.helper-called" ] && rec G4.credential-helper result OBSERVED "in-repo-helper-executed-on-auth (severity: repo config is a credential vector under this env shape)" \
+[ -e "$HERE/probe.g4.helper-called" ] && rec G4.credential-helper result OBSERVED "in-repo-helper-executed-on-401 (git 2.34 has no helper allow-list; the product isolation for this vector is env shape + its own token path — submitted to owner reading)" \
   || { printf '%s' "$out" | grep -q "could not read Username" && rec G4.credential-helper result PASS "helper-not-run (query went to terminal, refused)" || rec G4.credential-helper result UNKNOWN "reason=outcome-unclassified"; }
 # Was the hostile include even read? (include.path in .git/config IS trusted by git; the row tells us which layer stopped it.)
 out2=$(git -C "$HERE/w/repo" config --get-regexp credential 2>&1); log "AUX-include-read: $out2"
