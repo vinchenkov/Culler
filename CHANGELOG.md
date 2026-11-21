@@ -4,6 +4,32 @@ This file holds one section for each Culler version, from the newest version to 
 The release workflow copies the section of a new version into the description of its GitHub release.
 The [installation guide](INSTALL.md#versions) gives the version rules.
 
+## 0.1.1
+
+### Changes
+
+- **Agent profile deletion.** The dashboard and Collie can delete an agent profile that no role uses. Deletion keeps the connection and the other agent profiles that use it.
+- **Clear failures.** A Project infrastructure notice with one or two counted failures offers **Clear failures**. The action resets the failure count and the retry time of that Project.
+- **Dismiss.** The notice of a failed Collie reply offers **Dismiss**. The reply stays in the conversation and keeps **Retry reply**.
+- **Provider account allowance.** When a provider account has no available allowance, the connection notice shows the provider's reset time, and Culler retries at that time. **Retry connection** retries sooner.
+- **License.** Culler has the MIT license.
+
+### Known limits
+
+- Culler is in early access. A 0.x minor version can change the public interface.
+- Culler supports one operator on one Mac with Apple silicon, and it requires Docker Desktop.
+- Agent containers have open internet access. They can reach services on the loopback address of your Mac. Culler's own services require a token or a secret path.
+
+### Database compatibility
+
+The database schema is the same as in 0.1.0.
+An update from 0.1.0 keeps the database.
+
+### Update effects
+
+- `culler update` stops Culler and interrupts active runs. Interrupted work can require a retry.
+- The update keeps the configuration, the credentials, the database, and the Project repositories and worktrees.
+
 ## 0.1.0
 
 ### Features

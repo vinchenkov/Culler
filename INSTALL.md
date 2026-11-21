@@ -258,8 +258,8 @@ For example, they show `0.1.0 (1a2b3c4d5e6f)`.
 
 These rules apply before version 1.0.0:
 
-- A compatible fix increases the patch number, for example from 0.1.0 to 0.1.1.
-- A feature or an incompatible change increases the minor number, for example from 0.1.1 to 0.2.0.
+- A compatible fix or feature increases the patch number, for example from 0.1.0 to 0.1.1.
+- A change that needs a data conversion, or an incompatible change, increases the minor number, for example from 0.1.1 to 0.2.0.
 - Version 1.0.0 declares a stable public contract. After version 1.0.0, an incompatible change increases the major number.
 
 Version 0.1.0 starts the public data compatibility contract.
