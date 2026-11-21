@@ -140,9 +140,13 @@ if is_container_id "$CID5"; then
   sleep 4
   RAW_PATH=$(docker inspect --format '{{.LogPath}}' "$CID5" 2>/dev/null)
   # Docker names the file `<id>-json.log` (hyphen), rotations append `.1`,`.2`.
-  # Accept only an absolute /var/lib/docker path with safe characters; then
-  # stat each rotation file found under that exact base name, no raw glob.
-  if printf '%s' "$RAW_PATH" | grep -qE '^/var/lib/docker/[0-9A-Za-z._/-]+-json\.log$'; then
+  # The data-root is host-specific (this target keeps it off /var/lib), so
+  # derive it from the daemon itself and accept the inspect path only when it
+  # sits exactly under that root with safe characters. Then stat the base and
+  # the two rotation suffixes explicitly — no raw glob.
+  DROOT=$(docker info --format '{{.DockerRootDir}}' 2>/dev/null)
+  if [ -n "$DROOT" ] && printf '%s' "$RAW_PATH" | grep -qF "$DROOT/" && \
+     printf '%s' "$RAW_PATH" | grep -qE '^[0-9A-Za-z._/-]+-json\.log$'; then
     for suffix in "" ".1" ".2"; do
       f="$RAW_PATH$suffix"
       [ -f "$f" ] || continue
