@@ -1,5 +1,5 @@
-G1.naive-push result OBSERVED ts=2026-11-21T14:32:41Z host=F1104 uid=0
-G2.global-null result OBSERVED ts=2026-11-21T14:32:41Z host=F1104 uid=0
-G3.product-env result PASS ts=2026-11-21T14:32:41Z host=F1104 uid=0
-G4.credential-helper result PASS ts=2026-11-21T14:32:41Z host=F1104 uid=0
-G4b.include-shape result OBSERVED ts=2026-11-21T14:32:41Z host=F1104 uid=0
+G1.naive-push result OBSERVED ts=2026-11-21T14:39:29Z host=F1104 uid=0
+G2.global-null result OBSERVED ts=2026-11-21T14:39:29Z host=F1104 uid=0
+G3.product-env result PASS ts=2026-11-21T14:39:29Z host=F1104 uid=0
+G4.credential-helper result OBSERVED ts=2026-11-21T14:39:30Z host=F1104 uid=0
+G4b.include-shape result OBSERVED ts=2026-11-21T14:39:30Z host=F1104 uid=0
