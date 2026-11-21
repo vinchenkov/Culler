@@ -139,12 +139,12 @@ MAXLOG=0
 if is_container_id "$CID5"; then
   sleep 4
   RAW_PATH=$(docker inspect --format '{{.LogPath}}' "$CID5" 2>/dev/null)
+  # Docker names the file `<id>-json.log` (hyphen), rotations append `.1`,`.2`.
   # Accept only an absolute /var/lib/docker path with safe characters; then
-  # stat each rotation file found under that exact directory, no raw glob.
-  if printf '%s' "$RAW_PATH" | grep -qE '^/var/lib/docker/[0-9A-Za-z._/-]+\.json\.log$'; then
-    LOGDIR=${RAW_PATH%.json.log}
+  # stat each rotation file found under that exact base name, no raw glob.
+  if printf '%s' "$RAW_PATH" | grep -qE '^/var/lib/docker/[0-9A-Za-z._/-]+-json\.log$'; then
     for suffix in "" ".1" ".2"; do
-      f="$LOGDIR.json.log$suffix"
+      f="$RAW_PATH$suffix"
       [ -f "$f" ] || continue
       sz=$(stat -c %s "$f" 2>/dev/null || echo 0)
       [ "$sz" -gt "$MAXLOG" ] && MAXLOG=$sz
@@ -163,11 +163,18 @@ echo "== C6 memory: --memory bounds a runaway allocation to the container"
 BEFORE=$(free_kb "$SPINE")
 mem_probe='x=[]
 while True: x.append(bytearray(1024*1024))'
-runin C6.mem "${BASE[@]}" --memory 128m --name a16-mem mc-prod python3 -c "$mem_probe"
-if grep -qiE 'Killed|MemoryError|OOM|exit status 137|Exit code: 137' "$RAWF"; then
-  rec C6 result PASS "allocation-bounded-to-container"
+if runin C6.mem "${BASE[@]}" --memory 128m --name a16-mem mc-prod python3 -c "$mem_probe"; then
+  # A bounded allocation loop should not run to a normal end here.
+  rec C6 result FAIL "reason=allocation-unsuppressed"
 else
-  rec C6 result FAIL "reason=memory-cap-not-observed"
+  case $? in
+    137) rec C6 result PASS "exit-137=cgroup-oom-killed-container-only" ;;
+    *) if grep -qiE 'Killed|MemoryError|OOM|exit status 137' "$RAWF"; then
+         rec C6 result PASS "allocation-bounded-with-resource-signal"
+       else
+         rec C6 result FAIL "reason=memory-cap-not-observed"
+       fi ;;
+  esac
 fi
 AFTER=$(free_kb "$SPINE")
 [ $(( BEFORE - AFTER )) -lt 1024 ] || fail_all C6 spine-fs-polluted
@@ -196,7 +203,14 @@ uptime | sed 's/^/C8 /' >>"$RAWF"
 emit_result() {
   echo "== RAW BEGIN"; sed 's/^/| /' "$RAWF"; echo "== RAW END"
   cat "$RESF"
-  failing=$(awk '$2=="FAIL"{printf "%s,", $1}' "$RESF")
-  if [ -z "$failing" ]; then echo "ACCEPT: PASS"; exit 0; else echo "ACCEPT: FAIL failing=${failing%,}"; exit 1; fi
+  # Round one misreported PASS here: `rec Cn result FAIL` puts FAIL in column
+  # 3, and the old predicate read column 2, so no row ever counted as failing.
+  # The verdict scans BOTH record shapes and fails closed on either.
+  failing=$(awk '($2=="FAIL" || $3=="FAIL"){printf "%s,", $1}' "$RESF")
+  if [ -z "$failing" ] && [ "$(awk 'END{print NR}' "$RESF")" -ge 9 ]; then
+    echo "ACCEPT: PASS"; exit 0
+  fi
+  echo "ACCEPT: FAIL failing=${failing%,}"
+  exit 1
 }
 emit_result
