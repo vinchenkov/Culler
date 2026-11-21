@@ -1,0 +1,5 @@
+S0	1	read-config
+R.home	1	read-config
+R.cwd	1	clean
+R.upscan	1	clean
+R.bare	1	clean

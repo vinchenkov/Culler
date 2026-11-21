@@ -1,0 +1,24 @@
+ts=2026-11-21T13:11:40Z host=F1104 uid=0 OUT[S0 exit=1] WARNING: proceeding, even though we could not create PATH aliases: Read-only file system (os error 30)
+Error loading configuration: /probe/config.toml:1:20: unclosed array table, expected `]]`
+ts=2026-11-21T13:11:40Z host=F1104 uid=0 TOKEN[S0]=read-config
+ts=2026-11-21T13:11:40Z host=F1104 uid=0 RESULT S0.instrument-check result PASS
+ts=2026-11-21T13:11:40Z host=F1104 uid=0 OUT[R.home exit=1] WARNING: proceeding, even though we could not create PATH aliases: Read-only file system (os error 30)
+Error loading configuration: /home/probe/.codex/config.toml:1:20: unclosed array table, expected `]]`
+ts=2026-11-21T13:11:40Z host=F1104 uid=0 TOKEN[R.home]=read-config
+ts=2026-11-21T13:11:41Z host=F1104 uid=0 OUT[R.cwd exit=1] WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp/.codex"))
+Not logged in
+ts=2026-11-21T13:11:41Z host=F1104 uid=0 TOKEN[R.cwd]=clean
+ts=2026-11-21T13:11:41Z host=F1104 uid=0 OUT[R.upscan exit=1] WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp/.codex"))
+Not logged in
+ts=2026-11-21T13:11:41Z host=F1104 uid=0 TOKEN[R.upscan]=clean
+ts=2026-11-21T13:11:42Z host=F1104 uid=0 OUT[R.bare exit=1] WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp/.codex"))
+Not logged in
+ts=2026-11-21T13:11:42Z host=F1104 uid=0 TOKEN[R.bare]=clean
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 OUT[S2 exit=1] Not logged in
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 RESULT S2.production-mask result PASS
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 RESULT S0 OBSERVED exit=1 read-config
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 RESULT R.home OBSERVED exit=1 read-config
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 RESULT R.cwd OBSERVED exit=1 clean
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 RESULT R.upscan OBSERVED exit=1 clean
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 RESULT R.bare OBSERVED exit=1 clean
+ts=2026-11-21T13:11:43Z host=F1104 uid=0 TEARDOWN end containers=0

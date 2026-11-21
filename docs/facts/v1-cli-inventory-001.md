@@ -18,3 +18,10 @@
 
 ## 下一执行件（待开）
 `a14-v1-acceptance.sh`：逐家族×四源恶意样本（assembly §2 规格）+ `was-executed` 探针；T2 容器形（带 run.json）+ t2 参数表（A16 已提供配置面）。V-2/V-7 采样同场。**与 boundarydocker/e2e 道错峰**（同一定向机资源包络）。
+
+## 追加：codex 族发现轮实测（2026-11-21，a14-v1a-discovery.sh @218，measured-218.tsv+raw 入档）
+- **读源确认**：`$HOME/.codex/config.toml` 与显式 `CODEX_HOME` 两处**被读**（S0 正控+R.home 均 read-config）。
+- **不读确认**：cwd 下 `.codex/`（R.cwd=clean，cwd 直挂注入目录仍未读）——本版本 codex 无 cwd 发现。
+- **自纠**：R.upscan 探针形状缺陷（注入目录未落在 /tmp/sub 的父链上）=**父目录上溯未测**，clean 不作结论；修正探针（注入挂 /work、cwd=/work/sub）随 claude 族轮一并重跑。
+- **S2 硬断言 PASS**：生产 pipeline 形（HOME bind + `.codex` tmpfs 掩码）下注入配置**读不到**——掩码恰好覆盖 codex 唯一的活读源=策略意义明确：**对 codex 族，产品掩码已闭合 HOME 源；仓库经 bind 进入的 HOME 持久目录（项目 home）由 V-2 跨 run 面接管；cwd/父链源该版本不存在**。
+- claude/opencode 族：同表待跑（claude 活源=~/.claude.json+settings——`--version` 短路、需选择读配置的离线子命令，探针形状=下一件）；V-1b/c/d 政策判定仍门控于 T2 活会话（A25/A02）。
