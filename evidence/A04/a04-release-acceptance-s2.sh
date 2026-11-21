@@ -188,7 +188,10 @@ RES_HOME=$([ -e /home/"$ACCT" ] && echo 1 || echo 0)
 log "FINAL user=$RES_USER home=$RES_HOME"
 [ "$RES_USER" = 0 ] && [ "$RES_HOME" = 0 ] && rec B10 teardown PASS || rec B10 teardown FAIL reason=residue
 
-echo "== RAW BEGIN"; sed 's/^/| /' "$RAWF"; echo "== RAW END"
-cat "$RESF"
-failing=$(awk '$2=="FAIL"{printf "%s,", $1}' "$RESF")
-if [ -z "$failing" ]; then echo "ACCEPT: PASS"; else echo "ACCEPT: FAIL failing=${failing%,}"; exit 1; fi
+emit_result() {
+  echo "== RAW BEGIN"; sed 's/^/| /' "$RAWF"; echo "== RAW END"
+  cat "$RESF"
+  failing=$(awk '$2=="FAIL"{printf "%s,", $1}' "$RESF")
+  if [ -z "$failing" ]; then echo "ACCEPT: PASS"; exit 0; else echo "ACCEPT: FAIL failing=${failing%,}"; exit 1; fi
+}
+emit_result
