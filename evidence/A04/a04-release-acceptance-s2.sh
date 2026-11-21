@@ -127,7 +127,7 @@ record = {"format": 1, "version": version, "commit": commit, "release_id": commi
   "checks": [{"name": n, "passed": True} for n in ["fast-suite-macos","deployment-linux","application-package","product-image","release-downloads"]]}
 print(json.dumps(record))
 PY
-runas B5.setup "export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; /home/$ACCT/package/bin/mc __setup --yes --activate --accept-default-routing --accept-default-tunables --accept-default-git-identity --accept-default-dashboard-bind --discord-mode disabled" 
+runas B5.setup "export MC_HOME=/home/$ACCT/.culler MC_SPINE=/home/$ACCT/.culler/spine.db MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; /home/$ACCT/package/bin/mc __setup --yes --activate --accept-default-routing --accept-default-tunables --accept-default-git-identity --accept-default-dashboard-bind --discord-mode disabled" 
 setup_status=$?
 log "B5.setup exit=$setup_status"
 if [ "$setup_status" = 0 ]; then
@@ -148,7 +148,7 @@ else
   # `__setup` normally creates the deployment home before its stages run; the
   # platform-gate refusal happens earlier, so the drill prepares the home
   # itself. `__onboard` inspects MC_HOME first and refuses an absent one.
-  runas B5.onboard "install -d -m 700 /home/$ACCT/.culler; export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; P=/home/$ACCT/package/bin/mc; for s in agentsview home tunables surfaces; do \$P __onboard \$s || exit 41; done; \$P __onboard supervision --activate --reconfigure" || { fail_all B5 onboard-chain; exit 1; }
+  runas B5.onboard "install -d -m 700 /home/$ACCT/.culler; export MC_HOME=/home/$ACCT/.culler MC_SPINE=/home/$ACCT/.culler/spine.db MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; P=/home/$ACCT/package/bin/mc; for s in agentsview home tunables surfaces; do \$P __onboard \$s || exit 41; done; \$P __onboard supervision --activate --reconfigure" || { fail_all B5 onboard-chain; exit 1; }
 fi
 
 echo "== B6 supervision state"
@@ -184,18 +184,18 @@ runas B8.mask "systemctl --user mask com.culler.$SUFFIX.dashboard.service" || fa
 # The public culler stop verb runs the canInspectProjectVision gate (darwin today,
 # A24 pending), so the redline capture drives the host-private reconfigure path,
 # which issues the same controller disable --now against the masked unit.
-runas B8.stop "export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; /home/$ACCT/package/bin/mc __onboard supervision --activate --reconfigure"
+runas B8.stop "export MC_HOME=/home/$ACCT/.culler MC_SPINE=/home/$ACCT/.culler/spine.db MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; /home/$ACCT/package/bin/mc __onboard supervision --activate --reconfigure"
 stop_status=$?
 log "B8.reconfigure-stop exit=$stop_status"
 ACTIVE_AFTER=$(runas B8.probe "systemctl --user is-active com.culler.$SUFFIX.dashboard.service" 2>/dev/null || true)
 log "B8 dashboard-after-stop=[$ACTIVE_AFTER]"
 runas B8.unmask "systemctl --user unmask com.culler.$SUFFIX.dashboard.service" || true
-runas B8.reactivate "MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json /home/$ACCT/package/bin/mc __onboard supervision --activate --reconfigure" || true
+runas B8.reactivate "MC_HOME=/home/$ACCT/.culler MC_SPINE=/home/$ACCT/.culler/spine.db MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json /home/$ACCT/package/bin/mc __onboard supervision --activate --reconfigure" || true
 rec B8 result PASS "captured exit=$stop_status state=$ACTIVE_AFTER"   # data point; the swallow verdict belongs to the owner, not this script
 
 echo "== B9 uninstall + teardown, zero residue"
-runas B9.plan "MC_HOME=/home/$ACCT/.culler /home/$ACCT/package/bin/mc __uninstall --dry-run" || { fail_all B9 plan; exit 1; }
-printf 'uninstall\n' | runas B9.uninstall "MC_HOME=/home/$ACCT/.culler /home/$ACCT/package/bin/mc __uninstall --confirm" || { fail_all B9 uninstall; exit 1; }
+runas B9.plan "MC_HOME=/home/$ACCT/.culler MC_SPINE=/home/$ACCT/.culler/spine.db /home/$ACCT/package/bin/mc __uninstall --dry-run" || { fail_all B9 plan; exit 1; }
+printf 'uninstall\n' | runas B9.uninstall "MC_HOME=/home/$ACCT/.culler MC_SPINE=/home/$ACCT/.culler/spine.db /home/$ACCT/package/bin/mc __uninstall --confirm" || { fail_all B9 uninstall; exit 1; }
 UNITS_LEFT=$(runas B9.units "systemctl --user list-unit-files 'com.culler.*' --no-legend | wc -l")
 VOL_LEFT=$(docker volume ls --format '{{.Name}}' | grep -c "$SUFFIX" || true)
 CON_LEFT=$(docker ps -a --format '{{.Names}}' | grep -c "$SUFFIX" || true)
