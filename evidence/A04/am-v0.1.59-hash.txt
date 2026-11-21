@@ -1,0 +1,6 @@
+AM v0.1.59 双面哈希登记（S2 收口轮：B0–B4 真机绿 + B5–B10 移交 A25，Q8(a)）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = bb63b2602b4f4a1c2ad28304c758b2bdf76592ee9269a103fcdfc1e2a0765d92
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.58 = e886c1fd86ecb8d6f659931e263078a715dcd4c26b8c45e1189f6ef67fdaf456（evidence/A04/am-v0.1.58-hash.txt）
+- 同轮事实: S2 支 ff 并入 dev（tip=本登记轮）；A25 行转写（B5–B10+mask 红线移交义务）；verification-record-A04-V-001.md S2 增补段；原始件 a04-s2-raw-round5.tgz / a04-s2-raw-rounds6-12.tgz 入册；blcheck 62/0；218 终态零残留实测
