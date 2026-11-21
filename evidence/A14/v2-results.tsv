@@ -1,4 +1,0 @@
-R1.writes result PASS ts=2026-11-21T13:19:28Z host=F1104 uid=0
-R2.home-direct-persists result OBSERVED ts=2026-11-21T13:19:29Z host=F1104 uid=0
-R2.masked-dirs-clear result PASS ts=2026-11-21T13:19:29Z host=F1104 uid=0
-R2.cache-persists result OBSERVED ts=2026-11-21T13:19:29Z host=F1104 uid=0

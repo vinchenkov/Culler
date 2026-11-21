@@ -1,9 +1,0 @@
-ts=2026-11-21T13:19:28Z host=F1104 uid=0 OUT[R1 exit=0] wrote
-ts=2026-11-21T13:19:28Z host=F1104 uid=0 RESULT R1.writes result PASS
-ts=2026-11-21T13:19:29Z host=F1104 uid=0 OUT[R2 exit=0] PRESENT /home/agent/v2-direct.txt mark-direct
-ABSENT  /home/agent/.claude/v2-settings.json
-PRESENT /cache/v2-cache.txt mark-cache
-ts=2026-11-21T13:19:29Z host=F1104 uid=0 RESULT R2.home-direct-persists result OBSERVED
-ts=2026-11-21T13:19:29Z host=F1104 uid=0 RESULT R2.masked-dirs-clear result PASS
-ts=2026-11-21T13:19:29Z host=F1104 uid=0 RESULT R2.cache-persists result OBSERVED
-ts=2026-11-21T13:19:29Z host=F1104 uid=0 TEARDOWN end
