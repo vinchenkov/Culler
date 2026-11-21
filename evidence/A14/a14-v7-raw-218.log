@@ -1,0 +1,31 @@
+ts=2026-11-21T15:33:50Z host=F1104 uid=0 OUT[R1.spine-same-owner uid=10002 file=spine.db] SECRET-SPINE-VALUE
+rc=0
+ts=2026-11-21T15:33:50Z host=F1104 uid=0 RESULT R1.spine-same-owner result PASS
+ts=2026-11-21T15:33:51Z host=F1104 uid=0 OUT[R2.provider-0644 uid=10002 file=provider-access.json] SECRET-PROVIDER-ACCESS
+rc=0
+ts=2026-11-21T15:33:51Z host=F1104 uid=0 RESULT R2.provider-0644 result PASS
+ts=2026-11-21T15:33:52Z host=F1104 uid=0 OUT[R3.runlog-0640 uid=10002 file=run.ndjson] SECRET-RUNLOG
+rc=0
+ts=2026-11-21T15:33:52Z host=F1104 uid=0 RESULT R3.runlog-0640 result PASS
+ts=2026-11-21T15:33:52Z host=F1104 uid=0 OUT[R4.private-0700dir uid=10002 file=private-out/att.bin] cat: /arena/private-out/att.bin: Permission denied
+rc=1
+ts=2026-11-21T15:33:52Z host=F1104 uid=0 RESULT R4.private-0700dir result PASS
+ts=2026-11-21T15:33:53Z host=F1104 uid=0 OUT[R5.config-0600 uid=10002 file=config.toml] cat: /arena/config.toml: Permission denied
+rc=1
+ts=2026-11-21T15:33:53Z host=F1104 uid=0 RESULT R5.config-0600 result PASS
+ts=2026-11-21T15:33:53Z host=F1104 uid=0 OUT[R6.open-share uid=10002 file=open-share/notes.md] PUBLIC-OK
+rc=0
+ts=2026-11-21T15:33:53Z host=F1104 uid=0 RESULT R6.open-share result PASS
+ts=2026-11-21T15:33:54Z host=F1104 uid=0 OUT[R7.spine-other-uid uid=3100 file=spine.db] cat: /arena/spine.db: Permission denied
+rc=1
+ts=2026-11-21T15:33:54Z host=F1104 uid=0 RESULT R7.spine-other-uid result PASS
+ts=2026-11-21T15:33:54Z host=F1104 uid=0 OUT[R8.provider-other-uid uid=3100 file=provider-access.json] SECRET-PROVIDER-ACCESS
+rc=0
+ts=2026-11-21T15:33:54Z host=F1104 uid=0 RESULT R8.provider-other-uid result PASS
+ts=2026-11-21T15:33:55Z host=F1104 uid=0 OUT[R9.runlog-other-uid uid=3100 file=run.ndjson] cat: /arena/run.ndjson: Permission denied
+rc=1
+ts=2026-11-21T15:33:55Z host=F1104 uid=0 RESULT R9.runlog-other-uid result PASS
+ts=2026-11-21T15:33:56Z host=F1104 uid=0 OUT[R10.config-other-uid uid=3100 file=config.toml] cat: /arena/config.toml: Permission denied
+rc=1
+ts=2026-11-21T15:33:56Z host=F1104 uid=0 RESULT R10.config-other-uid result PASS
+ts=2026-11-21T15:33:56Z host=F1104 uid=0 TEARDOWN end

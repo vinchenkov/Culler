@@ -1,0 +1,10 @@
+R1.spine-same-owner result PASS ts=2026-11-21T15:33:50Z host=F1104 uid=0
+R2.provider-0644 result PASS ts=2026-11-21T15:33:51Z host=F1104 uid=0
+R3.runlog-0640 result PASS ts=2026-11-21T15:33:52Z host=F1104 uid=0
+R4.private-0700dir result PASS ts=2026-11-21T15:33:52Z host=F1104 uid=0
+R5.config-0600 result PASS ts=2026-11-21T15:33:53Z host=F1104 uid=0
+R6.open-share result PASS ts=2026-11-21T15:33:53Z host=F1104 uid=0
+R7.spine-other-uid result PASS ts=2026-11-21T15:33:54Z host=F1104 uid=0
+R8.provider-other-uid result PASS ts=2026-11-21T15:33:54Z host=F1104 uid=0
+R9.runlog-other-uid result PASS ts=2026-11-21T15:33:55Z host=F1104 uid=0
+R10.config-other-uid result PASS ts=2026-11-21T15:33:56Z host=F1104 uid=0

@@ -1,0 +1,9 @@
+# product-nested re-measure — captured 2026-11-21T15:05Z (direct run); artifacts follow
+700 root /tmp/a16-res-203009/a14v7/arena2/runs
+644 root /tmp/a16-res-203009/a14v7/arena2/runs/pa.json
+== reader uid 10002
+cat: /arena/runs/pa.json: Permission denied
+== reader uid 3100
+cat: /arena/runs/pa.json: Permission denied
+SECRET-PROVIDER-ACCESS
+per-file-bind-shape
