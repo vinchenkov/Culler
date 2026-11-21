@@ -132,7 +132,13 @@ class PackageValidationTests(unittest.TestCase):
                     program.write_bytes(reader.read("bun-darwin-aarch64/bun"))
                     program.chmod(0o755)
         Path(env["CULLER_PACKAGE_CHECK_FETCHES"]).write_text(fetches)
-        code, message = (2, LOCK_REFUSAL) if setup else (1, "GitHub refused access.")
+        linux = validate_package.RECORD_PLATFORM.startswith("linux")
+        if setup:
+            code, message = 2, (validate_package.SETUP_MAC_REFUSAL if linux else LOCK_REFUSAL)
+        elif linux:
+            code, message = 2, validate_package.HOST_VISION_REFUSAL
+        else:
+            code, message = 1, "GitHub refused access."
         return subprocess.CompletedProcess(command, code, "Culler passed the download checks.\n" + message + "\n")
 
     def test_validation_checks_staged_bytes_and_uses_a_private_environment(self):
@@ -186,6 +192,33 @@ class PackageValidationTests(unittest.TestCase):
                        side_effect=status_shape((2, validate_package.HOST_VISION_REFUSAL))):
                 result = validate(self.output)
             self.assertTrue(result["installer_handoff"])
+
+    def test_a_linux_setup_check_demands_the_mac_refusal(self):
+        # The Linux setup stage stops one step earlier than the Mac lock
+        # refusal: the terminal wizard's platform gate. Bidirectional — the
+        # darwin lock shape must be refused on a Linux target, and the Mac
+        # refusal must be accepted.
+        self.package()
+
+        def setup_shape(shape):
+            def handoff(command, **kwargs):
+                result = self.handoff(command, **kwargs)
+                if kwargs["cwd"].name == "setup":
+                    code, message = shape
+                    result.returncode = code
+                    result.stdout = "Culler passed the download checks.\n" + message + "\n"
+                return result
+            return handoff
+
+        with patch.object(validate_package, "RECORD_PLATFORM", "linux-amd64"):
+            with patch("validate_package.subprocess.run",
+                       side_effect=setup_shape((2, LOCK_REFUSAL))):
+                with self.assertRaisesRegex(ValueError, "did not complete the expected local check"):
+                    validate(self.output)
+            with patch("validate_package.subprocess.run",
+                       side_effect=setup_shape((2, validate_package.SETUP_MAC_REFUSAL))):
+                result = validate(self.output)
+            self.assertTrue(result["setup_handoff"])
 
     def test_missing_or_invalid_commit_fails_before_program_execution(self):
         for commit in (None, "", "short", "a" * 39, "A" * 40):

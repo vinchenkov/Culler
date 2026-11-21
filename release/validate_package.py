@@ -60,6 +60,11 @@ LOCK_REFUSAL = "Another installer or service command controls this deployment. R
 # refusal exactly, so it stays truthful about today's Linux behavior without
 # weakening any check; enabling the surface on Linux is ticket A24, not A04.
 HOST_VISION_REFUSAL = "Release controls require the Culler host."
+# On a Linux release target the packaged setup stage stops earlier still: the
+# terminal setup wizard is Mac-worded and runTerminalSetup refuses non-darwin
+# (A04-S2 finding; porting the wizard is its own owner scope call, not A04).
+# The validator asserts that refusal exactly.
+SETUP_MAC_REFUSAL = "Culler setup requires a Mac."
 REQUIRED_CHECKS = ("fast-suite-macos", "deployment-linux", "application-package", "product-image", "release-downloads")
 
 
@@ -270,7 +275,8 @@ printf 200
     with lock_path.open("w") as lock:
         lock_path.chmod(0o600)
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        # The status check stops at the absent credential. Setup stops at this lock.
+        # The status check stops at the absent credential. Setup stops at this
+        # lock on the Mac, and one stage earlier on a Linux target (platform gate).
         result = subprocess.run(
             ["/bin/sh", str(output / "assets" / "installer.sh")] + ([] if check_setup else ["--check-updates"]),
             cwd=scratch, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
@@ -278,7 +284,7 @@ printf 200
         )
     text = " ".join(result.stdout.split())
     if check_setup:
-        code, message = 2, LOCK_REFUSAL
+        code, message = 2, (SETUP_MAC_REFUSAL if RECORD_PLATFORM.startswith("linux") else LOCK_REFUSAL)
     elif RECORD_PLATFORM.startswith("linux"):
         code, message = 2, HOST_VISION_REFUSAL
     else:

@@ -126,11 +126,18 @@ log "B5.setup exit=$setup_status"
 if [ "$setup_status" = 0 ]; then
   rec B5 result PASS
 else
-  # the expected honest stop: the Linux credential gate (O1 facts: hostSecretStore
-  # unavailable on Linux). The refusal is DATA, recorded, then the supervision
-  # chain is driven section by section — the platform services themselves need
-  # no provider credential.
-  grep -qiE 'credential|keychain|secret|sign-in|login' "$RAWF" && rec B5 result PASS "stopped-at-credential-gate" || rec B5 result FAIL reason=setup-unexplained
+  # The expected honest stop on today's Linux target: the packaged front stage
+  # refuses at the setup-wizard platform gate (A04-S2 finding, filed A25), and
+  # below it still sits the credential gate (O1 facts: hostSecretStore absent on
+  # Linux). Both refusals are DATA, recorded, then the supervision chain is
+  # driven section by section — the platform services need no credential.
+  if grep -qi 'requires a Mac' "$RAWF"; then
+    rec B5 result PASS "stopped-at-setup-platform-gate(gap=A25)"
+  elif grep -qiE 'credential|keychain|secret|sign-in|login' "$RAWF"; then
+    rec B5 result PASS "stopped-at-credential-gate"
+  else
+    rec B5 result FAIL reason=setup-unexplained
+  fi
   runas B5.onboard "export MC_HOME=/home/$ACCT/.culler MC_BIN_DIR=/home/$ACCT/.local/bin CULLER_PACKAGE_ROOT=/home/$ACCT/package CULLER_RELEASE_RECORD=$HERE/bootstrap-release.json; P=/home/$ACCT/package/bin/mc; for s in agentsview home tunables surfaces; do \$P __onboard \$s || exit 41; done; \$P __onboard supervision --activate --reconfigure" || { fail_all B5 onboard-chain; exit 1; }
 fi
 
