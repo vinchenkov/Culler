@@ -1,0 +1,62 @@
+ts=2026-11-21T13:05:05Z host=F1104 uid=0 RESULT D0 result PASS
+2ad44319366d995dbb3748e6619164567373a3818d48367f3429725eed996e36
+ef5f69feba779a8d34f62c492bb324f5a250357f7aad8e768bbab0905c1637fa
+ts=2026-11-21T13:05:06Z host=F1104 uid=0 OUT[H.project-list exit=2] mc: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+{"error":{"code":"usage","message":"open spine read-only /mc/spine/spine.db: unable to open database file (14)"}}
+ts=2026-11-21T13:05:06Z host=F1104 uid=0 OUT[HELPER.project-list exit=2] mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+{"error":{"code":"usage","message":"refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[AGENT.project-list exit=2] mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+{"error":{"code":"usage","message":"refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[H.release-status exit=2] mc: Release controls require the Culler host.
+{"error":{"code":"usage","message":"Release controls require the Culler host."}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[HELPER.release-status exit=2] mc: Release controls require the Culler host.
+{"error":{"code":"usage","message":"Release controls require the Culler host."}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[AGENT.release-status exit=1] mc: Release controls is host scope only; run.json callers are refused
+{"error":{"code":"domain-rejection","message":"Release controls is host scope only; run.json callers are refused"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[H.delivery-start exit=2] mc: open spine /mc/spine/spine.db: unable to open database file (14)
+{"error":{"code":"usage","message":"open spine /mc/spine/spine.db: unable to open database file (14)"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[HELPER.delivery-start exit=2] mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+{"error":{"code":"usage","message":"refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[AGENT.delivery-start exit=1] mc: mc delivery is host scope only; run.json callers are refused
+{"error":{"code":"domain-rejection","message":"mc delivery is host scope only; run.json callers are refused"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[H.env-save exit=1] mc: The selected Culler deployment is unavailable. Complete its installation before a new change.
+{"error":{"code":"deployment-unavailable","message":"The selected Culler deployment is unavailable. Complete its installation before a new change."}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[HELPER.env-save exit=1] mc: inspect MC_HOME "/root/.culler": lstat /root/.culler: permission denied
+{"error":{"code":"domain-rejection","message":"inspect MC_HOME \"/root/.culler\": lstat /root/.culler: permission denied"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[AGENT.env-save exit=2] mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+{"error":{"code":"usage","message":"refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it"}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[H.upload exit=2] mc: unknown verb "dashboard" Read mc --help.
+{"error":{"code":"usage","message":"unknown verb \"dashboard\" Read mc --help."}}
+ts=2026-11-21T13:05:07Z host=F1104 uid=0 OUT[HELPER.upload exit=2] mc: unknown verb "dashboard" Read mc --help.
+{"error":{"code":"usage","message":"unknown verb \"dashboard\" Read mc --help."}}
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 OUT[AGENT.upload exit=2] mc: unknown verb "dashboard"
+{"error":{"code":"usage","message":"unknown verb \"dashboard\""}}
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 OUT[H.task-list exit=2] mc: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+{"error":{"code":"usage","message":"open spine read-only /mc/spine/spine.db: unable to open database file (14)"}}
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 OUT[HELPER.task-list exit=2] mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+{"error":{"code":"usage","message":"refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it"}}
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 OUT[AGENT.task-list exit=2] mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+{"error":{"code":"usage","message":"refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it"}}
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 DATA BEGIN
+| H.project-list	2	mc: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+| HELPER.project-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+| AGENT.project-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+| H.release-status	2	mc: Release controls require the Culler host.
+| HELPER.release-status	2	mc: Release controls require the Culler host.
+| AGENT.release-status	1	mc: Release controls is host scope only; run.json callers are refused
+| H.delivery-start	2	mc: open spine /mc/spine/spine.db: unable to open database file (14)
+| HELPER.delivery-start	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+| AGENT.delivery-start	1	mc: mc delivery is host scope only; run.json callers are refused
+| H.env-save	1	mc: The selected Culler deployment is unavailable. Complete its installation before a new change.
+| HELPER.env-save	1	mc: inspect MC_HOME "/root/.culler": lstat /root/.culler: permission denied
+| AGENT.env-save	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+| H.upload	2	mc: unknown verb "dashboard" Read mc --help.
+| HELPER.upload	2	mc: unknown verb "dashboard" Read mc --help.
+| AGENT.upload	2	mc: unknown verb "dashboard"
+| H.task-list	2	mc: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+| HELPER.task-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+| AGENT.task-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 DATA END
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 RESULT I.agent-zero-exit result PASS
+ts=2026-11-21T13:05:08Z host=F1104 uid=0 RESULT P.baseline result PASS
+ts=2026-11-21T13:05:09Z host=F1104 uid=0 TEARDOWN end containers=0

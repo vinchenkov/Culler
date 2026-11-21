@@ -1,0 +1,18 @@
+H.project-list	2	mc: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+HELPER.project-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+AGENT.project-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+H.release-status	2	mc: Release controls require the Culler host.
+HELPER.release-status	2	mc: Release controls require the Culler host.
+AGENT.release-status	1	mc: Release controls is host scope only; run.json callers are refused
+H.delivery-start	2	mc: open spine /mc/spine/spine.db: unable to open database file (14)
+HELPER.delivery-start	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+AGENT.delivery-start	1	mc: mc delivery is host scope only; run.json callers are refused
+H.env-save	1	mc: The selected Culler deployment is unavailable. Complete its installation before a new change.
+HELPER.env-save	1	mc: inspect MC_HOME "/root/.culler": lstat /root/.culler: permission denied
+AGENT.env-save	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+H.upload	2	mc: unknown verb "dashboard" Read mc --help.
+HELPER.upload	2	mc: unknown verb "dashboard" Read mc --help.
+AGENT.upload	2	mc: unknown verb "dashboard"
+H.task-list	2	mc: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+HELPER.task-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
+AGENT.task-list	2	mc: refusing to open the spine under /mc/spine: its mount / is fstype=overlay source=overlay, which is not a block-device-backed local filesystem — the spine must live on a runtime-local named volume, because a shared host path splits its locks across two kernels and corrupts it
