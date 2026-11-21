@@ -38,8 +38,8 @@ out=$(docker run --rm --user 10002:10002 --cap-drop ALL --security-opt no-new-pr
 log "OUT[H1 exit=$st] $out"
 t1=$(printf '%s\n' "$out" | awk '/^==T1/{s=1;next}/^==/{s=0}s&&/tmpfs/{c++}END{print c+0}')
 [ "$t1" = 3 ] && rec T1.tmpfs-before-exec result PASS "3-mask-mounts" || rec T1.tmpfs-before-exec result FAIL "reason=mount-table=$t1"
-printf '%s' "$out" | grep -qE "^CapEff[[:space:]]+0000000000000000" && rec T2.caps result PASS "cap-eff-zero" || rec T2.caps result FAIL "reason=cap-effective"
-printf '%s' "$out" | grep -qE "^NoNewPrivs[[:space:]]+1" && rec T2.nnp result PASS || rec T2.nnp result FAIL "reason=no-new-privs-off"
+printf '%s' "$out" | grep -qE "^CapEff:[[:space:]]+0000000000000000" && rec T2.caps result PASS "cap-eff-zero" || rec T2.caps result FAIL "reason=cap-effective"
+printf '%s' "$out" | grep -qE "^NoNewPrivs:[[:space:]]+1" && rec T2.nnp result PASS || rec T2.nnp result FAIL "reason=no-new-privs-off"
 u=$(printf '%s\n' "$out" | awk '/^==T3/{getline a; getline b; print a":"b}')
 [ "$u" = "10002:10002" ] && rec T3.uid result PASS || rec T3.uid result FAIL "reason=$u"
 printf '%s' "$out" | grep -q "dockerenv=yes" && rec T4.dockerenv result PASS || rec T4.dockerenv result FAIL "reason=missing"
