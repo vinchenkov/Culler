@@ -84,6 +84,12 @@ out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HE
     mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
 log "OUT[O3 exit=$st] $out"; row O3.project-live MARK-PROJ "$st" "$out"
 
+echo "== O3b the product's disable flag (adapters/opencode.ts sets OPENCODE_DISABLE_PROJECT_CONFIG=1)"
+out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HERE/ocinj:/inj:ro" -w /inj/proj -e HOME=/tmp \
+    -e OPENCODE_DISABLE_PROJECT_CONFIG=1 \
+    mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
+log "OUT[O3b exit=$st] $out"; row O3b.flag-covers MARK-PROJ "$st" "$out"
+
 echo "== O4 AGENTS.md instruction source at cwd"
 out=$(docker run --rm --user 10002:10002 --network none -v "$OCV":/oc:ro -v "$HERE/ocinj:/inj:ro" -w /inj/proj -e HOME=/tmp \
     mc-prod /bin/sh -c 'XDG_DATA_HOME=/tmp/d XDG_CACHE_HOME=/tmp/c XDG_STATE_HOME=/tmp/s XDG_CONFIG_HOME=/tmp/cf timeout 20 /oc/node_modules/@opencode/cli-linux-x64/bin/opencode debug config' 2>&1); st=$?
