@@ -1,0 +1,6 @@
+AM v0.1.63 双面哈希登记（A14 续轮：三族合表+V-1d+V-3 git 矩阵+credential 缺口呈报）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 50b665719a70674c7deef5bed5800f2137eb7411d1551fa8fbaae96e5a6821bb
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.62 = 577307cde35747f6fa745b3c52104d1f36ae235d11be80e302e936eb56880fce（evidence/A14/am-v0.1.62-hash.txt）
+- 同轮事实: opencode 族表+V-1d 九行 PASS+V-3 矩阵入档（dev 67d7e52 面）；diff-plan-004 撤回（TA16 9b8c11b 并入）；credential.helper 缺口=具名呈报未修（交付域，无正清单授权）；blcheck 62/0；本机 boundary/e2e 链在途
