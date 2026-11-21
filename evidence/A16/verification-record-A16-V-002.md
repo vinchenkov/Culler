@@ -1,0 +1,22 @@
+# A16 验证记录 #2（TM §7.1 · 真机资源矩阵轮 · EVIDENCED 证据件）
+
+- verification_id: A16-V-002
+- target_component: 沙箱资源维的**真实强制行为**：pids / fd(nofile) / tmpfs size / docker json-file 日志帽 / memory 帽 / 帽被 inspect 如实记录（envelope 见证的 docker 层前置）/ 爆炸半径（spine 见证文件系统零漂移 + 宿主控制面存活）。
+- tested_version: shz/dev@7679ff7（产品码与镜像构建点 9e0c54b 之间的两次提交仅改 evidence/ 脚本，产品逐字相同——镜像 rev 标签=9e0c54b，如实登记）。验收器=evidence/A16/a16-resource-acceptance.sh。
+- environment: 218.84.111.20（host=F1104）root 驱动；专用账户 shza16（uid 钉 2100 段，docker 组）；mc-prod=真机 build-prod 产成（bootstrap 步 BOOTSTRAP-OK：arch=amd64 ∧ rev=9e0c54b 双断言）；不装 unit、不 reboot、不碰任何既有服务。
+- attack_scenario（三轮迭代，逐轮如实）:
+  - **R1（12:38Z）**：C0–C4/C7/C8 PASS；C5/C6 FAIL；末行却 `ACCEPT: PASS`。**该 PASS 被我拒绝采信并当场定性=验收器自身缺陷**：emit 的 awk 读第 2 列而 FAIL 记在第 3 列，判定谓词永不命中（假阳性通道）。教训正是既录纪律的镜像案例：*"绿=exit 0 且 ok-marker 双检"*——marker 本身也要有反证。同轮 C6 的 EXIT=137 实为**内存帽生效证据**（探测器只 grep 文本没读退出码）；C5 为路径匹配缺陷（见 R2）。
+  - **R2（12:40Z）**：判定修双列+九行齐全才 PASS（fail-closed）；C6 以退出码判定转 PASS；C5 仍 FAIL——真因=**本宿主 docker data-root 不在 /var/lib/docker**（在独立卷 /data-shunhong/docker_data，`docker info` 实测），探测器硬编码前缀恒拒。**非产品缺陷**。
+  - **R3（12:42Z）终轮 ACCEPT: PASS（9/9）**，实测值入册：
+    - C2 pids：fork 炸弹在 `--pids-limit 128` 下有界完成，宿主与 spine 见证无恙（`control-plane docker alive=yes`，df 漂移<1MB）。
+    - C3 fd：容器内实读 `inherited-soft 1024, opened 1021, errno 24`（EMFILE）——**"新调用失败"语义逐字兑现**（TM 5.2 FD 行）。
+    - C4 tmpfs：`dd: error writing '/mc/scratch/fill': No space left on device`——**真 ENOSPC**（D-1(b) 语义兑现），spine 见证零漂移。
+    - C5 日志帽：单文件最大 <3MB（max-size=1m×轮转），帽生效且宿主可写层不被灌满。
+    - C6 memory：EXIT=137（cgroup OOM 只杀该容器），宿主无恙。
+    - C7 见证：`docker inspect` 逐值含 PidsLimit 2048 / nofile 65536:262144 / Memory 134217728 / json-file max-size 10m ×3——**digest 所证的值在真实守护进程上被如实记录**（envelope 负控在 resident 单元面已 5 例钉死）。
+    - C8 控制面：全维打完后 docker 响应正常。
+  - **覆盖边界（不自扩）**：本记录证明 docker 施加与爆炸半径；**run 的 spine 终态记账**（container-gone/lease 通道下的资源类收口）与**看门狗在真 run 上的端到端**需持久部署=随 A25 移交段（其剧本 B5–B10 内含）；工作区"真配额"维=b+c 裁定下的登记残余（宿主契约/F0a，HOST-CHANGE-ORDER-DRAFT 备用件）。
+- evidence_ref: evidence/A16/a16-resource-raw-rounds.tgz（R2/R3 原始+结果表；**R1 的 tsv 在主机被后续轮覆盖=演练卫生缺口，如实登记**，其结论以本记录与 6c78548 提交注为准）；build.out 链存主机 $R。
+- teardown: 终态实测 user=0 / a16 容器=0；mc-prod 镜像**保留**于宿主（后续 A24/A14 轮的部署材料，非残留垃圾，特此声明）。
+- verdict: **A16=开发证据链完整（CODED→真机矩阵 9/9）**；EVIDENCED 状态转写随 AM 登记轮；义务完成判定仍归 F0a Exit+治理链（Authority 悬置于您 Q3）。
+- reviewed_by: host-agent（执行兼任复核声明沿用；Integrity 未做，不宣称）；verified_at: 2026-11-21 (+0800)

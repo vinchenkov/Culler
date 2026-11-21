@@ -1,0 +1,6 @@
+AM v0.1.61 双面哈希登记（A16 EVIDENCED 真机矩阵轮 + A24 正清单备批）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 7a264f0a1f0a7581cb0286773b2cf0320a63fce415cf4038ef6d80de93481fbc
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.60 = 57252b154cb268b80560c1a033c98e465399cb14cafacc838f3d9321e8a9e3f5（evidence/A16/am-v0.1.60-hash.txt）
+- 同轮事实: A16 台账 EVIDENCED（status.json）；V-002+原始件入册；DEV-BASELINE A16 行 EVIDENCED 转写（A14 执行前置达成注记）；A24 正清单在 shz/TA24@e1fce48 未并 dev（门未松，待批）；blcheck 62/0；矩阵三轮链=拒绝假阳性→data-root 定性→9/9 PASS；218 终态 user=0/容器=0，mc-prod 镜像声明性保留
