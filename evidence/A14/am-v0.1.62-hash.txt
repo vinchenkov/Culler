@@ -1,0 +1,6 @@
+AM v0.1.62 双面哈希登记（A14 执行首轮 + A24 批准包实测重定）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 577307cde35747f6fa745b3c52104d1f36ae235d11be80e302e936eb56880fce
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-21 +0800 实测）
+- 前轮: v0.1.61 = 7a264f0a1f0a7581cb0286773b2cf0320a63fce415cf4038ef6d80de93481fbc（evidence/A16/am-v0.1.61-hash.txt；60=57252b15…、59=bb63b260…）
+- 同轮事实: A14 双族 V-1a+V-2 记录器与实测入册（dev 至 69f1ff9 面）；A24 批准包 003 修正版在 shz/TA24（未并 dev、门未松）；纪律样本=行编辑静默失败经 grep 复核抓出重打；本机 boundary/e2e 链在途（结果随 A16-V-003）
