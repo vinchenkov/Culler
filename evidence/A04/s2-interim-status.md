@@ -47,3 +47,11 @@
 - **修复=Dockerfile 每架构快照参数**：`UBUNTU_SNAPSHOT_AMD64=20261122T000000Z`（≥基镜内容日），apt 步内按 TARGETARCH 取 `$snap` 并落盘 `/usr/share/culler-project/ubuntu-snapshot`，project-manifest 读**实效值**入 manifest；arm64 路径与 20261001 逐字不变。**218 预验证**：钉基镜×20261122 快照，全工具清单 `--dry-run` 解算 **158 Inst、exit 0**。
 - 测试转写：toolchain.test.sh 锚从 `^RUN printf` 改 `^RUN snap=` 并**新增三条断言**（sources 行写 $snap、实效快照落盘、AMD64 ARG 声明次序）——钉得更紧而非放宽；runner/image lane EXIT=0、release lane EXIT=0。
 - 第九轮：重传（bundle）后续跑 B4→B10。
+
+# 第六轮取证（2026-11-21 02:30Z，S2 第九轮）+ B4 第三深度缺陷=harness 层目录缺失（双架构回归，验收器首抓）
+
+- apt 层通过（快照修复生效，#6 完整跑到 git 编译），失败推进到 runtime.Dockerfile `#17`：`cp: cannot create regular file '/opt/culler-runtime/app/package.json': No such file or directory`。
+- **根因=阶段② 自身回归（S2 验收器抓出的第 4 个真实缺陷）**：原实现用 `COPY … /opt/culler-runtime/app/`（COPY 隐式建父目录），② 为按架构选择 manifest 改成 `COPY→/tmp + cp`，**丢失目录创建**；tools 阶段无人 mkdir app（runtime 阶段的 install -d 属另一 FROM）。**arm64 腿同样会坏**——发布腿不建镜像、本机与 CI 均无该步真实覆盖，mc-prod 完整构建在 218 首跑（B4）即暴露；②/⑤ lane 全绿不构成反证（镜像内 RUN 语义只有 docker build 能证明）。
+- 修复=该 RUN 首步 `install -d /opt/culler-runtime/app`（同层建目录再按架构拷贝，两架构同修，注释记录因果）。image/release lane 重跑 EXIT=0。
+- 覆盖缺口如实登记：**产品镜像完整构建**应列为 deployment-linux-* /孪生 CI 的必跑门（F0a 合流项，随 §7.1 呈报）。
+- 第十轮：重传后续跑 B4（x64 bun install 与运行时校验在前方，可能再暴露深层问题）。

@@ -70,7 +70,11 @@ RUN case "$TARGETARCH" in \
 ARG RUNTIME_DEPS=0
 COPY --chmod=0644 runner/agent-runner/package.json runner/agent-runner/bun.lock /tmp/harness-arm64/
 COPY --chmod=0644 runner/agent-runner/package.linux-x64.json runner/agent-runner/bun.linux-x64.lock /tmp/harness-x64/
-RUN if [ "$TARGETARCH" = arm64 ]; then cp /tmp/harness-arm64/package.json /tmp/harness-arm64/bun.lock /opt/culler-runtime/app/; \
+# The harness COPY pair stages the manifests in /tmp; the tools stage has no
+# app folder yet (the runtime stage's `install -d` belongs to another layer),
+# so this step creates the folder it copies into.
+RUN install -d /opt/culler-runtime/app \
+ && if [ "$TARGETARCH" = arm64 ]; then cp /tmp/harness-arm64/package.json /tmp/harness-arm64/bun.lock /opt/culler-runtime/app/; \
     elif [ "$TARGETARCH" = amd64 ]; then cp /tmp/harness-x64/package.linux-x64.json /opt/culler-runtime/app/package.json && cp /tmp/harness-x64/bun.linux-x64.lock /opt/culler-runtime/app/bun.lock; \
     else printf 'unsupported target architecture %s\n' "$TARGETARCH" >&2; exit 2; fi \
  && rm -rf /tmp/harness-arm64 /tmp/harness-x64 \
