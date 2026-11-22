@@ -1,0 +1,22 @@
+# A14 验证记录 #2（TM §7.1 · V-1d 首进程时序 · 容器启动不变量九格）
+
+- verification_id: **A14-V-002**
+- target_component: agent 容器**首进程可见的既定环境**——掩码/降权/信封在场是否先于任何被检代码执行（A16 资源与安全帽的时序前提）。
+- tested_version: 运行点=`shz/dev@67d7e52` 面（提交时刻 2026-11-21 22:41 +0800，紧随 14:28Z 运行）；记录器 `a14-v1d-ordering.sh`、结果表 `a14-v1d-results-218.tsv`、原始件 `a14-v1d-raw-218.log` 随票入库。
+- environment: 218.84.111.20（host=F1104）；字面 argv；未装 unit、未 reboot。
+- results（终轮 ACCEPT:PASS，九行原样）：
+  - `T1.tmpfs-before-exec` PASS — 三处 tmpfs 在挂载表中先于任何代码（`/mc/scratch` 与 harness 掩码层）。
+  - `T2.caps` PASS — `CapEff:` 全零。
+  - `T2.nnp` PASS — `NoNewPrivs=1`。
+  - `T3.uid` PASS — 进程 uid=10002（容器内 agent 用户）。
+  - `T4.dockerenv` PASS — `/.dockerenv` 在场（A24 容器域判定的实态前提）。
+  - `T4b.runjson-absent-pipeline` PASS — pipeline 形态下信封不伪装存在。
+  - `T5.workspace` OBSERVED — 工作区可写（如实记观察）。
+  - `T6.no-path-cli` PASS — 首进程视图内 PATH 无 harness CLI（与 V-1a"CLI 住 runtime 层"合读=同一事实的第二只眼）。
+  - `T7.runjson-at-exec` PASS — 信封在场先于任何被检代码。
+- 仪器自纠（如实留痕）：首轮两格 FAIL 的根因是**自家断言正则漏字段冒号**（`^CapEff` 对 `^CapEff:`），实测值本身全对；按纪律**修仪器不放宽**，双日志均留档。此教训与 A16-R1（marker 需反证）、V-3（dry-run 空跑）同族：**判定谓词本身要有负控**。
+- coverage boundary（不自扩）：本记录证明"启动瞬间"的环境形态，**不**证明会话中途不被改（无 in-run 重配面即无此威胁模型分支）；V-5/X-1 场景不在本记录（活会话门控）。
+- evidence_ref: `evidence/A14/a14-v1d-results-218.tsv` sha256 `d0d33150308cb9a6d997cbe488191988fafde26549a7700550e5030f4b99288e`；`a14-v1d-raw-218.log`（同目录）。
+- teardown: 容器与临时目录随轮清；宿主残留实测 0。
+- verdict: **V-1d=闭合（九格实测，含一次仪器自纠）**。
+- reviewed_by: host-agent（执行兼任复核声明沿用；Integrity 未做，不宣称）；verified_at: 运行 2026-11-21（+0800），登记 2026-11-22。
