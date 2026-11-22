@@ -1,0 +1,9 @@
+AM v0.1.91 双面哈希登记（轮十八续：A25 前置侦察 + O1-b 比较落账 + A25a 向导切片并入 BACKLOG-on-A02；两处流程自纠 + blcheck 独立印证审方）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = ba4b1289c26091d742ac38b038d551b1130a1922012a37a4126fac95b9ad7e7e
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.90 = e14008b3fd12a73ff929d96aa9bb6cc00fd041ea3a33404df1c2e3e3b24666a7（evidence/A23/am-v0.1.90-hash.txt）
+- 同轮事实: 三支并入 dev（TR20 A25 前置侦察@6f9acb8 / TR21 O1-b 表@8e6eba5 / TA25 A25a 切片@7a7b313）；A25 真钥匙=A02（审方 LOUD + blcheck ready-unmet 双独立印证，Linux 向导第 2 步撞 ErrHostCredentialUnavailable）⇒ A25a CODED 并入但票保持 BACKLOG-on-A02 不标 EVIDENCED；O1-b C0-C3×八维+三问（三根亲验），A01 命门="同后端"定义（抽象 or 载体层，决 C2 系生死），八件候勾；A25b 生命周期门 culler_prod.go:222 候裁 B1/B2/B3；VISION.md 不在 fork 树（AGENTS 引用悬空）呈报
+- 流程自纠两笔（§H-6 姊妹，入 AGENDA §H 第 7 条）: (a) 全道通知未到即写"完成"，读日志戳穿（有 ok 行无 tee 标记=仍在跑），升格"完成信号只认 tee 退出码标记，wrapper exit0≠门 exit0"；(b) O1-b 表一度直写 dev，git mv/rmdir 归零改走支
+- 账面: blcheck 69/0；ledger 26 EVIDENCED 不变（A25a 有意不入账）；worktree 仅 dev；main 远端 dd087c7 本轮未再推（D5 授权不延伸下次+Actions 未启用推了不跑）；不宣称项目安全
+- 候令五件: A25b 形状 · A01 八件 · 启用 fork Actions · 发布纪律(A02+A25b 前勿出 Linux 版) · VISION.md 处置
