@@ -36,7 +36,10 @@
 - cmd/mc 全包（**post-:475-fix 新鲜跑**，弃用改前陈旧那次）：`A25_CMD2_EXIT=0`（`ok mc/cmd/mc 414.0s`）——证审方两改点+完成语转写无破；且此包绿即证**无 cmd/mc 测试钉旧四语**（若钉必红）。
 - onboarding 包：`ONB_EXIT=0`（`ok mc/onboarding 2.3s`，含 `terminal_presentation_test.go:24/:30` 双向断言同串转写——`:24`"完成前不宣告"负控 + `:30`"Complete() 后必现"正控，语义逐字不变=转写非放宽）。
 - 文案对抗审查：首轮 4 语 ACCEPT + 2 处漏改 REVISE（`:475`、`:36/:149`）→ 已逐字采用审方原词（"Set up this machine"/"Setup complete"，其 40 列适配自算且严格更短）→ **ACCEPT-TO-MERGE**（审方原话，dev/分支层）；**BLOCKER 仅在发布层**（凭据墙，见 §0）。
-- 全道 mc/check.sh + 扫描门：`=?`（回填位，合并前硬规则；扫描按 v0.1.90 分域纪律先核被改 .go 在覆盖集——Go 文件历轮证在集）。
+- 全道 mc/check.sh + 扫描门：全道 `A25_FULL_EXIT=0`（收到完成通知后亲读标记；26 包 ok/0 FAIL/0 UNVERIFIED）；扫描 seal `fb63fab7…` 按**分域新纪律逐文件核**：唯一逻辑改动文件 `setup_terminal_prod.go` 确在覆盖集（该文件别处 2 条既有 finding 证 join 有效）且**落 A25 改行 0**=真信号；其余 3 文件（choices/presentation/test）全文件 0 finding **无法区分未扫与干净⇒不假称背书**，其证据=纯字符串字面改动+cmd/mc/onboarding 包绿。
+
+## 6. 状态定性（审方 LOUD 决定的诚实收口）
+A25a=**CODED 已并 dev，票停 IN_PROGRESS 不标 EVIDENCED**。理由：票面 F0b 验收="Linux 真机 `mc __setup` 全程绿（含凭据段）"——审方亲证 Linux 向导在第 2 步 `provider_credential.go:165→WriteHostSecret→host_secret_other.go` 抛 `ErrHostCredentialUnavailable`（"Unlock the login Keychain"，Linux 无此物）⇒**端到端不可达，且本机 Mac 也不可真跑 Linux**。本机可证的仅=Mac 无回归（全包+onboarding 包+双平台编译）+文案适配（审方 ACCEPT-TO-MERGE dev/分支层）。Linux 端到端=**A02 落地后 + A32/218 运行域**（双重具名延付）。**A25 的真实解锁钥匙是 A02 不是 A25a/b**——本票把 Mac 入口锁去掉，A02 才让 Linux 走完；§2 A25b 形状候裁。
 
 ## 5. 审方缓改面（后续票收，本支不动=登记不扩面）
 `:671` "Mac requirements"、`:708-728` Docker Desktop 复制文案+mac-install URL、`:652` "macOS refused"、`:658` "Open Docker Desktop"——均属 Linux 向导**深水区文案**（Docker Desktop 在 Linux 不存在），改它们须与 A02 凭据墙+Linux 首跑真实语义一起定（否则改了词仍走不通=制造假就绪）。归 A02/A25b 后续统一收，diff-plan §0 已具名。**这些是"Linux 能用"承诺的组成部分，不随 A25a 半改**。
