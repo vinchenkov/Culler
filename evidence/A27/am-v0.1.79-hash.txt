@@ -1,0 +1,8 @@
+AM v0.1.79 双面哈希登记（A27 CODED+EVIDENCED：N-1 主干闭合；含 site-2 越界被全道抓破后回撤的完整披露）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 22c82f684d2fd91a797d14eafbc88151d6b741a35c63af606496f893fda927bb
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.78 = 793ff3760c9c4d8e14c9b8d1ea922643f3978a2beda6f65560249d3b53fbbd95（evidence/REGISTRY/am-v0.1.78-hash.txt；该轮另有一次追记致值更新，见该文件内注）
+- 同轮事实: 票支 shz/TA27i 六提交（73f3909 R3 曾单独先并 dev / a1fe268 STOP 呈报 / 2a68849 V-γ 主体 / f585bbd 范围回撤 / e0d1e07 证据+台账 / 0dbab11 票行转写）ff 并入 dev（tip 0dbab11→登记提交）；update_docker 双宿主绿（本机 EXIT=0 24.6s；218 原生 EXIT=0 39.45s，原始件 evidence/A27/a27-lane-218-raw.log sha256 前缀 ee5cfdb0…，宿主残留 0）；MC_EXIT=0（26 包/0 FAIL/0 UNVERIFIED）+ RES_EXIT=0（774/0）+ docker_boundary EXIT=0；扫描 seal 458b74c6… 落本票改动行 0（blame 基准+阳性对照）；§7.1=evidence/A27/verification-record-A27-V-001.md；status.json A27=EVIDENCED；blcheck 64/0（BLCHECK_EXIT=0）
+- 关键披露: ① site-2 安装门首版一并翻快照 → mc/check.sh 当场 MC_EXIT=1 破 5 个在制测试（含他人不变量测试）→ 按三支原则整体回撤，未借守卫扩权；此即"合并前必跑全道"硬规则的主动救回，代价为零；② 决定性新事实 j.Previous.Image(:255) 旧镜像 ⇒ 新动词/加 flag 在混合版路径不可用 ⇒ V-γ 近唯一解（STOP-1 呈报后由所有者裁定）；③ site-2 的 prod 同型红今日不可见（fake 直喂 JSON）→ 具名 A28 候选，未擅自建票；site-3 窗口移交 L02
+- 未做（诚实面）: 未动 site-2/site-3 生产语义（已裁归属他票/L02）；未编辑 workflow（C-A 前置已达成但仍待点名授权）；未在 CI 面跑任何道；docker_e2e 仍未在有效域跑
