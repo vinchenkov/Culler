@@ -1,0 +1,7 @@
+AM v0.1.77 双面哈希登记（登记册字节完整性预审计：13 全等含四次签发绑定零漂移；唯一不一致=§1.2 MASTER 行，留步骤 2 裁定）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 168b49aca52b664b833b76d83822039d6ae00e452641e7cf09eb58695a702607
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.76 = 88e4b7eca44d86826bb31c38038cb6aeea646cd074d84534ad0409ceb93d655b（evidence/F0AP/am-v0.1.76-hash.txt）
+- 同轮事实: docs/contracts/REGISTRY-INTEGRITY-001.md 入库（分支 shz/TREG 提交 84cac65 ff 并入 dev）；AGENDA-001 §A MASTER 行归因更正+步骤 2 前置新增"§1.2 行重新登记"；blcheck 64/0（BLCHECK_EXIT=0）；docs-only 波次，代码扫描门不触发声明沿前例；不宣称项目安全；本审计不声称完成步骤 2（Integrity 角色不可替代）
+- 审计核心数：13 登记值=现字节全等（含签发 001/002/003/003A 四绑定零漂移+diff-plan-003+g-b）；1 不一致（§1.2 b83abef1 无事件可溯≠现字节 654b4f59=§1.1"旧值"列，MASTER 单提交零编辑⇒登记缺陷三角，处置权=步骤 2）；6 审绑类值按设计不比对
