@@ -1,0 +1,7 @@
+AM v0.1.65 双面哈希登记（轮八·十项裁定登记 + Q7 即时执行）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 795ce391db8b33415d63fcc337e66fe47b3b54121d38492f2b8bc5092c1fcf29
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.64 = c4d72c1cb7627fee77c703c38ef295c369b4be10080ad7627180dc0646f4df80（evidence/A16/am-v0.1.64-hash.txt）
+- 同轮事实: Q7 唯一生产/测试码改动并入 dev 7ca53b3（substrate virtiofs 行 + e2e 拒绝结果断言，本机实跑 ok）；Q1 追加令草案 IMPL-AUTH-003A-A24-DRAFT.md 未签发（绑 diff-plan-003 SHA d557d5fb…3d4c）；Q6 立票 A26（diff-plan-001 先列后改，未授进码）；Q9 A13 批准事件登记（绑 g-b SHA 94a96a0a…8e4a，附七1-3 清、未 CODED）；Q8 e2e 运行域声明；status.json A14→IN_PROGRESS；扫描 seal b74a1e32…（落采样生产行 0）；blcheck 63/0
+- 仍悬所有者: Q1 追加令正式发出（完整 SHA 绑定）、Q3 Authority 本人明示任命、A26/A13 代码激活令
