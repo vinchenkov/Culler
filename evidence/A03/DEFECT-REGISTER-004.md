@@ -37,6 +37,7 @@
 - **F-3（不采）**：镜像里改 `safe.directory=*` 之外再放宽——扩大授权面。
 - 验收域：修后 `docker_e2e` 在本机（所有者声明其健康）与定向机/CI 各跑一次；**此前所有把它记为"运行域不满足"的在册句须按更正纪律改写**（AM 变更史只增不改、§7.1 追加更正段、DEV-BASELINE/设计件可就地转写）。
 - 立票建议：**A29**（承载 F-1 + 三处调用族的负控 + e2e 道本机首绿），与 A28 独立（不同文件族，可并行）。
+- **【轮十二注】执行差与状态**：F-1 落地（单咽喉+两旁路）；验收域实际=**本机半边兑现**（首绿+16/17），**定向机/CI 半边未跑**（如实挂账，"各跑一次"原句未完成）；道内唯一残留红 `TestCollieNativeProxy*` 经 A30 预勘+本代理复验**定性=传输层独立缺陷**（DEFECT-005 更正段 #1），与 sourcegit 族零交集再证 ⇒ **不影响本件闭合**（本缺陷症状 seeding-dubious-ownership 已被端到端否证）。
 
 ## 6. 闭合段（2026-11-22 轮十一，A29 实施；登记不修→授权后闭合）
 - **修复=F-1 落地**：`mc/verbs/sourcegit.go` 新增 `safeDirectoryArg(dir)`（`filepath.Abs` 归一；Abs 失败=无旗走今日行为，不静默换形），前置入 `gitAtSource` 单咽喉与两处旁路直调（`onboardprojectgit.go:243/:407`，探针保留 `GIT_OPTIONAL_LOCKS=0` env 差异）；`seedingprojection.go` 合成 archive 直调**不改**（实验证 GIT_DIR 显式设定时 git 跳过发现与属主检查，无需旗）。零新 verb/wire/相位词。

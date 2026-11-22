@@ -1,6 +1,6 @@
-# Defect register 005 — Collie 原生代理子界：collie 容器从未 birth（wake 不 fires）；A29 修复后 e2e 道内**唯一剩余红**，与 A29 改动面零交集
+# Defect register 005 — Collie 原生代理子界红（~~collie 容器从未 birth（wake 不 fires）~~ **更正：birth/wake 正常，红在 native-provider 传输层**，见更正段 #1）；A29 修复后 e2e 道内**唯一剩余红**，与 A29 改动面零交集
 
-状态：**REGISTERED, IN PROGRESS（本登记=事实半，隔离取证在途）**。属登记不修：`collie` 族/`resident` wake 路径不在任何现行正清单。
+状态：**REGISTERED, IN PROGRESS（取证进行中；§1/§2 原定性已作废——更正段 #1）**。属登记不修：collie native-proxy 传输面不在任何现行正清单。
 
 ## 1. 症状（首次可见性=DEFECT-004 修复的副产品）
 `docker_e2e`（A29 票支，本机，Desktop 健康）：14 用例中 13 用例过/半过，唯一整测红=
@@ -26,3 +26,21 @@
 
 ## 5. 修复归属建议
 wake/birth 时序属 **collie 产品面**（非票面现有：A14 V-1b/c 系 harness 配置面、A25 系向导）。建议**新立票承载**（A30 候选）：collie native-proxy 子界红 + resident wake 语义追证；或并入 L02 的"计划内/崩溃区分"家族（resident 晚启=计划内时序，恰与其同源）。**归所有者裁**，执行侧不建票不猜修。
+
+---
+
+## 更正段 #1（2026-11-22 轮十二追加；**§1/§2 核心定性作废**，原文保留不删；§5 的 wake 框架与 (a)/(b) 判据随之作废）
+
+**追加者=原撰写者本人；触发=轮十二 A30 只读预勘带回否证，经本代理独立复验成立。原句"collie 容器从未创建 / wake 不 fires / 红在 wake/birth 层"全部推翻。**
+
+### 复验证据（全部宿主侧保留树+源码，不依赖已删卷）
+1. **Birth 实证**：树 `/private/tmp/mc-e2e-4238657310/home/logs/runs/h-22c5523c973ad663/runner.ndjson` 含 `runner.started` → `runner.harness_failed`，逐字 `"exit":1,"replied":false`。会话目录+runner 日志存在=容器创建并运行过。
+2. **`No such container` 是设计保证的事后假象**：`resident/src/effects.ts:686` 注释自明 collie 容器 **`--rm`**（"so the container is gone"）——测内 cleanup（`collie_native_proxy_test.go:84-87`）在容器退出后 `docker logs` **必然**拿不到对象。该信号与"从未创建"和"出生后即死"**两个假设皆相容**，我取了前者。
+3. **反证曾在自己引用的行里**：首轮我逐字引用过 `sweep.skipped unrecorded=1 … log(s) name no run row … h-1e6f4bd057c36d94`——h- 前缀=collie 会话 runner 日志存在=**birth 已发生的直接反证**，当时未解读。**违犯在册纪律"本地感知远程效果≠不存在（超时/关闭/dispatch 停摆皆不证无）"的现行实例。**
+4. **wake 路径实核**（预勘 file:line+本代理复核其设计文本）：wake=dispatch 驱动自脊态（`collieselect.go:19-21`"wake 无需 pending inbound turn"；`collie.go:203-204` 容器可先于首消息备好；`CollieSend` 为纯脊事务 INSERT 消息——**无 socket 队列可丢**）。我"resident.log 零 collie 行⇒wake 未发"是**探针位置错**：wake 结果落 `mc.ndjson`/spine activity，不落 resident.log（该树实测 resident.log 计数=0 与 wake 正常并存，即证）。
+5. **卷身份纪律已执行**：树→卷映射自被检树读出（`e2e_test.go:567 f.volume="mc-e2e-spine-"+sfx`；预勘所引会话 id 与树内目录名全等）——§3 那次"0 行"误读的教训未重犯。
+
+### 修正后的定性（红仍在、独立仍在，层位移动）
+- **失败层=native-provider 传输边界**：容器内适配器请求**未抵达测试 fixture 传输**（树内 `native-provider/` 下 requests.jsonl **不存在**=零请求；预勘另见 diagnostic_events `invalid_api_key 401`，涉已删卷 spine 行，本代理未独立复验=降为"预勘证据"）⇒ harness 无回复 exit=1 ⇒ 会话 `resume_owed=1` 停摆 ⇒ 测等 draft 超时。wake/birth/持久消息**皆正常**。
+- **产品 vs 夹具归属=未定（E3）**：线索=测配置 `surfaces.provider_proxy bind=""` + preload 仅补 `globalThis.fetch`——若 codex SDK 自带传输绕过之，401 来自真实上游（合成 key）⇒ **夹具布线缺陷**；若产品 egress 本应经宿主代理而 bind="" 语义未定义 ⇒ **产品面**。**此判定需一次适配器 egress 只读追读，A30 diff-plan v2 的前置；不预设。**
+- 不受影响的在册结论：父提交独立性（红确在 04cd6b2）；"A29 使内层红首次可见"的洋葱定性（成立，内层=传输非 birth）；DEFECT-004 闭合；A29 16/17。
