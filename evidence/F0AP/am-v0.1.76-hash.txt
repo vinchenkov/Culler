@@ -1,0 +1,7 @@
+AM v0.1.76 双面哈希登记（F0a 预清障议程备料包；§3 步骤 1 完成态注）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 88e4b7eca44d86826bb31c38038cb6aeea646cd074d84534ad0409ceb93d655b
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.75 = 66e75bb36ac63923eb5af3067f74f34240ee0114f5871e08fd583f44a98510a4（evidence/A27/am-v0.1.75-hash.txt）
+- 同轮事实: docs/contracts/F0A-PRECLEARANCE-AGENDA-001.md 入库（§A 冻结链工作表/§B ADV 逐项/§C Exit 依赖图/§D 明示清单十条/§E 零预断声明；分支 shz/TF0AP 提交 7680d22 ff 并入）；§3 队列步骤 1 完成态注（权威记录指针=v0.1.66②）； MASTER 哈希归因颠倒一处写作中自纠并催生"哈希按登记位分列"纪律注；blcheck 64/0（records=3 不变）；docs-only 波次代码扫描门不触发，不宣称项目安全；worktree 收敛至仅 dev；main PRISTINE 未推送
+- 治理轮开启时本包=议程底稿；开启与包内全部裁决属 Authority（所有者本人），本登记零预断
