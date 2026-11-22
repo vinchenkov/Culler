@@ -1,0 +1,6 @@
+AM v0.1.64 双面哈希登记（A16 本机 e2e/boundary 收口轮 + 字节臂采样自纠 + e2e 三失败二分定责非 A16）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = c4d72c1cb7627fee77c703c38ef295c369b4be10080ad7627180dc0646f4df80
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.63 = 50b665719a70674c7deef5bed5800f2137eb7411d1551fa8fbaae96e5a6821bb（evidence/A14/am-v0.1.63-hash.txt）
+- 同轮事实: boundarydocker ok/exit0；A16-V-003 入册（dev a9b7a46）；字节臂采样修复 resident 772→773/0（5579374）；docker_e2e 三失败父提交 8dce77c 同态复现=非 A16（walking-skeleton/collie-proxy 环境既有 + 锁域 fakeowner/virtiofs 断言漂移）；两项测试维护呈所有者；worktree 收敛 blcheck 62/0 工作树干净
