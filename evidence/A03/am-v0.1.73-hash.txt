@@ -1,0 +1,7 @@
+AM v0.1.73 双面哈希登记（DEFECT-003 v2 机制修正与三处爆炸半径；nightly/update_docker 首跑；G-4 普查勘误）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = bb9d7576c39fe977dc36335d19da1b5fef2aebfdb37d675cda7d971e941d7a28
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.72 = 7255df0169fe22025d6905cc4af717a94df6234c4daba5a502a61555088c7dec（evidence/A14/am-v0.1.72-hash.txt）
+- 同轮事实: 分支 shz/TDEF003 两提交 047b9dd（DEFECT-003 v2 + lanes-first-run-001 + 三原始日志归档 + L02 行修正）/992454b（G-4 勘误 + 设计件 §3b 方法学）ff 并入 dev（tip 992454b→登记提交）；原始件 sha256：def003-out-20261122T043723Z.log 9bf21735…d71／def003-r2-20261122T043845Z.log（弃用轮）9c249fef…eea／def003-r2b-20261122T043919Z.log 94cba972…ec1／DEFECT-REGISTER-003-v2.md 4ca4a774…88b8（后二者为登记件非工件）；lane 结果=nightly 绿（EXIT=0，27 RUN/6 PASS/0 SKIP）+ update_docker 红（EXIT=1）；blcheck 63/0（2 warning 沿册）；定向机残留=文件 0/卷 0/容器 0
+- 未做（诚实面）: 未修任何生产码（三处位点均不在现行正清单）；未跑 docker_e2e 于有效运行域；未在目标机跑 nightly；未处置普查命中（归 V-3/N-2）
