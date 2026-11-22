@@ -1,0 +1,7 @@
+AM v0.1.93 双面哈希登记（轮二十：A02 预铸 diff-plan 落账（标签亲验：桩=!darwin、fixture=test_fake_routing⇒CI 零凭据结构已成立）+ A01 ADR 落格壳（八格全空+联锁+两事件签发）；脊候 A01 批，执行侧无自主剩余）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 2c1b40fab26202367d4f78ee15a6cbefcd137100af5257be35b815822088543d
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-23 +0800 实测）
+- 前轮: v0.1.92 = d6e8960e41a16fa21ecebdc378304a1759f5a31b2eb0c65ffc39668f6bb2999b（evidence/A01/am-v0.1.92-hash.txt）
+- 同轮事实: 支 shz/TR22→R23 两支两提交（e3ae89e）ff 并入 dev；A02 行备注格首次启用；两行 6 列 blcheck 69/0；ledger 26 不变（A02 未动=批未落）；worktree 仅 dev；main 远端 dd087c7 未再推（D5 一次性授权已尽，新推需新令）；docs-only 扫描不触发；不宣称项目安全
+- 候一批答案即全速: 决策支持件 §4 模板（A01 八件）+ A25b(B1/B2/B3) + 发布纪律 + Actions 启用 + 218 探针准/否 + VISION.md + 是否推攒下的账 commit
