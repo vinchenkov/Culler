@@ -1,0 +1,15 @@
+# update checkpoint finding, two-sided reproduction on 218
+Sun Nov 22 04:15:44 AM UTC 2026
+x86_64
+Server 29.4.0
+== mode=wal journal-header-bytes:
+ 02 02
+== product check command:
+mc: inspect spine "/mc/spine/spine.db" read-only: open spine read-only /mc/spine/spine.db: unable to open database file (14)
+{"error":{"code":"domain-rejection","message":"inspect spine \"/mc/spine/spine.db\" read-only: open spine read-only /mc/spine/spine.db: unable to open database file (14)"}}
+EXIT=1
+== mode=delete journal-header-bytes:
+ 01 01
+== product check command:
+{"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b9b6019ff108ba0963","uuid":"ffffffffffffffffffffffffffffffff","empty":false,"runs":0,"leases":0,"repository_operations":0,"environment_operations":0,"collie_launches":0,"collie_containers":[],"project_images":null}
+EXIT=0
