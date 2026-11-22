@@ -581,6 +581,7 @@ describe("spawn effect", () => {
     expect(runJson).toEqual({
       run_id: "run-42-worker",
       tier: "pipeline",
+      release_build_id: "test-release",
       role: "worker",
       subject_id: 42,
       project: "ws-e2e",
@@ -3090,5 +3091,15 @@ describe("reap and the run's diagnostics", () => {
     expect(removed.some((e) => e.includes("/runs/scratch/run-42-worker"))).toBe(true);
     // The diagnostics stay. The run-log prune chore bounds the tree instead.
     expect(removed.some((e) => e.includes("/logs/runs/"))).toBe(false);
+  });
+});
+
+describe("the G-B producer bind", () => {
+  test("a pipeline spawn refuses and never creates a container when the release identity is missing", async () => {
+    const rig = repositoryRig({ config: { ...testConfig, releaseBuildId: "" } });
+    await expect(applyEffect(spawnEffect, rig.deps)).rejects.toThrow(/release identity is unavailable/);
+    // Fail-closed before side effects: no envelope, no container.
+    expect(rig.fakeFs.writes.get("/tmp/mc-home/runs/run-42-worker.json")).toBeUndefined();
+    expect(rig.docker.calls.some((argv) => argv[0] === "create" || argv[0] === "run")).toBe(false);
   });
 });

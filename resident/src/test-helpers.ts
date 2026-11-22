@@ -484,6 +484,10 @@ export function effectJson(effect: unknown): ExecResult {
 
 export const testConfig: ResidentConfig = {
   mcHome: "/tmp/mc-home",
+  // A configured release identity, so the G-B producer bind is satisfied the
+  // way a real matched-pair deployment satisfies it. A test that wants the
+  // missing-identity refusal overrides this to "".
+  releaseBuildId: "test-release",
   agentsViewBind: "127.0.0.1:7334",
   image: "mc-fake-e2e:test",
   agentCmd: ["bun", "/app/src/agent-runner/main.ts"],

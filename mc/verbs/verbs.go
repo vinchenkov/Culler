@@ -306,8 +306,30 @@ func LoadIdentity() (*RunIdentity, error) {
 	if err := json.Unmarshal(b, &id); err != nil {
 		return nil, Usagef("parse run.json: %v", err)
 	}
+	// G-B build-identity bind. An agent container must run the release its
+	// envelope was minted for: the resident and the container's mc come from
+	// one matched-pair release, so the envelope's release_build_id equals this
+	// binary's. A mismatch is a restart of an old run container under a new
+	// binary (or a tampered envelope) — refuse before any spine open so a
+	// mixed build cannot write the spine, turning silent corruption into an
+	// explicitly blocked run the operator can see and re-launch. Host scope
+	// returned above (its identity is the process itself); the empty self id
+	// is a package-test context with no binary identity to bind against.
+	if selfReleaseBuildID != "" && id.ReleaseBuildID != selfReleaseBuildID {
+		return nil, Domainf("the run envelope names release %q but this binary is release %q: re-launch the run on the current release rather than write the spine from a mixed build",
+			id.ReleaseBuildID, selfReleaseBuildID)
+	}
 	return &id, nil
 }
+
+// selfReleaseBuildID is this binary's release build id, set once by main at
+// startup. Empty means unset (a host-side package test that never ran through
+// main), which skips the agent bind rather than refusing on an unknown value.
+var selfReleaseBuildID string
+
+// SetSelfReleaseBuildID records the binary's own release build id so the
+// agent-scope identity loader can bind a run envelope to it.
+func SetSelfReleaseBuildID(id string) { selfReleaseBuildID = id }
 
 // requirePipeline checks identity presence and tier, for the
 // verbs whose role expectation is subject-dependent or role-neutral.

@@ -133,6 +133,18 @@ async function removeProviderAccessFiles(run: string, deps: TickDeps): Promise<v
   }
 }
 
+// G-B producer bind: every run envelope names the release it was minted on, so
+// the container's identity loader can bind the running build to it. A missing
+// deployment release identity is a configuration fault surfaced as a refusal —
+// never a silent fallback value, which would make the mixed-build check vacuous
+// (the collie tier's former `?? "development"` was exactly such a fail-open).
+function requiredReleaseBuildId(releaseBuildId: string | undefined): string {
+  if (!releaseBuildId) {
+    throw new Error("The deployment release identity is unavailable. Re-deploy or repair the configuration before a run starts.");
+  }
+  return releaseBuildId;
+}
+
 async function removeProviderAccessFile(run: string, launch: string, deps: TickDeps): Promise<void> {
   if (!SAFE_ID.test(run) || !SAFE_ID.test(launch)) return;
   const path = providerAccessHostPath(deps.config.mcHome, run, launch);
@@ -622,7 +634,7 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
     ...(effect.vision_project_id === undefined ? {} : { vision_project_id: effect.vision_project_id }),
     ...(packet === undefined ? {} : { packet }),
     tier: "collie",
-    release_build_id: config.releaseBuildId ?? "development",
+    release_build_id: requiredReleaseBuildId(config.releaseBuildId),
     directive: effect.directive,
     mode,
     binding,
@@ -1347,6 +1359,7 @@ async function spawnAttempt(
   const runJson = {
     run_id,
     tier: "pipeline",
+    release_build_id: requiredReleaseBuildId(config.releaseBuildId),
     role,
     subject_id: effect.subject_id ?? null,
     project: effect.project,
