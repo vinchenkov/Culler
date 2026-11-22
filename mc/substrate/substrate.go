@@ -8,6 +8,7 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -94,9 +95,24 @@ func OpenReadOnly(path string) (*sql.DB, error) {
 // file or its sidecars for the read's lifetime. A live spine routed through
 // here can silently miss committed frames, so this entry stays explicit:
 // no fallback ever selects it.
+//
+// The precondition is enforced, not just documented: a closed SQLite
+// database leaves no write-ahead sidecars behind, so any surviving
+// -wal or -shm marks the file as not-closed — a live or crashed database
+// whose main file alone may not hold every committed frame. Such a path is
+// refused here rather than read immutably and answered from a partial
+// snapshot. The refusal is deliberately loud: routing a live spine through
+// this entry must fail, never silently read stale content.
 func OpenSnapshotReadOnly(path string) (*sql.DB, error) {
 	if err := GuardLockDomain(path); err != nil {
 		return nil, err
+	}
+	for _, suffix := range []string{"-wal", "-shm"} {
+		if _, err := os.Stat(path + suffix); err == nil {
+			return nil, fmt.Errorf("snapshot precondition unmet: %s sits beside %s, which is not a closed snapshot", suffix, path)
+		} else if !os.IsNotExist(err) {
+			return nil, err
+		}
 	}
 	return openReadOnly(path, true)
 }

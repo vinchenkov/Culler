@@ -17,6 +17,7 @@ import (
 
 	"golang.org/x/sys/unix"
 	"mc/distribution"
+	"mc/substrate"
 )
 
 var regexpContainerID = regexp.MustCompile(`^[a-f0-9]{12,64}$`)
@@ -252,7 +253,7 @@ func CreateUpdateCheckpoint(ctx context.Context, home string, j *UpdateJournal, 
 				return errors.New("The volume checkpoint failed its checksum.")
 			}
 			if name == names.Volume {
-				if err := checkUpdateSpine(ctx, j.Previous.Image, backup, j.Previous.Schema, run); err != nil {
+				if err := VerifyUpdateCheckpointSpine(ctx, j.Previous.Image, backup, filepath.Join(UpdateDirectory(home, j.ID), "spine-verify"), j.Previous.Schema, run); err != nil {
 					return err
 				}
 			}
@@ -631,30 +632,131 @@ func updateVolumeDigest(ctx context.Context, image, name string, run RuntimeDock
 	}
 	return digest, nil
 }
-func checkUpdateSpine(ctx context.Context, image, name, schema string, run RuntimeDocker) error {
-	body, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002", "--mount", "type=volume,src="+name+",dst=/mc/spine,readonly", image, "mc", "__release-database")
-	var record struct {
-		Schema string `json:"schema"`
-		Empty  bool   `json:"empty"`
+
+// StageSpineCopy copies the spine database AND any write-ahead sidecar from
+// a volume into a host directory, returning the staged main-file path. The
+// sidecars travel on purpose: a residue must stay visible so the snapshot
+// guard refuses, instead of a main-file-only copy quietly hiding
+// uncheckpointed frames.
+func StageSpineCopy(ctx context.Context, image, volume, stageDir string, run RuntimeDocker) (string, error) {
+	script := `set -eu
+need=$(du -sk /source | cut -f1)
+free=$(df -Pk /destination | tail -n 1 | awk '{print $4}')
+test "$free" -ge "$((need + 262144))"
+for entry in /source/spine.db /source/spine.db-wal /source/spine.db-shm; do
+  if [ -e "$entry" ]; then cp -a "$entry" /destination/; fi
+done
+sync
+uid=$(stat -c %u /destination)
+gid=$(stat -c %g /destination)
+chown "$uid:$gid" /destination/spine.db* 2>/dev/null || true`
+	if out, err := run(ctx, "", "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--user", "0:0",
+		"--mount", "type=volume,src="+volume+",dst=/source,readonly,volume-nocopy",
+		"--mount", "type=bind,src="+stageDir+",dst=/destination",
+		image, "/bin/sh", "-ec", script); err != nil {
+		return "", fmt.Errorf("stage a copy of the spine volume: %w: %s", err, lastLine(out))
 	}
-	// A failure here has distinct causes that must not collapse into one
-	// sentence: the container's own error (e.g. the spine cannot be opened
-	// read-only), a response that is not the expected record, a schema that
-	// differs from this release, and a spine with no tables. Reporting only
-	// "integrity or schema check" sent the real cause into a discarded error.
+	return filepath.Join(stageDir, "spine.db"), nil
+}
+
+// VerifyUpdateCheckpointSpine inspects the spine inside a checkpoint copy
+// through the settled snapshot read, staged to the host first.
+//
+// The read runs in THIS binary, not in the previous release's image:
+// CreateUpdateCheckpoint passes j.Previous.Image, whose baked mc predates
+// anything new, so an intent carried by a verb arg would die on the version
+// skew this very check exists to protect against. Staging the spine files to
+// the host and reading the copy here keeps the verifier and the contract in
+// one version.
+//
+// The copy is closed by construction (a `cp -a` of a volume stopped in the
+// update's stop phase), so the snapshot shape is the applicable read: a
+// quiesced WAL file has no sidecars, and OpenSnapshotReadOnly's guard
+// refuses loudly anything that is not closed instead of reading it stale.
+func VerifyUpdateCheckpointSpine(ctx context.Context, image, volume, stageRoot, schema string, run RuntimeDocker) error {
+	// stageRoot is a dedicated staging area, never the checkpoint root: the
+	// root directory only exists after the atomic .next rename, and creating
+	// it early would break that rename.
+	if err := os.MkdirAll(stageRoot, 0700); err != nil {
+		return err
+	}
+	stage, err := os.MkdirTemp(stageRoot, "spine-verify-")
 	if err != nil {
-		return fmt.Errorf("the spine checkpoint verification could not run: %s", lastLine(body))
+		return err
 	}
-	if json.Unmarshal(body, &record) != nil {
-		return errors.New("the spine checkpoint verification returned a malformed record.")
+	defer os.RemoveAll(stage)
+	staged, err := StageSpineCopy(ctx, image, volume, stage, run)
+	if err != nil {
+		return err
 	}
-	if record.Schema != schema {
-		return fmt.Errorf("the spine checkpoint schema %q differs from this release %q.", record.Schema, schema)
+	db, err := substrate.OpenSnapshotReadOnly(staged)
+	if err != nil {
+		return fmt.Errorf("verify the spine checkpoint copy: %w", err)
 	}
-	if record.Empty {
-		return errors.New("the spine checkpoint has no tables.")
+	defer db.Close()
+	var tables int
+	if err := db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE type = 'table'`).Scan(&tables); err != nil {
+		return fmt.Errorf("count the spine checkpoint tables: %w", err)
+	}
+	if tables == 0 {
+		return errors.New("The spine checkpoint has no tables.")
+	}
+	var integrity string
+	if err := db.QueryRow("PRAGMA quick_check").Scan(&integrity); err != nil {
+		return fmt.Errorf("run the spine checkpoint integrity check: %w", err)
+	}
+	if integrity != "ok" {
+		return errors.New("The spine checkpoint failed its integrity check. Preserve it and restore a verified checkpoint.")
+	}
+	if err := substrate.CheckSchema(db); err != nil {
+		if errors.Is(err, substrate.ErrSchemaMismatch) {
+			return fmt.Errorf("the spine checkpoint schema differs from the release that must restore it (journal schema %s).", schema)
+		}
+		return err
 	}
 	return nil
+}
+
+// CheckpointSpineFacts reads identity facts from a staged, settled copy of a
+// spine volume. It exists so a restore can prove what it restored (schema,
+// deployment uuid, table count) through the same guarded door the checkpoint
+// verification uses — never through the live verb, whose read shape fails a
+// closed WAL file.
+type CheckpointSpineIdentity struct {
+	Schema string
+	UUID   string
+	Tables int
+}
+
+func InspectCheckpointSpineIdentity(ctx context.Context, image, volume, stageRoot string, run RuntimeDocker) (CheckpointSpineIdentity, error) {
+	identity := CheckpointSpineIdentity{Schema: substrate.CurrentSchemaID}
+	if err := os.MkdirAll(stageRoot, 0700); err != nil {
+		return identity, err
+	}
+	stage, err := os.MkdirTemp(stageRoot, "spine-facts-")
+	if err != nil {
+		return identity, err
+	}
+	defer os.RemoveAll(stage)
+	staged, err := StageSpineCopy(ctx, image, volume, stage, run)
+	if err != nil {
+		return identity, err
+	}
+	db, err := substrate.OpenSnapshotReadOnly(staged)
+	if err != nil {
+		return identity, fmt.Errorf("inspect the staged spine copy: %w", err)
+	}
+	defer db.Close()
+	if err := db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE type = 'table'`).Scan(&identity.Tables); err != nil {
+		return identity, fmt.Errorf("count the staged spine tables: %w", err)
+	}
+	if identity.Tables == 0 {
+		return identity, nil
+	}
+	if err := db.QueryRow(`SELECT deployment_uuid FROM meta WHERE id = 1`).Scan(&identity.UUID); err != nil {
+		return identity, fmt.Errorf("read the staged spine identity: %w", err)
+	}
+	return identity, nil
 }
 
 func updateDiskSpace(path string, bytes int64) error {

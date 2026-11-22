@@ -19,6 +19,7 @@ import (
 	"mc/deployment"
 	"mc/distribution"
 	"mc/onboarding"
+	"mc/substrate"
 	"mc/verbs"
 )
 
@@ -119,8 +120,139 @@ func TestPublishedDatabaseCheckUsesReadOnlyTargetImage(t *testing.T) {
 		}
 		return json.Marshal(verbs.ReleaseDatabase{Schema: r.Schema, Empty: true})
 	}
-	if _, err := p.database(context.Background()); err != nil {
+	if _, err := p.database(context.Background(), false); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// closedVolumeSpine seeds a closed WAL spine (no sidecars — that is what a
+// clean close leaves) into a fake volume directory and returns its uuid.
+func closedVolumeSpine(t *testing.T, dir string) string {
+	t.Helper()
+	uuid := strings.Repeat("c", 32)
+	db, err := substrate.Open(filepath.Join(dir, "spine.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := substrate.Init(db); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := db.Exec("INSERT INTO meta (id,deployment_uuid,schema_id) VALUES (1,?,?)",
+		uuid, substrate.CurrentSchemaID); err != nil {
+		t.Fatal(err)
+	}
+	if err := db.Close(); err != nil {
+		t.Fatal(err)
+	}
+	return uuid
+}
+
+// stagedVolumeDocker answers the volume inspect and emulates the staging run
+// by copying spine files from dir, mirroring StageSpineCopy's contract.
+func stagedVolumeDocker(t *testing.T, dir string, seen *[]string) func(context.Context, ...string) ([]byte, error) {
+	t.Helper()
+	return func(_ context.Context, args ...string) ([]byte, error) {
+		*seen = append(*seen, strings.Join(args, " "))
+		if args[0] == "volume" {
+			return json.Marshal(map[string]any{"Name": args[len(args)-1], "Driver": "local"})
+		}
+		if args[0] == "run" && !strings.Contains(strings.Join(args, " "), "mc __") {
+			destination := ""
+			wantsVolume := false
+			for _, arg := range args {
+				switch {
+				case strings.HasPrefix(arg, "type=bind,src="):
+					destination = strings.TrimPrefix(arg, "type=bind,src=")
+					if i := strings.Index(destination, ","); i >= 0 {
+						destination = destination[:i]
+					}
+				case strings.HasPrefix(arg, "type=volume,src=") && strings.Contains(arg, ",dst=/source,readonly"):
+					wantsVolume = true
+				}
+			}
+			if !wantsVolume {
+				t.Fatalf("staging run does not mount the spine volume read-only: %v", args)
+			}
+			if destination == "" {
+				t.Fatalf("staging run without a bind destination: %v", args)
+			}
+			for _, name := range []string{"spine.db", "spine.db-wal", "spine.db-shm"} {
+				body, err := os.ReadFile(filepath.Join(dir, name))
+				if os.IsNotExist(err) {
+					continue
+				}
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(filepath.Join(destination, name), body, 0o600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			return nil, nil
+		}
+		t.Fatalf("unexpected docker call: %v", args)
+		return nil, nil
+	}
+}
+
+// The settled class must read a stopped deployment's spine (closed WAL file,
+// no sidecars) through the staged in-process copy — and must never reach the
+// live verb, whose read shape fails exactly that file state.
+func TestPublishedDatabaseSettledReadUsesTheStagedCopy(t *testing.T) {
+	home := t.TempDir()
+	dir := t.TempDir()
+	uuid := closedVolumeSpine(t, dir)
+	if err := os.WriteFile(filepath.Join(home, "deployment.uuid"), []byte(uuid+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	r := distribution.Record{Schema: substrate.CurrentSchemaID, Image: "img"}
+	p := &publishedSetup{home: home, record: r}
+	var seen []string
+	p.docker = stagedVolumeDocker(t, dir, &seen)
+	got, err := p.database(context.Background(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.Empty || got.UUID != uuid {
+		t.Fatalf("settled facts: %+v", got)
+	}
+	for _, line := range seen {
+		if strings.Contains(line, "__release-database") {
+			t.Fatalf("settled read took the live verb: %s", line)
+		}
+	}
+}
+
+// A spine that still carries write-ahead residue is not a closed snapshot:
+// the settled class must refuse it loudly instead of answering from the
+// main file alone, which is the silent-stale hazard the guard exists for.
+func TestPublishedDatabaseSettledReadRefusesWriteAheadResidue(t *testing.T) {
+	home := t.TempDir()
+	dir := t.TempDir()
+	closedVolumeSpine(t, dir)
+	if err := os.WriteFile(filepath.Join(dir, "spine.db-wal"), []byte("committed-frames-not-checkpointed"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(home, "deployment.uuid"), []byte(strings.Repeat("c", 32)+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	r := distribution.Record{Schema: substrate.CurrentSchemaID, Image: "img"}
+	p := &publishedSetup{home: home, record: r}
+	var seen []string
+	p.docker = stagedVolumeDocker(t, dir, &seen)
+	_, err := p.database(context.Background(), true)
+	if err == nil {
+		t.Fatal("residue passed the settled read")
+	}
+	// The operator sees the stable cause; the true reason must arrive in the
+	// failure details, not be swallowed (DEFECT-003's diagnosis-surface fix).
+	var failure *setupFailure
+	if !errors.As(err, &failure) {
+		t.Fatalf("expected a setupFailure, got %T: %v", err, err)
+	}
+	joined := strings.Join(failure.details, " | ")
+	if !strings.Contains(joined, "snapshot precondition unmet") {
+		t.Fatalf("refusal must carry the residue cause in the details, got: %s", joined)
 	}
 }
 

@@ -1,6 +1,7 @@
 package verbs
 
 import (
+	"database/sql"
 	"encoding/json"
 	"mc/substrate"
 )
@@ -31,8 +32,28 @@ func (r ReleaseDatabase) Idle() bool {
 }
 
 func InspectReleaseDatabase(spine string) (ReleaseDatabase, error) {
+	return inspectReleaseDatabase(spine, false)
+}
+
+// InspectSettledReleaseDatabase reads a spine the caller has established as
+// quiesced — a staged copy, or a volume whose services this flow stopped. See
+// inspectSpineSettled for why that state needs the snapshot shape, and why a
+// still-written spine fails this door loudly instead of answering stale.
+func InspectSettledReleaseDatabase(spine string) (ReleaseDatabase, error) {
+	return inspectReleaseDatabase(spine, true)
+}
+
+func inspectReleaseDatabase(spine string, settled bool) (ReleaseDatabase, error) {
 	r := ReleaseDatabase{Schema: substrate.CurrentSchemaID}
-	inspection, err := inspectSpineReadOnly(spine)
+	var (
+		inspection spineInspection
+		err        error
+	)
+	if settled {
+		inspection, err = inspectSpineSettled(spine)
+	} else {
+		inspection, err = inspectSpineReadOnly(spine)
+	}
 	if err != nil {
 		return r, err
 	}
@@ -44,7 +65,12 @@ func InspectReleaseDatabase(spine string) (ReleaseDatabase, error) {
 		return r, Domainf("The database schema differs from this release. The installed release remains intact.")
 	}
 	r.UUID = inspection.uuid
-	db, err := substrate.OpenReadOnly(spine)
+	var db *sql.DB
+	if settled {
+		db, err = substrate.OpenSnapshotReadOnly(spine)
+	} else {
+		db, err = substrate.OpenReadOnly(spine)
+	}
 	if err != nil {
 		return r, err
 	}

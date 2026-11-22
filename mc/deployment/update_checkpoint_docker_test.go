@@ -4,7 +4,6 @@ package deployment
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
@@ -121,10 +120,16 @@ func TestUpdateCheckpointDockerRestoresAfterInterruptedVolumeCopy(t *testing.T) 
 	if err != nil || string(body) != "original configuration" {
 		t.Fatal("configuration did not restore", err)
 	}
-	checked := docker("", "run", "--rm", "--network", "none", "--user", "10002:10002", "--mount", "type=volume,src="+names.Volume+",dst=/mc/spine,readonly", image, "mc", "__release-database")
-	var facts struct{ Schema, UUID string }
-	if json.Unmarshal(checked, &facts) != nil || facts.Schema != substrate.CurrentSchemaID || facts.UUID != strings.Repeat("f", 32) {
-		t.Fatalf("spine identity: %s", checked)
+	// The post-restore identity check goes through the settled door. The old
+	// form ran `mc __release-database` here — the live read shape — against a
+	// closed WAL file, which is exactly the state this lane's restore leaves
+	// and exactly what that shape cannot open (the A27 defect's own witness).
+	facts, err := InspectCheckpointSpineIdentity(ctx, image, names.Volume, t.TempDir(), run)
+	if err != nil {
+		t.Fatalf("spine identity after restore: %v", err)
+	}
+	if facts.Schema != substrate.CurrentSchemaID || facts.UUID != strings.Repeat("f", 32) || facts.Tables == 0 {
+		t.Fatalf("spine identity: %+v", facts)
 	}
 	j.Phase = "restored"
 	if err := SaveUpdateJournal(home, j); err != nil {

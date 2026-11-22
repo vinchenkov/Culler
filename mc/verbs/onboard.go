@@ -341,6 +341,23 @@ type spineInspection struct {
 // identity. It reads through the shared read-only path
 // (substrate.OpenReadOnly), which never changes journal mode.
 func inspectSpineReadOnly(spine string) (spineInspection, error) {
+	return inspectSpine(spine, substrate.OpenReadOnly, "read-only")
+}
+
+// inspectSpineSettled is the gate for a spine the caller has established as
+// QUISCED: services stopped by this very flow (update after its stop phase,
+// a repair stop, a drain acknowledgement), or a staged copy of one. It reads
+// through the snapshot shape, which works on a closed WAL file that carries
+// no sidecars — the state a stopped deployment's spine is actually in, and
+// precisely the state the live read shape cannot open read-only.
+// A file with an active writer keeps a -wal sidecar, which the snapshot
+// guard refuses, so a mislabelled live spine fails loudly instead of
+// answering from a partial view.
+func inspectSpineSettled(spine string) (spineInspection, error) {
+	return inspectSpine(spine, substrate.OpenSnapshotReadOnly, "settled snapshot")
+}
+
+func inspectSpine(spine string, open func(string) (*sql.DB, error), shape string) (spineInspection, error) {
 	if spine == "" {
 		return spineInspection{}, Usagef("mc onboard home requires MC_SPINE")
 	}
@@ -365,9 +382,9 @@ func inspectSpineReadOnly(spine string) (spineInspection, error) {
 	if st.Size() == 0 {
 		return inspection, nil
 	}
-	db, err := substrate.OpenReadOnly(spine)
+	db, err := open(spine)
 	if err != nil {
-		return spineInspection{}, Domainf("inspect spine %q read-only: %v", spine, err)
+		return spineInspection{}, Domainf("inspect spine %q %s: %v", spine, shape, err)
 	}
 	defer db.Close()
 	if err := db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE type = 'table'`).Scan(&inspection.tables); err != nil {

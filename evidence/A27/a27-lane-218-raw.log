@@ -1,0 +1,3 @@
+=== RUN   TestUpdateCheckpointDockerRestoresAfterInterruptedVolumeCopy
+--- PASS: TestUpdateCheckpointDockerRestoresAfterInterruptedVolumeCopy (39.45s)
+PASS
