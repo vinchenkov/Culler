@@ -20,6 +20,7 @@ import (
 	"mc/deployment"
 	"mc/distribution"
 	"mc/opencodecatalog"
+	"mc/substrate"
 	"mc/verbs"
 )
 
@@ -211,8 +212,16 @@ func TestCandidateChecksArchivedImagesWithIsolatedRuntime(t *testing.T) {
 			home := t.TempDir()
 			names, _ := deployment.RuntimeNames(home)
 			optional, _ := deployment.OpenCodeVolume(home)
-			record := distribution.Record{Schema: "schema", Commit: strings.Repeat("a", 40), Image: "candidate"}
+			record := distribution.Record{Schema: substrate.CurrentSchemaID, Commit: strings.Repeat("a", 40), Image: "candidate"}
 			p := &publishedSetup{home: home, record: record, update: &deployment.UpdateJournal{ID: strings.Repeat("f", 32)}}
+			// The journal in hand puts this read on the settled door, so the fake
+			// stages a real spine carrying the project selections instead of
+			// answering the live verb.
+			stage := t.TempDir()
+			stageSpine(t, stage, deploymentMirror(t, home), false, []verbs.ReleaseProjectImage{
+				{ProjectID: "archived", Image: "selected", Base: "base", Archived: true},
+				{ProjectID: "active", Image: "selected", Base: "base"},
+			})
 			var calls []string
 			p.docker = func(_ context.Context, args ...string) ([]byte, error) {
 				joined := strings.Join(args, " ")
@@ -226,11 +235,8 @@ func TestCandidateChecksArchivedImagesWithIsolatedRuntime(t *testing.T) {
 					}
 					return json.Marshal(map[string]any{"Name": names.Volume, "Driver": "local"})
 				}
-				if strings.Contains(joined, "mc __release-database") {
-					return json.Marshal(verbs.ReleaseDatabase{Schema: record.Schema, Empty: true, ProjectImages: []verbs.ReleaseProjectImage{
-						{ProjectID: "archived", Image: "selected", Base: "base", Archived: true},
-						{ProjectID: "active", Image: "selected", Base: "base"},
-					}})
+				if serveStagedSpine(t, stage, args) {
+					return nil, nil
 				}
 				if strings.Contains(joined, "/opt/culler-runtime/bin/check") {
 					if strings.Contains(joined, "src="+names.RuntimeVolume+",") || strings.Contains(joined, "dst=/mc/spine") || !strings.Contains(joined, "readonly,volume-nocopy") || !strings.Contains(joined, "--network none") || !strings.Contains(joined, "--label mc-deployment="+names.Suffix) {

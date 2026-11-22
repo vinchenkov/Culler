@@ -399,6 +399,74 @@ func inspectSpineReadOnly(spine string) (spineInspection, error) {
 	return inspection, nil
 }
 
+// inspectSpineSettled is the gate for a spine the caller has ESTABLISHED as
+// quiesced: the services were stopped by this very flow, a drain was
+// acknowledged idle, or the file is a staged copy of one. Such a spine is a
+// cleanly closed write-ahead-log database, which carries no sidecars, and a
+// read-only connection that must create the shared-memory sidecar cannot open
+// it at all. This gate therefore reads through the snapshot entry, whose guard
+// refuses any file still carrying write-ahead residue: a spine someone is
+// writing fails loudly here instead of answering from a partial view.
+//
+// The preflight is deliberately a separate copy rather than a shared helper
+// that takes the opener as an argument: the source guards pin that
+// inspectSpineReadOnly itself calls the live substrate reader, and passing the
+// opener by value would hide that call from the guard.
+func inspectSpineSettled(spine string) (spineInspection, error) {
+	if spine == "" {
+		return spineInspection{}, Usagef("mc onboard home requires MC_SPINE")
+	}
+	if err := substrate.GuardLockDomain(spine); err != nil {
+		return spineInspection{}, Domainf("%v", err)
+	}
+	st, err := os.Stat(spine)
+	if os.IsNotExist(err) {
+		return spineInspection{}, nil
+	}
+	if err != nil {
+		return spineInspection{}, Domainf("inspect spine %q: %v", spine, err)
+	}
+	if st.IsDir() {
+		return spineInspection{}, Domainf("spine path %q is a directory", spine)
+	}
+	inspection := spineInspection{exists: true, bytes: st.Size()}
+	if st.Size() == 0 {
+		return inspection, nil
+	}
+	db, err := substrate.OpenSnapshotReadOnly(spine)
+	if err != nil {
+		return spineInspection{}, Domainf("inspect spine %q settled: %v", spine, err)
+	}
+	defer db.Close()
+	if err := db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE type = 'table'`).Scan(&inspection.tables); err != nil {
+		return spineInspection{}, Domainf("inspect spine %q tables: %v", spine, err)
+	}
+	if inspection.tables == 0 {
+		return inspection, nil
+	}
+	var metaTables int
+	if err := db.QueryRow(`SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'meta'`).Scan(&metaTables); err != nil {
+		return spineInspection{}, Domainf("inspect spine %q meta table: %v", spine, err)
+	}
+	if metaTables == 0 {
+		return inspection, nil
+	}
+	if err := db.QueryRow(`SELECT deployment_uuid FROM meta WHERE id = 1`).Scan(&inspection.uuid); err != nil {
+		return spineInspection{}, Domainf("spine at %q has no singleton identity: %v", spine, err)
+	}
+	inspection.hasMeta = true
+	schemaErr := substrate.CheckSchema(db)
+	if schemaErr != nil && !errors.Is(schemaErr, substrate.ErrSchemaMismatch) {
+		return spineInspection{}, schemaErr
+	}
+	inspection.compatible = schemaErr == nil
+	if inspection.compatible {
+		inspection.schemaID = substrate.CurrentSchemaID
+	}
+
+	return inspection, nil
+}
+
 func readDeploymentMirror(home string) (string, bool, error) {
 	path := filepath.Join(home, deploymentUUIDFilename)
 	b, err := os.ReadFile(path)

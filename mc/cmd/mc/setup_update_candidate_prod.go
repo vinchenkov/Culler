@@ -156,7 +156,11 @@ func (p *publishedSetup) verifyCandidateConfiguration() error {
 
 // Project checks use temporary volumes and mount no user data.
 func (p *publishedSetup) checkCandidateProjectImages(ctx context.Context) error {
-	database, err := p.database(ctx)
+	// The only production caller is beforeUpdate's update branch, after its
+	// stop phase, and StopUpdateWork stops the deployment's containers as well
+	// as the units — the journal in hand is that proof, so the settled door is
+	// earned here rather than assumed.
+	database, err := p.database(ctx, p.update != nil)
 	if err != nil {
 		return err
 	}

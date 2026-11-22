@@ -496,7 +496,11 @@ func (p *publishedSetup) stopAndRecheck(ctx context.Context, stop func(string) e
 	p.interrupted = &cullerOperation{Services: deployment.SupervisedUnits, Prior: states, Stops: stops}
 	checkErr := stop(p.home)
 	if checkErr == nil {
-		database, err := p.database(ctx)
+		// The live door stays here: this stop covers the supervised units only,
+		// while agent and Collie containers keep writing the spine. Quiescence
+		// is not provable on this path, and the busy answer it produces is the
+		// point of the check (registered residual, A28 §7.1).
+		database, err := p.database(ctx, false)
 		checkErr = err
 		if checkErr == nil && !database.Idle() {
 			checkErr = errors.New("Culler work began before the services stopped. Finish that work, then run install.sh.")
@@ -635,7 +639,10 @@ func (p *publishedSetup) prepare(ctx context.Context, report func(string)) error
 		}
 	}
 	report("Check database compatibility")
-	if _, err := p.database(ctx); err != nil {
+	// A journal in hand means beforeUpdate ran its stop phase before prepare;
+	// a fresh install reaches here with no spine volume and short-circuits
+	// above as absent, so it never reads through either door.
+	if _, err := p.database(ctx, p.update != nil); err != nil {
 		return err
 	}
 	p.prepared = true
@@ -735,7 +742,14 @@ func validatePublishedImage(body []byte, r distribution.Record) error {
 	return nil
 }
 
-func (p *publishedSetup) database(ctx context.Context) (verbs.ReleaseDatabase, error) {
+// database inspects the deployment spine. Callers pass settled=true only where
+// THIS flow established quiescence: stop() has returned, a drain was
+// acknowledged idle, or the update journal proves the stop phase ran. The
+// settled door stages a copy of the volume and reads it in this process
+// through the snapshot shape, which is the only read that works on a cleanly
+// closed write-ahead-log database — the state a stopped deployment leaves.
+// A door that cannot prove quiescence keeps the live shape.
+func (p *publishedSetup) database(ctx context.Context, settled bool) (verbs.ReleaseDatabase, error) {
 	r := verbs.ReleaseDatabase{Schema: p.record.Schema, Empty: true}
 	names, err := deployment.RuntimeNames(p.home)
 	if err != nil {
@@ -755,13 +769,30 @@ func (p *publishedSetup) database(ctx context.Context) (verbs.ReleaseDatabase, e
 	if json.Unmarshal(body, &volume) != nil || volume.Name != names.Volume || volume.Driver != "local" || len(volume.Options) != 0 {
 		return r, errors.New("The deployment database volume identity is invalid.")
 	}
-	body, err = p.docker(ctx, "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002",
-		"--label", "mc-managed=true", "--label", "mc-deployment="+names.Suffix,
-		"--mount", "type=volume,src="+names.Volume+",dst=/mc/spine,readonly", p.record.Image, "mc", "__release-database")
-	if err != nil {
-		return r, &setupFailure{cause: "This release cannot use the database. Setup left the installed release intact.", details: []string{setupSafeDiagnostic(string(body))}}
+	if settled {
+		inspected, err := p.settledDatabase(ctx, names.Volume)
+		if err != nil {
+			// A spine still being written is refused by the snapshot door. The
+			// operator answer is the one this flow already gives for work that
+			// outlived the stop; the technical cause travels in the details.
+			if strings.Contains(err.Error(), "snapshot precondition unmet") {
+				return r, &setupFailure{cause: "Culler work began before the services stopped. Finish that work, then run install.sh.", details: []string{setupSafeDiagnostic(err.Error())}}
+			}
+			return r, &setupFailure{cause: "This release cannot use the database. Setup left the installed release intact.", details: []string{setupSafeDiagnostic(err.Error())}}
+		}
+		r = inspected
+	} else {
+		body, err = p.docker(ctx, "run", "--rm", operatorconfig.PidsLimitFlag, "--network", "none", "--cap-drop", "ALL", "--user", "10002:10002",
+			"--label", "mc-managed=true", "--label", "mc-deployment="+names.Suffix,
+			"--mount", "type=volume,src="+names.Volume+",dst=/mc/spine,readonly", p.record.Image, "mc", "__release-database")
+		if err != nil {
+			return r, &setupFailure{cause: "This release cannot use the database. Setup left the installed release intact.", details: []string{setupSafeDiagnostic(string(body))}}
+		}
+		if json.Unmarshal(body, &r) != nil {
+			return r, errors.New("The database check returned an invalid release identity.")
+		}
 	}
-	if json.Unmarshal(body, &r) != nil || r.Schema != p.record.Schema {
+	if r.Schema != p.record.Schema {
 		return r, errors.New("The database check returned an invalid release identity.")
 	}
 	mirror, err := os.ReadFile(filepath.Join(p.home, "deployment.uuid"))
@@ -772,6 +803,25 @@ func (p *publishedSetup) database(ctx context.Context) (verbs.ReleaseDatabase, e
 		return r, err
 	}
 	return r, nil
+}
+
+// settledDatabase stages a copy of the spine volume into a private directory
+// under the deployment home and inspects that copy here. The staging travels
+// through the image's plain shell tools only: no mc from any image version
+// takes part in the read, so the verifying code always matches the release
+// running the check.
+func (p *publishedSetup) settledDatabase(ctx context.Context, volume string) (verbs.ReleaseDatabase, error) {
+	stage, err := os.MkdirTemp(p.home, ".spine-stage-*")
+	if err != nil {
+		return verbs.ReleaseDatabase{}, err
+	}
+	defer os.RemoveAll(stage)
+	staged, err := deployment.StageSpineCopy(ctx, p.record.Image, volume, stage,
+		func(_ context.Context, _ string, args ...string) ([]byte, error) { return p.docker(ctx, args...) })
+	if err != nil {
+		return verbs.ReleaseDatabase{}, err
+	}
+	return verbs.InspectSettledReleaseDatabase(staged)
 }
 
 func (p *publishedSetup) drain(ctx context.Context) error {
@@ -810,7 +860,10 @@ func (p *publishedSetup) drain(ctx context.Context) error {
 			ready = err == nil && json.Unmarshal(body, &ack) == nil && ack.ID == p.maintenanceID && ack.Ready && p.now().Sub(ack.ObservedAt) >= 0 && p.now().Sub(ack.ObservedAt) < 90*time.Second
 		}
 		if ready {
-			database, err := p.database(ctx)
+			// The idle acknowledgement covers the resident's ticks, not the
+			// containers, so this read stays on the live door for the same
+			// reason stopAndRecheck does.
+			database, err := p.database(ctx, false)
 			if err != nil {
 				return err
 			}

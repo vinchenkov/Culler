@@ -19,6 +19,7 @@ import (
 	"mc/deployment"
 	"mc/distribution"
 	"mc/onboarding"
+	"mc/substrate"
 	"mc/verbs"
 )
 
@@ -119,8 +120,190 @@ func TestPublishedDatabaseCheckUsesReadOnlyTargetImage(t *testing.T) {
 		}
 		return json.Marshal(verbs.ReleaseDatabase{Schema: r.Schema, Empty: true})
 	}
-	if _, err := p.database(context.Background()); err != nil {
+	if _, err := p.database(context.Background(), false); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// The settled door reads a STAGED copy of the spine volume in this process, so
+// a fake that only returns canned JSON cannot serve it: the staging run must
+// actually place a spine file in its bind destination. These helpers give every
+// fixture the same honest shape — a real closed spine written by the real
+// substrate and read back by the real settled door.
+
+// stageSpine seeds a spine in dir carrying the deployment identity plus the
+// busy row and the project images the caller asks for. A clean Close leaves no
+// write-ahead residue, which is exactly what a stopped deployment leaves.
+func stageSpine(t *testing.T, dir, uuid string, busy bool, images []verbs.ReleaseProjectImage) {
+	t.Helper()
+	db, err := substrate.Open(filepath.Join(dir, "spine.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := substrate.Init(db); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := db.Exec("INSERT INTO meta (id,deployment_uuid,schema_id) VALUES (1,?,?)",
+		uuid, substrate.CurrentSchemaID); err != nil {
+		t.Fatal(err)
+	}
+	seedProject := func(id, status string) {
+		if _, err := db.Exec(`INSERT INTO sandbox_profiles(id,workspace_root) VALUES(?,?)`, id, "/fixture/"+id); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := db.Exec(`INSERT INTO projects(id,title,sandbox_profile,status) VALUES(?,?,?,?)`, id, id, id, status); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if busy {
+		seedProject("lease-holder", "active")
+		if _, err := db.Exec(`INSERT INTO leases(project,run_id) VALUES(?,?)`, "lease-holder", "run-active"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, selected := range images {
+		status := "active"
+		if selected.Archived {
+			status = "archived"
+		}
+		seedProject(selected.ProjectID, status)
+		if _, err := db.Exec(`INSERT INTO project_environments(project_id,setup_id,selected_image_digest,selected_base_digest) VALUES(?,?,?,?)`,
+			selected.ProjectID, "setup-"+selected.ProjectID, selected.Image, selected.Base); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := db.Close(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+// serveStagedSpine answers the staging run of deployment.StageSpineCopy by
+// copying the seeded files into its bind destination. handled=false means the
+// args are some other docker call and the caller keeps its own answer.
+func serveStagedSpine(t *testing.T, dir string, args []string) (handled bool) {
+	t.Helper()
+	if len(args) == 0 || args[0] != "run" {
+		return false
+	}
+	joined := strings.Join(args, " ")
+	// Both shapes must appear: the runtime check of the candidate gate also
+	// mounts a volume read-only with nocopy, and must not be mistaken here.
+	if !strings.Contains(joined, "dst=/source,readonly,volume-nocopy") || !strings.Contains(joined, "dst=/destination") {
+		return false
+	}
+	destination := ""
+	for _, arg := range args {
+		if rest, found := strings.CutPrefix(arg, "type=bind,src="); found {
+			destination, _, _ = strings.Cut(rest, ",dst=")
+		}
+	}
+	if destination == "" {
+		t.Fatalf("staging run without a bind destination: %s", joined)
+	}
+	for _, name := range []string{"spine.db", "spine.db-wal", "spine.db-shm"} {
+		body, err := os.ReadFile(filepath.Join(dir, name))
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(destination, name), body, 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return true
+}
+
+// deploymentMirror reads the identity mirror the gate compares against, so a
+// staged spine carries whatever the home already claims.
+func deploymentMirror(t *testing.T, home string) string {
+	t.Helper()
+	body, err := os.ReadFile(filepath.Join(home, "deployment.uuid"))
+	if err != nil {
+		if os.IsNotExist(err) {
+			return strings.Repeat("d", 32)
+		}
+		t.Fatal(err)
+	}
+	return strings.TrimSpace(string(body))
+}
+
+// The settled door must read a stopped deployment's spine through the staged
+// copy — and must never reach the live verb, whose shape cannot open a closed
+// write-ahead-log file at all.
+func TestPublishedDatabaseSettledReadUsesTheStagedCopy(t *testing.T) {
+	home := t.TempDir()
+	stage := t.TempDir()
+	uuid := strings.Repeat("c", 32)
+	if err := os.WriteFile(filepath.Join(home, "deployment.uuid"), []byte(uuid+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	stageSpine(t, stage, uuid, false, nil)
+	r := distribution.Record{Schema: substrate.CurrentSchemaID, Image: "img"}
+	p := &publishedSetup{home: home, record: r}
+	var seen []string
+	p.docker = func(_ context.Context, args ...string) ([]byte, error) {
+		joined := strings.Join(args, " ")
+		seen = append(seen, joined)
+		if args[0] == "volume" {
+			return json.Marshal(map[string]any{"Name": args[len(args)-1], "Driver": "local"})
+		}
+		if serveStagedSpine(t, stage, args) {
+			return nil, nil
+		}
+		t.Fatalf("unexpected docker call: %s", joined)
+		return nil, nil
+	}
+	got, err := p.database(context.Background(), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.Empty || got.UUID != uuid {
+		t.Fatalf("settled facts: %+v", got)
+	}
+	for _, line := range seen {
+		if strings.Contains(line, "__release-database") {
+			t.Fatalf("the settled door took the live verb: %s", line)
+		}
+	}
+}
+
+// A spine that still carries write-ahead residue is not a closed snapshot: the
+// settled door must refuse it and hand the operator the work-still-running
+// answer, never a quiet read of a partial file.
+func TestPublishedDatabaseSettledReadRefusesWriteAheadResidue(t *testing.T) {
+	home := t.TempDir()
+	stage := t.TempDir()
+	uuid := strings.Repeat("c", 32)
+	if err := os.WriteFile(filepath.Join(home, "deployment.uuid"), []byte(uuid+"\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	stageSpine(t, stage, uuid, false, nil)
+	if err := os.WriteFile(filepath.Join(stage, "spine.db-wal"), []byte("committed-frames-not-checkpointed"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	p := &publishedSetup{home: home, record: distribution.Record{Schema: substrate.CurrentSchemaID, Image: "img"}}
+	p.docker = func(_ context.Context, args ...string) ([]byte, error) {
+		if args[0] == "volume" {
+			return json.Marshal(map[string]any{"Name": args[len(args)-1], "Driver": "local"})
+		}
+		serveStagedSpine(t, stage, args)
+		return nil, nil
+	}
+	_, err := p.database(context.Background(), true)
+	if err == nil {
+		t.Fatal("residue passed the settled door")
+	}
+	var failure *setupFailure
+	if !errors.As(err, &failure) {
+		t.Fatalf("expected a setupFailure, got %T: %v", err, err)
+	}
+	if !strings.Contains(failure.cause, "work began before the services stopped") {
+		t.Fatalf("the operator answer lost the busy guidance: %s", failure.cause)
+	}
+	if !strings.Contains(strings.Join(failure.details, " | "), "snapshot precondition unmet") {
+		t.Fatalf("the technical cause must travel in the details: %v", failure.details)
 	}
 }
 

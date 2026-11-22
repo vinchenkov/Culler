@@ -15,14 +15,18 @@ import (
 // the snapshot shape fails here with a named file, and the planted-violation
 // case proves the checker actually has teeth.
 
-// settledEntryAllowlist maps each file allowed to reference the snapshot
-// shape to the exact number of occurrences. The install/update gate and the
-// verbs inspectors deliberately stay on the live read: routing them at the
-// snapshot door is a separate change with its own test work (see the A27
-// site-2 finding), so they must not appear here.
+// settledEntryAllowlist maps each file allowed to reference the snapshot shape
+// to the exact number of occurrences. Every entry is a place that PROVES the
+// file it reads is quiesced (a staged copy it made, an update journal whose
+// stop phase already ran, a services-stopped install gate). The live doors —
+// inspectSpineReadOnly, InspectReleaseDatabase's live branch, and the redeploy
+// gate that reads while the deployment runs — must stay off this list.
 var settledEntryAllowlist = map[string]int{
 	"verbs/spine_transfer.go":         1, // the staged backup/restore reader
+	"verbs/onboard.go":                1, // inspectSpineSettled
+	"verbs/release_database.go":       2, // the settled inspector and its door
 	"deployment/update_checkpoint.go": 2, // the checkpoint verify + post-restore identity
+	"cmd/mc/setup_published_prod.go":  1, // the settled install/update gate
 }
 
 var settledMarkers = []string{"OpenSnapshotReadOnly", "InspectSettledReleaseDatabase"}

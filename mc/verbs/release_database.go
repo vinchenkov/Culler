@@ -30,9 +30,29 @@ func (r ReleaseDatabase) Idle() bool {
 	return r.Runs == 0 && r.Leases == 0 && r.RepositoryOperations == 0 && r.EnvironmentOperations == 0 && r.CollieLaunches == 0
 }
 
+// InspectReleaseDatabase reads the spine through the live read-only door: the
+// right door for a database a writer may still hold open.
 func InspectReleaseDatabase(spine string) (ReleaseDatabase, error) {
+	return inspectReleaseDatabase(spine, false)
+}
+
+// InspectSettledReleaseDatabase reads a spine the caller has ESTABLISHED as
+// quiesced: this flow stopped the services, a drain was acknowledged idle, or
+// the path is a staged copy of one. A cleanly closed write-ahead-log database
+// carries no sidecar file, and the live door cannot open such a file read-only
+// at all; the snapshot door reads it, and refuses loudly anything still being
+// written rather than answering from a partial view.
+func InspectSettledReleaseDatabase(spine string) (ReleaseDatabase, error) {
+	return inspectReleaseDatabase(spine, true)
+}
+
+func inspectReleaseDatabase(spine string, settled bool) (ReleaseDatabase, error) {
 	r := ReleaseDatabase{Schema: substrate.CurrentSchemaID}
-	inspection, err := inspectSpineReadOnly(spine)
+	gate, open := inspectSpineSettled, substrate.OpenSnapshotReadOnly
+	if !settled {
+		gate, open = inspectSpineReadOnly, substrate.OpenReadOnly
+	}
+	inspection, err := gate(spine)
 	if err != nil {
 		return r, err
 	}
@@ -44,7 +64,7 @@ func InspectReleaseDatabase(spine string) (ReleaseDatabase, error) {
 		return r, Domainf("The database schema differs from this release. The installed release remains intact.")
 	}
 	r.UUID = inspection.uuid
-	db, err := substrate.OpenReadOnly(spine)
+	db, err := open(spine)
 	if err != nil {
 		return r, err
 	}
