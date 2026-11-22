@@ -1,0 +1,6 @@
+AM v0.1.69 双面哈希登记（L01 设计件交付；Track L 开批首票）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 51631d12a02adc407adaba0a2be8bc31d7d4ca33e7d18063173d221036a3297f
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.68 = 3554a99971411ac3ac496b2e66ab05f9c08d694c71b56ff31d77cc0e38f4eaf1（evidence/A13/am-v0.1.68-hash.txt）
+- 同轮事实: L01 设计件 docs/design/l01-script-nodes-001.md 并入 dev（1877cf5，shz/TL01 ff-only）；status.json L01=IN_PROGRESS；blcheck 63/0（2 warning 沿册）；docs-only 波次代码扫描门不触发；S-1..S-5 形状决定悬于所有者；L02/L03 未启动（Q10：不提前授权实施）
