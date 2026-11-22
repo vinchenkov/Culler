@@ -1,0 +1,6 @@
+AM v0.1.68 双面哈希登记（A13 根因闭合+EVIDENCED；三签发终局）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 3554a99971411ac3ac496b2e66ab05f9c08d694c71b56ff31d77cc0e38f4eaf1
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.67 = b5dcfa33fa4a18a556cbebbe0937252df037cd4ad056a6f2380108b70c86dfe6（evidence/A24/am-v0.1.67-hash.txt）
+- 同轮事实: A13 并入 dev（413880a/4fa3863/dcdd82b→791bdd4），合并态双全道 mc exit0+resident 774/0，扫描 8401348b 落 A13 改动行 0；status.json A13→EVIDENCED；A24=CODED IN_PROGRESS（post 矩阵=A25 段）；A26=EVIDENCED；三签发终局账面；blcheck 63/0
