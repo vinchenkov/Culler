@@ -37,3 +37,10 @@
 - **F-3（不采）**：镜像里改 `safe.directory=*` 之外再放宽——扩大授权面。
 - 验收域：修后 `docker_e2e` 在本机（所有者声明其健康）与定向机/CI 各跑一次；**此前所有把它记为"运行域不满足"的在册句须按更正纪律改写**（AM 变更史只增不改、§7.1 追加更正段、DEV-BASELINE/设计件可就地转写）。
 - 立票建议：**A29**（承载 F-1 + 三处调用族的负控 + e2e 道本机首绿），与 A28 独立（不同文件族，可并行）。
+
+## 6. 闭合段（2026-11-22 轮十一，A29 实施；登记不修→授权后闭合）
+- **修复=F-1 落地**：`mc/verbs/sourcegit.go` 新增 `safeDirectoryArg(dir)`（`filepath.Abs` 归一；Abs 失败=无旗走今日行为，不静默换形），前置入 `gitAtSource` 单咽喉与两处旁路直调（`onboardprojectgit.go:243/:407`，探针保留 `GIT_OPTIONAL_LOCKS=0` env 差异）；`seedingprojection.go` 合成 archive 直调**不改**（实验证 GIT_DIR 显式设定时 git 跳过发现与属主检查，无需旗）。零新 verb/wire/相位词。
+- **链级生效实证（本机，Desktop=所有者声明健康；完整状态表经补跑凑齐，含一次 `-run` 模式漏项的当场纠正）**：`docker_e2e` 17 个顶层用例 **16 绿 / 1 红**——本缺陷原症状正主 `TestWalkingSkeleton` **首绿 133s**；此前要求真产活的整片（`TestBackpressure` 569s、`CorrectionRally`、`CredentialProjection×2`、`RebootDrill`、`MultiApproveDrain`、`RoleSkillIsolation`、`LandingFailureAndRecovery` 等）全绿。⇒ 播种投影不再被 `dubious ownership` 挡死，run birth→dispatch→回收全链通。
+- **修复面负控**：argv 注入弱守卫（旗先于子命令/值绝对/非 `*`）+ 旁路源守卫（两处非咽喉直调必带 `safeDirectoryArg`，计数不涨）；`TestReadOnlyInspectionsOpenThroughTheSharedPath` 等被钉不变量**未破**。bespoke 双向容器哨兵（root 属主仓库×10002×pre/post 双跑）因操作者扫描钩子与其包内已批同形件冲突、三度拦下 ⇒ 存 `evidence/A29/blocked-boundary-test.txt` 待裁工件，**强证由上列 e2e 端到端链承担**（断言体即原症状，较容器单点更强）。
+- **唯一残留红定性**：`TestCollieNativeProxyDockerBoundary/{codex,claude-sdk}` = **独立缺陷 DEFECT-REGISTER-005**（wake/birth 层；父提交 `04cd6b2` 无本改动**同红同签名** `PARENT_EXIT=1` 实证非我引入；其余三枚 collie 测全绿把红收窄到"native proxy resident 晚启"特有面）。**本缺陷（004）就此闭合**，005 另呈（A30 候选或并入 L02 计划内时序家族，归所有者裁）。
+- **状态转写**：REGISTERED, NOT FIXED → **FIXED via A29**（CODED；e2e 链级 16/17 实证；EVIDENCED 转写随 AM 登记轮，义务完成判定仍归 F0a Exit+治理链）。通道预算注：包级 30m 对 17 测不足（实测全跑 ≈40m+），本批补跑用 45m；数值更新属测试域呈报项，未擅改。
