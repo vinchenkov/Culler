@@ -1,0 +1,7 @@
+AM v0.1.86 双面哈希登记（轮十四/十五：审查接续接收 + §H 边界入册 + PENDING-DECISIONS-001 一次性决策包）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 5b21da6a8d154417aaa039f831d57cf2b76bc40bb7c23e0f76e1e7a422851489
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.85 = 08c95d9bdcd1e5185589c2999e9ba0a68d388d4249d9aef3d3cb88d9763017b4（evidence/A30/am-v0.1.85-hash.txt）
+- 同轮事实: 支 shz/TR15 单提交 1f428c4 ff 并入 dev；AGENDA 新增 §H（候裁输入/建议/边界/禁止推导表/三纪律）；PENDING-DECISIONS-001.md 落盘（D1–D11 全候裁，零裁决）；①登记为建议不代决（不立 A31、不改 effects）；blcheck 67/0（BLCHECK_EXIT=0）；worktree 仅 dev；docs-only 扫描门不触发；不宣称项目安全；main HOLD b22df40
+- 候裁队列: PENDING-DECISIONS-001 D1–D11（可一回"全按推荐"关闭）；未获明示前 §H 原状维持
