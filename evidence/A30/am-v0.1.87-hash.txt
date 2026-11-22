@@ -1,0 +1,7 @@
+AM v0.1.87 双面哈希登记（轮十六：所有者批准整条议程⇒四波作战图+W1 三票实施；授权范围与不扩项在册；票号冲突裁定 A31=Linux/A32=C-A）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = ce880233904fcef1c9ff845b8f06467fe471dadd44afb332ac18c1a252779932
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.86 = 5b21da6a8d154417aaa039f831d57cf2b76bc40bb7c23e0f76e1e7a422851489（evidence/A30/am-v0.1.86-hash.txt）
+- 同轮事实: 支 shz/TR16 单提交 45d3adc ff 并入 dev（WAVE-PLAN-001.md + DEV-BASELINE A30 轮十六注+A31/A32 两新行 + status.json 三票 IN_PROGRESS + C-A 准备件改号注）；blcheck 69 票 0 违规（BLCHECK_EXIT=0）；W1 起步顺序 A30→A32→A31→L02→D4/D9/D10→波门→D5；D1–D11 全采纳登记；owner-only 残留=F0b 契约批准/E 轨 DT 内容/外发除 D5 main 推送/MASTER 重登记之非 AI Integrity 复核（集中在波门呈裁）
+- 后续: A30 夹具形实施（正清单=既有 fetch 注入缝+e2e 全道收口）
