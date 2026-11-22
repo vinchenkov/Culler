@@ -1,0 +1,8 @@
+AM v0.1.83 双面哈希登记（轮十二续：A30 预勘否证我先前 005 定性；层位=provider 传输；判据作废换夹具/产品二形待 egress 追证）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 50a196694c4b672159dfd50c18a2b457f1f25e0583415382d9c67ea1421b26cc
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.82 = 4422c481d97e402449cbf2695a6acdb46f68229c47e15ffec942e8b1804d7b4e（evidence/A30/am-v0.1.82-hash.txt）
+- 同轮事实: 支 shz/TR13 单提交 81bc767 ff 并入 dev（DEFECT-005 更正段 #1+标题/状态划线作废 / DEFECT-004 §6 轮十二注[定向机半边未兑现挂账] / A30 diff-plan v2 全重写[v1 经 git 史保留] / 票行尾注）；核心=本代理独立复验预勘否证（runner.ndjson birth 实证；--rm 事后假象 effects.ts:686；sweep.skipped 反证曾在我自己引用行里；探针位置错；卷身份纪律本轮执行）；违犯"感知远程效果≠不存在"纪律的自案入册=方法学账⑤"事后信号只证当时不存在"；红与父提交独立性不变，A29/004 闭合不受影响；blcheck 67/0（BLCHECK_EXIT=0）；worktree 仅 dev（本会话第二次仓内误建已由 worktree move 归位，重复违例如实登记）；docs-only 扫描门不触发；不宣称项目安全；main HOLD b22df40
+- 在途: 适配器 egress 只读追证（唯一事实缺口）→ 归属材料+判据择一呈所有者；A30 仍仅立票未授权实施
+- 待所有者: T-2 · U-6/U-7 · C-A 点名(P-1/P-2) · 治理轮落笔 · main/推送
