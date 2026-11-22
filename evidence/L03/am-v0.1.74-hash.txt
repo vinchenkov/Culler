@@ -1,0 +1,8 @@
+AM v0.1.74 双面哈希登记（车道承载者勘查=四道无自动承载者；M-2 方法验证=差集法抓到记忆法漏掉的宿主名族）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = b39e2f8c9e6fb2eafe6480674be0104ff2398f19778cc27abf23b6e0675f0925
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.73 = bb9d7576c39fe977dc36335d19da1b5fef2aebfdb37d675cda7d971e941d7a28（evidence/A03/am-v0.1.73-hash.txt）
+- 同轮事实: 分支 shz/TL03M 单提交 ace37bc ff 并入 dev；新增 evidence/LANES/lanes-carrier-001.md 与 evidence/L03/m2-extraction-001.md；DEV-BASELINE L03 行追加转写；仓外真值表 ~/.culler-local/l03-m2/env-host-specific.tsv（0600，sha256 前缀 0e474d1f7e971a56）；blcheck 63/0（2 warning 沿册，BLCHECK_EXIT=0 自取退出码）；定向机 218 只读探测=无安装/无容器/无服务变更
+- 纪律违规自录: L03 行编辑在表格单元写字面管道符致 "row has 7 columns"（A24 同型第二次），且首跑把 blcheck 接在管道后被 && 放行=提交先于看码；已改为自取退出码+修字面管道后复验再并 dev
+- 未做（诚实面）: 未修任何生产码；未编辑 .github/workflows（C-A 仅呈报）；未在有效运行域跑 docker_e2e；未处置普查命中；未代所有者保管应屏蔽清单的权威副本
