@@ -24,6 +24,11 @@ const (
 	// would have accepted this, which is why the allowlist shape is the
 	// load-bearing one.
 	mountFakeownerBind = `1500 1000 0:77 /Users/op/dev /mc/spine rw,relatime - fakeowner /run/host_mark/Users rw`
+	// The same host bind surfacing under the obvious "virtiofs" name on other
+	// Docker Desktop builds. The allowlist refuses either presentation by its
+	// non-/dev source, so this pair is where both names are proven to refuse —
+	// the e2e boundary test no longer pins either literal.
+	mountVirtiofsBind = `1500 1000 0:77 /Users/op/dev /mc/spine rw,relatime - virtiofs virtiofs-0 rw`
 )
 
 func mountinfo(lines ...string) string { return strings.Join(lines, "\n") + "\n" }
@@ -50,6 +55,12 @@ func TestLockDomainAcceptsOnlyBlockDeviceBackedLocalFilesystems(t *testing.T) {
 			info:    mountinfo(mountOverlayRoot, mountFakeownerBind),
 			dir:     "/mc/spine",
 			wantErr: "fakeowner",
+		},
+		{
+			name:    "the same bind surfacing as virtiofs is refused by name too",
+			info:    mountinfo(mountOverlayRoot, mountVirtiofsBind),
+			dir:     "/mc/spine",
+			wantErr: "virtiofs",
 		},
 		{
 			name:    "container rootfs is refused",

@@ -336,9 +336,12 @@ func TestWalkingSkeleton(t *testing.T) {
 // Docker test proves acceptance implicitly, so acceptance alone can pass while
 // the refusal has quietly rotted into a no-op.
 //
-// The refusal arm also pins a production finding: Docker Desktop surfaces a
-// host bind as `fakeowner`, not `virtiofs`, so a denylist keyed on the obvious
-// name would accept the very mount that corrupted the spine.
+// The refusal arm asserts a property, not a name: whatever a host bind happens
+// to surface as (Docker Desktop has reported it as both `fakeowner` and
+// `virtiofs`), the guard must refuse because the mount is not block-device-
+// backed. Pinning the fstype string here would couple the boundary to one
+// Desktop build; both name presentations are proven to refuse in the substrate
+// unit test, which feeds captured mountinfo for each.
 func TestSpineLockDomainGuardDockerBoundary(t *testing.T) {
 	f := setup(t)
 
@@ -353,10 +356,26 @@ func TestSpineLockDomainGuardDockerBoundary(t *testing.T) {
 	if err == nil {
 		t.Fatalf("bind-mounted spine was ACCEPTED: %q; the lock-domain guard is not enforcing", out)
 	}
-	for _, want := range []string{"refusing to open the spine under", "fakeowner", "not a block-device-backed local filesystem"} {
-		if !strings.Contains(string(out), want) {
-			t.Fatalf("bind refusal %q does not name %q", out, want)
+	msg := string(out)
+	for _, want := range []string{"refusing to open the spine under", "not a block-device-backed local filesystem"} {
+		if !strings.Contains(msg, want) {
+			t.Fatalf("bind refusal %q does not name %q", msg, want)
 		}
+	}
+	// Assert the refusal RESULT is the block-device property, independent of the
+	// reported name: the mount the guard blamed must have a source the guard
+	// does not treat as a block device (no /dev/ prefix). A missing source is a
+	// loud failure, never a silent pass.
+	_, after, found := strings.Cut(msg, "source=")
+	if !found {
+		t.Fatalf("bind refusal %q reports no mount source", msg)
+	}
+	fields := strings.Fields(after)
+	if len(fields) == 0 {
+		t.Fatalf("bind refusal %q names an empty source", msg)
+	}
+	if strings.HasPrefix(fields[0], "/dev/") {
+		t.Fatalf("bind refusal blamed a block-device source %q; expected a non-/dev host mount", fields[0])
 	}
 
 	// Refused: a single file bound over spine.db inside an otherwise legitimate
