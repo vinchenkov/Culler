@@ -1,6 +1,6 @@
 # Defect register 001 — redeploy.sh stops launchd units from the plist list, not the loaded list
 
-Status: REGISTERED, NOT FIXED. The operator ruled on 2026-11-20 that this latent
+Status: FIXED — closed via A23 (2026-11-22, list-driven stop; positive+negative controls in evidence/A23/). The text below stays as filed; nothing here claimed a repair at registration time. The operator ruled on 2026-11-20 that this latent
 defect is registered as its own record while A03 adds the systemd branch, and
 that no A03 change may silently alter the Darwin stop behavior it lives in.
 Nothing in this file is a claim that the code was repaired.
