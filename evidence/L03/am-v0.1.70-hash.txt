@@ -1,0 +1,6 @@
+AM v0.1.70 双面哈希登记（L02+L03 评估件交付；Track L 设计面交齐）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = d4db9a1c9d01a71dcbb20a7f8b9568252669335a7bffd0c89ffb0dee42c38f78
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.69 = 51631d12a02adc407adaba0a2be8bc31d7d4ca33e7d18063173d221036a3297f（evidence/L01/am-v0.1.69-hash.txt）
+- 同轮事实: L02 并入 dev（111a028，shz/TL02 ff-only）+ L03 并入 dev（8c13044，shz/TL03 ff-only）；两评估件 docs/design/l02-drain-handover-001.md、docs/design/l03-ci-egress-001.md；DEV-BASELINE L02/L03 行随票转写；status.json L02/L03=IN_PROGRESS；blcheck 63/0（2 warning 沿册）；docs-only 波次代码扫描门不触发；待所有者 T-1..T-5（L02）与 V-1..V-4（L03）；三票实施授权零自扩（Q10）

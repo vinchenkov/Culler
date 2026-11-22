@@ -26,5 +26,7 @@
   "E03": "BLOCKED",
   "E04": "BLOCKED",
   "E05": "BLOCKED",
-  "L01": "IN_PROGRESS"
+  "L01": "IN_PROGRESS",
+  "L02": "IN_PROGRESS",
+  "L03": "IN_PROGRESS"
 }
