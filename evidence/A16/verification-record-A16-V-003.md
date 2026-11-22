@@ -27,3 +27,14 @@
 - reviewed_by: host-agent（执行兼任复核，显式声明；Integrity 未做，不宣称）
 - verified_at: 2026-11-22 (+0800)
 - 边界: 执行事实零义务提升；bisect 是**归属**判定，不判 walking skeleton 的根因修复（那属环境/交付域，越 A16 票面）；EVIDENCED 完成判定仍随 F0a Exit+治理链。
+
+---
+
+## 更正段 #1（2026-11-22 轮十追加；原§3 结论的归因半边作废）
+
+**原句"结论=本机 Docker-Desktop 环境既有问题"被证伪**（所有者明言本机 Docker 健康；`evidence/A03/DEFECT-REGISTER-004.md` 给出产品级真因：`verbs/sourcegit.go sourceGitEnv()` 的 `GIT_CONFIG_NOSYSTEM=1` 连带关掉镜像系统配置的 `safe.directory=*` ⇒ 容器内 git 对外属主仓库拒读 `detected dubious ownership` ⇒ 播种投影失败 ⇒ run 不 birth ⇒ 骨架空转）。**本记录其余判定不受影响且部分反而加强**：
+- "非 A16 回归" **成立且升级**——父提交同态复现恰证该缺陷**先于 A16 存在于上游存量代码**（`sourcegit.go` 族），二分事实有效、仅**归因**（环境 vs 产品）错了。
+- "待批 2（维持定向机/CI 口径）" **改判**：本机并非不适域；A29 修复后本机即有效 e2e 运行域（Desktop 健康为前提，所有者声明在册）。Q8 运行域**声明本体**是否收回归 Authority。
+- 原§边界句"那属环境/交付域"中"环境"二字作废，改"产品缺陷域（DEFECT-004/A29）"。
+
+**纪律入册**：把红归因给环境前必须先做**单变量隔离实验**；"父提交同态复现"只排除我方回归、**不构成环境归因的充分证据**。本件是该教训的原始案卷（教训全文=AM v0.1.80 ③）。

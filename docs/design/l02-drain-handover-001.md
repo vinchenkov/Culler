@@ -29,7 +29,7 @@
 ## 4. ×A03/A17/更新面接缝
 - 监督语义不改（Restart=always/RestartSec=10 与 KeepAlive 对镜 supervision_systemd.go:74/supervision_darwin.go:62-69）；drain 是**升级编排层**（setup_update_transaction）语义，不是单元语义。
 - journal 相位机是天然承载点：D-B 在 `stop` 前插"等待"属**流程内步骤**还是**新相位词**=形状决定（新相位词触 update_journal.go 值集+UPDATES.md 操作者面 8 相位表=登记同步义务）。
-- "计划内 vs 崩溃"的证据要求与 §7.1/附五一致：演练必须在 update_docker lane（已有检查点用例家族）+定向机持久段出原始块，**本机 Docker Desktop=运行域不满足（Q8 口径），不得出 PASS**。
+- "计划内 vs 崩溃"的证据要求与 §7.1/附五一致：演练必须在 update_docker lane（已有检查点用例家族）+定向机持久段出原始块，**本机 Docker Desktop=运行域不满足（Q8 口径），不得出 PASS**。**【2026-11-22 更正】末句作废：Desktop 归因被 `DEFECT-REGISTER-004` 证伪（真因=产品 git 授权缺陷，A29 候选）；update_docker 双宿主实测皆绿。演练域=定向机持久段（A25 前置）+ A29 后的本机/CI 皆有效，声明收归 Authority。**
 
 ## 5. 验收映射预告（F1 实施票时细化）
 ①update_docker lane 新用例：drain 期限内活跃 run 自然终态→零 `interrupted` 记录；到期→现状中断路径行为不回归（含 __update-reconcile 记账）。②journal 崩溃点矩阵在 drain 态重跑（既有用例族）。③D-C 若批：仓库操作计费断言（计划内双变更不扣额/崩溃双变更扣额）。④红绿样例入 fast suite（drain 闸的开关态）。⑤A13 不回归：混版拒绝在升级前后各验一次。

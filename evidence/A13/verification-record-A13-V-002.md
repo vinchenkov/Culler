@@ -18,3 +18,9 @@
 - evidence_ref: 本记录 + 上述测试文件；设计件 A13-V-001；批准事件=AM v0.1.65 Q9 + 进码授权 AM v0.1.66；合并链=dev 413880a→dcdd82b(修复)→791bdd4
 - reviewed_by: host-agent（执行兼任复核声明沿用；Integrity 未做，不宣称）；verified_at: 2026-11-22 (+0800)
 - 边界: 合并态双全道（mc/check.sh exit0、resident 774/0）+ 扫描 0-on-lines → **A13 台账转 EVIDENCED**（附七 cond1–3 清+cond4 实施在获批形状内；义务完成判定仍随 F0a Exit+Authority——Q3 任命后 Authority=所有者本人，其逐项接受仍须明示）。
+
+---
+
+## 更正段 #1（2026-11-22 轮十追加）
+
+原残余句"本机 e2e 运行域=定向机/CI（Q8 声明）"的**前提**（本机 Docker 不适跑 e2e）被证伪——真因=产品缺陷 `DEFECT-REGISTER-004`（`sourceGitEnv` 的 NOSYSTEM 连带关掉镜像 `safe.directory=*`），修复归 A29 候选；**A29 后本机即有效运行域**。Q8 声明本体维持至 Authority 重定。本记录其余结论（split-brain 根因=testConfig 身份错配、三点对齐、双全道绿）不受影响。
