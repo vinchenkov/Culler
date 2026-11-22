@@ -98,7 +98,7 @@ A Go test that reads files outside the `mc` module must run with `-count=1`.
 
 Run an opt-in lane when your change touches what the lane proves:
 
-- `cd mc && mise exec -- go test -tags docker_e2e -v -timeout 30m ./e2e/...`: the full pipeline with real containers.
+- `cd mc && mise exec -- go test -tags docker_e2e -v -timeout 45m ./e2e/...`: the full pipeline with real containers. The suite needs about 40 minutes of test time on a healthy host; a shorter package timeout panics mid-suite, skips each `t.Cleanup`, and leaks the fixture volumes and helper containers.
 - `cd mc && mise exec -- go test -tags docker_boundary -count=1 ./boundarydocker/...`: the container boundaries. The tag also selects tests in `mc/cmd/mc`, `mc/deployment`, and `mc/verbs`.
 - `cd mc && mise exec -- go test -tags nightly ./property/...`: the dispatch properties.
 - `update_docker`: the update checkpoint. `openwiki/tests/checks-and-test-lanes.md` gives its command and variables.
