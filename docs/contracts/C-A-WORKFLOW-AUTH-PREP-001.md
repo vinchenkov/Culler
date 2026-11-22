@@ -23,4 +23,4 @@
 release 触发（push/PR 分支不变）· 发布 job 及其权限（`release-images*`/`release-downloads` 与 publication 环境）· 凭据注入（零新增 secrets；道全走 fake harness）· 环境保护规则 · `security-nightly.yml` · 发布检查枚举三处（P-1 下）· `install.sh`（P-1 下）。
 
 ## 6. 就绪判定
-本文 = 轮十二 Q3 要求的"精确清单"本体。**发出授权的动作=所有者对本文（或含修订的本文）点名**；授权文本建议覆盖：文件=release.yml 一处、job 名、P-1/P-2 择一、时延核对前置、§4-§5 义务随附。授权前，本票（C-A 实施票=拟 **A31**，与 L02/A30 独立）不启动、不建票。
+本文 = 轮十二 Q3 要求的"精确清单"本体。**发出授权的动作=所有者对本文（或含修订的本文）点名**；授权文本建议覆盖：文件=release.yml 一处、job 名、P-1/P-2 择一、时延核对前置、§4-§5 义务随附。授权前，本票（C-A 实施票=**A32**〔轮十六票号裁定：PENDING-DECISIONS 曾写 A31，与 Linux 票冲突，最终 A31=Linux、A32=C-A，WAVE-PLAN-001 在册〕；轮十六"批准整条议程"=点名授权已发：文件=release.yml、job=opt-in-lanes、形=P-1）转入实施。
