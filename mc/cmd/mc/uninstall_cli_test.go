@@ -21,8 +21,8 @@ func TestUninstallRefusesEveryContainerCaller(t *testing.T) {
 		name string
 		body string
 	}{
-		{"pipeline worker", `{"run_id":"r","tier":"pipeline","role":"worker"}`},
-		{"collie session", `{"run_id":"h","tier":"collie","role":"collie","verb_allowlist":["uninstall"]}`},
+		{"pipeline worker", `{"run_id":"r","tier":"pipeline","role":"worker","release_build_id":"development"}`},
+		{"collie session", `{"run_id":"h","tier":"collie","role":"collie","verb_allowlist":["uninstall"],"release_build_id":"development"}`},
 	} {
 		t.Run(identity.name, func(t *testing.T) {
 			runJSON := filepath.Join(t.TempDir(), "run.json")

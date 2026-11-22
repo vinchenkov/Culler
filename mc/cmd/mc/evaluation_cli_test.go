@@ -46,7 +46,7 @@ func TestEvaluationCapturesEffectiveInputBeforeRepositoryCleanup(t *testing.T) {
 	host := append(spineEnv(spine), "MC_ARTIFACTS_ROOT="+artifacts)
 	envFor := func(run, role, root string) []string {
 		path := filepath.Join(t.TempDir(), "identity.json")
-		body, _ := json.Marshal(map[string]any{"run_id": run, "tier": "pipeline", "role": role, "mounts": map[string]any{"allow_write": []string{plane}}})
+		body, _ := json.Marshal(map[string]any{"run_id": run, "tier": "pipeline", "role": role, "release_build_id": "development", "mounts": map[string]any{"allow_write": []string{plane}}})
 		if err := os.WriteFile(path, body, 0600); err != nil {
 			t.Fatal(err)
 		}

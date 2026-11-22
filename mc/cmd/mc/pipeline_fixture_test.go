@@ -311,7 +311,7 @@ func roleEnv(t *testing.T, spine, run, role, root string) ([]string, string) {
 	}
 	p := filepath.Join(t.TempDir(), "run.json")
 	b, _ := json.Marshal(map[string]any{
-		"run_id": run, "tier": "pipeline", "role": role,
+		"run_id": run, "tier": "pipeline", "role": role, "release_build_id": "development",
 		"mounts": map[string]any{"allow_write": []string{plane}},
 	})
 	if err := os.WriteFile(p, b, 0o644); err != nil {

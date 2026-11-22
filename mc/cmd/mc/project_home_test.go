@@ -54,7 +54,7 @@ func TestProjectHomeRejectsAgentScopeAndInvalidIdentity(t *testing.T) {
 	t.Setenv("MC_HOME", home)
 	identity := filepath.Join(home, "run.json")
 	t.Setenv("MC_RUN_JSON", identity)
-	if err := os.WriteFile(identity, []byte(`{"tier":"pipeline","role":"worker","run_id":"fixture","project":"fixture"}`), 0o600); err != nil {
+	if err := os.WriteFile(identity, []byte(`{"tier":"pipeline","role":"worker","run_id":"fixture","project":"fixture","release_build_id":"development"}`), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	var out, diagnostics bytes.Buffer

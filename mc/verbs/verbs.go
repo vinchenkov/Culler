@@ -316,7 +316,7 @@ func LoadIdentity() (*RunIdentity, error) {
 	// returned above (its identity is the process itself); the empty self id
 	// is a package-test context with no binary identity to bind against.
 	if selfReleaseBuildID != "" && id.ReleaseBuildID != selfReleaseBuildID {
-		return nil, Domainf("the run envelope names release %q but this binary is release %q: re-launch the run on the current release rather than write the spine from a mixed build",
+		return nil, Domainf("the run envelope names release %q but this binary is release %q: different releases, re-launch the run on the current release rather than write the spine from a mixed build",
 			id.ReleaseBuildID, selfReleaseBuildID)
 	}
 	return &id, nil

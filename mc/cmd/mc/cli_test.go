@@ -538,7 +538,10 @@ func queryString(t *testing.T, db *sql.DB, q string, args ...any) string {
 func runJSONEnv(t *testing.T, spine, runID, tier, role string) []string {
 	t.Helper()
 	p := filepath.Join(t.TempDir(), "run.json")
-	b, _ := json.Marshal(map[string]any{"run_id": runID, "tier": tier, "role": role})
+	// "development" is the built test binary's releaseBuildID (TestMain builds
+	// with no -X override), so the envelope matches it as a matched-pair
+	// resident would; the loader refuses a mixed build.
+	b, _ := json.Marshal(map[string]any{"run_id": runID, "tier": tier, "role": role, "release_build_id": "development"})
 	if err := os.WriteFile(p, b, 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -550,7 +553,8 @@ func collieJSONEnv(t *testing.T, spine, sessionID string, allowlist []string) []
 	p := filepath.Join(t.TempDir(), "run.json")
 	b, _ := json.Marshal(map[string]any{
 		"run_id": sessionID, "tier": "collie", "role": "collie",
-		"verb_allowlist": allowlist,
+		"release_build_id": "development",
+		"verb_allowlist":   allowlist,
 	})
 	if err := os.WriteFile(p, b, 0o644); err != nil {
 		t.Fatal(err)
@@ -2709,7 +2713,7 @@ func TestStrategistProposeRoleAndSubjectFence(t *testing.T) {
 func TestCollieStartBrokerRefusesRunJSONCallers(t *testing.T) {
 	agentRun := filepath.Join(t.TempDir(), "run.json")
 	if err := os.WriteFile(agentRun,
-		[]byte(`{"run_id":"r","tier":"pipeline","role":"worker"}`), 0o600); err != nil {
+		[]byte(`{"run_id":"r","tier":"pipeline","role":"worker","release_build_id":"development"}`), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	denied := runMC(t, []string{
@@ -6618,7 +6622,7 @@ func TestADurableArtifactRefusalWithNoPlaneRoutesToInfra(t *testing.T) {
 	// artifact root. The isolated repository of the run stays where it is.
 	runJSON := filepath.Join(t.TempDir(), "run.json")
 	body, _ := json.Marshal(map[string]any{
-		"run_id": run, "tier": "pipeline", "role": "verifier",
+		"run_id": run, "tier": "pipeline", "role": "verifier", "release_build_id": "development",
 		"mounts": map[string]any{"allow_write": []string{}},
 	})
 	if err := os.WriteFile(runJSON, body, 0o644); err != nil {

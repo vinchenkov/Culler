@@ -126,9 +126,9 @@ func TestCullerUninstallRejectsContainerScopeBeforeRemoval(t *testing.T) {
 	for _, role := range []string{"worker", "collie"} {
 		t.Run(role, func(t *testing.T) {
 			path := filepath.Join(t.TempDir(), "run.json")
-			body := `{"run_id":"fixture","tier":"pipeline","role":"worker"}`
+			body := `{"run_id":"fixture","tier":"pipeline","role":"worker","release_build_id":"development"}`
 			if role == "collie" {
-				body = `{"run_id":"fixture","tier":"collie","role":"collie"}`
+				body = `{"run_id":"fixture","tier":"collie","role":"collie","release_build_id":"development"}`
 			}
 			uninstallWrite(t, path, body, 0600)
 			t.Setenv("MC_RUN_JSON", path)
