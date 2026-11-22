@@ -125,7 +125,8 @@ func loadPublishedSetup(home string, args verbs.OnboardArgs) (*publishedSetup, e
 		docker: func(ctx context.Context, args ...string) ([]byte, error) {
 			return exec.CommandContext(ctx, publishedUpdateDockerProgram(home), args...).CombinedOutput()
 		},
-		states: setupServiceStates, restore: restorePublishedServices, helper: startReleaseHelper, started: publishedInstallStartedAt(os.Getenv("CULLER_INSTALL_STARTED_AT"), now), now: time.Now, sleep: time.Sleep}
+		states: setupServiceStates, restore: restorePublishedServices, helper: startReleaseHelper, started: publishedInstallStartedAt(os.Getenv("CULLER_INSTALL_STARTED_AT"), now), now: time.Now, sleep: time.Sleep,
+		drainWindow: updateDrainWindow}
 	var prior struct {
 		ID string `json:"id"`
 	}
