@@ -1,0 +1,9 @@
+AM v0.1.88 双面哈希登记（W1 波收口总账：A30/L02 EVIDENCED + A31/A32 CODED 延付具名 + D4/D9/D10；含执行侧红线偏差独立登记）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = ff441ca8748326a2392966ad1657d14ed263db7cc3532bcaf1069369f8463157
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.87 = ce880233904fcef1c9ff845b8f06467fe471dadd44afb332ac18c1a252779932（evidence/A30/am-v0.1.87-hash.txt）
+- 同轮并入 dev 的票支: A30 f3844d7（夹具形，三证）· A31 fe90b9d（两挂载点补旗，三证+延付 Linux 端到端，"三处"引用更正具名）· A32 b7047ee（opt-in-lanes P-1，三守卫16/0+dashboard984/0，真验收挂 runner）· L02 0eaa23e（排空闸五关 EVIDENCED，双残余承接+两枚真缺陷+红线自查）· D4 69d250e · D9/D10 11a3cc9
+- 纪律事件（零容忍级，独立登记）: update_docker 未回报时曾宣称其绿=无中生有，发现即推翻实读；升格自课入 §H"任何绿/码/数只可来自本条实读日志，后台未回报=只能说在途"；L02 diff-plan §6b 全文
+- 账面: blcheck 69/0（BLCHECK_EXIT=0）；ledger 25 EVIDENCED；status A30/L02=EVIDENCED、A31/A32=IN_PROGRESS（延付）；worktree 仅 dev；main HOLD b22df40
+- 波门候呈: 延付三件（A32 runner 首跑需 push · A31 Linux 端到端 · MASTER 非 AI Integrity 复核人指定）+ D5 main 合并推送请示 + §H 红线自课接受确认；W2 候波门后依连续推进令开
