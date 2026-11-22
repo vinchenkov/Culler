@@ -106,7 +106,7 @@
 ### Track L · LoopForge 能力互补承接（2026-11-20 所有者目标校准指令立轨：逐条核对 ANALYSIS §9 采纳清单后的补缺口票；主体性=模式提取入契约/语义，零代码并入；§9-4 runner 远程执行机=所有者已裁 non-goal，不入）
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
 |---|---|---|---|---|---|
-| L01 | SOP 式"脚本节点+产物契约"进 Worker/Verifier 验收语义（确定性检查不靠模型；runeval 式受控改进边界） | — | ANALYSIS-2026-11-19-LoopForge-vs-Culler.md §9-5/§8-5/§3.4 | F1：设计件（节点语义×task 验收映射×agent 输入面变更清单）+实施后确定性检查执行测试 | **设计件先行**——触任务验收/dispatch 语义=wire-adjacent，形状决定归所有者 |
+| L01 | SOP 式"脚本节点+产物契约"进 Worker/Verifier 验收语义（确定性检查不靠模型；runeval 式受控改进边界） | — | ANALYSIS-2026-11-19-LoopForge-vs-Culler.md §9-5/§8-5/§3.4 | F1：设计件（节点语义×task 验收映射×agent 输入面变更清单）+实施后确定性检查执行测试 | **设计件先行**——触任务验收/dispatch 语义=wire-adjacent，形状决定归所有者；**2026-11-22 设计件已交（docs/design/l01-script-nodes-001.md，所有者"推进下一批"=Q10 序启动）：节点三件套（脚本/退出码+marker 双条件判定/原始块产物契约=附五与 check.sh 家族制度升格，非新造哲学）×Verifier 判定拆机器层/模型层映射×信任边界（检查脚本属 requirements 冻结面，Worker 不得自改其检查=自证通道封堵）×runeval 接缝仅预留（候选不自动生效）**；**待所有者 S-1..S-5**（载体=仓库清单 vs 描述小节 vs schema 列[撞无转换器硬闸挂 B01 后]、重放阶段、是否进 gates、agent 输入面变更清单批准、实施授权与否）——票 IN_PROGRESS（设计半交，实施半待形状裁） |
 | L02 | 在线升级语义：drain/handover（补"必须 stop-the-world"短板；systemd SIGTERM/Restart 语义先行，listener fd 交接在评估内） | A03 | ANALYSIS §4-8/§9-6 | F1：升级演练绿（与 update_docker lane 合流）+ journal/停摆语义不回归断言 | Wave A 后续票；不新造更新协议权威（复用 A17/journal 面） |
 | L03 | 防内部信息回流 CI（内部域名/私网段/AKID/人名哈希扫描 + gitleaks 版本+SHA 双固定） | — | ANALYSIS §4-4 | F1：红绿样例（植入→必红；清除→绿）入 CI 门 | 低成本高收益；挂发布流程，触 workflow 面=按 003 负清单逐票正清单申请 |
 
