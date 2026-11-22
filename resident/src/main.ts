@@ -315,7 +315,13 @@ async function startProjector(mcPath: string, mcHome: string, log: Logger,
     observe, runMc, acquireOwner: connection => acquireConnectionOwner(mcPath, mcHome, connection),
   });
   const refreshConnection = (connection: string) => refreshConnectionCheck(runMc, credentials.renew, connection);
+  // The e2e Collie provider-proxy test preloads a synthetic transport onto
+  // globalThis.fetch and names its directory here. Forward it through the
+  // projector's existing fetch seam so it lands on the real proxy egress path.
+  // Without that variable the option stays undefined and egress is unchanged.
+  const fixtureFetch = process.env.CULLER_COLLIE_PROXY_FIXTURE ? globalThis.fetch : undefined;
   const handle = startCredentialProjector({ credentials, tls, hostname: proxyHost, refreshConnection, observe,
+    fetch: fixtureFetch,
     isLaunchCurrent: (run, launch, signal) => providerLaunchState(runMc, run, launch, signal) }, catalog);
   try {
     await observe({ request_id: crypto.randomUUID(), operation: "service", origin: "proxy", outcome: "ready",
