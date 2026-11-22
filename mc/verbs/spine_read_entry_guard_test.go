@@ -16,14 +16,13 @@ import (
 // case proves the checker actually has teeth.
 
 // settledEntryAllowlist maps each file allowed to reference the snapshot
-// shape or the settled inspector to the exact number of occurrences.
+// shape to the exact number of occurrences. The install/update gate and the
+// verbs inspectors deliberately stay on the live read: routing them at the
+// snapshot door is a separate change with its own test work (see the A27
+// site-2 finding), so they must not appear here.
 var settledEntryAllowlist = map[string]int{
-	"substrate/substrate.go":          1, // the guarded entry itself
-	"verbs/onboard.go":                1, // inspectSpineSettled hands it over
-	"verbs/release_database.go":       2, // open + the settled inspector dispatch
 	"verbs/spine_transfer.go":         1, // the staged backup/restore reader
-	"deployment/update_checkpoint.go": 1, // the checkpoint verify composite
-	"cmd/mc/setup_published_prod.go":  1, // the settled install/repair door
+	"deployment/update_checkpoint.go": 2, // the checkpoint verify + post-restore identity
 }
 
 var settledMarkers = []string{"OpenSnapshotReadOnly", "InspectSettledReleaseDatabase"}

@@ -156,10 +156,7 @@ func (p *publishedSetup) verifyCandidateConfiguration() error {
 
 // Project checks use temporary volumes and mount no user data.
 func (p *publishedSetup) checkCandidateProjectImages(ctx context.Context) error {
-	// The only production caller is beforeUpdate's update branch, after its
-	// stop phase; the journal in hand is that proof, so the read class
-	// follows evidence rather than trust.
-	database, err := p.database(ctx, p.update != nil)
+	database, err := p.database(ctx)
 	if err != nil {
 		return err
 	}
