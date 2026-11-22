@@ -1,0 +1,7 @@
+AM v0.1.90 双面哈希登记（W2-A23 收口：DEFECT-001 FIXED + 扫描覆盖分域新纪律）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = e14008b3fd12a73ff929d96aa9bb6cc00fd041ea3a33404df1c2e3e3b24666a7
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.89 = a8a83e1ea165efa7ab4601d431bbb904c721d547e79e7cc8f2f50eab77c45a07（evidence/L02/am-v0.1.89-hash.txt）
+- 同轮事实: shz/TA23 四提交 rebase 后 ff 并入 dev=7069306；redeploy.sh list-驱（同源真相+exit-113 容错+fail-closed 零放宽）；F0b 本体新用例（plist 全删+双在载⇒完成，旧必楔死）+负控实跑 pre-fix（OLD_STATUS=1/bootout_calls=0/WEDGE）；矩阵 6 场景按新基数重标定（poll 3/image 4）；rebase 后 RT=0、全道 A23_MC_EXIT=0（26/0/0）；DEFECT-001 转 FIXED 指针；观察项销账（dev-reset 已对/uninstall 无循环）；顺序偏差（先改后列）申报在 diff-plan §0；⚑ 扫描分域新纪律：coverage 无 .sh⇒shell 票"落行 0"无干净含义，每票先核覆盖集、不在则声明"扫描范围外，防线=测试族+负控"（§H-6 姊妹条）；blcheck 69/0；ledger 26 EVIDENCED；worktree 仅 dev；main 远端 dd087c7、本地账差 3 枚随下波推进；A31/A32 延付仍候属主启用 fork Actions；不宣称项目安全
+- 候令: fork Actions 启用（唯一新闸）· W2 按波连续推进中（A25 前置读源/A01 材料续）
