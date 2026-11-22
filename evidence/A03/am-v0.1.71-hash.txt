@@ -1,0 +1,7 @@
+AM v0.1.71 双面哈希登记（update_docker lane 首跑抓出 DEFECT-REGISTER-003；L03 G-4 普查；A19 引用键核对）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 36341ed218a06296e54865f9126fba9397910ee232a3dd6aa735ab3dc82e9646
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.70 = d4db9a1c9d01a71dcbb20a7f8b9568252669335a7bffd0c89ffb0dee42c38f78（evidence/L03/am-v0.1.70-hash.txt）
+- 同轮事实: shz/TL03P 两提交 d90c8b3/4f829ea ff 并入 dev（tip 4f829ea）；evidence/A03/DEFECT-REGISTER-003.md + l03p-218-raw-20261122T041544Z.log（原始件 sha256 22ff1146cd07ffeb6105d1cecda4ce7c8a7d96bf5de573a97d623de8db89ad55，宿主副本已删、218 残留=文件 0/容器 0）；evidence/L03/g4-census-001.md + g4-census-hits.ndjson（20 行，无命中值）；DEV-BASELINE A19 行转写=BLOCKED-with-registration；Wave A 账面={A03,A04,A16}EVIDENCED+{A14}IN_PROGRESS+{A19}BLOCKED-reg；blcheck 63/0（2 warning 沿册）；docs/evidence-only 波次，代码扫描门不触发
+- 未做（诚实面）: 未修任何生产码（DEFECT-003 属 mc/deployment，不在现行正清单）；未跑通操作者前门更新序列；未跑 CI 面
