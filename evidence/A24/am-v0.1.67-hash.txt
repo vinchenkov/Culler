@@ -1,0 +1,6 @@
+AM v0.1.67 双面哈希登记（三签发执行结果：A24 CODED / A26 EVIDENCED / A13 诚实撤出待根因）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = b5dcfa33fa4a18a556cbebbe0937252df037cd4ad056a6f2380108b70c86dfe6
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.66 = 见 evidence/A24/am-v0.1.66-hash.txt
+- 同轮事实: A24 CODED 并入 dev（谓词 f920cb8 + §7.1 a008776，mc/check.sh exit0，扫描 seal 4870e5eb 落改动行 0，IN_PROGRESS 待 post 矩阵）；A26 CODED+EVIDENCED（git.go+哨兵测+§7.1 e67b9fa，check.sh exit0，扫描 seal 2f988364 落改动行 0）；A13 实施绿于 effects/verbs/cmd-mc/drift 但合并态 split-brain/wiki-crossing runner exit 2 根因未定→诚实 reset 撤出 dev 留 shz/TA13impl（never-merge-red / 不弱化验绑 / 不改他人 17 断言），IN_PROGRESS；status.json A26=EVIDENCED、A24/A13/A14=IN_PROGRESS；blcheck 63/0；dev tip e67b9fa→本提交
