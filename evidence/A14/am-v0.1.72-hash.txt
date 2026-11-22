@@ -1,0 +1,7 @@
+AM v0.1.72 双面哈希登记（A14 §7.1 记录 ID 补登轮；A19 引用键 V-2 半边闭合）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 7255df0169fe22025d6905cc4af717a94df6234c4daba5a502a61555088c7dec
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.71 = 36341ed218a06296e54865f9126fba9397910ee232a3dd6aa735ab3dc82e9646（evidence/A03/am-v0.1.71-hash.txt）
+- 同轮事实: 分支 shz/TA14R 单提交 e39a1bd ff 并入 dev（tip e39a1bd）；新增 evidence/A14/verification-record-A14-V-001..004.md（四件，绑定结果表/原始件 sha256；零新实测零新判定）；DEV-BASELINE A14/A19 两行追加式转写；两处登记前自纠入册（uid 值以原始件 3100 取代记忆 2100；基镜归因改为可核形式并声明引用 A16-V-002 在册断言）；A19 仍缺 V-5 族→维持 BLOCKED-with-registration；blcheck 63/0（2 warning 沿册）；docs/evidence-only，代码扫描门不触发
+- 未做（诚实面）: 未跑任何新实测；未动生产码；A14 维持 IN_PROGRESS；V-5/活会话格仍门控
