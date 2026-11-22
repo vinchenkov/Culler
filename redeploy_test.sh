@@ -152,13 +152,13 @@ if [ "${1:-}" = bootout ] && [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ]; then
   rm -f "$MC_REDEPLOY_TEST_LOADED_FILE"
 fi
 if [ "${1:-}" = list ] && [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ] && [ -e "$MC_REDEPLOY_TEST_LOADED_FILE" ]; then
-  printf -- '-\t0\tcom.culler.abc.resident\n'
+  printf -- '-\t0\tcom.culler.abc.resident\n-\t0\tcom.culler.abc.dashboard\n'
 fi
 if [ "${1:-}" = list ] && [ -n "${MC_REDEPLOY_TEST_LIST_BUSY_FILE:-}" ]; then
   left=$(cat "$MC_REDEPLOY_TEST_LIST_BUSY_FILE" 2>/dev/null || printf '0')
   if [ "$left" -gt 0 ]; then
     printf '%s\n' "$((left - 1))" >"$MC_REDEPLOY_TEST_LIST_BUSY_FILE"
-    printf -- '-\t0\tcom.culler.abc.resident\n'
+    printf -- '-\t0\tcom.culler.abc.resident\n-\t0\tcom.culler.abc.dashboard\n'
   fi
 fi
 exit 0
@@ -237,16 +237,21 @@ make_fakes "$case_root/bin"
 mkdir -p "$case_root/home/Library/LaunchAgents" "$case_root/mc-bin"
 touch "$case_root/home/Library/LaunchAgents/com.culler.abc.resident.plist" \
       "$case_root/home/Library/LaunchAgents/com.culler.abc.dashboard.plist"
+# Both units are LOADED (a real running deployment): `launchctl list` reports them
+# while this sentinel exists, and a bootout removes it. The stop loop drives from
+# this loaded list, not from the plist glob.
+: >"$case_root/loaded"
 printf 'old release\n' >"$case_root/mc-bin/mc"
 printf 'schema=current records=5\n' >"$case_root/spine.db"
 log="$case_root/calls.log"
 : >"$log"
 env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" MC_REDEPLOY_TEST_DB="$case_root/spine.db" \
+  MC_REDEPLOY_TEST_LOADED_FILE="$case_root/loaded" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "happy path did not complete"; }
 [ "$(cat "$case_root/spine.db")" = "schema=current records=5" ] || fail "a redeploy changed a database with the current schema"
 grep -F -- "== release $release" "$case_root/out" >/dev/null || fail "the release commit was not stated"
-expected=$(printf 'CALL\tlaunchctl\tlist\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.dashboard\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.resident\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' \
+expected=$(printf 'CALL\tlaunchctl\tlist\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.resident\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.dashboard\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' \
   "$(id -u)" "$(id -u)" "$ROOT" "$ROOT")
 actual=$(grep -v '^CALL	docker	info$' "$log")
 [ "$actual" = "$expected" ] || {
@@ -257,8 +262,10 @@ grep -q 'MC_REDEPLOY_TEST_LOG' "$case_root/mc-bin/mc" || fail "the new mc was no
 
 # --- rerun: the same sequence again, nothing refuses --------------------------
 : >"$log"
+: >"$case_root/loaded"
 env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
+  MC_REDEPLOY_TEST_LOADED_FILE="$case_root/loaded" \
   sh "$ROOT/redeploy.sh" >"$case_root/out2" 2>&1 || { cat "$case_root/out2" >&2; fail "rerun did not complete"; }
 [ "$(grep -v '^CALL	docker	info$' "$log")" = "$expected" ] || fail "rerun changed the sequence"
 
@@ -290,7 +297,7 @@ env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/h
   MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" \
   MC_REDEPLOY_TEST_LIST_BUSY_FILE="$case_root/busy" \
   sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1 || { cat "$case_root/out" >&2; fail "a lingering bootout was not waited out"; }
-expected_race=$(printf 'CALL\tlaunchctl\tlist\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.dashboard\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.resident\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' \
+expected_race=$(printf 'CALL\tlaunchctl\tlist\nCALL\tdocker\timage\nCALL\t__redeploy-check\tmc-linux\nCALL\t__onboard\tagentsview\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.resident\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.dashboard\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\nCALL\t__onboard\thome\t--release-source\t%s/runner\t--host-release-source\t%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' \
   "$(id -u)" "$(id -u)" "$ROOT" "$ROOT")
 actual=$(grep -v '^CALL	docker	info$' "$log")
 [ "$actual" = "$expected_race" ] || {

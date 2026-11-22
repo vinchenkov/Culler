@@ -391,27 +391,32 @@ Linux)
   done
   ;;
 *)
-for plist in "$HOME/Library/LaunchAgents"/com.culler.*.plist; do
-  [ -e "$plist" ] || continue
-  label=$(basename "$plist" .plist)
-  if launchctl bootout "gui/$(id -u)/$label" >"$SCRATCH/bootout.out" 2>&1; then
-    WIDTH=$(message_width)
-    paragraph "   Stop requested: $label"
-  else
-    bootout_status=$?
-    # An empty service list can describe another domain. Check the target service.
-    inspect_status=0
-    inspection=$(launchctl print "gui/$(id -u)/$label" 2>&1) || inspect_status=$?
-    if [ "$inspect_status" -eq 113 ] && \
-       printf '%s\n' "$inspection" | grep -Eiq 'could not find service|service not found'; then
-      say "   $label already stopped"
+  # The loaded list is the ground truth here, aligned with the Linux branch
+  # above and with the wait loop below: `units_loaded` decides from
+  # `launchctl list`. A loaded unit whose plist was removed by hand still shows
+  # in the list, so driving the stop from the plist glob would never name it and
+  # the wait would wedge. Column three of `launchctl list` is the label.
+  read_units
+  for label in $(printf '%s\n' "$UNITS" | awk '$3 ~ /^com\.culler\./ {print $3}'); do
+    if launchctl bootout "gui/$(id -u)/$label" >"$SCRATCH/bootout.out" 2>&1; then
+      WIDTH=$(message_width)
+      paragraph "   Stop requested: $label"
     else
-      service_control_stop "A Culler service could not stop." \
-        "launchctl bootout exited with $bootout_status for $label. $(cat "$SCRATCH/bootout.out") Service inspection exited with $inspect_status. $inspection"
+      bootout_status=$?
+      # The label left the list between the read and the bootout. An empty
+      # service list can also describe another domain, so check the target.
+      inspect_status=0
+      inspection=$(launchctl print "gui/$(id -u)/$label" 2>&1) || inspect_status=$?
+      if [ "$inspect_status" -eq 113 ] && \
+         printf '%s\n' "$inspection" | grep -Eiq 'could not find service|service not found'; then
+        say "   $label already stopped"
+      else
+        service_control_stop "A Culler service could not stop." \
+          "launchctl bootout exited with $bootout_status for $label. $(cat "$SCRATCH/bootout.out") Service inspection exited with $inspect_status. $inspection"
+      fi
     fi
-  fi
-  stopped=1
-done
+    stopped=1
+  done
 ;;
 esac
 [ "$stopped" -eq 1 ] || say "   no supervised units found"
