@@ -1,0 +1,7 @@
+AM v0.1.82 双面哈希登记（轮十二：六裁定落账 + A30 立票 + blocked 注记 + C-A 准备件 + 治理轮议程定版 §F/§G）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 4422c481d97e402449cbf2695a6acdb46f68229c47e15ffec942e8b1804d7b4e
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.81 = 99365ddc2972bc8fd3b4242ec34582a8ddf47f4c173a0255b2fe6fb507b04b84（evidence/A29/am-v0.1.81-hash.txt）
+- 同轮事实: 支 shz/TR12 单提交 166079a ff 并入 dev；evidence/A30/diff-plan-001.md（五项保留证据+判据二择一+预勘回填位；A30 不入 status.json=BACKLOG）+ docs/contracts/C-A-WORKFLOW-AUTH-PREP-001.md（release.yml 精确位+拟名 opt-in-lanes+P-1/P-2 择一+转述纠正[三处发布枚举+prune 正则，install.sh 差额待核]+不改清单）+ blocked-boundary 工件 OWNER DECISION 五点注记 + AGENDA ⚑开启注+§F 更正链 7 件+§G 三态接收抄件；blcheck 67 票 0 违规（BLCHECK_EXIT=0）；A30 只读根因预勘在途（回即 diff-plan v2）；docs-only 波次扫描门不触发声明沿前例；不宣称项目安全；main HOLD b22df40
+- 授权边界照录: 未授权=A30 修复码·workflow 修改·L02 实施·凭据链实施·main 合并/推送；剩余两参数=T-2 数值·U-6/U-7（其余不重开）
