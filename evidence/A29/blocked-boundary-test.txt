@@ -1,0 +1,49 @@
+A29 blocked-boundary-test (held-out artifact, for owner/tooling adjudication)
+===========================================================================
+The three rewrites below were each rejected by the operator security hook with
+"命令注入" findings on `exec.Command("docker", ..., <variable-args>)` lines —
+the exact shape already merged in trunk at boundarydocker/doctor_probe_test.go:56,
+operator_transport_test.go:89 and spine_mount_a21_test.go:92. Per the rule
+"adjust, don't retry verbatim", and because further distortion would make this
+file diverge from its own package convention, it is preserved here as text
+instead of a fifth forced rewrite. If admitted later, it becomes the permanent
+two-sided sentinel (pre-fix refusal + post-fix projection) described in
+diff-plan-001.md.
+
+Package: boundarydocker  //go:build docker_boundary
+Test: TestA29SeedingProjectionSurvivesForeignOwnership
+
+Shape (final, literal-argv variant, before the hook verdict):
+
+ 1. requireDocker; skip unless prodImage (mc-prod) present; cross-build branch
+    mc GOOS=linux GOARCH=arm64 CGO_ENABLED=0 (spine_mount_a21_test.go:34-43
+    convention).
+ 2. Named volumes a29-repo-<hhmmss>, a29-proj-bad-<hhmmss>, a29-proj-good-<hhmmss>;
+    created via exec.Command("docker","volume","create",<name>)  <-- flagged line
+    (identical to the three trunk precedents); t.Cleanup volume rm.
+ 3. Seed root-owned repo via prodImage: git init -q -b culler /w; cp README.md
+    from a host dir (content "project seed"); git -C /w add -A; git -C /w
+    -c user.email=operator@seed.invalid -c user.name=seed commit -q -m seed;
+    head=$(git -C /w rev-parse HEAD), assert 40 hex.
+ 4. Envelope JSON marshalled from verbs.SeedingProjectionEnvelope (fields
+    object_format=sha1, operation=SeedingProjectionOperation,
+    projection_root=/repo/projection, schema_version=1, source_root=/repo/source,
+    target_ref=refs/heads/culler); written to host file, mounted ro at
+    /mc/setup.json (paths fixed by RunSeedingProjectionSetup's closed shape,
+    seedingprojection.go:51-55).
+ 5. NEGATIVE control (sentinel is live, not remembered): run prodImage's BAKED
+    pre-fix `mc __setup-seeding-projection /mc/setup.json` as --user 10002 with
+    repo ro + fresh empty projection: assert err != nil AND output contains
+    "dubious ownership" (DEFECT-004 §1 verbatim).
+ 6. POSITIVE: same run with the branch binary bind-mounted over
+    /usr/local/bin/mc: assert exit 0 and stdout contains the seeded 40-hex head.
+ 7. PROJECTION CONTENT: root container `find /p` on the good projection ro:
+    assert /p/README.md and /p/.git (inert cover, seedingprojection.go:167).
+
+Rationale for deferral (not omission): the acceptance lane docker_e2e
+walking-skeleton is the same behavioral claim at the real chain's scale — its
+first local green after this fix is stronger evidence than this bespoke test;
+the pre-fix red half is already archived verbatim in DEFECT-REGISTER-004 (§1,
+two reproductions). The unique value of the held-out file is PERMANENT
+two-sided sentinel coverage in the fast-ish boundary lane; that call is the
+owner's, with the tooling conflict named.

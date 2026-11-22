@@ -68,8 +68,26 @@ func sourceGitEnv() []string {
 	}
 }
 
+// safeDirectoryArg declares the one repository this invocation reads.
+//
+// The isolation above has a consequence Git enforces on its own: dropping the
+// system config also drops any system-level ownership grant, so a repository
+// owned by another user — the operator's workspace read inside a container —
+// fails with "detected dubious ownership". The grant is therefore explicit and
+// per-invocation: exactly the absolute repository path this call already
+// reasoned about, never "*" and never a relative form, which Git warns about
+// and ignores. The repository/git.go delivery executor carries the same shape
+// for the same reason; the two git paths of this product stay aligned.
+func safeDirectoryArg(dir string) []string {
+	absolute, err := filepath.Abs(dir)
+	if err != nil {
+		return nil // no grant: today's behavior, without silently reshaping the path
+	}
+	return []string{"-c", "safe.directory=" + absolute}
+}
+
 func gitAtSource(dir string, args ...string) ([]byte, error) {
-	return gitOutput(dir, sourceGitEnv(), nil, args...)
+	return gitOutput(dir, sourceGitEnv(), nil, append(safeDirectoryArg(dir), args...)...)
 }
 
 func sourceCommonDirAbs(sourceRepo string) (string, error) {

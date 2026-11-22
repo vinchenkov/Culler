@@ -240,7 +240,7 @@ func inspectOnboardGitRoot(root string) (bool, error) {
 }
 
 func hostOnboardGitMutation(root string, args ...string) error {
-	if _, err := gitOutput(root, sourceGitEnv(), nil, args...); err != nil {
+	if _, err := gitOutput(root, sourceGitEnv(), nil, append(safeDirectoryArg(root), args...)...); err != nil {
 		return Domainf("prepare workspace Git contract at %q: %v", root, err)
 	}
 	return nil
@@ -404,7 +404,7 @@ func applyWorkspaceGitRule(root string, isRepo bool, mutate OnboardGitMutation) 
 		return false, false, Domainf("workspace Git contract did not retain worktree.useRelativePaths=true")
 	}
 	env := append(sourceGitEnv(), "GIT_OPTIONAL_LOCKS=0")
-	if _, err := gitOutput(root, env, nil, "status", "--porcelain=v1", "--untracked-files=no"); err != nil {
+	if _, err := gitOutput(root, env, nil, append(safeDirectoryArg(root), "status", "--porcelain=v1", "--untracked-files=no")...); err != nil {
 		return false, false, Domainf("host read-only Git probe failed for %q: %v", root, err)
 	}
 	return changed, initialized, nil
