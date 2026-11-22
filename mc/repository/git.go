@@ -38,6 +38,15 @@ func (g Git) command(ctx context.Context, input []byte, args ...string) ([]byte,
 func (g Git) process(ctx context.Context, args ...string) *exec.Cmd {
 	fixed := []string{"-C", g.Root,
 		"-c", "safe.directory=" + g.Root,
+		// Clear any inherited credential helper. GIT_CONFIG_NOSYSTEM and
+		// GIT_CONFIG_GLOBAL=/dev/null below silence the system and global files,
+		// but git still trusts the repository's own .git/config at repo scope,
+		// where a `[credential] helper = !cmd` is arbitrary host code on an auth
+		// negotiation (the V-3 G4 finding). This command-line `-c credential.helper=`
+		// is last-word precedence and empties the chain before any helper runs.
+		// This executor carries no platform credential to preserve (it is local
+		// file transport only), so clearing here cannot break controlled auth.
+		"-c", "credential.helper=",
 		"-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false",
 		"-c", "core.attributesFile=/dev/null", "-c", "core.excludesFile=/dev/null",
 		"-c", "gc.auto=0", "-c", "maintenance.auto=false",
