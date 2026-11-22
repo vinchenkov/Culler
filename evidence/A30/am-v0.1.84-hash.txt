@@ -1,0 +1,7 @@
+AM v0.1.84 双面哈希登记（轮十二续2：A30 egress 追证回收——H-夹具高置信，三承重行亲验；判据二形呈择；Linux add-host 单列）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 4db9468734875e061481dcec9bccd121f1d7abda11743517eceadd6a7512591d
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.83 = 50a196694c4b672159dfd50c18a2b457f1f25e0583415382d9c67ea1421b26cc（evidence/A30/am-v0.1.83-hash.txt）
+- 同轮事实: 支 shz/TR13B 两提交（0cc8a7e 指针注 / 07097ce §2 结果回填）ff 并入 dev；承重亲验=provider-proxy.ts:435 + main.ts:318 无 fetch + collie-resident-preload.ts:15 + credential-projector.ts:127/:136/:166-167 + config.go:403-406 + effects.ts:785-url 式；判据二形（夹具形主/收缩形副）与 Linux add-host 独立小票问题呈所有者择/裁；A30 至今零代码触碰，"仅立票"义务链闭合；blcheck 67/0；docs-only 扫描门不触发；本会话第三次编辑误落 dev=未遂（合并前自查，checkout 归位），规则升格"先建支后动笔"；不宣称项目安全；main HOLD b22df40
+- 待所有者: A30 判据择一（→diff-plan v3+进码令）· Linux add-host 小票与否 · T-2 · U-6/7 · C-A 点名(P-1/P-2) · 治理轮落笔 · main/推送
