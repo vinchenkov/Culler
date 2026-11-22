@@ -731,6 +731,10 @@ async function collieWake(effect: CollieWakeEffect, deps: TickDeps): Promise<boo
       .flatMap((w) => ["-v", `${maskDir}:/workspaces/${w.id}/${PROJECT_ARTIFACT_DIR}:ro`]),
     ...(taskArtifacts?.source ? ["-v", `${taskArtifacts.source}:${taskArtifacts.destination}:ro`] : []),
     ...(providerAccessPath === undefined ? [] : [
+      // Provider traffic egresses to the host proxy at host.docker.internal;
+      // Linux engines only resolve that name with an explicit gateway mapping,
+      // as the deployment-side runtime-auth launcher already passes (A31).
+      "--add-host", "host.docker.internal:host-gateway",
       "-v", `${providerAccessPath}:/mc/provider-access.json:ro`,
       "-e", "MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json",
     ]),
@@ -1536,6 +1540,10 @@ async function spawnAttempt(
       : projectHomeArguments(effect.mount_plan.tool_home.canonical, true, limits.tmpfs_mb)),
     ...planBinds,
     ...(providerAccessPath === undefined ? [] : [
+      // Provider traffic egresses to the host proxy at host.docker.internal;
+      // Linux engines only resolve that name with an explicit gateway mapping,
+      // as the deployment-side runtime-auth launcher already passes (A31).
+      "--add-host", "host.docker.internal:host-gateway",
       "-v", `${providerAccessPath}:/mc/provider-access.json:ro`,
       "-e", "MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json",
     ]),

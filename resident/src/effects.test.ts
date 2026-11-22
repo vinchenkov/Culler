@@ -933,6 +933,7 @@ describe("spawn effect", () => {
       expect(create.join(" ")).not.toContain("CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST");
       expect(create.join(" ")).not.toContain("host-minted-access");
       expect(create).toContain("MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json");
+      expect(create[create.indexOf("--add-host") + 1]).toBe("host.docker.internal:host-gateway");
       expect(create.join(" ")).not.toContain("ANTHROPIC_API_KEY");
       expect(rig.docker.calls[1]).toEqual(["start", "mc-ws-e2e-run-77-worker"]);
     });
@@ -952,6 +953,7 @@ describe("spawn effect", () => {
       expect(rig.fakeFs.writes.get("/tmp/mc-home/runs/provider-access/run-78-worker-run-78-worker.json")).toBe(accessProjection().proxyConfig);
       const create = rig.docker.calls[0]!;
       expect(create).toContain("/tmp/mc-home/runs/provider-access/run-78-worker-run-78-worker.json:/mc/provider-access.json:ro");
+      expect(create[create.indexOf("--add-host") + 1]).toBe("host.docker.internal:host-gateway");
 	  expect(create).toContain("/tmp/mc-home/sessions/run-78-worker:/mc/session");
       expect(create.join(" ")).not.toContain("CODEX_HOME");
       expect(create.join(" ")).not.toContain("REFRESH_TOKEN");
@@ -1058,6 +1060,7 @@ describe("spawn effect", () => {
       ],
       ["start", "mc-ws-e2e-run-42-worker"],
     ]);
+    expect(rig.docker.calls[0]).not.toContain("--add-host");
   });
 
   // The container identity is per Project. The id is a segment of the
@@ -2298,6 +2301,7 @@ describe("collie tier (lease-free)", () => {
       expect(create.join(" ")).not.toContain("CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST");
       expect(create.join(" ")).not.toContain("host-minted-access");
       expect(create).toContain("MC_PROVIDER_ACCESS_FILE=/mc/provider-access.json");
+      expect(create[create.indexOf("--add-host") + 1]).toBe("host.docker.internal:host-gateway");
       expect(create).toContain(`${testConfig.mcHome}/agentsview/inspection:/mc/traces:ro`);
     });
 
