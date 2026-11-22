@@ -15,3 +15,8 @@ codex/claude 适配器的 provider egress 走 `globalThis.fetch`（preload 可�
 
 ## 3. 边界
 不触 L02（双残余/T-2 与本票无关）；不并 D-C；005 §1/§2/§5 旧 wake 框架作废留痕于更正段（原文不删）；实施授权前 collie/adapters/resident 零动。
+
+## 4. §2 追证结果（轮十二续；只读追证子代理+本代理亲验承重行）
+**归属材料=H-夹具（置信高），结构链亲验**：容器 egress 目标=宿主代理（`provider-access.json` 的 url 恒 `https://host.docker.internal:<port>`，`credential-projector.ts:159`+`provider-proxy.ts:785`；bind 只选宿主监听面，`config.go:403-406` 空=loopback，Mac 下 host.docker.internal 可达）；代理上游 egress 读 `dependencies.fetch ?? providerTransport`（`provider-proxy.ts:435`，本代理亲验），生产 `main.ts:318` 起投影器**不传 fetch**（行范围无 "fetch"，亲验）⇒ 实际走 `provider-transport.ts`（node:https）；而 fixture preload 只补 `globalThis.fetch`（`collie-resident-preload.ts:15`，亲验）——**被补引用在生产调用链上从未被读，拦截在最后一跳结构性失效**⇒代理持合成 key 打真实上游=401（预勘侧 diagnostic 证据，与机制一致）。**注入缝已存在**：`credential-projector.ts:127 fetch?: typeof fetch` → `:136` 下传（bun 侧 native-harness/collie-stream/failure-repair 套件即走此缝且**绿**——真容器化 codex/claude CLI 到宿主代理端到端已证，产品 egress 设计无缺口）。三枚通过 collie 测=假 harness（fakeRouting；`credential-projector.ts:166-167` fake→null projection 无挂载 `--network none`），**从不发真 provider 请求**——失败测是道内唯一期待真形往返者。
+**UNKNOWN 保留（不掩）**：a) 观测轮请求实际到没到代理（macOS loopback 可达性；requests.jsonl 从未存在故不可判，保留树 `runs/provider-access/` 空=清理或未写不可判）；b) Linux 形 `bind=""`+host.docker.internal 无 `--add-host`（effects 全文无该参）=契约问题（若产品声明支持 Linux 容器达代理，此为**另一独立产品缺口**，属 A03/A04 部署面非本票 wake 题——单列呈报）。
+**判据二形（供所有者择一，即 §1-5 的落地）**：**(夹具形·主)** e2e 测改用既有 `fetch` 注入缝（或等效测试钩子）使 fixture 传输真正在链上，判据=两子界转绿+三通过测不回归+**native-harness 绿套不动**（避免双权威注入）；**(收缩形·副)** 承认 bun 级 native-harness 套为该拦截的既备证据，删除/降级 e2e 侧重复断言（转写≠放宽的边界在此=不得把两形都留成假绿面）。b 项若裁"Linux 契约应撑"，另立小票不并 A30。
