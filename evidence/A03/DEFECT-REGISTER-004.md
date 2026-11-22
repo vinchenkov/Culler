@@ -44,4 +44,10 @@
 - **链级生效实证（本机，Desktop=所有者声明健康；完整状态表经补跑凑齐，含一次 `-run` 模式漏项的当场纠正）**：`docker_e2e` 17 个顶层用例 **16 绿 / 1 红**——本缺陷原症状正主 `TestWalkingSkeleton` **首绿 133s**；此前要求真产活的整片（`TestBackpressure` 569s、`CorrectionRally`、`CredentialProjection×2`、`RebootDrill`、`MultiApproveDrain`、`RoleSkillIsolation`、`LandingFailureAndRecovery` 等）全绿。⇒ 播种投影不再被 `dubious ownership` 挡死，run birth→dispatch→回收全链通。
 - **修复面负控**：argv 注入弱守卫（旗先于子命令/值绝对/非 `*`）+ 旁路源守卫（两处非咽喉直调必带 `safeDirectoryArg`，计数不涨）；`TestReadOnlyInspectionsOpenThroughTheSharedPath` 等被钉不变量**未破**。bespoke 双向容器哨兵（root 属主仓库×10002×pre/post 双跑）因操作者扫描钩子与其包内已批同形件冲突、三度拦下 ⇒ 存 `evidence/A29/blocked-boundary-test.txt` 待裁工件，**强证由上列 e2e 端到端链承担**（断言体即原症状，较容器单点更强）。
 - **唯一残留红定性**：`TestCollieNativeProxyDockerBoundary/{codex,claude-sdk}` = **独立缺陷 DEFECT-REGISTER-005**（wake/birth 层；父提交 `04cd6b2` 无本改动**同红同签名** `PARENT_EXIT=1` 实证非我引入；其余三枚 collie 测全绿把红收窄到"native proxy resident 晚启"特有面）。**本缺陷（004）就此闭合**，005 另呈（A30 候选或并入 L02 计划内时序家族，归所有者裁）。
+  - *（轮十三随 005 更正段 #1：上句 wake/birth 与"晚启"框架作废，正确定性=provider 传输边界（H-夹具高置信）；A30 已独立立票（轮十二 Q1）。**独立性实证与"不影响 004 闭合"两判定不受此更正影响**。)*
+
+## §6 验收语义注（轮十三，依所有者"以原票面验收条件为准"之令核对）
+- **原票面（A29 行 F1，轮十一经"批准，继续一下批任务"授权执行）验收条件=「docker_e2e 本机首绿」+合并前双全道+boundary/update_docker 回归**——三项全部兑现。**定向机/CI 的 e2e 不在其列**。
+- "本机与定向机/CI 各跑一次"出自**本登记 §5 的修复方向呈报语**（我撰写，非票面、非批准条款）。按所有者第四点两分支：**采"额外验证计划"读法**——CLOSED 与票面证据一致、无需回退；定向机/CI e2e 自本注起**明确标记=未完成的额外验证项**（非未满足的硬性条件）。其可行性约束见 `evidence/A30/linux-host-gateway-contract-facts-001.md` F3：Linux 上真 harness 端到端现无承载道，**C-A 落地亦不覆盖**（CI 跑 fake harness=`--network none` 不发 provider 请求）。
+- 本注不改状态行（CLOSED 维持），只固化其依据的是哪份验收文字——防后文误读为"双环境均已验证"。
 - **状态转写**：REGISTERED, NOT FIXED → **FIXED via A29**（CODED；e2e 链级 16/17 实证；EVIDENCED 转写随 AM 登记轮，义务完成判定仍归 F0a Exit+治理链）。通道预算注：包级 30m 对 17 测不足（实测全跑 ≈40m+），本批补跑用 45m；数值更新属测试域呈报项，未擅改。
