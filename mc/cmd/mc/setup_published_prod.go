@@ -53,6 +53,8 @@ type publishedSetup struct {
 	helper              func(home, image string) error
 	now                 func() time.Time
 	sleep               func(time.Duration)
+	drainWindow         time.Duration
+	drainIdle           func(context.Context) error
 	images              *imageRemovalRecord
 	hostBunProblem      string
 }

@@ -149,6 +149,7 @@ func (p *publishedSetup) beforeUpdate(ctx context.Context, report func(string)) 
 	if err := p.updatePhase("stop"); err != nil {
 		return err
 	}
+	p.drainWindow = updateDrainWindow
 	if err := p.stopForUpdate(ctx, report); err != nil {
 		return p.updateFailure(err)
 	}

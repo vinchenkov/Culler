@@ -137,3 +137,106 @@ func TestPublishedRestoreStartsThePreviousHelperBeforeServices(t *testing.T) {
 		})
 	}
 }
+
+func TestUpdateDrainWindowIsTheApprovedTenMinutes(t *testing.T) {
+	if updateDrainWindow != 10*time.Minute {
+		t.Fatalf("the drain window changed without the owner's parameter decision: %v", updateDrainWindow)
+	}
+}
+
+func TestPublishedUpdateStopDrainsBeforeInterrupting(t *testing.T) {
+	old := publishedUpdateStopControl
+	t.Cleanup(func() { publishedUpdateStopControl = old })
+	var steps []string
+	publishedUpdateStopControl = func(string, func(context.Context, ...string) ([]byte, error)) deployment.UpdateStopControl {
+		return deployment.UpdateStopControl{Now: time.Now, Services: func(context.Context, bool) error { return nil },
+			Processes: func(context.Context) ([]deployment.UpdateProcess, error) {
+				steps = append(steps, "stop")
+				return nil, nil
+			},
+			Wait:   func(_ context.Context, d time.Duration) error { return nil },
+			Docker: func(context.Context, ...string) ([]byte, error) { return nil, nil }}
+	}
+	p := &publishedSetup{home: t.TempDir(), update: &deployment.UpdateJournal{ID: strings.Repeat("a", 32)},
+		installed:   distribution.Record{Image: "previous@sha256:" + strings.Repeat("a", 64)},
+		drainWindow: time.Minute,
+		now:         func() time.Time { return time.Unix(1700000000, 0) },
+		sleep:       func(time.Duration) {},
+		drainIdle: func(context.Context) error {
+			if len(steps) < 2 {
+				steps = append(steps, "drain-busy")
+				return errors.New("active work remains")
+			}
+			steps = append(steps, "drain-idle")
+			return nil
+		},
+		docker: func(_ context.Context, args ...string) ([]byte, error) {
+			if args[len(args)-1] == "__update-reconcile" {
+				steps = append(steps, "reconcile")
+				return []byte(`{"runs":0,"executions":0,"sessions":0,"environments":0}`), nil
+			}
+			return nil, nil
+		}}
+	var reports []string
+	if err := p.stopForUpdate(context.Background(), func(line string) { reports = append(reports, line) }); err != nil {
+		t.Fatal(err)
+	}
+	joined := strings.Join(steps, "|")
+	if !strings.HasPrefix(joined, "drain-busy|drain-busy|drain-idle|stop") || !strings.HasSuffix(joined, "reconcile") {
+		t.Fatalf("quiescence steps %q", joined)
+	}
+	if strings.Contains(strings.SplitN(joined, "stop", 2)[1], "drain") {
+		t.Fatalf("a drain sample ran after the stop phase began: %q", joined)
+	}
+	if !strings.Contains(strings.Join(reports, "\n"), "Active work finished before the stop.") {
+		t.Fatalf("reports %q", reports)
+	}
+}
+
+func TestPublishedUpdateStopInterruptsWhenTheDrainWindowCloses(t *testing.T) {
+	old := publishedUpdateStopControl
+	t.Cleanup(func() { publishedUpdateStopControl = old })
+	var steps []string
+	publishedUpdateStopControl = func(string, func(context.Context, ...string) ([]byte, error)) deployment.UpdateStopControl {
+		return deployment.UpdateStopControl{Now: time.Now, Services: func(context.Context, bool) error { return nil },
+			Processes: func(context.Context) ([]deployment.UpdateProcess, error) {
+				steps = append(steps, "stop")
+				return nil, nil
+			},
+			Wait:   func(_ context.Context, d time.Duration) error { return nil },
+			Docker: func(context.Context, ...string) ([]byte, error) { return nil, nil }}
+	}
+	start := time.Unix(1700000000, 0)
+	clock := start
+	p := &publishedSetup{home: t.TempDir(), update: &deployment.UpdateJournal{ID: strings.Repeat("a", 32)},
+		installed:   distribution.Record{Image: "previous@sha256:" + strings.Repeat("a", 64)},
+		drainWindow: 30 * time.Second,
+		now:         func() time.Time { clock = clock.Add(10 * time.Second); return clock },
+		sleep:       func(time.Duration) {},
+		drainIdle: func(context.Context) error {
+			steps = append(steps, "drain-busy")
+			return errors.New("active work remains")
+		},
+		docker: func(_ context.Context, args ...string) ([]byte, error) {
+			if args[len(args)-1] == "__update-reconcile" {
+				steps = append(steps, "reconcile")
+				return []byte(`{"runs":1,"executions":1,"sessions":0,"environments":0}`), nil
+			}
+			return nil, nil
+		}}
+	var reports []string
+	if err := p.stopForUpdate(context.Background(), func(line string) { reports = append(reports, line) }); err != nil {
+		t.Fatal(err)
+	}
+	joined := strings.Join(reports, "\n")
+	if !strings.Contains(joined, "Active work remains. Interrupted runs can require a retry.") {
+		t.Fatalf("reports %q", reports)
+	}
+	expiry := strings.Join(steps, "|")
+	if !strings.HasPrefix(expiry, "drain-busy|drain-busy|drain-busy|stop") || !strings.HasSuffix(expiry, "reconcile") {
+		t.Fatalf("expiry steps %q", expiry)
+	}
+	if strings.Contains(strings.SplitN(expiry, "stop", 2)[1], "drain") {
+		t.Fatalf("the window kept sampling after the stop phase began: %q", expiry)
+	}
+}
