@@ -1,0 +1,7 @@
+AM v0.1.75 双面哈希登记（轮九十一项总裁定 + A27 立票 + 公开面闭合集入纪律册 + Authority 登记行漂移修复）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 66e75bb36ac63923eb5af3067f74f34240ee0114f5871e08fd583f44a98510a4
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.74 = b39e2f8c9e6fb2eafe6480674be0104ff2398f19778cc27abf23b6e0675f0925（evidence/L03/am-v0.1.74-hash.txt）
+- 同轮事实: 三票支 ff 并入 dev（5309ac7 A27 立票 / 6755060 前台语义转写 / 15024e6 Track L 形状转写），dev tip 15024e6→登记提交；blcheck 64 票 0 违规（2 warning 沿册，BLCHECK_EXIT=0 自取退出码）；A27 未入 status.json=BACKLOG（立票不进码一致）；Authority 登记行漂移（正文"待指定"vs 变更史 v0.1.66 已任命）经所有者核查指令暴露并同轮修复；Q4 容器枚举纪律与 Q3 公开面闭合集两规则入纪律册即时生效；docs/evidence-only 波次，代码扫描门不触发声明沿 v0.1.36 前例，不宣称项目安全；worktree 收敛至仅 dev；main 仍 PRISTINE b22df40 未推送
+- 待所有者（其自列三参数/决定）: U-6/U-7（O1-b）；L02 排空期限数值；合并独立决定
