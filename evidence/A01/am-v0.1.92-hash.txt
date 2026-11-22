@@ -1,0 +1,7 @@
+AM v0.1.92 双面哈希登记（轮十九：A01 决策支持件——载体缝已存在、八件收敛三事、218 探针候令、A02 未启动零裁决）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = d6e8960e41a16fa21ecebdc378304a1759f5a31b2eb0c65ffc39668f6bb2999b
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-23 +0800 实测）
+- 前轮: v0.1.91 = ba4b1289c26091d742ac38b038d551b1130a1922012a37a4126fac95b9ad7e7e（evidence/A25/am-v0.1.91-hash.txt）
+- 同轮事实: 支 shz/TR22 ff 并入 dev=da0e173；决策支持件=evidence/A01/a01-decision-support-001.md（载体缝三选型行亲验/各候选 A02 码面同形/八件机械后果矩阵/验证地图/一行式批量模板 §4）；blcheck 69/0；worktree 仅 dev；docs-only 扫描不触发；main 远端 dd087c7 未再推；不宣称项目安全
+- 候令: A01 八件（模板可一次答完）· A25b B1/B2/B3 · Actions 启用 · 发布纪律确认 · VISION.md · 218 三行探针准/不准
