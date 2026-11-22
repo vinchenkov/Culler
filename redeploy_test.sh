@@ -146,6 +146,9 @@ if [ "${1:-}" = print ] && [ -n "${MC_REDEPLOY_TEST_PRINT_EXIT:-}" ]; then
 fi
 if [ "${1:-}" = bootout ] && [ -n "${MC_REDEPLOY_TEST_BOOTOUT_EXIT:-}" ]; then
   printf 'Boot-out failed: service control refused the request.\n' >&2
+  # Exit 3 models a service that is already gone: a later `list` must not show
+  # it, so the loaded sentinel comes off here even though the bootout failed.
+  [ "${MC_REDEPLOY_TEST_BOOTOUT_EXIT}" = 3 ] && rm -f "${MC_REDEPLOY_TEST_LOADED_FILE:-/nonexistent}"
   exit "$MC_REDEPLOY_TEST_BOOTOUT_EXIT"
 fi
 if [ "${1:-}" = bootout ] && [ -n "${MC_REDEPLOY_TEST_LOADED_FILE:-}" ]; then
@@ -325,6 +328,32 @@ grep -F "redeploy.sh: a supervised Culler deployment is loaded." "$case_root/out
 grep -q 'CALL	docker	build' "$log" && fail "the expired wait still built the image"
 [ "$(cat "$case_root/mc-bin/mc")" = "old release" ] || fail "the expired wait replaced the installed mc"
 
+# --- plist removed by hand but the units are loaded: the stop still unloads ---
+# This is DEFECT-REGISTER-001: the old plist-glob stop never named a loaded
+# unit whose plist file was gone, so the wait wedged. The loaded list drives the
+# stop now, so the same state completes the redeploy. Under the old script this
+# case reproduces the wedge with "a supervised Culler deployment is loaded."
+case_root="$TMP/plist-gone-loaded"
+make_fakes "$case_root/bin"
+mkdir -p "$case_root/home/Library/LaunchAgents" "$case_root/mc-bin"
+# No plist files exist at all; both units are loaded.
+: >"$case_root/loaded"
+printf 'old release\n' >"$case_root/mc-bin/mc"
+printf 'schema=current records=5\n' >"$case_root/spine.db"
+log="$case_root/calls.log"
+: >"$log"
+if ! env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
+  MC_BIN_DIR="$case_root/mc-bin" MC_REDEPLOY_TEST_LOG="$log" MC_REDEPLOY_TEST_DB="$case_root/spine.db" \
+  MC_REDEPLOY_TEST_LOADED_FILE="$case_root/loaded" \
+  sh "$ROOT/redeploy.sh" >"$case_root/out" 2>&1; then
+  cat "$case_root/out" >&2
+  fail "loaded units with missing plist files wedged the redeploy (DEFECT-REGISTER-001)"
+fi
+grep -q "CALL	launchctl	bootout	gui/$(id -u)/com.culler.abc.resident" "$log" || fail "the loaded resident was not stopped"
+grep -q "CALL	launchctl	bootout	gui/$(id -u)/com.culler.abc.dashboard" "$log" || fail "the loaded dashboard was not stopped"
+[ -e "$case_root/loaded" ] && fail "the wait loop did not see the units unload"
+grep -q 'CALL	doctor' "$log" || fail "the redeploy did not complete"
+
 # --- image build fails: units stopped, old release untouched, clear message ---
 case_root="$TMP/image-fails"
 make_fakes "$case_root/bin"
@@ -380,13 +409,18 @@ for width in 80 40; do
       [ "$color" = plain ] || { no_color= force_color=1; }
       case "$scenario" in
         preflight) list_fail=1 ;;
-        database|poll) list_fail=2 ;;
-        image) list_fail=3 ;;
+        database) list_fail=2 ;;
+        poll) list_fail=3 ;;
+        image) list_fail=4 ;;
         bootout)
           bootout_exit=5 loaded="$case_root/loaded"
           touch "$loaded" ;;
-        bootout-check) bootout_exit=5 print_exit=141 ;;
-        absent) bootout_exit=3 print_exit=113 ;;
+        bootout-check)
+          bootout_exit=5 print_exit=141 loaded="$case_root/loaded"
+          touch "$loaded" ;;
+        absent)
+          bootout_exit=3 print_exit=113 loaded="$case_root/loaded"
+          touch "$loaded" ;;
       esac
       status=0
       env MC_OS_OVERRIDE=Darwin PATH="$case_root/bin:/usr/bin:/bin" HOME="$case_root/home" \
@@ -642,8 +676,8 @@ for target in default named; do
     printf 'reset\n' | TTY=1 run_redeploy --reset-database || { cat "$case_root/out" >&2; fail "a confirmed reset did not complete"; }
     CASE_MC_HOME=
     [ "$(cat "$case_root/spine.db")" = "schema=current records=0" ] || fail "a confirmed reset did not replace the database"
-    expected_reset=$(printf 'CALL\tlaunchctl\tlist\nCALL\tdocker\timage\nCALL\t__onboard\tagentsview\nCALL\tlaunchctl\tbootout\tgui/%s/com.culler.abc.resident\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\n%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsurfaces\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' \
-      "$(id -u)" "$reset_call")
+    expected_reset=$(printf 'CALL\tlaunchctl\tlist\nCALL\tdocker\timage\nCALL\t__onboard\tagentsview\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tlaunchctl\tlist\nCALL\tdocker\tbuild\nCALL\tdocker\tbuild\nCALL\tdocker\trun\nCALL\tdocker\trun\n%s\nCALL\t__onboard\ttunables\nCALL\t__onboard\tsurfaces\nCALL\t__onboard\tsupervision\t--activate\t--reconfigure\nCALL\tdoctor' \
+      "$reset_call")
     actual=$(grep -v '^CALL	docker	info$' "$log")
     [ "$actual" = "$expected_reset" ] || {
       printf 'expected:\n%s\nactual:\n%s\n' "$expected_reset" "$actual" >&2

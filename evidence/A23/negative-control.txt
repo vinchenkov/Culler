@@ -1,0 +1,83 @@
+Negative control for DEFECT-REGISTER-001 (A23) — archived transcript of the executed check.
+Executable form (run with the pre-fix script exposed at a scratch path):
+  ROOT=$(mktemp -d); git -C <dev-worktree> worktree add --detach "$ROOT/old" 7c6524e
+  # then set OLD_SH below to "$ROOT/old/redeploy.sh" and run this file with sh.
+RESULT ON 2026-11-22 (+0800): OLD_STATUS=1  bootout_calls=0  WEDGE MESSAGE PRESENT
+  (the pre-fix loop never named the loaded units because their plist files were gone;
+   the wait loop then expired on "a supervised Culler deployment is loaded.")
+The SAME state under the fixed (list-driven) stop loop is covered by the positive case
+in redeploy_test.sh ("plist removed by hand but the units are loaded"), which asserts
+both bootouts happen and the redeploy completes.
+
+#!/bin/sh
+# Negative control for DEFECT-REGISTER-001: the PRE-FIX redeploy.sh must wedge
+# when units are loaded but their plist files are gone (the old stop loop
+# enumerated plists; the wait loop checked launchctl list).
+set -u
+OLD_SH=${OLD_SH:?pass the pre-fix redeploy.sh path}
+BIN=$(mktemp -d)/bin; mkdir -p "$BIN"
+LOG=$BIN/calls.log; : >"$LOG"
+LOADED=$BIN/loaded; : >"$LOADED"
+HOME_DIR=$(mktemp -d)/home; mkdir -p "$HOME_DIR/Library/LaunchAgents"   # no plists
+MC_BIN=$(mktemp -d)/mc-bin; mkdir -p "$MC_BIN"; printf 'old release\n' >"$MC_BIN/mc"
+printf 'schema=current records=5\n' >"$BIN/spine.db"
+cat >"$BIN/launchctl" <<'F'
+#!/bin/sh
+{ printf 'CALL\tlaunchctl'; for a do printf '\t%s' "$a"; done; printf '\n'; } >>"$MC_NEG_LOG"
+if [ "${1:-}" = list ] && [ -e "${MC_NEG_LOADED:-/nonexistent}" ]; then
+  printf -- '-\t0\tcom.culler.abc.resident\n-\t0\tcom.culler.abc.dashboard\n'
+fi
+if [ "${1:-}" = bootout ] && [ -n "${MC_NEG_LOADED:-}" ]; then rm -f "${MC_NEG_LOADED}"; fi
+exit 0
+F
+cat >"$BIN/docker" <<'F'
+#!/bin/sh
+{ printf 'CALL\tdocker\t%s\n' "${1:-}"; } >>"$MC_NEG_LOG"
+exit 0
+F
+cat >"$BIN/uname" <<'F'
+#!/bin/sh
+[ "${1:-}" = -m ] && printf 'x86_64\n' && exit 0
+printf 'Darwin\n'
+F
+cat >"$BIN/mise" <<'F'
+#!/bin/sh
+{ printf 'CALL\tmise'; for a do printf '\t%s' "$a"; done; printf '\n'; } >>"$MC_NEG_LOG"
+[ "${1:-}" = exec ] || exit 94
+shift; [ "${1:-}" = -- ] && shift
+if [ "${1:-}" = go ] && [ "${2:-}" = build ]; then
+  # Emulate the host mc build: honor -o so the script's scratch binary exists.
+  out=; prev=
+  for a in "$@"; do
+    [ "$prev" = -o ] && out=$a
+    prev=$a
+  done
+  [ -n "$out" ] || exit 94
+  cat >"$out" <<'MC'
+#!/bin/sh
+{ printf 'CALL\tmc'; for a do printf '\t%s' "$a"; done; printf '\n'; } >>"${MC_NEG_LOG:?}"
+for a in "$@"; do
+  case "$a" in
+    __redeploy-check) printf '{"ok":true,"sections":[{"section":"home","status":"ok"}]}\n'; exit 0 ;;
+  esac
+done
+printf '{"ok":true,"sections":[{"section":"home","status":"ok"}]}\n'
+exit 0
+MC
+  chmod 755 "$out"
+  exit 0
+fi
+exec "$@"
+F
+chmod 755 "$BIN"/*
+status=0
+env -i PATH="$BIN:/usr/bin:/bin" HOME="$HOME_DIR" SHELL=/bin/sh \
+  MC_OS_OVERRIDE=Darwin MC_NEG_LOG="$LOG" MC_NEG_LOADED="$LOADED" \
+  MC_BIN_DIR="$MC_BIN" MC_REDEPLOY_TEST_LOG="$LOG" MC_REDEPLOY_TEST_DB="$BIN/spine.db" \
+  MC_REDEPLOY_TEST_LOADED_FILE="$LOADED" COLUMNS=80 \
+  sh "$OLD_SH" >"$BIN/out" 2>&1 || status=$?
+echo "OLD_STATUS=$status"
+grep -c 'bootout' "$LOG" | sed 's/^/bootout_calls=/'
+grep -F 'a supervised Culler deployment is loaded.' "$BIN/out" >/dev/null \
+  && echo "WEDGE MESSAGE PRESENT (negative control holds)" \
+  || { echo "no wedge message; tail:"; tail -4 "$BIN/out"; }
