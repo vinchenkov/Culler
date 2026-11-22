@@ -9,7 +9,30 @@ import (
 
 const productionSpinePath = "/mc/spine/spine.db"
 
-func shouldDelegateToHelper() bool { return runtime.GOOS == "darwin" }
+// The operator host is any place Culler's own containers are not. The project
+// vision surface and the helper delegation both key on this one fact: a process
+// inside a Culler container (agent or helper) carries /.dockerenv, and must
+// neither inspect project vision nor delegate onward to another helper. Docker
+// ships /.dockerenv in every image, so its absence is the scope fact; the
+// darwin/Linux name presentation differs only by host, and both behave alike.
+// The seams let the three-domain matrix be proven in unit form (host / helper /
+// agent); the run.json identity layer (RequireHostScope) and the lock-domain
+// guard are the separate, unchanged defenses they are.
+var (
+	operatorHostOS  = runtime.GOOS
+	dockerEnvMarker = func() error { _, err := os.Stat("/.dockerenv"); return err }
+)
+
+func operatorHostScope() bool {
+	switch operatorHostOS {
+	case "darwin", "linux":
+		return os.IsNotExist(dockerEnvMarker())
+	default:
+		return false
+	}
+}
+
+func shouldDelegateToHelper() bool { return operatorHostScope() }
 func directPrivateAttachmentOK() bool {
 	return false
 }
@@ -38,4 +61,4 @@ func privateHelperScopeOK() bool {
 	return true
 }
 
-func canInspectProjectVision() bool { return runtime.GOOS == "darwin" }
+func canInspectProjectVision() bool { return operatorHostScope() }
