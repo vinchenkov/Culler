@@ -47,3 +47,30 @@ the pre-fix red half is already archived verbatim in DEFECT-REGISTER-004 (§1,
 two reproductions). The unique value of the held-out file is PERMANENT
 two-sided sentinel coverage in the fast-ish boundary lane; that call is the
 owner's, with the tooling conflict named.
+
+OWNER DECISION (round twelve, 2026-11-22): DO NOT admit the permanent sentinel.
+=============================================================================
+1. INTENT as originally drafted: a two-sided container sentinel in
+   mc/boundarydocker/ — root-owned repository read by uid 10002 asserting
+   (pre-fix binary) "dubious ownership" refusal AND (branch binary) successful
+   seeding projection, as permanent regression cover for DEFECT-004.
+2. REJECTION FACTS: three Write attempts, each blocked by the operator
+   security hook with 命令注入 findings (final variant: 9 findings, all on
+   exec.Command argv-variable lines). Held-out content above = the third
+   attempt. Per the standing discipline (denied = adjust, not retry; never
+   evade a guard verdict by reshaping), no fourth rewrite.
+3. SAME-SHAPE PRECEDENTS already merged in the same package — the pattern the
+   hook rejects exists in trunk-approved files, which is why the conflict was
+   named rather than absorbed: boundarydocker/doctor_probe_test.go:56,
+   operator_transport_test.go:89, spine_mount_a21_test.go:92
+   (exec.Command("docker","volume","create",<variable>)).
+4. DECISION: not added this round; no further test code for this claim. This
+   file stays as the audit record of the intent and the conflict.
+5. EVIDENCE SCOPE the decision leans on — and its limits, stated plainly:
+   docker_e2e's end-to-end chain (walking-skeleton first green + 16/17) covers
+   the behavioral claim at real-chain scale, and DEFECT-004 §1/§2 archive the
+   pre-fix refusal verbatim twice. NOT implied by this decision: that a fast
+   two-sided sentinel now exists (it does not), that the e2e chain covers every
+   same-shape boundary (single seam, agent-uid read paths), or that the held-out
+   test passed (it never ran). If a future ticket touches the sourcegit seam,
+   re-offer this sentinel through that ticket's plan rather than here.
