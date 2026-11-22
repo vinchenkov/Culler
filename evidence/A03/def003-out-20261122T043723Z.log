@@ -1,0 +1,12 @@
+# DEFECT-003 truth table on designated host
+image=sha256:f77ab1459d896a7ba2a02d57d7ced633a20dd7ad804b93d
+binary-elf-head= 7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+
+A	marker=ERR	verb=__release-database	user=10002:10002	mount=ro	header=0202	exit=1	result=mc: inspect spine "/mc/spine/spine.db" read-only: open spine read-only	ts=2026-11-22T04:37:25Z host=F1104 uid=0
+B	marker=OK	verb=__release-database	user=10002:10002	mount=ro	header=0101	exit=0	result={"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b9b6019ff108b	ts=2026-11-22T04:37:27Z host=F1104 uid=0
+C	marker=OK	verb=__release-database	user=10002:10002	mount=ro	header=od: cannot skip past end of combined input	exit=0	result={"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b9b6019ff108b	ts=2026-11-22T04:37:28Z host=F1104 uid=0
+D	marker=ERR	verb=__database-schema	user=10001:10001	mount=ro	header=0202	exit=1	result=mc: inspect spine "/mc/spine/spine.db" read-only: open spine read-only	ts=2026-11-22T04:37:29Z host=F1104 uid=0
+E	marker=OK	verb=__database-schema	user=10001:10001	mount=ro	header=0101	exit=0	result={"protocol_version":1,"schema_id":"5c56d3132ea33fb85f9204462df94396c9d	ts=2026-11-22T04:37:30Z host=F1104 uid=0
+F	marker=ERR	verb=__release-database	user=10002:10002	mount=rw	header=0202	exit=1	result=mc: inspect spine "/mc/spine/spine.db" read-only: open spine read-only	ts=2026-11-22T04:37:32Z host=F1104 uid=0
+
+residue: volumes=0 containers=0

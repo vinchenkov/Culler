@@ -1,0 +1,11 @@
+# DEFECT-003 round 2b
+G/H volume files: : 1044480:spine.db 32768:spine.db-shm 0:spine.db-wal 
+G	exit=0	mount=ro	bin=host	verb=__release-database	files=: 1044480:spine.db 32768:spine.db-shm 0:spine.db-wal 	result={"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b	ts=2026-11-22T04:39:19Z host=F1104
+H	exit=0	mount=rw	bin=host	verb=__release-database	files=: 1044480:spine.db 32768:spine.db-shm 0:spine.db-wal 	result={"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b	ts=2026-11-22T04:39:19Z host=F1104
+K volume files: : 23:app 7:bin 4096:boot 4096:cache 4096:d 340:dev 4096:etc 4096:home 1044480:in.db 7:lib 4096:lib.usr-is-merged 9:lib64 4096:mc 4096:media 4096:mnt 4096:ms-playwright 4096:opt 0:proc 4096:root 4096:run 8:sbin 4096:srv 0:sys 4096:tmp 4096:usr 4096:var 4096:workspace 
+K	exit=1	mount=ro	bin=image	verb=__release-database	files=: 23:app 7:bin 4096:boot 4096:cache 4096:d 340:dev 4096:etc 4096:home 1044480:in.db 7:lib 4096:lib.usr-is-merged 9:lib64 4096:mc 4096:media 4096:mnt 4096:ms-playwright 4096:opt 0:proc 4096:root 4096:run 8:sbin 4096:srv 0:sys 4096:tmp 4096:usr 4096:var 4096:workspace 	result=mc: inspect spine "/mc/spine/spine.db" read-only: open spi	ts=2026-11-22T04:39:19Z host=F1104
+L volume files: : 23:app 7:bin 4096:boot 4096:cache 4096:d 340:dev 4096:etc 4096:home 1044480:in.db 7:lib 4096:lib.usr-is-merged 9:lib64 4096:mc 4096:media 4096:mnt 4096:ms-playwright 4096:opt 0:proc 4096:root 4096:run 8:sbin 4096:srv 0:sys 4096:tmp 4096:usr 4096:var 4096:workspace 
+L	exit=0	mount=ro	bin=image	verb=__release-database	files=: 23:app 7:bin 4096:boot 4096:cache 4096:d 340:dev 4096:etc 4096:home 1044480:in.db 7:lib 4096:lib.usr-is-merged 9:lib64 4096:mc 4096:media 4096:mnt 4096:ms-playwright 4096:opt 0:proc 4096:root 4096:run 8:sbin 4096:srv 0:sys 4096:tmp 4096:usr 4096:var 4096:workspace 	result={"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b	ts=2026-11-22T04:39:19Z host=F1104
+
+residue before cleanup: volumes=3
+residue after cleanup: volumes=0 containers=0 tmp=3

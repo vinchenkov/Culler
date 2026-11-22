@@ -1,4 +1,4 @@
-# Defect register 003 — 升级检查点用只读挂载校验 WAL 脊，任何真脊必失败（update_docker lane 首跑抓出）
+# Defect register 003 — 三处以只读连接校验"已停写的 WAL 脊副本"必失败（update_docker lane 首跑抓出；v2 已修正机制归因）
 
 状态：**REGISTERED, NOT FIXED**。`mc/deployment/` 的更新检查点代码不在任何现行正清单内（003 主款二的 Wave A 五票与 003A 的 A24 清单一律不含），修复=新授权，本件仅登记。本文件不宣称任何代码已被修复。
 
@@ -11,6 +11,7 @@
 - 容器内：`mc/cmd/mc/private_release_database.go:13` → `verbs.InspectReleaseDatabase`（`verbs/release_database.go:47`）→ **`substrate.OpenReadOnly`**（`substrate/substrate.go:83`）。
 - Culler 的脊**永远是 WAL**：`substrate.Open` 设 WAL 模式（`substrate.go:39-40` 附近的连接纪律；脊文件头 18/19 字节=`02 02` 实测在案，取自真实运行留下的 `mc-e2e-spine-140360502` 卷）。
 - SQLite 打开一个 WAL 库需要能建立 `-shm`；卷以 **readonly** 挂载 ⇒ 无法建立 ⇒ `SQLITE_CANTOPEN (14)`。删除模式（`01 01`）的同一文件同一命令则成功。
+  - **本条为 v1 归因，已被 v2 实测部分否证**：readonly 挂载**不是**充分也不是必要触发因——可写挂载同样失败（v1 轮自己的 F 案），而 `-shm` 在场时**连 readonly 挂载都能读**（v2 轮 G 案）。真正触发因见文末 §v2。v1 文本保留为发现过程记录，不作结论引用。
 
 ## 证据（两侧对照 × 两宿主 × 三脊）
 
@@ -32,7 +33,7 @@
 
 ## 修复方向（呈所有者，本票未执行）
 
-仓库里**已有正确的读法**：`substrate.OpenSnapshotReadOnly`（`substrate.go:90-97`，`immutable=1`，其文档前条件正是"调用方已确立为完成且稳定的快照——一份拷贝出的备份"），并且 `verbs/spine_transfer.go:229-230` 已经在快照读取上用它。故最小形状=检查点校验改走快照读法（或改可写挂载），二者皆为设计决定（"检查点拷贝的权威读法"归哪一层）。
+仓库里**已有正确的读法**：`substrate.OpenSnapshotReadOnly`（`substrate.go:90-97`，`immutable=1`，其文档前条件正是"调用方已确立为完成且稳定的快照——一份拷贝出的备份"），并且 `verbs/spine_transfer.go:229-230` 已经在快照读取上用它。故最小形状=检查点校验改走快照读法（~~或改可写挂载~~——该替代项已被 v2 实测否证，可写挂载同样失败），二者皆为设计决定（"检查点拷贝的权威读法"归哪一层）。
 
 ## 附属登记项：诊断面缺陷（同族教训）
 

@@ -1,0 +1,12 @@
+# DEFECT-003 round 2 (sidecars present; shipped image binary)
+probe.db-shm
+probe.db-wal
+spine.db
+G	exit=1	files=: 32768:probe.db-shm 0:probe.db-wal 1044480:spine.db 	mount=ro	bin=host	verb=__release-database	result={"error":{"code":"domain-rejection","message":"inspect spine \"/	ts=2026-11-22T04:38:45Z host=F1104
+H	exit=1	files=: 32768:probe.db-shm 0:probe.db-wal 1044480:spine.db 	mount=rw	bin=host	verb=__release-database	result=mc: inspect spine "/mc/spine/spine.db" read-only: open spine rea	ts=2026-11-22T04:38:45Z host=F1104
+tar: This does not look like a tar archive
+tar: Skipping to next header
+tar: Exiting with failure status due to previous errors
+K	exit=0	files=: 	mount=ro	bin=image	verb=__release-database	result={"schema":"5c56d3132ea33fb85f9204462df94396c9dfb5c4801271b9b6019	ts=2026-11-22T04:38:45Z host=F1104
+
+residue: volumes=2 containers=0
