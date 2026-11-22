@@ -1,0 +1,7 @@
+AM v0.1.89 双面哈希登记（W1 推送落地：三道合树全绿→origin/main b22df40→dd087c7；test_releases=false 纠正；发现 fork Actions 未启用之属主闸=卡 A31/A32 延付证据）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = a8a83e1ea165efa7ab4601d431bbb904c721d547e79e7cc8f2f50eab77c45a07
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.88 = ff441ca8748326a2392966ad1657d14ed263db7cc3532bcaf1069369f8463157（evidence/L02/am-v0.1.88-hash.txt）
+- 同轮事实: 支 shz/TR18 单提交 ff 并入 dev；三条所有者裁定执行（§H-6 接受/MASTER Integrity=本人自任/D5 推送已执行）；推送前三道在合并 tip dd087c7 重跑全绿（MC_GATE_EXIT=0 26包0/0/0UNVERIFIED + RES 774/0 + DASH 984/0）；push origin shz/dev:main 非强推快进成功，origin/main 实读=dd087c75…8b9ba17（本 fork 首次远端推进）；本地 main 分支暂留 b22df40 未回拉（不搅操作者树）；据工件纠正——update_policy.json test_releases=false 双点核对=此推送不发布版本，仅推 ref+触发 CI；⚑ fork Actions 未启用（enabled:true 但全仓 run_count=0、release.yml 含 opt-in-lanes 已在 main）=GitHub 对 fork 需属主网页点启用之既定行为→A31 Linux 端到端 + A32 runner 首跑 两延付现卡此闸，待所有者于 https://github.com/warlockedward/Culler/actions 启用后下次 push/dispatch 产出；blcheck 69/0；ledger 25 EVIDENCED 不变；W1 本机侧全收口；不宣称项目安全
+- 待所有者（唯一新闸）: 启用 fork Actions 以解锁 A31/A32 延付证据（本侧不可代）
