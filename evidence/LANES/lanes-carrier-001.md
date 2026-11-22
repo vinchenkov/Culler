@@ -23,3 +23,8 @@
 
 ## 4. 本轮已按 C-C 交付的部分（不需授权，已完成）
 `update_docker`（红+根因）、`nightly`（绿）两条已由执行侧真跑，见 `evidence/LANES/lanes-first-run-001.md`。`docker_boundary` 此前已绿（A16-V-003）。**`docker_e2e` 在四条道里唯一仍未在任何有效域跑过**——它比另三条更吃工具链（bun+真 resident+镜像构建），且本机域已被否证；故其有效域首跑事实上取决于 C-A 或 C-B 的授权。
+
+## 5. 轮九 Q2 裁定（2026-11-22，登记于此使本件与决定同步）
+- **C-A=终态承载者路线获原则批准**；依赖序钉死为 **A27 落地 → update_docker 本地转绿 → workflow 文件族单独点名授权 → CI job 落地**。C-A 正式实施票必含：三守卫测试转写（release-workflow/security-gate/smoke-gate——**转写=适配形态，不是为让新 job 变绿而放宽守卫，原安全性质保留**）+ publish.py/record.go/install.sh 发布 job ID 引用面核对 + 新 job 与既有发布流程的权限边界检查。
+- **C-B 不采用**（生产宿主持久变更+共用+根分区 89%）。
+- **C-C 可作过渡状态保留，但不得登记为最终验收承载者**——本件 §3/§4 的"C-C 已交付"字样按此定性读取；任何以"C-C 已覆盖"为由关闭承载者问题的表述无效。
