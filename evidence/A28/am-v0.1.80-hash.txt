@@ -1,0 +1,7 @@
+AM v0.1.80 双面哈希登记（轮十：A28 EVIDENCED + DEFECT-004 推翻"Desktop 坏域"定性 + 19 处误定性按纪律分类更正）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 0190a9cab46f83cc69b18475079be842d7633b9b44c7318a21b52d24604598b9
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.79 = 22c82f684d2fd91a797d14eafbc88151d6b741a35c63af606496f893fda927bb（evidence/A27/am-v0.1.79-hash.txt）
+- 同轮事实: 票支 shz/TA28 六提交（d1042b3 立票/29fe8bf 实施+§0b 自我更正/1f517e2 五处就地更正/e54cf96 双残余挂 L02/26c885c EVIDENCED 收口）ff 并入 dev；DEFECT-REGISTER-004 入库（单变量矩阵+复现+修复候选；A29 候选未建票）；四证=MC_EXIT=0（26包/0/0）+RES_EXIT=0（774/0）+update_docker EXIT=0+docker_boundary EXIT=0；扫描 seal 37eb2ec2… blame-join 落本票行 0（阳性对照 363 行有效）；blcheck 65/0；§7.1=evidence/A28/verification-record-A28-V-001.md；A29 预勘子代理中止无产出如实报（下轮重派）；main PRISTINE b22df40
+- 挂账（下轮清尾）: A16-V-003/A13-V-002/A24-V-001 三 §7.1 记录的追加更正段 + A27 diff-plan §3 与 L02 设计件 §4 两处口径句（AM 变更史 6 条以本条为指针，不改写）
