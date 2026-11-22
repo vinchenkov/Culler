@@ -1,0 +1,7 @@
+AM v0.1.78 双面哈希登记（预审计第二片：计算型绑定=两套件逐字节全等+O1-a 冻结集零 hunk）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 7f9f32ec9ef68e350973cedabf56229d642b43c8fece67dffdb084d9aad03a36
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测；值曾随"过程披露⑤"追记更新一次：初登 793ff376…bd95 → 追记后 7f9f32ec…3a36，两态均双面一致）
+- 前轮: v0.1.77 = 168b49aca52b664b833b76d83822039d6ae00e452641e7cf09eb58695a702607（evidence/REGISTRY/am-v0.1.77-hash.txt）
+- 同轮事实: docs/contracts/REGISTRY-INTEGRITY-002.md 入库+AGENDA 纪律注指针（分支 shz/TREG2 提交 f517d33 ff 并入 dev）；重算值=F0b-3 套件 1a582fba…全等/F0b-2 套件 9d1c3e9c…全等/O1-a F1–F18 区（行 8–46）零 hunk、确认面字节锚 e95191b0…6729 已备呈 Authority；两片总账=除 §1.2 MASTER 行外全部可核绑定闭合；blcheck 64/0（BLCHECK_EXIT=0）；重跑 -I 隔离 stdlib-only；不宣称项目安全；worktree 仅 dev；main PRISTINE b22df40
+- 待命输入不变: A27 进码令 · U-6/U-7 · L02 排空期限 · 治理轮开启（议程=AGENDA-001 + 预审计两片 001/002）
