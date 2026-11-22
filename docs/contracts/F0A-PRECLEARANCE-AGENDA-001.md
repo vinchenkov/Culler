@@ -15,7 +15,7 @@
 | IDENTITY-GOVERNANCE v0.2.2 | RECOMMENDED（三审+终审/身份统一） | 三轮+终审（v0.1.7/v0.1.9 身份统一） | 审查正文绑 `fdbd1cbd`；§1.1 清扫后 `e3ddfc5a…c384d2`；§1.2 登记现值 `5d35c0e7…`（v0.2.2） | 同上 + **队列步骤 5：五 D-IG 裁决批准**（IG §11 现为"审方建议"态，Architecture Approval Authority 行为） |
 | BUDGET-LEDGER v0.1.2 | RECOMMENDED 正文封闭 | 首审 7.8→终审 8.6→v0.1.2 定向修正 | 审绑 `7e109b66…`（§1.1）；现字节 `fcbf9ad0…`（§1.2 登记行） | 同上 + **BL-V1 原文核对**（治理指针在册） |
 | PROVIDER-SECURITY v0.1.4 | RECOMMENDED（文档工程停止裁定在册） | 首审五 P0→PS-1..7 全闭 | 评审对象 `7ed93a0f…`；§1.1 清扫后 `adf30f71…ae326`；定稿登记 `c37e06da…`（v0.1.17） | 同上 + PS-F1 义务随冻结面读取 |
-| MASTER-ARCHITECTURE v3.3 | **待 ARCHITECTURE_FROZEN**（非 RECOMMENDED 体系） | D1–D31 台账 | §1.1 旧登记 `654b4f59…788d2`（评审/清扫前行）；§1.2 现字节 `b83abef1…`（identity 清扫后） | 步骤 3=Architecture Approval Authority 独立决策；**不代表任何后续契约冻结**（§3 原文重申） |
+| MASTER-ARCHITECTURE v3.3 | **待 ARCHITECTURE_FROZEN**（非 RECOMMENDED 体系） | D1–D31 台账 | **登记位冲突件**：§1.1 注"清扫后"=`654b4f59…`（**=现字节，复算等**）、§1.2=`b83abef1…`（全册无事件可溯，≠现字节）；MASTER 自基线 `902e528` 单提交零编辑 ⇒ 两登记列构成不可能三角——**判定归步骤 2，详见 `REGISTRY-INTEGRITY-001.md` §2（本行先前"旧登记/现字节"归因系我包内初稿错误，已由审计否证并在此更正）** | 步骤 3=Architecture Approval Authority 独立决策；**不代表任何后续契约冻结**（§3 原文重申）；**前置=§1.2 行重新登记** |
 | DELIVERY-TRANSACTION v0.1 | **SUBMITTED_FOR_REVIEW**（未评未分） | 见 §B | 不登记哈希（评审对象由审方届时全值绑定——冻结时刻约定在册） | 先走 §B 裁决，再进 RECOMMENDED/冻结程序 |
 
 **队列步骤 4 的残余 F0b 三件套（冻结链并行治理件）**：F0b-3 serializer 字段表+30 向量=**已批准**（v0.1.29，范围=B03 §4 注册家族，declared-pending 七族不在其内）；F0b-2 根算法 shz-merkle-v1+11 向量（套件 `9d1c3e9c…`）=**批准悬置**；"摘要关系批准确认"=悬置。三者与 F0b Exit 的关系措辞归 Authority。
