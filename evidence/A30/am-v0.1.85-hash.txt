@@ -1,0 +1,7 @@
+AM v0.1.85 双面哈希登记（轮十三：审查意见接收+第四点验收语义核对执行+Linux 契约事实包呈齐；执行侧转入纯候令态）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 08c95d9bdcd1e5185589c2999e9ba0a68d388d4249d9aef3d3cb88d9763017b4
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.84 = 4db9468734875e061481dcec9bccd121f1d7abda11743517eceadd6a7512591d（evidence/A30/am-v0.1.84-hash.txt）
+- 同轮事实: 支 shz/TR14 单提交 a382d38 ff 并入 dev；第四点核对结论=A29 票面 F1（三项）全兑现，"定向机/CI 各跑一次"系登记 §5 呈报语非票面条款→采第二读法 CLOSED 维持+该半边标记未完成额外验证（004 新增 §6 验收语义注）；Linux 事实包=evidence/A30/linux-host-gateway-contract-facts-001.md（verifier:448 自带映射 vs effects 无 + url 恒 host.docker.internal 与 config.go:403-406 承诺矛盾 + Linux 真 harness 无承载道且 C-A 不覆盖；三形问题候契约句）；A30"夹具形倾向"按令登记为技术建议不代决；审查意见与 §G 抄件一致无改写；blcheck 67/0；建支先于动笔新规则首用合规；不宣称项目安全；main HOLD b22df40
+- 纯候令清单: A30 判据择一 · Linux 契约一句 · T-2 · U-6/7 · C-A 点名(P-1/P-2) · 治理轮 §A–§G 落笔 · main/推送
