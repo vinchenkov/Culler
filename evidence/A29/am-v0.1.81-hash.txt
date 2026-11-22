@@ -1,0 +1,7 @@
+AM v0.1.81 双面哈希登记（轮十一：清尾七件全落 + A29 EVIDENCED + DEFECT-004 闭合 + DEFECT-005 新立）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = 99365ddc2972bc8fd3b4242ec34582a8ddf47f4c173a0255b2fe6fb507b04b84
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.80 = 0190a9cab46f83cc69b18475079be842d7633b9b44c7318a21b52d24604598b9（evidence/A28/am-v0.1.80-hash.txt）
+- 同轮事实: 双支并入 dev——shz/TCORR（04cd6b2 清尾 7 件：三 §7.1 追加更正段+四口径句就地）+ shz/TA29 六提交（d1042b3..7614c01：立票→实施→DEFECT-005 登记+两次取证自我纠正→父对照独立性定论→§7.1+闭合段→EVIDENCED 转正），dev tip 7614c01；六道全绿（mc 26包/0/0 · resident 774/0 · update_docker · boundary 89.9s · **e2e 本机 16/17：walking-skeleton 首绿 133s**）；扫描 seal 6466a8a5 落本票行 0（阳性对照 148 行）；blcheck 66/0（BLCHECK_EXIT=0）；status.json A29=EVIDENCED；本机 e2e 泄漏卷/容器清理归零；不宣称项目安全
+- 待所有者: A30 建票与否（DEFECT-005 collie wake）· blocked-boundary-test.txt 工件裁处 · C-A workflow 点名 · L02 实施授权（含 §0b+site-3 残余+T-2 数值）· U-6/U-7 · 治理轮 · main/推送（全 HOLD 未变）
