@@ -637,8 +637,22 @@ func checkUpdateSpine(ctx context.Context, image, name, schema string, run Runti
 		Schema string `json:"schema"`
 		Empty  bool   `json:"empty"`
 	}
-	if err != nil || json.Unmarshal(body, &record) != nil || record.Schema != schema || record.Empty {
-		return errors.New("The spine checkpoint failed its integrity or schema check.")
+	// A failure here has distinct causes that must not collapse into one
+	// sentence: the container's own error (e.g. the spine cannot be opened
+	// read-only), a response that is not the expected record, a schema that
+	// differs from this release, and a spine with no tables. Reporting only
+	// "integrity or schema check" sent the real cause into a discarded error.
+	if err != nil {
+		return fmt.Errorf("the spine checkpoint verification could not run: %s", lastLine(body))
+	}
+	if json.Unmarshal(body, &record) != nil {
+		return errors.New("the spine checkpoint verification returned a malformed record.")
+	}
+	if record.Schema != schema {
+		return fmt.Errorf("the spine checkpoint schema %q differs from this release %q.", record.Schema, schema)
+	}
+	if record.Empty {
+		return errors.New("the spine checkpoint has no tables.")
 	}
 	return nil
 }
