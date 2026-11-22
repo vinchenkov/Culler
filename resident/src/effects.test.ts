@@ -581,7 +581,7 @@ describe("spawn effect", () => {
     expect(runJson).toEqual({
       run_id: "run-42-worker",
       tier: "pipeline",
-      release_build_id: "test-release",
+      release_build_id: "development",
       role: "worker",
       subject_id: 42,
       project: "ws-e2e",

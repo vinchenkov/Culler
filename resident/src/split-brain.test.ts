@@ -627,6 +627,10 @@ async function runScopedMc(
     run_id: runId,
     tier: "pipeline",
     role,
+    // Matched-pair identity: the test-built mc carries "development" (built
+    // with no -X override), so the forged agent envelope binds to it exactly
+    // as a resident-minted envelope would.
+    release_build_id: "development",
     pool_ids: [],
     // The writable set of the run. A terminal that records an artifact path
     // requires the plane of that path in this set.
