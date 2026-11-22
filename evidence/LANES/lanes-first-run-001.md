@@ -25,7 +25,7 @@ cd mc && mise exec -- go test -tags update_docker -count=1 -v ./deployment \
 | 道 | 状态 | 运行域 |
 |---|---|---|
 | fast suite（`mc/check.sh`+各 Bun lane） | 绿（v0.1.72 轮 dev `d22ed5d`：mc EXIT=0 零 UNVERIFIED；resident 774/0） | 本机 |
-| `docker_e2e` | 三失败**已二分定性为非我方改动**（pre-A16 父提交同态复现）；Q8 裁定运行域=有效 Docker 的定向机/CI，本机记**运行域不满足/UNVERIFIED** | 定向机/CI（未跑） |
+| `docker_e2e` | 三失败**已二分定性为非我方改动**（pre-A16 父提交同态复现）；Q8 裁定运行域=有效 Docker 的定向机/CI，本机记**运行域不满足/UNVERIFIED** ——**【2026-11-22 更正】归因证伪，真因=`evidence/A03/DEFECT-REGISTER-004.md`（容器内 git `safe.directory` 授权被 NOSYSTEM 连带关闭）；改记"产品缺陷在册未修（A29 候选）"，本机 Docker 由所有者声明健康** | 定向机/CI（未跑）；本机待 A29 |
 | `docker_boundary` | 绿（A16-V-003 轮，ok/exit 0） | 本机 |
 | `update_docker` | **红 + 根因在册**（本件 §2） | 本机与定向机均可跑 |
 | `nightly` | **绿（本件 §1）** | 本机 |

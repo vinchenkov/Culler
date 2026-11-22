@@ -13,7 +13,7 @@
 | CI runner | 全部为 GitHub 托管：`macos-15` / `ubuntu-24.04` / `ubuntu-24.04-arm`——**Linux runner 自带 Docker 引擎**，且本道用 **fake harness**（`e2e_test.go:812-814` "routes every role to the fake harness"、`:5/:10` 生命周期注记、`runner/image/build.sh:6-8` 产 `mc-fake-e2e` 带 `test_fake_routing`）⇒ 零模型 token、零 provider 凭据 ⇒ 与"PR CI 无凭据无发布权限"不变量**不冲突** | 读源 + AGENTS |
 | 定向机 218 | `mise`/`go`/`bun` **全部 MISSING**（docker 29.4.0、git 2.34.1、node 有）；`/` 已用 89%（可用 ~50 GB）；culler 单元 0；宿主上另有**第三方租户容器**在跑（nexusflow-*，未触） | 实测探测（只读命令） |
 | 定向机能否绕过工具链 | **不能**：`e2e_test.go:632` 与被测镜像构建 `runner/image/build.sh:31-32` 都在**驱动机**上调 `mise exec -- go build`；`e2e_test.go:1085` 更在驱动机上以 `mise exec -- bun src/main.ts` 起**真 resident 进程**（resident 不落容器）⇒ 需宿主级 Go+Bun+被 pin 的工具链，非"拷一个测试二进制"可代 | 读源 |
-| 本机 Docker Desktop | 已定性：pre-A16 父提交 `8dce77c` 上同样红的骨架空转（AM v0.1.64 二分在册），锁域项因 virtiofs 呈现已由 Q7 重钉为拒绝性质断言 | 在册事实 |
+| 本机 Docker Desktop | ~~已定性：pre-A16 父提交 `8dce77c` 上同样红的骨架空转~~ **【2026-11-22 更正】"Desktop 既有问题"归因证伪：真因=`evidence/A03/DEFECT-REGISTER-004.md`（镜像 `safe.directory=*` 被产品自身 NOSYSTEM 设置连带关闭⇒容器内 git 拒读外属主仓库）；所有者声明本机 Docker 健康。故本件"两侧皆无承载者"中**"本机不能跑"那半边理由失效**（修 A29 后本机即有效域），"CI 不执行 + 定向机无工具链"两半边仍成立**；锁域项因 virtiofs 呈现已由 Q7 重钉为拒绝性质断言 | 在册事实（已更正） |
 
 ## 3. 若要给出承载者，三条候选（成本如实，全部**需所有者点名授权**，执行侧不动）
 - **C-A（最低成本，建议）**：CI 新增一个 Linux job 跑 `docker_e2e`+`docker_boundary`+`update_docker`（fake harness ⇒ 无凭据；runner 自带 Docker；mise-action 已在用）。

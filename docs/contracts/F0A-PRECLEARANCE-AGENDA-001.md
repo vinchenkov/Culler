@@ -47,7 +47,7 @@ F0a 行在册摘要=「服务器端到端+品牌白名单+恢复演练一次+T2 
 
 ## §D 明示清单（Q9 议程 4：不用治理动作掩盖证据缺口——每条=在册原句/位置）
 1. `systemd 真实监督行为`：已收窄为"**持久化监督面仍未验证——结构依赖 A25 向导**"（v0.1.59③，收窄不删规则），随票携带。
-2. `docker_e2e`：本机 pre-A16 即红=**运行域不满足/UNVERIFIED 非产品 PASS**（轮八 Q8）；承载者缺失为轮九在册事实（lanes-carrier-001+§5）。
+2. `docker_e2e`：~~本机 pre-A16 即红=**运行域不满足/UNVERIFIED 非产品 PASS**（轮八 Q8）~~ **【2026-11-22 更正：归因证伪——真因=镜像自带 `safe.directory=*` 被产品 `sourceGitEnv` 的 `GIT_CONFIG_NOSYSTEM` 连带关闭，见 `evidence/A03/DEFECT-REGISTER-004.md`；所有者声明本机 Docker 健康。现状态=产品缺陷在册未修（A29 候选），修复后本机/定向机/CI 皆可跑，Q8 运行域声明须由 Authority 重定】**；承载者缺失仍为在册事实（lanes-carrier-001+§5）。
 3. `工作区真配额`：宿主契约/F0a 残余（ext4-prjquota 变更单草案=未授权备用件）。
 4. `CI 孪生真实 runner 面`：不推送挂账（v0.1.55④）。
 5. `update_docker`：跑过且红+根因在册（DEFECT-003 v2 四态表），**未修**。
