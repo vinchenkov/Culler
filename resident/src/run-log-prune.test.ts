@@ -4,6 +4,7 @@ import {
   createRunLogPruneChore,
   KEEP_RUN_LOGS,
   pruneRunLogs,
+  RUN_LOG_BYTE_ARM_EVERY_TICKS,
   RUN_LOG_PRUNE_PER_TICK,
   type RunLogPruneDeps,
 } from "./run-log-prune";
@@ -238,6 +239,22 @@ describe("the run log prune", () => {
 
   // beforeTick failure skips dispatch for the tick, so this chore's contract is
   // that it cannot fail — a tick must never lose its dispatch to disk hygiene.
+  test("the byte arm is sampled: an idle board pays one readdir between passes", async () => {
+    const runs = endedRuns(10);
+    const r = rig({ entries: runs.map((x) => x.id), runs: runList(runs), budgetMB: 1024,
+      sizes: Object.fromEntries(runs.map((run) => [run.id, 1048576])) });
+    const chore = createRunLogPruneChore(r.deps);
+    for (let i = 0; i < RUN_LOG_BYTE_ARM_EVERY_TICKS - 1; i++) await chore.beforeTick();
+    // No sampling tick yet: the board never read the budget, the run table, or
+    // a single size. This is the regression guard — an unsampled tick that
+    // still walked the tree turned every minute into the expensive pass.
+    expect(r.mcCalls.filter((argv) => argv[0] === "config")).toEqual([]);
+    expect(r.mcCalls.filter((argv) => argv[1] === "list")).toEqual([]);
+    await chore.beforeTick();
+    expect(r.mcCalls.filter((argv) => argv[0] === "config").length).toBe(1);
+    expect(r.discarded).toEqual([]);   // 10 MB ended under a 1024 MB budget
+  });
+
   test("the chore swallows what the prune throws", async () => {
     const r = rig({ entries: [] });
     r.deps.readdir = async () => { throw new Error("ENOENT"); };

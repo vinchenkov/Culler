@@ -61,11 +61,22 @@ export interface RunLogPruneChore {
 // in the effector graph.
 const SAFE_ID = /^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/;
 
+/** How often the byte arm runs. The count arm costs one readdir, so it checks
+ * every tick; the byte arm reads the run table, the container inventory, and
+ * the sizes of the ended tree. Reclaiming disk carries no deadline, so a
+ * sampled pass still holds the budget while an idle board pays what it paid
+ * before the budget existed. Without the sample the byte arm turned every
+ * tick into the expensive pass and re-warned the same unrecorded log each
+ * minute. */
+export const RUN_LOG_BYTE_ARM_EVERY_TICKS = 8;
+
 export function createRunLogPruneChore(deps: RunLogPruneDeps): RunLogPruneChore {
+  let elapsed = 0;
   return {
     async beforeTick() {
+      elapsed = (elapsed + 1) % RUN_LOG_BYTE_ARM_EVERY_TICKS;
       try {
-        await pruneRunLogs(deps);
+        await pruneRunLogs(deps, { byteArm: elapsed === 0 });
       } catch (err) {
         deps.log.warn("sweep.skipped", `run log prune: skipped this tick: ${err instanceof Error ? err.message : String(err)}`);
       }
@@ -75,7 +86,8 @@ export function createRunLogPruneChore(deps: RunLogPruneDeps): RunLogPruneChore 
 
 /** One prune. Exported for tests; production reaches it through the chore,
  * which is the arm that guarantees it cannot cancel a tick. */
-export async function pruneRunLogs(deps: RunLogPruneDeps): Promise<void> {
+export async function pruneRunLogs(deps: RunLogPruneDeps, opts: { byteArm?: boolean } = {}): Promise<void> {
+  const byteArm = opts.byteArm ?? true;
   const root = `${deps.mcHome}/logs/runs`;
   let entries: string[];
   try {
@@ -85,7 +97,7 @@ export async function pruneRunLogs(deps: RunLogPruneDeps): Promise<void> {
     return;
   }
   if (entries.length === 0) return;
-  const budgetMB = await runTreeBudgetMB(deps);
+  const budgetMB = byteArm ? await runTreeBudgetMB(deps) : null;
   if (entries.length <= KEEP_RUN_LOGS && budgetMB === null) return;
 
   const rows = await endedAtByRunID(deps);
