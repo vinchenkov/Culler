@@ -1,0 +1,9 @@
+AM v0.1.66 双面哈希登记（⚑ IMPL-AUTH-003A 发出 + Authority 任命 + A26/A13/A24 进码授权）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = f1612a98258265d1e5fb9b0890d76ffb09088ae4c411f44c5ba2dd468249c152
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-22 +0800 实测）
+- 前轮: v0.1.65 = 795ce391db8b33415d63fcc337e66fe47b3b54121d38492f2b8bc5092c1fcf29（evidence/A26/am-v0.1.65-hash.txt）
+- 发出绑定: IMPL-AUTH-003A-A24-DRAFT.md 全值 SHA-256 = 1227f5ad0b2728d02a47709f1e87bc3930be7023cd47b3a6ac86f49c58ce3873（内绑 diff-plan-003 = d557d5fb2a8b813a88fc79719df3ac633a163abbda2ffeed19fdca96567b3d4c）
+- Authority: 部署所有者本人（RR 接受/冻结链/F0a exit；撤销=明示撤回；任命≠任何接受决定）
+- A13 进码绑定形状文档 g-b-envelope-design.md SHA-256 = 94a96a0a0a200790fb265008e7053c6e6f1aef5f6d869d160d14603e78af8e4a
+- 同轮: status.json A13/A24/A26→IN_PROGRESS；A26 依赖边纠正（A14→—，provenance≠dependency，blcheck 63/0）
