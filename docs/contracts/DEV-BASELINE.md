@@ -26,7 +26,7 @@
 ### Track A · F0a 地基（Linux 服务器/品牌/门禁/验证）
 | ID | 标题 | depends | 契约锚 | 验收映射 | 备注/门 |
 |---|---|---|---|---|---|
-| A01 | ADR-0 凭据后端选型（age+口令/systemd-creds/KMS 接口，经 R1 拆分实为 C0/C1/C2a/C2b/C3 五候选） | — | IG §5.1 表B〔待:O1 ADR〕；MASTER §10 O1；DC §7.4 | F0a：O1 ADR 入档+表B 引用格补源 | O1-a 事实基线**已冻结**（o1-credential-facts-001.md §7，AM v0.1.46）；O1-b 比较待 U-6/U-7 要求值；ADR 决定本身仍未发——A01 保持 BLOCKED-on-decision |
+| A01 | ADR-0 凭据后端选型（age+口令/systemd-creds/KMS 接口，经 R1 拆分实为 C0/C1/C2a/C2b/C3 五候选） | — | IG §5.1 表B〔待:O1 ADR〕；MASTER §10 O1；DC §7.4 | F0a：O1 ADR 入档+表B 引用格补源 | O1-a 事实基线**已冻结**（o1-credential-facts-001.md §7，AM v0.1.46）；O1-b 比较待 U-6/U-7 要求值；ADR 决定本身仍未发——A01 保持 BLOCKED-on-decision；**【轮十八·O1-b 已做，A01 转"候八件形状裁"】**U-6=否/U-7=dev-prod 同后端+CI 零凭据经轮十六 D7/D8 给值⇒比较解锁：`evidence/A01/o1b-comparison-001.md`（C0-C3 × 八维表+三问直答；**承重三根执行侧亲验**：host_secret_other.go:9,12 全 Err / platform:7 硬闸 / agentprofiles.go:38 拒语，agent E1 非终判律兑现；未亲验项具名=creds@249 文档主张、o1/o3 内部行号未重开）；**Q1=A02 清第 2 步墙六件已列**（接口/闸/文案/消费面/迁移/前台，行级锚全在）；**Q2=命门**："同后端"未定义（D8 原文粒度未定）⇒C2 系生死悬于此定义，A01 裁件 1；Q3=C3 与 CI 零凭据正面冲突+E2 项三笔。ADR 起草候 §3 八件勾选（1 定义/2 秘密之秘密/3 重签发定形/4 C3 收拒/5 Git 三对象/6 viewer 例外/7 备份密钥环归属/8 文案范围表）；顺带呈=**VISION.md 不在 fork 树**（AGENTS 指为北极星=引用悬空）|
 | A02 | Linux 凭据后端实现（host_secret_linux + 迁移工具） | A01 | IG §5.1 矩阵行；DC §7.4 分域 | F0a：IG §5.1 矩阵逐行测试 | |
 | A03 | systemd 监督替换 launchd（supervision/services/uninstall/redeploy/dev-reset 平台面） | — | MASTER §2 P0 清单③；DC-FACTS #5 | F0a：Linux 安装→运行→停复→卸载实测 | amd64 主目标 |
 | A04 | 安装/发布资产双架构（install.sh 矩阵+arch 闸 host-native-arch 政策+opencode x64 包链+CI 矩阵） | A03 | MASTER §2 移植清单（B4 行：`containerruntime_linux.go:115`） | F0a：CI 双架构矩阵全绿+amd64 净机安装 | |
