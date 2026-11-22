@@ -2,6 +2,7 @@
 
 性质=**决策支持**。执行者=执行侧，只读普查，未改写任何在册文件，未处置任何命中。范围=`shz/dev` 全 231 提交 + 工作树（tracked∪untracked，排除 `.git`/`node_modules`）。
 本件与 `g4-census-hits.ndjson` 均**不含命中值**——命中值再入册=二次泄露；台账只记 {family, path, line}。
+**⚠ 本件的家族 A 枚举后被证明不完备（漏掉频率最高的宿主主机名族），修正与影响见同目录 `g4-census-erratum-001.md`；家族 A 的四行数字保留为发现过程记录，不作覆盖率结论引用。**
 
 ## 1. 结论（先给）
 1. **会外流的是我们自己的登记面，不是代码面。** 已知操作者标识的命中集中在 `docs/contracts/ACCEPTANCE-MATRIX.md`、`docs/facts/o1-*`、`docs/facts/o3-*` 与 `evidence/A*/verification-record-*.md`；生产源码零命中（见 §3 家族 B 的区分）。
