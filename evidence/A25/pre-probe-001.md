@@ -16,6 +16,17 @@
 | S4 | run.json 闸 | :103-106 拒容器内 setup（"operator's Mac terminal"）——**本质=动词域纪律（host agent 不得跑 setup），非平台锁**，Linux 宿主同样适用 | 仅文案去 Mac 字样，判定逻辑不动（AGENTS 不变量：verb scope 只认 /mc/run.json 存在性） |
 | S5 | Linux 真机端到端 | 本机 Mac 无法证 | 载体=A32 `opt-in-lanes` runner 首跑（**候属主启用 fork Actions**）；启用前 S1-S4 可 CODED，EVIDENCED 挂延付具名（与 A31 同闸）|
 
+## 2.5 ⚑ 追加盘点（同轮补做全量 GOOS 闸普查后自纠——§2 的 S1"闸面=1 处"**过窄**，我当时只 grep 了 Mac 字面未查平台闸全量）
+全仓生产 `GOOS` 闸亲验清单（`grep runtime.GOOS` 非测试面，5 处）：
+| 闸 | 位置 | 语义 | 归 A25？ |
+|---|---|---|---|
+| **G-LIFE** | `culler_prod.go:222` `GOOS != darwin \|\| !canInspectProjectVision()` ⇒ "Lifecycle operations require the Culler Mac host."（×2 同语 :228） | **操作者主面**：Linux 机上 `culler update/services/status` 全灭——但 systemd(A03✓)/双架构(A04✓)/更新链(Linux 段 A27/A28✓)/A24 谓词（其 EVIDENCED 判据本就是 Linux 目标机三域矩阵）**四件套已备**，GOOS 半=历史锁；A24 设计件语义=视觉谓词门非 Mac 门 | **A25b（本件发现的新半）**：去 GOOS 留谓词=与 A24 设计一致；操作者面重大⇒呈报后动，diff-plan 单列 |
+| G-OPEN | `private_release.go:129` 拒 Linux "open"（Apple silicon 句） | 开终端便利路 | 独立小面随 A25b 申报 |
+| G-WIZ | `setup_terminal_prod.go:99` | 向导入口 | **A25a**（§2 S1-S4） |
+| G-SEC | `host_secret_platform.go:7` `GOOS == darwin \|\| test-env` | **真平台能力锁**（Linux 后端=A02 未建）| **保留不动**（正确锁，A02 收口） |
+| fixture 面 | `host_secret_fixture.go:122` | 测试夹具 | 不动 |
+**教训自记**：§2 声称"闸面=1 处"时我只数了文案命中——"标签面=闸面"是未经检查的等同假设；全量普查应在前置侦察内完成而非事后补。**A25 票的真实面=a 向导 + b 生命周期门**（b 才是 Linux 宿主可用的主体），票行随本轮改写。
+
 ## 3. 风险注
 - S3 若归 A25：向导文面三语改动=AGENTS"操作者可见文本"全义务（审到 accept 为止）。
 - S1 放行后 Linux 宿主首跑路径=发布安装向导（A24 谓词/凭据步 A02 候值）——**向导非凭据段（welcome/prepare/review/start/dashboard）可先绿**；凭据段在 A02 前按既有拒绝语义走，A25 不改其形。

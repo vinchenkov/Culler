@@ -33,7 +33,7 @@ func (t *Terminal) SetStageTitles(titles []string) {
 }
 
 func (t *Terminal) Complete() {
-	t.writeLines(t.stageLines(len(stageIDs)+1, "Mac setup complete", stageIDs, ""))
+	t.writeLines(t.stageLines(len(stageIDs)+1, "Setup complete", stageIDs, ""))
 }
 
 func (t *Terminal) styled(text, style string) string {
@@ -146,7 +146,7 @@ func (t *Terminal) stageLines(index int, title string, completed []string, next 
 		lines = append(lines, t.lines(plain.String(), "", 0)...)
 	}
 	if index > len(stageIDs) {
-		lines = append(lines, t.lines("Mac setup complete", textDone, 0)...)
+		lines = append(lines, t.lines("Setup complete", textDone, 0)...)
 	} else {
 		lines = append(lines, t.lines(fmt.Sprintf("%d of %d  %s", index, len(stageIDs), progressText(title)), textCurrent, 0)...)
 	}

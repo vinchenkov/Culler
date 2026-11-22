@@ -85,7 +85,7 @@ type setupWizard struct {
 }
 
 var setupStageTitles = []string{
-	"Welcome", "Prepare your Mac", "Connect an agent",
+	"Welcome", "Prepare your machine", "Connect an agent",
 	"Review your setup", "Start Culler", "Open your dashboard",
 }
 
@@ -96,12 +96,12 @@ func setupChoice(id, label, detail string) onboarding.Choice {
 }
 
 func runTerminalSetup(raw []string, stdin io.Reader, stdout, stderr io.Writer) int {
-	if runtime.GOOS != "darwin" {
-		fmt.Fprintln(stderr, "Culler setup requires a Mac.")
+	if runtime.GOOS != "darwin" && runtime.GOOS != "linux" {
+		fmt.Fprintln(stderr, "Culler setup runs on the operator's Mac or Linux host.")
 		return 2
 	}
 	if _, err := os.Lstat("/mc/run.json"); !os.IsNotExist(err) {
-		fmt.Fprintln(stderr, "Culler setup requires the operator's Mac terminal.")
+		fmt.Fprintln(stderr, "Culler setup runs in the operator's host terminal, not in an agent.")
 		return 2
 	}
 	a, err := parseTerminalSetupArgs(raw)
@@ -472,7 +472,7 @@ func (w *setupWizard) welcome() error {
 		"Connect an agent and open your dashboard.",
 		"You will add your project and its goal in the dashboard.",
 	})
-	_, err := w.ui.Choose("Ready to begin?", []onboarding.Choice{setupChoice("continue", "Set up this Mac", "")}, 0)
+	_, err := w.ui.Choose("Ready to begin?", []onboarding.Choice{setupChoice("continue", "Set up this machine", "")}, 0)
 	return err
 }
 

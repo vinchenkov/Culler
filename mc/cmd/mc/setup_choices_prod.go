@@ -107,7 +107,7 @@ func (w *setupWizard) revalidate() error {
 	w.ui.Panel("Resume your setup", []string{"Culler will check your saved choices."})
 	if w.session.ReleaseID != releaseBuildID {
 		w.session.Stage = 1
-		w.ui.Panel("Prepare your Mac again", []string{"This version of Culler needs a new check."})
+		w.ui.Panel("Prepare your machine again", []string{"This version of Culler needs a new check."})
 		return w.save()
 	}
 	status := w.deps.docker(context.Background())

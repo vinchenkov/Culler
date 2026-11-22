@@ -21,13 +21,13 @@ func TestStageDistinguishesPendingAndCompletedWork(t *testing.T) {
 		t.Fatalf("the stage display omits its position: %q", text)
 	}
 	terminal.Stage(6, "Open your dashboard", stageIDs[:5])
-	if strings.Contains(out.String(), "Mac setup complete") {
+	if strings.Contains(out.String(), "Setup complete") {
 		t.Fatal("the final stage declared completion before the final save")
 	}
 	before := out.Len()
 	terminal.Complete()
 	completion := out.String()[before:]
-	if strings.Count(completion, "✓") != 6 || strings.ContainsAny(completion, "●○·") || !strings.Contains(completion, "Mac setup complete") {
+	if strings.Count(completion, "✓") != 6 || strings.ContainsAny(completion, "●○·") || !strings.Contains(completion, "Setup complete") {
 		t.Fatalf("the final state remains incomplete: %q", completion)
 	}
 	if len(regexp.MustCompile(`(?m)^Culler$`).FindAllString(out.String(), -1)) != 1 || strings.Contains(out.String(), "+---") {
