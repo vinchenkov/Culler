@@ -1,0 +1,8 @@
+AM v0.1.94 双面哈希登记（轮二十二：A01 批文 + 218 探针证伪 creds@249 + A02 Linux 后端 CODED 全绿并入 f65147d + A25b B1 并入 b5eb671 + pty flaky 归因 + §H-8/§H-9 新纪律）
+- 文件: docs/contracts/ACCEPTANCE-MATRIX.md
+- sha256(dev worktree 登记轮工作态) = c16222aae6e68b7569b56811ee72abb4ca0642285076d72c8fc3da862b4fa6d6
+- sha256(主工作树未跟踪副本) = 同上（cmp DUAL-EQUAL，2026-11-23 +0800 实测）
+- 前轮: v0.1.93 = 2c1b40fab26202367d4f78ee15a6cbefcd137100af5257be35b815822088543d（evidence/A02/am-v0.1.93-hash.txt）
+- 同轮事实: dev f65147d(A02)+b5eb671(A25b) 两提交；218 探针 root:3479 三行只读=a准授权内，结果 creds 无/TPM 无/machine-id 在；A02 五线全（容器 6/6、扫描间接阳性对照、审方 5 语、全道 26/0/0、双平台编译）；A25b 五线含双层全道；pty flaky 三证据归因非回归；A02/A25b 均停本机全绿不标 EVIDENCED（端到端候 Actions/218 单令）；A01=AM-REFERRAL 候定稿笔；blcheck 69/0；ledger 26 不变；worktree 仅 dev；main 远端 dd087c7 未推；不宣称项目安全
+- 下一波自动连开（§H-8 先写骨架）: A09 改名波（schema 4 处破坏性先于 B02）→ C01 → A06 → B01
+- 候三事: ADR 定稿之笔 · Actions 启用 · 218 凭据动词端到端准否
