@@ -9,7 +9,6 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -516,8 +515,8 @@ func TestCullerUpdateUsesSavedInstallerAndSelectedHome(t *testing.T) {
 }
 
 func TestCullerLogsSelectsHomeAndRetainsTail(t *testing.T) {
-	if runtime.GOOS != "darwin" {
-		t.Skip("The public log command requires the Mac host.")
+	if !canInspectProjectVision() {
+		t.Skip("The public log command runs on the operator's Culler host.")
 	}
 	home := t.TempDir()
 	t.Setenv("MC_HOME", filepath.Join(t.TempDir(), "unrelated"))
@@ -562,8 +561,8 @@ func TestPublishedCancellationRestoresServicesAfterTheStop(t *testing.T) {
 }
 
 func TestCullerReleaseDeadlineCannotReportSuccess(t *testing.T) {
-	if runtime.GOOS != "darwin" {
-		t.Skip("The public release check requires the Mac host.")
+	if !canInspectProjectVision() {
+		t.Skip("The public release check runs on the operator's Culler host.")
 	}
 	home := t.TempDir()
 	var out bytes.Buffer

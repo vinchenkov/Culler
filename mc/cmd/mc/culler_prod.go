@@ -14,7 +14,6 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"syscall"
@@ -219,13 +218,13 @@ func runCullerWith(args []string, stdin io.Reader, stdout, stderr io.Writer, dep
 		}
 		return 0
 	}
-	if runtime.GOOS != "darwin" || !canInspectProjectVision() {
-		return fail(errors.New("Lifecycle operations require the Culler Mac host."), 2)
+	if !canInspectProjectVision() {
+		return fail(errors.New("Lifecycle operations run on the operator's Culler host, not in an agent."), 2)
 	}
 	if id, err := verbs.LoadIdentity(); err != nil {
 		return fail(err, 2)
 	} else if err := verbs.RequireHostScope(id, "Culler lifecycle operations"); err != nil {
-		return fail(errors.New("Lifecycle operations require the Culler Mac host."), 2)
+		return fail(errors.New("Lifecycle operations run on the operator's Culler host, not in an agent."), 2)
 	}
 	previous, present := os.LookupEnv("MC_HOME")
 	if err := os.Setenv("MC_HOME", home); err != nil {
