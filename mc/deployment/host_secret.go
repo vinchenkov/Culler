@@ -12,7 +12,7 @@ import (
 
 const maxHostSecretBytes = 256 << 10
 
-var ErrHostCredentialUnavailable = errors.New("The host credential store is unavailable. Unlock the login Keychain, then retry.")
+var ErrHostCredentialUnavailable = errors.New("The host credential store is unavailable. Unlock it or re-authorize the connection, then retry.")
 
 type hostSecretStore interface {
 	Read(service, account string) ([]byte, error)

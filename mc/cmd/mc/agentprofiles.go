@@ -35,7 +35,7 @@ func commandAgentProfile(args []string, stdin io.Reader) (result any, err error)
 		return nil, verbs.Usagef("An agent profile action is required.")
 	}
 	if (args[0] == "credential-read" || args[0] == "credential-renew" || args[0] == "proxy-tls" || args[0] == "credential-migrate" || args[0] == "connection-delete") && !deployment.HostCredentialCommandsAvailable() {
-		return nil, verbs.Domainf("Host credentials require the macOS host.")
+		return nil, verbs.Domainf("Host credentials require the operator's host.")
 	}
 	home, err := configuredCanonicalHome()
 	if err != nil {

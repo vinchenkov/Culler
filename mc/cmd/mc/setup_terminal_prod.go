@@ -649,7 +649,7 @@ func setupSectionCause(message string) string {
 		{"release update requires", "The release update requires stopped Culler services. Ask your coding harness to apply this update."},
 		{"invalid owner", "A setup file or directory belongs to another user. Ask your coding harness to repair its ownership, then run install.sh."},
 		{"permission denied", "Culler lacks permission to access a required file."},
-		{"operation not permitted", "macOS refused access to a required file or service."},
+		{"operation not permitted", "The system refused access to a required file or service."},
 		{"address already in use", "Another process uses the selected dashboard address. Choose another port."},
 		{"loaded supervision differs", "The active services use a different configuration. Ask your coding harness to apply the new setup."},
 		{"mode 0700", "A setup directory requires owner-only access. Ask your coding harness to repair its permissions."},

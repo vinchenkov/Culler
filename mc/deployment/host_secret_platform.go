@@ -4,4 +4,6 @@ package deployment
 
 import "runtime"
 
-func HostCredentialCommandsAvailable() bool { return runtime.GOOS == "darwin" }
+func HostCredentialCommandsAvailable() bool {
+	return runtime.GOOS == "darwin" || runtime.GOOS == "linux"
+}
